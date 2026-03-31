@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Polaris_Thruster_VTOL",
+  "ref": "1ffbc5d1-2993-43ee-942f-e57222084a38",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 3000.0
+  },
+  "type_data": {
+    "thrust_capacity": 18200000.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "vtol"
+  }
+}

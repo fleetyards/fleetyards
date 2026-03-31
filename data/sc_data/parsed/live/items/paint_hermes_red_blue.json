@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Red_Blue",
+  "ref": "e3b2de03-eb22-4603-af5f-9af12c119fe2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd2de251-4a0a-4873-bb64-4bb8a448130b",
+  "name": "Hermes Dauntless Livery",
+  "short_name": null,
+  "description": "Carve a path through the unknown with the Dauntless livery. Featuring a deep, slate blue and striking red details, this color palette is for the bold and the brave.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "key": "INTK_AEGS_Redeemer",
+  "ref": "22a8d9dc-cd68-4b84-bb53-dceb1f6c60f0",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 0.0,
+    "minimum_rate": 0.2
+  }
+}

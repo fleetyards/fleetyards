@@ -1,0 +1,63 @@
+{
+  "key": "MXOX_NeutronCannon_S1",
+  "ref": "3fc83638-fbe5-4d75-8e18-678736fefbc4",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "de0d3594-9f18-42c0-8a90-6edd723d80f8",
+  "name": "NN-13 Cannon",
+  "short_name": "NN-13",
+  "description": "Manufacturer: MaxOx\\nItem Type: Neutron Cannon\\nSize: 1\\n\\nMaxOx’s NN-13 neutron cannon offers a massive energy payload at the expense of speed and energy efficiency. One could argue the virtues of speed, rate of fire and distance over damage, but the argument becomes irrelevant if you only need to hit them once.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

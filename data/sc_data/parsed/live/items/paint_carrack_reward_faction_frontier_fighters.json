@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Carrack_Reward_Faction_Frontier_Fighters",
+  "ref": "26b59f42-b324-4e71-ab3d-f07c0d8e2bca",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0027f4f4-483e-462e-a362-ee0df5bb81f5",
+  "name": "Carrack Frontier Fighters Camo Livery",
+  "short_name": null,
+  "description": "Be ready to battle in the untamed wilds with this green camo livery featuring the logo of the Frontier Fighters vigilante group.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

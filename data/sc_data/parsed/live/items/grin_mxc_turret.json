@@ -1,0 +1,42 @@
+{
+  "key": "Grin_MXC_Turret",
+  "ref": "09196459-f7ba-4423-af45-da8865736cb6",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_class_1_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_class_1_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 500.0
+  }
+}

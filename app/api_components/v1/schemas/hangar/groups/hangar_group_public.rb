@@ -5,7 +5,7 @@ module V1
     module Hangar
       module Groups
         class HangarGroupPublic
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

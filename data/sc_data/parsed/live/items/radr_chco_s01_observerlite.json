@@ -1,0 +1,92 @@
+{
+  "key": "RADR_CHCO_S01_ObserverLite",
+  "ref": "28c7f719-37c3-432e-ab94-59dab4c3a0f7",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "8af71a8a-7da0-4e31-afc7-648fc916e387",
+  "name": "Observer-Lite",
+  "short_name": null,
+  "description": "Item Type: Radar\\nManufacturer: Chimera Communications\\nSize: 1\\nGrade: D\\nClass: Industrial\\n\\nThe Observer-Lite is a no-frills radar ready for those long hauls. Trust the brand that focuses on how good a radar works and not just how it looks.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 585.0
+  },
+  "type_data": {
+    "signature_detection": [
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.6,
+        "piercing": 1.0,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      }
+    ],
+    "ping_properties": {
+      "cooldown_time": 2.5
+    },
+    "sensitivityModifiers": {
+      "sensitivityAddition": -0.55
+    }
+  }
+}

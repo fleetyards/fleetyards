@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Polaris_Blue_Black_Yellow",
+  "ref": "5f8ae92f-7bcf-4fdb-a258-e4e51f9bc0c8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "caea151a-fe40-49ec-9f9f-b7b834889015",
+  "name": "Polaris Sirius Livery",
+  "short_name": null,
+  "description": "Patrol, protect, and impress with the Polaris by outfitting it with the Sirius livery, which masterfully mixes blue, grey, and tan.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

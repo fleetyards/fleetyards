@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S03_CS_FSKI_Arrester",
+  "ref": "ace7d6e1-63d3-484a-a707-a88f240d40e5",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Argos IX-G Torpedo",
+  "short_name": null,
+  "description": "Manufacturer: Talon \\nTracking Signal: Cross Section \\nSize: 9  \\n\\nThe Talon Argos strike torpedo features a classic, straightforward design that relies on exacting manufacturing standards and a classic cross section targeting system. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 1000000.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  }
+}

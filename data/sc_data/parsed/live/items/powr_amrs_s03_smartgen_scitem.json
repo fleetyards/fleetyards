@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S03_SmartGen_SCItem",
+  "ref": "39e271e4-e9f4-421d-9673-063726b72c8b",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "3",
+  "grade": "4",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "SmartGen",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 3\\nGrade: D\\nClass: Military\\n\\nThe no-frills SmartGen is A&R’s entry-level large power plant that delivers solid performance for the price.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1800.0
+  }
+}

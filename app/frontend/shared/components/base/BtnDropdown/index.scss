@@ -1,0 +1,91 @@
+.panel-btn-dropdown {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  > :first-child {
+    margin-right: 0;
+  }
+
+  &__list {
+    position: absolute;
+    z-index: 1001;
+    font-size: 1rem;
+    display: none;
+    min-width: 200px;
+    background: $panel-bg;
+    border: $panel-border-width solid $panel-inner-border;
+    border-radius: $panel-border-radius;
+    cursor: pointer;
+    flex-direction: column;
+
+    &.visible {
+      display: flex;
+    }
+
+    &::before {
+      position: absolute;
+      top: -$panel-border-width;
+      right: 14px;
+      left: 14px;
+      height: $panel-border-width;
+      background-color: #444;
+      content: "";
+    }
+
+    &::after {
+      position: absolute;
+      right: 14px;
+      bottom: -$panel-border-width;
+      left: 14px;
+      height: $panel-border-width;
+      background-color: #444;
+      content: "";
+    }
+
+    :deep(hr) {
+      height: 2px;
+      margin-block: 5px;
+    }
+
+    > :deep(.panel-btn) {
+      display: flex;
+      background-color: transparent;
+      border: none;
+      margin: 0;
+      text-align: left;
+      line-height: 1.5;
+
+      &::after,
+      &::before {
+        display: none;
+      }
+
+      > * {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+
+        > :first-child {
+          display: flex;
+          justify-content: center;
+          width: 20px;
+        }
+
+        > :not(:first-child) {
+          flex: 1 1;
+        }
+      }
+    }
+  }
+
+  &--inline {
+    margin-bottom: 0px;
+  }
+}

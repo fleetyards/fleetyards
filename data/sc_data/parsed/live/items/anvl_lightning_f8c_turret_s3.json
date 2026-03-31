@@ -1,0 +1,42 @@
+{
+  "key": "ANVL_Lightning_F8C_Turret_S3",
+  "ref": "537e8385-4679-41e1-9fe3-b5cfc0f48a93",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil Lightning F8C Turret",
+  "short_name": null,
+  "description": "This remote turret provides mounts for two Size 2 weapons, an expansive field of fire, and precise control to give F8C pilots a comprehensive weapon system to get out of any situation.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_01",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_02",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 3500.0
+  }
+}

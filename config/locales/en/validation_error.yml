@@ -2,11 +2,11 @@
 en:
   validation_error:
     change_pasword: Password Change failed.
-    commodity_price:
-      create: Price could not be created
-      destroy: Price could not be destroyed
-      update: Price could not be updated
     confirmation: Confirmation failed.
+    vehicle:
+      create: Ship could not be added.
+      destroy: Ship could not be removed.
+      update: Ship could not be updated.
     fleet:
       create: Fleet could not be created.
       destroy: Fleet could not be destroyed.
@@ -21,7 +21,7 @@ en:
       destroy: Fleet could not be leaved.
       accept: Fleet Invitation could not be accepted.
       decline: Fleet Invitation could not be declined.
-      leave_as_admin: You can't leave a Fleet as an Admin.
+      demote_not_permitted: You can't demote the last Member of a permanent Fleet Role.
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed
@@ -31,5 +31,9 @@ en:
       update: Image could not be updated
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
+    oauth_application:
+      create: OAuth application could not be created.
+      update: OAuth application could not be updated.
+      destroy: OAuth application could not be destroyed.
     hangar:
       import: Import failed

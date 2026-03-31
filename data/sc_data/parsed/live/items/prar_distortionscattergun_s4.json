@@ -1,0 +1,63 @@
+{
+  "key": "PRAR_DistortionScatterGun_S4",
+  "ref": "76706adf-4687-4a7a-aaf1-c44af0a5d2ca",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "a2ba1db6-a7e8-49db-ba52-c61219693531",
+  "name": "Salvation Distortion Scattergun",
+  "short_name": "Salvation",
+  "description": "Manufacturer: Preacher Armaments\\nItem Type: Distortion Scattergun\\nSize: 4\\n\\nDisable an enemy's ship without damaging it with the Salvation scattergun from Preacher Armaments. With its wide spread and low rate of fire this size four scattergun is most potent at close range.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1650.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

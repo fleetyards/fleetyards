@@ -1,9 +1,9 @@
 shared:
-  name: <%= ENV["MAINTAINER_NAME"] %>
-  mail: <%= ENV["MAINTAINER_MAIL"] %>
+  name: <%= Rails.application.credentials.dig(:maintainer, :name) rescue nil %>
+  mail: <%= Rails.application.credentials.dig(:maintainer, :mail) rescue nil %>
 
   address:
-    street: <%= ENV["MAINTAINER_ADDRESS_STREET"] %>
-    postalcode: <%= ENV["MAINTAINER_ADDRESS_POSTALCODE"] %>
-    city: <%= ENV["MAINTAINER_ADDRESS_CITY"] %>
-    country: <%= ENV["MAINTAINER_ADDRESS_COUNTRY"] %>
+    street: <%= Rails.application.credentials.dig(:maintainer, :address, :street) rescue nil %>
+    postalcode: <%= Rails.application.credentials.dig(:maintainer, :address, :postalcode) rescue nil %>
+    city: <%= Rails.application.credentials.dig(:maintainer, :address, :city) rescue nil %>
+    country: <%= Rails.application.credentials.dig(:maintainer, :address, :country) rescue nil %>

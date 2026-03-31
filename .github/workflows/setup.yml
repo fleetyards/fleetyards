@@ -1,0 +1,31 @@
+name: Setup
+
+on:
+  workflow_dispatch:
+    inputs:
+      destination:
+        description: "Deployment destination"
+        required: true
+        type: choice
+        options:
+          - stage
+          - live
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.job.yml
+    with:
+      tag: ${{ github.sha }}
+    permissions:
+      contents: read
+      packages: write
+
+  setup:
+    needs: build
+    uses: ./.github/workflows/deploy.job.yml
+    with:
+      destination: ${{ inputs.destination }}
+      name: ${{ inputs.destination == 'live' && 'Live' || 'Stage' }}
+      url: ${{ inputs.destination == 'live' && 'https://fleetyards.net' || 'https://fleetyards.dev' }}
+      command: setup
+    secrets: inherit

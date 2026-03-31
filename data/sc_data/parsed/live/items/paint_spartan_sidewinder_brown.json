@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spartan_Sidewinder_Brown",
+  "ref": "0b55d477-383a-436b-b78a-746372ea94d2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ead93763-7fc8-4f11-806a-4da785c22bc2",
+  "name": "Spartan Sidewinder Livery",
+  "short_name": null,
+  "description": "Blend into rocky, desert landscapes with the Sidewinder livery for the Spartan.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

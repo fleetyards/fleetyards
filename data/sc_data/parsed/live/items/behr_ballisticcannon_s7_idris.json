@@ -1,0 +1,63 @@
+{
+  "key": "BEHR_BallisticCannon_S7_Idris",
+  "ref": "1c5cb632-fe64-42a4-9a4e-86147a4dcd74",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "Conqueror-7",
+  "short_name": "Conqueror-7",
+  "description": "Item Type: Ballistic Cannon Turret\\nManufacturer: Hurston Dynamics\\nSize: 7\\n\\nBring your conquest to the skies using Hurston Dynamics' Conqueror-7 ballistic cannon. Bespoke built for the Aegis Idris dorsal turret, these cannons are able to engage larger ships from a distance, finishing fights before they even begin.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 1.786404,
+      "y": 13.26605,
+      "z": 2.806632
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 6750.0
+  },
+  "ammunition": {
+    "max_ammo_count": 800.0,
+    "initial_ammo_count": 800.0,
+    "max_restock_count": 3.0
+  }
+}

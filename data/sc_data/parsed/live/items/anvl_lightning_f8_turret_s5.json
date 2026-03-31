@@ -1,0 +1,42 @@
+{
+  "key": "ANVL_Lightning_F8_Turret_S5",
+  "ref": "338d10af-9b8f-4a4b-b0e2-a0ca99bb3781",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil Lightning F8 Turret",
+  "short_name": null,
+  "description": "Anvil Lightning F8 Turret",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_01",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_02",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

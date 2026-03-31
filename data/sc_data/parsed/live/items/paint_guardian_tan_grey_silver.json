@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_Tan_Grey_Silver",
+  "ref": "7a8f27a1-b8e8-4ac6-b4a6-015d634c04c8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f27df40b-a47f-4697-9990-95f34223be26",
+  "name": "Guardian Stormburst Livery",
+  "short_name": null,
+  "description": "A new twist on a understated color combination, the silver of this palette adds a subtle majesty to the more earthen tans and greys of the Stormburst livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

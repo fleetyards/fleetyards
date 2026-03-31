@@ -1,0 +1,274 @@
+<script lang="ts">
+export default {
+  name: "ModelsTable",
+};
+</script>
+
+<script lang="ts" setup>
+import BaseTable from "@/shared/components/base/Table/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import ModelContextMenu from "@/frontend/components/Models/ContextMenu/index.vue";
+import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
+import { type Model } from "@/services/fyApi";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { type BaseTableCol } from "@/shared/components/base/Table/types";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import {
+  useModelsStore,
+  ModelTableViewColsEnum,
+  ModelTableViewImageColsEnum,
+} from "@/frontend/stores/models";
+
+type Props = {
+  models: Model[];
+  editable?: boolean;
+  wishlist?: boolean;
+  loading?: boolean;
+  emptyVisible?: boolean;
+};
+
+defineProps<Props>();
+
+const { t, toNumber, toUEC, toDollar } = useI18n();
+
+const mobile = useMobile();
+
+const modelsStore = useModelsStore();
+
+const extraColumns = computed<BaseTableCol<Model>[]>(() => {
+  return Object.values(ModelTableViewColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: t(`labels.models.table.columns.${col}`),
+        sortable: true,
+      };
+    })
+    .filter((col) => {
+      return modelsStore.tableViewCols.includes(col.name);
+    });
+});
+
+const extraImageColumns = computed(() => {
+  return Object.values(ModelTableViewImageColsEnum)
+    .map((col) => {
+      return {
+        name: col,
+        label: "",
+        width: col.endsWith("Wide") ? "270px" : "120px",
+        centered: true,
+      };
+    })
+    .filter((col) => {
+      return modelsStore.tableViewImageCols.includes(col.name);
+    });
+});
+
+const manufacturerColumnVisible = computed(() => {
+  return extraColumns.value.some(
+    (column) => column.name === "manufacturerName",
+  );
+});
+
+const tableColumns = computed<BaseTableCol<Model>[]>(() => {
+  return [
+    ...extraImageColumns.value,
+    {
+      name: "name",
+      label: t("labels.vehicle.name"),
+      width: "auto",
+      sortable: true,
+    },
+    ...extraColumns.value,
+  ];
+});
+
+const angledImage = (record: Model) => {
+  if (record && record.media.angledViewColored) {
+    return record.media.angledViewColored;
+  }
+
+  return record.media.angledView;
+};
+</script>
+
+<template>
+  <div>
+    <BaseTable
+      :records="models"
+      primary-key="slug"
+      default-sort="name asc"
+      :columns="tableColumns"
+      :loading="loading"
+      :empty-visible="emptyVisible"
+    >
+      <template #col-storeImage="{ record }">
+        <ViewImage
+          :image="record.media.storeImage"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          shadow
+        />
+      </template>
+      <template #col-storeImageWide="{ record }">
+        <ViewImage
+          :image="record.media.storeImage"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE"
+          shadow
+        />
+      </template>
+      <template #col-angledView="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          transparent
+          without-fallback
+        />
+      </template>
+      <template #col-angledViewWide="{ record }">
+        <ViewImage
+          :image="angledImage(record)"
+          size="small"
+          alt="image"
+          :variant="LazyImageVariantsEnum.WIDE"
+          transparent
+          without-fallback
+        />
+      </template>
+      <template #col-manufacturerName="{ record }">
+        {{ record.manufacturer?.name }}
+      </template>
+      <template #col-length="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.length || "", "distance")
+        }}</span>
+      </template>
+      <template #col-beam="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.beam || "", "distance")
+        }}</span>
+      </template>
+      <template #col-height="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.height || "", "distance")
+        }}</span>
+      </template>
+      <template #col-mass="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.mass || "", "weight")
+        }}</span>
+      </template>
+      <template #col-cargo="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.cargo || "", "cargo")
+        }}</span>
+      </template>
+      <template #col-hydrogenFuelTankSize="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.hydrogenFuelTankSize || "", "cargo")
+        }}</span>
+      </template>
+      <template #col-quantumFuelTankSize="{ record }">
+        <span class="no-break">{{
+          toNumber(record.metrics.quantumFuelTankSize || "", "cargo")
+        }}</span>
+      </template>
+      <template #col-minCrew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.crew.min || "", "people")
+        }}</span>
+      </template>
+      <template #col-maxCrew="{ record }">
+        <span class="no-break">{{
+          toNumber(record.crew.max || "", "people")
+        }}</span>
+      </template>
+      <template #col-groundMaxSpeed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.speeds.groundMaxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-scmSpeed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.speeds.scmSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-maxSpeed="{ record }">
+        <span class="no-break">{{
+          toNumber(record.speeds.maxSpeed || "", "speed")
+        }}</span>
+      </template>
+      <template #col-productionStatus="{ record }">
+        {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}
+      </template>
+      <template #col-price="{ record }">
+        <!-- eslint-disable vue/no-v-html -->
+        <div
+          v-tooltip="{ content: toUEC(record.price), html: true }"
+          class="no-break"
+          v-html="toUEC(record.price)"
+        />
+        <!-- eslint-enable vue/no-v-html -->
+      </template>
+      <template #col-pledgePrice="{ record }">
+        <span class="no-break">{{ toDollar(record.pledgePrice) }}</span>
+      </template>
+      <template #col-name="{ record }">
+        <div class="name">
+          <router-link
+            :to="{
+              name: 'ship',
+              params: {
+                slug: record.slug,
+              },
+            }"
+          >
+            {{ record.name }}
+          </router-link>
+          <br />
+          <small>
+            <!-- eslint-disable vue/no-v-html -->
+            <span
+              v-if="record.manufacturer && !manufacturerColumnVisible"
+              v-html="record.manufacturer.name"
+            />
+          </small>
+        </div>
+      </template>
+      <template #actions="{ record }">
+        <BtnGroup inline class="vehicles-table-btn-group">
+          <Btn
+            v-if="!mobile"
+            :to="{
+              name: 'ship',
+              params: {
+                slug: record.slug,
+              },
+            }"
+            :size="BtnSizesEnum.SMALL"
+          >
+            <span class="no-wrap">{{ t("actions.showDetailPage") }}</span>
+          </Btn>
+          <AddToHangar :model="record" :size="BtnSizesEnum.SMALL" />
+          <ModelContextMenu :model="record" />
+        </BtnGroup>
+      </template>
+      <template #empty>
+        <Empty :name="t('models.name')" inline />
+      </template>
+    </BaseTable>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "index";
+</style>

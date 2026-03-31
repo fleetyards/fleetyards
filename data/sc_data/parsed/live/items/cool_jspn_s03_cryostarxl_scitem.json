@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S03_CryoStarXL_SCItem",
+  "ref": "d36feefd-7377-4188-9271-355709039a39",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "3",
+  "grade": "2",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Cryo-Star XL",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span\\nSize: 3\\nGrade: B\\nClass: Civilian\\n\\nWith its well-crafted design and dependable performance, the Cryo-Star XL cooler proves from the moment you use it that no one understands heat management better than J-Span.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1100.0
+  }
+}

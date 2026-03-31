@@ -1,0 +1,24 @@
+{
+  "key": "ARMR_RSI_Apollo_Medivac",
+  "ref": "42014f8c-2b70-e411-4f1a-1c15cd36ce9f",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 16335.0
+  }
+}

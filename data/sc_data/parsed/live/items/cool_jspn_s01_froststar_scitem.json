@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S01_FrostStar_SCItem",
+  "ref": "d8059126-352a-4be5-bfc9-15cf4fb05439",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Frost-Star",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span \\nSize: 1\\nGrade: C\\nClass: Civilian\\n\\nNoted for its consistent performance, the Frost-Star cooler from J-Span has many admirers for its well-balanced power to heat ratio. ",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 130.0
+  }
+}

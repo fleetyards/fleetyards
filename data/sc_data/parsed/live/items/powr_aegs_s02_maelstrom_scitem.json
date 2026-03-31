@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S02_Maelstrom_SCItem",
+  "ref": "662e4a88-d893-46fd-9fcc-e33e4b783fae",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Maelstrom",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics\\nSize: 2\\nGrade: C\\nClass: Military\\n\\nThis military-grade component has been put through the paces by the UEE Navy, so you know the Maelstrom can handle the havoc of battle.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 750.0
+  }
+}

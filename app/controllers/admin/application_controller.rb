@@ -3,11 +3,15 @@
 module Admin
   class ApplicationController < ActionController::Base
     include RansackHelper
+    include ActionPolicy::Controller
 
     layout "admin/application"
 
+    verify_authorized
+
+    before_action :set_paper_trail_whodunnit
     before_action :configure_permitted_parameters, if: :devise_controller?
-    before_action :authenticate_admin_user!, :set_default_nav
+    before_action :set_default_nav
 
     protect_from_forgery with: :exception
 
@@ -15,27 +19,13 @@ module Admin
 
     add_flash_types :error, :warning
 
-    check_authorization unless: :unauthorized_controllers
-
     rescue_from ActionController::InvalidAuthenticityToken do
       @action_name = "unprocessable_entity"
       render "errors/error", status: :unprocessable_entity
     end
 
-    def worker_running?(name)
-      Sidekiq::Workers.new.any? do |_process_id, _thread_id, work|
-        work.queue == name
-      end
-    end
-    helper_method :worker_running?
-
     private def unauthorized_controllers
       devise_controller?
-    end
-
-    rescue_from CanCan::AccessDenied do |exception|
-      sign_out
-      redirect_to new_admin_user_session_path, warning: exception.message
     end
 
     private def set_default_nav

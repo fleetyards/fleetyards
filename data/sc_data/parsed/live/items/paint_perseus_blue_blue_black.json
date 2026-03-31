@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Blue_Blue_Black",
+  "ref": "340807f0-99b0-466d-9783-8112a00b4a8e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "52fb3c47-9062-4b6e-b748-d72f7f939c0c",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

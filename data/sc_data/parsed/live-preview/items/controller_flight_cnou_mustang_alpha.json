@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_CNOU_Mustang_Alpha",
+  "ref": "ab251efb-5dae-4f76-bf40-966598c24f35",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 225.0,
+    "scm_speed_boosted": 500.0,
+    "reverse_speed_boosted": 260.0,
+    "max_speed": 1200.0,
+    "angular_velocity": {
+      "pitch": 72.3,
+      "yaw": 53.7,
+      "roll": 205.3
+    },
+    "boosted_angular_velocity": {
+      "pitch": 86.75999999999999,
+      "yaw": 64.44,
+      "roll": 246.36
+    }
+  }
+}

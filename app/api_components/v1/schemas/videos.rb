@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class Videos < ::Shared::V1::Schemas::BaseList
-      include SchemaConcern
+      include Rswag::SchemaComponents::Component
 
       schema({
         properties: {

@@ -14,4 +14,6 @@ if fleet_invite_url.limit.present?
   json.limit_reached fleet_invite_url.limit_reached?
 end
 
+json.usage_count fleet_invite_url.usage_count
+
 json.partial! "api/shared/dates", record: fleet_invite_url

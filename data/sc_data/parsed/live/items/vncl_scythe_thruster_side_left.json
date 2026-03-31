@@ -1,0 +1,30 @@
+{
+  "key": "VNCL_Scythe_Thruster_side_left",
+  "ref": "8f6c7169-965d-4428-bd8c-df61a4b20631",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 12300.0
+  },
+  "type_data": {
+    "thrust_capacity": 2510000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": null
+  }
+}

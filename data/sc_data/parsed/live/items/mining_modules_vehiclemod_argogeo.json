@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_VehicleMod_ARGOGeo",
+  "ref": "361c0ac0-5e41-4e45-b3ab-5d18e65000ef",
+  "category": "utility",
+  "type": null,
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "ATLS GEO Module",
+  "short_name": null,
+  "description": "Manufacturer: Argo Astronautics\\nItem Type: Mining Module (Passive)\\n\\nThis bespoke mining module was designed specifically for use with the ATLS GEO.",
+  "inventory_consumption": {
+    "micro_scu": 10644.0,
+    "dimensions": {
+      "x": 0.2113915,
+      "y": 0.3365072,
+      "z": 0.187045
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

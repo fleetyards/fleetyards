@@ -1,0 +1,22 @@
+{
+  "key": "DRAK_Caterpillar_CargoGrid_Nose_Access",
+  "ref": "b6ac92b9-e3a6-4af2-9e0d-8ea39dc7d4e2",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "d656a5e1-5a3e-49c4-80ca-0b7119d84aee"
+}

@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Perseus_Thruster_Retro_Front_Top_Left",
+  "ref": "dfc9bc0a-8041-4d6a-b606-7d6da845b9ef",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "Retro",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 5000.0
+  },
+  "type_data": {
+    "thrust_capacity": 19459490.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

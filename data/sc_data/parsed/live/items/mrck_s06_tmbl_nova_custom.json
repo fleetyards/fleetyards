@@ -1,0 +1,122 @@
+{
+  "key": "MRCK_S06_TMBL_Nova_Custom",
+  "ref": "d4cb1e57-fe95-48b8-b8ee-844c4344a7e2",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "name": "Reliant Tana Missile Launcher",
+  "short_name": null,
+  "description": "Item Type: Missile Launcher\\nManufacturer: MISC\\nSize: 5\\nMissiles: 8xS2 \\n\\nBespoke missile launcher built into the wings of the Tana to make this Reliant variant a deceptively deadly dogfighter.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_s1_missile_101",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_102",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_103",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_104",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_201",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_202",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_203",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_204",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_301",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_302",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_303",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s1_missile_304",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 500.0
+  }
+}

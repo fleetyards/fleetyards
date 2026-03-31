@@ -1,0 +1,24 @@
+{
+  "key": "COOL_WCPR_S01_Endo_SCItem",
+  "ref": "f6ab217a-2506-42ad-b6f2-90bdf939c0af",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4",
+  "name": "Endo",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel Propulsion\t\\nSize: 1\\nGrade: B\\nClass: Civilian\\n\\nA cooler for discerning ship-owners who are looking to push their craft further, Wen/Cassel’s Endo features above average cooling performance and thoughtful design.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 150.0
+  }
+}

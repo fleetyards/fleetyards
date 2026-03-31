@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Salvation_SCItem_SeatDashboard",
+  "ref": "cd9e9668-5fbd-4684-b8f3-e0104ab1c347",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "23186ec6-28ed-4f2e-a3f9-0c5459202d63",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

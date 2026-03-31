@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Idris_Thruster_Main_Fixed_01",
+  "ref": "a2cdb461-b5eb-4e04-a7ab-25bf24613f2f",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "JointThruster",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 500000.0
+  },
+  "type_data": {
+    "thrust_capacity": 94000000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

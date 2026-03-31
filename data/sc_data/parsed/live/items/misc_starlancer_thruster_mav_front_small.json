@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Starlancer_Thruster_Mav_Front_Small",
+  "ref": "21483ce4-0f85-4870-9305-a454d319901c",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2000.0
+  },
+  "type_data": {
+    "thrust_capacity": 7800000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

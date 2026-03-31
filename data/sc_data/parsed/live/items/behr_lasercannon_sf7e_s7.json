@@ -1,0 +1,89 @@
+{
+  "key": "BEHR_LaserCannon_SF7E_S7",
+  "ref": "25ebe37d-5fdd-4319-ad41-71d768b5bed4",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "SF7E Cannon",
+  "short_name": "SF7E",
+  "description": "Manufacturer: Behring\\nItem Type: Laser Cannon\\nSize: 7\\n\\nEngineers from Behring and Crusader collaborated to make the SF7E laser cannon the ideal weapon for the Ares Ion Star Fighter. A custom shell allows the massive weapon to seamlessly integrate into the body of the ship. Ideal for long-range engagements involving large and capital-class spacecraft, the SF7E's impressive accuracy and high damage-per-round make it a devastating weapon in the hands of a skilled shooter.",
+  "inventory_consumption": {
+    "micro_scu": 14200000.0,
+    "dimensions": {
+      "x": 1.786404,
+      "y": 13.26605,
+      "z": 2.806632
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "BEHR_LaserCannon_SF7E_Barrel_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "BEHR_LaserCannon_SF7E_FiringMechanism_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "BEHR_LaserCannon_SF7E_PowerArray_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "BEHR_LaserCannon_SF7E_Ventilation_S7",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 6750.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

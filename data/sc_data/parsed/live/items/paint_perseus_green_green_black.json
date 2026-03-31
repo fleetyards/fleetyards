@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Green_Green_Black",
+  "ref": "d40f3949-cd6f-4f50-8add-6e1cea833294",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f7e4c36b-da2c-4146-9907-fcc52aa1b65d",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

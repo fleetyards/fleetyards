@@ -4,12 +4,13 @@ module V1
   module Schemas
     module Hangar
       class HangarStatsPublic
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
             total: {type: :integer},
+            wishlistTotal: {type: :integer},
             classifications: {type: :array, items: {"$ref": "#/components/schemas/HangarClassificationMetric"}},
             groups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupMetric"}}
           },

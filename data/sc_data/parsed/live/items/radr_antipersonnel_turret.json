@@ -1,0 +1,92 @@
+{
+  "key": "RADR_AntiPersonnel_Turret",
+  "ref": "c818ab50-4350-42dc-b285-388adec321ec",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "0",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 21000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 1.105504,
+      "z": 0.4009475
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  },
+  "type_data": {
+    "signature_detection": [
+      {
+        "sensitivity": 0.75,
+        "piercing": 1.0,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.75,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.5,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 1.0,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      }
+    ],
+    "ping_properties": {
+      "cooldown_time": 0.0
+    },
+    "sensitivityModifiers": {
+      "sensitivityAddition": -0.75
+    }
+  }
+}

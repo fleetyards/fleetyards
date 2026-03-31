@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Starlancer_Thruster_Main",
+  "ref": "26ec8ad9-a0d0-49ad-b328-3d0571af7f8d",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 17000.0
+  },
+  "type_data": {
+    "thrust_capacity": 12500000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

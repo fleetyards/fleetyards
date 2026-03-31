@@ -1,0 +1,24 @@
+{
+  "key": "POWR_LPLT_S00_IonWave_SCItem",
+  "ref": "f27e87f6-5075-470f-83f3-358424a14e7c",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "0",
+  "grade": "2",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "IonWave",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Lightning Power Ltd.\\nSize: 0\\nGrade: B\\nClass: Civilian\\n\\nThe IonWave vehicle power plant can help you confidently summit the heights of most peaks without overheating thanks to the incredible technology inside designed by the folks at Lightning Power Ltd.",
+  "inventory_consumption": {
+    "micro_scu": 44000.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 82.0
+  }
+}

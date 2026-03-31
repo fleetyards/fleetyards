@@ -3,48 +3,126 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:serial) { "DO-5920-FL" }
+  let(:serial_other) { "DO-5921-FL" }
+  let(:vehicle) { create(:vehicle, serial:, user: author) }
+  let(:vehicle_other) { create(:vehicle, serial: serial_other) }
 
-  let(:user) { nil }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["hangar", "hangar:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     sign_in(user) if user.present?
+
+    vehicle
+    vehicle_other
   end
 
   path "/vehicles/check-serial" do
     post("Check Vehicle Serial") do
-      operationId "vehicleCheckSerial"
+      operationId "checkSerialVehicle"
       tags "Vehicles"
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :data, in: :body, schema: {"$ref": "#/components/schemas/VehicleCheckSerialInput"}, required: true
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["hangar", "hangar:read"]},
+        {OpenId: ["hangar", "hangar:read"]}
+      ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/VehicleCheckSerialResponse"
+        schema "$ref": "#/components/schemas/Check"
 
-        let(:user) { users :data }
-        let(:data) do
+        let(:input) do
           {
-            serial: "1234567890"
+            value: serial
           }
         end
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        run_test! do |response|
+          body = JSON.parse(response.body)
+
+          expect(body["taken"]).to eq(true)
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+        let(:input) { {value: serial} }
 
         run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+        let(:input) { {value: serial} }
+
+        run_test!
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Check"
+
+        let(:input) do
+          {
+            value: "00-0000-00"
+          }
+        end
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+
+          expect(body["taken"]).to eq(false)
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Check"
+
+        let(:input) do
+          {
+            value: serial_other
+          }
+        end
+
+        run_test! do |response|
+          body = JSON.parse(response.body)
+
+          expect(body["taken"]).to eq(false)
+        end
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:data) { nil }
+        let(:input) do
+          {
+            value: "foo"
+          }
+        end
+        let(:user) { nil }
 
         run_test!
       end

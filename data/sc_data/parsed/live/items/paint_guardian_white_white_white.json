@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_White_White_White",
+  "ref": "08c615d0-3d09-4070-81d1-030414317fa5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a023f38c-79c3-44dc-ac28-9ef4b16950fd",
+  "name": "Guardian Whiteout Livery",
+  "short_name": null,
+  "description": "Featuring a dramatically stark all-white finish, the Whiteout livery highlights the powerful form of the Guardian.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Reclaimer_Thruster_Main",
+  "ref": "45e0a42f-092a-41c8-a95e-a7a05c1b9735",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 29000.0
+  },
+  "type_data": {
+    "thrust_capacity": 73000000.0,
+    "fuel_burn_rate_per10_k_newton": 0.193875,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

@@ -1,0 +1,114 @@
+# frozen_string_literal: true
+
+require "swagger_helper"
+
+RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:new_member) { create(:fleet_membership, fleet: fleet, aasm_state: :requested).user }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
+  let(:fleetSlug) { fleet.slug }
+  let(:username) { new_member.username }
+
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["fleet", "fleet:write"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["public"]
+    )
+  end
+
+  before do
+    sign_in(user) if user.present?
+  end
+
+  path "/fleets/{fleetSlug}/members/{username}/decline" do
+    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "username", in: :path, type: :string, description: "Username"
+
+    put("Decline Member") do
+      operationId "declineFleetMember"
+      tags "FleetMembers"
+      consumes "application/json"
+      produces "application/json"
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
+      ]
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/StandardMessage"
+
+        run_test!
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
+      end
+
+      response(400, "bad request") do
+        schema "$ref": "#/components/schemas/ValidationError"
+
+        let(:username) { member.username }
+
+        run_test!
+      end
+
+      response(404, "not found") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:fleetSlug) { "unknown-fleet" }
+
+        run_test!
+      end
+
+      response(404, "not found") do
+        description "No Member found"
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:username) { "unknown-username" }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { member }
+
+        run_test!
+      end
+
+      response(401, "unauthorized") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+
+        run_test!
+      end
+    end
+  end
+end

@@ -1,0 +1,34 @@
+{
+  "key": "Mount_Gimbal_S3_Perseus_Remote_R",
+  "ref": "6345ae6c-20ff-4d2b-8438-781cb02fa651",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b9b97673-c585-4e0a-b229-a0a3c79668c3",
+  "name": "VariPuck S3 Gimbal Mount",
+  "short_name": null,
+  "description": "Manufacturer: Flashfire Systems\\nItem Type: Weapon Mount\\nSize: 3\\n\\nThe VariPuck fits between your weapon and the ship hardpoint to transform a fixed weapon mount into a gimballed mount, allowing the pilot to independently aim their weapon’s fire. VariPucks will accept any weapon the same size as the hardpoint it is mounting to.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "2",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1024.0
+  }
+}

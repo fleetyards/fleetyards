@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MPUV_Lovestruck_Pink_Black",
+  "ref": "c0e2bd7d-39a4-4299-a7fe-015301679341",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e6e27811-b3d3-4d47-9563-b922b3c52c4c",
+  "name": "MPUV Lovestruck Livery",
+  "short_name": null,
+  "description": "Inspired by the colors of Coramor, the Lovestruck livery is a stylish metallic pink and black look for your MPUV.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

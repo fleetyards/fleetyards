@@ -1,0 +1,35 @@
+{
+  "key": "AEGS_EMP_Sentinel_S4",
+  "ref": "19210f79-9618-42e0-9b88-6f59cad9fe2c",
+  "category": "weapons",
+  "type": "EMP",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "REP-VS EMP Generator",
+  "short_name": "REP-VS",
+  "description": "Manufacturer: Behring\\nItem Type: Burst Generator\\nSize: 4\\nDamage Type: EMP\\n\\nDeliver distortion damage with the REP-VS burst generator built specifically for the Aegis Vanguard Sentinel. Behring modified the technology used in their reputable REP-8 to design an effective non-lethal weapon that integrates seamlessly with the Sentinel.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 150.0
+  },
+  "type_data": {
+    "charge_time": 26.0,
+    "distortion_damage": 3300.0,
+    "emp_radius": 900.0,
+    "min_emp_radius": 250.0,
+    "phys_radius": 1201.0,
+    "min_phys_radius": 250.0,
+    "pressure": 0.0,
+    "unleash_time": 1.5,
+    "cooldown_time": 40.0
+  }
+}

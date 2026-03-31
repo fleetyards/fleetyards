@@ -1,0 +1,22 @@
+{
+  "key": "ANVL_Paladin_CargoGrid",
+  "ref": "e6724834-f542-4231-b82e-e318578c2e14",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "8a01576f-9f85-46f9-b78e-9af3d9de2fa5"
+}

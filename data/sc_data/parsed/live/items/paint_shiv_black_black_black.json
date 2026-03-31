@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Shiv_Black_Black_Black",
+  "ref": "eb3fa2a0-c03d-43ed-95a3-24b9b77db490",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "869a5b0c-0e78-4e41-9e44-5c662c89349b",
+  "name": "Shiv Spectre Livery",
+  "short_name": null,
+  "description": "Make the Shiv dark and discreet with the all black Spectre livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -6,31 +6,6 @@ en:
         bought_via:
           pledge_store: Pledge Store
           ingame: Ingame Store
-      celestial_object:
-        hidden: hidden?
-        location_prefix:
-          default: in the %{starsystem} System
-      commodity:
-        commodity_types:
-          agricultural_supply: Agricultural Supply
-          consumer_goods: Consumer Goods
-          food: Food
-          gas: Gas
-          harvestable: Harvestable
-          medical_supply: Medical Supply
-          metal: Metal
-          mineral: Mineral
-          non_metals: Non-Metals
-          processed_goods: Processed Goods
-          scrap: Scrap
-          vice: Vice
-          waste: Waste
-      commodity_rental_price:
-        time_ranges:
-          1-day: 1 Day
-          3-days: 3 Days
-          30-days: 30 Days
-          7-days: 7 Days
       component:
         component_classes:
           RSIAvionic: Avionic
@@ -243,91 +218,6 @@ en:
           password: SMPT Password or Token
           port: SMTP Port
           user: SMTP User
-      shop:
-        buying: Does buy Items?
-        hidden: hidden?
-        location_prefix:
-          default: at
-        refinery_terminal: Has a Refinery Terminal?
-        rental: Does offer Rentals?
-        selling: Does sell Items?
-        shop_types:
-          admin: Admin Office
-          armor: Armor Store
-          armor_and_weapons: Armor & Weapons Store
-          bar: Bar
-          blackmarket: Blackmarket
-          cargo: Cargo Center
-          clothing: Clothing Store
-          components: Components Store
-          computers: Computer Store
-          courier: Courier
-          equipment: Equipment
-          hospital: Hospital
-          kiosk: Kiosk
-          mining_equipment: Mining Equipment
-          pharmacy: pharmacy
-          refinery: Refinery
-          rental: Rental
-          resources: Resources Broker
-          salvage: Salvage Yard
-          ship_customizations: Ship & Vehicle Customizations
-          ships: Ship Store
-          souvenirs: Souvenirs
-          superstore: Superstore
-          weapons: Weapons Store
-      shop_commodity:
-        commodity_item_types:
-          Commodity: Commodities
-          Component: Components
-          Equipment: Equipment
-          Model: Ships
-          ModelModule: Ship Modules
-          ModelPaint: Ship Paints
-        location_prefix:
-          default: sold at
-        price_per_unit: Price per Unit?
-      station:
-        cargo_hub: Has Cargo Hub?
-        classifications:
-          city: City
-          drug_lab: Drug lab
-          farming: Farming
-          mining: Mining
-          poi: Point of Interest
-          rest_stop: Rest Stop
-          salvaging: Salvaging
-          science: Science
-          security: Security
-          settlement: Settlement
-          town: Town
-          trading: Trading
-          cargo: Cargo
-          derelict: Derelict
-          prison: Prison
-          spaceport: Spaceport
-        hidden: hidden?
-        location_prefix:
-          asteriod: on asteroid near
-          default: 'on'
-          near: near
-          orbit: in orbit around
-        refinery: Has Refinery Station?
-        sizes:
-          large: Large
-          medium: Medium
-          small: Small
-        station_types:
-          aid_shelter: Aid Shelter
-          asteroid_station: Asteriod Station
-          district: District
-          landing_zone: Landing Zone
-          outpost: Outpost
-          station: Station
-          ugf: Underground Facility
-      trade_commodity:
-        buy: Buy?
-        sell: Sale?
       updated_at: "%{time} ago"
       user:
         admin: Admin?
@@ -353,8 +243,14 @@ en:
         blank: can't be blank
         record_invalid: Bad Data
       models:
+        fleet_role:
+          attributes:
+            resource_access:
+              changed: Access privileges can not be changed
         fleet_membership:
           attributes:
+            base:
+              cannot_destroy_from_permanent_role: Cannot remove member of Fleet from permanent role
             user_id:
               taken: already present or has a pending invite
         user:

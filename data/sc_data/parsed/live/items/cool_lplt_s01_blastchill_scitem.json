@@ -1,0 +1,24 @@
+{
+  "key": "COOL_LPLT_S01_BlastChill_SCItem",
+  "ref": "94ea5bb5-070c-4c75-b90d-66c26c38bb2a",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "BlastChill",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Lightning Power Ltd. \\nSize: 1\\nGrade: D\\nClass: Civilian\\n\\nThe BlastChill is a consumer-grade cooler from Lightning Power Ltd. It keeps your ship running without straining its signature, but is best known for a much mocked 2945 ad campaign that promised it was “Built to bring the chill.”",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 110.0
+  }
+}

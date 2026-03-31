@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Fortune_Thruster_Main_Front",
+  "ref": "408d0ea6-c250-4dc9-856f-186fe1b61190",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 11400.0
+  },
+  "type_data": {
+    "thrust_capacity": 399807.0,
+    "fuel_burn_rate_per10_k_newton": 0.102375,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

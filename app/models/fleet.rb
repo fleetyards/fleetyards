@@ -4,35 +4,61 @@
 #
 # Table name: fleets
 #
-#  id                 :uuid             not null, primary key
-#  background_image   :string
-#  created_by         :uuid
-#  description        :text
-#  discord            :string
-#  fid                :string
-#  guilded            :string
-#  homepage           :string
-#  logo               :string
-#  name               :string
-#  normalized_fid     :string
-#  public_fleet       :boolean          default(FALSE)
-#  public_fleet_stats :boolean          default(FALSE)
-#  rsi_sid            :string
-#  sid                :string
-#  slug               :string
-#  ts                 :string
-#  twitch             :string
-#  youtube            :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                      :uuid             not null, primary key
+#  background_image        :string
+#  carrierwave_migrated_at :datetime
+#  created_by              :uuid
+#  description             :text
+#  discord                 :string
+#  fid                     :string
+#  guilded                 :string
+#  homepage                :string
+#  logo                    :string
+#  name                    :string
+#  normalized_fid          :string
+#  public_fleet            :boolean          default(FALSE)
+#  public_fleet_stats      :boolean          default(FALSE)
+#  rsi_sid                 :string
+#  sid                     :string
+#  slug                    :string
+#  ts                      :string
+#  twitch                  :string
+#  youtube                 :string
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
 #
 # Indexes
 #
 #  index_fleets_on_fid  (fid) UNIQUE
 #
 class Fleet < ApplicationRecord
-  include UrlFieldHelper
+  include UrlFieldConcern
+  include ActiveStorageVariants
 
+  attr_accessor :update_reason, :update_reason_description, :author_id
+
+  AVAILABLE_PRIVILEGES = [
+    "fleet:update",
+    "fleet:update:images",
+    "fleet:update:description",
+    "fleet:delete",
+    "fleet:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: ["fleet:manage"],
+    officer: ["fleet:update:description", "fleet:update:images"],
+    member: []
+  }.freeze
+
+  has_paper_trail meta: {
+    author_id: :author_id,
+    reason: :update_reason,
+    reason_description: :update_reason_description
+  }
+
+  has_many :fleet_roles,
+    dependent: :destroy
   has_many :fleet_memberships,
     dependent: :destroy
   has_many :fleet_invite_urls,
@@ -48,6 +74,7 @@ class Fleet < ApplicationRecord
     length: {minimum: 3},
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
+
   validates :name,
     length: {minimum: 3},
     presence: true,
@@ -59,14 +86,49 @@ class Fleet < ApplicationRecord
       multiline: true
     }
 
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
+
+  def self.ransackable_attributes(auth_object = nil)
+    [
+      "created_at", "created_by", "description", "fid", "id", "id_value",
+      "name", "normalized_fid", "public_fleet", "public_fleet_stats",
+      "slug", "updated_at"
+    ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    []
+  end
+
   mount_uploader :logo, LogoUploader
   mount_uploader :background_image, ImageUploader
+
+  has_one_attached :new_logo
+  has_one_attached :new_background_image
+
+  def logo=(value)
+    if value.is_a?(String) && value.present?
+      self.new_logo = value
+    else
+      super
+    end
+  end
+
+  def background_image=(value)
+    if value.is_a?(String) && value.present?
+      self.new_background_image = value
+    else
+      super
+    end
+  end
 
   accepts_nested_attributes_for :fleet_memberships
 
   before_validation :update_urls
   before_validation :set_normalized_fields
   before_save :update_slugs
+  after_create :setup_default_roles!
   after_create :setup_admin_user
 
   def self.accepted
@@ -86,27 +148,29 @@ class Fleet < ApplicationRecord
     self.ts = ensure_valid_ts_url(self, :ts, force:)
   end
 
+  def setup_default_roles!
+    FleetRole.setup_default_roles!(self)
+  end
+
+  def default_member_role
+    fleet_roles.ranked.last || begin
+      setup_default_roles!
+      fleet_roles.reload.ranked.last
+    end
+  end
+
   def setup_admin_user
     fleet_memberships.create(
       user_id: created_by,
-      role: :admin,
+      fleet_role: fleet_roles.ranked.first,
       aasm_state: :accepted,
       accepted_at: Time.zone.now
     )
   end
 
-  def role(user_id)
-    membership = fleet_memberships.find_by(user_id:)
-
-    return if membership.blank? || !membership.accepted?
-
-    membership.role
-  end
-
-  def my_fleet?(user_id)
-    membership = fleet_memberships.find_by(user_id:)
-
-    membership.present? && membership.accepted?
+  def update_role_privileges
+    fleet.fleet_roles.each do |role|
+    end
   end
 
   def invitation(user_id)
@@ -138,6 +202,6 @@ class Fleet < ApplicationRecord
   end
 
   private def update_slugs
-    self.slug = SlugHelper.generate_slug(fid)
+    self.slug = generate_slug(fid)
   end
 end

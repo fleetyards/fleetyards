@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ARGO_RAFT",
+  "ref": "907d1a21-cf68-40c5-8129-62a8015cdac4",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 96.0
+  }
+}

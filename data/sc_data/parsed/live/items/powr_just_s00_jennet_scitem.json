@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S00_Jennet_SCItem",
+  "ref": "926ea000-c084-4461-bfd1-bbab1c1138a9",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "0",
+  "grade": "4",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Jennet",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 0\\nGrade: D\\nClass: Industrial\\n\\nJuno Starwerk’s foray into vehicle power plants begins with the Jennet. While not as highly-rated as similar components, the company’s reputation for dependability and ease of maintenance still make it a favorite in some circles.",
+  "inventory_consumption": {
+    "micro_scu": 44000.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 74.0
+  }
+}

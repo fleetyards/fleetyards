@@ -1,0 +1,119 @@
+{
+  "de": {
+    "placeholders": {
+      "name": "Name",
+      "description": "Description",
+      "login": "Username or email",
+      "username": "Username",
+      "twoFactorCode": "Two-factor code",
+      "email": "Email",
+      "currentPassword": "Current Password",
+      "password": "Password",
+      "passwordConfirmation": "Password Confirmation",
+      "homepage": "Homepage",
+      "discord": "Discord Server",
+      "youtube": "Youtube Channel",
+      "twitch": "Twitch Channel",
+      "guilded": "Guilded Server",
+      "color": "Color",
+      "fleetInviteToken": "Fleet Invite",
+      "quicksearch": {
+        "models": "Avenger, Carrack, Cutlass...",
+        "models-fleetchart": "Avenger, Carrack, Cutlass...",
+        "hangar": "Enterprise, Andromeda...",
+        "hangar-fleetchart": "Enterprise, Andromeda...",
+        "hangar-wishlist": "Avenger, Carrack, Cutlass..."
+      },
+      "search": {
+        "default": "Search the Verse...",
+        "roadmap-progress-tracker": "Search"
+      },
+      "home": { "search": "Search for Ships..." },
+      "fleet": {
+        "fid": "Fleet ID",
+        "rsiSid": "RSI SID",
+        "ts": "Teamspeak Server"
+      },
+      "user": { "rsiHandle": "RSI Handle" },
+      "vehicle": { "serial": "Serial" },
+      "model": {
+        "length": "Länge",
+        "beam": "Breite",
+        "height": "Höhe",
+        "price": "Preis",
+        "pledgePrice": "Pledge-Preis",
+        "onSale": "Im Verkauf",
+        "mass": "Masse",
+        "minCrew": "Min. Crew",
+        "maxCrew": "Max. Crew",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Verkaufsseiten-URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Produktionsnotiz",
+        "scmSpeed": "SCM Geschwindigkeit",
+        "scmSpeedBoosted": "SCM Geschwindigkeit (Boosted)",
+        "maxSpeed": "Max Geschwindigkeit",
+        "reverseSpeedBoosted": "Rückwärtsgeschwindigkeit (Boosted)",
+        "quantumFuelTankSize": "Quantum-Treibstofftankgröße",
+        "hydrogenFuelTankSize": "Wasserstoff-Treibstofftankgröße",
+        "yaw": "Gieren",
+        "pitch": "Nicken",
+        "roll": "Rollen",
+        "yawBoosted": "Gieren (Boosted)",
+        "pitchBoosted": "Nicken (Boosted)",
+        "rollBoosted": "Rollen (Boosted)",
+        "fleetchartOffsetLength": "Flottenkarten-Versatz Länge",
+        "fleetchartOffsetBeam": "Flottenkarten-Versatz Breite",
+        "cargo": "Fracht",
+        "baseModel": "Basismodell"
+      },
+      "modelModule": {
+        "name": "Modulname",
+        "pledgePrice": "0.00",
+        "search": "Module nach Name suchen..."
+      },
+      "modelUpgrade": {
+        "name": "Upgrade-Name",
+        "pledgePrice": "0.00",
+        "description": "Beschreibung"
+      },
+      "modelModulePackage": {
+        "name": "Paketname",
+        "pledgePrice": "0.00",
+        "description": "Beschreibung"
+      },
+      "dock": {
+        "name": "Dock-Name"
+      },
+      "video": {
+        "url": "YouTube Video ID"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "Standort",
+        "locationUrl": "Standort-URL"
+      },
+      "image": {
+        "caption": "Beschriftung"
+      },
+      "filters": {
+        "vehicles": {
+          "name": "Enterprise, Andromeda...",
+          "priceLt": "Price <=",
+          "priceGt": "Price >="
+        },
+        "models": {
+          "name": "Gladius, Andromeda...",
+          "shipRole": "Cargo, Capital Ship, Fighter...",
+          "classification": "Vehicle, Fighter, Cargo...",
+          "manufacturer": "Origin, Robert Space Industries, Aegis...",
+          "onSale": "Yes or No",
+          "productionStatus": "Announced, Flight Ready, In Concept..."
+        },
+        "fleets": { "members": { "username": "Username" } }
+      }
+    }
+  }
+}

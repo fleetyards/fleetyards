@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Asgard_Beige_Black_Red",
+  "ref": "f536fd69-3c41-4962-9d9a-52949ac9f9ed",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e76c7ed-f353-430b-9067-b0589f4549c2",
+  "name": "Asgard Sand Sea Livery",
+  "short_name": null,
+  "description": "The Sand Sea livery for the Asgard is primarily beige with black and red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

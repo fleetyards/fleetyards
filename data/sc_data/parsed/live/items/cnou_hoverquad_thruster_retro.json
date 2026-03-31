@@ -1,0 +1,30 @@
+{
+  "key": "CNOU_HoverQuad_Thruster_Retro",
+  "ref": "40310d85-e7b5-4c33-9c71-54cc6eaa93d0",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ac7035-10a0-4bbb-90b0-9bddf047b504",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2500.0
+  },
+  "type_data": {
+    "thrust_capacity": 56500.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Lightning_F8_Thruster_Main_LightBlue",
+  "ref": "c54da6a1-9fa0-4342-82c2-62de11900d9d",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 10500.0
+  },
+  "type_data": {
+    "thrust_capacity": 5305440.0,
+    "fuel_burn_rate_per10_k_newton": 0.05,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

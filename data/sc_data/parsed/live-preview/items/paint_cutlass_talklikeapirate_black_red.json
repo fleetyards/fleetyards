@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutlass_TalkLikeAPirate_Black_Red",
+  "ref": "d75eae08-f688-4b42-9c7b-ee510c0f66c6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a7f18d9c-1de6-440f-9c24-9cfa860751b0",
+  "name": "Cutlass Skull and Crossbones Livery",
+  "short_name": null,
+  "description": "Deemed by Drake's public relations team as a “tongue-in-cheek reference to the overblown controversy,” the Skull and Crossbones livery leans into the perception that the Cutlass is marketed toward those on the wrong side of the law. The livery embraces classic pirate iconography by featuring several skull and crossbones symbols across it grey frame with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

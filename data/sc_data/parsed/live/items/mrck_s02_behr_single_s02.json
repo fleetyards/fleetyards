@@ -1,0 +1,34 @@
+{
+  "key": "MRCK_S02_BEHR_Single_S02",
+  "ref": "b684b116-ba0d-41fb-82fb-720ecd6d4d21",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-212 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 2\\nMissiles: 1xS2\\n\\nBehring’s MSD-212 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 2 hardpoint for the reliable and effective launch of one S2 missile.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

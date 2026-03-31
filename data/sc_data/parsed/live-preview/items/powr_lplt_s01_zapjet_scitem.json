@@ -1,0 +1,60 @@
+{
+  "key": "POWR_LPLT_S01_ZapJet_SCItem",
+  "ref": "cebbf547-717e-478e-8d52-81f786477295",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "ZapJet",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Lightning Power Ltd.\\nSize: 1\\nGrade: D\\nClass: Civilian\\n\\nThe Lightning Power ZapJet is an ideal streamlined package perfect for anybody who wants a straightforward no-fuss power solution.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 510.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 1.75,
+    "StartIRTemperature": 14.0,
+    "OverpowerHeat": 0.07,
+    "OverclockThresholdMinHeat": 0.38,
+    "OverclockThresholdMaxHeat": 0.45,
+    "ThermalEnergyBase": 14603.0,
+    "ThermalEnergyDraw": 19283.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 505.44,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 72.59813,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 600.0,
+    "RecoveryTemperature": 670.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 300.0,
+    "MisfireMaxTemperature": 900.0
+  },
+  "power_connection": {
+    "power_base": 0.0,
+    "power_draw": 1893.15,
+    "time_to_reach_draw_request": 11.25,
+    "safeguard_priority": 100.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 1.0,
+    "is_overclockable": 1.0,
+    "overclock_threshold_min": 0.306,
+    "overclock_threshold_max": 0.387,
+    "overpower_performance": 0.045,
+    "overclock_performance": 0.306,
+    "power_to_em": 0.634,
+    "decay_rate_of_em": 0.18
+  }
+}

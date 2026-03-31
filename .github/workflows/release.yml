@@ -1,39 +1,53 @@
 name: Release
 
 on:
-  push:
-    tags: ["v*"]
+  release:
+    types: [published]
 
 jobs:
-  # smoke-test:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: ./.github/workflows/js-setup-action
-  #     - run: yarn cypress install
-  #     - name: Run E2E Tests
-  #       run: yarn run test:e2e --record --config baseUrl=https://${{ vars.STAGE_DOMAIN }} --parallel
+  build:
+    uses: ./.github/workflows/build.job.yml
+    with:
+      tag: ${{ github.event.release.tag_name }}
+    permissions:
+      contents: read
+      packages: write
 
-  # build:
-  #   needs: [smoke-test]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: ./.github/workflows/build.job.yml
-  #       with:
-  #         name: ${GITHUB_REF/refs\/tags\//}
-  #       secrets: inherit
+  deploy-to-stage:
+    if: github.event.release.prerelease
+    needs: [build]
+    uses: ./.github/workflows/deploy.job.yml
+    with:
+      destination: stage
+      name: Stage
+      url: https://fleetyards.dev
+    secrets: inherit
+
   deploy-to-live:
-    # needs: [smoke-test]
+    if: "!github.event.release.prerelease"
+    needs: [build]
     uses: ./.github/workflows/legacy-deploy.job.yml
     with:
-      capEnv: live
+      destination: live
       name: Live
       url: https://fleetyards.net
     secrets: inherit
 
-  notify_app_signal:
+  notify-appsignal-stage:
+    if: github.event.release.prerelease
+    runs-on: ubuntu-latest
+    needs: [deploy-to-stage]
+    environment: Stage
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
+    steps:
+      - run: |
+          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
+
+  notify-appsignal-live:
+    if: "!github.event.release.prerelease"
     runs-on: ubuntu-latest
     needs: [deploy-to-live]
     environment: Live
@@ -41,41 +55,34 @@ jobs:
       APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
     steps:
       - run: |
-          curl -X POST $APP_SIGNAL_DEPLOY_HOOK \
+          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
           -H 'Content-Type: application/json' \
           -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
 
-  create-release:
-    needs: [deploy-to-live]
+  notify-discord-stage:
+    if: github.event.release.prerelease
     runs-on: ubuntu-latest
-    environment: Live
+    needs: [deploy-to-stage]
+    environment: Stage
+    env:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Set TAG_NAME
-        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
-      - name: extract Changelog for the current Tag
-        run: bundle exec thor changelog:entry $TAG_NAME
-      - uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          name: ${{ env.TAG_NAME }}
-          body_path: ${{ env.TAG_NAME }}.md
-          draft: false
-          prerelease: false
+      - run: |
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          curl -X POST "$DISCORD_WEBHOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": \"**Stage Deploy:** ${TAG_NAME}\nhttps://github.com/fleetyards/fleetyards/releases/tag/${TAG_NAME}\" }"
 
-  notify-discord:
+  notify-discord-live:
+    if: "!github.event.release.prerelease"
     runs-on: ubuntu-latest
-    needs: [create-release]
+    needs: [deploy-to-live]
     environment: Live
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
     steps:
-      - name: Set TAG_NAME
-        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - run: |
-          curl -X POST $DISCORD_WEBHOOK \
+          TAG_NAME="${{ github.event.release.tag_name }}"
+          curl -X POST "$DISCORD_WEBHOOK" \
           -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**New Release:** $TAG_NAME\nhttps://github.com/fleetyards/fleetyards/releases/tag/$TAG_NAME\" }"
+          -d "{\"content\": \"**New Release:** ${TAG_NAME}\nhttps://github.com/fleetyards/fleetyards/releases/tag/${TAG_NAME}\" }"

@@ -1,0 +1,40 @@
+{
+  "key": "ESPR_Prowler_Utility_CargoGrid_Main",
+  "ref": "dd1fb9e8-7b92-45f0-b01c-23716e75e422",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 2.5,
+      "y": 5.0,
+      "z": 2.5
+    },
+    "capacity": 16,
+    "max_container_size": {
+      "size": 16,
+      "dimensions": {
+        "x": 5.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      }
+    }
+  }
+}

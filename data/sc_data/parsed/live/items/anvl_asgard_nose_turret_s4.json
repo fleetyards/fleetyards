@@ -1,0 +1,42 @@
+{
+  "key": "ANVL_Asgard_Nose_Turret_S4",
+  "ref": "500a82b0-3c76-443d-b302-1b0ccf15071f",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "PC2 Dual S3 Mount",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

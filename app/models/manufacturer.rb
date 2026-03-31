@@ -4,25 +4,37 @@
 #
 # Table name: manufacturers
 #
-#  id           :uuid             not null, primary key
-#  code         :string
-#  code_mapping :string
-#  description  :text
-#  known_for    :string(255)
-#  logo         :string(255)
-#  long_name    :string
-#  name         :string(255)
-#  slug         :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  rsi_id       :integer
+#  id                      :uuid             not null, primary key
+#  carrierwave_migrated_at :datetime
+#  code                    :string
+#  code_mapping            :string
+#  description             :text
+#  known_for               :string(255)
+#  logo                    :string(255)
+#  long_name               :string
+#  name                    :string(255)
+#  sc_ref                  :string
+#  slug                    :string(255)
+#  created_at              :datetime
+#  updated_at              :datetime
+#  rsi_id                  :integer
 #
 class Manufacturer < ApplicationRecord
   include ActionView::Helpers::OutputSafetyHelper
+  include ActiveStorageVariants
 
   paginates_per 30
 
   mount_uploader :logo, LogoUploader
+  has_one_attached :new_logo
+
+  def logo=(value)
+    if value.is_a?(String) && value.present?
+      self.new_logo = value
+    else
+      super
+    end
+  end
 
   has_many :models,
     dependent: :nullify
@@ -31,7 +43,8 @@ class Manufacturer < ApplicationRecord
 
   before_save :update_slugs
 
-  ransack_alias :name, :name_or_slug
+  DEFAULT_SORTING_PARAMS = "name asc"
+  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "createdAt asc", "createdAt desc"]
 
   def self.ransackable_attributes(auth_object = nil)
     [
@@ -65,10 +78,16 @@ class Manufacturer < ApplicationRecord
   end
 
   def to_filter
+    icon = if new_logo.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(new_logo)
+    elsif logo.present?
+      logo.small.url
+    end
+
     Filter.new(
       category: "manufacturer",
-      name:,
-      icon: (logo.small.url if logo.present?),
+      label: name_clean,
+      icon:,
       value: slug
     )
   end

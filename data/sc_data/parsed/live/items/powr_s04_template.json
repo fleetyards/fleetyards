@@ -1,0 +1,24 @@
+{
+  "key": "POWR_S04_Template",
+  "ref": "f2a7001e-c73e-4f1a-8f2f-3bae82c657a5",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 5300.0
+  }
+}

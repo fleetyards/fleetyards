@@ -1,37 +1,71 @@
 # frozen_string_literal: true
 
 v1_admin_api_routes = lambda do
-  resources :models, only: %i[index] do
-    get :options, on: :collection
-    get :images, on: :member
-  end
+  resource :sessions, only: %i[create destroy]
 
-  resources :stations, only: %i[index] do
-    get :options, on: :collection
-    get :images, on: :member
-  end
-
-  resource :equipment, only: [] do
-    get :weapons, on: :collection
-    get :attachments, on: :collection
-    get :utilities, on: :collection
-  end
-
-  resources :equipment, only: [:index] do
+  resources :admin_users, only: %i[index show create update destroy] do
     collection do
-      get :item_type_filters
-      get :type_filters
-      get :slot_filters
+      get :me
     end
   end
 
-  resources :commodities, only: [:index]
-  resources :components, only: [:index] do
+  resources :users, only: %i[index show update destroy] do
+    member do
+      get "login-as", to: "users#login_as"
+      post "resend-confirmation", to: "users#resend_confirmation"
+      post "send-password-reset", to: "users#send_password_reset"
+    end
+  end
+
+  resources :models, only: %i[index show create update destroy] do
+    collection do
+      get :options
+      get "production-states" => "models#production_states"
+      put "reload-matrix" => "models#reload_matrix"
+      put "reload-scdata" => "models#reload_scdata"
+      put "reload-loaners" => "models#reload_loaners"
+      put "reload-paints" => "models#reload_paints"
+    end
+
+    member do
+      put "use-rsi-image" => "models#use_rsi_image"
+      put "reload-one" => "models#reload_one"
+    end
+  end
+
+  resources :videos, only: %i[index show create update destroy]
+  resources :model_modules, path: "model-modules", only: %i[index show create update destroy] do
+    member do
+      put :link
+      put :unlink
+    end
+  end
+  resources :model_paints, path: "model-paints", only: %i[index show create update destroy]
+  resources :model_upgrades, path: "model-upgrades", only: %i[index show create update destroy] do
+    member do
+      put :link
+      put :unlink
+    end
+  end
+  resources :model_module_packages, path: "model-module-packages", only: %i[index show create update destroy]
+  resources :docks, only: %i[index show create update destroy]
+  resources :model_hardpoints, path: "model-hardpoints", only: %i[index show create update destroy]
+  resources :model_hardpoint_loadouts, path: "model-hardpoint-loadouts", only: %i[index show create update destroy]
+  resources :model_loaners, path: "model-loaners", only: %i[index show create update destroy]
+  resources :cargo_holds, path: "cargo-holds", only: %i[index show update]
+
+  resources :manufacturers, only: %i[index show create update destroy]
+
+  resources :components, only: %i[index show create update destroy] do
     get :class_filters, on: :collection
     get :item_type_filters, on: :collection
   end
-  resources :model_modules, path: "model-modules", only: [:index]
-  resources :model_paints, path: "model-paints", only: [:index]
+
+  resources :fleets, only: %i[index show create update destroy]
+
+  resources :vehicles, only: %i[index show update destroy]
+
+  resources :item_prices, path: "item-prices", only: %i[index show create update destroy]
 
   resource :stats, only: [] do
     get "quick-stats" => "stats#quick_stats"
@@ -41,34 +75,29 @@ v1_admin_api_routes = lambda do
     get "registrations-per-month" => "stats#registrations_per_month"
   end
 
-  resources :images, only: %i[index create destroy update]
+  resources :images, only: %i[index create destroy update] do
+    put :attach, on: :collection
+  end
 
-  resources :shops, only: [] do
-    resources :shop_commodities, path: "commodities", only: %i[create index destroy update] do
-      member do
-        get "buy-prices" => "shop_commodities#buy_prices"
-        get "sell-prices" => "shop_commodities#sell_prices"
-        get "rental-prices" => "shop_commodities#rental_prices"
-      end
+  resources :imports, only: %i[index show]
+
+  resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy]
+
+  resources :rsi_request_logs, path: "rsi-request-logs", only: %i[index] do
+    member do
+      put :resolve
     end
   end
 
-  resources :shop_commodities, path: "shop-commodities", only: %i[index destroy] do
+  resources :features, only: %i[index show create destroy] do
     member do
-      put :confirm
-    end
-  end
-
-  resources :commodity_prices, path: "commodity-prices", only: %i[index destroy] do
-    collection do
-      post "create-sell-price" => "commodity_prices#create_sell_price"
-      post "create-buy-price" => "commodity_prices#create_buy_price"
-      post "create-rental-price" => "commodity_prices#create_rental_price"
-      get "time-ranges" => "commodity_prices#time_ranges"
-    end
-
-    member do
-      put :confirm
+      put :enable
+      put :disable
+      put "enable-actor", to: "features#enable_actor"
+      put "disable-actor", to: "features#disable_actor"
+      put "enable-group", to: "features#enable_group"
+      put "disable-group", to: "features#disable_group"
+      put "toggle-self-service", to: "features#toggle_self_service"
     end
   end
 end

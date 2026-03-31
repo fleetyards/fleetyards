@@ -1,0 +1,42 @@
+{
+  "key": "GMRCK_S03_TMBL_Dual_S02_Cyclone_MT_Left",
+  "ref": "fcc8cce4-bc63-4764-973b-e691853ac72d",
+  "category": "missile_racks",
+  "type": "GroundVehicleMissileLauncher",
+  "sub_type": "GroundVehicleMissileRack",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-322 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 3\\nMissiles: 2xS2\\n\\nBehring’s MSD-322 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 3 hardpoint for the reliable and effective launch of two S2 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

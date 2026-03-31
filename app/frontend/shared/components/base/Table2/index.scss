@@ -1,0 +1,12 @@
+.base-table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: auto;
+  min-height: 180px;
+}
+
+.base-table__loader {
+  top: 50%;
+  margin-top: 10px;
+}

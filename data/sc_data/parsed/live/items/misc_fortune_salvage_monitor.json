@@ -1,0 +1,21 @@
+{
+  "key": "MISC_Fortune_Salvage_Monitor",
+  "ref": "8306db02-ce5b-4019-99df-ed67ef2b5b84",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "74b1d2f4-f820-4935-a25c-b11f68d72f55",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spartan_Ranger_GreenCamo",
+  "ref": "8de4c1b6-3124-4215-81a8-155250f275fa",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b0fc1b8e-a69f-45f5-b922-2c95dd73afb1",
+  "name": "Spartan Ranger Livery",
+  "short_name": null,
+  "description": "With its camo green paint scheme, the Spartan Ranger livery is an ideal choice when traveling and deploying troops in verdant fields or forests.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

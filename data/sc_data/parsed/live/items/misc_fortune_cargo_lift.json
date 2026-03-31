@@ -1,0 +1,40 @@
+{
+  "key": "MISC_Fortune_Cargo_Lift",
+  "ref": "8dd2d3b4-dc1d-4060-beac-c685d462a779",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid_lift",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid_lift",
+      "key": null,
+      "ref": "6b64eaf2-01ff-4c96-b126-2ea06e03f38f",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

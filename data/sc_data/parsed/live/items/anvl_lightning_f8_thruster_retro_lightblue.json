@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Lightning_F8_Thruster_Retro_LightBlue",
+  "ref": "acb0df68-9a03-4077-a368-dcc469867298",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 9800.0
+  },
+  "type_data": {
+    "thrust_capacity": 2787604.0,
+    "fuel_burn_rate_per10_k_newton": 0.05,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

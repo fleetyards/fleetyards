@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Star_Runner_Equinox_Orange_Black",
+  "ref": "2f6fbf38-ec6c-457c-b6ca-66c606b6f2f9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e5145e1d-7442-481e-8b5d-55f19cd655f6",
+  "name": "Mercury Star Runner Equinox Livery",
+  "short_name": null,
+  "description": "The Mercury Star Runner Equinox livery blends orange and black for a paint scheme highlighting the unique look of this asymmetrical ship.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fortune_Black_White",
+  "ref": "9f2ed793-1795-4a85-aa3d-a0c359b80aae",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b8c90431-8dc0-48e4-97de-2ba6cb71fd8c",
+  "name": "Fortune Iceberg Livery",
+  "short_name": null,
+  "description": "Black and white paints juxtapose each other across the Iceberg livery, with a sleek blue finish around the Fortune's more shapely areas.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "key": "MRCK_S02_ORIG_400i_Octo_S01_L",
+  "ref": "59fd39c9-5771-4844-b81d-cbdd5ea6dc8f",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": "ST-171 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 1\\nMissiles: 8xS1\\n\\nTo help defend the Origin 400i, Behring built the SNT-171 \"Santoro\", which can carry and deploy eight S1 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

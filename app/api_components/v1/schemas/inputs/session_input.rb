@@ -4,17 +4,17 @@ module V1
   module Schemas
     module Inputs
       class SessionInput
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
             login: {type: :string, description: "Username or email"},
             password: {type: :string},
-            rememberMe: {type: :boolean}
+            rememberMe: {type: :boolean},
+            twoFactorCode: {type: :string}
           },
-          additionalProperties: false,
-          required: %w[login password]
+          additionalProperties: false
         })
       end
     end

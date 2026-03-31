@@ -1,0 +1,22 @@
+{
+  "key": "MISC_Starlancer_CargoGrid",
+  "ref": "4cecf036-2231-46c9-8762-3bfb2fb04229",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "b321cf6b-a66b-4e88-8534-b9bce1b45504"
+}

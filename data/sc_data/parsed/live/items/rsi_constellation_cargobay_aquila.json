@@ -1,0 +1,68 @@
+{
+  "key": "RSI_Constellation_CargoBay_Aquila",
+  "ref": "11856fe8-b8f0-4dec-bc81-905b1122e24f",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargogrid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    },
+    {
+      "name": "hardpoint_cargowall_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Container"
+      ]
+    },
+    {
+      "name": "hardpoint_cargowall_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargogrid",
+      "key": "RSI_Constellation_CargoGrid_Main",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_cargowall_right",
+      "key": "RSI_Constellation_Base_BayWall_Right",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_cargowall_left",
+      "key": "RSI_Constellation_Base_BayWall_Left",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

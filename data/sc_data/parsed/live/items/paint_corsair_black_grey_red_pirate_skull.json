@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Corsair_Black_Grey_Red_Pirate_Skull",
+  "ref": "4d7130bd-e4a0-462c-a0bd-2efd214bdb66",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ae7be99f-93f4-4766-8b44-63add3eef617",
+  "name": "Corsair Skullcrusher Livery",
+  "short_name": null,
+  "description": "Exude attitude with the Skullcrusher livery for the Corsair, which features a massive skull across the top.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

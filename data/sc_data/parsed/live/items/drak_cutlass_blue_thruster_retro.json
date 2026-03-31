@@ -1,0 +1,30 @@
+{
+  "key": "DRAK_Cutlass_Blue_Thruster_Retro",
+  "ref": "1c58c3be-3344-4a8b-a476-5b500cb11df4",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 12340.0
+  },
+  "type_data": {
+    "thrust_capacity": 1110000.0,
+    "fuel_burn_rate_per10_k_newton": 0.105,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

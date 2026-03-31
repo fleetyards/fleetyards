@@ -1,0 +1,50 @@
+{
+  "key": "QDMP_RSI_S03_Captor",
+  "ref": "08f46049-5b2a-4b43-9055-16a6d090a41f",
+  "category": "quantumenforcementdevice",
+  "type": "QuantumInterdictionGenerator",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Captor QD",
+  "short_name": "Captor QD",
+  "description": "Item Type: Quantum Dampener\\nManufacturer: RSI\\nSize: 3\\n\\nDesigned by Roberts Space Industries in partnership with Mirai exclusively for the Guardian QI, the carefully crafted Captor Quantum Dampener generates a field that prevents quantum drive activation.\\n",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1100.0
+  },
+  "type_data": {
+    "base_power_draw_fraction": 0.2,
+    "pulse_power_fraction": 0.8,
+    "jammer_power_fraction": 0.4,
+    "jammer_settings": {
+      "jammer_range": 4500.0,
+      "max_power_draw": 200.0,
+      "green_zone_check_range": 4000.0
+    },
+    "quantum_interdiction_pulse_settings": {
+      "charge_time_secs": 90.0,
+      "discharge_time_secs": 30.0,
+      "cooldown_time_secs": 1.0,
+      "radius_meters": 1.0,
+      "decrease_charge_rate_time_seconds": 1.5,
+      "increase_charge_rate_time_seconds": 3.5,
+      "activation_phase_duration_seconds": 3.0,
+      "disperse_charge_time_seconds": 5.0,
+      "max_power_draw": 1100.0,
+      "stop_charging_power_draw_fraction": 0.2,
+      "max_charge_rate_power_draw_fraction": 0.85,
+      "active_power_draw_fraction": 0.95,
+      "tethering_power_draw_fraction": 0.8,
+      "green_zone_check_range": 30000.0
+    }
+  }
+}

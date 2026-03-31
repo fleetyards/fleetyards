@@ -1,0 +1,89 @@
+{
+  "key": "TOAG_LaserGatling_S2",
+  "ref": "6e3a862f-d13e-4873-ba34-24f3e554984d",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "70ac7035-10a0-4bbb-90b0-9bddf047b504",
+  "name": "Thlilye Laser Gatling",
+  "short_name": "Thlilye",
+  "description": "Manufacturer: Torral Aggregate\\nItem Type: Laser Gatling\\nSize: 2\\n\\nExperience the cutting edge of Xi'an technology with the Thlilye laser gatling, designed by Torral Aggregate. Made exclusively for the Mirai Pulse, this size 2, fully automatic laser gatling features a lightning-quick rate of fire, making it ideal for close-range battle.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "TOAG_LaserGatling_Barrel_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "TOAG_LaserGatling_FiringMechanism_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "TOAG_LaserGatling_PowerArray_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "TOAG_LaserGatling_Ventilation_S2",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 850.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

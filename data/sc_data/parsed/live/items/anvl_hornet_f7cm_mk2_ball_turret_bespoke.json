@@ -1,0 +1,72 @@
+{
+  "key": "ANVL_Hornet_F7CM_Mk2_Ball_Turret_Bespoke",
+  "ref": "4b2e4ce4-ac79-4923-bfdd-ccce02129b27",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "TMSB-5 Ball Turret",
+  "short_name": null,
+  "description": "Manufacturer: Behring\\nItem Type: Ball Turret\\nSize: 5\\n\\nDesigned in conjunction with Anvil Aerospace for use on the F7C Hornet Mk II, this turret featuring a fully integrated gimbal mount to allow for adaptive targeting and is fitted with bespoke twin ballistic gatling guns.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "key": null,
+      "ref": "fbccf8e2-2085-48c3-bfa8-00226450636d",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "cfbd1437-b6aa-480a-b3a2-5d3ad001c726",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "key": null,
+      "ref": "fbccf8e2-2085-48c3-bfa8-00226450636d",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "cfbd1437-b6aa-480a-b3a2-5d3ad001c726",
+          "default_loadout": []
+        }
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

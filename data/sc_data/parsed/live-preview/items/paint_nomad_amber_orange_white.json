@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nomad_Amber_Orange_White",
+  "ref": "029cc3d4-522a-4c08-8d51-b60e30d60eb5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b1fa1a3e-c91b-48a2-b6e3-7db95614abc1",
+  "name": "Nomad Sandstone Livery",
+  "short_name": null,
+  "description": "Make your Nomad stick out among the stars with the Sandstone livery featuring a metallic orange finish with black and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

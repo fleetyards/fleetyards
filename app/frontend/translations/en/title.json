@@ -1,0 +1,180 @@
+{
+  "en": {
+    "title": {
+      "default": "FleetYards.net",
+      "defaultShort": "FleetYards",
+      "defaultAdmin": "FleetYards.net Command",
+      "defaultAdminShort": "FltYrds Command",
+      "defaultDocs": "FleetYards.net Documentation",
+      "defaultDocsShort": "FleetYards Docs",
+      "home": "Home",
+      "ships": {
+        "index": "Ships",
+        "viewer": "Ship Viewer"
+      },
+      "ship": "%{name} - %{manufacturer}",
+      "shipImages": "%{name} Images",
+      "shipVideos": "%{name} Videos",
+      "shipViewer": "%{name} Viewer",
+      "images": "Images",
+      "stats": "Stats",
+      "login": "Login",
+      "signUp": "Sign Up",
+      "embed": "Embed Widget",
+      "apiV1": "API V1",
+      "apiV1Schema": "Schema",
+      "apiV1Pagination": "Pagination",
+      "authApiV1": "Auth API V1",
+      "authApiV1OpenId": "OpenID Connect",
+      "authApiV1Schema": "Schema",
+      "hangar": {
+        "index": "My Hangar",
+        "preview": "My Hangar Preview",
+        "stats": "My Hangar Stats",
+        "import": "Import",
+        "public": "%{user} Hangar",
+        "wishlist": "Wishlist",
+        "publicWishlist": "%{user} Wishlist"
+      },
+      "requestPassword": "Request Password",
+      "changePassword": "Change Password",
+      "fleets": {
+        "add": "Create a new Fleet",
+        "preview": "Fleet Preview",
+        "invites": "Fleet Invites",
+        "members": {
+          "index": "%{fleet} Members",
+          "invites": "%{fleet} Invites"
+        },
+        "stats": "%{fleet} Stats",
+        "settings": {
+          "index": "%{fleet} Settings",
+          "fleet": "%{fleet} Settings",
+          "membership": "%{fleet} Membership",
+          "roles": "%{fleet} Roles"
+        }
+      },
+      "roadmap": {
+        "index": "Roadmap",
+        "ships": "Ship-Roadmap",
+        "changes": "Roadmap Changes"
+      },
+      "settings": {
+        "index": "Profile Settings",
+        "profile": "Profile Settings",
+        "account": "Account",
+        "hangar": "Hangar Settings",
+        "features": "Feature Flags",
+        "oauthApplications": "OAuth Applications",
+        "notifications": "Notification Settings",
+        "security": "Account Security",
+        "twoFactor": {
+          "enable": "Enable Two-factor Authentiation",
+          "disable": "Disable Two-factor Authentiation",
+          "backupCodes": "Generate Two-Factor Backup Codes"
+        }
+      },
+      "compare": {
+        "ships": "Compare Ships"
+      },
+      "notFound": "404",
+      "tools": {
+        "index": "Tools",
+        "travelTimes": "Travel Times",
+        "cargoGrids": "Cargo Grids"
+      },
+      "impressum": "Impressum",
+      "privacyPolicy": "Privacy policy",
+      "cookiePolicy": "Cookie policy",
+      "visualTests": {
+        "index": "Visual Tests",
+        "panels": "Panels - Visual Tests",
+        "buttons": "Buttons - Visual Tests",
+        "tables": "Tables - Visual Tests"
+      },
+      "admin": {
+        "models": {
+          "index": "Models",
+          "new": "New Model",
+          "edit": {
+            "index": "Edit %{manufacturer} %{model}",
+            "metrics": "Edit %{manufacturer} %{model} Metrics",
+            "prices": "Edit %{manufacturer} %{model} Prices",
+            "fleetchart": "Edit %{manufacturer} %{model} Fleetchart Images",
+            "hardpoints": "Edit %{manufacturer} %{model} Hardpoints",
+            "cargoAndFuel": "Edit %{manufacturer} %{model} Fuel",
+            "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
+            "docks": "Edit %{manufacturer} %{model} Docks",
+            "modules": "Edit %{manufacturer} %{model} Modules",
+            "paints": "Edit %{manufacturer} %{model} Paints",
+            "images": "Edit %{manufacturer} %{model} Images",
+            "videos": "Edit %{manufacturer} %{model} Videos",
+            "loaners": "Edit %{manufacturer} %{model} Loaners",
+            "upgrades": "Edit %{manufacturer} %{model} Upgrades",
+            "packages": "Edit %{manufacturer} %{model} Packages"
+          }
+        },
+        "components": {
+          "index": "Components",
+          "new": "New Component",
+          "edit": {
+            "index": "Edit Component",
+            "prices": "Edit Component Prices"
+          }
+        },
+        "manufacturers": {
+          "index": "Manufacturers",
+          "new": "New Manufacturer",
+          "edit": "Edit Manufacturer"
+        },
+        "users": {
+          "index": "Users",
+          "edit": "Edit User"
+        },
+        "vehicles": {
+          "index": "Vehicles",
+          "edit": "Edit Vehicle"
+        },
+        "admins": {
+          "index": "Admins",
+          "edit": "Edit Admin"
+        },
+        "fleets": {
+          "index": "Fleets",
+          "edit": "Edit Fleet"
+        },
+        "oauthApplications": {
+          "index": "OAuth Applications",
+          "new": "New OAuth Application",
+          "edit": "Edit OAuth Application"
+        },
+        "features": {
+          "index": "Feature Flags",
+          "show": "Feature Details"
+        },
+        "images": {
+          "index": "Images"
+        },
+        "maintenance": {
+          "index": "Maintenance",
+          "pghero": "PgHero",
+          "features": "Features",
+          "flipper": "Flipper UI",
+          "workers": "Workers",
+          "tasks": "Tasks",
+          "rsiApiStatus": "RSI API Status"
+        },
+        "modelPaints": {
+          "index": "Model Paints",
+          "edit": "Edit Model Paint"
+        },
+        "modelModules": {
+          "index": "Model Modules"
+        },
+        "modelModulePackages": {
+          "index": "Model Module Packages"
+        }
+      }
+    }
+  }
+}

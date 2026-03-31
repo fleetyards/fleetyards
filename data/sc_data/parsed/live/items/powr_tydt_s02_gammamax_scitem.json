@@ -1,0 +1,24 @@
+{
+  "key": "POWR_TYDT_S02_GammaMax_SCItem",
+  "ref": "7efda460-54a9-4447-b74d-eaa25ea882cb",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "GammaMax",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 2\\nGrade: B\\nClass: Stealth\\n\\nA complete overhaul of the materials in the heatsinks dramatically decreased the emission level of the GammaMax. Few medium power plants run as quiet at the same price point of this one from Tyler Design & Tech.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 520.0
+  }
+}

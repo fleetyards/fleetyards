@@ -2,10 +2,6 @@
 fr:
   validation_error:
     change_pasword: Le changement de mot de passe a échoué.
-    commodity_price:
-      create: Le prix n'a pas pu être créé
-      destroy: Le prix n'a pas pu être détruit
-      update: Le prix n'a pas pu être modifié
     confirmation: Échec de la confirmation.
     fleet:
       create: La flotte n’a pas pu être créée.

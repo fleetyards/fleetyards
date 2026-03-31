@@ -33,21 +33,6 @@ en:
         code: Shortcode of Name
         known_for: "..."
       name: Name
-      shop_commodity:
-        buy_price: Buy Price
-        description: Description
-        name: Name
-        rental_price: Rental Prices
-        rental_price_1_day: 1 Day
-        rental_price_30_days: 30 Days
-        rental_price_3_days: 3 Days
-        rental_price_7_days: 7 Days
-        sell_price: Sell Price
-      station:
-        hidden: hidden?
-      trade_commodity:
-        buy: Buy?
-        sell: Sale?
       user:
         email: Email
         login: Username or email
@@ -64,10 +49,6 @@ en:
         map: Map?
         on_sale: On Sale?
     prompt:
-      celestial_object:
-        starsystem: Please select a Starsystem
-      commodity:
-        commodity_type: Please select a Type
       component:
         component_class: Please select a Component Class
         item_class: Please select a Item Class
@@ -85,17 +66,5 @@ en:
         weapon_class: Please select a Weapon Class
       models:
         dock_size: Please select a Dock size
-      shop_commodities:
-        commodity_item: Please select a Model/Component
-      shops:
-        shop_type: Plase select a Shop Type
-        station: Please select a Station
-      stations:
-        celestial_object: Please select a Celestial Object
-        station_type: Please select a Station Type
-        classification: Please select a Classification
-        size: Please select a Size
-      trade_commodity:
-        commodity: Commodity
       video:
         video_type: Please select a Video Type

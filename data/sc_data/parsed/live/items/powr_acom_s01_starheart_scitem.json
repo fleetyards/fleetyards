@@ -1,0 +1,24 @@
+{
+  "key": "POWR_ACOM_S01_StarHeart_SCItem",
+  "ref": "41a56edf-ce69-4638-9c80-1692c3d345c6",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "StarHeart",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: ACOM \\nSize: 1\\nGrade: B\\nClass: Competition\\n\\nFour generations of racing knowledge and know-how are behind ACOM’s StarHeart power plant. Known for its rapid power distribution, the StarHeart has become a favorite among speedsters.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 120.0
+  }
+}

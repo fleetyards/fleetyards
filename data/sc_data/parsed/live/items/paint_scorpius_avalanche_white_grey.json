@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_Avalanche_White_Grey",
+  "ref": "0c42f5a4-11f0-44f2-8381-0213dc9ae592",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "67b859ab-664a-4ac9-8bba-b09f3d9be2c0",
+  "name": "Scorpius Avalanche Livery",
+  "short_name": null,
+  "description": "White with grey and orange accents, the Avalanche livery for the Scorpius gives the ship a pristine and refined style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

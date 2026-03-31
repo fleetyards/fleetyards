@@ -1,0 +1,22 @@
+{
+  "key": "DRAK_Cutter_CargoGrid_4Stack",
+  "ref": "17e09668-67f5-4eb9-8346-101497f6a3ab",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "d5dccb5f-33f8-43ff-b9d4-b13d9ad62e64"
+}

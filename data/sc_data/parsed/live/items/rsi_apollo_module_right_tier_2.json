@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Apollo_Module_Right_Tier_2",
+  "ref": "4f374a14-98ec-5481-2c07-dd369c257dbe",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Apollo Tier 2 Module Right",
+  "short_name": null,
+  "description": "This module contains 2x Tier 2 medical beds.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "COOL_LPLT_S03_FrostBite_SCItem",
+  "ref": "65c269cf-5094-4984-9dbf-d6675a4a785b",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "3",
+  "grade": "2",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "FrostBite",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Lightning Power Ltd.\\nSize: 3\\nGrade: B\\nClass: Civilian\\n\\nKeep your ship running smoothly with the Lightning Power FrostBite handling your thermal management needs. This consumer-grade cooler can process extra-heat and help maintain optimal running temperatures for all your components.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1100.0
+  }
+}

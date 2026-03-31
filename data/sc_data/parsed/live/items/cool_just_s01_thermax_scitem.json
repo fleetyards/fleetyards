@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JUST_S01_Thermax_SCItem",
+  "ref": "bba050c3-1348-45a8-91c6-73e4ecf5082f",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Thermax",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Juno Starwerk \\nSize: 1\\nGrade: C\\nClass: Industrial\\n\\nJuno Starwerk has done it again. With the Thermax line of coolers, Juno raised the bar on economical industrial coolers made to fit any budget. These small coolers offer above average performance and durability but without breaking the bank.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 150.0
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "key": "GRIN_ROC_DS_Turret_Mining",
+  "ref": "c6f9489b-7757-4ec3-8354-ff7abe692a18",
+  "category": "turret",
+  "type": "UtilityTurret",
+  "sub_type": "MannedTurret",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_mining_laser",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "WeaponMining"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

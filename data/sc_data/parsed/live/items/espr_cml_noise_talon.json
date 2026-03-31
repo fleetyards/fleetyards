@@ -1,0 +1,29 @@
+{
+  "key": "ESPR_CML_Noise_Talon",
+  "ref": "35e2b8cc-442d-4b71-b436-4240e716018d",
+  "category": "countermeasures",
+  "type": "WeaponDefensive",
+  "sub_type": "CountermeasureLauncher",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "19fbaf6d-d6dc-4e15-8fdf-67101934ff3c",
+  "name": "Joker Defcon - Noise Launcher",
+  "short_name": "Noise",
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 5.0,
+    "initial_ammo_count": 5.0,
+    "max_restock_count": 3.0
+  }
+}

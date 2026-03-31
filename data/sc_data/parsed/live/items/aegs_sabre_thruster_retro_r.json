@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Sabre_Thruster_Retro_R",
+  "ref": "c23f1f4b-1da5-41d1-9ab5-5e5217870434",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 13450.0
+  },
+  "type_data": {
+    "thrust_capacity": 779147.4,
+    "fuel_burn_rate_per10_k_newton": 0.03675,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

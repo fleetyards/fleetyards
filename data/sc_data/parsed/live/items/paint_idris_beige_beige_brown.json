@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Idris_Beige_Beige_Brown",
+  "ref": "319dfd92-a7c3-412a-bbac-852609244ff7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e543000b-0a8c-4797-bd7c-958096115a32",
+  "name": "Idris Beachhead Livery",
+  "short_name": null,
+  "description": "Proclaim your presence with the Beachhead livery for the Idris. It uses various shades of beige and brown for a look that stands out against the dark of space.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

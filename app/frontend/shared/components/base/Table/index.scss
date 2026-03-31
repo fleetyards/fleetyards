@@ -1,0 +1,30 @@
+.base-table {
+  &__outer-wrapper {
+    position: relative;
+  }
+
+  &__wrapper {
+    overflow: auto;
+  }
+
+  &__inner {
+    width: 100%;
+    min-height: 180px;
+  }
+
+  &__loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    > * {
+      margin-top: -20px;
+    }
+  }
+
+  &__loading {
+    opacity: 0.5;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+}

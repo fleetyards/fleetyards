@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Queries
       class HangarQuery
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
@@ -41,13 +41,15 @@ module V1
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},
             willItFit: {type: :string, format: :uuid},
-            sorts: {oneOf: [{
+            withCargo: {type: :boolean},
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/VehicleSortEnum"}
             }, {
               "$ref": "#/components/schemas/VehicleSortEnum"
             }]}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

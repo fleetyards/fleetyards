@@ -1,0 +1,42 @@
+{
+  "key": "BEHR_PC2_Dual_S4",
+  "ref": "f10376d0-7068-4124-adf5-aabea4b69c43",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "NoseMounted",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "PC2 Dual S4 Mount",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_01",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_02",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 600.0
+  }
+}

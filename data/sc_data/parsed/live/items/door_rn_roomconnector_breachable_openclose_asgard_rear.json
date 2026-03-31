@@ -1,0 +1,56 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_Asgard_Rear",
+  "ref": "d7e5524f-175a-46aa-92d4-f7550b4a3681",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_exterior_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
+      "name": "hardpoint_exterior_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_exterior_left",
+      "key": null,
+      "ref": "ac074842-d0f8-4ad8-b8aa-63809fdf9ba1",
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_exterior_right",
+      "key": null,
+      "ref": "ac074842-d0f8-4ad8-b8aa-63809fdf9ba1",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 14000.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "ESPR_Prowler_Thruster",
+  "ref": "a1d76646-c171-443a-90bc-2067932bd8fe",
+  "category": "thrusters",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 19500.0
+  },
+  "type_data": {
+    "thrust_capacity": 10000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": null
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S02_TurboDrive_SCItem",
+  "ref": "5df9fe17-bda5-433d-a2cd-bff6b29eeac9",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "TurboDrive",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 2\\nGrade: C\\nClass: Military\\n\\nThe TurboDrive is a common military-grade power plant from A&R that slightly favors performance over durability and stealth.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 750.0
+  }
+}

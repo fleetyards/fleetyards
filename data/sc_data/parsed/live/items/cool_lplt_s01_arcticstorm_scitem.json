@@ -1,0 +1,24 @@
+{
+  "key": "COOL_LPLT_S01_ArcticStorm_SCItem",
+  "ref": "d98450a2-605a-47b6-a8cd-f43df14ddf0e",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "ArcticStorm",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Lightning Power Ltd. \\nSize: 1\\nGrade: C\\nClass: Civilian\\n\\nIf you’re after a cooler that balances performance, durability and stealth, then look to the ArcticStorm. This mid-grade cooler from Lightning Power Ltd uses their centuries old technology to provide performance that can be relied upon.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 130.0
+  }
+}

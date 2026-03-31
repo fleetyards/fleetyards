@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_GoblinG_H_Black_Yellow",
+  "ref": "676c63b5-bbee-4fe0-8cbb-96b4f58ffda4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "93f1bf07-50bb-4c66-9d95-193ffb263f15",
+  "name": "Spirit Hurston Livery",
+  "short_name": null,
+  "description": "The Hurston livery for the Spirit features the company's logo atop a grey base paint with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

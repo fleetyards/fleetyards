@@ -1,0 +1,160 @@
+{
+  "key": "ANVL_Paladin_Thruster_Main",
+  "ref": "e88e0302-be74-45d3-a691-ad5c3e11ff95",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "anim_thruster_flap_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_03",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_04",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_05",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_06",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_07",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_08",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_09",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_10",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_11",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_12",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_13",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_14",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_15",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "anim_thruster_flap_16",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 10000.0
+  },
+  "type_data": {
+    "thrust_capacity": 9645856.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

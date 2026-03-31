@@ -1,0 +1,24 @@
+{
+  "key": "POWR_ACOM_S02_StarBurn_SCItem",
+  "ref": "1fc13db3-38bd-40b4-aada-3d4d665d1679",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "StarBurn",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: ACOM\\nSize: 2\\nGrade: B\\nClass: Competition \\n\\nThe StarBurn power plant is another excellent addition to the ACOM line of components. This medium-sized component delivers solid performance without overheating, so you won't risk burning your hands while making important repairs on the fly.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 330.0
+  }
+}

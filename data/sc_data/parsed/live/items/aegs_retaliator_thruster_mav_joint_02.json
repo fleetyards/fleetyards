@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Retaliator_Thruster_Mav_Joint_02",
+  "ref": "10602ade-884e-485d-9a7d-60002dd6b4fc",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 15500.0
+  },
+  "type_data": {
+    "thrust_capacity": 920000.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

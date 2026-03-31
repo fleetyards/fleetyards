@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Reward_Faction_Frontier_Fighters",
+  "ref": "5413291f-f462-4e0c-b237-6c067468affa",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "91741790-c5bd-488f-8136-6bcb6a8e3e22",
+  "name": "Cutter Frontier Fighters Camo Livery",
+  "short_name": null,
+  "description": "Be ready to battle in the untamed wilds with this green camo livery featuring the logo of the Frontier Fighters vigilante group.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

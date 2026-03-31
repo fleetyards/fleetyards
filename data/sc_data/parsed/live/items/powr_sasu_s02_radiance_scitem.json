@@ -1,0 +1,24 @@
+{
+  "key": "POWR_SASU_S02_Radiance_SCItem",
+  "ref": "64844114-2aaa-4292-9326-0e3ac941afd9",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "Radiance",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 2\\nGrade: B\\nClass: Civilian\\n\\nConsidering its extensive and extremely diverse line of products, it’s incredible that Sakura Sun can maintain such quality and consistency. The Radiance power plant is a perfect example. A staple of their product line for years, the Radiance has won multiple consumer awards for its reliability and overall performance.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 540.0
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "key": "KRON_LaserCannon_S1",
+  "ref": "3d562dad-88f9-43aa-8ed5-616bf6634ff9",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2a64f92e-8f6d-47ac-a6ed-643465e91d4b",
+  "name": "FL-11 Cannon",
+  "short_name": "FL-11",
+  "description": "Manufacturer: Kroneg\\nItem Type: Laser Cannon\\nSize: 1\\n\\nDeliver massive damage from a distance with Kroneg's FL line of laser cannons. The FL-11 might shoot slow but provides considerable firepower for a size one weapon.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "KRON_LaserCannon_Barrel_S1",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "KRON_LaserCannon_FiringMechanism_S1",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "KRON_LaserCannon_PowerArray_S1",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "KRON_LaserCannon_Ventilation_S1",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "key": "ANVL_Asgard_CargoGrid_IC",
+  "ref": "e218b7d9-aaad-4580-9f56-3ca2e1688911",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 6.25,
+      "y": 11.25,
+      "z": 5.0
+    },
+    "capacity": 180,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 10.0
+        },
+        "capacity": 32
+      }
+    }
+  }
+}

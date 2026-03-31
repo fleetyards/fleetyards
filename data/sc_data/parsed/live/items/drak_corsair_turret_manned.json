@@ -1,0 +1,44 @@
+{
+  "key": "DRAK_Corsair_Turret_Manned",
+  "ref": "460303b8-2c17-4522-9630-1965f2f3b722",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 6000.0
+  }
+}

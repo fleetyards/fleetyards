@@ -1,13 +1,77 @@
+<script lang="ts">
+export default {
+  name: "FleetchartSlider",
+};
+</script>
+
+<script lang="ts" setup>
+import { useMobile } from "@/shared/composables/useMobile";
+
+type Props = {
+  modelValue?: number;
+  maxScale?: number;
+  minScale?: number;
+  interval?: number;
+  mark?: number;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: 1,
+  maxScale: 20,
+  minScale: 0.2,
+  interval: 0.5,
+  mark: 2,
+});
+
+const innerValue = ref(1);
+
+const mobile = useMobile();
+
+const innerMark = computed(() => {
+  return mobile.value ? 5 : props.mark;
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    innerValue.value = props.modelValue;
+  },
+);
+
+onMounted(() => {
+  innerValue.value = props.modelValue;
+});
+
+const emit = defineEmits(["update:modelValue"]);
+
+const update = (value: number) => {
+  emit("update:modelValue", value);
+};
+
+const marks = (value: number) => {
+  if (value % innerMark.value === 0) {
+    return {
+      label: label(value),
+    };
+  }
+
+  return false;
+};
+
+const label = (value: number) => {
+  return `${value}x`;
+};
+</script>
+
 <template>
   <div class="fleetchart-slider">
-    <VueSlider
-      ref="scaleSlider"
+    <Slider
       v-model="innerValue"
       :min="minScale"
       :max="maxScale"
       :interval="interval"
       :marks="marks"
-      dot-size="20"
+      :dot-size="20"
       :tooltip-formatter="label"
       :process="false"
       :lazy="true"
@@ -15,62 +79,3 @@
     />
   </div>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import VueSlider from "vue-slider-component";
-import { Getter } from "vuex-class";
-
-@Component({
-  components: {
-    VueSlider,
-  },
-})
-export default class FleetchartSlider extends Vue {
-  innerValue = 1;
-
-  @Prop({ required: true }) value!: number;
-
-  @Prop({ default: 20 }) maxScale!: number;
-
-  @Prop({ default: 0.2 }) minScale!: number;
-
-  @Prop({ default: 0.5 }) interval!: number;
-
-  @Prop({ default: 2 }) mark!: number;
-
-  @Getter("mobile") mobile;
-
-  get innerMark() {
-    return this.mobile ? 5 : this.mark;
-  }
-
-  @Watch("value")
-  onValueChange() {
-    this.innerValue = this.value;
-  }
-
-  mounted() {
-    this.innerValue = this.value;
-  }
-
-  update(value) {
-    this.$emit("input", value);
-  }
-
-  marks(value) {
-    if (value % this.innerMark === 0) {
-      return {
-        label: this.label(value),
-      };
-    }
-
-    return false;
-  }
-
-  label(value) {
-    return `${value}x`;
-  }
-}
-</script>

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Mk2_White_Gray_Red",
+  "ref": "da651812-4804-4c9d-9b0a-d143bbdd92db",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d0b4b885-46bb-4ecb-98b2-7aba859f7302",
+  "name": "Aurora Mk II Obscurity Livery",
+  "short_name": "Aurora Mk II Obscurity Livery",
+  "description": "Mainly gray with select white features, the sharp reds of the Obscurity livery cut through an otherwise brooding appearance.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

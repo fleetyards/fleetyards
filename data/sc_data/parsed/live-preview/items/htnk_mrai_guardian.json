@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_MRAI_Guardian",
+  "ref": "50df8799-d4d8-49b9-b5f1-9d6af03e38a6",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 9.0
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "key": "ANVL_Paladin_SCItem_Remote_Turret_Left_Right",
+  "ref": "19677aee-ec86-4852-9faa-204680484f43",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "joint_turret_weapon_left",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "joint_turret_weapon_right",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5500.0
+  }
+}

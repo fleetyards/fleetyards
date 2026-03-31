@@ -1,0 +1,24 @@
+{
+  "key": "POWR_ACOM_S02_SolarFlare_SCItem",
+  "ref": "bec88ea5-1dc1-4c87-836c-e9b9026369be",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "SolarFlare",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: ACOM\\nSize: 2\\nGrade: C\\nClass: Competition\\n\\nThe ACOM team took their years of experience in the racing world and applied it to their component designs. That focus has helped make the SolarFlare a popular power plant among pilots that want to prioritize performance.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 290.0
+  }
+}

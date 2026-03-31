@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Scorpius_Luminalia_White_Blue",
+  "ref": "99e3d509-40b8-4918-a264-754b928ea7e5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "11b99e81-e149-4c2e-80e7-f29d0828f8bd",
+  "name": "Scorpius IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Scorpius with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_L22_Wolf_Blue_Red_White_Stripes",
+  "ref": "b6ad06f5-4e7d-4d16-9d8e-45a4bebe84fc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fb0250f2-bcf7-4d71-aa46-ce33a3b1c4fc",
+  "name": "Wolf Antilles Livery",
+  "short_name": null,
+  "description": "The Antilles livery for the Wolf features a vibrant, electric blue base paint and bright red tail section.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

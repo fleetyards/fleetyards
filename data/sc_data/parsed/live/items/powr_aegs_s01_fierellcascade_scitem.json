@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S01_FierellCascade_SCItem",
+  "ref": "50e95028-4764-416c-9380-7d9d52d8d82b",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Fierell Cascade",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics\\nSize: 1\\nGrade: B\\nClass: Military\\n\\nRely on Aegis’ expertise to power your ship. The Fierell Cascade is a military-grade power plant that prioritizes performance over everything else.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 310.0
+  }
+}

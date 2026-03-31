@@ -1,0 +1,63 @@
+{
+  "key": "PRAR_DistortionScatterGun_S5",
+  "ref": "2e0a3446-23e2-447b-8f1c-2b01516ca396",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "a2ba1db6-a7e8-49db-ba52-c61219693531",
+  "name": "Absolution Distortion Scattergun",
+  "short_name": "Absolution",
+  "description": "Manufacturer: Preacher Armaments\\nItem Type: Distortion Scattergun\\nSize: 5\\n\\nDeliver high distortion damage in close quarters with Preacher Armaments' Absolution scattergun. This size five weapon is an ideal loadout option for those interested in capturing or boarding their target.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2640.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

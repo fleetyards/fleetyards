@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_GoblinG_C_Blue_Black",
+  "ref": "5e8f217f-449e-46b1-8ede-b78bd3257b45",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8715193f-dd6a-4841-93be-b7fc6b63d2cc",
+  "name": "Caterpillar Crusader Livery",
+  "short_name": null,
+  "description": "The Crusader livery for the Caterpillar features the company's logo atop a light blue base paint with black and white highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

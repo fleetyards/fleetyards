@@ -1,0 +1,34 @@
+{
+  "key": "XNAA_SanTokYai_Mount_Gimbal_S3",
+  "ref": "98f27734-3ef8-4715-a1dd-0c28f6e053bd",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "06370f79-4741-4781-be08-d5acc9e28047",
+  "name": "San'tok.yāi Gimbal Mount",
+  "short_name": null,
+  "description": "Manufacturer: Aopoa\\nItem Type: Weapon Mount\\nSize: 3\\n\\nLine up the perfect shot with help from this S3 gimbal mount. Made by Aopoa specifically for the San'tok.yāi, this gimbal can handle weapons up to S3.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 150.0
+  }
+}

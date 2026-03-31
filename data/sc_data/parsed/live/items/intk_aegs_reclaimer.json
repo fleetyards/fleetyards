@@ -1,0 +1,25 @@
+{
+  "key": "INTK_AEGS_Reclaimer",
+  "ref": "998b41a8-7ca2-4dca-b44a-c75179c6a112",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 50.0,
+    "minimum_rate": 0.2
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_GoblinG_M_White_Blue",
+  "ref": "7e77dee4-b0fc-4a88-b834-f17ebfd07b53",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "26c07a48-f263-4085-b775-47e5379ee577",
+  "name": "Freelancer microTech Livery",
+  "short_name": null,
+  "description": "The microTech livery for the Freelancer features the company's logo atop a white base paint with light blue and grey highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

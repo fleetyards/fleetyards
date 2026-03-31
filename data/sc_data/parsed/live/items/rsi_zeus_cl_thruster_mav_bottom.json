@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Zeus_CL_Thruster_Mav_Bottom",
+  "ref": "a775b002-9890-48a8-9bd2-0fd75fed31b8",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 14350.0
+  },
+  "type_data": {
+    "thrust_capacity": 2343993.0,
+    "fuel_burn_rate_per10_k_newton": 0.037,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "KRIG_P72_Archimedes_Thruster_Retro_02",
+  "ref": "24e9bbcb-08a6-4d7c-971c-a9550460b75c",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 4000.0
+  },
+  "type_data": {
+    "thrust_capacity": 112403.4,
+    "fuel_burn_rate_per10_k_newton": 0.093625,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

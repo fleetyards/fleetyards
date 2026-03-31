@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Enums
         class EquipmentTypeEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: ::Equipment.equipment_types.keys
+            enum: ::Equipment.equipment_types.keys,
+            "x-enumNames": ::Equipment.equipment_types.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

@@ -1,0 +1,85 @@
+{
+  "fr": {
+    "meta": {
+      "description": "FleetYards.net, votre base de données pour toutes les informations relatives aux vaisseaux de « Star Citizen ».",
+      "keywords": "Star Citizen, vaisseaux spatiaux, vaisseaux, Fighter, Database, Squadron, 42, Star, Citizen, Français, Chris, Roberts, Online, Game, Espace, Simulation"
+    },
+    "model": {
+      "focus": "Domaine",
+      "classification": "Classification",
+      "size": "Taille",
+      "beam": "Rayon",
+      "cargo": "Soute",
+      "netCargo": "Soute avec véhicule",
+      "crew": "Équipage",
+      "speed": "Vitesse",
+      "minCrew": "Équipage min.",
+      "maxCrew": "Équipage max.",
+      "scmSpeed": "Vitesse SCM",
+      "scmSpeedBoosted": "Vitesse SCM Boostée",
+      "reverseSpeedBoosted": "Vitesse Marche Arrière Boostée",
+      "maxSpeed": "Vitesse Max",
+      "scm": "SCM",
+      "max": "Max",
+      "groundMaxSpeed": "Vitesse Max",
+      "groundReverseSpeed": "Vitesse Marche Arrière",
+      "pitch": "Pitch",
+      "pitchBoosted": "Pitch Boosté",
+      "yaw": "Yaw",
+      "yawBoosted": "Yaw Boosté",
+      "roll": "Roll",
+      "rollBoosted": "Roll Boosté",
+      "price": "Prix",
+      "groundAcceleration": "Accélération",
+      "groundDecceleration": "Décélération",
+      "scmSpeedAcceleration": "Zéro vers SCM",
+      "scmSpeedDecceleration": "SCM vers Zéro",
+      "maxSpeedAcceleration": "Zéro vers Max",
+      "maxSpeedDecceleration": "Max vers Zéro",
+      "compare": {
+        "groundMaxSpeed": "Vitesse Sol Max",
+        "groundReverseSpeed": "Vitesse Sol Marche Arrière",
+        "groundAcceleration": "Accélération Sol",
+        "groundDecceleration": "Décélération Sol"
+      },
+      "pledgePrice": "Prix réel",
+      "quantumFuelTankSize": "Carburant Quantum",
+      "hydrogenFuelTankSize": "Carburant",
+      "height": "Hauteur",
+      "length": "Longueur",
+      "mass": "Masse",
+      "manufacturer": "Fabricant",
+      "hardpoints": "point d'ancrage",
+      "weapons": "Armes",
+      "equipment": "Équipement",
+      "variants": "Variantes",
+      "maxUpgrades": "Améliorations",
+      "productionStatus": "Statut du produit",
+      "propulsion": "Propulsion",
+      "ordnance": "Munition",
+      "modular": "Modulaire",
+      "soldAt": "Vendu à?",
+      "rentalAt": "Location à ?",
+      "lastUpdatedAt": "Dernière mise à jour le ?"
+    },
+    "component": {
+      "manufacturer": "Fabricant",
+      "size": "Taille"
+    },
+    "availability": {
+      "listedAt": "Listé à",
+      "soldAt": "Vendu à",
+      "boughtAt": "Acheté à"
+    },
+    "resources": {
+      "models": "Vaisseaux",
+      "hardpoints": "Points d'ancrage",
+      "images": "Images"
+    },
+    "pagination": {
+      "previous": "Page précédente",
+      "next": "Page suivante",
+      "gap": "écart entre les lignes"
+    }
+  }
+}

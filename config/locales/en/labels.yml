@@ -46,7 +46,6 @@ en:
       actions: Actions
       blank:
         admin_user: No Admin could be found.
-        commodity: No Commodities could be found.
         default: No Entries could be found.
         equipment: No Equipment could be found.
         image: No Image could be found.
@@ -56,9 +55,6 @@ en:
         model_upgrade: No Upgrade could be found.
         model_paints: No Paint could be found.
         planet: No Planets could be found.
-        shop: No Shops could be found.
-        starsystem: No Starsystems could be found.
-        station: No Stations could be found.
         user: No User could be found.
         rsi_api_status: No unresolved RSI API Insidents
       component:

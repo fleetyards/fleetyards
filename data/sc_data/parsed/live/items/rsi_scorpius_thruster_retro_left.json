@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Scorpius_Thruster_Retro_Left",
+  "ref": "9fa91245-dc14-429c-b35e-9ddae3b36b40",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 7000.0
+  },
+  "type_data": {
+    "thrust_capacity": 2000000.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

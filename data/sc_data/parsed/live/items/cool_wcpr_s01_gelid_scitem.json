@@ -1,0 +1,24 @@
+{
+  "key": "COOL_WCPR_S01_Gelid_SCItem",
+  "ref": "5e5e363e-2ae2-455f-8062-49189906fdc9",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4",
+  "name": "Gelid",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel Propulsion\\nSize: 1\\nGrade: A\\nClass: Civilian\\n\\nAllowing for greater thermo-dispersal and improved performance output, the top-of-the-line Gelid cooler from Wen/Cassel is an all-inclusive heat management system ideal for a variety of ships.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 170.0
+  }
+}

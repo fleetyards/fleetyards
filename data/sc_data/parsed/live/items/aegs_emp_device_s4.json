@@ -1,0 +1,35 @@
+{
+  "key": "AEGS_EMP_Device_S4",
+  "ref": "5b592245-58a7-4ce9-9c96-3145d0424da8",
+  "category": "weapons",
+  "type": "EMP",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "REP-8 EMP Generator",
+  "short_name": "REP-8 EMP Generator",
+  "description": "Manufacturer: Behring\\nItem Type: EMP Generator\\n\\nThe REP-8 is a highly regarded EMP-focused burst generator from Behring. It balances a manageable charge time with a strong blast of distortion damage that knocks out electronic components caught within its radius. Solid engineering and centuries of use have made this a standard non-lethal deterrent across the Empire.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 150.0
+  },
+  "type_data": {
+    "charge_time": 20.0,
+    "distortion_damage": 2750.0,
+    "emp_radius": 750.0,
+    "min_emp_radius": 250.0,
+    "phys_radius": 1000.0,
+    "min_phys_radius": 250.0,
+    "pressure": 0.0,
+    "unleash_time": 1.5,
+    "cooldown_time": 22.0
+  }
+}

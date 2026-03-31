@@ -1,0 +1,22 @@
+{
+  "key": "RSI_Ursa_CargoGrid_Rear",
+  "ref": "b039d7b6-6f63-413a-9175-43964d3a334f",
+  "category": "cargogrid",
+  "type": "Cargo",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "9db430fa-adbb-40f1-8797-11e8bbe4a0b6"
+}

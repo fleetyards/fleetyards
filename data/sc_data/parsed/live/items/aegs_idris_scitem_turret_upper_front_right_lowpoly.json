@@ -1,0 +1,42 @@
+{
+  "key": "AEGS_Idris_SCItem_Turret_Upper_Front_Right_LowPoly",
+  "ref": "b5001feb-f0b9-4857-843f-92a0da73f525",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 10000.0
+  }
+}

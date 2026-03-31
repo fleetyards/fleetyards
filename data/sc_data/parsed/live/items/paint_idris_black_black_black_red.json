@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Idris_Black_Black_Black_Red",
+  "ref": "2b812e19-1eeb-475a-b560-2d319ea20a52",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b57a9517-4e74-472b-8ab8-491c8d903850",
+  "name": "Idris Marauder Livery",
+  "short_name": null,
+  "description": "Designed for the Idris-K aftermarket kit, the Marauder livery is primarily black with subtle red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

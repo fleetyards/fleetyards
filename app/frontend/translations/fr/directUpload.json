@@ -1,0 +1,21 @@
+{
+  "fr": {
+    "directUpload": {
+      "title": "Télécharger",
+      "chooseFiles": "Choisir des fichiers",
+      "dropzone": {
+        "textMultiple": "Déposez les fichiers ici pour télécharger",
+        "text": "Déposez le fichier ici pour télécharger",
+        "or": "ou",
+        "browse": "parcourir"
+      },
+      "previewImage": {
+        "remove": "Supprimer"
+      },
+      "actions": {
+        "upload": "Télécharger",
+        "close": "Fermer"
+      }
+    }
+  }
+}

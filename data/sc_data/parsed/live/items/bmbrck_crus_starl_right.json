@@ -1,0 +1,42 @@
+{
+  "key": "BMBRCK_CRUS_STARL_Right",
+  "ref": "8352da44-4b63-4a4b-8397-734dfb11698b",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-313 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 3\\nMissiles: 1xS3\\n\\nBehring’s MSD-313 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 3 hardpoint for the reliable and effective launch of one S3 missile.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "10",
+      "max_size": "10",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "10",
+      "max_size": "10",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 3600.0
+  }
+}

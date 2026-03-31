@@ -1,0 +1,63 @@
+{
+  "key": "BEHR_LaserCannon_S8",
+  "ref": "6bf837a5-2763-4cd3-aa9c-869b0e798cb3",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "8",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "M9A Cannon",
+  "short_name": null,
+  "description": "Manufacturer: Behring\\nItem Type: Laser Cannon\\nSize: 7\\n\\nStrike at the very heart of your enemies with the devastating impact of Behring's M9A energy autocannon. When fully charged, the massive stopping power of this laser weapon has the potential to halt even capital ships in their tracks.",
+  "inventory_consumption": {
+    "micro_scu": 54600000.0,
+    "dimensions": {
+      "x": 2.902906,
+      "y": 22.11008,
+      "z": 4.009475
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 10810.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

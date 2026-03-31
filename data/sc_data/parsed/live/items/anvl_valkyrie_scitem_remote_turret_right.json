@@ -1,0 +1,35 @@
+{
+  "key": "ANVL_Valkyrie_SCItem_Remote_Turret_Right",
+  "ref": "209c444e-0b4f-46b4-9265-de6e1daa8fcf",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_gun",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 12000.0
+  }
+}

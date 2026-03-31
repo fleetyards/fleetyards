@@ -1,0 +1,24 @@
+{
+  "key": "Door_Ship_Exterior_ORIG_600i_Garage_Door",
+  "ref": "8bce26e2-f80b-4c9b-ab95-b2e5a6900880",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 13000.0
+  }
+}

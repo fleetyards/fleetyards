@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mole_Dolivine_Green",
+  "ref": "ac889ced-e5fc-4c51-8b77-55c39992c45b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c5b352f7-237e-4b5e-8fcb-c0bfd9c8589c",
+  "name": "MOLE Dolivine Livery",
+  "short_name": null,
+  "description": "Sharing the name with a gemstone prized for its beauty and industrial applications, the Dolivine livery blends shades of light green to give your MOLE a unique look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

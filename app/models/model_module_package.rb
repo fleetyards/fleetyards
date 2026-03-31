@@ -4,28 +4,33 @@
 #
 # Table name: model_module_packages
 #
-#  id                 :uuid             not null, primary key
-#  active             :boolean          default(TRUE)
-#  angled_view        :string
-#  angled_view_height :integer
-#  angled_view_width  :integer
-#  description        :text
-#  hidden             :boolean          default(TRUE)
-#  name               :string
-#  pledge_price       :decimal(15, 2)
-#  side_view          :string
-#  side_view_height   :integer
-#  side_view_width    :integer
-#  slug               :string
-#  store_image        :string
-#  top_view           :string
-#  top_view_height    :integer
-#  top_view_width     :integer
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  model_id           :uuid
+#  id                      :uuid             not null, primary key
+#  active                  :boolean          default(TRUE)
+#  angled_view             :string
+#  angled_view_height      :integer
+#  angled_view_width       :integer
+#  carrierwave_migrated_at :datetime
+#  description             :text
+#  hidden                  :boolean          default(TRUE)
+#  name                    :string
+#  pledge_price            :decimal(15, 2)
+#  side_view               :string
+#  side_view_height        :integer
+#  side_view_width         :integer
+#  slug                    :string
+#  store_image             :string
+#  store_image_height      :integer
+#  store_image_width       :integer
+#  top_view                :string
+#  top_view_height         :integer
+#  top_view_width          :integer
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  model_id                :uuid
 #
 class ModelModulePackage < ApplicationRecord
+  include ActiveStorageVariants
+
   paginates_per 30
 
   belongs_to :model, touch: true
@@ -40,9 +45,28 @@ class ModelModulePackage < ApplicationRecord
   mount_uploader :side_view, FleetchartImageUploader
   mount_uploader :angled_view, FleetchartImageUploader
 
+  has_one_attached :new_store_image
+  has_one_attached :new_top_view
+  has_one_attached :new_side_view
+  has_one_attached :front_view
+  has_one_attached :new_angled_view
+
   accepts_nested_attributes_for :module_package_items, allow_destroy: true
 
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "createdAt asc", "createdAt desc",
+    "updatedAt asc", "updatedAt desc"
+  ]
+
   before_save :update_slugs
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["active", "created_at", "description", "hidden", "id", "model_id", "name", "pledge_price", "slug", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["model", "model_modules", "module_package_items"]
+  end
 
   def self.ordered_by_name
     order(name: :asc)

@@ -1,0 +1,28 @@
+{
+  "key": "INTK_MISC_Starfarer_Nose_SCItem",
+  "ref": "d8913855-325b-46f1-ba5f-22c0c2ef1ea2",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "MISC Starfarer Fuel Intake",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  },
+  "type_data": {
+    "fuel_push_rate": 120.0,
+    "minimum_rate": 0.2
+  }
+}

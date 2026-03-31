@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Enums
         class DockTypeEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: ::Dock.dock_types.keys
+            enum: ::Dock.dock_types.keys,
+            "x-enumNames": ::Dock.dock_types.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

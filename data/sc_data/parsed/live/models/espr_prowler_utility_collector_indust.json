@@ -1,0 +1,530 @@
+{
+  "key": "ESPR_Prowler_Utility_Collector_Indust",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Esperia Prowler Utility Wikelo Work Special",
+  "description": "Manufacturer: Esperia\\nFocus: Cargo\\n\\nWhile no known Tevarin-made examples of this historical ship exist, historians at Esperia studied contemporary UPE military field reports to reconstruct this modified Prowler. Used by the Tevarin military to deliver urgently needed supplies to the frontlines, the Prowler Utility pairs a tractor beam with a fully accessible hold, alongside the warship’s still significant armaments, to make the transfer of cargo in battlefield conditions a precision operation. \\n\\nWikelo hi. Made useful modifications to make ship even more industrious. You will like.",
+  "career": "Transporter",
+  "role": "Light Freight",
+  "insurance": {
+    "base_wait_time_minutes": "21",
+    "mandatory_wait_time_minutes": "5.25",
+    "base_expediting_fee": "9200"
+  },
+  "mass": 171700.0,
+  "metrics": {
+    "x": 32.0,
+    "y": 34.0,
+    "z": 15.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_pilot_seat",
+      "ref": "002a4bf9-2aea-4d70-ac1c-d0d69ab6d17f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_copilot_seat",
+      "ref": "8e7c5bec-31f1-4617-a1a8-70b781d016f7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_TYDT_S02_Eclipse_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_JUST_S02_Snowfall_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_JUST_S02_Snowfall_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ESPR_Prowler"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_BASL_S02_Citadel_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_BASL_S02_Citadel_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_ESPR_Prowler_Utility"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": "87008b2d-438a-4091-8ae4-303be47190d8",
+      "key": null
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_hydrogen_fuel_tank",
+      "ref": null,
+      "key": "HTNK_ESPR_Prowler_Utility"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_ESPR_Prowler"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_ESPR_Prowler"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S02_Huracan_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_ESPR_Prowler_Utility"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ESPR_Prowler_Utility"
+    },
+    {
+      "name": "hardpoint_main_thruster_wing_left",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Main_Utility"
+    },
+    {
+      "name": "hardpoint_main_thruster_wing_right",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Main_Utility"
+    },
+    {
+      "name": "hardpoint_retro_thruster_wing_left",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Retro_Utility"
+    },
+    {
+      "name": "hardpoint_retro_thruster_wing_right",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Retro_Utility"
+    },
+    {
+      "name": "hardpoint_retro_thruster_body_left",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Retro_02_Utility"
+    },
+    {
+      "name": "hardpoint_retro_thruster_body_right",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Retro_02_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_left_top",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Up_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_left_mid",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_left_bot",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Down_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_right_top",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Up_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_right_mid",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_nose_right_bot",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Down_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_left_top",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Up_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_left_mid",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_left_bot",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Down_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_right_top",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Up_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_right_mid",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_tail_right_bot",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Down_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_wing_left_mid",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_wing_right_mid",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_Lateral_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_spine_left",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_02_Utility"
+    },
+    {
+      "name": "hardpoint_mav_thruster_spine_right",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Mav_02_Utility"
+    },
+    {
+      "name": "hardpoint_grav_nose_left_front",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_grav_nose_left_rear",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_grav_nose_right_front",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_grav_nose_right_rear",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_grav_body_left_front",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_grav_body_left_rear",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_grav_body_right_front",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_grav_body_right_rear",
+      "ref": null,
+      "key": "ESPR_Prowler_Thruster_Aux"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_copilot",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "cf57c4df-0fed-40bb-9771-10fc7853d8f9",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "cf57c4df-0fed-40bb-9771-10fc7853d8f9",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_spine",
+      "ref": "92d6e85c-e59a-4826-bcfa-f96e580164b1",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "370e4728-924a-4791-9297-a71b25ff08e9",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "370e4728-924a-4791-9297-a71b25ff08e9",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": "894fa1cc-9734-44be-b4c1-f6895f9389a4",
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": "49f405a8-e9e6-47b1-a091-85989d39df68",
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_rear_ramp",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenReverse_IP_Prowler"
+    },
+    {
+      "name": "hardpoint_jump_seat_01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_jump_seat_02",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_jump_seat_03",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_rack_01",
+      "ref": null,
+      "key": "Weapon_Rack_Powered_ESPR_Prowler"
+    },
+    {
+      "name": "hardpoint_weapon_rack_02",
+      "ref": null,
+      "key": "Weapon_Rack_Powered_ESPR_Prowler"
+    },
+    {
+      "name": "hardpoint_weapon_rack_03",
+      "ref": null,
+      "key": "Weapon_Rack_Powered_ESPR_Prowler"
+    },
+    {
+      "name": "hardpoint_weapon_rack_04",
+      "ref": null,
+      "key": "Weapon_Rack_Powered_ESPR_Prowler"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_ladder",
+      "ref": null,
+      "key": "ESPR_Prowler_Door_Ladder_Int"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_inflight_fuelport",
+      "ref": "9aeedf9f-22c4-4754-8fb9-3591551194fc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ESPR_Prowler_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_life_support",
+      "ref": "e947b002-e65e-4637-90b7-c894925d6625",
+      "key": null
+    },
+    {
+      "name": "hardpoint_engineeringscreen",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_03",
+      "ref": "a7dd60d3-10bf-473d-9de5-747071885573",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_04",
+      "ref": "a7dd60d3-10bf-473d-9de5-747071885573",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_01",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_ground_fuel_port",
+      "ref": "41adb6bf-b552-428c-a8dd-6cf7520309cb",
+      "key": null
+    },
+    {
+      "name": "hardpoint_engineeringscreen",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
+      "key": null
+    },
+    {
+      "name": "hardpoint_body_housing",
+      "ref": "cab5f94d-aa83-4325-8444-4f931a4503bf",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargo_door_left",
+      "ref": "ebaeeea5-87e3-4fca-b7f2-cce5a00c83fb",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargo_door_right",
+      "ref": "25b91169-2958-4df1-8052-e09ee75835b2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_salvage",
+      "ref": "f974850a-2444-4771-babf-c3a2ece76c3b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_tractor_beam_arm",
+      "ref": "d2185125-70a1-4f51-a149-527828e9df9e",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_tractor_beam_turret",
+          "ref": "24546504-58cb-40a5-b6b5-db20a3bb959d",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_tractor_beam",
+              "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+              "key": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "es": {
+    "tools": {
+      "descriptions": {
+        "verseGuide": "Guía de viaje integral con mapas detallados del sistema, puntos de interés y rutas de exploración en el universo de Star Citizen",
+        "starCitizenTools": "Wiki impulsado por la comunidad con documentación extensa sobre naves, armas, ubicaciones, mecánicas de juego y trasfondo",
+        "starship42": "Visualizador 3D interactivo de naves con modelos detallados exteriores e interiores, colocación de componentes y comparaciones de tamaño",
+        "erkul": "Calculadora avanzada de DPS y optimizador de configuración de naves con estadísticas detalladas de armas y comparaciones de componentes",
+        "starjump": "Herramienta de visualización 2D de flotas para crear hermosos diseños de naves y gráficos de organización de flotas",
+        "itemFinder": "Base de datos integral de ubicación de objetos y equipos con seguimiento de disponibilidad en tiempo real en el universo",
+        "starHangar": "Mercado confiable para paquetes de naves de Star Citizen con comercio seguro y seguimiento de precios",
+        "shinytracker": "Rastreador de progreso personal para misiones, reputación, logros y objetivos de exploración con estadísticas detalladas",
+        "uexCorp": "Plataforma de comercio de materias primas en tiempo real con seguimiento de precios, optimización de rutas comerciales y herramientas de análisis de mercado",
+        "cargoGridViewer": "Visor 3D de cuadrícula de carga que muestra dimensiones de bodega y ajuste de contenedores para todas las naves",
+        "scmdb": "Explora misiones, recompensas, rutas de reputación, recursos mineros y más para Star Citizen",
+        "regolith": "Herramienta de minería de Star Citizen con escaneo de rocas, cálculos de refinamiento y comparaciones de cabezales de minería"
+      },
+      "categories": {
+        "trading": "Comercio y Economía",
+        "loadouts": "Equipamiento y Combate",
+        "mining": "Minería",
+        "guides": "Información y Guías",
+        "missions": "Misiones y Base de Datos",
+        "roadmap": "Hoja de Ruta y Seguimiento",
+        "fleet": "Gestión de Flota",
+        "marketplace": "Mercado"
+      },
+      "discontinued": "Este proyecto ha sido descontinuado.",
+      "discontinuedHeading": "Proyectos descontinuados"
+    }
+  }
+}

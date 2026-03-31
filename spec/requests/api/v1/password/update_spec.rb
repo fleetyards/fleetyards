@@ -3,9 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :users
-
-  let(:user) { users :data }
+  let(:user) { create(:user, password: "enterprise") }
   let(:input) do
     {
       currentPassword: "enterprise",
@@ -27,16 +25,12 @@ RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" 
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/PasswordInput"}, required: true
 
+      security [{
+        SessionCookie: []
+      }]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end

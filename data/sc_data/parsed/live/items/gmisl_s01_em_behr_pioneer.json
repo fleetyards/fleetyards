@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S01_EM_BEHR_Pioneer",
+  "ref": "8c28d7a1-c09c-4718-aa5e-bb23821c04db",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "Pioneer I-G Missile",
+  "short_name": "Pioneer I-G",
+  "description": "Manufacturer: Behring \\nTracking Signal: Electromagnetic \\nSize: 1  \\n\\nBehring prides itself on dependability and the Pioneer is no exception. The updated Oracle EM tracking system has proven itself time and again in numerous consumer-testing reports against similarly classed proximity missiles. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 15625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

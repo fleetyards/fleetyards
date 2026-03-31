@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pulse_Grey_Gold_Camo",
+  "ref": "4856e1ee-9205-407f-8156-9ad61c055663",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "71b5fe17-8797-4b2c-9e36-9369a4cea2cb",
+  "name": "Pulse GCD-Army Livery",
+  "short_name": null,
+  "description": "In honor of the soldiers who protect the Empire, Mirai crafted this limited-edition GCD-Army livery. The glints of gold against grey camo makes it a memorable choice for the Pulse.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

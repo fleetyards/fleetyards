@@ -1,0 +1,22 @@
+{
+  "key": "DRAK_Caterpillar_CargoGrid_Module_Walkway",
+  "ref": "28c084c3-442d-4b33-8a35-a213a56e9d76",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "6b7c9453-ae93-4b42-b6a1-ed954289c65c"
+}

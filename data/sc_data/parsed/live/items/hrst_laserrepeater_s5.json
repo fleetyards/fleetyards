@@ -1,0 +1,89 @@
+{
+  "key": "HRST_LaserRepeater_S5",
+  "ref": "2c9b3880-a108-4746-a6cd-7e2b04feee36",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "ee8b7bb3-d420-435c-924f-561e67e64588",
+  "name": "Attrition-5 Repeater",
+  "short_name": "Attrition-5",
+  "description": "Manufacturer: Hurston Dynamics\\nItem Type: Laser Repeater\\nSize: 5\\n\\nMore than a simple size five laser repeater, the Attrition-5 from Hurston Dynamics features advanced cascade technology to allow the weapon significant performance improvements the longer it sustains its energy output.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "HRST_LaserRepeater_Barrel_S5",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "HRST_LaserRepeater_FiringMechanism_S5",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "HRST_LaserRepeater_PowerArray_S5",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "HRST_LaserRepeater_Ventilation_S5",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 2640.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

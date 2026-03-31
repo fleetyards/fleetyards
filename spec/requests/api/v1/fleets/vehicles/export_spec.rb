@@ -3,14 +3,36 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:admin) { create(:user, vehicle_count: 2) }
+  let(:member) { create(:user, vehicle_count: 1) }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
+  let(:fleetSlug) { fleet.slug }
 
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["fleet", "fleet:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
+    Sidekiq::Testing.inline!
+
     sign_in(user) if user.present?
+  end
+
+  after do
+    Sidekiq::Testing.fake!
   end
 
   path "/fleets/{fleetSlug}/vehicles/export" do
@@ -30,36 +52,45 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
         explode: true,
         required: false
 
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
+      ]
+
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
-
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test! do |response|
           data = JSON.parse(response.body)
 
           expect(data.count).to be > 0
-          expect(data.count).to eq(2)
+          expect(data.count).to eq(3)
         end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
       end
 
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
         let(:q) do
           {
-            "modelNameCont" => "600i"
+            "modelNameCont" => fleet.models.first.name
           }
         end
 
@@ -67,7 +98,20 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
           data = JSON.parse(response.body)
 
           expect(data.count).to eq(1)
-          expect(data.first["name"]).to eq("600i Explorer")
+          expect(data.first["name"]).to eq(fleet.models.first.name)
+        end
+      end
+
+      response(200, "successful") do
+        schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
+
+        let(:user) { member }
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data.count).to be > 0
+          expect(data.count).to eq(3)
         end
       end
 
@@ -75,7 +119,6 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleetSlug) { "unknown-fleet" }
-        let(:user) { users :data }
 
         run_test!
       end
@@ -83,7 +126,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleetSlug) { fleet.slug }
+        let(:user) { nil }
 
         run_test!
       end

@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Retaliator_CargoGrid_Front_left",
+  "ref": "1c72ac07-0f44-4f11-a755-a7284d9a934f",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "610ba880-7f53-49ba-aead-eb9656534a37"
+}

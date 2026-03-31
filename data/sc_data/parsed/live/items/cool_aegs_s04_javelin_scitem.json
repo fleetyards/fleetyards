@@ -1,0 +1,24 @@
+{
+  "key": "COOL_AEGS_S04_Javelin_SCItem",
+  "ref": "1f5be5de-b5ea-42c7-879f-289c4bf64f19",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 100000.0
+  }
+}

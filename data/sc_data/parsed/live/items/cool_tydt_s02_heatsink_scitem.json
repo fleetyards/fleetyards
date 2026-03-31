@@ -1,0 +1,24 @@
+{
+  "key": "COOL_TYDT_S02_HeatSink_SCItem",
+  "ref": "4df4557d-6c24-421a-9db6-36d731dcffe4",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "HeatSink",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Tyler Design & Tech\\nSize: 2\\nGrade: C\\nClass: Stealth\\n\\nThe HeatSink produces low signatures without sacrificing too much performance or durability, making it a reliable stealth component.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 300.0
+  }
+}

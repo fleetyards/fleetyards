@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Storm_Grey_Gold_Camo",
+  "ref": "c3f4df2e-b978-47e9-b56c-7a27773d733b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b135030-f217-4830-8600-06d3d384381c",
+  "name": "Storm GCD-Army Livery",
+  "short_name": null,
+  "description": "In honor of the soldiers who protect the Empire, Tumbril crafted this limited-edition GCD-Army livery for the Storm. The golden seal of the UEE army and gold highlights stand out against the grey camo base paint.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

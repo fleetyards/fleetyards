@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler_Tan_Brown_Cream",
+  "ref": "25b3d795-84c3-41c2-88d5-94c82c75e07f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "04bbc83c-7944-43fc-b9b5-d1521261fee7",
+  "name": "Prowler Hamada Livery",
+  "short_name": null,
+  "description": "The Hamada livery mixes tan and various shade of brown on the Prowler.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

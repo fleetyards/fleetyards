@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Black_Green_Gold",
+  "ref": "8f7b16fc-4a66-4056-bfc5-c882a9570816",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f691b60e-f490-4e4a-8ce3-031df8296b62",
+  "name": "Aurora Mk I High Roller Livery",
+  "short_name": null,
+  "description": "Ready to shut up the naysayers and show the 'verse that you made it big? Roll up with your Aurora decked out in this green and gold livery checkered with credit symbols.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

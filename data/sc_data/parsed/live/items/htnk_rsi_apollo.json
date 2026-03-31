@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_RSI_Apollo",
+  "ref": "4a92080a-0202-90be-81cd-e9436e1523a5",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 63.0
+  }
+}

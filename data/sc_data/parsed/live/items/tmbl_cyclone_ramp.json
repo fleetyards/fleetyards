@@ -1,0 +1,24 @@
+{
+  "key": "TMBL_Cyclone_Ramp",
+  "ref": "2c5b697d-7a5d-4f6e-8cd6-f998288400fd",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 400.0
+  }
+}

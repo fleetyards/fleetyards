@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Avenger_CargoGrid_Stalker",
+  "ref": "c2685798-8c72-45fc-ade2-adc7d5263338",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "1b353a91-123b-44e1-9b91-6179df6bb19f"
+}

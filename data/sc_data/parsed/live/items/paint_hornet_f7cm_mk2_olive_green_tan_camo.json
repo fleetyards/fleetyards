@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7CM_Mk2_Olive_Green_Tan_Camo",
+  "ref": "f8270cc1-74de-4330-ba68-13797b13beec",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "38c2507a-002e-4fba-99f9-603ecb55f84e",
+  "name": "Hornet Mk II Canopy Camo Livery",
+  "short_name": null,
+  "description": "Get in close for the kill with the Canopy Camo livery. It utilizes a digital camo pattern consisting of tan, olive, and green to help disguise the Hornet Mk II.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S03_FrostStarXL_SCItem",
+  "ref": "bea66e66-0d30-4f9c-8eaa-b15002fb2299",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Frost-Star XL",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span \\nSize: 3\\nGrade: C\\nClass: Civilian\\n\\nAs your ship flies, components generate heat that can be damaging and even lead to system failures unless properly dealt with by a dependable and properly designed cooler like the Frost-Star XL from J-Span.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 960.0
+  }
+}

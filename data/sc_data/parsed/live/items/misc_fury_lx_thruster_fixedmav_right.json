@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Fury_LX_Thruster_FixedMav_Right",
+  "ref": "c4d49fd5-596c-46a2-83f3-3a9eb4291019",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 7000.0
+  },
+  "type_data": {
+    "thrust_capacity": 299871.2,
+    "fuel_burn_rate_per10_k_newton": 0.03,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

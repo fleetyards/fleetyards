@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JUST_S01_Hydrocel_SCItem",
+  "ref": "a5107834-61e1-481d-b836-7ed6c08b14d5",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Hydrocel",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Juno Starwerk \\nSize: 1\\nGrade: D\\nClass: Industrial\\n\\nKeep your ship working harder for longer with the durable Hydrocel, an entry-level industrial cooler from respected manufacturer Juno Starwerk.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 130.0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "key": "GAMA_Syulen_CargoGrid_Main",
+  "ref": "94fc5f4a-241b-4100-a685-949848c60f1a",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "a42f1a06-050d-4fd5-b1d6-4bf06a51f185"
+}

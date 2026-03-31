@@ -1,0 +1,24 @@
+{
+  "key": "COOL_WCPR_S02_Aufeis_SCItem",
+  "ref": "308a2992-585b-40ba-9cfb-51251a3e0683",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4",
+  "name": "Aufeis",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel Propulsion        \\nSize: 2\\nGrade: A \\nClass: Civilian\\n\\nImpeccable design and unmatched attention to detail from Wen/Cassel Propulsion makes the Aufeis one of the premiere civilian coolers on the market.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 460.0
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "key": "BEHR_MassDriver_S12",
+  "ref": "a1ea51dd-1665-41cf-923a-d6a42a7130ce",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "12",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "M9A Cannon",
+  "short_name": null,
+  "description": "Manufacturer: Behring\\nItem Type: Laser Cannon\\nSize: 7\\n\\nStrike at the very heart of your enemies with the devastating impact of Behring's M9A energy autocannon. When fully charged, the massive stopping power of this laser weapon has the potential to halt even capital ships in their tracks.",
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "durability": {
+    "health": 708660.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 2.0,
+    "StartIRTemperature": 250.0,
+    "OverpowerHeat": 0.0,
+    "OverclockThresholdMinHeat": 0.0,
+    "OverclockThresholdMaxHeat": 0.0,
+    "ThermalEnergyBase": 100.0,
+    "ThermalEnergyDraw": 200.0,
+    "ThermalConductivity": 0.05,
+    "SpecificHeatCapacity": 0.5,
+    "Mass": 1800.0,
+    "SurfaceArea": 0.05,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 6879.0,
+    "MaxTemperature": 700.0,
+    "OverheatTemperature": 700.0,
+    "RecoveryTemperature": 550.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "ammunition": {
+    "max_ammo_count": 7000.0,
+    "initial_ammo_count": 7000.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 94.0,
+    "power_draw": 262.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.0,
+    "overclock_threshold_max": 0.0,
+    "overpower_performance": 0.0,
+    "overclock_performance": 0.0,
+    "power_to_em": 1.8,
+    "decay_rate_of_em": 0.15
+  }
+}

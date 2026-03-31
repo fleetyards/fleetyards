@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Constellation_Airlock_Left",
+  "ref": "48993eb1-4613-4f3f-b3c5-2560de32cd16",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 400.0
+  }
+}

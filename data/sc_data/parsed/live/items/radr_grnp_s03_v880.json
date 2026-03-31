@@ -1,0 +1,92 @@
+{
+  "key": "RADR_GRNP_S03_V880",
+  "ref": "5fd1c4a5-853e-4643-ae44-606d03a8edd8",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "3909dad3-eab3-4da7-9d90-74d7064d5900",
+  "name": "V880",
+  "short_name": null,
+  "description": "Item Type: Radar\\nManufacturer: Groupe Nouveau Paradigme\\nSize: 3\\nGrade: A\\nClass: Military\\n\\nProviding useful assistance when detecting hostiles, the V880 brings the power of military technology to the consumer market.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4140.0
+  },
+  "type_data": {
+    "signature_detection": [
+      {
+        "sensitivity": 0.95,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.95,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 1.0,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      }
+    ],
+    "ping_properties": {
+      "cooldown_time": 2.5
+    },
+    "sensitivityModifiers": {
+      "sensitivityAddition": -0.7
+    }
+  }
+}

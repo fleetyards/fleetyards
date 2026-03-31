@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Sorts
         class VehicleSortEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: Vehicle::ALLOWED_SORTING_PARAMS
+            enum: Vehicle::ALLOWED_SORTING_PARAMS,
+            "x-enumNames": Vehicle::ALLOWED_SORTING_PARAMS.map { |v| transform_enum_key(v) }
           })
         end
       end

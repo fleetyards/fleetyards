@@ -1,0 +1,44 @@
+{
+  "key": "ANVL_Valkyrie_Turret_Top_CitizenCon",
+  "ref": "d29d0851-638d-4b83-a9a6-b0fd424ca31b",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4500.0
+  }
+}

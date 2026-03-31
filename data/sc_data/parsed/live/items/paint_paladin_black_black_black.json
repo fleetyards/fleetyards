@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Paladin_black_black_black",
+  "ref": "9d408a0a-cfbd-4c76-ba56-14a69fe60dce",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "add208ce-7e3c-4b80-9e29-fb2066be8bd0",
+  "name": "Paladin Shadowfall Livery",
+  "short_name": null,
+  "description": "Slip under the radar using this foreboding collection of blacks and greys, featured in the Shadowfall livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

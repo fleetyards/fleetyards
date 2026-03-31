@@ -1,73 +1,26 @@
-<template>
-  <div>
-    <div class="row compare-row compare-section">
-      <div class="col-12 compare-row-label sticky-left">
-        <div
-          :class="{
-            active: visible,
-          }"
-          class="text-right metrics-title"
-          @click="toggle"
-        >
-          {{ t("labels.metrics.crew") }}
-          <i class="fa fa-chevron-right" />
-        </div>
-      </div>
-      <div
-        v-for="model in models"
-        :key="`${model.slug}-placeholder`"
-        class="col-12 compare-row-item"
-      />
-    </div>
-
-    <Collapsed id="crew" :visible="visible" class="row">
-      <div class="col-12">
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.minCrew") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-min-crew`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.minCrew, "people") }}
-            </span>
-          </div>
-        </div>
-        <div class="row compare-row">
-          <div
-            class="col-12 compare-row-label text-right metrics-label sticky-left"
-          >
-            {{ t("model.maxCrew") }}
-          </div>
-          <div
-            v-for="model in models"
-            :key="`${model.slug}-min-crew`"
-            class="col-6 text-center compare-row-item"
-          >
-            <span class="metrics-value">
-              {{ toNumber(model.maxCrew, "people") }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </Collapsed>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelsCompareCrew",
+};
+</script>
 
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
+import CompareModelsRow from "@/frontend/components/Compare/Models/Row/index.vue";
+import CompareModelsRowTitle from "@/frontend/components/Compare/Models/Row/Title/index.vue";
+import CompareModelsRowLabel from "@/frontend/components/Compare/Models/Row/Label/index.vue";
+import CompareModelsRowValue from "@/frontend/components/Compare/Models/Row/Value/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
+  slim?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  slim: false,
+});
 
 const { t, toNumber } = useI18n();
 
@@ -87,10 +40,62 @@ watch(
 const toggle = () => {
   visible.value = !visible.value;
 };
+
+const rows = [
+  {
+    key: "crew-min-crew",
+    label: t("model.minCrew"),
+    value: (model: Model) => toNumber(model.crew.min, "people"),
+  },
+  {
+    key: "crew-max-crew",
+    label: t("model.maxCrew"),
+    value: (model: Model) => toNumber(model.crew.max, "people"),
+  },
+];
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelsCompareCrew",
-};
-</script>
+<template>
+  <div>
+    <CompareModelsRow
+      :models="models"
+      row-key="crew"
+      :slim="slim"
+      sticky-left
+      section
+    >
+      <template #label>
+        <CompareModelsRowTitle
+          :active="visible"
+          :title="t('labels.metrics.crew')"
+          @click="toggle"
+        />
+      </template>
+    </CompareModelsRow>
+
+    <Collapsed id="crew" :visible="visible" class="row">
+      <div class="col-12">
+        <CompareModelsRow
+          v-for="row in rows"
+          :key="row.key"
+          :models="models"
+          :row-key="row.key"
+          :slim="slim"
+          sticky-left
+        >
+          <template #label>
+            <CompareModelsRowLabel>
+              {{ row.label }}
+            </CompareModelsRowLabel>
+          </template>
+          <template #default="{ model }">
+            <CompareModelsRowValue>
+              <!-- eslint-disable-next-line vue/no-v-html -->
+              <span v-html="row.value(model)" />
+            </CompareModelsRowValue>
+          </template>
+        </CompareModelsRow>
+      </div>
+    </Collapsed>
+  </div>
+</template>

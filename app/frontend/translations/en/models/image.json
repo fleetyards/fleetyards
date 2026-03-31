@@ -1,0 +1,23 @@
+{
+  "en": {
+    "models": {
+      "image": {
+        "background": "Use as Background?",
+        "enabled": "Enabled?",
+        "global": "Global?",
+        "delete": "Delete",
+        "start": "Start",
+        "cancel": "Cancel",
+        "processing": "Processing...",
+        "error": "Error",
+        "name": "Name",
+        "size": "File size",
+        "dropzone": "Drop images here",
+        "cancelUpload": "Cancel upload",
+        "startUpload": "Start upload",
+        "selectImages": "Add images...",
+        "selectFolder": "Add a folder..."
+      }
+    }
+  }
+}

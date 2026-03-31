@@ -1,0 +1,21 @@
+{
+  "key": "Col_a_Int_Door_Single_Keypad",
+  "ref": "9d4ba2ed-8f35-4056-ab39-64d1f8a5d764",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

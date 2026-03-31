@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Razor_Sand_Orange_Hurston",
+  "ref": "cdc8582e-e32d-49a8-9fb6-22d674b6fbf0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ae10e953-219b-4290-a166-3163ab8d4ed1",
+  "name": "Razor Central Tower Livery",
+  "short_name": null,
+  "description": "Give the Razor a dramatic new look with the Central Tower livery. The orange and black color scheme is inspired by the furnaces of industry powering Lorville, and also features a representation of the landing zone's iconic Central Headquarters and Shared Services Center, aka Central Tower.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

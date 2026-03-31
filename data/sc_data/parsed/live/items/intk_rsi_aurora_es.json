@@ -1,0 +1,25 @@
+{
+  "key": "INTK_RSI_Aurora_ES",
+  "ref": "57412106-c03c-4f21-ac4f-8bae4ce48896",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 2.5,
+    "minimum_rate": 0.2
+  }
+}

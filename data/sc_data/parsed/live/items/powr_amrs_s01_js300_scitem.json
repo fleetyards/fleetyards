@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S01_JS300_SCItem",
+  "ref": "b1c89d89-d408-4998-9b17-76986d78a9dd",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "JS-300",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 1\\nGrade: A \\nClass: Military\\n\\nThis high-end, military-grade component from A&R delivers excellent performance and solid durability at the expense of slightly increased emission levels. However with the JS-300 pedigree, it’s easy to see why this small power plant has many fans in the military.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 350.0
+  }
+}

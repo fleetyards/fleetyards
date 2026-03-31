@@ -1,3 +1,24 @@
+<script lang="ts">
+export default {
+  name: "SpeedMetrics",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import type { Model } from "@/services/fyApi";
+
+type Props = {
+  model: Model;
+};
+
+const props = defineProps<Props>();
+
+const { t, toNumber } = useI18n();
+
+const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
+</script>
+
 <template>
   <div class="row metrics-padding">
     <div class="col-12 col-lg-3">
@@ -55,42 +76,6 @@
       </div>
       <template v-else>
         <div class="row">
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.scmSpeedAcceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.scmSpeedAcceleration, "seconds") }}
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.scmSpeedDecceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.scmSpeedDecceleration, "seconds") }}
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.maxSpeedAcceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.maxSpeedAcceleration, "seconds") }}
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="metrics-label">
-              {{ t("model.maxSpeedDecceleration") }}:
-            </div>
-            <div class="metrics-value">
-              {{ toNumber(model.speeds.maxSpeedDecceleration, "seconds") }}
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-6 col-lg-4">
             <div class="metrics-label">{{ t("model.pitch") }}:</div>
             <div class="metrics-value">
@@ -114,23 +99,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useI18n } from "@/frontend/composables/useI18n";
-
-type Props = {
-  model: Model;
-};
-
-const props = defineProps<Props>();
-
-const { t, toNumber } = useI18n();
-
-const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
-</script>
-
-<script lang="ts">
-export default {
-  name: "SpeedMetrics",
-};
-</script>

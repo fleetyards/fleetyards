@@ -1,0 +1,40 @@
+{
+  "key": "ARGO_MOTH_CargoGrid_Right",
+  "ref": "ad89512a-cc62-40d6-ac19-6b60ad08ab0f",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 7.5,
+      "y": 5.0,
+      "z": 5.0
+    },
+    "capacity": 96,
+    "max_container_size": {
+      "size": 24,
+      "dimensions": {
+        "x": 7.5,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 2.5
+        },
+        "capacity": 8
+      }
+    }
+  }
+}

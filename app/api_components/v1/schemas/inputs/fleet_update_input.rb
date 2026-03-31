@@ -4,19 +4,20 @@ module V1
   module Schemas
     module Inputs
       class FleetUpdateInput
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
             fid: {type: :string},
             name: {type: :string},
-            logo: {type: :string, format: :binary},
+            logo: {type: :string},
             removeLogo: {type: :boolean},
             backgroundImage: {type: :string, format: :binary},
             removeBackground: {type: :boolean},
             description: {type: :string},
             publicFleet: {type: :boolean},
+            publicFleetStats: {type: :boolean},
             homepage: {type: :string},
             rsiSid: {type: :string},
             discord: {type: :string},

@@ -1,0 +1,24 @@
+{
+  "key": "POWR_ACOM_S01_SunFlare_SCItem",
+  "ref": "8e828c4f-b435-4db5-aab4-318dead98403",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "SunFlare",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: ACOM\\nSize: 1\\nGrade: C\\nClass: Competition\\n\\nHarness the power of a star with this high performance power plant from ACOM. Ideal for racers and those who seek speed.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 110.0
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "key": "DRAK_Caterpillar_SideElevator_Room3_Right",
+  "ref": "a80fc81c-d242-497a-b059-7c6aa244ff82",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_door_switch_exterior",
+      "min_size": "1",
+      "max_size": "1",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_door_switch_exterior",
+      "key": "Door_Ship_Switch_Exterior",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 42000.0
+  }
+}

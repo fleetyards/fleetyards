@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_GoblinG_H_Black_Yellow",
+  "ref": "882db93b-3807-4310-82d5-ea7342c9debd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3e48892e-95f3-4f44-a0b1-537502a0870c",
+  "name": "Hercules Starlifter Hurston Livery",
+  "short_name": null,
+  "description": "The Hurston livery for the Starlifter features the company's logo atop a grey base paint with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

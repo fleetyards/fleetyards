@@ -1,0 +1,50 @@
+{
+  "key": "MRCK_S05_AEGS_Vanguard",
+  "ref": "3a442a45-e593-4556-9aa4-3988d6fd1075",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Aegis Vanguard Torpedo Rack",
+  "short_name": null,
+  "description": "Item Type: Torpedo Rack\\nManufacturer: Behring\\nSize: 5\\nTorpedoes: 3xS5\\n\\nAegis Dynamics and Behring worked together to develop this torpedo rack, which can carry and deploy three S5 torpedoes.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "torpedo_tray_01_attach_node",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "torpedo_tray_02_attach_node",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "torpedo_tray_03_attach_node",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

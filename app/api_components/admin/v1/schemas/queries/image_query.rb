@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Queries
         class ImageQuery
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,
@@ -13,7 +13,8 @@ module Admin
               galleryIdEq: {type: :string, format: :uuid},
               galleryTypeEq: {type: :string}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            example: {}
           })
         end
       end

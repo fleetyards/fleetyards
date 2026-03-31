@@ -1,0 +1,30 @@
+{
+  "key": "ORIG_100i_Thruster_Mav_Fixed",
+  "ref": "d1e01206-8649-452b-a629-4394d5647795",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1500.0
+  },
+  "type_data": {
+    "thrust_capacity": 1644704.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

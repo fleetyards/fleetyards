@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Arrow_Invictus_Camo",
+  "ref": "c166a7d1-2bc4-4ed3-a2ca-253967511607",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d91a28fa-a957-4189-9cd0-ef5693504597",
+  "name": "Arrow Twilight Livery",
+  "short_name": null,
+  "description": "Customize your Arrow with this fragmented grey livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

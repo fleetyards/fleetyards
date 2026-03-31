@@ -1,0 +1,42 @@
+{
+  "key": "MISC_Hull_C_SCItem_Remote_Turret_Rear",
+  "ref": "8e3362ae-2831-405c-8fdf-fa5b09679b25",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8500.0
+  }
+}

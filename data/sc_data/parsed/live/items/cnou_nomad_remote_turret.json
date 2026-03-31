@@ -1,0 +1,34 @@
+{
+  "key": "CNOU_Nomad_Remote_Turret",
+  "ref": "2a17a938-cd69-479a-94a6-55e2bc8f72b0",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_weapon",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  }
+}

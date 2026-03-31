@@ -1,0 +1,22 @@
+{
+  "key": "ORIG_600_CargoGrid_Main_Small",
+  "ref": "719ee5b2-29eb-401c-90d2-194a1c73cad1",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "62b21251-8d33-43d2-82dc-69b427a7a248"
+}

@@ -1,0 +1,40 @@
+{
+  "key": "RSI_Aurora_Mk2_Module_Cargo",
+  "ref": "be11b23a-38a3-4045-bb61-4effe23faedf",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Aurora Mk II TS Module",
+  "short_name": "Aurora Mk II TS Module",
+  "description": "RSI designed this transport and storage module to increase the cargo capacity of the Aurora Mk II.",
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_module_cargo_rack",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_module_cargo_rack",
+      "key": null,
+      "ref": "b79aa3d2-af8e-4e93-af49-865af639578e",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 500.0
+  }
+}

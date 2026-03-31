@@ -1,0 +1,63 @@
+{
+  "key": "KLWE_LaserRepeater_S6",
+  "ref": "3bb64389-e75d-463e-a73b-115bf132667e",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "name": "CF-667 Mammoth Repeater",
+  "short_name": "Mammoth",
+  "description": "Manufacturer: Klaus & Werner\\nItem Type: Laser Repeater\\nSize: 6\\n\\nThis beast of a laser repeater from Klaus & Werner features three massive barrels that warn any who spot a ship bearing the CF-667 that they may want to think again before engaging.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4224.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

@@ -1227,6 +1227,11 @@ html {
   color: #9ce3c3;
 }
 
+.swagger-ui .auth-btn-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .swagger-ui .btn.authorize svg {
   fill: #9ce3c3;
 }
@@ -1239,6 +1244,10 @@ html {
 
 .swagger-ui .copy-to-clipboard {
   background: #7c8192;
+}
+
+.swagger-ui .opblock-control-arrow svg {
+  fill: #7c8192;
 }
 
 .swagger-ui .copy-to-clipboard button {
@@ -1310,7 +1319,7 @@ html {
 }
 
 .swagger-ui .checkbox input[type="checkbox"]:checked + label > .item {
-  background: url('data:image/svg+xml;charset=utf-8,<svg width="10" height="8" viewBox="3 7 10 8" xmlns="http://www.w3.org/2000/svg"><path fill="%2341474E" fill-rule="evenodd" d="M6.333 15L3 11.667l1.333-1.334 2 2L11.667 7 13 8.333z"/></svg>')
+  background: url('data:image/svg+xml;charset=utf-8,<svg width="10" height="8" viewBox="3 7 10 8" xmlns="http://www.w3.org/2000/svg"><path fill="%23bfbfbf" fill-rule="evenodd" d="M6.333 15L3 11.667l1.333-1.334 2 2L11.667 7 13 8.333z"/></svg>')
     50% center no-repeat #303030;
 }
 
@@ -1326,6 +1335,10 @@ html {
 
 .swagger-ui .dialog-ux .modal-ux-header .close-modal {
   background: 0 0;
+
+  svg {
+    fill: #bfbfbf;
+  }
 }
 
 .swagger-ui .model .deprecated span,

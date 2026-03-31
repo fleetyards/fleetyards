@@ -1,0 +1,24 @@
+{
+  "key": "POWR_SASU_S02_Lotus_SCItem",
+  "ref": "313907ec-6ce1-473e-8505-3d3e3209075e",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "Lotus",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 2\\nGrade: A\\nClass: Civilian\\n\\nWhen it comes to medium sized, civilian power plants Whitley’s Guide continues to rate the Lotus highly. Few can touch this Sakura Sun component when it comes to both performance and durability.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 620.0
+  }
+}

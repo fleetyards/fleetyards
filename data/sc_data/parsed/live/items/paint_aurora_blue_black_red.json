@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Blue_Black_Red",
+  "ref": "bc3c5ded-5192-42aa-90b4-fa122aaf676f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1c53bf6-8fb9-4812-ade7-91bb08210915",
+  "name": "Auorora Mk I Disco Livery",
+  "short_name": null,
+  "description": "Equip the ship livery used by ace pilot Disco in the classic children's cartoon Rory Nova. While it turns the Aurora Mk I metallic dark blue, black, and red, whether you turn into the 'dynamic, instinctive spacecraft operator' that inspired the livery's name is up to you.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

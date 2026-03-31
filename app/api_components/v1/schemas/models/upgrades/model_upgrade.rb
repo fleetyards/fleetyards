@@ -5,7 +5,7 @@ module V1
     module Models
       module Upgrades
         class ModelUpgrade
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,
@@ -18,7 +18,7 @@ module V1
               media: {
                 type: :object,
                 properties: {
-                  storeImage: {"$ref": "#/components/schemas/MediaImage"}
+                  storeImage: {"$ref": "#/components/schemas/MediaFile"}
                 },
                 additionalProperties: false
               },

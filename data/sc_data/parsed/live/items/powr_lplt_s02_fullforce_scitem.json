@@ -1,0 +1,24 @@
+{
+  "key": "POWR_LPLT_S02_FullForce_SCItem",
+  "ref": "dabd2d8d-c06c-4ebf-8791-192ace67ac33",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "FullForce",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Lightning Power Ltd.\\nSize: 2\\nGrade: C\\nClass: Civilian\\n\\nThis power plant from Lightning Power Ltd. delivers balanced performance, durability and emissions, providing consumers with a “FullForce” of options as to how to use it.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 540.0
+  }
+}

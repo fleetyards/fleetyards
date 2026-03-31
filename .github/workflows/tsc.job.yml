@@ -1,0 +1,18 @@
+name: TSC Job
+
+on:
+  workflow_call:
+
+jobs:
+  tsc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/workflows/js-setup-action
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Vite Build
+        run: bin/vite build --clear --mode=test
+      - run: pnpm run vue-tsc
+      - run: pnpm run tsc

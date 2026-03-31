@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pulse_StellaFortuna2955_Green",
+  "ref": "20296d51-5558-4107-a1fc-c9c43839bc9a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "44d542af-0335-44f7-853c-1034637bc636",
+  "name": "Pulse Fortuna Livery",
+  "short_name": null,
+  "description": "Make luck your co-pilot. Boldly set your sights on the stars and adventure forth in style with the Fortuna livery. This Stella Fortuna themed paint scheme is primarily green with gray accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

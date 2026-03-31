@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JUST_S02_CoolCore_SCItem",
+  "ref": "553f7473-1d24-41b5-bd53-baa4190464d0",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "CoolCore",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Juno Starwerk \\nSize: 2\\nGrade: C\\nClass: Industrial\\n\\nThe name CoolCore says it all. Designed by Juno Starwerk to be as hardworking as you are, this cooler helps ensure that your entire ship operates well within desired temperature parameters.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 420.0
+  }
+}

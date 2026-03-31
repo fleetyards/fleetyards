@@ -1,0 +1,21 @@
+{
+  "key": "MISC_Hull_C_CentralWalkway_PHYSICS",
+  "ref": "37b635b9-e83d-45aa-bfe9-3c8104afefb5",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Idris_Blue_Blue_Black",
+  "ref": "ae1ee008-a458-477a-85a6-6500df1f293c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f9809f6c-7712-45c6-ae9a-f156087c689c",
+  "name": "Idris Sea Serpent Livery",
+  "short_name": null,
+  "description": "Cool blues and black combine for this subdued Idris Sea Serpent livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_NoRoomConnector_Breachable_OpenClose_Perseus_Personnel",
+  "ref": "0e2bab80-5f93-49a8-b7fe-c59011d7acff",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 19000.0
+  }
+}

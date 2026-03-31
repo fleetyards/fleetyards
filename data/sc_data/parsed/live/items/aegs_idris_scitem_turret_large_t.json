@@ -1,0 +1,70 @@
+{
+  "key": "AEGS_Idris_SCItem_Turret_Large_T",
+  "ref": "3bcd974f-1b44-4871-933f-e23d6a05e09b",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "IFR-BC7 Turret",
+  "short_name": "IFR-BC7 Turret",
+  "description": "Item Type: Turret\\nManufacturer: Aegis Dynamics\\nSize: 7\\n\\nThis manned turret, designed by Aegis to be used with ballistic cannons, is bespoke to the Idris frigate.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "key": null,
+      "ref": "e405f0a1-c1c2-46d1-80cf-b0a51acc313f",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "1c5cb632-fe64-42a4-9a4e-86147a4dcd74",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "key": null,
+      "ref": "e405f0a1-c1c2-46d1-80cf-b0a51acc313f",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "1c5cb632-fe64-42a4-9a4e-86147a4dcd74",
+          "default_loadout": []
+        }
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "key": "ANVL_C8_Pisces_CargoGrid",
+  "ref": "70f2b9c0-aab0-417d-b168-fe9c99ef6b51",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 2.5,
+      "z": 1.25
+    },
+    "capacity": 2,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 2.5,
+          "z": 1.25
+        },
+        "capacity": 2
+      }
+    }
+  }
+}

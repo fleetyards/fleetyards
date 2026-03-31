@@ -1,0 +1,44 @@
+.base-table-cell {
+  .base-table-cell-content {
+    padding: 10px;
+  }
+
+  &--header {
+    display: flex;
+    align-items: center;
+    color: darken($text-color, 20%);
+    white-space: nowrap;
+    font-weight: bold;
+  }
+
+  &--align-left {
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  &--align-center {
+    text-align: center;
+    justify-content: center;
+  }
+
+  &--align-right {
+    text-align: right;
+    justify-content: flex-end;
+  }
+
+  &--selection {
+    width: 60px;
+
+    .base-table-col__inner {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  &--actions {
+    .base-table-col__inner {
+      text-align: right;
+      justify-content: flex-end;
+    }
+  }
+}

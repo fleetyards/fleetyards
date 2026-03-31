@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Retaliator_Thruster_Mav_Fixed_Top",
+  "ref": "d39e8595-ac0e-4ba5-a2cc-62aae8c6312c",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 16000.0
+  },
+  "type_data": {
+    "thrust_capacity": 2308000.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

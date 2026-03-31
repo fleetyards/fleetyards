@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ARGO_MPUV_Transport_Flight_Blade_HND",
+  "ref": "c3aab17a-cc16-4c8a-afae-0ffa0a5eb3f0",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ad865899-f5ba-4818-ae8c-fe80a55108b7",
+  "name": "MPUV-1P PHB Flight Blade",
+  "short_name": "MPUV-1P PHB Flight Blade",
+  "description": "Manufacturer: Broad & Rabiee\\nType: Flight Blade\\n\\nUnlock the potential of your Argo MPUV-1P with the PHB Flight Blade from Broad & Rabiee. By re-allocating forward thrust resources, you can expect your ship deliver increased precision handling during tight maneuvers.",
+  "inventory_consumption": {
+    "micro_scu": 970.0,
+    "dimensions": {
+      "x": 0.2575701,
+      "y": 0.1729496,
+      "z": 0.02177711
+    }
+  },
+  "type_data": {
+    "scm_speed": 170.0,
+    "scm_speed_boosted": 360.0,
+    "reverse_speed_boosted": 140.0,
+    "max_speed": 890.0,
+    "angular_velocity": {
+      "pitch": 30.0,
+      "yaw": 30.0,
+      "roll": 85.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 36.0,
+      "yaw": 36.0,
+      "roll": 102.0
+    }
+  }
+}

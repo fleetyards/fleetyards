@@ -1,0 +1,24 @@
+{
+  "key": "Door_Ship_Exterior_Airlock_MISC_Freelancer",
+  "ref": "842f9f66-327d-47de-b3ca-3c03e93e23bd",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 400.0
+  }
+}

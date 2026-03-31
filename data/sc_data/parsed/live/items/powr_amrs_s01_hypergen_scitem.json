@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S01_HyperGen_SCItem",
+  "ref": "f0510922-1ae3-4b30-936b-a8ac7b7fd048",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "HyperGen",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co. \\nSize: 1\\nGrade: D\\nClass: Military\\n\\nThe HyperGen power plant is popular among both civilians and the military for its high quality. As a bonus, the manufacture, Amon & Reese, is famous for its stellar customer service.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 240.0
+  }
+}

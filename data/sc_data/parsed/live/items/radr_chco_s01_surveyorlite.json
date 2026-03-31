@@ -1,0 +1,92 @@
+{
+  "key": "RADR_CHCO_S01_SurveyorLite",
+  "ref": "87008b2d-438a-4091-8ae4-303be47190d8",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "8af71a8a-7da0-4e31-afc7-648fc916e387",
+  "name": "Surveyor-Lite",
+  "short_name": null,
+  "description": "Item Type: Radar\\nManufacturer: Chimera Communications\\nSize: 1\\nGrade: C\\nClass: Industrial\\n\\nThere’s a lot for you to worry about on those long hauls. Don’t let your radar’s performance be one of them. You can count on the Surveyor-Lite from Chimera Communications to provide the durability and performance that you need.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 650.0
+  },
+  "type_data": {
+    "signature_detection": [
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.8,
+        "piercing": 1.0,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      }
+    ],
+    "ping_properties": {
+      "cooldown_time": 2.5
+    },
+    "sensitivityModifiers": {
+      "sensitivityAddition": -0.55
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_L22_Wolf_White_Grey_White_Spots",
+  "ref": "a84e7c2d-ced5-4ea0-bbb4-0acf81b0d096",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bb3b6f7c-bbdb-4512-81a4-c11c2ed727a6",
+  "name": "Wolf Iceflash Livery",
+  "short_name": null,
+  "description": "The Iceflash livery provides the Wolf a distinct look with grey spots breaking up its grey and white base paint.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

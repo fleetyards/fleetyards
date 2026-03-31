@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_Scavengers_Black_Black_Black",
+  "ref": "2fbfdba3-54dc-4c7a-945e-f88eb254127f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cffbc8c7-d889-4ae2-8eb8-6874115145de",
+  "name": "Vulture Outcast Livery (Modified)",
+  "short_name": null,
+  "description": "This version of the livery has been modified from its original form with the addition of graffiti. Embrace chaos with the Outcast livery. It features rough splashes of neon green against black to give the Vulture an aggressively chaotic appearance.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

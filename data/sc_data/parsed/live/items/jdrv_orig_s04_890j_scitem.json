@@ -1,0 +1,24 @@
+{
+  "key": "JDRV_ORIG_S04_890J_SCItem",
+  "ref": "5f54cdb1-8397-479f-9b14-8988fc53373e",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": null,
+  "size": "4",
+  "grade": "3",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 6300.0
+  }
+}

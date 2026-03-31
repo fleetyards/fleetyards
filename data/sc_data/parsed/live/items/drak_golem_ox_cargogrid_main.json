@@ -1,0 +1,22 @@
+{
+  "key": "DRAK_Golem_OX_CargoGrid_Main",
+  "ref": "8bec7005-ff5a-45cb-b022-f71c44ccad0a",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "a1d1bc29-39a7-4c43-8baa-44d4541c2c58"
+}

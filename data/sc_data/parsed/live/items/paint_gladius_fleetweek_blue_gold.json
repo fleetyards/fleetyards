@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Gladius_Fleetweek_Blue_Gold",
+  "ref": "e5086306-a0f6-4031-bc93-a06483ede2a6",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20878b35-0b19-4131-80e3-657e9ca5ef71",
+  "name": "Gladius Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Featuring a vibrant blue base color and gold highlights, the Invictus Blue and Gold livery will give your Gladius a striking style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

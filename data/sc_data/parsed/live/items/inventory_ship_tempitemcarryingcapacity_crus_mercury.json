@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_CRUS_Mercury",
+  "ref": "fe8ac5e6-e7d7-4e8d-911d-b52120cdca4c",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 114.0
+  }
+}

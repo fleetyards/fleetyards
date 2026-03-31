@@ -1,0 +1,24 @@
+{
+  "key": "POWR_ACOM_S01_LumaCore_SCItem",
+  "ref": "c7c3faeb-1d23-410d-9f75-8b36fd0d58ba",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "LumaCore",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: ACOM\\nSize: 1\\nGrade: A\\nClass: Competition\\n\\nAmong small power plants, ACOM’s LumaCore consistently ranks among the best for its power rate, cool rate, and high overheat temperature. That’s why if you value your ship’s performance over anything else, this competition-grade component is perfect for you.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 140.0
+  }
+}

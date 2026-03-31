@@ -1,0 +1,30 @@
+{
+  "key": "ORIG_600i_Thruster_Retro",
+  "ref": "90a2d228-1e86-4a99-80bb-dd552c02fc2e",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 19500.0
+  },
+  "type_data": {
+    "thrust_capacity": 16550000.0,
+    "fuel_burn_rate_per10_k_newton": 0.0875,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

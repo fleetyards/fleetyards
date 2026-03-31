@@ -1,0 +1,62 @@
+{
+  "key": "ANVL_Paladin_SCItem_Remote_Turret_Large",
+  "ref": "c57cff4a-f5ec-403c-b2b4-201f60b2a59d",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_turret_weapon_left_a",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_turret_weapon_left_b",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_turret_weapon_right_b",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_turret_weapon_right_a",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 13000.0
+  }
+}

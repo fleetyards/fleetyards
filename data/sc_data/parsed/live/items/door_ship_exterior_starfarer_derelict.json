@@ -1,0 +1,32 @@
+{
+  "key": "Door_Ship_Exterior_Starfarer_Derelict",
+  "ref": "d209938a-ee28-48eb-8c8c-be495c4f48a8",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_ramp",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "CNOU_Mustang_Beta_Thruster_Retro",
+  "ref": "f7fe12d1-ab69-4cf3-a373-00348728a60f",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 8900.0
+  },
+  "type_data": {
+    "thrust_capacity": 987520.5,
+    "fuel_burn_rate_per10_k_newton": 0.09275,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Avenger_Warlock_Thruster_Retro",
+  "ref": "68fb7238-5f64-4a2a-a942-437f9b00d068",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 8100.0
+  },
+  "type_data": {
+    "thrust_capacity": 20981.97,
+    "fuel_burn_rate_per10_k_newton": 0.0643125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

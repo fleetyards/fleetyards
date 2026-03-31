@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Zeus_Reward_Faction_Xeno_Threat",
+  "ref": "67b55d61-4b48-441f-9c17-4f5429466e09",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f3caa63d-06b1-4c35-ac01-897b2a9068c1",
+  "name": "Zeus XenoThreat Purge Livery",
+  "short_name": null,
+  "description": "Let Humanity know you won't bow down to alien invaders with this XenoThreat livery featuring a muted teal with bright red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,3 +1,60 @@
+<script lang="ts">
+export default {
+  name: "VehicleOwnersModal",
+};
+</script>
+
+<script lang="ts" setup>
+import { useRoute } from "vue-router";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import Avatar from "@/shared/components/Avatar/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { sortBy, uniqByField as uniqByFieldArray } from "@/shared/utils/Array";
+import {
+  type VehiclePublic,
+  type FleetVehiclesParams,
+  useFleetVehicles as useFleetVehiclesQuery,
+} from "@/services/fyApi";
+
+type Props = {
+  modelSlug: string;
+  fleetSlug: string;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const route = useRoute();
+
+const loanerEq = computed(
+  () =>
+    (route.query.q as unknown as Record<string, unknown> | undefined)
+      ?.loanerEq as boolean | undefined,
+);
+
+const params = computed<FleetVehiclesParams>(() => ({
+  grouped: false,
+  perPage: "all",
+  q: {
+    modelSlugIn: [props.modelSlug],
+    loanerEq: loanerEq.value,
+  },
+}));
+
+const { data, status } = useFleetVehiclesQuery(props.fleetSlug, params);
+
+const loading = computed(() => status.value === "pending");
+
+const sortedVehicles = computed(() =>
+  sortBy((data.value?.items || []) as VehiclePublic[], "username").filter(
+    uniqByFieldArray("username"),
+  ),
+);
+</script>
+
 <template>
   <Modal :title="t('headlines.fleets.owners')">
     <div class="row">
@@ -13,7 +70,8 @@
           <Btn
             v-if="vehicle.username"
             :href="`/hangar/${vehicle.username}`"
-            :block="true"
+            block
+            align-start
           >
             <div class="user-item">
               <Avatar :avatar="vehicle.userAvatar" size="small" />
@@ -28,7 +86,7 @@
               </span>
             </div>
           </Btn>
-          <Btn v-else :disabled="true" :block="true">
+          <Btn v-else disabled block align-start>
             <div class="user-item">
               <Avatar size="small" />
               <span class="user-item-username">
@@ -47,58 +105,6 @@
     </div>
   </Modal>
 </template>
-
-<script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import Avatar from "@/frontend/core/components/Avatar/index.vue";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { sortBy } from "@/frontend/lib/Helpers";
-import { uniqByField as uniqByFieldArray } from "@/frontend/utils/Array";
-import { FleetVehiclesCollection } from "@/frontend/api/collections/FleetVehicles";
-
-type Props = {
-  modelSlug: string;
-  fleetSlug: string;
-};
-
-const props = defineProps<Props>();
-
-const { t } = useI18n();
-
-const collection: FleetVehiclesCollection = new FleetVehiclesCollection();
-
-const loading = ref(true);
-
-const sortedVehicles = computed(() =>
-  sortBy(collection.records, "username").filter(uniqByFieldArray("username")),
-);
-
-const route = useRoute();
-
-const query = computed(() => (route.query.q || {}) as VehiclesFilter);
-
-const loanerEq = computed(() => query.value.loanerEq as boolean | "only");
-
-onMounted(async () => {
-  await collection.findAll({
-    slug: props.fleetSlug,
-    filters: { modelSlugIn: [props.modelSlug], loanerEq: loanerEq.value },
-    grouped: false,
-    perPage: "all",
-  });
-
-  loading.value = false;
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "VehicleOwnersModal",
-};
-</script>
 
 <style lang="scss" scoped>
 @import "index";

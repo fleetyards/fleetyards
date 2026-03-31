@@ -1,0 +1,24 @@
+{
+  "key": "COOL_WCPR_S01_Berian_SCItem",
+  "ref": "f68e5fb2-2388-43d1-9aab-bed82da648c8",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4",
+  "name": "Berian",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel Propulsion \\nSize: 1\\nGrade: C\\nClass: Civilian\\n\\nThe Berian delivers Wen/Cassel’s signature look and performance in an introductory cooler that will meet and surpass pilot’s expectations.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 130.0
+  }
+}

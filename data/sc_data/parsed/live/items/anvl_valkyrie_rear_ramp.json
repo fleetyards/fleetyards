@@ -1,0 +1,24 @@
+{
+  "key": "ANVL_Valkyrie_Rear_Ramp",
+  "ref": "7fe0456d-8a09-4c90-9b70-0c28db614d5d",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 6000.0
+  }
+}

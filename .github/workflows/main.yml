@@ -2,7 +2,8 @@ name: Main
 
 on:
   push:
-    branches: ["main", "staging", "trying"]
+    # TODO: remove chore/vue3 after merging into main (see #3520)
+    branches: ["main", "staging", "trying", "chore/vue3"]
     tags-ignore:
       - "*.*"
     paths-ignore:
@@ -10,7 +11,6 @@ on:
       - "config/version.rb"
       - "package.json"
   pull_request:
-    branches: ["main"]
   merge_group:
   workflow_dispatch:
 
@@ -18,32 +18,37 @@ jobs:
   js-setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/js-setup-action
+
+  ruby-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
 
   js-lint:
     needs: js-setup
     uses: ./.github/workflows/js-lint.job.yml
+
+  tsc:
+    needs: [ruby-setup, js-setup]
+    uses: ./.github/workflows/tsc.job.yml
 
   js-prettier:
     needs: js-setup
     uses: ./.github/workflows/js-prettier.job.yml
 
   api-schema-lint:
+    name: API Schema Lint
     needs: js-setup
     uses: ./.github/workflows/api-schema-lint.job.yml
 
-  # js-tests:
-  #   needs: js-setup
-  #   uses: ./.github/workflows/js-tests.job.yml
-
-  ruby-setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
+  js-tests:
+    needs: js-setup
+    uses: ./.github/workflows/js-tests.job.yml
 
   ruby-lint:
     needs: ruby-setup
@@ -53,18 +58,25 @@ jobs:
     needs: ruby-setup
     uses: ./.github/workflows/ruby-tests.job.yml
 
-  ruby-api-tests:
-    needs: ruby-setup
-    uses: ./.github/workflows/ruby-api-tests.job.yml
-
   seeds:
     needs: ruby-setup
     uses: ./.github/workflows/seeds.job.yml
 
-  # build:
-  #   uses: ./.github/workflows/build.job.yml
-  #   with:
-  #     name: ${GITHUB_REF##*/}
+  build:
+    # TODO: remove chore/vue3 branch condition after merging into main (see #3520)
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || github.event_name == 'workflow_dispatch'
+    uses: ./.github/workflows/build.job.yml
+    with:
+      tag: ${{ github.ref_name }}
+    secrets: inherit
+    permissions:
+      contents: read
+      packages: write
+
+  api-schema-check:
+    name: API Schema Check
+    needs: [ruby-setup, js-setup]
+    uses: ./.github/workflows/api-schema-check.job.yml
 
   e2e-test:
     needs: [ruby-setup, js-setup]

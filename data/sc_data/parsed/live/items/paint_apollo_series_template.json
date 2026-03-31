@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Apollo_Series_Template",
+  "ref": "503f930a-dcd9-4c33-9ab1-4c353e7e7f09",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

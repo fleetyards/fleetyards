@@ -1,0 +1,42 @@
+{
+  "key": "ANVL_Hornet_F7C_Nose_Turret",
+  "ref": "d342658d-9562-4b07-aa26-7a47b6ed6fd3",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "CanardTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil Hornet F7C Nose Turret",
+  "short_name": null,
+  "description": "Item Type: Turret\\nManufacturer: Anvil Aerospace\\nSize: 3\\n\\nThis nose turret was designed specifically for Anvil's F7C Hornet to allow for mounting two Size-1 weapons and precise gimbaled tracking of targets.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_class_1_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_class_1_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 600.0
+  }
+}

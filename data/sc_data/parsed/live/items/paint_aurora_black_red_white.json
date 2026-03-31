@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Black_Red_White",
+  "ref": "b19bcc93-5294-4f62-b93c-b060b9e3be46",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fa80a083-faff-40a9-808f-17980cb04f27",
+  "name": "Aurora Mk I  Dread Pirate Livery",
+  "short_name": null,
+  "description": "Boldly show your true colors with this black and red livery, letting all know that you do as you please, and are pretty pleased with what you do.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

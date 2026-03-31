@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Asgard_Black_Black_Yellow",
+  "ref": "d4236dde-81e6-489f-be03-c1fc09b5e8df",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a1f42a8c-50f9-47c3-a091-79296e64af29",
+  "name": "Asgard Last Light Livery",
+  "short_name": null,
+  "description": "Wrap your Asgard in a black base with yellow accents with the Last Light livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

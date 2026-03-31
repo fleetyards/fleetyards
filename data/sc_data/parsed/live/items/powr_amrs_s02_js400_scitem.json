@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S02_JS400_SCItem",
+  "ref": "f1763688-a3b6-496e-8d62-3e40e2098661",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "JS-400",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 2\\nGrade: A\\nClass: Military\\n\\nAs the UEE’s oldest energy weapon manufacturer, A&R expanded into power plants to interface more efficiently with their weapons. The JS-400 was their first attempt at a medium power plant, and it’s a testament to the quality of this military-grade component that it’s still around.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 980.0
+  }
+}

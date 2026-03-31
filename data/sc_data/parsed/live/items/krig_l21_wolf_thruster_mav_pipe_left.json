@@ -1,0 +1,30 @@
+{
+  "key": "KRIG_l21_Wolf_Thruster_Mav_Pipe_Left",
+  "ref": "03c55b07-8013-4c8d-8053-70ed821291d6",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 800.0
+  },
+  "type_data": {
+    "thrust_capacity": 1.995709,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "mav"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Mk2_White_Blue_Yellow",
+  "ref": "c8ca15b3-5e3d-4d6a-b606-3e0f1cfed3e2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "578ec2f8-218b-44ac-8443-83b08b17f33a",
+  "name": "Aurora Mk II Cloudbuster Livery",
+  "short_name": "Aurora Mk II Cloudbuster Livery",
+  "description": "The Cloudbuster livery utilizes a contrasting pale gray against a rich blue, finished with playful yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

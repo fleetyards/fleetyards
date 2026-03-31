@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Reclaimer_CargoGrid_Large",
+  "ref": "ba943358-a13f-48b4-855c-e6dd1806167b",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "ca5ffafa-1648-4651-9d26-bb8fd73ec169"
+}

@@ -11,4 +11,4 @@ session_store_options = {
   same_site: :lax
 }
 
-Fleetyards::Application.config.session_store :redis_store, **session_store_options
+Rails.application.config.session_store :redis_store, **session_store_options

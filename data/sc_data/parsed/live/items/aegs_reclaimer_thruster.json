@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Reclaimer_Thruster",
+  "ref": "f75fef87-3c3e-454d-a1c6-380f42bd6cb0",
+  "category": "thrusters",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 28500.0
+  },
+  "type_data": {
+    "thrust_capacity": 10000.0,
+    "fuel_burn_rate_per10_k_newton": 0.193875,
+    "thruster_type": "Maneuver",
+    "thruster_class": null
+  }
+}

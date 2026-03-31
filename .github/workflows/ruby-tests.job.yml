@@ -9,10 +9,11 @@ jobs:
 
     env:
       RAILS_ENV: test
-      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
-      DATABASE_HOST: 127.0.0.1
-      DATABASE_USER: root
-      OPENSEARCH_URL: http://localhost:8273
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_USER: root
+      DB_PASSWORD: root
+      REDIS_URL: redis://localhost:6379
 
     services:
       postgres:
@@ -40,19 +41,43 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ci_node_total: [4]
-        ci_node_index: [0, 1, 2, 3]
+        ci_node_total: [2]
+        ci_node_index: [0, 1]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install pnpm
+        run: npm install -g pnpm@9.1.3
+      - uses: actions/cache@v4
+        with:
+          path: |
+            "**/node_modules"
+            "~/.pnpm-store"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - run: pnpm install
+      - name: Build email assets
+        run: bin/build-email-assets
       - run: mkdir -p log
-      - run: bundle exec rails db:create db:schema:load
+      - name: Prepare test databases
+        run: bundle exec flatware fan -w 2 rake db:create db:schema:load
       - name: Run tests
         env:
           CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
           CI_NODE_INDEX: ${{ matrix.ci_node_index }}
         run: |
-          bundle exec rake knapsack:minitest
+          mapfile -t specs < <(find spec -name '*_spec.rb' | sort)
+          total=${#specs[@]}
+          node_specs=()
+          for ((i=0; i<total; i++)); do
+            if (( i % CI_NODE_TOTAL == CI_NODE_INDEX )); then
+              node_specs+=("${specs[$i]}")
+            fi
+          done
+          bundle exec flatware rspec -w 2 "${node_specs[@]}"

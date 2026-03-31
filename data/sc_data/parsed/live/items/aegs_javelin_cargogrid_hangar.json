@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Javelin_CargoGrid_Hangar",
+  "ref": "d703ef50-7df6-423b-842b-4f6ca18a5dee",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "0cb044d6-2bc6-4f16-9dbe-3ef894bb840c"
+}

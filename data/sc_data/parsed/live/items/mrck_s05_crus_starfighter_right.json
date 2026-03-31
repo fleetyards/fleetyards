@@ -1,0 +1,34 @@
+{
+  "key": "MRCK_S05_CRUS_Starfighter_Right",
+  "ref": "f909146e-daf1-4a04-ba5b-3c0c291644db",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "MISC Freelancer MIS Missile Launcher",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_attatch_01",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "key": "ASAD_DistortionRepeater_S2",
+  "ref": "a5ade53b-9c40-477a-aaf8-78b6ef485283",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "055fe7c5-2e02-4e3a-aacb-f289563fabbd",
+  "name": "DR Model-XJ2 Repeater",
+  "short_name": "DR-XJ2",
+  "description": "Manufacturer: Associated Science & Development\\nItem Type: Distortion Repeater\\nSize: 2\\n\\nAdvancing the field of distortion weapons, the DR Model-XJ2 repeater from ASD provides tactical energy disruption that will severely limit any targeted ships operational capacity.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "ASAD_DistortionRepeater_Barrel_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "ASAD_DistortionRepeater_FiringMechanism_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "ASAD_DistortionRepeater_PowerArray_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "ASAD_DistortionRepeater_Ventilation_S2",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 850.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

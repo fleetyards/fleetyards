@@ -1,0 +1,35 @@
+{
+  "key": "RSI_Scorpius_EMP_Device",
+  "ref": "3d521e8c-4249-4987-b544-d32634ab0d2a",
+  "category": "weapons",
+  "type": "EMP",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Magstrand EMP Generator",
+  "short_name": "Magstrand EMP Generator",
+  "description": "Item Type: Burst Generator\\nManufacturer: RSI\\nSize: 4\\n\\nThe Magstrand from RSI is an EMP burst generator designed specifically for the Scorpius Antares. When fully charged, the device creates a powerful wave of distortion damage that can disable electric components within its blast radius.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 1.105504,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 150.0
+  },
+  "type_data": {
+    "charge_time": 22.0,
+    "distortion_damage": 3300.0,
+    "emp_radius": 1100.0,
+    "min_emp_radius": 250.0,
+    "phys_radius": 1001.0,
+    "min_phys_radius": 250.0,
+    "pressure": 0.0,
+    "unleash_time": 1.5,
+    "cooldown_time": 16.0
+  }
+}

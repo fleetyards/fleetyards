@@ -1,0 +1,24 @@
+{
+  "key": "COOL_WCPR_S02_Taiga_SCItem",
+  "ref": "576b939f-1596-42ee-95b4-d5c871542d8c",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4",
+  "name": "Taiga",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel Propulsion\\nSize: 2\\nGrade: B\\nClass: Civilian\\n\\nWen/Cassel has worked long and hard to develop quality coolers like the latest edition Taiga, which can process and manage excess heat while consistently maintaining the high standards that they have become known for.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 400.0
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "key": "DRAK_Cutlass_Steel_Rear_Remote_Dual_Turret_S4",
+  "ref": "f3c73f6d-f497-4f21-a5b5-cef56d52ae96",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "TopTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Drake Cutlass Steel Remote Turret",
+  "short_name": null,
+  "description": "Item Type: Turret\\nManufacturer: Drake Interplanetary\\nSize: 2 \\n\\nThis remote-operated turret comes factory-equipped with two Klaus & Werner laser repeaters.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 3500.0
+  }
+}

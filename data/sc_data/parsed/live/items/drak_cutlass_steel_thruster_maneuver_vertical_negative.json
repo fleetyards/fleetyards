@@ -1,0 +1,30 @@
+{
+  "key": "DRAK_Cutlass_Steel_Thruster_Maneuver_Vertical_Negative",
+  "ref": "5331f132-2f79-493a-9843-695552d45d61",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 10240.0
+  },
+  "type_data": {
+    "thrust_capacity": 2638703.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": null
+  }
+}

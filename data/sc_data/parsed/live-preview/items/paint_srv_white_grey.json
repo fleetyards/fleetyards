@@ -1,0 +1,21 @@
+{
+  "key": "Paint_SRV_White_Grey",
+  "ref": "3d48eb3c-0d9c-43bd-84f4-e8d2f35bbd49",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "02d06a62-4402-46bb-89d3-81f31f82a225",
+  "name": "SRV Overcast Livery",
+  "short_name": null,
+  "description": "Have your SRV looking good on recovery operations with the Overcast livery, which is white with black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "DRAK_Corsair_Thruster_Mav_Up",
+  "ref": "10737349-12d3-4fb0-ad6e-0c60238c6de0",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 30000.0
+  },
+  "type_data": {
+    "thrust_capacity": 1157955.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

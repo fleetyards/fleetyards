@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Redeemer_Thruster_Main_Right",
+  "ref": "3104f043-26b8-49ee-b348-299ae739d6e2",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 27500.0
+  },
+  "type_data": {
+    "thrust_capacity": 7496779.0,
+    "fuel_burn_rate_per10_k_newton": 0.1012375,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

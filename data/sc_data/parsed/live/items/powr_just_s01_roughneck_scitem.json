@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S01_Roughneck_SCItem",
+  "ref": "9a5c71d4-12c0-4994-a41f-98b6e6018151",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Roughneck",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 1\\nGrade: D\\nClass: Industrial\\n\\nFor its class, the Roughneck power plant from Juno Starwerk is an ideal component for haulers looking for maximum performance.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

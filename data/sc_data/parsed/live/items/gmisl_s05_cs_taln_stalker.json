@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S05_CS_TALN_Stalker",
+  "ref": "1928b138-e521-4cec-8791-183f6c6c93ec",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Stalker V-G Missile",
+  "short_name": "Stalker V-G",
+  "description": "Manufacturer: Talon \\nTracking Signal: Cross Section \\nSize: 5  \\n\\nWith dedicated cross section tracking, the Talon Stalker has endured over the years as a precision strike torpedo with maximum stopping power. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 78125.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 5.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 50.0
+  }
+}

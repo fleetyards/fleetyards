@@ -4,15 +4,16 @@ module V1
   module Schemas
     module Inputs
       class FleetCreateInput
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
-            fid: {type: :string, format: :uuid},
+            fid: {type: :string},
             name: {type: :string},
             description: {type: :string},
             publicFleet: {type: :boolean},
+            publicFleetStats: {type: :boolean},
             homepage: {type: :string},
             rsiSid: {type: :string},
             discord: {type: :string},

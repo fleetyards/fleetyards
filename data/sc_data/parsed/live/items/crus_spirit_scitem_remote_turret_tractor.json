@@ -1,0 +1,34 @@
+{
+  "key": "CRUS_Spirit_SCItem_Remote_Turret_Tractor",
+  "ref": "86da0491-010a-41c6-9cd1-0e676814ce2a",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "TractorBeam"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 3000.0
+  }
+}

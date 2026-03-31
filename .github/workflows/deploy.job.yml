@@ -1,0 +1,70 @@
+name: Deploy Job
+
+on:
+  workflow_call:
+    inputs:
+      destination:
+        required: true
+        type: string
+      name:
+        required: true
+        type: string
+      url:
+        required: true
+        type: string
+      command:
+        required: false
+        type: string
+        default: deploy
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: ${{ inputs.name }}
+      url: ${{ inputs.url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: unnecessary
+          if_key_exists: ignore
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Install 1Password CLI
+        run: |
+          curl -sSfo /tmp/op.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.0/op_linux_amd64_v2.33.0.zip"
+          unzip -o /tmp/op.zip -d /usr/local/bin op
+          chmod +x /usr/local/bin/op
+
+      - name: Install hcloud CLI
+        run: |
+          curl -fsSL -o /tmp/hcloud.tar.gz https://github.com/hetznercloud/cli/releases/latest/download/hcloud-linux-amd64.tar.gz
+          tar -xzf /tmp/hcloud.tar.gz -C /usr/local/bin hcloud
+
+      - name: Fetch known hosts
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          DESTINATION=$(echo "${{ inputs.destination }}" | tr '[:lower:]' '[:upper:]')
+          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_${DESTINATION}/credential")
+          WEB_IPS=$(bash .kamal/server-ips web ${{ inputs.destination }})
+          ACC_IPS=$(bash .kamal/server-ips accessory ${{ inputs.destination }})
+          ALL_IPS=$(echo "$WEB_IPS,$ACC_IPS" | tr ',' ' ')
+          ssh-keyscan $ALL_IPS >> ~/.ssh/known_hosts
+
+      - name: Deploy with Kamal
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          DESTINATION=$(echo "${{ inputs.destination }}" | tr '[:lower:]' '[:upper:]')
+          export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_${DESTINATION}/credential")
+          bundle exec kamal ${{ inputs.command }} -d ${{ inputs.destination }} --skip-push

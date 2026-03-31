@@ -1,0 +1,21 @@
+{
+  "key": "Lt_DoorPanelScreen_Locked",
+  "ref": "b788cb4f-842a-4d33-84df-e59c81086f09",
+  "category": "doors",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

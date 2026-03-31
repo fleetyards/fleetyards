@@ -1,0 +1,30 @@
+{
+  "key": "CRUS_Starlifter_Thruster_Mav_Front_M2",
+  "ref": "587ba401-a257-45db-aff3-8dd5db683f29",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 22200.0
+  },
+  "type_data": {
+    "thrust_capacity": 5497638.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

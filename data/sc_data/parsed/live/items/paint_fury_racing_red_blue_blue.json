@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fury_Racing_Red_Blue_Blue",
+  "ref": "9d53c591-a7f5-4b77-8380-a3bac9b52872",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a094adc2-6ca1-47e3-a29f-0c584126a249",
+  "name": "Fury Racing Livery",
+  "short_name": null,
+  "description": "Pull away from the pack with this daring Racing livery for the Fury. Combining coral reds with an undercurrent of teal, you're guaranteed to grab the attention of those you overtake when racing in these bold colors.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

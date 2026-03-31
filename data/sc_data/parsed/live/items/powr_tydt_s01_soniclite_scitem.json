@@ -1,0 +1,24 @@
+{
+  "key": "POWR_TYDT_S01_SonicLite_SCItem",
+  "ref": "ad089033-7cfc-479f-b7d4-49a93e1e3bd4",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "SonicLite",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 1\\nGrade: C\\nClass: Stealth\\n\\nConstructed from the ground up to minimize your heat signature, Tyler Design’s SonicLite power plant has gained a following among pilots who appreciate a subtler approach.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 170.0
+  }
+}

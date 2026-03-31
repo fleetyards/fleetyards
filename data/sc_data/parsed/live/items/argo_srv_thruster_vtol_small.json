@@ -1,0 +1,30 @@
+{
+  "key": "ARGO_SRV_Thruster_VTOL_Small",
+  "ref": "91b8e43b-4313-480f-baac-13bbe65bc2f6",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 21000.0
+  },
+  "type_data": {
+    "thrust_capacity": 287500.0,
+    "fuel_burn_rate_per10_k_newton": 0.05,
+    "thruster_type": "Main",
+    "thruster_class": "vtol"
+  }
+}

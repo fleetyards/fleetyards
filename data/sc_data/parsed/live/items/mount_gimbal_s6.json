@@ -1,0 +1,34 @@
+{
+  "key": "Mount_Gimbal_S6",
+  "ref": "5b7b1b80-e5ee-4cc3-8b24-93c9353412dc",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "b9b97673-c585-4e0a-b229-a0a3c79668c3",
+  "name": "VariPuck S6 Gimbal Mount",
+  "short_name": null,
+  "description": "Manufacturer: Flashfire Systems\\nItem Type: Weapon Mount\\nSize: 6\\n\\nThe VariPuck fits between your weapon and the ship hardpoint to transform a fixed weapon mount into a gimballed mount, allowing the pilot to independently aim their weapon’s fire. VariPucks will accept any weapon the same size as the hardpoint it is mounting to.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_class_2",
+      "min_size": "5",
+      "max_size": "6",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4224.0
+  }
+}

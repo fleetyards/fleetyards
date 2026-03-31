@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ARGO_MPUV_Flight_Blade_SPD",
+  "ref": "d211d188-d57e-4efc-a71f-8f081fe83e28",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ad865899-f5ba-4818-ae8c-fe80a55108b7",
+  "name": "MPUV-1C TSB Flight Blade",
+  "short_name": "MPUV-1C TSB Flight Blade",
+  "description": "Manufacturer: Broad & Rabiee\\nType: Flight Blade\\n\\nUnlock the potential of your Argo MPUV-1C with the TSB Flight Blade from Broad & Rabiee. By re-allocating lateral thrust resources, you can expect your ship deliver increased top speeds in the straightaway.",
+  "inventory_consumption": {
+    "micro_scu": 970.0,
+    "dimensions": {
+      "x": 0.2575701,
+      "y": 0.1729496,
+      "z": 0.02177711
+    }
+  },
+  "type_data": {
+    "scm_speed": 170.0,
+    "scm_speed_boosted": 360.0,
+    "reverse_speed_boosted": 140.0,
+    "max_speed": 890.0,
+    "angular_velocity": {
+      "pitch": 30.0,
+      "yaw": 30.0,
+      "roll": 85.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 36.0,
+      "yaw": 36.0,
+      "roll": 102.0
+    }
+  }
+}

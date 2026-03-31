@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vulture_coramor_2956_purple_pink_green_iridecence",
+  "ref": "aca07eeb-b79e-4707-9215-c56a9a588021",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fd2a82ad-7abc-4e3b-b9c6-2a272a8e0480",
+  "name": "Vulture Heartthrob Livery",
+  "short_name": null,
+  "description": "Make people weak in the knees by adorning the Vulture with the Hearthrob livery, featuring a shimmering violet paint scheme.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

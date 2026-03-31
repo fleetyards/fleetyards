@@ -3,11 +3,26 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:member) { create(:user, vehicle_count: 2) }
+  let(:fleet) { create(:fleet, members: [member]) }
+  let(:user) { member }
+  let(:fleetSlug) { fleet.slug }
 
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: member.id,
+      scopes: ["fleet", "fleet:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: member.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     sign_in(user) if user.present?
@@ -21,19 +36,39 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
       tags "FleetStats"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/FleetMemberQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
+      ]
+
       response(200, "successful") do
         schema "$ref" => "#/components/schemas/FleetMembersStats"
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
+        run_test!
+      end
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
 
         run_test!
       end

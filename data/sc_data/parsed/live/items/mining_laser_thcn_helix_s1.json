@@ -1,0 +1,50 @@
+{
+  "key": "Mining_Laser_THCN_Helix_S1",
+  "ref": "81e1a10a-c7bd-401f-92e1-284115dcd6e1",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "Helix I Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Thermyte Concern\\nItem Type: Mining Laser \\nSize: 1\\n\\nOptimal Range: 15m\\nMaximum Range: 45m\\n\\nMining Laser Power: 630 - 3150\\nExtraction Laser Power: 1850\\n\\nModule Slots: 2\\n\\nResistance: -30%\\nInert Material Level: -30%\\n\\nOptimal Charge Window Size: -40%\\n\\nTo some, the effective use of the Helix I has become a sign of a true mining professional. Thermyte Concern gave the laser impressive power that can bypass a deposit's resistance but also requires precision handling to hit the optimal charge window. Best deployed at close range, Helix I features two module slots so miners can tailor the laser to their liking.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S01_CS_FSKI_Spark",
+  "ref": "dd3a17c3-cfac-49b4-990a-64ac2efa22e1",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Spark I-G Missile",
+  "short_name": "Spark I-G",
+  "description": "Manufacturer: Firestorm Kinetics \\nTracking Signal: Cross Section \\nSize: 1  \\n\\nThose that believe size doesn’t matter would do well to stay clear of the Firestorm Kinetics Spark. Using cross section targeting, this lightweight proximity missile packs a considerable punch. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 15625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

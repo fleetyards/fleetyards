@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Idris_FW2955_Grey_Black_Red_Camo",
+  "ref": "0483f65f-827c-48e0-81ec-cd326cb89d1a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "87e34380-b9b4-43f9-b215-ec1ecfbe8ff7",
+  "name": "Idris Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Idris with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

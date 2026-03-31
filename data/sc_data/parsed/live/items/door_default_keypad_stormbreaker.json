@@ -1,0 +1,21 @@
+{
+  "key": "Door_Default_Keypad_StormBreaker",
+  "ref": "248b6f7f-d03d-4203-842c-b5364f8d400e",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

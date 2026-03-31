@@ -1,0 +1,25 @@
+{
+  "key": "DRAK_Mule_CargoGrid_Front",
+  "ref": "e1776ba2-5abe-4f34-b61c-1c84f2d0e84e",
+  "category": "cargogrid",
+  "type": "Cargo",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "storage": {
+    "storage": 1.0
+  },
+  "inventory_ref": "49739a99-620b-4937-b628-59b616b9ff36"
+}

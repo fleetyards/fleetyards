@@ -1,0 +1,42 @@
+{
+  "key": "ANVL_Hornet_F7A_Ball_Turret",
+  "ref": "ea532b81-bbe5-4cc1-aede-4566ab44607e",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "C5-173f S5 Hornet Mk II Ball Turret",
+  "short_name": null,
+  "description": "Give your Hornet Mk II a boost in firepower with the C5-173f ball turret. Designed by Anvil specifically for its F7 Mk II series, this S5 ball turret can equip two S3 ship weapons.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_S3_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_S3_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1350.0
+  }
+}

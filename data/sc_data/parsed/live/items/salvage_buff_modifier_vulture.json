@@ -1,0 +1,21 @@
+{
+  "key": "Salvage_Buff_Modifier_Vulture",
+  "ref": "2111d664-3b0a-4459-b2c9-ba917cf945e8",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

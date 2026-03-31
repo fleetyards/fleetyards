@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S01_Endurance_SCItem",
+  "ref": "49d355d9-b5a5-454a-a6e8-dedb4bdffa02",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Endurance",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk \\nSize: 1\\nGrade: B\\nClass: Industrial\\n\\nJuno Starwerk’s Endurance has been in service since the 26th century. This industrial strength, utilitarian power plant is a favorite of mechanics since spare parts are easily acquired.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 270.0
+  }
+}

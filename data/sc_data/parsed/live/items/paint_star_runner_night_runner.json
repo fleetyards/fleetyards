@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Star_Runner_Night_Runner",
+  "ref": "90a87603-95e6-4024-b111-1b19507562ae",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5f5d7ee4-6e8e-46e9-b27a-9abcea611c3c",
+  "name": "Mercury Star Runner Nightrunner Livery",
+  "short_name": null,
+  "description": "Meld into the pitch-dark expanse of space with this livery featuring a black paint scheme with gold accents for your Mercury Star Runner.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

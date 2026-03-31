@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_MX_Blue_Blue_Blue",
+  "ref": "1221bff3-96e9-4ce6-b27f-0e2700ba99c1",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "01cb7556-7978-4faa-90b1-9778bbac718e",
+  "name": "Guardian Eventide Livery",
+  "short_name": null,
+  "description": "The white lettering of the Mirai name and logo pop against the midnight blue and crimson red of the Eventide livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

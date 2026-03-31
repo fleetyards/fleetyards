@@ -1,0 +1,31 @@
+{
+  "key": "RSI_Zeus_SCItem_Seat_Bed_Lower_Left",
+  "ref": "bc6be4a4-c80d-461e-82ab-19298b4b24f2",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Bed",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_bedding",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Seat"
+      ]
+    }
+  ]
+}

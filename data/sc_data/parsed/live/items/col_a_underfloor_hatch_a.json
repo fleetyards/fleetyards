@@ -1,0 +1,21 @@
+{
+  "key": "Col_A_Underfloor_Hatch_A",
+  "ref": "b4e74195-cf3b-4316-a042-bb21a91abf94",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

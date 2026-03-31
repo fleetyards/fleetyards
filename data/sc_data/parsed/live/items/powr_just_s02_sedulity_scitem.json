@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S02_Sedulity_SCItem",
+  "ref": "bd423b9c-4115-4785-909a-77d621fd2bc4",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Sedulity",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 2\\nGrade: B\\nClass: Industrial\\n\\nWhen you need a power plant that’s as reliable as you are, then snag yourself a Sedulity. This component has been a staple of the Juno Starwerk line for years, making it truly worthy of the name.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 740.0
+  }
+}

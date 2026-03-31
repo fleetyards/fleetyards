@@ -1,5 +1,4 @@
 require "active_support/core_ext/integer/time"
-require "uglifier"
 require "app_endpoint_resolver"
 
 Rails.application.configure do
@@ -9,6 +8,13 @@ Rails.application.configure do
 
   config.hosts << ".#{Rails.configuration.app.domain}"
   config.hosts << Rails.configuration.app.short_domain
+
+  # Redirect www to apex domain
+  config.middleware.insert_before ActionDispatch::SSL, Rack::Rewrite do
+    r301 %r{.*}, ->(match, rack_env) {
+      "https://#{rack_env["SERVER_NAME"].sub(/\Awww\./, "")}#{rack_env["PATH_INFO"]}"
+    }, if: ->(rack_env) { rack_env["SERVER_NAME"]&.start_with?("www.") }
+  end
 
   # Code is not reloaded between requests.
   config.enable_reloading = false
@@ -22,6 +28,8 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
+  config.action_controller.asset_host = Rails.configuration.app.cdn_endpoint || endpoints.frontend_endpoint
+  config.asset_host = Rails.configuration.app.cdn_endpoint || endpoints.frontend_endpoint
 
   # Ensures that a master key has been made available in ENV["RAILS_MASTER_KEY"], config/master.key, or an environment
   # key such as config/credentials/production.key. This key is used to decrypt credentials (and other encrypted files).
@@ -30,9 +38,6 @@ Rails.application.configure do
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
-
-  # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   config.asset_host = Rails.configuration.app.cdn_endpoint
@@ -52,13 +57,16 @@ Rails.application.configure do
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
-  # config.assume_ssl = true
+  config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = !ENV["UNSAFE"]
   config.ssl_options = {
     hsts: {preload: !ENV["UNSAFE"]}
   }
+
+  # Skip http-to-https redirect for the default health check endpoint.
+  # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
   # Log to STDOUT by default
   config.logger = ActiveSupport::Logger.new($stdout)
@@ -86,8 +94,6 @@ Rails.application.configure do
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque
   # config.active_job.queue_name_prefix = "fleetyards_production"
-
-  config.assets.precompile += %w[error.css]
 
   config.action_mailer.perform_caching = false
 
@@ -133,11 +139,14 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Only use :id for inspections in production.
+  config.active_record.attributes_for_inspect = [:id]
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
   #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.host_authorization = {exclude: ->(request) { request.path == "/up" }}
 end

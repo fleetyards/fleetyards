@@ -1,0 +1,89 @@
+{
+  "key": "BEHR_LaserRepeater_S10_SecurityNetwork_Weak",
+  "ref": "bcbd3b7e-4d12-448f-8866-cafd8e53b91d",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "GVSR Repeater",
+  "short_name": null,
+  "description": "Manufacturer: Behring\\nItem Type: Laser Repeater\\nSize: 2\\n\\nAegis commissioned Behring to design a laser repeater specifically for their Vanguard line-up. The result was the GVSR, which met Aegis exacting standards by delivering a steady rate of fire without overtaxing the ship's power plant.",
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "10",
+      "max_size": "10",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "10",
+      "max_size": "10",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "10",
+      "max_size": "10",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "10",
+      "max_size": "10",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "BEHR_LaserRepeater_Barrel_S10",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "BEHR_LaserRepeater_FiringMechanism_S10",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "BEHR_LaserRepeater_PowerArray_S10",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "BEHR_LaserRepeater_Ventilation_S10",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 20000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

@@ -1,0 +1,72 @@
+.panel-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: border-radius $transition-base-speed ease;
+
+  &-rounded {
+    border-radius: $panelContentBorderRadius;
+  }
+
+  &-rounded-bottom {
+    border-bottom-left-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+  }
+
+  &-rounded-top {
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
+  }
+
+  &-rounded-left {
+    border-top-left-radius: $panelContentBorderRadius;
+    border-bottom-left-radius: $panelContentBorderRadius;
+  }
+
+  &-rounded-right {
+    border-top-right-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+  }
+
+  &-align-left {
+    background-position: left;
+  }
+
+  &-align-right {
+    background-position: right;
+  }
+
+  &__skeleton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      $gray-darker 25%,
+      lighten($gray-darker, 12%) 50%,
+      $gray-darker 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: inherit;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}

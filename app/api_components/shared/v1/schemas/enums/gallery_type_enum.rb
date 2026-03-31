@@ -5,11 +5,14 @@ module Shared
     module Schemas
       module Enums
         class GalleryTypeEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
+
+          TYPES = %w[Model Album].freeze
 
           schema({
             type: :string,
-            enum: %w[Model Station Album]
+            enum: TYPES,
+            "x-enumNames": TYPES.map { |v| transform_enum_key(v) }
           })
         end
       end

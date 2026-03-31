@@ -1,0 +1,44 @@
+{
+  "key": "ORIG_890J_SCItem_Turret_Upper",
+  "ref": "29ebfe0f-5a24-49a4-ab9e-c25434ed3d8b",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Golem_Black_Green_Grey",
+  "ref": "986fa034-1259-43b9-9244-75c2509c8a0d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "67263514-70b2-4d3e-bc10-d6abe0af605a",
+  "name": "Golem Rockfall Livery",
+  "short_name": null,
+  "description": "The Rockfall livery blends green and grey earth tones with black to give the Golem a look fitting for a ship made to rip apart rocks.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

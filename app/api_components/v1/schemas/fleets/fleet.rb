@@ -4,14 +4,11 @@ module V1
   module Schemas
     module Fleets
       class Fleet
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
-            myRole: {"$ref": "#/components/schemas/FleetMembershipRoleEnum"},
-            primary: {type: :boolean},
-            myFleet: {type: :boolean},
             id: {type: :string, format: :uuid},
             fid: {type: :string},
             rsiSid: {type: :string},
@@ -26,8 +23,9 @@ module V1
             description: {type: :string},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
-            logo: {type: :string},
-            backgroundImage: {type: :string},
+            logo: {"$ref": "#/components/schemas/MediaFile"},
+            backgroundImage: {"$ref": "#/components/schemas/MediaFile"},
+            myFleet: {type: :boolean},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

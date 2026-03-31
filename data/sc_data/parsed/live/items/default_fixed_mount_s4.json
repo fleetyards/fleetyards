@@ -1,0 +1,34 @@
+{
+  "key": "Default_Fixed_Mount_S4",
+  "ref": "c2af3f67-3ad7-4214-b502-4d00bb3df0b8",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Size 4 Fixed Mount",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_size_4",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

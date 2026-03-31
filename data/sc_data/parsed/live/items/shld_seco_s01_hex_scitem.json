@@ -1,0 +1,94 @@
+{
+  "key": "SHLD_SECO_S01_HEX_SCItem",
+  "ref": "2de33b34-afaf-40ec-ab30-0a5039946866",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "f91beb30-915c-42f6-9b1f-f5bd74633fd6",
+  "name": "HEX",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Seal Corporation\\nSize: 1\\nGrade: B\\nClass: Civilian\\n\\nPrepare your ship for any circumstance by installing a HEX from Seal Corporation. Balanced performance and durability make this an ideal, versatile choice for those who don’t know where their next adventure may take them.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 170.0
+  },
+  "type_data": {
+    "max_health": 2700.0,
+    "max_regen": 270.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 9.09,
+    "damaged_regen_delay": 4.55,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": -0.27,
+        "min": -0.82
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.45,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

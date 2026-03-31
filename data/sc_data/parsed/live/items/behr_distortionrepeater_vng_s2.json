@@ -1,0 +1,29 @@
+{
+  "key": "BEHR_DistortionRepeater_VNG_S2",
+  "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "ATVS Repeater",
+  "short_name": "ATVS",
+  "description": "Manufacturer: Behring\\nItem Type: Distortion Repeater\\nSize: 2\\n\\nMess with an aggressor's electrical system with the ATVS from Behring. This disruptive, non-lethal distortion repeater is only compatible with the nose-mount on the Aegis Vanguard.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 850.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

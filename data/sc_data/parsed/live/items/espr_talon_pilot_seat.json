@@ -1,0 +1,47 @@
+{
+  "key": "ESPR_Talon_Pilot_Seat",
+  "ref": "75e1779a-b257-435a-8e0f-191614f5c5d7",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cockpit_radar",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    },
+    {
+      "name": "Annunciator_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    },
+    {
+      "name": "Annunciator_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    }
+  ]
+}

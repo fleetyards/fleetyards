@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Syulen_AlienWeek_Green_Brown_Brown",
+  "ref": "df034c8f-f65f-48b6-9870-1fe4b4f9f12a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d40fe3ab-f8cc-4845-b7e3-0df5a42874d5",
+  "name": "Syulen Luminary Livery",
+  "short_name": null,
+  "description": "The Luminary livery gives the Syulen a glossy green base paint with brown highlights for a dazzlingly beautiful and complex design.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

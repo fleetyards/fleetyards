@@ -1,0 +1,24 @@
+{
+  "key": "COOL_AEGS_S02_Boreal_SCItem",
+  "ref": "62f0d8cc-ed06-47d6-9522-bd3950faa19d",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Boreal",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Aegis Dynamics\\nSize: 2\\nGrade: D\\nClass: Military\\n\\nDesigned to disperse the heat of battle, Aegis Dynamics’ Boreal cooler is a military standard with the capacity to survive stressful situations.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 430.0
+  }
+}

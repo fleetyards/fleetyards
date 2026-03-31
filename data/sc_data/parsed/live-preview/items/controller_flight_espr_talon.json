@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_ESPR_Talon",
+  "ref": "e1e8ba90-d536-443a-a9a2-807391f7648b",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "SELF STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "scm_speed": 225.0,
+    "scm_speed_boosted": 500.0,
+    "reverse_speed_boosted": 260.0,
+    "max_speed": 1200.0,
+    "angular_velocity": {
+      "pitch": 70.0,
+      "yaw": 52.0,
+      "roll": 200.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 84.0,
+      "yaw": 62.4,
+      "roll": 240.0
+    }
+  }
+}

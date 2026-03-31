@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S04_Reclaimer_SCItem",
+  "ref": "ae9cec5a-0917-441d-802b-3d96d79478cc",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Main Powerplant",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 6300.0
+  }
+}

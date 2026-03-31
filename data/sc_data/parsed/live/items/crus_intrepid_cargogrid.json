@@ -1,0 +1,22 @@
+{
+  "key": "CRUS_Intrepid_CargoGrid",
+  "ref": "7a85969c-c09f-462b-b081-52df6c36e7a3",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "da04ea70-7911-4f7d-b259-88b5e13237f4"
+}

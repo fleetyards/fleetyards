@@ -45,6 +45,10 @@ class AppEndpointResolver
     "#{admin_endpoint}/api/#{Rails.configuration.app.admin_api_version}"
   end
 
+  def oauth_endpoint
+    "#{frontend_endpoint}/oauth"
+  end
+
   def cable_endpoint
     "#{websocket_scheme}://#{Rails.configuration.app.domain}/cable"
   end

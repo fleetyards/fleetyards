@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Nyx_MediumFront_Rest_Nyx",
+  "ref": "9c7ac740-1d04-4c70-8c52-5928a3f2fb25",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Constellation_GoblinG_A_Red_Black",
+  "ref": "78c15b15-709f-4822-94d6-0ae07e322469",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bc762805-7d81-46ed-983d-8cc8a92d0e36",
+  "name": "Constellation ArcCorp Livery",
+  "short_name": null,
+  "description": "The ArcCorp livery for the Constellation features the company's logo atop a maroon base paint with black and yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

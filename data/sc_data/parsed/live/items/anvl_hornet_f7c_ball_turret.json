@@ -1,0 +1,44 @@
+{
+  "key": "ANVL_Hornet_F7C_Ball_Turret",
+  "ref": "6bd70c5f-f778-45a5-a4f3-5952d619717d",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "C4-160f S5 Hornet Ball Turret",
+  "short_name": null,
+  "description": "Give your Hornet's firepower a boost with the C4-160f. Designed by Anvil specifically for its F7 series, this S5 ball turret can equip two S2 ship weapons.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1250.0
+  }
+}

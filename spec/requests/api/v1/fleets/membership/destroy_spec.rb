@@ -3,15 +3,24 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
-
-  let(:fleet) { fleets :starfleet }
+  let(:member) { create(:user) }
+  let(:user) { member }
+  let(:fleet) { create(:fleet) }
   let(:fleetSlug) { fleet.slug }
 
-  let(:user) { nil }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: member.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     sign_in(user) if user.present?
+
+    create(:fleet_membership, fleet:, user: member)
   end
 
   path "/fleets/{fleetSlug}/membership" do
@@ -22,8 +31,19 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       tags "FleetMembership"
       produces "application/json"
 
+      security [
+        {SessionCookie: []},
+        {Oauth2: []},
+        {OpenId: []}
+      ]
+
       response(204, "successful") do
-        let(:user) { users :data }
+        run_test!
+      end
+
+      response(204, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
         run_test!
       end
@@ -31,14 +51,15 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :data }
-        let(:fleet) { fleets :klingon_empire }
+        let(:fleetSlug) { "unknown-fleet" }
 
         run_test!
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

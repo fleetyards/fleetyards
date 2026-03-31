@@ -1,0 +1,22 @@
+{
+  "key": "RSI_Constellation_Taurus_CargoGrid_Tail",
+  "ref": "4612e7cc-4837-4f84-8da1-4104d10523f9",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "65e694a2-c544-4205-9524-3b4bb66fae83"
+}

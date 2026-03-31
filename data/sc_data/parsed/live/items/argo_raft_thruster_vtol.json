@@ -1,0 +1,30 @@
+{
+  "key": "ARGO_RAFT_Thruster_VTOL",
+  "ref": "55da1905-92d7-4d28-a78c-5f2a9a6694fe",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 4500.0
+  },
+  "type_data": {
+    "thrust_capacity": 2448948.0,
+    "fuel_burn_rate_per10_k_newton": 0.109375,
+    "thruster_type": "Main",
+    "thruster_class": "vtol"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "key": "DRAK_Buccaneer_Dual_S2",
+  "ref": "02bb4650-7c20-4e42-b3d8-1ca7bb4b76bf",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Drake Buccaneer Spinal Mount",
+  "short_name": null,
+  "description": "Ward off attacks from any angle by installing this gimballed spinal mount. Designed by Drake for the Buccaneer, this S4 turret can equip two S2 weapons to keep the heat on aggressors.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_01",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_02",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1200.0
+  }
+}

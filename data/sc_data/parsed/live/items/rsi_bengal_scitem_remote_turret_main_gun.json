@@ -1,0 +1,94 @@
+{
+  "key": "RSI_Bengal_SCItem_Remote_Turret_Main_Gun",
+  "ref": "aa481cf0-992b-44f5-8d48-beef15bbae6e",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "12",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right_outer",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right_inner",
+      "min_size": "12",
+      "max_size": "12",
+      "types": []
+    },
+    {
+      "name": "hardpoint_weapon_left_inner",
+      "min_size": "12",
+      "max_size": "12",
+      "types": []
+    },
+    {
+      "name": "hardpoint_weapon_left_outer",
+      "min_size": "12",
+      "max_size": "12",
+      "types": []
+    },
+    {
+      "name": "hardpoint_aimodule",
+      "min_size": "0",
+      "max_size": "10",
+      "types": [
+        "AIModule"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_weapon_right_outer",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_weapon_right_inner",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_weapon_left_inner",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_weapon_left_outer",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

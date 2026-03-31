@@ -1,0 +1,21 @@
+{
+  "key": "CRUS_Starlifter_SCItem_Turret_Seat_Right",
+  "ref": "f0e7b6bf-9035-4ff6-8c39-1db071ec0f8f",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

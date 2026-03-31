@@ -1,0 +1,24 @@
+{
+  "key": "COOL_TYDT_S01_HeatSafe_SCItem",
+  "ref": "b4be7e39-8cd9-4d38-af89-61ace9c67796",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "HeatSafe",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Tyler Design & Tech\t\\nSize: 1\\nGrade: C\\nClass: Stealth\\n\\nPilots looking to keep their IR signature low rely on Tyler Design & Tech. As an entry level cooler, the HeatSafe not only limits emissions, it is built with Tyler’s satisfaction guarantee.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 110.0
+  }
+}

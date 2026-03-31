@@ -1,0 +1,56 @@
+{
+  "key": "Mining_Laser_THCN_Helix_S0",
+  "ref": "8c95c978-9e47-46ec-88e3-a0662c13d76a",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "0",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 1.105504,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "Mining_Modifier_ATLS",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "UNDEFINED"
+      ]
+    },
+    {
+      "name": "Mining_Modifier_ROCds",
+      "min_size": "0",
+      "max_size": "1",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "Mining_Modifier_ATLS",
+      "key": null,
+      "ref": "361c0ac0-5e41-4e45-b3ab-5d18e65000ef",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

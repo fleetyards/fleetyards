@@ -1,0 +1,42 @@
+{
+  "key": "DRAK_Cutter_Roof_Expo_Nose",
+  "ref": "7d400e7a-bc43-4eff-972a-412e765172fa",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_roof_hfuel",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "FuelTank"
+      ]
+    },
+    {
+      "name": "hardpoint_roof_qfuel",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "QuantumFuelTank"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "key": "MRCK_S05_VNCL_Stinger_S02_Right",
+  "ref": "1de02adf-1980-4fcb-af0a-2d6f2508c8ee",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "Esperia Stinger Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Esperia\\nSize: 5\\nMissiles: 8xS2 \\n\\nThis S5 missile rack can be equipped with eight S2 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

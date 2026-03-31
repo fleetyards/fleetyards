@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Enums
         class DockShipSizeEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: ::Dock.ship_sizes.keys
+            enum: ::Dock.ship_sizes.keys,
+            "x-enumNames": ::Dock.ship_sizes.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

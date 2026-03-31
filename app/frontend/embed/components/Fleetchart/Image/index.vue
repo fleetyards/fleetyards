@@ -1,3 +1,22 @@
+<script lang="ts">
+export default {
+  name: "FleetchartListItemImage",
+};
+</script>
+
+<script lang="ts" setup>
+type Props = {
+  src: string;
+  label: string;
+  length: number;
+  scale: number;
+};
+
+const props = defineProps<Props>();
+
+const lengthMultiplicator = computed(() => (props.scale / 100) * 4);
+</script>
+
 <template>
   <img
     v-if="src"
@@ -9,27 +28,7 @@
     class="fleetchart-item-image"
   />
   <span v-else>
-    <i class="fal fa-question-circle" />
+    <i class="fa-light fa-question-circle" />
     <p>{{ label }}</p>
   </span>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-
-@Component({})
-export default class FleetchartListItemImage extends Vue {
-  @Prop() src!: string;
-
-  @Prop() label!: string;
-
-  @Prop() length!: number;
-
-  @Prop() scale!: number;
-
-  get lengthMultiplicator() {
-    return (this.scale / 100) * 4;
-  }
-}
-</script>

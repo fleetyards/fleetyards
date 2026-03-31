@@ -1,0 +1,55 @@
+{
+  "key": "GMRCK_ANVL_Ballista_Quad_S05",
+  "ref": "c0ca28f6-e9d3-4c38-866e-254d9ec81a10",
+  "category": "missile_racks",
+  "type": "GroundVehicleMissileLauncher",
+  "sub_type": "GroundVehicleMissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil Ballista S05 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Anvil Aerospace\\nSize: 5\\nMissiles: 4xS5 \\n\\nMissile rack for the Anvil Ballista that carries four, S5 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    }
+  ]
+}

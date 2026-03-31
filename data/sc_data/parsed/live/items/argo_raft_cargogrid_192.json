@@ -1,0 +1,22 @@
+{
+  "key": "ARGO_RAFT_CargoGrid_192",
+  "ref": "90b012ac-f963-4023-92da-f4389a0fd497",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "64c40320-3afc-47d3-a8a8-2650a3b4f1f4"
+}

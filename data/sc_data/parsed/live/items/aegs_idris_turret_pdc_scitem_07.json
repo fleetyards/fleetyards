@@ -1,0 +1,42 @@
+{
+  "key": "AEGS_Idris_Turret_PDC_SCItem_07",
+  "ref": "7ce23757-c94b-4621-a489-8bf725f9df8f",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "PDCTurret",
+  "size": "9",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_class_2",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_class_2",
+      "key": null,
+      "ref": "0e3f4b37-8085-4641-a360-40e4e372cd15",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

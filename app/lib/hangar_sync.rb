@@ -11,7 +11,7 @@ class HangarSync < HangarImporter
   ].freeze
 
   def initialize(data)
-    @data = data.map(&:deep_symbolize_keys)
+    @data = data.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
     @ships = @data.select { |item| item[:type] == "ship" }
     @components = @data.select { |item| item[:type] == "component" }
     @upgrades = @data.select { |item| item[:type] == "upgrade" }
@@ -414,6 +414,7 @@ class HangarSync < HangarImporter
       "Reliant Tana - Skirmisher" => "Reliant Tana",
       "Rover" => "G12a Rover",
       "Retaliator Base" => "Retaliator",
+      "Retaliator Bomber" => "Retaliator",
       "Crusader A1 Spirit" => "A1 Spirit",
       "Crusader C1 Spirit" => "C1 Spirit",
       "Crusader E1 Spirit" => "E1 Spirit"

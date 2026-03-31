@@ -1,0 +1,92 @@
+{
+  "key": "RADR_Default",
+  "ref": "05166c08-0e57-47ca-be82-7b8aee16e831",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Radar",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 500.0
+  },
+  "type_data": {
+    "signature_detection": [
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.8,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 1.0,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      }
+    ],
+    "ping_properties": {
+      "cooldown_time": 2.5
+    },
+    "sensitivityModifiers": {
+      "sensitivityAddition": -0.55
+    }
+  }
+}

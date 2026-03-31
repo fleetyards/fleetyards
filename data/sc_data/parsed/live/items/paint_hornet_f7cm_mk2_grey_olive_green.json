@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7CM_Mk2_Grey_Olive_Green",
+  "ref": "1dd696f0-676c-4ff5-8e47-daac833e0255",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bd7b7a1e-a395-4ef5-a727-85dfee7bd5a1",
+  "name": "Hornet Mk II Silva Livery",
+  "short_name": null,
+  "description": "Featuring various shades of green, the Silva livery brings a bold and distinct look to the Hornet Mk II.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

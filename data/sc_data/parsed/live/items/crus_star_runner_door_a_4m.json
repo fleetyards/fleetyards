@@ -1,0 +1,21 @@
+{
+  "key": "CRUS_Star_Runner_Door_A_4m",
+  "ref": "2b140c49-01ac-4209-8045-b18b5c3bb5a3",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

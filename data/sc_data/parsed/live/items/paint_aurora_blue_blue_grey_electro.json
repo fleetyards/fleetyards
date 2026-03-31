@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Blue_Blue_Grey_Electro",
+  "ref": "4e6b46cc-6675-4449-bbb7-1726d21c3404",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0ed137f9-6ee9-427e-a91f-076c1c4e564f",
+  "name": "Aurora Mk I Shocking Blue Livery",
+  "short_name": null,
+  "description": "Liven up the Aurora with this slick blue livery that is sure to earn you a second look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

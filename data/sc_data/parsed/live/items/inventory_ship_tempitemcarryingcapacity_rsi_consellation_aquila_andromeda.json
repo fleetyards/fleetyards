@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_RSI_Consellation_Aquila_Andromeda",
+  "ref": "8355960f-f906-4bd5-9531-832c0af6d4a3",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 96.0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "key": "ANVL_Pisces_CargoGrid",
+  "ref": "1a3a5169-3b90-46bc-b18f-7aae3ecf05ae",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "70f2b9c0-aab0-417d-b168-fe9c99ef6b51"
+}

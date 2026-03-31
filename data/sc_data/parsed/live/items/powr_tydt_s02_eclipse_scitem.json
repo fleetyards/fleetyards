@@ -1,0 +1,24 @@
+{
+  "key": "POWR_TYDT_S02_Eclipse_SCItem",
+  "ref": "277e2f9c-d899-442d-a999-23368b3bdb6c",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "Eclipse",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 2\\nGrade: A\\nClass: Stealth \\n\\nCompeting medium power plants struggle to match the heat and signature reduction of the Eclipse. Tyler Design & Tech’s mastery of stealth tech makes this component a must own by those who prefer to go unnoticed.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 590.0
+  }
+}

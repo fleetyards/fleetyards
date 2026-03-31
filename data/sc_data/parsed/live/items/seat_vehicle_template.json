@@ -1,0 +1,21 @@
+{
+  "key": "Seat_Vehicle_Template",
+  "ref": "5789dd3c-b82e-4e26-8627-cd7996d0e5a1",
+  "category": "seat",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

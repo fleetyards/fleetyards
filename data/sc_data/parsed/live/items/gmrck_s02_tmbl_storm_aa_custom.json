@@ -1,0 +1,90 @@
+{
+  "key": "GMRCK_S02_TMBL_Storm_AA_Custom",
+  "ref": "65193d8e-3df2-4eed-bf13-71d95c0ddec4",
+  "category": "missile_racks",
+  "type": "GroundVehicleMissileLauncher",
+  "sub_type": "GroundVehicleMissileRack",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_s2_missile_001",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s2_missile_002",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s2_missile_003",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s2_missile_004",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s2_missile_005",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s2_missile_006",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s2_missile_007",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_s2_missile_008",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "key": "MISC_Starlancer_TAC_Missile_Gimbal",
+  "ref": "97158d79-3c49-4138-8c7f-4124bb2e734f",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "PC2 Dual S4 Mount",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_missile_rack",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "MissileLauncher"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 600.0
+  }
+}

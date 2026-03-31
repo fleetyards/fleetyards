@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prospector_Dolivine_Green",
+  "ref": "af85230b-4d9d-4354-8d06-4233e777fe41",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f99a21fb-01b0-4899-a7e1-fab65c3a23ec",
+  "name": "Prospector Dolivine Livery",
+  "short_name": null,
+  "description": "Sharing the name with a gemstone prized for its beauty and industrial applications, the Dolivine livery blends shades of light green to give your Prospector a unique look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

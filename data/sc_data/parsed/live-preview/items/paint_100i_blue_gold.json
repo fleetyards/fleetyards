@@ -1,0 +1,21 @@
+{
+  "key": "Paint_100i_Blue_Gold",
+  "ref": "b9019a07-0ace-4cf5-927b-3d58c2800235",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8846a4a4-6aa9-435a-8f28-9ca433ee6503",
+  "name": "100 Series Blue Ametrine Livery",
+  "short_name": null,
+  "description": "Customize your Origin 100 series ship with this blue and yellow livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

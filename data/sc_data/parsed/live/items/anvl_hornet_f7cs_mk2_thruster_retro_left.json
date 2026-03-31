@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Hornet_F7CS_Mk2_Thruster_Retro_Left",
+  "ref": "a99c80d0-efcb-4b6c-9019-16f6d049b3f0",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "Retro",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 8250.0
+  },
+  "type_data": {
+    "thrust_capacity": 1641671.0,
+    "fuel_burn_rate_per10_k_newton": 0.0455375,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

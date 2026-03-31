@@ -1,0 +1,63 @@
+{
+  "key": "WEP_TractorBeam_S4_template",
+  "ref": "55f8b029-dc4b-4397-baac-992de680aa24",
+  "category": "weapons",
+  "type": "TractorBeam",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "SureGrip TH4 Tractor Beam",
+  "short_name": "SureGrip TH4 Tractor",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Tractor Beam\\n\\nGreycat’s latest addition to their field-tested tractor beam line is a dependable addition to their catalog. Aside from a more efficient pull/draw ratio, the latest model does little to advance from the previous models. The SureGrip has settings to target and extract everything from asteroid fragments to drifting crewmen, backed by Greycat’s certified Soft-Touch® guarantee.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1050.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

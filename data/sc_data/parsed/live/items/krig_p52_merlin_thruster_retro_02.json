@@ -1,0 +1,30 @@
+{
+  "key": "KRIG_P52_Merlin_Thruster_Retro_02",
+  "ref": "c0fa67e9-2b9f-4fe2-a945-ef7ab3b12249",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 5750.0
+  },
+  "type_data": {
+    "thrust_capacity": 125891.8,
+    "fuel_burn_rate_per10_k_newton": 0.093625,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

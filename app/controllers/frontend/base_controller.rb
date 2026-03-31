@@ -5,6 +5,8 @@ require "image_processing/mini_magick"
 module Frontend
   class BaseController < ApplicationController
     before_action :check_short_domain
+    before_action :add_flash_messages_to_prefetch
+    before_action :add_features_to_prefetch
 
     include PrefetchHelper
 
@@ -12,7 +14,7 @@ module Frontend
       route = request.fullpath.split("?").first.sub(%r{^/}, "").tr("/", "_")
       route = "home" if route.blank?
 
-      @title = I18n.t("title.frontend.#{route}")
+      @title = I18n.t("title.frontend.#{route}") if I18n.exists?("title.frontend.#{route}")
 
       render_frontend
     end
@@ -25,12 +27,6 @@ module Frontend
 
     def password
       @title = I18n.t("title.frontend.password_change")
-
-      render_frontend
-    end
-
-    def commodities
-      @title = I18n.t("title.frontend.commodities")
 
       render_frontend
     end
@@ -89,78 +85,69 @@ module Frontend
       render_frontend
     end
 
-    def starsystem
-      @starsystem = Starsystem.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @starsystem.present?
-        @title = I18n.t("title.frontend.starsystem", starsystem: @starsystem.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @starsystem.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def station
-      @station = Station.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @station.present?
-        @title = I18n.t("title.frontend.station", station: @station.name, celestial_object: @station.celestial_object.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @station.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def station_images
-      @station = Station.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @station.present?
-        @title = I18n.t("title.frontend.station_images", station: @station.name, celestial_object: @station.celestial_object.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @station.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def celestial_object
-      @celestial_object = CelestialObject.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @celestial_object.present?
-        @title = I18n.t("title.frontend.celestial_object", starsystem: @celestial_object.starsystem.name, celestial_object: @celestial_object.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @celestial_object.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def shop
-      @shop = Shop.find_by(["slug = :value", {value: (params[:slug] || "").downcase}])
-      if @shop.present?
-        @title = I18n.t("title.frontend.shop", station: @shop.station.name, shop: @shop.name)
-        # @description = @station.description
-        @og_type = "article"
-        @og_image = @shop.store_image.url
-      end
-
-      render_frontend
-    end
-
-    def not_found
+    def manifest
       respond_to do |format|
-        format.html do
-          render "frontend/index", status: :not_found
-        end
         format.json do
-          render json: {code: "not_found", message: "Not Found"}, status: :not_found
+          render "frontend/manifest", status: :ok, layout: false
         end
         format.all do
           redirect_to "/404"
         end
       end
+    end
+
+    private def add_flash_messages_to_prefetch
+      messages = []
+
+      if flash[:alert].present?
+        messages << {
+          type: "alert",
+          text: flash[:alert]
+        }
+      end
+      if flash[:error].present?
+        messages << {
+          type: "alert",
+          text: flash[:error]
+        }
+      end
+      if flash[:warning].present?
+        messages << {
+          type: "warning",
+          text: flash[:warning]
+        }
+      end
+      if flash[:notice].present?
+        messages << {
+          type: "info",
+          text: flash[:notice]
+        }
+      end
+      if flash[:success].present?
+        messages << {
+          type: "success",
+          text: flash[:success]
+        }
+      end
+
+      return if messages.blank?
+
+      add_to_prefetch(:notifications, messages.to_json)
+    end
+
+    def add_features_to_prefetch
+      user_features = Flipper.features.filter_map do |feature|
+        Flipper.enabled?(feature.name, current_user) ? feature.to_s : nil
+      end
+      fleet_features = Flipper.features.filter_map do |feature|
+        Flipper.enabled?(feature.name, current_user&.fleets.to_a) ? feature.to_s : nil
+      end
+
+      features = (user_features + fleet_features).uniq
+
+      return if features.blank?
+
+      add_to_prefetch(:features, features.to_json)
     end
 
     private def render_frontend

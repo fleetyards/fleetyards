@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ROC_Dolivine_Green",
+  "ref": "fc832536-15b2-4a33-a7da-e2b99ea060f7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "229bf3fd-4f2b-4e3d-95a4-cfd63efb7f9b",
+  "name": "ROC Dolivine Livery",
+  "short_name": null,
+  "description": "Sharing the name with a gemstone prized for its beauty and industrial applications, the Dolivine livery blends shades of light green to give your ROC a unique look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Zeus_CL_Thruster_Main_Top_Left",
+  "ref": "9808ecb4-8e4d-482c-b4df-4f5b98ac14c0",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 14350.0
+  },
+  "type_data": {
+    "thrust_capacity": 5847488.0,
+    "fuel_burn_rate_per10_k_newton": 0.027,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

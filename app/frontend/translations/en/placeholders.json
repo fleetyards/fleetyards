@@ -1,0 +1,209 @@
+{
+  "en": {
+    "placeholders": {
+      "name": "Name",
+      "description": "Description",
+      "login": "Username or email",
+      "username": "Username",
+      "twoFactorCode": "Two-factor code",
+      "email": "Email",
+      "currentPassword": "Current Password",
+      "password": "Password",
+      "passwordConfirmation": "Password Confirmation",
+      "homepage": "Homepage",
+      "discord": "Discord Server",
+      "youtube": "Youtube Channel",
+      "twitch": "Twitch Channel",
+      "distance": "Distance",
+      "guilded": "Guilded Server",
+      "color": "Color",
+      "features": {
+        "username": "Username or User ID",
+        "fleetFid": "Fleet FID or Fleet ID",
+        "name": "Feature name"
+      },
+      "fleetInviteToken": "Fleet Invite",
+      "quicksearch": {
+        "models": "Avenger, Carrack, Cutlass...",
+        "models-fleetchart": "Avenger, Carrack, Cutlass...",
+        "hangar": "Enterprise, Andromeda...",
+        "hangar-fleetchart": "Enterprise, Andromeda...",
+        "hangar-wishlist": "Avenger, Carrack, Cutlass..."
+      },
+      "search": {
+        "default": "Search...",
+        "roadmap-progress-tracker": "Search"
+      },
+      "home": {
+        "search": "Search for Ships..."
+      },
+      "container-1": "0",
+      "container-2": "0",
+      "container-4": "0",
+      "container-8": "0",
+      "container-16": "0",
+      "container-24": "0",
+      "container-32": "0",
+      "image": {
+        "caption": "Caption"
+      },
+      "model": {
+        "length": "Length",
+        "beam": "Beam",
+        "height": "Height",
+        "price": "Price",
+        "pledgePrice": "Pledge Price",
+        "onSale": "On Sale",
+        "mass": "Mass",
+        "minCrew": "Min. Crew",
+        "maxCrew": "Max. Crew",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Production Note",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "Max Speed",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "quantumFuelTankSize": "Quantum Fuel Tank Size",
+        "hydrogenFuelTankSize": "Hydrogen Fuel Tank Size",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "Yaw Boosted",
+        "pitchBoosted": "Pitch Boosted",
+        "rollBoosted": "Roll Boosted",
+        "fleetchartOffsetLength": "Fleetchart Offset Length",
+        "fleetchartOffsetBeam": "Fleetchart Offset Beam",
+        "cargo": "Cargo",
+        "baseModel": "Base Model"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X",
+        "offsetY": "Offset Y",
+        "offsetZ": "Offset Z",
+        "rotation": "0 or 90"
+      },
+      "manufacturer": {
+        "longName": "Long Name",
+        "code": "Code",
+        "scRef": "SC Ref"
+      },
+      "component": {
+        "componentClass": "Component Class",
+        "componentType": "Component Type",
+        "componentSubType": "Component Sub Type",
+        "itemType": "Item Type",
+        "size": "Size",
+        "grade": "Grade",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "pledgePrice": "Pledge Price",
+        "productionStatus": "Production Status",
+        "productionNote": "Production Note"
+      },
+      "fleet": {
+        "fid": "Fleet ID",
+        "rsiSid": "RSI SID",
+        "ts": "Teamspeak Server",
+        "description": "Description",
+        "discord": "Discord Server",
+        "guilded": "Guilded Server",
+        "homepage": "Homepage",
+        "twitch": "Twitch Channel",
+        "youtube": "Youtube Channel"
+      },
+      "adminUser": {
+        "passwordConfirmation": "Password Confirmation"
+      },
+      "user": {
+        "rsiHandle": "RSI Handle"
+      },
+      "oauthApplication": {
+        "name": "My Application",
+        "redirectUri": "https://example.com/callback",
+        "scopes": "public"
+      },
+      "vehicle": {
+        "serial": "Serial (XX-XXXX-XX)"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "Location",
+        "locationUrl": "Location URL"
+      },
+      "video": {
+        "url": "YouTube Video ID"
+      },
+      "modelModule": {
+        "name": "Module Name",
+        "pledgePrice": "0.00",
+        "search": "Search modules by name..."
+      },
+      "modelUpgrade": {
+        "name": "Upgrade Name",
+        "pledgePrice": "0.00",
+        "description": "Description"
+      },
+      "modelModulePackage": {
+        "name": "Package Name",
+        "pledgePrice": "0.00",
+        "description": "Description"
+      },
+      "dock": {
+        "name": "Dock Name"
+      },
+      "modelHardpoint": {
+        "name": "Hardpoint Name",
+        "key": "hardpoint_key",
+        "details": "Details",
+        "mount": "Mount Type",
+        "itemSlots": "0",
+        "loadoutIdentifier": "Loadout Identifier"
+      },
+      "modelHardpointLoadout": {
+        "name": "Loadout Name"
+      },
+      "filters": {
+        "vehicles": {
+          "name": "Enterprise, Andromeda...",
+          "priceLt": "Price <=",
+          "priceGt": "Price >="
+        },
+        "models": {
+          "name": "Gladius, Andromeda...",
+          "shipRole": "Cargo, Capital Ship, Fighter...",
+          "classification": "Vehicle, Fighter, Cargo...",
+          "manufacturer": "Origin, Robert Space Industries, Aegis...",
+          "onSale": "Yes or No",
+          "productionStatus": "Announced, Flight Ready, In Concept..."
+        },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "users": {
+          "search": "Username or Email",
+          "username": "Username",
+          "rsiHandle": "RSI Handle",
+          "email": "Email"
+        },
+        "components": {
+          "name": "Name",
+          "itemType": "Item Type",
+          "componentClass": "Component Class"
+        },
+        "fleets": {
+          "name": "Name",
+          "fid": "FID",
+          "members": {
+            "username": "Username"
+          }
+        }
+      }
+    }
+  }
+}

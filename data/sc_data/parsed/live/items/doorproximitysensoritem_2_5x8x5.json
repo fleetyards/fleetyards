@@ -1,0 +1,24 @@
+{
+  "key": "DoorProximitySensorItem_2_5x8x5",
+  "ref": "a3def0d9-1358-42db-b5fe-330141b3d543",
+  "category": "doors",
+  "type": "Sensor",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 99.0
+  }
+}

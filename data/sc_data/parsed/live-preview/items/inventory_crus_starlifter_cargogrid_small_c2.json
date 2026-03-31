@@ -1,0 +1,40 @@
+{
+  "key": "CRUS_Starlifter_CargoGrid_Small_C2",
+  "ref": "b30f3329-6944-4d43-a1df-9a9007d15a59",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 7.5,
+      "y": 11.25,
+      "z": 5.0
+    },
+    "capacity": 216.0,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 7.5,
+          "y": 10.0,
+          "z": 2.5
+        },
+        "capacity": 96.0
+      }
+    }
+  }
+}

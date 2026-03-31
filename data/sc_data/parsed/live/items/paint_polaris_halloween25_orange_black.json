@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Polaris_Halloween25_Orange_Black",
+  "ref": "eccaab4a-2803-47bb-a85f-f66b4a4ada01",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dbf31d5c-5dc9-4b86-8f18-c9ebd8160e6c",
+  "name": "Polaris Black Magic Livery",
+  "short_name": null,
+  "description": "The Black Magic livery for the Polaris mixes a macabre black with glowing orange highlights for a look inspired by the sinister spirit of Day of the Vara.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

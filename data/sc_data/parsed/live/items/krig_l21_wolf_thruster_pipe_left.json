@@ -1,0 +1,24 @@
+{
+  "key": "KRIG_L21_Wolf_Thruster_Pipe_Left",
+  "ref": "ee776107-2232-4674-aa4b-46f8ae89dc0b",
+  "category": "module",
+  "type": "AttachedPart",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 100.0
+  }
+}

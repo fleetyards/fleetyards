@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_DRAK_Caterpillar",
+  "ref": "df2d93e4-4169-40cd-ae4f-4f808b9b61d2",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

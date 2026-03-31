@@ -17,6 +17,7 @@
 #  brochure                   :string
 #  cargo                      :decimal(15, 2)
 #  cargo_holds                :string
+#  carrierwave_migrated_at    :datetime
 #  classification             :string(255)
 #  description                :text
 #  dock_size                  :integer
@@ -24,6 +25,7 @@
 #  fleetchart_image           :string
 #  fleetchart_image_height    :integer
 #  fleetchart_image_width     :integer
+#  fleetchart_offset_beam     :decimal(15, 2)
 #  fleetchart_offset_length   :decimal(15, 2)
 #  focus                      :string(255)
 #  front_view                 :string
@@ -32,6 +34,7 @@
 #  front_view_colored_width   :integer
 #  front_view_height          :integer
 #  front_view_width           :integer
+#  fuel_consumption           :decimal(15, 2)
 #  ground                     :boolean          default(FALSE)
 #  ground_acceleration        :decimal(15, 2)
 #  ground_decceleration       :decimal(15, 2)
@@ -59,13 +62,16 @@
 #  notified                   :boolean          default(FALSE)
 #  on_sale                    :boolean          default(FALSE)
 #  pitch                      :decimal(15, 2)
+#  pitch_boosted              :decimal(15, 2)
 #  pledge_price               :decimal(15, 2)
 #  price                      :decimal(15, 2)
 #  production_note            :string(255)
 #  production_status          :string(255)
 #  quantum_fuel_tank_size     :decimal(15, 2)
 #  quantum_fuel_tanks         :string
+#  reverse_speed_boosted      :decimal(15, 2)
 #  roll                       :decimal(15, 2)
+#  roll_boosted               :decimal(15, 2)
 #  rsi_beam                   :decimal(15, 2)   default(0.0), not null
 #  rsi_cargo                  :decimal(15, 2)
 #  rsi_classification         :string
@@ -87,6 +93,8 @@
 #  rsi_size                   :string
 #  rsi_slug                   :string
 #  rsi_store_image            :string
+#  rsi_store_image_height     :integer
+#  rsi_store_image_width      :integer
 #  rsi_store_url              :string
 #  rsi_yaw                    :decimal(15, 2)
 #  sales_page_url             :string
@@ -96,6 +104,7 @@
 #  sc_length                  :decimal(15, 2)
 #  scm_speed                  :decimal(15, 2)
 #  scm_speed_acceleration     :decimal(15, 2)
+#  scm_speed_boosted          :decimal(15, 2)
 #  scm_speed_decceleration    :decimal(15, 2)
 #  side_view                  :string
 #  side_view_colored          :string
@@ -106,6 +115,8 @@
 #  size                       :string
 #  slug                       :string(255)
 #  store_image                :string(255)
+#  store_image_height         :integer
+#  store_image_width          :integer
 #  store_images_updated_at    :datetime
 #  store_url                  :string(255)
 #  top_view                   :string
@@ -117,6 +128,7 @@
 #  upgrade_kits_count         :integer          default(0)
 #  videos_count               :integer          default(0)
 #  yaw                        :decimal(15, 2)
+#  yaw_boosted                :decimal(15, 2)
 #  created_at                 :datetime
 #  updated_at                 :datetime
 #  base_model_id              :uuid
@@ -126,11 +138,17 @@
 #
 # Indexes
 #
-#  index_models_on_base_model_id  (base_model_id)
+#  index_models_on_base_model_id      (base_model_id)
+#  index_models_on_classification     (classification)
+#  index_models_on_manufacturer_id    (manufacturer_id)
+#  index_models_on_name               (name)
+#  index_models_on_production_status  (production_status)
+#  index_models_on_size               (size)
 #
 class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
-  include Routing
+  include RoutingConcern
+  include ActiveStorageVariants
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -152,39 +170,16 @@ class Model < ApplicationRecord
   max_paginates_per 240
   per_page_steps [15, 30, 60, 120, 240]
 
-  searchkick searchable: %i[name manufacturer_name manufacturer_code],
-    word_start: %i[name manufacturer_name]
-
-  def search_data
-    {
-      name:,
-      manufacturer_name: manufacturer.name,
-      manufacturer_code: manufacturer.code
-    }
-  end
-
-  def should_index?
-    active && !hidden
-  end
-
   belongs_to :manufacturer, optional: true
 
-  has_one :addition,
-    class_name: "ModelAddition",
-    dependent: :destroy,
-    inverse_of: :model
-
-  delegate :net_cargo, to: :addition, allow_nil: true
-  delegate :height, :length, :cargo, :max_crew, :min_crew,
-    :scm_speed, :afterburner_speed, :mass, :beam, :price, to: :addition, allow_nil: true, prefix: true
-
-  accepts_nested_attributes_for :addition, allow_destroy: true
+  has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
+  has_many :components, through: :hardpoints
 
   has_many :model_hardpoints,
     dependent: :destroy,
     autosave: true
+  has_many :hardpoint_components, through: :model_hardpoints
   has_many :vehicles, dependent: :destroy
-  has_many :components, through: :model_hardpoints
 
   has_many :module_hardpoints, dependent: :destroy
   has_many :modules,
@@ -229,11 +224,15 @@ class Model < ApplicationRecord
     through: :model_snub_crafts,
     source: :snub_craft
 
-  has_many :shop_commodities, as: :commodity_item, dependent: :destroy
+  has_many :item_prices, as: :item, dependent: :destroy
 
   has_many :docks, dependent: :destroy
 
-  enum dock_size: Dock.ship_sizes.keys.map(&:to_sym)
+  has_many :cargo_holds_db, class_name: "CargoHold", dependent: :destroy
+  has_many :cargo_hold_container_capacities, through: :cargo_holds_db
+
+  enum :dock_size,
+    Dock.ship_sizes.keys.map(&:to_sym)
 
   serialize :cargo_holds, coder: YAML
   serialize :quantum_fuel_tanks, coder: YAML
@@ -257,13 +256,39 @@ class Model < ApplicationRecord
   mount_uploader :holo, HoloUploader
 
   has_one_attached :new_store_image
+  has_one_attached :new_rsi_store_image
+  has_one_attached :new_fleetchart_image
+  has_one_attached :new_top_view
+  has_one_attached :new_side_view
+  has_one_attached :new_front_view
+  has_one_attached :new_angled_view
+  has_one_attached :new_top_view_colored
+  has_one_attached :new_side_view_colored
+  has_one_attached :new_front_view_colored
+  has_one_attached :new_angled_view_colored
+  has_one_attached :new_brochure
+  has_one_attached :new_holo
+
+  %i[
+    store_image rsi_store_image fleetchart_image
+    top_view side_view front_view angled_view
+    top_view_colored side_view_colored front_view_colored angled_view_colored
+    brochure holo
+  ].each do |attr|
+    define_method(:"#{attr}=") do |value|
+      if value.is_a?(String) && value.present?
+        send(:"new_#{attr}=", value)
+      else
+        super(value)
+      end
+    end
+  end
 
   before_save :update_slugs
 
   before_save :update_from_hardpoints
   before_create :set_last_updated_at
 
-  after_save :touch_shop_commodities
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
   after_save :send_new_model_notification
@@ -271,7 +296,14 @@ class Model < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   DEFAULT_SORTING_PARAMS = "name asc"
-  ALLOWED_SORTING_PARAMS = ["name asc", "name desc", "created_at asc", "created_at desc"]
+  ALLOWED_SORTING_PARAMS = [
+    "name asc", "name desc", "createdAt asc", "createdAt desc", "length asc", "length desc",
+    "beam asc", "beam desc", "height asc", "height desc", "mass asc", "mass desc", "cargo asc",
+    "cargo desc", "manufacturerName asc", "manufacturerName desc", "pledgePrice asc",
+    "pledgePrice desc", "price asc", "price desc", "scmSpeed asc", "scmSpeed desc", "maxSpeed asc",
+    "maxSpeed desc", "groundMaxSpeed asc", "groundMaxSpeed desc", "productionStatus asc",
+    "productionStatus desc", "focus asc", "focus desc", "rsiId asc", "rsiId desc"
+  ]
 
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug
@@ -307,9 +339,9 @@ class Model < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     [
-      "addition", "components", "docks", "images", "loaners", "manufacturer", "model_hardpoints",
-      "model_loaners", "model_snub_crafts", "module_hardpoints", "module_packages", "modules",
-      "paints", "shop_commodities", "snub_crafts", "upgrade_kits", "upgrades", "vehicles",
+      "components", "docks", "images", "loaners", "manufacturer", "model_hardpoints",
+      "model_loaners", "model_snub_crafts", "module_hardpoints", "module_packages",
+      "modules", "paints", "snub_crafts", "upgrade_kits", "upgrades", "vehicles",
       "versions", "videos"
     ]
   end
@@ -320,11 +352,15 @@ class Model < ApplicationRecord
 
   PRODUCTION_STATUSES = %w[in-concept in-production flight-ready].freeze
 
+  def in_game?
+    sc_identifier.present? && production_status == "flight-ready"
+  end
+
   def self.production_status_filters
     PRODUCTION_STATUSES.map do |item|
       Filter.new(
         category: "productionStatus",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -334,7 +370,17 @@ class Model < ApplicationRecord
     Model.classifications.map do |item|
       Filter.new(
         category: "classification",
-        name: item.humanize,
+        label: item.humanize,
+        value: item
+      )
+    end
+  end
+
+  def self.dock_size_filters
+    Model.dock_sizes.map do |key, item|
+      Filter.new(
+        category: "dock_size",
+        label: key.humanize,
         value: item
       )
     end
@@ -348,7 +394,7 @@ class Model < ApplicationRecord
     Model.visible.active.all.map(&:focus).compact_blank.compact.uniq.map do |item|
       Filter.new(
         category: "focus",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -358,7 +404,7 @@ class Model < ApplicationRecord
     %w[vehicle snub small medium large extra_large capital].map do |item|
       Filter.new(
         category: "size",
-        name: item.humanize,
+        label: item.humanize,
         value: item
       )
     end
@@ -387,10 +433,83 @@ class Model < ApplicationRecord
   end
 
   def set_cargo_from_hardpoints
-    return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
+    return if cargo_holds.blank? || (cargo.present? && !cargo.zero? && !cargo_holds_change_to_be_saved)
 
-    self.cargo = cargo_holds.sum do |item|
-      item[:scu]
+    self.cargo = cargo_holds.sum do |cargo_hold|
+      cargo_hold.dig("capacity")&.to_f || 0
+    end
+
+    update_cargo_holds_db
+  end
+
+  def cargo_holds_with_offsets
+    db_records = cargo_holds_db.where.not(offset_x: nil)
+      .or(cargo_holds_db.where.not(offset_y: nil))
+      .or(cargo_holds_db.where.not(offset_z: nil))
+      .or(cargo_holds_db.where.not(rotation: nil))
+      .index_by(&:position)
+
+    return cargo_holds if db_records.empty?
+
+    cargo_holds.each_with_index.map do |hold_data, index|
+      db_record = db_records[index]
+      if db_record
+        extra = {
+          "offset" => {
+            "x" => db_record.offset_x&.to_f || 0.0,
+            "y" => db_record.offset_y&.to_f || 0.0,
+            "z" => db_record.offset_z&.to_f || 0.0
+          }
+        }
+        extra["rotation"] = db_record.rotation if db_record.rotation.present?
+        hold_data.merge(extra)
+      else
+        hold_data
+      end
+    end
+  end
+
+  def update_cargo_holds_db
+    # Preserve manually-set offsets before recreating
+    existing_offsets = cargo_holds_db.where.not(offset_x: nil).or(
+      cargo_holds_db.where.not(offset_y: nil)
+    ).or(
+      cargo_holds_db.where.not(offset_z: nil)
+    ).or(
+      cargo_holds_db.where.not(rotation: nil)
+    ).index_by(&:position)
+
+    cargo_holds_db.destroy_all
+
+    cargo_holds.each_with_index do |hold_data, index|
+      next if hold_data.blank? || hold_data["dimensions"].blank?
+
+      # Restore offsets from previous record if they existed (match by position)
+      previous = existing_offsets[index]
+
+      cargo_hold = cargo_holds_db.create!(
+        name: hold_data["name"],
+        dimension_x: hold_data["dimensions"]["x"],
+        dimension_y: hold_data["dimensions"]["y"],
+        dimension_z: hold_data["dimensions"]["z"],
+        capacity_scu: hold_data["capacity"],
+        max_container_size_scu: hold_data.dig("max_container_size", "size"),
+        max_container_dimension_x: hold_data.dig("max_container_size", "dimensions", "x"),
+        max_container_dimension_y: hold_data.dig("max_container_size", "dimensions", "y"),
+        max_container_dimension_z: hold_data.dig("max_container_size", "dimensions", "z"),
+        min_container_size_scu: hold_data.dig("limits", "min", "capacity"),
+        min_container_dimension_x: hold_data.dig("limits", "min", "dimensions", "x"),
+        min_container_dimension_y: hold_data.dig("limits", "min", "dimensions", "y"),
+        min_container_dimension_z: hold_data.dig("limits", "min", "dimensions", "z"),
+        position: index,
+        offset_x: previous&.offset_x,
+        offset_y: previous&.offset_y,
+        offset_z: previous&.offset_z,
+        rotation: previous&.rotation
+      )
+
+      # Calculate container capacities
+      cargo_hold.calculate_container_capacities!
     end
   end
 
@@ -398,7 +517,7 @@ class Model < ApplicationRecord
     return if quantum_fuel_tanks.blank? || (quantum_fuel_tank_size.present? && !quantum_fuel_tanks_change_to_be_saved)
 
     self.quantum_fuel_tank_size = quantum_fuel_tanks.sum do |item|
-      item[:capacity]
+      item["capacity"]
     end
   end
 
@@ -406,7 +525,19 @@ class Model < ApplicationRecord
     return if hydrogen_fuel_tanks.blank? || (hydrogen_fuel_tank_size.present? && !hydrogen_fuel_tanks_change_to_be_saved)
 
     self.hydrogen_fuel_tank_size = hydrogen_fuel_tanks.sum do |item|
-      item[:capacity]
+      item["capacity"]
+    end
+  end
+
+  def set_fuel_consumption_from_hardpoints
+    thrusters = hardpoints.includes(:component).where(group: :thruster).filter_map do |hardpoint|
+      next if hardpoint.component.blank?
+
+      hardpoint.component.type_data
+    end
+
+    self.fuel_consumption = thrusters.sum do |thruster|
+      thruster.dig("fuel_burn_rate_per10_k_newton").to_f
     end
   end
 
@@ -421,19 +552,15 @@ class Model < ApplicationRecord
   end
 
   def sold_at
-    shop_commodities.where.not(sell_price: nil).order(sell_price: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.sell.order(price: :asc).uniq(&:location)
   end
 
   def bought_at
-    shop_commodities.where.not(buy_price: nil).order(buy_price: :desc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
-  end
-
-  def listed_at
-    shop_commodities.where(sell_price: nil, buy_price: nil).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
   def rental_at
-    shop_commodities.where.not(rental_price_1_day: nil).order(rental_price_1_day: :asc).uniq { |item| "#{item.shop.station_id}-#{item.shop_id}" }
+    item_prices.rental.order(price: :asc).uniq(&:location)
   end
 
   def dock_counts
@@ -565,15 +692,9 @@ class Model < ApplicationRecord
     ActionCable.server.broadcast("on_sale", to_json)
   end
 
-  private def touch_shop_commodities
-    # rubocop:disable Rails/SkipsModelValidations
-    shop_commodities.update_all(updated_at: Time.zone.now)
-    # rubocop:enable Rails/SkipsModelValidations
-  end
-
   private def update_slugs
     super
-    self.rsi_slug = SlugHelper.generate_slug(rsi_name)
+    self.rsi_slug = generate_slug(rsi_name)
   end
 
   private def set_last_updated_at

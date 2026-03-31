@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Hawk_Thruster_Main",
+  "ref": "58ed4e19-6f40-4338-9383-de7b418cf937",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 7500.0
+  },
+  "type_data": {
+    "thrust_capacity": 4317000.0,
+    "fuel_burn_rate_per10_k_newton": 0.0655375,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

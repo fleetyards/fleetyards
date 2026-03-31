@@ -1,0 +1,60 @@
+{
+  "key": "MISC_Starlancer_TAC_Side_Turret",
+  "ref": "b3cba11a-c683-4a89-bc01-1f21505638ec",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "Display_Radar",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    },
+    {
+      "name": "hardpoint_turret_exterior",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  }
+}

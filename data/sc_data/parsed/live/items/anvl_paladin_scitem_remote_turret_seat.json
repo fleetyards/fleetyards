@@ -1,0 +1,21 @@
+{
+  "key": "ANVL_Paladin_SCItem_Remote_Turret_Seat",
+  "ref": "c6169663-53ea-4400-8f2e-c175b1eefb39",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

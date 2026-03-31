@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JUST_S01_EcoFlow_SCItem",
+  "ref": "b2279e37-c5fb-49ab-b008-b32f3c528706",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Eco-Flow",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Juno Starwerk\\nSize: 1\\nGrade: B\\nClass: Industrial\\n\\nA standard for centuries, Juno Starwerk’s industrial Eco-Flow cooler is a favorite of haulers for being easy to maintain even when carrying the heaviest cargo loads.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 180.0
+  }
+}

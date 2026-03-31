@@ -1,0 +1,31 @@
+{
+  "key": "RSI_Constellation_SCItem_Seat_CoPilot_Left",
+  "ref": "52d3e4e9-e970-4a21-b214-510e6b5b43ba",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cockpit_radar",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    }
+  ]
+}

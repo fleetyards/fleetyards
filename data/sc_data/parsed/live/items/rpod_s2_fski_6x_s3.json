@@ -1,0 +1,29 @@
+{
+  "key": "RPOD_S2_FSKI_6x_S3",
+  "ref": "2f525576-8894-4bc6-baf1-d08a8c21cabc",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Rocket",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "5f81335d-44e6-4104-841e-c5af9df06829",
+  "name": "Yebira II",
+  "short_name": null,
+  "description": "Item Type: Rocket Pod\\nManufacturer: Firestorm Kinetics\\nSize: 2\\nRockets: 6xS3\\n\\nThe Yebira II rocket pod is the perfect system for efficient deployment of S3 ordnance. Manufactured by Firestorm Kinetics, this rocket pod carries six rockets and attaches to any size two hardpoint.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 750.0
+  },
+  "ammunition": {
+    "max_ammo_count": 12.0,
+    "initial_ammo_count": 12.0,
+    "max_restock_count": 3.0
+  }
+}

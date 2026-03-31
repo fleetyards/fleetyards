@@ -1,0 +1,60 @@
+.modal-header {
+  position: relative;
+  padding: 0;
+  padding-bottom: 1rem;
+  border-bottom: none;
+  border-radius: 0;
+
+  .modal-title {
+    padding-right: 20px;
+    font-weight: normal;
+    font-family: "Orbitron", sans-serif;
+    line-height: 1;
+    padding-bottom: 1rem;
+
+    small {
+      font-size: 15px;
+      font-family: "Open Sans", sans-serif;
+      line-height: 1;
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 0;
+    right: -10px;
+    margin: 0;
+    padding: 3px 10px;
+    color: white;
+    font-size: 1rem;
+    text-shadow: none;
+    cursor: pointer;
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  padding: 15px;
+  background-color: transparent;
+  border: none;
+  border-radius: $border-radius-base;
+  box-shadow: none;
+}
+
+.modal-body {
+  padding: 0;
+}
+
+.modal-footer {
+  padding: 0.75rem 0;
+  border-top: none;
+  border-radius: 0;
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .modal-content {
+    border-width: 1px 0 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "key": "ANVL_Valkyrie_Nose_Turret_S3",
+  "ref": "d2a6b563-5c2d-4334-b3b8-22ab4fc84c39",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "PC2 Dual S3 Mount",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

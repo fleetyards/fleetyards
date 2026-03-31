@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_GoblinG_A_Red_Black",
+  "ref": "a3ae2df5-461d-49f2-a6c2-cf23454e67f8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "260492eb-17f2-440d-99f0-c2dcb5432e4f",
+  "name": "Spirit ArcCorp Livery",
+  "short_name": null,
+  "description": "The ArcCorp livery for the Spirit features the company's logo atop a maroon base paint with black and yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S02_CryoStarEX_SCItem",
+  "ref": "b3e803cc-f907-494d-8e35-51703eae4b6f",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Cryo-Star EX",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span\\nSize: 2\\nGrade: B\\nClass: Civilian\\n\\nWith its EX line, J-Span has brought the same reliable heat absorption of their popular Cryo-Star cooler to pilots looking to outfit larger ships.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 400.0
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "key": "APAR_BallisticScatterGun_S2_Shark",
+  "ref": "961c6667-32b3-453a-b651-2e639f6742c7",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "name": "Hellion Scattergun Sharkmouth Edition",
+  "short_name": "Hellion SHK",
+  "description": "Manufacturer: Apocalypse Arms\\nItem Type: Ballistic Scattergun\\nSize: 2\\n\\nApocalypse Arms' Hellion is a size two scattergun that saturates targets with ballistic ammo in close quarters. The gun's smart ammo functionality allows it to switch between standard and specialty rounds.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 2019.0,
+    "initial_ammo_count": 2019.0,
+    "max_restock_count": 3.0
+  }
+}

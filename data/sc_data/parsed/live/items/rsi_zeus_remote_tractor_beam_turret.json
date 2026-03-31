@@ -1,0 +1,34 @@
+{
+  "key": "RSI_Zeus_Remote_Tractor_Beam_Turret",
+  "ref": "e4d17bcd-6b55-4e7e-b66d-0a53c710030a",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "Utility",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_tractor_beam_device",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "TractorBeam"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 500.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "COOL_ACOM_S01_QuickCool_SCItem",
+  "ref": "34334a56-0045-40e5-b573-5891e8e2dbbf",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "QuikCool",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: ACOM\\nSize: 1\\nGrade: D\\nClass: Competition\\n\\nThe QuikCool provides superior performance over other coolers in its class. This competition grade component from ACOM sacrifices stealth and some durability to be one of the most powerful entry-level coolers around.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 62.0
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "key": "AEGS_Reclaimer_SCItem_Remote_Salvage_Turret_Left",
+  "ref": "109cb42f-54b2-4e3c-914f-9baca40b3a22",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "Utility",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_salvage",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "SalvageHead"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4000.0
+  }
+}

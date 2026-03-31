@@ -5,11 +5,39 @@ module Admin
     module Schemas
       module Models
         module Loaners
-          class ModelLoaner < ::V1::Schemas::Models::Loaners::ModelLoaner
-            include SchemaConcern
+          class ModelLoaner
+            include Rswag::SchemaComponents::Component
 
             schema({
-              properties: {}
+              type: :object,
+              properties: {
+                id: {type: :string, format: :uuid},
+                modelId: {type: :string, format: :uuid},
+                loanerModelId: {type: :string, format: :uuid},
+                hidden: {type: :boolean},
+                model: {
+                  type: :object,
+                  properties: {
+                    id: {type: :string, format: :uuid},
+                    name: {type: :string},
+                    slug: {type: :string}
+                  },
+                  required: %w[id name slug]
+                },
+                loanerModel: {
+                  type: :object,
+                  properties: {
+                    id: {type: :string, format: :uuid},
+                    name: {type: :string},
+                    slug: {type: :string}
+                  },
+                  required: %w[id name slug]
+                },
+                createdAt: {type: :string, format: "date-time"},
+                updatedAt: {type: :string, format: "date-time"}
+              },
+              additionalProperties: false,
+              required: %w[id modelId loanerModelId hidden createdAt updatedAt]
             })
           end
         end

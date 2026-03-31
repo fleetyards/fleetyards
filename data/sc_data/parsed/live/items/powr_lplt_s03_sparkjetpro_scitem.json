@@ -1,0 +1,24 @@
+{
+  "key": "POWR_LPLT_S03_SparkJetPro_SCItem",
+  "ref": "18fb77da-25b5-4599-98a3-6a6335fe3bc5",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "3",
+  "grade": "4",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "SparkJet Pro",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Lighting Power Ltd.\\nSize: 3\\nGrade: D\\nClass: Civilian  \\n\\nLooking to upgrade your power plant on a budget? Lightning Power Ltd's SparkJet Pro gives you reliability across the board, making it a solid choice to get you out and flying.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1300.0
+  }
+}

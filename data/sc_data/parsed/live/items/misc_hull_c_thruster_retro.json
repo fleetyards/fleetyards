@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Hull_C_Thruster_Retro",
+  "ref": "7837dfda-fcef-4e12-b4e3-1ce54daf3b22",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 15000.0
+  },
+  "type_data": {
+    "thrust_capacity": 6000000.0,
+    "fuel_burn_rate_per10_k_newton": 0.1085,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

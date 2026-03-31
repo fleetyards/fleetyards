@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler_IcySilver_Titanium_Titanium",
+  "ref": "f171609e-962c-482f-93b4-1752b36c39fb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1faf4ac3-9160-4d59-a315-99a5ba85f691",
+  "name": "Prowler Elysian Livery",
+  "short_name": null,
+  "description": "Beautiful blues swirl together with the Elysian livery to bring a truly special look to the Prowler.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "key": "Door_ChipReader_Yormandi_Access",
+  "ref": "48a356b5-573a-479c-ab50-fbb2e34c18e1",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "055fe7c5-2e02-4e3a-aacb-f289563fabbd",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "slot_cardreader_a",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "FPS_Consumable"
+      ]
+    }
+  ]
+}

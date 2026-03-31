@@ -2,26 +2,41 @@
 
 json.id model_module.id
 json.name model_module.name
+json.active model_module.active
+json.hidden model_module.hidden
 
 json.availability do
   json.bought_at do
-    json.array! model_module.bought_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model_module.bought_at, partial: "api/v1/item_prices/base", as: :item_price
   end
   json.sold_at do
-    json.array! model_module.sold_at, partial: "api/v1/shop_commodities/base", as: :shop_commodity
+    json.array! model_module.sold_at, partial: "api/v1/item_prices/base", as: :item_price
   end
 end
+
 json.description model_module.description
 json.has_store_image model_module.store_image.present?
 
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/media_image", media_image: model_module.store_image
+    json.partial! "api/v1/shared/file", record: model_module, attr: :new_store_image, old_attr: :store_image, width: model_module.store_image_width, height: model_module.store_image_height
+  end
+end
+
+if model_module.models.any?
+  json.model do
+    json.partial! "admin/api/v1/models/base", model: model_module.models.first
   end
 end
 
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status
+
+if model_module.manufacturer.present?
+  json.manufacturer do
+    json.partial! "api/v1/manufacturers/base", manufacturer: model_module.manufacturer
+  end
+end
 
 json.partial! "api/shared/dates", record: model_module

@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S01_Regulus_SCItem",
+  "ref": "688aab9c-bc62-4774-be7d-065dee7e2187",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Regulus",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics\\nSize: 1\\nGrade: C\\nClass: Military\\n\\nThe Regulus is the power plant you can count on when everyone is counting on you. Made to exceed exacting military standards, Aegis’ design team has made sure that you have the extra power you need, when you need it most.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 270.0
+  }
+}

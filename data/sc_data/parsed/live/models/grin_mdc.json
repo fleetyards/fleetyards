@@ -1,0 +1,195 @@
+{
+  "key": "GRIN_MDC",
+  "ground": true,
+  "movement_class": "ArcadeWheeled",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Greycat MDC",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Combat\\n \\nBuilding upon a robust and sturdy industrial frame, Greycat has crafted the MDC Mobile Defense Center into an effective combat vehicle ready to protect your interests from remote mining sites to patrolling high-value processing centers thanks to its mounted PDS turret.",
+  "career": "Ground",
+  "role": "Anti-Air",
+  "insurance": {
+    "base_wait_time_minutes": "5.1",
+    "mandatory_wait_time_minutes": "1.3",
+    "base_expediting_fee": "5060"
+  },
+  "mass": 13000.0,
+  "metrics": {
+    "x": 8.75,
+    "y": 6.0,
+    "z": 5.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant_mdc",
+      "ref": "ad59f651-83d0-42f3-839a-8f055243ba6b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "fe391f6b-2f84-4fd4-8ddc-7be3ce581e74",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": "b935e5d8-dead-47c5-8937-382c3aa11682",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": "4a9ebf31-a405-4b68-9886-b4a47bd1b61d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": "61cc7bf5-6666-40f7-8c0a-ee8a8092f51e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": "9b580184-17bf-42f7-a22d-9938b2af42b1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_wheel",
+      "ref": "394a67c7-db2c-4b8a-80ef-769212a708a3",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": "29f19b90-b8a2-4ddb-b45a-bf3c440452aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_driver",
+      "ref": "8a0a4ce7-a563-40b6-9ed9-c0eb372b532d",
+      "key": null,
+      "loadout": []
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": "e9655bd9-dd74-46ee-8a15-2ac3bd3dfde1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_mdc",
+      "ref": "ffede9a8-3c50-4b9e-be0f-9d93e5a26f29",
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_mdc",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler_mdc",
+      "ref": "7db13b34-c8b1-4e1a-9aba-3dcd7087e995",
+      "key": null
+    },
+    {
+      "name": "hardpoint_GRIN_MXC_Fuelport",
+      "ref": "bd703016-1294-410c-86c3-118644932b70",
+      "key": null
+    },
+    {
+      "name": "hardpoint_comp_radar_mdc",
+      "ref": "28e81323-a16a-4995-9da5-1aca23b4044c",
+      "key": null
+    },
+    {
+      "name": "hardpoint_comp_lifesupport_mdc",
+      "ref": "b9c57c11-2e49-4098-9475-671b7788e318",
+      "key": null
+    },
+    {
+      "name": "hardpoint_comp_computer_mdc",
+      "ref": "a6b4604a-358b-4ee7-8c0f-f3f43427154d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_GRIN_MXC_Door",
+      "ref": "0cd5df6f-9852-4ecd-b28b-f3a2cb5c5764",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_mdc",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_rear",
+      "ref": null,
+      "key": "Grin_Rear_Module_MDC"
+    },
+    {
+      "name": "hardpoint_GRIN_MTC_Blastshield",
+      "ref": "60618a88-efed-44ac-b6af-58cf8b43ad94",
+      "key": null
+    },
+    {
+      "name": "hardpoint_GRIN_MTC_cargohatch",
+      "ref": "d4dbb2f7-eb01-4946-8d5c-703110a9ecdc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_extinguisher",
+      "ref": "c2a8a6dc-45be-42e1-bacf-45c035a4aedc",
+      "key": null
+    },
+    {
+      "name": "hardpoint_personalstorage",
+      "ref": null,
+      "key": "PersonalStorage_GRIN_MXC"
+    },
+    {
+      "name": "hardpoint_fuel_tank_hydrogen",
+      "ref": null,
+      "key": "HTNK_GRIN_MTC"
+    },
+    {
+      "name": "hardpoint_engineeringscreen_mdc",
+      "ref": "dbdb43e1-085f-495d-88bc-f495cf5d8bee",
+      "key": null
+    },
+    {
+      "name": "hardpoint_towhook_01",
+      "ref": "757480c2-4a61-4368-b10e-746f16035fff",
+      "key": null
+    },
+    {
+      "name": "hardpoint_towhook_02",
+      "ref": null,
+      "key": "constraint_MXC_towhook"
+    },
+    {
+      "name": "hardpoint_towhook_03",
+      "ref": null,
+      "key": "constraint_MXC_towhook"
+    },
+    {
+      "name": "hardpoint_towhook_04",
+      "ref": null,
+      "key": "constraint_MXC_towhook"
+    }
+  ]
+}

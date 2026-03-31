@@ -1,0 +1,22 @@
+{
+  "key": "ARGO_SRV_CargoGrid_Main",
+  "ref": "53f60f2b-4d66-4926-811c-ab9068f1a562",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "af8f5a09-19b8-4173-b361-a0b7dab7897a"
+}

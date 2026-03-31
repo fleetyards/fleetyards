@@ -1,0 +1,24 @@
+{
+  "key": "QTNK_RSI_Aurora_LX",
+  "ref": "51ea4f6c-a3b2-4038-8938-0f1f1fe4e6e0",
+  "category": "fueltanks",
+  "type": "QuantumFuelTank",
+  "sub_type": "QuantumFuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 1.8
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S01_Breton_SCItem",
+  "ref": "e533d75c-9275-48e9-bc93-f49a2c113bc5",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Breton",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 1\\nGrade: A\\nClass: Industrial\\n\\nThe Breton embodies exactly what Juno Starwerk engineers wanted out of an industrial power plant — utilitarian, easy to repair and extremely powerful. You’ll be hard pressed to find a better balance of performance and durability from a unit this size.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 300.0
+  }
+}

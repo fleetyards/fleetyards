@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S04_CS_TALN_Assailant",
+  "ref": "8814fe40-39c1-43c0-8ad4-5bad1c2a2c5c",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Assailant IV-G Missile",
+  "short_name": "Asslnt IV-G",
+  "description": "Manufacturer: Talon \\nTracking Signal: Cross Section \\nSize: 4  \\n\\nThe Assailant missile from Talon is a perfect weapon solution for precision strikes against motivated opponents. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 62500.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 4.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

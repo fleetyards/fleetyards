@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S01_Fortitude_SCItem",
+  "ref": "a1108d40-080d-4087-b5e2-5030336ee180",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Fortitude",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 1\\nGrade: C\\nClass: Industrial\\n\\nBeloved by haulers for centuries, the Fortitude lives up to its name by reliably producing power when needed most.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 230.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "ANVL_Terrapin_Medic_EmergencyLights",
+  "ref": "229f71d2-b57a-4943-8df8-60877f4b9ecb",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 10.0
+  }
+}

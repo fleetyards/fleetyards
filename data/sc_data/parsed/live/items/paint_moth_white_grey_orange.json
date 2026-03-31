@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Moth_white_grey_orange",
+  "ref": "67a22871-aa24-4a33-b59e-1b4f8cad1aa9",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "389cfdaa-8b16-49f4-8de7-1c1cac49a6c1",
+  "name": "MOTH Dolomite Livery",
+  "short_name": null,
+  "description": "The Dolomite livery turns the MOTH white and grey with orange highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

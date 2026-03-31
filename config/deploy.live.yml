@@ -1,0 +1,40 @@
+<% web_ips = `bash .kamal/server-ips web live`.strip.split(',') %>
+<% acc_ips = `bash .kamal/server-ips accessory live`.strip.split(',') %>
+
+# Kamal destination: live (production)
+# Deploy with: kamal deploy -d live
+
+servers:
+  web:
+    hosts:
+<%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
+  worker:
+    hosts:
+<%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
+
+proxy:
+  host: fleetyards.net
+
+env:
+  clear:
+    RAILS_ENV: production
+    WORKER_COUNT: "3"
+    MAX_THREADS: "8"
+    DOMAIN: fleetyards.net
+    SHORT_DOMAIN: fltyrd.net
+    CDN_ENDPOINT: "https://cdn.fltyrd.net"
+    STORAGE_CDN_ENDPOINT: "https://storage.fltyrd.net"
+    MAILER_DEFAULT_FROM: "info@fleetyards.net"
+    CABLE_ENDPOINT: "wss://fleetyards.net/cable"
+
+accessories:
+  db:
+    host: <%= acc_ips.first %>
+  redis:
+    host: <%= acc_ips.first %>
+  db-backup:
+    host: <%= acc_ips.first %>
+    env:
+      clear:
+        POSTGRES_DATABASE: fleetyards_production
+        S3_BUCKET: fltyrd-live-backups

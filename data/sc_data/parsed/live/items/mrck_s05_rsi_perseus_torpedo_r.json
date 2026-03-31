@@ -1,0 +1,106 @@
+{
+  "key": "MRCK_S05_RSI_Perseus_Torpedo_R",
+  "ref": "6c32193d-15e0-486f-a833-1db0b1f93d05",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "RSI Polaris Torpedo Rack",
+  "short_name": null,
+  "description": "Item Type: Torpedo Rack\\nManufacturer: RSI\\nSize: 10\\nTorpedo: 7xS10 \\n\\nBring the impressive firepower of the Polaris to bear with this bespoke torpedo rack holding seven massive S10 torpedoes.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_09_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_10_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

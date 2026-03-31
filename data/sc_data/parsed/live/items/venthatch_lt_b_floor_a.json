@@ -1,0 +1,21 @@
+{
+  "key": "VentHatch_Lt_B_Floor_a",
+  "ref": "f1c417de-0977-4c95-89e0-50d0a40b1df7",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

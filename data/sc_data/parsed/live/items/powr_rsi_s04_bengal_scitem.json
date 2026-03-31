@@ -1,0 +1,24 @@
+{
+  "key": "POWR_RSI_S04_Bengal_SCItem",
+  "ref": "87bcad59-966f-4280-b651-1f9a8d92bc32",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Main Powerplant",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 420000.0
+  }
+}

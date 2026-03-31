@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Guardian_MX_Tan_Green_Tan",
+  "ref": "5149f401-4438-4674-b7a5-46647bfe4edf",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f6f3ead5-74e8-42d5-938c-7ebcfe5f37f4",
+  "name": "Guardian Peninsula Livery",
+  "short_name": null,
+  "description": "Shades of stony tans and earthen browns create a grounded look for the Peninsula livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

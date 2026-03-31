@@ -1,0 +1,34 @@
+{
+  "key": "MISC_Hull_A_CargoPlate",
+  "ref": "3f73dc4b-abc5-448b-a449-f02627697d4a",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "Hardpoint_Cargo",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

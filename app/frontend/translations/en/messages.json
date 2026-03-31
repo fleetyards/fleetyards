@@ -1,0 +1,382 @@
+{
+  "en": {
+    "messages": {
+      "copy": {
+        "success": "Text Copied!",
+        "failure": "Could not copy Text"
+      },
+      "copyGitRevision": {
+        "success": "Git Revision Copied!",
+        "failure": "Could not copy Git Revision"
+      },
+      "copyImageUrl": {
+        "success": "Image URL Copied!",
+        "failure": "Could not copy Image URL"
+      },
+      "copyVideoUrl": {
+        "success": "Video URL Copied!",
+        "failure": "Could not copy Video URL"
+      },
+      "copyShareUrl": {
+        "success": "URL \"%{url}\" Copied!",
+        "failure": "Could not copy URL"
+      },
+      "copyInviteUrl": {
+        "success": "Invite URL \"%{url}\" Copied!",
+        "failure": "Could not copy Invite URL"
+      },
+      "copyTwoFactorProvisioningUrl": {
+        "success": "Provisioning Url Copied!",
+        "failure": "Could not copy Provisioning Url"
+      },
+      "copyBackupCodes": {
+        "success": "Backup Codes Copied!",
+        "failure": "Could not copy Backup Codes"
+      },
+      "signup": {
+        "success": "<b>Welcome to FleetYards.net!</b> Your account has been created. <br>You will receive a confirmation email to activate your account.",
+        "invalid": "Please resolve the errors before your account can be created.",
+        "failure": "We could not create your account. Please try again later."
+      },
+      "accountConfirm": {
+        "success": "Your account was successfully confirmed.<br>You can now login.",
+        "failure": "Your account could not be confirmed."
+      },
+      "requestPasswordChange": {
+        "success": "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
+      },
+      "changePassword": {
+        "success": "Your password was changed successfully.",
+        "failure": "Your password could not be updated."
+      },
+      "updateProfile": {
+        "success": "Profile updated.",
+        "failure": "Profile could not be updated."
+      },
+      "updateHangar": {
+        "success": "Hangar Settings updated."
+      },
+      "features": {
+        "updated": "Feature updated.",
+        "error": "Could not update feature.",
+        "actorAdded": "Actor added to feature.",
+        "actorRemoved": "Actor removed from feature.",
+        "groupAdded": "Group added to feature.",
+        "groupRemoved": "Group removed from feature.",
+        "created": "Feature created.",
+        "destroyed": "Feature removed.",
+        "createError": "Could not create feature."
+      },
+      "rsiRequestLogs": {
+        "resolved": "Request log marked as resolved.",
+        "error": "Could not update request log."
+      },
+      "updateNotifications": {
+        "success": "Notification Settings updated."
+      },
+      "updateAccount": {
+        "success": "Account updated."
+      },
+      "oauthApplications": {
+        "create": {
+          "success": "OAuth application created.",
+          "error": "Could not create OAuth application."
+        },
+        "update": {
+          "success": "OAuth application updated.",
+          "error": "Could not update OAuth application."
+        },
+        "destroy": {
+          "success": "OAuth application deleted.",
+          "error": "Could not delete OAuth application."
+        },
+        "regenerateSecret": {
+          "success": "Client secret regenerated.",
+          "error": "Could not regenerate client secret."
+        },
+        "copied": "Copied to clipboard.",
+        "copyError": "Could not copy to clipboard.",
+        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+      },
+      "avatarUpload": {
+        "create": {
+          "success": "Avatar uploaded",
+          "failure": "Could not upload Avatar"
+        },
+        "destroy": {
+          "success": "Avatar removed",
+          "failure": "Could not remove Avatar"
+        },
+        "invalidExtension": "The Picture you provided has an invalid Format. Supported Formats are: %{extensions}."
+      },
+      "hangarImport": {
+        "success": "Import completed",
+        "partialSuccess": "Import partially completed.<br><br>Not found Ships: <br>%{missing}",
+        "failure": "Import failed",
+        "invalidExtension": "The Import you provided has an invalid Format. Supported Formats are: %{extensions}."
+      },
+      "hangarExport": {
+        "failure": "Export failed, Please try again later."
+      },
+      "vehicle": {
+        "add": {
+          "success": {
+            "noHtml": "Your new %{model} will be delivered to your Hangar",
+            "paragraph1": "Your new ",
+            "paragraph2": "will be delivered to your "
+          }
+        },
+        "addToWishlist": {
+          "success": {
+            "noHtml": "Your new %{model} was added to your Wishlist",
+            "paragraph2": "was added to your "
+          }
+        },
+        "resetIngame": {
+          "moveToWishlist": {
+            "success": "Moved all Ingame bought Ships to your Wishlist.",
+            "failure": "Could not move all Ingame bought Ships to your Wishlist."
+          },
+          "removeAll": {
+            "success": "Removed all Ingame bought Ships from your Hangar.",
+            "failure": "Could not remove all Ingame bought Ships from your Hangar."
+          }
+        }
+      },
+      "model": {
+        "onSale": "%{model} now on Sale!"
+      },
+      "notification": {
+        "granted": "Welcome to FleetYards.net Notifications!"
+      },
+      "twoFactor": {
+        "enable": {
+          "success": "Two-factor Authentication enabled!",
+          "failure": "Could not enable Two-factor Authentication."
+        },
+        "disable": {
+          "success": "Two-factor Authentication disabled!",
+          "failure": "Could not diable Two-factor Authentication."
+        },
+        "backupCodes": {
+          "failure": "Backup Codes could not be generated."
+        }
+      },
+      "error": {
+        "usernameTaken": "Username is already taken.",
+        "userNotFound": "User not found",
+        "urlInvalid": "URL is invalid",
+        "emailTaken": "Email is already taken.",
+        "fleetTaken": "Fleet is already taken.",
+        "colorInvalid": "Color is invalid",
+        "serialTaken": "Serial is already taken.",
+        "textInvalid": "%{field} is invalid",
+        "hangar": {
+          "accountRequired": {
+            "noHtml": "You need to Sign up or Login to add Ships to your Hangar.",
+            "paragraph1": "You need to ",
+            "paragraph2": " to add Ships to your Hangar.",
+            "paragraph3": "Get more Information "
+          }
+        },
+        "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
+      },
+      "account": {
+        "destroy": {
+          "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
+          "failure": "We could not destroy your Account! Please try again later."
+        }
+      },
+      "fleet": {
+        "create": {
+          "success": "Your Fleet has been created.",
+          "failure": "Fleet could not be saved."
+        },
+        "update": {
+          "success": "Settings saved.",
+          "failure": "Settings could not be saved."
+        },
+        "destroy": {
+          "success": "Your Fleet has been destroyed.",
+          "failure": "We could not destroy your Fleet."
+        },
+        "leave": {
+          "success": "You have left the Fleet.",
+          "failure": "Could not leave the Fleet."
+        },
+        "invites": {
+          "accept": {
+            "success": "Invite accepted.",
+            "failure": "Could not accept Invite."
+          },
+          "decline": {
+            "success": "Invite declined.",
+            "failure": "Could not decline Invite."
+          },
+          "create": {
+            "failure": "Could not invite User."
+          }
+        },
+        "members": {
+          "update": {
+            "success": "Settings saved.",
+            "failure": "Settings could not be saved."
+          },
+          "destroy": {
+            "success": "Member removed.",
+            "failure": "Member could not be removed."
+          },
+          "demote": {
+            "success": "Member demoted.",
+            "failure": "Member could not be demoted."
+          },
+          "promote": {
+            "success": "Member promoted.",
+            "failure": "Member could not be promoted."
+          },
+          "accept": {
+            "success": "Member accepted.",
+            "failure": "Member could not be accepted."
+          },
+          "decline": {
+            "success": "Member declined.",
+            "failure": "Member could not be declined."
+          }
+        }
+      },
+      "fleetInvite": {
+        "used": "<b>Join request for %{fleet} send!</b><br>Once your Membership is accepted you will be notified via email",
+        "failure": "Invite could not be used.",
+        "notFound": "Invite not found.",
+        "confirm": "Are you sure you want to join the Fleet: \"%{fleet}\"?"
+      },
+      "holoViewer": {
+        "modelLoader": {
+          "failure": "We could not load the requested 3D model! Please try again later."
+        }
+      },
+      "cargoGridViewer": {
+        "noCargoHolds": "This ship has no cargo holds."
+      },
+      "confirm": {
+        "vehicle": {
+          "destroy": "Are you sure you want to remove this Ship from you Hangar?"
+        },
+        "hangarGroup": {
+          "destroy": "Are you sure you want to remove this Group from you Hangar?"
+        },
+        "hangar": {
+          "import": "Imported ships will be added to your Hangar without matching to exisiting Ships.<br><br>Supported Formats are: Fleetyards Export or HangarXplor.<br><br>Do you want to continue?",
+          "destroySelected": "Are you sure you want to remove all Selected Ships from you Hangar? This Action can't be reverted.",
+          "destroyAll": "Are you sure you want to remove all Ships from you Hangar? This Action can't be reverted."
+        },
+        "wishlist": {
+          "destroyAll": "Are you sure you want to remove all Ships from you Wishlist? This Action can't be reverted."
+        },
+        "account": {
+          "destroy": "Are you sure you want to destroy your Account? This Action can't be reverted."
+        },
+        "itemPrice": {
+          "destroy": "Are you sure you want to destroy this Item Price? This Action can't be reverted."
+        },
+        "fleet": {
+          "leave": "Are you sure you want to leave the Fleet? This Action can't be reverted.",
+          "destroy": "Are you sure you want to destroy your Fleet? This Action can't be reverted.",
+          "members": {
+            "destroy": "Are you sure you want to remove this Member?"
+          },
+          "invites": {
+            "decline": "Are you sure you want to decline this Invite? This Action can't be reverted."
+          }
+        },
+        "oauthApplication": {
+          "destroy": "Are you sure you want to delete this OAuth application? This action can't be reverted.",
+          "regenerateSecret": "Are you sure you want to regenerate the client secret? Existing integrations will stop working."
+        },
+        "twoFactor": {
+          "generateBackupCodes": "Are you sure you want to regenerate your Two-factor Backup Codes?"
+        },
+        "user": {
+          "loginAs": "Are you sure you want to login as this user?",
+          "resendConfirmation": "Are you sure you want to resend the confirmation email for this user?",
+          "sendPasswordReset": "Are you sure you want to send a password reset email for this user?",
+          "destroy": "Are you sure you want to delete this user? This action can't be reverted."
+        },
+        "model": {
+          "destroy": "Are you sure you want to delete this model? This action can't be reverted.",
+          "sync": "Are you sure you want to sync this model from RSI?",
+          "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
+          "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
+          "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs."
+        },
+        "manufacturer": {
+          "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "modelHardpoint": {
+          "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
+        },
+        "modelHardpointLoadout": {
+          "destroy": "Are you sure you want to delete this loadout? This action can't be reverted."
+        },
+        "modelLoaner": {
+          "destroy": "Are you sure you want to delete this loaner? This action can't be reverted."
+        },
+        "modelPaint": {
+          "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
+        },
+        "video": {
+          "destroy": "Are you sure you want to delete this video? This action can't be reverted."
+        },
+        "modelModule": {
+          "destroy": "Are you sure you want to delete this module? This action can't be reverted.",
+          "unlink": "Are you sure you want to unlink this module from the model? The module will still exist but won't be associated with this model."
+        },
+        "modelUpgrade": {
+          "destroy": "Are you sure you want to delete this upgrade? This action can't be reverted.",
+          "unlink": "Are you sure you want to unlink this upgrade from the model? The upgrade will still exist but won't be associated with this model."
+        },
+        "modelModulePackage": {
+          "destroy": "Are you sure you want to delete this module package? This action can't be reverted."
+        },
+        "dock": {
+          "destroy": "Are you sure you want to delete this dock? This action can't be reverted."
+        },
+        "component": {
+          "destroy": "Are you sure you want to delete this component? This action can't be reverted."
+        },
+        "adminFleet": {
+          "destroy": "Are you sure you want to delete this fleet? This action can't be reverted."
+        },
+        "adminUser": {
+          "destroy": "Are you sure you want to delete this admin user? This action can't be reverted."
+        },
+        "image": {
+          "destroy": "Are you sure you want to delete this image? This action can't be reverted."
+        },
+        "adminVehicle": {
+          "destroy": "Are you sure you want to delete this vehicle? This action can't be reverted."
+        }
+      },
+      "oauthAuthorize": {
+        "loading": "Loading...",
+        "loadError": "Failed to load authorization details.",
+        "authorizeError": "Authorization failed.",
+        "denyError": "Authorization denial failed."
+      },
+      "confirmAccess": {
+        "failure": "Access could not be confirmed. Please check your password and try again."
+      },
+      "import": {
+        "started": "%{type} import started...",
+        "finished": "%{type} import completed successfully.",
+        "failed": "%{type} import failed: %{info}"
+      },
+      "syncExtension": {
+        "started": "Syncing your Hangar...",
+        "success": "Your Hangar has been synced.",
+        "failure": "Your Hangar could not be synced.",
+        "notLoggedIn": "You need to be logged in on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> to sync your Hangar."
+      }
+    }
+  }
+}

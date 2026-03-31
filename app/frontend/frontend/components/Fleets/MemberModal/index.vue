@@ -1,95 +1,120 @@
-<template>
-  <ValidationObserver v-slot="{ handleSubmit }" slim>
-    <Modal v-if="fleet && form" :title="$t('headlines.fleets.inviteMember')">
-      <form
-        :id="`fleet-member-${fleet.id}`"
-        @submit.prevent="handleSubmit(save)"
-      >
-        <div class="row">
-          <div class="col-12">
-            <ValidationProvider
-              v-slot="{ errors }"
-              vid="username"
-              rules="required|alpha_dash|user"
-              :name="$t('labels.username')"
-              :slim="true"
-            >
-              <FormInput
-                id="username"
-                v-model="form.username"
-                :error="errors[0]"
-                :no-label="true"
-                :autofocus="true"
-              />
-            </ValidationProvider>
-          </div>
-        </div>
-      </form>
-      <template #footer>
-        <div class="float-sm-right">
-          <Btn
-            :form="`fleet-member-${fleet.id}`"
-            :loading="submitting"
-            type="submit"
-            size="large"
-            :inline="true"
-          >
-            {{ $t("actions.fleet.members.invite") }}
-          </Btn>
-        </div>
-      </template>
-    </Modal>
-  </ValidationObserver>
-</template>
-
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import memberCollection from "@/frontend/api/collections/FleetMembers";
-import { displayAlert } from "@/frontend/lib/Noty";
-
-@Component<MemberModal>({
-  components: {
-    Modal,
-    FormInput,
-    Btn,
-  },
-})
-export default class MemberModal extends Vue {
-  @Prop({ required: true }) fleet: Fleet;
-
-  submitting = false;
-
-  form: FleetMemberForm | null = null;
-
-  mounted() {
-    this.setupForm();
-  }
-
-  setupForm() {
-    this.form = {
-      username: null,
-    };
-  }
-
-  async save() {
-    this.submitting = true;
-
-    const response = await memberCollection.create(this.fleet.slug, this.form);
-
-    this.submitting = false;
-
-    if (!response.error) {
-      this.$comlink.$emit("fleet-member-invited", response.data);
-      this.$comlink.$emit("close-modal");
-    } else {
-      displayAlert({
-        text: this.$t(response.error),
-      });
-    }
-  }
-}
+export default {
+  name: "MemberModal",
+};
 </script>
+
+<script lang="ts" setup>
+import { useForm } from "vee-validate";
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { transformErrors } from "@/frontend/utils/transformErrors";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  type Fleet,
+  type FleetMemberCreateInput,
+  type ValidationError,
+} from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useCreateFleetMember as useCreateFleetMemberMutation } from "@/services/fyApi";
+import { type ErrorType } from "@/services/axiosClient";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
+const { t } = useI18n();
+
+type Props = {
+  fleet: Fleet;
+};
+
+const props = defineProps<Props>();
+
+const submitting = ref(false);
+
+const validationSchema = {
+  username: "required|alpha_dash|user",
+};
+
+const { displayAlert } = useAppNotifications();
+
+const { defineField, handleSubmit, setErrors } =
+  useForm<FleetMemberCreateInput>({
+    initialValues: {
+      username: undefined,
+    },
+  });
+
+const [username, usernameProps] = defineField("username");
+
+const comlink = useComlink();
+
+const mutation = useCreateFleetMemberMutation();
+
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
+
+  await mutation
+    .mutateAsync({
+      fleetSlug: props.fleet.slug,
+      data: values,
+    })
+    .then((member) => {
+      comlink.emit("fleet-member-invited", member);
+      comlink.emit("close-modal");
+    })
+    .catch((error) => {
+      const response = error as unknown as ErrorType<ValidationError>;
+
+      if (response.response?.data?.errors) {
+        setErrors(
+          transformErrors(response.response.data.errors, {
+            user_id: "username",
+          }),
+        );
+
+        displayAlert({
+          text: response.response?.data?.message,
+        });
+      } else {
+        displayAlert({
+          text: response.response?.data?.message,
+        });
+      }
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+});
+</script>
+
+<template>
+  <Modal v-if="fleet" :title="t('headlines.fleets.inviteMember')">
+    <form :id="`fleet-member-${fleet.id}`" @submit.prevent="onSubmit">
+      <div class="row">
+        <div class="col-12">
+          <FormInput
+            v-model="username"
+            v-bind="usernameProps"
+            :rules="validationSchema.username"
+            name="username"
+            :no-label="true"
+            :autofocus="true"
+          />
+        </div>
+      </div>
+    </form>
+    <template #footer>
+      <div class="float-sm-right">
+        <Btn
+          :loading="submitting"
+          :size="BtnSizesEnum.LARGE"
+          :inline="true"
+          @click="onSubmit"
+        >
+          {{ t("actions.fleet.members.invite") }}
+        </Btn>
+      </div>
+    </template>
+  </Modal>
+</template>

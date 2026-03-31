@@ -1,0 +1,34 @@
+{
+  "key": "ORIG_890j_SCItem_Remote_Turret_Missile_Top_Right",
+  "ref": "46034ae0-90fa-4523-8672-faa631ba0fe1",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "MissileTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": "Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_missile_rack",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "MissileLauncher"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  }
+}

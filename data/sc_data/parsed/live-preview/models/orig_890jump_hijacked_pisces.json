@@ -1,0 +1,1078 @@
+{
+  "key": "ORIG_890Jump_Hijacked_Pisces",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Origin 890 Jump",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nWith an elegant, sleek exterior that belies its spacious interior, the 890 Jump is a true engineering marvel; crafted to impress from every angle by combining a unique, innovative design with the finest materials and the most advanced technology. The result is a vessel that is in a class all of its own, a masterpiece worthy of the name Origin.",
+  "career": "Exploration",
+  "role": "Luxury",
+  "insurance": {
+    "base_wait_time_minutes": "67.5",
+    "mandatory_wait_time_minutes": "22.5",
+    "base_expediting_fee": "33750"
+  },
+  "mass": 44237159.0,
+  "metrics": {
+    "x": 80.0,
+    "y": 210.0,
+    "z": 45.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "ORIG_890J_Pilot_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "ORIG_890J_Seat_Pilot",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_left",
+      "ref": null,
+      "key": "ORIG_890J_Bridge_Left_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_bridge_left",
+      "ref": null,
+      "key": "ORIG_890J_Seat_Bridge_Left",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_access_bridge_right",
+      "ref": null,
+      "key": "ORIG_890J_Bridge_Right_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_bridge_right",
+      "ref": null,
+      "key": "ORIG_890J_Seat_Bridge_Right",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_BB_Left",
+      "ref": null,
+      "key": "ORIG_890J_Seat_BattleBridge_Left",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_BB_Right",
+      "ref": null,
+      "key": "ORIG_890J_Seat_BattleBridge_Right",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_BB_middle",
+      "ref": null,
+      "key": "ORIG_890J_Seat_BattleBridge_Middle",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_80s"
+    },
+    {
+      "name": "hardpoint_radar_01",
+      "ref": null,
+      "key": "RADR_CHCO_S02_Surveyor"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_hologlobe_display",
+      "ref": null,
+      "key": "ORIG_890J_Hologlobe_RADR_Display"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": null,
+      "key": "POWR_ORIG_S04_890J_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": "HTNK_ORIG_890J"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_ORIG_890J"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_ORIG_890J"
+    },
+    {
+      "name": "hardpoint_fuel_intake_center",
+      "ref": null,
+      "key": "INTK_ORIG_890J"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_ORIG_S04_890J_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_ORIG_S04_890J_SCItem"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_ORIG_S04_890J_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "5f54cdb1-8397-479f-9b14-8988fc53373e",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_ORIG_890J"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_ORIG_S04_890J_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_ORIG_S04_890J_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_ORIG_890J"
+    },
+    {
+      "name": "hardpoint_main_upper_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Main_TL"
+    },
+    {
+      "name": "hardpoint_main_upper_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Main_TR"
+    },
+    {
+      "name": "hardpoint_main_lower_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Main_BL"
+    },
+    {
+      "name": "hardpoint_main_lower_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Main_BR"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Retro_L"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Retro_R"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_top_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_side_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_FSL"
+    },
+    {
+      "name": "hardpoint_thruster_mav_front_side_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_FSR"
+    },
+    {
+      "name": "hardpoint_thruster_mav_mid_top_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_mid_top_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_Fixed"
+    },
+    {
+      "name": "hardpoint_thruster_mav_mid_side_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_MSL"
+    },
+    {
+      "name": "hardpoint_thruster_mav_mid_side_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_MSR"
+    },
+    {
+      "name": "hardpoint_thruster_mav_mid_bottom_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_BML"
+    },
+    {
+      "name": "hardpoint_thruster_mav_mid_bottom_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_BMR"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_TRL"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_top_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_TRR"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_BRL"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_bottom_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_BRR"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_side_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_RSL"
+    },
+    {
+      "name": "hardpoint_thruster_mav_rear_side_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_RSR"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_nose",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_left",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_right",
+      "ref": null,
+      "key": "ORIG_890_Jump_Thruster_Mav_VTOL"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_ORIG_890J"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_ORIG_890Jump"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_BB",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_bridge_right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_weapon_bridge_left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_WC_BB_Left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_WC_BB_Right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_remote_turret_left",
+      "ref": "92bfd79f-565d-474d-aa48-7704f2582aab",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_turret_right",
+      "ref": "ca065f95-2a0e-4c44-8ff3-6a5b54238e68",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_missile_turret_left",
+      "ref": null,
+      "key": "ORIG_890j_SCItem_Remote_Turret_Missile_Top_Left",
+      "loadout": [
+        {
+          "name": "turret_missile_rack",
+          "ref": null,
+          "key": "MRCK_S04_ORIG_Octo_S01",
+          "loadout": [
+            {
+              "name": "missile_01_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_02_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_03_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_04_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_05_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_06_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_07_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_08_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_missile_turret_right",
+      "ref": null,
+      "key": "ORIG_890j_SCItem_Remote_Turret_Missile_Top_Right",
+      "loadout": [
+        {
+          "name": "turret_missile_rack",
+          "ref": null,
+          "key": "MRCK_S04_ORIG_Octo_S01",
+          "loadout": [
+            {
+              "name": "missile_01_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_02_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_03_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_04_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_05_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_06_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_07_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_08_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_missile_turret_leftL",
+      "ref": null,
+      "key": "ORIG_890j_SCItem_Remote_Turret_Missile_Lower_Left",
+      "loadout": [
+        {
+          "name": "turret_missile_rack",
+          "ref": null,
+          "key": "MRCK_S04_ORIG_Octo_S01",
+          "loadout": [
+            {
+              "name": "missile_01_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_02_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_03_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_04_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_05_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_06_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_07_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_08_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_remote_missile_turret_rightL",
+      "ref": null,
+      "key": "ORIG_890j_SCItem_Remote_Turret_Missile_Lower_Right",
+      "loadout": [
+        {
+          "name": "turret_missile_rack",
+          "ref": null,
+          "key": "MRCK_S04_ORIG_Octo_S01",
+          "loadout": [
+            {
+              "name": "missile_01_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_02_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_03_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_04_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_05_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_06_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_07_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            },
+            {
+              "name": "missile_08_attach",
+              "ref": null,
+              "key": "MISL_S02_IR_FSKI_Ignite"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_upper",
+      "ref": "29ebfe0f-5a24-49a4-ab9e-c25434ed3d8b",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_lower",
+      "ref": "8694d2bf-a5d9-476f-9b1e-478a4d299daf",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_lower_left",
+      "ref": null,
+      "key": "MRCK_S05_ORIG_890J_Quad_S03",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_lower_right",
+      "ref": null,
+      "key": "MRCK_S05_ORIG_890J_Quad_S03_R",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_CS_FSKI_Arrester"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "JOKR_Defcon_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_cargogrid_hangar_001",
+      "ref": null,
+      "key": "ORIG_890Jump_CargoGrid_Hangar_Wide"
+    },
+    {
+      "name": "hardpoint_cargogrid_hangar_002",
+      "ref": null,
+      "key": "ORIG_890Jump_CargoGrid_Hangar"
+    },
+    {
+      "name": "hardpoint_cargogrid_hangar_003",
+      "ref": null,
+      "key": "ORIG_890Jump_CargoGrid_Hangar"
+    },
+    {
+      "name": "hardpoint_cargogrid_hangar_005",
+      "ref": null,
+      "key": "ORIG_890Jump_CargoGrid_Hangar_Wide"
+    },
+    {
+      "name": "hardpoint_cargogrid_hangar_006",
+      "ref": null,
+      "key": "ORIG_890Jump_CargoGrid_Hangar"
+    },
+    {
+      "name": "hardpoint_cargogrid_hangar_007",
+      "ref": null,
+      "key": "ORIG_890Jump_CargoGrid_Hangar"
+    },
+    {
+      "name": "Hardpoint_Airlock_Door_L",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_890J_Airlock"
+    },
+    {
+      "name": "Hardpoint_Airlock_Door_R",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_IP_890J_Airlock"
+    },
+    {
+      "name": "hardpoint_docking_collar_left",
+      "ref": null,
+      "key": "ORIG_890Jump_DockingTube"
+    },
+    {
+      "name": "hardpoint_docking_collar_right",
+      "ref": null,
+      "key": "ORIG_890Jump_DockingTube"
+    },
+    {
+      "name": "hardpoint_weapon_locker_01",
+      "ref": null,
+      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+    },
+    {
+      "name": "hardpoint_weapon_locker_02",
+      "ref": null,
+      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+    },
+    {
+      "name": "hardpoint_weapon_locker_03",
+      "ref": null,
+      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+    },
+    {
+      "name": "hardpoint_weapon_locker_04",
+      "ref": null,
+      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "ORIG_890Jump_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_missile_bridge_left",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_MC_BB_Left",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_ORIG_890Jump"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_hangar_lift",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ORIG_890Jump_Hangar_Elevator"
+    },
+    {
+      "name": "hardpoint_hangar_door",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ORIG_890Jump_Hangar"
+    },
+    {
+      "name": "hardpoint_cargo_lift",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ORIG_890Jump_Cargo_Elevator"
+    },
+    {
+      "name": "hardpoint_entrance_lift",
+      "ref": null,
+      "key": "Door_Ship_Exterior_ORIG_890Jump_Entrance_Elevator"
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_2",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_3",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_4",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_5",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_6",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_7",
+      "ref": null,
+      "key": "RELAY_1slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_8",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_9",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_10",
+      "ref": null,
+      "key": "RELAY_2slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_11",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_relay_12",
+      "ref": null,
+      "key": "RELAY_3slot_slim"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_S04_ORIG_890"
+    },
+    {
+      "name": "hardpoint_PDC_01",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC_01",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM_01",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_02",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC_02",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM_02",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_03",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC_03",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM_03",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_04",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC_04",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM_04",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_05",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC_05",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM_05",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_06",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC_06",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM_06",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_07",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC_07",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM_07",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    }
+  ]
+}

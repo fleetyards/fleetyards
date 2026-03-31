@@ -1,0 +1,40 @@
+{
+  "key": "DRAK_Cutlass_Red_Airlock_Sleeve",
+  "ref": "36007c31-6c33-43aa-8a28-788386fb6403",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_ext_door",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_ext_door",
+      "key": null,
+      "ref": "d6a5eac5-83ca-4628-9bce-652ac29d0a88",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

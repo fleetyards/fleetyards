@@ -1,0 +1,63 @@
+{
+  "key": "HRST_Nova_BallisticCannon_S5",
+  "ref": "189b0ce2-d934-4208-9970-ac633dbd67d3",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "ee8b7bb3-d420-435c-924f-561e67e64588",
+  "name": "Slayer Cannon",
+  "short_name": "Slayer",
+  "description": "Manufacturer: Hurston Dynamics\\nItem Type: Ballistic Cannon\\nSize: 5\\n\\nDesigned specifically for the Nova tank, Hurston Dynamics' Slayer ballistic cannon earned its illustrious reputation through countless battlefield engagements during the Second Tevarin War. This battlefield beast excels against armored targets and fortified emplacements by firing large caliber artillery rounds with astounding accuracy and velocity. Hurston worked closely with Tumbril when the tank manufacturer decided to bring back the Nova. Though they painstakingly honored the original Slayer design, Hurston also updated it for the 30th century by improving the pivot speed, heat resistance, and associated software to provide a state-of-the-art gunner UI.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 20000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 363.0,
+    "initial_ammo_count": 363.0,
+    "max_restock_count": 3.0
+  }
+}

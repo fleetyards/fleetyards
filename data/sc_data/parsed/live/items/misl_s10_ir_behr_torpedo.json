@@ -1,0 +1,24 @@
+{
+  "key": "MISL_S10_IR_BEHR_Torpedo",
+  "ref": "bcdd8022-c2f4-49d0-8528-e4a3a7a01a03",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "VT-T10 \"Veritas\" Torpedo",
+  "short_name": "VT-T10 Torpedo",
+  "description": "Manufacturer: Behring\\nTracking Signal: Infrared\\nSize: 10\\n\\nBring Behring's expert engineering to bear with the VT-T10 \"Veritas\" Torpedo. Originally designed for the Polaris, this size 10 torpedo has earned a reputation as a dependable and incredibly powerful ordnance.",
+  "inventory_consumption": {
+    "micro_scu": 140625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 12.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 667.0
+  }
+}

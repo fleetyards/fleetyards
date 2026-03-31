@@ -1,0 +1,154 @@
+{
+  "key": "MRCK_S05_AEGS_Idris_Left",
+  "ref": "24ad5462-6265-4c8e-b627-1d237a7a3e7b",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "IFR-532 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Aegis Dynamics\\nSize: 5\\nMissiles: 3x32\\n\\nDesigned to bolster the offensive capabilities of the Idris, this missile rack was made by Aegis Dynamics specifically for the famed frigate.",
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_attach_01",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_02",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_03",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_04",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_05",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_06",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_07",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_08",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_09",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_10",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_11",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_12",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_13",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_14",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_15",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_16",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

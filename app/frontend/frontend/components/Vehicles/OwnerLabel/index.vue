@@ -1,3 +1,41 @@
+<script lang="ts">
+export default {
+  name: "OwnerLabel",
+};
+</script>
+
+<script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+
+const { t } = useI18n();
+
+type Props = {
+  fleetSlug: string;
+  owner?: string;
+  modelSlug?: string;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  owner: undefined,
+  modelSlug: undefined,
+});
+
+const comlink = useComlink();
+
+const openOwnersModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Vehicles/OwnersModal/index.vue"),
+    props: {
+      fleetSlug: props.fleetSlug,
+      modelSlug: props.modelSlug,
+    },
+  });
+};
+</script>
+
 <template>
   <div class="owner">
     <template v-if="modelSlug">
@@ -5,13 +43,13 @@
         variant="link"
         :text-inline="true"
         class="owner-more-action"
-        @click.native="openOwnersModal"
+        @click="openOwnersModal"
       >
-        {{ $t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
+        {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
       </Btn>
     </template>
     <template v-else-if="owner">
-      {{ $t("labels.vehicle.owner") }}
+      {{ t("labels.vehicle.owner") }}
       <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
         {{ owner }}
       </Btn>
@@ -19,32 +57,22 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import Btn from "@/frontend/core/components/Btn/index.vue";
+<style lang="scss" scoped>
+.owner {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  padding: 4px 10px;
+  background-color: $primary;
+  border-radius: 10px 0 0 10px;
+  font-size: 0.85em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #fff;
 
-@Component<ModelPanel>({
-  components: {
-    Btn,
-  },
-})
-export default class ModelPanel extends Vue {
-  @Prop({ required: true }) fleetSlug: string;
-
-  @Prop({ default: null }) owner: string | null;
-
-  @Prop({ default: null }) modelSlug: string | null;
-
-  openOwnersModal() {
-    this.$comlink.$emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Vehicles/OwnersModal/index.vue"),
-      props: {
-        fleetSlug: this.fleetSlug,
-        modelSlug: this.modelSlug,
-      },
-    });
+  .btn {
+    color: #fff;
   }
 }
-</script>
+</style>

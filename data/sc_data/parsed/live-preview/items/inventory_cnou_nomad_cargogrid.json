@@ -1,0 +1,40 @@
+{
+  "key": "CNOU_Nomad_CargoGrid",
+  "ref": "4b550941-3ae1-42c1-9e69-7fa43f7de19d",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 3.75,
+      "y": 5.0,
+      "z": 2.5
+    },
+    "capacity": 24.0,
+    "max_container_size": {
+      "size": 16,
+      "dimensions": {
+        "x": 5.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1.0
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 2.5,
+          "z": 2.5
+        },
+        "capacity": 8.0
+      }
+    }
+  }
+}

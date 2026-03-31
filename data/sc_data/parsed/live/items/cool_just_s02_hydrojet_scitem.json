@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JUST_S02_Hydrojet_SCItem",
+  "ref": "866c76c0-8c22-44ad-b1dc-167ee5fbe347",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "HydroJet",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Juno Starwerk \\nSize: 2\\nGrade: D\\nClass: Industrial\\n\\nWhen your ship overheats, it makes just about any task not only more difficult, but potentially dangerous for you and your crew. With the entry-level HydroJet from Juno Starwerk installed, you can be confident that your heat levels are being controlled by a cooler designed by one of the most trustworthy names in the industry.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 370.0
+  }
+}

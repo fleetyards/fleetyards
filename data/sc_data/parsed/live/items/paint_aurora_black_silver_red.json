@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Black_Silver_Red",
+  "ref": "9766d23a-8930-4734-bef2-d898e4a5bb75",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "df1154ca-2f79-4067-be39-50050020b9a1",
+  "name": "Aurora Mk I False Colors Livery",
+  "short_name": null,
+  "description": "Become a force to be reckoned with thanks to this livery which features a black finish, red and silver accents, and the intimidating visage of a skull.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

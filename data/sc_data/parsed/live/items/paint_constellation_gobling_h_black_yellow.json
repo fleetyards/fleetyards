@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Constellation_GoblinG_H_Black_Yellow",
+  "ref": "46fc9ff1-2acd-43b9-8736-cd598e5aa2dc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c6221fd7-a9da-40a1-9e4b-bd118ad0604e",
+  "name": "Constellation Hurston Livery",
+  "short_name": null,
+  "description": "The Hurston livery for the Constellation features the company's logo atop a grey base paint with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

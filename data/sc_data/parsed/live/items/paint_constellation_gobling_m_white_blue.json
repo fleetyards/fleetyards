@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Constellation_GoblinG_M_White_Blue",
+  "ref": "7f49c9d8-9aa7-4a12-8209-ae80ce755094",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "86b1f113-f9a9-43ce-b86c-a17c7c57f94c",
+  "name": "Constellation microTech Livery",
+  "short_name": null,
+  "description": "The microTech livery for the Constellation features the company's logo atop a white base paint with light blue and grey highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

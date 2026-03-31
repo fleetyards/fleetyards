@@ -1,0 +1,63 @@
+{
+  "key": "AMRS_LaserCannon_S6",
+  "ref": "1901415b-cfbd-49fb-82f8-42eff2c11f01",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "Omnisky XVIII Cannon",
+  "short_name": "Omnisky-18",
+  "description": "Manufacturer: Amon & Reese Co.\\nItem Type: Laser Cannon\\nSize: 6\\n\\nNicknamed 'Augustus' by Amon & Reese engineers after the Roman Emperor who founded the notable 'Eighteenth Legion,' this massive size six laser autocannon hits hard over great distances, making the Omnisky XVIII an effective way to keep enemies at bay.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4224.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

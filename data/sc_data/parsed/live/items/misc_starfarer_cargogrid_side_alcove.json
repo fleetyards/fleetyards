@@ -1,0 +1,22 @@
+{
+  "key": "MISC_Starfarer_CargoGrid_Side_Alcove",
+  "ref": "b59d47c7-0c5c-4f29-9292-f9c833826c5f",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "4af63ee8-eb4f-481e-9994-1d4126f668d6"
+}

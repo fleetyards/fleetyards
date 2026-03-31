@@ -1,0 +1,63 @@
+{
+  "key": "WEP_TractorBeam_S1_Military_1",
+  "ref": "f70cbd61-2d36-4862-b259-7cc94917b2e7",
+  "category": "weapons",
+  "type": "TractorBeam",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "ViseLock S1 Tractor Beam",
+  "short_name": "ViseLock S1 Tractor Beam",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Tractor Beam\\nMax Angle: 80°\\nMax Range: 135 m\\nFull Strength Distance: 50 m\\n\\nThe ViseLock tractor beam is an evolution of Greycat’s industry-standard tech, with added improvements specifically intended to help security forces restrain their targets. In its design, Greycat sacrificed some hold strength at greater distances to achieve a more powerful tether that is harder to escape.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 1.105504,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1050.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

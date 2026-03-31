@@ -5,7 +5,7 @@ module V1
     module Models
       module Loaners
         class ModelLoaner
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :object,

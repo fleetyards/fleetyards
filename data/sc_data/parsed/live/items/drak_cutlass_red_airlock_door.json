@@ -1,0 +1,24 @@
+{
+  "key": "DRAK_Cutlass_Red_Airlock_Door",
+  "ref": "55776a8a-0a45-4281-8af6-761e0867d21d",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 400.0
+  }
+}

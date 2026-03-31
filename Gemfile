@@ -3,29 +3,20 @@
 source "https://rubygems.org"
 
 ruby file: ".tool-versions"
-ruby "3.4.5"
 
 gem "rails", "7.2.2.2"
 
 gem "pg", "~> 1.0"
 
-gem "sidekiq", "<= 8.0.7"
-gem "sidekiq-cron"
+gem "sidekiq", "~> 8.0"
+gem "sidekiq-scheduler"
+gem "sidekiq-failures"
 
 gem "paper_trail"
 
-gem "haml"
-gem "haml-rails"
-gem "slim-rails"
-
 gem "data_migrate"
 
-gem "opensearch-ruby"
-gem "searchkick"
-
 gem "discordrb-webhooks"
-
-gem "selectize-rails"
 
 gem "vite_rails"
 
@@ -49,11 +40,18 @@ gem "griddler"
 gem "griddler-postmark", github: "r38y/griddler-postmark"
 gem "postmark-rails"
 
-gem "cancancan"
+gem "action_policy"
 
 gem "devise"
 gem "devise-two-factor"
 gem "rqrcode"
+gem "omniauth-discord"
+gem "omniauth-github"
+gem "omniauth-twitch"
+gem "omniauth-google-oauth2"
+gem "omniauth-apple"
+gem "omniauth-atproto"
+gem "omniauth-rails_csrf_protection"
 
 gem "useragent"
 
@@ -66,24 +64,11 @@ gem "deep_merge", require: "deep_merge/rails_compat"
 gem "jbuilder"
 gem "oj"
 gem "responders"
-gem "rswag-api"
 
 gem "dalli"
 
 gem "kaminari"
 gem "url_plumber"
-
-gem "dynamic_fields_for_rails"
-
-gem "bourbon"
-gem "coffee-rails"
-gem "sass-rails"
-gem "sprockets-rails"
-
-gem "jquery-rails"
-gem "js-routes"
-
-gem "uglifier"
 
 gem "metadown"
 gem "redcarpet"
@@ -91,9 +76,6 @@ gem "redcarpet"
 gem "puma"
 gem "rack-attack"
 
-gem "bower-rails"
-
-gem "highline"
 gem "thor"
 
 gem "aasm"
@@ -109,10 +91,7 @@ gem "nokogiri"
 gem "typhoeus"
 
 gem "rack-cors", require: "rack/cors"
-
-gem "sentry-rails"
-gem "sentry-ruby"
-gem "sentry-sidekiq"
+gem "rack-rewrite"
 
 gem "lograge"
 
@@ -123,12 +102,13 @@ gem "bootsnap", ">= 1.1.0", require: false
 gem "appsignal"
 
 gem "pghero"
+gem "pghero_assets"
 gem "pg_query", ">= 0.9.0"
 
 gem "git"
 gem "rdoc"
 
-gem "psych", "~> 5.2.6"
+gem "psych", "~> 5.2"
 
 gem "progress_bar"
 
@@ -138,18 +118,23 @@ gem "flipper-ui"
 gem "flipper-active_record"
 
 # openapi
+gem "rswag-api"
 gem "rspec-rails", require: false
 gem "rswag-specs", require: false
+gem "rswag-schema_components"
+gem "committee"
+
+group :development, :test do
+  gem "dotenv"
+  gem "dotenv-rails", require: "dotenv/load"
+end
 
 group :development do
   gem "annotate"
 
-  gem "i18n-tasks", "~> 1.0.5"
+  gem "i18n-tasks", "~> 1.0"
   gem "listen"
   gem "rails-erd"
-
-  gem "dotenv"
-  gem "dotenv-rails", require: "dotenv/load"
 
   gem "standard"
 
@@ -157,30 +142,22 @@ group :development do
   gem "spring-watcher-listen"
   gem "web-console"
 
-  gem "bcrypt_pbkdf", require: false
-  gem "capistrano", "~> 3.11", require: false
-  gem "capistrano-rails", "~> 1.4", require: false
-  gem "capistrano-rails-console", require: false
-  gem "capistrano-rbenv", "~> 2.1", require: false
-  gem "ed25519", require: false
+  gem "kamal", require: false
 
   gem "letter_opener"
 end
 
 group :test do
   gem "faker"
-  gem "minitest-ci"
-  gem "minitest-rails"
   gem "mocha", require: false
   gem "rails-perftest"
-  gem "shoulda"
   gem "shoulda-matchers"
   gem "simplecov", require: false
   gem "simplecov-console", require: false
   gem "simplecov-html", require: false
   gem "timecop"
-  gem "vcr"
   gem "webmock", require: false
+  gem "database_cleaner-active_record"
 end
 
 group :development, :test do
@@ -191,17 +168,33 @@ group :development, :test do
 
   gem "factory_bot_rails", "~> 6.5.0"
 
+  gem "debug", ">= 1.0.0", platforms: %i[mri windows]
   gem "byebug", platform: :mri
   gem "pry-byebug"
 
-  gem "knapsack"
+  gem "flatware-rspec", require: false
+
+  gem "cypress-on-rails"
+
+  gem "foreman"
 end
 
 gem "enum_attributes_validation", "~> 0.1.7"
 
 gem "bskyrb", "~> 0.5.3"
 
+gem "doorkeeper", "~> 5.6"
+gem "doorkeeper-jwt"
+gem "doorkeeper-openid_connect"
+
+gem "oauth2", "~> 2.0"
+
 gem "aws-sdk-s3", require: false
+
+gem "lexorank"
+gem "with_advisory_lock"
+
+gem "maintenance_tasks", "~> 2.11"
 
 gem "graphlient"
 

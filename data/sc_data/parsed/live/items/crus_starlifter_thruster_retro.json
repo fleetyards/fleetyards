@@ -1,0 +1,30 @@
+{
+  "key": "CRUS_Starlifter_Thruster_Retro",
+  "ref": "066e8800-ba83-43d6-82eb-40fc40bf81df",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 22200.0
+  },
+  "type_data": {
+    "thrust_capacity": 6697123.0,
+    "fuel_burn_rate_per10_k_newton": 0.0525,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Reclaimer_CargoGrid_Salvage_Rear_TEMP",
+  "ref": "c30c7656-84d3-41c1-964c-539187f123ea",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "ce31baf8-21a9-4bdc-b776-c20c3206be68"
+}

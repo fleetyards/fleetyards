@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Mk2_Green_Green_Bronze",
+  "ref": "d48aa151-859e-42ef-bc55-764f12f42ac7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7de1c36e-52d8-4767-affd-11322a0bdc6a",
+  "name": "Aurora Mk II Medallion Livery",
+  "short_name": "Aurora Mk II Medallion Livery",
+  "description": "Merging grays, greens, and bronze, the metallic Medallion livery emphasizes the sturdiness of the ship's shape.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

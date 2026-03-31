@@ -1,0 +1,49 @@
+{
+  "key": "Door_ChipReader_Rockcrack",
+  "ref": "902d9109-1ac2-4548-a043-279e7c96869b",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "loadout": [
+    {
+      "name": "slot_cardreader_a",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "slot_cardreader_b",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "slot_cardreader_a",
+      "key": null,
+      "ref": "8c47a08d-890b-4ced-b897-1863133db627",
+      "default_loadout": []
+    },
+    {
+      "name": "slot_cardreader_b",
+      "key": null,
+      "ref": "8c47a08d-890b-4ced-b897-1863133db627",
+      "default_loadout": []
+    }
+  ]
+}

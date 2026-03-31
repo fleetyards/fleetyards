@@ -1,0 +1,24 @@
+{
+  "key": "JDRV_S03_Template",
+  "ref": "033a1b41-dd66-4f6b-b96d-943d509d0157",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": null,
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 6066000.0,
+    "dimensions": {
+      "x": 3.0,
+      "y": 2.0,
+      "z": 1.011
+    }
+  },
+  "durability": {
+    "health": 1300.0
+  }
+}

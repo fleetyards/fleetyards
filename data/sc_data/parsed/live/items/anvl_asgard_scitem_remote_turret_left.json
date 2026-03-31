@@ -1,0 +1,44 @@
+{
+  "key": "ANVL_Asgard_SCItem_Remote_Turret_Left",
+  "ref": "92042a64-7ca7-4f1c-bcfd-653a66ecb3c6",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_gun",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_gun2",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 12000.0
+  }
+}

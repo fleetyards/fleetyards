@@ -1,0 +1,30 @@
+{
+  "key": "ORIG_400i_Thruster_Main_Sub",
+  "ref": "148c6921-bd29-4b2c-b2dd-c3e4594d5eea",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 18450.0
+  },
+  "type_data": {
+    "thrust_capacity": 7210000.0,
+    "fuel_burn_rate_per10_k_newton": 0.11025,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

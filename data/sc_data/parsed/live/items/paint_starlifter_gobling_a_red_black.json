@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlifter_GoblinG_A_Red_Black",
+  "ref": "fdbfaeee-f978-4c2e-86ef-fe1f45050d1d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0331d102-1d0c-443a-8080-eee4246802b2",
+  "name": "Hercules Starlifter ArcCorp Livery",
+  "short_name": null,
+  "description": "The ArcCorp livery for the Starlifter features the company's logo atop a maroon base paint with black and yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

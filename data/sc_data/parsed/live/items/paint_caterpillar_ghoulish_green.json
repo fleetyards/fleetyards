@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_Ghoulish_Green",
+  "ref": "2379b054-ef12-418f-aa22-e966ed30f5c5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "abe92ba8-97ed-4d8d-9e0f-54f22985280a",
+  "name": "Caterpillar Ghoulish Green Livery",
+  "short_name": null,
+  "description": "Embrace Day of the Vara mischievousness and mayhem any time of the year with this custom Caterpillar livery. It combines metallic green and black for a striking look that highlights the holiday's classic colors.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

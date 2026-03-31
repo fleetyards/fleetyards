@@ -1,0 +1,252 @@
+<script lang="ts">
+export default {
+  name: "AdminModelEditPage",
+};
+</script>
+
+<script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import {
+  type ModelExtended,
+  type ModelUpdateInput,
+} from "@/services/fyAdminApi";
+import { useForm } from "vee-validate";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
+import ModelForm from "@/admin/components/Models/Form/index.vue";
+import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
+import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
+import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
+import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
+import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
+
+type Props = {
+  model: ModelExtended;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const initialValues = ref<ModelUpdateInput>({
+  name: props.model.name,
+  description: props.model.description,
+  hidden: props.model.hidden,
+  active: props.model.active,
+  ground: props.model.metrics.isGroundVehicle,
+  rsiId: props.model.rsiId,
+  scIdentifier: props.model.scIdentifier,
+  erkulIdentifier: props.model.erkulIdentifier,
+  baseModelId: props.model.baseModelId,
+  manufacturerId: props.model.manufacturer?.id,
+  productionStatus: props.model.productionStatus,
+  productionNote: props.model.productionNote,
+  classification: props.model.classification,
+  focus: props.model.focus,
+  storeImage: undefined,
+  brochure: undefined,
+  holo: undefined,
+});
+
+const validationSchema = {
+  name: "required",
+};
+
+const { defineField } = useForm<ModelUpdateInput>({
+  initialValues: initialValues.value,
+  validationSchema,
+});
+
+const [name, nameProps] = defineField("name");
+const [description, descriptionProps] = defineField("description");
+const [hidden, hiddenProps] = defineField("hidden");
+const [active, activeProps] = defineField("active");
+const [ground, groundProps] = defineField("ground");
+const [rsiId, rsiIdProps] = defineField("rsiId");
+const [scIdentifier, scIdentifierProps] = defineField("scIdentifier");
+const [erkulIdentifier, erkulIdentifierProps] = defineField("erkulIdentifier");
+const [baseModelId, baseModelIdProps] = defineField("baseModelId");
+const [manufacturerId, manufacturerIdProps] = defineField("manufacturerId");
+const [productionStatus, productionStatusProps] =
+  defineField("productionStatus");
+const [productionNote, productionNoteProps] = defineField("productionNote");
+const [classification, classificationProps] = defineField("classification");
+const [focus, focusProps] = defineField("focus");
+const [storeImage, storeImageProps] = defineField("storeImage");
+const [brochure, brochureProps] = defineField("brochure");
+const [holo, holoProps] = defineField("holo");
+</script>
+
+<template>
+  <Heading hero>{{ t("headlines.admin.models.edit.index") }}</Heading>
+  <ModelForm
+    :model="model"
+    :validation-schema="validationSchema"
+    :initial-values="initialValues"
+  >
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput v-model="name" v-bind="nameProps" name="name" />
+        <FormTextarea
+          v-model="description"
+          v-bind="descriptionProps"
+          name="description"
+        />
+        <ManufacturerFilterGroup
+          v-model="manufacturerId"
+          v-bind="manufacturerIdProps"
+          :no-label="false"
+          value-attr="id"
+          :multiple="false"
+          name="manufacturer"
+        />
+        <ModelFilterGroup
+          v-model="baseModelId"
+          v-bind="baseModelIdProps"
+          translation-key="model.baseModel"
+          :no-label="false"
+          value-attr="id"
+          :multiple="false"
+          name="baseModelId"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <div class="row">
+          <div class="col-12 col-md-4">
+            <FormToggle
+              v-model="hidden"
+              translation-key="model.hidden"
+              v-bind="hiddenProps"
+              name="hidden"
+            />
+          </div>
+          <div class="col-12 col-md-4">
+            <FormToggle
+              v-model="active"
+              translation-key="model.active"
+              v-bind="activeProps"
+              name="active"
+            />
+          </div>
+          <div class="col-12 col-md-4">
+            <FormToggle
+              v-model="ground"
+              translation-key="model.ground"
+              v-bind="groundProps"
+              name="ground"
+            />
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="rsiId"
+              translation-key="model.rsiId"
+              v-bind="rsiIdProps"
+              name="rsiId"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="scIdentifier"
+              v-bind="scIdentifierProps"
+              translation-key="model.scIdentifier"
+              name="scIdentifier"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="erkulIdentifier"
+              translation-key="model.erkulIdentifier"
+              v-bind="erkulIdentifierProps"
+              name="erkulIdentifier"
+            />
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <ModelClassificationFilterGroup
+              v-model="classification"
+              v-bind="classificationProps"
+              :multiple="false"
+              :no-label="false"
+              name="classification"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <ModelFocusFilterGroup
+              v-model="focus"
+              v-bind="focusProps"
+              :no-label="false"
+              :multiple="false"
+              name="focus"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <ProductionStatusFilterGroup
+              v-model="productionStatus"
+              :no-label="false"
+              v-bind="productionStatusProps"
+              :multiple="false"
+              name="productionStatus"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="productionNote"
+              translation-key="model.productionNote"
+              v-bind="productionNoteProps"
+              name="productionNote"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="storeImage"
+          :file="model.media.storeImage"
+          translation-key="model.storeImage"
+          v-bind="storeImageProps"
+          name="storeImage"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="holo"
+          :file="model.media.holo"
+          translation-key="model.holo"
+          v-bind="holoProps"
+          name="holo"
+          :allowed-types="AllowedFileTypes.HOLO"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="brochure"
+          :file="model.media.brochure"
+          translation-key="model.brochure"
+          v-bind="brochureProps"
+          :allowed-types="AllowedFileTypes.PDF"
+          name="brochure"
+          clearable
+        />
+      </div>
+    </div>
+  </ModelForm>
+</template>

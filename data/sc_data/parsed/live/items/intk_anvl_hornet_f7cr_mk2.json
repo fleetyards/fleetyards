@@ -1,0 +1,25 @@
+{
+  "key": "INTK_ANVL_Hornet_F7CR_Mk2",
+  "ref": "5e887c5d-4b2b-4b6c-a7c6-e0c695a80668",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 18.0,
+    "minimum_rate": 0.2
+  }
+}

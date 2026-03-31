@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_Luminalia_White_Blue",
+  "ref": "5e615822-2ae1-4f8d-a9f9-3d83c2912c7e",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "021f3296-effa-4102-a949-6fa0cd4c223b",
+  "name": "Spirit IceBreak Livery",
+  "short_name": null,
+  "description": "Equip your Spirit with a paint scheme cooler than a snow storm. The IceBreak livery mixes crisp, cool white with a frostbitten blue for an exciting look suitable for any season.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

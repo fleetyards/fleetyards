@@ -1,0 +1,21 @@
+{
+  "key": "ORIG_600i_TV",
+  "ref": "6edc92e9-fe85-4f19-bb9f-d14d74eedb5f",
+  "category": "module",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

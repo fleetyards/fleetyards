@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Salvation_Thruster_Mav_Joint_Top",
+  "ref": "8cf0cf70-7f15-4f6d-8dc5-349aaee3d4b9",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1050.0
+  },
+  "type_data": {
+    "thrust_capacity": 858892.5,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

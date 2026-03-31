@@ -1,0 +1,9 @@
+{
+  "key": "PersonalStorage_Locker_090",
+  "ref": "41b19211-b6a2-4967-a7b7-541806e61127",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.9
+  }
+}

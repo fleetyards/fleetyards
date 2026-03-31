@@ -1,0 +1,22 @@
+{
+  "key": "ORIG_135c_CargoGrid",
+  "ref": "57ca31b4-99ab-4639-ac90-b2926cf1d719",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "12156bf0-dbfc-4583-ab5a-36b2a4bb5a08"
+}

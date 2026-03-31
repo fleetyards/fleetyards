@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pisces_Reward_Faction_Head_Hunters",
+  "ref": "6d3d35c6-049c-4fb9-b831-d098d40dc5d2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b1ba1913-9243-463f-bef7-29cf2805f5d5",
+  "name": "Pisces Headhunters Trauma Livery",
+  "short_name": null,
+  "description": "Show your loyalty to the Headhunters gang with this livery featuring their logo emblazoned on a dark grey hull accented with a vibrant purple.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

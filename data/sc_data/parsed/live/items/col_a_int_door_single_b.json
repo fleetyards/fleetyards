@@ -1,0 +1,21 @@
+{
+  "key": "Col_a_Int_Door_Single_B",
+  "ref": "ffa83671-c3d0-4202-a990-7f3decc6fa7c",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

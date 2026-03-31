@@ -1,0 +1,24 @@
+{
+  "key": "COOL_AEGS_S02_Arctic_SCItem",
+  "ref": "e41f4682-381a-453e-802b-521ce84a26b6",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Arctic",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Aegis Dynamics \\nSize: 2\\nGrade: C\\nClass: Military\\n\\nProviding the kind of durability that made Aegis products a mainstay with the military, the Arctic is an economic mil-spec cooler capable of withstanding the rigors of combat without sacrificing performance.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 490.0
+  }
+}

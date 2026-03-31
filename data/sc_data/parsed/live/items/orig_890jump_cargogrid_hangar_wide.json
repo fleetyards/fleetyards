@@ -1,0 +1,22 @@
+{
+  "key": "ORIG_890Jump_CargoGrid_Hangar_Wide",
+  "ref": "51d32aff-4e39-4148-8339-3676b9a42b27",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "e10f02ac-7a47-4de7-af93-1bd690eeaaac"
+}

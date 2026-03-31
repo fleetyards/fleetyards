@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7CM_Mk2_Bluegrey_Orange_Black",
+  "ref": "ee9d65a6-a05e-4af9-a679-180cf0315599",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9179f3d8-0341-4972-9844-5a8e118fefb9",
+  "name": "Hornet Mk II Tigerveil Livery",
+  "short_name": null,
+  "description": "The dynamic Hornet Mk II deserves a livery to match. The Tigerveil livery consists of a steely blue with bold orange and subtle black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

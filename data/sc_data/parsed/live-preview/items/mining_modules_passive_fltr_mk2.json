@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Passive_FLTR_MK2",
+  "ref": "e2647306-e5d7-452a-8af6-d7141b540a6b",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "FLTR-L Module",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Module (Passive)\\n\\nInert Material Level: -23%\\n\\nExtraction Laser Power: 90%\\n\\nReduce the amount of inert material collected from deposits with the FLTR-L Module. Though it reduces the laser's extraction power, the FLTR-L's patented filtration system screens out inert material to leave more storage space for valuable ore.",
+  "inventory_consumption": {
+    "micro_scu": 10387.0,
+    "dimensions": {
+      "x": 0.2750299,
+      "y": 0.2010482,
+      "z": 0.234822
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

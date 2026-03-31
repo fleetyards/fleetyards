@@ -1,0 +1,42 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Grin_MTC_Ground_Fuel_Port",
+  "ref": "bd703016-1294-410c-86c3-118644932b70",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "IP_Open",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "IP_Open",
+      "key": "ControlPanel_Screen_DoorControl_Physical_Grin_MXC_ProxyIP",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

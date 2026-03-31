@@ -1,0 +1,16 @@
+{
+  "fr": {
+    "validations": {
+      "required": "The %{field} field is required",
+      "min": "The %{field} field must be at least %{min} characters",
+      "max": "The %{field} field must be at most %{max} characters",
+      "alpha_dash": "The %{field} field may contain alpha-numeric characters as well as dashes and underscores",
+      "email": "The %{field} field must be a valid email address",
+      "confirmed": "The %{field} field does not match",
+      "numeric": "The %{field} field may only contain numeric characters",
+      "between": "The %{field} field must be between %{min} and %{max}",
+      "min_value": "The %{field} field must be %{min} or more",
+      "url": "The %{field} field is not a valid URL"
+    }
+  }
+}

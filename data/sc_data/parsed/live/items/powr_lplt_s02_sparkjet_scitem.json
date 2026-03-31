@@ -1,0 +1,24 @@
+{
+  "key": "POWR_LPLT_S02_SparkJet_SCItem",
+  "ref": "c245b408-006d-4b3a-8dc9-0dc5b26b672a",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "SparkJet",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Lightning Power Ltd.\\nSize: 2\\nGrade: D\\nClass: Civilian\\n\\nThe SparkJet is a basic power plant from Lighting Power Ltd. that strives to balance heat and EM emissions with overall performance and durability.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 470.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "VNCL_Glaive_Thruster_Aux_Joint",
+  "ref": "950db1f1-4d3b-47ec-88e8-568adfba4909",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 11200.0
+  },
+  "type_data": {
+    "thrust_capacity": 1239285.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "aux"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "key": "SHLD_BASL_S02_Armada_SCItem",
+  "ref": "7ff2c313-51c7-459b-91e5-8afd089df32f",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "2948496b-45d2-41f8-bdff-97587f1e6981",
+  "name": "Armada",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Basilisk\\nSize: 2\\nGrade: D\\nClass: Industrial\\n\\nBasilisk started by making cutting edge hull plating that was renowned for being durable and dependable. Today they carry on that proud legacy with industrial shield generators like the Armada.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 430.0
+  },
+  "type_data": {
+    "max_health": 9000.0,
+    "max_regen": 810.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 12.1,
+    "damaged_regen_delay": 6.05,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": -0.23,
+        "min": -0.7
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.45,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

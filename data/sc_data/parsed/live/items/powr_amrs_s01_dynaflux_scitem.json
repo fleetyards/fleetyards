@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S01_DynaFlux_SCItem",
+  "ref": "0b758584-4cc6-4306-85dd-07e1b81d6852",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "DynaFlux",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 1\\nGrade: B\\nClass: Military\\n\\nThe DynaFlux was one of the first components A&R Co. built when they expanded their product line to more than energy weapons. Their years of experience manufacturing military-grade equipment went a long way to making the DynaFlux power plant a standout right from the beginning.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 310.0
+  }
+}

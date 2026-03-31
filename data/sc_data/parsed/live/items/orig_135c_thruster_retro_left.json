@@ -1,0 +1,30 @@
+{
+  "key": "ORIG_135c_Thruster_Retro_Left",
+  "ref": "639d77d0-17f3-4850-aff8-e0dded594dad",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2150.0
+  },
+  "type_data": {
+    "thrust_capacity": 1085462.0,
+    "fuel_burn_rate_per10_k_newton": 0.091,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

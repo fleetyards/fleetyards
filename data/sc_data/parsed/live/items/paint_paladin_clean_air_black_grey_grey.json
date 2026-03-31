@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Paladin_Clean_Air_Black_Grey_Grey",
+  "ref": "ea3c4eb8-a906-4ad5-8b4c-553f608b202a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b63f94a8-29ad-4c66-875b-11cdda895909",
+  "name": "Paladin Alliance Aid Camo Livery",
+  "short_name": null,
+  "description": "Showcase your dedication to helping Alliance Aid assist the people of Levski during their time of need with this grey camo livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

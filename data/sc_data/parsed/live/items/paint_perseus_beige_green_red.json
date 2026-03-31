@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Beige_Green_Red",
+  "ref": "7660b182-6b30-4934-ac08-050a2586d042",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "badd6df8-6376-451a-8c05-91d701d4588f",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

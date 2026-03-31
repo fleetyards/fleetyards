@@ -1,0 +1,24 @@
+{
+  "key": "COOL_TYDT_S01_VaporBlock_SCItem",
+  "ref": "5f474dec-75e8-4626-9c0a-f5a48f841f33",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "VaporBlock",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Tyler Design & Tech \\nSize: 1\\nGrade: B\\nClass: Stealth\\n\\nFew coolers can match the stealth performance of the VaporBlock. The team at Tyler Design & Tech have crafted a cooler that keeps your ship’s signature low while delivering acceptable durability and performance.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 120.0
+  }
+}

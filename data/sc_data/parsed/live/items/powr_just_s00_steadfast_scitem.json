@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S00_SteadFast_SCItem",
+  "ref": "0ed88703-3183-48c8-95f1-eda2b5b4381a",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "0",
+  "grade": "3",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Steadfast",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 0\\nGrade: C\\nClass: Industrial\\n\\nWhen the road ahead is long, Juno Starwerk’s Steadfast power plant is there to see you and your vehicle through to the end by providing on-demand power and durability.",
+  "inventory_consumption": {
+    "micro_scu": 44000.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 85.0
+  }
+}

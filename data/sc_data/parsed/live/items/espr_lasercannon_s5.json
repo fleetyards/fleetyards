@@ -1,0 +1,89 @@
+{
+  "key": "ESPR_LaserCannon_S5",
+  "ref": "5eef2a62-013b-4b80-80e4-5198213da1ec",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "Lightstrike V Cannon",
+  "short_name": "LGHTSTRK-5",
+  "description": "Manufacturer: Esperia\\nItem Type: Laser Cannon \\nSize: 5\\n\\nThe Lightstrike V takes the attack to distant targets by delivering focused, high damage blasts that will make any aggressor think twice before coming too close. Capable of providing powerful overwatch options during troop deployments or engaging targets in outer space, it's easy to see why the Lightstrike V was feared by UPE forces during the First Tevarin War.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "ESPR_LaserCannon_Barrel_S5",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "ESPR_LaserCannon_FiringMechanism_S5",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "ESPR_LaserCannon_PowerArray_S5",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "ESPR_LaserCannon_Ventilation_S5",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

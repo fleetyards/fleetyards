@@ -1,0 +1,92 @@
+{
+  "key": "RADR_WLOP_S00_Denning",
+  "ref": "28e81323-a16a-4995-9da5-1aca23b4044c",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "0",
+  "grade": "3",
+  "manufacturer_ref": "967cd454-20d9-4cb8-8465-990ff1a1f769",
+  "name": "Denning",
+  "short_name": null,
+  "description": "Item Type: Radar\\nManufacturer: WillsOp\\nSize: 0\\nGrade: C\\nClass: Civilian\\n\\nWith the Denning, you can now equip an award winning WillsOp radar to your vehicle.",
+  "inventory_consumption": {
+    "micro_scu": 21000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 1.105504,
+      "z": 0.4009475
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  },
+  "type_data": {
+    "signature_detection": [
+      {
+        "sensitivity": 0.75,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.75,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.5,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 1.0,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 1.0,
+        "piercing": 0.25,
+        "permit_active_detection": 1.0,
+        "permit_passive_detection": 1.0
+      },
+      {
+        "sensitivity": 0.0,
+        "piercing": 0.25,
+        "permit_active_detection": 0.0,
+        "permit_passive_detection": 0.0
+      }
+    ],
+    "ping_properties": {
+      "cooldown_time": 2.5
+    },
+    "sensitivityModifiers": {
+      "sensitivityAddition": -0.5
+    }
+  }
+}

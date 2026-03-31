@@ -1,8 +1,4 @@
 ---
 fr:
   activerecord:
-    attributes:
-      celestial_object:
-        hidden: masqué ?
-        location_prefix:
-          default: dans le système %{starsystem}
+    attributes: {}

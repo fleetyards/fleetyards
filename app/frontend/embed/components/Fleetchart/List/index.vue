@@ -1,3 +1,68 @@
+<script lang="ts">
+export default {
+  name: "FleetchartList",
+};
+</script>
+
+<script lang="ts" setup>
+import FleetchartSlider from "@/embed/components/Fleetchart/Slider/index.vue";
+import FleetchartItem from "@/embed/components/Fleetchart/Item/index.vue";
+import type { Model } from "@/services/fyApi";
+import { useEmbedStore } from "@/embed/stores/embed";
+import { storeToRefs } from "pinia";
+
+const embedStore = useEmbedStore();
+
+type Props = {
+  models: Model[];
+  slider?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  slider: true,
+});
+
+const { fleetchartScale } = storeToRefs(embedStore);
+
+const internalModels = ref<Model[]>([]);
+
+watch(
+  () => props.models,
+  () => {
+    internalModels.value = [...props.models];
+    internalModels.value.sort(sortByFleetchartLength);
+  },
+);
+
+const getLength = (model: Model) => {
+  if (model.metrics.fleetchartOffsetLength) {
+    return model.metrics.fleetchartOffsetLength;
+  }
+
+  return model.metrics.length || 0;
+};
+
+const sortByFleetchartLength = (a: Model, b: Model) => {
+  if (getLength(a) > getLength(b)) {
+    return -1;
+  }
+
+  if (getLength(a) < getLength(b)) {
+    return 1;
+  }
+
+  return 0;
+};
+const updateFleetchartScale = (value: number) => {
+  embedStore.fleetchartScale = value;
+};
+
+onMounted(() => {
+  internalModels.value = [...props.models];
+  internalModels.value.sort(sortByFleetchartLength);
+});
+</script>
+
 <template>
   <div>
     <div v-if="slider" class="row justify-content-lg-center">
@@ -28,56 +93,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import FleetchartSlider from "@/embed/components/Fleetchart/Slider/index.vue";
-import FleetchartItem from "@/embed/components/Fleetchart/Item/index.vue";
-import Store from "@/embed/lib/Store";
-
-type Props = {
-  models: Model[];
-  slider?: boolean;
-};
-
-const props = withDefaults(defineProps<Props>(), {
-  slider: true,
-});
-
-const fleetchartScale = computed(() => Store.getters.fleetchartScale);
-
-const internalModels = ref<Model[]>([]);
-
-watch(
-  () => props.models,
-  () => {
-    internalModels.value = [...props.models];
-    internalModels.value.sort(sortByFleetchartLength);
-  },
-);
-
-const sortByFleetchartLength = (a: Model, b: Model) => {
-  if (a.fleetchartLength > b.fleetchartLength) {
-    return -1;
-  }
-
-  if (a.fleetchartLength < b.fleetchartLength) {
-    return 1;
-  }
-
-  return 0;
-};
-const updateFleetchartScale = (value: number) => {
-  Store.commit("setFleetchartScale", value);
-};
-
-onMounted(() => {
-  internalModels.value = [...props.models];
-  internalModels.value.sort(sortByFleetchartLength);
-});
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetchartList",
-};
-</script>

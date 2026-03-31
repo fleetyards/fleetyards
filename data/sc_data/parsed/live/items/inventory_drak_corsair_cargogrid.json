@@ -1,0 +1,40 @@
+{
+  "key": "DRAK_Corsair_CargoGrid",
+  "ref": "59df765b-ed64-43fc-bff4-083a4975da15",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 5.0,
+      "y": 11.25,
+      "z": 2.5
+    },
+    "capacity": 72,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 5.0,
+          "y": 7.5,
+          "z": 2.5
+        },
+        "capacity": 48
+      }
+    }
+  }
+}

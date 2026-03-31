@@ -5,11 +5,20 @@ module Api
     class WishlistsController < ::Api::BaseController
       include HangarFiltersConcern
 
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?,
+        only: %i[show export items]
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        except: %i[show export items]
+
       after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
       def show
-        authorize! :show, :api_hangar
-        scope = current_user.vehicles.visible.wanted
+        authorize! with: ::HangarPolicy
+
+        scope = authorized_scope(Vehicle.all).visible.wanted
 
         if price_range.present?
           vehicle_query_params["sorts"] = "model_price asc"
@@ -24,11 +33,13 @@ module Api
         scope = loaner_included?(scope)
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
-        vehicle_query_params["sorts"] = sorting_params(Vehicle, ["name asc", "model_name asc"])
+        vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params["sorts"], ["name asc", "model_name asc"])
 
         @q = scope.ransack(vehicle_query_params)
-
-        result = @q.result(distinct: true)
+        result = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
+          .order(@q.result.order_values)
           .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
           .joins(model: [:manufacturer])
 
@@ -36,14 +47,14 @@ module Api
       end
 
       def destroy
-        authorize! :destroy, :api_hangar
+        authorize! with: ::HangarPolicy
 
         Vehicle.transaction do
           # rubocop:disable Rails/SkipsModelValidations
-          current_user.vehicles.wanted.update_all(notify: false)
+          authorized_scope(Vehicle.all).wanted.update_all(notify: false)
           # rubocop:enable Rails/SkipsModelValidations
 
-          vehicle_ids = current_user.vehicles.wanted.pluck(:id)
+          vehicle_ids = authorized_scope(Vehicle.all).wanted.pluck(:id)
 
           VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
           VehicleModule.where(vehicle_id: vehicle_ids).delete_all
@@ -52,24 +63,27 @@ module Api
       end
 
       def export
-        authorize! :show, :api_hangar
+        authorize! with: ::HangarPolicy
 
-        scope = current_user.vehicles.visible.wanted
+        scope = authorized_scope(Vehicle.all).visible.wanted
 
         scope = loaner_included?(scope)
 
         vehicle_query_params["sorts"] = "model_name asc"
 
         @q = scope.ransack(vehicle_query_params)
-
-        @vehicles = @q.result(distinct: true)
+        @vehicles = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
+          .order(@q.result.order_values)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
       end
 
       def items
-        authorize! :show, :api_hangar
-        model_ids = current_user.vehicles
+        authorize! with: ::HangarPolicy
+
+        model_ids = authorized_scope(Vehicle.all)
           .where(loaner: false)
           .visible
           .wanted

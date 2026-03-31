@@ -1,0 +1,24 @@
+{
+  "key": "ANVL_Valkyrie_Door_Right_CitizenCon",
+  "ref": "5984f9f0-8bcd-44fb-bb29-e8d19df7dd8e",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 6000.0
+  }
+}

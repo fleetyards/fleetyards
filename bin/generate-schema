@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
-bundle exec rake rswag:specs:swaggerize
+set -euo pipefail
 
-yarn generate-api-client && yarn generate-admin-api-client
+# Pin DOMAIN and ON_SUBDOMAIN so the generated schema always contains
+# canonical dev-server URLs, regardless of the local environment.
+DOMAIN=fleetyards.test ON_SUBDOMAIN=true SKIP_COMMITTEE=true bundle exec rake rswag:specs:swaggerize
+
+echo "cleanup old generated files"
+
+rm -rf ./app/frontend/services/fyAdminApi
+rm -rf ./app/frontend/services/fyApi
+rm -rf ./app/frontend/services/fyOAuthApi
+
+echo "generate api clients"
+
+pnpm generate-api-client

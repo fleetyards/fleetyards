@@ -1,0 +1,50 @@
+{
+  "key": "AEGS_Idris_SCItem_Turret_Large_P",
+  "ref": "a1a6eaa7-b0d6-4afe-9b99-07a9d57d0e52",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "IFR-W57 Turret",
+  "short_name": "IFR-W57 Turret",
+  "description": "Item Type: Turret\\nManufacturer: Aegis Dynamics\\nSize: 7\\n\\nThis manned turret, designed by Aegis to be equipped with two size 5 weapons, is bespoke to the Idris frigate.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "Turret_Backing",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  }
+}

@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Queries
       class ImageQuery
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
@@ -12,7 +12,8 @@ module V1
             modelIn: {type: :array, items: {type: :string}},
             stationIn: {type: :array, items: {type: :string}}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

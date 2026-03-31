@@ -1,0 +1,34 @@
+{
+  "key": "MISC_Hull_C_FoldingStrut_1A_Outer",
+  "ref": "f5a97a63-7cc5-4159-9cda-40683df5d9d1",
+  "category": "cargogrid",
+  "type": "Cargo",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "Hardpoint_Cargo2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

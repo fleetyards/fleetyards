@@ -1,0 +1,29 @@
+{
+  "key": "RPOD_S2_HRST_12x_S1",
+  "ref": "06c3eecf-c6e5-4f63-91ab-158103f04e4a",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Rocket",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "ee8b7bb3-d420-435c-924f-561e67e64588",
+  "name": "Jericho X",
+  "short_name": null,
+  "description": "Item Type: Rocket Pod\\nManufacturer: Hurston Dynamics\\nSize: 2\\nRockets: 12xS1\\n\\nThe Jericho X rocket pod from Hurston Dynamics is compatible with any size two hardpoint and capable of carrying twelve S1 rockets.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 750.0
+  },
+  "ammunition": {
+    "max_ammo_count": 24.0,
+    "initial_ammo_count": 24.0,
+    "max_restock_count": 3.0
+  }
+}

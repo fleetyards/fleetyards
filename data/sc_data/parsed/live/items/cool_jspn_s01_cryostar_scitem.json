@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S01_CryoStar_SCItem",
+  "ref": "0a190bad-bbb1-4988-9622-61b7af717d6f",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Cryo-Star",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span\\nSize: 1\\nGrade: B\\nClass: Civilian\\n\\nJ-Span’s consumer-grade Cryo-Star cooler has become a common sight across the Empire thanks to its reliable heat absorption that won’t strain your ship’s power-plant.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 150.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "DRAK_Golem_Thruster_Front_VTOL",
+  "ref": "b8b45be7-6329-4b56-93fd-6c5171d908e3",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "Retro",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1700.0
+  },
+  "type_data": {
+    "thrust_capacity": 190000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "vtol"
+  }
+}

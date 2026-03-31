@@ -1,0 +1,22 @@
+{
+  "key": "ORIG_100i_CargoGrid",
+  "ref": "3d9e81ac-d858-44c6-9865-f69119238865",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "81c40d55-29cc-48df-a23d-a803f4753f8f"
+}

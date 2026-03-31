@@ -1,0 +1,42 @@
+{
+  "key": "ANVL_Arrow_Turret",
+  "ref": "62022f65-a2a2-46c8-af79-e40760f0f254",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil Arrow Turret",
+  "short_name": null,
+  "description": "Manufacturer: Anvil Aerospace\\n\\nThe Gestonne turret system for Anvil's Arrow allows precise independent tracking of targets and features mounts for two Size-1 weapons.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

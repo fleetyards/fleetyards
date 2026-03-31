@@ -1,0 +1,24 @@
+{
+  "key": "COOL_WCPR_S03_Kragen_SCItem",
+  "ref": "3c5a56d9-ff6e-426c-a0dd-6fe0d64037f7",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4",
+  "name": "Kragen",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel Propulsion\\nSize: 3\\nGrade: A\\nClass: Civilian\\n\\nWhen you go big, get nothing but the best. The Kragen from Wen/Cassel Propulsion has consistently been rated among the best large, commercial coolers available on the market.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1300.0
+  }
+}

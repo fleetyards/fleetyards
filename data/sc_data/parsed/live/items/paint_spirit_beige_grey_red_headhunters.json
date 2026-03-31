@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_Beige_Grey_Red_Headhunters",
+  "ref": "659ff3a1-c637-45d7-b045-6b3de88444a3",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bea39b2f-086c-421f-9490-ff877943971e",
+  "name": "Spirit Headhunters Reaper Livery",
+  "short_name": null,
+  "description": "The Headhunters Reaper livery lets you proudly proclaim your allegiance to the gang. It features the gang's name and highlights in red on a beige and grey paint scheme.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

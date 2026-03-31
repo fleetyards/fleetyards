@@ -1,0 +1,24 @@
+{
+  "key": "POWR_ORIG_S04_890J_SCItem",
+  "ref": "70019264-f2b2-4741-b50f-bdce41cf0825",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Stellate",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 4\\nGrade: Bespoke\\nClass: Civilian\\n\\nSakura Sun worked with Origin to fine tune the Stellate into the perfect power plant for the 890 Jump, providing the power and performance necessary for a ship of such grand design.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 13000.0
+  }
+}

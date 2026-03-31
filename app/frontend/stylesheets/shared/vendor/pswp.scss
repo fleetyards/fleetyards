@@ -1,0 +1,17 @@
+.pswp {
+  .pswp__button {
+    transition: all ease 0.5s;
+  }
+
+  .pswp__custom-caption {
+    font-size: 16px;
+    line-height: 1.5;
+    color: white;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}

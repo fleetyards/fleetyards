@@ -1,7 +1,6 @@
 require_relative "boot"
 
 require "rails/all"
-require "sprockets/railtie"
 require_relative "../lib/middleware/transform_parameters"
 
 # Require the gems listed in Gemfile, including any gems
@@ -44,7 +43,7 @@ module Fleetyards
       # rubocop:enable Rails/OutputSafety
     }
 
-    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time]
+    config.active_record.yaml_column_permitted_classes = [Symbol, Date, Time, ActiveSupport::HashWithIndifferentAccess]
 
     # Hack to fix Zeitwerk issue
     Rails.autoloaders.main.ignore(Rails.root.join("app/frontend/images"))
@@ -56,6 +55,7 @@ module Fleetyards
     config.middleware.use Middleware::TransformParameters
 
     config.app = config_for("app/main")
+    config.sc_data = config_for("app/sc_data")
     config.maintainer = config_for("app/maintainer")
     config.rsi = config_for("app/rsi")
     config.api_schema = config_for("app/api_schema")

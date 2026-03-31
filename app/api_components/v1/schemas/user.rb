@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class User
-      include SchemaConcern
+      include Rswag::SchemaComponents::Component
 
       schema({
         type: :object,
@@ -12,7 +12,7 @@ module V1
           username: {type: :string},
           email: {type: :string},
           unconfirmedEmail: {type: :string},
-          avatar: {type: :string},
+          avatar: {"$ref": "#/components/schemas/MediaFile"},
           rsiHandle: {type: :string},
           discord: {type: :string},
           youtube: {type: :string},
@@ -30,13 +30,15 @@ module V1
           twoFactorQrCodeUrl: {type: :string},
           twoFactorProvisioningUrl: {type: :string},
           hangarUpdatedAt: {type: :string, format: "date-time"},
+          resourceAccess: {type: :array, items: {type: :string}},
+          authConnections: {type: :array, items: {type: :string}},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
         required: %w[
           username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
-          twoFactorRequired createdAt updatedAt
+          twoFactorRequired resourceAccess authConnections createdAt updatedAt
         ]
       })
     end

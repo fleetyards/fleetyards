@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Reward_Faction_Head_Hunters",
+  "ref": "da46c111-d6ee-4057-b7a0-f6d0c3bd7b12",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4e9fd6bf-95ca-4899-a73c-2cd5e70dd608",
+  "name": "Cutter Headhunters Trauma Livery",
+  "short_name": null,
+  "description": "Show your loyalty to the Headhunters gang with this livery featuring their logo emblazoned on a dark grey hull accented with a vibrant purple.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

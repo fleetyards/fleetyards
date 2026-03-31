@@ -1,0 +1,25 @@
+{
+  "key": "INTK_RSI_Meteor",
+  "ref": "910b6e4f-7a1e-4ede-be51-c396bc1e789e",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 0.0,
+    "minimum_rate": 0.2
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "Mining_Modules_Active",
+  "ref": "a5edf7d3-64f6-4ef6-bee8-dfa6f844e396",
+  "category": "utility",
+  "type": "MiningModifier",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Mining Modules",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 407.0,
+    "dimensions": {
+      "x": 0.0649999,
+      "y": 0.1203114,
+      "z": 0.0649999
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

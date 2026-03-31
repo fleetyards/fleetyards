@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_GoblinG_H_Black_Yellow",
+  "ref": "70f47a1a-49b0-4311-a883-e604d27e0230",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "97ff99dc-fd97-4326-b88d-9c9322906c99",
+  "name": "Aurora Mk I Hurston Livery",
+  "short_name": null,
+  "description": "The Hurston livery for the Aurora features the company's logo atop a grey base paint with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

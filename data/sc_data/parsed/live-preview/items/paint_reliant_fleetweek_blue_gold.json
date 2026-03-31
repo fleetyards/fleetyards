@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Reliant_Fleetweek_Blue_Gold",
+  "ref": "105ad697-b26d-4084-80f8-0349bce79ea2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cbba3cd2-bd12-4562-b594-cdc8b03f0eca",
+  "name": "Reliant Invictus Blue and Gold Livery",
+  "short_name": null,
+  "description": "Featuring a vibrant blue base color and gold highlights, the Invictus Blue and Gold livery will give your Reliant a striking style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Api
-  class SchemaController < ApplicationController
+  class SchemaController < ActionController::API
     def index
-      not_found! unless File.exist?(Rails.root.join("#{schema_folder}/#{params[:api_version]}/schema.yaml"))
+      return head(:not_found) unless File.exist?(Rails.root.join("#{schema_folder}/#{params[:api_version]}/schema.yaml"))
 
       render file: Rails.root.join("#{schema_folder}/#{params[:api_version]}/schema.yaml")
     end

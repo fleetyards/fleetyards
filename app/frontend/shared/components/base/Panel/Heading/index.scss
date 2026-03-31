@@ -1,0 +1,37 @@
+.panel-heading {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  color: $text-color;
+
+  &--top {
+    background: linear-gradient(to bottom, rgba(black, 0.8), transparent);
+    border-top-left-radius: $panelContentBorderRadius;
+    border-top-right-radius: $panelContentBorderRadius;
+    align-items: flex-start;
+  }
+
+  &--bottom {
+    background: linear-gradient(to top, rgba(black, 0.8), transparent);
+    border-bottom-left-radius: $panelContentBorderRadius;
+    border-bottom-right-radius: $panelContentBorderRadius;
+    align-items: flex-end;
+  }
+
+  &__title {
+    width: 100%;
+    padding: 15px 15px 0;
+
+    &--with-actions {
+      padding-right: 55px;
+    }
+  }
+
+  &__actions {
+    margin-right: 10px;
+    padding-top: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "key": "KBAR_BallisticCannon_S1",
+  "ref": "85fd75f8-6c6c-4d3f-839f-988ae7660617",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7b4402a1-f17f-4125-afcc-4a159dcd29e0",
+  "name": "9-Series Longsword Cannon",
+  "short_name": "Longsword",
+  "description": "Manufacturer: KnightBridge Arms\\nItem Type: Ballistic Cannon\\nSize: 1\\n\\nThe entry level autocannon of the KnightBridge Arms Sword-line, the 9-Series Longsword fires a ballistic round designed for use against a variety of armored hostiles while allowing pilots to keep a healthy distance from targets.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 850.0
+  },
+  "ammunition": {
+    "max_ammo_count": 495.0,
+    "initial_ammo_count": 495.0,
+    "max_restock_count": 3.0
+  }
+}

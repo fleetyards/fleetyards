@@ -1,0 +1,130 @@
+.base-image-input {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+
+  label {
+    white-space: nowrap;
+  }
+
+  &__subline {
+    display: block;
+    margin-top: 5px;
+  }
+
+  &__direct-upload {
+    position: absolute;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+
+    input {
+      display: block;
+      width: 100%;
+      height: 43px;
+      padding: 6px 12px 6px 12px;
+      color: $input-color;
+      font-size: 16px;
+      line-height: 1.42857;
+      text-overflow: ellipsis;
+      background-color: $input-bg;
+      background-image: none;
+      border: 1px solid $input-border;
+      border-radius: 3px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+      transition:
+        border-color ease-in-out 0.15s,
+        box-shadow ease-in-out 0.15s;
+
+      &[type="number"]::-webkit-inner-spin-button,
+      &[type="number"]::-webkit-outer-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+      }
+
+      &[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &.clearable {
+        padding-right: 50px;
+      }
+    }
+  }
+
+  &__clear {
+    position: absolute;
+    cursor: pointer;
+    top: 5px;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $danger !important;
+    border-radius: 10px 0 0 10px;
+    z-index: 1;
+    opacity: 0;
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
+  &:hover {
+    .base-image-input__clear {
+      opacity: 1;
+    }
+  }
+
+  &--disabled {
+    input {
+      color: darken($input-color, 10%);
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+  }
+
+  &--with-error {
+    input {
+      border-color: darken($danger, 15%);
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    }
+  }
+
+  &--avatar {
+    .base-image-input__wrapper {
+      width: 200px;
+
+      :deep(img) {
+        border-radius: 50%;
+      }
+    }
+
+    .base-image-input__clear {
+      background: transparent !important;
+      top: -10px;
+      right: -10px;
+    }
+
+    :deep(.direct-upload__dropzone) {
+      flex-direction: column;
+
+      &::before {
+        border-radius: 50%;
+        overflow: hidden;
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "key": "ANVL_Hornet_CargoGrid_F7C_Mk2",
+  "ref": "2e32c134-5d48-4b8f-9e7e-7a3d679f21f4",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "storage": {
+    "storage": 1.0
+  },
+  "inventory_ref": "0502e435-5268-40de-addd-ec8a36114177"
+}

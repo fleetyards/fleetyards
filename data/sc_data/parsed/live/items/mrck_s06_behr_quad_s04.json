@@ -1,0 +1,58 @@
+{
+  "key": "MRCK_S06_BEHR_Quad_S04",
+  "ref": "c870f6a8-5db9-4999-909a-675aa511ba19",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-644 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 6\\nMissiles: 4xS4\\n\\nBehring’s MSD-644 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 6 hardpoint for the reliable and effective launch of four S4 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

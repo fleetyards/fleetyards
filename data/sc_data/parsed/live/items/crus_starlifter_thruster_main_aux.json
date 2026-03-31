@@ -1,0 +1,30 @@
+{
+  "key": "CRUS_Starlifter_Thruster_Main_Aux",
+  "ref": "16ec0923-6843-46eb-8a2e-cab704181842",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 22200.0
+  },
+  "type_data": {
+    "thrust_capacity": 11395100.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "aux"
+  }
+}

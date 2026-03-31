@@ -1,0 +1,40 @@
+{
+  "key": "ANVL_Paladin_CargoGrid",
+  "ref": "8a01576f-9f85-46f9-b78e-9af3d9de2fa5",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 5.0,
+      "z": 1.25
+    },
+    "capacity": 4,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      }
+    }
+  }
+}

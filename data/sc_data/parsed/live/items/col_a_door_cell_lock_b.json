@@ -1,0 +1,49 @@
+{
+  "key": "Col_A_Door_Cell_Lock_b",
+  "ref": "ea5d6f94-3880-48dd-8933-b9ba62b826a4",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "Lock1",
+      "min_size": "0",
+      "max_size": "4",
+      "types": []
+    },
+    {
+      "name": "Lock2",
+      "min_size": "0",
+      "max_size": "4",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "Lock1",
+      "key": "Door_Deadbolt_Cuttable",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "Lock2",
+      "key": "Door_Deadbolt_Cuttable",
+      "ref": null,
+      "default_loadout": []
+    }
+  ]
+}

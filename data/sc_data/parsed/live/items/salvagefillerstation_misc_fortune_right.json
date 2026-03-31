@@ -1,0 +1,49 @@
+{
+  "key": "SalvageFillerStation_MISC_Fortune_Right",
+  "ref": "4f191c66-88c5-4e6a-9762-7a5a5a67d6a2",
+  "category": "salvagefillerstation",
+  "type": "SalvageFillerStation",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_salvage_refill_right",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "hardpoint_salvage_crate_right",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "hardpoint_cargo_grid_right",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid_right",
+      "key": null,
+      "ref": "2fa57a1f-f534-4358-b89d-a1df0620e556",
+      "default_loadout": []
+    }
+  ]
+}

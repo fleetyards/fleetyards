@@ -1,0 +1,22 @@
+{
+  "key": "DRAK_Cutlass_Red_CargoGrid_Right",
+  "ref": "96b66dfc-7a66-4a65-ae06-48593b9ef454",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "2b05f746-5928-4cad-939c-70fe9bf4b863"
+}

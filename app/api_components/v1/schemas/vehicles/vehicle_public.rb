@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Vehicles
       class VehiclePublic
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
@@ -17,9 +17,9 @@ module V1
             hangarGroups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupPublic"}},
             loaner: {type: :boolean},
             model: {"$ref": "#/components/schemas/Model"},
-            username: {type: :string, nullable: true},
-            userAvatar: {type: :string, format: :uri, nullable: true},
-            userRsiHandle: {type: :string, nullable: true},
+            username: {type: :string},
+            userAvatar: {type: :string, format: :uri},
+            userRsiHandle: {type: :string},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},

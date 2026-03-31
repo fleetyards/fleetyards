@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_GoblinG_A_Red_Black",
+  "ref": "5a7ec97b-e358-4c9a-af54-8f5819a9efd4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "44078548-84df-4108-92d1-d7a72f0e83c5",
+  "name": "Aurora Mk I ArcCorp Livery",
+  "short_name": null,
+  "description": "The ArcCorp livery for the Aurora features the company's logo atop a maroon base paint with black and yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

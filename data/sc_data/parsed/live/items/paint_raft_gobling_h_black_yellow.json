@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RAFT_GoblinG_H_Black_Yellow",
+  "ref": "7190c568-8bae-4419-9f47-91cb01413d55",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "541f083c-28b0-4042-a4ef-70015b2e82e6",
+  "name": "RAFT Hurston Livery",
+  "short_name": null,
+  "description": "The Hurston livery for the RAFT features the company's logo atop a grey base paint with yellow highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

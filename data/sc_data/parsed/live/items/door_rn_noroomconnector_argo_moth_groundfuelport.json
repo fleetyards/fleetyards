@@ -1,0 +1,21 @@
+{
+  "key": "Door_RN_NoRoomConnector_ARGO_MOTH_GroundFuelport",
+  "ref": "2af039dc-e8fc-4fa0-b1d2-398d99724414",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

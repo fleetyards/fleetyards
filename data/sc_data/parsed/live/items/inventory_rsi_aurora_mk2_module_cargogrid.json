@@ -1,0 +1,40 @@
+{
+  "key": "RSI_Aurora_Mk2_Module_CargoGrid",
+  "ref": "865161dd-fbb5-498a-8681-09f499d7aa03",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 3.75,
+      "z": 1.25
+    },
+    "capacity": 3,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 2.5,
+          "z": 1.25
+        },
+        "capacity": 2
+      }
+    }
+  }
+}

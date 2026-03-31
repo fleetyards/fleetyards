@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Carrack_Thruster_Main_Large",
+  "ref": "5e79be94-5052-4617-b5d3-c433b4401e0b",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 30000.0
+  },
+  "type_data": {
+    "thrust_capacity": 65000000.0,
+    "fuel_burn_rate_per10_k_newton": 0.0279,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

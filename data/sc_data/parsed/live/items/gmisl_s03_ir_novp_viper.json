@@ -1,0 +1,126 @@
+{
+  "key": "GMISL_S03_IR_NOVP_Viper",
+  "ref": "69c9701d-53e2-4377-ac94-f65edfe4c63f",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "67fd3077-ee8c-4a7c-8bad-91500b2a9509",
+  "name": "Viper III-G Missile",
+  "short_name": "Viper III-G",
+  "description": "Manufacturer: Nova Pyrotechnica \\nTracking Signal: Infrared \\nSize: 3  \\n\\nNova has worked hard to insure that their infrared tracking Viper strike missile lives up to its name by delivering agile and lethal attacks against hostile targets. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 31250.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 2.0,
+      "z": 1.0
+    }
+  },
+  "loadout": [
+    {
+      "name": "cluster1",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "cluster2",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "cluster3",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "cluster4",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "cluster5",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "cluster6",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "cluster7",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "cluster1",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "cluster2",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "cluster3",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "cluster4",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "cluster5",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "cluster6",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "cluster7",
+      "key": "NOVP_Rocket_Venom_S1_Strike_TL_IR",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 25.0
+  }
+}

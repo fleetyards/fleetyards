@@ -1,0 +1,42 @@
+{
+  "key": "RSI_Bengal_SCItem_Remote_Turret_Phalanx",
+  "ref": "96394fd4-6aa3-4f96-87f9-07b6c4b4aaa4",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_centre",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "turret_centre",
+      "key": "Bengal_BallisticGatling_S6",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

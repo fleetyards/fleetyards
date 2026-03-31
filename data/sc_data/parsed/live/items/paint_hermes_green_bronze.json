@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Green_Bronze",
+  "ref": "3237534f-e602-4629-8a3e-5bb7a2341446",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dfe8144d-154e-43c4-87fb-d2e224b5e745",
+  "name": "Hermes Honorbound Livery",
+  "short_name": null,
+  "description": "Fight for glory with the Honorbound livery, consisting of a muted military green accompanied by a subtle bronze.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

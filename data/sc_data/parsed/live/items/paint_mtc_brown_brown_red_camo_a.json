@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MTC_brown_brown_red_camo_a",
+  "ref": "88e164f9-e6e2-4e41-a5a1-248b211dcaf2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2ce95598-54ec-4119-bd14-e529e4151cb8",
+  "name": "MXC Timberwolf Camo Livery",
+  "short_name": null,
+  "description": "An ideal choice for cloaking the MXC in woodland environs, the Timberwolf Camo livery features a brown camo pattern and subtle red highlights. It's also compatible with other Greycat M-series vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

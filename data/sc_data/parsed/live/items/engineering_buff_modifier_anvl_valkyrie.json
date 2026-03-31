@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_ANVL_Valkyrie",
+  "ref": "01f9a25d-aea6-4cd9-a1b5-7e51eaf43247",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

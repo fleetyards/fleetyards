@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Defender_AlienWeek_Platinum_Silver_Purple_Mosaic",
+  "ref": "1c7867ff-d27d-46c4-a9d4-4c7adc86b8f5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bce4f7e0-2523-4427-8bdd-306f9554efd3",
+  "name": "Defender Wanderer Livery",
+  "short_name": null,
+  "description": "The Wanderer livery features crisscrossing purple and grey lines over a platinum foundation. Inspired by the sacred Xi'an gardens of R.aip’uāng, famous for its trails that wander in surprising ways and encourage a focus on the journey instead of the destination.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

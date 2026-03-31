@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Sabre_Peregrine_Thruster_Mav_Joint_01_Top",
+  "ref": "8c3ca3e5-a06c-488c-b166-02ebeda2b099",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 12750.0
+  },
+  "type_data": {
+    "thrust_capacity": 500000.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

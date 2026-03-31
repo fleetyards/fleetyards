@@ -1,0 +1,34 @@
+{
+  "key": "MRCK_S03_TEMP_BOMB",
+  "ref": "549964bb-a674-41ba-86d5-55a6d3c25931",
+  "category": "missile_racks",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-313 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 3\\nMissiles: 1xS3\\n\\nBehring’s MSD-313 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 3 hardpoint for the reliable and effective launch of one S3 missile.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "1",
+      "max_size": "10",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

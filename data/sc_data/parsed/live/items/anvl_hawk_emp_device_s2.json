@@ -1,0 +1,35 @@
+{
+  "key": "ANVL_Hawk_EMP_Device_S2",
+  "ref": "6557820b-a5d1-4630-80aa-44d41058e488",
+  "category": "weapons",
+  "type": "EMP",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "TroMag Burst Generator",
+  "short_name": "TroMag Burst Generator",
+  "description": "Manufacturer: MaxOx\\nItem Type: Burst Generator\\nSize: 1\\nDamage Type: EMP\\n\\nThe TroMag from MaxOx is a well-designed and reliable EMP-focused burst generator. Its popularity has risen over the years as pilots look for alternatives to Behring’s REP-8. The TroMag boasts a faster charge time than their main competitor but has a smaller effective radius, leaving pilots to decide whether they prefer speed or size.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 150.0
+  },
+  "type_data": {
+    "charge_time": 12.0,
+    "distortion_damage": 2475.0,
+    "emp_radius": 750.0,
+    "min_emp_radius": 150.0,
+    "phys_radius": 400.0,
+    "min_phys_radius": 250.0,
+    "pressure": 0.0,
+    "unleash_time": 0.75,
+    "cooldown_time": 12.0
+  }
+}

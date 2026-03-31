@@ -1,0 +1,44 @@
+{
+  "key": "RSI_Constellation_Taurus_Turret_Lower",
+  "ref": "d73e604b-72ec-4310-a21d-83beae6f65df",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "TractorBeam",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

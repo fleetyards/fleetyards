@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Fury_Thruster_Main_Bottom_LX",
+  "ref": "d4e53d51-831f-4d47-969c-1e4834aa38ca",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 7500.0
+  },
+  "type_data": {
+    "thrust_capacity": 672211.2,
+    "fuel_burn_rate_per10_k_newton": 0.025,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

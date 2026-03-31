@@ -1,0 +1,21 @@
+{
+  "key": "Paint_MTC_lightgrey_lightgrey_red_solid",
+  "ref": "2e44fa78-2e8c-45b0-b015-92defd8fbe72",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f9ccd0e6-215d-4ebd-b169-926013bef9e9",
+  "name": "MXC Cadet Livery",
+  "short_name": null,
+  "description": "Make the MXC light grey with red highlights by equipping the Cadet livery, which can also be applied to other Greycat M-Series vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

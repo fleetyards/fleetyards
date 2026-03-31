@@ -1,0 +1,34 @@
+{
+  "key": "ANVL_Fixed_Mount_Hornet_Ball_S4",
+  "ref": "18895043-42c5-4f1d-a5e8-4cf7c78bd69f",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b9b97673-c585-4e0a-b229-a0a3c79668c3",
+  "name": "Specialty Hornet S5 VariPuck Mount",
+  "short_name": null,
+  "description": "Manufacturer: Flashfire Systems\\nItem Type: Weapon Mount\\nSize: 5\\n\\nA ‘special mission’ weapon mount from Flashfire Systems designed to allow the Hornet to attach weapons the same size as the hardpoint the VariPuck is mounting to.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_size_4",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1400.0
+  }
+}

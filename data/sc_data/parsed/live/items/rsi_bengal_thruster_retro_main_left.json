@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Bengal_Thruster_Retro_Main_Left",
+  "ref": "23122b86-2f4e-4f50-90bf-cc6f79bf0187",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "type_data": {
+    "thrust_capacity": 100981200.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

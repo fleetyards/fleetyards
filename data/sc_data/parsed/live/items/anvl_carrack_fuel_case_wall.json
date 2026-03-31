@@ -1,0 +1,21 @@
+{
+  "key": "ANVL_Carrack_Fuel_Case_Wall",
+  "ref": "778cd136-9785-4f9c-a974-03262e4ad99a",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

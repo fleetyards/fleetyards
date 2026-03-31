@@ -1,0 +1,42 @@
+{
+  "key": "MISC_Starlancer_Dual_Gimbal",
+  "ref": "6585fd71-0e31-4018-917c-7fec1ab1c1d1",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "NoseMounted",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "PC2 Dual S4 Mount",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_01",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_02",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 600.0
+  }
+}

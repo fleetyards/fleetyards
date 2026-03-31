@@ -4,17 +4,16 @@ module V1
   module Schemas
     module Fleets
       class FleetMember
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
             id: {type: :string, format: :uuid},
             username: {type: :string},
-            role: {"$ref": "#/components/schemas/FleetMembershipRoleEnum"},
-            roleLabel: {type: :string},
+            fleetRole: {"$ref": "#/components/schemas/FleetRole"},
             status: {"$ref": "#/components/schemas/FleetMembershipStatusEnum"},
-            avatar: {type: :string},
+            avatar: {"$ref": "#/components/schemas/MediaFile"},
             rsiHandle: {type: :string},
             homepage: {type: :string},
             discord: {type: :string},
@@ -27,7 +26,9 @@ module V1
             fleetName: {type: :string},
             fleet: {"$ref": "#/components/schemas/Fleet"},
             primary: {type: :boolean},
+            isDestroyAllowed: {type: :boolean},
             hangarUpdatedAt: {type: :string, format: "date-time"},
+            lastActiveAt: {type: :string, format: "date-time"},
             invitedAt: {type: :string, format: "date-time"},
             invitedAtLabel: {type: :string},
             requestedAt: {type: :string, format: "date-time"},
@@ -40,7 +41,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id username role roleLabel shipsFilter fleetSlug fleetName createdAt updatedAt]
+          required: %w[id username fleetRole shipsFilter fleetSlug fleetName createdAt updatedAt]
         })
       end
     end

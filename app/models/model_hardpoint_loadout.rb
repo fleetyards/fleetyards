@@ -14,4 +14,12 @@
 class ModelHardpointLoadout < ApplicationRecord
   belongs_to :model_hardpoint, touch: true
   belongs_to :component, optional: true
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["component_id", "created_at", "id", "model_hardpoint_id", "name", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["component", "model_hardpoint"]
+  end
 end

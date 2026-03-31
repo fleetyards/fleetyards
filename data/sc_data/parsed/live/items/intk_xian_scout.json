@@ -1,0 +1,25 @@
+{
+  "key": "INTK_XIAN_Scout",
+  "ref": "f7cefbcd-f19b-4d0c-8d04-172357b6218a",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 14.5,
+    "minimum_rate": 0.2
+  }
+}

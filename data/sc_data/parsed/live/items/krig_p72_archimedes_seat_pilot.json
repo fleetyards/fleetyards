@@ -1,0 +1,21 @@
+{
+  "key": "KRIG_P72_Archimedes_Seat_Pilot",
+  "ref": "b149dd6b-207f-4e5b-8130-200a53133b91",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

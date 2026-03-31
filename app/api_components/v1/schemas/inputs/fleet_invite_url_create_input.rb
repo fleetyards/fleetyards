@@ -4,13 +4,13 @@ module V1
   module Schemas
     module Inputs
       class FleetInviteUrlCreateInput
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
-            limit: {type: :integer},
-            expiresAfterMinutes: {type: :integer}
+            limit: {type: :integer, nullable: true},
+            expiresAfterMinutes: {type: :integer, nullable: true}
           },
           additionalProperties: false
         })

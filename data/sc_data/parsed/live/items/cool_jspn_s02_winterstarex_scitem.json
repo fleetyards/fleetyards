@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S02_WinterStarEX_SCItem",
+  "ref": "5800c752-938f-4b6a-b39b-7f770c6fa060",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Winter-Star EX",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span \\nSize: 2\\nGrade: D\\nClass: Civilian\\n\\nThe Winter-Star EX is a baseline cooler you can trust. Built by the experts at J-Span, it’s ready to handle whatever conditions you encounter.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 300.0
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "key": "DRAK_Corsair_Remote_Turret_Tail",
+  "ref": "6b47720a-31ab-4af2-a400-3f84ad112c4b",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "TopTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 6000.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Retaliator_Thruster_Main_Right",
+  "ref": "398db9a9-8b8a-47d1-8503-2879fc4b3a1e",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 18500.0
+  },
+  "type_data": {
+    "thrust_capacity": 6220000.0,
+    "fuel_burn_rate_per10_k_newton": 0.035,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

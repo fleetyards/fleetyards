@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_Lunar_2956_Red_Gold",
+  "ref": "9358d406-b626-4fe6-986b-52dda526e5fe",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6f3cb34c-f31d-4dfa-a971-9550249d37dd",
+  "name": "ATLS Auspicious Red Livery",
+  "short_name": null,
+  "description": "The Auspicious Red livery brings a bold red base paint and striking gold accents to the ATLS power suit.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

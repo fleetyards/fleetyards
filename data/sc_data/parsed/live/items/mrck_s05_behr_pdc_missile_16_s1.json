@@ -1,0 +1,252 @@
+{
+  "key": "MRCK_S05_BEHR_PDC_Missile_16_S1",
+  "ref": "3b57d123-4a6f-4549-88ca-641de8cc3537",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-582 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 5\\nMissiles: 8xS2\\n\\nBehring’s MSD-582 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 5 hardpoint for the reliable and effective launch of eight S2 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_09_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_10_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_11_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_12_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_13_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_14_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_15_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_16_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "missile_01_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_02_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_03_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_04_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_05_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_06_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_07_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_08_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_09_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_10_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_11_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_12_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_13_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_14_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_15_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    },
+    {
+      "name": "missile_16_attach",
+      "key": null,
+      "ref": "b86bd2f2-1f5e-4731-a286-74faa8cde646",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

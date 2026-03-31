@@ -1,0 +1,21 @@
+{
+  "key": "CRUS_Star_Runner_Cargo_Hold_Lift",
+  "ref": "5bcc42b4-c5f3-4872-ac13-3e71cd99939d",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

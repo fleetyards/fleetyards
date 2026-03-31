@@ -1,0 +1,94 @@
+{
+  "key": "SHLD_BEHR_S01_6SA_SCItem",
+  "ref": "69eab676-9cc1-4e42-bacd-3fa9a78081ee",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "6SA 'Arbiter'",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Behring\\nSize: 1\\nGrade: B\\nClass: Civilian\\n\\nProviding above average shield health and damage absorption, the 6SA ‘Arbiter’ has been a trusted component for centuries. Experience the Behring advantage by installing this small shield generator today.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 170.0
+  },
+  "type_data": {
+    "max_health": 3750.0,
+    "max_regen": 375.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 9.09,
+    "damaged_regen_delay": 4.55,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": -0.18,
+        "min": -0.55
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.45,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

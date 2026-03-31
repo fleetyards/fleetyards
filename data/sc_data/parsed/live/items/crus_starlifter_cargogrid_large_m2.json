@@ -1,0 +1,22 @@
+{
+  "key": "CRUS_Starlifter_CargoGrid_Large_M2",
+  "ref": "6fe4ea07-9414-45d0-8953-203239236d30",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "f059c1ba-89f0-4919-aedb-4e54b0e78884"
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RAFT_GoblinG_M_White_Blue",
+  "ref": "6e318f10-454c-4631-bbf8-09f632342635",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d701ac8a-d3e3-4679-b270-5f711471720a",
+  "name": "RAFT microTech Livery",
+  "short_name": null,
+  "description": "The microTech livery for the RAFT features the company's logo atop a white base paint with light blue and grey highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,472 @@
+{
+  "key": "AEGS_Sabre_Firebird_Collector_Milt",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": null,
+  "description": null,
+  "career": "Combat",
+  "role": "Stealth Fighter",
+  "insurance": {
+    "base_wait_time_minutes": "7.56",
+    "mandatory_wait_time_minutes": "2.52",
+    "base_expediting_fee": "3934"
+  },
+  "mass": 73492.72,
+  "metrics": {
+    "x": 24.5,
+    "y": 24.5,
+    "z": 5.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_SCItem_Seat_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_20s"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": "d89b535f-8187-4840-b5f4-3230c789dfd1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "ref": "d89b535f-8187-4840-b5f4-3230c789dfd1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": "5748cdbc-5a26-477a-a4ad-b20a593bde59",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": "5748cdbc-5a26-477a-a4ad-b20a593bde59",
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": "995c2de5-f7e6-4646-83e3-4627ba5a5865",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": null,
+      "key": "ARMR_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_shield_generator_A",
+      "ref": "0baaf20a-460e-4668-84f2-d09f9d31b492",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_B",
+      "ref": "0baaf20a-460e-4668-84f2-d09f9d31b492",
+      "key": null
+    },
+    {
+      "name": "hardpoint_engine",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Retro_Left"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Retro_Right"
+    },
+    {
+      "name": "hardpoint_thruster_bottomFL",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_bottomFR",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_topFL",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_topFR",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_01"
+    },
+    {
+      "name": "hardpoint_thruster_bottomRL",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_bottomRR",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_topRL",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_thruster_topRR",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_02"
+    },
+    {
+      "name": "hardpoint_weapon_missilerack",
+      "ref": null,
+      "key": "MRCK_S03_AEGS_Sabre_Firebird",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_03_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_04_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_05_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_06_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_07_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_08_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_09_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_10_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_11_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_12_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_13_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_14_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_15_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_16_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_17_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_18_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_19_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_20_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_21_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_22_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_23_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        },
+        {
+          "name": "missile_24_attach",
+          "ref": null,
+          "key": "MISL_S03_EM_FSKI_Thunderbolt"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_left_wing",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": "GATS_BallisticGatling_S3",
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "b837397c-47b6-45e7-b409-db290a068b47",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right_wing",
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "key": "GATS_BallisticGatling_S3",
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "b837397c-47b6-45e7-b409-db290a068b47",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "AEGS_Firebird_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "AEGS_Firebird_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    },
+    {
+      "name": "hardpoint_avionics",
+      "ref": null,
+      "key": "COMP_BEHR_S01_CSR-RP"
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_AEGS_Sabre_Firebird"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_3slot"
+    },
+    {
+      "name": "hardpoint_thruster_sideRL",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_03"
+    },
+    {
+      "name": "hardpoint_thruster_sideRR",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_Thruster_Mav_Joint_03"
+    },
+    {
+      "name": "hardpoint_winglet_left",
+      "ref": "47ac894f-6591-463b-870a-0a9fc9b1afbb",
+      "key": null
+    },
+    {
+      "name": "hardpoint_winglet_right",
+      "ref": "d4d86568-7ebb-4eb9-bc0b-24fc92b81bc3",
+      "key": null
+    },
+    {
+      "name": "hardpoint_bombay_door_left_outer",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_bombay_door_left_outer"
+    },
+    {
+      "name": "hardpoint_bombay_door_left_inner",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_bombay_door_left_inner"
+    },
+    {
+      "name": "hardpoint_bombay_door_right_outer",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_bombay_door_right_outer"
+    },
+    {
+      "name": "hardpoint_bombay_door_right_inner",
+      "ref": null,
+      "key": "AEGS_Sabre_Firebird_bombay_door_right_inner"
+    },
+    {
+      "name": "hardpoint_WingCap_Left",
+      "ref": "6cac9b5f-e8ae-427f-8399-0f60ed53e5b9",
+      "key": null
+    },
+    {
+      "name": "hardpoint_WingCap_Right",
+      "ref": "9455eaee-b3a8-41f5-8a7b-c3723bce6c70",
+      "key": null
+    }
+  ]
+}

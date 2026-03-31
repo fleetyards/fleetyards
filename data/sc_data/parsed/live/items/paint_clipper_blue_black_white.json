@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Clipper_Blue_Black_White",
+  "ref": "374becfb-7f28-488b-b7d5-2d26096b1035",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7fd8d9fe-ed83-4ca5-acd3-f8f33240bcd7",
+  "name": "Clipper Cerulean Livery",
+  "short_name": null,
+  "description": "Bring a beautiful blue with black and white accents to the Clipper with the Cerulean livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

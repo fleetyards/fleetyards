@@ -1,8 +1,85 @@
+<script lang="ts">
+export default {
+  name: "VehiclesBulkGroupModal",
+};
+</script>
+
+<script lang="ts" setup>
+import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  type HangarGroup,
+  useHangarGroups as useHangarGroupsQuery,
+  useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
+} from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+
+type Props = {
+  vehicleIds: string[];
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const comlink = useComlink();
+
+const submitting = ref(false);
+
+const hangarGroupIds = ref<string[]>([]);
+
+const { data: hangarGroupsData } = useHangarGroupsQuery();
+
+const hangarGroups = computed<HangarGroup[]>(() => {
+  return hangarGroupsData.value || [];
+});
+
+const selected = (groupId: string) => {
+  return hangarGroupIds.value.includes(groupId);
+};
+
+const changeGroup = (group: HangarGroup) => {
+  if (hangarGroupIds.value.includes(group.id)) {
+    const index = hangarGroupIds.value.findIndex(
+      (groupId) => groupId === group.id,
+    );
+    if (index > -1) {
+      hangarGroupIds.value.splice(index, 1);
+    }
+  } else {
+    hangarGroupIds.value.push(group.id);
+  }
+};
+
+const bulkUpdateMutation = useUpdateBulkVehicleMutation();
+
+const save = async () => {
+  submitting.value = true;
+
+  await bulkUpdateMutation
+    .mutateAsync({
+      data: {
+        ids: props.vehicleIds,
+        hangarGroupIds: hangarGroupIds.value,
+      },
+    })
+    .then(() => {
+      comlink.emit("close-modal");
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+};
+</script>
+
 <template>
-  <Modal :title="$t('headlines.vehicle.bulkGroupEdit')">
+  <Modal :title="t('headlines.vehicle.bulkGroupEdit')">
     <p class="hint">
-      <i class="fal fa-info-circle" />
-      {{ $t("labels.vehicle.bulkGroupEdit.hint") }}
+      <i class="fa-light fa-info-circle" />
+      {{ t("labels.vehicle.bulkGroupEdit.hint") }}
     </p>
 
     <form id="vehicle-bulk" @submit.prevent="save">
@@ -15,7 +92,8 @@
               :key="group.id"
               class="col-12 col-md-6"
             >
-              <Checkbox
+              <FormToggle
+                :name="group.name"
                 :label="group.name"
                 :value="selected(group.id)"
                 @input="changeGroup(group)"
@@ -29,79 +107,19 @@
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          form="vehicle-bulk"
           :loading="submitting"
-          type="submit"
-          size="large"
+          :size="BtnSizesEnum.LARGE"
           data-test="vehicle-save"
           :inline="true"
+          @click="save"
         >
-          {{ $t("actions.save") }}
+          {{ t("actions.save") }}
         </Btn>
       </div>
     </template>
   </Modal>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
-import Modal from "@/frontend/core/components/AppModal/Inner/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Checkbox from "@/frontend/core/components/Form/Checkbox/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import vehiclesCollection from "@/frontend/api/collections/Vehicles";
-import hangarGroupsCollection from "@/frontend/api/collections/HangarGroups";
-
-@Component<VehicleModal>({
-  components: {
-    Modal,
-    Checkbox,
-    FormInput,
-    Btn,
-  },
-})
-export default class VehicleModal extends Vue {
-  @Prop({ required: true }) vehicleIds: string[];
-
-  submitting = false;
-
-  hangarGroupIds: string[] = [];
-
-  get hangarGroups() {
-    return hangarGroupsCollection.records;
-  }
-
-  selected(groupId) {
-    return this.hangarGroupIds.includes(groupId);
-  }
-
-  changeGroup(group) {
-    if (this.hangarGroupIds.includes(group.id)) {
-      const index = this.hangarGroupIds.findIndex(
-        (groupId) => groupId === group.id,
-      );
-      if (index > -1) {
-        this.hangarGroupIds.splice(index, 1);
-      }
-    } else {
-      this.hangarGroupIds.push(group.id);
-    }
-  }
-
-  async save() {
-    this.submitting = true;
-
-    if (
-      await vehiclesCollection.updateHangarGroupsBulk(
-        this.vehicleIds,
-        this.hangarGroupIds,
-      )
-    ) {
-      this.$comlink.$emit("close-modal");
-    }
-
-    this.submitting = false;
-  }
-}
-</script>
+<style lang="scss" scoped>
+@import "./index.scss";
+</style>

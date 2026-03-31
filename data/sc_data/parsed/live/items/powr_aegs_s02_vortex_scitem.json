@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S02_Vortex_SCItem",
+  "ref": "75d69d04-429b-47e1-b439-4d8e9e4e6bce",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Vortex",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics \\nSize: 2\\nGrade: D\\nClass: Military\\n\\nTurn the tide of battle with the Aegis Vortex. Counted on by the UEE Navy, this power plant can be found on ships defending every corner of the universe.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 650.0
+  }
+}

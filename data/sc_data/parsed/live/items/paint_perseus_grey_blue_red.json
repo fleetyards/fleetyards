@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Perseus_Grey_Blue_Red",
+  "ref": "dced07ce-cb72-4cad-865a-0e4a6bdf64c1",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3c132c28-0f09-4b65-ac0a-c1ca0d7dc80c",
+  "name": "Perseus Resilient Livery",
+  "short_name": null,
+  "description": "The Resilient livery for the Perseus elegantly mixes grey and blue with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

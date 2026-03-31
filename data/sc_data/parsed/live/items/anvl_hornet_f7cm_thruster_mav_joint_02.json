@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Hornet_F7CM_Thruster_Mav_Joint_02",
+  "ref": "3dc96ab5-8c6f-4e7e-a1ec-e46c35ae55e2",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 4700.0
+  },
+  "type_data": {
+    "thrust_capacity": 5668000.0,
+    "fuel_burn_rate_per10_k_newton": 0.053958,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

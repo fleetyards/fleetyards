@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Idris_Chrome_Chrome_Black",
+  "ref": "8da0c78f-9bf9-44a2-9e0d-c3b4902265eb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d4a29f0d-bc3c-4594-8fa1-121a8328f646",
+  "name": "Idris Ironcore Livery",
+  "short_name": null,
+  "description": "The chrome and black colors of the Ironcore livery helps the Idris obscure itself against the dark expanse of space.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

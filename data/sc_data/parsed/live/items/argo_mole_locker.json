@@ -1,0 +1,21 @@
+{
+  "key": "ARGO_MOLE_Locker",
+  "ref": "4ffcd883-b34f-4a3a-bd31-f3e9719e9c39",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "COOL_RSI_S04_Bengal_SCItem",
+  "ref": "a2472bfc-17ff-461d-8d99-ec68da5d04b1",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 280000.0
+  }
+}

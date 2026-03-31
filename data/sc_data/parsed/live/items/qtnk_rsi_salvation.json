@@ -1,0 +1,24 @@
+{
+  "key": "QTNK_RSI_Salvation",
+  "ref": "b82b688d-34be-4c3a-8e96-6568f57f5a5b",
+  "category": "fueltanks",
+  "type": "QuantumFuelTank",
+  "sub_type": "QuantumFuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 1.0
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "key": "RSI_Polaris_Turret_Side_Right",
+  "ref": "c283366e-e76a-4127-90d1-ee80cd296c37",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_upper_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_upper_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_lower_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_lower_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 10000.0
+  }
+}

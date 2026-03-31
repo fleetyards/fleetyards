@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_RSI_Constellation_Andromeda",
+  "ref": "7eb19d22-9ab6-469d-a9bf-c5b70ae7e876",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 33.0
+  }
+}

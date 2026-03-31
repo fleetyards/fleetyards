@@ -1,0 +1,63 @@
+{
+  "key": "WEP_TractorBeam_S2_Utility_1",
+  "ref": "39d9b779-561f-42c2-9e6d-a832ed37a303",
+  "category": "weapons",
+  "type": "TractorBeam",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "SureGrip HV-S2 Tractor Beam",
+  "short_name": "SureGrip HV-S2 Tractor Beam",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Tractor Beam\\nMax Angle: 60°\\nMax Range: 130 m\\nFull Strength Distance: 55 m\\n\\nThis heavy-duty variant of Greycat’s SureGrip tractor beam sacrifices range in exchange for additional power to handle larger and heavier objects making it an essential tool in a variety of industrial applications.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1050.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

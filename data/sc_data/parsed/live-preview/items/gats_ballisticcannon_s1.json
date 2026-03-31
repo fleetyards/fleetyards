@@ -1,0 +1,112 @@
+{
+  "key": "GATS_BallisticCannon_S1",
+  "ref": "8bebf292-a9a3-4dc8-a86c-ddfa3b9b79be",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a834198a-3465-4b02-86a5-887e922ec06d",
+  "name": "Tarantula GT-870 Mark 1 Cannon",
+  "short_name": "Tarantula-1",
+  "description": "Manufacturer: Gallenson Tactical Systems\\nItem Type: Ballistic Cannon\\nSize: 1\\n\\nFed by Gallenson Tactical’s patented SpinGlide drum ammunition system, the Tarantula GT-870 Mk1 can smoothly and accurately deliver a consistent stream of ballistic shells. Though it only has a moderate rate of fire, its trustworthy durability makes it a dependable addition to any fight.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "GATS_BallisticCannon_Barrel_S1",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "MEC",
+      "key": "GATS_BallisticCannon_FiringMechanism_S1",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "POW",
+      "key": "GATS_BallisticCannon_PowerArray_S1",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    },
+    {
+      "name": "VEN",
+      "key": "GATS_BallisticCannon_Ventilation_S1",
+      "ref": null,
+      "default_loadout": [
+
+      ]
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 433.0,
+    "initial_ammo_count": 433.0,
+    "max_restock_count": 3.0
+  },
+  "power_connection": {
+    "power_base": 30.0,
+    "power_draw": 50.0,
+    "time_to_reach_draw_request": 0.0,
+    "safeguard_priority": 20.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.25,
+    "overclock_threshold_max": 0.46,
+    "overpower_performance": 0.3,
+    "overclock_performance": 0.25,
+    "power_to_em": 0.25,
+    "decay_rate_of_em": 0.5
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "key": "MRCK_S04_RSI_Constellation",
+  "ref": "67d955e2-38b2-497d-8c88-72ffe4ebdd19",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "RSI Constellation Side Missile Rack",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_attach_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_03",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_04",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_05",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_06",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_07",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

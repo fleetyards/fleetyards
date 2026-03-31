@@ -1,0 +1,35 @@
+{
+  "key": "ORIG_315p_Remote_Turret",
+  "ref": "6d43d6f8-33b1-4a7b-b32d-02299e1ae714",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_class_2",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Turret",
+        "TractorBeam"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

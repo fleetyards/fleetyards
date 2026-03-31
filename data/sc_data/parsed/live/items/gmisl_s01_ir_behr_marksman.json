@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S01_IR_BEHR_Marksman",
+  "ref": "5af848a3-a8e4-487e-8e40-58dc012d97ad",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "Marksman I-G Missile",
+  "short_name": "Marksman I-G",
+  "description": "Manufacturer: Behring \\nTracking Signal: Infrared \\nSize: 1  \\n\\nBehring's Marksman series of proximity missiles has earned as much of a reputation for its ability to track a wide range of heat signatures as it has for its area-effect proximity damage. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 15625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 25.0
+  }
+}

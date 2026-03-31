@@ -1,0 +1,63 @@
+{
+  "key": "AMRS_LaserCannon_S1",
+  "ref": "26838ca7-418a-47d2-8429-7339ebbb8993",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "Omnisky III Cannon",
+  "short_name": "Omnisky-3",
+  "description": "Manufacturer: Amon & Reese Co.\\nItem Type: Laser Cannon\\nSize: 1\\n\\nThe Omnisky III is the base model in A&R's line of laser autocannons for small ships and has a comparable rate of fire, damage output and range to other weapons in its size class. It uses mid-grade components in its design, offering a marked increase in power efficiency over some of its less expensive competitors.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

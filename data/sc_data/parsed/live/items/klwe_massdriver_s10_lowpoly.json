@@ -1,0 +1,63 @@
+{
+  "key": "KLWE_MassDriver_S10_LowPoly",
+  "ref": "3e507f17-6725-40d6-aad0-acdb97e1d115",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "name": "Destroyer Mass Driver Cannon",
+  "short_name": "Destroyer",
+  "description": "Manufacturer: Klaus & Werner\\nItem Type: Mass Driver Cannon\\nSize: 10\\n\\nMade for the Aegis Idris utilizing railgun technology to accurately fire high damage ballistic projectiles over long distances, the Destroyer mass driver from Klaus & Werner has made it's presence known on the battlefield time and again with devastating impact.",
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 727680.0
+  },
+  "ammunition": {
+    "max_ammo_count": 1500.0,
+    "initial_ammo_count": 1500.0,
+    "max_restock_count": 3.0
+  }
+}

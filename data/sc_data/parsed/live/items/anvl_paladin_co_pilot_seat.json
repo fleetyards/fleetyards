@@ -1,0 +1,39 @@
+{
+  "key": "ANVL_Paladin_co_pilot_seat",
+  "ref": "36dad667-cd8c-42da-b59f-99ea3f874a62",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "m_velocity_display",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    },
+    {
+      "name": "m_afterburner_display",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Display"
+      ]
+    }
+  ]
+}

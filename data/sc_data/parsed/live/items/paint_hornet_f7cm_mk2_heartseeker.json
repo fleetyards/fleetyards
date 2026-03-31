@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7CM_Mk2_Heartseeker",
+  "ref": "4dba686d-b68d-410b-bcd5-08346e061002",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "086dd7b9-5a98-48fe-89ab-0d30238b80d4",
+  "name": "Hornet Mk II Heartseeker Livery",
+  "short_name": null,
+  "description": "Made for pilots whose true love is the thrill of a harrowing dogfight, the Heartseeker livery for the Hornet Mk II features a white base paint, red highlights, and a heart decal near the cockpit.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

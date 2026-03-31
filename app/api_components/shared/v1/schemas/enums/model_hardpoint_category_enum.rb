@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Enums
         class ModelHardpointCategoryEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: ::ModelHardpoint.categories.keys
+            enum: ::ModelHardpoint.categories.keys,
+            "x-enumNames": ::ModelHardpoint.categories.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

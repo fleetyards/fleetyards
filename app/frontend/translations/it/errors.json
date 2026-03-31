@@ -1,0 +1,13 @@
+{
+  "it": {
+    "errors": {
+      "generic": "Si è verificato un errore",
+      "upload": {
+        "oneFile": "È possibile caricare un solo file alla volta.",
+        "generic": "Si è verificato un errore durante il caricamento.",
+        "fileTooLarge": "Il file \"%{filename}\" supera la dimensione massima consentita di %{size} MB.",
+        "invalidFileType": "Il file \"%{filename}\" non è di un tipo consentito. I tipi consentiti sono: %{types}."
+      }
+    }
+  }
+}

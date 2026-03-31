@@ -1,0 +1,34 @@
+{
+  "key": "ANVL_Terrapin_Support_Turret",
+  "ref": "5699babb-fb1b-49ca-b8b1-272fdf37d195",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "TopTurret",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_scanner",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Seat"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  }
+}

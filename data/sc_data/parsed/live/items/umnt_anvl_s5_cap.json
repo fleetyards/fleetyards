@@ -1,0 +1,24 @@
+{
+  "key": "UMNT_ANVL_S5_Cap",
+  "ref": "83b6c014-63a2-4516-b2bd-36b762d208f4",
+  "category": "weapon_mounts",
+  "type": "Module",
+  "sub_type": null,
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil Hornet Ghost Center Cap",
+  "short_name": null,
+  "description": "This special center cap designed for the Hornet Ghost features additional faceted surfaces to potentially help radiate incoming radar energy.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 100.0
+  }
+}

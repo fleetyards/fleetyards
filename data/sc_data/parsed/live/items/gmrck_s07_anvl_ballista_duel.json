@@ -1,0 +1,31 @@
+{
+  "key": "GMRCK_S07_ANVL_Ballista_Duel",
+  "ref": "9b1808e8-0ccf-4684-8ac8-8f42848786ad",
+  "category": "missile_racks",
+  "type": "GroundVehicleMissileLauncher",
+  "sub_type": "GroundVehicleMissileRack",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil Ballista S07 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Anvil Aerospace\\nSize: 7\\nMissiles: 1xS7 \\n\\nBespoke missile rack for the Anvil Ballista that fires an S7 missile capable of massive destruction.",
+  "inventory_consumption": {
+    "micro_scu": 14200000.0,
+    "dimensions": {
+      "x": 1.786404,
+      "y": 13.26605,
+      "z": 2.806632
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "Missile"
+      ]
+    }
+  ]
+}

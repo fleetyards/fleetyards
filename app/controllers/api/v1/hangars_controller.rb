@@ -5,11 +5,20 @@ module Api
     class HangarsController < ::Api::BaseController
       include HangarFiltersConcern
 
+      before_action :authenticate_user!, only: []
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
+        unless: :user_signed_in?,
+        only: %i[show export items]
+      before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
+        unless: :user_signed_in?,
+        except: %i[show export items]
+
       after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
       def show
-        authorize! :show, :api_hangar
-        scope = current_user.vehicles.visible.purchased
+        authorize! with: ::HangarPolicy
+
+        scope = authorized_scope(Vehicle.all).visible.purchased
 
         if price_range.present?
           vehicle_query_params["sorts"] = "model_price asc"
@@ -22,28 +31,34 @@ module Api
         end
 
         scope = loaner_included?(scope)
+        scope = scope.where(models: {cargo: 0.1..}) if vehicle_query_params.delete("with_cargo")
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
-        vehicle_query_params["sorts"] = sorting_params(Vehicle)
+        vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params["sorts"])
 
         @q = scope.ransack(vehicle_query_params)
 
-        result = @q.result(distinct: true)
-          .includes(:vehicle_upgrades, :model_paint, :model_upgrades, model: [:manufacturer])
+        result = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
+          .order(@q.result.order_values)
+          .includes(:vehicle_upgrades, :model_paint, :model_upgrades, :module_package,
+            :task_forces, :hangar_groups,
+            model: [:manufacturer, :item_prices, {model_loaners: :loaner_model}])
           .joins(model: [:manufacturer])
 
         @vehicles = result_with_pagination(result, per_page(Vehicle))
       end
 
       def destroy
-        authorize! :destroy, :api_hangar
+        authorize! with: ::HangarPolicy
 
         Vehicle.transaction do
           # rubocop:disable Rails/SkipsModelValidations
-          current_user.vehicles.purchased.update_all(notify: false)
+          authorized_scope(Vehicle.all).purchased.update_all(notify: false)
           # rubocop:enable Rails/SkipsModelValidations
 
-          vehicle_ids = current_user.vehicles.purchased.pluck(:id)
+          vehicle_ids = authorized_scope(Vehicle.all).purchased.pluck(:id)
 
           VehicleUpgrade.where(vehicle_id: vehicle_ids).delete_all
           VehicleModule.where(vehicle_id: vehicle_ids).delete_all
@@ -52,9 +67,9 @@ module Api
       end
 
       def import
-        authorize! :update, :api_hangar
+        authorize! to: :update?, with: ::HangarPolicy
 
-        import = Imports::HangarImport.new(import_params.merge(user_id: current_user.id))
+        import = Imports::HangarImport.new(import_params.merge(user_id: current_resource_owner.id))
 
         unless import.save
           render json: ValidationError.new("hangar.import", errors: import.errors), status: :bad_request
@@ -72,9 +87,9 @@ module Api
       end
 
       def export
-        authorize! :show, :api_hangar
+        authorize! to: :show?, with: ::HangarPolicy
 
-        scope = current_user.vehicles.visible.purchased
+        scope = authorized_scope(Vehicle.all).visible.purchased
 
         scope = loaner_included?(scope)
 
@@ -82,22 +97,26 @@ module Api
 
         @q = scope.ransack(vehicle_query_params)
 
-        @vehicles = @q.result(distinct: true)
+        @vehicles = Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
+          .order(@q.result.order_values)
           .includes(model: [:manufacturer])
           .joins(model: [:manufacturer])
       end
 
       def sync_rsi_hangar
-        authorize! :update, :api_hangar
+        authorize! to: :update?, with: ::HangarPolicy
 
         render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request if params[:items].blank?
 
-        @response = ::HangarSync.new(sync_params[:items].to_a.map(&:to_h)).run(current_user.id)
+        @response = ::HangarSync.new(sync_params[:items].to_a.map(&:to_h)).run(current_resource_owner.id)
       end
 
       def items
-        authorize! :show, :api_hangar
-        model_ids = current_user.vehicles
+        authorize! to: :show?, with: ::HangarPolicy
+
+        model_ids = authorized_scope(Vehicle.all)
           .where(loaner: false)
           .visible
           .purchased
@@ -106,12 +125,12 @@ module Api
       end
 
       def move_all_ingame_to_wishlist
-        authorize! :update_bulk, :api_hangar
+        authorize! to: :update?, with: ::HangarPolicy
 
         errors = []
 
         Vehicle.transaction do
-          scope = current_user.vehicles.purchased.where(bought_via: :ingame)
+          scope = authorized_scope(Vehicle.all).purchased.where(bought_via: :ingame)
 
           scope.find_each do |vehicle|
             next if vehicle.update(wanted: true)
@@ -126,7 +145,7 @@ module Api
       end
 
       private def import_params
-        @import_params ||= params.permit(:import)
+        @import_params ||= params.permit(:import, :new_import)
       end
 
       private def sync_params

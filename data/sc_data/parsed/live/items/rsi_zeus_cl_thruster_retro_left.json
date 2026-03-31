@@ -1,0 +1,30 @@
+{
+  "key": "RSI_Zeus_CL_Thruster_Retro_Left",
+  "ref": "b136f052-08cc-454b-84c4-f52d405dc350",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "Retro",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 15250.0
+  },
+  "type_data": {
+    "thrust_capacity": 3898325.0,
+    "fuel_burn_rate_per10_k_newton": 0.32,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

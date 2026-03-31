@@ -1,0 +1,40 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Prowler_Utility_Left_Cargo",
+  "ref": "ebaeeea5-87e3-4fca-b7f2-cce5a00c83fb",
+  "category": "doors",
+  "type": "AttachedPart",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_grid_left",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid_left",
+      "key": null,
+      "ref": "3bdfe5cc-df33-43c6-bd0e-3ea77b28f470",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 7400.0
+  }
+}

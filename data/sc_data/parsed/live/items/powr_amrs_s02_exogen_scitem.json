@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S02_ExoGen_SCItem",
+  "ref": "d49cced4-ee82-4a98-8690-93ac432c891a",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "ExoGen",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co. \\nSize: 2\\nGrade: D\\nClass: Military\\n\\nSimple and direct, the ExoGen generates power in traditional A&R style: no fuss, just solid craftsmanship.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 650.0
+  }
+}

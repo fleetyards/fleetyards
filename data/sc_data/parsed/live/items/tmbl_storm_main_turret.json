@@ -1,0 +1,34 @@
+{
+  "key": "TMBL_Storm_Main_Turret",
+  "ref": "e1e59a86-ec92-4c20-a33c-e5a2834af2c4",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "TopTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "name": "Tumbril Storm Turret",
+  "short_name": "Item Type: Turret\\nManufacturer: Tumbril Land Systems\\n\\nA bespoke turret designed for the Tumbril Storm single-operator mini-tank.",
+  "description": "Multitask on the battlefield with this remote turret system. Featuring precise controls and a wide field of fire, the turret allows pilots to add combat support to their resume.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_primary_weapon",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 14500.0
+  }
+}

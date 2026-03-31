@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Vanguard_Hoplite_Thruster_Main_02",
+  "ref": "af63298e-f24b-424c-8163-9faa23830e63",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 16500.0
+  },
+  "type_data": {
+    "thrust_capacity": 5579270.0,
+    "fuel_burn_rate_per10_k_newton": 0.091875,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

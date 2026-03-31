@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Idris_CargoGrid_CargoRoom_Medium",
+  "ref": "ec00c253-d87c-4849-8dc8-c7116efa8a2d",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "2419d3c0-a57e-4a62-ab52-137e039cb074"
+}

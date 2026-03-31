@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Wheel_RSI_Lynx",
+  "ref": "499394eb-9bac-49d2-b836-a8afe9da5128",
+  "category": "controller",
+  "type": "WheeledController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Drivetrain",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

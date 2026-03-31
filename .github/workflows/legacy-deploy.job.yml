@@ -3,7 +3,7 @@ name: Legacy Deploy Job
 on:
   workflow_call:
     inputs:
-      capEnv:
+      destination:
         required: true
         type: string
       name:
@@ -22,7 +22,7 @@ jobs:
       url: ${{ inputs.url }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:

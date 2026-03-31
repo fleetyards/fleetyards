@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Salvation_black_white_orange",
+  "ref": "723d6c3c-0a53-4ee0-b7c3-cb2d510844ab",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4b37d710-ccaf-46ab-a9bf-18bcf233d548",
+  "name": "Salvation Vespid Livery",
+  "short_name": null,
+  "description": "The Vespid livery turns the Salvation white with orange highlights that stand in stark contrast to its black base paint.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

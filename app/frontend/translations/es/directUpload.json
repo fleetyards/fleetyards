@@ -1,0 +1,21 @@
+{
+  "es": {
+    "directUpload": {
+      "title": "Subir",
+      "chooseFiles": "Elegir archivos",
+      "dropzone": {
+        "textMultiple": "Suelta archivos aquí para subir",
+        "text": "Suelta archivo aquí para subir",
+        "or": "o",
+        "browse": "explorar"
+      },
+      "previewImage": {
+        "remove": "Eliminar"
+      },
+      "actions": {
+        "upload": "Subir",
+        "close": "Cerrar"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "JDRV_WETK_S04_Idris_SCItem",
+  "ref": "af671ad3-d55d-44b3-8617-473bd3dc0da6",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Exfiltrate",
+  "short_name": null,
+  "description": "Item Type: Jump Module\\nManufacturer: Aegis Dynamics\\nSize: 4\\n\\nThis capital-class jump module was designed specifically for the Idris frigate.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 41000.0
+  }
+}

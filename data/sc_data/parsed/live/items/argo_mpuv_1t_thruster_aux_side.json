@@ -1,0 +1,30 @@
+{
+  "key": "ARGO_MPUV_1T_Thruster_Aux_Side",
+  "ref": "12cfce99-e537-44b2-bbaa-ef4b58b14fe8",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2500.0
+  },
+  "type_data": {
+    "thrust_capacity": 61034.76,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "aux"
+  }
+}

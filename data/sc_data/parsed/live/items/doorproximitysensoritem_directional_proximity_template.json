@@ -1,0 +1,24 @@
+{
+  "key": "DoorProximitySensorItem_Directional_Proximity_Template",
+  "ref": "fcc8f1bd-7239-4645-a726-a9956c69f033",
+  "category": "doors",
+  "type": "Sensor",
+  "sub_type": "DoorPart",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 99.0
+  }
+}

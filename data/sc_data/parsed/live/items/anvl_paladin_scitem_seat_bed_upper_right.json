@@ -1,0 +1,31 @@
+{
+  "key": "ANVL_Paladin_SCItem_Seat_Bed_Upper_Right",
+  "ref": "53828788-5e0c-419f-8e0a-6b7ffc257dfa",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Bed",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_upper_bed_mattress",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Seat"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Apollo_SCItem_SeatDashboard_Pilot",
+  "ref": "450e7f4f-a466-3aba-f1ab-d8f416964589",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "23186ec6-28ed-4f2e-a3f9-0c5459202d63",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

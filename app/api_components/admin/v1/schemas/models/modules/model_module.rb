@@ -6,10 +6,14 @@ module Admin
       module Models
         module Modules
           class ModelModule < ::V1::Schemas::Models::Modules::ModelModule
-            include SchemaConcern
+            include Rswag::SchemaComponents::Component
 
             schema({
-              properties: {}
+              properties: {
+                active: {type: :boolean},
+                hidden: {type: :boolean},
+                model: {"$ref": "#/components/schemas/Model"}
+              }
             })
           end
         end

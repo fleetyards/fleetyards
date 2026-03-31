@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Salvation_black_gold_black",
+  "ref": "b47c2586-e012-4321-b642-ed44e0c7ff37",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "710399f8-b32d-46b7-a9a7-e499f6d53f79",
+  "name": "Salvation Eureka Livery",
+  "short_name": null,
+  "description": "The Eureka livery features glittering gold highlights against a black base paint for the Salvation.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

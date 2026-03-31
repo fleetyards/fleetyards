@@ -1,0 +1,30 @@
+{
+  "key": "CRUS_Intrepid_Thruster_Mav",
+  "ref": "f88b8871-e54d-431c-95bc-dd1829b0832b",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 800.0
+  },
+  "type_data": {
+    "thrust_capacity": 2300000.0,
+    "fuel_burn_rate_per10_k_newton": 0.035,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

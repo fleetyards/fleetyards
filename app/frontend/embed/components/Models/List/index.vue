@@ -1,30 +1,27 @@
-<template>
-  <transition-group name="fade-list" class="row" tag="div" :appear="true">
-    <div
-      v-for="(model, index) in internalModels"
-      :key="`panel-${index}-${model.slug}`"
-      class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
-    >
-      <ModelPanel :model="model" :details="details" :count="count(model)" />
-    </div>
-  </transition-group>
-</template>
+<script lang="ts">
+export default {
+  name: "ModelList",
+};
+</script>
 
 <script lang="ts" setup>
 import ModelPanel from "@/embed/components/Models/Panel/index.vue";
-import Store from "@/embed/lib/Store";
+import type { EnhancedModelMinimal } from "@/embed/pages/index.vue";
+import { type Model } from "@/services/fyApi";
+import { useEmbedStore } from "@/embed/stores/embed";
+import { storeToRefs } from "pinia";
 
 type Props = {
-  models: Model[];
+  models: (EnhancedModelMinimal | Model)[];
 };
 
 const props = defineProps<Props>();
 
-const internalModels = ref<Model[]>([]);
+const internalModels = ref<(EnhancedModelMinimal | Model)[]>([]);
 
-const details = computed(() => Store.getters.details);
+const embedStore = useEmbedStore();
 
-const grouping = computed(() => Store.getters.grouping);
+const { details, grouping } = storeToRefs(embedStore);
 
 watch(
   () => props.models,
@@ -37,17 +34,23 @@ onMounted(() => {
   internalModels.value = props.models;
 });
 
-const count = (model: Model) => {
+const count = (model: EnhancedModelMinimal | Model) => {
   if (!grouping.value) {
-    return null;
+    return undefined;
   }
 
-  return model.count;
+  return (model as EnhancedModelMinimal).count;
 };
 </script>
 
-<script lang="ts">
-export default {
-  name: "ModelList",
-};
-</script>
+<template>
+  <transition-group name="fade-list" class="row" tag="div" :appear="true">
+    <div
+      v-for="(model, index) in internalModels"
+      :key="`panel-${index}-${model.slug}`"
+      class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
+    >
+      <ModelPanel :model="model" :details="details" :count="count(model)" />
+    </div>
+  </transition-group>
+</template>

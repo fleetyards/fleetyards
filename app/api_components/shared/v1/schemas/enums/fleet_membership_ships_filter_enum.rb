@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Enums
         class FleetMembershipShipsFilterEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: ::FleetMembership.ships_filters.keys
+            enum: ::FleetMembership.ships_filters.keys,
+            "x-enumNames": ::FleetMembership.ships_filters.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

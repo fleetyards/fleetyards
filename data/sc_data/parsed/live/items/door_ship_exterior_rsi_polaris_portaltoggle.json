@@ -1,0 +1,21 @@
+{
+  "key": "Door_Ship_Exterior_RSI_Polaris_PortalToggle",
+  "ref": "cca18610-bd6e-499e-9075-08945ceb051d",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

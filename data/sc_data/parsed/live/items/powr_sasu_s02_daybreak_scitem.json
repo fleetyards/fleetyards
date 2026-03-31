@@ -1,0 +1,24 @@
+{
+  "key": "POWR_SASU_S02_DayBreak_SCItem",
+  "ref": "fda65886-0ccb-4a80-a5ee-528b186d4584",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "DayBreak",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 2\\nGrade: C\\nClass: Civilian\\n\\nSakura Sun knows exactly what you need. The DayBreak is a straightforward power plant that provides parity to its performance, durability, and stealth stats.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 470.0
+  }
+}

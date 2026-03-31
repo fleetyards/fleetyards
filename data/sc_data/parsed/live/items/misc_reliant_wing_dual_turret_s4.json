@@ -1,0 +1,42 @@
+{
+  "key": "MISC_Reliant_Wing_Dual_Turret_S4",
+  "ref": "1139b69c-c5b3-4f58-8ecb-64f1585e2bdb",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Reliant Toshima Turret",
+  "short_name": null,
+  "description": "Item Type: Turret (Reliant Exclusive)\\nManufacturer: MISC\\nSize: 4\\n\\nSpecifically built to be used exclusively on the MISC Reliant, the Toshima turret system comes with a camera that can be remoted into while providing a wide range of motion for two Size-2 weapons.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

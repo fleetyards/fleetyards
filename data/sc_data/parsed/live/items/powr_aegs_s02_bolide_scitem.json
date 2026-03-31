@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S02_Bolide_SCItem",
+  "ref": "22ca3ca2-1bdc-48a7-8689-a0f8259a5441",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Bolide",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics\\nSize: 2\\nGrade: B\\nClass: Military\\n\\nThe Bolide power plant from Aegis has logged innumerable hours of flight experience and is frequently used by the UEE Navy and security forces across the Empire.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 860.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "POWR_SASU_S01_LightBlossom_SCItem",
+  "ref": "a117d541-aa61-49fd-ae53-469b0fdf7ccd",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "LightBlossom",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 1\\nGrade: C\\nClass: Civilian\\n\\nFeaturing stylish design and strong performance, the LightBlossom is a worthy addition to Sakura Sun’s line-up, continuing the reputation the conglomerate has for making everything and making it well.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 170.0
+  }
+}

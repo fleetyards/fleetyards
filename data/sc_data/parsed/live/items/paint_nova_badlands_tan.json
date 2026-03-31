@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Nova_Badlands_Tan",
+  "ref": "5d5bf916-ef0a-454b-8d81-0c3034dd8cef",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2dd848c1-5781-4072-9a76-9b541756d96e",
+  "name": "Nova Badlands Livery",
+  "short_name": null,
+  "description": "Featuring a tan paint scheme ideal for desert environments, the Nova Badlands livery offers a devastating combination of weaponry to eliminate threats on the ground and in the air.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

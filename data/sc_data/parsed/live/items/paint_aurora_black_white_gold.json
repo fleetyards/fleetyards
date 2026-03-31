@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Black_White_Gold",
+  "ref": "5439cdb0-89ae-4179-88a3-5d6726a32972",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5a6983b0-3a62-4054-905d-b29ffb15949c",
+  "name": "Aurora Mk I Exploration Livery",
+  "short_name": null,
+  "description": "This Aurora livery is perfect for those ready to go forth boldly with a black finish, white accents, and a large citizen emblem emblazoned on one side.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

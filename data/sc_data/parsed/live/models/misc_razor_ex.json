@@ -1,0 +1,314 @@
+{
+  "key": "MISC_Razor_EX",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Mirai Razor EX",
+  "description": "Manufacturer: Mirai\\nFocus: Stealth\\n\\nOutfitted with signature-reducing materials, the Razor EX was a specialty build for the UEE Advocacy for use in surveillance and extraction operations. Although the EX was ultimately rejected for widespread use, a variation of the model was released for members of the public looking to keep a lower profile.",
+  "career": "Combat",
+  "role": "Stealth Fighter",
+  "insurance": {
+    "base_wait_time_minutes": "5.91",
+    "mandatory_wait_time_minutes": "1.97",
+    "base_expediting_fee": "2740"
+  },
+  "mass": 10860.0,
+  "metrics": {
+    "x": 9.0,
+    "y": 12.5,
+    "z": 3.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": "a962a30e-dbcb-4d78-9eee-29388338e39b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": "6f6e04ca-236d-47aa-9d97-9e1d427dcd74",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": "4a9ebf31-a405-4b68-9886-b4a47bd1b61d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": "e5512d65-5462-4270-8095-212efe3fcf99",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": "c9ab6b66-2edf-4dbc-8c73-0304441dcc03",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": "809c5792-ae9b-4a09-8fd2-0001296dfc9b",
+      "key": "RADR_BLTR_S01_Pelerous"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": "61cc7bf5-6666-40f7-8c0a-ee8a8092f51e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": "41a56edf-ce69-4638-9c80-1692c3d345c6",
+      "key": "POWR_TYDT_S01_SonicLite_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": "b935e5d8-dead-47c5-8937-382c3aa11682",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": "f59a0b33-5bbe-439e-8bd5-111db00b5ff6",
+      "key": "COOL_TYDT_S01_HeatSafe_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": "f59a0b33-5bbe-439e-8bd5-111db00b5ff6",
+      "key": "COOL_TYDT_S01_HeatSafe_SCItem"
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": "246962c4-e76e-4c28-9521-492998859677",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": "818098fe-0455-4d5b-ba8b-f584d26c4a7a",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": "818098fe-0455-4d5b-ba8b-f584d26c4a7a",
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": "f3ceefa2-670f-47c5-8c13-a80c8cf93c52",
+      "key": "QDRV_RACO_S01_Drift_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": "c8797bce-6220-4d1e-bc6d-23da4a366a6d",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": "892fcbee-525f-41df-8227-45ec354aa73e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": "5a906730-1e70-4c66-863a-9583eed743b7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": "d0669062-2e64-41d4-beb2-d510588ca593",
+      "key": "SHLD_ASAS_S01_Shimmer_SCItem"
+    },
+    {
+      "name": "hardpoint_armour",
+      "ref": "26273c33-ca33-4583-b6dd-e79ffb6ce956",
+      "key": null
+    },
+    {
+      "name": "hardpoint_engine_left",
+      "ref": "14e79be3-e93b-4c3a-9fba-2db8f9a35b40",
+      "key": "MISC_Razor_EX_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_engine_right",
+      "ref": "14e79be3-e93b-4c3a-9fba-2db8f9a35b40",
+      "key": "MISC_Razor_EX_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_FL_top",
+      "ref": "a8daecbc-90ba-40c3-a31c-ac73575e5144",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Top"
+    },
+    {
+      "name": "hardpoint_thruster_FL_side",
+      "ref": "fdd5da78-74a6-46d3-a64e-d5d826299df1",
+      "key": "MISC_Razor_EX_Thruster_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_FL_bottom",
+      "ref": "4d71a1bf-4d43-4fec-b659-d6da5ec4c558",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_RL_top",
+      "ref": "a8daecbc-90ba-40c3-a31c-ac73575e5144",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Top"
+    },
+    {
+      "name": "hardpoint_thruster_RL_side",
+      "ref": "fdd5da78-74a6-46d3-a64e-d5d826299df1",
+      "key": "MISC_Razor_EX_Thruster_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_RL_bottom",
+      "ref": "4d71a1bf-4d43-4fec-b659-d6da5ec4c558",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_FR_top",
+      "ref": "a8daecbc-90ba-40c3-a31c-ac73575e5144",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Top"
+    },
+    {
+      "name": "hardpoint_thruster_FR_side",
+      "ref": "fdd5da78-74a6-46d3-a64e-d5d826299df1",
+      "key": "MISC_Razor_EX_Thruster_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_FR_bottom",
+      "ref": "4d71a1bf-4d43-4fec-b659-d6da5ec4c558",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_RR_top",
+      "ref": "a8daecbc-90ba-40c3-a31c-ac73575e5144",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Top"
+    },
+    {
+      "name": "hardpoint_thruster_RR_side",
+      "ref": "fdd5da78-74a6-46d3-a64e-d5d826299df1",
+      "key": "MISC_Razor_EX_Thruster_Lateral"
+    },
+    {
+      "name": "hardpoint_thruster_RR_bottom",
+      "ref": "4d71a1bf-4d43-4fec-b659-d6da5ec4c558",
+      "key": "MISC_Razor_EX_Thruster_Vertical_Bottom"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": "b6886e23-9b36-4f4e-a439-aef3e0c55f01",
+      "key": "MISC_Razor_EX_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": "b6886e23-9b36-4f4e-a439-aef3e0c55f01",
+      "key": "MISC_Razor_EX_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c7c36fea-dcf5-48b9-9939-bf2771f9f8f4",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c7c36fea-dcf5-48b9-9939-bf2771f9f8f4",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_left",
+      "ref": "142e6235-9f9d-4e5a-b0c9-0a2338f70901",
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": "37a5512d-e5c2-4b41-869d-44cd91d80eeb",
+          "key": "MISL_S01_CS_FSKI_Spark"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_right",
+      "ref": "142e6235-9f9d-4e5a-b0c9-0a2338f70901",
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": "37a5512d-e5c2-4b41-869d-44cd91d80eeb",
+          "key": "MISL_S01_CS_FSKI_Spark"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": "28c543ea-8a76-4453-a762-37b4b29ab2c9",
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": "17eb8b6b-3bed-48d4-8c89-8f6451768798",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": "0219b443-6f28-4aa2-bcc3-cfbff843729d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": "9925488b-127a-4fc3-b7bb-9e4f5a46bbbd",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": "2a20db14-2cab-438a-97eb-7ea383a16329",
+      "key": null
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": "ff53924b-e00d-48ad-9a0e-0332ac5c4aec",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": "e947b002-e65e-4637-90b7-c894925d6625",
+      "key": null
+    }
+  ]
+}

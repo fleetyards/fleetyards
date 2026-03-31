@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Golem_Blue_Black_Green",
+  "ref": "13742bbe-675e-450e-9b48-5e6bcd4b2dbc",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "01e32c9a-db2a-419c-8cb0-f5565675a51b",
+  "name": "Golem Cypher Livery",
+  "short_name": null,
+  "description": "Striking green and blue highlights elevate the black base paint of the Cypher livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "key": "MISC_Reliant_CargoGrid_Kore",
+  "ref": "c789d9b8-5958-46b4-b8c4-2db9522033f9",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "3e61a091-fe10-49c7-9a00-e3d3294bb931"
+}

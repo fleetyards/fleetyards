@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S01_OverDrive_SCItem",
+  "ref": "13880fbe-7295-4f55-886d-251ad01e2677",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "OverDrive",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 1\\nGrade: C\\nClass: Military\\n\\nAmon & Reese knows from years of experience just how hard the military can push their ships. Their OverDrive power plant was designed from the ground up to not only handle those tough conditions with less overheating, but to provide the same dependability and power to civilians as well.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 270.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fortune_2955RedFestival_Red_Gold_Snake",
+  "ref": "c1824f59-0810-4bc9-96b1-8b05ad5699b0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0d378ed2-a3f9-405f-bd2d-e1af39b86484",
+  "name": "Fortune 2955 Auspicious Red Snake Livery",
+  "short_name": null,
+  "description": "Seek peace and prosperity in the new year with the Auspicious Red Snake livery. Outfit your ship with this bold red base paint complemented by gold accents and a stylized graphic of a snake.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

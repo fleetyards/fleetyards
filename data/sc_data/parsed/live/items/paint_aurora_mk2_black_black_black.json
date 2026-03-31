@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Mk2_Black_Black_Black",
+  "ref": "f331749a-d9de-44e8-b975-68a0b6648492",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5d016e83-abcd-4b72-bd4d-2dc15ff1ad7e",
+  "name": "Aurora Mk II Shade Livery",
+  "short_name": "Aurora Mk II Shade Livery",
+  "description": "Featuring a deep black and soft gray elements, the Shade livery ensures you'll soar through space in style.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

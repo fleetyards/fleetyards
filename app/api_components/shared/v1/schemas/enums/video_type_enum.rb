@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Enums
         class VideoTypeEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: ::Video.video_types.keys
+            enum: ::Video.video_types.keys,
+            "x-enumNames": ::Video.video_types.keys.map { |v| transform_enum_key(v) }
           })
         end
       end

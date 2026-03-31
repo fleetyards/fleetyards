@@ -1,0 +1,44 @@
+{
+  "key": "RSI_Zeus_Remote_Turret_Top_S3",
+  "ref": "7676edfb-e035-4bb2-9e37-a5e23441d068",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "TopTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Multitask on the battlefield with this remote turret system. Featuring precise controls and a wide field of fire, the turret allows pilots to add combat support to their resume.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_gun_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_gun_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

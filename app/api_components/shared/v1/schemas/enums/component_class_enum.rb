@@ -5,11 +5,12 @@ module Shared
     module Schemas
       module Enums
         class ComponentClassEnum
-          include SchemaConcern
+          include Rswag::SchemaComponents::Component
 
           schema({
             type: :string,
-            enum: ::Component.component_classes
+            enum: ::Component.component_classes,
+            "x-enumNames": ::Component.component_classes.map { |v| transform_enum_key(v) }
           })
         end
       end

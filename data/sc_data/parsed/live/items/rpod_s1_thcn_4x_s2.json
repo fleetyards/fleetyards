@@ -1,0 +1,29 @@
+{
+  "key": "RPOD_S1_THCN_4x_S2",
+  "ref": "065e4a72-1226-42d7-8be0-62865c8b6ebc",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Rocket",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "Liberator",
+  "short_name": null,
+  "description": "Item Type: Rocket Pod\\nManufacturer: Thermyte Concern\\nSize: 1\\nRockets: 4xS2\\n\\nThermyte Concern's Liberator rocket pod carries four S2 rockets and can be attached to any size one hardpoint.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 500.0
+  },
+  "ammunition": {
+    "max_ammo_count": 8.0,
+    "initial_ammo_count": 8.0,
+    "max_restock_count": 3.0
+  }
+}

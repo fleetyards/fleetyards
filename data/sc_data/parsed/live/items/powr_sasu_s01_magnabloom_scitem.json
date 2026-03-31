@@ -1,0 +1,24 @@
+{
+  "key": "POWR_SASU_S01_MagnaBloom_SCItem",
+  "ref": "098603e0-7866-47d3-a4f2-dbc98b653971",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "MagnaBloom",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 1\\nGrade: B\\nClass: Civilian\\n\\nThe MagnaBloom power plant achieves above average performance and durability with minimal excess emissions, making it another exquisitely designed component from Sakura Sun.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Ursa_Black_Grey_Red_Pirate_Skull",
+  "ref": "87e6dac9-8efa-4f1f-8078-3dcf2754e0b8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "16e8731d-066c-4afd-8c4e-4c5493ebd206",
+  "name": "Ursa Skullcrusher Livery",
+  "short_name": null,
+  "description": "Exude attitude with the Skullcrusher livery for the Ursa, which features a massive skull across the top.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

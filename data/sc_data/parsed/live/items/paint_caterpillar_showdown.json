@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_Showdown",
+  "ref": "7cfda00c-7823-4581-8f8c-7a651106a440",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4efef32c-11a8-4481-8440-7b09920d4a22",
+  "name": "Caterpillar 2949 Best In Show Livery",
+  "short_name": null,
+  "description": "Customize your Caterpillar with this special 2949 Best in Show livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "key": "HRST_LaserRepeater_S6",
+  "ref": "f02c1934-9ebb-413c-9f3e-cbcb262f25de",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "ee8b7bb3-d420-435c-924f-561e67e64588",
+  "name": "Attrition-6 Repeater",
+  "short_name": "Attrition-6",
+  "description": "Manufacturer: Hurston Dynamics\\nItem Type: Laser Repeater\\nSize: 6\\n\\nWith Hurston Dynamics' cascade technology, the Attrition-6 laser repeater maximizes it's combat potential. It's common for weapons to heat up when used heavily in combat, but what sets this size six repeater apart is that thermal energy is translating directly into increased offensive strength.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "HRST_LaserRepeater_Barrel_S6",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "HRST_LaserRepeater_FiringMechanism_S6",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "HRST_LaserRepeater_PowerArray_S6",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "HRST_LaserRepeater_Ventilation_S6",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 4224.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

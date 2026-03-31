@@ -1,0 +1,30 @@
+{
+  "key": "MRAI_Guardian_Thruster_Mav_Top_MX",
+  "ref": "4ec2ed72-29d5-7b5a-478c-4e27d409e7ba",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cdf6ea1e-7de3-4b58-bf9d-13c5fbafc49a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2200.0
+  },
+  "type_data": {
+    "thrust_capacity": 280000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

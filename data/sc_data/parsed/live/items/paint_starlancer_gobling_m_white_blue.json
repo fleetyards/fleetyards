@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlancer_GoblinG_M_White_Blue",
+  "ref": "4a7849e0-60c5-4be1-a8e1-573a8859075c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "43133af8-93e1-4603-8844-57be0958c0a2",
+  "name": "Starlancer microTech Livery",
+  "short_name": null,
+  "description": "The microTech livery for the Starlancer features the company's logo atop a white base paint with light blue and grey highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

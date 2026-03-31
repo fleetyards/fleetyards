@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Vanguard_Blue_Blue_White_Stripe",
+  "ref": "9568282c-af1c-4b74-a6ed-e1b638c9f67b",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20eaadb6-bc30-42aa-8ce9-a32cd44cb408",
+  "name": "Vanguard Clawed Steel Livery",
+  "short_name": null,
+  "description": "The Clawed Steel livery blends several shades of blue for a livery that beautifully breaks up the Vanguard's silhouette.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

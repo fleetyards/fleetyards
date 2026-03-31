@@ -1,0 +1,21 @@
+{
+  "key": "Hospital_blinds",
+  "ref": "870e7088-c17b-4cb6-b89d-27b2f20deb2b",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "0",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,3 +1,127 @@
+<script lang="ts">
+export default {
+  name: "VehicleAddonsModalAddons",
+};
+</script>
+
+<script lang="ts" setup>
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import {
+  type ModelModule,
+  type ModelUpgrade,
+  type FilterOption,
+} from "@/services/fyApi";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
+import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+
+type Props = {
+  addons: (ModelModule | ModelUpgrade)[];
+  label: string;
+  initialAddons: string[];
+  modelValue?: string[];
+  editable?: boolean;
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: undefined,
+  editable: false,
+});
+
+const { t } = useI18n();
+
+const addonToAdd = ref<string | undefined>();
+
+const internalAddons = ref<string[]>(props.modelValue || []);
+
+const storeImage = (addon: ModelModule | ModelUpgrade) => {
+  return addon.media?.storeImage?.smallUrl;
+};
+
+const options = computed((): FilterOption[] => {
+  return props.addons.map((addon) => {
+    return {
+      value: addon.id,
+      label: addon.name,
+      icon: addon.media.storeImage?.smallUrl,
+    };
+  });
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    if (internalAddons.value !== props.modelValue) {
+      internalAddons.value = [...(props.modelValue || [])];
+    }
+  },
+);
+
+watch(
+  () => props.addons,
+  () => {
+    internalAddons.value = [...(props.modelValue || [])];
+  },
+);
+
+const emit = defineEmits(["update:modelValue"]);
+
+watch(
+  () => internalAddons.value,
+  () => {
+    emit("update:modelValue", internalAddons.value);
+  },
+);
+
+const selectTooltip = (addonId: string) => {
+  if (internalAddons.value.includes(addonId)) {
+    return t("labels.deselect");
+  }
+  return null;
+};
+
+const addAddon = () => {
+  if (!addonToAdd.value) {
+    return;
+  }
+
+  internalAddons.value.push(addonToAdd.value);
+  addonToAdd.value = undefined;
+};
+
+const idsForAddon = (addonId: string) => {
+  const ids = internalAddons.value.filter((item) => item === addonId);
+  if (ids.length) {
+    return ids;
+  }
+  return [addonId];
+};
+
+const changeAddon = (addonId: string) => {
+  if (!props.editable) {
+    return;
+  }
+
+  if (internalAddons.value.includes(addonId)) {
+    const index = internalAddons.value.findIndex(
+      (itemId) => itemId === addonId,
+    );
+    if (index > -1) {
+      internalAddons.value.splice(index, 1);
+    }
+  } else {
+    internalAddons.value.push(addonId);
+  }
+};
+
+const selectedAddon = (addonId: string) => {
+  return internalAddons.value.includes(addonId);
+};
+</script>
+
 <template>
   <div class="row">
     <div class="col-12">
@@ -8,28 +132,34 @@
             :key="`${index}-${addonId}`"
             class="col-12 col-md-6 addon"
           >
-            <Panel>
-              <div
-                v-tooltip="editable && selectTooltip(addon.id)"
-                class="model-panel"
-                :class="{
-                  editable,
-                }"
-                @click.capture="changeAddon(addon.id)"
-              >
-                <div
-                  :style="{
-                    'background-image': `url(${addon.storeImage})`,
-                  }"
-                  class="model-panel-image"
-                />
-                <div class="model-panel-body">
-                  <h3>{{ addon.name }}</h3>
-                </div>
+            <Panel
+              v-tooltip="editable && selectTooltip(addon.id)"
+              :alignment="PanelAlignmentsEnum.LEFT"
+              slim
+              class="addon-panel"
+              :class="{
+                'addon-panel-editable': editable,
+              }"
+              @click.capture="changeAddon(addon.id)"
+            >
+              <PanelImage
+                :image="storeImage(addon)"
+                image-size="auto"
+                rounded="left"
+                class="addon-image"
+                :alt="addon.name"
+              />
+              <div>
+                <PanelHeading
+                  :level="HeadingLevelEnum.H3"
+                  title-align="right"
+                  multiline
+                  >{{ addon.name }}</PanelHeading
+                >
                 <div
                   v-if="selectedAddon(addon.id)"
-                  v-tooltip="editable && $t('labels.selected')"
-                  class="model-panel-selected"
+                  v-tooltip="editable && t('labels.selected')"
+                  class="addon-panel-selected"
                 >
                   <i class="fa fa-check" />
                 </div>
@@ -43,125 +173,15 @@
       <FilterGroup
         v-model="addonToAdd"
         :label="label"
-        :options="addons"
+        :options="options"
         name="addons"
         value-attr="id"
         :searchable="true"
-        @input="addAddon"
+        @update:model-value="addAddon"
       />
     </div>
   </div>
 </template>
-
-<script>
-import Panel from "@/frontend/core/components/Panel/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-
-export default {
-  name: "VehicleAddonsModal",
-
-  components: {
-    Panel,
-    FilterGroup,
-  },
-
-  props: {
-    addons: {
-      type: Array,
-      required: true,
-    },
-
-    label: {
-      type: String,
-      required: true,
-    },
-
-    value: {
-      type: Array,
-      required: true,
-    },
-
-    initialAddons: {
-      type: Array,
-      required: true,
-    },
-
-    editable: {
-      type: Boolean,
-      default: false,
-    },
-  },
-
-  data() {
-    return {
-      addonToAdd: null,
-      internalAddons: [...this.value],
-    };
-  },
-
-  watch: {
-    value() {
-      if (this.internalAddons !== this.value) {
-        this.internalAddons = [...this.value];
-      }
-    },
-
-    addons() {
-      this.internalAddons = [...this.value];
-    },
-
-    internalAddons() {
-      this.$emit("input", this.internalAddons);
-    },
-  },
-
-  methods: {
-    selectTooltip(addonId) {
-      if (this.internalAddons.includes(addonId)) {
-        return this.$t("labels.deselect");
-      }
-      return null;
-    },
-
-    addAddon() {
-      if (!this.addonToAdd) {
-        return;
-      }
-      this.internalAddons.push(this.addonToAdd);
-      this.addonToAdd = null;
-    },
-
-    idsForAddon(addonId) {
-      const ids = this.internalAddons.filter((item) => item === addonId);
-      if (ids.length) {
-        return ids;
-      }
-      return [addonId];
-    },
-
-    changeAddon(addonId) {
-      if (!this.editable) {
-        return;
-      }
-
-      if (this.internalAddons.includes(addonId)) {
-        const index = this.internalAddons.findIndex(
-          (itemId) => itemId === addonId,
-        );
-        if (index > -1) {
-          this.internalAddons.splice(index, 1);
-        }
-      } else {
-        this.internalAddons.push(addonId);
-      }
-    },
-
-    selectedAddon(addonId) {
-      return this.internalAddons.includes(addonId);
-    },
-  },
-};
-</script>
 
 <style lang="scss" scoped>
 @import "index";

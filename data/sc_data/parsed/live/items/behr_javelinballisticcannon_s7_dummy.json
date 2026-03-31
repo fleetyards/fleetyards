@@ -1,0 +1,97 @@
+{
+  "key": "BEHR_JavelinBallisticCannon_S7_Dummy",
+  "ref": "2b815637-2fa9-484d-ba91-8ae4411a8a64",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "M9A Cannon",
+  "short_name": "M9A",
+  "description": "Manufacturer: Behring\\nItem Type: Laser Cannon\\nSize: 7\\n\\nStrike at the very heart of your enemies with the devastating impact of Behring's M9A energy autocannon. When fully charged, the massive stopping power of this laser weapon has the potential to halt even capital ships in their tracks.",
+  "inventory_consumption": {
+    "micro_scu": 14200000.0,
+    "dimensions": {
+      "x": 1.786404,
+      "y": 13.26605,
+      "z": 2.806632
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "BAR1",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "BEHR_JavelinBallisticCannon_Barrel_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "BEHR_JavelinBallisticCannon_FiringMechanism_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "BEHR_JavelinBallisticCannon_PowerArray_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "BEHR_JavelinBallisticCannon_Ventilation_S7",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 6750.0
+  },
+  "ammunition": {
+    "max_ammo_count": 276.0,
+    "initial_ammo_count": 276.0,
+    "max_restock_count": 3.0
+  }
+}

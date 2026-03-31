@@ -1,0 +1,30 @@
+{
+  "key": "CRUS_Starfighter_Thruster_Retro",
+  "ref": "fc390626-f63f-490e-9e62-f086e8e18830",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 22200.0
+  },
+  "type_data": {
+    "thrust_capacity": 5295449.0,
+    "fuel_burn_rate_per10_k_newton": 0.0704375,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

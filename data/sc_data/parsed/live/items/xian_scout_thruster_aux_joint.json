@@ -1,0 +1,30 @@
+{
+  "key": "XIAN_Scout_Thruster_Aux_Joint",
+  "ref": "38a98af8-c27a-45fd-b93b-8674305406ee",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FlexThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ac7035-10a0-4bbb-90b0-9bddf047b504",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 12500.0
+  },
+  "type_data": {
+    "thrust_capacity": 499759.2,
+    "fuel_burn_rate_per10_k_newton": 0.146875,
+    "thruster_type": "Maneuver",
+    "thruster_class": "aux"
+  }
+}

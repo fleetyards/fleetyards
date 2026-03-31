@@ -1,0 +1,34 @@
+{
+  "key": "ARGO_MOLE_Turret_Right",
+  "ref": "3287181a-04f0-44c9-8bb0-865ae24e7451",
+  "category": "turret",
+  "type": "UtilityTurret",
+  "sub_type": "MannedTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_mining",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "WeaponMining"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

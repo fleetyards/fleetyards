@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_RSI_Perseus",
+  "ref": "ecc91543-dd12-458c-bf28-b893cba1e316",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 1.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 400.0
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "key": "RSI_Apollo_Docking_Arm",
+  "ref": "41852f35-62e0-30f3-34f4-7d21881c3197",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_docking_collar_large",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Door"
+      ]
+    },
+    {
+      "name": "hardpoint_docking_collar_small",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Door"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_docking_collar_large",
+      "key": null,
+      "ref": "4271f80f-1e9b-eb77-f05f-c420c4537f97",
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_docking_collar_small",
+      "key": null,
+      "ref": "4f4583f7-6317-d409-861d-32a872c52a8f",
+      "default_loadout": []
+    }
+  ]
+}

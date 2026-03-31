@@ -1,0 +1,24 @@
+{
+  "key": "JDRV_AEGS_S04_Javelin_SCItem",
+  "ref": "c7d2da14-754f-41f1-9251-4d5f7694fa00",
+  "category": "jumpdrive",
+  "type": "JumpDrive",
+  "sub_type": null,
+  "size": "4",
+  "grade": "3",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 77000.0
+  }
+}

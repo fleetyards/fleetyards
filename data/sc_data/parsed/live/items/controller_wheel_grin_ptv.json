@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Wheel_GRIN_PTV",
+  "ref": "f83db275-20b8-4b49-b6d4-272f68b66484",
+  "category": "controller",
+  "type": "WheeledController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Drivetrain",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

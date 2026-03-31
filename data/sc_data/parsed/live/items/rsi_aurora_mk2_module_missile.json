@@ -1,0 +1,210 @@
+{
+  "key": "RSI_Aurora_Mk2_Module_Missile",
+  "ref": "29913ca8-55ff-4add-992e-e779b1e4ab18",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Aurora Mk II DM Module",
+  "short_name": "Aurora Mk II DM Module",
+  "description": "RSI designed this defensive measures module to increase the combat capabilities of the Aurora Mk II.",
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_06_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_07_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_08_rack",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "hardpoint_shield_generator_back",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Shield"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "missile_01_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "missile_02_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "missile_03_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "missile_04_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "missile_05_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "missile_06_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "missile_07_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "missile_08_rack",
+      "key": null,
+      "ref": "cd4b5f66-56e1-4878-b0f4-7ae1ca8dc53d",
+      "default_loadout": [
+        {
+          "name": "missile_01_attach",
+          "key": null,
+          "ref": "67d6efbd-6b65-49d9-b319-041dc6a2675a",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_shield_generator_back",
+      "key": null,
+      "ref": "9d309719-800c-4d42-946e-fa6c240bc2df",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 500.0
+  }
+}

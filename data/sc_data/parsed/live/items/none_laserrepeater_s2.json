@@ -1,0 +1,89 @@
+{
+  "key": "NONE_LaserRepeater_S2",
+  "ref": "d6decc9e-ec4f-4bab-a0bc-5e1dc01d7af7",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "ee8b7bb3-d420-435c-924f-561e67e64588",
+  "name": "Ardor-2 Salvaged Repeater",
+  "short_name": "Ardor-2 Salvaged",
+  "description": "Manufacturer: Hurston Dynamics\\nItem Type: Laser Repeater\\nSize: 2\\n\\nThis Ardor-2 laser repeater was salvaged in the Pyro system. First manufactured in 2724, the Ardor series became popular for its split barrel design that helped mitigate heat when sustaining fire. Hurston eventually stopped manufacturing the weapon in favor of the Attrition line of laser repeaters. Despite the effects of time and constant usage, the weapon is still sought after because of the consistent performance delivered by Hurston Dynamic's expert design and solid construction.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "NONE_LaserRepeater_Barrel_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "NONE_LaserRepeater_FiringMechanism_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "NONE_LaserRepeater_PowerArray_S2",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "NONE_LaserRepeater_Ventilation_S2",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 850.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

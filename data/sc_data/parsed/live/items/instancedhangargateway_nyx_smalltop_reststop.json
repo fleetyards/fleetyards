@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Nyx_SmallTop_RestStop",
+  "ref": "6f555fd9-7b1a-4144-9247-b1e07e23e399",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

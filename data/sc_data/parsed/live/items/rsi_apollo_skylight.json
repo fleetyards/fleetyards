@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Apollo_Skylight",
+  "ref": "c267796b-38b6-41ea-a87c-2693f8b40dd6",
+  "category": "module",
+  "type": "AttachedPart",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 10000.0
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "key": "RSI_Ursa_Rover",
+  "ground": true,
+  "movement_class": "ArcadeWheeled",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "RSI Ursa",
+  "description": "Manufacturer: RSI\\nFocus: Exploration\\n\\nBuilt by RSI specifically for the planetside explorer, the Ursa Rover offers civilians military-grade all-terrain capabilities and stands as the rugged standard in ground-based scouting, mapping and discovery applications.",
+  "career": "Exploration",
+  "role": "Pathfinder",
+  "insurance": {
+    "base_wait_time_minutes": "2.53",
+    "mandatory_wait_time_minutes": "0.84",
+    "base_expediting_fee": "1015"
+  },
+  "mass": 11972.0,
+  "metrics": {
+    "x": 8.75,
+    "y": 6.0,
+    "z": 3.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_passenger",
+      "ref": null,
+      "key": "RSI_Ursa_Rover_SCItem_Seat_CoPilot",
+      "loadout": []
+    },
+    {
+      "name": "hardpoint_seat_driver",
+      "ref": null,
+      "key": "RSI_Ursa_Rover_SCItem_Seat_Pilot",
+      "loadout": []
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "RSI_Ursa_Rover_SCItem_SeatAccess"
+    },
+    {
+      "name": "hardpoint_controller_wheel",
+      "ref": null,
+      "key": "Controller_Wheel_RSI_Ursa_Rover"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_cargogrid",
+      "ref": null,
+      "key": "RSI_Ursa_CargoGrid_Rear"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S00_Prevenir"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": "POWR_LPLT_S00_Radix_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": "COOL_JSPN_S00_FrostStarSL_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_RSI_Ursa"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_SECO_S00_PIN_SCItem"
+    },
+    {
+      "name": "hardpoint_door_sideDoor",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_Ursa_Side"
+    },
+    {
+      "name": "hardpoint_door_ramp",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_Ursa_Ramp"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon_Vehicle"
+    },
+    {
+      "name": "hardpoint_turret_mount",
+      "ref": null,
+      "key": "RSI_Ursa_Rover_SCItem_BallTurret",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "80ae6d83-7d8a-4357-b109-a0154418bae5",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "c9c2bb19-3298-448e-a117-043e082a1c74",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_rack_01",
+      "ref": null,
+      "key": "Weapon_Rack_RSI_Ursa_Rover_2_Slots"
+    },
+    {
+      "name": "hardpoint_weapon_rack_02",
+      "ref": null,
+      "key": "Weapon_Rack_RSI_Ursa_Rover_2_Slots"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "6fb0f4a2-e747-4e5d-bef7-7e481a587254",
+      "key": null
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": "b9c57c11-2e49-4098-9475-671b7788e318",
+      "key": null
+    }
+  ]
+}

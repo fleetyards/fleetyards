@@ -1,0 +1,24 @@
+{
+  "key": "POWR_SASU_S03_NewDawn_SCItem",
+  "ref": "397bd43e-fdbf-45b3-ba56-79647656f23e",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "NewDawn",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 3\\nGrade: C\\nClass: Civilian\\n\\nThe NewDawn was appropriately named, as it was the first large power plant built by Sakura Sun. Following its commercial success, the company decided to expand and improve upon their line of large power plants.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1300.0
+  }
+}

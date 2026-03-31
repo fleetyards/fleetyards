@@ -1,63 +1,117 @@
-ARG RUBY_VERSION=3.0.2
+# syntax=docker/dockerfile:1
 
-FROM ruby:$RUBY_VERSION-slim
+# Stage 1: Base image with system dependencies
+ARG RUBY_VERSION=3.4.5
+FROM ruby:${RUBY_VERSION}-slim AS base
 
-ARG NODE_VERSION=14
-ARG BUNDLER_VERSION=2.2.23
+WORKDIR /rails
 
-ENV RAILS_ENV=production
+# Install base runtime packages (no build tools)
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+      curl \
+      imagemagick \
+      libcurl4 \
+      libpq5 \
+      libvips42 \
+      poppler-utils \
+      ffmpeg \
+      shared-mime-info \
+      postgresql-client \
+    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-## install main deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && apt-get clean \
-    && rm -rf /tmp/* /var/lib/apt/lists/*
+# Set production environment
+ARG RAILS_ENV="production"
+ENV RAILS_ENV="${RAILS_ENV}" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development:test"
 
-RUN curl https://deb.nodesource.com/setup_current.x | bash - \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+# Stage 2: Build gems and frontend assets
+FROM base AS build
 
-RUN curl -sS https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -\
-    && echo "deb https://deb.nodesource.com/node_${NODE_VERSION}.x focal main" | tee /etc/apt/sources.list.d/node.list
+# Install build dependencies
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y \
+      build-essential \
+      git \
+      gnupg2 \
+      libcurl4-openssl-dev \
+      libmagickwand-dev \
+      libpq-dev \
+      libyaml-dev \
+      node-gyp \
+      pkg-config \
+      python-is-python3 \
+    && rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-## install main deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    nodejs=$NODE_VERSION* yarn git gcc g++ make rsync patch postgresql-client build-essential \
-    cmake imagemagick openssl libreadline6-dev zlib1g zlib1g-dev libssl-dev libyaml-dev \
-    libpq-dev libxml2-dev libxslt-dev libc6-dev libicu-dev xvfb bzip2 libssl-dev \
-    unzip shared-mime-info \
-    && apt-get clean \
-    && rm -rf /tmp/* /var/lib/apt/lists/*
+# Install Node.js and pnpm
+ARG NODE_MAJOR=24
+RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_MAJOR}.x | bash - && \
+    apt-get install --no-install-recommends -y nodejs && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+RUN corepack enable && corepack prepare pnpm@10.31.0 --activate
 
-## install bundler
-RUN gem update --system && gem install bundler -v $BUNDLER_VERSION
+# Install Ruby gems
+COPY Gemfile Gemfile.lock .tool-versions ./
+RUN bundle install --jobs 4 && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git
 
-WORKDIR /fleetyards
+# Install Node dependencies (skip postinstall, orval runs after full copy)
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --ignore-scripts
 
-COPY app /fleetyards/app
-COPY config /fleetyards/config
-COPY db /fleetyards/db
-COPY bin /fleetyards/bin
-COPY lib /fleetyards/lib
-COPY public /fleetyards/public
-COPY vendor /fleetyards/vendor
-COPY .tool-versions /fleetyards/.tool-versions
-COPY Rakefile /fleetyards/Rakefile
-COPY Gemfile /fleetyards/Gemfile
-COPY Gemfile.lock /fleetyards/Gemfile.lock
-COPY config.ru /fleetyards/config.ru
+# Copy the rest of the application
+COPY . .
 
-RUN bundle install
+# Run postinstall scripts now that full source is available
+RUN pnpm run postinstall
 
-# Add a script to be executed every time the container starts.
-COPY docker/entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+# Precompile bootsnap code for faster boot times
+RUN bundle exec bootsnap precompile app/ lib/
 
-RUN mkdir -p /fleetyards/tmp/pids && mkdir -p /fleetyards/log
+# Build frontend assets with Vite
+RUN --mount=type=secret,id=RAILS_MASTER_KEY \
+    RAILS_MASTER_KEY="$(cat /run/secrets/RAILS_MASTER_KEY)" \
+    SECRET_KEY_BASE_DUMMY=1 \
+    bin/rails assets:precompile
+
+# Copy PWA files to public root (Vite outputs to public/vite/ but they need root scope)
+RUN cp public/vite/sw.js public/sw.js 2>/dev/null; \
+    cp public/vite/sw.js.map public/sw.js.map 2>/dev/null; \
+    cp public/vite/workbox-*.js public/ 2>/dev/null; \
+    cp public/vite/workbox-*.js.map public/ 2>/dev/null; \
+    cp public/vite/manifest.webmanifest public/manifest.webmanifest 2>/dev/null; \
+    true
+
+# Stage 3: Final production image
+FROM base
+
+# Copy built gems
+COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
+
+# Copy application code
+COPY --from=build /rails /rails
+
+# Clean up files not needed in production
+RUN rm -rf \
+      app/frontend \
+      node_modules \
+      spec \
+      test \
+      tmp/cache \
+      vendor/assets \
+    && mkdir -p tmp/pids tmp/cache log storage db
+
+# Run as non-root user for security
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+    chown -R rails:rails db log storage tmp
+USER 1000:1000
+
+# Entrypoint prepares the database
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
 EXPOSE 3000
 
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
-
-

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Fortune_Blue_Gray",
+  "ref": "51bfc345-7263-4db3-ba20-2e06c59dc7a0",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ba9e1aa3-68ab-4529-b72b-e6aff7419c39",
+  "name": "Fortune Hightide Livery",
+  "short_name": null,
+  "description": "Oceanic blues drench the Hightide livery, with strong blacks and greys deepening the Fortune's impact further.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "key": "RSI_Apollo_Canister_Storage_Shelf_Parent",
+  "ref": "eaedbd3a-734b-4372-89a8-3d08a267f2e8",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_canister_storage_shelf",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Container"
+      ]
+    },
+    {
+      "name": "canister_slot_02",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ]
+}

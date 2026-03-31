@@ -3,9 +3,23 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:input) do
+    {
+      fid: "STARFLEET",
+      name: "Starfleet"
+    }
+  end
 
-  let(:user) { nil }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     sign_in(user) if user.present?
@@ -20,24 +34,14 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetCreateInput"}, required: true
 
+      security [
+        {SessionCookie: []},
+        {Oauth2: []},
+        {OpenId: []}
+      ]
+
       response(201, "successful") do
         schema "$ref": "#/components/schemas/Fleet"
-
-        let(:user) { users :data }
-        let(:input) do
-          {
-            fid: "STARFLEET",
-            name: "Starfleet"
-          }
-        end
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test! do |response|
           data = JSON.parse(response.body)
@@ -46,10 +50,16 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
+      response(201, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:user) { users :data }
         let(:input) { nil }
 
         run_test!
@@ -58,7 +68,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:user) { nil }
 
         run_test!
       end

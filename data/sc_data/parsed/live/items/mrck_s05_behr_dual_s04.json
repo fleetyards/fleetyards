@@ -1,0 +1,42 @@
+{
+  "key": "MRCK_S05_BEHR_Dual_S04",
+  "ref": "3677de9d-b92f-42f1-a34e-0c0fe6cdfcd0",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-524 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 5\\nMissiles: 2xS4\\n\\nBehring’s MSD-524 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 5 hardpoint for the reliable and effective launch of two S4 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

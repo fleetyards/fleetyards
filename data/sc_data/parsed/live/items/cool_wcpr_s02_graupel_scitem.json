@@ -1,0 +1,24 @@
+{
+  "key": "COOL_WCPR_S02_Graupel_SCItem",
+  "ref": "8d2c7d2d-7359-474b-90cd-c0ba9c31ac7f",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "d8ef0f35-e196-4d18-affa-750f6cdf8cb4",
+  "name": "Graupel",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel Propulsion\\nSize: 2\\nGrade: C\\nClass: Civilian\\n\\nThe Graupel not only provides the top of the line cooling technology that larger ships need to maintain optimal performance, it does it with Wen/Cassel’s signature craftsmanship.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 350.0
+  }
+}

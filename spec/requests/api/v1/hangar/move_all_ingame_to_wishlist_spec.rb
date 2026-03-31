@@ -3,12 +3,30 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:ingame_vehicles) { create_list(:vehicle, 2, user: author, bought_via: :ingame) }
 
-  let(:user) { nil }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["hangar", "hangar:write"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     sign_in(user) if user.present?
+
+    ingame_vehicles
   end
 
   path "/hangar/move-all-ingame-to-wishlist" do
@@ -17,14 +35,39 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Hangar"
       produces "application/json"
 
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["hangar", "hangar:write"]},
+        {OpenId: ["hangar", "hangar:write"]}
+      ]
+
       response(204, "successful") do
-        let(:user) { users :data }
+        run_test! do
+          expect(user.vehicles.where(wanted: true).count).to eq(2)
+          expect(user.vehicles.where(wanted: false).count).to eq(0)
+        end
+      end
+
+      response(204, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
 
         run_test!
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

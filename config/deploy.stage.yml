@@ -1,0 +1,52 @@
+<% web_ips = `bash .kamal/server-ips web stage`.strip.split(',') %>
+<% acc_ips = `bash .kamal/server-ips accessory stage`.strip.split(',') %>
+
+# Kamal destination: stage (staging)
+# Deploy with: kamal deploy -d stage
+
+servers:
+  web:
+    hosts:
+<%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
+  worker:
+    hosts:
+<%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
+
+builder:
+  args:
+    RAILS_ENV: staging
+
+proxy:
+  ssl: true
+  hosts:
+    - fleetyards.dev
+    - www.fleetyards.dev
+    - api.fleetyards.dev
+    - admin.fleetyards.dev
+    - docs.fleetyards.dev
+    - fltyrd.dev
+
+env:
+  clear:
+    RAILS_ENV: staging
+    WORKER_COUNT: "1"
+    MAX_THREADS: "3"
+    MIN_THREADS: "3"
+    DOMAIN: fleetyards.dev
+    SHORT_DOMAIN: fltyrd.dev
+    CDN_ENDPOINT: "https://cdn.fltyrd.dev"
+    STORAGE_CDN_ENDPOINT: "https://storage.fltyrd.dev"
+    MAILER_DEFAULT_FROM: "info@fleetyards.dev"
+    CABLE_ENDPOINT: "wss://fleetyards.dev/cable"
+
+accessories:
+  db:
+    host: <%= acc_ips.first %>
+  redis:
+    host: <%= acc_ips.first %>
+  db-backup:
+    host: <%= acc_ips.first %>
+    env:
+      clear:
+        POSTGRES_DATABASE: fleetyards_staging
+        S3_BUCKET: fltyrd-stage-backups

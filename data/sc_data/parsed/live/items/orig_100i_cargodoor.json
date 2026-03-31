@@ -1,0 +1,56 @@
+{
+  "key": "ORIG_100i_CargoDoor",
+  "ref": "37506e70-b45c-45c1-b76d-6cefae3f5c84",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargogrid_ramp",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    },
+    {
+      "name": "hardpoint_cargogrid_135",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargogrid_ramp",
+      "key": "ORIG_135c_CargoGrid",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_cargogrid_135",
+      "key": "ORIG_100i_CargoGrid",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

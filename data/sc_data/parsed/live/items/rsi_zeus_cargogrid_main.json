@@ -1,0 +1,22 @@
+{
+  "key": "RSI_Zeus_CargoGrid_Main",
+  "ref": "ff8b37cf-1875-4e64-ae77-1760dec2d2e7",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "19c42ffe-76ce-481b-92d9-28802f188a9d"
+}

@@ -3,11 +3,28 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:admin) { create(:user) }
+  let(:member) { create(:user) }
+  let(:another_member) { create(:user) }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, admins: [admin], members: [member, another_member]) }
+  let(:fleetSlug) { fleet.slug }
 
-  let(:fleet) { fleets :starfleet }
-
-  let(:user) { nil }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["fleet", "fleet:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     sign_in(user) if user.present?
@@ -33,69 +50,120 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         required: false
       parameter name: "cacheId", in: :query, type: :string, required: false
 
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
+      ]
+
       response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMember"}
+        schema "$ref": "#/components/schemas/FleetMembersList"
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
+        run_test! do |response|
+          data = JSON.parse(response.body)
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
+          expect(data["items"].count).to be > 0
+          expect(data["items"].count).to eq(3)
+        end
+
+        context "with filter" do
+          let(:q) do
+            {
+              "usernameCont" => member.username
             }
-          }
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].count).to eq(1)
+            expect(data["items"].first.dig("username")).to eq(member.username)
+          end
         end
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
+        context "with perPage" do
+          let(:perPage) { 1 }
 
-          expect(data.count).to be > 0
-          expect(data.count).to eq(5)
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].count).to eq(1)
+          end
+        end
+
+        context "with member" do
+          let(:user) { member }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].count).to eq(3)
+          end
+        end
+
+        context "sorted by rsiHandle asc" do
+          let(:q) do
+            {
+              "sorts" => "rsiHandle asc"
+            }
+          end
+
+          before do
+            admin.update!(rsi_handle: "charlie")
+            member.update!(rsi_handle: "alpha")
+            another_member.update!(rsi_handle: "bravo")
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].count).to eq(3)
+            expect(data["items"].map { |m| m["rsiHandle"] }).to eq(%w[alpha bravo charlie])
+          end
+        end
+
+        context "sorted by rsiHandle desc" do
+          let(:q) do
+            {
+              "sorts" => "rsiHandle desc"
+            }
+          end
+
+          before do
+            admin.update!(rsi_handle: "charlie")
+            member.update!(rsi_handle: "alpha")
+            another_member.update!(rsi_handle: "bravo")
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].count).to eq(3)
+            expect(data["items"].map { |m| m["rsiHandle"] }).to eq(%w[charlie bravo alpha])
+          end
         end
       end
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMember"}
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-        let(:q) do
-          {
-            "usernameCont" => "willriker"
-          }
-        end
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(1)
-          expect(data.first.dig("username")).to eq("willriker")
-        end
+        run_test!
       end
 
-      response(200, "successful") do
-        schema type: :array,
-          items: {"$ref": "#/components/schemas/FleetMember"}
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleetSlug) { fleet.slug }
-        let(:user) { users :data }
-        let(:perPage) { 1 }
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(1)
-        end
+        run_test!
       end
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleetSlug) { "unknown-fleet" }
-        let(:user) { users :data }
 
         run_test!
       end
@@ -103,7 +171,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:fleetSlug) { fleet.slug }
+        let(:user) { nil }
 
         run_test!
       end

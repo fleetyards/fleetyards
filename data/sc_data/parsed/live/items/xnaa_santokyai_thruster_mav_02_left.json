@@ -1,0 +1,30 @@
+{
+  "key": "XNAA_SanTokYai_Thruster_Mav_02_Left",
+  "ref": "7857c357-17a6-4dac-ab5c-0122ff757701",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FlexThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "06370f79-4741-4781-be08-d5acc9e28047",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 12500.0
+  },
+  "type_data": {
+    "thrust_capacity": 1997424.0,
+    "fuel_burn_rate_per10_k_newton": 0.078,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

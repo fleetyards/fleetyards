@@ -8,6 +8,7 @@
 #  expires_after :datetime
 #  limit         :integer
 #  token         :string
+#  usage_count   :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  fleet_id      :uuid
@@ -21,13 +22,27 @@ class FleetInviteUrl < ApplicationRecord
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::DateHelper
 
+  AVAILABLE_PRIVILEGES = [
+    "fleet:invites:read",
+    "fleet:invites:create",
+    "fleet:invites:update",
+    "fleet:invites:delete",
+    "fleet:invites:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: [],
+    officer: ["fleet:invites:manage"],
+    member: []
+  }.freeze
+
   paginates_per 30
 
   belongs_to :fleet
   belongs_to :user
 
   validates :token, uniqueness: true, presence: true
-  validates :limit, numericality: {greater_than: 0}, allow_nil: true
+  validates :limit, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
 
   before_validation :generate_token
 
@@ -60,9 +75,11 @@ class FleetInviteUrl < ApplicationRecord
   end
 
   def reduce_limit
-    return if limit.blank? || limit_reached?
-
-    update(limit: limit - 1)
+    if limit.present? && !limit_reached?
+      update!(limit: limit - 1, usage_count: usage_count + 1)
+    else
+      increment!(:usage_count)
+    end
   end
 
   def url

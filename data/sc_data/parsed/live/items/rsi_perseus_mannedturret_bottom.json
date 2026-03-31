@@ -1,0 +1,60 @@
+{
+  "key": "RSI_Perseus_MannedTurret_Bottom",
+  "ref": "c7a58dc6-24c5-4ee8-b181-39e6557f1ac7",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "8",
+  "grade": "1",
+  "manufacturer_ref": "23186ec6-28ed-4f2e-a3f9-0c5459202d63",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "8",
+      "max_size": "8",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "8",
+      "max_size": "8",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_secondary_gun_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_secondary_gun_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 35000.0
+  }
+}

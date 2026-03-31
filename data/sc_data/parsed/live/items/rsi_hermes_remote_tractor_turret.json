@@ -1,0 +1,34 @@
+{
+  "key": "RSI_Hermes_Remote_Tractor_Turret",
+  "ref": "6ab1e8c7-a2ae-41f9-b046-578841110b59",
+  "category": "turret",
+  "type": "UtilityTurret",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Tractor Beam",
+  "short_name": null,
+  "description": "Tractor Beam",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "TractorBeam"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 6000.0
+  }
+}

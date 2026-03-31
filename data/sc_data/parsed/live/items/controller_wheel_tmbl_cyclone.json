@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Wheel_TMBL_Cyclone",
+  "ref": "4fb3ab46-25d3-4b41-af0b-f454e8a93503",
+  "category": "controller",
+  "type": "WheeledController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Drivetrain",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

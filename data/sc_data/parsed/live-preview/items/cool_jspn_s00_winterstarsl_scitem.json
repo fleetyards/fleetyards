@@ -1,0 +1,63 @@
+{
+  "key": "COOL_JSPN_S00_WinterStarSL_SCItem",
+  "ref": "26f6ac67-8c44-4160-8be2-d64d07d3ec3a",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "0",
+  "grade": "4",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Winter-Star SL",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span\\nSize: 0\\nGrade: D \\nClass: Civilian\\n\\nThe latest in J-Span’s Winter-Star line of coolers, the SL’s new Kivo system offers a unique dispersal method, allowing your vehicle to manage heat better than ever before.",
+  "inventory_consumption": {
+    "micro_scu": 21000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 1.105504,
+      "z": 0.4009475
+    }
+  },
+  "durability": {
+    "health": 210.0
+  },
+  "heat_connection": {
+    "TemperatureToIR": 0.65,
+    "StartIRTemperature": 0.0,
+    "OverpowerHeat": 0.12,
+    "OverclockThresholdMinHeat": 0.47,
+    "OverclockThresholdMaxHeat": 0.6,
+    "ThermalEnergyBase": 10.0,
+    "ThermalEnergyDraw": 20.0,
+    "ThermalConductivity": 3.0,
+    "SpecificHeatCapacity": 13.0,
+    "Mass": 200.0,
+    "SurfaceArea": 50.0,
+    "StartCoolingTemperature": 300.0,
+    "MaxCoolingRate": 1.0,
+    "MaxTemperature": 450.0,
+    "OverheatTemperature": 370.0,
+    "RecoveryTemperature": 350.0,
+    "MinTemperature": 0.0,
+    "MisfireMinTemperature": 370.0,
+    "MisfireMaxTemperature": 600.0
+  },
+  "power_connection": {
+    "power_base": 4.0,
+    "power_draw": 6.0,
+    "time_to_reach_draw_request": 15.0,
+    "safeguard_priority": 30.0,
+    "displayed_in_powered_item_list": 1.0,
+    "is_throttleable": 0.0,
+    "is_overclockable": 0.0,
+    "overclock_threshold_min": 0.5,
+    "overclock_threshold_max": 0.7,
+    "overpower_performance": 0.25,
+    "overclock_performance": 1.25,
+    "power_to_em": 1.3,
+    "decay_rate_of_em": 0.2
+  },
+  "type_data": {
+    "cooling_rate": 100000.0
+  }
+}

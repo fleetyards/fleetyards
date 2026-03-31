@@ -1,0 +1,22 @@
+{
+  "key": "ARGO_CSV_CargoGrid_Main",
+  "ref": "ff3d2a64-2497-4a76-9cfe-d8415b062a78",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "180d4b6c-c62e-4ca8-80d7-0ca0c17d6672"
+}

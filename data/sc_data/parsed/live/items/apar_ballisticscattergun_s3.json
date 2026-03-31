@@ -1,0 +1,63 @@
+{
+  "key": "APAR_BallisticScatterGun_S3",
+  "ref": "fac5a97f-64bf-450e-a2f2-90e4da5ccf73",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "name": "Predator Scattergun",
+  "short_name": "Predator",
+  "description": "Manufacturer: Apocalypse Arms\\nItem Type: Ballistic Scattergun\\nSize: 3\\n\\nThe Predator scattergun preys upon nearby opponents with an overwhelming barrage of ballistic ammo. The size three version of Apocalypse Arms' feared scattergun trades effective range for a wide spread.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 1980.0,
+    "initial_ammo_count": 1980.0,
+    "max_restock_count": 3.0
+  }
+}

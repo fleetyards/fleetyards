@@ -4,13 +4,14 @@ module V1
   module Schemas
     module Inputs
       class FleetMembershipUpdateInput
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
             primary: {type: :boolean},
-            shipsFilter: {"$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"}
+            shipsFilter: {"$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"},
+            hangarGroupId: {type: :string, nullable: true}
           },
           additionalProperties: false
         })

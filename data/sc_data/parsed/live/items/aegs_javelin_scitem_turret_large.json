@@ -1,0 +1,78 @@
+{
+  "key": "AEGS_Javelin_SCItem_Turret_Large",
+  "ref": "1b88cf97-4632-4d7f-ba7e-a4c41bd08a38",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "8",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "9",
+      "max_size": "9",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "9",
+      "max_size": "9",
+      "types": []
+    },
+    {
+      "name": "turret_left_top",
+      "min_size": "9",
+      "max_size": "9",
+      "types": []
+    },
+    {
+      "name": "turret_right_top",
+      "min_size": "9",
+      "max_size": "9",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "turret_left",
+      "key": "BEHR_LaserCannon_S9",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "turret_right",
+      "key": "BEHR_LaserCannon_S9",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "turret_right_top",
+      "key": "BEHR_LaserCannon_S9",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "turret_left_top",
+      "key": "BEHR_LaserCannon_S9",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 25000.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_VNCL_Scythe",
+  "ref": "d6508a2b-6ba3-4a3b-80d7-d61807f7820d",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

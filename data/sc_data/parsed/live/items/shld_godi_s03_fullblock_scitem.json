@@ -1,0 +1,94 @@
+{
+  "key": "SHLD_GODI_S03_FullBlock_SCItem",
+  "ref": "6a4d4eb2-dacd-4b04-b17f-e7a02ea7e744",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "3",
+  "grade": "2",
+  "manufacturer_ref": "57bfcf3d-13f6-4c2c-b7c7-6bf8eacb8a24",
+  "name": "FullBlock",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Gorgon Defender Industries\\nSize: 3\\nGrade: B\\nClass: Military\\n\\nCrafted by former residents of Caliban, Gorgon’s FullBlock large shield generator has been repeatedly put to the test by members of the military and public. That means you can count on it regardless of what you come up against.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1800.0
+  },
+  "type_data": {
+    "max_health": 132000.0,
+    "max_regen": 13200.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 12.7,
+    "damaged_regen_delay": 6.33,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": -0.11,
+        "min": -0.34
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.45,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

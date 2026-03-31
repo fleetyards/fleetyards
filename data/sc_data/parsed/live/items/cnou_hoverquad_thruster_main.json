@@ -1,0 +1,30 @@
+{
+  "key": "CNOU_HoverQuad_Thruster_Main",
+  "ref": "f0175cd8-e827-4863-a45d-4a88421cbf56",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2750.0
+  },
+  "type_data": {
+    "thrust_capacity": 135000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "key": "SHLD_BASL_S01_Palisade_SCItem",
+  "ref": "15ebdff2-2724-4fb3-abbf-db20e150da77",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2948496b-45d2-41f8-bdff-97587f1e6981",
+  "name": "Palisade",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Basilisk\\nSize: 1\\nGrade: A\\nClass: Industrial\\n\\nNo other small shield generator can match the durability of the Basilisk Palisade. This top-of-the-line industrial component forfeits stealth for the ability to absorb an unrivaled amount of damage.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 230.0
+  },
+  "type_data": {
+    "max_health": 2700.0,
+    "max_regen": 297.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 8.33,
+    "damaged_regen_delay": 4.17,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": -0.2,
+        "min": -0.6
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.45,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

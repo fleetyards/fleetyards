@@ -1,0 +1,22 @@
+{
+  "key": "CNOU_Nomad_CargoGrid_Main",
+  "ref": "ebf577c0-d12e-4d77-831d-6571ed4c9a1b",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "4b550941-3ae1-42c1-9e69-7fa43f7de19d"
+}

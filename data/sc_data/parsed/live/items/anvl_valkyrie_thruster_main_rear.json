@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Valkyrie_Thruster_Main_Rear",
+  "ref": "a0bd89dc-6702-4bb8-8035-8604380b2ea9",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 17600.0
+  },
+  "type_data": {
+    "thrust_capacity": 2375000.0,
+    "fuel_burn_rate_per10_k_newton": 0.13375,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

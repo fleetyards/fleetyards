@@ -1,0 +1,30 @@
+{
+  "key": "DRAK_Cutter_Thruster_Mav_Fixed_Bottom",
+  "ref": "e6fbff12-2b58-473e-beb2-c51c53a72228",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 9000.0
+  },
+  "type_data": {
+    "thrust_capacity": 1163000.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

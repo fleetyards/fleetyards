@@ -1,0 +1,21 @@
+{
+  "key": "DoorDefaultTemplate_AnimVariable",
+  "ref": "015c25a7-43d2-4b7c-b36b-d606726ef94e",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

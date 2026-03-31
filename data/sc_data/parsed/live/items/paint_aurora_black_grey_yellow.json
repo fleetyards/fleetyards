@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Black_Grey_Yellow",
+  "ref": "5b57d31b-a123-4094-a2ef-935d7285b99d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf594fb5-3b61-42e1-8b5b-dd82c1c4587b",
+  "name": "Aurora Mk I UEE Distinguished Service Livery",
+  "short_name": null,
+  "description": "Your love of the Empire will be clear to all when you emblazon your ship in this patriotic livery, inspiring honor and dedication in those you fly with.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

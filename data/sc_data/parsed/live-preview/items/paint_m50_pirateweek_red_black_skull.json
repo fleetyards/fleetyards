@@ -1,0 +1,21 @@
+{
+  "key": "Paint_M50_PirateWeek_Red_Black_Skull",
+  "ref": "ce4a4027-7a0d-4814-8d4c-b029260570d5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c0723315-4430-4f7e-b3c8-e31690ae4ba4",
+  "name": "M50 Skullcrusher Livery",
+  "short_name": null,
+  "description": "Exude attitude with the Skullcrusher livery for the M50, which features a massive skull across the top.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

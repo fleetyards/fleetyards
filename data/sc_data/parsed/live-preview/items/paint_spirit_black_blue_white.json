@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_Black_Blue_White",
+  "ref": "6a9b1dc3-a073-44a8-afad-17f3d641a0e4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1b953266-986f-4242-b04f-8f6ceeca4217",
+  "name": "Spirit Valor Livery",
+  "short_name": null,
+  "description": "Where ever your mission takes you, this livery featuring dark grey with sky blue highlights and white trim will make sure that your Crusader Spirit looks the part.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

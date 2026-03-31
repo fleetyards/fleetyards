@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_ARGO_MOLE",
+  "ref": "fa9ef9bf-c60b-4937-b8a9-9e8c548e1519",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 96.0
+  }
+}

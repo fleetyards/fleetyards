@@ -1,0 +1,42 @@
+{
+  "key": "ARGO_RAFT_Docking_Door",
+  "ref": "7cc13095-98dc-4079-8156-f8fb7f34fe83",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "IP_Exterior",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "IP_Exterior",
+      "key": "ControlPanel_Screen_DoorControl_RAFT_Button",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  }
+}

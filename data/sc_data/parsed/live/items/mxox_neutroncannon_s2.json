@@ -1,0 +1,63 @@
+{
+  "key": "MXOX_NeutronCannon_S2",
+  "ref": "596ced46-195e-4f60-826a-7cc5bb2e2f02",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "de0d3594-9f18-42c0-8a90-6edd723d80f8",
+  "name": "NN-14 Cannon",
+  "short_name": "NN-14",
+  "description": "Manufacturer: MaxOx\\nItem Type: Neutron Cannon\\nSize: 2\\n\\nBuilding on the technology of the NN-13, MaxOx’s NN-14 offers a significant increase in power for the neutron autocannon to give each shot a devastating punch. With that increased damage however, comes a heavier draw on your power plant.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 850.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

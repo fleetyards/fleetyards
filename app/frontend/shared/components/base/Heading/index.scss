@@ -1,0 +1,107 @@
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0;
+  color: $text-color;
+}
+
+// Tailwind CSS Placeholder Classes
+.mt-4 {
+  margin-top: 1rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1rem !important;
+}
+
+.font-hero {
+  font-family: "Orbitron", sans-serif;
+}
+
+.font-opensans {
+  font-family: "Open Sans", sans-serif;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.text-hero {
+  font-size: 2.25rem;
+  line-height: 3rem;
+}
+
+.text-hero-sm {
+  font-size: 1.875rem;
+  line-height: 2.5rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-shadow {
+  text-shadow: 0 0 2px black;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.truncate {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-baseline {
+  align-items: baseline;
+}

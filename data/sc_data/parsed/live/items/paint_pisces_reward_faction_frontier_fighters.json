@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pisces_Reward_Faction_Frontier_Fighters",
+  "ref": "99083e47-0939-4303-8de5-0bd5ed302f36",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3ee12475-93bb-4a5d-8af1-234d1b5c2d9a",
+  "name": "Pisces Frontier Fighters Camo Livery",
+  "short_name": null,
+  "description": "Be ready to battle in the untamed wilds with this green camo livery featuring the logo of the Frontier Fighters vigilante group.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

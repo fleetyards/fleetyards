@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S01_Quadracell_SCItem",
+  "ref": "d89b535f-8187-4840-b5f4-3230c789dfd1",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "QuadraCell",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics\\nSize: 1\\nGrade: A\\nClass: Military\\n\\nFew military-grade power plants get better than the Aegis QuadraCell. It wasn’t just built to survive the heat of battle, it was built to thrive in it.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 350.0
+  }
+}

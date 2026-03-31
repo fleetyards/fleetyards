@@ -1,0 +1,21 @@
+{
+  "key": "ElevatorDoorDefault_Gama_Syulen",
+  "ref": "dc678a4e-7537-40ea-8e8d-23f042561417",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

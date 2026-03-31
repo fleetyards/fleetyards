@@ -1,0 +1,40 @@
+{
+  "key": "ANVL_Valkyrie_CargoGrid",
+  "ref": "d7ce032d-a7d8-484b-bc1a-1b8bf2d14c9d",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 6.25,
+      "y": 7.5,
+      "z": 3.75
+    },
+    "capacity": 90,
+    "max_container_size": {
+      "size": 24,
+      "dimensions": {
+        "x": 7.5,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 7.5,
+          "z": 2.5
+        },
+        "capacity": 24
+      }
+    }
+  }
+}

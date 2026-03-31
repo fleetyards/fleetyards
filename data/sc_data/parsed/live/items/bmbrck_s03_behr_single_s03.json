@@ -1,0 +1,34 @@
+{
+  "key": "BMBRCK_S03_BEHR_Single_S03",
+  "ref": "c9686715-884f-456a-afbe-054107c8c54a",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "CST-313 \"Castillo\"",
+  "short_name": "CST-313",
+  "description": "Item Type: Bomb Rack\\nManufacturer: Behring\\nSize: S3\\n\\nDesigned to fit a wide variety of ships, the CST-313 \"Castillo\" bomb rack is able to store a single S3 bomb and makes for a good alternative on ships that can support a S3 missile rack.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

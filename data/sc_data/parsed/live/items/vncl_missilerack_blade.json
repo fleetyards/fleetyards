@@ -1,0 +1,24 @@
+{
+  "key": "VNCL_MissileRack_Blade",
+  "ref": "1f535425-a24a-4c6f-9274-0534bfeda63e",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "Ramming Blade",
+  "short_name": null,
+  "description": "Blade component that can be used for ramming.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

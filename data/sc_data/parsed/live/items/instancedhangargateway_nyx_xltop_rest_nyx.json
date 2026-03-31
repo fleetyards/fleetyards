@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Nyx_XLTop_Rest_Nyx",
+  "ref": "805803aa-3a4a-4366-aa15-1bfd19a0d810",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

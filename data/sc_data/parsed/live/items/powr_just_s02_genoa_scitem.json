@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S02_Genoa_SCItem",
+  "ref": "2a02027b-5c19-456b-901b-663189505be0",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Genoa",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 2\\nGrade: A\\nClass: Industrial\\n\\nAccording to Juno Starwerk, good industrial design is meant to go unnoticed, yet it’s hard not to marvel at the Genoa medium power plant, as its outstanding performance and noted durability make it a first-rate component.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 840.0
+  }
+}

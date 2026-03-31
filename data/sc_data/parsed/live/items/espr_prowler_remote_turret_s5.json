@@ -1,0 +1,44 @@
+{
+  "key": "ESPR_Prowler_Remote_Turret_S5",
+  "ref": "92d6e85c-e59a-4826-bcfa-f96e580164b1",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "4ecc1a24-d228-4dd5-8857-21ba6145a1d3",
+  "name": "Esperia Prowler Turret",
+  "short_name": null,
+  "description": "Item Type: Turret\\nManufacturer: Esperia\\n\\nThis faithful recreation of the original Tevarin design features modern mounts for precise target acquisition.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

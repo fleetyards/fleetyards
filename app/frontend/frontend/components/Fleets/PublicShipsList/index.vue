@@ -1,61 +1,156 @@
+<script lang="ts">
+export default {
+  name: "FleetPublicShipsList",
+};
+</script>
+
+<script lang="ts" setup>
+import FilteredList from "@/shared/components/FilteredList/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
+import FleetVehiclesTable from "@/frontend/components/Fleets/VehiclesTable/index.vue";
+import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
+import Paginator from "@/shared/components/Paginator/index.vue";
+import PublicFleetVehiclesFilterForm from "@/frontend/components/Fleets/PublicFilterForm/index.vue";
+import type { Fleet, FleetVehicleQuery } from "@/services/fyApi";
+import { useMobile } from "@/shared/composables/useMobile";
+import { usePublicFleetStore } from "@/frontend/stores/publicFleet";
+import { useFleetStore } from "@/frontend/stores/fleet";
+import { useFleetchartStore } from "@/shared/stores/fleetchart";
+import { storeToRefs } from "pinia";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { useFilters } from "@/shared/composables/useFilters";
+import { usePagination } from "@/shared/composables/usePagination";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  usePublicFleetStatsModelCounts as usePublicFleetStatsModelCountsQuery,
+  usePublicFleetVehicles as usePublicFleetVehiclesQuery,
+  getPublicFleetVehiclesQueryKey,
+} from "@/services/fyApi";
+
+type Props = {
+  fleet: Fleet;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const mobile = useMobile();
+
+const fleetStore = usePublicFleetStore();
+const displayStore = useFleetStore();
+
+const comlink = useComlink();
+
+const { grouped, detailsVisible } = storeToRefs(fleetStore);
+const { gridView } = storeToRefs(displayStore);
+
+const openDisplayOptionsModal = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/DisplayOptionsModal/index.vue"),
+  });
+};
+
+const fleetchartStore = useFleetchartStore();
+
+const fleetchartVisible = computed(() => {
+  return fleetchartStore.isVisible("publicFleet");
+});
+
+const toggleFleetchart = () => {
+  fleetchartStore.toggleFleetchart("publicFleet");
+};
+
+watch(
+  () => grouped.value,
+  () => refetch,
+);
+
+watch(
+  () => props.fleet,
+  () => refetch,
+);
+
+const vehiclesQueryKey = computed(() => {
+  return getPublicFleetVehiclesQueryKey(
+    props.fleet.slug,
+    vehiclesQueryParams.value,
+  );
+});
+
+const { filters } = useFilters<FleetVehicleQuery>({
+  updateCallback: async () => {
+    await refetch();
+  },
+});
+
+const { perPage, page, updatePerPage } = usePagination(vehiclesQueryKey);
+
+const vehiclesQueryParams = computed(() => {
+  return {
+    page: page.value,
+    perPage: perPage.value,
+    q: filters.value,
+    grouped: grouped.value,
+  };
+});
+
+const { data: modelCounts, refetch: refetchModelCounts } =
+  usePublicFleetStatsModelCountsQuery(props.fleet.slug, vehiclesQueryParams);
+
+const {
+  data: fleetVehicles,
+  refetch: refetchVehicles,
+  ...asyncStatus
+} = usePublicFleetVehiclesQuery(props.fleet.slug, vehiclesQueryParams);
+
+const refetch = async () => {
+  await refetchVehicles();
+  await refetchModelCounts();
+};
+</script>
+
 <template>
   <div>
     <FilteredList
-      key="fleet-public-ships"
-      :collection="collection"
-      :name="$route.name"
-      :route-query="$route.query"
-      :params="routeParams"
-      :hash="$route.hash"
-      :paginated="true"
-      :hide-loading="fleetchartVisible"
+      name="fleet-public-ships"
+      :records="fleetVehicles?.items || []"
+      :async-status="asyncStatus"
+      primary-key="id"
+      :hide-loading="fleetchartVisible || !gridView"
+      :hide-empty="!gridView"
     >
-      <template slot="actions">
-        <BtnDropdown size="small">
-          <template v-if="mobile">
-            <Btn
-              size="small"
-              variant="dropdown"
-              data-test="fleetchart-link"
-              @click.native="toggleFleetchart"
-            >
-              <i class="fad fa-starship" />
-              <span>{{ $t("labels.fleetchart") }}</span>
-            </Btn>
-
-            <hr />
-          </template>
-          <Btn
-            :active="detailsVisible"
-            :aria-label="toggleDetailsTooltip"
-            size="small"
-            variant="dropdown"
-            @click.native="toggleDetails"
-          >
-            <i class="fad fa-info-square" />
-            <span>{{ toggleDetailsTooltip }}</span>
-          </Btn>
-
-          <Btn size="small" variant="dropdown" @click.native="toggleGrouped">
-            <template v-if="grouped">
-              <i class="fas fa-square" />
-              <span>{{ $t("actions.ungrouped") }}</span>
-            </template>
-            <template v-else>
-              <i class="fas fa-th-large" />
-              <span>{{ $t("actions.groupedByModel") }}</span>
-            </template>
-          </Btn>
-        </BtnDropdown>
+      <template #actions-right>
+        <Btn
+          :aria-label="t('actions.models.openTableConfiguration')"
+          :size="BtnSizesEnum.SMALL"
+          @click="openDisplayOptionsModal"
+        >
+          <i class="fa-duotone fa-sliders" />
+        </Btn>
+        <Btn
+          v-if="mobile"
+          :size="BtnSizesEnum.SMALL"
+          data-test="fleetchart-link"
+          @click="toggleFleetchart"
+        >
+          <i class="fa-duotone fa-starship" />
+        </Btn>
       </template>
 
-      <PublicFleetVehiclesFilterForm slot="filter" />
-
-      <template #default="{ records, loading, filterVisible, primaryKey }">
-        <FilteredGrid
+      <template #filter>
+        <PublicFleetVehiclesFilterForm />
+      </template>
+      <template #default="{ records, loading, filterVisible, emptyVisible }">
+        <Grid
+          v-if="gridView"
           :records="records"
           :filter-visible="filterVisible"
-          :primary-key="primaryKey"
+          primary-key="id"
         >
           <template #default="{ record }">
             <FleetVehiclePanel
@@ -66,128 +161,40 @@
               :show-owner="false"
             />
           </template>
-        </FilteredGrid>
+        </Grid>
+
+        <FleetVehiclesTable
+          v-else
+          :fleet-slug="fleet.slug"
+          :loading="loading"
+          :empty-visible="emptyVisible"
+          :vehicles="fleetVehicles?.items || []"
+        />
 
         <FleetchartApp
-          :items="records"
+          :items="fleetVehicles?.items || []"
           namespace="publicFleet"
           :loading="loading"
           :download-name="`${fleet.slug}-fleetchart`"
         />
       </template>
+      <template #pagination-top>
+        <Paginator
+          v-if="fleetVehicles"
+          :query-result-ref="fleetVehicles"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+        />
+      </template>
+
+      <template #pagination-bottom>
+        <Paginator
+          v-if="fleetVehicles"
+          :query-result-ref="fleetVehicles"
+          :per-page="perPage"
+          :update-per-page="updatePerPage"
+        />
+      </template>
     </FilteredList>
   </div>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { Getter, Action } from "vuex-class";
-import FilteredList from "@/frontend/core/components/FilteredList/index.vue";
-import FilteredGrid from "@/frontend/core/components/FilteredGrid/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import BtnDropdown from "@/frontend/core/components/BtnDropdown/index.vue";
-import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
-import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
-import PublicFleetVehiclesFilterForm from "@/frontend/components/Fleets/PublicFilterForm/index.vue";
-import ModelClassLabels from "@/frontend/components/Models/ClassLabels/index.vue";
-import AddonsModal from "@/frontend/components/Vehicles/AddonsModal/index.vue";
-import publicFleetVehiclesCollection from "@/frontend/api/collections/PublicFleetVehicles";
-
-@Component<FleetPublicShipsList>({
-  components: {
-    Btn,
-    BtnDropdown,
-    FilteredList,
-    FilteredGrid,
-    FleetVehiclePanel,
-    ModelClassLabels,
-    AddonsModal,
-    PublicFleetVehiclesFilterForm,
-    FleetchartApp,
-  },
-})
-export default class FleetPublicShipsList extends Vue {
-  collection: PublicFleetVehiclesCollection = publicFleetVehiclesCollection;
-
-  @Prop({ required: true }) fleet: Fleet;
-
-  @Getter("mobile") mobile;
-
-  @Getter("grouped", { namespace: "publicFleet" }) grouped;
-
-  @Getter("detailsVisible", { namespace: "publicFleet" }) detailsVisible;
-
-  @Getter("fleetchartVisible", { namespace: "publicFleet" }) fleetchartVisible;
-
-  @Getter("perPage", { namespace: "publicFleet" }) perPage;
-
-  @Action("toggleFleetchart", { namespace: "publicFleet" })
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  toggleFleetchart: any;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Action("toggleDetails", { namespace: "publicFleet" }) toggleDetails: any;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  @Action("toggleGrouped", { namespace: "publicFleet" }) toggleGrouped: any;
-
-  get toggleDetailsTooltip() {
-    if (this.detailsVisible) {
-      return this.$t("actions.hideDetails");
-    }
-    return this.$t("actions.showDetails");
-  }
-
-  get routeParams() {
-    return {
-      ...this.$route.params,
-      grouped: this.grouped,
-    };
-  }
-
-  get filters() {
-    return {
-      slug: this.fleet.slug,
-      grouped: this.grouped,
-      page: this.$route.query.page,
-    };
-  }
-
-  get modelCounts() {
-    return this.collection.modelCounts;
-  }
-
-  @Watch("grouped")
-  onGroupedChange() {
-    this.fetch();
-  }
-
-  @Watch("perPage")
-  onPerPageChange() {
-    this.fetch();
-  }
-
-  @Watch("$route")
-  onRouteChange() {
-    this.fetchModelCounts();
-  }
-
-  @Watch("fleet")
-  onFleetChange() {
-    this.fetchModelCounts();
-  }
-
-  mounted() {
-    this.fetchModelCounts();
-  }
-
-  async fetch() {
-    await this.collection.findAll(this.filters);
-  }
-
-  async fetchModelCounts() {
-    await this.collection.findModelCounts(this.filters);
-  }
-}
-</script>

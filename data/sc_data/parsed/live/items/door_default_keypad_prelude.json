@@ -1,0 +1,21 @@
+{
+  "key": "Door_Default_Keypad_Prelude",
+  "ref": "7e6076a8-84db-426c-8fa7-1414e9473d73",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

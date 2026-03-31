@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Idris_Blue_Blue_Blue_Camo",
+  "ref": "ca4a07b0-7c4e-45cd-ab51-2d11ff3d2679",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c27f8ca8-5bba-4066-b5c6-0f72977a7e2e",
+  "name": "Idris Triton Camo Livery",
+  "short_name": null,
+  "description": "Conceal the shape of the Idris with the blue camo pattern of the Triton Camo livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler_IAE2950_Grey_Blue",
+  "ref": "28450c13-4f89-4dfa-b571-c25c9ec3f32c",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "10a2a75f-ba80-4f39-8233-66d03af8d2e2",
+  "name": "Prowler Stormbringer Livery",
+  "short_name": null,
+  "description": "This custom Prowler livery was created to celebrate the 2950 IAE on microTech. It integrates black and electric blue accents to give the ship a cool new look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

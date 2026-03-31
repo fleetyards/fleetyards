@@ -1,0 +1,21 @@
+{
+  "key": "AEGS_Retaliator_SCItem_Seat_Bed_Upper_Right",
+  "ref": "1e82fe51-96a0-4a09-8b79-0edc49ae2617",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

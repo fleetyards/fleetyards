@@ -1,0 +1,78 @@
+{
+  "key": "RSI_Bengal_SCItem_STS_Large_Turret",
+  "ref": "06649c1a-a839-4a74-9ac9-c93505c58f72",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "12",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_right_outer",
+      "min_size": "12",
+      "max_size": "12",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right_inner",
+      "min_size": "12",
+      "max_size": "12",
+      "types": []
+    },
+    {
+      "name": "hardpoint_weapon_left_inner",
+      "min_size": "12",
+      "max_size": "12",
+      "types": []
+    },
+    {
+      "name": "hardpoint_weapon_left_outer",
+      "min_size": "12",
+      "max_size": "12",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_weapon_right_outer",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_weapon_right_inner",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_weapon_left_inner",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_weapon_left_outer",
+      "key": "BEHR_MassDriver_S12",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1000000.0
+  }
+}

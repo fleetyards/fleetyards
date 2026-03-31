@@ -1,0 +1,24 @@
+{
+  "key": "COOL_LPLT_S02_WhiteOut_SCItem",
+  "ref": "29026bad-ef1d-4a72-8059-f1fe2c397603",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "WhiteOut",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Lightning Power Ltd.\\nSize: 2\\nGrade: D\\nClass: Civilian\\n\\nYour ship faces a lot of extreme conditions while flying. From the coldness of space to the burning heat of a desert planet, the last thing you want to worry about is if your cooler can keep up. The entry-level WhiteOut from Lightning Power provides thermal management that can help make sure you get where you’re going.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 300.0
+  }
+}

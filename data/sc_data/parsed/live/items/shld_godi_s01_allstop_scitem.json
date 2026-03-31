@@ -1,0 +1,94 @@
+{
+  "key": "SHLD_GODI_S01_AllStop_SCItem",
+  "ref": "339bd641-8dfb-4bc1-b273-5ffc5f702fbb",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "57bfcf3d-13f6-4c2c-b7c7-6bf8eacb8a24",
+  "name": "AllStop",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Gorgon Defender Industries\\nSize: 1\\nGrade: C\\nClass: Military\\n\\nGorgon Defender Industries first created the AllStop shield generator to hold off the Vanduul. They worked so well that many military crafts were known to prefer the AllStop. Just one of the many reasons to have one on your ship.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 210.0
+  },
+  "type_data": {
+    "max_health": 3960.0,
+    "max_regen": 376.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 11.5,
+    "damaged_regen_delay": 5.75,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": -0.12,
+        "min": -0.37
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.45,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

@@ -4,6 +4,7 @@ module Admin
   module Api
     class BaseController < ActionController::API
       include ActionController::Caching
+      include ActionPolicy::Controller
       include RansackHelper
       include Pagination
 
@@ -16,10 +17,12 @@ module Admin
 
       before_action :authenticate_admin_user!
 
-      check_authorization
+      verify_authorized
 
-      rescue_from CanCan::AccessDenied do |exception|
-        render json: {code: "forbidden", message: exception.message}, status: :forbidden
+      authorize :user, through: :current_admin_user
+
+      rescue_from ActionPolicy::Unauthorized do |exception|
+        render json: {code: "forbidden", message: exception.result.message}, status: :forbidden
       end
 
       rescue_from ActionController::InvalidAuthenticityToken do |_exception|
@@ -37,6 +40,10 @@ module Admin
 
       def current_ability
         @current_ability ||= AdminAbility.new(current_user)
+      end
+
+      def feature_enabled?(feature)
+        Flipper.enabled?(feature, current_user)
       end
 
       def resource_message(resource, action, state)

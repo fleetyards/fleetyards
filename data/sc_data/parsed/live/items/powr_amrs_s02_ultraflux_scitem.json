@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AMRS_S02_UltraFlux_SCItem",
+  "ref": "f549b612-0be0-41fe-91d1-12a479af2ac8",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "UltraFlux",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Amon & Reese Co.\\nSize: 2\\nGrade: B\\nClass: Military\\n\\nInitially designed under a military contract, A&R's UltraFlux medium power plant decimated the required performance milestones and enjoyed a storied career as a dependable military asset. When the military’s exclusive rights to this high quality component lapsed, A&R eagerly released this to the commercial market.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 860.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "COOL_AEGS_S04_Reclaimer",
+  "ref": "115aaff9-c8c5-4b93-bc14-9f22524fe8a8",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Algid",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Aegis Dynamics\\nSize: 4\\nGrade: Bespoke\\nClass: Industrial\\n\\nThe Reclaimer is a ship renowned for its ability to work long and hard. To help support even the most arduous salvaging projects, Aegis develop the bespoke Algid cooler.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 4100.0
+  }
+}

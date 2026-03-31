@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S02_Diligence_SCItem",
+  "ref": "be3eb52b-243a-4ed9-833a-d348f910a32a",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Diligence",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 2\\nGrade: C\\nClass: Industrial\\n\\nThough the Diligence delivers high performance compared to other components in its class, this power plant’s dependability and ease of maintenance is what makes it a favorite of haulers.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 640.0
+  }
+}

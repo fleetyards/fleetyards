@@ -1,0 +1,63 @@
+{
+  "key": "BEHR_Nova_BallisticGatling_S5",
+  "ref": "56c36bd9-9090-4166-a3dd-9dc8ad225f70",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "NV57 Ballistic Gatling",
+  "short_name": "NV57",
+  "description": "Item Type: Ballistic Gatling Gun\\nManufacturer: Behring\\nSize: S5\\n\\nBreak the ranks with the NV57 Ballistic Gatling Gun designed to replace the standard Tumbril Nova tank canon. Be ready to face overwhelming ground forces head on using this high powered weapon with superior damage output and a devastating rate of fire.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4224.0
+  },
+  "ammunition": {
+    "max_ammo_count": 9600.0,
+    "initial_ammo_count": 9600.0,
+    "max_restock_count": 3.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Hornet_F7A_Mk1_Thruster_Main",
+  "ref": "ad5a3583-5a04-48c8-a322-91139381ac1b",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 6700.0
+  },
+  "type_data": {
+    "thrust_capacity": 2814000.0,
+    "fuel_burn_rate_per10_k_newton": 0.0455375,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prowler_AlienWeek_Green_Brown_Brown",
+  "ref": "e5215a48-7a6d-4dd2-9f38-38b20708ba40",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c46eea5d-b807-443d-8288-9c41e039e31d",
+  "name": "Prowler Luminary Livery",
+  "short_name": null,
+  "description": "The Luminary livery gives the Prowler a glossy green base paint with brown highlights for a dazzlingly beautiful and complex design.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "key": "SalvageFillerStation_ARGO_MOTH_Left",
+  "ref": "7e47570a-6dee-4ecc-9f96-ca07ac08e0a5",
+  "category": "salvagefillerstation",
+  "type": "SalvageFillerStation",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_salvage_refill",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "hardpoint_salvage_crate",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": null,
+      "ref": "9181cea7-462e-48f5-aea0-33d9f14077e8",
+      "default_loadout": []
+    }
+  ]
+}

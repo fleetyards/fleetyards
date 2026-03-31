@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Spirit_Grey_Grey_Blue",
+  "ref": "7c4831e3-c964-4f95-8983-bc2b5c07be81",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "360f9f73-a7ba-4a27-bfb3-f661cb6c745b",
+  "name": "Spirit Resolute Livery",
+  "short_name": null,
+  "description": "With a dual tone grey body and steel blue trim, this subtle livery will ensure you Crusader Spirit is worth a second look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

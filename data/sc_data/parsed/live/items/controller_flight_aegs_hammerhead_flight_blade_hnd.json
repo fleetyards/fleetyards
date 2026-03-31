@@ -1,0 +1,37 @@
+{
+  "key": "Controller_Flight_AEGS_Hammerhead_Flight_Blade_HND",
+  "ref": "539caf3f-0894-4587-915f-1648374d9ab7",
+  "category": "controller",
+  "type": "FlightController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ad865899-f5ba-4818-ae8c-fe80a55108b7",
+  "name": "Hammerhead PHB Flight Blade",
+  "short_name": "Hammerhead PHB Flight Blade",
+  "description": "Manufacturer: Broad & Rabiee\\nType: Flight Blade\\n\\nUnlock the potential of your Aegis Hammerhead with the PHB Flight Blade from Broad & Rabiee. By re-allocating forward thrust resources, you can expect your ship deliver increased precision handling during tight maneuvers.",
+  "inventory_consumption": {
+    "micro_scu": 970.0,
+    "dimensions": {
+      "x": 0.2575701,
+      "y": 0.1729496,
+      "z": 0.02177711
+    }
+  },
+  "type_data": {
+    "scm_speed": 160.0,
+    "scm_speed_boosted": 320.0,
+    "reverse_speed_boosted": 170.0,
+    "max_speed": 950.0,
+    "angular_velocity": {
+      "pitch": 20.0,
+      "yaw": 20.0,
+      "roll": 30.0
+    },
+    "boosted_angular_velocity": {
+      "pitch": 30.0,
+      "yaw": 30.0,
+      "roll": 60.0
+    }
+  }
+}

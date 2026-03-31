@@ -4,9 +4,7 @@ de:
     add: Hinzufügen
     add_video: Video hinzufügen
     login_in_as: Anmelden als
-    admin:
-      celestial_object:
-        new: Neuen Himmelskörper erstellen
+    admin: {}
     back: Zurück
     cancel: Abbrechen
     confirm: Konto bestätigen
@@ -24,6 +22,4 @@ de:
     save_password: Passwort speichern
     sign_in: Anmelden
     sign_out: Abmelden
-    station:
-      images: Bilder
     unlock: Konto entsperren

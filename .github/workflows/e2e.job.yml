@@ -6,19 +6,23 @@ on:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2]
+        shardTotal: [2]
     env:
-      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-      DATABASE_URL: postgresql://root:root@127.0.0.1:5432/fleetyards_test
+      RAILS_ENV: test
+      NODE_OPTIONS: "--max_old_space_size=4096"
+      DATABASE_URL: postgresql://root:password@127.0.0.1:8271/fleetyards_test
       DATABASE_HOST: 127.0.0.1
       DATABASE_USER: root
-      TEST_SEEDS: 1
-      RAILS_ENV: ci
-      VITE_RUBY_MODE: production
-      ON_SUBDOMAIN: false
+      DATABASE_PASSWORD: password
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      TEST_SEEDS: 1
       JOBS: 1
+      PORT: 8280
 
     services:
       postgres:
@@ -26,9 +30,9 @@ jobs:
         env:
           POSTGRES_USER: root
           POSTGRES_DB: fleetyards_test
-          POSTGRES_PASSWORD: root
+          POSTGRES_PASSWORD: password
         ports:
-          - 5432:5432
+          - 8271:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -37,26 +41,18 @@ jobs:
       redis:
         image: redis:6.2.10-alpine
         ports:
-          - 6379:6379
+          - 8272:6379
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - uses: ./.github/workflows/js-setup-action
-      - name: Configure sysctl limits
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-      - uses: ankane/setup-opensearch@v1
       - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - name: install dependencies
         uses: Eeems-Org/apt-cache-action@v1.3
@@ -64,21 +60,58 @@ jobs:
           packages: imagemagick libmagickwand-dev
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
-      - name: Create ES Index
-        run: bundle exec thor search:index
       - name: Assets Compile
         run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - name: Get Playwright version
+        id: playwright-version
+        run: echo "version=$(pnpm playwright --version)" >> "$GITHUB_OUTPUT"
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v4
         with:
-          start: bundle exec puma -C config/puma.rb
-          wait-on: "http://localhost:8270"
-          wait-on-timeout: 120
-          browser: chrome
-          record: true
-          parallel: true
-        env:
-          PORT: 8270
-          CYPRESS_BASE_URL: http://localhost:8270
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm test:e2e:install
+      - name: Install Playwright system dependencies
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: pnpm playwright install-deps
+      - name: Run e2e Tests
+        run: pnpm test:e2e:run --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: blob-report-${{ matrix.shardIndex }}-attempt-${{ github.run_attempt }}
+          path: blob-report
+          retention-days: 1
+
+  merge-reports:
+    # Merge reports after playwright-tests, even if some shards have failed
+    if: ${{ !cancelled() }}
+    needs: [e2e-test]
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/workflows/js-setup-action
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: all-blob-reports
+          pattern: blob-report-*
+          merge-multiple: true
+
+      - name: Merge into HTML Report
+        run: pnpm playwright merge-reports --reporter html ./all-blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report--attempt-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 2

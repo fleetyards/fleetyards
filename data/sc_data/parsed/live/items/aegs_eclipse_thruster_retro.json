@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Eclipse_Thruster_Retro",
+  "ref": "ecc37329-3c8d-4dec-876d-fd3986476241",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 11500.0
+  },
+  "type_data": {
+    "thrust_capacity": 99957.05,
+    "fuel_burn_rate_per10_k_newton": 0.0655375,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

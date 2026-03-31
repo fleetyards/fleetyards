@@ -1,0 +1,31 @@
+{
+  "key": "AEGS_Redeemer_SCItem_Seat_Bed_Lower_Left",
+  "ref": "7c1e66e7-bb7f-435f-882b-509b5f63dce5",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Bed",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_bedding",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Seat"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Star_Runner_Silver_Spark_Grey_Yellow",
+  "ref": "daeea277-f1d1-4a81-ab17-4753eb7cc11a",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ba42353a-8f9f-4fb2-807d-dd1dcdd5535b",
+  "name": "Mercury Star Runner Silver Spark Livery",
+  "short_name": null,
+  "description": "Emphasize the special shape of the Mercury Star Runner with the Silver Spark livery featuring yellow highlights expertly integrated into the grey and black paint scheme.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

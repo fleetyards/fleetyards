@@ -1,0 +1,21 @@
+{
+  "key": "Paint_PTV_Camo",
+  "ref": "847aa805-c322-451a-8b97-f9728e748742",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "PTV All Terrain Camouflage: Forest (ATC-F) Livery",
+  "short_name": null,
+  "description": "ATC-F livery uses a non-reflective paint surface ideal for anyone looking to lower their profile in the wild. Perfect for military, sporting enthusiasts or naturalists.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

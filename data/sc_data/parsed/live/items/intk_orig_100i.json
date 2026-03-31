@@ -1,0 +1,25 @@
+{
+  "key": "INTK_ORIG_100i",
+  "ref": "ebf3f2f8-f685-4af2-aeb6-bd09e2285ec6",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 15.0,
+    "minimum_rate": 0.5
+  }
+}

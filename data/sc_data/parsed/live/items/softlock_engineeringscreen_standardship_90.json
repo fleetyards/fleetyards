@@ -1,0 +1,21 @@
+{
+  "key": "SoftLock_EngineeringScreen_StandardShip_90",
+  "ref": "ac463935-15d0-451a-94e8-ac6f17ce7dcb",
+  "category": "utility",
+  "type": "SeatDashboard",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Screen",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

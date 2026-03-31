@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Golem_Black_Red_Black",
+  "ref": "2b5acde1-50c1-4a6f-afe5-164ac3f1a6ae",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "927f5161-8835-407e-860b-a877b447c91a",
+  "name": "Golem Strongheart Livery",
+  "short_name": null,
+  "description": "The Strongheart livery for the Golem is a bright and bold red with black highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

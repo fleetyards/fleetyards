@@ -1,0 +1,21 @@
+{
+  "zh-CN": {
+    "directUpload": {
+      "title": "上传",
+      "chooseFiles": "选择文件",
+      "dropzone": {
+        "textMultiple": "将文件拖拽到这里上传",
+        "text": "将文件拖拽到这里上传",
+        "or": "或",
+        "browse": "浏览"
+      },
+      "previewImage": {
+        "remove": "移除"
+      },
+      "actions": {
+        "upload": "上传",
+        "close": "关闭"
+      }
+    }
+  }
+}

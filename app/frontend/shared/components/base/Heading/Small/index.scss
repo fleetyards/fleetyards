@@ -1,0 +1,33 @@
+small {
+  font-size: 70%;
+
+  :deep(a) {
+    color: darken($text-color, 20%);
+    text-decoration: none;
+
+    &:hover {
+      color: $text-color;
+    }
+  }
+}
+
+// Tailwind CSS Placeholder Classes
+.text-brand-textdark {
+  color: darken($text-color, 20%);
+}
+
+.font-opensans {
+  font-family: "Open Sans", sans-serif;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}

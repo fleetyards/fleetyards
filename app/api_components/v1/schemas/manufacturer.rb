@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    class Manufacturer
+      include Rswag::SchemaComponents::Component
+
+      schema({
+        type: :object,
+        properties: {
+          name: {type: :string},
+          slug: {type: :string},
+          code: {type: :string},
+          logo: {"$ref": "#/components/schemas/MediaFile"},
+          longName: {type: :string},
+          scRef: {type: :string},
+          createdAt: {type: :string, format: "date-time"},
+          updatedAt: {type: :string, format: "date-time"}
+        },
+        additionalProperties: false,
+        required: %w[name slug createdAt updatedAt]
+      })
+    end
+  end
+end

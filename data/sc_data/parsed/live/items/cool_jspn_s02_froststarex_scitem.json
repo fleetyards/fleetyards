@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S02_FrostStarEX_SCItem",
+  "ref": "59a37716-f4d3-4dcb-a41e-0f2c3064e169",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Frost-Star EX",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span \\nSize: 2\\nGrade: C\\nClass: Civilian\\n\\nThe Frost-Star EX cooler comes to you from J-Span, a manufacturer with a well deserved reputation among ship owners for constructing coolers that can reliably handle heat exchange wherever you may fly.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 350.0
+  }
+}

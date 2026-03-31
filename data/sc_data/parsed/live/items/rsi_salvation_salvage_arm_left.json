@@ -1,0 +1,34 @@
+{
+  "key": "RSI_Salvation_Salvage_Arm_Left",
+  "ref": "b0f5b06f-bdd9-4534-af68-b91e8cfb61c0",
+  "category": "weapon_mounts",
+  "type": "ToolArm",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_salvage_arm_head",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "SalvageHead"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5000.0
+  }
+}

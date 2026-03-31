@@ -1,0 +1,89 @@
+{
+  "key": "JOKR_DistortionCannon_S1",
+  "ref": "d195eb47-24b8-45c0-a4d0-1771d60dc1a8",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "19fbaf6d-d6dc-4e15-8fdf-67101934ff3c",
+  "name": "Suckerpunch Cannon",
+  "short_name": "SCKRPNCH",
+  "description": "Manufacturer: Joker Engineering\\nItem Type: Distortion Cannon\\nSize: 1\\n\\nThe geniuses over at Joker have done it again. The Suckerpunch Distortion autocannon is a long-range weapon that drains your target's power supply rather than damaging the physical body of the ship, making it ideal for law-enforcement or other applications.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "JOKR_DistortionCannon_Barrel_S1",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "JOKR_DistortionCannon_FiringMechanism_S1",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "JOKR_DistortionCannon_PowerArray_S1",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "JOKR_DistortionCannon_Ventilation_S1",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

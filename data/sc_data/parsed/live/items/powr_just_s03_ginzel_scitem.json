@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S03_Ginzel_SCItem",
+  "ref": "96244ab6-8819-47c3-87af-78124661c725",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "3",
+  "grade": "3",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Ginzel",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 3\\nGrade: C\\nClass: Industrial\\n\\nThe unique name for this stalwart industrial power plant was inspired by the nickname of a Juno Starwerk junior engineer who helped design it.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "durability": {
+    "health": 1800.0
+  }
+}

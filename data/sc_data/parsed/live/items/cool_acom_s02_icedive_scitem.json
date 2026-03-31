@@ -1,0 +1,24 @@
+{
+  "key": "COOL_ACOM_S02_IceDive_SCItem",
+  "ref": "c5b36e51-f6ea-4823-be8b-f3dd12fbda3c",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "IceDive",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: ACOM\\nSize: 2\\nGrade: C \\nClass: Competition\\n\\nThe IceDive delivers peak performance over other medium coolers of its grade, though it does come at the cost of generating high IR and EM signatures.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 190.0
+  }
+}

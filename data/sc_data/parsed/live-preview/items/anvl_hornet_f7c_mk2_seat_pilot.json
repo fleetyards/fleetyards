@@ -1,0 +1,21 @@
+{
+  "key": "ANVL_Hornet_F7C_Mk2_Seat_Pilot",
+  "ref": "d2d2d0a7-539f-48b5-aedd-62a6c217eedf",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

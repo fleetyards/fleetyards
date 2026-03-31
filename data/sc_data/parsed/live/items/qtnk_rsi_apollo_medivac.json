@@ -1,0 +1,24 @@
+{
+  "key": "QTNK_RSI_Apollo_Medivac",
+  "ref": "3ecf1e1e-bde7-4185-a955-020673128d8e",
+  "category": "fueltanks",
+  "type": "QuantumFuelTank",
+  "sub_type": "QuantumFuel",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 4.5
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Collector_SCItem_Seat_ATC",
+  "ref": "7847cf55-ee59-4d75-aacf-0a5c3d9c005e",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

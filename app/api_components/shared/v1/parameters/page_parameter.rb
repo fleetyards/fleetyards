@@ -4,7 +4,7 @@ module Shared
   module V1
     module Parameters
       class PageParameter
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           name: :page,

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Paladin_grey_black_red",
+  "ref": "6c507205-7599-4e75-add1-3b51b8b993dd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a03b0b00-fa56-4afb-89b4-ff0292e2c026",
+  "name": "Paladin Carmine Livery",
+  "short_name": null,
+  "description": "Equip the Carmine livery with its bold red highlights atop a grey base paint to make the Paladin easier to spot amidst the fog the war.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Pisces_Thruster_Retro_Right",
+  "ref": "eaae0959-4699-423b-ab72-596b156b40b0",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "JointThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 7000.0
+  },
+  "type_data": {
+    "thrust_capacity": 600000.0,
+    "fuel_burn_rate_per10_k_newton": 0.00468125,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

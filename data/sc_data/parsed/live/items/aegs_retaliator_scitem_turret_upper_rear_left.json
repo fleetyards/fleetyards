@@ -1,0 +1,68 @@
+{
+  "key": "AEGS_Retaliator_SCItem_Turret_Upper_Rear_Left",
+  "ref": "39bffb2c-8e04-47be-829d-7babf5811f1e",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "room_lighting",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "turret_left",
+      "key": null,
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "turret_right",
+      "key": null,
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "room_lighting",
+      "key": "AEGS_Retaliator_Turret_Lights",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

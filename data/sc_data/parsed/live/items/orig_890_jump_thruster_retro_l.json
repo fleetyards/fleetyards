@@ -1,0 +1,30 @@
+{
+  "key": "ORIG_890_Jump_Thruster_Retro_L",
+  "ref": "60b40cc3-939a-4ebd-b6fc-79f557c5fe92",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 44000.0
+  },
+  "type_data": {
+    "thrust_capacity": 327500000.0,
+    "fuel_burn_rate_per10_k_newton": 0.005,
+    "thruster_type": "Maneuver",
+    "thruster_class": "retro"
+  }
+}

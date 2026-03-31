@@ -1,0 +1,24 @@
+{
+  "key": "COOL_TYDT_S02_NightFall_SCItem",
+  "ref": "acb949b6-488a-4d10-b0f3-6597ef22925e",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "NightFall",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Tyler Design & Tech        \\nSize: 2\\nGrade: A\\nClass: Stealth\\n\\nRun silent and safe with the NightFall from Tyler Design & Tech. Few coolers can match the way this component manages your ship's heat while also keeping its signatures low.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 390.0
+  }
+}

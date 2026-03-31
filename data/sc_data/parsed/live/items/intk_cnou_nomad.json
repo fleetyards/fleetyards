@@ -1,0 +1,25 @@
+{
+  "key": "INTK_CNOU_Nomad",
+  "ref": "d71ef07f-a94a-45ef-a63d-de307ad4b03e",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 8.0,
+    "minimum_rate": 0.2
+  }
+}

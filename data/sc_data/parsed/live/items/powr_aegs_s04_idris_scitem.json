@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S04_Idris_SCItem",
+  "ref": "4f29e9ae-6a77-4461-b479-0479b9ecdca0",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Main Powerplant",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 56000.0
+  }
+}

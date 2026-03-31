@@ -1,0 +1,21 @@
+{
+  "key": "InstancedHangarGateway_Nyx",
+  "ref": "7864fbdc-baac-4c61-9c71-46d1c9a7c4b7",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

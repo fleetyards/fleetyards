@@ -1,0 +1,63 @@
+{
+  "key": "AMRS_LaserCannon_S2",
+  "ref": "1893e596-acaf-49bc-b367-e43e99c2925f",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "eccba58a-f6d9-42e8-95c6-d0a65763e583",
+  "name": "Omnisky VI Cannon",
+  "short_name": "Omnisky-6",
+  "description": "Manufacturer: Amon & Reese Co.\\nItem Type: Laser Cannon\\nSize: 2\\n\\nThe Omnisky VI is the mid-sized laser autocannon from manufacturer A&R. It boasts increased damage and range and power consumption over its smaller brother, the Omnisky III, and utilizes many of the same components resulting in middle-of-the-road power efficiency.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "magazine_attach",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 850.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

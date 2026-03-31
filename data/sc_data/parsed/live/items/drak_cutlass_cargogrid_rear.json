@@ -1,0 +1,22 @@
+{
+  "key": "DRAK_Cutlass_CargoGrid_Rear",
+  "ref": "49824f72-5e46-4683-a1c0-2f4c5114ce9f",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "5e4c4c7d-5c6f-4347-90cf-ce7d93a8cb56"
+}

@@ -1,0 +1,50 @@
+{
+  "key": "Mining_Laser_GRIN_Arbor_S2",
+  "ref": "4435898e-a6cc-4f51-ab2a-805d0cf1a44a",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Arbor MH2 Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Laser \\nSize: 2\\n\\nOptimal Range: 90m\\nMaximum Range: 270m\\n\\nMining Laser Power: 480 - 2400\\nExtraction Laser Power: 2590\\n\\nModule Slots: 2\\n\\nLaser Instability: -35%\\nOptimal Charge Window Size: +40%\\nInert Material Level: -40%\\n\\nResistance: +25%\\n\\nThe Arbor MH2 is the size two version of Greycat's heralded Arbor mining laser series. Like the smaller variant, the Arbor MH2's solid, reliable design found favor among industrial and solo operations for balancing speed and safety while also featuring a special filtration system that reduces the amount of inert material collected.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

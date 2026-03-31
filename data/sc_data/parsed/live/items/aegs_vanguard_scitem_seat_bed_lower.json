@@ -1,0 +1,21 @@
+{
+  "key": "AEGS_Vanguard_SCItem_Seat_Bed_Lower",
+  "ref": "5505bf9e-225e-4cfc-9c23-594537f86d9d",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "key": "CRUS_Starlifter_Bomb_Turret",
+  "ref": "0a7f69a5-be49-4afb-9fd5-9177b541550e",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Multitask on the battlefield with this remote turret system. Featuring precise controls and a wide field of fire, the turret allows pilots to add combat support to their resume.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_primary_weapon",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_left_aft_countermeasure",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_left_foward_countermeasure",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_right_aft_countermeasure",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_right_foward_countermeasure",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "WeaponDefensive"
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack1",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "MissileLauncher"
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack2",
+      "min_size": "6",
+      "max_size": "6",
+      "types": [
+        "MissileLauncher"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

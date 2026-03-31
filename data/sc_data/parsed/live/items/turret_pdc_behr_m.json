@@ -1,0 +1,42 @@
+{
+  "key": "Turret_PDC_BEHR_M",
+  "ref": "128ad66c-09a2-43e3-9080-18a018490e96",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "PDCTurret",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "PPB-116 \"Pepperbox\"",
+  "short_name": "PPB-116",
+  "description": "Item Type: PDC\\nManufacturer: Behring\\n\\nStoring sixteen S1 missiles, the PPB-116 \"Pepperbox\" is as disruptive as it is deadly, excelling at both inflicting damage and overwhelming evasive maneuvers.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_centre",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "MissileLauncher"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "turret_centre",
+      "key": null,
+      "ref": "3b57d123-4a6f-4549-88ca-641de8cc3537",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

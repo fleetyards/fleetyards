@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Shiv_Green_Grey_Yellow",
+  "ref": "8da73345-f6bc-486a-96a4-8baf43042339",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bf8c1d5a-2798-4597-bab5-bc6401775260",
+  "name": "Shiv Gideon Livery",
+  "short_name": null,
+  "description": "The Gideon livery for the Shiv features a heavily worn green and grey finish with yellow accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

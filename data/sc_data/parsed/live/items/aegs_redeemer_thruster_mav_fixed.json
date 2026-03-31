@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Redeemer_Thruster_Mav_Fixed",
+  "ref": "b0c94338-d58c-4632-a96d-9befca61bf95",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 25500.0
+  },
+  "type_data": {
+    "thrust_capacity": 9096092.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

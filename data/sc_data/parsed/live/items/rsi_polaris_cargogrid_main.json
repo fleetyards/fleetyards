@@ -1,0 +1,22 @@
+{
+  "key": "RSI_Polaris_CargoGrid_Main",
+  "ref": "5b7b5bee-bf28-4406-8310-334bc5c8c699",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "2a3bd9ef-70b6-409a-a3be-5f7f69535fdb"
+}

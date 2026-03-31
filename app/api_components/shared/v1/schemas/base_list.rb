@@ -4,19 +4,15 @@ module Shared
   module V1
     module Schemas
       class BaseList
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
-            items: {
-              type: :array,
-              items: {type: :object}
-            },
             meta: {"$ref": "#/components/schemas/Meta"}
           },
           additionalProperties: false,
-          required: %w[items meta]
+          required: %w[meta]
         })
       end
     end

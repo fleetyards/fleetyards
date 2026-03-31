@@ -1,0 +1,40 @@
+{
+  "key": "RSI_Hermes_CargoInventory_Main",
+  "ref": "54e1e16b-4c06-43d5-b957-8ccd42d3c851",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 5.0,
+      "y": 22.5,
+      "z": 2.5
+    },
+    "capacity": 144,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "key": "RSI_Bengal_SCItem_Remote_Turret_MissileLauncher",
+  "ref": "5815fc36-9669-4b72-b5d1-8959cc857e48",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "MissileTurret",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_centre",
+      "min_size": "1",
+      "max_size": "6",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "turret_centre",
+      "key": "MRCK_S06_BEHR_Beehive_S02",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

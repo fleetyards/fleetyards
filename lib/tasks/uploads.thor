@@ -12,8 +12,8 @@ class Uploads < Thor
   S3_BUCKET = "fleetyards/uploads"
   EXPORT_FOLDER = "./public/uploads"
 
-  desc "sync", "Sync Uploads from S3"
+  desc "sync_to_local", "Sync Uploads from S3"
   def sync_to_local(dry_run = false)
-    system("s3cmd sync --delete-removed#{" --dry-run" if dry_run} s3://#{S3_BUCKET} #{EXPORT_FOLDER}")
+    system("s3cmd -c ~/.s3cfg.digitalocean sync --no-check-md5 --delete-removed#{" --dry-run" if dry_run} s3://#{S3_BUCKET} #{EXPORT_FOLDER}")
   end
 end

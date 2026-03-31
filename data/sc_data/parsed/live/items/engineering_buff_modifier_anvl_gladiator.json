@@ -1,0 +1,21 @@
+{
+  "key": "Engineering_Buff_Modifier_ANVL_Gladiator",
+  "ref": "0e26d8c7-f8c5-492a-a8be-4819512fd2fd",
+  "category": "utility",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 340.0,
+    "dimensions": {
+      "x": 0.0549,
+      "y": 0.0424,
+      "z": 0.133
+    }
+  }
+}

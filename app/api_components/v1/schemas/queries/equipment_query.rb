@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Queries
       class EquipmentQuery
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
@@ -13,7 +13,8 @@ module V1
             idIn: {type: :array, items: {type: :string, format: :uuid}},
             nameIn: {type: :array, items: {type: :string}}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

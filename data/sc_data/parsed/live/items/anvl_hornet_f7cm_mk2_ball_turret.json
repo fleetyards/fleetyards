@@ -1,0 +1,52 @@
+{
+  "key": "ANVL_Hornet_F7CM_Mk2_Ball_Turret",
+  "ref": "34121f6a-0c88-4c0d-948d-8fd5c1f24c2e",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": "Anvil F7C-M Mk II Ball Turret",
+  "short_name": null,
+  "description": "Item Type: Turret\\nManufacturer: Anvil Aerospace\\nSize: 5\\n \\nGive your Anvil F7C-M Super Hornet Mk II a boost in firepower with this bespoke ball turret able to equip two S3 ship weapons and eight S1 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "MissileLauncher"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

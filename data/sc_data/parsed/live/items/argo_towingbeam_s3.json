@@ -1,0 +1,63 @@
+{
+  "key": "ARGO_TowingBeam_S3",
+  "ref": "fd3625ad-6dce-4a48-ac86-3c7f8f09e11f",
+  "category": "weapons",
+  "type": "TowingBeam",
+  "sub_type": null,
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "SafeTow S3 Towing Beam",
+  "short_name": "SafeTow S3 Towing Beam",
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Towing Beam\\nMax Angle: 160°\\nMax Range: 250 m\\nFull Strength Distance: 200 m\\n\\nThe safe and secure choice of recovery teams across the empire, the SafeTow towing beam from Greycat Industrial boasts enough strength, power, and control to transport both heavy cargo and vehicles across the ‘verse.",
+  "inventory_consumption": {
+    "micro_scu": 756000.0,
+    "dimensions": {
+      "x": 0.6699014,
+      "y": 4.422015,
+      "z": 1.202842
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1050.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

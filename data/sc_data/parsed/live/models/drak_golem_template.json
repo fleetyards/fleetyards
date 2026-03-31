@@ -1,0 +1,360 @@
+{
+  "key": "DRAK_Golem_Template",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "Drake Golem",
+  "description": "Manufacturer: Drake Interplanetary\\nFocus: Starter / Mining\\n\\nWith the Golem, Drake designed the ideal ship for those interested in starting a mining career. The ship features a bespoke mining laser and the capacity to carry 32 SCU of valuable resources. In classic Drake fashion, the Golem is a purpose-built ship that prioritizes function over frills.",
+  "career": "Starter",
+  "role": "Mining",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": null,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_mining",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_intake",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_tank",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_avionics",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasure_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_countermeasure_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mining_arm",
+      "ref": null,
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_mining_laser",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_mav_front_bottom_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_bottom_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_top_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_front_top_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_bottom_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_bottom_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_top_inner_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_top_inner_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_top_outer_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_mav_rear_top_outer_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_rear_main_thruster_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_rear_main_thruster_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_retro_front_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_retro_front_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_vtol_front_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_vtol_front_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_vtol_retro_thruster_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_vtol_thruster_main_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_vtol_retro_thruster_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_vtol_thruster_main_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargo_front",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargo_rear",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_missile_left",
+      "ref": null,
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_right",
+      "ref": null,
+      "key": null,
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_rack_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_rack_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": null
+    }
+  ]
+}

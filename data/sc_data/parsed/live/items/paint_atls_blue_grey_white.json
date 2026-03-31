@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_Blue_Grey_White",
+  "ref": "1271d6ba-3e4a-4fb2-86e0-26ce8c874ad2",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e57cf717-6bf1-4872-b1ab-26b0cd45a684",
+  "name": "ATLS Cobalt Livery",
+  "short_name": null,
+  "description": "The Cobalt livery is a vibrant blue with white lettering across the side of the ATLS.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "key": "MRCK_S08_AEGS_Idris",
+  "ref": "d5a0f8c8-a60b-43ac-8d2a-e71ce1ad47fa",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "8",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "IFR-810 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Aegis Dynamics\\nSize: 8\\nMissiles: 5x10\\n\\nDesigned to bolster the offensive capabilities of the Idris, this missile rack was made by Aegis Dynamics specifically for the famed frigate.",
+  "inventory_consumption": {
+    "micro_scu": 54600000.0,
+    "dimensions": {
+      "x": 2.902906,
+      "y": 22.11008,
+      "z": 4.009475
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_attach_01",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_02",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_03",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_04",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_05",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_06",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_07",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_08",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_09",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_attach_10",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5000.0
+  }
+}

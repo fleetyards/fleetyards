@@ -1,0 +1,30 @@
+{
+  "key": "CRUS_Starlifter_Thruster_VTOL_Side_Left",
+  "ref": "32a793b5-f0de-4cc8-90c1-72fd92962172",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 22200.0
+  },
+  "type_data": {
+    "thrust_capacity": 14908770.0,
+    "fuel_burn_rate_per10_k_newton": 0.0525,
+    "thruster_type": "Main",
+    "thruster_class": "vtol"
+  }
+}

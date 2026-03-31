@@ -1,0 +1,250 @@
+{
+  "key": "AEGS_Idris_K_Turret_Large",
+  "ref": "731fcdd3-6a77-4880-b10d-4c7bf639c241",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "IFR-MS7 Turret",
+  "short_name": "IFR-MS7 Turret",
+  "description": "Item Type: Turret\\nManufacturer: Aegis Dynamics\\nSize: 7\\n\\nThis manned turret, designed by Aegis to be used in tandem with the IFR-532 missile rack, is bespoke to the Idris frigate.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "MissileLauncher"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "MissileLauncher"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "key": null,
+      "ref": "24ad5462-6265-4c8e-b627-1d237a7a3e7b",
+      "default_loadout": [
+        {
+          "name": "missile_attach_01",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_02",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_03",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_04",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_05",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_06",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_07",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_08",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_09",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_10",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_11",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_12",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_13",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_14",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_15",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_16",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "key": null,
+      "ref": "a03671cd-d2be-4822-b971-d98be38b11ba",
+      "default_loadout": [
+        {
+          "name": "missile_attach_01",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_02",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_03",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_04",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_05",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_06",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_07",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_08",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_09",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_10",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_11",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_12",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_13",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_14",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_15",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        },
+        {
+          "name": "missile_attach_16",
+          "key": null,
+          "ref": "e5aa84b6-9b14-4eb3-949f-10e1cc8cd6cf",
+          "default_loadout": []
+        }
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  }
+}

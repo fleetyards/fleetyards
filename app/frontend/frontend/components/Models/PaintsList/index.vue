@@ -1,75 +1,78 @@
-<template>
-  <div class="row">
-    <div class="col-12 paints">
-      <hr v-if="paints.length" />
-      <a href="#paints">
-        <h2 v-if="paints.length" id="paints" class="text-uppercase">
-          {{ $t("labels.model.paints") }}
-        </h2>
-      </a>
-      <transition-group
-        v-if="paints.length"
-        name="fade-list"
-        class="row"
-        tag="div"
-        appear
-      >
-        <div
-          v-for="paint in paints"
-          :key="`paint-${paint.slug}`"
-          class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
-        >
-          <TeaserPanel :item="paint" :fullscreen="true" />
-        </div>
-      </transition-group>
-      <Loader :loading="loading" :fixed="true" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop, Watch } from "vue-property-decorator";
-import Loader from "@/frontend/core/components/Loader/index.vue";
-import TeaserPanel from "@/frontend/core/components/TeaserPanel/index.vue";
-import modelPaintsCollection from "@/frontend/api/collections/ModelPaints";
-
-@Component<ModelPaintList>({
-  components: {
-    Loader,
-    TeaserPanel,
-  },
-})
-export default class ModelPaintList extends Vue {
-  @Prop({ required: true }) model!: Model;
-
-  collection: ModelPaintsCollection = modelPaintsCollection;
-
-  loading = false;
-
-  get paints() {
-    return this.collection.records;
-  }
-
-  @Watch("model")
-  onModelChange() {
-    this.fetch();
-  }
-
-  mounted() {
-    this.fetch();
-  }
-
-  async fetch() {
-    if (!this.model) {
-      return;
-    }
-
-    this.loading = true;
-
-    await this.collection.findAllByModel(this.model.slug);
-
-    this.loading = false;
-  }
-}
+export default {
+  name: "ModelPaintList",
+};
 </script>
+
+<script lang="ts" setup>
+import AsyncData from "@/shared/components/AsyncData.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { type ModelPaint } from "@/services/fyApi";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useModelPaints as useModelPaintsQuery } from "@/services/fyApi";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+
+type Props = {
+  modelSlug: string;
+};
+
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const { data: paints, ...asyncStatus } = useModelPaintsQuery(props.modelSlug);
+
+const { supported: webpSupported } = useWebpCheck();
+
+const mobile = useMobile();
+
+const storeImage = (paint: ModelPaint) => {
+  if (mobile.value && paint.media.storeImage?.mediumUrl) {
+    return paint.media.storeImage?.mediumUrl;
+  }
+
+  if (paint.media.storeImage?.largeUrl) {
+    return paint.media.storeImage?.largeUrl;
+  }
+
+  if (webpSupported) {
+    return fallbackImage;
+  }
+
+  return fallbackImageJpg;
+};
+</script>
+
+<template>
+  <AsyncData :async-status="asyncStatus" hide-error>
+    <template #resolved>
+      <div v-if="paints?.length" id="paints" class="row">
+        <hr />
+        <div class="col-12">
+          <h2 v-if="paints?.length" id="paints" class="text-uppercase">
+            {{ t("labels.model.paints") }}
+          </h2>
+
+          <transition-group name="fade-list" class="row" tag="div" appear>
+            <div
+              v-for="item in paints"
+              :key="`paints-${item.id}`"
+              class="col-12 col-md-6 col-xxl-4 col-xxlg-2-4 fade-list-item"
+            >
+              <Panel :bg-image="storeImage(item)">
+                <PanelHeading :level="HeadingLevelEnum.H3">
+                  {{ item.name }}
+                </PanelHeading>
+              </Panel>
+            </div>
+          </transition-group>
+        </div>
+      </div>
+    </template>
+  </AsyncData>
+</template>

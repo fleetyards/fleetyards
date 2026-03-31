@@ -1,0 +1,9 @@
+{
+  "key": "GroundVehicle_Medium",
+  "ref": "32e63987-1b3f-4f0a-a44f-b78a24151ee7",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.65
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Razor_Thruster_Vertical_Bottom",
+  "ref": "4d71a1bf-4d43-4fec-b659-d6da5ec4c558",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 4560.0
+  },
+  "type_data": {
+    "thrust_capacity": 216906.8,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": null
+  }
+}

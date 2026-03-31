@@ -1,0 +1,24 @@
+{
+  "key": "COOL_LPLT_S01_FlashFreeze_SCItem",
+  "ref": "96860a78-4b34-4888-93a5-12efb259a5ff",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "FlashFreeze",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Lightning Power Ltd. \\nSize: 1\\nGrade: B\\nClass: Civilian\\n\\nWith the FlashFreeze, Lightning Power makes sure that no matter how hot things get, you can rely on its proven cooling technology to keep you flying.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 150.0
+  }
+}

@@ -1,77 +1,130 @@
+<script lang="ts">
+export default {
+  name: "FleetFilterForm",
+};
+</script>
+
+<script lang="ts" setup>
+import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import ManufacturerFilterGroup from "@/frontend/components/base/ManufacturerFilterGroup/index.vue";
+import ProductionStatusFilterGroup from "@/frontend/components/base/ProductionStatusFilterGroup/index.vue";
+import ClassificationFilterGroup from "@/frontend/components/base/ModelClassificationFilterGroup/index.vue";
+import FocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
+import SizeFilterGroup from "@/frontend/components/base/ModelSizeFilterGroup/index.vue";
+import FleetMemberFilterGroup from "@/frontend/components/base/FleetMemberFilterGroup/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
+import { useFilters } from "@/shared/composables/useFilters";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+
+const { t } = useI18n();
+const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+
+const route = useRoute();
+
+type FleetsFilterForm = {
+  modelNameCont?: string;
+  onSaleEq?: string;
+  loanerEq?: string;
+  priceLteq?: string;
+  priceGteq?: string;
+  pledgePriceLteq?: string;
+  pledgePriceGteq?: string;
+  lengthLteq?: string;
+  lengthGteq?: string;
+  manufacturerIn?: string[];
+  classificationIn?: string[];
+  focusIn?: string[];
+  sizeIn?: string[];
+  priceIn?: string[];
+  pledgePriceIn?: string[];
+  productionStatusIn?: string[];
+  memberIn?: string[];
+};
+
+const prefillFormValues = () => {
+  return {
+    modelNameCont: filters.value.modelNameCont,
+    onSaleEq: filters.value.onSaleEq,
+    loanerEq: filters.value.loanerEq,
+    priceLteq: filters.value.priceLteq,
+    priceGteq: filters.value.priceGteq,
+    pledgePriceLteq: filters.value.pledgePriceLteq,
+    pledgePriceGteq: filters.value.pledgePriceGteq,
+    lengthLteq: filters.value.lengthLteq,
+    lengthGteq: filters.value.lengthGteq,
+    manufacturerIn: filters.value.manufacturerIn || [],
+    classificationIn: filters.value.classificationIn || [],
+    focusIn: filters.value.focusIn || [],
+    sizeIn: filters.value.sizeIn || [],
+    priceIn: filters.value.priceIn || [],
+    pledgePriceIn: filters.value.pledgePriceIn || [],
+    productionStatusIn: filters.value.productionStatusIn || [],
+    memberIn: filters.value.memberIn || [],
+  };
+};
+
+const setupForm = () => {
+  form.value = prefillFormValues();
+};
+
+const { resetFilter, isFilterSelected, filter, filters } =
+  useFilters<FleetsFilterForm>({
+    updateCallback: setupForm,
+  });
+
+const form = ref<FleetsFilterForm>(prefillFormValues());
+
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true },
+);
+
+const submit = () => {
+  filter(form.value);
+};
+</script>
+
 <template>
   <form @submit.prevent="submit">
     <FormInput
       id="model-name"
+      name="model-name"
       v-model="form.modelNameCont"
       translation-key="filters.models.name"
       :no-label="true"
       :clearable="true"
     />
 
-    <FilterGroup
+    <FleetMemberFilterGroup
       v-model="form.memberIn"
-      :label="t('labels.filters.fleets.member')"
-      :fetch-path="`fleets/${$route.params.slug}/members`"
+      :fleet-slug="route.params.slug as string"
       name="member"
-      value-attr="username"
-      label-attr="username"
-      icon-attr="avatar"
-      :paginated="true"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ManufacturerFilterGroup
       v-model="form.manufacturerIn"
-      :label="t('labels.filters.models.manufacturer')"
-      fetch-path="manufacturers/with-models"
       name="manufacturer"
-      value-attr="slug"
-      icon-attr="logo"
-      :paginated="true"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ProductionStatusFilterGroup
       v-model="form.productionStatusIn"
-      :label="t('labels.filters.models.productionStatus')"
-      fetch-path="models/production-states"
       name="production-status"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
+    <ClassificationFilterGroup
       v-model="form.classificationIn"
-      :label="t('labels.filters.models.classification')"
-      fetch-path="models/classifications"
       name="classification"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
     />
 
-    <FilterGroup
-      v-model="form.focusIn"
-      :label="t('labels.filters.models.focus')"
-      fetch-path="models/focus"
-      name="focus"
-      :searchable="true"
-      :multiple="true"
-      :no-label="true"
-    />
+    <FocusFilterGroup v-model="form.focusIn" name="focus" />
 
-    <FilterGroup
-      v-model="form.sizeIn"
-      :label="t('labels.filters.models.size')"
-      fetch-path="models/sizes"
-      name="size"
-      :multiple="true"
-      :no-label="true"
-    />
+    <SizeFilterGroup v-model="form.sizeIn" name="size" />
 
     <FilterGroup
       v-model="form.pledgePriceIn"
@@ -95,6 +148,7 @@
       <div class="col-6">
         <FormInput
           id="model-length-gteq"
+          name="model-length-gteq"
           v-model="form.lengthGteq"
           type="number"
           translation-key="filters.vehicles.lengthGt"
@@ -104,6 +158,7 @@
       <div class="col-6">
         <FormInput
           id="model-length-lteq"
+          name="model-length-lteq"
           v-model="form.lengthLteq"
           type="number"
           translation-key="filters.vehicles.lengthLt"
@@ -116,6 +171,7 @@
       <div class="col-6">
         <FormInput
           id="model-pledge-price-gteq"
+          name="model-pledge-price-gteq"
           v-model="form.pledgePriceGteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceGt"
@@ -126,6 +182,7 @@
       <div class="col-6">
         <FormInput
           id="model-pledge-price-lteq"
+          name="model-pledge-price-lteq"
           v-model="form.pledgePriceLteq"
           type="number"
           translation-key="filters.vehicles.pledgePriceLt"
@@ -136,6 +193,7 @@
 
     <FormInput
       id="model-price-gteq"
+      name="model-price-gteq"
       v-model="form.priceGteq"
       type="number"
       translation-key="filters.vehicles.priceGt"
@@ -143,6 +201,7 @@
 
     <FormInput
       id="model-price-lteq"
+      name="model-price-lteq"
       v-model="form.priceLteq"
       type="number"
       translation-key="filters.vehicles.priceLt"
@@ -162,125 +221,20 @@
       :reset-label="t('labels.hide')"
       :options="[
         {
-          name: 'Show',
+          label: 'Show',
           value: 'true',
         },
         {
-          name: 'Only',
+          label: 'Only',
           value: 'only',
         },
       ]"
       name="loaner"
     />
 
-    <Btn
-      :disabled="!isFilterSelected"
-      :block="true"
-      @click.native="resetFilter"
-    >
-      <i class="fal fa-times" />
+    <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
+      <i class="fa-light fa-times" />
       {{ t("actions.resetFilter") }}
     </Btn>
   </form>
 </template>
-
-<script lang="ts" setup>
-import { useRoute } from "vue-router/composables";
-import RadioList from "@/frontend/core/components/Form/RadioList/index.vue";
-import FilterGroup from "@/frontend/core/components/Form/FilterGroup/index.vue";
-import FormInput from "@/frontend/core/components/Form/FormInput/index.vue";
-import Btn from "@/frontend/core/components/Btn/index.vue";
-import {
-  booleanOptions as booleanFilterOptions,
-  priceOptions as priceFilterOptions,
-  pledgePriceOptions as pledgePriceFilterOptions,
-} from "@/frontend/utils/FilterOptions";
-import { useI18n } from "@/frontend/composables/useI18n";
-import { useFilters } from "@/frontend/composables/useFilters";
-
-type FleetsFilterForm = {
-  modelNameCont?: string;
-  onSaleEq?: string;
-  loanerEq?: string;
-  priceLteq?: string;
-  priceGteq?: string;
-  pledgePriceLteq?: string;
-  pledgePriceGteq?: string;
-  lengthLteq?: string;
-  lengthGteq?: string;
-  manufacturerIn?: string[];
-  classificationIn?: string[];
-  focusIn?: string[];
-  sizeIn?: string[];
-  priceIn?: string[];
-  pledgePriceIn?: string[];
-  productionStatusIn?: string[];
-  memberIn?: string[];
-};
-
-const query = computed(() => (route.query.q || {}) as FleetsFilterForm);
-
-const form = ref<FleetsFilterForm>({});
-
-const booleanOptions = booleanFilterOptions;
-const priceOptions = priceFilterOptions;
-const pledgePriceOptions = pledgePriceFilterOptions;
-
-const { t } = useI18n();
-
-const route = useRoute();
-
-const { resetFilter, isFilterSelected, filter } = useFilters();
-
-watch(
-  () => route.query,
-  () => {
-    setupForm();
-  },
-  { deep: true },
-);
-
-watch(
-  () => form.value,
-  () => {
-    filter(form.value);
-  },
-  { deep: true },
-);
-
-onMounted(() => {
-  setupForm();
-});
-
-const setupForm = () => {
-  form.value = {
-    modelNameCont: query.value.modelNameCont,
-    onSaleEq: query.value.onSaleEq,
-    loanerEq: query.value.loanerEq,
-    priceLteq: query.value.priceLteq,
-    priceGteq: query.value.priceGteq,
-    pledgePriceLteq: query.value.pledgePriceLteq,
-    pledgePriceGteq: query.value.pledgePriceGteq,
-    lengthLteq: query.value.lengthLteq,
-    lengthGteq: query.value.lengthGteq,
-    manufacturerIn: query.value.manufacturerIn || [],
-    classificationIn: query.value.classificationIn || [],
-    focusIn: query.value.focusIn || [],
-    sizeIn: query.value.sizeIn || [],
-    priceIn: query.value.priceIn || [],
-    pledgePriceIn: query.value.pledgePriceIn || [],
-    productionStatusIn: query.value.productionStatusIn || [],
-    memberIn: query.value.memberIn || [],
-  };
-};
-
-const submit = () => {
-  filter(form.value);
-};
-</script>
-
-<script lang="ts">
-export default {
-  name: "FleetFilterForm",
-};
-</script>

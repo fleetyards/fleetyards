@@ -1,0 +1,24 @@
+{
+  "key": "GMISL_S09_EM_TALN_Seeker",
+  "ref": "d2cd6b43-5787-41a2-a581-4817b7155b22",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "GroundVehicleMissile",
+  "size": "9",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Seeker IX-G Torpedo",
+  "short_name": "Seeker IX-G",
+  "description": "Manufacturer: Talon \\nTracking Signal: Electromagnetic \\nSize: 9  \\n\\nTalon's Seeker torpedo is a precision, EM-targeting torpedo capable of delivering a massive payload quickly and accurately. Note: This missile may only be launched by ground vehicles.",
+  "inventory_consumption": {
+    "micro_scu": 140625.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 9.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 667.0
+  }
+}

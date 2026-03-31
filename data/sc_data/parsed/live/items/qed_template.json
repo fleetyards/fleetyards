@@ -1,0 +1,47 @@
+{
+  "key": "QED_Template",
+  "ref": "31aa0799-9c13-452b-b917-6152318e828b",
+  "category": "quantumenforcementdevice",
+  "type": "QuantumInterdictionGenerator",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "base_power_draw_fraction": 0.2,
+    "pulse_power_fraction": 0.8,
+    "jammer_power_fraction": 0.4,
+    "jammer_settings": {
+      "jammer_range": 12000.0,
+      "max_power_draw": 200.0,
+      "green_zone_check_range": 4000.0
+    },
+    "quantum_interdiction_pulse_settings": {
+      "charge_time_secs": 90.0,
+      "discharge_time_secs": 30.0,
+      "cooldown_time_secs": 1.0,
+      "radius_meters": 20000.0,
+      "decrease_charge_rate_time_seconds": 1.5,
+      "increase_charge_rate_time_seconds": 3.5,
+      "activation_phase_duration_seconds": 3.0,
+      "disperse_charge_time_seconds": 5.0,
+      "max_power_draw": 1100.0,
+      "stop_charging_power_draw_fraction": 0.2,
+      "max_charge_rate_power_draw_fraction": 0.85,
+      "active_power_draw_fraction": 0.95,
+      "tethering_power_draw_fraction": 0.8,
+      "green_zone_check_range": 30000.0
+    }
+  }
+}

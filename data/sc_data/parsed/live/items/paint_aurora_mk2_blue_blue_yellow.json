@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Mk2_Blue_Blue_Yellow",
+  "ref": "bf3e3083-5179-4d57-b065-bd0546b044c1",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d02856a3-ec75-4d0d-b4c0-617d64daf810",
+  "name": "Aurora Mk II Caspian Livery",
+  "short_name": "Aurora Mk II Caspian Livery",
+  "description": "The Caspian livery is primarily a pale, water-like blue with crisp yellow accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

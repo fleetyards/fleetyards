@@ -1,0 +1,30 @@
+{
+  "key": "KRIG_P72_Archimedes_Thruster_Mav_Fixed_01",
+  "ref": "0f4bbb82-e2ab-4ba3-baa1-2d88c811a102",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 3500.0
+  },
+  "type_data": {
+    "thrust_capacity": 280879.3,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

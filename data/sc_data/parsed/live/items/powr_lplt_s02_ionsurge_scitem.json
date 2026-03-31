@@ -1,0 +1,24 @@
+{
+  "key": "POWR_LPLT_S02_IonSurge_SCItem",
+  "ref": "4f9781e1-cd4d-4f39-b9ad-306ba1704439",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "IonSurge",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Lighting Power Ltd.\\nSize: 2\\nGrade: B\\nClass: Civilian\\n\\nLightning Power Ltd.’s line of medium power plants reach their pinnacle with the IonSurge. Design innovation and higher quality materials push this component's performance higher than others in its class.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 620.0
+  }
+}

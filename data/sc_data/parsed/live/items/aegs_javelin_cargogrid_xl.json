@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Javelin_CargoGrid_XL",
+  "ref": "5df9deb7-331e-4d51-a2a8-0f0d58db0923",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "0f99bc85-8f04-45f5-bf68-01abf4591bc0"
+}

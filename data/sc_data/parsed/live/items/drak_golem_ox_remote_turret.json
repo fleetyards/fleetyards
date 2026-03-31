@@ -1,0 +1,34 @@
+{
+  "key": "DRAK_Golem_OX_Remote_Turret",
+  "ref": "f627cdcb-5597-4d05-b96d-80129104aba2",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_tractor_beam",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "TractorBeam"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  }
+}

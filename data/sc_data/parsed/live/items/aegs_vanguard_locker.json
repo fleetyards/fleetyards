@@ -1,0 +1,21 @@
+{
+  "key": "AEGS_Vanguard_Locker",
+  "ref": "13fa9486-e86f-4a8b-98da-fa2e3a557fe7",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "key": "MISC_Hull_A_Nose_Turret_S5",
+  "ref": "920c89a5-30e2-403a-88bf-9e3d33a3f8f9",
+  "category": "weapon_mounts",
+  "type": "Turret",
+  "sub_type": "BallTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Crusader Mercury Star Runner Nose Turret",
+  "short_name": null,
+  "description": "Item Type: Turret\\nManufacturer: Crusader Industries\\nSize: 3\\n\\nThis pilot-controlled, dual-linked nose turret is mounted to the belly of the Mercury Star Runner. Bespoke to the ship, the turret is outfitted with two size-3 laser repeaters ready to help keep your flight path clear.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    },
+    {
+      "name": "hardpoint_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  }
+}

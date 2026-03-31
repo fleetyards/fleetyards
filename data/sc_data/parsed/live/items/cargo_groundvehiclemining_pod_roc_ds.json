@@ -1,0 +1,28 @@
+{
+  "key": "Cargo_GroundVehicleMining_Pod_ROC_DS",
+  "ref": "e8265869-5ca5-4cbc-8821-7fe0742b2c48",
+  "category": "utility",
+  "type": "Container",
+  "sub_type": "Cargo",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Greycat ROC-DS Ore Pod",
+  "short_name": null,
+  "description": "Capacity: 3.4 SCU\\n\\nProduced by Greycat for their ROC-DS mining vehicle, this ore pod features tough construction able to withstand the rigors of the job.",
+  "inventory_consumption": {
+    "micro_scu": 3000000.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 3000.0
+  },
+  "inventory_ref": "c766ff12-e7d0-4fbf-ab68-87c074b7601e",
+  "type_data": {
+    "capacity": 3.4
+  }
+}

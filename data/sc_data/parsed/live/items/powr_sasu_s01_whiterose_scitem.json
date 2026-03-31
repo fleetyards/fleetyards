@@ -1,0 +1,24 @@
+{
+  "key": "POWR_SASU_S01_WhiteRose_SCItem",
+  "ref": "a5518651-cd87-490d-98ee-dccba428fdca",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "name": "WhiteRose",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Sakura Sun\\nSize: 1\\nGrade: A\\nClass: Civilian\\n\\nPull incredible performance from the WhiteRose. This small power plant from Sakura Sun shines when generating the kind of power that leaves the other small power plants in its wake.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 220.0
+  }
+}

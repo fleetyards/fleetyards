@@ -1,0 +1,9 @@
+{
+  "key": "ARGO_ATLS_CargoGrid_Geo",
+  "ref": "7bd242d6-8bd7-4b1a-82b6-8d01b1fc5055",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.01
+  }
+}

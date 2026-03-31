@@ -1,0 +1,44 @@
+{
+  "key": "MISC_Starfarer_Gemini_SCItem_Turret_Large_Derelict",
+  "ref": "090d3ed5-6462-41cf-a2a7-2ed1a11a8106",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "12",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8500.0
+  }
+}

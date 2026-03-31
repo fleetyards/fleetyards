@@ -1,0 +1,32 @@
+{
+  "key": "Door_RN_NoRoomConnector_Breachable_OpenClose_ANVL_Hawk_Bounty_Pod",
+  "ref": "903c62b3-ddcf-46e5-b279-b24345b1425d",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "StackingPoint1",
+      "min_size": "0",
+      "max_size": "2",
+      "types": []
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

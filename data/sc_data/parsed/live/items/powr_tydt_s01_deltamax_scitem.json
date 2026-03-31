@@ -1,0 +1,24 @@
+{
+  "key": "POWR_TYDT_S01_DeltaMax_SCItem",
+  "ref": "0a713a9d-7e70-4586-87a6-ce08c337a8ea",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "DeltaMax",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 1\\nGrade: B\\nClass: Stealth\\n\\nExpert engineering made significant breakthroughs possible when designing the DeltaMax, resulting in a stealth signature even lower than originally estimated by the team at Tyler Design and Tech.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 190.0
+  }
+}

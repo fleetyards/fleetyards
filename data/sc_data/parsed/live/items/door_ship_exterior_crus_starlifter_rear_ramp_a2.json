@@ -1,0 +1,42 @@
+{
+  "key": "Door_Ship_Exterior_CRUS_Starlifter_Rear_Ramp_A2",
+  "ref": "696aab71-18a7-4d95-8b77-a1aadf4f8712",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "63685f47-b0cc-4ebe-8f16-72793a5cd6e0",
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "IP_Exterior",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "IP_Exterior",
+      "key": "ControlPanel_Screen_DoorControl_Starlifter_Interior_Button",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 43600.0
+  }
+}

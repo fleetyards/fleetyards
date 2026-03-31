@@ -1,0 +1,24 @@
+{
+  "key": "COOL_RSI_S04_Polaris_SCItem",
+  "ref": "d0b4ce5b-c8ba-4a9f-90b1-c9567a6c90e9",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Serac",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: Wen/Cassel \\nSize: 4\\nGrade: Bespoke\\nClass: Civilian\\n\\nOnly available for Origin Jumpworks' luxury liner, Wen/Cassel specially designed the Serac cooler to keep the 890 Jump operational through the diverse conditions typically encountered while cruising the stars.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 9500.0
+  }
+}

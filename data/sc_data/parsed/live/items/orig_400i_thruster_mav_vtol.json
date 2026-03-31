@@ -1,0 +1,30 @@
+{
+  "key": "ORIG_400i_Thruster_Mav_VTOL",
+  "ref": "ee1f45e5-d24d-4b31-9b8f-eb80d4e19046",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FlexThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 16000.0
+  },
+  "type_data": {
+    "thrust_capacity": 2828637.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "vtol"
+  }
+}

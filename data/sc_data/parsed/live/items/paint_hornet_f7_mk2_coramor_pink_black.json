@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hornet_F7_Mk2_Coramor_Pink_Black",
+  "ref": "447e73c4-3e5b-4f38-b71e-2c2b4ad76a49",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a450ee05-582e-4408-8d42-563b0b2cd745",
+  "name": "Hornet Mk II Lovestruck Livery",
+  "short_name": null,
+  "description": "Inspired by the colors of Coramor, the Lovestruck livery is a stylish metallic pink and black look for your Hornet Mk II.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

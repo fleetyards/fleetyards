@@ -1,0 +1,29 @@
+{
+  "key": "DRAK_Dragonfly_CML_Chaff",
+  "ref": "c20b552a-8cac-4aaf-bf3a-549cfcd57620",
+  "category": "countermeasures",
+  "type": "WeaponDefensive",
+  "sub_type": "CountermeasureLauncher",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": "Noise",
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 1.0,
+    "initial_ammo_count": 1.0,
+    "max_restock_count": 3.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "POWR_LPLT_S01_PowerBolt_SCItem",
+  "ref": "4a4a2a9c-040f-4f36-befe-7101b230fa53",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "3",
+  "manufacturer_ref": "60d0f346-0c22-4869-81d3-1168b526a258",
+  "name": "PowerBolt",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Lightning Power Ltd.\\nSize: 1\\nGrade: C\\nClass: Civilian\\n\\nThe PowerBolt provides all the power and performance you need for your journey through the stars. You can trust Lightning Power to get you there.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

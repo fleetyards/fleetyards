@@ -1,0 +1,24 @@
+{
+  "key": "Door_Single_AEGS_Airlock",
+  "ref": "627efc4c-20f6-4b1b-8e7f-b799b2be7f1f",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 100.0
+  }
+}

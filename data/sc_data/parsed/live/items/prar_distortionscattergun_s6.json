@@ -1,0 +1,63 @@
+{
+  "key": "PRAR_DistortionScatterGun_S6",
+  "ref": "bad19f5c-7249-4d85-9430-040733eb6e4a",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "a2ba1db6-a7e8-49db-ba52-c61219693531",
+  "name": "Condemnation Distortion Scattergun",
+  "short_name": "CNDMNTN",
+  "description": "Manufacturer: Preacher Armaments\\nItem Type: Distortion Scattergun\\nSize: 6\\n\\nThe Condemnation is a massive size six scattergun from Preacher Armaments. Its high distortion damage incapacitates the electronics, though its wide spreads makes it less effective as the target gets farther away.",
+  "inventory_consumption": {
+    "micro_scu": 7560000.0,
+    "dimensions": {
+      "x": 1.339803,
+      "y": 11.05504,
+      "z": 2.405685
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 4224.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

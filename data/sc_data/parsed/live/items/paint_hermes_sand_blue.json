@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Sand_Blue",
+  "ref": "a1d7c68e-af12-4a8c-876c-0fdc73040fb5",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b4e5d06b-6bd5-4296-b910-fe7a0c2f332d",
+  "name": "Hermes Navarra Livery",
+  "short_name": null,
+  "description": "Evoking the sandy browns of an arid savanna, the Navarra livery is offset with a splash of bright blue.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

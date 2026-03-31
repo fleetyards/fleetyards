@@ -1,0 +1,24 @@
+{
+  "key": "COOL_JSPN_S01_WinterStar_SCItem",
+  "ref": "ec636cbd-21c6-4b9c-a095-c8ef04f1a9fa",
+  "category": "cooler",
+  "type": "Cooler",
+  "sub_type": null,
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "6cf93625-789a-4e8f-a857-325d64a58c93",
+  "name": "Winter-Star",
+  "short_name": null,
+  "description": "Item Type: Cooler\\nManufacturer: J-Span \\nSize: 1\\nGrade: D\\nClass: Civilian\\n\\nJoin the J-Span family by snagging the Winter-Star cooler for your ship. This entry-level model lacks flash but its strong performance record and price point make it a popular choice for pilots across the UEE.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 110.0
+  }
+}

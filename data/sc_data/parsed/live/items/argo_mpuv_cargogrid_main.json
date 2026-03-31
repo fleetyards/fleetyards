@@ -1,0 +1,22 @@
+{
+  "key": "ARGO_MPUV_CargoGrid_Main",
+  "ref": "2e20319b-0d57-4c27-a3f7-6317736d0d76",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "e8b3a3a6-42fd-4a3c-9856-1ed750eac8f6"
+}

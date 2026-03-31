@@ -1,0 +1,24 @@
+{
+  "key": "POWR_TYDT_S02_Cirrus_SCItem",
+  "ref": "aff1d3cf-2e01-48a1-8ce3-47fbdbeceb16",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "3",
+  "manufacturer_ref": "a2a97679-2a6e-4e89-80d8-439c88a01427",
+  "name": "Cirrus",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Tyler Design & Tech\\nSize: 2\\nGrade: C\\nClass: Stealth\\n\\nThe Cirrus is for pilots that prioritize stealth above all else. This medium power plant from Tyler Design & Tech intelligently manages its energy distribution flow and performance output to achieve that end.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 460.0
+  }
+}

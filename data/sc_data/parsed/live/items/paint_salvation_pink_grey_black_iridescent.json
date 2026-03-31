@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Salvation_pink_grey_black_iridescent",
+  "ref": "b5532228-ef37-47fd-9b83-2593c7a0d7af",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6a238680-4a8c-427e-8b11-d21769bd7e49",
+  "name": "Salvation Lovestruck Livery",
+  "short_name": null,
+  "description": "Inspired by the colors of Coramor, the Lovestruck livery is a stylish iridescent pink and black look for your Salvation.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

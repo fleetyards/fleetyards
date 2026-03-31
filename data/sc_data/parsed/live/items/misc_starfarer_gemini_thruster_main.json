@@ -1,0 +1,30 @@
+{
+  "key": "MISC_Starfarer_Gemini_Thruster_Main",
+  "ref": "b8924198-bfe6-46cc-8666-f11d12eef4bf",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 21000.0
+  },
+  "type_data": {
+    "thrust_capacity": 40000000.0,
+    "fuel_burn_rate_per10_k_newton": 0.105875,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

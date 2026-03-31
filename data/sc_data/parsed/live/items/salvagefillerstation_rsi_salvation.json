@@ -1,0 +1,52 @@
+{
+  "key": "SalvageFillerStation_RSI_Salvation",
+  "ref": "7b52235d-c4da-4520-891e-00201e1ea277",
+  "category": "salvagefillerstation",
+  "type": "SalvageFillerStation",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Filler Station",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_salvage_refill",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "hardpoint_salvage_crate",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "hardpoint_cargo_grid",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_grid",
+      "key": null,
+      "ref": "2e677d53-4b0d-4cdd-8c28-57b269064c7c",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1.0
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "key": "SalvageInternalStorage_RSI_Salvation",
+  "ref": "8405e12d-52eb-4fb2-8093-865e1fce8dd6",
+  "category": "salvagemunching",
+  "type": "SalvageInternalStorage",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 6.0
+  }
+}

@@ -4,13 +4,13 @@ module V1
   module Schemas
     module Inputs
       class HangarGroupUpdateInput
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
-            name: {type: :string, nullable: true},
-            color: {type: :string, nullable: true},
+            name: {type: :string},
+            color: {type: :string},
             sort: {type: :integer, nullable: true},
             public: {type: :boolean, nullable: true}
           },

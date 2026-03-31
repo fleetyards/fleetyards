@@ -1,0 +1,71 @@
+{
+  "key": "MISC_Starlancer_TAC_Turret_Door_Left",
+  "ref": "707e6c73-bfd0-4d62-b89c-57c5257c58b6",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "weapon",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "ammo_slot",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AmmoBox"
+      ]
+    },
+    {
+      "name": "weapon_controller",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "WeaponController"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "weapon",
+      "key": "GATS_BallisticGatling_Mounted_S1_DRAK_Cutlass_Steel",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "ammo_slot",
+      "key": "AmmoBox_GATS_BallisticGatling_Mounted_S1",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "weapon_controller",
+      "key": "Controller_Weapon_UnmannedTurret",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "ANVL_Gladiator_Thruster_Mav_Joint_01",
+  "ref": "734ff92a-963e-444d-a46c-d77ae56362aa",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FlexThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 6980.0
+  },
+  "type_data": {
+    "thrust_capacity": 900000.0,
+    "fuel_burn_rate_per10_k_newton": 0.03125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "key": "Bengal_BallisticCannon_S7",
+  "ref": "42e5fc33-1e86-4141-b876-c74aaec72a25",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": "a834198a-3465-4b02-86a5-887e922ec06d",
+  "name": "Tarantula GT-870 Mark 3 Cannon",
+  "short_name": null,
+  "description": "Manufacturer: Gallenson Tactical Systems\\nItem Type: Ballistic Cannon\\nSize: 3\\n\\nFed by Gallenson Tactical’s patented SpinGlide drum ammunition system, the Tarantula GT-870 Mk3 can smoothly and accurately deliver a consistent stream of ballistic shells. Though it only has a moderate rate of fire, its trustworthy durability makes it a dependable addition to any fight.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "BAR1",
+      "key": "Bengal_BallisticCannon_Barrel_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "MEC",
+      "key": "Bengal_BallisticCannon_FiringMechanism_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "POW",
+      "key": "Bengal_BallisticCannon_PowerArray_S7",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "VEN",
+      "key": "Bengal_BallisticCannon_Ventilation_S7",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 10240.0
+  },
+  "ammunition": {
+    "max_ammo_count": 276.0,
+    "initial_ammo_count": 276.0,
+    "max_restock_count": 3.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "AEGS_Bed_Bunk_Shutter_Bottom_PLayer_Bespoke",
+  "ref": "f1d36fcf-87ff-4efa-bde3-82ea7855002c",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,52 +1,25 @@
-<template>
-  <div
-    class="fleetchart-item fade-list-item"
-    :style="{
-      'min-height': `${height}px`,
-    }"
-    :class="cssClasses"
-  >
-    <div v-if="showLabel" class="fleetchart-item-label">
-      <template v-if="name">
-        <span>{{ name }}</span>
-        <small>
-          <span>{{ modelName }}</span>
-          <template v-if="showStatus"><br />{{ productionStatus }}</template>
-        </small>
-      </template>
-      <template v-else>
-        <span>{{ modelName }}</span>
-        <small v-if="showStatus">
-          {{ productionStatus }}
-        </small>
-      </template>
-    </div>
-    <div
-      class="fleetchart-item-image-wrapper"
-      :style="{
-        width: `${length}px`,
-        height: `${height}px`,
-      }"
-    >
-      <FleetchartItemImage
-        :label="name || modelName"
-        :src="image"
-        :width="imageWidth"
-        :height="height"
-      />
-    </div>
-  </div>
-</template>
+<script lang="ts">
+export default {
+  name: "FleetchartListItem",
+};
+</script>
 
 <script lang="ts" setup>
-import { useI18n } from "@/frontend/composables/useI18n";
+import { useI18n } from "@/shared/composables/useI18n";
 import FleetchartItemImage from "./Image/index.vue";
-
-type ViewType = "top" | "side" | "angled" | "front";
+import type {
+  Model,
+  Vehicle,
+  VehiclePublic,
+  ModelModulePackage,
+  MediaFile,
+  ModelPaint,
+} from "@/services/fyApi";
+import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 
 type Props = {
-  item: Model | Vehicle;
-  viewpoint?: ViewType;
+  item: Vehicle | Model | VehiclePublic;
+  viewpoint?: FleetchartViewpoints;
   showLabel?: boolean;
   showStatus?: boolean;
   sizeMultiplicator?: number;
@@ -55,7 +28,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  viewpoint: "side",
+  viewpoint: FleetchartViewpoints.SIDE,
   showLabel: false,
   showStatus: false,
   sizeMultiplicator: 1,
@@ -65,25 +38,25 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const imageByViewpoint = computed<FyMediaViewImage>(() => {
+const imageByViewpoint = computed<MediaFile | undefined>(() => {
   if (props.viewpoint === "angled") {
-    return angledView.value as FyMediaViewImage;
+    return angledView.value;
   }
 
   if (props.viewpoint === "front") {
-    return frontView.value as FyMediaViewImage;
+    return frontView.value;
   }
 
   if (props.viewpoint === "side") {
-    return sideView.value as FyMediaViewImage;
+    return sideView.value;
   }
 
-  return topView.value as FyMediaViewImage;
+  return topView.value;
 });
 
 const model = computed<Model>(() => {
   if (props.item && (props.item as Vehicle).model) {
-    return (props.item as Vehicle).model as Model;
+    return (props.item as Vehicle).model;
   }
 
   return props.item as Model;
@@ -119,9 +92,9 @@ const angledView = computed(() => {
   }
 
   if (modulePackage.value && modulePackage.value.media.angledView) {
-    if (props.colored && modulePackage.value.media.angledViewColored) {
-      return modulePackage.value.media.angledViewColored;
-    }
+    // if (props.colored && modulePackage.value.media.angledViewColored) {
+    //   return modulePackage.value.media.angledViewColored;
+    // }
 
     return modulePackage.value.media.angledView;
   }
@@ -134,17 +107,17 @@ const angledView = computed(() => {
 });
 
 const frontView = computed(() => {
-  if (props.colored && paint.value && paint.value.media.frontView) {
-    return paint.value.media.frontView;
-  }
+  // if (props.colored && paint.value && paint.value.media.frontView) {
+  //   return paint.value.media.frontView;
+  // }
 
-  if (modulePackage.value && modulePackage.value.media.frontView) {
-    if (props.colored && modulePackage.value.media.frontViewColored) {
-      return modulePackage.value.media.frontViewColored;
-    }
+  // if (modulePackage.value && modulePackage.value.media.frontView) {
+  //   if (props.colored && modulePackage.value.media.frontViewColored) {
+  //     return modulePackage.value.media.frontViewColored;
+  //   }
 
-    return modulePackage.value.media.frontView;
-  }
+  //   return modulePackage.value.media.frontView;
+  // }
 
   if (props.colored && model.value.media.frontViewColored) {
     return model.value.media.frontViewColored;
@@ -159,9 +132,9 @@ const sideView = computed(() => {
   }
 
   if (modulePackage.value && modulePackage.value.media.sideView) {
-    if (props.colored && modulePackage.value.media.sideViewColored) {
-      return modulePackage.value.media.sideViewColored;
-    }
+    // if (props.colored && modulePackage.value.media.sideViewColored) {
+    //   return modulePackage.value.media.sideViewColored;
+    // }
 
     return modulePackage.value.media.sideView;
   }
@@ -179,14 +152,14 @@ const topView = computed(() => {
   }
 
   if (modulePackage.value && modulePackage.value.media.topView) {
-    if (props.colored && modulePackage.value.media.topViewColored) {
-      return modulePackage.value.media.topViewColored;
-    }
+    // if (props.colored && modulePackage.value.media.topViewColored) {
+    //   return modulePackage.value.media.topViewColored;
+    // }
 
     return modulePackage.value.media.topView;
   }
 
-  if (props.colored && model.value.media.topViewColored?.source) {
+  if (props.colored && model.value.media.topViewColored?.url) {
     return model.value.media.topViewColored;
   }
 
@@ -198,10 +171,6 @@ const cssClasses = computed(() => {
 
   if (props.showStatus) {
     cssClasses.push(`status-${model.value.productionStatus}`);
-  }
-
-  if (props.showLabel) {
-    cssClasses.push("fleetchart-item-with-labels");
   }
 
   return cssClasses;
@@ -221,26 +190,38 @@ const name = computed(() => {
 
 const modelName = computed(() => {
   if (paint.value && paint.value.rsiId) {
-    return `${model.value.manufacturer.code} ${paint.value.name}`;
+    return `${model.value.manufacturer?.code} ${paint.value.name}`;
   }
 
-  return `${model.value.manufacturer.code} ${model.value.name}`;
+  return `${model.value.manufacturer?.code} ${model.value.name}`;
 });
 
 const length = computed(
-  () => model.value.fleetchartLength * props.sizeMultiplicator,
+  () =>
+    (model.value.metrics.fleetchartOffsetLength || 0) * props.sizeMultiplicator,
+);
+
+const beam = computed(
+  () =>
+    (model.value.metrics.fleetchartOffsetBeam || 0) * props.sizeMultiplicator,
 );
 
 const height = computed(
-  () => (length.value * sourceImageHeightMax.value) / sourceImageWidthMax.value,
+  () =>
+    (Math.max(length.value, beam.value) * sourceImageHeightMax.value) /
+    sourceImageWidthMax.value,
 );
 
-const imageWidth = computed(() =>
-  Math.min(
+const imageWidth = computed(() => {
+  if (!sourceImageWidth.value || !sourceImageHeight.value) {
+    return 0;
+  }
+
+  return Math.min(
     (height.value * sourceImageWidth.value) / sourceImageHeight.value,
     length.value,
-  ),
-);
+  );
+});
 
 const sourceImageHeight = computed(() => imageByViewpoint.value?.height);
 
@@ -270,19 +251,58 @@ const image = computed(() => {
   const width = length.value * props.sizeMultiplicator * props.scale;
 
   if (width > 1900) {
-    return imageByViewpoint.value?.source;
+    return imageByViewpoint.value?.url;
   }
 
   if (width > 900) {
-    return imageByViewpoint.value?.large;
+    return imageByViewpoint.value?.largeUrl;
   }
 
-  return imageByViewpoint.value?.medium;
+  return imageByViewpoint.value?.mediumUrl;
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: "FleetchartListItem",
-};
-</script>
+<template>
+  <div
+    class="fleetchart-item fade-list-item"
+    :style="{
+      'min-height': `${height}px`,
+    }"
+    :class="cssClasses"
+  >
+    <div v-if="showLabel" class="fleetchart-item-label">
+      <template v-if="name">
+        <span>{{ name }}</span>
+        <small>
+          <span>{{ modelName }}</span>
+          <template v-if="showStatus"><br />{{ productionStatus }}</template>
+        </small>
+      </template>
+      <template v-else>
+        <span>{{ modelName }}</span>
+        <small v-if="showStatus">
+          {{ productionStatus }}
+        </small>
+      </template>
+    </div>
+    <div
+      class="fleetchart-item-image-wrapper"
+      :style="{
+        width: `${length}px`,
+        height: `${height}px`,
+      }"
+    >
+      <FleetchartItemImage
+        v-if="image"
+        :label="name || modelName"
+        :src="image"
+        :width="imageWidth"
+        :height="height"
+      />
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+@import "index.scss";
+</style>

@@ -1,0 +1,63 @@
+{
+  "key": "KLWE_LaserRepeater_S1_ATLS",
+  "ref": "ba8c9920-9fd0-4253-a349-de32079edce2",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "name": "CF-117 Bulldog Repeater",
+  "short_name": "Bulldog",
+  "description": "Manufacturer: Klaus & Werner\\nItem Type: Laser Repeater\\nSize: 1\\n\\nFeaturing a three-barrel sequential fire design, the Klaus & Werner CF-117 Bulldog laser repeater is capable of delivering high velocity energy rounds while maintaining heat efficiency making it a favorite among new pilots who are outfitting their first ship.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 525.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  }
+}

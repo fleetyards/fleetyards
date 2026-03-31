@@ -1,0 +1,24 @@
+{
+  "key": "POWR_ACOM_S02_LuxCore_SCItem",
+  "ref": "78e0c040-6668-4b43-a29c-4c47051bba8d",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "5d616e6f-3257-4d19-90c3-11ab974f12e7",
+  "name": "LuxCore",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: ACOM\\nSize: 2\\nGrade: A \\nClass: Competition\\n\\nFamous for performance that laps the competition, the LuxCore provides all the speed your ship needs. You'll leave other medium power plants in the dust with this first-class component from the racing experts at ACOM.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 380.0
+  }
+}

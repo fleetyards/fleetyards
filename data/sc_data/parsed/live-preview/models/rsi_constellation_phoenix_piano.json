@@ -1,0 +1,759 @@
+{
+  "key": "RSI_Constellation_Phoenix_Piano",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "RSI Constellation Phoenix",
+  "description": "Manufacturer: RSI\\nFocus: Touring\\n\\nA dedicated luxury spacecraft for the discerning star captain. The Constellation Phoenix can be operated as an organization command ship and features a luxurious redesigned interior. Includes a hidden sensor-dampened area for your most precious cargo. The Phoenix comes with a Lynx rover and a Kruger P-72 Archimedes Fighter.",
+  "career": "Multi-Role",
+  "role": "Luxury",
+  "insurance": {
+    "base_wait_time_minutes": "24.3",
+    "mandatory_wait_time_minutes": "8.1",
+    "base_expediting_fee": "12079"
+  },
+  "mass": 427001.0,
+  "metrics": {
+    "x": 27.75,
+    "y": 63.5,
+    "z": 15.25
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "RSI_Constellation_SCItem_Seat_Access_Pilot"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot_left",
+      "ref": null,
+      "key": "RSI_Constellation_SCItem_Seat_Access_CoPilot_Left"
+    },
+    {
+      "name": "hardpoint_seat_access_copilot_right",
+      "ref": null,
+      "key": "RSI_Constellation_SCItem_Seat_Access_CoPilot_Right"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": "d6cc3437-cbf5-47e6-9a2c-dfaba7e602a3",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_cockpit_radar",
+          "ref": null,
+          "key": "Radar_Display_Constellation"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_seat_copilot_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_SCItem_Seat_CoPilot_Left",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_seat_copilot_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_SCItem_Seat_CoPilot_Right",
+      "loadout": [
+
+      ]
+    },
+    {
+      "name": "hardpoint_cockpit_selfdestruct",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_powerplant_left",
+      "ref": null,
+      "key": "POWR_SASU_S02_DayBreak_SCItem"
+    },
+    {
+      "name": "hardpoint_powerplant_right",
+      "ref": null,
+      "key": "POWR_SASU_S02_DayBreak_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_JSPN_S02_FrostStarEX_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_JSPN_S02_FrostStarEX_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_RSI_Constellation"
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "ref": null,
+      "key": "SHLD_BEHR_S03_5CA_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_RSI_Constellation_Phoenix"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_RSI_Constellation_Phoenix"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_WLOP_S02_Chernykh"
+    },
+    {
+      "name": "hardpoint_scanner",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_ping",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": "HTNK_RSI_Constellation_Andromeda"
+    },
+    {
+      "name": "hardpoint_fuel_intake_top_left",
+      "ref": null,
+      "key": "INTK_RSI_Constellation_Andromeda"
+    },
+    {
+      "name": "hardpoint_fuel_intake_top_right",
+      "ref": null,
+      "key": "INTK_RSI_Constellation_Andromeda"
+    },
+    {
+      "name": "hardpoint_fuel_intake_bottom_left",
+      "ref": null,
+      "key": "INTK_RSI_Constellation_Andromeda"
+    },
+    {
+      "name": "hardpoint_fuel_intake_bottom_right",
+      "ref": null,
+      "key": "INTK_RSI_Constellation_Andromeda"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_JUST_S02_Bolon_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_RSI_Constellation_Andromeda"
+    },
+    {
+      "name": "hardpoint_engine_top_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_engine_top_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_engine_bottom_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_engine_bottom_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_retro_top_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_retro_top_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_retro_bottom_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_retro_bottom_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_front_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_back_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_top_back_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_center_front_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_center_front_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_center_back_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_center_back_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_front_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_back_left",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_back_right",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_left_01",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Front"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_left_02",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Front"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_right_01",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Front"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_front_right_02",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Front"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_left_01",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Rear"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_left_02",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Rear"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_right_01",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Rear"
+    },
+    {
+      "name": "hardpoint_thruster_vtol_rear_right_02",
+      "ref": null,
+      "key": "RSI_Constellation_Phoenix_Thruster_Turbine_Rear"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_gun_laser_top_left",
+      "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c778d7c0-116a-4597-a32e-2bbf7f6b7c17",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_gun_laser_top_right",
+      "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c778d7c0-116a-4597-a32e-2bbf7f6b7c17",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_gun_laser_bottom_left",
+      "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c778d7c0-116a-4597-a32e-2bbf7f6b7c17",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_gun_laser_bottom_right",
+      "ref": "99e0ea17-45fc-4700-8607-ab879d05a284",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "c778d7c0-116a-4597-a32e-2bbf7f6b7c17",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_base_upper",
+      "ref": "b692e35b-faa5-43c4-8700-eded659149d3",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_turret_base_lower",
+      "ref": "b0aa88f6-56d5-440e-acab-b3a2811360fb",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_weapon_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S3",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "KLWE_LaserRepeater_S3"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_arm_body_left",
+      "ref": null,
+      "key": "MRCK_S04_RSI_Constellation",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_04",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_05",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_06",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_07",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_arm_body_right",
+      "ref": null,
+      "key": "MRCK_S04_RSI_Constellation",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_04",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_05",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_06",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_07",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_arm_tail_left",
+      "ref": null,
+      "key": "MRCK_S04_RSI_Constellation",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_04",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_05",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_06",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_07",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_arm_tail_right",
+      "ref": null,
+      "key": "MRCK_S04_RSI_Constellation",
+      "loadout": [
+        {
+          "name": "missile_attach_01",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_02",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_03",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_04",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_05",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_06",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        },
+        {
+          "name": "missile_attach_07",
+          "ref": null,
+          "key": "MISL_S01_IR_BEHR_Marksman"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cm_launcher_right_top",
+      "ref": null,
+      "key": "RSI_Constellation_CML_Decoy"
+    },
+    {
+      "name": "hardpoint_cm_launcher_left_top",
+      "ref": null,
+      "key": "RSI_Constellation_CML_Noise"
+    },
+    {
+      "name": "hardpoint_cargo_bay",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_elevator",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_door_airlock_neck_top",
+      "ref": "e4da2709-0295-489c-898f-8424091b4a2f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_flair_conference",
+      "ref": null,
+      "key": "Flair_Piano_Phoenix"
+    },
+    {
+      "name": "hardpoint_bed_body_right",
+      "ref": null,
+      "key": "Bed_Single_RSI_Constellation_Phoenix_Left"
+    },
+    {
+      "name": "hardpoint_bed_body_master",
+      "ref": null,
+      "key": "Bed_Double_RSI_Constellation_Phoenix_Master"
+    },
+    {
+      "name": "hardpoint_bed_body_left",
+      "ref": null,
+      "key": "Bed_Single_RSI_Constellation_Phoenix_Right"
+    },
+    {
+      "name": "hardpoint_weapon_rack",
+      "ref": null,
+      "key": "Weapon_Rack_RSI_Constellation_2_Slots"
+    },
+    {
+      "name": "hardpoint_docking_collar_merlin",
+      "ref": null,
+      "key": "RSI_Constellation_Rear_DockingTube",
+      "loadout": [
+        {
+          "name": "itemport_vehicle_attach",
+          "ref": null,
+          "key": "KRIG_P72_Archimedes"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_merlin_dock_door",
+      "ref": "9463e0e4-7d09-4ea7-b27b-280cc56d4961",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile"
+    },
+    {
+      "name": "hardpoint_air_traffic_controller",
+      "ref": null,
+      "key": "RSI_Constellation_Andromeda_ShipATCDataManager"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_fuel_port",
+      "ref": null,
+      "key": "DockingTube_Fuel_Ports_RSI_Constellation_Phoenix"
+    },
+    {
+      "name": "hardpoint_cockpit_flair",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_cockpit_flair_hang",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_cockpit",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_relay_engineering",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
+      "name": "hardpoint_engineeringscreen",
+      "ref": null,
+      "key": "SoftLock_EngineeringScreen_Template"
+    },
+    {
+      "name": "hardpoint_life_support",
+      "ref": null,
+      "key": "LFSP_TYDT_S03_ComfortAirMax"
+    },
+    {
+      "name": "hardpoint_PDC",
+      "ref": "a113eb5a-2759-4a55-ac48-7170c7d17f50",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_WC",
+      "ref": "7f72f468-3e23-40b9-a5ee-d607d36437f2",
+      "key": null
+    },
+    {
+      "name": "hardpoint_PDC_AIM",
+      "ref": "15881eca-d6f4-47fc-a5bb-633ca4bba06b",
+      "key": null
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "key": "RSI_Meteor_Template",
+  "ref": "c25fb549-ef58-4223-b0dc-e1302d611f50",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 0.0
+  }
+}

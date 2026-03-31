@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Cutter_Orange_Grey_Stripe",
+  "ref": "7c1bd94d-4004-469f-a8b2-2556b20242c4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "61af9bd8-a8ae-49ab-8f1b-a6494fafaebb",
+  "name": "Cutter Rockslide Livery",
+  "short_name": null,
+  "description": "Bring a unique style to the Cutter with the Rockslide livery, which adds orange stripes and brown highlights to compliment the ship's grey body.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

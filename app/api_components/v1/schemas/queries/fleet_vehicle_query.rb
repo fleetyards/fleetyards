@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Queries
       class FleetVehicleQuery
-        include SchemaConcern
+        include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
@@ -28,17 +28,19 @@ module V1
             productionStatusIn: {type: :array, items: {type: :string}},
             searchCont: {type: :string},
             sizeIn: {type: :array, items: {type: :string}},
+            modelSlugIn: {type: :array, items: {type: :string}},
             modelNameCont: {type: :string},
             modelNameOrModelDescriptionCont: {type: :string},
             loanerEq: {type: :boolean},
             memberIn: {type: :array, items: {type: :string}},
-            sorts: {oneOf: [{
+            sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/FleetVehicleSortEnum"}
             }, {
               "$ref": "#/components/schemas/FleetVehicleSortEnum"
             }]}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          example: {}
         })
       end
     end

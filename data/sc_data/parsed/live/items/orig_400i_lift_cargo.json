@@ -1,0 +1,42 @@
+{
+  "key": "ORIG_400i_Lift_Cargo",
+  "ref": "a2ff1272-897a-4a0e-8f86-37934b975817",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door Control",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "Cargo_Grid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "Cargo_Grid",
+      "key": "ORIG_400i_CargoGrid",
+      "ref": null,
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 3500.0
+  }
+}

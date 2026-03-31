@@ -1,0 +1,40 @@
+{
+  "key": "RSI_Perseus_CargoGrid",
+  "ref": "1685f711-dd94-4343-8d66-bcc58aa36b72",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 10.0,
+      "y": 7.5,
+      "z": 2.5
+    },
+    "capacity": 96,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 2.5,
+          "y": 10.0,
+          "z": 2.5
+        },
+        "capacity": 32
+      }
+    }
+  }
+}

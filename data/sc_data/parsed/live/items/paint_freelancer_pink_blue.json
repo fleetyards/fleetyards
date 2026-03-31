@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Freelancer_Pink_Blue",
+  "ref": "0b3ff5dc-6346-4d0a-b027-b0a9fe801414",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f23b1ca1-83a8-49d8-827d-1da92511cb3e",
+  "name": "Freelancer Star Kitten Livery",
+  "short_name": null,
+  "description": "Bring joy and a pastel palette to the Freelancer with the Star Kitten livery, which features bright pink and pale blue alongside images of the famous cartoon space cat Sally.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

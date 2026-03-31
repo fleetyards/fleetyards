@@ -3,56 +3,67 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:member) { create(:user) }
+  let(:admin) { create(:user) }
+  let(:fleet) { create(:fleet, members: [member], admins: [admin]) }
+  let(:author) { create(:user) }
+  let(:user) { author }
+  let(:invite_url) { create(:fleet_invite_url, fleet: fleet, user: admin) }
+  let(:input) do
+    {
+      token: invite_url.token
+    }
+  end
 
-  let(:user) { nil }
-
-  let(:inviteUrl) { fleet_invite_urls :starfleet_invite }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: author.id,
+      scopes: ["public"]
+    )
+  end
 
   before do
     sign_in(user) if user.present?
   end
 
   path "/fleets/use-invite" do
-    post("Create Membership by Invite") do
-      operationId "useInvite"
+    post("Create Fleet Membership by Invite") do
+      operationId "useFleetInvite"
       tags "FleetInviteUrls"
       consumes "application/json"
       produces "application/json"
 
       parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMembershipCreateInput"}, required: true
 
-      let(:input) do
-        {
-          token: inviteUrl.token
-        }
-      end
+      security [
+        {SessionCookie: []},
+        {Oauth2: []},
+        {OpenId: []}
+      ]
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/FleetMember"
 
-        let(:user) { users :troi }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data["username"]).to eq("troi")
+          expect(data["username"]).to eq(user.username)
           expect(data["status"]).to eq("requested")
         end
+      end
+
+      response(201, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
       end
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:user) { users :troi }
         let(:input) do
           {
             token: "unknown"
@@ -66,13 +77,15 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
         description "User is already a member of this fleet"
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:user) { users :data }
+        let(:user) { member }
 
         run_test!
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

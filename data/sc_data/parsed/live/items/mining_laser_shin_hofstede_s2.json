@@ -1,0 +1,50 @@
+{
+  "key": "Mining_Laser_SHIN_Hofstede_S2",
+  "ref": "b422bcf8-b553-4b09-b2be-e92ab2f80e9a",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Hofstede-S2 Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Shubin Interstellar\\nItem Type: Mining Laser \\nSize: 2\\n\\nOptimal Range: 60m\\nMaximum Range: 180m\\n\\nMining Laser Power: 336 - 3360\\nExtraction Laser Power: 1295\\n\\nModule Slots: 2\\n\\nResistance: -30%\\nOptimal Charge Window Rate: +20%\\nInert Material Level: -40%\\n\\nLaser Instability: +10%\\n\\nThe Hofstede-S2 was designed with a patented crystal lattice structure that dampens a deposit's natural resistance while mining and gathers less inert materials when extracting. Most effective at short and medium range, an accompanying increase in instability means the laser should be managed carefully.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

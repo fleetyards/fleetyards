@@ -1,0 +1,30 @@
+{
+  "key": "ESPR_Prowler_Thruster_Retro_02",
+  "ref": "2fb8ee1b-8aa0-48c1-aad2-5c269df94a54",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 18000.0
+  },
+  "type_data": {
+    "thrust_capacity": 1979150.0,
+    "fuel_burn_rate_per10_k_newton": 0.1015,
+    "thruster_type": "Retro",
+    "thruster_class": "retro"
+  }
+}

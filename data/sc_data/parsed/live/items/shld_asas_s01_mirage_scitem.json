@@ -1,0 +1,94 @@
+{
+  "key": "SHLD_ASAS_S01_Mirage_SCItem",
+  "ref": "94807046-b89e-422d-8bbc-f914b1cbc08d",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "abca0ae0-a819-4aeb-a1a7-f8f1d7e277cf",
+  "name": "Mirage",
+  "short_name": null,
+  "description": "Item Type: Shield Generator\\nManufacturer: Ascension Astro\\nSize: 1\\nGrade: A\\nClass: Stealth\\n\\nBy boasting a signature so faint most won’t believe it’s there, Ascension Astro’s top of the line small shield generator lives up to its name — Mirage. It’s the ultimate component for those who want to go unnoticed.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 170.0
+  },
+  "type_data": {
+    "max_health": 2805.0,
+    "max_regen": 309.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 5.83,
+    "damaged_regen_delay": 2.92,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": [
+      {
+        "max": 0.25,
+        "min": 0.0
+      },
+      {
+        "max": -0.24,
+        "min": -0.71
+      },
+      {
+        "max": 0.95,
+        "min": 0.75
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      },
+      {
+        "max": 0.0,
+        "min": 0.0
+      }
+    ],
+    "absorption": [
+      {
+        "max": 0.45,
+        "min": 0.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      },
+      {
+        "max": 1.0,
+        "min": 1.0
+      }
+    ]
+  }
+}

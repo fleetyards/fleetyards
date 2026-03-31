@@ -1,0 +1,50 @@
+{
+  "key": "Mining_Laser_S1_Template",
+  "ref": "f200ee06-6fad-4bbc-8d9c-8908ac7aeb6e",
+  "category": "weapons",
+  "type": "WeaponMining",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Arbor MH1 Mining Laser",
+  "short_name": null,
+  "description": "Manufacturer: Greycat Industrial\\nItem Type: Mining Laser \\nSize: 1\\n\\nOptimal Range: 60m\\nMaximum Range: 180m\\n\\nMining Laser Power: 189 - 1890\\nExtraction Laser Power: 1850\\n\\nModule Slots: 1\\n\\nLaser Instability: -35%\\nOptimal Charge Window Size: +40%\\nInert Material Level: -30%\\n\\nResistance: +25%\\n\\nThe Arbor MH1 became the universe's most heralded mining laser thanks to Greycat Industrial's exacting standards and business prowess. The laser found favor among industrial and solo operations for balancing speed and safety while also featuring a special filtration system that reduces the amount of inert material collected. Greycat capitalized on this reputation by securing exclusive contracts that made the Arbor MH1 the standard laser head on most mining ships.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 1.105504,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "BONE_ItemPort_Consumable_1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "BONE_ItemPort_Consumable_2",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "MiningModifier"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8000.0
+  }
+}

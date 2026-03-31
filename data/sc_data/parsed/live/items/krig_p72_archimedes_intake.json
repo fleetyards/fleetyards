@@ -1,0 +1,28 @@
+{
+  "key": "KRIG_P72_Archimedes_Intake",
+  "ref": "ceaa01df-718b-413b-96e4-ce59388ee7d1",
+  "category": "module",
+  "type": "FuelIntake",
+  "sub_type": "NoseMounted",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "7b5d1ed3-11e7-49e6-9ed3-9d0cb52a3dc2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 250.0
+  },
+  "type_data": {
+    "fuel_push_rate": 3.5,
+    "minimum_rate": 0.2
+  }
+}

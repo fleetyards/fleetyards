@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Idris_CargoGrid_AdditionalStorage",
+  "ref": "d946868b-aa6f-45ba-94a1-08003f25424b",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "702b994a-6213-4225-ac4f-5ca4bec9e336"
+}

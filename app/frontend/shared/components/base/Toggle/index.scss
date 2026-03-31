@@ -1,0 +1,75 @@
+.base-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: $text-color;
+  font-size: inherit;
+  line-height: 1;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &-track {
+    display: inline-block;
+    position: relative;
+    width: 44px;
+    height: 24px;
+    background: $input-bg;
+    border: 1px solid $input-border;
+    border-radius: 12px;
+    transition: all 250ms ease;
+    flex-shrink: 0;
+  }
+
+  &-knob {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: $gray-lighter;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    transition: all 250ms ease;
+    font-size: 10px;
+    color: $gray-dark;
+  }
+
+  &-label {
+    user-select: none;
+  }
+
+  &:hover:not(:disabled) &-track {
+    border-color: $gray;
+  }
+
+  &--active &-track {
+    background: $primary;
+    border-color: $primary;
+  }
+
+  &--active &-knob {
+    left: 23px;
+    background: #fff;
+  }
+
+  &--active:hover:not(:disabled) &-track {
+    border-color: darken($primary, 10%);
+  }
+
+  &--loading &-knob {
+    background: transparent;
+  }
+
+  &--inline {
+    margin-bottom: 0;
+  }
+}

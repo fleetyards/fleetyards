@@ -3,9 +3,32 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
-  fixtures :all
+  let(:admin) { create(:user, :with_rsi_handle) }
+  let(:member) { create(:user) }
+  let(:user) { admin }
+  let(:fleet) { create(:fleet, :with_description, :with_logo, :with_background_image, :with_social_links, admins: [admin], members: [member]) }
+  let(:fleet_other) { create(:fleet) }
+  let(:slug) { fleet.slug }
 
-  let(:fleet) { fleets :starfleet }
+  let(:Authorization) { nil }
+  let(:oauth_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["fleet", "fleet:read"]
+    )
+  end
+  let(:wrong_scope_access_token) do
+    create(
+      :oauth_access_token,
+      resource_owner_id: admin.id,
+      scopes: ["public"]
+    )
+  end
+
+  before do
+    sign_in(user) if user.present?
+  end
 
   path "/fleets/{slug}" do
     parameter name: "slug", in: :path, type: :string, description: "slug"
@@ -15,18 +38,46 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       tags "Fleets"
       produces "application/json"
 
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
+      ]
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleet"
 
-        let(:slug) { fleet.slug }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
+        context "for admin" do
+          run_test!
         end
+
+        context "for member" do
+          let(:user) { member }
+
+          run_test!
+        end
+      end
+
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
+      end
+
+      response(403, "forbidden") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:slug) { fleet_other.slug }
 
         run_test!
       end
@@ -34,7 +85,15 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:slug) { "unknown-model" }
+        let(:slug) { "unknown-fleet" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
 
         run_test!
       end

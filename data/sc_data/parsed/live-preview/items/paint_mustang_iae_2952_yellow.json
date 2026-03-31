@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Mustang_IAE_2952_Yellow",
+  "ref": "70f40ea0-7ddb-4333-80f9-e5a764254a9f",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "92e9e484-527e-47d8-82c0-0e8124f45794",
+  "name": "Mustang Guardian Livery",
+  "short_name": null,
+  "description": "A unique ship deserves an equally bold look, so outfit your Mustang in yellow with the Guardian livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

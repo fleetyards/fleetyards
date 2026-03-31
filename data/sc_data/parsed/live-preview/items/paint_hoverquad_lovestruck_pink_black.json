@@ -1,0 +1,21 @@
+{
+  "key": "Paint_HoverQuad_Lovestruck_Pink_Black",
+  "ref": "7e936fa7-2fad-4918-a955-b678123641f7",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f7cfbe5b-a089-4b5e-a378-af7585eac0d5",
+  "name": "HoverQuad Lovestruck Livery",
+  "short_name": null,
+  "description": "Inspired by the colors of Coramor, the Lovestruck livery is a stylish metallic pink and black look for your HoverQuad.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

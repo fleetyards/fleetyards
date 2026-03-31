@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OUT_DIR="public/vite-test"
+MANIFEST="$OUT_DIR/.vite/manifest.json"
+
+echo "Building email assets for test environment..."
+npx vite build --config vite.config.email.ts
+
+# Copy logo image and add it to the manifest
+cp app/frontend/images/logo.png "$OUT_DIR/assets/logo.png"
+
+# Merge logo entry into the Vite manifest
+node -e "
+const fs = require('fs');
+const manifest = JSON.parse(fs.readFileSync('$MANIFEST', 'utf8'));
+manifest['images/logo.png'] = { file: 'assets/logo.png', src: 'images/logo.png' };
+fs.writeFileSync('$MANIFEST', JSON.stringify(manifest, null, 2));
+"
+
+echo "Email assets built successfully."

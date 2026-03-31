@@ -1,0 +1,44 @@
+{
+  "key": "RSI_Hermes_Remote_Turret",
+  "ref": "9964b83a-08bc-48ee-bf29-f52ac0b8c550",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "TopTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_left",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "min_size": "4",
+      "max_size": "4",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2000.0
+  }
+}

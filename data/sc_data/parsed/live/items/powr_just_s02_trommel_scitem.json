@@ -1,0 +1,24 @@
+{
+  "key": "POWR_JUST_S02_Trommel_SCItem",
+  "ref": "aa15e2df-d7b1-4e97-9e0d-7623a3a096b0",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "4",
+  "manufacturer_ref": "d7cc897f-b760-4a73-93c0-27e23c52db0a",
+  "name": "Trommel",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Juno Starwerk\\nSize: 2\\nGrade: D\\nClass: Industrial\\n\\nUtilitarian to its core, the Trommel’s lack of frills has made the power plant a favorite of mechanics around the Empire.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 560.0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "key": "RPOD_S2_THCN_8x_S2",
+  "ref": "5ed1f1ec-6ebc-463b-9529-83382e20624d",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Rocket",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
+  "name": "Liberator Prime",
+  "short_name": null,
+  "description": "Item Type: Rocket Pod\\nManufacturer: Thermyte Concern\\nSize: 2\\nRockets: 8xS2\\n\\nThermyte Concern's Liberator Prime rocket pod carries eight S2 rockets and can be attached to any size two hardpoint.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 750.0
+  },
+  "ammunition": {
+    "max_ammo_count": 16.0,
+    "initial_ammo_count": 16.0,
+    "max_restock_count": 3.0
+  }
+}

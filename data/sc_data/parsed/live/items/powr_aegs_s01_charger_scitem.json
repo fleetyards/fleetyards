@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S01_Charger_SCItem",
+  "ref": "913a1e91-896a-483f-a5e0-34865d4ceee1",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "1",
+  "grade": "4",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Charger",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics \\nSize: 1\\nGrade: D\\nClass: Military\\n\\nThe Aegis Charger has powered military fighters for generations. Tried and tested in the most demanding of situations, the Charger can handle sudden or sustained power draws with ease.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 240.0
+  }
+}

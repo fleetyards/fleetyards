@@ -1,0 +1,24 @@
+{
+  "key": "POWR_AEGS_S02_QuadracellMT_SCItem",
+  "ref": "18d542ac-ee74-411e-ad3e-e2e0b980c103",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "QuadraCell MT",
+  "short_name": null,
+  "description": "Item Type: Power Plant\\nManufacturer: Aegis Dynamics\\nSize: 2\\nGrade: A \\nClass: Military\\n\\nAn Aegis intern crafted the initial design for the QuadraCell MT power plant, inspiring a phrase often heard around their office, “Fresh eyes bring fresh innovation.” This military-grade component still outperforms any other medium power plant they make.",
+  "inventory_consumption": {
+    "micro_scu": 252000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 3.316511,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 980.0
+  }
+}

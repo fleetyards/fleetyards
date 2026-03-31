@@ -1,0 +1,21 @@
+{
+  "key": "Paint_X1_Black_Black_Orange",
+  "ref": "a2d90b2a-7f1a-4ab9-9b02-f7f1c88be2cf",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "a74791cb-4ef2-4bdb-99a4-bb5e142d4d67",
+  "name": "X1 Shadow Livery",
+  "short_name": null,
+  "description": "Infinity Custom worked with Origin on the Shadow livery for the X1, which is primarily black with grey lettering and orange highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}
