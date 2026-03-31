@@ -8,7 +8,7 @@ RSpec.describe ScData::Loader::ManufacturersLoader do
 
   describe "#all" do
     it "loads data from game files" do
-      expect { loader.all }.to change(Manufacturer, :count).by(108)
+      expect { loader.all }.to change(Manufacturer, :count).by(112)
 
       manufacturer_codes = Manufacturer.pluck(:code)
 
@@ -41,7 +41,7 @@ RSpec.describe ScData::Loader::ManufacturersLoader do
     it "reuses existing entries" do
       expect { rsi_models_loader.all }.to change(Manufacturer, :count).by(18)
 
-      expect { loader.all }.to change(Manufacturer, :count).by(93)
+      expect { loader.all }.to change(Manufacturer, :count).by(97)
 
       manufacturer_codes = Manufacturer.pluck(:code)
 
