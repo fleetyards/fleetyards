@@ -14,7 +14,7 @@ class Scdata < Thor
   desc "setup", "Setup sc data export symlink"
   def setup(source_folder, export_folder = EXPORT_FOLDER)
     say("Creating symlink from #{source_folder} to #{export_folder}/raw", :green)
-    system("ln -s #{source_folder} #{export_folder}/raw")
+    system("ln -s '#{source_folder}' '#{export_folder}/raw'")
   end
 
   desc "parse", "Parse SC Data"

@@ -9,7 +9,7 @@ gem "rails", "7.2.2.2"
 gem "pg", "~> 1.0"
 
 gem "sidekiq", "~> 8.0"
-gem "sidekiq-cron"
+gem "sidekiq-scheduler"
 gem "sidekiq-failures"
 
 gem "paper_trail"
