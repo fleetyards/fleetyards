@@ -86,4 +86,4 @@ data/sc_data/raw
 # ai agent files
 .cursor/working/
 .augment/
-.claude/
+.claude/settings.local.json
