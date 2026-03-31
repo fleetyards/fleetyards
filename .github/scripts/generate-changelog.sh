@@ -10,6 +10,7 @@ DATE=$(date +%Y-%m-%d)
 FEATURES=""
 FIXES=""
 REFACTORS=""
+CHORES=""
 
 while IFS= read -r line; do
   [ -z "$line" ] && continue
@@ -47,6 +48,15 @@ while IFS= read -r line; do
       DESC=$(echo "$MSG" | sed 's/refactor[: ] *//')
       REFACTORS="${REFACTORS}* ${DESC} (${LINK})"$'\n'
       ;;
+    chore\(*\):*)
+      SCOPE=$(echo "$MSG" | sed 's/chore(\([^)]*\)):.*/\1/')
+      DESC=$(echo "$MSG" | sed 's/chore([^)]*): *//')
+      CHORES="${CHORES}* **${SCOPE}:** ${DESC} (${LINK})"$'\n'
+      ;;
+    chore:*|chore\ *)
+      DESC=$(echo "$MSG" | sed 's/chore[: ] *//')
+      CHORES="${CHORES}* ${DESC} (${LINK})"$'\n'
+      ;;
   esac
 done < <(git log "${PREVIOUS_TAG}..HEAD" --format="%H %s" --no-merges)
 
@@ -73,6 +83,13 @@ if [ -n "$REFACTORS" ]; then
   echo "### Refactorings"
   echo ""
   printf '%s' "$REFACTORS"
+fi
+
+if [ -n "$CHORES" ]; then
+  echo ""
+  echo "### Chores"
+  echo ""
+  printf '%s' "$CHORES"
 fi
 
 echo ""
