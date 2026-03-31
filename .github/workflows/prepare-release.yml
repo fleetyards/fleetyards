@@ -3,15 +3,11 @@ name: Prepare Release
 on:
   workflow_dispatch:
     inputs:
-      bump:
-        description: "Version bump type"
-        required: true
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
-        default: patch
+      major:
+        description: "Create a major release (otherwise auto-detected: feat→minor, fix→patch)"
+        required: false
+        type: boolean
+        default: false
       prerelease:
         description: "Create a pre-release (RC) for staging"
         required: true
@@ -51,7 +47,28 @@ jobs:
           CURRENT=$(jq -r .version package.json)
           IFS='.' read -r MAJOR MINOR PATCH <<< "${CURRENT%%-*}"
 
-          case "${{ inputs.bump }}" in
+          if [ "${{ inputs.major }}" = "true" ]; then
+            BUMP="major"
+          else
+            # Auto-detect from conventional commits like standard-version:
+            # feat: → minor, everything else → patch
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+            if [ -n "$PREVIOUS_TAG" ]; then
+              HAS_FEAT=$(git log "${PREVIOUS_TAG}..HEAD" --format="%s" --no-merges | grep -cE '^feat(\(|:|[[:space:]])' || true)
+            else
+              HAS_FEAT=$(git log --format="%s" --no-merges | grep -cE '^feat(\(|:|[[:space:]])' || true)
+            fi
+
+            if [ "$HAS_FEAT" -gt 0 ]; then
+              BUMP="minor"
+            else
+              BUMP="patch"
+            fi
+          fi
+
+          echo "bump=${BUMP}" >> "$GITHUB_OUTPUT"
+
+          case "$BUMP" in
             major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
             minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
             patch) PATCH=$((PATCH + 1)) ;;
