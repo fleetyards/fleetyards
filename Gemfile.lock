@@ -257,7 +257,7 @@ GEM
     flatware-rspec (2.3.4)
       flatware (= 2.3.4)
       rspec (>= 3.6)
-    flipper (1.4.0)
+    flipper (1.4.1)
       concurrent-ruby (< 2)
     flipper-active_record (1.4.0)
       activerecord (>= 4.2, < 9)
