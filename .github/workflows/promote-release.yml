@@ -24,6 +24,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: main
+          token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Configure git
         run: |
