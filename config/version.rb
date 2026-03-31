@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 module Fleetyards
-  CODENAME = "Aurora"
-  VERSION = "v6.0.0-rc.2"
+  CODENAME = "Odyssey"
+  VERSION = "v5.33.2"
 end
