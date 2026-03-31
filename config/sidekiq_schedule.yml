@@ -1,70 +1,51 @@
 # see https://crontab.guru for help/explanation of cron lines
 
-_defaults: &defaults
-  loaders_youtube_job: &loaders_youtube_job
-    cron: '*/10 * * * *' # Every 10 Minutes
-    class: 'Loaders::YoutubeJob'
-    queue: 'loaders'
-  loaders_rsi_news_job: &loaders_rsi_news_job
-    cron: '*/15 * * * *' # Every 15 Minutes
-    class: 'Loaders::RsiNewsJob'
-    queue: 'loaders'
-  loaders_models_job: &loaders_models_job
-    cron: '0 20 */1 * *' # Daily at 20:00
-    class: 'Loaders::ModelsJob'
-    queue: 'loaders'
-  sc_data_check_job: &sc_data_check_job
-    cron: '0 22 */1 * *' # Daily at 22:00
-    class: 'ScData::CheckJob'
-    queue: 'loaders'
-  metrics_job: &metrics_job
-    cron: '0 1 */1 * *' # Daily at 1:00
-    class: 'MetricsJob'
-  cleanup_unattached_check_job: &cleanup_unattached_check_job
-    cron: '0 2 */1 * *' # Daily at 2:00
-    class: 'Cleanup::UnattachedCheckJob'
-    queue: 'cleanup'
-  loaders_paints_import_job: &loaders_paints_import_job
-    cron: '0 19 * * 0' # Weekly on Sunday 19:00
-    class: 'Loaders::PaintsImportJob'
-    queue: 'loaders'
-  admin_notifier_job: &admin_notifier_job
-    cron: '0 20 * * 0' # Weekly on Sunday 20:00
-    class: 'Notifications::AdminJob'
-    queue: 'notifications'
-  loaders_loaner_job: &loaders_loaner_job
-    cron: '0 21 * * 0' # Weekly on Sunday 21:00
-    class: 'Loaders::LoanerJob'
-    queue: 'loaders'
-  cleanup_fleet_invite_url_job: &cleanup_fleet_invite_url_job
-    cron: '0 22 * * 0' # Weekly on Sunday 22:00
-    class: 'Cleanup::FleetInviteUrlJob'
-    queue: 'cleanup'
-  cleanup_visits_job: &cleanup_visits_job
-    cron: '0 0 1 * *' # Monthly on the first day at 0:00
-    class: 'Cleanup::VisitsJob'
-    queue: 'cleanup'
-
-production:
-  <<: *defaults
-
-staging:
-  <<: *defaults
-  loaders_youtube_job:
-    <<: *loaders_youtube_job
-    enabled: false
-  loaders_rsi_news_job:
-    <<: *loaders_rsi_news_job
-    enabled: false
-  loaders_models_job:
-    <<: *loaders_models_job
-    enabled: false
-  loaders_paints_import_job:
-    <<: *loaders_paints_import_job
-    enabled: false
-  admin_notifier_job:
-    <<: *admin_notifier_job
-    enabled: false
-  loaders_loaner_job:
-    <<: *loaders_loaner_job
-    enabled: false
+loaders_youtube_job:
+  cron: '*/10 * * * *' # Every 10 Minutes
+  class: 'Loaders::YoutubeJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
+loaders_rsi_news_job:
+  cron: '*/15 * * * *' # Every 15 Minutes
+  class: 'Loaders::RsiNewsJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
+loaders_models_job:
+  cron: '0 20 */1 * *' # Daily at 20:00
+  class: 'Loaders::ModelsJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
+sc_data_check_job:
+  cron: '0 22 */1 * *' # Daily at 22:00
+  class: 'ScData::CheckJob'
+  queue: 'loaders'
+metrics_job:
+  cron: '0 1 */1 * *' # Daily at 1:00
+  class: 'MetricsJob'
+cleanup_unattached_check_job:
+  cron: '0 2 */1 * *' # Daily at 2:00
+  class: 'Cleanup::UnattachedCheckJob'
+  queue: 'cleanup'
+loaders_paints_import_job:
+  cron: '0 19 * * 0' # Weekly on Sunday 19:00
+  class: 'Loaders::PaintsImportJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
+admin_notifier_job:
+  cron: '0 20 * * 0' # Weekly on Sunday 20:00
+  class: 'Notifications::AdminJob'
+  queue: 'notifications'
+  enabled: <%= Rails.env.production? %>
+loaders_loaner_job:
+  cron: '0 21 * * 0' # Weekly on Sunday 21:00
+  class: 'Loaders::LoanerJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
+cleanup_fleet_invite_url_job:
+  cron: '0 22 * * 0' # Weekly on Sunday 22:00
+  class: 'Cleanup::FleetInviteUrlJob'
+  queue: 'cleanup'
+cleanup_visits_job:
+  cron: '0 0 1 * *' # Monthly on the first day at 0:00
+  class: 'Cleanup::VisitsJob'
+  queue: 'cleanup'

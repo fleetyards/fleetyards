@@ -11,7 +11,8 @@ Sidekiq.configure_server do |config|
 
   config.on(:startup) do
     schedule_file = Rails.root.join("config/sidekiq_schedule.yml")
-    Sidekiq.schedule = YAML.load_file(schedule_file, aliases: true)[Rails.env] || {}
+    schedule_yaml = ERB.new(File.read(schedule_file)).result
+    Sidekiq.schedule = YAML.safe_load(schedule_yaml, permitted_classes: [Symbol]) || {}
     SidekiqScheduler::Scheduler.instance.reload_schedule!
   end
 end
