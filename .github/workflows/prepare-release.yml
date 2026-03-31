@@ -17,6 +17,10 @@ on:
         description: "Release codename (leave empty to keep current)"
         required: false
         type: string
+      hotfix:
+        description: "Hotfix: branch name with the fix (e.g. hotfix/5.33.3). Patch bumps and releases from that branch."
+        required: false
+        type: string
 
 concurrency:
   group: release
@@ -33,7 +37,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: main
+          ref: ${{ inputs.hotfix || 'main' }}
           token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: Configure git
@@ -51,8 +55,13 @@ jobs:
           fi
           IFS='.' read -r MAJOR MINOR PATCH <<< "${CURRENT%%-*}"
 
+          if [ -n "${{ inputs.hotfix }}" ]; then
+            # Hotfix: always patch bump from the hotfix tag
+            BUMP="patch"
+            PATCH=$((PATCH + 1))
+            BASE_VERSION="${MAJOR}.${MINOR}.${PATCH}"
           # If already in an RC cycle and creating another prerelease, skip bumping
-          if [ "$IN_RC" = "true" ] && [ "${{ inputs.prerelease }}" = "true" ] && [ "${{ inputs.major }}" != "true" ]; then
+          elif [ "$IN_RC" = "true" ] && [ "${{ inputs.prerelease }}" = "true" ] && [ "${{ inputs.major }}" != "true" ]; then
             BASE_VERSION="${MAJOR}.${MINOR}.${PATCH}"
           else
             if [ "${{ inputs.major }}" = "true" ]; then
@@ -176,7 +185,11 @@ jobs:
 
       - name: Push changes
         run: |
-          git push origin main
+          if [ -n "${{ inputs.hotfix }}" ]; then
+            git push origin HEAD:${{ inputs.hotfix }}
+          else
+            git push origin main
+          fi
           git push origin "${{ steps.version.outputs.tag }}"
 
       - name: Create GitHub release
