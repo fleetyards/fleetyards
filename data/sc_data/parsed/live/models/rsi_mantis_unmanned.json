@@ -1,0 +1,287 @@
+{
+  "key": "RSI_Mantis_Unmanned",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "1",
+  "name": "<= UNINITIALIZED =>",
+  "description": "<= UNINITIALIZED =>",
+  "career": "Combat",
+  "role": "Interdiction",
+  "insurance": {
+    "base_wait_time_minutes": "13.5",
+    "mandatory_wait_time_minutes": "4.5",
+    "base_expediting_fee": "6750"
+  },
+  "mass": 224923.0,
+  "metrics": {
+    "x": 17.0,
+    "y": 30.0,
+    "z": 7.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access",
+      "ref": null,
+      "key": "RSI_Mantis_SeatAccess"
+    },
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "RSI_Mantis_Seat_Pilot",
+      "loadout": [
+        {
+          "name": "hardpoint_cockpit_radar",
+          "ref": null,
+          "key": "RADR_Display"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_self_destruct_pilot",
+      "ref": null,
+      "key": "VHCL_SelfDestruct_30s"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": null,
+      "key": "POWR_AEGS_S01_Regulus_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "ref": null,
+      "key": "COOL_AEGS_S01_Bracer_SCItem"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_Quadrant"
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "ref": null,
+      "key": "SHLD_GODI_S01_AllStop_SCItem"
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "ref": null,
+      "key": "SHLD_GODI_S01_AllStop_SCItem"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_RSI_Mantis"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_RSI_Mantis"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_GRNP_S01_Ecouter"
+    },
+    {
+      "name": "hardpoint_thruster_main_left",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_main_right",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_mav_left_front_top",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mav_left_front_bot",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mav_left_rear_top",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mav_left_rear_bot",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mav_right_front_top",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mav_right_front_bot",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mav_right_rear_top",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_thruster_mav_right_rear_bot",
+      "ref": null,
+      "key": "RSI_Mantis_Thruster_Mav_Joint"
+    },
+    {
+      "name": "hardpoint_fuel_intake_left",
+      "ref": null,
+      "key": "INTK_RSI_Mantis"
+    },
+    {
+      "name": "hardpoint_fuel_intake_right",
+      "ref": null,
+      "key": "INTK_RSI_Mantis"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_RSI_Mantis"
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_WETK_S01_Beacon_SCItem",
+      "loadout": [
+        {
+          "name": "hardpoint_jump_drive",
+          "ref": null,
+          "key": "JDRV_TARS_S01_C_Explorer"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_RSI_Mantis"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_weapon_left",
+      "ref": null,
+      "key": "KRON_LaserCannon_S3"
+    },
+    {
+      "name": "hardpoint_weapon_right",
+      "ref": null,
+      "key": "KRON_LaserCannon_S3"
+    },
+    {
+      "name": "hardpoint_missiles_wing_left",
+      "ref": null,
+      "key": "MRCK_S03_BEHR_Dual_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_EM_TALN_Dominator"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_EM_TALN_Dominator"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missiles_wing_right",
+      "ref": null,
+      "key": "MRCK_S03_BEHR_Dual_S02",
+      "loadout": [
+        {
+          "name": "missile_01_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        },
+        {
+          "name": "missile_02_attach",
+          "ref": null,
+          "key": "MISL_S02_IR_FSKI_Ignite"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_interdiction_device",
+      "ref": null,
+      "key": "QED_WETK_S03_Reynie"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_left",
+      "ref": null,
+      "key": "RSI_Mantis_CML_Flare"
+    },
+    {
+      "name": "hardpoint_countermeasure_launcher_right",
+      "ref": null,
+      "key": "RSI_Mantis_CML_Chaff"
+    },
+    {
+      "name": "hardpoint_door_lift",
+      "ref": null,
+      "key": "RSI_Mantis_Door_Lift"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "ref": null,
+      "key": "LFSP_TYDT_S01_ComfortAir"
+    }
+  ]
+}

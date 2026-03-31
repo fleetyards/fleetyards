@@ -250,13 +250,27 @@
       "loadout": [
         {
           "name": "hardpoint_weapon_left",
-          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-          "key": null
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
         },
         {
           "name": "hardpoint_weapon_right",
-          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-          "key": null
+          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+              "key": null
+            }
+          ]
         },
         {
           "name": "hardpoint_missile_rack",

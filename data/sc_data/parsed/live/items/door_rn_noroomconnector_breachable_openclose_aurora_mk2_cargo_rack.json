@@ -1,0 +1,56 @@
+{
+  "key": "Door_RN_NoRoomConnector_Breachable_OpenClose_Aurora_Mk2_Cargo_Rack",
+  "ref": "2e32912e-f6f5-4be6-820b-b4b9e7ea66da",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    },
+    {
+      "name": "hardpoint_cargo_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "CargoGrid"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo_right",
+      "key": null,
+      "ref": "770d0cce-1ca6-4546-8aa5-8c6f8f581bd6",
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_cargo_left",
+      "key": null,
+      "ref": "770d0cce-1ca6-4546-8aa5-8c6f8f581bd6",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  }
+}

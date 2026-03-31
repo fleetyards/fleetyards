@@ -25,12 +25,12 @@
     "max_speed": 1025.0,
     "angular_velocity": {
       "pitch": 30.0,
-      "yaw": 28.0,
+      "yaw": 30.0,
       "roll": 95.0
     },
     "boosted_angular_velocity": {
       "pitch": 36.0,
-      "yaw": 33.6,
+      "yaw": 36.0,
       "roll": 114.0
     }
   }

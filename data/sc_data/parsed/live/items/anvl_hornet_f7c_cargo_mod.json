@@ -31,8 +31,8 @@
   "default_loadout": [
     {
       "name": "hardpoint_cargo_grid",
-      "key": "ANVL_Hornet_CargoGrid_F7C",
-      "ref": null,
+      "key": null,
+      "ref": "4a08dec7-9544-4d3b-9e01-0e7ed83793cf",
       "default_loadout": []
     }
   ],

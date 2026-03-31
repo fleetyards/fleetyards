@@ -62,8 +62,8 @@
     },
     {
       "name": "hardpoint_controller_flight",
-      "ref": null,
-      "key": "Controller_Flight_CRUS_Starfighter"
+      "ref": "b4fcd688-2d73-476d-9577-92705fe6754a",
+      "key": null
     },
     {
       "name": "hardpoint_controller_weapon",

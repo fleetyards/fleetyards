@@ -27,5 +27,8 @@
         "Turret"
       ]
     }
-  ]
+  ],
+  "durability": {
+    "health": 20000.0
+  }
 }

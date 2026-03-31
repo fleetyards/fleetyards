@@ -31,42 +31,6 @@
   "durability": {
     "health": 170.0
   },
-  "heat_connection": {
-    "TemperatureToIR": 2.5,
-    "StartIRTemperature": 290.0,
-    "OverpowerHeat": 0.0,
-    "OverclockThresholdMinHeat": 0.0,
-    "OverclockThresholdMaxHeat": 0.0,
-    "ThermalEnergyBase": 3677.0,
-    "ThermalEnergyDraw": 3677.0,
-    "ThermalConductivity": 0.0,
-    "SpecificHeatCapacity": 0.5,
-    "Mass": 491.4,
-    "SurfaceArea": 0.0,
-    "StartCoolingTemperature": 300.0,
-    "MaxCoolingRate": 26.5,
-    "MaxTemperature": 700.0,
-    "OverheatTemperature": 650.0,
-    "RecoveryTemperature": 350.0,
-    "MinTemperature": 0.0,
-    "MisfireMinTemperature": 370.0,
-    "MisfireMaxTemperature": 600.0
-  },
-  "power_connection": {
-    "power_base": 0.4,
-    "power_draw": 100.0,
-    "time_to_reach_draw_request": 0.0,
-    "safeguard_priority": 5.0,
-    "displayed_in_powered_item_list": 1.0,
-    "is_throttleable": 0.0,
-    "is_overclockable": 0.0,
-    "overclock_threshold_min": 0.34,
-    "overclock_threshold_max": 0.43,
-    "overpower_performance": 0.05,
-    "overclock_performance": 0.357,
-    "power_to_em": 75.0,
-    "decay_rate_of_em": 0.21
-  },
   "type_data": {
     "quantum_fuel_requirement": 0.011368,
     "jump_range": 3.402823e+38,

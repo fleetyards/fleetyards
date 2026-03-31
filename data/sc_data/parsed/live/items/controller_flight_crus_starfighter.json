@@ -24,13 +24,13 @@
     "reverse_speed_boosted": 210.0,
     "max_speed": 1050.0,
     "angular_velocity": {
-      "pitch": 37.0,
-      "yaw": 30.0,
+      "pitch": 36.0,
+      "yaw": 36.0,
       "roll": 105.0
     },
     "boosted_angular_velocity": {
-      "pitch": 44.4,
-      "yaw": 36.0,
+      "pitch": 43.199999999999996,
+      "yaw": 43.199999999999996,
       "roll": 126.0
     }
   }

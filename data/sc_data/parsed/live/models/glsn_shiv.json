@@ -569,6 +569,16 @@
       "name": "hardpoint_cargogrid_main",
       "ref": "40635903-b38b-4560-aae9-3b1c4a72d6f9",
       "key": null
+    },
+    {
+      "name": "hardpoint_front",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_back",
+      "ref": null,
+      "key": null
     }
   ]
 }

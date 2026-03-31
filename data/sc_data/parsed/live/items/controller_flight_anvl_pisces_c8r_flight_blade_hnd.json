@@ -19,19 +19,19 @@
     }
   },
   "type_data": {
-    "scm_speed": 215.0,
-    "scm_speed_boosted": 450.0,
-    "reverse_speed_boosted": 290.0,
-    "max_speed": 1130.0,
+    "scm_speed": 220.0,
+    "scm_speed_boosted": 460.0,
+    "reverse_speed_boosted": 300.0,
+    "max_speed": 1150.0,
     "angular_velocity": {
-      "pitch": 57.0,
-      "yaw": 57.0,
-      "roll": 144.0
+      "pitch": 56.0,
+      "yaw": 56.0,
+      "roll": 142.0
     },
     "boosted_angular_velocity": {
-      "pitch": 68.39999999999999,
-      "yaw": 68.39999999999999,
-      "roll": 172.79999999999998
+      "pitch": 67.2,
+      "yaw": 67.2,
+      "roll": 170.4
     }
   }
 }

@@ -449,13 +449,13 @@
     },
     {
       "name": "hardpoint_elevator",
-      "ref": null,
-      "key": "Door_Ship_Exterior_ARGO_MOLE_Elevator"
+      "ref": "4725faf9-4517-41f2-adfd-d3ad9e2fb36c",
+      "key": null
     },
     {
       "name": "hardpoint_elevator_door",
-      "ref": null,
-      "key": "Door_Ship_Exterior_ARGO_MOLE_Elevator_Door"
+      "ref": "2a9b82ca-0668-4aef-9ed9-38cb58fcd8b5",
+      "key": null
     },
     {
       "name": "hardpoint_controller_mining_pilot",
@@ -463,24 +463,19 @@
       "key": "Controller_Mining"
     },
     {
-      "name": "hardpoint_relay_bridge",
-      "ref": null,
-      "key": "RELAY_1slot"
-    },
-    {
-      "name": "hardpoint_relay_engines",
-      "ref": null,
-      "key": "RELAY_2slot"
+      "name": "hardpoint_relay_processing",
+      "ref": "d046b6a3-84ba-4a9b-bc51-952ecb40224d",
+      "key": null
     },
     {
       "name": "hardpoint_relay_engineering",
-      "ref": null,
-      "key": "RELAY_3slot"
+      "ref": "609b087d-bdfe-401d-b9fe-526af4d52d09",
+      "key": null
     },
     {
       "name": "hardpoint_lifesupport",
-      "ref": null,
-      "key": "LFSP_TYDT_S01_ComfortAir"
+      "ref": "c50917d3-f453-4ca6-b753-1c506a6710e0",
+      "key": null
     },
     {
       "name": "hardpoint_radar_cab_front",
@@ -580,6 +575,26 @@
     {
       "name": "hardpoint_ground_fuelport",
       "ref": "2af039dc-e8fc-4fa0-b1d2-398d99724414",
+      "key": null
+    },
+    {
+      "name": "hardpoint_gravity_generator",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_computer",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_rear_lift",
+      "ref": "717c18c9-db8c-4160-92f4-c167da510cbc",
       "key": null
     }
   ]

@@ -1,0 +1,21 @@
+{
+  "key": "Lt_Delta_Door_Elevator_4m_A",
+  "ref": "1c342cd0-4db7-4de3-802b-b6ef3c43b6b1",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

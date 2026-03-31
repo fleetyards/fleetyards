@@ -177,8 +177,8 @@
     },
     {
       "name": "hardpoint_radar",
-      "ref": null,
-      "key": "RADR_WLOP_S02_Chernykh"
+      "ref": "d055fbff-ec64-4a81-8d0b-c6ffcbd2b83e",
+      "key": null
     },
     {
       "name": "hardpoint_controller_energy",

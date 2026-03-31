@@ -1,0 +1,24 @@
+{
+  "key": "RSI_Hermes_SeatDashboard_CoPilot",
+  "ref": "7cfe6103-3e2d-4192-a902-4471ed051510",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "23186ec6-28ed-4f2e-a3f9-0c5459202d63",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 1.0
+  }
+}

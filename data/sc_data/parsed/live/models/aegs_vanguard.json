@@ -257,23 +257,51 @@
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_001",
-      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": null,
+          "key": "BEHR_LaserCannon_VNG_S2"
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_002",
-      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": null,
+          "key": "BEHR_LaserCannon_VNG_S2"
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_003",
-      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": null,
+          "key": "BEHR_LaserCannon_VNG_S2"
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_004",
-      "ref": "febc4b3a-09d7-446e-99a4-0f6be2387346",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": null,
+          "key": "BEHR_LaserCannon_VNG_S2"
+        }
+      ]
     },
     {
       "name": "hardpoint_turret",

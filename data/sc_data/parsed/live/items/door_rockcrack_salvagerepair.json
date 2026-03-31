@@ -1,0 +1,21 @@
+{
+  "key": "Door_Rockcrack_SalvageRepair",
+  "ref": "e737e936-b69e-49e9-ae87-cfec9868850b",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  }
+}

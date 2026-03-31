@@ -7,7 +7,7 @@
   "name": "MISC Starfarer Gemini",
   "description": "Manufacturer: MISC\\nFocus: Heavy Refueling\\n\\nThe United Empire of Earth military uses an adapted ‘rough and tumble’ variant of the Starfarer for their front line operations. The G2M Gemini, more commonly the Starfarer Gemini or ‘Star G,’ trades some cargo capacity and maneuverability in exchange for reinforced armor, increased shielding, more powerful engines and stronger versions of the three manned turrets.",
   "career": "Support",
-  "role": "Heavy Refuelling",
+  "role": "Heavy Refueling",
   "insurance": {
     "base_wait_time_minutes": "35.34",
     "mandatory_wait_time_minutes": "11.78",

@@ -578,6 +578,11 @@
       "name": "hardpoint_salvage_filler_right",
       "ref": "80d39f24-7b21-405a-920b-26d41afa79b8",
       "key": null
+    },
+    {
+      "name": "hardpoint_attachable_buff",
+      "ref": "fdfd9046-a27f-4fa2-be83-e2014183ee2d",
+      "key": null
     }
   ]
 }

@@ -594,8 +594,8 @@
     },
     {
       "name": "hardpoint_life_support",
-      "ref": null,
-      "key": "LFSP_TYDT_S21_ComfortAirPlus"
+      "ref": "c50917d3-f453-4ca6-b753-1c506a6710e0",
+      "key": null
     },
     {
       "name": "hardpoint_weaponlocker",

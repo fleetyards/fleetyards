@@ -350,11 +350,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_cargo",
-      "ref": null,
-      "key": "Cargo_Pod_F7C_TEMP"
-    },
-    {
       "name": "hardpoint_relay",
       "ref": null,
       "key": "RELAY_3slot"

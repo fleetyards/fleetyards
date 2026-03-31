@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Aurora_Mk2_Pink_Green_Purple",
+  "ref": "f33ee44b-7309-4587-a4ce-31fa89156370",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "644ec9b5-7ba8-4c5d-9e4b-7b25d677f141",
+  "name": "Aurora Mk II Shimmerscale Livery",
+  "short_name": "Aurora Mk II Shimmerscale Livery",
+  "description": "Combining deep purples and blue, the Shimmerscale livery is finished with a subtle green offering an ethereal shimmer.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

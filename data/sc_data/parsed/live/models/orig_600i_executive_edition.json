@@ -117,8 +117,8 @@
     },
     {
       "name": "hardpoint_radar",
-      "ref": null,
-      "key": "RADR_WLOP_S02_Chernykh"
+      "ref": "9793a9fd-a521-48be-92fe-86da036b8e2a",
+      "key": null
     },
     {
       "name": "hardpoint_scanner",

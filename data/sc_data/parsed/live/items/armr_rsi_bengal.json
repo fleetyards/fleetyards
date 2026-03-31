@@ -7,7 +7,7 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
-  "name": "Aurora MR Ship Armor",
+  "name": "Aurora Mk I MR Ship Armor",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
@@ -19,6 +19,6 @@
     }
   },
   "durability": {
-    "health": 0.0
+    "health": 275400.0
   }
 }

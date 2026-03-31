@@ -1,0 +1,49 @@
+{
+  "key": "Door_Rockcrack_DoubleFuse",
+  "ref": "bf5dc5cd-9779-46b5-ad16-5d142472c041",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "loadout": [
+    {
+      "name": "slot_relay_a",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    },
+    {
+      "name": "slot_relay_b",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "slot_relay_a",
+      "key": null,
+      "ref": "e2e68560-3400-49e7-bbc4-fa64bed71797",
+      "default_loadout": []
+    },
+    {
+      "name": "slot_relay_b",
+      "key": null,
+      "ref": "e2e68560-3400-49e7-bbc4-fa64bed71797",
+      "default_loadout": []
+    }
+  ]
+}

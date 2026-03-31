@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Wolf_Carbon_Red_White",
+  "ref": "50993a8a-a31a-4e41-8616-0839be025e50",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "05fb6a6d-a25b-4322-9017-3705a1856015",
+  "name": "Wolf HighSec Livery",
+  "short_name": null,
+  "description": "The HighSec livery gives the Wolf a carbon fiber finish with red accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -690,11 +690,6 @@
       "key": "Controller_Weapon"
     },
     {
-      "name": "hardpoint_controller_turretseatright_missile",
-      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
-      "key": null
-    },
-    {
       "name": "hardpoint_seat_turretseatright",
       "ref": null,
       "key": "RSI_Polaris_Seat_Bridge"

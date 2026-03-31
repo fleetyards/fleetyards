@@ -7,7 +7,7 @@
   "name": "MISC Starfarer Teach's Special",
   "description": "Manufacturer: MISC\\nFocus: Heavy Refueling\\n\\nThe Starfarer differs from traditional bulk freighters in one key way: it is a dedicated fuel platform. The Starfarer is designed not only to load, store and protect fuel stasis units, it is designed to take in spaceborne gases and refine them for use without landing. And while it excels at this, the Starfarer can also be used to ferry traditional bulk cargo pods.\\n\\nCatering to the difficult work condition's of Nyx, Teach's Ship Shop has outfitted this special edition with a custom loadout featuring rugged components so you can better tackle the job at hand.",
   "career": "Support",
-  "role": "Heavy Refuelling",
+  "role": "Heavy Refueling",
   "insurance": {
     "base_wait_time_minutes": "18",
     "mandatory_wait_time_minutes": "6",

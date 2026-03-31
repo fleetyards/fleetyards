@@ -83,8 +83,8 @@
     },
     {
       "name": "hardpoint_radar_01",
-      "ref": null,
-      "key": "RADR_CHCO_S02_Surveyor"
+      "ref": "441e0d9d-f432-4e7a-825f-6c4c5e10d9da",
+      "key": null
     },
     {
       "name": "hardpoint_scanner",
@@ -874,8 +874,8 @@
     },
     {
       "name": "hardpoint_hangar_lift",
-      "ref": null,
-      "key": "Door_Ship_Exterior_ORIG_890Jump_Hangar_Elevator"
+      "ref": "c6ca20ad-b2aa-446c-acfd-31b0358baaac",
+      "key": null
     },
     {
       "name": "hardpoint_hangar_door",

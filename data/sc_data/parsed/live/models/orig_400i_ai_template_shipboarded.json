@@ -660,6 +660,11 @@
       "name": "hardpoint_cooler_2",
       "ref": "f0429b13-6f0d-4ffb-9160-6ae0df03b5cb",
       "key": null
+    },
+    {
+      "name": "hardpoint_engineeringscreen",
+      "ref": "878ae63f-4076-42ab-bab2-861ff7988045",
+      "key": null
     }
   ]
 }

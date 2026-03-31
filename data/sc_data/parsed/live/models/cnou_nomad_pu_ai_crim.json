@@ -82,8 +82,8 @@
     },
     {
       "name": "hardpoint_shield_generator_01",
-      "ref": null,
-      "key": "SHLD_SECO_S01_WEB_SCItem"
+      "ref": "6be9c02c-ff32-483f-a6f8-d984dcb97c40",
+      "key": null
     },
     {
       "name": "hardpoint_shield_generator_02",
