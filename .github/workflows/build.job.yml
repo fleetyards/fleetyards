@@ -53,6 +53,10 @@ jobs:
             type=raw,value=${{ inputs.tag }}
             type=raw,value=${{ github.sha }}
 
+      - name: Read Ruby version from .tool-versions
+        id: ruby
+        run: echo "version=$(grep '^ruby ' .tool-versions | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -62,6 +66,8 @@ jobs:
           labels: |
             ${{ steps.meta.outputs.labels }}
             service=fleetyards
+          build-args: |
+            RUBY_VERSION=${{ steps.ruby.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secrets: |
