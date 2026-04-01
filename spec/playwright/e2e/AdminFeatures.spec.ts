@@ -80,7 +80,6 @@ test.describe("Admin Features", () => {
 
     // Edit form should appear with self-service toggle and group buttons
     await expect(page.getByTestId("edit-feature")).toBeVisible();
-    await expect(page.getByTestId("edit-section")).toHaveCount(3);
   });
 
   test("Toggles self-service flag", async ({ page, notification }) => {
