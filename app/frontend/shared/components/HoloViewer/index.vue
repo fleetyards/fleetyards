@@ -9,7 +9,7 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Mesh, type Vector3 } from "three";
+import { type Mesh, type Object3D, type Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { TresCanvas } from "@tresjs/core";
@@ -205,7 +205,7 @@ const handleModelProgress = (loaded: number, total: number) => {
   progress.value = (loaded / total) * 100;
 };
 
-const currentModel = ref<Mesh>();
+const currentModel = ref<Object3D>();
 
 const _traverseEventObjects = (object: Mesh): Mesh => {
   if (object.parent && object.parent.type !== "Scene") {
