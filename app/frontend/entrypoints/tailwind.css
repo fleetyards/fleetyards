@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  /* Match Bootstrap grid breakpoints from variables.scss */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 992px;
+  --breakpoint-lg: 1500px;
+  --breakpoint-xl: 2100px;
+  --breakpoint-2xl: 2800px;
+  --breakpoint-3xl: 3200px;
+
+  /* Colors matching project variables */
+  --color-background: #000;
+  --color-text: #c8c8c8;
+  --color-primary: #428bca;
+  --color-admin-primary: #af0300;
+  --color-success: #5cb85c;
+  --color-danger: #dc3545;
+  --color-warning: #fa6800;
+  --color-gold: #d4af37;
+
+  --color-gray-lighter: #999;
+  --color-gray-light: #7a8288;
+  --color-gray: #52575c;
+  --color-gray-dark: #3a3f44;
+  --color-gray-darker: #272b30;
+  --color-gray-black: #222;
+
+  /* Grid gutter to match Bootstrap's $grid-gutter-width: 30px (15px per side) */
+  --spacing-gutter: 15px;
+}
