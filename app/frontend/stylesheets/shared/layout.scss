@@ -15,8 +15,42 @@
   }
 }
 
+// Base reboot styles (replacing Bootstrap _reboot.scss)
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+img {
+  vertical-align: middle;
+}
+
+// Utility classes (replacing Bootstrap utilities)
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1rem;
 }
 
 body {
@@ -24,7 +58,10 @@ body {
   min-width: 320px;
   min-height: 100%;
   font-family: "Open Sans", sans-serif;
-  background-color: $background;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  color: $body-color;
+  background-color: $body-bg;
 }
 
 .sticky {

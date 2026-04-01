@@ -1,0 +1,125 @@
+// Standalone 12-column grid system (replaces Bootstrap grid)
+// Uses project breakpoints from variables.scss
+
+// Variables are available via @import chain from entrypoint
+
+$grid-columns: 12;
+$gutter: $grid-gutter-width; // 30px from variables.scss
+
+// Container
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: $gutter * 0.5;
+  padding-left: $gutter * 0.5;
+
+  @each $bp, $max-width in $container-max-widths {
+    $min-width: map-get($grid-breakpoints, $bp);
+    @if $min-width and $min-width > 0 {
+      @media (min-width: $min-width) {
+        max-width: $max-width;
+      }
+    }
+  }
+}
+
+// Row
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: $gutter * -0.5;
+  margin-left: $gutter * -0.5;
+}
+
+// Base column styles (applied to all col-* classes)
+%col-base {
+  position: relative;
+  width: 100%;
+  padding-right: $gutter * 0.5;
+  padding-left: $gutter * 0.5;
+}
+
+// Generate column width
+@mixin make-col($size, $columns: $grid-columns) {
+  flex: 0 0 percentage(calc($size / $columns));
+  max-width: percentage(calc($size / $columns));
+}
+
+// Generate column offset
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  $num: calc($size / $columns);
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+// Breakpoint infix (e.g., "-sm", "-md", or "" for xs)
+@function breakpoint-infix($name) {
+  @if map-get($grid-breakpoints, $name) == 0 {
+    @return "";
+  }
+  @return "-#{$name}";
+}
+
+// Generate grid classes for each breakpoint
+@each $breakpoint, $min-width in $grid-breakpoints {
+  $infix: breakpoint-infix($breakpoint);
+
+  // Apply base styles to all column classes at this breakpoint
+  @for $i from 1 through $grid-columns {
+    .col#{$infix}-#{$i} {
+      @extend %col-base;
+    }
+  }
+  .col#{$infix}-2dot4 {
+    @extend %col-base;
+  }
+
+  @if $min-width == 0 {
+    // xs breakpoint (no media query)
+    @for $i from 1 through $grid-columns {
+      .col#{$infix}-#{$i} {
+        @include make-col($i);
+      }
+    }
+
+    .col#{$infix}-2dot4 {
+      @include make-col(2.4);
+    }
+
+    @for $i from 0 through ($grid-columns - 1) {
+      @if $i > 0 {
+        .offset#{$infix}-#{$i} {
+          @include make-col-offset($i);
+        }
+      }
+    }
+
+    .offset#{$infix}-2dot4 {
+      @include make-col-offset(2.4);
+    }
+  } @else {
+    @media (min-width: $min-width) {
+      @for $i from 1 through $grid-columns {
+        .col#{$infix}-#{$i} {
+          @include make-col($i);
+        }
+      }
+
+      .col#{$infix}-2dot4 {
+        @include make-col(2.4);
+      }
+
+      @for $i from 0 through ($grid-columns - 1) {
+        @if $i > 0 {
+          .offset#{$infix}-#{$i} {
+            @include make-col-offset($i);
+          }
+        }
+      }
+
+      .offset#{$infix}-2dot4 {
+        @include make-col-offset(2.4);
+      }
+    }
+  }
+}
