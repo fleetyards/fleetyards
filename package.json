@@ -110,7 +110,7 @@
     "@types/qs": "^6.15.0",
     "@types/rails__actioncable": "^6.1.11",
     "@types/rails__activestorage": "^7.1.1",
-    "@types/swagger-ui": "^5.21.1",
+    "@types/swagger-ui": "^5.32.0",
     "@types/swagger-ui-dist": "^3.30.6",
     "@types/three": "^0.181.0",
     "@types/uuid": "^10.0.0",
