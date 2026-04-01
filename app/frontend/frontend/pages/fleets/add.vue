@@ -85,13 +85,13 @@ const submit = handleSubmit(async (values) => {
 <template>
   <section class="container">
     <form @submit.prevent="submit">
-      <div class="row justify-content-lg-center">
+      <div class="row lg:justify-center">
         <div class="col-12 col-md-6 col-lg-4">
           <h1>{{ t("headlines.fleets.add") }}</h1>
         </div>
       </div>
 
-      <div class="row justify-content-lg-center">
+      <div class="row lg:justify-center">
         <div class="col-12 col-md-6 col-lg-4">
           <FormInput
             name="fid"
@@ -105,7 +105,7 @@ const submit = handleSubmit(async (values) => {
           />
         </div>
       </div>
-      <div class="row justify-content-lg-center">
+      <div class="row lg:justify-center">
         <div class="col-12 col-md-6 col-lg-4">
           <br />
           <Btn

@@ -25,7 +25,7 @@ const openPrivacySettings = () => {
 </script>
 
 <template>
-  <div class="row justify-content-lg-center">
+  <div class="row lg:justify-center">
     <div class="col-12 col-lg-8">
       <Panel inset>
         <h1>{{ t("headlines.privacy") }}</h1>

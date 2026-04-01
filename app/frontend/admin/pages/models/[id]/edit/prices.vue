@@ -107,7 +107,7 @@ const itemPricesList = ref<{
     </div>
   </ModelForm>
 
-  <div class="d-flex align-items-center justify-content-between">
+  <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.itemPrices") }}</Heading>
     <Btn
       :size="BtnSizesEnum.SMALL"

@@ -114,14 +114,14 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
 
 <template>
   <section class="container">
-    <div class="row justify-content-lg-center">
+    <div class="row lg:justify-center">
       <div class="col-12 col-lg-6">
         <h1>
           {{ t("headlines.fleets.invites") }}
         </h1>
       </div>
     </div>
-    <div class="row justify-content-lg-center">
+    <div class="row lg:justify-center">
       <div class="col-12 col-lg-6">
         <Panel slim>
           <transition-group

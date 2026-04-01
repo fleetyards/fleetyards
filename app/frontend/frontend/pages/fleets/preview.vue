@@ -116,7 +116,7 @@ const handleLogin = () => {
 
         <hr class="large-spacer" />
 
-        <div class="row justify-content-center">
+        <div class="row justify-center">
           <div class="col-12 col-lg-4">
             <Btn
               :to="{

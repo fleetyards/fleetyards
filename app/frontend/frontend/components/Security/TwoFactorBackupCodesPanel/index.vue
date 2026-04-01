@@ -43,7 +43,7 @@ const copyCodes = () => {
     <p>
       {{ t("texts.twoFactor.backupCodes") }}
     </p>
-    <div class="row d-flex justify-content-center codes-panel-inner">
+    <div class="row flex justify-center codes-panel-inner">
       <div
         v-for="backupCode in codes"
         :key="backupCode"
@@ -53,7 +53,7 @@ const copyCodes = () => {
       </div>
     </div>
     <hr />
-    <div class="d-flex justify-content-center">
+    <div class="flex justify-center">
       <Btn :variant="BtnVariantsEnum.LINK" @click="copyCodes">
         {{ t("actions.copyBackupCodes") }}
       </Btn>

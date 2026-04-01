@@ -71,7 +71,7 @@ const {
 <template>
   <div id="hardpoints" class="row components hardpoints-legacy">
     <div class="col-12">
-      <div v-if="model.scIdentifier" class="d-flex justify-content-center">
+      <div v-if="model.scIdentifier" class="flex justify-center">
         <BtnGroup>
           <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
           <Btn :href="erkulUrl" :mobile-block="true" class="erkul-link">

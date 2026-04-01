@@ -85,7 +85,7 @@ const {
 <template>
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
-      <div v-if="model.inGame" class="d-flex justify-content-center">
+      <div v-if="model.inGame" class="flex justify-center">
         <BtnGroup>
           <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
           <Btn :href="erkulUrl" mobile-block class="erkul-link">
@@ -103,7 +103,7 @@ const {
           </Btn>
         </BtnGroup>
       </div>
-      <div class="d-flex justify-content-end">
+      <div class="flex justify-end">
         <BtnGroup>
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"
