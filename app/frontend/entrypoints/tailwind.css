@@ -4,12 +4,11 @@
  * Override Tailwind preflight img rules that conflict with existing styles.
  * The codebase relies on img height being inherited from containers
  * (e.g. gallery-image 250px, lazy-image 100%) rather than auto-sized.
+ * Must be unlayered to beat Tailwind's @layer base preflight.
  */
-@layer base {
-  img,
-  video {
-    height: revert;
-  }
+img,
+video {
+  height: revert;
 }
 
 @theme {
