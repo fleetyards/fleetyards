@@ -2,7 +2,7 @@
 
 module HangarFiltersConcern
   private def vehicle_query_params
-    @vehicle_query_params ||= params.permit(q: [ParamsHelper.new("v1/schema.yaml").to_params("HangarQuery")]).fetch(:q, {})
+    @vehicle_query_params ||= params.permit(q: ParamsHelper.new("v1/schema.yaml").to_params("HangarQuery")).fetch(:q, {})
   end
 
   private def will_it_fit?(scope)
