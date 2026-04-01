@@ -265,13 +265,6 @@ GEM
     flipper-active_record (1.4.1)
       activerecord (>= 4.2, < 9)
       flipper (~> 1.4.1)
-    flipper-ui (1.4.0)
-      erubi (>= 1.0.0, < 2.0.0)
-      flipper (~> 1.4.0)
-      rack (>= 1.4, < 4)
-      rack-protection (>= 1.5.3, < 5.0.0)
-      rack-session (>= 1.0.2, < 3.0.0)
-      sanitize (< 8)
     fog-aws (3.33.1)
       base64 (>= 0.2, < 0.4)
       fog-core (~> 2.6)
@@ -761,9 +754,6 @@ GEM
     rufus-scheduler (3.9.2)
       fugit (~> 1.1, >= 1.11.1)
     safely_block (0.5.0)
-    sanitize (7.0.0)
-      crass (~> 1.0.2)
-      nokogiri (>= 1.16.8)
     sawyer (0.9.3)
       addressable (>= 2.3.5)
       faraday (>= 0.17.3, < 3)
@@ -914,7 +904,6 @@ DEPENDENCIES
   flatware-rspec
   flipper
   flipper-active_record
-  flipper-ui
   fog-aws
   foreman
   foundation_emails

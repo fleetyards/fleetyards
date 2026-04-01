@@ -113,7 +113,6 @@ gem "progress_bar"
 
 # feature flag
 gem "flipper"
-gem "flipper-ui"
 gem "flipper-active_record"
 
 # openapi

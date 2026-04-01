@@ -14,9 +14,6 @@ namespace :admin, **admin_options do
   authenticate :admin_user, ->(u) { u.present? && u.has_access?(:pghero) } do
     mount PgHero::Engine => "/pghero"
   end
-  authenticate :admin_user, ->(u) { u.present? && u.has_access?(:features) } do
-    mount Flipper::UI.app(Flipper) => "/flipper", :as => :flipper
-  end
   authenticate :admin_user, ->(u) { u.present? && u.has_access?(:maintenance) } do
     mount MaintenanceTasks::Engine, at: "/maintenance_tasks"
   end
