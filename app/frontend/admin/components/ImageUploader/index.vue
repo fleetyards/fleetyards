@@ -249,10 +249,7 @@ const inputFilter = (
         </Btn>
       </div>
 
-      <div
-        v-show="uploadElement?.active"
-        class="col-xl-5 fileupload-progress"
-      >
+      <div v-show="uploadElement?.active" class="col-xl-5 fileupload-progress">
         <span class="fileupload-process">
           {{ formatSize(speed) }}
         </span>

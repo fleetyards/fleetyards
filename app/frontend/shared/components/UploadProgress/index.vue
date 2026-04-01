@@ -27,7 +27,11 @@ const fillClasses = computed(() => ({
 
 <template>
   <div class="upload-progress">
-    <div :class="fillClasses" role="progressbar" :style="{ width: progress + '%' }">
+    <div
+      :class="fillClasses"
+      role="progressbar"
+      :style="{ width: progress + '%' }"
+    >
       {{ progress }} %
     </div>
   </div>

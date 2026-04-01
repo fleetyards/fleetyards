@@ -245,7 +245,9 @@ const updateCaption = debounce(debouncedUpdateCaption, 500);
             (internalImage as VueUploadItem).active ||
             (internalImage as VueUploadItem).progress !== '0.00'
           "
-          :progress="parseFloat(String((internalImage as VueUploadItem).progress))"
+          :progress="
+            parseFloat(String((internalImage as VueUploadItem).progress))
+          "
           :active="!!(internalImage as VueUploadItem).active"
           :error="!!(internalImage as VueUploadItem).error"
         />
