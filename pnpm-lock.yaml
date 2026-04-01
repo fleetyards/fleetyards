@@ -100,8 +100,8 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2(vue@3.5.31(typescript@5.9.3))
       foundation-emails:
-        specifier: ^2.4.0
-        version: 2.4.0
+        specifier: ^2.5.1
+        version: 2.5.1
       highcharts:
         specifier: 12.5.0
         version: 12.5.0
@@ -3949,8 +3949,8 @@ packages:
     resolution: {integrity: sha512-buewHzMvYL29jdeQTVILecSaZKnt/RJWjoZCF5OW60Z67/GmSLBkOFM7qh1PI3zFNtJbaZL5eQu1vLfazOwj4g==}
     engines: {node: '>=12.20.0'}
 
-  foundation-emails@2.4.0:
-    resolution: {integrity: sha512-aLma02P+OafCQtcEkZzVAhX1E3LiB4RYCxUu73BRma+YMrq2QOBUr6K8Cw37taL0jehQn4T8yfuWBQ8xv3Mvug==}
+  foundation-emails@2.5.1:
+    resolution: {integrity: sha512-1Yp9MbN8qJZrLUXMyQ5clLm+Ea663J7cSc//Y8EfCM21IkD7N2xYB7vRlSnnQy3fIB3TnI25IpW2VJHqXm9UkA==}
 
   framer-motion@12.35.2:
     resolution: {integrity: sha512-dhfuEMaNo0hc+AEqyHiIfiJRNb9U9UQutE9FoKm5pjf7CMitp9xPEF1iWZihR1q86LBmo6EJ7S8cN8QXEy49AA==}
@@ -10949,7 +10949,7 @@ snapshots:
     dependencies:
       fetch-blob: 3.2.0
 
-  foundation-emails@2.4.0: {}
+  foundation-emails@2.5.1: {}
 
   framer-motion@12.35.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
