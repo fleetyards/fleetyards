@@ -1,15 +1,7 @@
-@import "tailwindcss";
-
-/*
- * Override Tailwind preflight img rules that conflict with existing styles.
- * The codebase relies on img height being inherited from containers
- * (e.g. gallery-image 250px, lazy-image 100%) rather than auto-sized.
- * Must be unlayered to beat Tailwind's @layer base preflight.
- */
-img,
-video {
-  height: revert;
-}
+/* Import Tailwind without preflight — project has its own base styles */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 
 @theme {
   /* Match Bootstrap grid breakpoints from variables.scss */
