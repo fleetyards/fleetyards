@@ -37,7 +37,7 @@
     "@rails/activestorage": "^8.1.300",
     "@tanstack/vue-query": "^5.92.9",
     "@tresjs/cientos": "^5.1.0",
-    "@tresjs/core": "^5.1.0",
+    "@tresjs/core": "^5.8.0",
     "@uppy/aws-s3": "^5.1.0",
     "@uppy/core": "^5.2.0",
     "@uppy/remote-sources": "^3.1.0",
