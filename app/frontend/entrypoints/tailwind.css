@@ -1,7 +1,4 @@
-/* Import Tailwind without preflight — project has its own base styles */
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import "tailwindcss";
 
 @theme {
   /* Match Bootstrap grid breakpoints from variables.scss */
