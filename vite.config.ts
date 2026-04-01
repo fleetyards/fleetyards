@@ -5,7 +5,6 @@ import Vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
-import browserslistToEsbuild from "browserslist-to-esbuild";
 import { templateCompilerOptions } from "@tresjs/core";
 
 const cache: { [key: string]: string } = {};
@@ -93,15 +92,12 @@ export default defineConfig({
     },
   },
   build: {
-    target: browserslistToEsbuild(),
-    minify: "esbuild",
     emptyOutDir: false,
-    rollupOptions: {
-      maxParallelFileOps: 5,
+    rolldownOptions: {
       output: {
-        manualChunks: {
-          vue: ["vue"],
-          "vue-router": ["vue-router"],
+        manualChunks(id) {
+          if (id.includes("node_modules/vue/")) return "vue";
+          if (id.includes("node_modules/vue-router/")) return "vue-router";
         },
       },
     },
