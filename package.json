@@ -34,7 +34,7 @@
     "@appsignal/vue": "^1.1.2",
     "@number-flow/vue": "^0.4.12",
     "@rails/actioncable": "7.1.3",
-    "@rails/activestorage": "^8.1.200",
+    "@rails/activestorage": "^8.1.300",
     "@tanstack/vue-query": "^5.92.9",
     "@tresjs/cientos": "^5.1.0",
     "@tresjs/core": "^5.1.0",

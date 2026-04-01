@@ -31,8 +31,8 @@ importers:
         specifier: 7.1.3
         version: 7.1.3
       '@rails/activestorage':
-        specifier: ^8.1.200
-        version: 8.1.200
+        specifier: ^8.1.300
+        version: 8.1.300
       '@tanstack/vue-query':
         specifier: ^5.92.9
         version: 5.92.9(vue@3.5.31(typescript@5.9.3))
@@ -1792,8 +1792,8 @@ packages:
   '@rails/actioncable@7.1.3':
     resolution: {integrity: sha512-ojNvnoZtPN0pYvVFtlO7dyEN9Oml1B6IDM+whGKVak69MMYW99lC2NOWXWeE3bmwEydbP/nn6ERcpfjHVjYQjA==}
 
-  '@rails/activestorage@8.1.200':
-    resolution: {integrity: sha512-bPZqv447REBd1NQfba//FjgUqbUd93zKh7+BWhh3vRZ7Nm+RUgm6c5GbWctmik/rMHjsruTHhusYGyoKyf60pg==}
+  '@rails/activestorage@8.1.300':
+    resolution: {integrity: sha512-AOv3zZrTJjQlzm4L9uzOQtCz6zaM4IqUyux6yzSqmS+PZ8EzwD1F2JAc4LlJNJAv4MSyNYriG+CaCm1QbQTjsA==}
 
   '@rolldown/pluginutils@1.0.0-rc.2':
     resolution: {integrity: sha512-izyXV/v+cHiRfozX62W9htOAvwMo4/bXKDrQ+vom1L1qRuexPock/7VZDAhnpHCLNejd3NJ6hiab+tO0D44Rgw==}
@@ -8329,7 +8329,7 @@ snapshots:
 
   '@rails/actioncable@7.1.3': {}
 
-  '@rails/activestorage@8.1.200':
+  '@rails/activestorage@8.1.300':
     dependencies:
       spark-md5: 3.0.2
 
