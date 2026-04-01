@@ -138,7 +138,10 @@ const removeGroup = async (featureName: string, group: string) => {
   }
 };
 
-const updatePercentageOfActors = async (feature: FeatureItem, percentage: number) => {
+const updatePercentageOfActors = async (
+  feature: FeatureItem,
+  percentage: number,
+) => {
   try {
     await enableAdminFeaturePercentageOfActors(feature.name, { percentage });
     void invalidateFeatures();
@@ -148,7 +151,10 @@ const updatePercentageOfActors = async (feature: FeatureItem, percentage: number
   }
 };
 
-const updatePercentageOfTime = async (feature: FeatureItem, percentage: number) => {
+const updatePercentageOfTime = async (
+  feature: FeatureItem,
+  percentage: number,
+) => {
   try {
     await enableAdminFeaturePercentageOfTime(feature.name, { percentage });
     void invalidateFeatures();
@@ -287,7 +293,8 @@ const hasSelectedActor = computed(() => {
         {{ t("labels.features.selfService") }}
       </BasePill>
       <BasePill v-if="item.percentageOfActors > 0" margin-right>
-        {{ item.percentageOfActors }}% {{ t("labels.features.percentageOfActors") }}
+        {{ item.percentageOfActors }}%
+        {{ t("labels.features.percentageOfActors") }}
       </BasePill>
       <BasePill v-if="item.percentageOfTime > 0" margin-right>
         {{ item.percentageOfTime }}% {{ t("labels.features.percentageOfTime") }}
@@ -332,7 +339,12 @@ const hasSelectedActor = computed(() => {
               min="0"
               max="100"
               :value="item.percentageOfActors"
-              @change="updatePercentageOfActors(item, Number(($event.target as HTMLInputElement).value))"
+              @change="
+                updatePercentageOfActors(
+                  item,
+                  Number(($event.target as HTMLInputElement).value),
+                )
+              "
             />
             <span class="percentage-value">{{ item.percentageOfActors }}%</span>
           </div>
@@ -346,7 +358,12 @@ const hasSelectedActor = computed(() => {
               min="0"
               max="100"
               :value="item.percentageOfTime"
-              @change="updatePercentageOfTime(item, Number(($event.target as HTMLInputElement).value))"
+              @change="
+                updatePercentageOfTime(
+                  item,
+                  Number(($event.target as HTMLInputElement).value),
+                )
+              "
             />
             <span class="percentage-value">{{ item.percentageOfTime }}%</span>
           </div>

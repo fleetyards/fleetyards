@@ -88,7 +88,7 @@ module Admin
 
         def enable_percentage_of_actors
           percentage = params[:percentage].to_i
-          unless (0..100).include?(percentage)
+          unless (0..100).cover?(percentage)
             return render json: {code: "feature.invalid_percentage", message: "Percentage must be between 0 and 100"}, status: :unprocessable_entity
           end
 
@@ -99,7 +99,7 @@ module Admin
 
         def enable_percentage_of_time
           percentage = params[:percentage].to_i
-          unless (0..100).include?(percentage)
+          unless (0..100).cover?(percentage)
             return render json: {code: "feature.invalid_percentage", message: "Percentage must be between 0 and 100"}, status: :unprocessable_entity
           end
 
