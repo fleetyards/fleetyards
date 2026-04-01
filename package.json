@@ -98,7 +98,7 @@
     "@faker-js/faker": "^9.9.0",
     "@pinia/testing": "^1.0.3",
     "@playwright/test": "^1.58.2",
-    "@tanstack/eslint-plugin-query": "^5.91.4",
+    "@tanstack/eslint-plugin-query": "^5.95.2",
     "@tanstack/vue-query-devtools": "^5.91.0",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/ahoy.js": "^0.4.2",

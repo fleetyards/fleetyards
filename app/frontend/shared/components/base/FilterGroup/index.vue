@@ -156,9 +156,9 @@ const loading = computed(() => {
   return isLoading.value || isFetching.value;
 });
 
+/* eslint-disable @tanstack/query/exhaustive-deps */
 const { isLoading, isFetching, data, refetch } = useQuery({
   refetchOnWindowFocus: false,
-  // eslint-disable-next-line @tanstack/query/exhaustive-deps
   queryKey: [
     "filterGroupOptions",
     id.value,
@@ -195,6 +195,7 @@ const { isLoading, isFetching, data, refetch } = useQuery({
   placeholderData: keepPreviousData,
   enabled: !!props.queryFn,
 });
+/* eslint-enable @tanstack/query/exhaustive-deps */
 
 watch(
   () => data.value,
