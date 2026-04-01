@@ -12,6 +12,7 @@ import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordFor
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import SocialLogins from "@/shared/components/SocialLogins/index.vue";
+import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const sessionStore = useSessionStore();
@@ -61,17 +62,17 @@ const socialLogins = ref<InstanceType<typeof SocialLogins> | undefined>();
           <h2 id="two-factor">
             {{ t("headlines.settings.security.twoFactor") }}
             <small>
-              <span
+              <BasePill
                 v-if="sessionStore.currentUser.twoFactorRequired"
-                class="badge badge-success"
+                variant="success"
               >
                 <i class="fa-solid fa-check" />
                 {{ t("labels.enabled") }}
-              </span>
-              <span v-else class="badge badge-danger">
+              </BasePill>
+              <BasePill v-else variant="danger">
                 <i class="fa-solid fa-times" />
                 {{ t("labels.disabled") }}
-              </span>
+              </BasePill>
             </small>
           </h2>
           <div class="two-factor-actions">

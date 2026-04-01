@@ -26,6 +26,13 @@
     color: $gray-light;
     font-size: 110%;
 
+    + .breadcrumb-item::before {
+      float: left;
+      padding-right: 0.5rem;
+      color: $gray-light;
+      content: "/";
+    }
+
     > a {
       color: $gray-lighter;
 

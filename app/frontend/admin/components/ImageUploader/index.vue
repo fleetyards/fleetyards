@@ -13,6 +13,7 @@ import Empty from "@/shared/components/Empty/index.vue";
 import ImageRow from "@/admin/components/ImageUploader/ImageRow/index.vue";
 import type { Image } from "@/services/fyAdminApi";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import UploadProgress from "@/shared/components/UploadProgress/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -250,21 +251,13 @@ const inputFilter = (
 
       <div
         v-show="uploadElement?.active"
-        class="col-xl-5 fileupload-progress fade in"
+        class="col-xl-5 fileupload-progress"
       >
         <span class="fileupload-process">
           {{ formatSize(speed) }}
         </span>
 
-        <div class="progress">
-          <div
-            class="progress-bar progress-bar-animated progress-bar-info progress-bar-striped"
-            role="progressbar"
-            :style="{ width: progress + '%' }"
-          >
-            {{ progress }} %
-          </div>
-        </div>
+        <UploadProgress :progress="progress" :active="true" />
       </div>
     </div>
 

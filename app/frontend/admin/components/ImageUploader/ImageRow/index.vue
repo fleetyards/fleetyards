@@ -13,6 +13,7 @@ import { formatSize } from "@/shared/utils/Format";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { Image } from "@/services/fyAdminApi";
 import type { VueUploadItem } from "vue-upload-component";
+import UploadProgress from "@/shared/components/UploadProgress/index.vue";
 import { useUpdateImage as useUpdateImageMutation } from "@/services/fyAdminApi";
 import { useDestroyImage as useDestroyImageMutation } from "@/services/fyAdminApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -239,25 +240,15 @@ const updateCaption = debounce(debouncedUpdateCaption, 500);
           {{ t("models.image.processing") }}
           {{ formatSize(speed) }}
         </p>
-        <div
+        <UploadProgress
           v-if="
             (internalImage as VueUploadItem).active ||
             (internalImage as VueUploadItem).progress !== '0.00'
           "
-          class="progress"
-        >
-          <div
-            class="progress-bar progress-bar-info progress-bar-striped"
-            :class="{
-              'progress-bar-danger': (internalImage as VueUploadItem).error,
-              'progress-bar-animated': (internalImage as VueUploadItem).active,
-            }"
-            role="progressbar"
-            :style="{ width: (internalImage as VueUploadItem).progress + '%' }"
-          >
-            {{ (internalImage as VueUploadItem).progress }} %
-          </div>
-        </div>
+          :progress="parseFloat(String((internalImage as VueUploadItem).progress))"
+          :active="!!(internalImage as VueUploadItem).active"
+          :error="!!(internalImage as VueUploadItem).error"
+        />
       </template>
     </div>
     <div v-if="internalImage.size" class="size">
