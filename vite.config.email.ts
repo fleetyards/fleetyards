@@ -8,7 +8,7 @@ export default defineConfig({
     outDir: resolve(__dirname, "public/vite-test"),
     emptyOutDir: false,
     manifest: true,
-    rollupOptions: {
+    rolldownOptions: {
       input: {
         "entrypoints/email": resolve(
           __dirname,

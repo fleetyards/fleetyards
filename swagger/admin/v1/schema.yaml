@@ -970,6 +970,94 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/FeatureGroupInput"
+  "/features/{id}/enable-percentage-of-actors":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Enable Feature for Percentage of Actors
+      operationId: enableAdminFeaturePercentageOfActors
+      tags:
+      - Features
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeaturePercentageInput"
+  "/features/{id}/enable-percentage-of-time":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Enable Feature for Percentage of Time
+      operationId: enableAdminFeaturePercentageOfTime
+      tags:
+      - Features
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeaturePercentageInput"
   "/features/{id}/enable":
     parameters:
     - name: id
@@ -6458,6 +6546,10 @@ components:
           type: string
         selfService:
           type: boolean
+        percentageOfActors:
+          type: number
+        percentageOfTime:
+          type: number
         groups:
           type: array
           items:
@@ -6471,6 +6563,8 @@ components:
       - name
       - state
       - selfService
+      - percentageOfActors
+      - percentageOfTime
       - groups
       - actors
       title: Feature
@@ -6519,6 +6613,17 @@ components:
       required:
       - name
       title: FeatureInput
+    FeaturePercentageInput:
+      type: object
+      properties:
+        percentage:
+          type: integer
+          minimum: 0
+          maximum: 100
+      additionalProperties: false
+      required:
+      - percentage
+      title: FeaturePercentageInput
     Fleet:
       type: object
       properties:

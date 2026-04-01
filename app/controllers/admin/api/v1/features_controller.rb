@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class FeaturesController < ::Admin::Api::BaseController
-        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group toggle_self_service destroy]
+        before_action :set_feature, only: %i[show enable disable enable_actor disable_actor enable_group disable_group enable_percentage_of_actors enable_percentage_of_time toggle_self_service destroy]
 
         def index
           authorize! with: ::Admin::FeaturePolicy
@@ -82,6 +82,28 @@ module Admin
           return not_found("Group not found") unless Flipper.group_exists?(group_name)
 
           @feature.disable_group(group_name)
+
+          render :show
+        end
+
+        def enable_percentage_of_actors
+          percentage = params[:percentage].to_i
+          unless (0..100).cover?(percentage)
+            return render json: {code: "feature.invalid_percentage", message: "Percentage must be between 0 and 100"}, status: :unprocessable_entity
+          end
+
+          @feature.enable_percentage_of_actors(percentage)
+
+          render :show
+        end
+
+        def enable_percentage_of_time
+          percentage = params[:percentage].to_i
+          unless (0..100).cover?(percentage)
+            return render json: {code: "feature.invalid_percentage", message: "Percentage must be between 0 and 100"}, status: :unprocessable_entity
+          end
+
+          @feature.enable_percentage_of_time(percentage)
 
           render :show
         end
