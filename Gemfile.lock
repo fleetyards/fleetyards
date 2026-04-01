@@ -252,12 +252,14 @@ GEM
     ffi (1.17.3-arm64-darwin)
     ffi (1.17.3-x86_64-linux-gnu)
     fiber-storage (1.0.1)
-    flatware (2.3.4)
+    flatware (2.4.0)
+      benchmark
       drb
+      logger
       thor (< 2.0)
-    flatware-rspec (2.3.4)
-      flatware (= 2.3.4)
-      rspec (>= 3.6)
+    flatware-rspec (2.4.0)
+      flatware (= 2.4.0)
+      rspec (>= 3.8)
     flipper (1.4.1)
       concurrent-ruby (< 2)
     flipper-active_record (1.4.1)
