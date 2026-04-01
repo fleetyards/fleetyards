@@ -172,6 +172,11 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"
-    ]
+    ],
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "vite-plugin-pwa>vite": "8"
+      }
+    }
   }
 }
