@@ -98,6 +98,8 @@
           "groups": "Groups",
           "actors": "Actors",
           "selfService": "Self-Service",
+          "percentageOfActors": "Percentage of Actors",
+          "percentageOfTime": "Percentage of Time",
           "addActor": "Add Actor"
         },
         "rsiApiStatus": {

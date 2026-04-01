@@ -39,6 +39,8 @@
         "user": "User",
         "fleet": "Fleet",
         "actorType": "Actor Type",
+        "percentageOfActors": "of actors",
+        "percentageOfTime": "of time",
         "currentState": "Current State",
         "settingsIntro": "Enable or disable experimental features for your account. These features may be incomplete or change without notice.",
         "noFeaturesAvailable": "No self-service features are currently available.",

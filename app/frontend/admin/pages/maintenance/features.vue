@@ -24,6 +24,8 @@ import {
   disableAdminFeatureActor,
   enableAdminFeatureGroup,
   disableAdminFeatureGroup,
+  enableAdminFeaturePercentageOfActors,
+  enableAdminFeaturePercentageOfTime,
   toggleAdminFeatureSelfService,
   createAdminFeature,
   destroyAdminFeature,
@@ -131,6 +133,26 @@ const removeGroup = async (featureName: string, group: string) => {
     await disableAdminFeatureGroup(featureName, { group });
     void invalidateFeatures();
     displaySuccess({ text: t("messages.features.groupRemoved") });
+  } catch {
+    displayAlert({ text: t("messages.features.error") });
+  }
+};
+
+const updatePercentageOfActors = async (feature: FeatureItem, percentage: number) => {
+  try {
+    await enableAdminFeaturePercentageOfActors(feature.name, { percentage });
+    void invalidateFeatures();
+    displaySuccess({ text: t("messages.features.updated") });
+  } catch {
+    displayAlert({ text: t("messages.features.error") });
+  }
+};
+
+const updatePercentageOfTime = async (feature: FeatureItem, percentage: number) => {
+  try {
+    await enableAdminFeaturePercentageOfTime(feature.name, { percentage });
+    void invalidateFeatures();
+    displaySuccess({ text: t("messages.features.updated") });
   } catch {
     displayAlert({ text: t("messages.features.error") });
   }
@@ -264,6 +286,12 @@ const hasSelectedActor = computed(() => {
       <BasePill v-if="item.selfService" margin-right>
         {{ t("labels.features.selfService") }}
       </BasePill>
+      <BasePill v-if="item.percentageOfActors > 0" margin-right>
+        {{ item.percentageOfActors }}% {{ t("labels.features.percentageOfActors") }}
+      </BasePill>
+      <BasePill v-if="item.percentageOfTime > 0" margin-right>
+        {{ item.percentageOfTime }}% {{ t("labels.features.percentageOfTime") }}
+      </BasePill>
       <BasePill v-if="item.groups.length > 0" margin-right>
         {{ item.groups.join(", ") }}
       </BasePill>
@@ -294,6 +322,34 @@ const hasSelectedActor = computed(() => {
             data-test="toggle-self-service"
             @toggle="toggleSelfServiceFlag(item)"
           />
+        </div>
+
+        <div class="edit-section" data-test="edit-section">
+          <h4>{{ t("headlines.admin.features.percentageOfActors") }}</h4>
+          <div class="edit-percentage">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              :value="item.percentageOfActors"
+              @change="updatePercentageOfActors(item, Number(($event.target as HTMLInputElement).value))"
+            />
+            <span class="percentage-value">{{ item.percentageOfActors }}%</span>
+          </div>
+        </div>
+
+        <div class="edit-section" data-test="edit-section">
+          <h4>{{ t("headlines.admin.features.percentageOfTime") }}</h4>
+          <div class="edit-percentage">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              :value="item.percentageOfTime"
+              @change="updatePercentageOfTime(item, Number(($event.target as HTMLInputElement).value))"
+            />
+            <span class="percentage-value">{{ item.percentageOfTime }}%</span>
+          </div>
         </div>
 
         <div class="edit-section" data-test="edit-section">
@@ -401,6 +457,22 @@ const hasSelectedActor = computed(() => {
   h4 {
     margin: 0 0 0.5rem;
     font-size: 0.9rem;
+  }
+}
+
+.edit-percentage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  input[type="range"] {
+    flex: 1;
+  }
+
+  .percentage-value {
+    min-width: 3rem;
+    text-align: right;
+    font-weight: 600;
   }
 }
 

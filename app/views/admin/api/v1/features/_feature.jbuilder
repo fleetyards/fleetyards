@@ -5,6 +5,9 @@ json.state feature.state.to_s
 
 json.selfService FeatureSetting.self_service?(feature.name)
 
+json.percentageOfActors feature.percentage_of_actors_value
+json.percentageOfTime feature.percentage_of_time_value
+
 json.groups feature.groups_value.to_a
 
 actors = feature.actors_value.to_a
