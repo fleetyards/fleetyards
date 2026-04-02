@@ -66,7 +66,6 @@
     "lodash.debounce": "4.0.8",
     "lodash.merge": "^4.6.2",
     "mitt": "^3.0.1",
-    "motion-v": "^1.10.3",
     "nanoevents": "^9.1.0",
     "nprogress": "0.2.0",
     "panzoom": "9.4.4",
