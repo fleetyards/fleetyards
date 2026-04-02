@@ -15,6 +15,7 @@ module Admin
 
       skip_before_action :track_ahoy_visit
 
+      before_action :set_locale
       before_action :authenticate_admin_user!
 
       verify_authorized
@@ -31,6 +32,16 @@ module Admin
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|
         render json: {code: "not_found", message: I18n.t("errors.not_found.message")}, status: :not_found
+      end
+
+      private def set_locale
+        I18n.locale = extract_locale || I18n.default_locale
+      end
+
+      private def extract_locale
+        parsed_locale = params[:locale] || request.env["HTTP_ACCEPT_LANGUAGE"] || ""
+
+        AcceptLanguage.parse(parsed_locale).match(*I18n.available_locales)
       end
 
       private def current_user
