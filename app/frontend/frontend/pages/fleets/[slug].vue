@@ -84,7 +84,7 @@ useFleetMeta(resolvedFleet);
     <template #resolved>
       <AsyncData :async-status="asyncMembershipStatus" :hide-error="true">
         <template #resolved>
-          <AccessCheck :resource-access="membership?.fleetRole.resourceAccess">
+          <AccessCheck :resource-access="membership?.fleetRole?.resourceAccess">
             <template #granted>
               <router-view :fleet="resolvedFleet" :membership="membership" />
             </template>
