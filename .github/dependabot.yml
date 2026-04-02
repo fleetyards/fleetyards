@@ -20,6 +20,11 @@ updates:
     labels:
       - dependencies
       - javascript
+    groups:
+      playwright:
+        patterns:
+          - "playwright"
+          - "@playwright/*"
 
   - package-ecosystem: docker
     directory: /
