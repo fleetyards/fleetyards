@@ -380,8 +380,8 @@ importers:
         specifier: 1.2.0
         version: 1.2.0(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2))(workbox-build@7.4.0(@types/babel__core@7.20.5))(workbox-window@7.4.0)
       vite-plugin-rails:
-        specifier: 0.5.0
-        version: 0.5.0(rollup@4.59.0)(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2))
+        specifier: 0.6.0
+        version: 0.6.0(rollup@2.80.0)(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2))
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@24.12.0)(jiti@2.6.1)(jsdom@26.1.0)(lightningcss@1.32.0)(msw@2.12.14(@types/node@24.12.0)(typescript@5.9.3))(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2)
@@ -5668,11 +5668,14 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  rollup-plugin-gzip@3.1.2:
-    resolution: {integrity: sha512-9xemMyvCjkklgNpu6jCYqQAbvCLJzA2nilkiOGzFuXTUX3cXEFMwIhsIBRF7kTKD/SnZ1tNPcxFm4m4zJ3VfNQ==}
+  rollup-plugin-gzip@4.2.0:
+    resolution: {integrity: sha512-XDs02OO6B5cJBQ6leATfdGJPJ9HPuQ841e21LVrbfcBL10gAcA/uxsXnherbUp3T/U9SWpfKKGpfqB4DSBisHw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       rollup: '>=2.0.0'
+    peerDependenciesMeta:
+      rollup:
+        optional: true
 
   rollup@2.80.0:
     resolution: {integrity: sha512-cIFJOD1DESzpjOBl763Kp1AH7UE/0fcdHe6rZXUdQ9c50uvgigvW97u3IcSeBwOkgqL/PXPBktBCh0KEu5L8XQ==}
@@ -6555,13 +6558,13 @@ packages:
       '@vite-pwa/assets-generator':
         optional: true
 
-  vite-plugin-rails@0.5.0:
-    resolution: {integrity: sha512-PR3zTHW96X8c7dRsuL2Mu1EAXXeO8fQjQ2KanwIC7EWgBST+D8AKjJyEUAr13IakrIYvd1cM3LcQUcrKmCMePg==}
+  vite-plugin-rails@0.6.0:
+    resolution: {integrity: sha512-4Ze5Up+RD0QwF03WauEYtAaJU1SKWDHnojsDbyEQk4GZfp0alRuPWipOphFEla69VKrhw2adz5xmfRzr5wHb+A==}
     peerDependencies:
       vite: '>=5.0.0'
 
-  vite-plugin-ruby@5.1.3:
-    resolution: {integrity: sha512-vpTOKbR6AmnupmXvQccRcr/jIY+oobNuCbNJHUzkT8oQ2BBQSlp22Xec3zszBBc7GjwDGn2+E+IQoNRXdEY7Ig==}
+  vite-plugin-ruby@5.2.1:
+    resolution: {integrity: sha512-wI3F/Yr4e4mEwiMff/cvNwGu8nZok5wrwUjHxO8we+h3y9+qCluO3Y5dzvz6vHJDBya9fKXkltoMwoJhaB2SRg==}
     peerDependencies:
       vite: '>=5.0.0'
 
@@ -12662,9 +12665,9 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.0.0-rc.12
       '@rolldown/binding-win32-x64-msvc': 1.0.0-rc.12
 
-  rollup-plugin-gzip@3.1.2(rollup@4.59.0):
-    dependencies:
-      rollup: 4.59.0
+  rollup-plugin-gzip@4.2.0(rollup@2.80.0):
+    optionalDependencies:
+      rollup: 2.80.0
 
   rollup@2.80.0:
     optionalDependencies:
@@ -13673,26 +13676,24 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vite-plugin-rails@0.5.0(rollup@4.59.0)(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2)):
+  vite-plugin-rails@0.6.0(rollup@2.80.0)(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2)):
     dependencies:
-      rollup-plugin-gzip: 3.1.2(rollup@4.59.0)
+      rollup-plugin-gzip: 4.2.0(rollup@2.80.0)
       vite: 8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2)
       vite-plugin-environment: 1.1.3(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2))
       vite-plugin-full-reload: 1.2.0
       vite-plugin-manifest-sri: 0.2.0
-      vite-plugin-ruby: 5.1.3(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2))
+      vite-plugin-ruby: 5.2.1(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2))
       vite-plugin-stimulus-hmr: 3.0.0
     transitivePeerDependencies:
       - rollup
       - supports-color
 
-  vite-plugin-ruby@5.1.3(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2)):
+  vite-plugin-ruby@5.2.1(vite@8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2)):
     dependencies:
-      debug: 4.4.3(supports-color@8.1.1)
-      fast-glob: 3.3.3
+      obug: 2.1.1
+      tinyglobby: 0.2.15
       vite: 8.0.3(@types/node@24.12.0)(esbuild@0.27.3)(jiti@2.6.1)(sass@1.97.3)(terser@5.46.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - supports-color
 
   vite-plugin-stimulus-hmr@3.0.0:
     dependencies:
