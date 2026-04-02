@@ -24,7 +24,7 @@ jobs:
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - uses: cachix/cachix-action@v11
+      - uses: cachix/cachix-action@v17
         with:
           name: fleetyards
           signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
