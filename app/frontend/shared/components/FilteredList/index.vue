@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import ServerError from "@/shared/components/ServerError/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -72,6 +73,10 @@ const filterTooltip = computed(() => {
   }
 
   return t("filteredList.actions.showFilter");
+});
+
+const error = computed(() => {
+  return props.asyncStatus.isError.value;
 });
 
 const emptyVisible = computed(() => {
@@ -176,7 +181,17 @@ const toggleFilter = () => {
           }"
           class="col-12 col-animated"
         >
-          <slot v-if="!hideLoading && loading" name="loader" :loading="loading">
+          <slot v-if="error" name="error">
+            <transition name="fade">
+              <ServerError />
+            </transition>
+          </slot>
+
+          <slot
+            v-else-if="!hideLoading && loading"
+            name="loader"
+            :loading="loading"
+          >
             <Loader :loading="loading" fixed />
           </slot>
 
