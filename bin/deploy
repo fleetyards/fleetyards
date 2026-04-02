@@ -2,4 +2,5 @@
 set -euo pipefail
 
 set +a
-kamal deploy -d live "$@"
+export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
+bundle exec kamal deploy -d live --skip-push "$@"

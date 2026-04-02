@@ -2,4 +2,5 @@
 set -euo pipefail
 
 set +a
-kamal deploy -d stage "$@"
+export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_STAGE/credential")
+bundle exec kamal deploy -d stage --skip-push "$@"
