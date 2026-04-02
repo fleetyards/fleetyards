@@ -14,13 +14,6 @@ servers:
 
 proxy:
   ssl: false
-  hosts:
-    - fleetyards.net
-    - www.fleetyards.net
-    - api.fleetyards.net
-    - admin.fleetyards.net
-    - docs.fleetyards.net
-    - fltyrd.net
 
 env:
   clear:
