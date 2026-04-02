@@ -20,7 +20,6 @@ import {
   ComponentTypeEnum,
   type ComponentQuantumDrive,
   type Component,
-  type ComponentTypeData,
 } from "@/services/fyApi";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
@@ -73,7 +72,7 @@ const storeImage = (component: Component) => {
 };
 
 const isQuantumDrive = (
-  typeData?: ComponentTypeData,
+  typeData?: Component["typeData"],
 ): typeData is ComponentQuantumDrive => {
   return !!typeData && "fuelRate" in typeData;
 };

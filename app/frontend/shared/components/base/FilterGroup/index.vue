@@ -17,11 +17,7 @@ import {
   keepPreviousData,
   useQuery,
 } from "@tanstack/vue-query";
-import {
-  type BaseList,
-  type FilterOption,
-  type FilterOptionValue,
-} from "@/services/fyApi";
+import { type BaseList, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { InputVariantsEnum } from "@/shared/components/base/FormInput/types";
@@ -94,6 +90,8 @@ const props = withDefaults(defineProps<Props>(), {
   bigIcon: false,
   hideSelected: false,
 });
+
+type FilterOptionValue = FilterOption["value"];
 
 const { t, tExists } = useI18n();
 
