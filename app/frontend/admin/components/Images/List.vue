@@ -12,7 +12,11 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
-import { useImages as useImagesQuery } from "@/services/fyAdminApi";
+import {
+  useImages as useImagesQuery,
+  getImagesQueryKey,
+} from "@/services/fyAdminApi";
+import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useImageFilters } from "@/admin/composables/useImageFilters";
 import DirectUpload, {
@@ -59,21 +63,24 @@ const routeQuery = computed(() => {
   return (route.query.q || {}) as ImageQuery;
 });
 
-const { perPage, page, updatePerPage } = usePagination(props.name);
-
-const { data, refetch, ...asyncStatus } = useImagesQuery({
+const imagesQueryParams = computed(() => ({
   page: page.value,
   perPage: perPage.value,
   q: routeQuery.value,
-});
+}));
 
-watch(
-  () => route.query,
-  async () => {
-    await refetch();
-  },
-  { deep: true },
+const imagesQueryKey = computed(() =>
+  getImagesQueryKey(imagesQueryParams.value),
 );
+
+const { perPage, page, updatePerPage } = usePagination(imagesQueryKey);
+
+const { data, ...asyncStatus } = useImagesQuery(imagesQueryParams);
+
+const queryClient = useQueryClient();
+
+const invalidateImages = () =>
+  queryClient.invalidateQueries({ queryKey: getImagesQueryKey() });
 
 const attachMutation = useCreateImageMutation();
 
@@ -91,7 +98,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
       },
     });
 
-    await refetch();
+    await invalidateImages();
   }
 };
 
