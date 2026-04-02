@@ -8,7 +8,7 @@ gem "rails", "8.1.3"
 
 gem "pg", "~> 1.0"
 
-gem "sidekiq", "~> 8.0"
+gem "sidekiq", "~> 8.1"
 gem "sidekiq-scheduler"
 gem "sidekiq-failures"
 

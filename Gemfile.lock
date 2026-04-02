@@ -671,7 +671,7 @@ GEM
       actionpack (>= 5)
       redis-rack (>= 2.1.0, < 4)
       redis-store (>= 1.1.0, < 2)
-    redis-client (0.27.0)
+    redis-client (0.28.0)
       connection_pool
     redis-rack (3.0.0)
       rack-session (>= 0.2.0)
@@ -766,12 +766,12 @@ GEM
     securerandom (0.4.1)
     shoulda-matchers (7.0.1)
       activesupport (>= 7.1)
-    sidekiq (8.0.10)
-      connection_pool (>= 2.5.0)
-      json (>= 2.9.0)
-      logger (>= 1.6.2)
-      rack (>= 3.1.0)
-      redis-client (>= 0.23.2)
+    sidekiq (8.1.2)
+      connection_pool (>= 3.0.0)
+      json (>= 2.16.0)
+      logger (>= 1.7.0)
+      rack (>= 3.2.0)
+      redis-client (>= 0.26.0)
     sidekiq-failures (1.1.0)
       sidekiq (>= 4.0.0)
     sidekiq-scheduler (6.0.1)
@@ -973,7 +973,7 @@ DEPENDENCIES
   rswag-schema_components
   rswag-specs
   shoulda-matchers
-  sidekiq (~> 8.0)
+  sidekiq (~> 8.1)
   sidekiq-failures
   sidekiq-scheduler
   simplecov
