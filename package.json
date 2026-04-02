@@ -99,7 +99,7 @@
     "@pinia/testing": "^1.0.3",
     "@playwright/test": "^1.58.2",
     "@tanstack/eslint-plugin-query": "^5.96.1",
-    "@tanstack/vue-query-devtools": "^5.91.0",
+    "@tanstack/vue-query-devtools": "^6.1.12",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/ahoy.js": "^0.4.2",
     "@types/downloadjs": "^1.4.6",
