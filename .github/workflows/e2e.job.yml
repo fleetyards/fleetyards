@@ -55,7 +55,7 @@ jobs:
       - uses: ./.github/workflows/js-setup-action
       - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
       - name: install dependencies
-        uses: Eeems-Org/apt-cache-action@v1.3
+        uses: Eeems-Org/apt-cache-action@v1.5
         with:
           packages: imagemagick libmagickwand-dev
       - name: Setup DB
