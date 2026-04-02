@@ -136,8 +136,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0
       panzoom:
-        specifier: 9.4.3
-        version: 9.4.3
+        specifier: 9.4.4
+        version: 9.4.4
       papaparse:
         specifier: 5.5.3
         version: 5.5.3
@@ -5261,8 +5261,8 @@ packages:
   package-json-from-dist@1.0.1:
     resolution: {integrity: sha512-UEZIS3/by4OC8vL3P2dTXRETpebLI2NiI5vIrjaD/5UtrkFX/tNbwjTSRAGC/+7CAo2pIcBaRgWmcBBHcsaCIw==}
 
-  panzoom@9.4.3:
-    resolution: {integrity: sha512-xaxCpElcRbQsUtIdwlrZA90P90+BHip4Vda2BC8MEb4tkI05PmR6cKECdqUCZ85ZvBHjpI9htJrZBxV5Gp/q/w==}
+  panzoom@9.4.4:
+    resolution: {integrity: sha512-r1KfkNZvsBw59IPq7Yy+GWZnZE1YCG/t7aG6caSkij/TBqdxTzmxNTm/lHf3h6qlVMFisIGIO+lgS2Ym23PIoA==}
 
   papaparse@5.5.3:
     resolution: {integrity: sha512-5QvjGxYVjxO59MGU2lHVYpRWBBtKHnlIAcSe1uNFCkkptUh63NFRj0FJQm7nR67puEruUci/ZkjmEFrjCAyP4A==}
@@ -12299,7 +12299,7 @@ snapshots:
 
   package-json-from-dist@1.0.1: {}
 
-  panzoom@9.4.3:
+  panzoom@9.4.4:
     dependencies:
       amator: 1.1.0
       ngraph.events: 1.4.0
