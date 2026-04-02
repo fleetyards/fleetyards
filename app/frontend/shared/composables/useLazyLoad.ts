@@ -36,7 +36,7 @@ export const useLazyLoad = (
   let observer: IntersectionObserver | null = null;
 
   const setupObserver = () => {
-    if (!target.value) return;
+    if (!target.value || !(target.value instanceof Element)) return;
 
     observer?.disconnect();
 
@@ -61,7 +61,7 @@ export const useLazyLoad = (
 
   watch(target, (el) => {
     if (el) {
-      setupObserver();
+      nextTick(setupObserver);
     }
   });
 

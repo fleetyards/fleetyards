@@ -62,13 +62,13 @@ const scrollDown = () => {
 };
 
 const routeForImage = (image: Image) => {
-  if (!image.gallery) {
+  if (!image.gallery?.slug) {
     return undefined;
   }
 
   return {
     name: "ship-images",
-    params: { slug: image.gallery?.slug },
+    params: { slug: image.gallery.slug },
   };
 };
 </script>
