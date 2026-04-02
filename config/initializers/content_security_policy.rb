@@ -36,7 +36,8 @@ Rails.application.configure do
       s3_endpoint, storage_cdn_endpoint,
       "https://www.gstatic.com",
       "https://cdn.jsdelivr.net",
-      "https://stackpath.bootstrapcdn.com"
+      "https://stackpath.bootstrapcdn.com",
+      "https://appsignal-endpoint.net"
     ].compact
 
     connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development? || Rails.env.test?
