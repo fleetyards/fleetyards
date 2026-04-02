@@ -6,4 +6,4 @@ if [ -n "$KAMAL_DESTINATION" ]; then
 fi
 
 echo "Running database migrations..."
-kamal app exec $DEST_FLAG --roles=web 'bin/rails db:migrate'
+kamal app exec $DEST_FLAG --roles=web --primary 'bin/rails db:migrate'
