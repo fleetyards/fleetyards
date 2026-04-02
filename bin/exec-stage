@@ -2,7 +2,8 @@
 set -euo pipefail
 
 set +a
+export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_STAGE/credential")
 
 ROLE="${1:-web}"
 shift 2>/dev/null || true
-kamal app exec -d stage -r "$ROLE" "$@"
+bundle exec kamal app exec -d stage -r "$ROLE" "$@"
