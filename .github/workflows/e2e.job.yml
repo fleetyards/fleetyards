@@ -81,7 +81,7 @@ jobs:
         run: pnpm playwright install-deps
       - name: Run e2e Tests
         run: pnpm test:e2e:run --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: blob-report-${{ matrix.shardIndex }}-attempt-${{ github.run_attempt }}
@@ -110,7 +110,7 @@ jobs:
         run: pnpm playwright merge-reports --reporter html ./all-blob-reports
 
       - name: Upload HTML report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: html-report--attempt-${{ github.run_attempt }}
           path: playwright-report
