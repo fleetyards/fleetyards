@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DESTINATION="${DESTINATION:-live}"
+MAINTENANCE_HTML="$SCRIPT_DIR/maintenance.html"
+
+usage() {
+  echo "Usage: .kamal/maintenance <on|off>"
+  echo ""
+  echo "  on   - Enable maintenance mode (stops app, sets error response)"
+  echo "  off  - Disable maintenance mode (deploys app)"
+  echo ""
+  echo "Environment variables:"
+  echo "  DESTINATION  - Kamal destination (default: live)"
+  exit 1
+}
+
+maintenance_on() {
+  echo "==> Enabling maintenance mode on '$DESTINATION'..."
+
+  if [ ! -f "$MAINTENANCE_HTML" ]; then
+    echo "Error: $MAINTENANCE_HTML not found"
+    exit 1
+  fi
+
+  echo "==> Setting maintenance error response..."
+  kamal proxy set-error-response -d "$DESTINATION" --status 503 --body-file "$MAINTENANCE_HTML"
+
+  echo "==> Stopping app..."
+  kamal app stop -d "$DESTINATION"
+
+  echo ""
+  echo "Maintenance mode enabled."
+  echo "Remember to update the Hetzner LB health check to accept 503 status codes."
+}
+
+maintenance_off() {
+  echo "==> Disabling maintenance mode on '$DESTINATION'..."
+
+  echo "==> Deploying app..."
+  kamal deploy -d "$DESTINATION"
+
+  echo "==> Clearing maintenance error response..."
+  kamal proxy clear-error-response -d "$DESTINATION"
+
+  echo ""
+  echo "Maintenance mode disabled."
+  echo "Remember to revert the Hetzner LB health check to accept only 200 status codes."
+}
+
+case "${1:-}" in
+  on)  maintenance_on ;;
+  off) maintenance_off ;;
+  *)   usage ;;
+esac
