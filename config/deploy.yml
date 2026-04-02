@@ -22,13 +22,6 @@ servers:
 proxy:
   ssl: true
   forward_headers: true
-  hosts:
-    - fleetyards.net
-    - www.fleetyards.net
-    - api.fleetyards.net
-    - admin.fleetyards.net
-    - docs.fleetyards.net
-    - fltyrd.net
   app_port: 3000
   healthcheck:
     interval: 3

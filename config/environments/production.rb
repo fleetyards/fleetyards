@@ -10,7 +10,8 @@ Rails.application.configure do
   config.hosts << Rails.configuration.app.short_domain
 
   # Redirect www to apex domain
-  config.middleware.insert_before ActionDispatch::SSL, Rack::Rewrite do
+  rewrite_target = config.force_ssl ? ActionDispatch::SSL : ActionDispatch::HostAuthorization
+  config.middleware.insert_before rewrite_target, Rack::Rewrite do
     r301 %r{.*}, ->(match, rack_env) {
       "https://#{rack_env["SERVER_NAME"].sub(/\Awww\./, "")}#{rack_env["PATH_INFO"]}"
     }, if: ->(rack_env) { rack_env["SERVER_NAME"]&.start_with?("www.") }

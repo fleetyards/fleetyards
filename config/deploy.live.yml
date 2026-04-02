@@ -13,7 +13,14 @@ servers:
 <%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
 
 proxy:
-  host: fleetyards.net
+  ssl: false
+  hosts:
+    - fleetyards.net
+    - www.fleetyards.net
+    - api.fleetyards.net
+    - admin.fleetyards.net
+    - docs.fleetyards.net
+    - fltyrd.net
 
 env:
   clear:
