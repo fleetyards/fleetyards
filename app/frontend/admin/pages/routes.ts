@@ -135,6 +135,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/maintenance",
     name: "admin-maintenance",
+    component: () => import("@/admin/pages/maintenance.vue"),
     children: maintenanceRoutes,
     redirect: { name: maintenanceRoutes[0].name },
     meta: {
