@@ -16,6 +16,8 @@ module Maintenance
       end
 
       def process(record)
+        record.define_singleton_method(:has_new_attachments?) { false }
+
         self.class::FIELD_MAPPINGS.each do |carrierwave_field, active_storage_field|
           migrate_field(record, carrierwave_field, active_storage_field)
         end
