@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.1](https://github.com/fleetyards/fleetyards/compare/v6.0.0...v6.0.1) (2026-04-03)
+
+
+### Bug Fixes
+
+* **deploy:** Write REVISION file during Docker build for admin UI git version ([30d33fb](https://github.com/fleetyards/fleetyards/commit/30d33fb0fd77bd71fa30b97e948b7286810ba543))
+
 ### [6.0.0](https://github.com/fleetyards/fleetyards/compare/v5.33.2...v6.0.0) (2026-04-03)
 
 
