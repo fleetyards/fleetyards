@@ -45,8 +45,10 @@ module Imports
     serialize :import_data, coder: YAML
 
     def set_import_data
-      data = if import.attached?
-        JSON.parse(import.blob.download)
+      data = if attachment_changes["import"].present?
+        JSON.parse(attachment_changes["import"].attachable.read)
+      elsif import.attached?
+        JSON.parse(import.download)
       end
 
       self.import_data = (data || []).map do |item|
