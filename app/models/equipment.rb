@@ -45,7 +45,7 @@ class Equipment < ApplicationRecord
 
   before_save :update_slugs
 
-  mount_uploader :store_image, StoreImageUploader
+  # TODO: Equipment model appears unused — remove entirely in a future cleanup
 
   ransack_alias :name, :name_or_slug
 

@@ -40,16 +40,11 @@ class ModelModulePackage < ApplicationRecord
     dependent: :destroy
   has_many :model_modules, through: :module_package_items
 
-  mount_uploader :store_image, StoreImageUploader
-  mount_uploader :top_view, FleetchartImageUploader
-  mount_uploader :side_view, FleetchartImageUploader
-  mount_uploader :angled_view, FleetchartImageUploader
-
-  has_one_attached :new_store_image
-  has_one_attached :new_top_view
-  has_one_attached :new_side_view
+  has_one_attached :store_image
+  has_one_attached :top_view
+  has_one_attached :side_view
   has_one_attached :front_view
-  has_one_attached :new_angled_view
+  has_one_attached :angled_view
 
   accepts_nested_attributes_for :module_package_items, allow_destroy: true
 

@@ -55,20 +55,13 @@ class ModelPaint < ApplicationRecord
   has_many :vehicles, dependent: :nullify
   has_many :item_prices, as: :item, dependent: :destroy
 
-  mount_uploader :store_image, StoreImageUploader
-  mount_uploader :rsi_store_image, StoreImageUploader
-  mount_uploader :fleetchart_image, FleetchartImageUploader
-  mount_uploader :top_view, FleetchartImageUploader
-  mount_uploader :side_view, FleetchartImageUploader
-  mount_uploader :angled_view, FleetchartImageUploader
-
-  has_one_attached :new_store_image
-  has_one_attached :new_rsi_store_image
-  has_one_attached :new_fleetchart_image
-  has_one_attached :new_top_view
-  has_one_attached :new_side_view
+  has_one_attached :store_image
+  has_one_attached :rsi_store_image
+  has_one_attached :fleetchart_image
+  has_one_attached :top_view
+  has_one_attached :side_view
   has_one_attached :front_view
-  has_one_attached :new_angled_view
+  has_one_attached :angled_view
 
   def self.ransackable_attributes(auth_object = nil)
     [

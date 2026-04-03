@@ -2,7 +2,7 @@
 
 json.username user.username
 json.avatar do
-  json.partial! "api/v1/shared/file", record: user, attr: :new_avatar, old_attr: :avatar
+  json.partial! "api/v1/shared/file", record: user, attr: :avatar
 end
 json.rsi_handle user.rsi_handle
 json.discord user.discord

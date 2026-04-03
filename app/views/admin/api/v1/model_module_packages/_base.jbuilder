@@ -11,16 +11,16 @@ json.pledge_price model_module_package.pledge_price
 json.media({})
 json.media do
   json.angled_view do
-    json.partial! "api/v1/shared/file", record: model_module_package, attr: :new_angled_view, old_attr: :angled_view, width: model_module_package.angled_view_width, height: model_module_package.angled_view_height
+    json.partial! "api/v1/shared/file", record: model_module_package, attr: :angled_view
   end
   json.side_view do
-    json.partial! "api/v1/shared/file", record: model_module_package, attr: :new_side_view, old_attr: :side_view, width: model_module_package.side_view_width, height: model_module_package.side_view_height
+    json.partial! "api/v1/shared/file", record: model_module_package, attr: :side_view
   end
   json.store_image do
-    json.partial! "api/v1/shared/file", record: model_module_package, attr: :new_store_image, old_attr: :store_image, width: model_module_package.store_image_width, height: model_module_package.store_image_height
+    json.partial! "api/v1/shared/file", record: model_module_package, attr: :store_image
   end
   json.top_view do
-    json.partial! "api/v1/shared/file", record: model_module_package, attr: :new_top_view, old_attr: :top_view, width: model_module_package.top_view_width, height: model_module_package.top_view_height
+    json.partial! "api/v1/shared/file", record: model_module_package, attr: :top_view
   end
 end
 

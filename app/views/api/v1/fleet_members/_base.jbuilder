@@ -23,7 +23,7 @@ if member.declined_at.present?
   json.declined_at_label I18n.l(member.declined_at.utc, format: :label)
 end
 json.avatar do
-  json.partial! "api/v1/shared/file", record: member.user, attr: :new_avatar, old_attr: :avatar
+  json.partial! "api/v1/shared/file", record: member.user, attr: :avatar
 end
 json.rsi_handle member.user.rsi_handle
 json.homepage member.user.homepage

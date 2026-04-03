@@ -38,7 +38,6 @@ class Image < ApplicationRecord
     optional: true
 
   has_one_attached :file
-  mount_uploader :name, ImageUploader
 
   ransack_alias :model, :model_slug
 

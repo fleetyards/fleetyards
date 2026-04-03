@@ -252,10 +252,11 @@ module Api
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
 
-        store_image_url = model.store_image.url
-        store_image_url = vite_asset_url("images/fallback/store_image.jpg") if store_image_url.blank?
-
-        redirect_to store_image_url, allow_other_host: true
+        if model.store_image.attached?
+          redirect_to rails_blob_url(model.store_image), allow_other_host: true
+        else
+          redirect_to vite_asset_url("images/fallback/store_image.jpg"), allow_other_host: true
+        end
       end
 
       def fleetchart_image
@@ -264,10 +265,10 @@ module Api
           .active
           .where(slug: params[:slug])
           .or(Model.where(rsi_slug: params[:slug]))
-          .where.not(fleetchart_image: nil)
+          .joins(:fleetchart_image_attachment)
           .first!
 
-        redirect_to model.fleetchart_image.url, allow_other_host: true
+        redirect_to rails_blob_url(model.fleetchart_image), allow_other_host: true
       end
 
       def snub_crafts

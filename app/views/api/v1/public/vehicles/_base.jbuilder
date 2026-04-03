@@ -24,7 +24,7 @@ json.model_upgrade_ids vehicle.model_upgrade_ids
 
 unless vehicle.user.hide_owner?
   json.username vehicle.user.username
-  json.user_avatar vehicle.user.avatar.small.url
+  json.user_avatar(vehicle.user.avatar.attached? ? rails_representation_url(vehicle.user.avatar.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:small])) : nil)
   json.user_rsi_handle vehicle.user.rsi_handle
 end
 

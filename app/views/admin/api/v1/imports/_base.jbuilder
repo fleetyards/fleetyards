@@ -9,12 +9,8 @@ json.input import.input
 
 if local_assigns.fetch(:extended, false)
   json.output import.output
-  if import.is_a?(Imports::HangarImport)
-    if import.new_import.attached?
-      json.import rails_blob_url(import.new_import)
-    else
-      json.import import.import.url
-    end
+  if import.is_a?(Imports::HangarImport) && import.import.attached?
+    json.import rails_blob_url(import.import)
   end
   json.import_data import.import_data
 end

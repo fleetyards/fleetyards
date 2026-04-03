@@ -241,48 +241,19 @@ class Model < ApplicationRecord
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
 
-  mount_uploader :store_image, StoreImageUploader
-  mount_uploader :rsi_store_image, StoreImageUploader
-  mount_uploader :fleetchart_image, FleetchartImageUploader
-  mount_uploader :top_view, FleetchartImageUploader
-  mount_uploader :side_view, FleetchartImageUploader
-  mount_uploader :front_view, FleetchartImageUploader
-  mount_uploader :angled_view, FleetchartImageUploader
-  mount_uploader :top_view_colored, FleetchartImageUploader
-  mount_uploader :side_view_colored, FleetchartImageUploader
-  mount_uploader :front_view_colored, FleetchartImageUploader
-  mount_uploader :angled_view_colored, FleetchartImageUploader
-  mount_uploader :brochure, BrochureUploader
-  mount_uploader :holo, HoloUploader
-
-  has_one_attached :new_store_image
-  has_one_attached :new_rsi_store_image
-  has_one_attached :new_fleetchart_image
-  has_one_attached :new_top_view
-  has_one_attached :new_side_view
-  has_one_attached :new_front_view
-  has_one_attached :new_angled_view
-  has_one_attached :new_top_view_colored
-  has_one_attached :new_side_view_colored
-  has_one_attached :new_front_view_colored
-  has_one_attached :new_angled_view_colored
-  has_one_attached :new_brochure
-  has_one_attached :new_holo
-
-  %i[
-    store_image rsi_store_image fleetchart_image
-    top_view side_view front_view angled_view
-    top_view_colored side_view_colored front_view_colored angled_view_colored
-    brochure holo
-  ].each do |attr|
-    define_method(:"#{attr}=") do |value|
-      if value.is_a?(String) && value.present?
-        send(:"new_#{attr}=", value)
-      else
-        super(value)
-      end
-    end
-  end
+  has_one_attached :store_image
+  has_one_attached :rsi_store_image
+  has_one_attached :fleetchart_image
+  has_one_attached :top_view
+  has_one_attached :side_view
+  has_one_attached :front_view
+  has_one_attached :angled_view
+  has_one_attached :top_view_colored
+  has_one_attached :side_view_colored
+  has_one_attached :front_view_colored
+  has_one_attached :angled_view_colored
+  has_one_attached :brochure
+  has_one_attached :holo
 
   before_save :update_slugs
 

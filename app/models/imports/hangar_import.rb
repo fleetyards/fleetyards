@@ -30,13 +30,12 @@ module Imports
   class HangarImport < ::Import
     belongs_to :user
 
-    mount_uploader :import, HangarImportUploader
-    has_one_attached :new_import
+    has_one_attached :import
 
     validate :import_file_presence
 
     def import_file_presence
-      return if import.present? || new_import.attached?
+      return if import.attached?
 
       errors.add(:import, I18n.t("errors.messages.blank"))
     end
@@ -46,10 +45,8 @@ module Imports
     serialize :import_data, coder: YAML
 
     def set_import_data
-      data = if import.present?
-        JSON.parse(import.read)
-      elsif new_import.attached?
-        JSON.parse(new_import.download)
+      data = if import.attached?
+        JSON.parse(import.download)
       end
 
       self.import_data = (data || []).map do |item|

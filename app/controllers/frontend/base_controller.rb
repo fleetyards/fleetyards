@@ -37,7 +37,7 @@ module Frontend
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description
         @og_type = "article"
-        @og_image = @model.store_image.url
+        @og_image = @model.store_image.attached? ? rails_blob_url(@model.store_image) : nil
         add_to_prefetch(:model, @model.to_json)
       end
 
@@ -50,7 +50,7 @@ module Frontend
         @title = I18n.t("title.frontend.ship_images", model: @model.name)
         @description = I18n.t("meta.ship_images.description", model: @model.name)
         @og_type = "article"
-        @og_image = @model.random_image&.name&.url
+        @og_image = @model.random_image&.file&.attached? ? rails_blob_url(@model.random_image.file) : nil
       end
 
       render_frontend
@@ -62,7 +62,7 @@ module Frontend
         @title = I18n.t("title.frontend.ship_videos", model: @model.name)
         @description = I18n.t("meta.ship_videos.description", model: @model.name)
         @og_type = "article"
-        @og_image = @model.random_image&.name&.url
+        @og_image = @model.random_image&.file&.attached? ? rails_blob_url(@model.random_image.file) : nil
       end
 
       render_frontend
@@ -78,7 +78,7 @@ module Frontend
           "meta.compare_ships.description.vs",
           models: @models.map(&:name).join(" vs. ")
         )
-        @og_image = @models.first.store_image.url
+        @og_image = @models.first.store_image.attached? ? rails_blob_url(@models.first.store_image) : nil
         # compare_image(@models) TODO: needs to be updated for AWS images
       end
 
@@ -163,7 +163,7 @@ module Frontend
 
     # rubocop:disable Metrics/CyclomaticComplexity
     private def compare_image(models)
-      return models.first.store_image.url if models.size == 1
+      return (models.first.store_image.attached? ? rails_blob_url(models.first.store_image) : nil) if models.size == 1
       return if models.blank?
 
       filename_base = models.map(&:slug).join("-")
@@ -172,9 +172,16 @@ module Frontend
       return "https://fleetyards.net/compare/#{filename}" if File.exist?(path)
 
       models.each_with_index do |model, index|
-        image = MiniMagick::Image.open(model.store_image.to_s)
+        next unless model.store_image.attached?
+
+        tempfile = Tempfile.new([model.slug, ".jpg"])
+        tempfile.binmode
+        model.store_image.download { |chunk| tempfile.write(chunk) }
+        tempfile.rewind
+        image = MiniMagick::Image.new(tempfile.path)
         image.write(Rails.root.join("tmp", model.slug))
         image.write(Rails.root.join("tmp", "#{filename_base}-base")) if index.zero?
+        tempfile.close!
       end
 
       base_image = MiniMagick::Image.new(Rails.root.join("tmp", "#{filename_base}-base"))

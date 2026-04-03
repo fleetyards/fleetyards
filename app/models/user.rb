@@ -152,17 +152,7 @@ class User < ApplicationRecord
   after_update :notify_user
   after_save :touch_fleet_memberships
 
-  mount_uploader :avatar, AvatarUploader
-
-  has_one_attached :new_avatar
-
-  def avatar=(value)
-    if value.is_a?(String) && value.present?
-      self.new_avatar = value
-    else
-      super
-    end
-  end
+  has_one_attached :avatar
 
   DEFAULT_SORTING_PARAMS = "username asc"
   ALLOWED_SORTING_PARAMS = [

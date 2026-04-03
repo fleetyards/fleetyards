@@ -3,7 +3,9 @@
 </h2>
 <br>
 <p>
-  <img src="<%= @vehicle.model.store_image.medium.url %>" alt="<%= @vehicle.model.name %>">
+  <% if @vehicle.model.store_image.attached? %>
+    <img src="<%= rails_representation_url(@vehicle.model.store_image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium])) %>" alt="<%= @vehicle.model.name %>">
+  <% end %>
   <h4>
     <small>
       <%= I18n.t('mailer.vehicle.on_sale.headline.part_one') %>

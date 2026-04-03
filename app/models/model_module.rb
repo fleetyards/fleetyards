@@ -54,8 +54,7 @@ class ModelModule < ApplicationRecord
 
   serialize :cargo_holds, coder: YAML
 
-  mount_uploader :store_image, StoreImageUploader
-  has_one_attached :new_store_image
+  has_one_attached :store_image
 
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true
 

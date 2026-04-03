@@ -8,5 +8,7 @@
 </h2>
 <br>
 <p>
-  <img src="<%= @model.store_image.medium.url %>" alt="<%= @model.name %>">
+  <% if @model.store_image.attached? %>
+    <img src="<%= rails_representation_url(@model.store_image.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium])) %>" alt="<%= @model.name %>">
+  <% end %>
 </p>

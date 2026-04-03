@@ -42,7 +42,7 @@ end
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/file", record: component, attr: :new_store_image, old_attr: :store_image, width: component.store_image_width, height: component.store_image_height
+    json.partial! "api/v1/shared/file", record: component, attr: :store_image
   end
 end
 

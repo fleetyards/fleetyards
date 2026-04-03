@@ -101,27 +101,8 @@ class Fleet < ApplicationRecord
     []
   end
 
-  mount_uploader :logo, LogoUploader
-  mount_uploader :background_image, ImageUploader
-
-  has_one_attached :new_logo
-  has_one_attached :new_background_image
-
-  def logo=(value)
-    if value.is_a?(String) && value.present?
-      self.new_logo = value
-    else
-      super
-    end
-  end
-
-  def background_image=(value)
-    if value.is_a?(String) && value.present?
-      self.new_background_image = value
-    else
-      super
-    end
-  end
+  has_one_attached :logo
+  has_one_attached :background_image
 
   accepts_nested_attributes_for :fleet_memberships
 

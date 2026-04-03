@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/models", type: :request, swagger_doc: "admin/v1/sch
   let(:user) { create(:admin_user, resource_access: [:models]) }
   let(:model) do
     m = create(:model)
-    m.new_rsi_store_image.attach(
+    m.rsi_store_image.attach(
       io: File.open(Rails.root.join("spec/fixtures/files/test.png")),
       filename: "test.png",
       content_type: "image/png"

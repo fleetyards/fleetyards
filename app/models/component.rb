@@ -57,8 +57,7 @@ class Component < ApplicationRecord
   before_save :update_slugs
   before_save :extract_data_from_description
 
-  mount_uploader :store_image, StoreImageUploader
-  has_one_attached :new_store_image
+  has_one_attached :store_image
 
   serialize :type_data, coder: YAML
   serialize :durability, coder: YAML

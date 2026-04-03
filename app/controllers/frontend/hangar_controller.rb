@@ -8,7 +8,7 @@ module Frontend
         vehicle = @user.vehicles.public.purchased.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_hangar", user: username(@user.username))
         @og_type = "article"
-        @og_image = vehicle.model.store_image.url if vehicle.present?
+        @og_image = (vehicle.model.store_image.attached? ? rails_blob_url(vehicle.model.store_image) : nil) if vehicle.present?
       end
 
       render_frontend
@@ -20,7 +20,7 @@ module Frontend
         vehicle = @user.vehicles.wanted.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_wishlist", user: username(@user.username))
         @og_type = "article"
-        @og_image = vehicle.model.store_image.url if vehicle.present?
+        @og_image = (vehicle.model.store_image.attached? ? rails_blob_url(vehicle.model.store_image) : nil) if vehicle.present?
       end
 
       render_frontend
