@@ -2,6 +2,63 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [6.0.0](https://github.com/fleetyards/fleetyards/compare/v5.33.2...v6.0.0) (2026-04-03)
+
+
+### Features
+
+* add bin/create-hotfix script for local hotfix branch setup ([445ec73](https://github.com/fleetyards/fleetyards/commit/445ec73b10ee6919a211273664bf65db918d4f0d))
+* **ci:** add hotfix support to prepare-release workflow ([8c4b0ad](https://github.com/fleetyards/fleetyards/commit/8c4b0adb05b2f201e4b002b6bda9bcbb13d3e04f))
+* **ci:** auto-detect semver bump from conventional commits in prepare-release ([69b4877](https://github.com/fleetyards/fleetyards/commit/69b48774d5efec3d79fe2aa98c9fda99caad155d))
+
+### Bug Fixes
+
+* **frontend:** Add missing component to admin maintenance route ([09f5ebd](https://github.com/fleetyards/fleetyards/commit/09f5ebde34d405682e95aebb549b6b6515ead7ad))
+* **ci:** read Ruby version from .tool-versions for Docker build ([31a5d2d](https://github.com/fleetyards/fleetyards/commit/31a5d2def419b77e026394c1aeb3ff8850a79eed))
+* reset version to v5.33.2 after deleting RC releases ([b35653c](https://github.com/fleetyards/fleetyards/commit/b35653c621e7b635b9fccd5f71f54e36d5f0aaa4))
+* **ci:** pass secrets to build job in release workflow ([b4d363a](https://github.com/fleetyards/fleetyards/commit/b4d363adda1c07e4eb2bf93f840e23180f4d58e6))
+* **ci:** skip version bump when creating additional RCs in same cycle ([4b2c3e0](https://github.com/fleetyards/fleetyards/commit/4b2c3e099d4f5b2b66668af7408641332a0d89ab))
+* **ci:** use RELEASE_TOKEN for releases and add chore commits to changelog ([d57a387](https://github.com/fleetyards/fleetyards/commit/d57a3876e80236c08c6099fc3d38530675242d5e))
+* use RELEASE_TOKEN to bypass branch protection in release workflows ([6c03107](https://github.com/fleetyards/fleetyards/commit/6c0310734233d6950013160765ed1d8099fb52d6))
+* handle invalid UTF-8 byte sequences in request parameter keys ([446e1aa](https://github.com/fleetyards/fleetyards/commit/446e1aa1fa23feb31edb53a3cbe3464521eeec2d))
+
+### Refactorings
+
+* **ci:** detect hotfix from branch name instead of manual input ([fb24f10](https://github.com/fleetyards/fleetyards/commit/fb24f1085ab7f4a4ee55921b7cc07553877539fe))
+
+### Chores
+
+* **release:** v6.0.0-rc.5 (Aurora) ([c853cbc](https://github.com/fleetyards/fleetyards/commit/c853cbcafa23be4a675e59e8972365fa23a6fe91))
+* **release:** v6.0.0-rc.4 (Aurora) ([75bb961](https://github.com/fleetyards/fleetyards/commit/75bb961be339c1208a7d927fe0115e22d24ce324))
+* **deps-dev:** bump @types/node from 24.12.0 to 25.5.0 (#3584) ([4b54d64](https://github.com/fleetyards/fleetyards/commit/4b54d6428722e2fa980b44d0d1d648baac14ee0f))
+* **deps:** bump actions/setup-node from 4 to 6 (#3588) ([0995d0c](https://github.com/fleetyards/fleetyards/commit/0995d0cb9f46de65d43759698ceed3d24dc35f8d))
+* **deps-dev:** bump the playwright group with 2 updates (#3590) ([e05c493](https://github.com/fleetyards/fleetyards/commit/e05c493e5dd90af69605ee51eafbae3ac49f8c65))
+* **deps-dev:** bump vue-tsc from 3.2.5 to 3.2.6 (#3581) ([b1a5828](https://github.com/fleetyards/fleetyards/commit/b1a5828dacc8525e35c6b1b976d4cd8c5eee4f18))
+* **deps:** bump cachix/cachix-action from 11 to 17 (#3586) ([0289cc0](https://github.com/fleetyards/fleetyards/commit/0289cc042dffecabe894a21bddf8d64e1d62879a))
+* **deps:** bump actions/upload-artifact from 4 to 7 (#3587) ([a5aec78](https://github.com/fleetyards/fleetyards/commit/a5aec7883feb843bc3b005e03882ee46a96345ca))
+* **deps:** bump cachix/install-nix-action from 18 to 31 (#3589) ([6fc9ceb](https://github.com/fleetyards/fleetyards/commit/6fc9cebdaad24d1401e76568a85f1af9f1ff0e36))
+* **deps:** bump docker/setup-buildx-action from 3 to 4 (#3585) ([cbbc49a](https://github.com/fleetyards/fleetyards/commit/cbbc49a5fa2a0c33dc074b1f2ec23cc38ee557c7))
+* **deps-dev:** bump vite-plugin-rails from 0.5.0 to 0.6.0 (#3577) ([dbc47b8](https://github.com/fleetyards/fleetyards/commit/dbc47b8c4e5af5931e8af299de48b1923618ebd4))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 5.91.0 to 6.1.12 (#3582) ([0806e93](https://github.com/fleetyards/fleetyards/commit/0806e936517c983e3b281823622164a8db977b86))
+* **deps:** bump panzoom from 9.4.3 to 9.4.4 (#3580) ([39d0df1](https://github.com/fleetyards/fleetyards/commit/39d0df1214eab1a2b1e56b6b82389571ccdd4277))
+* **deps:** bump @vueuse/core from 13.9.0 to 14.2.1 (#3583) ([093b296](https://github.com/fleetyards/fleetyards/commit/093b2961af14bc925a80d70775107353a13a6813))
+* **deps-dev:** bump web-console from 4.2.1 to 4.3.0 (#3578) ([861b2c7](https://github.com/fleetyards/fleetyards/commit/861b2c7c89d8dafffed761c0f9c342721dbfe5b6))
+* **deps-dev:** bump unplugin-vue-components from 29.2.0 to 32.0.0 (#3576) ([cf0b46e](https://github.com/fleetyards/fleetyards/commit/cf0b46e40998e51f9e04ed9a718a6e728afd0109))
+* **deps:** bump uuid from 11.1.0 to 13.0.0 (#3573) ([158e36c](https://github.com/fleetyards/fleetyards/commit/158e36c18ae35550279cd090d92c1662e84bb37d))
+* **deps:** bump sidekiq from 8.0.10 to 8.1.2 (#3575) ([e18ad4c](https://github.com/fleetyards/fleetyards/commit/e18ad4c661cfa8175c939eb120186da218ffa123))
+* **deps:** bump ahoy_matey from 5.4.1 to 5.4.2 (#3572) ([9b9f73c](https://github.com/fleetyards/fleetyards/commit/9b9f73c33ecacef0b3f5fb1727f8d9b2ff28ab5e))
+* **deps:** bump docker/build-push-action from 6 to 7 (#3571) ([6030ded](https://github.com/fleetyards/fleetyards/commit/6030ded2bea0ab59df5e0aa30eb4b620cba50f07))
+* **deps:** bump EndBug/add-and-commit from 9 to 10 (#3570) ([216afd7](https://github.com/fleetyards/fleetyards/commit/216afd7e5969f4124c23b4c879c5074f1f45c90e))
+* **deps:** bump Eeems-Org/apt-cache-action from 1.3 to 1.5 (#3569) ([11ba459](https://github.com/fleetyards/fleetyards/commit/11ba459dde66eb46779b5b4eff785526c4475480))
+* **deps:** bump docker/login-action from 3 to 4 (#3567) ([e3f7fe7](https://github.com/fleetyards/fleetyards/commit/e3f7fe7921c9561be3b5127ab824e5161e5217ae))
+* **deps:** bump actions/cache from 4 to 5 (#3568) ([6097c8c](https://github.com/fleetyards/fleetyards/commit/6097c8c4444c8f3dbc15557b124a67ea9095e211))
+* **release:** v6.0.0-rc.3 (Aurora) ([9eb142b](https://github.com/fleetyards/fleetyards/commit/9eb142b311638789f4beaad8e0e0c97cb45fcee9))
+* **release:** v6.0.0-rc.2 (Aurora) ([4e93793](https://github.com/fleetyards/fleetyards/commit/4e93793f26e4af3ec5a8bce5a738f261ee56a1a5))
+* **release:** v6.0.0-rc.2 (Aurora) ([5d02ebb](https://github.com/fleetyards/fleetyards/commit/5d02ebbd3f33b9c2e9fcfd91c04741cb9b3e8795))
+* **release:** v6.0.0-rc.1 (Aurora) ([1d43285](https://github.com/fleetyards/fleetyards/commit/1d432850f12ab0a2e1546296cc5f40675265616c))
+* add Claude Code skills for resolving import issues ([5334239](https://github.com/fleetyards/fleetyards/commit/5334239d3cb45f78d1283f5e6917a9232397d26b))
+* Migrate to Vue 3 (#2655) ([5cc1365](https://github.com/fleetyards/fleetyards/commit/5cc1365a3986d20310eee032ed2ea945c5cce634))
+
 ### [5.33.2](https://github.com/fleetyards/fleetyards/compare/v5.33.1...v5.33.2) (2026-03-26)
 
 
