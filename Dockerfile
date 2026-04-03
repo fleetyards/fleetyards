@@ -64,6 +64,10 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 # Copy the rest of the application
 COPY . .
 
+# Write git revision for the admin UI version display
+ARG GIT_REVISION=""
+RUN if [ -n "$GIT_REVISION" ]; then echo "$GIT_REVISION" > REVISION; fi
+
 # Run postinstall scripts now that full source is available
 RUN pnpm run postinstall
 

@@ -37,6 +37,8 @@ registry:
 
 builder:
   arch: amd64
+  args:
+    GIT_REVISION: <%= `git rev-parse HEAD`.strip %>
   secrets:
     - RAILS_MASTER_KEY
 

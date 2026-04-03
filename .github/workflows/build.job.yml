@@ -68,6 +68,7 @@ jobs:
             service=fleetyards
           build-args: |
             RUBY_VERSION=${{ steps.ruby.outputs.version }}
+            GIT_REVISION=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secrets: |
