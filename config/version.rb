@@ -2,5 +2,5 @@
 
 module Fleetyards
   CODENAME = "Aurora"
-  VERSION = "v6.0.0-rc.4"
+  VERSION = "v6.0.0-rc.5"
 end
