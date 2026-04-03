@@ -14,18 +14,7 @@ jobs:
       packages: write
     secrets: inherit
 
-  deploy-to-stage:
-    if: github.event.release.prerelease
-    needs: [build]
-    uses: ./.github/workflows/deploy.job.yml
-    with:
-      destination: stage
-      name: Stage
-      url: https://fleetyards.dev
-    secrets: inherit
-
   deploy-to-live:
-    if: "!github.event.release.prerelease"
     needs: [build]
     uses: ./.github/workflows/deploy.job.yml
     with:
@@ -34,21 +23,7 @@ jobs:
       url: https://fleetyards.net
     secrets: inherit
 
-  notify-appsignal-stage:
-    if: github.event.release.prerelease
-    runs-on: ubuntu-latest
-    needs: [deploy-to-stage]
-    environment: Stage
-    env:
-      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
-    steps:
-      - run: |
-          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
-          -H 'Content-Type: application/json' \
-          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
-
-  notify-appsignal-live:
-    if: "!github.event.release.prerelease"
+  notify-appsignal:
     runs-on: ubuntu-latest
     needs: [deploy-to-live]
     environment: Live
@@ -60,22 +35,7 @@ jobs:
           -H 'Content-Type: application/json' \
           -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
 
-  notify-discord-stage:
-    if: github.event.release.prerelease
-    runs-on: ubuntu-latest
-    needs: [deploy-to-stage]
-    environment: Stage
-    env:
-      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-    steps:
-      - run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          curl -X POST "$DISCORD_WEBHOOK" \
-          -H 'Content-Type: application/json' \
-          -d "{\"content\": \"**Stage Deploy:** ${TAG_NAME}\nhttps://github.com/fleetyards/fleetyards/releases/tag/${TAG_NAME}\" }"
-
-  notify-discord-live:
-    if: "!github.event.release.prerelease"
+  notify-discord:
     runs-on: ubuntu-latest
     needs: [deploy-to-live]
     environment: Live

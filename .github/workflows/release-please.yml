@@ -1,0 +1,46 @@
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - uses: actions/checkout@v4
+        if: steps.release.outputs.release_created
+        with:
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+      - name: Apply codename
+        if: steps.release.outputs.release_created
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          CODENAME=$(yq '.codename' config/release.yml)
+          TAG="${{ steps.release.outputs.tag_name }}"
+
+          # Update config/version.rb CODENAME
+          sed -i "s/CODENAME = \"[^\"]*\"/CODENAME = \"${CODENAME}\"/" config/version.rb
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config/version.rb
+          git commit -m "chore(release): set codename ${CODENAME} for ${TAG}" || true
+          git push
+
+          # Update GitHub release title to include codename
+          gh release edit "${TAG}" --title "${TAG} (${CODENAME})"

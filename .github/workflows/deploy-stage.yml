@@ -1,0 +1,72 @@
+name: Deploy to Stage
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-stage
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.job.yml
+    with:
+      tag: stage-${{ github.sha }}
+    permissions:
+      contents: read
+      packages: write
+    secrets: inherit
+
+  deploy:
+    needs: [build]
+    uses: ./.github/workflows/deploy.job.yml
+    with:
+      destination: stage
+      name: Stage
+      url: https://fleetyards.dev
+    secrets: inherit
+
+  notify-appsignal:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    environment: Stage
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
+    steps:
+      - run: |
+          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
+
+  notify-discord:
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    environment: Stage
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50
+
+      - name: Post to Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          SHORT_SHA="${GITHUB_SHA:0:7}"
+          REPO_URL="https://github.com/fleetyards/fleetyards"
+
+          # Get recent commits on this branch (up to 10)
+          COMMITS=$(git log --oneline -10 --no-merges --format="• %s (%h)")
+
+          BODY=$(cat <<EOF
+          **Stage Deploy:** \`${BRANCH}\` (${SHORT_SHA})
+          Branch: ${REPO_URL}/tree/${BRANCH}
+
+          **Recent commits:**
+          ${COMMITS}
+          EOF
+          )
+
+          curl -X POST "$DISCORD_WEBHOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"content\": $(echo "$BODY" | jq -Rs .)}"
