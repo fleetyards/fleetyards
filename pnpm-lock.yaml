@@ -14,6 +14,7 @@ overrides:
   qs: '>=6.5.3'
   semver: '>=7.5.2'
   flatted: '>=3.4.2'
+  lodash: '>=4.18.1'
   picomatch: '>=4.0.4'
   serialize-javascript: '>=7.0.5'
 
@@ -3853,8 +3854,8 @@ packages:
   lodash.truncate@4.4.2:
     resolution: {integrity: sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw==}
 
-  lodash@4.17.23:
-    resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -7142,7 +7143,7 @@ snapshots:
       '@babel/traverse': 7.29.0
       '@babel/types': 7.29.0
       javascript-natural-sort: 0.7.1
-      lodash: 4.17.23
+      lodash: 4.18.1
       prettier: 3.8.1
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.31
@@ -8752,7 +8753,7 @@ snapshots:
   i18n-js@4.5.3:
     dependencies:
       bignumber.js: 10.0.2
-      lodash: 4.17.23
+      lodash: 4.18.1
       make-plural: 7.5.0
 
   iconv-lite@0.6.3:
@@ -9154,7 +9155,7 @@ snapshots:
 
   lodash.truncate@4.4.2: {}
 
-  lodash@4.17.23: {}
+  lodash@4.18.1: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -10087,7 +10088,7 @@ snapshots:
 
   stylelint-selector-bem-pattern@4.0.1(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
-      lodash: 4.17.23
+      lodash: 4.18.1
       postcss: 8.5.8
       postcss-bem-linter: 4.0.1(postcss@8.5.8)
       stylelint: 16.26.1(typescript@5.9.3)
@@ -10846,7 +10847,7 @@ snapshots:
       fast-json-stable-stringify: 2.1.0
       fs-extra: 9.1.0
       glob: 11.1.0
-      lodash: 4.17.23
+      lodash: 4.18.1
       pretty-bytes: 5.6.0
       rollup: 2.80.0
       source-map: 0.8.0-beta.0
