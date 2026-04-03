@@ -1,12 +1,25 @@
 # frozen_string_literal: true
 
 class ActiveStorage::Representations::RedirectController < ActiveStorage::Representations::BaseController
+  rescue_from ActiveStorage::FileNotFoundError, with: :reprocess_representation
+
   def show
+    reprocess_representation unless representation_exists?
+
     expires_in ActiveStorage.service_urls_expire_in
     redirect_to url_with_origin_param(@representation.url(disposition: params[:disposition])), allow_other_host: true
   end
 
   private
+
+  def representation_exists?
+    @blob.service.exist?(@representation.key)
+  end
+
+  def reprocess_representation
+    @blob.variant_records.destroy_all
+    set_representation
+  end
 
   def url_with_origin_param(url)
     uri = URI.parse(url)
