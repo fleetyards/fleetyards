@@ -2,6 +2,12 @@
   position: relative;
   margin-bottom: 15px;
 
+  label {
+    display: block;
+    margin-bottom: 5px;
+    white-space: nowrap;
+  }
+
   .filter-group-title {
     display: flex;
     align-items: center;
