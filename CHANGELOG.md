@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.0.2](https://github.com/fleetyards/fleetyards/compare/v6.0.1...v6.0.2) (2026-04-03)
+
+
+### Bug Fixes
+
+* Accept version argument in ScData::AllJob#perform ([ecf450c](https://github.com/fleetyards/fleetyards/commit/ecf450cb24c57861f2e0b66bf42ff517a3a246a1))
+* Self-heal orphaned representation variants on redirect ([9cd1ce3](https://github.com/fleetyards/fleetyards/commit/9cd1ce375b48ed8ae2466430ab2f46bc7dfb6658))
+
+
+### Chores
+
+* **ci:** replace custom release workflows with release-please ([d0d078e](https://github.com/fleetyards/fleetyards/commit/d0d078e00e67c0782ddf3b747ffe9b4e1b96833c))
+* Remove completed image migration tasks ([4024887](https://github.com/fleetyards/fleetyards/commit/4024887caeb5a20150a21fd94940e05cd1995bb7))
+
 ### [6.0.1](https://github.com/fleetyards/fleetyards/compare/v6.0.0...v6.0.1) (2026-04-03)
 
 
