@@ -27,7 +27,7 @@ jobs:
   deploy-to-live:
     if: "!github.event.release.prerelease"
     needs: [build]
-    uses: ./.github/workflows/legacy-deploy.job.yml
+    uses: ./.github/workflows/deploy.job.yml
     with:
       destination: live
       name: Live
