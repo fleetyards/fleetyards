@@ -82,7 +82,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         )
       end
 
-      user.remote_avatar_url = auth.info.image if user.avatar.blank? && auth.info.image.present?
+      if !user.avatar.attached? && auth.info.image.present?
+        user.avatar.attach(
+          io: URI.parse(auth.info.image).open,
+          filename: "avatar#{File.extname(URI.parse(auth.info.image).path)}",
+          content_type: "image/jpeg"
+        )
+      end
 
       user.skip_reconfirmation!
 

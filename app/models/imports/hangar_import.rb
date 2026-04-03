@@ -46,7 +46,7 @@ module Imports
 
     def set_import_data
       data = if import.attached?
-        JSON.parse(import.download)
+        JSON.parse(import.blob.download)
       end
 
       self.import_data = (data || []).map do |item|

@@ -30,10 +30,13 @@ if ENV["TEST_SEEDS"].present?
 
   model = Model.first
   20.times do |index|
-    model.images << Image.new(
-      remote_name_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/models/stub-#{index}.jpg",
-      enabled: true
+    image = Image.new(gallery: model, enabled: true)
+    image.file.attach(
+      io: URI.parse("https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/models/stub-#{index}.jpg").open,
+      filename: "stub-#{index}.jpg",
+      content_type: "image/jpeg"
     )
+    image.save!
   end
 
   test_user = User.find_or_initialize_by(username: "TestUser")
