@@ -82,15 +82,13 @@ Rails.application.configure do
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
 
-  # Use a different cache store in production.
-  if ENV["MEMCACHED_URL"]
-    config.cache_store = :mem_cache_store,
-      ENV["MEMCACHED_URL"].split(","),
-      {
-        namespace: "fleetyards-#{Rails.env}"
-      }
-  end
-  # config.cache_store = :mem_cache_store
+  # Use Redis for caching (DB 1 to isolate from sessions/Sidekiq/Action Cable on DB 0)
+  config.cache_store = :redis_cache_store, {
+    url: Rails.configuration.redis.url,
+    db: 1,
+    namespace: "fleetyards-#{Rails.env}",
+    expires_in: 1.day
+  }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter = :resque

@@ -113,7 +113,9 @@ module Api
       end
 
       def show
-        @model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @model = Model.visible.active
+          .includes(:manufacturer, :item_prices, :docks, model_loaners: :loaner_model)
+          .where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
       end
 
       def hardpoints
@@ -158,7 +160,7 @@ module Api
       def variants
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        scope = model.variants.includes(:manufacturer).visible.active
+        scope = model.variants.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).visible.active
         if pledge_price_range.present?
           model_query_params["sorts"] = "pledge_price asc"
           scope = scope.where(pledge_price: pledge_price_range)
@@ -182,7 +184,7 @@ module Api
       def loaners
         model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
 
-        scope = model.loaners.includes(:manufacturer).visible.active
+        scope = model.loaners.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).visible.active
 
         if pledge_price_range.present?
           model_query_params["sorts"] = "pledge_price asc"

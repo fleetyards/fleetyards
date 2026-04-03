@@ -64,8 +64,6 @@ gem "jbuilder"
 gem "oj"
 gem "responders"
 
-gem "dalli"
-
 gem "kaminari"
 gem "url_plumber"
 

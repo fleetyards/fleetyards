@@ -552,15 +552,15 @@ class Model < ApplicationRecord
   end
 
   def sold_at
-    item_prices.sell.order(price: :asc).uniq(&:location)
+    item_prices.select(&:sell?).sort_by(&:price).uniq(&:location)
   end
 
   def bought_at
-    item_prices.buy.order(price: :asc).uniq(&:location)
+    item_prices.select(&:buy?).sort_by(&:price).uniq(&:location)
   end
 
   def rental_at
-    item_prices.rental.order(price: :asc).uniq(&:location)
+    item_prices.select(&:rental?).sort_by(&:price).uniq(&:location)
   end
 
   def dock_counts
