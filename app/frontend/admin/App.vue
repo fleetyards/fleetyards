@@ -167,9 +167,6 @@ const setNoScroll = () => {
 
     <div class="app-content">
       <transition name="fade" mode="out-in">
-        <AdminNavigationMobile v-if="mobile" />
-      </transition>
-      <transition name="fade" mode="out-in">
         <AdminNavigation />
       </transition>
       <div class="main-wrapper">
@@ -215,6 +212,10 @@ const setNoScroll = () => {
         />
       </div>
     </div>
+
+    <transition name="fade" mode="out-in">
+      <AdminNavigationMobile v-if="mobile" />
+    </transition>
 
     <AppConfirm />
     <AppModal />

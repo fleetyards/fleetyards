@@ -18,13 +18,11 @@ import { useI18nStore } from "@/shared/stores/i18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { storeToRefs } from "pinia";
 import { useNavStore } from "@/shared/stores/nav";
-import { useNProgress } from "@/shared/composables/useNProgress";
+import FetchProgressBar from "@/shared/components/FetchProgressBar/index.vue";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
-
-useNProgress();
 
 useMetaInfo({
   appTitle: t("title.defaultDocs"),
@@ -78,6 +76,7 @@ const setNoScroll = () => {
     }"
     class="app-body"
   >
+    <FetchProgressBar />
     <BackgroundImage />
 
     <div class="app-content">
