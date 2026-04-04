@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -eu
+
+S3_BUCKET="fltyrd-live-backups"
+S3_PREFIX="db"
+S3_ENDPOINT="fsn1.your-objectstorage.com"
+S3_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
+S3_SECRET_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
+DUMP_DIR="./dumps"
+DUMP_FILE="$DUMP_DIR/latest.dump"
+DB_PORT="${DB_PORT:-8271}"
+DB_NAME="${DB_NAME:-fleetyards_dev}"
+DB_USER="${DB_USER:-root}"
+
+S3CMD="s3cmd --host=$S3_ENDPOINT --host-bucket=%(bucket)s.$S3_ENDPOINT --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY"
+
+mkdir -p "$DUMP_DIR"
+
+echo "Fetching latest backup from s3://$S3_BUCKET/$S3_PREFIX/..."
+LATEST=$($S3CMD ls "s3://$S3_BUCKET/$S3_PREFIX/" | sort | tail -1 | awk '{print $4}')
+
+if [ -z "$LATEST" ]; then
+  echo "ERROR: No backups found in s3://$S3_BUCKET/$S3_PREFIX/"
+  exit 1
+fi
+
+echo "Downloading $LATEST..."
+$S3CMD get --force "$LATEST" "$DUMP_FILE"
+
+echo "Restoring to $DB_NAME on localhost:$DB_PORT..."
+PGPASSWORD=password pg_restore --verbose --clean --no-acl --no-owner \
+  -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" "$DUMP_FILE" || true
+
+echo "Running migrations..."
+DB_PORT="$DB_PORT" bin/rails db:migrate
+
+echo "Done!"

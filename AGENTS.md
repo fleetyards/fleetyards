@@ -55,7 +55,7 @@ rails db:create db:migrate db:seed
 ### Development
 ```bash
 docker-compose up -d              # Start database and services
-foreman start -f Procfile.dev     # Start Rails + Vite
+foreman start -f Procfile          # Start Rails + Vite
 bin/dev                           # Alternative: start dev environment
 ```
 

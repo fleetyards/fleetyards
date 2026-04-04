@@ -15,15 +15,9 @@ shared:
   on_subdomain?: <%= ENV["ON_SUBDOMAIN"] || false %>
 
   cable_endpoint: <%= ENV["CABLE_ENDPOINT"] || "ws://localhost:#{ENV["PORT"]}/cable" %>
-  cable_channel_prefix: <%= ENV["CABLE_CHANNEL_PREFIX"] %>
-
   mailer_default_from: <%= ENV["MAILER_DEFAULT_FROM"] %>
-  mailer_default_admin_to: <%= ENV["MAILER_DEFAULT_ADMIN_TO"] %>
-
   cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
   storage_cdn_endpoint: <%= ENV["STORAGE_CDN_ENDPOINT"] %>
-
-  s3_seeds_fleetchart_bucket: <%= ENV["S3_SEEDS_FLEETCHART_BUCKET"] || "seeds_fleetchart" %>
 
   github_repo: <%= ENV["GITHUB_REPO"] || 'fleetyards/fleetyards' %>
 
@@ -57,6 +51,3 @@ production:
 
   cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "https://cdn.fltyrd.net" %>
   legacy_cdn_endpoint: <%= ENV["LEGACY_CDN_ENDPOINT"] || "https://cdn.fleetyards.net" %>
-
-review:
-  domain: <%= ENV["HEROKU_APP_NAME"] %>.herokuapp.com

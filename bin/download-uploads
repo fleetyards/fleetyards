@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+set -eu
+
+S3_BUCKET="fltyrd-live-storage"
+S3_ENDPOINT="fsn1.your-objectstorage.com"
+S3_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
+S3_SECRET_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
+S3CMD="s3cmd --host=$S3_ENDPOINT --host-bucket=%(bucket)s.$S3_ENDPOINT --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY"
+
+LOCAL_ROOT="./storage"
+TMP_DIR="./tmp/s3_sync"
+
+mkdir -p "$TMP_DIR" "$LOCAL_ROOT"
+
+echo "Syncing s3://$S3_BUCKET to $TMP_DIR..."
+$S3CMD sync --no-check-md5 "s3://$S3_BUCKET/" "$TMP_DIR/"
+
+echo ""
+echo "Moving files into Active Storage disk layout (storage/ab/cd/key)..."
+
+moved=0
+skipped=0
+
+for file in "$TMP_DIR"/*; do
+  [ -f "$file" ] || continue
+
+  key=$(basename "$file")
+  target_dir="$LOCAL_ROOT/${key:0:2}/${key:2:2}"
+  target_path="$target_dir/$key"
+
+  if [ -f "$target_path" ] && [ "$(stat -f%z "$file")" = "$(stat -f%z "$target_path")" ]; then
+    skipped=$((skipped + 1))
+    continue
+  fi
+
+  mkdir -p "$target_dir"
+  mv "$file" "$target_path"
+  moved=$((moved + 1))
+done
+
+rm -rf "$TMP_DIR"
+
+echo "Done! Moved: $moved, Skipped: $skipped"

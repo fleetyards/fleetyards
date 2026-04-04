@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -eu
+
+echo "Broadcasting app version..."
+bin/rails runner 'Notifications::AppVersionJob.perform_in(1.minute)'
+echo "Done! Version broadcast scheduled."

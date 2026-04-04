@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe AdminMailer do
-  let(:admin_to) { Rails.configuration.app.mailer_default_admin_to.to_s }
+  let!(:super_admin) { create(:admin_user, super_admin: true, email: "admin@fleetyards.test") }
 
   describe "#weekly" do
     let(:stats) do
@@ -20,8 +20,8 @@ RSpec.describe AdminMailer do
       expect(mail.subject).to eq(I18n.t(:"mailer.admin.weekly.subject"))
     end
 
-    it "uses the default admin recipient" do
-      expect(described_class.default[:to]).to eq(Rails.configuration.app.mailer_default_admin_to.to_s)
+    it "sends to super admin users" do
+      expect(mail.to).to include(super_admin.email)
     end
 
     it "renders the body" do
@@ -37,8 +37,8 @@ RSpec.describe AdminMailer do
       expect(mail.subject).to eq(I18n.t(:"mailer.admin.notify_block.subject"))
     end
 
-    it "uses the default admin recipient" do
-      expect(described_class.default[:to]).to eq(Rails.configuration.app.mailer_default_admin_to.to_s)
+    it "sends to super admin users" do
+      expect(mail.to).to include(super_admin.email)
     end
 
     it "renders the body" do
@@ -54,8 +54,8 @@ RSpec.describe AdminMailer do
       expect(mail.subject).to eq(I18n.t(:"mailer.admin.notify_block.subject"))
     end
 
-    it "uses the default admin recipient" do
-      expect(described_class.default[:to]).to eq(Rails.configuration.app.mailer_default_admin_to.to_s)
+    it "sends to super admin users" do
+      expect(mail.to).to include(super_admin.email)
     end
 
     it "renders the body" do
