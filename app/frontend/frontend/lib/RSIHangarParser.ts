@@ -21,7 +21,7 @@ export class RSIHangarParser {
     const pledgeList = htmlDoc.getElementsByClassName("list-items")[0];
 
     if (!pledgeList) {
-      return [];
+      return undefined;
     }
 
     const entries = pledgeList.getElementsByTagName("li");
@@ -104,6 +104,24 @@ export class RSIHangarParser {
     }
 
     return imageUrl.replace("subscribers_vault_thumbnail", "source");
+  }
+
+  extractMaxPage(html: string): number | undefined {
+    const htmlDoc = this.parser.parseFromString(html, "text/html");
+    const links = htmlDoc.querySelectorAll('a[href*="page="]');
+    let maxPage: number | undefined;
+
+    links.forEach((link) => {
+      const match = link.getAttribute("href")?.match(/page=(\d+)/);
+      if (match) {
+        const page = parseInt(match[1], 10);
+        if (maxPage === undefined || page > maxPage) {
+          maxPage = page;
+        }
+      }
+    });
+
+    return maxPage;
   }
 
   checkForLastPage(htmlDoc: Document): boolean {

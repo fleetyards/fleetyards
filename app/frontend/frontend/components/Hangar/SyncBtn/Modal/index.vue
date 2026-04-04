@@ -47,6 +47,8 @@ const fetchCount = ref(0);
 
 const maxMessagesPerMinute = 60;
 
+const maxPage = ref<number | undefined>();
+
 const hangarStore = useHangarStore();
 
 const pledges = ref<RsiHangarItemInput[]>([]);
@@ -209,9 +211,9 @@ const start = async () => {
   started.value = true;
   pledges.value = [];
   currentPage.value = 1;
+  maxPage.value = undefined;
   syncStartedAt.value = new Date();
   fetchCount.value = 0;
-
   fetchPage(currentPage.value);
 
   displayInfo({ text: t("messages.syncExtension.started") });
@@ -241,18 +243,29 @@ const fetchPage = (page: number) => {
 const fetchRSIHangar = async (htmlPage: string) => {
   updateStep("fetchHangar", "processing");
 
-  const items = new RSIHangarParser().extractPage(htmlPage);
+  const parser = new RSIHangarParser();
 
-  if (items) {
-    pledges.value = [...pledges.value, ...items];
+  if (maxPage.value === undefined) {
+    maxPage.value = parser.extractMaxPage(htmlPage);
+  }
+
+  const items = parser.extractPage(htmlPage);
+
+  if (
+    items === undefined ||
+    (maxPage.value && currentPage.value >= maxPage.value)
+  ) {
+    updateStep("fetchHangar", "success");
+
+    await finishSync();
+  } else {
+    if (items.length > 0) {
+      pledges.value = [...pledges.value, ...items];
+    }
 
     currentPage.value += 1;
 
     setTimeout(() => fetchPage(currentPage.value), 500);
-  } else {
-    updateStep("fetchHangar", "success");
-
-    await finishSync();
   }
 };
 
