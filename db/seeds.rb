@@ -3,11 +3,6 @@
 
 require "open-uri"
 
-elasticsearch_url = ENV["ELASTICSEARCH_URL"] || "http://localhost:9200"
-
-system("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'")
-puts ""
-
 if ENV["TEST_SEEDS"].present?
   Model.find_or_create_by!(name: "Freelancer") do |model|
     model.hidden = false
