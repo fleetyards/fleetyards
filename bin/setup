@@ -4,6 +4,7 @@ require "zlib"
 require "open3"
 
 APP_ROOT = File.expand_path("..", __dir__)
+require_relative "../lib/cli_helpers"
 VERBOSE = ARGV.include?("--verbose")
 FRESH = ARGV.include?("--fresh")
 SKIP_ENV = ARGV.include?("--skip-env")
@@ -21,177 +22,14 @@ end
 PORT_OVERRIDE = parse_int_flag("--port")
 VITE_PORT_OVERRIDE = parse_int_flag("--vite-port")
 NAME_OVERRIDE = parse_flag("--name")
-SPINNER = %w[⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏].freeze
-
-$stdout.sync = true
-
 trap("INT") do
   print "\n"
   abort "Setup interrupted."
 end
 
-def format_duration(seconds)
-  seconds = seconds.round(0)
-  if seconds < 60
-    "#{seconds}s"
-  else
-    "#{seconds / 60}m#{seconds % 60}s"
-  end
-end
-
-def with_spinner(label)
-  start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
-
-  spinning = true
-  if $stdout.tty?
-    frame = 0
-    spin_thread = Thread.new do
-      while spinning
-        print "\r  #{label}...#{SPINNER[frame % SPINNER.size]} "
-        frame += 1
-        sleep 0.08
-      end
-    end
-  else
-    print "  #{label}..."
-  end
-
-  begin
-    success, output = yield
-  rescue Interrupt
-    spinning = false
-    spin_thread&.join
-    print "\r  #{label}...interrupted#{" " * 20}\n"
-    abort
-  end
-
-  spinning = false
-  spin_thread&.join
-
-  elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time
-  time_str = format_duration(elapsed)
-
-  if success
-    if $stdout.tty?
-      print "\r  #{label}...OK (#{time_str})#{" " * 20}\n"
-    else
-      puts "OK (#{time_str})"
-    end
-  else
-    if $stdout.tty?
-      print "\r  #{label}...FAILED (#{time_str})#{" " * 20}\n\n"
-    else
-      puts "FAILED (#{time_str})\n"
-    end
-    warn output
-    abort
-  end
-end
-
-def run_step(label, cmd = nil, async: false, &block)
-  if async
-    thread = Thread.new do
-      if block
-        block.call
-        [true, ""]
-      else
-        output, status = Open3.capture2e(cmd)
-        [status.success?, output]
-      end
-    end
-    return {label: label, thread: thread, start_time: Process.clock_gettime(Process::CLOCK_MONOTONIC)}
-  end
-
-  if VERBOSE
-    puts "\n== #{label} =="
-    if block
-      block.call
-      return
-    end
-    return if system(cmd)
-    abort "\n  #{label} failed!"
-  end
-
-  with_spinner(label) do
-    if block
-      block.call
-      [true, ""]
-    else
-      output, status = Open3.capture2e(cmd)
-      [status.success?, output]
-    end
-  end
-end
-
-def run_step_wait(*steps)
-  if VERBOSE
-    steps.each do |step|
-      puts "\n== #{step[:label]} =="
-      success, output = step[:thread].value
-      elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - step[:start_time]
-      puts "  (#{format_duration(elapsed)})"
-      next if success
-      warn output
-      abort "\n  #{step[:label]} failed!"
-    end
-    return
-  end
-
-  if $stdout.tty?
-    # Reserve one line per step
-    steps.each { |_| print "\n" }
-
-    finished = Array.new(steps.size)
-    frame = 0
-
-    loop do
-      # Move cursor back up to the first step line
-      print "\033[#{steps.size}A"
-
-      steps.each_with_index do |step, i|
-        if finished[i]
-          f = finished[i]
-          status = f[:success] ? "OK" : "FAILED"
-          print "\r  #{step[:label]}...#{status} (#{f[:time_str]})#{" " * 20}\n"
-        elsif step[:thread].alive?
-          print "\r  #{step[:label]}...#{SPINNER[frame % SPINNER.size]} #{" " * 20}\n"
-        else
-          success, output = step[:thread].value
-          elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - step[:start_time]
-          time_str = format_duration(elapsed)
-          finished[i] = {success: success, output: output, time_str: time_str}
-          status = success ? "OK" : "FAILED"
-          print "\r  #{step[:label]}...#{status} (#{time_str})#{" " * 20}\n"
-        end
-      end
-
-      break if finished.all?
-      frame += 1
-      sleep 0.08
-    end
-
-    failed = steps.each_with_index.filter_map { |step, i| [step, finished[i]] unless finished[i][:success] }
-    unless failed.empty?
-      print "\n"
-      warn failed.map { |step, f| "== #{step[:label]} ==\n#{f[:output]}" }.join("\n")
-      abort
-    end
-  else
-    # Non-TTY: wait for all, then print each result
-    results = steps.map { |s| [s, s[:thread].value] }
-    results.each do |step, (success, output)|
-      elapsed = Process.clock_gettime(Process::CLOCK_MONOTONIC) - step[:start_time]
-      time_str = format_duration(elapsed)
-      if success
-        puts "  #{step[:label]}...OK (#{time_str})"
-      else
-        puts "  #{step[:label]}...FAILED (#{time_str})\n"
-        warn output
-        abort
-      end
-    end
-  end
-end
+def format_duration(seconds) = CliHelpers.format_duration(seconds)
+def run_step(label, cmd = nil, async: false, &block) = CliHelpers.run_step(label, cmd, verbose: VERBOSE, async:, &block)
+def run_step_wait(*steps) = CliHelpers.run_step_wait(*steps, verbose: VERBOSE)
 
 WORKTREE_MARKER = "# -- worktree-managed --"
 
@@ -266,8 +104,8 @@ if ARGV.include?("--help") || ARGV.include?("-h")
     Options:
       --fresh         Wipe application state (Docker volumes) before setup
                       WARNING: affects all worktrees (shared Docker services)
-      --skip-env      Skip copying .env from main worktree
-      --force-env     Overwrite existing .env with copy from main worktree
+      --skip-env      Skip symlinking .env from main worktree
+      --force-env     Overwrite existing .env with symlink from main worktree
       --name=NAME     Override the worktree name used for DB suffix, ports, etc.
       --port=N        Override the Rails port (default: derived from name)
       --vite-port=N   Override the Vite dev server port (default: derived from name)
@@ -312,39 +150,40 @@ FileUtils.chdir APP_ROOT do
     env_file = File.join(APP_ROOT, ".env")
     if SKIP_ENV
       # skipped via flag, no output
-    elsif !FORCE_ENV && File.exist?(env_file)
+    elsif !FORCE_ENV && (File.exist?(env_file) || File.symlink?(env_file))
       if VERBOSE
-        puts "   .env already exists, skipping copy (use --force-env to overwrite)"
+        puts "   .env already exists, skipping (use --force-env to overwrite)"
       else
-        puts "  .env already exists, skipping copy (use --force-env to overwrite)"
+        puts "  .env already exists, skipping (use --force-env to overwrite)"
       end
     else
       source_root = main_worktree_root
       if source_root
         source_env = File.join(source_root, ".env")
         if File.exist?(source_env)
-          FileUtils.cp(source_env, env_file)
+          FileUtils.rm_f(env_file)
+          FileUtils.ln_s(source_env, env_file)
           if VERBOSE
-            puts "   Copied .env from #{source_root}"
+            puts "   Symlinked .env from #{source_root}"
           else
-            puts "  Copied .env from main worktree"
+            puts "  Symlinked .env from main worktree"
           end
         end
       end
     end
 
-    # Copy credential keys from main worktree
+    # Symlink credential keys from main worktree
     source_root = main_worktree_root
     if source_root
-      %w[config/master.key config/credentials/production.key config/credentials/staging.key config/credentials/review.key].each do |key_path|
+      %w[config/master.key config/credentials/production.key config/credentials/staging.key].each do |key_path|
         source_key = File.join(source_root, key_path)
         target_key = File.join(APP_ROOT, key_path)
         next unless File.exist?(source_key)
-        next if File.exist?(target_key)
+        next if File.exist?(target_key) || File.symlink?(target_key)
 
         FileUtils.mkdir_p(File.dirname(target_key))
-        FileUtils.cp(source_key, target_key, preserve: true)
-        puts VERBOSE ? "   Copied #{key_path} from main worktree" : "  Copied #{key_path}"
+        FileUtils.ln_s(source_key, target_key)
+        puts VERBOSE ? "   Symlinked #{key_path} from main worktree" : "  Symlinked #{key_path}"
       end
     end
   end

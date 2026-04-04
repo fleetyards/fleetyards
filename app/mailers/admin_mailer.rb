@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 class AdminMailer < ApplicationMailer
-  default to: Rails.configuration.app.mailer_default_admin_to.to_s
-
   def weekly(stats)
     @stats = stats
 
     mail(
+      to: super_admin_emails,
       subject: I18n.t(:"mailer.admin.weekly.subject")
     )
   end
@@ -15,6 +14,7 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
+      to: super_admin_emails,
       subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
   end
@@ -23,7 +23,12 @@ class AdminMailer < ApplicationMailer
     @url = url
 
     mail(
+      to: super_admin_emails,
       subject: I18n.t(:"mailer.admin.notify_block.subject")
     )
+  end
+
+  private def super_admin_emails
+    AdminUser.where(super_admin: true).pluck(:email)
   end
 end

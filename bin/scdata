@@ -1,0 +1,123 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../lib/cli_helpers"
+
+EXPORT_FOLDER = "data/sc_data"
+
+COMMANDS = {
+  "setup" => "Create symlink for SC data export",
+  "parse" => "Parse SC data for the given environment",
+  "load" => "Load all SC data (manufacturers, items, models, modules)",
+  "load:manufacturers" => "Load manufacturers from SC data",
+  "load:items" => "Load items from SC data",
+  "load:models" => "Load models (hardpoints) from SC data",
+  "load:modules" => "Load model modules from SC data"
+}.freeze
+
+def usage
+  puts "Usage: bin/scdata <command> [args]"
+  puts ""
+  puts "Commands:"
+  COMMANDS.each { |cmd, desc| puts "  %-20s %s" % [cmd, desc] }
+  exit 1
+end
+
+def boot_rails
+  require_relative "../config/environment"
+end
+
+def config_info
+  config = Rails.configuration.sc_data
+  "version: #{config[:version]} (#{config[:environment]})"
+end
+
+def latest_version(export_folder, sc_environment)
+  raw_path = File.join(export_folder, "raw")
+  abort "Raw data folder not found: #{raw_path}" unless Dir.exist?(raw_path)
+
+  folders = Dir.children(raw_path)
+    .select { |name| name.match?(/\A.+-#{Regexp.escape(sc_environment)}\.\d+\z/) }
+    .sort_by { |name| name.match(/\.(\d+)\z/)[1].to_i }
+
+  abort "No data found for environment: #{sc_environment}" if folders.empty?
+
+  folders.last
+end
+
+command = ARGV.shift
+usage if command.nil? || command == "--help" || command == "-h"
+
+case command
+when "setup"
+  source_folder = ARGV.shift
+  abort "Usage: bin/scdata setup <source_folder>" unless source_folder
+
+  target = File.join(EXPORT_FOLDER, "raw")
+  puts "Creating symlink from #{source_folder} to #{target}"
+  File.symlink(File.expand_path(source_folder), target)
+
+when "parse"
+  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+
+  sc_environment = ARGV.shift || Rails.configuration.sc_data[:environment]
+  sc_version = latest_version(EXPORT_FOLDER, sc_environment)
+
+  CliHelpers.run_step("Parsing SC Data #{sc_version} (#{sc_environment})") do
+    ScData::Parser::BaseParser.all(base_folder: Rails.root.join(EXPORT_FOLDER), sc_version:, sc_environment:)
+    [true, ""]
+  end
+
+  config_path = File.join(Dir.pwd, "config/app/sc_data.yml")
+  File.write(config_path, <<~YAML)
+    shared:
+      version: "#{sc_version}"
+      environment: "#{sc_environment}"
+  YAML
+
+  puts "  Updated config/app/sc_data.yml to version: #{sc_version}"
+
+when "load"
+  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+
+  CliHelpers.run_step("Loading all SC Data #{config_info}") do
+    ScData::Loader::BaseLoader.all
+    [true, ""]
+  end
+
+when "load:manufacturers"
+  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+
+  CliHelpers.run_step("Loading manufacturers #{config_info}") do
+    ScData::Loader::ManufacturersLoader.new.all
+    [true, ""]
+  end
+
+when "load:items"
+  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+
+  CliHelpers.run_step("Loading items #{config_info}") do
+    ScData::Loader::ItemsLoader.new.all
+    [true, ""]
+  end
+
+when "load:models"
+  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+
+  CliHelpers.run_step("Loading models #{config_info}") do
+    ScData::Loader::ModelsLoader.new.all
+    [true, ""]
+  end
+
+when "load:modules"
+  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+
+  CliHelpers.run_step("Loading model modules #{config_info}") do
+    ScData::Loader::ModelModulesLoader.new.all
+    [true, ""]
+  end
+
+else
+  puts "Unknown command: #{command}"
+  usage
+end

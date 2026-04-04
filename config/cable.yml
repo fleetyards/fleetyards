@@ -1,7 +1,7 @@
 production: &default
   adapter: redis
   url: <%= Rails.configuration.redis.url %>
-  channel_prefix: <%= Rails.configuration.app.cable_channel_prefix %>
+  channel_prefix: fleetyards_<%= Rails.env %>
 
 staging:
   <<: *default

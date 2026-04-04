@@ -1,3 +1,3 @@
-web: ./bin/rails server -p $PORT
-worker: ./bin/sidekiq -C config/sidekiq.yml
-release: ./bin/heroku-release
+web: bundle exec rdbg -O -n -c -- ./bin/rails s
+worker: ./bin/sidekiq -C config/sidekiq.yml -v
+vite: ./bin/vite dev
