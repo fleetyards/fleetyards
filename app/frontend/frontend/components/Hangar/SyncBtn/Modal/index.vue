@@ -243,7 +243,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
   const items = new RSIHangarParser().extractPage(htmlPage);
 
-  if (items) {
+  if (items && items.length > 0) {
     pledges.value = [...pledges.value, ...items];
 
     currentPage.value += 1;
