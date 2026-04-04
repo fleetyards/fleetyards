@@ -47,11 +47,7 @@ module Imports
     serialize :import_data, coder: YAML
 
     def set_import_data
-      data = if attachment_changes["import"].present?
-        JSON.parse(attachment_changes["import"].attachable.read)
-      elsif import.attached?
-        JSON.parse(import.download)
-      end
+      data = read_import_file
 
       self.import_data = (data || []).map do |item|
         return item unless item.is_a? Hash
@@ -67,6 +63,24 @@ module Imports
 
     def notify_admin
       # don't notify on hangar imports
+    end
+
+    private
+
+    def read_import_file
+      change = attachment_changes["import"]
+      if change.present?
+        attachable = change.attachable
+        case attachable
+        when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile
+          JSON.parse(attachable.read.tap { attachable.rewind })
+        when String
+          blob = ActiveStorage::Blob.find_signed!(attachable)
+          JSON.parse(blob.download)
+        end
+      elsif import.attached?
+        JSON.parse(import.download)
+      end
     end
   end
 end

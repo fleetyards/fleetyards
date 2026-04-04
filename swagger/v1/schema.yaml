@@ -7959,8 +7959,6 @@ components:
       properties:
         import:
           type: string
-        newImport:
-          type: string
       additionalProperties: false
       title: ImportInput
     ItemPrice:
