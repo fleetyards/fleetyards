@@ -19,6 +19,8 @@
 #  updated_at              :datetime         not null
 #
 class ModelUpgrade < ApplicationRecord
+  self.ignored_columns += %w[store_image]
+
   include ActiveStorageVariants
 
   paginates_per 30
@@ -43,7 +45,7 @@ class ModelUpgrade < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "created_at", "description", "hidden", "id", "id_value", "name", "pledge_price",
-      "slug", "store_image", "updated_at"
+      "slug", "updated_at"
     ]
   end
 

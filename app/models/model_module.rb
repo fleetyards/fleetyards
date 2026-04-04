@@ -25,6 +25,8 @@
 #  model_id                :uuid
 #
 class ModelModule < ApplicationRecord
+  self.ignored_columns += %w[store_image]
+
   include ActiveStorageVariants
 
   paginates_per 30
@@ -66,7 +68,7 @@ class ModelModule < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "created_at", "description", "hidden", "id", "id_value", "manufacturer_id",
-      "model_id", "name", "pledge_price", "production_status", "slug", "store_image", "updated_at"
+      "model_id", "name", "pledge_price", "production_status", "slug", "updated_at"
     ]
   end
 

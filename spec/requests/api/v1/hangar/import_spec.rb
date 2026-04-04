@@ -13,7 +13,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
   end
   let(:input) do
     {
-      newImport: import_blob.signed_id
+      import: import_blob.signed_id
     }
   end
 

@@ -146,6 +146,13 @@
 #  index_models_on_size               (size)
 #
 class Model < ApplicationRecord
+  self.ignored_columns += %w[
+    store_image rsi_store_image fleetchart_image
+    top_view side_view front_view angled_view
+    top_view_colored side_view_colored front_view_colored angled_view_colored
+    brochure holo
+  ]
+
   include ActionView::Helpers::NumberHelper
   include RoutingConcern
   include ActiveStorageVariants
@@ -156,10 +163,9 @@ class Model < ApplicationRecord
     classification production_status production_note focus pledge_price length beam height mass
     cargo size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
-    max_speed_acceleration max_speed_decceleration pitch yaw roll brochure price store_image
+    max_speed_acceleration max_speed_decceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
-    quantum_fuel_tanks holo sales_page_url top_view side_view angled_view front_view
-    angled_view_colored side_view_colored top_view_colored front_view_colored
+    quantum_fuel_tanks sales_page_url
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -281,15 +287,15 @@ class Model < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "active", "angled_view", "angled_view_colored", "angled_view_colored_height",
+      "active", "angled_view_colored_height",
       "angled_view_colored_width", "angled_view_height", "angled_view_width", "base_model_id",
-      "beam", "brochure", "cargo", "cargo_holds", "classification", "created_at", "description",
-      "dock_size", "erkul_identifier", "fleetchart_image", "fleetchart_image_height",
-      "fleetchart_image_width", "fleetchart_offset_length", "focus", "front_view",
-      "front_view_colored", "front_view_colored_height", "front_view_colored_width",
+      "beam", "cargo", "cargo_holds", "classification", "created_at", "description",
+      "dock_size", "erkul_identifier", "fleetchart_image_height",
+      "fleetchart_image_width", "fleetchart_offset_length", "focus",
+      "front_view_colored_height", "front_view_colored_width",
       "front_view_height", "front_view_width", "ground", "ground_acceleration",
       "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
-      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value",
+      "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value",
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
       "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
@@ -298,12 +304,12 @@ class Model < ApplicationRecord
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
       "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
-      "rsi_store_image", "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
+      "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
       "sc_identifier", "sc_length", "scm_speed", "scm_speed_acceleration",
-      "scm_speed_decceleration", "search", "side_view", "side_view_colored",
+      "scm_speed_decceleration", "search",
       "side_view_colored_height", "side_view_colored_width", "side_view_height", "side_view_width",
-      "size", "slug", "store_image", "store_images_updated_at", "store_url", "top_view",
-      "top_view_colored", "top_view_colored_height", "top_view_colored_width", "top_view_height",
+      "size", "slug", "store_images_updated_at", "store_url",
+      "top_view_colored_height", "top_view_colored_width", "top_view_height",
       "top_view_width", "updated_at", "upgrade_kits_count", "videos_count", "yaw"
     ]
   end

@@ -65,6 +65,8 @@
 #  index_users_on_username              (username) UNIQUE
 #
 class User < ApplicationRecord
+  self.ignored_columns += %w[avatar]
+
   include UrlFieldConcern
   include ActiveStorageVariants
   include Rails.application.routes.url_helpers
@@ -164,7 +166,7 @@ class User < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "avatar", "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
+      "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
       "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
     ]

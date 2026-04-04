@@ -29,6 +29,8 @@
 #  model_id                :uuid
 #
 class ModelModulePackage < ApplicationRecord
+  self.ignored_columns += %w[store_image top_view side_view angled_view]
+
   include ActiveStorageVariants
 
   paginates_per 30

@@ -20,6 +20,8 @@
 #  rsi_id                  :integer
 #
 class Manufacturer < ApplicationRecord
+  self.ignored_columns += %w[logo]
+
   include ActionView::Helpers::OutputSafetyHelper
   include ActiveStorageVariants
 
@@ -39,7 +41,7 @@ class Manufacturer < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for", "logo",
+      "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for",
       "long_name", "name", "rsi_id", "slug", "updated_at"
     ]
   end

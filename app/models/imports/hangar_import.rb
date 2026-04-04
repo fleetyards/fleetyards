@@ -28,6 +28,8 @@
 #
 module Imports
   class HangarImport < ::Import
+    self.ignored_columns += %w[import]
+
     belongs_to :user
 
     has_one_attached :import

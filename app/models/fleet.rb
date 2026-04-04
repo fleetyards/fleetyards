@@ -32,6 +32,8 @@
 #  index_fleets_on_fid  (fid) UNIQUE
 #
 class Fleet < ApplicationRecord
+  self.ignored_columns += %w[logo background_image]
+
   include UrlFieldConcern
   include ActiveStorageVariants
 

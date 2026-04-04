@@ -46,6 +46,11 @@
 #  rsi_id                  :integer
 #
 class ModelPaint < ApplicationRecord
+  self.ignored_columns += %w[
+    store_image rsi_store_image fleetchart_image
+    top_view side_view angled_view
+  ]
+
   include ActiveStorageVariants
 
   paginates_per 30
@@ -65,13 +70,13 @@ class ModelPaint < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "active", "angled_view", "angled_view_height", "angled_view_width", "created_at",
-      "description", "fleetchart_image", "fleetchart_image_height", "fleetchart_image_width",
+      "active", "angled_view_height", "angled_view_width", "created_at",
+      "description", "fleetchart_image_height", "fleetchart_image_width",
       "hidden", "id", "id_value", "last_updated_at", "model_id", "name",
       "on_sale", "pledge_price", "production_note", "production_status", "rsi_description",
-      "rsi_id", "rsi_name", "rsi_slug", "rsi_store_image", "rsi_store_url", "side_view",
-      "side_view_height", "side_view_width", "slug", "store_image", "store_images_updated_at",
-      "store_url", "top_view", "top_view_height", "top_view_width", "updated_at"
+      "rsi_id", "rsi_name", "rsi_slug", "rsi_store_url",
+      "side_view_height", "side_view_width", "slug", "store_images_updated_at",
+      "store_url", "top_view_height", "top_view_width", "updated_at"
     ]
   end
 

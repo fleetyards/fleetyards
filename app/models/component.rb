@@ -41,6 +41,8 @@
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #
 class Component < ApplicationRecord
+  self.ignored_columns += %w[store_image]
+
   include ActiveStorageVariants
 
   paginates_per 50
@@ -91,7 +93,7 @@ class Component < ApplicationRecord
     [
       "ammunition", "component_class", "created_at", "description", "durability", "grade",
       "heat_connection", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
-      "power_connection", "sc_identifier", "size", "slug", "store_image", "tracking_signal",
+      "power_connection", "sc_identifier", "size", "slug", "tracking_signal",
       "type_data", "updated_at"
     ]
   end

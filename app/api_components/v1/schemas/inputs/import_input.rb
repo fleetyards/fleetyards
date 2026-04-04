@@ -9,8 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            import: {type: :string},
-            newImport: {type: :string}
+            import: {type: :string}
           },
           additionalProperties: false
         })
