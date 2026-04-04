@@ -106,9 +106,12 @@
   &--avatar {
     .base-image-input__wrapper {
       width: 200px;
+      border-radius: 50%;
+      overflow: hidden;
 
       :deep(img) {
         border-radius: 50%;
+        object-fit: cover;
       }
     }
 

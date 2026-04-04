@@ -67,6 +67,19 @@ const destroy = () => {
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
   <Btn
+    v-tooltip="!withLabels && t('actions.copy')"
+    :size="BtnSizesEnum.SMALL"
+    :to="{
+      name: 'admin-model-paint-create',
+      query: {
+        copyFrom: props.modelPaint.id,
+      },
+    }"
+  >
+    <i class="fa-duotone fa-copy" />
+    <span v-if="withLabels">{{ t("actions.copy") }}</span>
+  </Btn>
+  <Btn
     v-tooltip="!withLabels && t('actions.delete')"
     :size="BtnSizesEnum.SMALL"
     :variant="BtnVariantsEnum.DANGER"

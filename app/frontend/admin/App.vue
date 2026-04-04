@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import AppModal from "@/shared/components/AppModal/index.vue";
+import OffCanvas from "@/shared/components/OffCanvas/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
@@ -19,7 +20,7 @@ import AccessCheck from "@/admin/components/AccessCheck.vue";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useAppStore } from "@/admin/stores/app";
 import { storeToRefs } from "pinia";
-import { useNProgress } from "@/shared/composables/useNProgress";
+import FetchProgressBar from "@/shared/components/FetchProgressBar/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -35,8 +36,6 @@ import { useMe as useMeQuery } from "@/services/fyAdminApi";
 const { t } = useI18n();
 
 useAxiosInterceptors();
-
-useNProgress();
 
 useMetaInfo({
   appTitle: t("title.defaultAdmin"),
@@ -163,6 +162,7 @@ const setNoScroll = () => {
     }"
     class="app-body"
   >
+    <FetchProgressBar />
     <BackgroundImage />
 
     <div class="app-content">
@@ -218,6 +218,7 @@ const setNoScroll = () => {
 
     <AppConfirm />
     <AppModal />
+    <OffCanvas />
     <AppNotifications />
     <AppEnvironment :git-revision="appStore.gitRevision" show-in-production />
   </div>

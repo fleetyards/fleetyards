@@ -133,7 +133,6 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
         }"
         icon="fa-duotone fa-starship"
       />
-      <NavItem :to="{ name: 'search' }" icon="fa fa-search" />
       <NavItem
         v-if="isAuthenticated || !hangarPreview"
         :to="{
@@ -147,6 +146,7 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
         :to="{ name: 'hangar-preview' }"
         icon="fa-light fa-warehouse"
       />
+      <NavItem :to="{ name: 'fleets' }" icon="fa-duotone fa-users" />
     </template>
   </AppNavigationMobile>
 </template>

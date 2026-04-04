@@ -47,6 +47,7 @@ body {
   .app-content {
     display: flex;
     align-items: stretch;
+    transition: transform ease $transition-base-speed;
   }
 
   .main-wrapper {
@@ -128,4 +129,5 @@ body {
       }
     }
   }
+
 }

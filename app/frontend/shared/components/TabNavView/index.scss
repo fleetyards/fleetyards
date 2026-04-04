@@ -199,3 +199,74 @@ $nav-transition-speed: 0.3s;
     }
   }
 }
+
+@media (max-width: $desktop-breakpoint) {
+  .tabs-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+
+    &::after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        $gray-darker 10%,
+        $gray-darker 90%,
+        transparent 100%
+      );
+      content: "";
+    }
+  }
+
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0;
+    margin: 0;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    &::before {
+      display: none;
+    }
+
+    :deep(li) {
+      flex-shrink: 0;
+
+      > a {
+        margin: 0;
+        padding: 8px $padding-horizontal 10px;
+        border: none;
+
+        &::before {
+          top: auto;
+          bottom: 0;
+          left: 10%;
+          width: 80%;
+          height: 3px;
+          border-radius: 2px 2px 0 0;
+        }
+      }
+
+      &.active > a::before {
+        top: auto;
+        left: 10%;
+        width: 80%;
+        height: 3px;
+        box-shadow:
+          0 3px 10px rgba(darken($primary, 20%), 0.9),
+          -3px 0 10px rgba(darken($primary, 20%), 0.9),
+          3px 0 10px rgba(darken($primary, 20%), 0.9);
+      }
+    }
+  }
+}

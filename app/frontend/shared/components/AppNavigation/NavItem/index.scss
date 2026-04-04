@@ -69,7 +69,9 @@
   &__sub-menu {
     > a,
     > button {
-      &__sub-menu-icon {
+      .nav-item__submenu-icon {
+        margin-right: 5px;
+
         i.fa-chevron-right,
         svg.fa-chevron-right {
           transition: all $transition-base-speed ease;

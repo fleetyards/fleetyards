@@ -11,6 +11,7 @@ import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/in
 import AppFooter from "@/shared/components/AppFooter/index.vue";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
+import OffCanvas from "@/shared/components/OffCanvas/index.vue";
 import AppConfirm from "@/shared/components/AppConfirm/index.vue";
 import AppNotifications from "@/shared/components/AppNotifications/index.vue";
 import SecurePage from "@/frontend/components/core/SecurePage/index.vue";
@@ -29,7 +30,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useMe as useMeQuery } from "@/services/fyApi";
-import { useNProgress } from "@/shared/composables/useNProgress";
+import FetchProgressBar from "@/shared/components/FetchProgressBar/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -46,8 +47,6 @@ useWebpCheck(true);
 useMetaInfo();
 
 useAxiosInterceptors();
-
-useNProgress();
 
 const mobile = useMobile();
 
@@ -253,12 +252,10 @@ const setLocale = (locale: string) => {
     }"
     class="app-body"
   >
+    <FetchProgressBar />
     <BackgroundImage />
 
     <div class="app-content">
-      <transition name="fade" mode="out-in">
-        <FrontendNavigationMobile v-if="mobile" />
-      </transition>
       <transition name="fade" mode="out-in">
         <FrontendNavigation />
       </transition>
@@ -341,8 +338,13 @@ const setLocale = (locale: string) => {
       </div>
     </div>
 
+    <transition name="fade" mode="out-in">
+      <FrontendNavigationMobile v-if="mobile" />
+    </transition>
+
     <AppConfirm />
     <AppModal />
+    <OffCanvas />
     <AppNotifications />
     <AppEnvironment :git-revision="appStore.gitRevision" />
   </div>

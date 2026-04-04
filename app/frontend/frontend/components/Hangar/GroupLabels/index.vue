@@ -50,6 +50,12 @@ watch(
 
 const { filter, filters } = useHangarFilters();
 
+const toArray = (value: string | string[] | undefined): string[] => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return [value];
+};
+
 const groupCount = (group: HangarGroup | HangarGroupPublic) => {
   return (
     props.hangarGroupCounts.find((count) => count.id === group.id) || {
@@ -59,59 +65,35 @@ const groupCount = (group: HangarGroup | HangarGroupPublic) => {
 };
 
 const filterGroup = (group: string) => {
-  const hangarGroupsIn = filters.value.hangarGroupsIn;
-  const hangarGroupsNotIn = filters.value.hangarGroupsNotIn;
+  const hangarGroupsIn = toArray(filters.value.hangarGroupsIn);
+  const hangarGroupsNotIn = toArray(filters.value.hangarGroupsNotIn);
 
-  if (!hangarGroupsIn && !hangarGroupsNotIn) {
+  if (!hangarGroupsIn.length && !hangarGroupsNotIn.length) {
     filter({
       hangarGroupsIn: [group],
     });
-  } else if (hangarGroupsIn && hangarGroupsIn.includes(group)) {
+  } else if (hangarGroupsIn.includes(group)) {
     filter({
       hangarGroupsIn: hangarGroupsIn.filter((g) => g !== group),
-      hangarGroupsNotIn: [...(hangarGroupsNotIn || []), group],
+      hangarGroupsNotIn: [...hangarGroupsNotIn, group],
     });
-  } else if (hangarGroupsIn && !hangarGroupsIn.includes(group)) {
-    filter({
-      hangarGroupsIn: [...(hangarGroupsIn || []), group],
-    });
-  } else if (hangarGroupsNotIn && hangarGroupsNotIn.includes(group)) {
+  } else if (hangarGroupsNotIn.includes(group)) {
     filter({
       hangarGroupsNotIn: hangarGroupsNotIn.filter((g) => g !== group),
     });
-  } else if (hangarGroupsNotIn && !hangarGroupsNotIn.includes(group)) {
+  } else {
     filter({
-      hangarGroupsNotIn: [...(hangarGroupsNotIn || []), group],
+      hangarGroupsIn: [...hangarGroupsIn, group],
     });
   }
 };
 
 const isActive = (group: string) => {
-  const hangarGroupsIn = filters.value.hangarGroupsIn;
-
-  if (!hangarGroupsIn) {
-    return false;
-  }
-
-  if (hangarGroupsIn.includes(group)) {
-    return true;
-  }
-
-  return false;
+  return toArray(filters.value.hangarGroupsIn).includes(group);
 };
 
 const isInverted = (group: string) => {
-  const hangarGroupsNotIn = filters.value.hangarGroupsNotIn;
-
-  if (!hangarGroupsNotIn) {
-    return false;
-  }
-
-  if (hangarGroupsNotIn.includes(group)) {
-    return true;
-  }
-
-  return false;
+  return toArray(filters.value.hangarGroupsNotIn).includes(group);
 };
 
 const drag = ref(false);
@@ -191,7 +173,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
         active: isActive(group.slug),
         inverted: isInverted(group.slug),
       }"
-      @click.exact="filterGroup(group.slug)"
+      @click="filterGroup(group.slug)"
     >
       <span
         :style="{

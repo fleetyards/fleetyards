@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type ModelPaintInput,
   useCreateModelPaint,
+  useModelPaint,
   getListModelPaintsQueryKey,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
@@ -23,16 +24,49 @@ import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
 const router = useRouter();
+const route = useRoute();
 const { extend } = useBreadCrumbs();
 const queryClient = useQueryClient();
+
+const copyFromId = computed(() => route.query.copyFrom as string | undefined);
+
+const { data: sourcePaint } = useModelPaint(copyFromId as Ref<string>, {
+  query: {
+    enabled: !!copyFromId.value,
+  },
+});
+
+const initialValues = computed<Partial<ModelPaintInput>>(() => {
+  if (!sourcePaint.value) return {};
+
+  return {
+    name: `${sourcePaint.value.name} (Copy)`,
+    description: sourcePaint.value.description,
+    modelId: sourcePaint.value.model?.id,
+    active: sourcePaint.value.active,
+    hidden: sourcePaint.value.hidden,
+  };
+});
 
 const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<ModelPaintInput>({
-  validationSchema,
-});
+const { defineField, handleSubmit, meta, setValues } = useForm<ModelPaintInput>(
+  {
+    validationSchema,
+  },
+);
+
+watch(
+  () => initialValues.value,
+  (values) => {
+    if (Object.keys(values).length) {
+      setValues(values);
+    }
+  },
+  { immediate: true },
+);
 
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");

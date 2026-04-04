@@ -3,6 +3,7 @@
     "nav": {
       "home": "Home",
       "back": "Back",
+      "navigation": "Navigation",
       "ships": {
         "index": "Ships"
       },

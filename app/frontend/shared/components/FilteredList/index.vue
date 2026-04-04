@@ -160,8 +160,11 @@ const toggleFilter = () => {
           </div>
           <div class="filtered-list__actions-right">
             <slot name="actions-right" :records="records" />
-            <slot name="pagination-top" />
+            <slot v-if="!mobile" name="pagination-top" />
           </div>
+        </div>
+        <div v-if="mobile" class="col-12 filtered-list__pagination-top">
+          <slot name="pagination-top" />
         </div>
       </div>
       <div class="row">

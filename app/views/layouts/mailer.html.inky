@@ -16,15 +16,13 @@
             <container class="header">
               <spacer size="32"></spacer>
               <row>
-                <columns small="12" large="3">
+                <columns small="12" large="12">
                   <center>
-                    <img src="<%= vite_asset_url('images/logo.png') %>" alt="logo">
+                    <img src="<%= vite_asset_url('images/logo.png') %>" alt="logo" width="80" height="80">
+                    <h1 style="margin-bottom: 0; margin-top: 10px;">
+                      <%= I18n.t('title.default') %>
+                    </h1>
                   </center>
-                </columns>
-                <columns small="12" large="9">
-                  <h1 style="margin-bottom: 0; margin-top: 20px;">
-                    <%= I18n.t('title.default') %>
-                  </h1>
                 </columns>
               </row>
             </container>
@@ -41,7 +39,7 @@
             </container>
             <container class="content">
               <row>
-                <columns small="12" large="6">
+                <columns small="12" large="12">
                   <spacer size="16"></spacer>
                   <%= yield %>
                 </columns>

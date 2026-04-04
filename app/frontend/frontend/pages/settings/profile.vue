@@ -75,12 +75,45 @@ const comlink = useComlink();
 
 const mutation = useUpdateProfileMutation();
 
-const onSubmit = handleSubmit(async (values) => {
+const avatarFileInput = ref<InstanceType<typeof FormFileInput>>();
+
+watch(avatar, async (newValue) => {
+  if (!newValue) {
+    return;
+  }
+
   submitting.value = true;
 
   await mutation
     .mutateAsync({
-      data: values,
+      data: { avatar: newValue },
+    })
+    .then(() => {
+      comlink.emit("user-update");
+      displaySuccess({
+        text: t("messages.updateProfile.success"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+      avatarFileInput.value?.clear();
+      displayAlert({
+        text: t("messages.updateProfile.failure"),
+      });
+    })
+    .finally(() => {
+      submitting.value = false;
+    });
+});
+
+const onSubmit = handleSubmit(async (values) => {
+  submitting.value = true;
+
+  const { avatar: _avatar, ...rest } = values;
+
+  await mutation
+    .mutateAsync({
+      data: rest,
     })
     .then(() => {
       comlink.emit("user-update");
@@ -111,6 +144,7 @@ const onSubmit = handleSubmit(async (values) => {
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
+          ref="avatarFileInput"
           v-model="avatar"
           v-bind="avatarProps"
           :file="sessionStore.currentUser?.avatar"

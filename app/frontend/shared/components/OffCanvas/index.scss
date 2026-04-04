@@ -1,0 +1,122 @@
+.off-canvas {
+  &__backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2017;
+    background-color: rgba(black, 0.6);
+  }
+
+  &__panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 2020;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    max-width: 80vw;
+    padding-top: env(safe-area-inset-top);
+    background-color: rgba($gray-darker, 0.5);
+    transition:
+      left ease $transition-base-speed,
+      right ease $transition-base-speed;
+
+    &--left {
+      left: -300px;
+      border-right: 1px solid rgba(30, 34, 38, 0.5);
+    }
+
+    &--right {
+      right: -300px;
+      border-left: 1px solid rgba(30, 34, 38, 0.5);
+    }
+
+    &--left.visible {
+      left: 0;
+    }
+
+    &--right.visible {
+      right: 0;
+    }
+  }
+
+  &__header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    padding: 20px 10px 10px 25px;
+  }
+
+  &__title {
+    font-size: 18px;
+    color: darken($text-color, 10%);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  &__body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  &__body :deep(.off-canvas-nav-item) {
+    position: relative;
+    display: block;
+    padding: 10px 10px 10px 25px;
+    color: darken($text-color, 10%);
+    font-size: 18px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      color: lighten($text-color, 10%);
+    }
+
+    &.active {
+      color: lighten($text-color, 10%);
+
+      &::after {
+        position: absolute;
+        top: 10%;
+        width: 3px;
+        height: 80%;
+        background: $primary;
+        content: "";
+      }
+    }
+  }
+
+  &__panel--left &__body :deep(.off-canvas-nav-item.active)::after {
+    right: 0;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    box-shadow: -2px 0 10px rgba(darken($primary, 20%), 0.9);
+  }
+
+  &__panel--right &__body :deep(.off-canvas-nav-item.active)::after {
+    left: 0;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    box-shadow: 2px 0 10px rgba(darken($primary, 20%), 0.9);
+  }
+}
+
+.off-canvas-backdrop-enter-active,
+.off-canvas-backdrop-leave-active {
+  transition: opacity ease $transition-base-speed;
+}
+
+.off-canvas-backdrop-enter-from,
+.off-canvas-backdrop-leave-to {
+  opacity: 0;
+}

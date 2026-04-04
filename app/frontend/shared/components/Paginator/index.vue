@@ -62,7 +62,11 @@ const currentPage = computed(() => {
 
 <template>
   <div
-    v-if="pagination && (perPageSelectable || pagination.totalPages > 1)"
+    v-if="
+      pagination &&
+      pagination.totalCount > 0 &&
+      (perPageSelectable || pagination.totalPages > 1)
+    "
     class="pagination"
   >
     <BtnGroup :inline="inline">

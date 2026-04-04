@@ -1,5 +1,6 @@
 import { type AppModalOptions } from "@/shared/components/AppModal/types";
 import { type AppConfirmOptions } from "@/shared/components/AppConfirm/types";
+import { type OffCanvasOptions } from "@/shared/components/OffCanvas/types";
 import { type FleetMember, type HangarGroup } from "@/services/fyApi";
 import { createNanoEvents } from "nanoevents";
 
@@ -8,6 +9,8 @@ type Events = {
   "show-confirm": (options: AppConfirmOptions) => void | Promise<unknown>;
   "hide-confirm": () => void | Promise<unknown>;
   "close-modal": (force?: boolean) => void | Promise<unknown>;
+  "open-off-canvas": (options: OffCanvasOptions) => void | Promise<unknown>;
+  "close-off-canvas": () => void | Promise<unknown>;
   "prices-update": () => void | Promise<unknown>;
   "commodities-update": () => void | Promise<unknown>;
   "open-privacy-settings": (force?: boolean) => void | Promise<unknown>;

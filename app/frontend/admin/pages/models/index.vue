@@ -165,6 +165,15 @@ const reloadScData = async () => {
   await reloadScDataMutation.mutateAsync();
 };
 
+const router = useRouter();
+
+const onRowClick = async (model: Model) => {
+  await router.push({
+    name: "admin-model-edit",
+    params: { id: model.id },
+  });
+};
+
 const breadcrumbsStore = useBreadCrumbsStore();
 
 watch(
@@ -253,6 +262,8 @@ watch(
         :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable
+        row-clickable
+        @row-click="onRowClick"
       >
         <template #col-storeImage="{ record }">
           <ViewImage

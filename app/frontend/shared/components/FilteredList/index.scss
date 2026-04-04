@@ -32,5 +32,11 @@
         justify-content: flex-end;
       }
     }
+
+    &__pagination-top {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
   }
 }

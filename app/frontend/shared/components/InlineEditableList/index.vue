@@ -11,6 +11,8 @@ import {
 } from "@/shared/components/base/Btn/types";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   items: T[];
@@ -30,6 +32,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { displayConfirm } = useAppNotifications();
+
+const mobile = useMobile();
+const { t } = useI18n();
 
 const emit = defineEmits<{
   "start-edit": [item: T];
@@ -162,6 +167,28 @@ defineExpose({
       </template>
       <template v-else>
         <slot v-if="hideEdit && hideDestroy" name="actions" :item="item" />
+        <BtnDropdown v-else-if="mobile" :size="BtnSizesEnum.SMALL" inline>
+          <slot name="actions" :item="item" />
+          <Btn
+            v-if="!hideEdit"
+            :size="BtnSizesEnum.SMALL"
+            data-test="start-edit"
+            @click="startEdit(item)"
+          >
+            <i class="fa-duotone fa-pencil" />
+            <span>{{ t("actions.edit") }}</span>
+          </Btn>
+          <Btn
+            v-if="!hideDestroy"
+            :size="BtnSizesEnum.SMALL"
+            :variant="BtnVariantsEnum.DANGER"
+            data-test="destroy"
+            @click="destroy(item)"
+          >
+            <i class="fa-duotone fa-trash" />
+            <span>{{ t("actions.delete") }}</span>
+          </Btn>
+        </BtnDropdown>
         <BtnGroup v-else inline>
           <slot name="actions" :item="item" />
           <Btn
