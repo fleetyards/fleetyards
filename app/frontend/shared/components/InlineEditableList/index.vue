@@ -166,9 +166,14 @@ defineExpose({
         </BtnGroup>
       </template>
       <template v-else>
-        <slot v-if="hideEdit && hideDestroy" name="actions" :item="item" />
+        <slot
+          v-if="hideEdit && hideDestroy"
+          name="actions"
+          :item="item"
+          :mobile="mobile"
+        />
         <BtnDropdown v-else-if="mobile" :size="BtnSizesEnum.SMALL" inline>
-          <slot name="actions" :item="item" />
+          <slot name="actions" :item="item" :mobile="mobile" />
           <Btn
             v-if="!hideEdit"
             :size="BtnSizesEnum.SMALL"
@@ -190,7 +195,7 @@ defineExpose({
           </Btn>
         </BtnDropdown>
         <BtnGroup v-else inline>
-          <slot name="actions" :item="item" />
+          <slot name="actions" :item="item" :mobile="false" />
           <Btn
             v-if="!hideEdit"
             :size="BtnSizesEnum.SMALL"

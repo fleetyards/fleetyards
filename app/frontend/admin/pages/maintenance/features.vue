@@ -307,8 +307,9 @@ const hasSelectedActor = computed(() => {
       </BasePill>
     </template>
 
-    <template #actions="{ item }">
+    <template #actions="{ item, mobile }">
       <Toggle
+        :label="mobile ? t('labels.features.toggle') : undefined"
         :active="item.state === 'on'"
         data-test="toggle-feature"
         @toggle="toggleFeature(item)"

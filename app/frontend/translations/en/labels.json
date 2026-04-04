@@ -43,6 +43,7 @@
         "percentageOfActors": "of actors",
         "percentageOfTime": "of time",
         "currentState": "Current State",
+        "toggle": "Toggle",
         "settingsIntro": "Enable or disable experimental features for your account. These features may be incomplete or change without notice.",
         "noFeaturesAvailable": "No self-service features are currently available.",
         "descriptions": {

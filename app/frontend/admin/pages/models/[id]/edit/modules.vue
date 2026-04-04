@@ -232,14 +232,16 @@ const onUnlink = (record: ModelModule) => {
       </template>
     </template>
 
-    <template #actions="{ item }">
+    <template #actions="{ item, mobile }">
       <Toggle
         v-tooltip="t('labels.modelModule.hidden')"
+        :label="mobile ? t('labels.modelModule.hidden') : undefined"
         :active="!item.hidden"
         @toggle="toggleField(item, 'hidden')"
       />
       <Toggle
         v-tooltip="t('labels.modelModule.active')"
+        :label="mobile ? t('labels.modelModule.active') : undefined"
         :active="item.active"
         @toggle="toggleField(item, 'active')"
       />
@@ -250,6 +252,7 @@ const onUnlink = (record: ModelModule) => {
         @click="onUnlink(item)"
       >
         <i class="fa-duotone fa-unlink text-muted" />
+        <span v-if="mobile">{{ t("actions.unlink") }}</span>
       </Btn>
     </template>
 

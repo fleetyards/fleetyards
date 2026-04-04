@@ -175,9 +175,10 @@ const handleUploadDone = async (files: FileUpload[]) => {
       <span>{{ item.name }}</span>
     </template>
 
-    <template #actions="{ item }">
+    <template #actions="{ item, mobile }">
       <Toggle
         v-tooltip="t('labels.image.enabled')"
+        :label="mobile ? t('labels.image.enabled') : undefined"
         :active="item.enabled"
         @toggle="toggleField(item, 'enabled')"
       />
@@ -191,6 +192,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
           class="fa-duotone fa-globe"
           :class="!item.global ? 'text-warning' : 'text-muted'"
         />
+        <span v-if="mobile">{{ t("labels.image.global") }}</span>
       </Btn>
       <Btn
         v-tooltip="t('labels.image.background')"
@@ -202,6 +204,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
           class="fa-duotone fa-image"
           :class="item.background ? 'text-info' : 'text-muted'"
         />
+        <span v-if="mobile">{{ t("labels.image.background") }}</span>
       </Btn>
     </template>
 

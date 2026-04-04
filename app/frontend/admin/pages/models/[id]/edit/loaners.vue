@@ -163,9 +163,10 @@ const onSaveCreate = async () => {
       <span v-if="item.loanerModel">{{ item.loanerModel.name }}</span>
     </template>
 
-    <template #actions="{ item }">
+    <template #actions="{ item, mobile }">
       <Toggle
         v-tooltip="t('labels.modelLoaner.hidden')"
+        :label="mobile ? t('labels.modelLoaner.hidden') : undefined"
         :active="!item.hidden"
         @toggle="toggleField(item, 'hidden')"
       />

@@ -249,7 +249,7 @@ const onSaveCreate = async () => {
       </div>
     </template>
 
-    <template #actions="{ item }">
+    <template #actions="{ item, mobile }">
       <Btn
         v-if="item.loadouts?.length"
         v-tooltip="'Loadouts'"
@@ -260,6 +260,7 @@ const onSaveCreate = async () => {
           class="fa-duotone fa-layer-group"
           :class="expandedId === item.id ? 'text-primary' : ''"
         />
+        <span v-if="mobile">Loadouts</span>
       </Btn>
     </template>
 

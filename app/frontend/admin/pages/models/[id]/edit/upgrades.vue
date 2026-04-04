@@ -227,14 +227,16 @@ const onUnlink = (record: ModelUpgrade) => {
       </template>
     </template>
 
-    <template #actions="{ item }">
+    <template #actions="{ item, mobile }">
       <Toggle
         v-tooltip="t('labels.modelUpgrade.hidden')"
+        :label="mobile ? t('labels.modelUpgrade.hidden') : undefined"
         :active="!item.hidden"
         @toggle="toggleField(item, 'hidden')"
       />
       <Toggle
         v-tooltip="t('labels.modelUpgrade.active')"
+        :label="mobile ? t('labels.modelUpgrade.active') : undefined"
         :active="item.active"
         @toggle="toggleField(item, 'active')"
       />
@@ -245,6 +247,7 @@ const onUnlink = (record: ModelUpgrade) => {
         @click="onUnlink(item)"
       >
         <i class="fa-duotone fa-unlink text-muted" />
+        <span v-if="mobile">{{ t("actions.unlink") }}</span>
       </Btn>
     </template>
 

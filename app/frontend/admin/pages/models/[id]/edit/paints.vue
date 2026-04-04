@@ -173,14 +173,16 @@ const onSaveCreate = async () => {
       <span>{{ item.name }}</span>
     </template>
 
-    <template #actions="{ item }">
+    <template #actions="{ item, mobile }">
       <Toggle
         v-tooltip="t('labels.modelPaint.hidden')"
+        :label="mobile ? t('labels.modelPaint.hidden') : undefined"
         :active="!item.hidden"
         @toggle="toggleField(item, 'hidden')"
       />
       <Toggle
         v-tooltip="t('labels.modelPaint.active')"
+        :label="mobile ? t('labels.modelPaint.active') : undefined"
         :active="item.active"
         @toggle="toggleField(item, 'active')"
       />

@@ -104,8 +104,12 @@ const toggleFeature = async (feature: FeatureItem) => {
       </span>
     </template>
 
-    <template #actions="{ item }">
-      <Toggle :active="item.enabled" @toggle="toggleFeature(item)" />
+    <template #actions="{ item, mobile }">
+      <Toggle
+        :label="mobile ? t('labels.features.toggle') : undefined"
+        :active="item.enabled"
+        @toggle="toggleFeature(item)"
+      />
     </template>
   </InlineEditableList>
 </template>
