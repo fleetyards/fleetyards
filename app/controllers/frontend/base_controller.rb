@@ -50,7 +50,8 @@ module Frontend
         @title = I18n.t("title.frontend.ship_images", model: @model.name)
         @description = I18n.t("meta.ship_images.description", model: @model.name)
         @og_type = "article"
-        @og_image = @model.random_image&.file&.attached? ? rails_blob_url(@model.random_image.file) : nil
+        random_img = @model.random_image
+        @og_image = random_img&.file&.attached? ? rails_blob_url(random_img.file) : nil
       end
 
       render_frontend
@@ -62,7 +63,8 @@ module Frontend
         @title = I18n.t("title.frontend.ship_videos", model: @model.name)
         @description = I18n.t("meta.ship_videos.description", model: @model.name)
         @og_type = "article"
-        @og_image = @model.random_image&.file&.attached? ? rails_blob_url(@model.random_image.file) : nil
+        random_img = @model.random_image
+        @og_image = random_img&.file&.attached? ? rails_blob_url(random_img.file) : nil
       end
 
       render_frontend

@@ -83,10 +83,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
 
       if !user.avatar.attached? && auth.info.image.present?
+        avatar_uri = URI.parse(auth.info.image)
+        filename = "avatar#{File.extname(avatar_uri.path)}"
         user.avatar.attach(
-          io: URI.parse(auth.info.image).open,
-          filename: "avatar#{File.extname(URI.parse(auth.info.image).path)}",
-          content_type: "image/jpeg"
+          io: avatar_uri.open,
+          filename: filename,
+          content_type: Marcel::MimeType.for(name: filename)
         )
       end
 
