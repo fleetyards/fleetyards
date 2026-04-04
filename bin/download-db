@@ -29,10 +29,42 @@ echo "Downloading $LATEST..."
 $S3CMD get --force "$LATEST" "$DUMP_FILE"
 
 echo "Restoring to $DB_NAME on localhost:$DB_PORT..."
-PGPASSWORD=password pg_restore --verbose --clean --no-acl --no-owner \
+PG_RESTORE="pg_restore"
+if [ -x "/opt/homebrew/opt/postgresql@16/bin/pg_restore" ]; then
+  PG_RESTORE="/opt/homebrew/opt/postgresql@16/bin/pg_restore"
+fi
+
+PGPASSWORD=password $PG_RESTORE --verbose --clean --no-acl --no-owner \
   -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" "$DUMP_FILE" || true
+
+echo "Switching Active Storage blobs to local service..."
+PGPASSWORD=password psql -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" \
+  -c "UPDATE active_storage_blobs SET service_name = 'local' WHERE service_name = 'cloud';"
 
 echo "Running migrations..."
 DB_PORT="$DB_PORT" bin/rails db:migrate
+
+echo "Updating test accounts..."
+
+ADMIN_USERNAME=$(op read "op://Fleetyards/Test Admin/username")
+ADMIN_PASSWORD=$(op read "op://Fleetyards/Test Admin/password")
+
+FRONTEND_USERNAME=$(op read "op://Fleetyards/Test Frontend/username")
+FRONTEND_PASSWORD=$(op read "op://Fleetyards/Test Frontend/password")
+
+DB_PORT="$DB_PORT" bin/rails runner "
+admin = AdminUser.find_by!(username: '$ADMIN_USERNAME')
+admin.password = '$ADMIN_PASSWORD'
+admin.password_confirmation = '$ADMIN_PASSWORD'
+admin.otp_required_for_login = false
+admin.save!
+puts \"Admin account '#{admin.username}' updated.\"
+
+user = User.find_by!(username: '$FRONTEND_USERNAME')
+user.password = '$FRONTEND_PASSWORD'
+user.password_confirmation = '$FRONTEND_PASSWORD'
+user.save!
+puts \"Frontend account '#{user.username}' updated.\"
+"
 
 echo "Done!"

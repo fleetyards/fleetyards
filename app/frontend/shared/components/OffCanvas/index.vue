@@ -34,8 +34,7 @@ onUnmounted(() => {
 
 const panel = ref<HTMLElement | null>(null);
 
-const getAppContent = () =>
-  document.querySelector<HTMLElement>(".app-content");
+const getAppContent = () => document.querySelector<HTMLElement>(".app-content");
 
 const getMobileNav = () =>
   document.querySelector<HTMLElement>(".navigation-mobile");
@@ -128,11 +127,7 @@ const onDocumentClick = (event: Event) => {
 <template>
   <Teleport to="body">
     <transition name="off-canvas-backdrop">
-      <div
-        v-if="visible"
-        class="off-canvas__backdrop"
-        @click="close"
-      />
+      <div v-if="visible" class="off-canvas__backdrop" @click="close" />
     </transition>
     <nav
       ref="panel"
