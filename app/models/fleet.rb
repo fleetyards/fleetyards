@@ -4,28 +4,25 @@
 #
 # Table name: fleets
 #
-#  id                      :uuid             not null, primary key
-#  background_image        :string
-#  carrierwave_migrated_at :datetime
-#  created_by              :uuid
-#  description             :text
-#  discord                 :string
-#  fid                     :string
-#  guilded                 :string
-#  homepage                :string
-#  logo                    :string
-#  name                    :string
-#  normalized_fid          :string
-#  public_fleet            :boolean          default(FALSE)
-#  public_fleet_stats      :boolean          default(FALSE)
-#  rsi_sid                 :string
-#  sid                     :string
-#  slug                    :string
-#  ts                      :string
-#  twitch                  :string
-#  youtube                 :string
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
+#  id                 :uuid             not null, primary key
+#  created_by         :uuid
+#  description        :text
+#  discord            :string
+#  fid                :string
+#  guilded            :string
+#  homepage           :string
+#  name               :string
+#  normalized_fid     :string
+#  public_fleet       :boolean          default(FALSE)
+#  public_fleet_stats :boolean          default(FALSE)
+#  rsi_sid            :string
+#  sid                :string
+#  slug               :string
+#  ts                 :string
+#  twitch             :string
+#  youtube            :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
 # Indexes
 #
@@ -101,27 +98,8 @@ class Fleet < ApplicationRecord
     []
   end
 
-  mount_uploader :logo, LogoUploader
-  mount_uploader :background_image, ImageUploader
-
-  has_one_attached :new_logo
-  has_one_attached :new_background_image
-
-  def logo=(value)
-    if value.is_a?(String) && value.present?
-      self.new_logo = value
-    else
-      super
-    end
-  end
-
-  def background_image=(value)
-    if value.is_a?(String) && value.present?
-      self.new_background_image = value
-    else
-      super
-    end
-  end
+  has_one_attached :logo
+  has_one_attached :background_image
 
   accepts_nested_attributes_for :fleet_memberships
 

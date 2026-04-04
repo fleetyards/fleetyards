@@ -4,21 +4,17 @@
 #
 # Table name: images
 #
-#  id                      :uuid             not null, primary key
-#  background              :boolean          default(TRUE)
-#  caption                 :string
-#  carrierwave_migrated_at :datetime
-#  enabled                 :boolean          default(FALSE), not null
-#  gallery_name            :string
-#  gallery_slug            :string
-#  gallery_type            :string(255)
-#  global                  :boolean          default(TRUE)
-#  height                  :integer
-#  name                    :string(255)
-#  width                   :integer
-#  created_at              :datetime
-#  updated_at              :datetime
-#  gallery_id              :uuid
+#  id           :uuid             not null, primary key
+#  background   :boolean          default(TRUE)
+#  caption      :string
+#  enabled      :boolean          default(FALSE), not null
+#  gallery_name :string
+#  gallery_slug :string
+#  gallery_type :string(255)
+#  global       :boolean          default(TRUE)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  gallery_id   :uuid
 #
 # Indexes
 #
@@ -38,7 +34,6 @@ class Image < ApplicationRecord
     optional: true
 
   has_one_attached :file
-  mount_uploader :name, ImageUploader
 
   ransack_alias :model, :model_slug
 
@@ -47,7 +42,7 @@ class Image < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "background", "caption", "created_at", "enabled", "gallery_id", "gallery_type", "global",
-      "height", "id", "id_value", "model", "name", "updated_at", "width"
+      "id", "id_value", "model", "updated_at"
     ]
   end
 

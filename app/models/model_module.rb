@@ -4,25 +4,21 @@
 #
 # Table name: model_modules
 #
-#  id                      :uuid             not null, primary key
-#  active                  :boolean          default(TRUE)
-#  cargo                   :decimal(15, 2)
-#  cargo_holds             :string
-#  carrierwave_migrated_at :datetime
-#  description             :text
-#  hidden                  :boolean          default(TRUE)
-#  name                    :string
-#  pledge_price            :decimal(15, 2)
-#  production_status       :string
-#  sc_key                  :string
-#  slug                    :string
-#  store_image             :string
-#  store_image_height      :integer
-#  store_image_width       :integer
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  manufacturer_id         :uuid
-#  model_id                :uuid
+#  id                :uuid             not null, primary key
+#  active            :boolean          default(TRUE)
+#  cargo             :decimal(15, 2)
+#  cargo_holds       :string
+#  description       :text
+#  hidden            :boolean          default(TRUE)
+#  name              :string
+#  pledge_price      :decimal(15, 2)
+#  production_status :string
+#  sc_key            :string
+#  slug              :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  manufacturer_id   :uuid
+#  model_id          :uuid
 #
 class ModelModule < ApplicationRecord
   include ActiveStorageVariants
@@ -54,8 +50,7 @@ class ModelModule < ApplicationRecord
 
   serialize :cargo_holds, coder: YAML
 
-  mount_uploader :store_image, StoreImageUploader
-  has_one_attached :new_store_image
+  has_one_attached :store_image
 
   accepts_nested_attributes_for :module_hardpoints, allow_destroy: true
 
@@ -67,7 +62,7 @@ class ModelModule < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "created_at", "description", "hidden", "id", "id_value", "manufacturer_id",
-      "model_id", "name", "pledge_price", "production_status", "slug", "store_image", "updated_at"
+      "model_id", "name", "pledge_price", "production_status", "slug", "updated_at"
     ]
   end
 

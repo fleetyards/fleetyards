@@ -4,14 +4,7 @@
 #
 #  id                      :uuid             not null, primary key
 #  active                  :boolean          default(TRUE)
-#  angled_view             :string
-#  angled_view_height      :integer
-#  angled_view_width       :integer
-#  carrierwave_migrated_at :datetime
 #  description             :string
-#  fleetchart_image        :string
-#  fleetchart_image_height :integer
-#  fleetchart_image_width  :integer
 #  hidden                  :boolean          default(TRUE)
 #  last_updated_at         :datetime
 #  name                    :string
@@ -22,22 +15,10 @@
 #  rsi_description         :string
 #  rsi_name                :string
 #  rsi_slug                :string
-#  rsi_store_image         :string
-#  rsi_store_image_height  :integer
-#  rsi_store_image_width   :integer
 #  rsi_store_url           :string
-#  side_view               :string
-#  side_view_height        :integer
-#  side_view_width         :integer
 #  slug                    :string
-#  store_image             :string
-#  store_image_height      :integer
-#  store_image_width       :integer
 #  store_images_updated_at :datetime
 #  store_url               :string
-#  top_view                :string
-#  top_view_height         :integer
-#  top_view_width          :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  model_id                :uuid

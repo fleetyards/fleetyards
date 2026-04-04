@@ -114,11 +114,17 @@ module Api
       end
 
       private def user_params
-        @user_params ||= params.transform_keys(&:underscore)
-          .permit(
-            :avatar, :remove_avatar, :sale_notify, :public_hangar, :public_wishlist, :rsi_handle,
-            :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hide_owner
-          )
+        @user_params ||= begin
+          permitted = params.transform_keys(&:underscore)
+            .permit(
+              :avatar, :remove_avatar, :sale_notify, :public_hangar, :public_wishlist, :rsi_handle,
+              :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hide_owner
+            )
+          if permitted.delete(:remove_avatar).present?
+            @user.avatar.purge if @user.avatar.attached?
+          end
+          permitted
+        end
       end
 
       private def user_account_params

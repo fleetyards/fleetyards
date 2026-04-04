@@ -4,137 +4,101 @@
 #
 # Table name: models
 #
-#  id                         :uuid             not null, primary key
-#  active                     :boolean          default(TRUE)
-#  adi_map                    :boolean          default(FALSE)
-#  angled_view                :string
-#  angled_view_colored        :string
-#  angled_view_colored_height :integer
-#  angled_view_colored_width  :integer
-#  angled_view_height         :integer
-#  angled_view_width          :integer
-#  beam                       :decimal(15, 2)   default(0.0), not null
-#  brochure                   :string
-#  cargo                      :decimal(15, 2)
-#  cargo_holds                :string
-#  carrierwave_migrated_at    :datetime
-#  classification             :string(255)
-#  description                :text
-#  dock_size                  :integer
-#  erkul_identifier           :string
-#  fleetchart_image           :string
-#  fleetchart_image_height    :integer
-#  fleetchart_image_width     :integer
-#  fleetchart_offset_beam     :decimal(15, 2)
-#  fleetchart_offset_length   :decimal(15, 2)
-#  focus                      :string(255)
-#  front_view                 :string
-#  front_view_colored         :string
-#  front_view_colored_height  :integer
-#  front_view_colored_width   :integer
-#  front_view_height          :integer
-#  front_view_width           :integer
-#  fuel_consumption           :decimal(15, 2)
-#  ground                     :boolean          default(FALSE)
-#  ground_acceleration        :decimal(15, 2)
-#  ground_decceleration       :decimal(15, 2)
-#  ground_max_speed           :decimal(15, 2)
-#  ground_reverse_speed       :decimal(15, 2)
-#  height                     :decimal(15, 2)   default(0.0), not null
-#  hidden                     :boolean          default(TRUE)
-#  holo                       :string
-#  holo_colored               :boolean          default(FALSE)
-#  hydrogen_fuel_tank_size    :decimal(15, 2)
-#  hydrogen_fuel_tanks        :string
-#  images_count               :integer          default(0)
-#  last_updated_at            :datetime
-#  length                     :decimal(15, 2)   default(0.0), not null
-#  loaners_count              :integer          default(0), not null
-#  mass                       :decimal(15, 2)   default(0.0), not null
-#  max_crew                   :integer
-#  max_speed                  :decimal(15, 2)
-#  max_speed_acceleration     :decimal(15, 2)
-#  max_speed_decceleration    :decimal(15, 2)
-#  min_crew                   :integer
-#  model_paints_count         :integer          default(0)
-#  module_hardpoints_count    :integer          default(0)
-#  name                       :string(255)
-#  notified                   :boolean          default(FALSE)
-#  on_sale                    :boolean          default(FALSE)
-#  pitch                      :decimal(15, 2)
-#  pitch_boosted              :decimal(15, 2)
-#  pledge_price               :decimal(15, 2)
-#  price                      :decimal(15, 2)
-#  production_note            :string(255)
-#  production_status          :string(255)
-#  quantum_fuel_tank_size     :decimal(15, 2)
-#  quantum_fuel_tanks         :string
-#  reverse_speed_boosted      :decimal(15, 2)
-#  roll                       :decimal(15, 2)
-#  roll_boosted               :decimal(15, 2)
-#  rsi_beam                   :decimal(15, 2)   default(0.0), not null
-#  rsi_cargo                  :decimal(15, 2)
-#  rsi_classification         :string
-#  rsi_ctm_url                :string
-#  rsi_description            :text
-#  rsi_focus                  :string
-#  rsi_height                 :decimal(15, 2)   default(0.0), not null
-#  rsi_length                 :decimal(15, 2)   default(0.0), not null
-#  rsi_mass                   :decimal(15, 2)   default(0.0), not null
-#  rsi_max_crew               :integer
-#  rsi_max_speed              :decimal(15, 2)
-#  rsi_min_crew               :integer
-#  rsi_name                   :string
-#  rsi_pitch                  :decimal(15, 2)
-#  rsi_pledge_slug            :string
-#  rsi_pledge_value           :integer
-#  rsi_roll                   :decimal(15, 2)
-#  rsi_scm_speed              :decimal(15, 2)
-#  rsi_size                   :string
-#  rsi_slug                   :string
-#  rsi_store_image            :string
-#  rsi_store_image_height     :integer
-#  rsi_store_image_width      :integer
-#  rsi_store_url              :string
-#  rsi_yaw                    :decimal(15, 2)
-#  sales_page_url             :string
-#  sc_beam                    :decimal(15, 2)
-#  sc_height                  :decimal(15, 2)
-#  sc_identifier              :string
-#  sc_length                  :decimal(15, 2)
-#  scm_speed                  :decimal(15, 2)
-#  scm_speed_acceleration     :decimal(15, 2)
-#  scm_speed_boosted          :decimal(15, 2)
-#  scm_speed_decceleration    :decimal(15, 2)
-#  side_view                  :string
-#  side_view_colored          :string
-#  side_view_colored_height   :integer
-#  side_view_colored_width    :integer
-#  side_view_height           :integer
-#  side_view_width            :integer
-#  size                       :string
-#  slug                       :string(255)
-#  store_image                :string(255)
-#  store_image_height         :integer
-#  store_image_width          :integer
-#  store_images_updated_at    :datetime
-#  store_url                  :string(255)
-#  top_view                   :string
-#  top_view_colored           :string
-#  top_view_colored_height    :integer
-#  top_view_colored_width     :integer
-#  top_view_height            :integer
-#  top_view_width             :integer
-#  upgrade_kits_count         :integer          default(0)
-#  videos_count               :integer          default(0)
-#  yaw                        :decimal(15, 2)
-#  yaw_boosted                :decimal(15, 2)
-#  created_at                 :datetime
-#  updated_at                 :datetime
-#  base_model_id              :uuid
-#  manufacturer_id            :uuid
-#  rsi_chassis_id             :integer
-#  rsi_id                     :integer
+#  id                       :uuid             not null, primary key
+#  active                   :boolean          default(TRUE)
+#  adi_map                  :boolean          default(FALSE)
+#  beam                     :decimal(15, 2)   default(0.0), not null
+#  cargo                    :decimal(15, 2)
+#  cargo_holds              :string
+#  classification           :string(255)
+#  description              :text
+#  dock_size                :integer
+#  erkul_identifier         :string
+#  fleetchart_offset_beam   :decimal(15, 2)
+#  fleetchart_offset_length :decimal(15, 2)
+#  focus                    :string(255)
+#  fuel_consumption         :decimal(15, 2)
+#  ground                   :boolean          default(FALSE)
+#  ground_acceleration      :decimal(15, 2)
+#  ground_decceleration     :decimal(15, 2)
+#  ground_max_speed         :decimal(15, 2)
+#  ground_reverse_speed     :decimal(15, 2)
+#  height                   :decimal(15, 2)   default(0.0), not null
+#  hidden                   :boolean          default(TRUE)
+#  holo_colored             :boolean          default(FALSE)
+#  hydrogen_fuel_tank_size  :decimal(15, 2)
+#  hydrogen_fuel_tanks      :string
+#  images_count             :integer          default(0)
+#  last_updated_at          :datetime
+#  length                   :decimal(15, 2)   default(0.0), not null
+#  loaners_count            :integer          default(0), not null
+#  mass                     :decimal(15, 2)   default(0.0), not null
+#  max_crew                 :integer
+#  max_speed                :decimal(15, 2)
+#  max_speed_acceleration   :decimal(15, 2)
+#  max_speed_decceleration  :decimal(15, 2)
+#  min_crew                 :integer
+#  model_paints_count       :integer          default(0)
+#  module_hardpoints_count  :integer          default(0)
+#  name                     :string(255)
+#  notified                 :boolean          default(FALSE)
+#  on_sale                  :boolean          default(FALSE)
+#  pitch                    :decimal(15, 2)
+#  pitch_boosted            :decimal(15, 2)
+#  pledge_price             :decimal(15, 2)
+#  price                    :decimal(15, 2)
+#  production_note          :string(255)
+#  production_status        :string(255)
+#  quantum_fuel_tank_size   :decimal(15, 2)
+#  quantum_fuel_tanks       :string
+#  reverse_speed_boosted    :decimal(15, 2)
+#  roll                     :decimal(15, 2)
+#  roll_boosted             :decimal(15, 2)
+#  rsi_beam                 :decimal(15, 2)   default(0.0), not null
+#  rsi_cargo                :decimal(15, 2)
+#  rsi_classification       :string
+#  rsi_ctm_url              :string
+#  rsi_description          :text
+#  rsi_focus                :string
+#  rsi_height               :decimal(15, 2)   default(0.0), not null
+#  rsi_length               :decimal(15, 2)   default(0.0), not null
+#  rsi_mass                 :decimal(15, 2)   default(0.0), not null
+#  rsi_max_crew             :integer
+#  rsi_max_speed            :decimal(15, 2)
+#  rsi_min_crew             :integer
+#  rsi_name                 :string
+#  rsi_pitch                :decimal(15, 2)
+#  rsi_pledge_slug          :string
+#  rsi_pledge_value         :integer
+#  rsi_roll                 :decimal(15, 2)
+#  rsi_scm_speed            :decimal(15, 2)
+#  rsi_size                 :string
+#  rsi_slug                 :string
+#  rsi_store_url            :string
+#  rsi_yaw                  :decimal(15, 2)
+#  sales_page_url           :string
+#  sc_beam                  :decimal(15, 2)
+#  sc_height                :decimal(15, 2)
+#  sc_identifier            :string
+#  sc_length                :decimal(15, 2)
+#  scm_speed                :decimal(15, 2)
+#  scm_speed_acceleration   :decimal(15, 2)
+#  scm_speed_boosted        :decimal(15, 2)
+#  scm_speed_decceleration  :decimal(15, 2)
+#  size                     :string
+#  slug                     :string(255)
+#  store_images_updated_at  :datetime
+#  store_url                :string(255)
+#  upgrade_kits_count       :integer          default(0)
+#  videos_count             :integer          default(0)
+#  yaw                      :decimal(15, 2)
+#  yaw_boosted              :decimal(15, 2)
+#  created_at               :datetime
+#  updated_at               :datetime
+#  base_model_id            :uuid
+#  manufacturer_id          :uuid
+#  rsi_chassis_id           :integer
+#  rsi_id                   :integer
 #
 # Indexes
 #
@@ -156,10 +120,9 @@ class Model < ApplicationRecord
     classification production_status production_note focus pledge_price length beam height mass
     cargo size min_crew max_crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
-    max_speed_acceleration max_speed_decceleration pitch yaw roll brochure price store_image
+    max_speed_acceleration max_speed_decceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
-    quantum_fuel_tanks holo sales_page_url top_view side_view angled_view front_view
-    angled_view_colored side_view_colored top_view_colored front_view_colored
+    quantum_fuel_tanks sales_page_url
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -241,48 +204,19 @@ class Model < ApplicationRecord
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true
 
-  mount_uploader :store_image, StoreImageUploader
-  mount_uploader :rsi_store_image, StoreImageUploader
-  mount_uploader :fleetchart_image, FleetchartImageUploader
-  mount_uploader :top_view, FleetchartImageUploader
-  mount_uploader :side_view, FleetchartImageUploader
-  mount_uploader :front_view, FleetchartImageUploader
-  mount_uploader :angled_view, FleetchartImageUploader
-  mount_uploader :top_view_colored, FleetchartImageUploader
-  mount_uploader :side_view_colored, FleetchartImageUploader
-  mount_uploader :front_view_colored, FleetchartImageUploader
-  mount_uploader :angled_view_colored, FleetchartImageUploader
-  mount_uploader :brochure, BrochureUploader
-  mount_uploader :holo, HoloUploader
-
-  has_one_attached :new_store_image
-  has_one_attached :new_rsi_store_image
-  has_one_attached :new_fleetchart_image
-  has_one_attached :new_top_view
-  has_one_attached :new_side_view
-  has_one_attached :new_front_view
-  has_one_attached :new_angled_view
-  has_one_attached :new_top_view_colored
-  has_one_attached :new_side_view_colored
-  has_one_attached :new_front_view_colored
-  has_one_attached :new_angled_view_colored
-  has_one_attached :new_brochure
-  has_one_attached :new_holo
-
-  %i[
-    store_image rsi_store_image fleetchart_image
-    top_view side_view front_view angled_view
-    top_view_colored side_view_colored front_view_colored angled_view_colored
-    brochure holo
-  ].each do |attr|
-    define_method(:"#{attr}=") do |value|
-      if value.is_a?(String) && value.present?
-        send(:"new_#{attr}=", value)
-      else
-        super(value)
-      end
-    end
-  end
+  has_one_attached :store_image
+  has_one_attached :rsi_store_image
+  has_one_attached :fleetchart_image
+  has_one_attached :top_view
+  has_one_attached :side_view
+  has_one_attached :front_view
+  has_one_attached :angled_view
+  has_one_attached :top_view_colored
+  has_one_attached :side_view_colored
+  has_one_attached :front_view_colored
+  has_one_attached :angled_view_colored
+  has_one_attached :brochure
+  has_one_attached :holo
 
   before_save :update_slugs
 
@@ -308,15 +242,24 @@ class Model < ApplicationRecord
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug
 
+  %i[front_view fleetchart_image top_view_colored holo].each do |attachment_name|
+    ransacker attachment_name do
+      Arel.sql(
+        "(SELECT active_storage_attachments.id FROM active_storage_attachments " \
+        "WHERE active_storage_attachments.record_type = 'Model' " \
+        "AND active_storage_attachments.record_id = models.id " \
+        "AND active_storage_attachments.name = '#{attachment_name}')"
+      )
+    end
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
-      "active", "angled_view", "angled_view_colored", "angled_view_colored_height",
-      "angled_view_colored_width", "angled_view_height", "angled_view_width", "base_model_id",
-      "beam", "brochure", "cargo", "cargo_holds", "classification", "created_at", "description",
-      "dock_size", "erkul_identifier", "fleetchart_image", "fleetchart_image_height",
-      "fleetchart_image_width", "fleetchart_offset_length", "focus", "front_view",
-      "front_view_colored", "front_view_colored_height", "front_view_colored_width",
-      "front_view_height", "front_view_width", "ground", "ground_acceleration",
+      "active", "base_model_id",
+      "beam", "cargo", "cargo_holds", "classification", "created_at", "description",
+      "dock_size", "erkul_identifier", "fleetchart_image",
+      "fleetchart_offset_length", "focus", "front_view",
+      "ground", "ground_acceleration",
       "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value",
       "images_count", "last_updated_at", "length", "loaners_count",
@@ -327,13 +270,11 @@ class Model < ApplicationRecord
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
       "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
-      "rsi_store_image", "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
+      "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
       "sc_identifier", "sc_length", "scm_speed", "scm_speed_acceleration",
-      "scm_speed_decceleration", "search", "side_view", "side_view_colored",
-      "side_view_colored_height", "side_view_colored_width", "side_view_height", "side_view_width",
-      "size", "slug", "store_image", "store_images_updated_at", "store_url", "top_view",
-      "top_view_colored", "top_view_colored_height", "top_view_colored_width", "top_view_height",
-      "top_view_width", "updated_at", "upgrade_kits_count", "videos_count", "yaw"
+      "scm_speed_decceleration", "search",
+      "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",
+      "updated_at", "upgrade_kits_count", "videos_count", "yaw"
     ]
   end
 

@@ -6,14 +6,7 @@
 #
 #  id                      :uuid             not null, primary key
 #  active                  :boolean          default(TRUE)
-#  angled_view             :string
-#  angled_view_height      :integer
-#  angled_view_width       :integer
-#  carrierwave_migrated_at :datetime
 #  description             :string
-#  fleetchart_image        :string
-#  fleetchart_image_height :integer
-#  fleetchart_image_width  :integer
 #  hidden                  :boolean          default(TRUE)
 #  last_updated_at         :datetime
 #  name                    :string
@@ -24,22 +17,10 @@
 #  rsi_description         :string
 #  rsi_name                :string
 #  rsi_slug                :string
-#  rsi_store_image         :string
-#  rsi_store_image_height  :integer
-#  rsi_store_image_width   :integer
 #  rsi_store_url           :string
-#  side_view               :string
-#  side_view_height        :integer
-#  side_view_width         :integer
 #  slug                    :string
-#  store_image             :string
-#  store_image_height      :integer
-#  store_image_width       :integer
 #  store_images_updated_at :datetime
 #  store_url               :string
-#  top_view                :string
-#  top_view_height         :integer
-#  top_view_width          :integer
 #  created_at              :datetime         not null
 #  updated_at              :datetime         not null
 #  model_id                :uuid
@@ -55,30 +36,23 @@ class ModelPaint < ApplicationRecord
   has_many :vehicles, dependent: :nullify
   has_many :item_prices, as: :item, dependent: :destroy
 
-  mount_uploader :store_image, StoreImageUploader
-  mount_uploader :rsi_store_image, StoreImageUploader
-  mount_uploader :fleetchart_image, FleetchartImageUploader
-  mount_uploader :top_view, FleetchartImageUploader
-  mount_uploader :side_view, FleetchartImageUploader
-  mount_uploader :angled_view, FleetchartImageUploader
-
-  has_one_attached :new_store_image
-  has_one_attached :new_rsi_store_image
-  has_one_attached :new_fleetchart_image
-  has_one_attached :new_top_view
-  has_one_attached :new_side_view
+  has_one_attached :store_image
+  has_one_attached :rsi_store_image
+  has_one_attached :fleetchart_image
+  has_one_attached :top_view
+  has_one_attached :side_view
   has_one_attached :front_view
-  has_one_attached :new_angled_view
+  has_one_attached :angled_view
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "active", "angled_view", "angled_view_height", "angled_view_width", "created_at",
-      "description", "fleetchart_image", "fleetchart_image_height", "fleetchart_image_width",
+      "active", "created_at",
+      "description",
       "hidden", "id", "id_value", "last_updated_at", "model_id", "name",
       "on_sale", "pledge_price", "production_note", "production_status", "rsi_description",
-      "rsi_id", "rsi_name", "rsi_slug", "rsi_store_image", "rsi_store_url", "side_view",
-      "side_view_height", "side_view_width", "slug", "store_image", "store_images_updated_at",
-      "store_url", "top_view", "top_view_height", "top_view_width", "updated_at"
+      "rsi_id", "rsi_name", "rsi_slug", "rsi_store_url",
+      "slug", "store_images_updated_at",
+      "store_url", "updated_at"
     ]
   end
 

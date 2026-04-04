@@ -166,7 +166,7 @@ module Rsi
 
     # rubocop:disable Metrics/CyclomaticComplexity
     private def load_store_image(model, media_data)
-      return if Rails.env.test? || (model.new_rsi_store_image.attached? && model.store_images_updated_at >= store_images_updated_at(media_data))
+      return if Rails.env.test? || (model.rsi_store_image.attached? && model.store_images_updated_at >= store_images_updated_at(media_data))
 
       model.store_images_updated_at = media_data["time_modified"]
 
@@ -177,8 +177,8 @@ module Rsi
 
       image_url = store_image_url.gsub("store_hub_large", "source")
 
-      attach_image_from_url(model, :new_rsi_store_image, image_url)
-      attach_image_from_url(model, :new_store_image, image_url) unless model.new_store_image.attached?
+      attach_image_from_url(model, :rsi_store_image, image_url)
+      attach_image_from_url(model, :store_image, image_url) unless model.store_image.attached?
       model.save
     end
     # rubocop:enable Metrics/CyclomaticComplexity

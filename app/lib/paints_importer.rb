@@ -125,7 +125,7 @@ class PaintsImporter
         tempfile = uri.open # rubocop:disable Security/Open
         filename = File.basename(uri.path)
         content_type = Marcel::MimeType.for(name: filename)
-        model_paint.new_store_image.attach(io: tempfile, filename: filename, content_type: content_type)
+        model_paint.store_image.attach(io: tempfile, filename: filename, content_type: content_type)
       end
 
       {

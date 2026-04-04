@@ -16,6 +16,12 @@ json.sale_notify vehicle.sale_notify
 json.groups vehicle.hangar_groups.map(&:name)
 json.modules vehicle.model_modules.map(&:name)
 json.upgrades vehicle.model_upgrades.map(&:name)
-json.username vehicle.user.hide_owner? ? nil : vehicle.user.username
-json.user_avatar vehicle.user.hide_owner? ? nil : vehicle.user.avatar.small.url
-json.user_rsi_handle vehicle.user.hide_owner? ? nil : vehicle.user.rsi_handle
+if vehicle.user.hide_owner?
+  json.username nil
+  json.user_avatar nil
+  json.user_rsi_handle nil
+else
+  json.username vehicle.user.username
+  json.user_avatar(vehicle.user.avatar.attached? ? rails_representation_url(vehicle.user.avatar.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:small])) : nil)
+  json.user_rsi_handle vehicle.user.rsi_handle
+end

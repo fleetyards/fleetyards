@@ -20,20 +20,20 @@ json.last_updated_at_label((I18n.l(model_paint.last_updated_at.utc, format: :lab
 json.media({})
 json.media do
   json.angled_view do
-    json.partial! "api/v1/shared/file", record: model_paint, attr: :new_angled_view, old_attr: :angled_view, width: model_paint.angled_view_width, height: model_paint.angled_view_height
+    json.partial! "api/v1/shared/file", record: model_paint, attr: :angled_view
   end
-  json.fleetchart_image model_paint.fleetchart_image.url
+  json.fleetchart_image(model_paint.fleetchart_image.attached? ? rails_blob_url(model_paint.fleetchart_image) : nil)
   json.front_view do
     json.partial! "api/v1/shared/file", record: model_paint, attr: :front_view
   end
   json.side_view do
-    json.partial! "api/v1/shared/file", record: model_paint, attr: :new_side_view, old_attr: :side_view, width: model_paint.side_view_width, height: model_paint.side_view_height
+    json.partial! "api/v1/shared/file", record: model_paint, attr: :side_view
   end
   json.store_image do
-    json.partial! "api/v1/shared/file", record: model_paint, attr: :new_store_image, old_attr: :store_image, width: model_paint.store_image_width, height: model_paint.store_image_height
+    json.partial! "api/v1/shared/file", record: model_paint, attr: :store_image
   end
   json.top_view do
-    json.partial! "api/v1/shared/file", record: model_paint, attr: :new_top_view, old_attr: :top_view, width: model_paint.top_view_width, height: model_paint.top_view_height
+    json.partial! "api/v1/shared/file", record: model_paint, attr: :top_view
   end
 end
 

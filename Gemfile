@@ -78,11 +78,8 @@ gem "thor"
 gem "aasm"
 gem "after_commit_everywhere"
 
-gem "carrierwave"
-gem "fog-aws"
 gem "image_processing", "~> 1.0"
 gem "mini_magick"
-gem "ssrf_filter"
 
 gem "nokogiri"
 gem "typhoeus"

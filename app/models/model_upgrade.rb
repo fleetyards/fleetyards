@@ -4,19 +4,15 @@
 #
 # Table name: model_upgrades
 #
-#  id                      :uuid             not null, primary key
-#  active                  :boolean          default(FALSE)
-#  carrierwave_migrated_at :datetime
-#  description             :text
-#  hidden                  :boolean          default(TRUE)
-#  name                    :string
-#  pledge_price            :decimal(15, 2)
-#  slug                    :string
-#  store_image             :string
-#  store_image_height      :integer
-#  store_image_width       :integer
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
+#  id           :uuid             not null, primary key
+#  active       :boolean          default(FALSE)
+#  description  :text
+#  hidden       :boolean          default(TRUE)
+#  name         :string
+#  pledge_price :decimal(15, 2)
+#  slug         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
 class ModelUpgrade < ApplicationRecord
   include ActiveStorageVariants
@@ -28,8 +24,7 @@ class ModelUpgrade < ApplicationRecord
   has_many :models, through: :upgrade_kits
   has_many :item_prices, as: :item, dependent: :destroy
 
-  mount_uploader :store_image, StoreImageUploader
-  has_one_attached :new_store_image
+  has_one_attached :store_image
 
   accepts_nested_attributes_for :upgrade_kits, allow_destroy: true
 
@@ -44,7 +39,7 @@ class ModelUpgrade < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "created_at", "description", "hidden", "id", "id_value", "name", "pledge_price",
-      "slug", "store_image", "updated_at"
+      "slug", "updated_at"
     ]
   end
 

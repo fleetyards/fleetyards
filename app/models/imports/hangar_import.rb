@@ -4,22 +4,20 @@
 #
 # Table name: imports
 #
-#  id                      :uuid             not null, primary key
-#  aasm_state              :string
-#  carrierwave_migrated_at :datetime
-#  failed_at               :datetime
-#  finished_at             :datetime
-#  import                  :string
-#  import_data             :text
-#  info                    :text
-#  input                   :jsonb
-#  output                  :jsonb
-#  started_at              :datetime
-#  type                    :string
-#  version                 :string
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  user_id                 :uuid
+#  id          :uuid             not null, primary key
+#  aasm_state  :string
+#  failed_at   :datetime
+#  finished_at :datetime
+#  import_data :text
+#  info        :text
+#  input       :jsonb
+#  output      :jsonb
+#  started_at  :datetime
+#  type        :string
+#  version     :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  user_id     :uuid
 #
 # Indexes
 #
@@ -30,13 +28,12 @@ module Imports
   class HangarImport < ::Import
     belongs_to :user
 
-    mount_uploader :import, HangarImportUploader
-    has_one_attached :new_import
+    has_one_attached :import
 
     validate :import_file_presence
 
     def import_file_presence
-      return if import.present? || new_import.attached?
+      return if import.attached?
 
       errors.add(:import, I18n.t("errors.messages.blank"))
     end
@@ -46,11 +43,7 @@ module Imports
     serialize :import_data, coder: YAML
 
     def set_import_data
-      data = if import.present?
-        JSON.parse(import.read)
-      elsif new_import.attached?
-        JSON.parse(new_import.download)
-      end
+      data = read_import_file
 
       self.import_data = (data || []).map do |item|
         return item unless item.is_a? Hash
@@ -66,6 +59,24 @@ module Imports
 
     def notify_admin
       # don't notify on hangar imports
+    end
+
+    private
+
+    def read_import_file
+      change = attachment_changes["import"]
+      if change.present?
+        attachable = change.attachable
+        case attachable
+        when ActionDispatch::Http::UploadedFile, Rack::Test::UploadedFile
+          JSON.parse(attachable.read.tap { attachable.rewind })
+        when String
+          blob = ActiveStorage::Blob.find_signed!(attachable)
+          JSON.parse(blob.download)
+        end
+      elsif import.attached?
+        JSON.parse(import.download)
+      end
     end
   end
 end

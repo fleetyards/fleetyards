@@ -74,8 +74,8 @@ module Admin
         end
 
         def use_rsi_image
-          if @model.new_rsi_store_image.attached?
-            @model.new_store_image.attach(@model.new_rsi_store_image.blob)
+          if @model.rsi_store_image.attached?
+            @model.store_image.attach(@model.rsi_store_image.blob)
             return
           end
 

@@ -152,13 +152,6 @@ GEM
       thor (~> 1.0)
     byebug (13.0.0)
       reline (>= 0.6.0)
-    carrierwave (3.1.2)
-      activemodel (>= 6.0.0)
-      activesupport (>= 6.0.0)
-      addressable (~> 2.6)
-      image_processing (~> 1.1)
-      marcel (~> 1.0.0)
-      ssrf_filter (~> 1.0)
     cgi (0.5.1)
     childprocess (5.1.0)
       logger (~> 1.5)
@@ -235,8 +228,6 @@ GEM
     ethon (0.18.0)
       ffi (>= 1.15.0)
       logger
-    excon (1.4.0)
-      logger
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
@@ -268,26 +259,8 @@ GEM
     flipper-active_record (1.4.1)
       activerecord (>= 4.2, < 9)
       flipper (~> 1.4.1)
-    fog-aws (3.33.1)
-      base64 (>= 0.2, < 0.4)
-      fog-core (~> 2.6)
-      fog-json (~> 1.1)
-      fog-xml (~> 0.1)
-    fog-core (2.6.0)
-      builder
-      excon (~> 1.0)
-      formatador (>= 0.2, < 2.0)
-      mime-types
-    fog-json (1.2.0)
-      fog-core
-      multi_json (~> 1.10)
-    fog-xml (0.1.5)
-      fog-core
-      nokogiri (>= 1.5.11, < 2.0.0)
     foreman (0.90.0)
       thor (~> 1.4)
-    formatador (1.2.3)
-      reline
     foundation_emails (2.2.1.0)
     fugit (1.12.1)
       et-orbi (~> 1.4)
@@ -458,7 +431,6 @@ GEM
     mocha (3.1.0)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.8.0)
-    multi_json (1.19.1)
     multi_xml (0.8.1)
       bigdecimal (>= 3.1, < 5)
     mutex_m (0.3.0)
@@ -795,7 +767,6 @@ GEM
       net-sftp (>= 2.1.2)
       net-ssh (>= 2.8.0)
       ostruct
-    ssrf_filter (1.4.0)
     standard (1.54.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -880,7 +851,6 @@ DEPENDENCIES
   bullet
   bundler-audit
   byebug
-  carrierwave
   committee
   csv
   cypress-on-rails
@@ -902,7 +872,6 @@ DEPENDENCIES
   flatware-rspec
   flipper
   flipper-active_record
-  fog-aws
   foreman
   foundation_emails
   git
@@ -975,7 +944,6 @@ DEPENDENCIES
   simplecov
   simplecov-console
   simplecov-html
-  ssrf_filter
   standard
   thor
   timecop

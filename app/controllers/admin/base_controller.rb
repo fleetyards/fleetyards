@@ -32,7 +32,7 @@ module Admin
         end
         @description = @model.description
         @og_type = "article"
-        @og_image = @model.store_image.url
+        @og_image = @model.store_image.attached? ? rails_blob_url(@model.store_image) : nil
         add_to_prefetch(:model, @model.to_json)
       end
 

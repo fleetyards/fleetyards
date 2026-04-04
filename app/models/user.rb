@@ -5,8 +5,6 @@
 # Table name: users
 #
 #  id                        :uuid             not null, primary key
-#  avatar                    :string
-#  carrierwave_migrated_at   :datetime
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -152,17 +150,7 @@ class User < ApplicationRecord
   after_update :notify_user
   after_save :touch_fleet_memberships
 
-  mount_uploader :avatar, AvatarUploader
-
-  has_one_attached :new_avatar
-
-  def avatar=(value)
-    if value.is_a?(String) && value.present?
-      self.new_avatar = value
-    else
-      super
-    end
-  end
+  has_one_attached :avatar
 
   DEFAULT_SORTING_PARAMS = "username asc"
   ALLOWED_SORTING_PARAMS = [
@@ -174,7 +162,7 @@ class User < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "avatar", "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
+      "confirmed_at", "created_at", "current_sign_in_at", "discord", "email",
       "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
       "rsi_handle", "twitch", "updated_at", "username", "wanted_vehicles_count", "youtube", "search"
     ]

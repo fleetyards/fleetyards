@@ -1,10 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 
-elasticsearch_url = ENV["ELASTICSEARCH_URL"] || "http://localhost:9200"
-
-system("curl -XPUT -H \"Content-Type: application/json\" #{elasticsearch_url}/_all/_settings -d '{\"index.blocks.read_only_allow_delete\": false}'")
-puts ""
+require "open-uri"
 
 if ENV["TEST_SEEDS"].present?
   Model.find_or_create_by!(name: "Freelancer") do |model|
@@ -30,10 +27,13 @@ if ENV["TEST_SEEDS"].present?
 
   model = Model.first
   20.times do |index|
-    model.images << Image.new(
-      remote_name_url: "https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/models/stub-#{index}.jpg",
-      enabled: true
+    image = Image.new(gallery: model, enabled: true)
+    image.file.attach(
+      io: URI.parse("https://fleetyards.fra1.digitaloceanspaces.com/seeds/images/models/stub-#{index}.jpg").open,
+      filename: "stub-#{index}.jpg",
+      content_type: "image/jpeg"
     )
+    image.save!
   end
 
   test_user = User.find_or_initialize_by(username: "TestUser")

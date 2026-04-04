@@ -15,12 +15,12 @@ json.availability do
 end
 
 json.description model_module.description
-json.has_store_image model_module.store_image.present?
+json.has_store_image model_module.store_image.attached?
 
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/file", record: model_module, attr: :new_store_image, old_attr: :store_image, width: model_module.store_image_width, height: model_module.store_image_height
+    json.partial! "api/v1/shared/file", record: model_module, attr: :store_image
   end
 end
 

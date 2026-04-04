@@ -4,20 +4,18 @@
 #
 # Table name: manufacturers
 #
-#  id                      :uuid             not null, primary key
-#  carrierwave_migrated_at :datetime
-#  code                    :string
-#  code_mapping            :string
-#  description             :text
-#  known_for               :string(255)
-#  logo                    :string(255)
-#  long_name               :string
-#  name                    :string(255)
-#  sc_ref                  :string
-#  slug                    :string(255)
-#  created_at              :datetime
-#  updated_at              :datetime
-#  rsi_id                  :integer
+#  id           :uuid             not null, primary key
+#  code         :string
+#  code_mapping :string
+#  description  :text
+#  known_for    :string(255)
+#  long_name    :string
+#  name         :string(255)
+#  sc_ref       :string
+#  slug         :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  rsi_id       :integer
 #
 class Manufacturer < ApplicationRecord
   include ActionView::Helpers::OutputSafetyHelper
@@ -25,16 +23,7 @@ class Manufacturer < ApplicationRecord
 
   paginates_per 30
 
-  mount_uploader :logo, LogoUploader
-  has_one_attached :new_logo
-
-  def logo=(value)
-    if value.is_a?(String) && value.present?
-      self.new_logo = value
-    else
-      super
-    end
-  end
+  has_one_attached :logo
 
   has_many :models,
     dependent: :nullify
@@ -48,7 +37,7 @@ class Manufacturer < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for", "logo",
+      "code", "code_mapping", "created_at", "description", "id", "id_value", "known_for",
       "long_name", "name", "rsi_id", "slug", "updated_at"
     ]
   end
@@ -78,10 +67,8 @@ class Manufacturer < ApplicationRecord
   end
 
   def to_filter
-    icon = if new_logo.attached?
-      Rails.application.routes.url_helpers.rails_blob_url(new_logo)
-    elsif logo.present?
-      logo.small.url
+    icon = if logo.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(logo)
     end
 
     Filter.new(

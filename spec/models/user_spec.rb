@@ -5,8 +5,6 @@
 # Table name: users
 #
 #  id                        :uuid             not null, primary key
-#  avatar                    :string
-#  carrierwave_migrated_at   :datetime
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime

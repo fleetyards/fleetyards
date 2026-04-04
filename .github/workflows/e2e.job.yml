@@ -57,7 +57,7 @@ jobs:
       - name: install dependencies
         uses: Eeems-Org/apt-cache-action@v1.5
         with:
-          packages: imagemagick libmagickwand-dev
+          packages: libvips-dev
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
       - name: Assets Compile

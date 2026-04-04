@@ -2,21 +2,17 @@
 #
 # Table name: images
 #
-#  id                      :uuid             not null, primary key
-#  background              :boolean          default(TRUE)
-#  caption                 :string
-#  carrierwave_migrated_at :datetime
-#  enabled                 :boolean          default(FALSE), not null
-#  gallery_name            :string
-#  gallery_slug            :string
-#  gallery_type            :string(255)
-#  global                  :boolean          default(TRUE)
-#  height                  :integer
-#  name                    :string(255)
-#  width                   :integer
-#  created_at              :datetime
-#  updated_at              :datetime
-#  gallery_id              :uuid
+#  id           :uuid             not null, primary key
+#  background   :boolean          default(TRUE)
+#  caption      :string
+#  enabled      :boolean          default(FALSE), not null
+#  gallery_name :string
+#  gallery_slug :string
+#  gallery_type :string(255)
+#  global       :boolean          default(TRUE)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  gallery_id   :uuid
 #
 # Indexes
 #

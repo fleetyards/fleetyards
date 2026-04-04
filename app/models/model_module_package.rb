@@ -4,29 +4,16 @@
 #
 # Table name: model_module_packages
 #
-#  id                      :uuid             not null, primary key
-#  active                  :boolean          default(TRUE)
-#  angled_view             :string
-#  angled_view_height      :integer
-#  angled_view_width       :integer
-#  carrierwave_migrated_at :datetime
-#  description             :text
-#  hidden                  :boolean          default(TRUE)
-#  name                    :string
-#  pledge_price            :decimal(15, 2)
-#  side_view               :string
-#  side_view_height        :integer
-#  side_view_width         :integer
-#  slug                    :string
-#  store_image             :string
-#  store_image_height      :integer
-#  store_image_width       :integer
-#  top_view                :string
-#  top_view_height         :integer
-#  top_view_width          :integer
-#  created_at              :datetime         not null
-#  updated_at              :datetime         not null
-#  model_id                :uuid
+#  id           :uuid             not null, primary key
+#  active       :boolean          default(TRUE)
+#  description  :text
+#  hidden       :boolean          default(TRUE)
+#  name         :string
+#  pledge_price :decimal(15, 2)
+#  slug         :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  model_id     :uuid
 #
 class ModelModulePackage < ApplicationRecord
   include ActiveStorageVariants
@@ -40,16 +27,11 @@ class ModelModulePackage < ApplicationRecord
     dependent: :destroy
   has_many :model_modules, through: :module_package_items
 
-  mount_uploader :store_image, StoreImageUploader
-  mount_uploader :top_view, FleetchartImageUploader
-  mount_uploader :side_view, FleetchartImageUploader
-  mount_uploader :angled_view, FleetchartImageUploader
-
-  has_one_attached :new_store_image
-  has_one_attached :new_top_view
-  has_one_attached :new_side_view
+  has_one_attached :store_image
+  has_one_attached :top_view
+  has_one_attached :side_view
   has_one_attached :front_view
-  has_one_attached :new_angled_view
+  has_one_attached :angled_view
 
   accepts_nested_attributes_for :module_package_items, allow_destroy: true
 

@@ -4,37 +4,33 @@
 #
 # Table name: components
 #
-#  id                      :uuid             not null, primary key
-#  ammunition              :string
-#  carrierwave_migrated_at :datetime
-#  category                :string
-#  component_class         :string
-#  component_sub_type      :string
-#  component_type          :string
-#  description             :text
-#  durability              :string
-#  grade                   :string
-#  heat_connection         :string
-#  hidden                  :boolean          default(FALSE)
-#  inventory_consumption   :string
-#  item_class              :integer
-#  item_type               :string
-#  name                    :string(255)
-#  power_connection        :string
-#  sc_identifier           :string
-#  sc_key                  :string
-#  sc_ref                  :string
-#  size                    :string(255)
-#  slug                    :string
-#  store_image             :string
-#  store_image_height      :integer
-#  store_image_width       :integer
-#  tracking_signal         :integer
-#  type_data               :string
-#  version                 :string
-#  created_at              :datetime
-#  updated_at              :datetime
-#  manufacturer_id         :uuid
+#  id                    :uuid             not null, primary key
+#  ammunition            :string
+#  category              :string
+#  component_class       :string
+#  component_sub_type    :string
+#  component_type        :string
+#  description           :text
+#  durability            :string
+#  grade                 :string
+#  heat_connection       :string
+#  hidden                :boolean          default(FALSE)
+#  inventory_consumption :string
+#  item_class            :integer
+#  item_type             :string
+#  name                  :string(255)
+#  power_connection      :string
+#  sc_identifier         :string
+#  sc_key                :string
+#  sc_ref                :string
+#  size                  :string(255)
+#  slug                  :string
+#  tracking_signal       :integer
+#  type_data             :string
+#  version               :string
+#  created_at            :datetime
+#  updated_at            :datetime
+#  manufacturer_id       :uuid
 #
 # Indexes
 #
@@ -57,8 +53,7 @@ class Component < ApplicationRecord
   before_save :update_slugs
   before_save :extract_data_from_description
 
-  mount_uploader :store_image, StoreImageUploader
-  has_one_attached :new_store_image
+  has_one_attached :store_image
 
   serialize :type_data, coder: YAML
   serialize :durability, coder: YAML
@@ -92,7 +87,7 @@ class Component < ApplicationRecord
     [
       "ammunition", "component_class", "created_at", "description", "durability", "grade",
       "heat_connection", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
-      "power_connection", "sc_identifier", "size", "slug", "store_image", "tracking_signal",
+      "power_connection", "sc_identifier", "size", "slug", "tracking_signal",
       "type_data", "updated_at"
     ]
   end
