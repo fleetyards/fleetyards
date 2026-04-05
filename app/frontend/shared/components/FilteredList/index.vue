@@ -13,6 +13,8 @@ import { useFiltersStore } from "@/shared/stores/filters";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
+import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   name: string;
@@ -45,7 +47,9 @@ const refetching = computed(() => {
 
 const fullscreen = ref(false);
 
-const mobile = ref(false);
+const mobile = useMobile();
+
+const comlink = useComlink();
 
 const filtersStore = useFiltersStore();
 
@@ -93,6 +97,8 @@ watch(
   { deep: true },
 );
 
+const onOffCanvasClosed = ref();
+
 onMounted(() => {
   if (mobile.value) {
     filtersStore.hide(props.name);
@@ -103,17 +109,21 @@ onMounted(() => {
   toggleFullscreen();
   saveFilters();
 
-  window.addEventListener("resize", checkMobile);
-  checkMobile();
+  onOffCanvasClosed.value = comlink.on("off-canvas-closed", () => {
+    filtersStore.hide(props.name);
+  });
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", checkMobile);
+  onOffCanvasClosed.value?.();
 });
 
-const checkMobile = () => {
-  mobile.value = document.documentElement.clientWidth < 992;
-};
+// Close OffCanvas when resizing from mobile to desktop
+watch(mobile, (isMobile, wasMobile) => {
+  if (wasMobile && !isMobile && filterVisible.value) {
+    comlink.emit("close-off-canvas");
+  }
+});
 
 const saveFilters = () => {
   if (props.isFilterSelected) {
@@ -132,7 +142,19 @@ const toggleFullscreen = () => {
 };
 
 const toggleFilter = () => {
-  filtersStore.toggle(props.name);
+  if (mobile.value) {
+    if (filterVisible.value) {
+      comlink.emit("close-off-canvas");
+    } else {
+      filtersStore.show(props.name);
+      comlink.emit("open-off-canvas", {
+        title: t("filteredList.actions.showFilter"),
+        side: "left",
+      });
+    }
+  } else {
+    filtersStore.toggle(props.name);
+  }
 };
 </script>
 
@@ -168,19 +190,25 @@ const toggleFilter = () => {
         </div>
       </div>
       <div class="row">
-        <transition
-          name="slide"
-          :appear="true"
-          @before-enter="toggleFullscreen"
-          @after-leave="toggleFullscreen"
-        >
-          <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
+        <Teleport to="#off-canvas-content" :disabled="!mobile">
+          <transition
+            v-if="!mobile"
+            name="slide"
+            :appear="true"
+            @before-enter="toggleFullscreen"
+            @after-leave="toggleFullscreen"
+          >
+            <div v-show="filterVisible" class="col-12 col-md-3 col-xxl-2">
+              <slot name="filter" />
+            </div>
+          </transition>
+          <div v-else v-show="filterVisible">
             <slot name="filter" />
           </div>
-        </transition>
+        </Teleport>
         <div
           :class="{
-            'col-lg-9 col-xxl-10': !fullscreen,
+            'col-md-9 col-xxl-10': !fullscreen,
           }"
           class="col-12 col-animated"
         >

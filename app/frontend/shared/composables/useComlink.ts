@@ -11,6 +11,7 @@ type Events = {
   "close-modal": (force?: boolean) => void | Promise<unknown>;
   "open-off-canvas": (options: OffCanvasOptions) => void | Promise<unknown>;
   "close-off-canvas": () => void | Promise<unknown>;
+  "off-canvas-closed": () => void | Promise<unknown>;
   "prices-update": () => void | Promise<unknown>;
   "commodities-update": () => void | Promise<unknown>;
   "open-privacy-settings": (force?: boolean) => void | Promise<unknown>;
