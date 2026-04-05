@@ -33,13 +33,13 @@ const scrollToActive = (smooth = true) => {
 };
 
 onMounted(() => {
-  nextTick(() => scrollToActive(false));
+  void nextTick(() => scrollToActive(false));
 });
 
 watch(
   () => route.name,
   () => {
-    nextTick(() => scrollToActive(true));
+    void nextTick(() => scrollToActive(true));
   },
 );
 </script>

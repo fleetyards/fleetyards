@@ -61,7 +61,7 @@ export const useLazyLoad = (
 
   watch(target, (el) => {
     if (el) {
-      nextTick(setupObserver);
+      void nextTick(setupObserver);
     }
   });
 

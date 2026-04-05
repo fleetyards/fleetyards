@@ -6,8 +6,7 @@
   width: 100%;
   transition:
     right ease $transition-base-speed,
-    width ease $transition-base-speed,
-    transform ease $transition-base-speed;
+    width ease $transition-base-speed;
 
   &__items {
     margin: 0;
