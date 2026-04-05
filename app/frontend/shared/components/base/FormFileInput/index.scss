@@ -107,7 +107,11 @@
     .base-image-input__wrapper {
       width: 200px;
       border-radius: 50%;
-      overflow: hidden;
+
+      :deep(.lazy-image) {
+        border-radius: 50%;
+        overflow: hidden;
+      }
 
       :deep(img) {
         border-radius: 50%;
@@ -121,12 +125,26 @@
       right: -10px;
     }
 
+    :deep(.direct-upload) {
+      border-radius: 50%;
+      overflow: hidden;
+    }
+
+    :deep(.direct-upload__uploader) {
+      border-radius: 50%;
+      overflow: hidden;
+      padding: 0;
+    }
+
     :deep(.direct-upload__dropzone) {
       flex-direction: column;
+      border-radius: 50% !important;
+      overflow: hidden;
+      position: relative;
+      padding: 10px;
 
       &::before {
-        border-radius: 50%;
-        overflow: hidden;
+        border-radius: 50% !important;
       }
     }
   }

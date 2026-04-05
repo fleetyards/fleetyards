@@ -90,6 +90,7 @@ watch(avatar, async (newValue) => {
     })
     .then(() => {
       comlink.emit("user-update");
+      avatar.value = undefined;
       displaySuccess({
         text: t("messages.updateProfile.success"),
       });

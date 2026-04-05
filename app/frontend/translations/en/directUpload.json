@@ -4,8 +4,8 @@
       "title": "Upload",
       "chooseFiles": "Choose files",
       "dropzone": {
-        "textMultiple": "Drop files here to upload",
-        "text": "Drop file here to upload",
+        "textMultiple": "Drop files here",
+        "text": "Drop file here",
         "or": "or",
         "browse": "browse"
       },
