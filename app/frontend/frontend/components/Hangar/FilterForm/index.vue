@@ -23,7 +23,6 @@ import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { type HangarQuery } from "@/services/fyApi";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
-import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   hideQuicksearch?: boolean;

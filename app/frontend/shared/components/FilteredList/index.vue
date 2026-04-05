@@ -190,10 +190,7 @@ const toggleFilter = () => {
         </div>
       </div>
       <div class="row">
-        <Teleport
-          to="#off-canvas-content"
-          :disabled="!mobile"
-        >
+        <Teleport to="#off-canvas-content" :disabled="!mobile">
           <transition
             v-if="!mobile"
             name="slide"
