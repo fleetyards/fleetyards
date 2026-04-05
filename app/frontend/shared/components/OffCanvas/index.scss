@@ -65,8 +65,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding-top: 10px;
-    padding-bottom: 20px;
+    padding: 10px 15px 20px;
     padding-bottom: env(safe-area-inset-bottom);
   }
 }

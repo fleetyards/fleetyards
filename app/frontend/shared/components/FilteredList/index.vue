@@ -192,7 +192,7 @@ const toggleFilter = () => {
       <div class="row">
         <Teleport
           to="#off-canvas-content"
-          :disabled="!mobile || !filterVisible"
+          :disabled="!mobile"
         >
           <transition
             v-if="!mobile"
@@ -201,17 +201,17 @@ const toggleFilter = () => {
             @before-enter="toggleFullscreen"
             @after-leave="toggleFullscreen"
           >
-            <div v-show="filterVisible" class="col-12 col-lg-3 col-xxl-2">
+            <div v-show="filterVisible" class="col-12 col-md-3 col-xxl-2">
               <slot name="filter" />
             </div>
           </transition>
-          <div v-else-if="filterVisible">
+          <div v-else v-show="filterVisible">
             <slot name="filter" />
           </div>
         </Teleport>
         <div
           :class="{
-            'col-lg-9 col-xxl-10': !fullscreen,
+            'col-md-9 col-xxl-10': !fullscreen,
           }"
           class="col-12 col-animated"
         >
