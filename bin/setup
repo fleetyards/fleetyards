@@ -216,7 +216,7 @@ FileUtils.chdir APP_ROOT do
   # Group B: Prepare databases and build Vite test assets (need deps + Docker)
   dev_db = run_step "Preparing database (dev)", "DB_PORT=#{db_port} bin/rails db:prepare", async: true
   test_db = run_step "Preparing database (test)", "DB_PORT=#{db_port} RAILS_ENV=test bin/rails db:prepare", async: true
-  vite_build = run_step "Building Vite assets (test)", "RAILS_ENV=test bundle exec vite build", async: true
+  vite_build = run_step "Building email assets (test)", "bin/build-email-assets", async: true
   run_step_wait(dev_db, test_db, vite_build)
 
   # Group C: Clean logs/tmp (need databases)
