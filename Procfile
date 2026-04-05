@@ -1,3 +1,3 @@
-web: bundle exec rdbg -O -n -c -- ./bin/rails s
+web: ./bin/rails s
 worker: ./bin/sidekiq -C config/sidekiq.yml -v
 vite: ./bin/vite dev
