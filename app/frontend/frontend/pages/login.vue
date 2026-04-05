@@ -38,6 +38,8 @@ const { t } = useI18n();
 
 const { displayAlert } = useAppNotifications();
 
+const socialLogins = ref<InstanceType<typeof SocialLogins>>();
+
 const submitting = ref(false);
 
 const twoFactorRequired = ref(false);
@@ -176,9 +178,9 @@ const signupRoute = computed(() => {
 
         <hr />
 
-        <SocialLogins only-icons />
+        <SocialLogins ref="socialLogins" only-icons />
 
-        <hr />
+        <hr v-if="socialLogins?.activeProviders?.length" />
 
         <Btn
           :to="{

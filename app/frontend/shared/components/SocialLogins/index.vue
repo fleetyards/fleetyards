@@ -43,7 +43,11 @@ defineExpose({
 </script>
 
 <template>
-  <div class="social-logins" :class="{ block: block, 'only-icons': onlyIcons }">
+  <div
+    v-if="activeProviders.length"
+    class="social-logins"
+    :class="{ block: block, 'only-icons': onlyIcons }"
+  >
     <OauthBtn
       v-for="provider in activeProviders"
       :key="provider"
