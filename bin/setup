@@ -95,6 +95,8 @@ def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_red
     VITE_RUBY_PORT=#{vite_port}
     WORKTREE_SUFFIX=#{db_suffix}
     SIDEKIQ_REDIS_DB=#{sidekiq_redis_db}
+    DOMAIN=localhost:#{port}
+    ON_SUBDOMAIN=false
   ENV
 
   File.write(env_local, user_content + managed)

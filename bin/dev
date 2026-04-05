@@ -103,4 +103,9 @@ if [ -n "$open_browser" ]; then
   ) &
 fi
 
-foreman start -f Procfile -m "$formation" -p "$dev_port"
+env_files=".env"
+if [ -f .env.local ]; then
+  env_files=".env,.env.local"
+fi
+
+foreman start -f Procfile -m "$formation" -p "$dev_port" -e "$env_files"
