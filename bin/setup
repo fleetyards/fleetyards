@@ -63,6 +63,10 @@ def worktree_db_port(name)
   8271
 end
 
+def worktree_redis_port(name)
+  8272
+end
+
 def worktree_db_suffix(name)
   "_wt_#{sanitize_worktree_name(name)}"
 end
@@ -71,7 +75,7 @@ def worktree_sidekiq_redis_db(name)
   2 + (Zlib.crc32(name) % 500)
 end
 
-def write_env_local(port, db_port, vite_port, db_suffix, sidekiq_redis_db)
+def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db)
   env_local = File.join(APP_ROOT, ".env.local")
 
   # Preserve user content above the marker
@@ -87,6 +91,7 @@ def write_env_local(port, db_port, vite_port, db_suffix, sidekiq_redis_db)
     #{WORKTREE_MARKER}
     PORT=#{port}
     DB_PORT=#{db_port}
+    REDIS_URL=redis://localhost:#{redis_port}
     VITE_RUBY_PORT=#{vite_port}
     WORKTREE_SUFFIX=#{db_suffix}
     SIDEKIQ_REDIS_DB=#{sidekiq_redis_db}
@@ -129,6 +134,7 @@ FileUtils.chdir APP_ROOT do
     effective_name = NAME_OVERRIDE || wt_name
     port = PORT_OVERRIDE || worktree_port(effective_name)
     db_port = worktree_db_port(effective_name)
+    redis_port = worktree_redis_port(effective_name)
     vite_port = VITE_PORT_OVERRIDE || worktree_vite_port(effective_name)
     db_suffix = worktree_db_suffix(effective_name)
     sidekiq_db = worktree_sidekiq_redis_db(effective_name)
@@ -138,13 +144,14 @@ FileUtils.chdir APP_ROOT do
       puts "   Rails port:  #{port}#{" (override)" if PORT_OVERRIDE}"
       puts "   Vite port:   #{vite_port}#{" (override)" if VITE_PORT_OVERRIDE}"
       puts "   DB port:     #{db_port}"
+      puts "   Redis port:  #{redis_port}"
       puts "   DB suffix:   #{db_suffix}"
       puts "   Sidekiq DB:  #{sidekiq_db}"
     else
       puts "  Worktree: #{effective_name} (port #{port})"
     end
 
-    write_env_local(port, db_port, vite_port, db_suffix, sidekiq_db)
+    write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db)
     puts "   Wrote .env.local" if VERBOSE
 
     env_file = File.join(APP_ROOT, ".env")
