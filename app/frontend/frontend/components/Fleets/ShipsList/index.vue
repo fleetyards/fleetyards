@@ -134,7 +134,7 @@ const downloadExport = (data?: VehicleExport[]) => {
   const link = document.createElement("a");
 
   link.href = window.URL.createObjectURL(
-    new Blob([data as unknown as BlobPart]),
+    new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }),
   );
 
   link.setAttribute(
