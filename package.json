@@ -135,7 +135,7 @@
     "stylelint-scss": "^6.14.0",
     "stylelint-selector-bem-pattern": "^4.0.1",
     "typescript": "5.9.3",
-    "unplugin-auto-import": "^20.3.0",
+    "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.0.0",
     "vite": "8.0.3",
     "vite-plugin-pwa": "1.2.0",
