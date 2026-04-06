@@ -1,0 +1,23 @@
+name: Notify AppSignal Job
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+    secrets:
+      APP_SIGNAL_DEPLOY_HOOK:
+        required: true
+
+jobs:
+  notify-appsignal:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    env:
+      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
+    steps:
+      - run: |
+          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
+          -H 'Content-Type: application/json' \
+          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"

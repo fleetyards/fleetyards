@@ -27,16 +27,11 @@ jobs:
     secrets: inherit
 
   notify-appsignal:
-    runs-on: ubuntu-latest
     needs: [deploy]
-    environment: Stage
-    env:
-      APP_SIGNAL_DEPLOY_HOOK: ${{ secrets.APP_SIGNAL_DEPLOY_HOOK }}
-    steps:
-      - run: |
-          curl -X POST "$APP_SIGNAL_DEPLOY_HOOK" \
-          -H 'Content-Type: application/json' \
-          -d "{\"revision\": \"$GITHUB_SHA\", \"user\": \"${{ github.actor }}\"}"
+    uses: ./.github/workflows/notify-appsignal.job.yml
+    with:
+      environment: Stage
+    secrets: inherit
 
   notify-discord:
     runs-on: ubuntu-latest

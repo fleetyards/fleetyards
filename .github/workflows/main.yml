@@ -2,8 +2,7 @@ name: Main
 
 on:
   push:
-    # TODO: remove chore/vue3 after merging into main (see #3520)
-    branches: ["main", "staging", "trying", "chore/vue3"]
+    branches: ["main", "staging", "trying"]
     tags-ignore:
       - "*.*"
     paths-ignore:
@@ -63,8 +62,7 @@ jobs:
     uses: ./.github/workflows/seeds.job.yml
 
   build:
-    # TODO: remove chore/vue3 branch condition after merging into main (see #3520)
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/chore/vue3')) || github.event_name == 'workflow_dispatch'
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     uses: ./.github/workflows/build.job.yml
     with:
       tag: ${{ github.ref_name }}
