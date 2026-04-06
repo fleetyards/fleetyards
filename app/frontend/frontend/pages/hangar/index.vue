@@ -216,7 +216,9 @@ const exportJson = async () => {
   const link = document.createElement("a");
 
   link.href = window.URL.createObjectURL(
-    new Blob([exportedData as unknown as BlobPart]),
+    new Blob([JSON.stringify(exportedData, null, 2)], {
+      type: "application/json",
+    }),
   );
 
   link.setAttribute(
