@@ -8,9 +8,13 @@ servers:
   web:
     hosts:
 <%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
+    options:
+      memory: 2g
   worker:
     hosts:
 <%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
+    options:
+      memory: 1g
 
 builder:
   args:
@@ -42,8 +46,12 @@ env:
 accessories:
   db:
     host: <%= acc_ips.first %>
+    options:
+      memory: 2g
   redis:
     host: <%= acc_ips.first %>
+    options:
+      memory: 1g
   db-backup:
     host: <%= acc_ips.first %>
     env:
