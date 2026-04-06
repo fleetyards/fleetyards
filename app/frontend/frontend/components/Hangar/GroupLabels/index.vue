@@ -188,6 +188,18 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
         <span class="label-count">{{ groupCount(group).count }}</span>
       </span>
     </Btn>
+    <Btn
+      v-if="editable"
+      class="labels-dropdown-item"
+      @click="openNewGroupModal"
+    >
+      <i class="fa-regular fa-plus" />
+      <span class="label-text-wrapper">
+        <span class="label-text">
+          {{ t("actions.addGroup") }}
+        </span>
+      </span>
+    </Btn>
   </BtnDropdown>
   <div v-else class="labels">
     <h3 v-if="groups.length || editable" class="label-title">
