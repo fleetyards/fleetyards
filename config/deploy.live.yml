@@ -38,3 +38,5 @@ accessories:
       clear:
         POSTGRES_DATABASE: fleetyards_production
         S3_BUCKET: fltyrd-live-backups
+  monitoring:
+    host: <%= acc_ips.first %>
