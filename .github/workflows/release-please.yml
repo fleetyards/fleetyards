@@ -20,7 +20,7 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         if: steps.release.outputs.release_created
         with:
           token: ${{ secrets.RELEASE_TOKEN }}
