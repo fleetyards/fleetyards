@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.job.yml
+    uses: ./.github/workflows/jobs/build.job.yml
     with:
       tag: stage-${{ github.sha }}
     permissions:
@@ -19,7 +19,7 @@ jobs:
 
   deploy:
     needs: [build]
-    uses: ./.github/workflows/deploy.job.yml
+    uses: ./.github/workflows/jobs/deploy.job.yml
     with:
       destination: stage
       name: Stage
@@ -28,7 +28,7 @@ jobs:
 
   notify-appsignal:
     needs: [deploy]
-    uses: ./.github/workflows/notify-appsignal.job.yml
+    uses: ./.github/workflows/jobs/notify-appsignal.job.yml
     with:
       environment: Stage
     secrets: inherit
