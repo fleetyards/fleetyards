@@ -68,13 +68,11 @@ const modelSlug = computed(() => props.vehicle?.model?.slug ?? "");
 const { data: modulePackages, ...modulePackagesAsyncStatus } =
   useModelModulePackagesQuery(modelSlug);
 
-const { data: modules, ...modulesAsyncStatus } = useModelModulesQuery(
-  modelSlug,
-);
+const { data: modules, ...modulesAsyncStatus } =
+  useModelModulesQuery(modelSlug);
 
-const { data: upgrades, ...upgradesAsyncStatus } = useModelUpgradesQuery(
-  modelSlug,
-);
+const { data: upgrades, ...upgradesAsyncStatus } =
+  useModelUpgradesQuery(modelSlug);
 
 const comlink = useComlink();
 

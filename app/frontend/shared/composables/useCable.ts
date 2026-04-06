@@ -3,7 +3,9 @@ import type { Consumer } from "@rails/actioncable";
 
 const setupConsumer = (): Consumer | undefined => {
   if (!window.CABLE_ENDPOINT) {
-    console.warn("Subscriptions: CABLE_ENDPOINT not set, skipping consumer setup");
+    console.warn(
+      "Subscriptions: CABLE_ENDPOINT not set, skipping consumer setup",
+    );
     return undefined;
   }
 
