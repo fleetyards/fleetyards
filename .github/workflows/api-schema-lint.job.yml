@@ -7,7 +7,7 @@ jobs:
   api-schema-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: ./.github/workflows/js-setup-action
       - run: pnpm run validate-schema
       - run: pnpm run validate-admin-schema
