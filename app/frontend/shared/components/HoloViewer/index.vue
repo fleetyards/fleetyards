@@ -191,6 +191,10 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   cameraPosition.value = [0, cameraAngle.value, distance];
 };
 
+const handleRenderError = (error: Error) => {
+  console.error("HoloViewer render error:", error);
+};
+
 const handleModelError = (error: unknown) => {
   loading.value = false;
 
@@ -290,6 +294,7 @@ defineExpose({
       :dpr="dpr"
       :power-preference="powerPreference"
       alpha
+      :on-error="handleRenderError"
     >
       <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs">
         <TresDirectionalLight :intensity="2" :cast-shadow="!mobile" />

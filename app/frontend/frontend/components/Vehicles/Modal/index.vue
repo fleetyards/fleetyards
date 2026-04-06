@@ -56,7 +56,7 @@ const vehicleName = computed(() => {
     return props.vehicle.name;
   }
 
-  return props.vehicle.model.name;
+  return props.vehicle?.model?.name;
 });
 
 onMounted(() => {
@@ -101,7 +101,7 @@ const onSubmit = handleSubmit(async (values) => {
 const { data: boughtViaFilters } = useVehicleBoughtViaFiltersQuery();
 
 const paintsFilterQuery = () => {
-  return fetchModelPaints(props.vehicle.model.slug);
+  return fetchModelPaints(props.vehicle?.model?.slug);
 };
 
 const paintsFilterFormatter = (paints: ModelPaint[]) => {
@@ -123,8 +123,8 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
 
       <small class="text-muted">
         <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="vehicle.model.manufacturer?.name" />
-        {{ vehicle.model.name }}
+        <span v-html="vehicle.model?.manufacturer?.name" />
+        {{ vehicle.model?.name }}
       </small>
     </template>
 
@@ -139,10 +139,10 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
             :label="t('labels.vehicle.flagship')"
           />
         </div>
-        <div v-if="vehicle && vehicle.model.hasPaints" class="col-12 col-md-6">
+        <div v-if="vehicle?.model?.hasPaints" class="col-12 col-md-6">
           <div class="form-group">
             <FilterGroup
-              :key="`paints-new-${vehicle.model.id}`"
+              :key="`paints-new-${vehicle.model?.id}`"
               v-model="modelPaintId"
               v-bind="modelPaintIdProps"
               :label="t('labels.findModel')"
@@ -175,7 +175,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
         <div class="col-12 col-md-6">
           <div class="form-group">
             <FilterGroup
-              :key="`bought-via-${vehicle.model.id}`"
+              :key="`bought-via-${vehicle.model?.id}`"
               v-model="boughtVia"
               v-bind="boughtViaProps"
               :options="boughtViaFilters"

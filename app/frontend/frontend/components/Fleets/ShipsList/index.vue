@@ -101,6 +101,10 @@ const setupUpdates = () => {
     fleetVehiclesChannel.value.unsubscribe();
   }
 
+  if (!consumer) {
+    return;
+  }
+
   fleetVehiclesChannel.value = consumer.subscriptions.create(
     {
       channel: "FleetVehiclesChannel",

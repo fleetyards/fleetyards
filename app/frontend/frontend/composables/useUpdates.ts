@@ -83,9 +83,9 @@ export const useUpdates = () => {
 
     displayInfo({
       text: t("messages.model.onSale", {
-        model: vehicle.model.name,
+        model: vehicle.model?.name,
       }),
-      icon: vehicle.model.media.storeImage?.smallUrl,
+      icon: vehicle.model?.media?.storeImage?.smallUrl,
     });
   };
 

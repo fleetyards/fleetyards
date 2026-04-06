@@ -63,15 +63,17 @@ const { defineField, handleSubmit } = useForm({
 const [modelModuleIds] = defineField("modelModuleIds");
 const [modelUpgradeIds] = defineField("modelUpgradeIds");
 
+const modelSlug = computed(() => props.vehicle?.model?.slug ?? "");
+
 const { data: modulePackages, ...modulePackagesAsyncStatus } =
-  useModelModulePackagesQuery(props.vehicle.model.slug);
+  useModelModulePackagesQuery(modelSlug);
 
 const { data: modules, ...modulesAsyncStatus } = useModelModulesQuery(
-  props.vehicle.model.slug,
+  modelSlug,
 );
 
 const { data: upgrades, ...upgradesAsyncStatus } = useModelUpgradesQuery(
-  props.vehicle.model.slug,
+  modelSlug,
 );
 
 const comlink = useComlink();
@@ -101,7 +103,7 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <Modal
     v-if="vehicle"
-    :title="t('headlines.myVehicleAddons', { vehicle: vehicle.model.name })"
+    :title="t('headlines.myVehicleAddons', { vehicle: vehicle?.model?.name })"
   >
     <form
       :id="`vehicle-addons-${vehicle.id}`"

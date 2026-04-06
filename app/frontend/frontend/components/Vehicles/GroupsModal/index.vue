@@ -83,7 +83,10 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.editGroups', { vehicle: vehicle.model.name })">
+  <Modal
+    v-if="vehicle?.model"
+    :title="t('headlines.editGroups', { vehicle: vehicle.model.name })"
+  >
     <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
       <div v-if="hangarGroups && hangarGroups.length" class="row">
         <div

@@ -119,7 +119,7 @@ const useName = (newName: string) => {
 <template>
   <Modal
     v-if="vehicle"
-    :title="t('headlines.nameMyVehicle', { vehicle: vehicle.model.name })"
+    :title="t('headlines.nameMyVehicle', { vehicle: vehicle?.model?.name })"
   >
     <form :id="`vehicle-${vehicle.id}`" @submit.prevent="onSubmit">
       <div class="row">
@@ -128,7 +128,7 @@ const useName = (newName: string) => {
             <FormInput
               v-model="name"
               name="name"
-              :placeholder="vehicle.model.name"
+              :placeholder="vehicle?.model?.name"
               translation-key="name"
               :no-label="true"
             />

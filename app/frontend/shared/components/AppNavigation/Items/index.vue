@@ -135,6 +135,10 @@ const routeTo = (route: RouteRecordRaw, nav: NavTypes = "main") => {
     return { name: childRoutes[0].name };
   }
 
+  if (childRoutes.length > 1 && !route.name) {
+    return { name: childRoutes[0].name };
+  }
+
   return { name: route.name };
 };
 </script>

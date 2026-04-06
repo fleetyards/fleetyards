@@ -39,6 +39,9 @@ Rails.application.configure do
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
   config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.public_file_server.headers = {
+    "Cache-Control" => "public, max-age=31536000, immutable"
+  }
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   config.asset_host = Rails.configuration.app.cdn_endpoint

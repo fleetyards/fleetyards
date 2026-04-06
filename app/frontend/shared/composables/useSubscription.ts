@@ -43,6 +43,10 @@ export const useSubscription = ({
   const subscribe = () => {
     unsubscribe();
 
+    if (!consumer) {
+      return;
+    }
+
     channel.value = consumer.subscriptions.create(
       {
         channel: channelName,

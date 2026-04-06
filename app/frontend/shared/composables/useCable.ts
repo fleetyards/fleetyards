@@ -1,7 +1,12 @@
 import { createConsumer } from "@rails/actioncable";
 import type { Consumer } from "@rails/actioncable";
 
-const setupConsumer = (): Consumer => {
+const setupConsumer = (): Consumer | undefined => {
+  if (!window.CABLE_ENDPOINT) {
+    console.warn("Subscriptions: CABLE_ENDPOINT not set, skipping consumer setup");
+    return undefined;
+  }
+
   console.info("Subscriptions: Setup consumer on:", window.CABLE_ENDPOINT);
 
   return createConsumer(window.CABLE_ENDPOINT);
@@ -10,10 +15,14 @@ const setupConsumer = (): Consumer => {
 let consumer = setupConsumer();
 
 export const useCable = () => {
+  if (!consumer) {
+    consumer = setupConsumer();
+  }
+
   const refresh = () => {
     console.info("Subscriptions: Refresh consumer");
 
-    consumer.disconnect();
+    consumer?.disconnect();
 
     consumer = setupConsumer();
   };

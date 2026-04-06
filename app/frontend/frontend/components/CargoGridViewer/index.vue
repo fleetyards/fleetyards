@@ -986,6 +986,7 @@ const resetCamera = () => {
         :dpr="dpr"
         :power-preference="powerPreference"
         alpha
+        :on-error="(e: Error) => console.error('CargoGridViewer render error:', e)"
       >
         <TresPerspectiveCamera
           :position="cameraPosition"
