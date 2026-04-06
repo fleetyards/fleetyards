@@ -105,8 +105,11 @@ accessories:
       memory: 256m
 
   monitoring:
-    image: appsignal/appsignal-agent
+    image: appsignal/agent
     env:
+      clear:
+        APPSIGNAL_APP_NAME: Fleetyards
+        APPSIGNAL_APP_ENV: production
       secret:
         - APPSIGNAL_PUSH_API_KEY
     options:
