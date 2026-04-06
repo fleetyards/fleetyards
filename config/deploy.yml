@@ -13,11 +13,11 @@ image: fleetyards/app
 servers:
   web:
     options:
-      memory: 2g
+      memory: 4g
   worker:
     cmd: bundle exec sidekiq -C config/sidekiq.yml
     options:
-      memory: 2g
+      memory: 3g
 
 proxy:
   ssl: true
@@ -50,6 +50,7 @@ env:
     RAILS_ENV: production
     RAILS_LOG_TO_STDOUT: "1"
     RAILS_SERVE_STATIC_FILES: "true"
+    MALLOC_ARENA_MAX: "2"
     WORKER_COUNT: "2"
     MAX_THREADS: "5"
     MIN_THREADS: "5"
@@ -75,16 +76,16 @@ accessories:
     directories:
       - data:/var/lib/postgresql/data
     options:
-      memory: 512m
+      memory: 4g
 
   redis:
     image: redis:7.2
     port: "6379:6379"
-    cmd: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    cmd: redis-server --maxmemory 1536mb --maxmemory-policy allkeys-lru
     directories:
       - data:/data
     options:
-      memory: 512m
+      memory: 2g
 
   db-backup:
     image: eeshugerman/postgres-backup-s3:16
@@ -102,3 +103,11 @@ accessories:
         - S3_SECRET_ACCESS_KEY
     options:
       memory: 256m
+
+  monitoring:
+    image: appsignal/appsignal-agent
+    env:
+      secret:
+        - APPSIGNAL_PUSH_API_KEY
+    options:
+      memory: 64m
