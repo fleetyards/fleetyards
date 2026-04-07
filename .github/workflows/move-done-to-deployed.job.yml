@@ -1,0 +1,84 @@
+name: Move Done to Deployed Job
+
+on:
+  workflow_call:
+
+jobs:
+  move-done-to-deployed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.RELEASE_TOKEN }}
+          script: |
+            const projectId = 'PVT_kwDOAGoNC84AAZg-';
+            const statusFieldId = 'PVTSSF_lADOAGoNC84AAZg-zgANg84';
+            const doneOptionId = '98236657';
+            const deployedOptionId = 'ebe234ea';
+
+            const allItems = [];
+            let cursor = null;
+            let hasNextPage = true;
+
+            while (hasNextPage) {
+              const result = await github.graphql(`
+                query($cursor: String) {
+                  node(id: "${projectId}") {
+                    ... on ProjectV2 {
+                      items(first: 100, after: $cursor) {
+                        pageInfo { hasNextPage endCursor }
+                        nodes {
+                          id
+                          content {
+                            ... on Issue {
+                              number
+                              repository { nameWithOwner }
+                            }
+                            ... on PullRequest {
+                              number
+                              repository { nameWithOwner }
+                            }
+                          }
+                          fieldValueByName(name: "Status") {
+                            ... on ProjectV2ItemFieldSingleSelectValue {
+                              optionId
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              `, { cursor });
+
+              const items = result.node.items;
+              allItems.push(...items.nodes);
+              hasNextPage = items.pageInfo.hasNextPage;
+              cursor = items.pageInfo.endCursor;
+            }
+
+            const doneItems = allItems.filter(
+              item => item.fieldValueByName?.optionId === doneOptionId
+            );
+
+            core.info(`Found ${doneItems.length} items to move`);
+
+            for (const item of doneItems) {
+              await github.graphql(`
+                mutation {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: "${projectId}"
+                    itemId: "${item.id}"
+                    fieldId: "${statusFieldId}"
+                    value: { singleSelectOptionId: "${deployedOptionId}" }
+                  }) {
+                    projectV2Item { id }
+                  }
+                }
+              `);
+              const content = item.content;
+              const label = content?.repository
+                ? `${content.repository.nameWithOwner}#${content.number}`
+                : item.id;
+              core.info(`Moved ${label} to Deployed`);
+            }

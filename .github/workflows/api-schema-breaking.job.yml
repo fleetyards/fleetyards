@@ -12,46 +12,35 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get base branch schemas
-        run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            BASE_REF="HEAD~1"
-          else
-            BASE_REF="origin/${{ github.base_ref }}"
-          fi
-          git show ${BASE_REF}:swagger/v1/schema.yaml > /tmp/base-schema.yaml
-          git show ${BASE_REF}:swagger/admin/v1/schema.yaml > /tmp/base-admin-schema.yaml
-
       - name: Install oasdiff
         run: |
           curl -fsSL https://raw.githubusercontent.com/Tufin/oasdiff/main/install.sh | sh
 
-      - name: Check breaking changes (API)
+      - name: Get base branch schemas
         run: |
-          echo "### API Breaking Changes" >> $GITHUB_STEP_SUMMARY
-          output=$(oasdiff breaking /tmp/base-schema.yaml swagger/v1/schema.yaml 2>&1) || true
-          if [ -n "$output" ]; then
-            echo "::warning::Breaking changes detected in API schema"
-            echo "$output"
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "$output" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
+          if [ "${{ github.event_name }}" = "merge_group" ]; then
+            BASE_SHA="${{ github.event.merge_group.base_sha }}"
+          elif [ -n "$GITHUB_BASE_REF" ]; then
+            BASE_SHA="origin/${GITHUB_BASE_REF}"
           else
-            echo "No breaking changes detected."
-            echo "No breaking changes detected." >> $GITHUB_STEP_SUMMARY
+            BASE_SHA="HEAD~1"
           fi
+          for schema in swagger/v1/schema.yaml swagger/admin/v1/schema.yaml swagger/oauth/v1/schema.yaml; do
+            mkdir -p ".base/$(dirname "$schema")"
+            git show "${BASE_SHA}:${schema}" > ".base/${schema}" 2>/dev/null || echo '{"openapi":"3.0.0","info":{"title":"empty","version":"0.0.0"},"paths":{}}' > ".base/${schema}"
+          done
 
-      - name: Check breaking changes (Admin API)
+      - name: Ensure ignore files exist
         run: |
-          echo "### Admin API Breaking Changes" >> $GITHUB_STEP_SUMMARY
-          output=$(oasdiff breaking /tmp/base-admin-schema.yaml swagger/admin/v1/schema.yaml 2>&1) || true
-          if [ -n "$output" ]; then
-            echo "::warning::Breaking changes detected in Admin API schema"
-            echo "$output"
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            echo "$output" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          else
-            echo "No breaking changes detected."
-            echo "No breaking changes detected." >> $GITHUB_STEP_SUMMARY
-          fi
+          for f in swagger/v1/oasdiff-ignore.txt swagger/admin/v1/oasdiff-ignore.txt swagger/oauth/v1/oasdiff-ignore.txt; do
+            [ -f "$f" ] || touch "$f"
+          done
+
+      - name: Check public API breaking changes
+        run: oasdiff breaking .base/swagger/v1/schema.yaml swagger/v1/schema.yaml --fail-on WARN --err-ignore swagger/v1/oasdiff-ignore.txt --warn-ignore swagger/v1/oasdiff-ignore.txt
+
+      - name: Check OAuth API breaking changes
+        run: oasdiff breaking .base/swagger/oauth/v1/schema.yaml swagger/oauth/v1/schema.yaml --fail-on WARN --err-ignore swagger/oauth/v1/oasdiff-ignore.txt --warn-ignore swagger/oauth/v1/oasdiff-ignore.txt
+
+      - name: Check admin API breaking changes (warn only)
+        run: oasdiff breaking .base/swagger/admin/v1/schema.yaml swagger/admin/v1/schema.yaml --fail-on ERR --err-ignore swagger/admin/v1/oasdiff-ignore.txt
