@@ -16,6 +16,7 @@ import { type LocationQueryRaw } from "vue-router";
 import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
+  useMyFleets as useMyFleetsQuery,
 } from "@/services/fyApi";
 
 const sessionStore = useSessionStore();
@@ -73,6 +74,15 @@ const { data: publicFleetData } = usePublicFleetQuery(fleetSlug, {
 });
 
 const currentFleet = computed(() => fleetData.value || publicFleetData.value);
+
+const { data: myFleets } = useMyFleetsQuery({
+  query: {
+    refetchOnWindowFocus: false,
+    enabled: isAuthenticated,
+  },
+});
+
+const primaryFleet = computed(() => myFleets.value?.[0]);
 </script>
 
 <template>
@@ -146,7 +156,12 @@ const currentFleet = computed(() => fleetData.value || publicFleetData.value);
         :to="{ name: 'hangar-preview' }"
         icon="fa-light fa-warehouse"
       />
-      <NavItem :to="{ name: 'fleets' }" icon="fa-duotone fa-users" />
+      <NavItem
+        v-if="primaryFleet"
+        :to="{ name: 'fleet', params: { slug: primaryFleet.slug } }"
+        :image="primaryFleet.logo?.smallUrl"
+        icon="fa-duotone fa-users"
+      />
     </template>
   </AppNavigationMobile>
 </template>
