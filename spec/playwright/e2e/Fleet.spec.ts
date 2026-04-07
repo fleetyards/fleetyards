@@ -75,6 +75,14 @@ test.describe("Fleet", () => {
   });
 
   test("update fleet settings", async ({ page, nav, notification }) => {
+    await nav.click("fleets-menu", "fleet-preview");
+
+    await expect(page).toHaveURL(/\/fleets\/preview\//);
+
+    await page.getByTestId("login").click();
+
+    await expect(page).toHaveURL(/\/login/);
+
     await appFactories([
       ["create", "user", { username: "test", password: "password" }],
     ]);
