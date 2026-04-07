@@ -41,23 +41,21 @@ jobs:
       RELEASE_BODY: ${{ github.event.release.body }}
     steps:
       - run: |
-          BODY=$(echo "$RELEASE_BODY" | head -c 1500)
+          jq -n \
+            --arg title "Fleetyards ${TAG_NAME} released!" \
+            --arg url "$RELEASE_URL" \
+            '{
+              embeds: [{
+                title: $title,
+                url: $url,
+                description: (env.RELEASE_BODY | .[:1500]),
+                color: 3066993
+              }]
+            }' > /tmp/discord_payload.json
 
           curl -sSf -X POST "$DISCORD_WEBHOOK" \
             -H "Content-Type: application/json" \
-            -d "$(jq -n \
-              --arg title "Fleetyards ${TAG_NAME} released!" \
-              --arg url "$RELEASE_URL" \
-              --arg description "$BODY" \
-              '{
-                embeds: [{
-                  title: $title,
-                  url: $url,
-                  description: $description,
-                  color: 3066993
-                }]
-              }'
-            )"
+            -d @/tmp/discord_payload.json
 
   move-done-to-deployed:
     runs-on: ubuntu-latest
