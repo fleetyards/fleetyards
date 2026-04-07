@@ -7562,10 +7562,8 @@ components:
       properties:
         name:
           type: string
-          nullable: true
         color:
           type: string
-          nullable: true
         sort:
           type: integer
           nullable: true
