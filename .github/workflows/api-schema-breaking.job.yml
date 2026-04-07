@@ -6,7 +6,6 @@ on:
 jobs:
   api-schema-breaking:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.event_name == 'merge_group'
 
     steps:
       - uses: actions/checkout@v6
@@ -15,8 +14,13 @@ jobs:
 
       - name: Get base branch schemas
         run: |
-          git show origin/${{ github.base_ref }}:swagger/v1/schema.yaml > /tmp/base-schema.yaml
-          git show origin/${{ github.base_ref }}:swagger/admin/v1/schema.yaml > /tmp/base-admin-schema.yaml
+          if [ "${{ github.event_name }}" = "push" ]; then
+            BASE_REF="HEAD~1"
+          else
+            BASE_REF="origin/${{ github.base_ref }}"
+          fi
+          git show ${BASE_REF}:swagger/v1/schema.yaml > /tmp/base-schema.yaml
+          git show ${BASE_REF}:swagger/admin/v1/schema.yaml > /tmp/base-admin-schema.yaml
 
       - name: Install oasdiff
         run: |
