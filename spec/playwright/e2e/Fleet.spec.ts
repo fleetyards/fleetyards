@@ -73,4 +73,39 @@ test.describe("Fleet", () => {
 
     await notification.success("Your Fleet has been destroyed.");
   });
+
+  test("update fleet settings", async ({ page, nav, notification }) => {
+    await appFactories([
+      ["create", "user", { username: "test", password: "password" }],
+    ]);
+
+    await page.locator("input[name='login']").fill("test");
+    await page.locator("input[name='password']").fill("password");
+    await page.getByTestId("submit-login").click();
+
+    await expect(page).toHaveURL(/\/fleets\/add\//);
+
+    await page.getByTestId("input-fid").fill("TestFleet1");
+    await page.getByTestId("input-name").fill("Test_Fleet_1");
+
+    await page.getByTestId("fleet-save").click();
+
+    await expect(page).toHaveURL(/\/fleets\/testfleet1\//);
+
+    await notification.success("Your Fleet has been created.");
+
+    await page.waitForTimeout(500);
+
+    await nav.click("fleet-settings");
+
+    await page.getByText("Fleet Settings").click();
+
+    await expect(page).toHaveURL(/\/settings\/fleet\//);
+
+    await page.locator("textarea[name='description']").fill("test");
+
+    await page.getByTestId("submit-form").click();
+
+    await notification.success("Settings saved.");
+  });
 });

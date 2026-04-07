@@ -53,6 +53,23 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         run_test!
       end
 
+      response(201, "successful with boughtVia enum value") do
+        schema "$ref": "#/components/schemas/Vehicle"
+
+        let(:input) do
+          {
+            modelId: model.id,
+            boughtVia: "pledge_store"
+          }
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data["boughtVia"]).to eq("pledge_store")
+        end
+      end
+
       response(201, "successful with OAuth token") do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }

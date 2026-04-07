@@ -11,7 +11,7 @@ module V1
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              component: {"$ref": "#/components/schemas/Component", nullable: true},
+              component: {"$ref": "#/components/schemas/Component"},
               name: {type: :string}
             },
             additionalProperties: false,

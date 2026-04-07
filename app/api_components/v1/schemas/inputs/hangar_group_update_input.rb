@@ -9,10 +9,10 @@ module V1
         schema({
           type: :object,
           properties: {
-            name: {type: :string},
-            color: {type: :string},
+            name: {type: :string, nullable: true},
+            color: {type: :string, nullable: true},
             sort: {type: :integer, nullable: true},
-            public: {type: :boolean, nullable: true}
+            public: {type: :boolean}
           },
           additionalProperties: false
         })

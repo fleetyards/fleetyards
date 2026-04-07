@@ -9,10 +9,10 @@ module V1
         schema({
           type: :object,
           properties: {
-            name: {type: :string},
-            redirectUri: {type: :string},
+            name: {type: :string, nullable: true},
+            redirectUri: {type: :string, nullable: true},
             confidential: {type: :boolean},
-            scopes: {type: :array, items: {type: :string}}
+            scopes: {type: :array, items: {type: :string}, nullable: true}
           },
           additionalProperties: false
         })

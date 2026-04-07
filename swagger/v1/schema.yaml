@@ -6692,9 +6692,11 @@ components:
       properties:
         username:
           type: string
+          nullable: true
         email:
           type: string
           format: email
+          nullable: true
       additionalProperties: false
       title: AccountUpdateInput
     ComponentQuery:
@@ -7189,37 +7191,49 @@ components:
       properties:
         fid:
           type: string
+          nullable: true
         name:
           type: string
+          nullable: true
         logo:
           type: string
+          nullable: true
         removeLogo:
           type: boolean
         backgroundImage:
           type: string
           format: binary
+          nullable: true
         removeBackground:
           type: boolean
         description:
           type: string
+          nullable: true
         publicFleet:
           type: boolean
         publicFleetStats:
           type: boolean
         homepage:
           type: string
+          nullable: true
         rsiSid:
           type: string
+          nullable: true
         discord:
           type: string
+          nullable: true
         ts:
           type: string
+          nullable: true
         youtube:
           type: string
+          nullable: true
         twitch:
           type: string
+          nullable: true
         guilded:
           type: string
+          nullable: true
       additionalProperties: false
       title: FleetUpdateInput
     FleetVehicleExport:
@@ -7548,14 +7562,15 @@ components:
       properties:
         name:
           type: string
+          nullable: true
         color:
           type: string
+          nullable: true
         sort:
           type: integer
           nullable: true
         public:
           type: boolean
-          nullable: true
       additionalProperties: false
       title: HangarGroupUpdateInput
     HangarImportResult:
@@ -8653,7 +8668,6 @@ components:
           format: uuid
         component:
           "$ref": "#/components/schemas/Component"
-          nullable: true
         name:
           type: string
       additionalProperties: false
@@ -9316,14 +9330,17 @@ components:
       properties:
         name:
           type: string
+          nullable: true
         redirectUri:
           type: string
+          nullable: true
         confidential:
           type: boolean
         scopes:
           type: array
           items:
             type: string
+          nullable: true
       additionalProperties: false
       title: OauthApplicationUpdateInput
     OauthApplicationWithSecret:
@@ -9603,20 +9620,27 @@ components:
       properties:
         avatar:
           type: string
+          nullable: true
         removeAvatar:
           type: boolean
         rsiHandle:
           type: string
+          nullable: true
         homepage:
           type: string
+          nullable: true
         discord:
           type: string
+          nullable: true
         youtube:
           type: string
+          nullable: true
         guilded:
           type: string
+          nullable: true
         twitch:
           type: string
+          nullable: true
         saleNotify:
           type: boolean
         publicHangar:
@@ -9699,7 +9723,6 @@ components:
       - id
       - model
       - wanted
-      - boughtVia
       - loaner
       - flagship
       - public
@@ -9767,26 +9790,20 @@ components:
           nullable: true
         wanted:
           type: boolean
-          nullable: true
         nameVisible:
           type: boolean
-          nullable: true
         public:
           type: boolean
-          nullable: true
         saleNotify:
           type: boolean
-          nullable: true
         flagship:
           type: boolean
-          nullable: true
         modelPaintId:
           type: string
           format: uuid
           nullable: true
         boughtVia:
           "$ref": "#/components/schemas/BoughtViaEnum"
-          nullable: true
         hangarGroupIds:
           type: array
           items:

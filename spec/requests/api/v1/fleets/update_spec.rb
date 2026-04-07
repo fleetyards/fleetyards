@@ -61,6 +61,27 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
+      response(200, "successful with nullable fields") do
+        schema "$ref": "#/components/schemas/Fleet"
+
+        let(:input) do
+          {
+            fid: fleet.fid,
+            name: fleet.name,
+            logo: nil,
+            description: "test",
+            publicFleet: fleet.public_fleet,
+            publicFleetStats: fleet.public_fleet_stats
+          }
+        end
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+
+          expect(data["description"]).to eq("test")
+        end
+      end
+
       response(200, "successful with OAuth token") do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }

@@ -35,7 +35,7 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id model wanted boughtVia loaner flagship public nameVisible saleNotify alternativeNames
+            id model wanted loaner flagship public nameVisible saleNotify alternativeNames
             modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt updatedAt
           ]
         })
