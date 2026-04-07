@@ -16,6 +16,8 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             BASE_REF="HEAD~1"
+          elif [ "${{ github.event_name }}" = "merge_group" ]; then
+            BASE_REF="${{ github.event.merge_group.base_sha }}"
           else
             BASE_REF="origin/${{ github.base_ref }}"
           fi
