@@ -36,18 +36,19 @@ jobs:
     environment: Live
     env:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      TAG_NAME: ${{ github.event.release.tag_name }}
+      RELEASE_URL: ${{ github.event.release.html_url }}
+      RELEASE_BODY: ${{ github.event.release.body }}
     steps:
       - run: |
-          TAG_NAME="${{ github.event.release.tag_name }}"
-          RELEASE_URL="${{ github.event.release.html_url }}"
-          RELEASE_BODY=$(echo '${{ toJSON(github.event.release.body) }}' | jq -r '.' | head -c 1500)
+          BODY=$(echo "$RELEASE_BODY" | head -c 1500)
 
           curl -sSf -X POST "$DISCORD_WEBHOOK" \
             -H "Content-Type: application/json" \
             -d "$(jq -n \
               --arg title "Fleetyards ${TAG_NAME} released!" \
               --arg url "$RELEASE_URL" \
-              --arg description "$RELEASE_BODY" \
+              --arg description "$BODY" \
               '{
                 embeds: [{
                   title: $title,
