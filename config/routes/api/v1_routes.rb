@@ -46,10 +46,6 @@ v1_api_routes = lambda do
     get :random, on: :collection
   end
 
-  resources :trade_routes, path: "trade-routes", only: [:index]
-
-  resources :equipment, only: [:index]
-
   namespace :stats do
     get "quick-stats", to: "base#quick_stats"
     get "models-per-month", to: "base#models_per_month"
