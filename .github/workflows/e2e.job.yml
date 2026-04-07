@@ -6,6 +6,8 @@ on:
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.59.1-noble
     strategy:
       fail-fast: false
       matrix:
@@ -14,12 +16,14 @@ jobs:
     env:
       RAILS_ENV: test
       NODE_OPTIONS: "--max_old_space_size=4096"
-      DATABASE_URL: postgresql://root:password@127.0.0.1:8271/fleetyards_test
-      DATABASE_HOST: 127.0.0.1
+      DATABASE_URL: postgresql://root:password@postgres:5432/fleetyards_test
+      DATABASE_HOST: postgres
       DATABASE_USER: root
       DATABASE_PASSWORD: password
+      REDIS_URL: redis://redis:6379
       RAILS_SERVE_STATIC_FILES: 1
       DISABLE_DATABASE_ENVIRONMENT_CHECK: 1
+      DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: true
       TEST_SEEDS: 1
       JOBS: 1
       PORT: 8280
@@ -31,8 +35,6 @@ jobs:
           POSTGRES_USER: root
           POSTGRES_DB: fleetyards_test
           POSTGRES_PASSWORD: password
-        ports:
-          - 8271:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -40,8 +42,6 @@ jobs:
           --health-retries 5
       redis:
         image: redis:6.2.10-alpine
-        ports:
-          - 8272:6379
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -49,36 +49,19 @@ jobs:
           --health-retries 5
     steps:
       - uses: actions/checkout@v6
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y --no-install-recommends libyaml-dev libvips-dev
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - uses: ./.github/workflows/js-setup-action
       - run: mkdir -p log && mkdir -p tmp/pids && rm -f tmp/pids/*
-      - name: install dependencies
-        uses: Eeems-Org/apt-cache-action@v1.5
-        with:
-          packages: libvips-dev
       - name: Setup DB
         run: bundle exec rails db:create db:schema:load
       - name: Assets Compile
         run: bundle exec rails assets:precompile
       - name: Prefill DB
         run: bundle exec rails db:seed
-      - name: Get Playwright version
-        id: playwright-version
-        run: echo "version=$(pnpm playwright --version)" >> "$GITHUB_OUTPUT"
-      - name: Cache Playwright browsers
-        id: playwright-cache
-        uses: actions/cache@v5
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}
-      - name: Install Playwright browsers
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm test:e2e:install
-      - name: Install Playwright system dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pnpm playwright install-deps
       - name: Run e2e Tests
         run: pnpm test:e2e:run --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
       - uses: actions/upload-artifact@v7
