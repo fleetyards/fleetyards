@@ -2,6 +2,72 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.1.0](https://github.com/fleetyards/fleetyards/compare/v6.0.2...v6.1.0) (2026-04-07)
+
+
+### Features
+
+* **ci:** use Discord embed for release notifications ([f95b6e1](https://github.com/fleetyards/fleetyards/commit/f95b6e1448afad856690bb028a2417a1e2b8865e))
+* Show labels for icon actions and toggles in InlineEditableList on mobile ([005d58e](https://github.com/fleetyards/fleetyards/commit/005d58eaa15aeee84f6a4ab468a7e48d05657574))
+
+
+### Bug Fixes
+
+* Add create group link to mobile group filter dropdown ([de6865d](https://github.com/fleetyards/fleetyards/commit/de6865d631aa54a2fda7e295a36cc9a7edcc9e15))
+* Add missing monitoring accessory host for stage ([a94d4f4](https://github.com/fleetyards/fleetyards/commit/a94d4f43ace1abfec077974c6cca08f7849922d4))
+* Add nullable to update input schemas for string/number fields ([df6c8d8](https://github.com/fleetyards/fleetyards/commit/df6c8d8386124a3cb259cadb64a1322fa144be84))
+* Add REDIS_URL to worktree .env.local and drop rdbg from Procfile ([6ffd89a](https://github.com/fleetyards/fleetyards/commit/6ffd89a95e6ba1b3a71b9033d8bb26969cb9f84e))
+* Bump vite from 8.0.3 to 8.0.5 to resolve security vulnerabilities ([56cd7fb](https://github.com/fleetyards/fleetyards/commit/56cd7fb9d2cf22db6aa81bf0db69cd8c3e0c24d1))
+* **ci:** Restore API breaking changes check on push to main ([b2f5fc3](https://github.com/fleetyards/fleetyards/commit/b2f5fc3a795f9546ca199104fe321f821cd9ec06))
+* **ci:** Revert workflow files move to jobs/ subdirectory ([06c2290](https://github.com/fleetyards/fleetyards/commit/06c2290b3262fc69df8aa3c13bd4ccd0b6926f8e))
+* **ci:** Run API breaking changes check on push to main ([87d034d](https://github.com/fleetyards/fleetyards/commit/87d034d777ed80a7c2899fe5159448942b3d2cea))
+* Drop rdbg wrapper from Procfile ([ec2333e](https://github.com/fleetyards/fleetyards/commit/ec2333ea559c2b3a23ddd8738ce572397176019f))
+* Fix publicFLeet typo in fleet settings form field name ([28dcacd](https://github.com/fleetyards/fleetyards/commit/28dcacdac159558e19c843cb99f742bf8d80bd54))
+* **frontend:** serialize hangar export data as JSON before creating Blob ([#3611](https://github.com/fleetyards/fleetyards/issues/3611)) ([c5f7fc5](https://github.com/fleetyards/fleetyards/commit/c5f7fc5448aa9e44f36fe5747cb1f3e34c44ead1)), closes [#3610](https://github.com/fleetyards/fleetyards/issues/3610)
+* Hide social logins section when no providers are active ([aad8373](https://github.com/fleetyards/fleetyards/commit/aad83735626566b024873ea5b2b65c8f6371a3d8))
+* Increase container memory limits and add host monitoring ([cc19b4d](https://github.com/fleetyards/fleetyards/commit/cc19b4d9e8d37704cbed3ed8e907c2fbdb14a7ff))
+* Link mobile nav fleet entry to user's primary fleet ([71d1a50](https://github.com/fleetyards/fleetyards/commit/71d1a50262393393ab4ed25dc4d62010c6687988))
+* Lower Docker memory limits for stage to fit 4g servers ([487ee2c](https://github.com/fleetyards/fleetyards/commit/487ee2ca206e7b8cef6664ec57601f90eebd96ac))
+* Navigate to login page before filling credentials in e2e test ([39026f1](https://github.com/fleetyards/fleetyards/commit/39026f1b9898b0b831943d8ced48f57dba3426d6))
+* Only build email assets in setup instead of full Vite build ([7786e1b](https://github.com/fleetyards/fleetyards/commit/7786e1b610532dc564839c5c3f79636be693c810))
+* Override transitive vite 7.x to resolve Dependabot security alerts ([f476c55](https://github.com/fleetyards/fleetyards/commit/f476c5563e1f6a536fbe23bf4323fd7baf57c7eb))
+* Raise BtnDropdown z-index above fleetchart fullscreen overlay ([ffebad4](https://github.com/fleetyards/fleetyards/commit/ffebad4252f262bf28a78c7ba83ce25e5c57e4eb))
+* Remove nullable from hangar group name and color fields ([0e4cd61](https://github.com/fleetyards/fleetyards/commit/0e4cd611d2f8ddba8e818113e2fe021dafe49ee7))
+* Replace mobile tab off-canvas with horizontal scrollable tabs ([434413b](https://github.com/fleetyards/fleetyards/commit/434413b369cb0c0eb83c3ae1e4df5feb696afec8))
+* Replace nprogress with custom FetchProgressBar component ([235a62c](https://github.com/fleetyards/fleetyards/commit/235a62c666c2d9012c64fe50e4ad6bfe46e75379))
+* Resolve multiple production frontend errors from AppSignal ([87aebff](https://github.com/fleetyards/fleetyards/commit/87aebff051d6410bef2f5f1a3c5e1a6a101a6331))
+* Set node-version to lts/* explicitly in CI workflows ([7b62422](https://github.com/fleetyards/fleetyards/commit/7b62422f288ddb505e489fa6a23b48574bffc771))
+* Stop RSI hangar sync from loading pages endlessly ([9f8066e](https://github.com/fleetyards/fleetyards/commit/9f8066edd38f4384966e861eefab80006e068884))
+* Update CI Node.js and pnpm versions to match .tool-versions ([f581338](https://github.com/fleetyards/fleetyards/commit/f581338ea619656dd0684fef67651445965ac836))
+* Update defu to 6.1.6 to fix prototype pollution vulnerability (CVE-2026-35209) ([efe941c](https://github.com/fleetyards/fleetyards/commit/efe941c040830f38c337610b64e7062a1c6e66f4))
+* Upload and avatar UI improvements ([edc0a0c](https://github.com/fleetyards/fleetyards/commit/edc0a0c090b526ec328bd04c7d1ef1762cd726de))
+* Use correct AppSignal standalone agent Docker image ([ee469e2](https://github.com/fleetyards/fleetyards/commit/ee469e2e7f978402666ca457c115410375ed3f3e))
+* Wait for page load and API response in fleet settings e2e test ([474766d](https://github.com/fleetyards/fleetyards/commit/474766dcde75c247d67787e72c94b9314cdeccd1))
+
+
+### Chores
+
+* CI and infrastructure housekeeping ([eec89e0](https://github.com/fleetyards/fleetyards/commit/eec89e02d7fb6864c12afbe2fa8a097d325c7c8f))
+* **ci:** Clean up CI workflow files ([0f6fe5f](https://github.com/fleetyards/fleetyards/commit/0f6fe5f519491413d289e4f6d31bdf106dd870f4))
+* **ci:** Move reusable job workflows to jobs/ subdirectory ([1ac6033](https://github.com/fleetyards/fleetyards/commit/1ac6033747319f768fbcab1f27d6ef98b6ee67fd))
+* **deps-dev:** bump @trivago/prettier-plugin-sort-imports ([#3604](https://github.com/fleetyards/fleetyards/issues/3604)) ([360b292](https://github.com/fleetyards/fleetyards/commit/360b292619220dc3898ace2badf38022460b9a67))
+* **deps-dev:** bump @types/node from 25.5.0 to 25.5.2 ([#3598](https://github.com/fleetyards/fleetyards/issues/3598)) ([f6910be](https://github.com/fleetyards/fleetyards/commit/f6910be5d4ab504856d37b52a0c58da69d8f11d1))
+* **deps-dev:** bump c8 from 10.1.3 to 11.0.0 ([#3599](https://github.com/fleetyards/fleetyards/issues/3599)) ([03c7165](https://github.com/fleetyards/fleetyards/commit/03c716591d4f7341df643e9537efb0d365ad77a9))
+* **deps-dev:** bump jsdom from 26.1.0 to 29.0.1 ([#3606](https://github.com/fleetyards/fleetyards/issues/3606)) ([16931c9](https://github.com/fleetyards/fleetyards/commit/16931c9372a5d73ba6aeff689c19d02bad92774e))
+* **deps-dev:** bump sass from 1.97.3 to 1.99.0 ([#3603](https://github.com/fleetyards/fleetyards/issues/3603)) ([628fc44](https://github.com/fleetyards/fleetyards/commit/628fc444a987f1a3e0fa1a46a2f0e6ae3687b7fe))
+* **deps-dev:** bump unplugin-auto-import from 20.3.0 to 21.0.0 ([#3601](https://github.com/fleetyards/fleetyards/issues/3601)) ([a22be03](https://github.com/fleetyards/fleetyards/commit/a22be030c2789ee14dd4715c50b309ab074eae35))
+* **deps:** bump @number-flow/vue from 0.4.12 to 0.5.0 ([#3600](https://github.com/fleetyards/fleetyards/issues/3600)) ([0e5fe7c](https://github.com/fleetyards/fleetyards/commit/0e5fe7c993459eb181b193146b1be88d8fe1cdea))
+* **deps:** bump @tanstack/vue-query from 5.96.1 to 5.96.2 ([#3605](https://github.com/fleetyards/fleetyards/issues/3605)) ([a3656b9](https://github.com/fleetyards/fleetyards/commit/a3656b988a426121aed5c72459b678972ce70e7c))
+* **deps:** bump actions/checkout from 4 to 6 ([#3607](https://github.com/fleetyards/fleetyards/issues/3607)) ([6e0898d](https://github.com/fleetyards/fleetyards/commit/6e0898dea1931f3182a3b7a72a5b7d0e97ffd3cf))
+* **deps:** bump actions/download-artifact from 4 to 8 ([#3608](https://github.com/fleetyards/fleetyards/issues/3608)) ([feead41](https://github.com/fleetyards/fleetyards/commit/feead41a83f51b587d53ac24fc17603dbe627d90))
+* **deps:** bump docker/metadata-action from 5 to 6 ([#3609](https://github.com/fleetyards/fleetyards/issues/3609)) ([affc227](https://github.com/fleetyards/fleetyards/commit/affc227e788dc1dab3a58d4616078ba69cf1508d))
+* **deps:** bump groupdate from 6.7.0 to 6.8.0 ([#3596](https://github.com/fleetyards/fleetyards/issues/3596)) ([4be531c](https://github.com/fleetyards/fleetyards/commit/4be531c08d9b1aab295f7a680c6715323073647f))
+* **deps:** bump three from 0.181.1 to 0.183.2 ([#3597](https://github.com/fleetyards/fleetyards/issues/3597)) ([ad7e8df](https://github.com/fleetyards/fleetyards/commit/ad7e8df75e56b7ae7be43bd98ea375d24b6043ad))
+* **deps:** bump vue from 3.5.31 to 3.5.32 ([#3602](https://github.com/fleetyards/fleetyards/issues/3602)) ([91e15f3](https://github.com/fleetyards/fleetyards/commit/91e15f308284849bff311997fc006cfa0b6e8535))
+* Format fixes from prettier ([27651ac](https://github.com/fleetyards/fleetyards/commit/27651acd555a18d5aef4e712562cbf17ec0405ab))
+* Remove Carrierwave, switch to Active Storage only ([dc6872e](https://github.com/fleetyards/fleetyards/commit/dc6872e30f8e57933439b0038cfdd26a6bfaf837))
+* Remove Heroku remnants, consolidate dev scripts and Procfiles ([19ee5c3](https://github.com/fleetyards/fleetyards/commit/19ee5c31e61baa24a9d86e39a7a7245e4de282b2))
+
 ## [6.0.2](https://github.com/fleetyards/fleetyards/compare/v6.0.1...v6.0.2) (2026-04-03)
 
 
