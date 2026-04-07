@@ -30,40 +30,40 @@ jobs:
 
   js-lint:
     needs: js-setup
-    uses: ./.github/workflows/jobs/js-lint.job.yml
+    uses: ./.github/workflows/js-lint.job.yml
 
   tsc:
     needs: [ruby-setup, js-setup]
-    uses: ./.github/workflows/jobs/tsc.job.yml
+    uses: ./.github/workflows/tsc.job.yml
 
   js-prettier:
     needs: js-setup
-    uses: ./.github/workflows/jobs/js-prettier.job.yml
+    uses: ./.github/workflows/js-prettier.job.yml
 
   api-schema-lint:
     name: API Schema Lint
     needs: js-setup
-    uses: ./.github/workflows/jobs/api-schema-lint.job.yml
+    uses: ./.github/workflows/api-schema-lint.job.yml
 
   js-tests:
     needs: js-setup
-    uses: ./.github/workflows/jobs/js-tests.job.yml
+    uses: ./.github/workflows/js-tests.job.yml
 
   ruby-lint:
     needs: ruby-setup
-    uses: ./.github/workflows/jobs/ruby-lint.job.yml
+    uses: ./.github/workflows/ruby-lint.job.yml
 
   ruby-tests:
     needs: ruby-setup
-    uses: ./.github/workflows/jobs/ruby-tests.job.yml
+    uses: ./.github/workflows/ruby-tests.job.yml
 
   seeds:
     needs: ruby-setup
-    uses: ./.github/workflows/jobs/seeds.job.yml
+    uses: ./.github/workflows/seeds.job.yml
 
   build:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
-    uses: ./.github/workflows/jobs/build.job.yml
+    uses: ./.github/workflows/build.job.yml
     with:
       tag: ${{ github.ref_name }}
     secrets: inherit
@@ -73,14 +73,14 @@ jobs:
 
   api-schema-breaking:
     name: API Schema Breaking Changes
-    uses: ./.github/workflows/jobs/api-schema-breaking.job.yml
+    uses: ./.github/workflows/api-schema-breaking.job.yml
 
   api-schema-check:
     name: API Schema Check
     needs: [ruby-setup, js-setup]
-    uses: ./.github/workflows/jobs/api-schema-check.job.yml
+    uses: ./.github/workflows/api-schema-check.job.yml
 
   e2e-test:
     needs: [ruby-setup, js-setup]
-    uses: ./.github/workflows/jobs/e2e.job.yml
+    uses: ./.github/workflows/e2e.job.yml
     secrets: inherit

@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/jobs/build.job.yml
+    uses: ./.github/workflows/build.job.yml
     with:
       tag: ${{ github.event.release.tag_name }}
     permissions:
@@ -16,7 +16,7 @@ jobs:
 
   deploy-to-live:
     needs: [build]
-    uses: ./.github/workflows/jobs/deploy.job.yml
+    uses: ./.github/workflows/deploy.job.yml
     with:
       destination: live
       name: Live
@@ -25,7 +25,7 @@ jobs:
 
   notify-appsignal:
     needs: [deploy-to-live]
-    uses: ./.github/workflows/jobs/notify-appsignal.job.yml
+    uses: ./.github/workflows/notify-appsignal.job.yml
     with:
       environment: Live
     secrets: inherit

@@ -13,7 +13,7 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/jobs/build.job.yml
+    uses: ./.github/workflows/build.job.yml
     with:
       tag: ${{ github.sha }}
     permissions:
@@ -22,7 +22,7 @@ jobs:
 
   setup:
     needs: build
-    uses: ./.github/workflows/jobs/deploy.job.yml
+    uses: ./.github/workflows/deploy.job.yml
     with:
       destination: ${{ inputs.destination }}
       name: ${{ inputs.destination == 'live' && 'Live' || 'Stage' }}
