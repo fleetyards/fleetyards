@@ -233,7 +233,7 @@ const onDestroy = async () => {
       <div class="col-12 col-md-6">
         <FormToggle
           v-model="publicFleet"
-          name="publicFLeet"
+          name="publicFleet"
           translation-key="fleet.public"
           v-bind="publicFleetProps"
         />
