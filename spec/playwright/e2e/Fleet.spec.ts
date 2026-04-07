@@ -106,13 +106,29 @@ test.describe("Fleet", () => {
 
     await nav.click("fleet-settings");
 
-    await page.getByText("Fleet Settings").click();
+    const fleetSettingsTab = page.locator("a", { hasText: "Fleet Settings" });
+
+    await fleetSettingsTab.waitFor({ state: "visible" });
+    await fleetSettingsTab.click();
 
     await expect(page).toHaveURL(/\/settings\/fleet\//);
 
+    await page
+      .locator("textarea[name='description']")
+      .waitFor({ state: "visible" });
+
     await page.locator("textarea[name='description']").fill("test");
 
+    const responsePromise = page.waitForResponse(
+      (resp) =>
+        resp.url().includes("/fleets/") && resp.request().method() === "PUT",
+    );
+
     await page.getByTestId("submit-form").click();
+
+    const response = await responsePromise;
+    const body = await response.text();
+    expect(response.status(), `Response body: ${body}`).toBe(200);
 
     await notification.success("Settings saved.");
   });
