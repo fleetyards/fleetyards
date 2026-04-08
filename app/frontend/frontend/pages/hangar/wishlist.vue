@@ -302,6 +302,7 @@ const openDisplayOptionsModal = () => {
             :vehicle="record"
             :details="detailsVisible"
             :editable="true"
+            wishlist
           />
         </template>
       </Grid>
