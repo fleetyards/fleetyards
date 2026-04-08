@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.2.1](https://github.com/fleetyards/fleetyards/compare/v6.2.0...v6.2.1) (2026-04-08)
+
+
+### Bug Fixes
+
+* Add missing loaner mappings for Aurora Mk I and MXC variants ([a8a62e3](https://github.com/fleetyards/fleetyards/commit/a8a62e337af9e73f87fb31e329cba3f178d7cf24)), closes [#3522](https://github.com/fleetyards/fleetyards/issues/3522)
+* Add missing paint mappings for Aurora Mk I, Hercules, Mercury, and MXC variants ([bc8b3e3](https://github.com/fleetyards/fleetyards/commit/bc8b3e36c2ae9cf907e7810e350f89d301e58319)), closes [#3521](https://github.com/fleetyards/fleetyards/issues/3521)
+
 ## [6.2.0](https://github.com/fleetyards/fleetyards/compare/v6.1.0...v6.2.0) (2026-04-08)
 
 
