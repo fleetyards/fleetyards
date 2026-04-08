@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.2.0](https://github.com/fleetyards/fleetyards/compare/v6.1.0...v6.2.0) (2026-04-08)
+
+
+### Features
+
+* Add bulk enable/disable actions for admin images ([#3616](https://github.com/fleetyards/fleetyards/issues/3616)) ([cde4434](https://github.com/fleetyards/fleetyards/commit/cde443406f6da36210b3811501e506bbf525b234))
+* Add copy function for paints in admin model edit ([#3615](https://github.com/fleetyards/fleetyards/issues/3615)) ([b4f2987](https://github.com/fleetyards/fleetyards/commit/b4f2987c5d36e0948699ebed5e43af6b45908d5f))
+
+
+### Bug Fixes
+
+* **ci:** Fix Discord notification shell quoting issues ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Fix release workflow and merge_group API breaking changes check ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Pass release body via env var to avoid bash syntax errors ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Use manual GraphQL pagination in move-done-to-deployed ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* Include last page items in hangar sync ([e85eb89](https://github.com/fleetyards/fleetyards/commit/e85eb89eca2689a17510a5812adaec24b2a8f99e))
+* Move db:migrate from post-deploy to pre-deploy hook ([f722a3b](https://github.com/fleetyards/fleetyards/commit/f722a3b0d684eeb0d2c244d9d4eab68af0fc4459))
+* Pass wishlist prop to VehiclePanel in wishlist grid view ([#3619](https://github.com/fleetyards/fleetyards/issues/3619)) ([e8a587d](https://github.com/fleetyards/fleetyards/commit/e8a587d69c785ce56a0527c6b57aec26666c3ad8))
+* Remove orphaned trade_routes and equipment routes ([6796e05](https://github.com/fleetyards/fleetyards/commit/6796e05385515d553fb42efe1fdea34b2edfa23d))
+* Replace Toggle switches with icon buttons in InlineEditableList actions ([#3617](https://github.com/fleetyards/fleetyards/issues/3617)) ([64fe6d6](https://github.com/fleetyards/fleetyards/commit/64fe6d6e13adf87bdac73f9c54a570f7b61a212b))
+* Update rack-session and addressable for security vulnerabilities ([#3618](https://github.com/fleetyards/fleetyards/issues/3618)) ([3a57222](https://github.com/fleetyards/fleetyards/commit/3a572228ec87ba25ab8cfa113ad939add6459075))
+
+
+### Refactorings
+
+* Replace deprecated next() callback with return-based navigation guards ([c6dbe4d](https://github.com/fleetyards/fleetyards/commit/c6dbe4de4a492d3826d428bbeb9d13a932602483))
+
+
+### Chores
+
+* Add maintenance task to touch all models for cache invalidation ([d76e82c](https://github.com/fleetyards/fleetyards/commit/d76e82ceba03d64b2be0561c2fa339b47f28ea44))
+* **ci:** Add manual workflow to move Done items to Deployed ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Extract move-done-to-deployed into reusable job file ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Reintegrate move-done-to-deployed into release workflow ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Remove move-done-to-deployed from release workflow ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Show repo and issue number in move-done-to-deployed logs ([000254d](https://github.com/fleetyards/fleetyards/commit/000254d73736f06737575751ccb63ef2313cfbd4))
+* **ci:** Use Playwright container image for e2e tests ([#3613](https://github.com/fleetyards/fleetyards/issues/3613)) ([d49bd3e](https://github.com/fleetyards/fleetyards/commit/d49bd3e36866960b3e945046aca5982dec1b8c8f))
+* **deps-dev:** bump @faker-js/faker from 9.9.0 to 10.4.0 ([#3625](https://github.com/fleetyards/fleetyards/issues/3625)) ([94a1ba2](https://github.com/fleetyards/fleetyards/commit/94a1ba2dbb537881987a207db48490500611edb4))
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#3628](https://github.com/fleetyards/fleetyards/issues/3628)) ([4376b04](https://github.com/fleetyards/fleetyards/commit/4376b040fe67993d3862637ef46e170b6cdaf337))
+* **deps-dev:** bump @types/rails__activestorage from 7.1.1 to 8.0.1 ([#3620](https://github.com/fleetyards/fleetyards/issues/3620)) ([b324a27](https://github.com/fleetyards/fleetyards/commit/b324a27b8e572c56871d0dee1a21262552f7a39c))
+* **deps-dev:** bump @types/uuid from 10.0.0 to 11.0.0 ([#3631](https://github.com/fleetyards/fleetyards/issues/3631)) ([c3d264c](https://github.com/fleetyards/fleetyards/commit/c3d264c03e3a9b49dc31b1cf3d6adc16c64023c8))
+* **deps-dev:** bump @typescript-eslint/parser from 8.57.0 to 8.58.1 ([#3630](https://github.com/fleetyards/fleetyards/issues/3630)) ([527c924](https://github.com/fleetyards/fleetyards/commit/527c924eeb2e4f83d1af6e4a4169cd4ff353771c))
+* **deps-dev:** bump knip from 5.88.1 to 6.3.1 ([#3621](https://github.com/fleetyards/fleetyards/issues/3621)) ([39c05d9](https://github.com/fleetyards/fleetyards/commit/39c05d9d57372365e5893ece2339b71b922f7ae2))
+* **deps-dev:** bump stylelint-scss from 6.14.0 to 7.0.0 ([#3627](https://github.com/fleetyards/fleetyards/issues/3627)) ([32fe10c](https://github.com/fleetyards/fleetyards/commit/32fe10c1e44ae22ace8c9a8dee0f52d8bedb5854))
+* **deps-dev:** bump vite from 8.0.5 to 8.0.7 ([#3624](https://github.com/fleetyards/fleetyards/issues/3624)) ([2bbbe99](https://github.com/fleetyards/fleetyards/commit/2bbbe99680ed211d5d53a886a7ccfa9dcc5dd700))
+* **deps:** bump actions/github-script from 7 to 8 ([#3629](https://github.com/fleetyards/fleetyards/issues/3629)) ([47dddae](https://github.com/fleetyards/fleetyards/commit/47dddae48a52c2a2128b3ca080af1fb2602fea08))
+* **deps:** bump aws-sdk-s3 from 1.218.0 to 1.219.0 ([#3623](https://github.com/fleetyards/fleetyards/issues/3623)) ([d94a0f8](https://github.com/fleetyards/fleetyards/commit/d94a0f8b440cc210852e930a8ed7daf2efad344d))
+* **deps:** bump axios from 1.13.6 to 1.14.0 ([#3626](https://github.com/fleetyards/fleetyards/issues/3626)) ([82a0090](https://github.com/fleetyards/fleetyards/commit/82a009003b752f3eb856988528c666556162d444))
+* **deps:** bump vue-router from 4.5.1 to 5.0.4 ([#3622](https://github.com/fleetyards/fleetyards/issues/3622)) ([5a5f90b](https://github.com/fleetyards/fleetyards/commit/5a5f90b4270103ce87b461a722c82d2673936f2a))
+* Update Dependabot schedule from weekly to daily ([d301c14](https://github.com/fleetyards/fleetyards/commit/d301c149306f7cdb7966c3ed8ed9593bb634c9b1))
+
 ## [6.1.0](https://github.com/fleetyards/fleetyards/compare/v6.0.2...v6.1.0) (2026-04-07)
 
 
