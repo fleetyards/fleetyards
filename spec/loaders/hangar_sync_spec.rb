@@ -68,4 +68,31 @@ RSpec.describe HangarSync do
       expect(pirate_ship.reload.name).to eq("Enterprise")
     end
   end
+
+  context "when rsi_pledge_id changes" do
+    let(:andromeda_model) { Model.find_by!(slug: "constellation-andromeda") }
+
+    let!(:andromeda_ship) do
+      create(:vehicle, user: user, model: andromeda_model, name: "USS Troi", wanted: false, public: true,
+        rsi_pledge_id: "OLD_PLEDGE_ID", rsi_pledge_synced_at: 1.day.ago)
+    end
+
+    it "updates the existing vehicle instead of creating a duplicate" do
+      Timecop.freeze(1.minute.from_now)
+
+      result = ::HangarSync.new(input).run(user.id)
+
+      expect(result[:found_vehicles]).to include(andromeda_ship.id)
+      expect(result[:moved_vehicles_to_wanted]).not_to include(andromeda_ship.id)
+
+      andromeda_ship.reload
+      expect(andromeda_ship.rsi_pledge_id).to eq("00064313")
+      expect(andromeda_ship.wanted).to be(false)
+      expect(andromeda_ship.name).to eq("USS Troi")
+
+      # No duplicate should exist
+      andromeda_vehicles = Vehicle.where(user_id: user.id, model_id: andromeda_model.id)
+      expect(andromeda_vehicles.count).to eq(1)
+    end
+  end
 end

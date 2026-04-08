@@ -157,6 +157,37 @@ class HangarSync < HangarImporter
       missing_models << item[:name]
     end
 
+    # Reconcile: match newly imported vehicles against unmatched existing vehicles
+    # This handles cases where pledge IDs changed and the normal matching failed
+    unmatched_vehicle_ids = vehicle_scope.where.not(id: vehicle_ids).pluck(:id, :model_id, :model_paint_id)
+    imported_vehicle_records = Vehicle.where(id: imported_vehicles).pluck(:id, :model_id, :model_paint_id)
+
+    imported_vehicle_records.each do |imported_id, imported_model_id, imported_paint_id|
+      match = unmatched_vehicle_ids.find { |_, model_id, paint_id| model_id == imported_model_id && paint_id == imported_paint_id }
+      next unless match
+
+      original_id = match[0]
+      original_vehicle = Vehicle.find(original_id)
+      imported_vehicle = Vehicle.find(imported_id)
+
+      # Transfer the new pledge data to the original vehicle
+      original_vehicle.update!(
+        rsi_pledge_id: imported_vehicle.rsi_pledge_id,
+        rsi_pledge_synced_at: imported_vehicle.rsi_pledge_synced_at,
+        wanted: false
+      )
+
+      # Remove the duplicate
+      imported_vehicle.destroy!
+
+      # Update tracking arrays
+      vehicle_ids << original_id
+      vehicle_ids.delete(imported_id)
+      imported_vehicles.delete(imported_id)
+      found_vehicles << original_id
+      unmatched_vehicle_ids.delete(match)
+    end
+
     vehicle_scope.where.not(id: vehicle_ids).find_each do |vehicle|
       initial_updated_at = vehicle.updated_at
       vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
