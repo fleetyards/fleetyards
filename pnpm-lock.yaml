@@ -223,8 +223,8 @@ importers:
         specifier: ^6.1.11
         version: 6.1.11
       '@types/rails__activestorage':
-        specifier: ^7.1.1
-        version: 7.1.1
+        specifier: ^8.0.1
+        version: 8.0.1
       '@types/swagger-ui':
         specifier: ^5.32.0
         version: 5.32.0
@@ -2053,8 +2053,8 @@ packages:
   '@types/rails__actioncable@6.1.11':
     resolution: {integrity: sha512-L6A3Rg6sGsv2cqalOgdOmyFvL1Pw69Mg0WuG6NtY9chzabhtkiSFY5fczo72mqRGezrMvl0Jy80v+N719CW+Tg==}
 
-  '@types/rails__activestorage@7.1.1':
-    resolution: {integrity: sha512-raNFQ08xlqHvSYkoJ1T8pPPeARj5EzV28L4zFNj09jVz0HprVAhLknl0a51lhXDeb6va2jAFXpwOeYSY6TAjUg==}
+  '@types/rails__activestorage@8.0.1':
+    resolution: {integrity: sha512-gwUZjLHyllzSEmegCXfkL11PrpZ/3Z+vCXBbYWgIdtX0ChfjtZcKq7HGfXYO5v5UYGLYenjGH3u8U+PpnA3dhg==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -7281,7 +7281,7 @@ snapshots:
 
   '@types/rails__actioncable@6.1.11': {}
 
-  '@types/rails__activestorage@7.1.1': {}
+  '@types/rails__activestorage@8.0.1': {}
 
   '@types/resolve@1.20.2': {}
 

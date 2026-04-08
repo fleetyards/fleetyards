@@ -28,11 +28,13 @@ export function useDirectUpload() {
       try {
         const upload = new DirectUpload(file, DIRECT_UPLOAD_URL, callbacks);
 
-        upload.create((error: Error, blob: Blob) => {
+        upload.create((error: Error | null, blob?: Blob) => {
           if (error) {
             errorHandler(error);
-          } else {
+          } else if (blob) {
             successHandler(blob);
+          } else {
+            errorHandler(new Error("DirectUpload failed: no blob returned"));
           }
           resolve();
         });
