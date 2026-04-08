@@ -9,10 +9,13 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
+import { uniq as uniqArray } from "@/shared/utils/Array";
 
 type Props = {
   items: T[];
@@ -21,6 +24,7 @@ type Props = {
   emptyName?: string;
   hideDestroy?: boolean;
   hideEdit?: boolean;
+  selectable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   emptyName: "entries",
   hideDestroy: false,
   hideEdit: false,
+  selectable: false,
 });
 
 const { displayConfirm } = useAppNotifications();
@@ -46,6 +51,40 @@ const emit = defineEmits<{
 
 const editingId = ref<string | null>(null);
 const creating = ref(false);
+
+const internalSelected = ref<string[]>([]);
+
+const allSelected = computed(() => {
+  if (!props.items.length) {
+    return false;
+  }
+
+  return props.items
+    .map((item) => item.id)
+    .every((id) => internalSelected.value.includes(id));
+});
+
+const partialSelected = computed(() => {
+  return internalSelected.value.length > 0 && !allSelected.value;
+});
+
+const onAllSelectedChange = (value?: boolean) => {
+  if (value) {
+    internalSelected.value = [
+      ...internalSelected.value,
+      ...props.items.map((item) => item.id),
+    ].filter(uniqArray);
+  } else {
+    const currentIds = props.items.map((item) => item.id);
+    internalSelected.value = internalSelected.value.filter(
+      (id) => !currentIds.includes(id),
+    );
+  }
+};
+
+const resetSelected = () => {
+  internalSelected.value = [];
+};
 
 const startEdit = (item: T) => {
   editingId.value = item.id;
@@ -99,13 +138,59 @@ const finishCreate = () => {
 defineExpose({
   editingId,
   creating,
+  selected: internalSelected,
   startCreate,
   finishEdit,
   finishCreate,
+  resetSelected,
 });
 </script>
 
 <template>
+  <div
+    v-if="props.selectable && items.length"
+    class="inline-editable-list__toolbar"
+  >
+    <div class="inline-editable-list__toolbar-left">
+      <FormCheckbox
+        :model-value="allSelected"
+        name="select-all"
+        no-label
+        inline
+        :partial="partialSelected"
+        @update:model-value="onAllSelectedChange"
+      />
+      <Collapsed
+        :visible="!!internalSelected.length"
+        as="span"
+        class="inline-editable-list__toolbar-info"
+      >
+        <span>
+          {{
+            t("filteredTable.labels.selected", {
+              count: internalSelected.length,
+            })
+          }}
+        </span>
+        <Btn
+          v-tooltip="t('filteredTable.actions.unselect')"
+          :size="BtnSizesEnum.SMALL"
+          :variant="BtnVariantsEnum.LINK"
+          inline
+          @click="resetSelected"
+        >
+          <i class="fa fa-times" />
+        </Btn>
+      </Collapsed>
+    </div>
+    <Collapsed
+      :visible="!!internalSelected.length"
+      class="inline-editable-list__actions"
+    >
+      <slot name="selected-actions" :selected="internalSelected" />
+    </Collapsed>
+  </div>
+
   <ListGroup :items="items" :loading="loading" :empty-name="emptyName">
     <template #prepend>
       <div v-if="creating" key="__create__" class="list-group__item">
@@ -136,6 +221,15 @@ defineExpose({
     </template>
 
     <template #display="{ item }">
+      <FormCheckbox
+        v-if="props.selectable"
+        v-model="internalSelected"
+        name="item"
+        no-label
+        inline
+        :checkbox-value="item.id"
+        class="inline-editable-list__checkbox"
+      />
       <template v-if="editingId === item.id">
         <div class="inline-editable-list__form">
           <slot name="edit" :item="item" />
@@ -232,5 +326,51 @@ defineExpose({
   & > * {
     flex: 1;
   }
+}
+
+.inline-editable-list__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 12px;
+  width: 100%;
+  min-height: 68px;
+}
+
+.inline-editable-list__toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: $primary;
+  white-space: nowrap;
+  font-size: 120%;
+
+  :deep(.panel-btn-inner) {
+    color: $primary;
+  }
+}
+
+.inline-editable-list__toolbar-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inline-editable-list__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  :deep(.panel-btn),
+  :deep(.panel-btn-group) {
+    margin-bottom: 0;
+    margin-right: 0;
+  }
+}
+
+.inline-editable-list__checkbox {
+  flex-shrink: 0;
 }
 </style>

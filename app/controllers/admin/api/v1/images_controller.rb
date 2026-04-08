@@ -5,6 +5,7 @@ module Admin
     module V1
       class ImagesController < ::Admin::Api::BaseController
         before_action :set_image, only: %i[update destroy]
+        before_action :set_images, only: %i[update_bulk]
 
         after_action -> { pagination_header(:images) }, only: [:index]
 
@@ -34,6 +35,20 @@ module Admin
           return if @image.update(image_params)
 
           render json: ValidationError.new("image.update", errors: @image.errors), status: :bad_request
+        end
+
+        def update_bulk
+          errors = []
+
+          Image.transaction do
+            @images.find_each do |image|
+              errors << image.errors unless image.update(image_params)
+            end
+          end
+
+          return head :ok if errors.blank?
+
+          render json: ValidationError.new("image.bulk_update", errors: errors.first), status: :bad_request
         end
 
         def destroy
@@ -68,6 +83,12 @@ module Admin
           @image = Image.find(params[:id])
 
           authorize! @image, with: ::Admin::ImagePolicy
+        end
+
+        private def set_images
+          authorize! with: ::Admin::ImagePolicy
+
+          @images = Image.where(id: params[:ids])
         end
       end
     end

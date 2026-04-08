@@ -69,6 +69,8 @@
       "remove": "Remove",
       "delete": "Delete",
       "deleteSelected": "Delete Selected",
+      "enableSelected": "Enable Selected",
+      "disableSelected": "Disable Selected",
       "close": "Close",
       "filter": "Filter",
       "showStatusColor": "Show Status as Color",

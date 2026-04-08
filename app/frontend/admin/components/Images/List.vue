@@ -27,10 +27,12 @@ import {
   type ImageQuery,
   type Image,
   useCreateImage as useCreateImageMutation,
+  useUpdateBulkImage as useUpdateBulkImageMutation,
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ImageActions from "@/admin/components/Images/Actions/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   name?: string;
@@ -48,7 +50,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { isFilterSelected } = useImageFilters();
 
-const { l } = useI18n();
+const { l, t } = useI18n();
 
 const route = useRoute();
 
@@ -100,6 +102,54 @@ const handleUploadDone = async (files: FileUpload[]) => {
 
     await invalidateImages();
   }
+};
+
+const selected = ref<string[]>([]);
+
+const onSelectedChange = (ids: string[]) => {
+  selected.value = ids;
+};
+
+const updateBulkMutation = useUpdateBulkImageMutation();
+
+const updating = ref(false);
+
+const enableSelected = async () => {
+  updating.value = true;
+
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: selected.value,
+        enabled: true,
+      },
+    })
+    .then(async () => {
+      selected.value = [];
+      await invalidateImages();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
+};
+
+const disableSelected = async () => {
+  updating.value = true;
+
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: selected.value,
+        enabled: false,
+      },
+    })
+    .then(async () => {
+      selected.value = [];
+      await invalidateImages();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
 };
 
 const columns: BaseTableCol<Image>[] = [
@@ -160,7 +210,29 @@ const columns: BaseTableCol<Image>[] = [
         :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable
+        :selected="selected"
+        @selected-change="onSelectedChange"
       >
+        <template #selected-actions>
+          <BtnGroup inline>
+            <Btn
+              v-tooltip="t('actions.enableSelected')"
+              :size="BtnSizesEnum.SMALL"
+              :disabled="updating"
+              @click="enableSelected"
+            >
+              <i class="fa-duotone fa-eye" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.disableSelected')"
+              :size="BtnSizesEnum.SMALL"
+              :disabled="updating"
+              @click="disableSelected"
+            >
+              <i class="fa-duotone fa-eye-slash" />
+            </Btn>
+          </BtnGroup>
+        </template>
         <template #loader="{ loading }">
           <Loader :loading="loading" admin />
         </template>

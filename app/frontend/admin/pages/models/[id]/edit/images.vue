@@ -21,6 +21,7 @@ import {
   useImages as useImagesQuery,
   useCreateImage as useCreateImageMutation,
   useUpdateImage as useUpdateImageMutation,
+  useUpdateBulkImage as useUpdateBulkImageMutation,
   useDestroyImage as useDestroyImageMutation,
   getImagesQueryKey,
 } from "@/services/fyAdminApi";
@@ -44,7 +45,9 @@ const queryClient = useQueryClient();
 
 const editableList = ref<{
   editingId: string | null;
+  selected: string[];
   finishEdit: () => void;
+  resetSelected: () => void;
 } | null>(null);
 
 const imagesQueryParams = computed(() => ({
@@ -117,6 +120,55 @@ const onDestroy = async (record: Image) => {
   await destroyMutation.mutateAsync({ id: record.id });
 };
 
+// Bulk update
+const updateBulkMutation = useUpdateBulkImageMutation();
+
+const bulkUpdating = ref(false);
+
+const enableSelected = async () => {
+  const selected = editableList.value?.selected;
+  if (!selected?.length) return;
+
+  bulkUpdating.value = true;
+
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: selected,
+        enabled: true,
+      },
+    })
+    .then(async () => {
+      editableList.value?.resetSelected();
+      await invalidateImages();
+    })
+    .finally(() => {
+      bulkUpdating.value = false;
+    });
+};
+
+const disableSelected = async () => {
+  const selected = editableList.value?.selected;
+  if (!selected?.length) return;
+
+  bulkUpdating.value = true;
+
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: selected,
+        enabled: false,
+      },
+    })
+    .then(async () => {
+      editableList.value?.resetSelected();
+      await invalidateImages();
+    })
+    .finally(() => {
+      bulkUpdating.value = false;
+    });
+};
+
 // Direct Upload
 const uploadMutation = useCreateImageMutation({
   mutation: {
@@ -160,10 +212,32 @@ const handleUploadDone = async (files: FileUpload[]) => {
     ref="editableList"
     :items="(data?.items as Image[]) || []"
     :confirm-destroy-text="t('messages.confirm.image.destroy')"
+    selectable
     @start-edit="onStartEdit"
     @save-edit="onSaveEdit"
     @destroy="onDestroy"
   >
+    <template #selected-actions>
+      <BtnGroup inline>
+        <Btn
+          v-tooltip="t('actions.enableSelected')"
+          :size="BtnSizesEnum.SMALL"
+          :disabled="bulkUpdating"
+          @click="enableSelected"
+        >
+          <i class="fa-duotone fa-eye" />
+        </Btn>
+        <Btn
+          v-tooltip="t('actions.disableSelected')"
+          :size="BtnSizesEnum.SMALL"
+          :disabled="bulkUpdating"
+          @click="disableSelected"
+        >
+          <i class="fa-duotone fa-eye-slash" />
+        </Btn>
+      </BtnGroup>
+    </template>
+
     <template #display="{ item }">
       <LazyImage
         v-if="item.smallUrl"

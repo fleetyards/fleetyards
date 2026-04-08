@@ -76,7 +76,10 @@ v1_admin_api_routes = lambda do
   end
 
   resources :images, only: %i[index create destroy update] do
-    put :attach, on: :collection
+    collection do
+      put :attach
+      put "bulk", to: "images#update_bulk"
+    end
   end
 
   resources :imports, only: %i[index show]
