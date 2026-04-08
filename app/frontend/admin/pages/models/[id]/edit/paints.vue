@@ -8,7 +8,10 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import Toggle from "@/shared/components/base/Toggle/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import {
   type ModelExtended,
   type ModelPaint,
@@ -26,7 +29,6 @@ import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -189,18 +191,30 @@ const onSaveCreate = async () => {
     </template>
 
     <template #actions="{ item, mobile }">
-      <Toggle
+      <Btn
         v-tooltip="t('labels.modelPaint.hidden')"
-        :label="mobile ? t('labels.modelPaint.hidden') : undefined"
-        :active="!item.hidden"
-        @toggle="toggleField(item, 'hidden')"
-      />
-      <Toggle
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'hidden')"
+      >
+        <i
+          class="fa-duotone fa-eye"
+          :class="!item.hidden ? '' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.modelPaint.hidden") }}</span>
+      </Btn>
+      <Btn
         v-tooltip="t('labels.modelPaint.active')"
-        :label="mobile ? t('labels.modelPaint.active') : undefined"
-        :active="item.active"
-        @toggle="toggleField(item, 'active')"
-      />
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'active')"
+      >
+        <i
+          class="fa-duotone fa-circle-check"
+          :class="item.active ? 'text-success' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.modelPaint.active") }}</span>
+      </Btn>
       <Btn
         v-tooltip="!mobile && t('actions.copy')"
         :size="BtnSizesEnum.SMALL"

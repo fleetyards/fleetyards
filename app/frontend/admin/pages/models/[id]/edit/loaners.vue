@@ -8,7 +8,10 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import Toggle from "@/shared/components/base/Toggle/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import {
   type ModelExtended,
   type ModelLoaner,
@@ -23,7 +26,6 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -164,12 +166,18 @@ const onSaveCreate = async () => {
     </template>
 
     <template #actions="{ item, mobile }">
-      <Toggle
+      <Btn
         v-tooltip="t('labels.modelLoaner.hidden')"
-        :label="mobile ? t('labels.modelLoaner.hidden') : undefined"
-        :active="!item.hidden"
-        @toggle="toggleField(item, 'hidden')"
-      />
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'hidden')"
+      >
+        <i
+          class="fa-duotone fa-eye"
+          :class="!item.hidden ? '' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.modelLoaner.hidden") }}</span>
+      </Btn>
     </template>
 
     <template #edit>

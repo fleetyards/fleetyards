@@ -735,6 +735,7 @@
         }
       },
       "image": {
+        "active": "Active?",
         "background": "Use as Background?",
         "caption": "Caption",
         "enabled": "Enabled?",

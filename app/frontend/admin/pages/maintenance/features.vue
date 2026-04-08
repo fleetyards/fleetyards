@@ -10,7 +10,10 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
@@ -308,12 +311,19 @@ const hasSelectedActor = computed(() => {
     </template>
 
     <template #actions="{ item, mobile }">
-      <Toggle
-        :label="mobile ? t('labels.features.toggle') : undefined"
-        :active="item.state === 'on'"
+      <Btn
+        v-tooltip="t('labels.features.toggle')"
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
         data-test="toggle-feature"
-        @toggle="toggleFeature(item)"
-      />
+        @click="toggleFeature(item)"
+      >
+        <i
+          class="fa-duotone fa-power-off"
+          :class="item.state === 'on' ? 'text-success' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.features.toggle") }}</span>
+      </Btn>
     </template>
 
     <template #edit="{ item }">
