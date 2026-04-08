@@ -9,7 +9,6 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import Toggle from "@/shared/components/base/Toggle/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -233,18 +232,30 @@ const onUnlink = (record: ModelModule) => {
     </template>
 
     <template #actions="{ item, mobile }">
-      <Toggle
+      <Btn
         v-tooltip="t('labels.modelModule.hidden')"
-        :label="mobile ? t('labels.modelModule.hidden') : undefined"
-        :active="!item.hidden"
-        @toggle="toggleField(item, 'hidden')"
-      />
-      <Toggle
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'hidden')"
+      >
+        <i
+          class="fa-duotone fa-eye"
+          :class="!item.hidden ? '' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.modelModule.hidden") }}</span>
+      </Btn>
+      <Btn
         v-tooltip="t('labels.modelModule.active')"
-        :label="mobile ? t('labels.modelModule.active') : undefined"
-        :active="item.active"
-        @toggle="toggleField(item, 'active')"
-      />
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'active')"
+      >
+        <i
+          class="fa-duotone fa-circle-check"
+          :class="item.active ? 'text-success' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.modelModule.active") }}</span>
+      </Btn>
       <Btn
         v-tooltip="t('actions.unlink')"
         :size="BtnSizesEnum.SMALL"

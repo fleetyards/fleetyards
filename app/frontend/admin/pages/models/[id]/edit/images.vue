@@ -8,7 +8,6 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import Toggle from "@/shared/components/base/Toggle/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -250,12 +249,18 @@ const handleUploadDone = async (files: FileUpload[]) => {
     </template>
 
     <template #actions="{ item, mobile }">
-      <Toggle
-        v-tooltip="t('labels.image.enabled')"
-        :label="mobile ? t('labels.image.enabled') : undefined"
-        :active="item.enabled"
-        @toggle="toggleField(item, 'enabled')"
-      />
+      <Btn
+        v-tooltip="t('labels.image.active')"
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'enabled')"
+      >
+        <i
+          class="fa-duotone fa-circle-check"
+          :class="item.enabled ? 'text-success' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.image.active") }}</span>
+      </Btn>
       <Btn
         v-tooltip="t('labels.image.global')"
         :size="BtnSizesEnum.SMALL"

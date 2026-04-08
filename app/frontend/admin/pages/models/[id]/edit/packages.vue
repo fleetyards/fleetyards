@@ -9,7 +9,6 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import Toggle from "@/shared/components/base/Toggle/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -34,7 +33,10 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -238,18 +240,30 @@ const onSaveCreate = async () => {
     </template>
 
     <template #actions="{ item, mobile }">
-      <Toggle
+      <Btn
         v-tooltip="t('labels.modelModulePackage.hidden')"
-        :label="mobile ? t('labels.modelModulePackage.hidden') : undefined"
-        :active="!item.hidden"
-        @toggle="toggleField(item, 'hidden')"
-      />
-      <Toggle
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'hidden')"
+      >
+        <i
+          class="fa-duotone fa-eye"
+          :class="!item.hidden ? '' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.modelModulePackage.hidden") }}</span>
+      </Btn>
+      <Btn
         v-tooltip="t('labels.modelModulePackage.active')"
-        :label="mobile ? t('labels.modelModulePackage.active') : undefined"
-        :active="item.active"
-        @toggle="toggleField(item, 'active')"
-      />
+        :size="BtnSizesEnum.SMALL"
+        :variant="BtnVariantsEnum.TRANSPARENT"
+        @click="toggleField(item, 'active')"
+      >
+        <i
+          class="fa-duotone fa-circle-check"
+          :class="item.active ? 'text-success' : 'text-muted'"
+        />
+        <span v-if="mobile">{{ t("labels.modelModulePackage.active") }}</span>
+      </Btn>
     </template>
 
     <template #edit="{ item }">

@@ -365,6 +365,7 @@
         }
       },
       "image": {
+        "active": "Active?",
         "background": "Use as Background?",
         "enabled": "Enabled?",
         "global": "Global?",

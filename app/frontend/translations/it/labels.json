@@ -363,6 +363,7 @@
         }
       },
       "image": {
+        "active": "Active?",
         "background": "Utilizzare come background?",
         "enabled": "Abilitato?",
         "global": "Globale?",
