@@ -251,6 +251,10 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
   const items = parser.extractPage(htmlPage);
 
+  if (items !== undefined && items.length > 0) {
+    pledges.value = [...pledges.value, ...items];
+  }
+
   if (
     items === undefined ||
     (maxPage.value && currentPage.value >= maxPage.value)
@@ -259,10 +263,6 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
     await finishSync();
   } else {
-    if (items.length > 0) {
-      pledges.value = [...pledges.value, ...items];
-    }
-
     currentPage.value += 1;
 
     setTimeout(() => fetchPage(currentPage.value), 500);
