@@ -5,7 +5,6 @@ import {
   type RouteRecordRaw,
   type RouterHistory,
   type RouteLocationNormalized,
-  type NavigationGuardNext,
 } from "vue-router";
 import { type LocationQuery } from "vue-router";
 import qs from "qs";
@@ -39,11 +38,7 @@ export type FyRouterOptions = {
   // parseQuery?: (query: string) => LocationQuery;
   // stringifyQuery?: (query: LocationQuery) => string;
   beforeResolve?: (to: RouteLocationNormalized) => FyRedirectRoute | undefined;
-  beforeEach?: (
-    to: RouteLocationNormalized,
-    from: RouteLocationNormalized,
-    next: NavigationGuardNext,
-  ) => void;
+  beforeEach?: (to: RouteLocationNormalized) => void;
 };
 
 export const setupRouter = (options: FyRouterOptions) => {
@@ -76,35 +71,27 @@ export const setupRouter = (options: FyRouterOptions) => {
     routes: options?.routes || [],
   });
 
-  router.beforeResolve((to, _from, next) => {
+  router.beforeResolve((to) => {
     if (!options?.beforeResolve) {
-      next();
       return;
     }
 
     const newRoute = options.beforeResolve(to);
     if (newRoute) {
-      router
-        .push({
-          name: newRoute.routeName,
-          params: newRoute.routeParams,
-          query: newRoute.routeQuery,
-        })
-        .catch(() => {
-          window.location.reload();
-        });
-    } else {
-      next();
+      return {
+        name: newRoute.routeName,
+        params: newRoute.routeParams,
+        query: newRoute.routeQuery,
+      };
     }
   });
 
-  router.beforeEach((to, _from, next) => {
+  router.beforeEach((to) => {
     if (!options?.beforeEach) {
-      next();
       return;
     }
 
-    options.beforeEach(to, _from, next);
+    options.beforeEach(to);
   });
 
   router.onError((error) => {

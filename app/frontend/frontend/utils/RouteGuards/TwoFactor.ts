@@ -1,30 +1,17 @@
 import { me as fetchMe } from "@/services/fyApi";
-import { RouteLocation, NavigationGuardNext } from "vue-router";
 
-export const enabledRouteGuard = async function fleetRouteGuard(
-  _to: RouteLocation,
-  _from: RouteLocation,
-  next: NavigationGuardNext,
-) {
+export const enabledRouteGuard = async function fleetRouteGuard() {
   const user = await fetchMe();
 
   if (!user.twoFactorRequired) {
-    next({ name: "settings-security-status" });
-  } else {
-    next();
+    return { name: "settings-security-status" };
   }
 };
 
-export const disabledRouteGuard = async function publicFleetRouteGuard(
-  _to: RouteLocation,
-  _from: RouteLocation,
-  next: NavigationGuardNext,
-) {
+export const disabledRouteGuard = async function publicFleetRouteGuard() {
   const user = await fetchMe();
 
   if (user.twoFactorRequired) {
-    next({ name: "settings-security-status" });
-  } else {
-    next();
+    return { name: "settings-security-status" };
   }
 };
