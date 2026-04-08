@@ -117,7 +117,8 @@ module Rsi
         "MPUV-Tractor" => ["MPUV Tractor"],
         "Pulse (+ LX)" => pulse_variants,
         "Ironclad (+ Assault)" => ironclad_variants,
-        "Terrapin (+ Medic)" => terrapin_variants
+        "Terrapin (+ Medic)" => terrapin_variants,
+        "MXC" => %w[MDC MTC]
       }
 
       return models_map[name] if models_map[name].present?
@@ -140,6 +141,8 @@ module Rsi
         "Khartu-al" => "Khartu-Al",
         "Lynx Rover" => "Lynx",
         "Mole" => "MOLE",
+        "Aurora MR" => "Aurora Mk I MR",
+        "Aurora LN" => "Aurora Mk I LN",
         "315p (non-customized; see known issue above)" => "315p"
       }
 
