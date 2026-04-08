@@ -12,6 +12,10 @@ module Admin
               properties: {
                 hidden: {type: :boolean},
                 active: {type: :boolean},
+                onSale: {type: :boolean},
+                pledgePrice: {type: :number},
+                productionStatus: {type: :string},
+                productionNote: {type: :string},
                 model: {"$ref": "#/components/schemas/Model"},
                 media: {
                   type: :object,

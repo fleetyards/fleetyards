@@ -8,6 +8,7 @@ if record.try(attr) && record.send(attr).attached?
   json.content_type file.content_type
   json.size file.byte_size
   json.url rails_blob_url(file)
+  json.signed_id file.blob.signed_id
   if file.representable?
     json.small_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:small]))
     json.medium_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]))

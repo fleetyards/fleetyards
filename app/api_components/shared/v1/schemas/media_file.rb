@@ -13,6 +13,7 @@ module Shared
             contentType: {type: :string},
             size: {type: :integer},
             url: {type: :string, format: :uri},
+            signedId: {type: :string},
             smallUrl: {type: :string, format: :uri},
             mediumUrl: {type: :string, format: :uri},
             largeUrl: {type: :string, format: :uri},
