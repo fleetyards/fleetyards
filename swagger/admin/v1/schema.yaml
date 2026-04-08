@@ -1437,6 +1437,34 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/ImageInput"
+  "/images/bulk":
+    put:
+      summary: Bulk update images
+      operationId: updateBulkImage
+      tags:
+      - Images
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImageUpdateBulkInput"
+        required: true
   "/imports":
     get:
       summary: Imports list
@@ -6883,6 +6911,26 @@ components:
       additionalProperties: false
       example: {}
       title: ImageQuery
+    ImageUpdateBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        enabled:
+          type: boolean
+        global:
+          type: boolean
+        background:
+          type: boolean
+        caption:
+          type: string
+      additionalProperties: false
+      required:
+      - ids
+      title: ImageUpdateBulkInput
     Images:
       type: object
       properties:

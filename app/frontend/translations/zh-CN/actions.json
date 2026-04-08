@@ -53,6 +53,8 @@
       "remove": "移除",
       "delete": "删除",
       "deleteSelected": "删除选中项",
+      "enableSelected": "启用选中项",
+      "disableSelected": "禁用选中项",
       "close": "关闭",
       "filter": "过滤",
       "showStatusColor": "显示状态颜色",

@@ -53,6 +53,8 @@
       "remove": "移除",
       "delete": "刪除",
       "deleteSelected": "刪除選中項",
+      "enableSelected": "啟用選中項",
+      "disableSelected": "停用選中項",
       "close": "關閉",
       "filter": "篩選",
       "showStatusColor": "顯示狀態顏色",

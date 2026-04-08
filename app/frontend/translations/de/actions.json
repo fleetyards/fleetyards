@@ -59,6 +59,8 @@
       "remove": "Entfernen",
       "delete": "Löschen",
       "deleteSelected": "Ausgewählte löschen",
+      "enableSelected": "Ausgewählte aktivieren",
+      "disableSelected": "Ausgewählte deaktivieren",
       "close": "Schließen",
       "filter": "Filter",
       "showStatusColor": "Status als Farbe anzeigen",
