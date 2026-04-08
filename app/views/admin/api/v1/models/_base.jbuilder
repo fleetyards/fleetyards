@@ -48,8 +48,8 @@ json.last_updated_at model.last_updated_at&.utc&.iso8601
 json.last_updated_at_label((I18n.l(model.last_updated_at.utc, format: :label) if model.last_updated_at.present?))
 
 json.links do
-  json.store_url model.rsi_store_url
-  json.sales_page_url model.rsi_sales_page_url
+  json.store_url model.store_url
+  json.sales_page_url model.sales_page_url
 end
 
 json.loaners do
