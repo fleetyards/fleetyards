@@ -45,6 +45,10 @@ const initialValues = computed<Partial<ModelPaintInput>>(() => {
     modelId: sourcePaint.value.model?.id,
     active: sourcePaint.value.active,
     hidden: sourcePaint.value.hidden,
+    onSale: sourcePaint.value.onSale,
+    pledgePrice: sourcePaint.value.pledgePrice,
+    productionStatus: sourcePaint.value.productionStatus,
+    productionNote: sourcePaint.value.productionNote,
   };
 });
 

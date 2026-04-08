@@ -6130,6 +6130,8 @@ components:
         url:
           type: string
           format: uri
+        signedId:
+          type: string
         smallUrl:
           type: string
           format: uri
@@ -7891,6 +7893,8 @@ components:
         url:
           type: string
           format: uri
+        signedId:
+          type: string
         smallUrl:
           type: string
           format: uri

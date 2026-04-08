@@ -5,6 +5,10 @@ json.name model_paint.name
 json.slug model_paint.slug
 json.hidden model_paint.hidden
 json.active model_paint.active
+json.on_sale model_paint.on_sale
+json.pledge_price model_paint.pledge_price
+json.production_status model_paint.production_status
+json.production_note model_paint.production_note
 
 json.availability do
   json.bought_at do

@@ -111,7 +111,7 @@ const onDestroy = async (record: ModelPaint) => {
   await destroyMutation.mutateAsync({ id: record.id });
 };
 
-// Create
+// Create / Copy
 const createForm = ref<ModelPaintInput>({
   modelId: props.model.id,
 });
@@ -119,6 +119,21 @@ const createForm = ref<ModelPaintInput>({
 const onStartCreate = () => {
   createForm.value = {
     modelId: props.model.id,
+  };
+};
+
+const copyPaint = (item: ModelPaint) => {
+  editableList.value?.startCreate();
+  createForm.value = {
+    name: item.name,
+    modelId: props.model.id,
+    active: item.active,
+    hidden: item.hidden,
+    onSale: item.onSale,
+    pledgePrice: item.pledgePrice,
+    productionStatus: item.productionStatus,
+    productionNote: item.productionNote,
+    storeImage: item.media?.storeImage?.signedId,
   };
 };
 
@@ -186,6 +201,14 @@ const onSaveCreate = async () => {
         :active="item.active"
         @toggle="toggleField(item, 'active')"
       />
+      <Btn
+        v-tooltip="!mobile && t('actions.copy')"
+        :size="BtnSizesEnum.SMALL"
+        @click="copyPaint(item)"
+      >
+        <i class="fa-duotone fa-copy" />
+        <span v-if="mobile">{{ t("actions.copy") }}</span>
+      </Btn>
     </template>
 
     <template #edit="{ item }">

@@ -5670,6 +5670,8 @@ components:
         url:
           type: string
           format: uri
+        signedId:
+          type: string
         smallUrl:
           type: string
           format: uri
@@ -6780,6 +6782,8 @@ components:
         url:
           type: string
           format: uri
+        signedId:
+          type: string
         smallUrl:
           type: string
           format: uri
@@ -8630,6 +8634,14 @@ components:
           type: boolean
         active:
           type: boolean
+        onSale:
+          type: boolean
+        pledgePrice:
+          type: number
+        productionStatus:
+          type: string
+        productionNote:
+          type: string
         model:
           "$ref": "#/components/schemas/Model"
       additionalProperties: false
