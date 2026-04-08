@@ -200,7 +200,7 @@ const resetSelected = () => {
               :clickable="props.rowClickable"
               @click="props.rowClickable && emit('row-click', record)"
             >
-              <TableCol v-if="props.selectable" variant="selection">
+              <TableCol v-if="props.selectable" variant="selection" @click.stop>
                 <FormCheckbox
                   v-model="internalSelected"
                   name="item"
@@ -226,7 +226,7 @@ const resetSelected = () => {
                   {{ record[fieldByColumn(column)] }}
                 </slot>
               </TableCol>
-              <TableCol v-if="slots.actions" variant="actions">
+              <TableCol v-if="slots.actions" variant="actions" @click.stop>
                 <slot :record="record" name="actions" />
               </TableCol>
             </TableRow>
