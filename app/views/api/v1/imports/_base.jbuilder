@@ -9,7 +9,6 @@ json.input import.input
 
 if local_assigns.fetch(:extended, false)
   json.output import.output
-  json.import import.import
   json.import_data import.import_data
 end
 
