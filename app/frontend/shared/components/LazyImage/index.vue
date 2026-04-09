@@ -22,6 +22,7 @@ export type Props = {
   height?: number;
   caption?: string;
   transparent?: boolean;
+  gallery?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   height: undefined,
   caption: undefined,
   transparent: false,
+  gallery: false,
 });
 
 const uuid = ref<string>(uuidv4());
@@ -90,7 +92,7 @@ const cssClasses = computed(() => {
   return {
     [`lazy-image--${props.variant}`]: !!props.variant,
     "lazy-image--shadow": props.shadow,
-    "gallery-image": !!props.href,
+    "gallery-image": props.gallery || !!props.href,
     "lazy-image--transparent": props.transparent,
   };
 });

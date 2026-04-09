@@ -198,7 +198,7 @@ const onSaveCreate = async () => {
 </script>
 
 <template>
-  <div class="d-flex align-items-center justify-content-between">
+  <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.packages") }}</Heading>
     <Btn
       :size="BtnSizesEnum.SMALL"

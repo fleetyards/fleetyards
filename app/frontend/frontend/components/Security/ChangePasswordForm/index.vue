@@ -119,7 +119,7 @@ const onSubmit = handleSubmit(async (values) => {
       :label="t('labels.passwordConfirmation')"
       :type="InputTypesEnum.PASSWORD"
     />
-    <div class="d-flex">
+    <div class="flex">
       <Btn :loading="submitting" :type="BtnTypesEnum.SUBMIT">
         {{ t("actions.updatePassword") }}
       </Btn>

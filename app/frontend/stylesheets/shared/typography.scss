@@ -1,16 +1,61 @@
+// Heading sizes and base styles (replacing Bootstrap _type.scss)
+h1,
 h2,
 h3,
-h4 {
-  margin-top: 0;
+h4,
+h5,
+h6 {
+  font-weight: 500;
+  line-height: 1.2;
+
+  small {
+    font-size: 80%;
+    font-weight: 400;
+  }
 }
 
 h1 {
+  font-size: $h1-font-size;
   margin-top: 0;
   margin-bottom: 15px;
 
   &.large {
     font-size: $h1-large-font-size;
   }
+}
+
+h2 {
+  font-size: $h2-font-size;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: $h3-font-size;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+h4 {
+  font-size: $h4-font-size;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+h5 {
+  font-size: $h5-font-size;
+  margin-bottom: 0.5rem;
+}
+
+h6 {
+  font-size: $h6-font-size;
+  margin-bottom: 0.5rem;
+}
+
+// Paragraphs
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 address {
@@ -23,6 +68,8 @@ address {
 }
 
 blockquote {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
   padding-left: 15px;
   border-left: 5px solid $gray-light;
 
@@ -42,6 +89,16 @@ blockquote {
         color: white;
       }
     }
+  }
+}
+
+.blockquote-footer {
+  display: block;
+  font-size: 80%;
+  color: $gray-light;
+
+  &::before {
+    content: "\2014\00A0"; // em-dash + non-breaking space
   }
 }
 

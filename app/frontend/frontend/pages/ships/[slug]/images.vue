@@ -161,6 +161,7 @@ useGallery(".images");
             :title="record.name"
             :caption="record.caption"
             shadow
+            gallery
           />
         </template>
       </Grid>

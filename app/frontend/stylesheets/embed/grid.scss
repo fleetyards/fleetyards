@@ -1,0 +1,105 @@
+// Standalone grid for embed (uses @import for scoped nesting compatibility)
+@import "../variables";
+
+$grid-columns: 12;
+$gutter: $grid-gutter-width;
+
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: $gutter * 0.5;
+  padding-left: $gutter * 0.5;
+
+  @each $bp, $max-width in $container-max-widths {
+    $min-width: map-get($grid-breakpoints, $bp);
+    @if $min-width and $min-width > 0 {
+      @media (min-width: $min-width) {
+        max-width: $max-width;
+      }
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: $gutter * -0.5;
+  margin-left: $gutter * -0.5;
+}
+
+// Column mixin
+@mixin make-col($size, $columns: $grid-columns) {
+  flex: 0 0 percentage(calc($size / $columns));
+  max-width: percentage(calc($size / $columns));
+}
+
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  $num: calc($size / $columns);
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+@mixin col-base {
+  position: relative;
+  width: 100%;
+  padding-right: $gutter * 0.5;
+  padding-left: $gutter * 0.5;
+}
+
+@function breakpoint-infix($name) {
+  @if map-get($grid-breakpoints, $name) == 0 {
+    @return "";
+  }
+  @return "-#{$name}";
+}
+
+@each $breakpoint, $min-width in $grid-breakpoints {
+  $infix: breakpoint-infix($breakpoint);
+
+  @for $i from 1 through $grid-columns {
+    .col#{$infix}-#{$i} {
+      @include col-base;
+    }
+  }
+  .col#{$infix}-2dot4 {
+    @include col-base;
+  }
+
+  @if $min-width == 0 {
+    @for $i from 1 through $grid-columns {
+      .col#{$infix}-#{$i} {
+        @include make-col($i);
+      }
+    }
+    .col#{$infix}-2dot4 {
+      @include make-col(2.4);
+    }
+    @for $i from 1 through ($grid-columns - 1) {
+      .offset#{$infix}-#{$i} {
+        @include make-col-offset($i);
+      }
+    }
+    .offset#{$infix}-2dot4 {
+      @include make-col-offset(2.4);
+    }
+  } @else {
+    @media (min-width: $min-width) {
+      @for $i from 1 through $grid-columns {
+        .col#{$infix}-#{$i} {
+          @include make-col($i);
+        }
+      }
+      .col#{$infix}-2dot4 {
+        @include make-col(2.4);
+      }
+      @for $i from 1 through ($grid-columns - 1) {
+        .offset#{$infix}-#{$i} {
+          @include make-col-offset($i);
+        }
+      }
+      .offset#{$infix}-2dot4 {
+        @include make-col-offset(2.4);
+      }
+    }
+  }
+}

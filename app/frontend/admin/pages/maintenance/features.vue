@@ -252,7 +252,7 @@ const hasSelectedActor = computed(() => {
 </script>
 
 <template>
-  <div class="d-flex align-items-center justify-content-between">
+  <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.features.index") }}</Heading>
     <Btn
       :size="BtnSizesEnum.SMALL"

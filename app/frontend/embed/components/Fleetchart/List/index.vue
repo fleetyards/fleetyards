@@ -65,7 +65,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <div v-if="slider" class="row justify-content-lg-center">
+    <div v-if="slider" class="row lg:justify-center">
       <div class="col-12 col-lg-4">
         <FleetchartSlider
           :initial-scale="fleetchartScale"

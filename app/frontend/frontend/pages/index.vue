@@ -93,7 +93,7 @@ const routeForImage = (image: Image) => {
               />
               {{ t("title.default") }}
             </h1>
-            <div class="row justify-content-md-center">
+            <div class="row md:justify-center">
               <div class="col-12 col-lg-6">
                 <form @submit.prevent="search">
                   <div class="form-group">

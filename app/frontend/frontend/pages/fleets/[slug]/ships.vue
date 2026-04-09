@@ -72,7 +72,7 @@ const toggleFleetchart = () => {
         {{ fleet.name }} ({{ fleet.fid }})
       </h1>
     </div>
-    <div class="col-12 col-lg-4 d-flex justify-content-end align-items-center">
+    <div class="col-12 col-lg-4 flex justify-end items-center">
       <div v-if="!mobile" class="page-actions">
         <Btn
           :inline="true"

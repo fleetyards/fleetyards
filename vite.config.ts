@@ -5,6 +5,7 @@ import Vue from "@vitejs/plugin-vue";
 import { VitePWA } from "vite-plugin-pwa";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
+import tailwindcss from "@tailwindcss/vite";
 import { templateCompilerOptions } from "@tresjs/core";
 
 const cache: { [key: string]: string } = {};
@@ -26,6 +27,7 @@ export const accessEnv = (key: string, defaultValue?: string): string => {
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
     ViteRails(),
     Vue({
       ...templateCompilerOptions,
