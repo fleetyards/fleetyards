@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.3.0](https://github.com/fleetyards/fleetyards/compare/v6.2.1...v6.3.0) (2026-04-09)
+
+
+### Features
+
+* Add sync command to bin/scdata for downloading SC data from Hetzner S3 ([4b1ba4d](https://github.com/fleetyards/fleetyards/commit/4b1ba4d019eee55a128f67e0ba254dcd7b8897c9))
+
+
+### Bug Fixes
+
+* Handle optional model.links in Vue templates after schema change ([b5e611c](https://github.com/fleetyards/fleetyards/commit/b5e611c7f0d8f5076458477de452409be8557b46))
+* Make links optional in Model schema since jbuilder drops nil-only blocks ([7e128d0](https://github.com/fleetyards/fleetyards/commit/7e128d0c4e3d84d15bd90a67e423ad0923d25adb))
+* Remove non-existent `import` attribute from imports jbuilder ([41c9018](https://github.com/fleetyards/fleetyards/commit/41c901803375dac952cec427d3359d5ff37075d4))
+* Replace remote seed images with local stub to avoid bucket dependency ([5ea6821](https://github.com/fleetyards/fleetyards/commit/5ea6821dfac6dd4b1261abc68c17d035a5462a31))
+* Return raw URLs in admin models jbuilder to prevent double RSI domain prepending ([9bf24d2](https://github.com/fleetyards/fleetyards/commit/9bf24d28943f45c3745a7349263c60856fcd2d06))
+* Stop event propagation on BaseTable actions and selection columns ([056aea2](https://github.com/fleetyards/fleetyards/commit/056aea2ede99a53ad89cf9cc66e84ca804b213ee))
+* Update items loader spec expected count for SC data 4.7.1-live.11592622 ([644afd1](https://github.com/fleetyards/fleetyards/commit/644afd186e309f872c5fa442a58e52f3763f3290))
+* Update rsi_store_image sync to re-download outdated images and only persist timestamp on success ([38df91e](https://github.com/fleetyards/fleetyards/commit/38df91eb017183dc976f95f1373e6214f17c6bb1))
+
+
+### Chores
+
+* Default live console to sandbox mode and add danger script for write access ([d7c26fa](https://github.com/fleetyards/fleetyards/commit/d7c26fa1edde4caf6aa9f843b37271132b218a70))
+* **deps-dev:** bump @types/three from 0.181.0 to 0.183.1 ([#3642](https://github.com/fleetyards/fleetyards/issues/3642)) ([700dc33](https://github.com/fleetyards/fleetyards/commit/700dc338fa383372ec1f06e1aaf68df38a62a04d))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#3638](https://github.com/fleetyards/fleetyards/issues/3638)) ([4383bd6](https://github.com/fleetyards/fleetyards/commit/4383bd6f7c775383bb5b73e0176d28b4e23244dc))
+* **deps-dev:** bump jsdom from 29.0.1 to 29.0.2 ([#3647](https://github.com/fleetyards/fleetyards/issues/3647)) ([d1b7390](https://github.com/fleetyards/fleetyards/commit/d1b7390bdc9615c533c8cd27824fd463f919d4f0))
+* **deps:** bump @rails/actioncable and @types/rails__actioncable ([#3637](https://github.com/fleetyards/fleetyards/issues/3637)) ([493c974](https://github.com/fleetyards/fleetyards/commit/493c9741fee39be0eb6205fec603fcdf436987e1))
+* **deps:** bump ahoy_matey from 5.4.2 to 5.5.0 ([#3636](https://github.com/fleetyards/fleetyards/issues/3636)) ([ddc45bc](https://github.com/fleetyards/fleetyards/commit/ddc45bceae83c296c515df9881205bb4dea1e53b))
+* **deps:** bump axios from 1.14.0 to 1.15.0 ([#3644](https://github.com/fleetyards/fleetyards/issues/3644)) ([3f238bd](https://github.com/fleetyards/fleetyards/commit/3f238bdc2ab74a717ed3332d1a13641b1c6ad5ca))
+* **deps:** bump core-js from 3.48.0 to 3.49.0 ([#3640](https://github.com/fleetyards/fleetyards/issues/3640)) ([73e01f7](https://github.com/fleetyards/fleetyards/commit/73e01f72d6aa2be77c7c42b63a1ae569e0b392b4))
+* **deps:** bump qs from 6.15.0 to 6.15.1 ([#3641](https://github.com/fleetyards/fleetyards/issues/3641)) ([32499f1](https://github.com/fleetyards/fleetyards/commit/32499f122f4165b090501c30c2c8879c5495d74c))
+* Remove AppSignal monitoring accessory from Kamal config ([e0426d1](https://github.com/fleetyards/fleetyards/commit/e0426d121a1a30f0a54d1b64198db44b67fa2cef))
+* Remove setup command from bin/scdata ([6da74ee](https://github.com/fleetyards/fleetyards/commit/6da74ee8c44644a66650c66562ee4262210228b0))
+* Update SC data to 4.7.1-live.11592622 ([a731bc1](https://github.com/fleetyards/fleetyards/commit/a731bc1fadb03fb993846f6db8c3cd0339651b69))
+
 ## [6.2.1](https://github.com/fleetyards/fleetyards/compare/v6.2.0...v6.2.1) (2026-04-08)
 
 
