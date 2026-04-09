@@ -33,8 +33,8 @@ importers:
         specifier: ^0.5.0
         version: 0.5.0(vue@3.5.32(typescript@5.9.3))
       '@rails/actioncable':
-        specifier: 7.1.3
-        version: 7.1.3
+        specifier: 8.1.300
+        version: 8.1.300
       '@rails/activestorage':
         specifier: ^8.1.300
         version: 8.1.300
@@ -220,8 +220,8 @@ importers:
         specifier: ^6.15.0
         version: 6.15.0
       '@types/rails__actioncable':
-        specifier: ^6.1.11
-        version: 6.1.11
+        specifier: ^8.0.3
+        version: 8.0.3
       '@types/rails__activestorage':
         specifier: ^8.0.1
         version: 8.0.1
@@ -323,7 +323,7 @@ importers:
         version: 1.0.0(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-standard-scss:
         specifier: ^15.0.1
-        version: 15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3))
+        version: 15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3))
       stylelint-scss:
         specifier: ^7.0.0
         version: 7.0.0(stylelint@16.26.1(typescript@5.9.3))
@@ -1707,8 +1707,8 @@ packages:
   '@pmndrs/pointer-events@6.6.29':
     resolution: {integrity: sha512-o4YD6VfJgDYjFgde/YyAw2X5KY454tdmOXrHGOvKTWJBHzkL90B5vH4rqmexwRVvaDfT3YLvVh/Dm5cBbgZXMg==}
 
-  '@rails/actioncable@7.1.3':
-    resolution: {integrity: sha512-ojNvnoZtPN0pYvVFtlO7dyEN9Oml1B6IDM+whGKVak69MMYW99lC2NOWXWeE3bmwEydbP/nn6ERcpfjHVjYQjA==}
+  '@rails/actioncable@8.1.300':
+    resolution: {integrity: sha512-zOENQsq3NM2jyBY6Z2qtZa3V/R/6OEqA+LGKixQbBMl7kk/J3FXDRcszPe74LsHNgB01jCl/DXu/xA8sHt4I/g==}
 
   '@rails/activestorage@8.1.300':
     resolution: {integrity: sha512-AOv3zZrTJjQlzm4L9uzOQtCz6zaM4IqUyux6yzSqmS+PZ8EzwD1F2JAc4LlJNJAv4MSyNYriG+CaCm1QbQTjsA==}
@@ -2050,8 +2050,8 @@ packages:
   '@types/qs@6.15.0':
     resolution: {integrity: sha512-JawvT8iBVWpzTrz3EGw9BTQFg3BQNmwERdKE22vlTxawwtbyUSlMppvZYKLZzB5zgACXdXxbD3m1bXaMqP/9ow==}
 
-  '@types/rails__actioncable@6.1.11':
-    resolution: {integrity: sha512-L6A3Rg6sGsv2cqalOgdOmyFvL1Pw69Mg0WuG6NtY9chzabhtkiSFY5fczo72mqRGezrMvl0Jy80v+N719CW+Tg==}
+  '@types/rails__actioncable@8.0.3':
+    resolution: {integrity: sha512-y46MOTYorVQVwlHUyaZYbrh3nIkXsRYNuPna32lb3RngLVBlndNbIPvAUywFfhivftNhYg+vW5sZKWYCVIX2lA==}
 
   '@types/rails__activestorage@8.0.1':
     resolution: {integrity: sha512-gwUZjLHyllzSEmegCXfkL11PrpZ/3Z+vCXBbYWgIdtX0ChfjtZcKq7HGfXYO5v5UYGLYenjGH3u8U+PpnA3dhg==}
@@ -6946,7 +6946,7 @@ snapshots:
 
   '@pmndrs/pointer-events@6.6.29': {}
 
-  '@rails/actioncable@7.1.3': {}
+  '@rails/actioncable@8.1.300': {}
 
   '@rails/activestorage@8.1.300':
     dependencies:
@@ -7275,7 +7275,7 @@ snapshots:
 
   '@types/qs@6.15.0': {}
 
-  '@types/rails__actioncable@6.1.11': {}
+  '@types/rails__actioncable@8.0.3': {}
 
   '@types/rails__activestorage@8.0.1': {}
 
@@ -9789,9 +9789,9 @@ snapshots:
     dependencies:
       postcss: 8.5.8
 
-  postcss-scss@4.0.9(postcss@8.5.8):
+  postcss-scss@4.0.9(postcss@8.5.9):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   postcss-selector-parser@7.1.1:
     dependencies:
@@ -10217,26 +10217,26 @@ snapshots:
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
 
-  stylelint-config-recommended-scss@15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3)):
+  stylelint-config-recommended-scss@15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@8.5.8)
+      postcss-scss: 4.0.9(postcss@8.5.9)
       stylelint: 16.26.1(typescript@5.9.3)
       stylelint-config-recommended: 16.0.0(stylelint@16.26.1(typescript@5.9.3))
       stylelint-scss: 6.14.0(stylelint@16.26.1(typescript@5.9.3))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   stylelint-config-recommended@16.0.0(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
 
-  stylelint-config-standard-scss@15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3)):
+  stylelint-config-standard-scss@15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
-      stylelint-config-recommended-scss: 15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3))
+      stylelint-config-recommended-scss: 15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-standard: 38.0.0(stylelint@16.26.1(typescript@5.9.3))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   stylelint-config-standard@38.0.0(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
