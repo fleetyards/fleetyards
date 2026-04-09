@@ -328,7 +328,7 @@ const adiMap = computed(() => {
           <div class="page-actions page-actions-block">
             <Btn
               v-if="model.onSale && price"
-              :href="`${model.links.storeUrl}#buying-options`"
+              :href="`${model.links?.storeUrl}#buying-options`"
               style="flex-grow: 3"
             >
               {{
@@ -340,7 +340,7 @@ const adiMap = computed(() => {
                 {{ t("labels.taxExcluded") }}
               </small>
             </Btn>
-            <Btn v-else :href="model.links.storeUrl" style="flex-grow: 3">
+            <Btn v-else :href="model.links?.storeUrl" style="flex-grow: 3">
               {{ t("actions.model.store") }}
             </Btn>
 
@@ -404,8 +404,8 @@ const adiMap = computed(() => {
                 :size="BtnSizesEnum.SMALL"
               />
               <Btn
-                v-if="model.links.salesPageUrl"
-                :href="model.links.salesPageUrl"
+                v-if="model.links?.salesPageUrl"
+                :href="model.links?.salesPageUrl"
                 :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-duotone fa-megaphone" />

@@ -7467,7 +7467,6 @@ components:
       - hasUpgrades
       - hasVideos
       - inGame
-      - links
       - loaners
       - media
       - metrics
@@ -7844,7 +7843,6 @@ components:
       - hasUpgrades
       - hasVideos
       - inGame
-      - links
       - loaners
       - media
       - metrics
@@ -7856,6 +7854,7 @@ components:
       - hidden
       - active
       - dockCounts
+      - links
       title: ModelExtended
     ModelHardpoint:
       type: object
