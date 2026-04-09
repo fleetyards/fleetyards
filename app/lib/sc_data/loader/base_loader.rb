@@ -148,9 +148,7 @@ module ScData
             )
           end
 
-          p item
           if item["loadout"].present? || item["default_loadout"].present?
-            p item
             update_loadout(hardpoint, item) if hardpoint.persisted?
           end
 
