@@ -7064,17 +7064,13 @@ components:
         metrics:
           type: object
           properties:
-            totalAdmins:
-              type: integer
-            totalOfficers:
-              type: integer
-            totalMembers:
-              type: integer
+            membersByRole:
+              type: object
+              additionalProperties:
+                type: integer
           additionalProperties: false
           required:
-          - totalAdmins
-          - totalOfficers
-          - totalMembers
+          - membersByRole
       additionalProperties: false
       required:
       - total

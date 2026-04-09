@@ -50,26 +50,8 @@ RSpec.describe FleetMembership, type: :model do
       expect(admin_membership.has_access?(["fleet:manage"])).to be true
     end
 
-    it "falls back to legacy role enum when fleet_role is nil" do
-      admin_membership.update_columns(fleet_role_id: nil, role: FleetMembership.roles[:admin])
-
-      expect(admin_membership.reload.has_access?(["fleet:manage"])).to be true
-    end
-
-    it "grants member legacy privileges for member role" do
-      member_membership.update_columns(fleet_role_id: nil, role: FleetMembership.roles[:member])
-
-      expect(member_membership.reload.has_access?(["fleet:memberships:read"])).to be true
-    end
-
-    it "returns false for unprivileged access with legacy member role" do
-      member_membership.update_columns(fleet_role_id: nil, role: FleetMembership.roles[:member])
-
-      expect(member_membership.reload.has_access?(["fleet:manage"])).to be false
-    end
-
-    it "returns false when both fleet_role and role are nil" do
-      admin_membership.update_columns(fleet_role_id: nil, role: nil)
+    it "returns false when fleet_role is nil" do
+      admin_membership.update_columns(fleet_role_id: nil)
 
       expect(admin_membership.reload.has_access?(["fleet:manage"])).to be false
     end
