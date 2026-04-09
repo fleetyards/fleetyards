@@ -86,7 +86,10 @@
           }
         }
       },
-      "model": { "onSale": "%{model} jetzt im Verkauf!", "syncStarted": "Model-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist." },
+      "model": {
+        "onSale": "%{model} jetzt im Verkauf!",
+        "syncStarted": "Model-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist."
+      },
       "notification": {
         "granted": "Willkommen bei FleetYards.net Benachrichtigungen!"
       },
