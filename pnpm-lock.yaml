@@ -54,8 +54,8 @@ importers:
         specifier: ^14.2.1
         version: 14.2.1(vue@3.5.32(typescript@5.9.3))
       ahoy.js:
-        specifier: 0.4.4
-        version: 0.4.4
+        specifier: 0.4.5
+        version: 0.4.5
       axios:
         specifier: 1.15.0
         version: 1.15.0
@@ -323,7 +323,7 @@ importers:
         version: 1.0.0(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-standard-scss:
         specifier: ^15.0.1
-        version: 15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3))
+        version: 15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3))
       stylelint-scss:
         specifier: ^7.0.0
         version: 7.0.0(stylelint@16.26.1(typescript@5.9.3))
@@ -2381,8 +2381,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ahoy.js@0.4.4:
-    resolution: {integrity: sha512-LpEf/4Xe4YWAbCN3SUjf58hhWKQzqECRdXJDCRSUp9cgwTul+CnukXxKXavGvoyiYg1QkdVQuO6tx/HELgizlA==}
+  ahoy.js@0.4.5:
+    resolution: {integrity: sha512-0gc+vSQZjeK/u0sZJKLCiGdLgfTZtwxE3iBwEuYiju1z+gMV3r4Xw1C8VpoSH6IvRkoZRFcZkgYJFWgaIj4Baw==}
 
   ajv-draft-04@1.0.0:
     resolution: {integrity: sha512-mv00Te6nmYbRp5DCwclxtt7yV/joXJPGS7nM+97GdxvuttCOfgI3K4U25zboyeX0O+myI8ERluxQe5wljMmVIw==}
@@ -7735,7 +7735,7 @@ snapshots:
 
   acorn@8.16.0: {}
 
-  ahoy.js@0.4.4: {}
+  ahoy.js@0.4.5: {}
 
   ajv-draft-04@1.0.0(ajv@8.18.0):
     optionalDependencies:
@@ -9804,9 +9804,9 @@ snapshots:
     dependencies:
       postcss: 8.5.8
 
-  postcss-scss@4.0.9(postcss@8.5.9):
+  postcss-scss@4.0.9(postcss@8.5.8):
     dependencies:
-      postcss: 8.5.9
+      postcss: 8.5.8
 
   postcss-selector-parser@7.1.1:
     dependencies:
@@ -10232,26 +10232,26 @@ snapshots:
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
 
-  stylelint-config-recommended-scss@15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3)):
+  stylelint-config-recommended-scss@15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@8.5.9)
+      postcss-scss: 4.0.9(postcss@8.5.8)
       stylelint: 16.26.1(typescript@5.9.3)
       stylelint-config-recommended: 16.0.0(stylelint@16.26.1(typescript@5.9.3))
       stylelint-scss: 6.14.0(stylelint@16.26.1(typescript@5.9.3))
     optionalDependencies:
-      postcss: 8.5.9
+      postcss: 8.5.8
 
   stylelint-config-recommended@16.0.0(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
 
-  stylelint-config-standard-scss@15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3)):
+  stylelint-config-standard-scss@15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
       stylelint: 16.26.1(typescript@5.9.3)
-      stylelint-config-recommended-scss: 15.0.1(postcss@8.5.9)(stylelint@16.26.1(typescript@5.9.3))
+      stylelint-config-recommended-scss: 15.0.1(postcss@8.5.8)(stylelint@16.26.1(typescript@5.9.3))
       stylelint-config-standard: 38.0.0(stylelint@16.26.1(typescript@5.9.3))
     optionalDependencies:
-      postcss: 8.5.9
+      postcss: 8.5.8
 
   stylelint-config-standard@38.0.0(stylelint@16.26.1(typescript@5.9.3)):
     dependencies:
