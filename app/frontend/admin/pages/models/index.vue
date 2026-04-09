@@ -276,7 +276,7 @@ watch(
         </template>
         <template #col-rsiStoreImage="{ record }">
           <ViewImage
-            :image="record.media.storeImage"
+            :image="record.media.rsiStoreImage"
             size="small"
             alt="image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
