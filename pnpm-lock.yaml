@@ -54,8 +54,8 @@ importers:
         specifier: ^14.2.1
         version: 14.2.1(vue@3.5.32(typescript@5.9.3))
       ahoy.js:
-        specifier: 0.4.4
-        version: 0.4.4
+        specifier: 0.4.5
+        version: 0.4.5
       axios:
         specifier: 1.15.0
         version: 1.15.0
@@ -2491,8 +2491,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ahoy.js@0.4.4:
-    resolution: {integrity: sha512-LpEf/4Xe4YWAbCN3SUjf58hhWKQzqECRdXJDCRSUp9cgwTul+CnukXxKXavGvoyiYg1QkdVQuO6tx/HELgizlA==}
+  ahoy.js@0.4.5:
+    resolution: {integrity: sha512-0gc+vSQZjeK/u0sZJKLCiGdLgfTZtwxE3iBwEuYiju1z+gMV3r4Xw1C8VpoSH6IvRkoZRFcZkgYJFWgaIj4Baw==}
 
   ajv-draft-04@1.0.0:
     resolution: {integrity: sha512-mv00Te6nmYbRp5DCwclxtt7yV/joXJPGS7nM+97GdxvuttCOfgI3K4U25zboyeX0O+myI8ERluxQe5wljMmVIw==}
@@ -7869,7 +7869,7 @@ snapshots:
 
   acorn@8.16.0: {}
 
-  ahoy.js@0.4.4: {}
+  ahoy.js@0.4.5: {}
 
   ajv-draft-04@1.0.0(ajv@8.18.0):
     optionalDependencies:
