@@ -4,8 +4,6 @@ ignore:
     - Layout/MultilineOperationIndentation
   - bin/bundler:
     - Style/StringLiterals
-  - bin/byebug:
-    - Style/StringLiterals
   - bin/dotenv:
     - Style/StringLiterals
   - bin/foreman:

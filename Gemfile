@@ -160,8 +160,6 @@ group :development, :test do
   gem "factory_bot_rails", "~> 6.5.0"
 
   gem "debug", ">= 1.0.0", platforms: %i[mri windows]
-  gem "byebug", platform: :mri
-  gem "pry-byebug"
 
   gem "flatware-rspec", require: false
 
@@ -192,4 +190,9 @@ gem "graphlient"
 gem "octokit"
 
 gem "abbrev"
+gem "benchmark"
 gem "csv"
+gem "irb"
+gem "logger"
+gem "ostruct"
+gem "reline"

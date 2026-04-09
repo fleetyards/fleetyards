@@ -150,8 +150,6 @@ GEM
     bundler-audit (0.9.3)
       bundler (>= 1.2.0)
       thor (~> 1.0)
-    byebug (13.0.0)
-      reline (>= 0.6.0)
     cgi (0.5.1)
     childprocess (5.1.0)
       logger (~> 1.5)
@@ -548,9 +546,6 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
       reline (>= 0.6.0)
-    pry-byebug (3.12.0)
-      byebug (~> 13.0)
-      pry (>= 0.13, < 0.17)
     pry-rails (0.3.11)
       pry (>= 0.13.0)
     psych (5.3.1)
@@ -846,11 +841,11 @@ DEPENDENCIES
   annotaterb
   appsignal
   aws-sdk-s3
+  benchmark
   bootsnap (>= 1.1.0)
   bskyrb (~> 0.5.3)
   bullet
   bundler-audit
-  byebug
   committee
   csv
   cypress-on-rails
@@ -883,6 +878,7 @@ DEPENDENCIES
   i18n-tasks (~> 1.0)
   image_processing (~> 1.0)
   inky-rb
+  irb
   jbuilder
   js_cookie_rails
   kamal
@@ -890,6 +886,7 @@ DEPENDENCIES
   letter_opener
   lexorank
   listen
+  logger
   lograge
   maintenance_tasks (~> 2.11)
   metadown
@@ -906,6 +903,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
   omniauth-twitch
+  ostruct
   paper_trail
   pg (~> 1.0)
   pg_query (>= 0.9.0)
@@ -914,7 +912,6 @@ DEPENDENCIES
   postmark-rails
   premailer-rails
   progress_bar
-  pry-byebug
   pry-rails
   psych (~> 5.2)
   puma
@@ -930,6 +927,7 @@ DEPENDENCIES
   redcarpet
   redis-actionpack
   redis-store
+  reline
   responders
   rollups
   rqrcode
@@ -957,7 +955,7 @@ DEPENDENCIES
   with_advisory_lock
 
 RUBY VERSION
-   ruby 3.4.7
+   ruby 4.0.2p0
 
 BUNDLED WITH
    2.7.1
