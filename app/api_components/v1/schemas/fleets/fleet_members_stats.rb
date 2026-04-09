@@ -13,12 +13,13 @@ module V1
             metrics: {
               type: :object,
               properties: {
-                totalAdmins: {type: :integer},
-                totalOfficers: {type: :integer},
-                totalMembers: {type: :integer}
+                membersByRole: {
+                  type: :object,
+                  additionalProperties: {type: :integer}
+                }
               },
               additionalProperties: false,
-              required: %w[totalAdmins totalOfficers totalMembers]
+              required: %w[membersByRole]
             }
           },
           additionalProperties: false,
