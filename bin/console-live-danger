@@ -6,4 +6,4 @@ export HCLOUD_TOKEN=$(op read "op://Fleetyards/HCLOUD_LIVE/credential")
 
 ROLE="${1:-web}"
 shift 2>/dev/null || true
-bundle exec kamal app exec -i -d live -r "$ROLE" "bin/rails console --sandbox"
+bundle exec kamal app exec -i -d live -r "$ROLE" "bin/rails console"
