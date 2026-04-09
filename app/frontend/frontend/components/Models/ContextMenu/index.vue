@@ -59,7 +59,7 @@ const mobile = useMobile();
     </Btn>
     <Btn
       :size="BtnSizesEnum.SMALL"
-      :href="model.links.storeUrl"
+      :href="model.links?.storeUrl"
       style="flex-grow: 3"
     >
       <img :src="rsiLogo" alt="RSI Logo" />
@@ -107,8 +107,8 @@ const mobile = useMobile();
       <span>{{ t("actions.compare.ships") }}</span>
     </Btn>
     <Btn
-      v-if="model.links.salesPageUrl"
-      :href="model.links.salesPageUrl"
+      v-if="model.links?.salesPageUrl"
+      :href="model.links?.salesPageUrl"
       :size="BtnSizesEnum.SMALL"
     >
       <i class="fa-duotone fa-megaphone" />
