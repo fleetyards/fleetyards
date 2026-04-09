@@ -1,11 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require "fileutils"
 require_relative "../lib/cli_helpers"
 
 EXPORT_FOLDER = "data/sc_data"
 
 COMMANDS = {
+  "sync" => "Sync SC data from Hetzner S3 (optionally specify version)",
   "setup" => "Create symlink for SC data export",
   "parse" => "Parse SC data for the given environment",
   "load" => "Load all SC data (manufacturers, items, models, modules)",
@@ -49,6 +51,43 @@ command = ARGV.shift
 usage if command.nil? || command == "--help" || command == "-h"
 
 case command
+when "sync"
+  require "open3"
+
+  s3_bucket = "fltyrd-sc"
+  s3_endpoint = "fsn1.your-objectstorage.com"
+  s3_access_key = `op read "op://Fleetyards/HETZNER_S3/access_key_id"`.strip
+  s3_secret_key = `op read "op://Fleetyards/HETZNER_S3/secret_access_key"`.strip
+  s3cmd = "s3cmd --host=#{s3_endpoint} --host-bucket=%(bucket)s.#{s3_endpoint} --access_key=#{s3_access_key} --secret_key=#{s3_secret_key}"
+
+  version = ARGV.shift
+
+  if version.nil?
+    CliHelpers.run_step("Finding latest version in s3://#{s3_bucket}") do
+      output, status = Open3.capture2e("#{s3cmd} ls s3://#{s3_bucket}/")
+      abort "Failed to list bucket: #{output}" unless status.success?
+
+      folders = output.lines
+        .filter_map { |line| line[%r{s3://#{Regexp.escape(s3_bucket)}/([^/]+)/}, 1] }
+        .select { |name| name.match?(/\A.+\.\d+\z/) }
+        .sort_by { |name| name.match(/\.(\d+)\z/)[1].to_i }
+
+      abort "No versions found in s3://#{s3_bucket}" if folders.empty?
+
+      version = folders.last
+      [true, ""]
+    end
+    puts "  Latest version: #{version}"
+  end
+
+  local_dir = File.join(EXPORT_FOLDER, "raw", version)
+
+  CliHelpers.run_step("Syncing s3://#{s3_bucket}/#{version} to #{local_dir}") do
+    FileUtils.mkdir_p(local_dir)
+    output, status = Open3.capture2e("#{s3cmd} sync --no-check-md5 s3://#{s3_bucket}/#{version}/ #{local_dir}/")
+    [status.success?, output]
+  end
+
 when "setup"
   source_folder = ARGV.shift
   abort "Usage: bin/scdata setup <source_folder>" unless source_folder
