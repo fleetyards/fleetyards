@@ -17,12 +17,12 @@ module Api
 
         members = @q.result
 
+        members_by_role = members.joins(:fleet_role).group("fleet_roles.name").count
+
         @quick_stats = QuickStats.new(
           total: members.size,
           metrics: {
-            total_admins: members.where(role: :admin).size,
-            total_officers: members.where(role: :officer).size,
-            total_members: members.where(role: :member).size
+            members_by_role:
           }
         )
       end

@@ -13,7 +13,6 @@
 #  invited_by        :uuid
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
-#  role              :integer
 #  ships_filter      :integer          default("all")
 #  used_invite_token :string
 #  created_at        :datetime         not null
@@ -69,17 +68,17 @@ class FleetMembership < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "hangar_group_id",
+      "aasm_state", "accepted_at", "created_at", "declined_at", "fleet_id", "fleet_role_id", "hangar_group_id",
       "hide_ships", "id", "id_value", "invited_at", "invited_by", "name", "primary", "requested_at",
-      "role", "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
+      "ships_filter", "updated_at", "used_invite_token", "user_id", "username", "state"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["fleet", "user"]
+    ["fleet", "fleet_role", "user"]
   end
 
-  validate_enum_attributes :ships_filter, :role
+  validate_enum_attributes :ships_filter
 
   validates :user_id, uniqueness: {scope: :fleet_id}
 
@@ -89,8 +88,6 @@ class FleetMembership < ApplicationRecord
     "createdAt asc", "createdAt desc", "acceptedAt asc", "acceptedAt desc",
     "lastActiveAt asc", "lastActiveAt desc"
   ]
-
-  enum :role, {admin: 0, officer: 1, member: 2}
 
   ransack_alias :username, :user_username
   ransack_alias :rsi_handle, :user_rsi_handle
@@ -109,14 +106,9 @@ class FleetMembership < ApplicationRecord
   before_destroy :check_if_can_be_destroyed
 
   def has_access?(privileges)
-    if fleet_role.present?
-      return fleet_role.has_access?(privileges)
-    end
+    return false if fleet_role.blank?
 
-    return false if role.blank?
-
-    legacy_privileges = FleetRole.preset_privileges[role.to_sym] || []
-    legacy_privileges.any? { |access| privileges.include?(access) }
+    fleet_role.has_access?(privileges)
   end
 
   def check_if_can_be_destroyed
@@ -239,6 +231,7 @@ class FleetMembership < ApplicationRecord
 
   def notify_invited_user
     return unless invited?
+    return if user.email.blank?
 
     FleetMembershipMailer.new_invite(user.email, user.username, fleet).deliver_later
   end
@@ -254,7 +247,11 @@ class FleetMembership < ApplicationRecord
   def notify_fleet_admins
     return unless requested? || accepted?
 
-    emails = fleet.fleet_memberships.where(role: :admin).map { |admin| admin.user.email }
+    emails = fleet.fleet_memberships.accepted.includes(:fleet_role).select { |m|
+      m.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
+    }.filter_map { |m| m.user.email.presence }
+
+    return if emails.blank?
 
     if requested?
       FleetMembershipMailer.member_requested(emails, user.username, fleet).deliver_later
@@ -273,6 +270,7 @@ class FleetMembership < ApplicationRecord
 
   def notify_new_member
     return unless accepted?
+    return if user.email.blank?
 
     FleetMembershipMailer.fleet_accepted(user.email, user.username, fleet).deliver_later
   end

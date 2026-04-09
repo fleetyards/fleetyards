@@ -26,7 +26,7 @@ module Api
         invite_url = FleetInviteUrl.active.find_by!(token: params[:token])
         user = User.find_by!(normalized_username: params[:username].downcase)
 
-        @member = invite_url.fleet.fleet_memberships.new(user_id: user.id, role: :member, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
+        @member = invite_url.fleet.fleet_memberships.new(user_id: user.id, fleet_role: invite_url.fleet.default_member_role, invited_by: invite_url.user_id, used_invite_token: invite_url.token)
 
         if @member.save
           @member.request!

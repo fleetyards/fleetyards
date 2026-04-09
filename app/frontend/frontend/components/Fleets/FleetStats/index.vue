@@ -144,29 +144,14 @@ const crewDeficitIcon = computed(() => {
 });
 
 const membersByRole = computed(() => {
-  if (!memberStats.value?.metrics) return null;
-  const { totalAdmins, totalOfficers, totalMembers } =
-    memberStats.value.metrics;
-  return [
-    {
-      name: "Admins",
-      y: totalAdmins,
-      selected: false,
-      sliced: false,
-    },
-    {
-      name: "Officers",
-      y: totalOfficers,
-      selected: false,
-      sliced: false,
-    },
-    {
-      name: "Members",
-      y: totalMembers,
-      selected: false,
-      sliced: false,
-    },
-  ];
+  const byRole = memberStats.value?.metrics?.membersByRole;
+  if (!byRole) return null;
+  return Object.entries(byRole).map(([name, count]) => ({
+    name,
+    y: count,
+    selected: false,
+    sliced: false,
+  }));
 });
 
 const uniqueModelsPercent = computed(() => {

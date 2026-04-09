@@ -13,7 +13,6 @@
 #  invited_by        :uuid
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
-#  role              :integer
 #  ships_filter      :integer          default("all")
 #  used_invite_token :string
 #  created_at        :datetime         not null

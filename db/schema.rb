@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_05_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_09_160326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -270,7 +270,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_05_140000) do
     t.uuid "invited_by"
     t.boolean "primary", default: false
     t.datetime "requested_at", precision: nil
-    t.integer "role"
     t.integer "ships_filter", default: 0
     t.datetime "updated_at", precision: nil, null: false
     t.string "used_invite_token"
