@@ -1,0 +1,21 @@
+{
+  "key": "Paint_RAFT_White_Blue_Blue",
+  "ref": "84c2b1ce-377e-4915-ab39-06864e0aa2bb",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "58ffe7cc-93f9-44ab-9612-da338fd89931",
+  "name": "RAFT Keystone Livery",
+  "short_name": null,
+  "description": "Crisp white with blue accents, the Keystone livery celebrates the workers whose mining, refining, hauling, salvaging, and more have made the empire what it is today.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

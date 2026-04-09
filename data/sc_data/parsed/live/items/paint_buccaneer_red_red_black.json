@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Buccaneer_Red_Red_Black",
+  "ref": "7c4bc703-a72b-4afb-a2bc-f9eb732dadea",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "aebb1e9d-f3ff-47bb-939c-f5637dfba474",
+  "name": "Buccaneer Redline Livery",
+  "short_name": null,
+  "description": "Featuring a fierce red base paint with black highlights, the Redline livery gives the Buccaneer a bold new look.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

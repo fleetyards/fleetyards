@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hull_B_White_Blue_Blue",
+  "ref": "e577e1c5-921b-4587-b85c-9231508f8a24",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bdd71c07-6f1f-498d-91b7-7d1e80070dea",
+  "name": "Hull B Keystone Livery",
+  "short_name": null,
+  "description": "Crisp white with blue accents, the Keystone livery celebrates the workers whose mining, refining, hauling, salvaging, and more have made the empire what it is today.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

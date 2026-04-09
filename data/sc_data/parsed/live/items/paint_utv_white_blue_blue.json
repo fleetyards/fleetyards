@@ -1,0 +1,21 @@
+{
+  "key": "Paint_UTV_White_Blue_Blue",
+  "ref": "a6b254ad-61b9-4893-b4ea-33dba18a1976",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b8bdd60d-c56b-4ce4-a619-50813dbb5273",
+  "name": "UTV Keystone Livery",
+  "short_name": null,
+  "description": "Crisp white with blue accents, the Keystone livery celebrates the workers whose mining, refining, hauling, salvaging, and more have made the empire what it is today.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

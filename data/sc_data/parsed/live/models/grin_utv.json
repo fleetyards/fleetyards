@@ -1,0 +1,149 @@
+{
+  "key": "GRIN_UTV",
+  "ground": true,
+  "movement_class": "ArcadeWheeled",
+  "gravlev": "0",
+  "min_crew": "2",
+  "name": "Greycat UTV",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Cargo\\n\\nThe Greycat UTV is a durable, utility buggy designed to transport light cargo loads across rugged terrain. Whether you’re coordinating freight storage or making a supply run to a neighboring outpost, the straightforward design of the UTV allows operators to focus on tackling the job at hand.",
+  "career": "Ground",
+  "role": "Ground",
+  "insurance": {
+    "base_wait_time_minutes": "2.17",
+    "mandatory_wait_time_minutes": "0.54",
+    "base_expediting_fee": "540"
+  },
+  "mass": 2500.0,
+  "metrics": {
+    "x": 2.6,
+    "y": 4.0,
+    "z": 2.5
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_driver",
+      "ref": "69f92823-093b-4858-986d-bc477a829aba",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_passenger",
+      "ref": "4ce0c141-2c44-4dd4-a4c6-5092648e13b0",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_driver",
+      "ref": "94d8bfd7-1522-4ec4-b368-24c00d5a4eb9",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_access_passenger",
+      "ref": "f6291672-5730-480e-aa04-3b2dddf8635b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": "0219b443-6f28-4aa2-bcc3-cfbff843729d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": "ae1a186e-0f8c-4deb-8079-bfb54df4a8a7",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": "b935e5d8-dead-47c5-8937-382c3aa11682",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": "4a9ebf31-a405-4b68-9886-b4a47bd1b61d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": "61cc7bf5-6666-40f7-8c0a-ee8a8092f51e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": "9925488b-127a-4fc3-b7bb-9e4f5a46bbbd",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_wheel",
+      "ref": "f4808f33-0481-4525-89df-d8f60b78e1b9",
+      "key": null
+    },
+    {
+      "name": "hardpoint_fuel_tank",
+      "ref": "3bc50ed6-2931-4df6-8e34-26ad472415d0",
+      "key": null
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": "a1d87085-b476-4949-be0b-31a35e1d958b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cargogrid",
+      "ref": "4ee6e50a-8d10-4b55-a41c-cb35eae076a1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "ref": "c46f3fb8-12f8-4c85-b4ac-0850b1e0d17d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": "28e81323-a16a-4995-9da5-1aca23b4044c",
+      "key": null
+    },
+    {
+      "name": "hardpoint_cooler",
+      "ref": "387da568-31d2-4479-81da-21dd015db668",
+      "key": null
+    },
+    {
+      "name": "hardpoint_computer",
+      "ref": "a6b4604a-358b-4ee7-8c0f-f3f43427154d",
+      "key": null
+    },
+    {
+      "name": "hardpoint_personal_inventory",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_selfdestruct",
+      "ref": "e9655bd9-dd74-46ee-8a15-2ac3bd3dfde1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_vehicleDestroyed",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_rack_left",
+      "ref": "c19de889-f1f1-4240-9d32-8b2053f5ec3f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_rack_right",
+      "ref": "d681bf45-0f52-45b1-b7f1-74075b2fcfa1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay",
+      "ref": "97f6e742-f693-4061-8880-8a7944712e59",
+      "key": null
+    }
+  ]
+}

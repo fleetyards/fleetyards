@@ -1,0 +1,40 @@
+{
+  "key": "GRIN_UTV_CargoGrid",
+  "ref": "c2c1a8cf-fde5-4a9b-bb00-c2c4cd3b5eba",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 1.25,
+      "z": 1.25
+    },
+    "capacity": 1,
+    "max_container_size": {
+      "size": 1,
+      "dimensions": {
+        "x": 1.25,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "capacity": 0
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      }
+    }
+  }
+}

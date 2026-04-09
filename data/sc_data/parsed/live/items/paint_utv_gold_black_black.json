@@ -1,0 +1,21 @@
+{
+  "key": "Paint_UTV_Gold_Black_Black",
+  "ref": "04a30642-3fe6-4552-811d-05e0770111fd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3dc969c3-348e-4e04-aed6-44f11537215f",
+  "name": "UTV Bonanza Livery",
+  "short_name": null,
+  "description": "The Bonanza livery gives the UTV a lustrous look with its gold and black finish.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}
