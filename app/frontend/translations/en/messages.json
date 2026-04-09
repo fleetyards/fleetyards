@@ -144,7 +144,8 @@
         }
       },
       "model": {
-        "onSale": "%{model} now on Sale!"
+        "onSale": "%{model} now on Sale!",
+        "syncStarted": "Model sync started. You will be notified when it completes."
       },
       "notification": {
         "granted": "Welcome to FleetYards.net Notifications!"

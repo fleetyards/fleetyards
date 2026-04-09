@@ -32,7 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const { displayConfirm } = useAppNotifications();
+const { displayConfirm, displaySuccess } = useAppNotifications();
 const queryClient = useQueryClient();
 
 const syncInputMatch = computed(() => ({
@@ -61,6 +61,11 @@ const destroyMutation = useDestroyModel({
 
 const reloadOneMutation = useReloadOneModel({
   mutation: {
+    onSuccess: () => {
+      displaySuccess({
+        text: t("messages.model.syncStarted"),
+      });
+    },
     onSettled: invalidateModels,
   },
 });
