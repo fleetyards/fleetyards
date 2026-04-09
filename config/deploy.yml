@@ -103,14 +103,3 @@ accessories:
         - S3_SECRET_ACCESS_KEY
     options:
       memory: 256m
-
-  monitoring:
-    image: appsignal/agent
-    env:
-      clear:
-        APPSIGNAL_APP_NAME: Fleetyards
-        APPSIGNAL_APP_ENV: production
-      secret:
-        - APPSIGNAL_PUSH_API_KEY
-    options:
-      memory: 64m

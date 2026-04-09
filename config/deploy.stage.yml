@@ -52,8 +52,6 @@ accessories:
     host: <%= acc_ips.first %>
     options:
       memory: 1g
-  monitoring:
-    host: <%= acc_ips.first %>
   db-backup:
     host: <%= acc_ips.first %>
     env:
