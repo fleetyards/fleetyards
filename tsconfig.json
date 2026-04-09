@@ -17,7 +17,6 @@
     "noEmit": true,
     "lib": ["esnext", "dom", "dom.iterable"],
     "skipLibCheck": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./app/frontend/*"],
     },
