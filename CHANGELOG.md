@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.5.0](https://github.com/fleetyards/fleetyards/compare/v6.4.1...v6.5.0) (2026-04-10)
+
+
+### Features
+
+* add separate matrix and SC data reload buttons on model edit page ([64175a4](https://github.com/fleetyards/fleetyards/commit/64175a44195314acf644e87b3039d30330647fe4))
+
+
+### Bug Fixes
+
+* cast attachment ransacker UUID to text for blank predicate ([d704fe9](https://github.com/fleetyards/fleetyards/commit/d704fe90ee78bd3771e5187abf821535e46ec741))
+* remove Mastodon link from footer ([8bd0742](https://github.com/fleetyards/fleetyards/commit/8bd07428480f8e10f359616d3d892cf797763535))
+* update AppFooter test link count after Mastodon removal ([a4b9af3](https://github.com/fleetyards/fleetyards/commit/a4b9af36208ba5a8f5b10ef3cc5512be2e84e022))
+
+
+### Chores
+
+* replace deprecated lighten() with color.adjust() ([adc162b](https://github.com/fleetyards/fleetyards/commit/adc162b51813cc4f6516fce6646f1c9d81b5b839))
+* update admin swagger schema ([b420eb6](https://github.com/fleetyards/fleetyards/commit/b420eb6f57a81a1eceeec77836ac1c38cf9d98cf))
+
 ## [6.4.1](https://github.com/fleetyards/fleetyards/compare/v6.4.0...v6.4.1) (2026-04-10)
 
 
