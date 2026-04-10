@@ -214,60 +214,54 @@ const fetchHangarVehicles = async () => {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <div class="page-actions page-actions-right">
-            <Btn
-              v-show="groupedButton"
-              data-test="fleetview-grouped-button"
-              :size="BtnSizesEnum.SMALL"
-              @click="toggleGrouping"
-            >
-              <template v-if="grouping">
-                {{ t("actions.disableGrouping") }}
-              </template>
-              <template v-else>
-                {{ t("actions.enableGrouping") }}
-              </template>
-            </Btn>
-            <Btn
-              v-show="!fleetchart"
-              :active="details"
-              data-test="fleetview-details-button"
-              :size="BtnSizesEnum.SMALL"
-              @click="toggleDetails"
-            >
-              <template v-if="details">
-                {{ t("actions.hideDetails") }}
-              </template>
-              <template v-else>
-                {{ t("actions.showDetails") }}
-              </template>
-            </Btn>
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              data-test="fleetview-fleetchart-button"
-              @click="toggleFleetchart"
-            >
-              <template v-if="fleetchart">
-                {{ t("actions.hideFleetchart") }}
-              </template>
-              <template v-else>
-                {{ t("actions.showFleetchart") }}
-              </template>
-            </Btn>
-          </div>
-        </div>
-      </div>
-      <FleetchartList
-        v-if="fleetchart"
-        :models="models"
-        :slider="fleetchartSlider"
-      />
-      <ModelList v-else :models="models" />
-      <Loader :loading="loading" :fixed="true" />
+  <div>
+    <div class="page-actions page-actions-right">
+      <Btn
+        v-show="groupedButton"
+        data-test="fleetview-grouped-button"
+        :size="BtnSizesEnum.SMALL"
+        @click="toggleGrouping"
+      >
+        <template v-if="grouping">
+          {{ t("actions.disableGrouping") }}
+        </template>
+        <template v-else>
+          {{ t("actions.enableGrouping") }}
+        </template>
+      </Btn>
+      <Btn
+        v-show="!fleetchart"
+        :active="details"
+        data-test="fleetview-details-button"
+        :size="BtnSizesEnum.SMALL"
+        @click="toggleDetails"
+      >
+        <template v-if="details">
+          {{ t("actions.hideDetails") }}
+        </template>
+        <template v-else>
+          {{ t("actions.showDetails") }}
+        </template>
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.SMALL"
+        data-test="fleetview-fleetchart-button"
+        @click="toggleFleetchart"
+      >
+        <template v-if="fleetchart">
+          {{ t("actions.hideFleetchart") }}
+        </template>
+        <template v-else>
+          {{ t("actions.showFleetchart") }}
+        </template>
+      </Btn>
     </div>
+    <FleetchartList
+      v-if="fleetchart"
+      :models="models"
+      :slider="fleetchartSlider"
+    />
+    <ModelList v-else :models="models" />
+    <Loader :loading="loading" :fixed="true" />
   </div>
 </template>

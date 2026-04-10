@@ -44,13 +44,26 @@ const count = (model: EnhancedModelMinimal | Model) => {
 </script>
 
 <template>
-  <transition-group name="fade-list" class="row" tag="div" :appear="true">
+  <transition-group
+    name="fade-list"
+    class="embed-model-list"
+    tag="div"
+    :appear="true"
+  >
     <div
       v-for="(model, index) in internalModels"
       :key="`panel-${index}-${model.slug}`"
-      class="col-12 col-md-6 col-xl-4 col-xxl-4 fade-list-item"
+      class="fade-list-item"
     >
       <ModelPanel :model="model" :details="details" :count="count(model)" />
     </div>
   </transition-group>
 </template>
+
+<style lang="scss" scoped>
+.embed-model-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+</style>

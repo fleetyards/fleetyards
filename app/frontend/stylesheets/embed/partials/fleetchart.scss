@@ -21,9 +21,14 @@
     }
 
     .fleetchart-item-image {
-      transform: rotate(180deg);
+      display: block;
     }
   }
+}
+
+.embed-slider-wrapper {
+  max-width: 300px;
+  margin: 0 auto 20px;
 }
 
 .fleetchart-slider {

@@ -41,8 +41,10 @@ const label = computed(
   >
     <a :href="url" target="_blank" rel="noopener" :aria-label="label">
       <FleetchartItemImage
-        v-if="model.media.fleetchartImage"
-        :src="model.media.fleetchartImage"
+        v-if="model.media.topView"
+        :src="model.media.topView.mediumUrl || model.media.topView.url"
+        :source-width="model.media.topView.width"
+        :source-height="model.media.topView.height"
         :length="length"
         :label="model.name"
         :scale="scale"

@@ -4,11 +4,12 @@ $panel-content-border-radius: 6px;
 
 .panel-btn {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
   min-width: 50px;
   margin-right: 10px;
   margin-bottom: 20px;
   padding: 2px;
+  align-items: stretch;
   background: $panel-bg;
   border: $panel-border-width solid $panel-inner-border;
   border-radius: $panel-border-radius;

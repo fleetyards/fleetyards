@@ -65,31 +65,27 @@ onMounted(() => {
 
 <template>
   <div>
-    <div v-if="slider" class="row lg:justify-center">
-      <div class="col-12 col-lg-4">
-        <FleetchartSlider
-          :initial-scale="fleetchartScale"
-          @change="updateFleetchartScale"
-        />
-      </div>
+    <div v-if="slider" class="embed-slider-wrapper">
+      <FleetchartSlider
+        :initial-scale="fleetchartScale"
+        @change="updateFleetchartScale"
+      />
     </div>
-    <div class="row">
-      <div class="col-12 fleetchart-wrapper">
-        <transition-group
-          id="fleetchart"
-          name="fade-list"
-          class="row fleetchart"
-          tag="div"
-          :appear="true"
-        >
-          <FleetchartItem
-            v-for="(model, index) in internalModels"
-            :key="`fleetchart-item-${index}-${model.slug}`"
-            :model="model"
-            :scale="fleetchartScale"
-          />
-        </transition-group>
-      </div>
+    <div class="fleetchart-wrapper">
+      <transition-group
+        id="fleetchart"
+        name="fade-list"
+        class="fleetchart"
+        tag="div"
+        :appear="true"
+      >
+        <FleetchartItem
+          v-for="(model, index) in internalModels"
+          :key="`fleetchart-item-${index}-${model.slug}`"
+          :model="model"
+          :scale="fleetchartScale"
+        />
+      </transition-group>
     </div>
   </div>
 </template>

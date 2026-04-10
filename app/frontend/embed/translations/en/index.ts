@@ -11,5 +11,5 @@ export default {
   ...extractTranslations("en", files),
   ...datetime.en,
   ...number.en,
-  ...model.en,
+  ...model.en.models,
 };
