@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.4.0](https://github.com/fleetyards/fleetyards/compare/v6.3.0...v6.4.0) (2026-04-10)
+
+
+### Features
+
+* Enable AppSignal logging for production and staging ([bb80edc](https://github.com/fleetyards/fleetyards/commit/bb80edc81a8d036e7af744c638c812b4f80c217c))
+
+
+### Bug Fixes
+
+* Add missing CABLE_ENDPOINT to admin layout and sync notification ([f17e76c](https://github.com/fleetyards/fleetyards/commit/f17e76cd650215b87a2c30c138781df67aad9d39))
+* Display rsiStoreImage instead of storeImage in admin models list ([2103266](https://github.com/fleetyards/fleetyards/commit/210326676d3e777eed0fa5a63297d1f66f40dd6d))
+* Remove debug statements and legacy role tests ([7bfad3b](https://github.com/fleetyards/fleetyards/commit/7bfad3b9b437fe210f660ed03e936a0fc52f1eee))
+* Remove legacy role enum from FleetMembership and use FleetRole for notifications ([028680d](https://github.com/fleetyards/fleetyards/commit/028680dec83be2f3feb103732e6b6b999bb5f481))
+* Update FleetMembersStats schema to match actual API response ([42e8ac2](https://github.com/fleetyards/fleetyards/commit/42e8ac23f0067741ba101e18653de6da1a2c3c57))
+
+
+### Chores
+
+* **deps-dev:** bump prettier from 3.8.1 to 3.8.2 ([#3665](https://github.com/fleetyards/fleetyards/issues/3665)) ([8381acb](https://github.com/fleetyards/fleetyards/commit/8381acb05569d9b2f6b1912af959cbbcfc4b2e35))
+* **deps:** bump actions/github-script from 8 to 9 ([#3666](https://github.com/fleetyards/fleetyards/issues/3666)) ([a8d62e2](https://github.com/fleetyards/fleetyards/commit/a8d62e219e7d88862b410d9f269be5e295d1963e))
+* **deps:** bump qs from 6.15.0 to 6.15.1 ([#3664](https://github.com/fleetyards/fleetyards/issues/3664)) ([3c620dc](https://github.com/fleetyards/fleetyards/commit/3c620dcbda87230cd151516a48a4ab23f5381ec3))
+* Format German translation messages JSON ([c9bb4b0](https://github.com/fleetyards/fleetyards/commit/c9bb4b07eb73269b61b0d22504528aea4202f794))
+* update deps ([78015f9](https://github.com/fleetyards/fleetyards/commit/78015f9c2b57431c62f3eee0289085ac2bfa45c5))
+* Update Ruby from 3.4.7 to 4.0.2 ([89c8131](https://github.com/fleetyards/fleetyards/commit/89c813198e098068b9dd78fbde33fcc8c4d47a48))
+
 ## [6.3.0](https://github.com/fleetyards/fleetyards/compare/v6.2.1...v6.3.0) (2026-04-09)
 
 
