@@ -179,6 +179,8 @@
       },
       "models": {
         "sync": "Sync from RSI",
+        "syncMatrix": "Sync Matrix",
+        "syncScData": "Sync SC Data",
         "exchangeStoreImage": "Use RSI Image",
         "images": "Images",
         "openTableConfiguration": "Open Table Configuration"

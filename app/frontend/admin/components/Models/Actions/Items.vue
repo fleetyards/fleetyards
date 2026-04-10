@@ -8,7 +8,8 @@ export default {
 import {
   type Model,
   useDestroyModel,
-  useReloadOneModel,
+  useReloadOneModelMatrix,
+  useReloadOneModelScData,
   useUseRsiImage,
   getModelsQueryKey,
 } from "@/services/fyAdminApi";
@@ -35,17 +36,23 @@ const { t } = useI18n();
 const { displayConfirm, displaySuccess } = useAppNotifications();
 const queryClient = useQueryClient();
 
-const syncInputMatch = computed(() => ({
+const matrixInputMatch = computed(() => ({
   modelId: props.model.id,
   rsiId: props.model.rsiId,
 }));
 
-const { isImporting: isImportingSyncing } = useImportLoading(
-  [
-    ImportTypeEnum.IMPORTS_MODEL_IMPORT,
-    ImportTypeEnum.IMPORTS_SC_DATA_MODEL_IMPORT,
-  ],
-  syncInputMatch,
+const scDataInputMatch = computed(() => ({
+  modelId: props.model.id,
+}));
+
+const { isImporting: isImportingMatrix } = useImportLoading(
+  [ImportTypeEnum.IMPORTS_MODEL_IMPORT],
+  matrixInputMatch,
+);
+
+const { isImporting: isImportingScData } = useImportLoading(
+  [ImportTypeEnum.IMPORTS_SC_DATA_MODEL_IMPORT],
+  scDataInputMatch,
 );
 
 const invalidateModels = () =>
@@ -59,19 +66,34 @@ const destroyMutation = useDestroyModel({
   },
 });
 
-const reloadOneMutation = useReloadOneModel({
+const reloadMatrixMutation = useReloadOneModelMatrix({
   mutation: {
     onSuccess: () => {
       displaySuccess({
-        text: t("messages.model.syncStarted"),
+        text: t("messages.model.syncMatrixStarted"),
       });
     },
     onSettled: invalidateModels,
   },
 });
 
-const isSyncing = computed(
-  () => isImportingSyncing.value || reloadOneMutation.isPending.value,
+const reloadScDataMutation = useReloadOneModelScData({
+  mutation: {
+    onSuccess: () => {
+      displaySuccess({
+        text: t("messages.model.syncScDataStarted"),
+      });
+    },
+    onSettled: invalidateModels,
+  },
+});
+
+const isSyncingMatrix = computed(
+  () => isImportingMatrix.value || reloadMatrixMutation.isPending.value,
+);
+
+const isSyncingScData = computed(
+  () => isImportingScData.value || reloadScDataMutation.isPending.value,
 );
 
 const useRsiImageMutation = useUseRsiImage({
@@ -80,13 +102,24 @@ const useRsiImageMutation = useUseRsiImage({
   },
 });
 
-const sync = () => {
+const syncMatrix = () => {
   if (!props.model.id) return;
 
   displayConfirm({
-    text: t("messages.confirm.model.sync"),
+    text: t("messages.confirm.model.syncMatrix"),
     onConfirm: async () => {
-      await reloadOneMutation.mutateAsync({ id: props.model.id! });
+      await reloadMatrixMutation.mutateAsync({ id: props.model.id! });
+    },
+  });
+};
+
+const syncScData = () => {
+  if (!props.model.id) return;
+
+  displayConfirm({
+    text: t("messages.confirm.model.syncScData"),
+    onConfirm: async () => {
+      await reloadScDataMutation.mutateAsync({ id: props.model.id! });
     },
   });
 };
@@ -116,14 +149,24 @@ const destroy = () => {
 
 <template>
   <Btn
-    v-tooltip="!withLabels && t('actions.models.sync')"
+    v-tooltip="!withLabels && t('actions.models.syncMatrix')"
     :size="BtnSizesEnum.SMALL"
-    :loading="isSyncing"
+    :loading="isSyncingMatrix"
     spinner
-    @click="sync"
+    @click="syncMatrix"
   >
     <i class="fa-duotone fa-rotate" />
-    <span v-if="withLabels">{{ t("actions.models.sync") }}</span>
+    <span v-if="withLabels">{{ t("actions.models.syncMatrix") }}</span>
+  </Btn>
+  <Btn
+    v-tooltip="!withLabels && t('actions.models.syncScData')"
+    :size="BtnSizesEnum.SMALL"
+    :loading="isSyncingScData"
+    spinner
+    @click="syncScData"
+  >
+    <i class="fa-duotone fa-database" />
+    <span v-if="withLabels">{{ t("actions.models.syncScData") }}</span>
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.models.exchangeStoreImage')"

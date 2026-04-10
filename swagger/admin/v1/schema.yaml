@@ -3539,6 +3539,94 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/reload-one-matrix":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Reload Single Model Matrix
+      operationId: reloadOneModelMatrix
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}/reload-one-scdata":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Reload Single Model SC Data
+      operationId: reloadOneModelScData
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/reload-scdata":
     put:
       summary: Reload Models SC Data

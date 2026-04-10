@@ -155,6 +155,8 @@
       },
       "models": {
         "sync": "Von RSI synchronisieren",
+        "syncMatrix": "Matrix synchronisieren",
+        "syncScData": "SC-Daten synchronisieren",
         "exchangeStoreImage": "RSI-Bild verwenden",
         "images": "Bilder",
         "openTableConfiguration": "Tabellenkonfiguration öffnen"

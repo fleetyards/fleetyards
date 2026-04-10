@@ -224,7 +224,7 @@ watch(
       spinner
       @click="reloadScData"
     >
-      <i class="fa fa-rotate" />
+      <i class="fa fa-database" />
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
     <Btn :size="BtnSizesEnum.SMALL" :to="{ name: 'admin-model-create' }">

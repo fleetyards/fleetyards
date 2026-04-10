@@ -88,7 +88,9 @@
       },
       "model": {
         "onSale": "%{model} jetzt im Verkauf!",
-        "syncStarted": "Model-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist."
+        "syncStarted": "Model-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
+        "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
+        "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist."
       },
       "notification": {
         "granted": "Willkommen bei FleetYards.net Benachrichtigungen!"
@@ -231,6 +233,8 @@
         "model": {
           "destroy": "Bist du sicher, dass du dieses Modell löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
           "sync": "Bist du sicher, dass du dieses Modell von RSI synchronisieren möchtest?",
+          "syncMatrix": "Bist du sicher, dass du die Matrix-Daten für dieses Modell synchronisieren möchtest?",
+          "syncScData": "Bist du sicher, dass du die SC-Daten für dieses Modell synchronisieren möchtest?",
           "exchangeStoreImage": "Bist du sicher, dass du das Store-Bild durch das RSI-Bild ersetzen möchtest?",
           "reloadMatrix": "Bist du sicher, dass du die Modell-Matrix neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
           "reloadScData": "Bist du sicher, dass du die SC-Daten neu laden möchtest? Dies wird Hintergrund-Jobs einreihen."

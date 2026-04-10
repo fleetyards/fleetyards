@@ -56,7 +56,8 @@ const nextItem = computed(() => {
         <span v-else>{{ crumb.label }}</span>
       </li>
     </ol>
-    <div v-if="stepperList" class="stepper">
+    <div v-if="stepperList || $slots.actions" class="stepper">
+      <slot name="actions" />
       <router-link
         v-if="prevItem"
         :to="{ name: 'admin-model-edit', params: { id: prevItem } }"
