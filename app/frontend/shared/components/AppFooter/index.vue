@@ -79,15 +79,6 @@ const openSupportModal = () => {
           <i class="fa-brands fa-bluesky" />
         </a>
         <a
-          v-tooltip="'Mastodon'"
-          href="https://starcitizen.social/@fleetyards"
-          target="_blank"
-          rel="noopener"
-          aria-label="Mastodon"
-        >
-          <i class="fa-brands fa-mastodon" />
-        </a>
-        <a
           v-tooltip="'Instagram'"
           href="https://www.instagram.com/fleetyardsnet/"
           target="_blank"
