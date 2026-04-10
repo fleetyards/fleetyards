@@ -2,12 +2,10 @@ import { app, appFactories } from "../support/on-rails";
 import { test, expect } from "../support/commands";
 
 test.describe("Login", () => {
-  test.beforeEach(async ({ page, acceptCookie }) => {
+  test.beforeEach(async ({ page }) => {
     await app("clean");
 
     await page.goto("/");
-
-    await acceptCookie.accept();
   });
 
   test("Success", async ({ page, nav }) => {

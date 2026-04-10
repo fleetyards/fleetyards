@@ -2,13 +2,11 @@ import { app, appScenario } from "../support/on-rails";
 import { test, expect } from "../support/commands";
 
 test.describe("Cargo Grids", () => {
-  test.beforeEach(async ({ page, acceptCookie }) => {
+  test.beforeEach(async ({ page }) => {
     await app("clean");
     await appScenario("tools");
 
     await page.goto("/tools/cargo-grids/");
-
-    await acceptCookie.accept();
 
     // Wait for the filter component to be interactive
     await page.getByTestId("filter-group-cargo-grid-model").waitFor();

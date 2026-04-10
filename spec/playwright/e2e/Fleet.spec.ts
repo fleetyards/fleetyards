@@ -2,12 +2,10 @@ import { test, expect } from "../support/commands";
 import { app, appFactories } from "../support/on-rails";
 
 test.describe("Fleet", () => {
-  test.beforeEach(async ({ page, acceptCookie }) => {
+  test.beforeEach(async ({ page }) => {
     await app("clean");
 
     await page.goto("/");
-
-    await acceptCookie.accept();
   });
 
   test("Shows Preview only once", async ({ page, nav }) => {

@@ -2,13 +2,11 @@ import { app, appScenario } from "../support/on-rails";
 import { test, expect } from "../support/commands";
 
 test.describe("Tools Index", () => {
-  test.beforeEach(async ({ page, acceptCookie }) => {
+  test.beforeEach(async ({ page }) => {
     await app("clean");
     await appScenario("tools");
 
     await page.goto("/tools/");
-
-    await acceptCookie.accept();
   });
 
   test("Loads the tools page", async ({ page }) => {

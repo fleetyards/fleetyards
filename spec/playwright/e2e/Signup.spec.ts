@@ -2,12 +2,10 @@ import { app, appFactories, appScenario } from "../support/on-rails";
 import { test, expect } from "../support/commands";
 
 test.describe("Signup", () => {
-  test.beforeEach(async ({ page, acceptCookie }) => {
+  test.beforeEach(async ({ page }) => {
     await app("clean");
 
     await page.goto("/");
-
-    await acceptCookie.accept();
   });
 
   test("Allows Signup/Login/Account deletion", async ({

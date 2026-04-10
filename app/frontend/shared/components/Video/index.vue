@@ -3,7 +3,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useComlink } from "@/shared/composables/useComlink";
 import { Video } from "@/services/fyApi";
 import { useCookiesStore } from "@/frontend/stores/cookies";
 import { storeToRefs } from "pinia";
@@ -37,10 +36,8 @@ const copyVideoUrl = (video: Partial<Video>) => {
   );
 };
 
-const comlink = useComlink();
-
 const acceptYoutube = () => {
-  comlink.emit("open-privacy-settings");
+  cookiesStore.acceptYoutube();
 };
 </script>
 

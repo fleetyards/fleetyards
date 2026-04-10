@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 
-import { useCookiesStore } from "./cookies";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useNavStore } from "@/shared/stores/nav";
@@ -37,7 +36,6 @@ export const useAppStore = defineStore("app", {
   actions: {
     resetAll(hard = false) {
       const sessionStore = useSessionStore();
-      const cookiesStore = useCookiesStore();
       const fleetStore = useFleetStore();
       const navStore = useNavStore();
       const publicFleetStore = usePublicFleetStore();
@@ -53,7 +51,6 @@ export const useAppStore = defineStore("app", {
 
       if (hard) {
         sessionStore.$reset();
-        cookiesStore.$reset();
         navStore.$reset();
       }
 

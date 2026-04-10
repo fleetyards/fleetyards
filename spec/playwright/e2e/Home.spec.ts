@@ -2,13 +2,11 @@ import { test, expect } from "../support/commands";
 import { app, appScenario } from "../support/on-rails";
 
 test.describe("Home", () => {
-  test.beforeEach(async ({ page, acceptCookie }) => {
+  test.beforeEach(async ({ page }) => {
     await app("clean");
     await appScenario("ships");
 
     await page.goto("/");
-
-    await acceptCookie.accept();
   });
 
   test("Loads", async ({ page }) => {

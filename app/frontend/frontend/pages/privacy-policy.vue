@@ -5,10 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Btn from "@/shared/components/base/Btn/index.vue";
 import AppContact from "@/frontend/components/core/AppContact/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
-import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
@@ -16,12 +14,6 @@ const { t } = useI18n();
 const appName = computed(() => {
   return window.APP_NAME;
 });
-
-const comlink = useComlink();
-
-const openPrivacySettings = () => {
-  comlink.emit("open-privacy-settings", true);
-};
 </script>
 
 <template>
@@ -29,13 +21,6 @@ const openPrivacySettings = () => {
     <div class="col-12 col-lg-8">
       <Panel inset>
         <h1>{{ t("headlines.privacy") }}</h1>
-        <Btn
-          class="privacy-settings-link"
-          :mobile-block="true"
-          @click="openPrivacySettings"
-        >
-          {{ t("nav.privacySettings") }}
-        </Btn>
         <p>
           {{ t("texts.privacy.p1", { app: appName }) }}
         </p>
@@ -216,6 +201,3 @@ const openPrivacySettings = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-@import "privacy-policy";
-</style>

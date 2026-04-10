@@ -14,7 +14,6 @@ type Events = {
   "off-canvas-closed": () => void | Promise<unknown>;
   "prices-update": () => void | Promise<unknown>;
   "commodities-update": () => void | Promise<unknown>;
-  "open-privacy-settings": (force?: boolean) => void | Promise<unknown>;
   "user-update": () => void | Promise<unknown>;
   "fleet-create": () => void | Promise<unknown>;
   "fleet-update": () => void | Promise<unknown>;

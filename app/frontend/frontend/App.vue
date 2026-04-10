@@ -23,7 +23,6 @@ import { useNavStore } from "@/shared/stores/nav";
 import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18nStore } from "@/shared/stores/i18n";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useCookiesStore } from "@/frontend/stores/cookies";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -70,10 +69,6 @@ const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
 
-const cookiesStore = useCookiesStore();
-
-const { infoVisible } = storeToRefs(cookiesStore);
-
 const { t, availableLocales, currentLocale } = useI18n();
 
 useFlashNotifications();
@@ -114,19 +109,12 @@ watch(
   async () => {
     await checkSessionReload();
 
-    if (infoVisible.value && route.name !== "privacy-policy") {
-      openPrivacySettings();
-    } else if (infoVisible.value && route.name === "privacy-policy") {
-      comlink.emit("close-modal", true);
-    }
-
     setupLocale();
   },
 );
 
 useCheckStoreVersion(appStore);
 
-const openPrivacySettingsComlink = ref();
 const userUpdateComlink = ref();
 const fleetCreateComlink = ref();
 const fleetUpdateComlink = ref();
@@ -139,23 +127,14 @@ onMounted(async () => {
     await requestBrowserPermission();
   }
 
-  openPrivacySettingsComlink.value = comlink.on(
-    "open-privacy-settings",
-    openPrivacySettings,
-  );
   userUpdateComlink.value = comlink.on("user-update", refetchCurrentUser);
   fleetCreateComlink.value = comlink.on("fleet-create", refetchCurrentUser);
   fleetUpdateComlink.value = comlink.on("fleet-update", refetchCurrentUser);
-
-  if (infoVisible.value && route.name !== "privacy-policy") {
-    openPrivacySettings();
-  }
 
   setupLocale();
 });
 
 onUnmounted(() => {
-  openPrivacySettingsComlink.value();
   userUpdateComlink.value();
   fleetCreateComlink.value();
   fleetUpdateComlink.value();
@@ -169,17 +148,6 @@ const setupLocale = () => {
   if (!locale.value && availableLocales().includes(navigator.language)) {
     i18nStore.locale = navigator.language;
   }
-};
-
-const openPrivacySettings = (settings = false) => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/core/PrivacySettings/index.vue"),
-    fixed: true,
-    props: {
-      settings,
-    },
-  });
 };
 
 const setNoScroll = () => {
