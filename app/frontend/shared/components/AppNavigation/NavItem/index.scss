@@ -40,7 +40,7 @@
   &:hover > button,
   &:active > button,
   &--active > button {
-    color: lighten($text-color, 10%);
+    color: color.adjust($text-color, $lightness: 10%);
   }
 
   &--active > a,
@@ -63,7 +63,7 @@
     height: 1px;
     margin: 5px 15px 5px;
     padding: 0;
-    background-color: lighten($gray-dark, 10%);
+    background-color: color.adjust($gray-dark, $lightness: 10%);
   }
 
   &__sub-menu {

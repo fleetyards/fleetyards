@@ -49,7 +49,7 @@
   transition: all 0.5s ease-in-out;
 
   &:hover {
-    color: lighten($text-color, 20%);
+    color: color.adjust($text-color, $lightness: 20%);
   }
 }
 

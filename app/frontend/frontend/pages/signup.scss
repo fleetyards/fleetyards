@@ -22,10 +22,10 @@
     color: $gray-lighter;
 
     a {
-      color: lighten($gray-light, 10%);
+      color: color.adjust($gray-light, $lightness: 10%);
 
       &:hover {
-        color: lighten($gray-light, 30%);
+        color: color.adjust($gray-light, $lightness: 30%);
       }
     }
   }

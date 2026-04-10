@@ -7,7 +7,7 @@
 
   .info {
     p {
-      color: lighten($gray-lighter, 5);
+      color: color.adjust($gray-lighter, $lightness: 5%);
     }
   }
 

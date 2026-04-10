@@ -74,7 +74,7 @@ $color2: #3197ee;
       }
 
       &:disabled:checked + label::before {
-        background: lighten($input-bg, 10%);
+        background: color.adjust($input-bg, $lightness: 10%);
       }
     }
   }

@@ -21,7 +21,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "${resolve(__dirname, "app/frontend/stylesheets/variables.scss")}";`,
+        additionalData: `@use "sass:color"; @import "${resolve(__dirname, "app/frontend/stylesheets/variables.scss")}";`,
       },
     },
   },

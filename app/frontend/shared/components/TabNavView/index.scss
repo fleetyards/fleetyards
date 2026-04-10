@@ -40,7 +40,7 @@ $nav-transition-speed: 0.3s;
         color $nav-transition-speed;
 
       i {
-        color: lighten($text-color, 30%);
+        color: color.adjust($text-color, $lightness: 30%);
         transition: color $nav-transition-speed;
       }
 

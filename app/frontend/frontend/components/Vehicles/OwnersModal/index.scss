@@ -29,7 +29,7 @@
   &:hover:not([disabled]),
   &.active {
     .user-item-ship {
-      color: lighten(invert($text-color), 10%);
+      color: color.adjust(invert($text-color), $lightness: 10%);
     }
   }
 }
