@@ -200,4 +200,3 @@ const appName = computed(() => {
     </div>
   </div>
 </template>
-

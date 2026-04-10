@@ -34,9 +34,7 @@ const countLabel = computed(() => {
   return `${props.count}x `;
 });
 
-const image = computed(
-  () => props.model.media.storeImage?.mediumUrl || null,
-);
+const image = computed(() => props.model.media.storeImage?.mediumUrl || null);
 </script>
 
 <template>
@@ -62,10 +60,7 @@ const image = computed(
           </h2>
         </div>
       </div>
-      <Collapsed
-        :key="`details-${model.slug}-wrapper`"
-        :visible="details"
-      >
+      <Collapsed :key="`details-${model.slug}-wrapper`" :visible="details">
         <div class="production-status">
           <strong class="text-uppercase">
             <template v-if="model.productionStatus">
