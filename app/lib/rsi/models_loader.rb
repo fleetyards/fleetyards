@@ -67,10 +67,11 @@ module Rsi
 
       updates = {
         rsi_id: data["id"],
-        sc_identifier:,
         rsi_chassis_id: data["chassis_id"],
         last_updated_at: new_time_modified(data)
       }
+
+      updates[:sc_identifier] = sc_identifier if model.sc_identifier.blank?
 
       if model_updated(model, data) || model.production_status.blank?
         if ::Model::PRODUCTION_STATUSES.include?(data["production_status"])
