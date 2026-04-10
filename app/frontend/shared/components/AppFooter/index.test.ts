@@ -10,6 +10,6 @@ describe("AppFooter", () => {
 
   it("renders all links", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component);
-    expect(wrapper.findAll("a")).toHaveLength(5);
+    expect(wrapper.findAll("a")).toHaveLength(4);
   });
 });
