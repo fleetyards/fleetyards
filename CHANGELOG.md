@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.4.1](https://github.com/fleetyards/fleetyards/compare/v6.4.0...v6.4.1) (2026-04-10)
+
+
+### Bug Fixes
+
+* preserve manually set sc_identifier in ship matrix import ([6a525b3](https://github.com/fleetyards/fleetyards/commit/6a525b3ef03183ce8b13c618398f148ba8bb3083))
+
 ## [6.4.0](https://github.com/fleetyards/fleetyards/compare/v6.3.0...v6.4.0) (2026-04-10)
 
 
