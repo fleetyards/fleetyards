@@ -245,7 +245,7 @@ class Model < ApplicationRecord
   %i[front_view fleetchart_image top_view_colored holo].each do |attachment_name|
     ransacker attachment_name do
       Arel.sql(
-        "(SELECT active_storage_attachments.id FROM active_storage_attachments " \
+        "(SELECT CAST(active_storage_attachments.id AS TEXT) FROM active_storage_attachments " \
         "WHERE active_storage_attachments.record_type = 'Model' " \
         "AND active_storage_attachments.record_id = models.id " \
         "AND active_storage_attachments.name = '#{attachment_name}')"
