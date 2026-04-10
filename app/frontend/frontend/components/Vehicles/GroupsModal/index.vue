@@ -95,9 +95,8 @@ const onSubmit = handleSubmit(async (values) => {
           class="col-12 col-md-6"
         >
           <FormCheckbox
-            v-model="hangarGroupIds"
             :checkbox-value="group.id"
-            :name="group.name"
+            name="hangarGroupIds"
             :label="group.name"
           />
         </div>
