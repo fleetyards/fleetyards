@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.5.1](https://github.com/fleetyards/fleetyards/compare/v6.5.0...v6.5.1) (2026-04-11)
+
+
+### Bug Fixes
+
+* close BtnDropdown on item click ([d0cafb6](https://github.com/fleetyards/fleetyards/commit/d0cafb6e073e7776dde397b0f19f9ff88416dca6))
+* handle nil user in omniauth callback when email exists but no user found ([d555c17](https://github.com/fleetyards/fleetyards/commit/d555c17fe226ceb0e66dcd9a150cf9703bee73cb))
+* overhaul embed v2 — migrate fleetchart image, fix layout and translations ([d02dcdf](https://github.com/fleetyards/fleetyards/commit/d02dcdf4881d5bebfce66c9ec25968e93c586627))
+* remove unnecessary cookie consent modal ([aee02ad](https://github.com/fleetyards/fleetyards/commit/aee02adb8a06dad8c9bcb96ac6e3fbadf031ab27))
+* remove unused hangarGroupIds variable in GroupsModal ([7265beb](https://github.com/fleetyards/fleetyards/commit/7265beb428831d2ed4662061cbdbf7be445b0778))
+* resolve faraday-retry and sidekiq/testing deprecation warnings ([b2d1014](https://github.com/fleetyards/fleetyards/commit/b2d1014e025a1eb047d21dbbe51593a3b58f8510))
+* restore missing data-test attributes in embed components ([cca0783](https://github.com/fleetyards/fleetyards/commit/cca07831db4b05f6154ce8b5f99076fea2ee5ead))
+* revert sidekiq/testing require to fix test suite ([4d926bc](https://github.com/fleetyards/fleetyards/commit/4d926bc70552f1da6cc0d4059f95d645d0dde8e1))
+* use flex: none for fleetchart image wrapper to prevent zero-width collapse ([986a63f](https://github.com/fleetyards/fleetyards/commit/986a63f6ec10751f71863ef6319cb3d32d71e644))
+* use shared vee-validate field name in GroupsModal checkboxes ([749ffdd](https://github.com/fleetyards/fleetyards/commit/749ffdd94bf219724961dd634109fc470c07ad99))
+
+
+### Chores
+
+* formatting fixes from linter ([91f4340](https://github.com/fleetyards/fleetyards/commit/91f4340afb4b64449d295227a352169518b14b4f))
+
 ## [6.5.0](https://github.com/fleetyards/fleetyards/compare/v6.4.1...v6.5.0) (2026-04-10)
 
 
