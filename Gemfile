@@ -83,6 +83,7 @@ gem "mini_magick"
 
 gem "nokogiri"
 gem "typhoeus"
+gem "faraday-retry"
 
 gem "rack-cors", require: "rack/cors"
 gem "rack-rewrite"
