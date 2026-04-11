@@ -72,9 +72,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         User.find_by(id: connection.user_id)
       elsif auth.info.email.present?
         User.find_by(normalized_email: auth.info.email.downcase)
-      else
+      end
+
+      if user.nil?
         password = Devise.friendly_token[0, 60]
-        User.new(
+        user = User.new(
           email: auth.info.email,
           username: auth.info.nickname || auth.info.name,
           password: password,
