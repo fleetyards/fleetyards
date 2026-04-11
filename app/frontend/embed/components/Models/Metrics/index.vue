@@ -42,7 +42,7 @@ const speeds = computed(() => {
 
 <template>
   <div class="embed-model-metrics">
-    <div class="embed-metrics-grid metrics-block top-metrics metrics-padding">
+    <div class="embed-metrics-grid metrics-block top-metrics metrics-padding" data-test="top-metrics">
       <div>
         <template v-if="model.focus">
           <div class="metrics-label">{{ t("model.focus") }}:</div>
