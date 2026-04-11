@@ -38,7 +38,7 @@ const { defineField, handleSubmit } = useForm({
   initialValues: initialValues.value,
 });
 
-const [hangarGroupIds] = defineField("hangarGroupIds");
+defineField("hangarGroupIds");
 
 onMounted(() => {
   setupForm();
