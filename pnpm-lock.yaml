@@ -39,8 +39,8 @@ importers:
         specifier: ^8.1.300
         version: 8.1.300
       '@tanstack/vue-query':
-        specifier: ^5.97.0
-        version: 5.97.0(vue@3.5.32(typescript@6.0.2))
+        specifier: ^5.99.0
+        version: 5.99.0(vue@3.5.32(typescript@6.0.2))
       '@tresjs/cientos':
         specifier: ^5.7.0
         version: 5.7.0(@tresjs/core@5.8.0(three@0.183.2)(vue@3.5.32(typescript@6.0.2)))(@types/three@0.183.1)(react@19.1.0)(three@0.183.2)(vue@3.5.32(typescript@6.0.2))
@@ -190,11 +190,11 @@ importers:
         specifier: ^4.2.2
         version: 4.2.2(vite@8.0.8(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.99.0)(terser@5.46.0)(yaml@2.8.2))
       '@tanstack/eslint-plugin-query':
-        specifier: ^5.97.0
-        version: 5.97.0(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
+        specifier: ^5.99.0
+        version: 5.99.0(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       '@tanstack/vue-query-devtools':
         specifier: ^6.1.14
-        version: 6.1.14(@tanstack/vue-query@5.97.0(vue@3.5.32(typescript@6.0.2)))(vue@3.5.32(typescript@6.0.2))
+        version: 6.1.14(@tanstack/vue-query@5.99.0(vue@3.5.32(typescript@6.0.2)))(vue@3.5.32(typescript@6.0.2))
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^6.0.2
         version: 6.0.2(@vue/compiler-sfc@3.5.32)(prettier@3.8.2)
@@ -1993,8 +1993,8 @@ packages:
     peerDependencies:
       vite: '>=7.3.2'
 
-  '@tanstack/eslint-plugin-query@5.97.0':
-    resolution: {integrity: sha512-0/py2lxpUaCHKZeaOcTUVGHsbmr7719bh4ruj++HXgJQN8AtPvoPODyc8eOYTi/gZqr0LA2ZHH3ohSMrD3im+g==}
+  '@tanstack/eslint-plugin-query@5.99.0':
+    resolution: {integrity: sha512-jVp1AEL7S7BeuQvH5SN1F5UdrNW/AbryKDeWUUMeAKNzh9C+Ik/bRSa/HeuJLlmaN+WOUkdDFbtCK0go7BxnUQ==}
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: ^5.4.0 || ^6.0.0
@@ -2006,8 +2006,8 @@ packages:
     resolution: {integrity: sha512-Wo1iKt2b9OT7d+YGhvEPD3DXvPv2etTusIMhMUoG7fbhmxcXCtIjJDEygy91Y2JFlwGyjqiBPRozme7UD8hoqg==}
     engines: {node: '>=12'}
 
-  '@tanstack/query-core@5.97.0':
-    resolution: {integrity: sha512-QdpLP5VzVMgo4VtaPppRA2W04UFjIqX+bxke/ZJhE5cfd5UPkRzqIAJQt9uXkQJjqE8LBOMbKv7f8HCsZltXlg==}
+  '@tanstack/query-core@5.99.0':
+    resolution: {integrity: sha512-3Jv3WQG0BCcH7G+7lf/bP8QyBfJOXeY+T08Rin3GZ1bshvwlbPt7NrDHMEzGdKIOmOzvIQmxjk28YEQX60k7pQ==}
 
   '@tanstack/query-devtools@5.97.0':
     resolution: {integrity: sha512-ZMjAuYhQCKwKLKFMrD+HJDehHwWBVTGOuWBf4vEjR9unO+UGUjQ1mw2TuVbQKoLN/eRwB7qtlPsWBqobBoRBMQ==}
@@ -2018,8 +2018,8 @@ packages:
       '@tanstack/vue-query': ^5.97.0
       vue: ^3.3.0
 
-  '@tanstack/vue-query@5.97.0':
-    resolution: {integrity: sha512-lziGgJTrEVXX98nQ9D+MfvjHgD92uHPrVXjB1GSfK+mq0rTr/I0ovwraGqaNTfwORmzHtQOObksPVf2NH17djw==}
+  '@tanstack/vue-query@5.99.0':
+    resolution: {integrity: sha512-okrHNkouasL5cjo7O8hUxul22DiIL335KUQus/cfoAdCOUytF/OIv3BpNDevfqE6zHqqJ651Fb9OkUJPUCL0ZQ==}
     peerDependencies:
       '@vue/composition-api': ^1.1.2
       vue: ^2.6.0 || ^3.3.0
@@ -7245,7 +7245,7 @@ snapshots:
       tailwindcss: 4.2.2
       vite: 8.0.8(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.6.1)(sass@1.99.0)(terser@5.46.0)(yaml@2.8.2)
 
-  '@tanstack/eslint-plugin-query@5.97.0(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)':
+  '@tanstack/eslint-plugin-query@5.99.0(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)':
     dependencies:
       '@typescript-eslint/utils': 8.58.1(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
       eslint: 10.2.0(jiti@2.6.1)
@@ -7258,20 +7258,20 @@ snapshots:
     dependencies:
       remove-accents: 0.5.0
 
-  '@tanstack/query-core@5.97.0': {}
+  '@tanstack/query-core@5.99.0': {}
 
   '@tanstack/query-devtools@5.97.0': {}
 
-  '@tanstack/vue-query-devtools@6.1.14(@tanstack/vue-query@5.97.0(vue@3.5.32(typescript@6.0.2)))(vue@3.5.32(typescript@6.0.2))':
+  '@tanstack/vue-query-devtools@6.1.14(@tanstack/vue-query@5.99.0(vue@3.5.32(typescript@6.0.2)))(vue@3.5.32(typescript@6.0.2))':
     dependencies:
       '@tanstack/query-devtools': 5.97.0
-      '@tanstack/vue-query': 5.97.0(vue@3.5.32(typescript@6.0.2))
+      '@tanstack/vue-query': 5.99.0(vue@3.5.32(typescript@6.0.2))
       vue: 3.5.32(typescript@6.0.2)
 
-  '@tanstack/vue-query@5.97.0(vue@3.5.32(typescript@6.0.2))':
+  '@tanstack/vue-query@5.99.0(vue@3.5.32(typescript@6.0.2))':
     dependencies:
       '@tanstack/match-sorter-utils': 8.19.4
-      '@tanstack/query-core': 5.97.0
+      '@tanstack/query-core': 5.99.0
       '@vue/devtools-api': 6.6.4
       vue: 3.5.32(typescript@6.0.2)
       vue-demi: 0.14.10(vue@3.5.32(typescript@6.0.2))
