@@ -56,6 +56,7 @@ en:
       no_data: No Data found to import
     hangar_sync:
       no_data: No Data found to sync
+      already_running: A Hangar Sync is already in progress
     user:
       requires_access_confirmation: Access confirmation pending
     otp:

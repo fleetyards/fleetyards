@@ -286,11 +286,13 @@ const onSyncResult = (data: string) => {
 
   if (message.status === "finished" && message.result) {
     result.value = message.result;
+    hangarStore.syncRunning = false;
 
     displaySuccess({ text: t("messages.syncExtension.success") });
     updateStep("submitData", "success");
     comlink.emit("hangar-sync-finished");
   } else if (message.status === "failed") {
+    hangarStore.syncRunning = false;
     updateStep("submitData", "backendFailure");
     console.error("Hangar sync failed:", message.error);
   }
@@ -302,6 +304,7 @@ const onSyncDisconnected = () => {
   );
 
   if (submitStep?.status === "processing") {
+    hangarStore.syncRunning = false;
     updateStep("submitData", "backendFailure");
     displayAlert({ text: t("messages.syncExtension.failure") });
   }
@@ -315,6 +318,7 @@ useSubscription({
 
 const finishSync = async () => {
   updateStep("submitData", "processing");
+  hangarStore.syncRunning = true;
 
   await mutation
     .mutateAsync({
@@ -323,6 +327,7 @@ const finishSync = async () => {
       },
     })
     .catch((error) => {
+      hangarStore.syncRunning = false;
       updateStep("submitData", "backendFailure");
       console.error(error);
     });
@@ -384,6 +389,9 @@ const refreshPage = async () => {
           </Btn>
         </p>
         <p v-html="t('texts.syncExtension.info')" />
+        <p v-if="hangarStore.syncRunning" class="text-warning">
+          {{ t("texts.syncExtension.alreadyRunning") }}
+        </p>
       </div>
       <div v-else>
         <p
@@ -667,7 +675,7 @@ const refreshPage = async () => {
           :inline="true"
           data-test="start-sync"
           :loading="started || loadingIdentity"
-          :disabled="identityStatus !== 'connected'"
+          :disabled="identityStatus !== 'connected' || hangarStore.syncRunning"
           @click="start"
         >
           {{ t("actions.syncExtension.start") }}

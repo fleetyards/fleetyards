@@ -114,6 +114,11 @@ module Api
           return
         end
 
+        if Imports::HangarSync.where(user_id: current_resource_owner.id, aasm_state: %w[created started]).exists?
+          render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.already_running")), status: :conflict
+          return
+        end
+
         items = sync_params[:items].to_a.map(&:to_h)
 
         import = Imports::HangarSync.create!(
@@ -124,6 +129,14 @@ module Api
         HangarSyncJob.perform_async(import.id)
 
         render json: {id: import.id, status: "pending"}
+      end
+
+      def sync_rsi_hangar_status
+        authorize! to: :update?, with: ::HangarPolicy
+
+        active = Imports::HangarSync.where(user_id: current_resource_owner.id, aasm_state: %w[created started]).exists?
+
+        render json: {active:}
       end
 
       def items

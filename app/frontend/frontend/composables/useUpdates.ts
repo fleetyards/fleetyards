@@ -157,11 +157,15 @@ export const useUpdates = () => {
   });
 
   const handleHangarSyncUpdate = (data: string) => {
+    const message = JSON.parse(data) as { status: string };
+
+    if (message.status === "finished" || message.status === "failed") {
+      hangarStore.syncRunning = false;
+    }
+
     if (hangarStore.syncModalOpen) {
       return;
     }
-
-    const message = JSON.parse(data) as { status: string };
 
     if (message.status === "finished") {
       displaySuccess({ text: t("messages.syncExtension.success") });

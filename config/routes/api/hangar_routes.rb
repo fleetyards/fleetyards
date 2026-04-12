@@ -3,6 +3,7 @@ resource :hangar, only: %i[show destroy] do
   put :import
   get :export
   put "sync-rsi-hangar", to: "hangars#sync_rsi_hangar"
+  get "sync-rsi-hangar/status", to: "hangars#sync_rsi_hangar_status"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 
