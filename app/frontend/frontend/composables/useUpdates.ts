@@ -64,7 +64,8 @@ export const useUpdates = () => {
 
   const { t } = useI18n();
 
-  const { displayMessage, displayInfo } = useAppNotifications();
+  const { displayMessage, displayInfo, displaySuccess, displayAlert } =
+    useAppNotifications();
 
   const sessionStore = useSessionStore();
 
@@ -152,6 +153,26 @@ export const useUpdates = () => {
   useSubscription({
     channelName: ChannelsEnum.WISHLIST_DESTROY,
     received: removeShipFromWishlist,
+    enabled: isAuthenticated,
+  });
+
+  const handleHangarSyncUpdate = (data: string) => {
+    if (hangarStore.syncModalOpen) {
+      return;
+    }
+
+    const message = JSON.parse(data) as { status: string };
+
+    if (message.status === "finished") {
+      displaySuccess({ text: t("messages.syncExtension.success") });
+    } else if (message.status === "failed") {
+      displayAlert({ text: t("messages.syncExtension.failure") });
+    }
+  };
+
+  useSubscription({
+    channelName: ChannelsEnum.HANGAR_SYNC,
+    received: handleHangarSyncUpdate,
     enabled: isAuthenticated,
   });
 

@@ -121,6 +121,7 @@ const onExtensionMessage = (event: FleetyardsSyncEvent) => {
 onMounted(() => {
   started.value = false;
   currentPage.value = 1;
+  hangarStore.syncModalOpen = true;
 
   window.addEventListener("message", onExtensionMessage as EventListener);
 
@@ -130,6 +131,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  hangarStore.syncModalOpen = false;
   window.removeEventListener("message", onExtensionMessage as EventListener);
 });
 
