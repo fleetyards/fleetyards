@@ -365,7 +365,7 @@ const refreshPage = async () => {
       </div>
       <div v-else-if="!started">
         <p
-          class="flex justify-center text-uppercase relative"
+          class="flex justify-center text-uppercase relative mt-4"
           :class="{
             'text-warning': identityStatus === 'pending',
             'text-success': identityStatus === 'connected',
