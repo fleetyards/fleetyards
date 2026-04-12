@@ -94,7 +94,7 @@
     "@types/downloadjs": "^1.4.6",
     "@types/lodash.debounce": "^4.0.9",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^25.5.2",
+    "@types/node": "^25.6.0",
     "@types/qs": "^6.15.0",
     "@types/rails__actioncable": "^8.0.3",
     "@types/rails__activestorage": "^8.0.1",
