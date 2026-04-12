@@ -123,7 +123,7 @@ module Api
 
         import = Imports::HangarSync.create!(
           user_id: current_resource_owner.id,
-          input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }.to_json
+          input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
         )
 
         HangarSyncJob.perform_async(import.id)

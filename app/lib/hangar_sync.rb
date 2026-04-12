@@ -20,7 +20,7 @@ class HangarSync < HangarImporter
   def run(user_id)
     import = Imports::HangarSync.create!(
       user_id:,
-      input: @data.to_json
+      input: @data
     )
 
     run_with_import(import)
@@ -50,7 +50,7 @@ class HangarSync < HangarImporter
       missing_upgrade_vehicles:
     }
 
-    import.update!(output: output.to_json)
+    import.update!(output:)
     import.finish!
 
     camel_case_output = output.transform_keys { |key| key.to_s.camelize(:lower) }
