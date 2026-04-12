@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.6.1](https://github.com/fleetyards/fleetyards/compare/v6.6.0...v6.6.1) (2026-04-12)
+
+
+### Bug Fixes
+
+* add top margin to RSI session status in sync modal ([942a7a3](https://github.com/fleetyards/fleetyards/commit/942a7a3f25a30ef370dd3cebe846722663fdb7e8))
+* **deploy:** run data migrations in Kamal pre-deploy hook ([70e7e4d](https://github.com/fleetyards/fleetyards/commit/70e7e4d1b7ca0e88c13de40f1ae2d4a63fb34daf))
+* remove double JSON serialization for jsonb columns in hangar sync ([588ec65](https://github.com/fleetyards/fleetyards/commit/588ec65198f71c8cc53f0e45579aec75bd8c51f7))
+* use wildcard for Twitch CSP form-action to cover full redirect chain ([6d2325d](https://github.com/fleetyards/fleetyards/commit/6d2325ddb2fe2439dea3fee09abac3a04721d0cf))
+
 ## [6.6.0](https://github.com/fleetyards/fleetyards/compare/v6.5.0...v6.6.0) (2026-04-12)
 
 
