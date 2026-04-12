@@ -18,8 +18,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to frontend_sign_up_url, alert: alert
   end
 
-  def google_oauth2
-    handle_auth(t("devise.omniauth.provider.google_oauth2"))
+  def google
+    handle_auth(t("devise.omniauth.provider.google"))
   end
 
   def discord

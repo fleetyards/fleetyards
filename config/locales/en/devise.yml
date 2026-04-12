@@ -47,7 +47,7 @@ en:
     omniauth:
       provider:
         discord: "Discord"
-        google_oauth2: "Google"
+        google: "Google"
         github: "GitHub"
         bluesky: "Bluesky"
         twitch: "Twitch"

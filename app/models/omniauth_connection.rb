@@ -22,7 +22,7 @@ class OmniauthConnection < ApplicationRecord
   belongs_to :user
 
   enum :provider, {
-    google_oauth2: 0,
+    google: 0,
     discord: 1,
     github: 2,
     bluesky: 3
