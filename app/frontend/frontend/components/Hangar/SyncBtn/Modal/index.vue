@@ -21,6 +21,10 @@ import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import { useSyncRsiHangar as useSyncRsiHangarMutation } from "@/services/fyApi";
+import {
+  useSubscription,
+  ChannelsEnum,
+} from "@/shared/composables/useSubscription";
 import { differenceInMinutes } from "date-fns";
 import {
   type FleetyardsSyncMessage,
@@ -271,6 +275,42 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
 const mutation = useSyncRsiHangarMutation();
 
+const onSyncResult = (data: string) => {
+  const message = JSON.parse(data) as {
+    status: string;
+    result?: HangarSyncResult;
+    error?: string;
+  };
+
+  if (message.status === "finished" && message.result) {
+    result.value = message.result;
+
+    displaySuccess({ text: t("messages.syncExtension.success") });
+    updateStep("submitData", "success");
+    comlink.emit("hangar-sync-finished");
+  } else if (message.status === "failed") {
+    updateStep("submitData", "backendFailure");
+    console.error("Hangar sync failed:", message.error);
+  }
+};
+
+const onSyncDisconnected = () => {
+  const submitStep = processSteps.value.find(
+    (step) => step.name === "submitData",
+  );
+
+  if (submitStep?.status === "processing") {
+    updateStep("submitData", "backendFailure");
+    displayAlert({ text: t("messages.syncExtension.failure") });
+  }
+};
+
+useSubscription({
+  channelName: ChannelsEnum.HANGAR_SYNC,
+  received: onSyncResult,
+  disconnected: onSyncDisconnected,
+});
+
 const finishSync = async () => {
   updateStep("submitData", "processing");
 
@@ -280,15 +320,8 @@ const finishSync = async () => {
         items: pledges.value,
       },
     })
-    .then((response) => {
-      result.value = response;
-
-      displaySuccess({ text: t("messages.syncExtension.success") });
-      updateStep("submitData", "success");
-      comlink.emit("hangar-sync-finished");
-    })
     .catch((error) => {
-      updateStep("submitData", "failure");
+      updateStep("submitData", "backendFailure");
       console.error(error);
     });
 };

@@ -2327,7 +2327,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/HangarSyncResult"
+                "$ref": "#/components/schemas/HangarSyncSubmitResult"
         '401':
           description: unauthorized
           content:
@@ -5177,6 +5177,7 @@ components:
       - HangarChannel
       - HangarCreateChannel
       - HangarDestroyChannel
+      - HangarSyncChannel
       - ImportsChannel
       - ModelsChannel
       - NotificationsChannel
@@ -5193,6 +5194,7 @@ components:
       - HANGAR_CHANNEL
       - HANGAR_CREATE_CHANNEL
       - HANGAR_DESTROY_CHANNEL
+      - HANGAR_SYNC_CHANNEL
       - IMPORTS_CHANNEL
       - MODELS_CHANNEL
       - NOTIFICATIONS_CHANNEL
@@ -7877,6 +7879,21 @@ components:
       - missingUpgrades
       - missingUpgradeVehicles
       title: HangarSyncResult
+    HangarSyncSubmitResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - pending
+      additionalProperties: false
+      required:
+      - id
+      - status
+      title: HangarSyncSubmitResult
     Image:
       type: object
       properties:

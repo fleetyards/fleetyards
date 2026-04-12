@@ -109,9 +109,21 @@ module Api
       def sync_rsi_hangar
         authorize! to: :update?, with: ::HangarPolicy
 
-        render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request if params[:items].blank?
+        if params[:items].blank?
+          render json: ValidationError.new("vehicle.sync", message: I18n.t("messages.hangar_sync.no_data")), status: :bad_request
+          return
+        end
 
-        @response = ::HangarSync.new(sync_params[:items].to_a.map(&:to_h)).run(current_resource_owner.id)
+        items = sync_params[:items].to_a.map(&:to_h)
+
+        import = Imports::HangarSync.create!(
+          user_id: current_resource_owner.id,
+          input: items.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }.to_json
+        )
+
+        HangarSyncJob.perform_async(import.id)
+
+        render json: {id: import.id, status: "pending"}
       end
 
       def items

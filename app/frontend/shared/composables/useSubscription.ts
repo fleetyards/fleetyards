@@ -6,6 +6,7 @@ export enum ChannelsEnum {
   HANGAR = "HangarChannel",
   HANGAR_CREATE = "HangarCreateChannel",
   HANGAR_DESTROY = "HangarDestroyChannel",
+  HANGAR_SYNC = "HangarSyncChannel",
   WISHLIST_CREATE = "WishlistCreateChannel",
   WISHLIST_DESTROY = "WishlistDestroyChannel",
   ON_SALE_HANGAR = "OnSaleHangarChannel",

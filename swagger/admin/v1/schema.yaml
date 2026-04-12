@@ -4801,6 +4801,7 @@ components:
       - HangarChannel
       - HangarCreateChannel
       - HangarDestroyChannel
+      - HangarSyncChannel
       - ImportsChannel
       - ModelsChannel
       - NotificationsChannel
@@ -4817,6 +4818,7 @@ components:
       - HANGAR_CHANNEL
       - HANGAR_CREATE_CHANNEL
       - HANGAR_DESTROY_CHANNEL
+      - HANGAR_SYNC_CHANNEL
       - IMPORTS_CHANNEL
       - MODELS_CHANNEL
       - NOTIFICATIONS_CHANNEL

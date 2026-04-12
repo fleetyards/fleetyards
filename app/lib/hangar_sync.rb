@@ -22,7 +22,14 @@ class HangarSync < HangarImporter
       user_id:,
       input: @data.to_json
     )
+
+    run_with_import(import)
+  end
+
+  def run_with_import(import)
     import.start!
+
+    user_id = import.user_id
 
     imported_vehicles, found_vehicles, moved_vehicles_to_wanted, missing_models = sync_vehicles(user_id)
     imported_components, found_components, missing_components, missing_component_vehicles = sync_components(user_id)
@@ -46,10 +53,15 @@ class HangarSync < HangarImporter
     import.update!(output: output.to_json)
     import.finish!
 
+    camel_case_output = output.transform_keys { |key| key.to_s.camelize(:lower) }
+    HangarSyncChannel.broadcast_to(import.user, {status: "finished", result: camel_case_output}.to_json)
+
     output
   rescue => e
     import&.fail!
     import&.update!(info: e.message)
+
+    HangarSyncChannel.broadcast_to(import.user, {status: "failed", error: e.message}.to_json) if import&.user
 
     raise e
   end
