@@ -38,7 +38,11 @@ const image = computed(() => props.model.media.storeImage?.mediumUrl || null);
 </script>
 
 <template>
-  <div v-if="model" class="panel-wrapper panel-outer-spacing" :data-test="`model-${model.slug}`">
+  <div
+    v-if="model"
+    class="panel-wrapper panel-outer-spacing"
+    :data-test="`model-${model.slug}`"
+  >
     <div class="panel">
       <div class="panel-inner" :class="{ 'panel-inner--details': details }">
         <div
