@@ -10,7 +10,6 @@ class CreateFeatureFlags < ActiveRecord::Migration[7.2]
       oauth-github
       oauth-twitch
       oauth-google
-      oauth-apple
       oauth-applications
     ].each do |name|
       Flipper.add(name)

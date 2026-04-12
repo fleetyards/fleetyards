@@ -6,6 +6,7 @@ oauth_options = {
 use_doorkeeper_openid_connect
 
 namespace :oauth, **oauth_options do
+  get "client-metadata.json", to: "client_metadata#show", as: :client_metadata
   get :authorize, to: "/frontend/base#index", constraints: ->(req) { req.format.html? }, as: :authorization
   get :authorize, to: "/oauth/authorizations#new", constraints: ->(req) { !req.format.html? }
   post :authorize, to: "/oauth/authorizations#create"

@@ -87,14 +87,12 @@
       "unlink": "Verknüpfung aufheben",
       "syncRsiHangar": "Sync RSI Hangar",
       "oauth": {
-        "apple": "Apple",
         "google": "Google",
         "discord": "Discord",
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
         "connected": {
-          "apple": "Mit Apple verbunden",
           "google": "Mit Google verbunden",
           "discord": "Mit Discord verbunden",
           "bluesky": "Mit BlueSky verbunden",

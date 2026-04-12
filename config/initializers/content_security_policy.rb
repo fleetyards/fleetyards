@@ -91,7 +91,8 @@ Rails.application.configure do
       "https://github.com",
       "https://id.twitch.tv",
       "https://www.twitch.tv",
-      "https://accounts.google.com"
+      "https://accounts.google.com",
+      "https://bsky.social"
     ]
 
     policy.default_src :none

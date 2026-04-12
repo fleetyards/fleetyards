@@ -48,7 +48,6 @@ gem "omniauth-discord"
 gem "omniauth-github"
 gem "omniauth-twitch"
 gem "omniauth-google-oauth2"
-gem "omniauth-apple"
 gem "omniauth-atproto"
 gem "omniauth-rails_csrf_protection"
 

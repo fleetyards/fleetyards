@@ -25,7 +25,8 @@ class OmniauthConnection < ApplicationRecord
     google: 0,
     discord: 1,
     github: 2,
-    bluesky: 3
+    bluesky: 3,
+    twitch: 4
   }
 
   validates :provider, presence: true, uniqueness: {scope: :user_id}

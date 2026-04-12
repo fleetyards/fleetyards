@@ -243,20 +243,20 @@ Devise.setup do |config|
   config.sign_out_via = :delete
 
   # ==> OmniAuth
-  # Add a new OmniAuth provider. Check the wiki for more information on setting
-  # up on your models and hooks.
-  # config.omniauth :facebook, Rails.application.credentials.facebook_id, Rails.application.credentials.facebook_secret
-  # config.omniauth :twitter, Rails.application.credentials.twitter_id, Rails.application.credentials.twitter_secret
-  config.omniauth :apple, Rails.configuration.app.apple[:bundle_id], "", {
-    scope: "email name",
-    team_id: Rails.configuration.app.apple[:id_prefix],
-    key_id: Rails.configuration.app.apple[:key],
-    pem: Rails.configuration.app.apple[:pem]
-  }
   config.omniauth :google_oauth2, Rails.configuration.app.google[:oauth_client_id], Rails.configuration.app.google[:oauth_secret], name: :google
   config.omniauth :github, Rails.configuration.app.github[:oauth_client_id], Rails.configuration.app.github[:oauth_secret], scope: "user"
   config.omniauth :twitch, Rails.configuration.app.twitch[:oauth_client_id], Rails.configuration.app.twitch[:oauth_secret]
   config.omniauth :discord, Rails.configuration.app.discord[:oauth_client_id], Rails.configuration.app.discord[:oauth_secret], scope: "identify email"
+  bluesky_private_key = Rails.application.credentials.dig(:bluesky, :private_key)
+  bluesky_jwk = Rails.application.credentials.dig(:bluesky, :jwk)
+  if bluesky_private_key.present? && bluesky_jwk.present?
+    config.omniauth :atproto, Rails.configuration.app.bluesky[:client_id], "", {
+      name: :bluesky,
+      private_key: OpenSSL::PKey::EC.new(bluesky_private_key),
+      client_jwk: JSON.parse(bluesky_jwk),
+      scope: "atproto transition:generic"
+    }
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

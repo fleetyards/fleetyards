@@ -3,5 +3,5 @@ export enum OauthBtnProvidersEnum {
   GITHUB = "github",
   TWITCH = "twitch",
   GOOGLE = "google",
-  APPLE = "apple",
+  BLUESKY = "bluesky",
 }
