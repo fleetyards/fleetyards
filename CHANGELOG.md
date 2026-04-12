@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.6.0](https://github.com/fleetyards/fleetyards/compare/v6.5.0...v6.6.0) (2026-04-12)
+
+
+### Features
+
+* **hangar:** prevent duplicate syncs and add status endpoint ([967cac1](https://github.com/fleetyards/fleetyards/commit/967cac140c12623fef592a9085b6b3fbf4a6bdc7))
+* **hangar:** show sync status notification via WebSocket ([2318555](https://github.com/fleetyards/fleetyards/commit/23185550609261b2ba8c4330029c513d5764ea7c))
+* **oauth:** add tests, wire up all providers, remove Apple, and set up Bluesky ([119995f](https://github.com/fleetyards/fleetyards/commit/119995f43cc84ad20689a6f4904431d80d8a2083))
+
+
+### Bug Fixes
+
+* add www.twitch.tv to CSP form-action for OAuth redirect chain ([a633735](https://github.com/fleetyards/fleetyards/commit/a633735de07ca11d6c9a5ec54b16d6949ea8a2f8))
+* close BtnDropdown on item click ([d0cafb6](https://github.com/fleetyards/fleetyards/commit/d0cafb6e073e7776dde397b0f19f9ff88416dca6))
+* handle nil user in omniauth callback when email exists but no user found ([d555c17](https://github.com/fleetyards/fleetyards/commit/d555c17fe226ceb0e66dcd9a150cf9703bee73cb))
+* **hangar:** fetch sync status on startup and fix google oauth boot ([c9e8945](https://github.com/fleetyards/fleetyards/commit/c9e894586edfe7dbffade180ea11d67d6a8e8b0d))
+* **hangar:** move RSI hangar sync to background job to prevent 504 timeouts ([ecfd7d9](https://github.com/fleetyards/fleetyards/commit/ecfd7d9563d73fd0c949fb1d237af00054554d1e))
+* overhaul embed v2 — migrate fleetchart image, fix layout and translations ([d02dcdf](https://github.com/fleetyards/fleetyards/commit/d02dcdf4881d5bebfce66c9ec25968e93c586627))
+* redirect to hangar after successful OAuth login instead of sign-up page ([286fdfd](https://github.com/fleetyards/fleetyards/commit/286fdfd17375d791e005d17e79c6aac4145f36fc))
+* remove unnecessary cookie consent modal ([aee02ad](https://github.com/fleetyards/fleetyards/commit/aee02adb8a06dad8c9bcb96ac6e3fbadf031ab27))
+* remove unused hangarGroupIds variable in GroupsModal ([7265beb](https://github.com/fleetyards/fleetyards/commit/7265beb428831d2ed4662061cbdbf7be445b0778))
+* rename Google OAuth provider from google_oauth2 to google ([f3130db](https://github.com/fleetyards/fleetyards/commit/f3130db902300cdd9102c8af8ea549971b3a2690))
+* resolve faraday-retry and sidekiq/testing deprecation warnings ([b2d1014](https://github.com/fleetyards/fleetyards/commit/b2d1014e025a1eb047d21dbbe51593a3b58f8510))
+* restore missing data-test attributes in embed components ([cca0783](https://github.com/fleetyards/fleetyards/commit/cca07831db4b05f6154ce8b5f99076fea2ee5ead))
+* revert sidekiq/testing require to fix test suite ([4d926bc](https://github.com/fleetyards/fleetyards/commit/4d926bc70552f1da6cc0d4059f95d645d0dde8e1))
+* use flex: none for fleetchart image wrapper to prevent zero-width collapse ([986a63f](https://github.com/fleetyards/fleetyards/commit/986a63f6ec10751f71863ef6319cb3d32d71e644))
+* use shared vee-validate field name in GroupsModal checkboxes ([749ffdd](https://github.com/fleetyards/fleetyards/commit/749ffdd94bf219724961dd634109fc470c07ad99))
+
+
+### Chores
+
+* add Google and Bluesky OAuth credentials for production ([efb67ad](https://github.com/fleetyards/fleetyards/commit/efb67ad20a22243afe424282b0725afbf5bd5430))
+* fix prettier formatting in embed components ([3d9cfa2](https://github.com/fleetyards/fleetyards/commit/3d9cfa2b2946169766adf07be84cedac773825cb))
+* formatting fixes from linter ([91f4340](https://github.com/fleetyards/fleetyards/commit/91f4340afb4b64449d295227a352169518b14b4f))
+
 ## [6.5.0](https://github.com/fleetyards/fleetyards/compare/v6.4.1...v6.5.0) (2026-04-10)
 
 
