@@ -7,3 +7,6 @@ fi
 
 echo "Running database migrations..."
 kamal app exec $DEST_FLAG --roles=web --primary 'bin/rails db:migrate'
+
+echo "Running data migrations..."
+kamal app exec $DEST_FLAG --roles=web --primary 'bin/rails data:migrate'
