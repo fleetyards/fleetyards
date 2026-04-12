@@ -38,6 +38,11 @@ export const useSessionStore = defineStore("session", {
         this.login(user);
       });
     },
+    async refreshUser() {
+      await fetchMe().then((user) => {
+        this.currentUser = user;
+      });
+    },
     login(user: User) {
       this.authenticated = true;
       this.currentUser = user;
