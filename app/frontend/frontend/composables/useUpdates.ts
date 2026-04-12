@@ -9,7 +9,7 @@ import {
 } from "@/shared/composables/useSubscription";
 import { storeToRefs } from "pinia";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { type Vehicle } from "@/services/fyApi";
+import { type Vehicle, useSyncRsiHangarStatus } from "@/services/fyApi";
 
 export const useUpdates = () => {
   const appStore = useAppStore();
@@ -179,6 +179,22 @@ export const useUpdates = () => {
     received: handleHangarSyncUpdate,
     enabled: isAuthenticated,
   });
+
+  const { data: syncStatus } = useSyncRsiHangarStatus({
+    query: {
+      enabled: isAuthenticated,
+    },
+  });
+
+  watch(
+    () => syncStatus.value,
+    (status) => {
+      if (status) {
+        hangarStore.syncRunning = status.active;
+      }
+    },
+    { immediate: true },
+  );
 
   useSubscription({
     channelName: ChannelsEnum.NOTIFICATIONS,
