@@ -89,8 +89,7 @@ Rails.application.configure do
       "https://discord.com",
       "https://api.github.com",
       "https://github.com",
-      "https://id.twitch.tv",
-      "https://www.twitch.tv",
+      "https://*.twitch.tv",
       "https://accounts.google.com",
       "https://bsky.social"
     ]
