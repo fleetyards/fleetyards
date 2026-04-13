@@ -766,7 +766,7 @@ GEM
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.5.0)
-    timecop (0.9.10)
+    timecop (0.9.11)
     timeout (0.6.1)
     track_open_instances (0.1.15)
     tsort (0.2.0)
