@@ -18,6 +18,9 @@ json.youtube user.youtube if user.youtube.present?
 json.twitch user.twitch if user.twitch.present?
 json.guilded user.guilded if user.guilded.present?
 json.homepage user.homepage if user.homepage.present?
+json.location user.location if user.location.present?
+json.current_system user.current_system if user.current_system.present?
+json.current_system_code user.current_system_code if user.current_system_code.present?
 
 json.sale_notify user.sale_notify
 json.public_hangar user.public_hangar

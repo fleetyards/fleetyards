@@ -140,7 +140,7 @@ const crumbs = computed(() => {
 <template>
   <BreadCrumbs :crumbs="crumbs" />
   <Heading>
-    {{ t("headlines.fleets.members") }}
+    {{ t("headlines.fleets.members.index") }}
     <small v-if="stats" class="text-muted">
       {{
         t("labels.fleet.members.total", {
@@ -150,8 +150,23 @@ const crumbs = computed(() => {
     </small>
   </Heading>
 
-  <Teleport v-if="!mobile && canManageInvites" to="#header-right">
+  <Teleport v-if="!mobile" to="#header-right">
     <Btn
+      :inline="true"
+      :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
+    >
+      <i class="fa-duotone fa-globe" />
+      {{ t("actions.fleet.worldmap") }}
+    </Btn>
+    <Btn
+      :inline="true"
+      :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
+    >
+      <i class="fa-duotone fa-planet-ringed" />
+      {{ t("actions.fleet.starmap") }}
+    </Btn>
+    <Btn
+      v-if="canManageInvites"
       :inline="true"
       :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
     >
@@ -168,8 +183,21 @@ const crumbs = computed(() => {
     :is-filter-selected="isFilterSelected"
     hide-empty
   >
-    <template v-if="mobile && canManageInvites" #actions-right>
+    <template v-if="mobile" #actions-right>
       <Btn
+        :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
+      >
+        <i class="fa-duotone fa-globe" />
+        <span>{{ t("actions.fleet.worldmap") }}</span>
+      </Btn>
+      <Btn
+        :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
+      >
+        <i class="fa-duotone fa-planet-ringed" />
+        <span>{{ t("actions.fleet.starmap") }}</span>
+      </Btn>
+      <Btn
+        v-if="canManageInvites"
         :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
       >
         <i class="fa-duotone fa-user-plus" />

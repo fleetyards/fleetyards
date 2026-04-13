@@ -11,6 +11,8 @@
 #  consumed_timestep         :integer
 #  current_sign_in_at        :datetime
 #  current_sign_in_ip        :string(255)
+#  current_system            :string
+#  current_system_code       :string
 #  discord                   :string
 #  email                     :string(255)      default(""), not null
 #  encrypted_otp_secret      :string
@@ -25,8 +27,11 @@
 #  last_active_at            :datetime
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
+#  latitude                  :decimal(10, 6)
 #  locale                    :string(255)
+#  location                  :string
 #  locked_at                 :datetime
+#  longitude                 :decimal(10, 6)
 #  normalized_email          :string
 #  normalized_username       :string
 #  otp_backup_codes          :string           is an Array
@@ -66,6 +71,11 @@ class User < ApplicationRecord
   include UrlFieldConcern
   include ActiveStorageVariants
   include Rails.application.routes.url_helpers
+
+  geocoded_by :location
+  after_validation :geocode, if: :will_save_change_to_location?
+  before_validation :clear_coordinates, if: -> { location_changed? && location.blank? }
+  before_validation :match_current_system, if: :will_save_change_to_current_system?
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
@@ -246,6 +256,122 @@ class User < ApplicationRecord
 
   def confirm_access_token
     Digest::MD5.hexdigest(Digest::MD5.hexdigest(Rails.application.credentials.confirm_access_secret!) + Digest::MD5.hexdigest(id))
+  end
+
+  STAR_SYSTEMS = {
+    "STANTON" => "Stanton",
+    "PYRO" => "Pyro",
+    "NYX" => "Nyx",
+    "TERRA" => "Terra",
+    "SOL" => "Sol",
+    "MAGNUS" => "Magnus",
+    "CASTRA" => "Castra",
+    "BREMEN" => "Bremen",
+    "ODIN" => "Odin",
+    "TOHIL" => "Tohil",
+    "VIRGIL" => "Virgil",
+    "HADRIAN" => "Hadrian",
+    "OSO" => "Oso",
+    "CANO" => "Cano",
+    "DAVIEN" => "Davien",
+    "CROSHAW" => "Croshaw",
+    "RHETOR" => "Rhetor",
+    "KIEL" => "Kiel",
+    "BAKER" => "Baker",
+    "GOSS" => "Goss",
+    "ELLIS" => "Ellis",
+    "NEMO" => "Nemo",
+    "COREL" => "Corel",
+    "KILIAN" => "Kilian",
+    "IDRIS" => "Idris",
+    "CENTAURI" => "Centauri",
+    "CATHCART" => "Cathcart",
+    "NEXUS" => "Nexus",
+    "VEGA" => "Vega",
+    "TIBER" => "Tiber",
+    "ORION" => "Orion",
+    "CALIBAN" => "Caliban",
+    "HORUS" => "Horus",
+    "OSIRIS" => "Osiris",
+    "KELLOG" => "Kellog",
+    "CHARON" => "Charon",
+    "HELIOS" => "Helios",
+    "HADES" => "Hades",
+    "NUL" => "Nul",
+    "LEIR" => "Leir",
+    "BANSHEE" => "Banshee",
+    "FERRON" => "Ferron",
+    "OBERON" => "Oberon",
+    "ELYSIUM" => "Elysium",
+    "VANGUARD" => "Vanguard",
+    "VIKING" => "Viking",
+    "TARANIS" => "Taranis",
+    "FORA" => "Fora",
+    "CHRONOS" => "Chronos",
+    "BRANAUGH" => "Branaugh",
+    "GENESIS" => "Genesis",
+    "TYROL" => "Tyrol",
+    "GLIESE" => "Gliese",
+    "MIN" => "Min",
+    "GARRON" => "Garron",
+    "TANGA" => "Tanga",
+    "BACCHUS" => "Bacchus",
+    "TRISE" => "Trise",
+    "KABAL" => "Kabal",
+    "GURZIL" => "Gurzil",
+    "OYA" => "Oya",
+    "TAYAC" => "Tayac",
+    "KALLIS" => "Kallis",
+    "VECTOR" => "Vector",
+    "TAMSA" => "Tamsa",
+    "VAGABOND" => "Vagabond",
+    "VENDETTA" => "Vendetta",
+    "VERITAS" => "Veritas",
+    "VERMILION" => "Vermilion",
+    "VESPER" => "Vesper",
+    "VIRGO" => "Virgo",
+    "VOLT" => "Volt",
+    "VOODOO" => "Voodoo",
+    "VULTURE" => "Vulture",
+    "ORETANI" => "Oretani",
+    "GEDDON" => "Geddon",
+    "KINS" => "Kins",
+    "AYR'KA" => "Ail'ka",
+    "EL'SIN" => "El'sin",
+    "RIHLAH" => "R.il'a (Rihlah)",
+    "KHABARI" => "K.ap'a'ri (Khabari)",
+    "KAYFA" => "Kai'pua (Kayfa)",
+    "INDRA" => "Kyuk'ya (Indra)",
+    "VIRTUS" => "La'uo (Virtus)",
+    "MARKAHIL" => "Malkail (Markahil)",
+    "PALLAS" => "Th.us'ūng (Pallas)",
+    "HADUR" => "Yā'mon (Hadur)",
+    "EEALUS" => "Ē'aluth (Eealus)",
+    "TAL" => "T.āl",
+    "YULIN" => "Yulin"
+  }.freeze
+
+  private def match_current_system
+    if current_system.blank?
+      self.current_system_code = nil
+      return
+    end
+
+    input = current_system.strip.downcase
+
+    match = STAR_SYSTEMS.find do |code, name|
+      input == code.downcase ||
+        input == name.downcase ||
+        name.downcase.include?(input) ||
+        input.include?(name.downcase)
+    end
+
+    self.current_system_code = match&.first
+  end
+
+  private def clear_coordinates
+    self.latitude = nil
+    self.longitude = nil
   end
 
   private def touch_fleet_memberships

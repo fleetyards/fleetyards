@@ -160,7 +160,11 @@
         "add": "Create a new Fleet",
         "invites": "Fleet Invites",
         "inviteUrls": "Invite Urls",
-        "members": "Members",
+        "members": {
+          "index": "Members",
+          "worldmap": "Member Worldmap",
+          "starmap": "Member Starmap"
+        },
         "stats": "Stats",
         "preview": {
           "h1": "Fleet Preview",

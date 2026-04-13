@@ -692,6 +692,8 @@
       },
       "user": {
         "rsiHandle": "Handle",
+        "location": "Location",
+        "currentSystem": "Current Star System",
         "tester": "Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Unconfirmed email",
