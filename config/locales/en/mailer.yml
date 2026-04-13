@@ -31,7 +31,7 @@ en:
         headline: "%{username} accepted his Fleet Invitation"
         subject: New Fleet Member
       member_requested:
-        action: "%{fleet} Memberlist"
+        action: "%{fleet} Invites"
         body: 'To accept the request please click on the following link:'
         headline: "%{username} wants to Join %{fleet}"
         subject: New Fleet Membership Request

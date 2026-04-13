@@ -28,6 +28,7 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/ships", to: "fleets#show"
   get "fleets/:slug/fleetchart", to: "fleets#show"
   get "fleets/:slug/members", to: "fleets#members", as: :fleet_members
+  get "fleets/:slug/members/invites", to: "fleets#members", as: :fleet_member_invites
   get "fleets/:slug/stats", to: "fleets#stats"
   get "fleets/:slug/settings", to: "fleets#settings"
   get "fleets/:slug/settings/fleet", to: "fleets#settings"

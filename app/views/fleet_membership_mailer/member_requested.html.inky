@@ -9,7 +9,7 @@
 </p>
 <spacer size="16"></spacer>
 <center>
-  <button href="<%= frontend_fleet_members_url(slug: @fleet.slug) %>">
+  <button href="<%= frontend_fleet_member_invites_url(slug: @fleet.slug) %>">
     <%= I18n.t('mailer.fleet_membership.member_requested.action', fleet: @fleet.name) %>
   </button>
 </center>
