@@ -1,0 +1,16 @@
+PORT=8270
+DOMAIN=fleetyards.test
+SHORT_DOMAIN=fltyrd.test
+ON_SUBDOMAIN=true
+DB_PORT=8271
+DB_PASSWORD=password
+REDIS_URL=redis://localhost:8272
+MAILER_DEFAULT_FROM=info@fleetyards.test
+__VUE_OPTIONS_API__=false
+__VUE_PROD_HYDRATION_MISMATCH_DETAILS__=false
+DISCORD_OAUTH_CLIENT_ID=op://Fleetyards/DISCORD_OAUTH/client_id
+DISCORD_OAUTH_SECRET=op://Fleetyards/DISCORD_OAUTH/credential
+GITHUB_OAUTH_CLIENT_ID=op://Fleetyards/GITHUB_OAUTH/client_id
+GITHUB_OAUTH_SECRET=op://Fleetyards/GITHUB_OAUTH/credential
+TWITCH_OAUTH_CLIENT_ID=op://Fleetyards/TWITCH_OAUTH/client_id
+TWITCH_OAUTH_SECRET=op://Fleetyards/TWITCH_OAUTH/credential

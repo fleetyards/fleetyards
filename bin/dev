@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Load worktree overrides before foreman so they take precedence over .env
+# Load worktree overrides so they take precedence for port detection
 if [ -f .env.local ]; then
   set -a
   source .env.local
@@ -103,9 +103,15 @@ if [ -n "$open_browser" ]; then
   ) &
 fi
 
-env_files=".env"
-if [ -f .env.local ]; then
-  env_files=".env,.env.local"
+if ! command -v op &> /dev/null; then
+  echo "Error: 1Password CLI (op) is not installed." >&2
+  echo "Install it from: https://developer.1password.com/docs/cli/get-started/" >&2
+  exit 1
 fi
 
-foreman start -f Procfile -m "$formation" -p "$dev_port" -e "$env_files"
+env_args=""
+if [ -f .env.local ]; then
+  env_args="-e .env.local"
+fi
+
+op run --env-file=.env.tpl -- foreman start -f Procfile -m "$formation" -p "$dev_port" $env_args
