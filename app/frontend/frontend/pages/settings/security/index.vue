@@ -16,7 +16,7 @@ import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const sessionStore = useSessionStore();
-sessionStore.refreshUser();
+void sessionStore.refreshUser();
 
 const { t } = useI18n();
 
