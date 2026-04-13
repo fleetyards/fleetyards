@@ -1,8 +1,25 @@
-# Migrate Kamal Secrets to 1Password
+# Migrate Secrets to 1Password
 
 **Status: Complete**
 
-Deployment secrets migrated from plain-text `.env` files to 1Password. All secrets are fetched via `op read` at deploy time using a service account token.
+All secrets are managed via 1Password. No secret values are stored on disk.
+
+## Development environment
+
+Secrets are injected at runtime via `op run --env-file=.env.tpl` — nothing is written to disk.
+
+- `.env.tpl` — checked into git, contains non-secret defaults and `op://` references for secrets
+- `.env.local` — gitignored, worktree overrides (ports, DB suffix, etc.)
+- `bin/dev` — wraps foreman with `op run` automatically
+- `bin/credentials <env>` — edit Rails encrypted credentials via 1Password (opens in VS Code)
+
+```bash
+bin/dev                        # start dev server (secrets injected via op run)
+bin/credentials production     # edit production credentials
+bin/credentials staging        # edit staging credentials
+```
+
+**Prerequisites:** 1Password CLI (`op`) must be installed and you must be signed in to the "Fleetyards" vault.
 
 ## Key learnings
 
@@ -25,6 +42,19 @@ Deployment secrets migrated from plain-text `.env` files to 1Password. All secre
 - Installs `op` CLI
 - Single secret: `OP_SERVICE_ACCOUNT_TOKEN`
 - Exports `HCLOUD_TOKEN` via `op read` before running kamal
+
+## Editing Rails credentials
+
+Rails credentials are edited via `bin/credentials`, which fetches the encryption key from 1Password so you don't need local `.key` files.
+
+```bash
+bin/credentials production   # edit config/credentials/production.yml.enc
+bin/credentials staging      # edit config/credentials/staging.yml.enc
+```
+
+The script opens the decrypted credentials in VS Code and waits for you to save and close before re-encrypting.
+
+**Prerequisites:** 1Password CLI (`op`) must be installed and you must be signed in to the "Fleetyards" vault.
 
 ## Post-merge cleanup
 

@@ -12,9 +12,9 @@ pids/*
 config/credentials/*.key
 config/*.key
 .env*
-!.env.example
-!.env.test.example
+!.env.tpl
 !.env.test
+!.env.test.example
 
 # test files
 coverage/*

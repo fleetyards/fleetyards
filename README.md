@@ -14,6 +14,29 @@ If you have any feedback, please reach out on the [Fleetyards.net Discord](https
 
 [GPLv3](https://choosealicense.com/licenses/gpl-3.0/)
   
+## Development Setup
+
+### Prerequisites
+
+- [1Password CLI](https://developer.1password.com/docs/cli/get-started/) (`brew install 1password-cli`)
+- Access to the **Fleetyards** vault in 1Password
+
+### Getting Started
+
+```bash
+bin/setup
+bin/dev
+```
+
+Secrets are injected at runtime via `op run` from `.env.tpl` — nothing is written to disk. Worktree overrides (ports, DB suffix) go in `.env.local`.
+
+### Editing Rails Credentials
+
+```bash
+bin/credentials production
+bin/credentials staging
+```
+
 ## Authors and Acknowledgement
 
 - [@mortik](https://www.github.com/mortik) for development and design.

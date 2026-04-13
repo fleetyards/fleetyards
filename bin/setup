@@ -7,8 +7,6 @@ APP_ROOT = File.expand_path("..", __dir__)
 require_relative "../lib/cli_helpers"
 VERBOSE = ARGV.include?("--verbose")
 FRESH = ARGV.include?("--fresh")
-SKIP_ENV = ARGV.include?("--skip-env")
-FORCE_ENV = ARGV.include?("--force-env")
 
 def parse_flag(prefix)
   arg = ARGV.find { |a| a.start_with?("#{prefix}=") }
@@ -111,8 +109,6 @@ if ARGV.include?("--help") || ARGV.include?("-h")
     Options:
       --fresh         Wipe application state (Docker volumes) before setup
                       WARNING: affects all worktrees (shared Docker services)
-      --skip-env      Skip symlinking .env from main worktree
-      --force-env     Overwrite existing .env with symlink from main worktree
       --name=NAME     Override the worktree name used for DB suffix, ports, etc.
       --port=N        Override the Rails port (default: derived from name)
       --vite-port=N   Override the Vite dev server port (default: derived from name)
@@ -156,45 +152,6 @@ FileUtils.chdir APP_ROOT do
     write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db)
     puts "   Wrote .env.local" if VERBOSE
 
-    env_file = File.join(APP_ROOT, ".env")
-    if SKIP_ENV
-      # skipped via flag, no output
-    elsif !FORCE_ENV && (File.exist?(env_file) || File.symlink?(env_file))
-      if VERBOSE
-        puts "   .env already exists, skipping (use --force-env to overwrite)"
-      else
-        puts "  .env already exists, skipping (use --force-env to overwrite)"
-      end
-    else
-      source_root = main_worktree_root
-      if source_root
-        source_env = File.join(source_root, ".env")
-        if File.exist?(source_env)
-          FileUtils.rm_f(env_file)
-          FileUtils.ln_s(source_env, env_file)
-          if VERBOSE
-            puts "   Symlinked .env from #{source_root}"
-          else
-            puts "  Symlinked .env from main worktree"
-          end
-        end
-      end
-    end
-
-    # Symlink credential keys from main worktree
-    source_root = main_worktree_root
-    if source_root
-      %w[config/master.key config/credentials/production.key config/credentials/staging.key].each do |key_path|
-        source_key = File.join(source_root, key_path)
-        target_key = File.join(APP_ROOT, key_path)
-        next unless File.exist?(source_key)
-        next if File.exist?(target_key) || File.symlink?(target_key)
-
-        FileUtils.mkdir_p(File.dirname(target_key))
-        FileUtils.ln_s(source_key, target_key)
-        puts VERBOSE ? "   Symlinked #{key_path} from main worktree" : "  Symlinked #{key_path}"
-      end
-    end
   end
 
   unless system("command -v pnpm > /dev/null 2>&1")
