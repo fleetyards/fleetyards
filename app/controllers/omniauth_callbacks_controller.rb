@@ -111,7 +111,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
         origin = request.env["omniauth.origin"]
         origin = nil if origin.blank? || [frontend_login_url, frontend_sign_up_url].include?(origin)
-        redirect_to origin || user.public_hangar_url, notice: t("devise.omniauth.success", kind: kind), allow_other_host: true
+        redirect_to origin || frontend_hangar_url, notice: t("devise.omniauth.success", kind: kind), allow_other_host: true
       else
         url = request.env["omniauth.origin"].presence || frontend_login_url
         redirect_to url, alert: t("devise.omniauth.failure_username_taken", kind: kind), allow_other_host: true
