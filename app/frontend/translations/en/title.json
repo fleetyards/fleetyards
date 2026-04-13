@@ -44,7 +44,9 @@
         "invites": "Fleet Invites",
         "members": {
           "index": "%{fleet} Members",
-          "invites": "%{fleet} Invites"
+          "invites": "%{fleet} Invites",
+          "worldmap": "%{fleet} Member Worldmap",
+          "starmap": "%{fleet} Member Starmap"
         },
         "stats": "%{fleet} Stats",
         "settings": {

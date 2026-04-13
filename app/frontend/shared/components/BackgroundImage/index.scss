@@ -58,6 +58,15 @@
     }
   }
 
+  &.bg-9 {
+    background-image: url("@/images/bg-9.jpg");
+    opacity: 0.8;
+
+    &.webp {
+      background-image: url("@/images/bg-9.webp");
+    }
+  }
+
   &.bg-404 {
     background-image: url("@/images/bg-404.jpg");
 

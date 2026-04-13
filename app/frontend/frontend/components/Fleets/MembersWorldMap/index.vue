@@ -9,24 +9,24 @@ import {
   SphereGeometry,
   ShaderMaterial,
   MeshBasicMaterial,
-  PointsMaterial,
   SpriteMaterial,
   AdditiveBlending,
-  BackSide,
   Color,
-  BufferGeometry,
-  Float32BufferAttribute,
   QuadraticBezierCurve3,
   Vector3,
   TubeGeometry,
+  TextureLoader,
   CanvasTexture,
   LinearFilter,
+  Float32BufferAttribute,
+  BufferGeometry,
+  PointsMaterial,
 } from "three";
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls } from "@tresjs/cientos";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { FleetMember } from "@/services/fyApi";
-import gridCoords from "@/frontend/data/globe-grid.json";
+import earthTextureSrc from "@/images/earth_dark.jpg";
 
 type Props = {
   members: FleetMember[];
@@ -48,104 +48,156 @@ const powerPreference = computed<WebGLPowerPreference>(() =>
 
 const GLOBE_RADIUS = 200;
 const MARKER_OFFSET = GLOBE_RADIUS + GLOBE_RADIUS * 0.025;
-const GRID_OFFSET = GLOBE_RADIUS + GLOBE_RADIUS * 0.025;
 
-// --- Coordinate conversion (standard geographic → 3D) ---
-// +Y = north pole, XZ plane = equator
+// --- Coordinate conversion ---
 function toSphereCoords(
   lat: number,
   lng: number,
   radius: number,
 ): [number, number, number] {
-  const latRad = (lat * Math.PI) / 180;
-  const lngRad = (lng * Math.PI) / 180;
-  const x = radius * Math.cos(latRad) * Math.cos(lngRad);
-  const y = radius * Math.sin(latRad);
-  const z = radius * Math.cos(latRad) * Math.sin(lngRad);
+  const phi = ((90 - lat) * Math.PI) / 180;
+  const theta = -(lng * Math.PI) / 180;
+  const x = radius * Math.sin(phi) * Math.cos(theta);
+  const y = radius * Math.cos(phi);
+  const z = radius * Math.sin(phi) * Math.sin(theta);
   return [x, y, z];
 }
 
+// --- Dev test data: 120 fake members scattered across Germany ---
+const DEV_TEST = import.meta.env.DEV;
+
+const GERMAN_CITIES = [
+  [52.52, 13.41], [53.55, 9.99], [48.14, 11.58], [50.94, 6.96],
+  [51.23, 6.78], [50.11, 8.68], [48.78, 9.18], [51.34, 12.37],
+  [53.08, 8.81], [51.05, 13.74], [51.45, 7.01], [49.45, 11.08],
+  [52.27, 10.52], [54.32, 10.14], [51.31, 9.5], [49.99, 8.27],
+  [48.4, 10.0], [50.07, 8.24], [47.99, 7.84], [49.48, 8.47],
+  [52.13, 11.63], [50.78, 6.08], [51.51, 7.47], [54.09, 12.13],
+  [52.41, 9.74], [50.36, 7.6], [49.01, 8.4], [51.96, 7.63],
+  [47.66, 9.18], [50.83, 12.92],
+] as const;
+
+function generateTestMembers(): FleetMember[] {
+  const members: FleetMember[] = [];
+  for (let i = 0; i < 120; i++) {
+    const [baseLat, baseLng] = GERMAN_CITIES[i % GERMAN_CITIES.length];
+    members.push({
+      id: `test-${i}`,
+      username: `Member_${i + 1}`,
+      latitude: baseLat + (Math.random() - 0.5) * 1.5,
+      longitude: baseLng + (Math.random() - 0.5) * 1.5,
+      fleetRole: { id: "0", name: "member", slug: "member" },
+      shipsFilter: "public" as any,
+      fleetSlug: "test",
+      fleetName: "Test",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+  }
+  return members;
+}
+
+const testMembers = DEV_TEST ? generateTestMembers() : [];
+
 // --- Members ---
-const membersWithLocation = computed(() =>
-  props.members.filter(
+const allMembers = computed(() => {
+  const real = props.members.filter(
     (m) => m.latitude != null && m.longitude != null,
-  ),
-);
+  );
+  return DEV_TEST ? [...real, ...testMembers] : real;
+});
 
-const markerPositions = computed(() =>
-  membersWithLocation.value.map((member) => ({
-    member,
-    position: toSphereCoords(
-      member.latitude!,
-      member.longitude!,
-      MARKER_OFFSET,
-    ),
-  })),
-);
+// --- Marker clustering ---
+interface MarkerCluster {
+  id: string;
+  position: [number, number, number];
+  members: FleetMember[];
+  lat: number;
+  lng: number;
+}
 
-// --- Globe (no texture, just rim glow like reference with null texture) ---
+const CLUSTER_THRESHOLD = 5; // degrees (~500km)
+
+function clusterMembers(members: FleetMember[]): MarkerCluster[] {
+  const clusters: MarkerCluster[] = [];
+
+  for (const member of members) {
+    const lat = member.latitude!;
+    const lng = member.longitude!;
+
+    let added = false;
+    for (const cluster of clusters) {
+      const dLat = lat - cluster.lat;
+      const dLng = lng - cluster.lng;
+      if (Math.sqrt(dLat * dLat + dLng * dLng) < CLUSTER_THRESHOLD) {
+        cluster.members.push(member);
+        // Recalculate centroid
+        cluster.lat =
+          cluster.members.reduce((s, m) => s + m.latitude!, 0) /
+          cluster.members.length;
+        cluster.lng =
+          cluster.members.reduce((s, m) => s + m.longitude!, 0) /
+          cluster.members.length;
+        cluster.position = toSphereCoords(
+          cluster.lat,
+          cluster.lng,
+          MARKER_OFFSET,
+        );
+        added = true;
+        break;
+      }
+    }
+
+    if (!added) {
+      clusters.push({
+        id: member.id,
+        position: toSphereCoords(lat, lng, MARKER_OFFSET),
+        members: [member],
+        lat,
+        lng,
+      });
+    }
+  }
+
+  return clusters;
+}
+
+const markerClusters = computed(() => clusterMembers(allMembers.value));
+
+// Marker size based on cluster count
+function clusterScale(count: number): number {
+  if (count <= 1) return 1;
+  return Math.min(1 + Math.log2(count) * 0.4, 3);
+}
+
+// --- Globe with earth texture + rim glow ---
+const earthTexture = new TextureLoader().load(earthTextureSrc);
 const globeGeometry = new SphereGeometry(GLOBE_RADIUS, 64, 64);
 
 const globeMaterial = new ShaderMaterial({
+  uniforms: { globeTexture: { value: earthTexture } },
   vertexShader: `
     varying vec3 vNormal;
+    varying vec2 vUv;
     void main() {
       vNormal = normalize(normalMatrix * normal);
+      vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
   fragmentShader: `
+    uniform sampler2D globeTexture;
     varying vec3 vNormal;
+    varying vec2 vUv;
     void main() {
+      vec3 diffuse = texture2D(globeTexture, vUv).xyz;
       float intensity = 1.05 - dot(vNormal, vec3(0.0, 0.0, 1.0));
       vec3 atmosphere = vec3(1.0, 1.0, 1.0) * pow(intensity, 3.0);
-      gl_FragColor = vec4(atmosphere, 1.0);
+      gl_FragColor = vec4(diffuse + atmosphere, 1.0);
     }
   `,
   blending: AdditiveBlending,
   transparent: true,
-});
-
-// --- Atmosphere (white glow, matching reference exactly) ---
-const atmosphereMaterial = new ShaderMaterial({
-  vertexShader: `
-    varying vec3 vNormal;
-    void main() {
-      vNormal = normalize(normalMatrix * normal);
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  `,
-  fragmentShader: `
-    varying vec3 vNormal;
-    void main() {
-      float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 4.0);
-      gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * intensity;
-    }
-  `,
-  blending: AdditiveBlending,
-  side: BackSide,
-  transparent: true,
-});
-
-// --- Dot grid (land-mass points from reference grid data) ---
-function buildGridGeometry(radius: number): BufferGeometry {
-  const positions: number[] = [];
-  for (const [lat, lon] of gridCoords as [number, number][]) {
-    const [x, y, z] = toSphereCoords(lat, lon, radius);
-    positions.push(x, y, z);
-  }
-  const geo = new BufferGeometry();
-  geo.setAttribute(
-    "position",
-    new Float32BufferAttribute(new Float32Array(positions), 3),
-  );
-  return geo;
-}
-
-const gridGeometry = buildGridGeometry(GRID_OFFSET);
-const gridMaterial = new PointsMaterial({
-  color: new Color("rgb(203, 168, 0)"),
-  size: 2,
 });
 
 // --- Connection arcs between members ---
@@ -178,19 +230,17 @@ function getSplineCoords(
 }
 
 const arcData = computed<ArcEntry[]>(() => {
-  const pts = markerPositions.value;
-  if (pts.length < 2) return [];
+  const clusters = markerClusters.value;
+  if (clusters.length < 2) return [];
 
-  const members = membersWithLocation.value;
   const arcs: ArcEntry[] = [];
-
-  for (let i = 0; i < members.length; i++) {
-    const j = (i + 1) % members.length;
+  for (let i = 0; i < clusters.length; i++) {
+    const j = (i + 1) % clusters.length;
     const { start, mid, end } = getSplineCoords(
-      members[i].latitude!,
-      members[i].longitude!,
-      members[j].latitude!,
-      members[j].longitude!,
+      clusters[i].lat,
+      clusters[i].lng,
+      clusters[j].lat,
+      clusters[j].lng,
       MARKER_OFFSET,
     );
 
@@ -209,7 +259,7 @@ const arcMaterial = new MeshBasicMaterial({
   opacity: 0.45,
 });
 
-// --- Traveling dots along arcs (matching reference Dots class) ---
+// --- Traveling dots along arcs ---
 const MAX_DOTS = 30;
 const dotsArray = new Float32Array(MAX_DOTS * 3).fill(99999);
 const dotsGeometry = new BufferGeometry();
@@ -226,20 +276,13 @@ const dotsMaterial = new PointsMaterial({
 });
 
 interface TravelingDot {
-  arcIndex: number;
   pathIndex: number;
   path: Vector3[] | null;
-  active: boolean;
 }
 
 const travelingDots: TravelingDot[] = Array.from(
   { length: MAX_DOTS },
-  () => ({
-    arcIndex: 0,
-    pathIndex: 0,
-    path: null,
-    active: false,
-  }),
+  () => ({ pathIndex: 0, path: null }),
 );
 
 // --- Marker materials ---
@@ -251,7 +294,7 @@ const markerMaterial = new MeshBasicMaterial({
   opacity: 0.8,
 });
 
-// Per-marker glow state for independent pulse animation
+// Per-marker glow state
 interface GlowState {
   isAnimating: boolean;
   scale: number;
@@ -260,7 +303,7 @@ interface GlowState {
 }
 
 const glowStates = computed<GlowState[]>(() =>
-  markerPositions.value.map(() => ({
+  markerClusters.value.map(() => ({
     isAnimating: false,
     scale: 1,
     opacity: 0.6,
@@ -273,41 +316,103 @@ const glowStates = computed<GlowState[]>(() =>
   })),
 );
 
+// --- Capital cities (geographic reference) ---
+const CAPITALS: { name: string; lat: number; lng: number }[] = [
+  { name: "Washington D.C.", lat: 38.9, lng: -77.04 },
+  { name: "London", lat: 51.51, lng: -0.13 },
+  { name: "Paris", lat: 48.86, lng: 2.35 },
+  { name: "Berlin", lat: 52.52, lng: 13.41 },
+  { name: "Tokyo", lat: 35.68, lng: 139.69 },
+  { name: "Canberra", lat: -35.28, lng: 149.13 },
+  { name: "Brasília", lat: -15.79, lng: -47.88 },
+  { name: "Moscow", lat: 55.76, lng: 37.62 },
+  { name: "Beijing", lat: 39.9, lng: 116.4 },
+  { name: "New Delhi", lat: 28.61, lng: 77.21 },
+  { name: "Cairo", lat: 30.04, lng: 31.24 },
+  { name: "Pretoria", lat: -25.75, lng: 28.19 },
+  { name: "Buenos Aires", lat: -34.6, lng: -58.38 },
+  { name: "Ottawa", lat: 45.42, lng: -75.7 },
+  { name: "Rome", lat: 41.9, lng: 12.5 },
+  { name: "Madrid", lat: 40.42, lng: -3.7 },
+  { name: "Seoul", lat: 37.57, lng: 126.98 },
+  { name: "Bangkok", lat: 13.76, lng: 100.5 },
+  { name: "Nairobi", lat: -1.29, lng: 36.82 },
+  { name: "Mexico City", lat: 19.43, lng: -99.13 },
+];
+
+const cityRadius = GLOBE_RADIUS + GLOBE_RADIUS * 0.022;
+const cityMarkerGeometry = new SphereGeometry(1.2, 12, 12);
+const cityMarkerMaterial = new MeshBasicMaterial({
+  color: new Color("rgb(255, 255, 255)"),
+  transparent: true,
+  opacity: 0.35,
+});
+
 // --- Label sprites ---
-function createLabelTexture(text: string): CanvasTexture {
+function createLabelTexture(
+  text: string,
+  color = "white",
+  fontSize = 72,
+  fontWeight = "600",
+): CanvasTexture {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
   canvas.width = 512;
   canvas.height = 128;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.font = "300 28px sans-serif";
-  ctx.fillStyle = "white";
+
+  ctx.font = `${fontWeight} ${fontSize}px sans-serif`;
+  ctx.shadowColor = "rgba(0, 0, 0, 1)";
+  ctx.shadowBlur = 10;
+  ctx.fillStyle = color;
   ctx.textBaseline = "middle";
-  ctx.fillText(text, 4, 64);
+  ctx.fillText(text, 4, 68);
+  ctx.fillText(text, 4, 68);
+
   const tex = new CanvasTexture(canvas);
   tex.minFilter = LinearFilter;
   return tex;
 }
 
 const labelData = computed(() =>
-  markerPositions.value.map((item) => {
-    const tex = createLabelTexture(
-      item.member.username || "Unknown",
-    );
+  markerClusters.value.map((cluster) => {
+    const label =
+      cluster.members.length === 1
+        ? cluster.members[0].username || "Unknown"
+        : `${cluster.members.length} members`;
+    const tex = createLabelTexture(label, "rgb(143, 216, 216)");
     const mat = new SpriteMaterial({
       map: tex,
       depthTest: false,
       transparent: true,
     });
-    // Offset label slightly above marker
+    const dir = new Vector3(...cluster.position).normalize();
     const pos: [number, number, number] = [
-      item.position[0],
-      item.position[1] + 4,
-      item.position[2],
+      cluster.position[0] + dir.x * 5,
+      cluster.position[1] + dir.y * 5 + 4,
+      cluster.position[2] + dir.z * 5,
     ];
-    return { id: item.member.id, material: mat, position: pos };
+    return { id: cluster.id, material: mat, position: pos };
   }),
 );
+
+// --- City label data ---
+const cityLabelData = CAPITALS.map((city) => {
+  const position = toSphereCoords(city.lat, city.lng, cityRadius);
+  const tex = createLabelTexture(city.name, "rgba(255, 255, 255, 0.6)", 48, "300");
+  const mat = new SpriteMaterial({
+    map: tex,
+    depthTest: false,
+    transparent: true,
+    opacity: 0.7,
+  });
+  const dir = new Vector3(...position).normalize();
+  const labelPos: [number, number, number] = [
+    position[0] + dir.x * 3,
+    position[1] + dir.y * 3 + 2,
+    position[2] + dir.z * 3,
+  ];
+  return { name: city.name, position, labelPos, material: mat };
+});
 
 // --- Glow mesh refs for scale animation ---
 const glowMeshRefs = ref<Record<string, any>>({});
@@ -322,13 +427,13 @@ function setGlowRef(id: string | undefined, el: any) {
 let rafId: number;
 
 function animate() {
-  // Animate marker glow (reference: random 1% chance per frame to start pulse)
+  // Animate marker glow
   const states = glowStates.value;
   const meshRefs = glowMeshRefs.value;
 
   for (let i = 0; i < states.length; i++) {
     const state = states[i];
-    const markerId = markerPositions.value[i]?.member.id;
+    const markerId = markerClusters.value[i]?.id;
     const mesh = markerId ? meshRefs[markerId] : null;
 
     if (!state.isAnimating) {
@@ -408,7 +513,8 @@ onUnmounted(() => {
 <template>
   <div class="members-worldmap">
     <TresCanvas
-      clear-color="#000000"
+      :clear-color="0x000000"
+      :clear-alpha="0"
       :shadows="false"
       :dpr="dpr"
       :power-preference="powerPreference"
@@ -421,32 +527,31 @@ onUnmounted(() => {
       <OrbitControls
         enable-damping
         :damping-factor="0.05"
-        :rotate-speed="0.07"
+        :rotate-speed="0.8"
         :enable-zoom="true"
+        :zoom-speed="0.5"
+        :min-distance="GLOBE_RADIUS * 1.2"
+        :max-distance="GLOBE_RADIUS * 4"
         :enable-pan="false"
         make-default
       />
 
-      <!-- Globe group (slow auto-rotation matching reference) -->
-      <TresGroup>
-        <!-- Globe sphere (rim glow only, no texture) -->
+      <!-- Globe group -->
+      <TresGroup :rotation-y="-Math.PI / 2">
+        <!-- Globe with earth texture + rim glow -->
         <TresMesh :geometry="globeGeometry" :material="globeMaterial" />
 
-        <!-- Dot grid (gold dots covering globe surface) -->
-        <TresPoints :geometry="gridGeometry" :material="gridMaterial" />
-
-        <!-- Member markers -->
-        <TresGroup v-for="(item, idx) in markerPositions" :key="item.member.id">
-          <!-- Marker point (teal) -->
+        <!-- Member markers (clustered) -->
+        <TresGroup v-for="(cluster, idx) in markerClusters" :key="cluster.id">
           <TresMesh
-            :position="item.position"
+            :position="cluster.position"
             :geometry="markerGeometry"
             :material="markerMaterial"
+            :scale="[clusterScale(cluster.members.length), clusterScale(cluster.members.length), clusterScale(cluster.members.length)]"
           />
-          <!-- Glow (white, animated pulse) -->
           <TresMesh
-            :ref="(el: any) => setGlowRef(item.member.id, el)"
-            :position="item.position"
+            :ref="(el: any) => setGlowRef(cluster.id, el)"
+            :position="cluster.position"
             :geometry="markerGeometry"
             :material="glowStates[idx]?.material"
           />
@@ -458,8 +563,22 @@ onUnmounted(() => {
           :key="item.id"
           :position="item.position"
           :material="item.material"
-          :scale="[40, 20, 1]"
+          :scale="[60, 15, 1]"
         />
+
+        <!-- Capital city markers -->
+        <TresGroup v-for="city in cityLabelData" :key="city.name">
+          <TresMesh
+            :position="city.position"
+            :geometry="cityMarkerGeometry"
+            :material="cityMarkerMaterial"
+          />
+          <TresSprite
+            :position="city.labelPos"
+            :material="city.material"
+            :scale="[45, 11, 1]"
+          />
+        </TresGroup>
 
         <!-- Connection arcs -->
         <TresMesh
@@ -473,10 +592,6 @@ onUnmounted(() => {
         <TresPoints :geometry="dotsGeometry" :material="dotsMaterial" />
       </TresGroup>
 
-      <!-- Atmosphere glow (outer halo) -->
-      <TresMesh :material="atmosphereMaterial">
-        <TresSphereGeometry :args="[GLOBE_RADIUS * 1.2, 64, 64]" />
-      </TresMesh>
     </TresCanvas>
   </div>
 </template>

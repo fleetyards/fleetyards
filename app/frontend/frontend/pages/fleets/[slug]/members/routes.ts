@@ -32,6 +32,7 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.members.starmap",
       needsAuthentication: true,
       customTitle: true,
+      feature: "fleet_starmap",
     },
   },
   {

@@ -8,8 +8,8 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 import MembersStarMap from "@/frontend/components/Fleets/MembersStarMap/index.vue";
 import {
   useFleetMembers as useFleetMembersQuery,
@@ -70,25 +70,20 @@ const crumbs = computed(() => [
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs" />
-  <Heading>
-    {{ t("headlines.fleets.members.starmap") }}
-    <small v-if="membersWithSystem.length" class="text-muted">
-      {{ membersWithSystem.length }} / {{ memberItems.length }}
-    </small>
-  </Heading>
+  <FeatureGuard feature="fleet_starmap">
+    <BreadCrumbs :crumbs="crumbs" />
+    <Heading>
+      {{ t("headlines.fleets.members.starmap") }}
+      <small v-if="membersWithSystem.length" class="text-muted">
+        {{ membersWithSystem.length }} / {{ memberItems.length }}
+      </small>
+    </Heading>
 
-  <Teleport to="#header-right">
-    <Btn
-      :inline="true"
-      :to="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
-    >
-      <i class="fa-duotone fa-list" />
-      {{ t("actions.fleet.membersList") }}
-    </Btn>
-  </Teleport>
+    <Loader :loading="asyncStatus.isLoading.value" />
 
-  <Loader :loading="asyncStatus.isLoading.value" />
-
-  <MembersStarMap v-if="!asyncStatus.isLoading.value" :members="memberItems" />
+    <MembersStarMap
+      v-if="!asyncStatus.isLoading.value"
+      :members="memberItems"
+    />
+  </FeatureGuard>
 </template>

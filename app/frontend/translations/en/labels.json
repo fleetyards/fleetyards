@@ -48,7 +48,8 @@
         "noFeaturesAvailable": "No self-service features are currently available.",
         "descriptions": {
           "tools_travel_times": "Show estimated travel times between locations.",
-          "tools_cargo_grids": "Show interactive cargo grid viewer for ships."
+          "tools_cargo_grids": "Show interactive cargo grid viewer for ships.",
+          "fleet_starmap": "Show Star Citizen starmap on fleet member pages."
         }
       },
       "oauthApplication": {

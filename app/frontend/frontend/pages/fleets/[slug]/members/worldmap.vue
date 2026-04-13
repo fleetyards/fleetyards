@@ -18,6 +18,7 @@ import {
   type FleetMembersParams,
   type FleetMemberQuery,
 } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
   fleet: Fleet;
@@ -28,6 +29,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const { isFeatureEnabled } = useFeatures();
+const starmapEnabled = computed(() => isFeatureEnabled("fleet_starmap"));
 
 const membersQueryParams = computed<FleetMembersParams>(() => ({
   perPage: "all",
@@ -89,6 +92,7 @@ const crumbs = computed(() => [
       {{ t("actions.fleet.membersList") }}
     </Btn>
     <Btn
+      v-if="starmapEnabled"
       :inline="true"
       :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
     >

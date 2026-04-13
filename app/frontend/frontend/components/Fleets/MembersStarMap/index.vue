@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { MeshBasicMaterial, Color, Vector3 } from "three";
+import { MeshBasicMaterial, Color, Vector2, Vector3 } from "three";
 import { LineSegmentsGeometry } from "three/examples/jsm/lines/LineSegmentsGeometry.js";
 import { LineSegments2 } from "three/examples/jsm/lines/LineSegments2.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
-import { TresCanvas } from "@tresjs/core";
+import { TresCanvas, useLoop } from "@tresjs/core";
 import { OrbitControls, Html } from "@tresjs/cientos";
 import { useMobile } from "@/shared/composables/useMobile";
 import type { FleetMember } from "@/services/fyApi";
@@ -56,7 +56,9 @@ const labelOffset = (system: StarSystem): [number, number, number] => [
 // Build a lookup map
 const systemByCode = new Map(starSystems.map((s) => [s.code, s]));
 
-// --- Fat line helpers ---
+// --- Track all LineMaterials so we can update their resolution ---
+const lineMaterials: LineMaterial[] = [];
+
 const buildLineSegments = (
   positions: number[],
   color: string,
@@ -70,9 +72,13 @@ const buildLineSegments = (
     linewidth,
     transparent: true,
     opacity,
-    worldUnits: true,
+    worldUnits: false,
     depthTest: true,
+    polygonOffset: true,
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1,
   });
+  lineMaterials.push(mat);
   const line = new LineSegments2(geo, mat);
   line.computeLineDistances();
   return line;
@@ -89,7 +95,7 @@ const routeLines = computed(() => {
     const [tx, ty, tz] = systemPosition(toSys);
     positions.push(fx, fy, fz, tx, ty, tz);
   }
-  return buildLineSegments(positions, "#4a4a5a", 0.25, 0.08);
+  return buildLineSegments(positions, "#4a5568", 0.35, 2);
 });
 
 // --- Highlight routes (connecting active systems) ---
@@ -105,43 +111,23 @@ const activeRouteLines = computed(() => {
     const [tx, ty, tz] = systemPosition(toSys);
     positions.push(fx, fy, fz, tx, ty, tz);
   }
-  return buildLineSegments(positions, "#428bca", 0.9, 0.15);
+  return buildLineSegments(positions, "#5aafd4", 0.85, 3);
 });
 
-// Dimmed system nodes: muted purple-grey (rendered on top of lines)
+// Dimmed system nodes: muted purple-grey
 const dimmedSystemMaterial = new MeshBasicMaterial({
   color: new Color("#6a5a7a"),
-  transparent: true,
-  opacity: 0.5,
-  depthTest: false,
 });
 
-// Active system nodes: primary blue (rendered on top of lines)
+// Active system nodes: primary blue
 const activeSystemMaterial = new MeshBasicMaterial({
   color: new Color("#428bca"),
-  transparent: true,
-  opacity: 0.9,
-  depthTest: false,
 });
 
 const activeSystemGlowMaterial = new MeshBasicMaterial({
   color: new Color("#428bca"),
   transparent: true,
   opacity: 0.25,
-  depthTest: false,
-});
-
-// Member markers: green
-const memberMarkerMaterial = new MeshBasicMaterial({
-  color: new Color("#42b883"),
-  transparent: true,
-  opacity: 0.9,
-});
-
-const memberMarkerGlowMaterial = new MeshBasicMaterial({
-  color: new Color("#42b883"),
-  transparent: true,
-  opacity: 0.3,
 });
 
 // --- Members grouped by system ---
@@ -156,31 +142,24 @@ const membersBySystem = computed(() => {
   return map;
 });
 
-// --- Compute member marker positions (offset around system node) ---
-const memberMarkers = computed(() => {
-  const markers: {
-    member: FleetMember;
+// --- System member badges (one per system that has members) ---
+const systemMemberBadges = computed(() => {
+  const badges: {
+    systemCode: string;
+    members: FleetMember[];
     position: [number, number, number];
   }[] = [];
   for (const [code, members] of membersBySystem.value) {
     const system = systemByCode.get(code);
     if (!system) continue;
     const [sx, sy, sz] = systemPosition(system);
-    const count = members.length;
-    for (let i = 0; i < count; i++) {
-      const angle = (2 * Math.PI * i) / Math.max(count, 1);
-      const offset = 0.8;
-      markers.push({
-        member: members[i],
-        position: [
-          sx + Math.cos(angle) * offset,
-          sy + Math.sin(angle) * offset,
-          sz,
-        ],
-      });
-    }
+    badges.push({
+      systemCode: code,
+      members,
+      position: [sx, sy - (ACTIVE_SYSTEMS.has(code) ? 1.4 : 0.8), sz],
+    });
   }
-  return markers;
+  return badges;
 });
 
 // --- Camera position (centered on the active systems) ---
@@ -203,25 +182,25 @@ const cameraPosition = computed(() => {
   return [t.x, t.y + 5, t.z + 30] as [number, number, number];
 });
 
-// --- Tooltip ---
-const hoveredItem = ref<{ label: string } | null>(null);
-const tooltipPos = ref({ x: 0, y: 0 });
-
-const onMemberEnter = (member: FleetMember) => {
-  hoveredItem.value = { label: member.username };
-};
-
-const onItemLeave = () => {
-  hoveredItem.value = null;
-};
-
-const onPointerMove = (event: PointerEvent) => {
-  tooltipPos.value = { x: event.clientX, y: event.clientY };
-};
+// --- Inner component to access the render loop for resolution updates ---
+const resolutionVec = new Vector2();
+const ResolutionUpdater = defineComponent({
+  setup() {
+    const { onBeforeRender } = useLoop();
+    onBeforeRender(({ renderer }) => {
+      if (!renderer) return;
+      renderer.getSize(resolutionVec);
+      for (const mat of lineMaterials) {
+        mat.resolution.set(resolutionVec.x, resolutionVec.y);
+      }
+    });
+    return () => null;
+  },
+});
 </script>
 
 <template>
-  <div class="members-starmap" @pointermove="onPointerMove">
+  <div class="members-starmap">
     <TresCanvas
       :clear-alpha="0"
       :shadows="false"
@@ -234,8 +213,6 @@ const onPointerMove = (event: PointerEvent) => {
         :args="[60, 1, 0.1, 500]"
       />
       <OrbitControls
-        auto-rotate
-        :auto-rotate-speed="0.3"
         enable-rotate
         :enable-zoom="true"
         :zoom-speed="0.5"
@@ -247,6 +224,9 @@ const onPointerMove = (event: PointerEvent) => {
         :target="cameraTarget"
         make-default
       />
+
+      <!-- Resolution updater for fat lines -->
+      <ResolutionUpdater />
 
       <!-- Jump routes (dimmed) -->
       <primitive :object="routeLines" />
@@ -279,7 +259,7 @@ const onPointerMove = (event: PointerEvent) => {
           <TresSphereGeometry :args="[0.7, 16, 16]" />
         </TresMesh>
         <!-- System label -->
-        <Html :position="labelOffset(system)" center>
+        <Html :position="labelOffset(system)" center :z-index-range="[1, 10]">
           <span
             :class="[
               'system-label',
@@ -293,33 +273,27 @@ const onPointerMove = (event: PointerEvent) => {
         </Html>
       </TresGroup>
 
-      <!-- Member markers -->
-      <TresGroup v-for="item in memberMarkers" :key="item.member.id">
-        <TresMesh
-          :position="item.position"
-          :material="memberMarkerGlowMaterial"
-          @pointer-enter="() => onMemberEnter(item.member)"
-          @pointer-leave="onItemLeave"
-        >
-          <TresSphereGeometry :args="[0.35, 16, 16]" />
-        </TresMesh>
-        <TresMesh :position="item.position" :material="memberMarkerMaterial">
-          <TresSphereGeometry :args="[0.18, 16, 16]" />
-        </TresMesh>
+      <!-- Member badges per system -->
+      <TresGroup
+        v-for="badge in systemMemberBadges"
+        :key="badge.systemCode"
+      >
+        <Html :position="badge.position" center :z-index-range="[50, 100]">
+          <div class="member-badge">
+            <span class="member-badge-count">{{ badge.members.length }}</span>
+            <div class="member-badge-names">
+              <span
+                v-for="m in badge.members"
+                :key="m.id"
+                class="member-badge-name"
+              >
+                {{ m.username }}
+              </span>
+            </div>
+          </div>
+        </Html>
       </TresGroup>
     </TresCanvas>
-
-    <!-- Tooltip overlay -->
-    <div
-      v-if="hoveredItem"
-      class="starmap-tooltip"
-      :style="{
-        left: `${tooltipPos.x + 12}px`,
-        top: `${tooltipPos.y - 20}px`,
-      }"
-    >
-      {{ hoveredItem.label }}
-    </div>
 
     <!-- Legend -->
     <div class="starmap-legend">
@@ -346,20 +320,7 @@ const onPointerMove = (event: PointerEvent) => {
   min-height: 400px;
   border-radius: 8px;
   overflow: hidden;
-}
-
-.starmap-tooltip {
-  position: fixed;
-  padding: 4px 10px;
-  background: rgba(10, 22, 40, 0.9);
-  color: #428bca;
-  border: 1px solid #428bca;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  pointer-events: none;
-  z-index: 10;
-  white-space: nowrap;
+  user-select: none;
 }
 
 .starmap-legend {
@@ -411,6 +372,8 @@ const onPointerMove = (event: PointerEvent) => {
   white-space: nowrap;
   pointer-events: none;
   text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 1;
 }
 
 :deep(.system-label-active) {
@@ -424,5 +387,58 @@ const onPointerMove = (event: PointerEvent) => {
 
 :deep(.system-label-dimmed) {
   color: rgba(180, 170, 200, 0.6);
+}
+
+:deep(.member-badge) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: auto;
+  cursor: default;
+  position: relative;
+  z-index: 50;
+
+  .member-badge-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 11px;
+    background: #42b883;
+    color: #0a1628;
+    font-size: 11px;
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(66, 184, 131, 0.6);
+  }
+
+  .member-badge-names {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    padding: 6px 10px;
+    background: rgba(10, 22, 40, 0.97);
+    border: 1px solid rgba(66, 184, 131, 0.4);
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    position: relative;
+    z-index: 100;
+  }
+
+  &:hover .member-badge-names {
+    display: flex;
+  }
+
+  .member-badge-name {
+    color: #42b883;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  }
 }
 </style>

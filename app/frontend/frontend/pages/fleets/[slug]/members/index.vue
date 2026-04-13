@@ -19,6 +19,7 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
 import { checkAccess } from "@/shared/utils/Access";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   ChannelsEnum,
   useSubscription,
@@ -57,6 +58,9 @@ const canManageInvites = computed(() =>
     "fleet:manage",
   ]),
 );
+
+const { isFeatureEnabled } = useFeatures();
+const starmapEnabled = computed(() => isFeatureEnabled("fleet_starmap"));
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   updateCallback: async () => {
@@ -159,6 +163,7 @@ const crumbs = computed(() => {
       {{ t("actions.fleet.worldmap") }}
     </Btn>
     <Btn
+      v-if="starmapEnabled"
       :inline="true"
       :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
     >
@@ -191,6 +196,7 @@ const crumbs = computed(() => {
         <span>{{ t("actions.fleet.worldmap") }}</span>
       </Btn>
       <Btn
+        v-if="starmapEnabled"
         :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
       >
         <i class="fa-duotone fa-planet-ringed" />
