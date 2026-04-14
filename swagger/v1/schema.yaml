@@ -3096,6 +3096,83 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
+  "/notification-preferences":
+    get:
+      summary: List notification preferences
+      operationId: notificationPreferences
+      tags:
+      - NotificationPreferences
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:read
+      - OpenId:
+        - notifications
+        - notifications:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/NotificationPreference"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/notification-preferences/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Update a notification preference
+      operationId: updateNotificationPreference
+      tags:
+      - NotificationPreferences
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      parameters: []
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/NotificationPreference"
+        '404':
+          description: not found for invalid type
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app:
+                  type: boolean
+                mail:
+                  type: boolean
+                push:
+                  type: boolean
   "/notifications/destroy-all":
     delete:
       summary: Delete all notifications
@@ -3140,10 +3217,6 @@ paths:
           description: successful with OAuth token
         '401':
           description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/notifications":
     get:
       summary: List notifications

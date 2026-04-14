@@ -37,7 +37,7 @@ module Api
       def read_all
         authorize! with: NotificationPolicy
 
-        authorized_scope(Notification.all).active.unread.update_all(read_at: Time.current)
+        authorized_scope(Notification.all).active.unread.update_all(read_at: Time.current, updated_at: Time.current)
 
         head :no_content
       end
@@ -53,7 +53,7 @@ module Api
       def destroy_all
         authorize! with: NotificationPolicy
 
-        authorized_scope(Notification.all).delete_all
+        authorized_scope(Notification.all).active.delete_all
 
         head :no_content
       end
