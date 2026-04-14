@@ -274,10 +274,7 @@ const ResolutionUpdater = defineComponent({
       </TresGroup>
 
       <!-- Member badges per system -->
-      <TresGroup
-        v-for="badge in systemMemberBadges"
-        :key="badge.systemCode"
-      >
+      <TresGroup v-for="badge in systemMemberBadges" :key="badge.systemCode">
         <Html :position="badge.position" center :z-index-range="[50, 100]">
           <div class="member-badge">
             <span class="member-badge-count">{{ badge.members.length }}</span>
