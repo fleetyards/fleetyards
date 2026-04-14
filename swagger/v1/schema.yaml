@@ -3096,6 +3096,157 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
+  "/notifications/destroy-all":
+    delete:
+      summary: Delete all notifications
+      operationId: destroyAllNotifications
+      tags:
+      - Notifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+  "/notifications/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Delete a notification
+      operationId: destroyNotification
+      tags:
+      - Notifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Notification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/notifications":
+    get:
+      summary: List notifications
+      operationId: notifications
+      tags:
+      - Notifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:read
+      - OpenId:
+        - notifications
+        - notifications:read
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful with type filter
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Notifications"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/notifications/read-all":
+    put:
+      summary: Mark all notifications as read
+      operationId: readAllNotifications
+      tags:
+      - Notifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+  "/notifications/{id}/read":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Mark notification as read
+      operationId: readNotification
+      tags:
+      - Notifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Notification"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/oauth-applications":
     post:
       summary: Create OAuth Application
@@ -6441,6 +6592,29 @@ components:
       - RSI_ID_ASC
       - RSI_ID_DESC
       title: ModelSortEnum
+    NotificationTypeEnum:
+      type: string
+      enum:
+      - hangar_create
+      - hangar_destroy
+      - wishlist_create
+      - wishlist_destroy
+      - model_on_sale
+      - on_sale
+      - new_model
+      - hangar_sync_finished
+      - hangar_sync_failed
+      x-enumNames:
+      - HANGAR_CREATE
+      - HANGAR_DESTROY
+      - WISHLIST_CREATE
+      - WISHLIST_DESTROY
+      - MODEL_ON_SALE
+      - ON_SALE
+      - NEW_MODEL
+      - HANGAR_SYNC_FINISHED
+      - HANGAR_SYNC_FAILED
+      title: NotificationTypeEnum
     OrderDirectionEnum:
       type: string
       enum:
@@ -9335,6 +9509,64 @@ components:
       - meta
       - items
       title: Models
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        notificationType:
+          "$ref": "#/components/schemas/NotificationTypeEnum"
+        title:
+          type: string
+        body:
+          type: string
+          nullable: true
+        link:
+          type: string
+          nullable: true
+        icon:
+          type: string
+          nullable: true
+        read:
+          type: boolean
+        readAt:
+          type: string
+          format: date-time
+          nullable: true
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - notificationType
+      - title
+      - read
+      - expiresAt
+      - createdAt
+      - updatedAt
+      title: Notification
+    Notifications:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Notification"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Notifications
     OauthApplication:
       type: object
       properties:

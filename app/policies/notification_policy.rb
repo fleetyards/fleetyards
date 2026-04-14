@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class NotificationPolicy < ApplicationPolicy
-  alias_rule :destroy?, :update?, to: :show?
+  alias_rule :index?, :destroy?, :update?, :read?, to: :show?
 
   def show?
     user.present?

@@ -6070,6 +6070,29 @@ components:
       - RSI_ID_ASC
       - RSI_ID_DESC
       title: ModelSortEnum
+    NotificationTypeEnum:
+      type: string
+      enum:
+      - hangar_create
+      - hangar_destroy
+      - wishlist_create
+      - wishlist_destroy
+      - model_on_sale
+      - on_sale
+      - new_model
+      - hangar_sync_finished
+      - hangar_sync_failed
+      x-enumNames:
+      - HANGAR_CREATE
+      - HANGAR_DESTROY
+      - WISHLIST_CREATE
+      - WISHLIST_DESTROY
+      - MODEL_ON_SALE
+      - ON_SALE
+      - NEW_MODEL
+      - HANGAR_SYNC_FINISHED
+      - HANGAR_SYNC_FAILED
+      title: NotificationTypeEnum
     OrderDirectionEnum:
       type: string
       enum:
