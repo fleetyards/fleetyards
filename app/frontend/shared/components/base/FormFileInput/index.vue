@@ -210,6 +210,11 @@ const setup = () => {
   directUpload.value?.clear();
 
   internalSrc.value = isHolo.value ? props.file?.url : props.file?.smallUrl;
+
+  if (inputValue.value) {
+    resetField({ value: undefined });
+    emit("update:modelValue", undefined);
+  }
 };
 
 onMounted(() => {
