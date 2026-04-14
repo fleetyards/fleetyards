@@ -3,7 +3,7 @@
 module Maintenance
   class BackfillNotificationPreferencesTask < MaintenanceTasks::Task
     def collection
-      User.confirmed
+      User.all
     end
 
     def count
