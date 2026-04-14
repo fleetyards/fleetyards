@@ -43,3 +43,13 @@ Model.find_or_create_by!(name: "Dragonfly Starkitten Edition") do |model|
   model.size = "vehicle"
   model.base_model_id = dragonfly_black.id
 end
+
+misc = Manufacturer.find_or_create_by!(name: "Musashi Industrial & Starflight Concern") do |m|
+  m.slug = "musashi-industrial-starflight-concern"
+  m.code = "MISC"
+end
+
+Model.find_or_create_by!(name: "Raptor") do |model|
+  model.manufacturer = misc
+  model.hidden = true
+end
