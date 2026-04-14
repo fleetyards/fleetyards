@@ -61,6 +61,7 @@ const canManageInvites = computed(() =>
 
 const { isFeatureEnabled } = useFeatures();
 const starmapEnabled = computed(() => isFeatureEnabled("fleet_starmap"));
+const worldmapEnabled = computed(() => isFeatureEnabled("fleet_worldmap"));
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   updateCallback: async () => {
@@ -156,6 +157,7 @@ const crumbs = computed(() => {
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn
+      v-if="worldmapEnabled"
       :inline="true"
       :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
     >
@@ -190,6 +192,7 @@ const crumbs = computed(() => {
   >
     <template v-if="mobile" #actions-right>
       <Btn
+        v-if="worldmapEnabled"
         :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
       >
         <i class="fa-duotone fa-globe" />

@@ -21,6 +21,7 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.members.worldmap",
       needsAuthentication: true,
       customTitle: true,
+      feature: "fleet_worldmap",
     },
   },
   {

@@ -83,23 +83,6 @@ const crumbs = computed(() => [
     </small>
   </Heading>
 
-  <Teleport to="#header-right">
-    <Btn
-      :inline="true"
-      :to="{ name: 'fleet-members-index', params: { slug: fleet.slug } }"
-    >
-      <i class="fa-duotone fa-list" />
-      {{ t("actions.fleet.membersList") }}
-    </Btn>
-    <Btn
-      v-if="starmapEnabled"
-      :inline="true"
-      :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
-    >
-      <i class="fa-duotone fa-planet-ringed" />
-      {{ t("actions.fleet.starmap") }}
-    </Btn>
-  </Teleport>
 
   <Loader :loading="asyncStatus.isLoading.value" />
 
