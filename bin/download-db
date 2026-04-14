@@ -36,13 +36,17 @@ fi
 echo "Downloading $LATEST..."
 $S3CMD get --force "$LATEST" "$DUMP_FILE"
 
+echo "Dropping and recreating $DB_NAME..."
+PGPASSWORD=password dropdb --if-exists -h localhost -U "$DB_USER" -p "$DB_PORT" "$DB_NAME"
+PGPASSWORD=password createdb -h localhost -U "$DB_USER" -p "$DB_PORT" "$DB_NAME"
+
 echo "Restoring to $DB_NAME on localhost:$DB_PORT..."
 PG_RESTORE="pg_restore"
 if [ -x "/opt/homebrew/opt/postgresql@16/bin/pg_restore" ]; then
   PG_RESTORE="/opt/homebrew/opt/postgresql@16/bin/pg_restore"
 fi
 
-PGPASSWORD=password $PG_RESTORE --verbose --clean --no-acl --no-owner \
+PGPASSWORD=password $PG_RESTORE --verbose --no-acl --no-owner \
   -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" "$DUMP_FILE" || true
 
 echo "Switching Active Storage blobs to local service..."
