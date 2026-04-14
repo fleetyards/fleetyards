@@ -55,6 +55,9 @@ class Notification < ApplicationRecord
   scope :expired, -> { where(expires_at: ...Time.current) }
   scope :active, -> { where(expires_at: Time.current..) }
 
+  DEFAULT_SORTING_PARAMS = "created_at desc"
+  ALLOWED_SORTING_PARAMS = ["createdAt asc", "createdAt desc"].freeze
+
   paginates_per 25
 
   def self.ransackable_attributes(_auth_object = nil)
