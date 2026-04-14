@@ -84,8 +84,8 @@ importers:
         specifier: ^2.5.1
         version: 2.5.1
       highcharts:
-        specifier: 12.5.0
-        version: 12.5.0
+        specifier: 12.6.0
+        version: 12.6.0
       highlight.js:
         specifier: ^11.11.1
         version: 11.11.1
@@ -3547,11 +3547,11 @@ packages:
   headers-polyfill@4.0.3:
     resolution: {integrity: sha512-IScLbePpkvO846sIwOtOTDjutRMWdXdJmXdMvk6gCBHxFO8d+QKOQedyZSxFTTFYRSmlgSTDtXqqq4pcenBXLQ==}
 
-  highcharts@12.5.0:
-    resolution: {integrity: sha512-uNSSv1KqRLNvkyXlf1FbeGWB1mJ/8/IYpVeqYiTIop5Wo8peUvNyzUfLa58vILsmXyz+XrETtgKIEOcSgBBKuQ==}
+  highcharts@12.6.0:
+    resolution: {integrity: sha512-zWwoXECOakJT2huBMqIZOjDNLLgyZFCcfZqTj2g6cvYOGxjF3nvooC+rIaF5aKiharluyGKNflfRNrzOAIjdRg==}
     peerDependencies:
-      jspdf: ^3.0.0
-      svg2pdf.js: ^2.6.0
+      jspdf: ^4.1.0
+      svg2pdf.js: ^2.7.0
     peerDependenciesMeta:
       jspdf:
         optional: true
@@ -9107,7 +9107,7 @@ snapshots:
 
   headers-polyfill@4.0.3: {}
 
-  highcharts@12.5.0: {}
+  highcharts@12.6.0: {}
 
   highlight.js@10.7.3: {}
 
