@@ -69,7 +69,6 @@ export class RSIHangarParser {
       kindOverride = "upgrade";
     }
 
-
     const image = this.extractImage(item);
 
     return {
