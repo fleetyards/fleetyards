@@ -235,7 +235,9 @@ class HangarImporter
       "Argo Mole - Talus Edition" => "Mole Talus Edition",
       "Crusader A1 Spirit" => "A1 Spirit",
       "Crusader C1 Spirit" => "C1 Spirit",
-      "Crusader E1 Spirit" => "E1 Spirit"
+      "Crusader E1 Spirit" => "E1 Spirit",
+      "MOLE - Carbon Edition" => "Carbon",
+      "Gladius Dunlevy" => "Dunlevy"
     }
   end
   # rubocop:enable Metrics/MethodLength
