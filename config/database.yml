@@ -15,8 +15,8 @@ ci:
 
 development:
   <<: *default
-  database: <%= ENV["DB_NAME"] || 'fleetyards_dev' %>
+  database: <%= ENV["DB_NAME"] || "fleetyards_dev#{ENV['WORKTREE_SUFFIX']}" %>
 
 test:
   <<: *default
-  database: <%= ENV["DB_NAME"] || "fleetyards_test#{ENV['TEST_ENV_NUMBER']}" %>
+  database: <%= ENV["DB_NAME"] || "fleetyards_test#{ENV['WORKTREE_SUFFIX']}#{ENV['TEST_ENV_NUMBER']}" %>
