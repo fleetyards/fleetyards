@@ -1,8 +1,7 @@
 import { createApp } from "vue";
 import App from "@/docs/App.vue";
 import router from "@/docs/plugins/Router";
-import FloatingVue from "floating-vue";
-import "floating-vue/dist/style.css";
+import Tooltip from "@/shared/plugins/Tooltip";
 import VueHighlightJS from "vue3-highlightjs";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
@@ -16,7 +15,7 @@ const app = createApp(App);
 app.use(VueQueryPlugin);
 app.use(router);
 app.use(pinia);
-app.use(FloatingVue);
+app.use(Tooltip);
 app.use(VueHighlightJS);
 
 app.mount("#docs-app");

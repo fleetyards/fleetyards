@@ -4,8 +4,7 @@ import router from "@/frontend/plugins/Router";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { setupAppsignal } from "@/shared/plugins/Appsignal";
-import FloatingVue from "floating-vue";
-import "floating-vue/dist/style.css";
+import Tooltip from "@/shared/plugins/Tooltip";
 import veeValidate from "@/frontend/plugins/VeeValidate";
 import {
   VueQueryPlugin,
@@ -61,7 +60,7 @@ app.use(VueQueryPlugin, vueQueryPluginOptions);
 app.use(router);
 app.use(pinia);
 setupAppsignal(app);
-app.use(FloatingVue);
+app.use(Tooltip);
 app.use(veeValidate);
 
 app.mount("#app");

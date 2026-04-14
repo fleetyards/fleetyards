@@ -2,8 +2,7 @@ import AppV1 from "@/embed/AppV1.vue";
 import router from "@/embed/plugins/Router";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
-import FloatingVue from "floating-vue";
-import "floating-vue/dist/style.css";
+import Tooltip from "@/shared/plugins/Tooltip";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 
 const pinia = createPinia();
@@ -16,9 +15,7 @@ setTimeout(() => {
   app.use(pinia);
   app.use(VueQueryPlugin);
 
-  app.use(FloatingVue, {
-    container: "#fleetyards-view",
-  });
+  app.use(Tooltip);
 
   app.mount("#fleetyards-view");
 

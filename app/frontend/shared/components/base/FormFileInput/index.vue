@@ -76,10 +76,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 watch(
   () => props.modelValue,
-  () => {
-    resetField({
-      value: props.modelValue,
-    });
+  (newValue) => {
+    if (newValue !== inputValue.value) {
+      resetField({
+        value: newValue,
+      });
+    }
   },
 );
 
@@ -164,6 +166,7 @@ const onUploadDone = (files: FileUpload[]) => {
   }
 
   inputValue.value = files[0].blob.signed_id;
+  emit("update:modelValue", files[0].blob.signed_id);
 };
 
 const onUploadClear = () => {
