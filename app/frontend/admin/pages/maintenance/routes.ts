@@ -1,5 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 
+const prefix = window.ON_SUBDOMAIN ? "" : "/admin";
+
 export const routes: RouteRecordRaw[] = [
   {
     path: "pghero/",
@@ -10,7 +12,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-database",
       needsAuthentication: true,
       access: ["pghero"],
-      href: "/pghero",
+      href: `${prefix}/pghero`,
     },
   },
   {
@@ -44,7 +46,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-list-timeline",
       needsAuthentication: true,
       access: ["workers"],
-      href: "/workers",
+      href: `${prefix}/workers`,
     },
   },
   {
@@ -56,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-clipboard-list-check",
       needsAuthentication: true,
       access: ["maintenance"],
-      href: "/maintenance_tasks",
+      href: `${prefix}/maintenance_tasks`,
     },
   },
   {

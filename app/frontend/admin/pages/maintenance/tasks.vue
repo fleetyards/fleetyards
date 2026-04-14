@@ -1,3 +1,4 @@
 <script lang="ts" setup>
-window.location.href = "/maintenance_tasks";
+const prefix = window.ON_SUBDOMAIN ? "" : "/admin";
+window.location.href = `${prefix}/maintenance_tasks`;
 </script>
