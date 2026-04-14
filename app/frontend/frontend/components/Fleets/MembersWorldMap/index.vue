@@ -9,10 +9,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
-import {
-  type FleetMember,
-  FleetMembershipShipsFilterEnum,
-} from "@/services/fyApi";
+import type { FleetMember } from "@/services/fyApi";
 
 type Props = {
   members: FleetMember[];
@@ -23,70 +20,9 @@ const props = defineProps<Props>();
 const mapContainer = ref<HTMLElement | null>(null);
 let map: L.Map | null = null;
 
-// --- Dev test data ---
-const DEV_TEST = import.meta.env.DEV;
-
-const GERMAN_CITIES = [
-  [52.52, 13.41],
-  [53.55, 9.99],
-  [48.14, 11.58],
-  [50.94, 6.96],
-  [51.23, 6.78],
-  [50.11, 8.68],
-  [48.78, 9.18],
-  [51.34, 12.37],
-  [53.08, 8.81],
-  [51.05, 13.74],
-  [51.45, 7.01],
-  [49.45, 11.08],
-  [52.27, 10.52],
-  [54.32, 10.14],
-  [51.31, 9.5],
-  [49.99, 8.27],
-  [48.4, 10.0],
-  [50.07, 8.24],
-  [47.99, 7.84],
-  [49.48, 8.47],
-  [52.13, 11.63],
-  [50.78, 6.08],
-  [51.51, 7.47],
-  [54.09, 12.13],
-  [52.41, 9.74],
-  [50.36, 7.6],
-  [49.01, 8.4],
-  [51.96, 7.63],
-  [47.66, 9.18],
-  [50.83, 12.92],
-] as const;
-
-function generateTestMembers(): FleetMember[] {
-  const members: FleetMember[] = [];
-  for (let i = 0; i < 120; i++) {
-    const [baseLat, baseLng] = GERMAN_CITIES[i % GERMAN_CITIES.length];
-    members.push({
-      id: `test-${i}`,
-      username: `Member_${i + 1}`,
-      latitude: baseLat + (Math.random() - 0.5) * 1.5,
-      longitude: baseLng + (Math.random() - 0.5) * 1.5,
-      fleetRole: { id: "0", name: "member", slug: "member" },
-      shipsFilter: FleetMembershipShipsFilterEnum.ALL,
-      fleetSlug: "test",
-      fleetName: "Test",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
-  }
-  return members;
-}
-
-const testMembers = DEV_TEST ? generateTestMembers() : [];
-
-const allMembers = computed(() => {
-  const real = props.members.filter(
-    (m) => m.latitude != null && m.longitude != null,
-  );
-  return DEV_TEST ? [...real, ...testMembers] : real;
-});
+const membersWithLocation = computed(() =>
+  props.members.filter((m) => m.latitude != null && m.longitude != null),
+);
 
 // --- Member marker icon ---
 const memberIcon = L.divIcon({
@@ -135,7 +71,7 @@ onMounted(() => {
     },
   });
 
-  for (const member of allMembers.value) {
+  for (const member of membersWithLocation.value) {
     const marker = L.marker([member.latitude!, member.longitude!], {
       icon: memberIcon,
     });
@@ -148,9 +84,9 @@ onMounted(() => {
   map.addLayer(clusters);
 
   // Fit bounds to members if any
-  if (allMembers.value.length > 0) {
+  if (membersWithLocation.value.length > 0) {
     const bounds = L.latLngBounds(
-      allMembers.value.map(
+      membersWithLocation.value.map(
         (m) => [m.latitude!, m.longitude!] as [number, number],
       ),
     );
