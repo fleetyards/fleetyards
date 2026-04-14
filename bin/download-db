@@ -33,11 +33,11 @@ if [ -z "$LATEST" ]; then
   exit 1
 fi
 
-REMOTE_MD5=$($S3CMD info "$LATEST" | grep 'MD5 sum' | awk '{print $3}')
+REMOTE_SIZE=$($S3CMD info "$LATEST" | grep 'File size' | awk '{print $3}')
 
-if [ -f "$DUMP_FILE" ] && [ -n "$REMOTE_MD5" ]; then
-  LOCAL_MD5=$(md5 -q "$DUMP_FILE" 2>/dev/null || md5sum "$DUMP_FILE" | awk '{print $1}')
-  if [ "$LOCAL_MD5" = "$REMOTE_MD5" ]; then
+if [ -f "$DUMP_FILE" ] && [ -n "$REMOTE_SIZE" ]; then
+  LOCAL_SIZE=$(wc -c < "$DUMP_FILE" | tr -d ' ')
+  if [ "$LOCAL_SIZE" = "$REMOTE_SIZE" ]; then
     echo "Local dump is already up to date, skipping download."
   else
     echo "Downloading $LATEST..."
