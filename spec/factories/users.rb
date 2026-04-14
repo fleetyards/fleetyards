@@ -9,8 +9,6 @@
 #  consumed_timestep         :integer
 #  current_sign_in_at        :datetime
 #  current_sign_in_ip        :string(255)
-#  current_system            :string
-#  current_system_code       :string
 #  discord                   :string
 #  email                     :string(255)      default(""), not null
 #  encrypted_otp_secret      :string
@@ -25,11 +23,8 @@
 #  last_active_at            :datetime
 #  last_sign_in_at           :datetime
 #  last_sign_in_ip           :string(255)
-#  latitude                  :decimal(10, 6)
 #  locale                    :string(255)
-#  location                  :string
 #  locked_at                 :datetime
-#  longitude                 :decimal(10, 6)
 #  normalized_email          :string
 #  normalized_username       :string
 #  otp_backup_codes          :string           is an Array
