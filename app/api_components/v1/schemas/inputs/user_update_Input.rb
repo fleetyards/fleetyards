@@ -21,7 +21,9 @@ module V1
             publicHangar: {type: :boolean},
             publicHangarLoaners: {type: :boolean},
             publicWishlist: {type: :boolean},
-            hideOwner: {type: :boolean}
+            hideOwner: {type: :boolean},
+            location: {type: :string, nullable: true},
+            currentSystem: {type: :string, nullable: true}
           },
           additionalProperties: false
         })

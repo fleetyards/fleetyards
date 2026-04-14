@@ -19,6 +19,7 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
 import { checkAccess } from "@/shared/utils/Access";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   ChannelsEnum,
   useSubscription,
@@ -57,6 +58,10 @@ const canManageInvites = computed(() =>
     "fleet:manage",
   ]),
 );
+
+const { isFeatureEnabled } = useFeatures();
+const starmapEnabled = computed(() => isFeatureEnabled("fleet_starmap"));
+const worldmapEnabled = computed(() => isFeatureEnabled("fleet_worldmap"));
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   updateCallback: async () => {
@@ -140,7 +145,7 @@ const crumbs = computed(() => {
 <template>
   <BreadCrumbs :crumbs="crumbs" />
   <Heading>
-    {{ t("headlines.fleets.members") }}
+    {{ t("headlines.fleets.members.index") }}
     <small v-if="stats" class="text-muted">
       {{
         t("labels.fleet.members.total", {
@@ -150,8 +155,25 @@ const crumbs = computed(() => {
     </small>
   </Heading>
 
-  <Teleport v-if="!mobile && canManageInvites" to="#header-right">
+  <Teleport v-if="!mobile" to="#header-right">
     <Btn
+      v-if="worldmapEnabled"
+      :inline="true"
+      :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
+    >
+      <i class="fa-duotone fa-globe" />
+      {{ t("actions.fleet.worldmap") }}
+    </Btn>
+    <Btn
+      v-if="starmapEnabled"
+      :inline="true"
+      :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
+    >
+      <i class="fa-duotone fa-planet-ringed" />
+      {{ t("actions.fleet.starmap") }}
+    </Btn>
+    <Btn
+      v-if="canManageInvites"
       :inline="true"
       :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
     >
@@ -168,8 +190,23 @@ const crumbs = computed(() => {
     :is-filter-selected="isFilterSelected"
     hide-empty
   >
-    <template v-if="mobile && canManageInvites" #actions-right>
+    <template v-if="mobile" #actions-right>
       <Btn
+        v-if="worldmapEnabled"
+        :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
+      >
+        <i class="fa-duotone fa-globe" />
+        <span>{{ t("actions.fleet.worldmap") }}</span>
+      </Btn>
+      <Btn
+        v-if="starmapEnabled"
+        :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
+      >
+        <i class="fa-duotone fa-planet-ringed" />
+        <span>{{ t("actions.fleet.starmap") }}</span>
+      </Btn>
+      <Btn
+        v-if="canManageInvites"
         :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
       >
         <i class="fa-duotone fa-user-plus" />

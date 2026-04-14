@@ -37,7 +37,8 @@ Rails.application.configure do
       "https://www.gstatic.com",
       "https://cdn.jsdelivr.net",
       "https://stackpath.bootstrapcdn.com",
-      "https://appsignal-endpoint.net"
+      "https://appsignal-endpoint.net",
+      "https://*.basemaps.cartocdn.com"
     ].compact
 
     connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development? || Rails.env.test?
@@ -67,7 +68,8 @@ Rails.application.configure do
       :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint, cdn_endpoint, legacy_cdn_endpoint,
       Rails.configuration.rsi.endpoint, "https://img.youtube.com", "https://img.buymeacoffee.com",
       "https://validator.swagger.io",
-      s3_endpoint, storage_cdn_endpoint
+      s3_endpoint, storage_cdn_endpoint,
+      "https://*.basemaps.cartocdn.com"
     ].compact
 
     font_src = [

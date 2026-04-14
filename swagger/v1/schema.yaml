@@ -6969,6 +6969,17 @@ components:
           "$ref": "#/components/schemas/Fleet"
         primary:
           type: boolean
+        latitude:
+          type: number
+          format: double
+          nullable: true
+        longitude:
+          type: number
+          format: double
+          nullable: true
+        currentSystemCode:
+          type: string
+          nullable: true
         isDestroyAllowed:
           type: boolean
         hangarUpdatedAt:
@@ -9554,6 +9565,12 @@ components:
           type: string
         homepage:
           type: string
+        location:
+          type: string
+        currentSystem:
+          type: string
+        currentSystemCode:
+          type: string
         saleNotify:
           type: boolean
         publicHangar:
@@ -9701,6 +9718,12 @@ components:
           type: boolean
         hideOwner:
           type: boolean
+        location:
+          type: string
+          nullable: true
+        currentSystem:
+          type: string
+          nullable: true
       additionalProperties: false
       title: UserUpdateInput
     Vehicle:

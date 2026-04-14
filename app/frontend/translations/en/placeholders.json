@@ -121,7 +121,9 @@
         "passwordConfirmation": "Password Confirmation"
       },
       "user": {
-        "rsiHandle": "RSI Handle"
+        "rsiHandle": "RSI Handle",
+        "location": "e.g. Berlin, Germany",
+        "currentSystem": "e.g. Stanton, Pyro, Nyx"
       },
       "oauthApplication": {
         "name": "My Application",

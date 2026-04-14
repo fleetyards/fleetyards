@@ -13,6 +13,30 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "worldmap/",
+    name: "fleet-members-worldmap",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/members/worldmap.vue"),
+    meta: {
+      title: "fleets.members.worldmap",
+      needsAuthentication: true,
+      customTitle: true,
+      feature: "fleet_worldmap",
+    },
+  },
+  {
+    path: "starmap/",
+    name: "fleet-members-starmap",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/members/starmap.vue"),
+    meta: {
+      title: "fleets.members.starmap",
+      needsAuthentication: true,
+      customTitle: true,
+      feature: "fleet_starmap",
+    },
+  },
+  {
     path: "invites/",
     name: "fleet-members-invites",
     component: () =>

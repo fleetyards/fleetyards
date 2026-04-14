@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_09_160326) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_13_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -818,6 +818,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_160326) do
     t.datetime "created_at", precision: nil
     t.datetime "current_sign_in_at", precision: nil
     t.string "current_sign_in_ip", limit: 255
+    t.string "current_system"
+    t.string "current_system_code"
     t.string "discord"
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_otp_secret"
@@ -832,8 +834,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_09_160326) do
     t.datetime "last_active_at"
     t.datetime "last_sign_in_at", precision: nil
     t.string "last_sign_in_ip", limit: 255
+    t.decimal "latitude", precision: 10, scale: 6
     t.string "locale", limit: 255
+    t.string "location"
     t.datetime "locked_at", precision: nil
+    t.decimal "longitude", precision: 10, scale: 6
     t.string "normalized_email"
     t.string "normalized_username"
     t.string "otp_backup_codes", array: true

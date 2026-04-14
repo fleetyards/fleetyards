@@ -28,6 +28,8 @@ const sessionStore = useSessionStore();
 const initialValues = ref<UserUpdateInput>({
   avatar: undefined,
   rsiHandle: sessionStore.currentUser?.rsiHandle,
+  location: sessionStore.currentUser?.location,
+  currentSystem: sessionStore.currentUser?.currentSystem,
   homepage: sessionStore.currentUser?.homepage,
   discord: sessionStore.currentUser?.discord,
   youtube: sessionStore.currentUser?.youtube,
@@ -41,6 +43,8 @@ const { defineField, handleSubmit } = useForm({
 
 const [avatar, avatarProps] = defineField("avatar");
 const [rsiHandle, rsiHandleProps] = defineField("rsiHandle");
+const [location, locationProps] = defineField("location");
+const [currentSystem, currentSystemProps] = defineField("currentSystem");
 const [homepage, homepageProps] = defineField("homepage");
 const [discord, discordProps] = defineField("discord");
 const [youtube, youtubeProps] = defineField("youtube");
@@ -64,6 +68,8 @@ onMounted(() => {
 
 const setupForm = () => {
   rsiHandle.value = sessionStore.currentUser?.rsiHandle;
+  location.value = sessionStore.currentUser?.location;
+  currentSystem.value = sessionStore.currentUser?.currentSystem;
   homepage.value = sessionStore.currentUser?.homepage;
   discord.value = sessionStore.currentUser?.discord;
   youtube.value = sessionStore.currentUser?.youtube;
@@ -165,6 +171,26 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="rsiHandleProps"
           icon="icon icon-rsi icon-label"
           translation-key="user.rsiHandle"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="location"
+          name="location"
+          v-bind="locationProps"
+          icon="fa-duotone fa-location-dot"
+          translation-key="user.location"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="currentSystem"
+          name="currentSystem"
+          v-bind="currentSystemProps"
+          icon="fa-duotone fa-planet-ringed"
+          translation-key="user.currentSystem"
         />
       </div>
     </div>

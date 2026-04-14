@@ -34,7 +34,9 @@
         "ships": "Ships",
         "members": {
           "index": "Members",
-          "invites": "Invites"
+          "invites": "Invites",
+          "worldmap": "Worldmap",
+          "starmap": "Starmap"
         },
         "stats": "Stats",
         "settings": {

@@ -80,6 +80,8 @@ gem "after_commit_everywhere"
 gem "image_processing", "~> 1.0"
 gem "mini_magick"
 
+gem "geocoder"
+
 gem "nokogiri"
 gem "typhoeus"
 gem "faraday-retry"
