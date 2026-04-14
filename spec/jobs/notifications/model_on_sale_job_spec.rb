@@ -36,6 +36,10 @@ RSpec.describe Notifications::ModelOnSaleJob do
 
       expect(OnSaleHangarChannel).to have_received(:broadcast_to)
       expect(VehicleMailer).to have_received(:on_sale).with(vehicle)
+
+      notification = Notification.find_by(user: user, notification_type: "model_on_sale")
+      expect(notification).to be_present
+      expect(notification.record).to eq(vehicle)
     end
   end
 end

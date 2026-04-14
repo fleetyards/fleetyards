@@ -4,9 +4,9 @@ require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:member) { create(:user) }
-  let(:another_member) { create(:user) }
+  let(:fleet_admin) { create(:user) }
   let(:user) { member }
-  let(:fleet) { create(:fleet, members: [another_member]) }
+  let(:fleet) { create(:fleet, admins: [fleet_admin]) }
   let(:fleetSlug) { fleet.slug }
 
   let(:Authorization) { nil }
@@ -44,6 +44,10 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
 
         run_test! do
           expect(member.fleets.reload.include?(fleet)).to be_truthy
+
+          notification = Notification.find_by(user: fleet_admin, notification_type: "fleet_member_accepted")
+          expect(notification).to be_present
+          expect(notification.record).to be_a(FleetMembership)
         end
       end
 
@@ -57,7 +61,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:user) { another_member }
+        let(:user) { fleet_admin }
 
         run_test!
       end

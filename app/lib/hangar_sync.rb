@@ -60,7 +60,7 @@ class HangarSync < HangarImporter
       type: :hangar_sync_finished,
       title: I18n.t("notifications.hangar_sync_finished.title"),
       body: I18n.t("notifications.hangar_sync_finished.body"),
-      link: "/hangar"
+      link: Rails.application.routes.url_helpers.frontend_hangar_path
     )
 
     output
@@ -75,7 +75,7 @@ class HangarSync < HangarImporter
         type: :hangar_sync_failed,
         title: I18n.t("notifications.hangar_sync_failed.title"),
         body: I18n.t("notifications.hangar_sync_failed.body", error: e.message),
-        link: "/hangar"
+        link: Rails.application.routes.url_helpers.frontend_hangar_path
       )
     end
 

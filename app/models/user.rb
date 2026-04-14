@@ -120,6 +120,7 @@ class User < ApplicationRecord
     through: :fleet_memberships
 
   has_many :notifications, dependent: :delete_all
+  has_many :notification_preferences, dependent: :delete_all
 
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
   has_many :omniauth_connections, dependent: :destroy
@@ -158,8 +159,10 @@ class User < ApplicationRecord
   before_validation :set_normalized_login_fields
   before_validation :update_urls
   before_create :setup_otp_secret
+  after_create :create_default_notification_preferences
 
   after_update :notify_user
+  after_update :sync_sale_notify_preference
   after_save :touch_fleet_memberships
 
   has_one_attached :avatar
@@ -374,6 +377,25 @@ class User < ApplicationRecord
   private def clear_coordinates
     self.latitude = nil
     self.longitude = nil
+  end
+
+  private def sync_sale_notify_preference
+    return unless saved_change_to_sale_notify?
+
+    pref = notification_preferences.find_or_initialize_by(notification_type: "model_on_sale")
+    pref.update!(app: sale_notify?, mail: sale_notify?)
+  end
+
+  private def create_default_notification_preferences
+    Notification.notification_types.each_key do |type|
+      defaults = NotificationPreference.defaults_for(type)
+
+      if type == "model_on_sale" && sale_notify?
+        defaults = {app: true, mail: true, push: false}
+      end
+
+      notification_preferences.create!(notification_type: type, **defaults)
+    end
   end
 
   private def touch_fleet_memberships

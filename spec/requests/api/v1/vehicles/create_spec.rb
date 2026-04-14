@@ -50,7 +50,11 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/Vehicle"
 
-        run_test!
+        run_test! do
+          notification = Notification.find_by(user: author, notification_type: "hangar_create")
+          expect(notification).to be_present
+          expect(notification.title).to include(model.name)
+        end
       end
 
       response(201, "successful with boughtVia enum value") do
