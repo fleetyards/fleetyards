@@ -46,6 +46,10 @@ loaders_loaner_job:
   class: 'Loaders::LoanerJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? %>
+cleanup_notifications_job:
+  cron: '0 3 */1 * *' # Daily at 3:00
+  class: 'Cleanup::NotificationsJob'
+  queue: 'cleanup'
 cleanup_fleet_invite_url_job:
   cron: '0 22 * * 0' # Weekly on Sunday 22:00
   class: 'Cleanup::FleetInviteUrlJob'

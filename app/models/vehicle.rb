@@ -247,8 +247,20 @@ class Vehicle < ApplicationRecord
 
     if wanted?
       WishlistCreateChannel.broadcast_to(user, to_json)
+      Notification.notify!(
+        user:,
+        type: :wishlist_create,
+        title: I18n.t("notifications.wishlist_create.title", model: model.name),
+        link: "/hangar"
+      )
     else
       HangarCreateChannel.broadcast_to(user, to_json)
+      Notification.notify!(
+        user:,
+        type: :hangar_create,
+        title: I18n.t("notifications.hangar_create.title", model: model.name),
+        link: "/hangar"
+      )
     end
   end
 
@@ -257,8 +269,20 @@ class Vehicle < ApplicationRecord
 
     if wanted?
       WishlistDestroyChannel.broadcast_to(user, to_json)
+      Notification.notify!(
+        user:,
+        type: :wishlist_destroy,
+        title: I18n.t("notifications.wishlist_destroy.title", model: model.name),
+        link: "/hangar"
+      )
     else
       HangarDestroyChannel.broadcast_to(user, to_json)
+      Notification.notify!(
+        user:,
+        type: :hangar_destroy,
+        title: I18n.t("notifications.hangar_destroy.title", model: model.name),
+        link: "/hangar"
+      )
     end
   end
 

@@ -705,6 +705,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_120000) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
+  create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "expires_at", null: false
+    t.string "icon"
+    t.string "link"
+    t.string "notification_type", null: false
+    t.datetime "read_at"
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["expires_at"], name: "index_notifications_on_expires_at"
+    t.index ["notification_type"], name: "index_notifications_on_notification_type"
+    t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at", order: { created_at: :desc }
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
+  end
+
   create_table "oauth_access_grants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "application_id", null: false
     t.string "code_challenge"
@@ -956,6 +973,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_120000) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
+  add_foreign_key "notifications", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_grants", "users", column: "resource_owner_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"

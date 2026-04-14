@@ -14,6 +14,13 @@ module Notifications
       Vehicle.where(model_id:, sale_notify: true, wanted: true, loaner: false, user_id: user_ids, notify: true).find_each do |vehicle|
         OnSaleHangarChannel.broadcast_to(vehicle.user, vehicle.to_json)
         VehicleMailer.on_sale(vehicle).deliver_later
+        Notification.notify!(
+          user: vehicle.user,
+          type: :model_on_sale,
+          title: I18n.t("notifications.model_on_sale.title", model: model.name),
+          body: I18n.t("notifications.model_on_sale.body", model: model.name),
+          link: "/ships/#{model.slug}"
+        )
       end
     end
   end

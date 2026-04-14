@@ -119,6 +119,8 @@ class User < ApplicationRecord
   has_many :fleets,
     through: :fleet_memberships
 
+  has_many :notifications, dependent: :delete_all
+
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
   has_many :omniauth_connections, dependent: :destroy
 
