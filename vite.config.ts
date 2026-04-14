@@ -122,12 +122,8 @@ export default defineConfig({
   },
   define: {
     "process.env": {},
-    "import.meta.env.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__": JSON.stringify(
-      process.env.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__,
-    ),
-    "import.meta.env.__VUE_OPTIONS_API__": JSON.stringify(
-      process.env.__VUE_OPTIONS_API__,
-    ),
+    __VUE_OPTIONS_API__: false,
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
   },
   cacheDir: accessEnv("FLEETYARDS_VITE_CACHE", "node_modules/.vite"),
 });
