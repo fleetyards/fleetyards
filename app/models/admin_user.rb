@@ -47,6 +47,10 @@ class AdminUser < ApplicationRecord
 
   before_validation :set_normalized_login_fields
 
+  def send_devise_notification(notification, *)
+    devise_mailer.send(notification, self, *).deliver_later
+  end
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
