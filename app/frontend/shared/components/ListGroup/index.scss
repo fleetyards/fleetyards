@@ -21,8 +21,9 @@
 
   &__content {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0;
+    flex: 1;
     gap: 8px;
     align-items: center;
     min-width: 0;

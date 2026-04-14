@@ -2,9 +2,9 @@ production: &default
   database: <%= ENV["DB_NAME"] || 'fleetyards' %>
   adapter: postgresql
   host: <%= ENV["DB_HOST"] || 'localhost' %>
-  port: <%= ENV["DB_PORT"] || 5432 %>
+  port: <%= ENV["DB_PORT"] || 8271 %>
   user: <%= ENV["DB_USER"] || 'root' %>
-  password: <%= ENV["DB_PASSWORD"] %>
+  password: <%= ENV["DB_PASSWORD"] || 'password' %>
   pool: <%= ENV.fetch("DB_POOL_SIZE") { Integer(ENV.fetch("MAX_THREADS", 5)) * 2 } %>
 
 staging:
