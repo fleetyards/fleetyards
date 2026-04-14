@@ -8,7 +8,6 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import MembersWorldMap from "@/frontend/components/Fleets/MembersWorldMap/index.vue";
 import {
@@ -18,8 +17,6 @@ import {
   type FleetMembersParams,
   type FleetMemberQuery,
 } from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
@@ -29,8 +26,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
-const { isFeatureEnabled } = useFeatures();
-const starmapEnabled = computed(() => isFeatureEnabled("fleet_starmap"));
 
 const membersQueryParams = computed<FleetMembersParams>(() => ({
   perPage: "all",
@@ -82,7 +77,6 @@ const crumbs = computed(() => [
       {{ membersWithLocation.length }} / {{ memberItems.length }}
     </small>
   </Heading>
-
 
   <Loader :loading="asyncStatus.isLoading.value" />
 

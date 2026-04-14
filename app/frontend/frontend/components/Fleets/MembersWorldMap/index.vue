@@ -9,7 +9,10 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
-import type { FleetMember } from "@/services/fyApi";
+import {
+  type FleetMember,
+  FleetMembershipShipsFilterEnum,
+} from "@/services/fyApi";
 
 type Props = {
   members: FleetMember[];
@@ -24,14 +27,36 @@ let map: L.Map | null = null;
 const DEV_TEST = import.meta.env.DEV;
 
 const GERMAN_CITIES = [
-  [52.52, 13.41], [53.55, 9.99], [48.14, 11.58], [50.94, 6.96],
-  [51.23, 6.78], [50.11, 8.68], [48.78, 9.18], [51.34, 12.37],
-  [53.08, 8.81], [51.05, 13.74], [51.45, 7.01], [49.45, 11.08],
-  [52.27, 10.52], [54.32, 10.14], [51.31, 9.5], [49.99, 8.27],
-  [48.4, 10.0], [50.07, 8.24], [47.99, 7.84], [49.48, 8.47],
-  [52.13, 11.63], [50.78, 6.08], [51.51, 7.47], [54.09, 12.13],
-  [52.41, 9.74], [50.36, 7.6], [49.01, 8.4], [51.96, 7.63],
-  [47.66, 9.18], [50.83, 12.92],
+  [52.52, 13.41],
+  [53.55, 9.99],
+  [48.14, 11.58],
+  [50.94, 6.96],
+  [51.23, 6.78],
+  [50.11, 8.68],
+  [48.78, 9.18],
+  [51.34, 12.37],
+  [53.08, 8.81],
+  [51.05, 13.74],
+  [51.45, 7.01],
+  [49.45, 11.08],
+  [52.27, 10.52],
+  [54.32, 10.14],
+  [51.31, 9.5],
+  [49.99, 8.27],
+  [48.4, 10.0],
+  [50.07, 8.24],
+  [47.99, 7.84],
+  [49.48, 8.47],
+  [52.13, 11.63],
+  [50.78, 6.08],
+  [51.51, 7.47],
+  [54.09, 12.13],
+  [52.41, 9.74],
+  [50.36, 7.6],
+  [49.01, 8.4],
+  [51.96, 7.63],
+  [47.66, 9.18],
+  [50.83, 12.92],
 ] as const;
 
 function generateTestMembers(): FleetMember[] {
@@ -44,7 +69,7 @@ function generateTestMembers(): FleetMember[] {
       latitude: baseLat + (Math.random() - 0.5) * 1.5,
       longitude: baseLng + (Math.random() - 0.5) * 1.5,
       fleetRole: { id: "0", name: "member", slug: "member" },
-      shipsFilter: "public" as any,
+      shipsFilter: FleetMembershipShipsFilterEnum.public,
       fleetSlug: "test",
       fleetName: "Test",
       createdAt: new Date().toISOString(),
@@ -85,13 +110,10 @@ onMounted(() => {
   });
 
   // Dark tile layer
-  L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    {
-      subdomains: "abcd",
-      maxZoom: 19,
-    },
-  ).addTo(map);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    subdomains: "abcd",
+    maxZoom: 19,
+  }).addTo(map);
 
   // Cluster group with custom styling
   const clusters = L.markerClusterGroup({
@@ -114,14 +136,12 @@ onMounted(() => {
   });
 
   for (const member of allMembers.value) {
-    const marker = L.marker(
-      [member.latitude!, member.longitude!],
-      { icon: memberIcon },
-    );
-    marker.bindPopup(
-      `<strong>${member.username}</strong>`,
-      { className: "member-popup" },
-    );
+    const marker = L.marker([member.latitude!, member.longitude!], {
+      icon: memberIcon,
+    });
+    marker.bindPopup(`<strong>${member.username}</strong>`, {
+      className: "member-popup",
+    });
     clusters.addLayer(marker);
   }
 
@@ -130,7 +150,9 @@ onMounted(() => {
   // Fit bounds to members if any
   if (allMembers.value.length > 0) {
     const bounds = L.latLngBounds(
-      allMembers.value.map((m) => [m.latitude!, m.longitude!] as [number, number]),
+      allMembers.value.map(
+        (m) => [m.latitude!, m.longitude!] as [number, number],
+      ),
     );
     map.fitBounds(bounds, { padding: [60, 60], maxZoom: 6 });
   }
