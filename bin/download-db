@@ -89,6 +89,7 @@ puts \"Admin account '#{admin.username}' updated.\"
 user = User.find_by!(username: '$FRONTEND_USERNAME')
 user.password = '$FRONTEND_PASSWORD'
 user.password_confirmation = '$FRONTEND_PASSWORD'
+user.otp_required_for_login = false
 user.save!
 puts \"Frontend account '#{user.username}' updated.\"
 "
