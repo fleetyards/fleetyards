@@ -1,5 +1,4 @@
 import { type RSIHangarItem, type RSIHangarItemKind } from "@/frontend/types";
-const VALID_COMPONENT_NAMES = ["Galaxy", "Endeavor", "Retaliator"];
 
 const COMPONENT_FOR_MODELS = [
   "GreyCat Estate Geotack-X Planetary Beacon",
@@ -70,13 +69,6 @@ export class RSIHangarParser {
       kindOverride = "upgrade";
     }
 
-    if (
-      !VALID_COMPONENT_NAMES.some((validName) => name.includes(validName)) &&
-      kind === "Component" &&
-      !kindOverride
-    ) {
-      return undefined;
-    }
 
     const image = this.extractImage(item);
 

@@ -36,6 +36,11 @@ admin_notifier_job:
   class: 'Notifications::AdminJob'
   queue: 'notifications'
   enabled: <%= Rails.env.production? %>
+loaders_modules_import_job:
+  cron: '0 18 * * 0' # Weekly on Sunday 18:00
+  class: 'Loaders::ModulesImportJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
 loaders_loaner_job:
   cron: '0 21 * * 0' # Weekly on Sunday 21:00
   class: 'Loaders::LoanerJob'
