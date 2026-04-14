@@ -22,6 +22,8 @@ module ScData
             extract_loadout(item)
           end
 
+          loadout = merge_module_ports(values, loadout)
+
           {
             key:,
             ground: false,
@@ -66,6 +68,8 @@ module ScData
             extract_loadout(item)
           end
 
+          loadout = merge_module_ports(values, loadout)
+
           insurance = values.dig("StaticEntityClassData", "SEntityInsuranceProperties")
 
           if insurance.is_a?(Array)
@@ -98,6 +102,38 @@ module ScData
         end
 
         save_items(vehicles, folder: "models")
+      end
+
+      private def merge_module_ports(values, loadout)
+        port_defs = values.dig(
+          "Components",
+          "SItemPortContainerComponentParams",
+          "Ports",
+          "SItemPortDef"
+        )
+
+        return loadout if port_defs.blank?
+
+        port_defs = [port_defs] unless port_defs.is_a?(Array)
+        loadout_names = loadout.map { |entry| entry[:name] }.to_set
+
+        port_defs.each do |port|
+          name = port["Name"]
+          next if name.blank?
+          next if loadout_names.include?(name)
+
+          types = port.dig("Types", "SItemPortDefTypes")
+          types = [types] unless types.is_a?(Array)
+          next unless types.compact.any? { |t| t["Type"] == "Module" }
+
+          loadout << {
+            name:,
+            ref: nil,
+            key: nil
+          }
+        end
+
+        loadout
       end
 
       private def extract_loadout(item)

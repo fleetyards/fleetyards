@@ -443,6 +443,11 @@
       "name": "hardpoint_fan_vtol_wing_right_rear",
       "ref": "1c9b1216-af45-4e00-8747-51d6bfc0e4a7",
       "key": null
+    },
+    {
+      "name": "hardpoint_module",
+      "ref": null,
+      "key": null
     }
   ]
 }
