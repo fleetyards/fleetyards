@@ -6604,6 +6604,10 @@ components:
       - new_model
       - hangar_sync_finished
       - hangar_sync_failed
+      - fleet_invite
+      - fleet_member_requested
+      - fleet_member_accepted
+      - fleet_request_accepted
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -6614,6 +6618,10 @@ components:
       - NEW_MODEL
       - HANGAR_SYNC_FINISHED
       - HANGAR_SYNC_FAILED
+      - FLEET_INVITE
+      - FLEET_MEMBER_REQUESTED
+      - FLEET_MEMBER_ACCEPTED
+      - FLEET_REQUEST_ACCEPTED
       title: NotificationTypeEnum
     OrderDirectionEnum:
       type: string
@@ -9553,6 +9561,27 @@ components:
       - createdAt
       - updatedAt
       title: Notification
+    NotificationPreference:
+      type: object
+      properties:
+        notificationType:
+          "$ref": "#/components/schemas/NotificationTypeEnum"
+        app:
+          type: boolean
+        mail:
+          type: boolean
+        push:
+          type: boolean
+        mailAvailable:
+          type: boolean
+      additionalProperties: false
+      required:
+      - notificationType
+      - app
+      - mail
+      - push
+      - mailAvailable
+      title: NotificationPreference
     Notifications:
       type: object
       properties:
