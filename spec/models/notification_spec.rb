@@ -240,7 +240,7 @@ RSpec.describe Notification, type: :model do
     end
 
     describe "app+mail types" do
-      %i[model_on_sale on_sale new_model fleet_invite fleet_member_requested fleet_member_accepted fleet_request_accepted].each do |type|
+      %i[model_on_sale new_model fleet_invite fleet_member_requested fleet_member_accepted fleet_request_accepted].each do |type|
         it "#{type} supports app and mail channels" do
           expect(described_class.channels_for(type)).to eq(%i[app mail])
         end

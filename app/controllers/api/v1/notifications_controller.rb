@@ -24,7 +24,6 @@ module Api
 
         @q = scope.ransack(notification_query_params)
         @notifications = @q.result(distinct: true)
-          .order(created_at: :desc)
           .page(params[:page])
           .per(per_page(Notification))
       end
@@ -38,7 +37,7 @@ module Api
       def read_all
         authorize! with: NotificationPolicy
 
-        authorized_scope(Notification.all).unread.update_all(read_at: Time.current)
+        authorized_scope(Notification.all).active.unread.update_all(read_at: Time.current)
 
         head :no_content
       end
@@ -47,6 +46,8 @@ module Api
         authorize! @notification
 
         @notification.destroy!
+
+        head :no_content
       end
 
       def destroy_all

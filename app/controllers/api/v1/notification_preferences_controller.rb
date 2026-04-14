@@ -22,6 +22,8 @@ module Api
       def update
         authorize! with: NotificationPreferencePolicy
 
+        return not_found unless Notification.notification_types.key?(params[:id])
+
         @notification_preference = current_user.notification_preferences
           .find_or_initialize_by(notification_type: params[:id])
 

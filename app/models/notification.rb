@@ -40,7 +40,6 @@ class Notification < ApplicationRecord
     wishlist_create: "wishlist_create",
     wishlist_destroy: "wishlist_destroy",
     model_on_sale: "model_on_sale",
-    on_sale: "on_sale",
     new_model: "new_model",
     hangar_sync_finished: "hangar_sync_finished",
     hangar_sync_failed: "hangar_sync_failed",
@@ -68,12 +67,6 @@ class Notification < ApplicationRecord
       channels: %i[app]
     },
     model_on_sale: {
-      retention: 30.days,
-      channels: %i[app mail],
-      mailer: ->(notification) { VehicleMailer.on_sale(notification.record).deliver_later },
-      preference_defaults: {app: false, mail: false, push: false}
-    },
-    on_sale: {
       retention: 30.days,
       channels: %i[app mail],
       mailer: ->(notification) { VehicleMailer.on_sale(notification.record).deliver_later },
@@ -194,6 +187,8 @@ class Notification < ApplicationRecord
       mailer = mailer_for(notification.notification_type)
       mailer&.call(notification)
     end
+  rescue => e
+    Rails.logger.error("Notification delivery failed for #{notification.id}: #{e.message}")
   end
   private_class_method :deliver_channels
 

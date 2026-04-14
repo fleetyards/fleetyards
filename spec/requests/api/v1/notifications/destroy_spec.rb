@@ -33,7 +33,6 @@ RSpec.describe "api/v1/notifications", type: :request, swagger_doc: "v1/schema.y
     delete("Delete a notification") do
       operationId "destroyNotification"
       tags "Notifications"
-      produces "application/json"
 
       security [
         {SessionCookie: []},
@@ -43,15 +42,13 @@ RSpec.describe "api/v1/notifications", type: :request, swagger_doc: "v1/schema.y
 
       let(:id) { notification.id }
 
-      response(200, "successful") do
-        schema "$ref": "#/components/schemas/Notification"
-
+      response(204, "successful") do
         run_test! do
           expect(Notification.find_by(id: notification.id)).to be_nil
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(204, "successful with OAuth token") do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 

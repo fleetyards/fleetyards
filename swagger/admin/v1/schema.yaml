@@ -6078,7 +6078,6 @@ components:
       - wishlist_create
       - wishlist_destroy
       - model_on_sale
-      - on_sale
       - new_model
       - hangar_sync_finished
       - hangar_sync_failed
@@ -6092,7 +6091,6 @@ components:
       - WISHLIST_CREATE
       - WISHLIST_DESTROY
       - MODEL_ON_SALE
-      - ON_SALE
       - NEW_MODEL
       - HANGAR_SYNC_FINISHED
       - HANGAR_SYNC_FAILED
