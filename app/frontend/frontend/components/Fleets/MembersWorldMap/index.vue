@@ -69,7 +69,7 @@ function generateTestMembers(): FleetMember[] {
       latitude: baseLat + (Math.random() - 0.5) * 1.5,
       longitude: baseLng + (Math.random() - 0.5) * 1.5,
       fleetRole: { id: "0", name: "member", slug: "member" },
-      shipsFilter: FleetMembershipShipsFilterEnum.public,
+      shipsFilter: FleetMembershipShipsFilterEnum.ALL,
       fleetSlug: "test",
       fleetName: "Test",
       createdAt: new Date().toISOString(),
