@@ -65,6 +65,8 @@ FRONTEND_USERNAME=$(op read "op://Fleetyards/Test Frontend/username")
 FRONTEND_PASSWORD=$(op read "op://Fleetyards/Test Frontend/password")
 
 DB_PORT="$DB_PORT" bin/rails runner "
+ActionMailer::Base.perform_deliveries = false
+
 admin = AdminUser.find_by!(username: '$ADMIN_USERNAME')
 admin.password = '$ADMIN_PASSWORD'
 admin.password_confirmation = '$ADMIN_PASSWORD'
