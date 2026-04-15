@@ -55,13 +55,29 @@ class HangarSync < HangarImporter
 
     camel_case_output = output.transform_keys { |key| key.to_s.camelize(:lower) }
     HangarSyncChannel.broadcast_to(import.user, {status: "finished", result: camel_case_output}.to_json)
+    Notification.notify!(
+      user: import.user,
+      type: :hangar_sync_finished,
+      title: I18n.t("notifications.hangar_sync_finished.title"),
+      body: I18n.t("notifications.hangar_sync_finished.body"),
+      link: Rails.application.routes.url_helpers.frontend_hangar_path
+    )
 
     output
   rescue => e
     import&.fail!
     import&.update!(info: e.message)
 
-    HangarSyncChannel.broadcast_to(import.user, {status: "failed", error: e.message}.to_json) if import&.user
+    if import&.user
+      HangarSyncChannel.broadcast_to(import.user, {status: "failed", error: e.message}.to_json)
+      Notification.notify!(
+        user: import.user,
+        type: :hangar_sync_failed,
+        title: I18n.t("notifications.hangar_sync_failed.title"),
+        body: I18n.t("notifications.hangar_sync_failed.body", error: e.message),
+        link: Rails.application.routes.url_helpers.frontend_hangar_path
+      )
+    end
 
     raise e
   end

@@ -233,7 +233,13 @@ class FleetMembership < ApplicationRecord
     return unless invited?
     return if user.email.blank?
 
-    FleetMembershipMailer.new_invite(user.email, user.username, fleet).deliver_later
+    Notification.notify!(
+      user:,
+      type: :fleet_invite,
+      title: I18n.t("notifications.fleet_invite.title", fleet: fleet.name),
+      link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
+      record: self
+    )
   end
 
   def on_accept_invitation
@@ -247,16 +253,22 @@ class FleetMembership < ApplicationRecord
   def notify_fleet_admins
     return unless requested? || accepted?
 
-    emails = fleet.fleet_memberships.accepted.includes(:fleet_role).select { |m|
+    admin_users = fleet.fleet_memberships.accepted.includes(:fleet_role, :user).select { |m|
       m.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
-    }.filter_map { |m| m.user.email.presence }
+    }.filter_map { |m| m.user if m.user.email.present? }
 
-    return if emails.blank?
+    return if admin_users.blank?
 
-    if requested?
-      FleetMembershipMailer.member_requested(emails, user.username, fleet).deliver_later
-    elsif accepted?
-      FleetMembershipMailer.member_accepted(emails, user.username, fleet).deliver_later
+    type = requested? ? :fleet_member_requested : :fleet_member_accepted
+
+    admin_users.each do |admin_user|
+      Notification.notify!(
+        user: admin_user,
+        type:,
+        title: I18n.t("notifications.#{type}.title", username: user.username, fleet: fleet.name),
+        link: Rails.application.routes.url_helpers.frontend_fleet_members_path(fleet.slug),
+        record: self
+      )
     end
   end
 
@@ -272,7 +284,13 @@ class FleetMembership < ApplicationRecord
     return unless accepted?
     return if user.email.blank?
 
-    FleetMembershipMailer.fleet_accepted(user.email, user.username, fleet).deliver_later
+    Notification.notify!(
+      user:,
+      type: :fleet_request_accepted,
+      title: I18n.t("notifications.fleet_request_accepted.title", fleet: fleet.name),
+      link: Rails.application.routes.url_helpers.frontend_fleets_invites_path,
+      record: self
+    )
   end
 
   def broadcast_update

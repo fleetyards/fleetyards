@@ -50,7 +50,11 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
 
-        run_test!
+        run_test! do
+          notification = Notification.find_by(user: new_member, notification_type: "fleet_request_accepted")
+          expect(notification).to be_present
+          expect(notification.record).to be_a(FleetMembership)
+        end
       end
 
       response(200, "successful with OAuth token") do

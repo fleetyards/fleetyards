@@ -60,6 +60,10 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
 
           expect(data["username"]).to eq(new_member.username)
           expect(data["status"]).to eq("invited")
+
+          notification = Notification.find_by(user: new_member, notification_type: "fleet_invite")
+          expect(notification).to be_present
+          expect(notification.record).to be_a(FleetMembership)
         end
       end
 
