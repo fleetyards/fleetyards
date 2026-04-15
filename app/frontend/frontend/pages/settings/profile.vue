@@ -84,15 +84,18 @@ const mutation = useUpdateProfileMutation();
 const avatarFileInput = ref<InstanceType<typeof FormFileInput>>();
 
 watch(avatar, async (newValue) => {
-  if (!newValue) {
+  if (newValue === undefined) {
     return;
   }
 
   submitting.value = true;
 
+  const data: Partial<UserUpdateInput> =
+    newValue === null ? { removeAvatar: true } : { avatar: newValue };
+
   await mutation
     .mutateAsync({
-      data: { avatar: newValue },
+      data,
     })
     .then(() => {
       comlink.emit("user-update");
