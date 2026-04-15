@@ -50,21 +50,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         run_test!
       end
 
-      response(204, "successful with OAuth token") do
-        let(:user) { nil }
-        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
-
-        run_test!
-      end
-
-      response(401, "unauthorized with wrong scope token") do
-        schema "$ref": "#/components/schemas/StandardError"
-
-        let(:user) { nil }
-        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
-
-        run_test!
-      end
+      include_examples "oauth_auth", success_status: 204
 
       response(204, "successful") do
         description "Delete own membership if not admin"
