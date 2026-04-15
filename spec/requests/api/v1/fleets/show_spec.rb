@@ -75,7 +75,6 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test!
       end
-
     end
   end
 end
