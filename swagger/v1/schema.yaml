@@ -8042,6 +8042,41 @@ components:
       - wishlistTotalMoney
       - wishlistTotalCredits
       title: HangarMetrics
+    HangarMetricsPublic:
+      type: object
+      properties:
+        totalMinCrew:
+          type: integer
+        totalMaxCrew:
+          type: integer
+        totalCargo:
+          type: number
+        largestShip:
+          type: number
+          nullable: true
+        smallestShip:
+          type: number
+          nullable: true
+        flightReadyCount:
+          type: integer
+        uniqueModelsCount:
+          type: integer
+        manufacturerCount:
+          type: integer
+        missingClassifications:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - totalMinCrew
+      - totalMaxCrew
+      - totalCargo
+      - flightReadyCount
+      - uniqueModelsCount
+      - manufacturerCount
+      - missingClassifications
+      title: HangarMetricsPublic
     HangarPublic:
       type: object
       properties:
@@ -8200,7 +8235,7 @@ components:
           items:
             "$ref": "#/components/schemas/HangarGroupMetric"
         metrics:
-          "$ref": "#/components/schemas/HangarMetrics"
+          "$ref": "#/components/schemas/HangarMetricsPublic"
       additionalProperties: false
       required:
       - total

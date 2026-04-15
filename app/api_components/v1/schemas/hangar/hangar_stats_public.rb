@@ -13,7 +13,7 @@ module V1
             wishlistTotal: {type: :integer},
             classifications: {type: :array, items: {"$ref": "#/components/schemas/HangarClassificationMetric"}},
             groups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupMetric"}},
-            metrics: {"$ref": "#/components/schemas/HangarMetrics"}
+            metrics: {"$ref": "#/components/schemas/HangarMetricsPublic"}
           },
           additionalProperties: false,
           required: %w[total classifications groups metrics]

@@ -48,12 +48,8 @@ const totalCount = ref(0);
 const minCrew = ref(0);
 const maxCrew = ref(0);
 const totalCargo = ref(0);
-const totalMoney = ref(0);
-const totalCredits = ref(0);
-const totalIngameValue = ref(0);
 const largestShip = ref(0);
 const smallestShip = ref(0);
-const averagePledgePrice = ref(0);
 const flightReadyCount = ref(0);
 const uniqueModelsCount = ref(0);
 const manufacturerCount = ref(0);
@@ -64,12 +60,8 @@ watch(
     quickStats.value?.metrics.totalMinCrew,
     quickStats.value?.metrics.totalMaxCrew,
     quickStats.value?.metrics.totalCargo,
-    quickStats.value?.metrics.totalMoney,
-    quickStats.value?.metrics.totalCredits,
-    quickStats.value?.metrics.totalIngameValue,
     quickStats.value?.metrics.largestShip,
     quickStats.value?.metrics.smallestShip,
-    quickStats.value?.metrics.averagePledgePrice,
     quickStats.value?.metrics.flightReadyCount,
     quickStats.value?.metrics.uniqueModelsCount,
     quickStats.value?.metrics.manufacturerCount,
@@ -80,13 +72,8 @@ watch(
       minCrew.value = quickStats.value?.metrics.totalMinCrew || 0;
       maxCrew.value = quickStats.value?.metrics.totalMaxCrew || 0;
       totalCargo.value = quickStats.value?.metrics.totalCargo || 0;
-      totalMoney.value = quickStats.value?.metrics.totalMoney || 0;
-      totalCredits.value = quickStats.value?.metrics.totalCredits || 0;
-      totalIngameValue.value = quickStats.value?.metrics.totalIngameValue || 0;
       largestShip.value = quickStats.value?.metrics.largestShip || 0;
       smallestShip.value = quickStats.value?.metrics.smallestShip || 0;
-      averagePledgePrice.value =
-        quickStats.value?.metrics.averagePledgePrice || 0;
       flightReadyCount.value = quickStats.value?.metrics.flightReadyCount || 0;
       uniqueModelsCount.value =
         quickStats.value?.metrics.uniqueModelsCount || 0;
@@ -106,33 +93,6 @@ const flightReadyPercent = computed(() => {
   if (!totalCount.value || !flightReadyCount.value) return "";
   return `(${Math.round((flightReadyCount.value / totalCount.value) * 100)}%)`;
 });
-
-function compactUec(value: number) {
-  if (value >= 1_000_000_000) {
-    return {
-      value: Math.round((value / 1_000_000_000) * 100) / 100,
-      suffix: "B aUEC",
-    };
-  }
-  if (value >= 1_000_000) {
-    return {
-      value: Math.round((value / 1_000_000) * 100) / 100,
-      suffix: "M aUEC",
-    };
-  }
-  if (value >= 1_000) {
-    return {
-      value: Math.round((value / 1_000) * 10) / 10,
-      suffix: "K aUEC",
-    };
-  }
-  return { value, suffix: "aUEC" };
-}
-
-const totalCreditsCompact = computed(() => compactUec(totalCredits.value));
-const totalIngameValueCompact = computed(() =>
-  compactUec(totalIngameValue.value),
-);
 </script>
 
 <template>
@@ -166,41 +126,6 @@ const totalIngameValueCompact = computed(() =>
         :value="totalCargo"
         :label="t('labels.hangarMetrics.totalCargo')"
         :suffix="t('number.units.cargo')"
-      />
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
-        icon="fa-duotone fa-dollar-sign fa-4x"
-        :value="totalMoney"
-        :label="t('labels.hangarMetrics.totalMoney')"
-        :prefix="t('number.units.currency')"
-      />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
-        icon="fa-duotone fa-coins fa-4x"
-        :value="totalCreditsCompact.value"
-        :label="t('labels.hangarMetrics.totalCredits')"
-        :suffix="totalCreditsCompact.suffix"
-      />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
-        icon="fa-duotone fa-coins fa-4x"
-        :value="totalIngameValueCompact.value"
-        :label="t('labels.hangarMetrics.totalIngameValue')"
-        :suffix="totalIngameValueCompact.suffix"
-      />
-    </div>
-    <div class="col-12 col-sm-6 col-lg-3">
-      <StatsPanel
-        icon="fa-duotone fa-dollar-sign fa-4x"
-        :value="averagePledgePrice"
-        :label="t('labels.hangarMetrics.averagePledgePrice')"
-        :prefix="t('number.units.currency')"
       />
     </div>
   </div>
