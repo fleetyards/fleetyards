@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -14,6 +15,8 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { storeToRefs } from "pinia";
+import { useSessionStore } from "@/frontend/stores/session";
 import {
   useHangarStats as useHangarStatsQuery,
   useHangarModelsByClassification as useHangarModelsByClassificationQuery,
@@ -23,6 +26,20 @@ import {
 } from "@/services/fyApi";
 
 const { t } = useI18n();
+
+const sessionStore = useSessionStore();
+
+const { currentUser } = storeToRefs(sessionStore);
+
+const shareTitle = computed(() => t("title.hangar.stats"));
+
+const shareUrl = computed(() => {
+  if (!currentUser?.value?.publicHangarUrl) {
+    return null;
+  }
+
+  return `${currentUser.value.publicHangarUrl}/stats`;
+});
 
 const { data: quickStats } = useHangarStatsQuery();
 
@@ -173,6 +190,15 @@ const wishlistTotalCreditsCompact = computed(() =>
       }}</Heading>
     </div>
   </div>
+
+  <Teleport to="#header-right">
+    <ShareBtn
+      v-if="currentUser && currentUser.publicHangarStats && shareUrl"
+      :url="shareUrl"
+      :title="shareTitle"
+      no-label
+    />
+  </Teleport>
 
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
