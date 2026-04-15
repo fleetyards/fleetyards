@@ -61,7 +61,7 @@ onMounted(async () => {
         ]"
       />
       <Heading size="hero" hero>{{
-        t("headlines.hangar.publicStats", { user: usernamePlural })
+        t("headlines.hangar.publicStats")
       }}</Heading>
     </div>
   </div>

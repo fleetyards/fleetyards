@@ -22,11 +22,11 @@
           "h3": "What Features does the Hangar include?"
         },
         "alternativeNames": "Alternative Names",
-        "stats": "My Hangar Stats",
+        "stats": "Stats",
         "public": "%{user} Hangar",
         "import": "Import",
         "wishlist": "Wishlist",
-        "publicStats": "%{user} Hangar Stats",
+        "publicStats": "Stats",
         "publicWishlist": "%{user} Wishlist",
         "resetIngame": "Reset Ingame Ships after Wipe"
       },
