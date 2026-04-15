@@ -119,11 +119,6 @@ gem "rswag-specs", require: false
 gem "rswag-schema_components"
 gem "committee"
 
-group :development, :test do
-  gem "dotenv"
-  gem "dotenv-rails", require: "dotenv/load"
-end
-
 group :development do
   gem "annotaterb"
 

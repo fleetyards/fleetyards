@@ -15,7 +15,7 @@ shared:
   on_subdomain?: <%= ENV["ON_SUBDOMAIN"] || false %>
 
   cable_endpoint: <%= ENV["CABLE_ENDPOINT"] || "ws://localhost:#{ENV["PORT"]}/cable" %>
-  mailer_default_from: <%= ENV["MAILER_DEFAULT_FROM"] %>
+  mailer_default_from: <%= ENV["MAILER_DEFAULT_FROM"] || "info@fleetyards.net" %>
   cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "cdn.fltyrd.net" %>
   storage_cdn_endpoint: <%= ENV["STORAGE_CDN_ENDPOINT"] %>
 

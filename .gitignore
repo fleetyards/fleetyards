@@ -13,8 +13,6 @@ config/credentials/*.key
 config/*.key
 .env*
 !.env.tpl
-!.env.test
-!.env.test.example
 
 # test files
 coverage/*
