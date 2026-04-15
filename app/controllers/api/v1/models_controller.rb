@@ -116,7 +116,6 @@ module Api
 
       def show
         @model = find_model_by_slug!(:manufacturer, :item_prices, :docks, {model_loaners: :loaner_model})
-        return if performed?
       end
 
       def hardpoints
