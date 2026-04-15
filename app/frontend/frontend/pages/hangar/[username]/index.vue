@@ -221,6 +221,11 @@ useSubscription({
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
+    <Btn v-if="user.publicHangarStats" :to="{ name: 'hangar-public-stats' }">
+      <i class="fa-duotone fa-chart-pie" />
+      {{ t("nav.stats") }}
+    </Btn>
+
     <Btn v-if="user.publicWishlist" :to="{ name: 'wishlist-public' }">
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
@@ -246,6 +251,15 @@ useSubscription({
   >
     <template v-if="mobile" #actions-right>
       <BtnDropdown :size="BtnSizesEnum.SMALL">
+        <Btn
+          v-if="user.publicHangarStats"
+          :to="{ name: 'hangar-public-stats' }"
+          :size="BtnSizesEnum.SMALL"
+        >
+          <i class="fa-duotone fa-chart-pie" />
+          <span>{{ t("nav.stats") }}</span>
+        </Btn>
+
         <Btn
           v-if="user.publicWishlist"
           :to="{ name: 'hangar-wishlist' }"
