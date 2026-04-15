@@ -38,7 +38,7 @@ test.describe("Cargo Grids", () => {
     const option = page.getByText("Caterpillar").first();
     await option.click();
 
-    await expect(page).toHaveURL(/ship=caterpillar/);
+    await expect(page).toHaveURL(/ship=DRAK-caterpillar/);
 
     // The cargo grid viewer should appear with stats
     await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
@@ -46,7 +46,7 @@ test.describe("Cargo Grids", () => {
   });
 
   test("Selects a model via URL query parameter", async ({ page }) => {
-    await page.goto("/tools/cargo-grids/?ship=caterpillar");
+    await page.goto("/tools/cargo-grids/?ship=DRAK-caterpillar");
 
     // Wait for page to settle after navigation with query param
     await page.waitForLoadState("networkidle");
@@ -105,7 +105,7 @@ test.describe("Cargo Grids", () => {
 
   test("Shows message when model has no cargo holds", async ({ page }) => {
     // Navigate directly via URL since the filter excludes models without cargo grids
-    await page.goto("/tools/cargo-grids/?ship=aurora-mr");
+    await page.goto("/tools/cargo-grids/?ship=RSI-aurora-mr");
     await page.waitForLoadState("networkidle");
 
     // Should show the no-cargo-holds message, not the viewer

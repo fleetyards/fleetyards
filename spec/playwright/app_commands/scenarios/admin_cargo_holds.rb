@@ -10,9 +10,10 @@ AdminUser.find_or_create_by!(username: "admin_cargo") do |u|
   u.super_admin = true
 end
 
+drak = Manufacturer.find_or_create_by!(name: "Drake Interplanetary") { |m| m.code = "DRAK" }
 model = Model.find_or_initialize_by(name: "Caterpillar")
 if model.new_record?
-  model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready")
+  model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready", manufacturer: drak)
 end
 model.update!(cargo_holds: [
   {

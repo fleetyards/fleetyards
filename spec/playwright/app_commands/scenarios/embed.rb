@@ -4,19 +4,22 @@ require "factory_bot_rails"
 Rails.logger.info "E2E: Creating embed scenario test data..."
 
 # Models needed by embed widgets
+misc = Manufacturer.find_or_create_by!(name: "MISC") { |m| m.code = "MISC" }
+origin = Manufacturer.find_or_create_by!(name: "Origin") { |m| m.code = "ORIG" }
+
 freelancer = Model.find_or_create_by!(name: "Freelancer") do |m|
   m.hidden = false
-  m.manufacturer = Manufacturer.find_or_create_by!(name: "MISC")
+  m.manufacturer = misc
 end
 
 Model.find_or_create_by!(name: "300i") do |m|
   m.hidden = false
-  m.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  m.manufacturer = origin
 end
 
 Model.find_or_create_by!(name: "600i Explorer") do |m|
   m.hidden = false
-  m.manufacturer = Manufacturer.find_or_create_by!(name: "Origin")
+  m.manufacturer = origin
 end
 
 # TestUser with Freelancer vehicles (for embed-v2-username-test)
