@@ -4200,6 +4200,118 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/public/hangars/{username}/stats/models-by-classification":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Hangar Models by Classification
+      operationId: publicHangarModelsByClassification
+      tags:
+      - PublicHangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/hangars/{username}/stats/models-by-manufacturer":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Hangar Models by Manufacturer
+      operationId: publicHangarModelsByManufacturer
+      tags:
+      - PublicHangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/hangars/{username}/stats/models-by-production-status":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Hangar Models by Production Status
+      operationId: publicHangarModelsByProductionStatus
+      tags:
+      - PublicHangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/public/hangars/{username}/stats/models-by-size":
+    parameters:
+    - name: username
+      in: path
+      description: username
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Public Hangar Models by Size
+      operationId: publicHangarModelsBySize
+      tags:
+      - PublicHangarStats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/PieChartStats"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/public/hangars/{username}/stats":
     parameters:
     - name: username
@@ -8087,11 +8199,14 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarGroupMetric"
+        metrics:
+          "$ref": "#/components/schemas/HangarMetrics"
       additionalProperties: false
       required:
       - total
       - classifications
       - groups
+      - metrics
       title: HangarStatsPublic
     HangarSyncResult:
       type: object
@@ -9907,6 +10022,8 @@ components:
           type: string
         publicHangarLoaners:
           type: boolean
+        publicHangarStats:
+          type: boolean
         publicWishlist:
           type: boolean
         publicWishlistUrl:
@@ -9943,6 +10060,7 @@ components:
       - saleNotify
       - publicHangar
       - publicHangarLoaners
+      - publicHangarStats
       - publicWishlist
       - hideOwner
       - twoFactorRequired
@@ -10002,12 +10120,15 @@ components:
           type: string
         publicHangarLoaners:
           type: boolean
+        publicHangarStats:
+          type: boolean
         publicWishlist:
           type: boolean
       additionalProperties: false
       required:
       - username
       - publicHangarLoaners
+      - publicHangarStats
       - publicWishlist
       title: UserPublic
     UserUpdateInput:
@@ -10041,6 +10162,8 @@ components:
         publicHangar:
           type: boolean
         publicHangarLoaners:
+          type: boolean
+        publicHangarStats:
           type: boolean
         publicWishlist:
           type: boolean

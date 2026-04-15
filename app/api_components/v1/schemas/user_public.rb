@@ -17,10 +17,11 @@ module V1
           guilded: {type: :string},
           homepage: {type: :string},
           publicHangarLoaners: {type: :boolean},
+          publicHangarStats: {type: :boolean},
           publicWishlist: {type: :boolean}
         },
         additionalProperties: false,
-        required: %w[username publicHangarLoaners publicWishlist]
+        required: %w[username publicHangarLoaners publicHangarStats publicWishlist]
       })
     end
   end

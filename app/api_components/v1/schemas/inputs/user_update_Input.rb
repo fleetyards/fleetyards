@@ -20,6 +20,7 @@ module V1
             saleNotify: {type: :boolean},
             publicHangar: {type: :boolean},
             publicHangarLoaners: {type: :boolean},
+            publicHangarStats: {type: :boolean},
             publicWishlist: {type: :boolean},
             hideOwner: {type: :boolean},
             location: {type: :string, nullable: true},

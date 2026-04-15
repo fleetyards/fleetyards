@@ -116,6 +116,7 @@
         "public": "%{user} Hangar",
         "import": "Import",
         "wishlist": "Wishlist",
+        "publicStats": "%{user} Hangar Stats",
         "publicWishlist": "%{user} Wishlist",
         "resetIngame": "Reset Ingame Ships after Wipe"
       },

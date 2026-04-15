@@ -28,6 +28,7 @@ const submitting = ref(false);
 const initialValues = ref<UserUpdateInput>({
   publicHangar: sessionStore.currentUser?.publicHangar,
   publicHangarLoaners: sessionStore.currentUser?.publicHangarLoaners,
+  publicHangarStats: sessionStore.currentUser?.publicHangarStats,
   publicWishlist: sessionStore.currentUser?.publicWishlist,
   hideOwner: sessionStore.currentUser?.hideOwner,
 });
@@ -36,6 +37,7 @@ const setupForm = () => {
   initialValues.value = {
     publicHangar: sessionStore.currentUser?.publicHangar,
     publicHangarLoaners: sessionStore.currentUser?.publicHangarLoaners,
+    publicHangarStats: sessionStore.currentUser?.publicHangarStats,
     publicWishlist: sessionStore.currentUser?.publicWishlist,
     hideOwner: sessionStore.currentUser?.hideOwner,
   };
@@ -64,6 +66,8 @@ const [publicHangar, publicHangarProps] = defineField("publicHangar");
 const [publicHangarLoaners, publicHangarLoanersProps] = defineField(
   "publicHangarLoaners",
 );
+const [publicHangarStats, publicHangarStatsProps] =
+  defineField("publicHangarStats");
 const [publicWishlist, publicWishlistProps] = defineField("publicWishlist");
 const [hideOwner, hideOwnerProps] = defineField("hideOwner");
 
@@ -114,6 +118,14 @@ const onSubmit = handleSubmit(async (values) => {
           name="publicHangarLoaners"
           v-bind="publicHangarLoanersProps"
           :label="t('labels.user.publicHangarLoaners')"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormToggle
+          v-model="publicHangarStats"
+          name="publicHangarStats"
+          v-bind="publicHangarStatsProps"
+          :label="t('labels.user.publicHangarStats')"
         />
       </div>
       <div class="col-12 col-md-6">

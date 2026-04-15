@@ -20,6 +20,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "stats/",
+    name: "hangar-public-stats",
+    component: () => import("@/frontend/pages/hangar/[username]/stats.vue"),
+    meta: {
+      title: "hangar.publicStats",
+      backgroundImage: "bg-5",
+      customTitle: true,
+    },
+  },
+  {
     path: "wishlist/",
     name: "wishlist-public",
     component: () => import("@/frontend/pages/hangar/[username]/wishlist.vue"),

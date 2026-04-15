@@ -26,6 +26,7 @@
         "public": "Hangar de %{user}",
         "import": "Importer",
         "wishlist": "Liste de souhaits",
+        "publicStats": "Statistiques du Hangar de %{user}",
         "publicWishlist": "Liste de souhaits de %{user}",
         "resetIngame": "Réinitialiser les vaisseaux obtenus dans le jeu"
       },

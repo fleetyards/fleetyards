@@ -26,6 +26,7 @@
         "public": "Hangar di %{user}",
         "import": "Importa",
         "wishlist": "Wishlist",
+        "publicStats": "%{user} Hangar Stats",
         "publicWishlist": "%{user} Wishlist",
         "resetIngame": "Reset Ingame Ships after Wipe"
       },

@@ -26,6 +26,7 @@ module V1
           publicHangar: {type: :boolean},
           publicHangarUrl: {type: :string},
           publicHangarLoaners: {type: :boolean},
+          publicHangarStats: {type: :boolean},
           publicWishlist: {type: :boolean},
           publicWishlistUrl: {type: :string},
           hideOwner: {type: :boolean},
@@ -40,7 +41,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email saleNotify publicHangar publicHangarLoaners publicWishlist hideOwner
+          username email saleNotify publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner
           twoFactorRequired resourceAccess authConnections createdAt updatedAt
         ]
       })

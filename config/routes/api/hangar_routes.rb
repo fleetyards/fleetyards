@@ -28,7 +28,12 @@ namespace :public do
   resources :hangars, param: :username, only: %i[show] do
     get :embed, on: :collection
 
-    resource :hangar_stats, path: "stats", only: %i[show]
+    resource :hangar_stats, path: "stats", only: %i[show] do
+      get "models-by-size", to: "hangar_stats#models_by_size"
+      get "models-by-production-status", to: "hangar_stats#models_by_production_status"
+      get "models-by-manufacturer", to: "hangar_stats#models_by_manufacturer"
+      get "models-by-classification", to: "hangar_stats#models_by_classification"
+    end
     resources :hangar_groups, path: "groups", only: %i[index]
   end
 

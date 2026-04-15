@@ -26,6 +26,7 @@ json.sale_notify user.sale_notify
 json.public_hangar user.public_hangar
 json.public_hangar_url user.public_hangar_url
 json.public_hangar_loaners user.public_hangar_loaners
+json.public_hangar_stats user.public_hangar_stats
 json.public_wishlist user.public_wishlist
 json.public_wishlist_url user.public_wishlist_url
 json.hide_owner user.hide_owner
