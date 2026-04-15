@@ -9,6 +9,7 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
@@ -220,7 +221,9 @@ const openDisplayOptionsModal = () => {
           <BreadCrumbs
             :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]"
           />
-          <h1>{{ t("headlines.hangar.wishlist") }}</h1>
+          <Heading size="hero" hero>{{
+            t("headlines.hangar.wishlist")
+          }}</Heading>
         </div>
       </div>
     </div>

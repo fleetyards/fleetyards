@@ -50,17 +50,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BreadCrumbs
-    :crumbs="[
-      {
-        to: { name: 'hangar-public', params: { username: username } },
-        label: t('headlines.hangar.public', { user: usernamePlural }),
-      },
-    ]"
-  />
-  <Heading>{{
-    t("headlines.hangar.publicStats", { user: usernamePlural })
-  }}</Heading>
+  <div class="row">
+    <div class="col-12">
+      <BreadCrumbs
+        :crumbs="[
+          {
+            to: { name: 'hangar-public', params: { username: username } },
+            label: t('headlines.hangar.public', { user: usernamePlural }),
+          },
+        ]"
+      />
+      <Heading size="hero" hero>{{
+        t("headlines.hangar.publicStats", { user: usernamePlural })
+      }}</Heading>
+    </div>
+  </div>
 
   <PublicHangarStats :username="username" />
 </template>

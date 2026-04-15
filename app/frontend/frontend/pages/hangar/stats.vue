@@ -163,8 +163,16 @@ const wishlistTotalCreditsCompact = computed(() =>
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]" />
-  <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+  <div class="row">
+    <div class="col-12">
+      <BreadCrumbs
+        :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]"
+      />
+      <Heading size="hero" hero>{{
+        t(`headlines.${route.meta.title}`)
+      }}</Heading>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-12 col-sm-6 col-lg-3">
