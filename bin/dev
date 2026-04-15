@@ -103,15 +103,4 @@ if [ -n "$open_browser" ]; then
   ) &
 fi
 
-if ! command -v op &> /dev/null; then
-  echo "Error: 1Password CLI (op) is not installed." >&2
-  echo "Install it from: https://developer.1password.com/docs/cli/get-started/" >&2
-  exit 1
-fi
-
-env_args=""
-if [ -f .env.local ]; then
-  env_args="-e .env.local"
-fi
-
-op run --env-file=.env.tpl -- foreman start -f Procfile -m "$formation" -p "$dev_port" $env_args
+exec bin/op foreman start -f Procfile -m "$formation" -p "$dev_port" -e /dev/null

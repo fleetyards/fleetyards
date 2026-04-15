@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Usage: bin/op rails console
+#        bin/op rails runner 'puts User.count'
+#        bin/op rake db:migrate
+set -euo pipefail
+
+if ! command -v op &> /dev/null; then
+  echo "Error: 1Password CLI (op) is not installed." >&2
+  echo "Install it from: https://developer.1password.com/docs/cli/get-started/" >&2
+  exit 1
+fi
+
+env_args=()
+for env_file in .env.tpl .env .env.local; do
+  if [ -f "$env_file" ]; then
+    env_args+=(--env-file="$env_file")
+  fi
+done
+
+exec op run "${env_args[@]}" -- "$@"
