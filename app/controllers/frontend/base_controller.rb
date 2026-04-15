@@ -33,6 +33,8 @@ module Frontend
 
     def model
       @model = model_record.includes(model_hardpoints: [:component]).first
+      return if redirect_to_canonical_slug(@model)
+
       if @model.present?
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description
@@ -46,6 +48,8 @@ module Frontend
 
     def model_images
       @model = model_record.first
+      return if redirect_to_canonical_slug(@model)
+
       if @model.present?
         @title = I18n.t("title.frontend.ship_images", model: @model.name)
         @description = I18n.t("meta.ship_images.description", model: @model.name)
@@ -59,6 +63,8 @@ module Frontend
 
     def model_videos
       @model = model_record.first
+      return if redirect_to_canonical_slug(@model)
+
       if @model.present?
         @title = I18n.t("title.frontend.ship_videos", model: @model.name)
         @description = I18n.t("meta.ship_videos.description", model: @model.name)
@@ -71,7 +77,8 @@ module Frontend
     end
 
     def compare_models
-      @models = Model.where(slug: (compare_params[:models] || []).map(&:downcase)).order(name: :asc).limit(8).all
+      slugs = (compare_params[:models] || []).map(&:downcase)
+      @models = Model.where(slug: slugs).or(Model.where(legacy_slug: slugs)).order(name: :asc).limit(8).all
       @title = I18n.t("title.frontend.compare_ships")
       @description = I18n.t("meta.compare_ships.description.default")
       @og_type = "article"
@@ -222,7 +229,16 @@ module Frontend
     end
 
     private def model_record(slug = params[:slug])
-      Model.where(slug: (slug || "").downcase)
+      slug = (slug || "").downcase
+      Model.where(slug:).or(Model.where(legacy_slug: slug))
+    end
+
+    private def redirect_to_canonical_slug(model)
+      return false if model.blank?
+      return false if model.slug == params[:slug]&.downcase
+
+      redirect_to url_for(slug: model.slug), status: :moved_permanently
+      true
     end
 
     private def check_short_domain

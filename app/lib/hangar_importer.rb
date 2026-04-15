@@ -12,6 +12,11 @@ class HangarImporter
     "rsi_slug = :normalized_name"
   ].freeze
 
+  MODEL_LEGACY_SLUG_QUERY = [
+    "legacy_slug = :slug",
+    "legacy_slug = :normalized_name"
+  ].freeze
+
   def initialize(import)
     @import = import
   end
@@ -60,7 +65,11 @@ class HangarImporter
         model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
       }
 
-      model = Model.where(query).first
+      model_query = [
+        (MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "),
+        query[1]
+      ]
+      model = Model.where(model_query).first
       if model.present?
         Vehicle.create(params.merge(model_id: model.id))
         imported_models << model.name

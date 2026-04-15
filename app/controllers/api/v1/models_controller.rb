@@ -100,7 +100,9 @@ module Api
       end
 
       def embed
-        @models = Model.visible.active.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).where(slug: params[:models]).order(name: :asc).all
+        @models = Model.visible.active.includes(:manufacturer, :item_prices, model_loaners: :loaner_model)
+          .where(slug: params[:models]).or(Model.where(legacy_slug: params[:models]))
+          .order(name: :asc).all
       end
 
       def updated
@@ -113,13 +115,13 @@ module Api
       end
 
       def show
-        @model = Model.visible.active
-          .includes(:manufacturer, :item_prices, :docks, model_loaners: :loaner_model)
-          .where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        @model = find_model_by_slug!(:manufacturer, :item_prices, :docks, {model_loaners: :loaner_model})
+        return if performed?
       end
 
       def hardpoints
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         scope = if feature_enabled?("hardpoints-v2")
           model.hardpoints.includes(:component)
@@ -139,7 +141,8 @@ module Api
       end
 
       def images
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         @images = model.images
           .enabled
@@ -149,7 +152,8 @@ module Api
       end
 
       def videos
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         @videos = model.videos
           .order("videos.created_at desc")
@@ -158,7 +162,8 @@ module Api
       end
 
       def variants
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         scope = model.variants.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).visible.active
         if pledge_price_range.present?
@@ -182,7 +187,8 @@ module Api
       end
 
       def loaners
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         scope = model.loaners.includes(:manufacturer, :item_prices, model_loaners: :loaner_model).visible.active
 
@@ -208,7 +214,8 @@ module Api
       end
 
       def modules
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         @model_modules = model.modules
           .visible
@@ -219,7 +226,8 @@ module Api
       end
 
       def module_packages
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         @module_packages = model.module_packages
           .visible
@@ -230,7 +238,8 @@ module Api
       end
 
       def upgrades
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         @model_upgrades = model.upgrades
           .visible
@@ -239,7 +248,8 @@ module Api
       end
 
       def paints
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         @paints = model.paints
           .visible
@@ -248,7 +258,9 @@ module Api
       end
 
       def store_image
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first
+        model = find_model_by_slug(Model.visible.active)
+        return if performed?
+
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
 
@@ -260,19 +272,15 @@ module Api
       end
 
       def fleetchart_image
-        model = Model
-          .visible
-          .active
-          .where(slug: params[:slug])
-          .or(Model.where(rsi_slug: params[:slug]))
-          .joins(:fleetchart_image_attachment)
-          .first!
+        model = find_model_by_slug!(joins: :fleetchart_image_attachment)
+        return if performed?
 
         redirect_to rails_blob_url(model.fleetchart_image), allow_other_host: true
       end
 
       def snub_crafts
-        model = Model.visible.active.where(slug: params[:slug]).or(Model.where(rsi_slug: params[:slug])).first!
+        model = find_model_by_slug!
+        return if performed?
 
         @snub_crafts = model.snub_crafts
           .visible
@@ -364,9 +372,46 @@ module Api
         scope
       end
 
+      private def find_model_by_slug!(*includes, joins: nil)
+        scope = Model.visible.active
+        scope = scope.includes(*includes) if includes.any?
+        scope = scope.joins(joins) if joins
+        model = scope
+          .where(slug: params[:slug])
+          .or(Model.where(rsi_slug: params[:slug]))
+          .or(Model.where(legacy_slug: params[:slug]))
+          .first!
+
+        if model.slug != params[:slug]
+          redirect_to url_for(slug: model.slug), status: :moved_permanently
+          return model
+        end
+
+        model
+      end
+
+      private def find_model_by_slug(scope)
+        model = scope
+          .where(slug: params[:slug])
+          .or(Model.where(rsi_slug: params[:slug]))
+          .or(Model.where(legacy_slug: params[:slug]))
+          .first
+
+        if model.present? && model.slug != params[:slug]
+          redirect_to url_for(slug: model.slug), status: :moved_permanently
+          return nil
+        end
+
+        model
+      end
+
       private def will_it_fit?(scope)
         slug = model_query_params.delete("will_it_fit")
-        parent = Model.visible.active.where(slug:).or(Model.where(rsi_slug: slug)).first
+        parent = Model.visible.active
+          .where(slug:)
+          .or(Model.where(rsi_slug: slug))
+          .or(Model.where(legacy_slug: slug))
+          .first
 
         return scope if parent.blank? || parent.docks.blank?
 

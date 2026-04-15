@@ -30,6 +30,7 @@
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
 #  last_updated_at          :datetime
+#  legacy_slug              :string
 #  length                   :decimal(15, 2)   default(0.0), not null
 #  loaners_count            :integer          default(0), not null
 #  mass                     :decimal(15, 2)   default(0.0), not null
@@ -102,12 +103,13 @@
 #
 # Indexes
 #
-#  index_models_on_base_model_id      (base_model_id)
-#  index_models_on_classification     (classification)
-#  index_models_on_manufacturer_id    (manufacturer_id)
-#  index_models_on_name               (name)
-#  index_models_on_production_status  (production_status)
-#  index_models_on_size               (size)
+#  index_models_on_base_model_id             (base_model_id)
+#  index_models_on_classification            (classification)
+#  index_models_on_legacy_slug               (legacy_slug)
+#  index_models_on_manufacturer_id           (manufacturer_id)
+#  index_models_on_manufacturer_id_and_name  (manufacturer_id,name) UNIQUE
+#  index_models_on_production_status         (production_status)
+#  index_models_on_size                      (size)
 #
 class Model < ApplicationRecord
   include ActionView::Helpers::NumberHelper
@@ -227,7 +229,7 @@ class Model < ApplicationRecord
   after_save :broadcast_update
   after_save :send_new_model_notification
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: {scope: :manufacturer_id}
 
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = [
@@ -634,8 +636,12 @@ class Model < ApplicationRecord
   end
 
   private def update_slugs
-    super
-    self.rsi_slug = generate_slug(rsi_name)
+    self.rsi_slug = rsi_name&.parameterize.presence
+    if manufacturer.present?
+      self.slug = "#{manufacturer.code}-#{name.parameterize}"
+    else
+      super
+    end
   end
 
   private def set_last_updated_at
