@@ -57,7 +57,7 @@ when "sync"
   s3_endpoint = "fsn1.your-objectstorage.com"
   s3_access_key = `op read "op://Fleetyards/HETZNER_S3/access_key_id"`.strip
   s3_secret_key = `op read "op://Fleetyards/HETZNER_S3/secret_access_key"`.strip
-  s3cmd = "s3cmd --host=#{s3_endpoint} --host-bucket=%(bucket)s.#{s3_endpoint} --access_key=#{s3_access_key} --secret_key=#{s3_secret_key}"
+  s3cmd = "s3cmd --host=#{s3_endpoint} --host-bucket='%(bucket)s.#{s3_endpoint}' --access_key=#{s3_access_key} --secret_key=#{s3_secret_key}"
 
   version = ARGV.shift
 
