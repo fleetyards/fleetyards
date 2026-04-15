@@ -16,8 +16,8 @@ namespace :frontend, **frontend_options do
   get "ships/:slug/videos", to: "base#model_videos", as: :model_videos
 
   get "hangar", to: "hangar#index", as: :hangar
-  get "hangar/:username", to: "hangar#index", as: :public_hangar
-  get "hangar/:username/fleetchart", to: "hangar#index"
+  get "hangar/:username", to: "hangar#public", as: :public_hangar
+  get "hangar/:username/fleetchart", to: "hangar#public"
   get "hangar/:username/wishlist", to: "hangar#wishlist", as: :public_wishlist
 
   get "compare/ships", to: "base#compare_models"

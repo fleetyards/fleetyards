@@ -3,6 +3,12 @@
 module Frontend
   class HangarController < ApplicationController
     def index
+      @title = I18n.t("title.frontend.hangar")
+
+      render_frontend
+    end
+
+    def public
       @user = User.find_by(["normalized_username = :value", {value: params[:username].downcase}])
       if @user.present?
         vehicle = @user.vehicles.public.purchased.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
