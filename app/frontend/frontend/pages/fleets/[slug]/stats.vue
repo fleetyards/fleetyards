@@ -44,7 +44,7 @@ const crumbs = computed(() => {
 
 <template>
   <BreadCrumbs :crumbs="crumbs" />
-  <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+  <Heading size="hero" hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
   <FleetStats v-if="membership" :fleet="fleet" />
 

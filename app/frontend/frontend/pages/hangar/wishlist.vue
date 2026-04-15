@@ -225,20 +225,8 @@ const openDisplayOptionsModal = () => {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-lg-12">
-      <div class="row">
-        <div class="col-12">
-          <BreadCrumbs
-            :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]"
-          />
-          <Heading size="hero" hero>{{
-            t("headlines.hangar.wishlist")
-          }}</Heading>
-        </div>
-      </div>
-    </div>
-  </div>
+  <BreadCrumbs :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]" />
+  <Heading size="hero" hero>{{ t("headlines.hangar.wishlist") }}</Heading>
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn data-test="fleetchart-link" @click="toggleFleetchart">
