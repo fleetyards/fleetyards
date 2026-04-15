@@ -222,7 +222,7 @@ useSubscription({
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn v-if="user.publicHangarStats" :to="{ name: 'hangar-public-stats' }">
-      <i class="fa-duotone fa-chart-pie" />
+      <i class="fa-duotone fa-chart-bar" />
       {{ t("nav.stats") }}
     </Btn>
 
@@ -256,7 +256,7 @@ useSubscription({
           :to="{ name: 'hangar-public-stats' }"
           :size="BtnSizesEnum.SMALL"
         >
-          <i class="fa-duotone fa-chart-pie" />
+          <i class="fa-duotone fa-chart-bar" />
           <span>{{ t("nav.stats") }}</span>
         </Btn>
 
