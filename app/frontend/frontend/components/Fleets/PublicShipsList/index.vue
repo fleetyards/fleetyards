@@ -45,8 +45,8 @@ const displayStore = useFleetStore();
 
 const comlink = useComlink();
 
-const { grouped, detailsVisible } = storeToRefs(fleetStore);
-const { gridView } = storeToRefs(displayStore);
+const { detailsVisible } = storeToRefs(fleetStore);
+const { grouped, gridView } = storeToRefs(displayStore);
 
 const openDisplayOptionsModal = () => {
   comlink.emit("open-modal", {
@@ -67,12 +67,12 @@ const toggleFleetchart = () => {
 
 watch(
   () => grouped.value,
-  () => refetch,
+  () => refetch(),
 );
 
 watch(
   () => props.fleet,
-  () => refetch,
+  () => refetch(),
 );
 
 const vehiclesQueryKey = computed(() => {

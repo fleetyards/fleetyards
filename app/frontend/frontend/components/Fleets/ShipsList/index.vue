@@ -82,12 +82,12 @@ const toggleFleetchart = () => {
 
 watch(
   () => grouped.value,
-  () => refetch,
+  () => refetch(),
 );
 
 watch(
   () => props.fleet,
-  () => refetch,
+  () => refetch(),
 );
 
 onMounted(() => {
