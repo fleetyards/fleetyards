@@ -4772,11 +4772,17 @@ paths:
       - OpenId: []
       responses:
         '200':
-          description: successful with OAuth token
+          description: successful when sole fleet admin
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: blocked by permanent fleet role
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: bad request
           content:

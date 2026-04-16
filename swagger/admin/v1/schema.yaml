@@ -4097,11 +4097,17 @@ paths:
       - Users
       responses:
         '200':
-          description: successful
+          description: successful when sole fleet admin
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
+        '400':
+          description: blocked by permanent fleet role
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '404':
           description: not found
           content:
