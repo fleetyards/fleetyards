@@ -2,6 +2,82 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.7.0](https://github.com/fleetyards/fleetyards/compare/v6.6.1...v6.7.0) (2026-04-16)
+
+
+### Features
+
+* add bin/op wrapper for 1Password secret injection ([95aea7e](https://github.com/fleetyards/fleetyards/commit/95aea7e1ae3a6b6e9fcb4f7c7ee88e3280b2f5a4))
+* add fleet member worldmap and starmap ([#3688](https://github.com/fleetyards/fleetyards/issues/3688)) ([ecb85e0](https://github.com/fleetyards/fleetyards/commit/ecb85e0520a2faad20cf087c496f9d12e4d86402))
+* add persistent notification center backend ([#3689](https://github.com/fleetyards/fleetyards/issues/3689)) ([ece407f](https://github.com/fleetyards/fleetyards/commit/ece407f3f675e81c6dca0db9fac48eab27acee07))
+* add public hangar stats with metrics and charts ([#3694](https://github.com/fleetyards/fleetyards/issues/3694)) ([837404e](https://github.com/fleetyards/fleetyards/commit/837404ee657d0406f8fc70c9792a6e38015595c8))
+* allow all RSI components in hangar sync and schedule modules import ([5152697](https://github.com/fleetyards/fleetyards/commit/5152697558404fad686f717072fe8b4be10c3df7))
+* use separate databases for worktrees ([2b1cb2f](https://github.com/fleetyards/fleetyards/commit/2b1cb2fc022063a9c67546798455adf83fdebc59))
+
+
+### Bug Fixes
+
+* add hangar import mappings for MOLE Carbon Edition and Gladius Dunlevy, create Raptor model ([9ae02bd](https://github.com/fleetyards/fleetyards/commit/9ae02bda253a4793c5190919026efbb88a2b9c21))
+* disable mail delivery in download-db test account updates ([7f07e9b](https://github.com/fleetyards/fleetyards/commit/7f07e9beb968434d0d737616ce8a196d7524725d))
+* disable OTP for frontend user in download-db ([a5b02cd](https://github.com/fleetyards/fleetyards/commit/a5b02cdf05c114a957381184730b482573d1c09c))
+* drop and recreate database in download-db script ([6324f2d](https://github.com/fleetyards/fleetyards/commit/6324f2d8780493860a6a035ad65ed1b3ed10a346))
+* include module port definitions in scdata models parser ([1933806](https://github.com/fleetyards/fleetyards/commit/1933806eb51caed961d283d93116a3dcbf540c5c))
+* link member requested notification email to invites page instead of members page ([76ecc70](https://github.com/fleetyards/fleetyards/commit/76ecc70f26c64cc2bd733e9d40003e985d670581))
+* move Raptor model creation from migration to seeds ([0217ad6](https://github.com/fleetyards/fleetyards/commit/0217ad680be6e331338117cbfa2e15c334c975ed))
+* prevent user deletion from silently failing due to permanent fleet roles ([15b8f5a](https://github.com/fleetyards/fleetyards/commit/15b8f5a1398114ed002705dd86cbc8e8fab87a89))
+* prevent user deletion from silently failing due to permanent fleet roles ([7bf08af](https://github.com/fleetyards/fleetyards/commit/7bf08af983559898c2cfe26e31a797ad49f0c67e))
+* public fleet ship list not updating when toggling grouped ([572056f](https://github.com/fleetyards/fleetyards/commit/572056fb8671a50ecd6d064a3d8dafba95fcd378))
+* quote %(bucket)s in s3cmd host-bucket flag to prevent shell syntax error ([f0f37b9](https://github.com/fleetyards/fleetyards/commit/f0f37b99cb0e240db92372c5a291a1a9f694c8c6))
+* redirect to private hangar after OAuth login instead of public hangar ([6980cc7](https://github.com/fleetyards/fleetyards/commit/6980cc7f0c367d386c66d94e56bd71a188ed2b9a))
+* refresh user data on security settings page to update OAuth button state ([0d4c039](https://github.com/fleetyards/fleetyards/commit/0d4c039df73f2b3c4685efeeac70d2356c969b67))
+* replace floating-vue with custom tooltip directive and fix paint upload ([7fcf425](https://github.com/fleetyards/fleetyards/commit/7fcf4258f07732d82e207f38198abd84ff662159))
+* reset FormFileInput display after file prop updates ([2154e1c](https://github.com/fleetyards/fleetyards/commit/2154e1cae6e1f66e95c441f70d4768ac851bfdb9))
+* reset schema version after deleted Raptor migration ([63bf83b](https://github.com/fleetyards/fleetyards/commit/63bf83bf81b3656c1fc190b31e7cbc82e7b01770))
+* resolve floating promise lint error in security settings page ([0eb59c8](https://github.com/fleetyards/fleetyards/commit/0eb59c8bec8db7ad5c21f2c6dcb6db3c743795c7))
+* respect subdomain setting for admin maintenance URLs ([9195baf](https://github.com/fleetyards/fleetyards/commit/9195bafa04ce4924a22b55558f2cd5ffc4535f88))
+* send removeAvatar flag when clearing avatar in profile settings ([dd81f08](https://github.com/fleetyards/fleetyards/commit/dd81f08def5eb1b8b59421a22c26e6c33ac3dbc4))
+* skip download-db re-download when local dump is already up to date ([f0349fd](https://github.com/fleetyards/fleetyards/commit/f0349fd2bd4dd2d0d646cb3c57b8de082e38c4b7))
+* split hangar controller into separate index and public actions ([0c03881](https://github.com/fleetyards/fleetyards/commit/0c038810e2cd568919a1927c1446bca387a38813))
+* update defu to 6.1.7 to resolve prototype pollution vulnerability (CVE) ([8885026](https://github.com/fleetyards/fleetyards/commit/88850264307f642aec272cad9ebffb1f3ddbdda4))
+* use deliver_later for AdminUser devise notifications ([26c9b66](https://github.com/fleetyards/fleetyards/commit/26c9b66c07ee734ed5b107780522a5a1988a73df))
+* use file size instead of MD5 for download-db skip check ([52a571f](https://github.com/fleetyards/fleetyards/commit/52a571f46c2659c8a853a95382b1ab486a3cbdae))
+
+
+### Refactorings
+
+* extract shared examples for spec auth and import patterns ([#3696](https://github.com/fleetyards/fleetyards/issues/3696)) ([91a2b34](https://github.com/fleetyards/fleetyards/commit/91a2b34c0cdc4d0c9cec9cd0ce1e40553296e462))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.14 to 6.1.16 ([#3679](https://github.com/fleetyards/fleetyards/issues/3679)) ([42a776c](https://github.com/fleetyards/fleetyards/commit/42a776c8ede0371e8360c2028966f5c3a08e2cf8))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#3692](https://github.com/fleetyards/fleetyards/issues/3692)) ([60c55de](https://github.com/fleetyards/fleetyards/commit/60c55de4b7fe4e4c722d7f3690bd591343f27131))
+* **deps-dev:** bump @typescript-eslint/parser from 8.58.1 to 8.58.2 ([#3683](https://github.com/fleetyards/fleetyards/issues/3683)) ([042def7](https://github.com/fleetyards/fleetyards/commit/042def7f9d1dc11b1fd96eedbf9baafdf18c8aaf))
+* **deps-dev:** bump @vitejs/plugin-vue from 6.0.5 to 6.0.6 ([#3686](https://github.com/fleetyards/fleetyards/issues/3686)) ([67956fc](https://github.com/fleetyards/fleetyards/commit/67956fc35ace4e30d176b967318633686774a8ab))
+* **deps-dev:** bump faker from 3.6.1 to 3.7.1 ([#3690](https://github.com/fleetyards/fleetyards/issues/3690)) ([2b99b6d](https://github.com/fleetyards/fleetyards/commit/2b99b6d31a8ebcf0252433efb0538341eb59b73a))
+* **deps-dev:** bump knip from 6.4.0 to 6.4.1 ([#3678](https://github.com/fleetyards/fleetyards/issues/3678)) ([14fea78](https://github.com/fleetyards/fleetyards/commit/14fea78ff50be44659295800d7af7790caf54326))
+* **deps-dev:** bump msw from 2.13.2 to 2.13.3 ([#3684](https://github.com/fleetyards/fleetyards/issues/3684)) ([c187165](https://github.com/fleetyards/fleetyards/commit/c1871655ec19a3c85e2100a45dbdbf0a150867a2))
+* **deps-dev:** bump orval from 8.7.0 to 8.8.0 ([#3701](https://github.com/fleetyards/fleetyards/issues/3701)) ([ad02f9e](https://github.com/fleetyards/fleetyards/commit/ad02f9e2ffa58226ea68c18aaaaa98ad9615ad5b))
+* **deps-dev:** bump prettier from 3.8.2 to 3.8.3 ([#3691](https://github.com/fleetyards/fleetyards/issues/3691)) ([9abbdad](https://github.com/fleetyards/fleetyards/commit/9abbdad0cb0d7430601d5ec242e5a0c551596a04))
+* **deps-dev:** bump stylelint from 17.6.0 to 17.7.0 ([#3677](https://github.com/fleetyards/fleetyards/issues/3677)) ([0ea748c](https://github.com/fleetyards/fleetyards/commit/0ea748cc3c0cf266e747f1dc23553ecc0b2f1385))
+* **deps-dev:** bump timecop from 0.9.10 to 0.9.11 ([#3675](https://github.com/fleetyards/fleetyards/issues/3675)) ([85a6faf](https://github.com/fleetyards/fleetyards/commit/85a6faf9c10e942e2b5c07915b9289f2ead9dfd8))
+* **deps:** bump highcharts from 12.5.0 to 12.6.0 ([#3685](https://github.com/fleetyards/fleetyards/issues/3685)) ([3414ebb](https://github.com/fleetyards/fleetyards/commit/3414ebbe3b1fa949f3bc9c0a63037f09998fac7f))
+* **deps:** bump oj from 3.16.16 to 3.16.17 ([#3676](https://github.com/fleetyards/fleetyards/issues/3676)) ([5016be8](https://github.com/fleetyards/fleetyards/commit/5016be813ce769775a0a15880125e70d4b7f2ab7))
+* **deps:** bump pghero from 3.7.0 to 3.8.0 ([#3697](https://github.com/fleetyards/fleetyards/issues/3697)) ([c13b61e](https://github.com/fleetyards/fleetyards/commit/c13b61e8c3f10e4ef2d4458f97e8aa87a4ca6da4))
+* **deps:** bump rollups from 0.5.0 to 0.6.0 ([#3698](https://github.com/fleetyards/fleetyards/issues/3698)) ([30249d2](https://github.com/fleetyards/fleetyards/commit/30249d214846b95b19de7b34332b157c014aeeb8))
+* **deps:** bump swagger-ui-dist from 5.32.2 to 5.32.3 ([#3693](https://github.com/fleetyards/fleetyards/issues/3693)) ([e898a4a](https://github.com/fleetyards/fleetyards/commit/e898a4a552be8ab060dd90162c414561080f5006))
+* **deps:** bump swagger-ui-dist from 5.32.3 to 5.32.4 ([#3699](https://github.com/fleetyards/fleetyards/issues/3699)) ([895811e](https://github.com/fleetyards/fleetyards/commit/895811e2d513c84e89e04685f1d913f1b323eeee))
+* move exec-plan to docs/exec-plans directory ([5e208ec](https://github.com/fleetyards/fleetyards/commit/5e208ecd14ab7b9b553d748b6fb28f5626da9ec3))
+* remove dotenv gems and .env.test in preparation for Rails 8.2 ([0f98db2](https://github.com/fleetyards/fleetyards/commit/0f98db21d190d06309615429fd9392942bd4be06))
+* remove extra blank line in RSIHangarParser ([fafabc8](https://github.com/fleetyards/fleetyards/commit/fafabc8bd9700ea3aea9a7495d1520d818cd2e0b))
+* remove unused nix development setup ([e3a7123](https://github.com/fleetyards/fleetyards/commit/e3a712326beb7309921aae7c9cf3d7d71bce4c25))
+* simplify Vue feature flags and remove redundant env vars ([251be4e](https://github.com/fleetyards/fleetyards/commit/251be4e160d51e3b5bf4ada6940a3f6cb7ed377f))
+* update ListGroup layout and local dev database/redis defaults ([dd1e46b](https://github.com/fleetyards/fleetyards/commit/dd1e46b99ad39601eb24fead64d0a780297c8763))
+* update SC data version to 4.7.1-live.11638371 ([bbaa811](https://github.com/fleetyards/fleetyards/commit/bbaa811d205dd7d921199f3357c55540311e471c))
+* update schema and user model annotations ([012afd6](https://github.com/fleetyards/fleetyards/commit/012afd643eca8474fada3882045dcdd9f95de7bc))
+* update schema annotations for user and omniauth_connection ([70ccb78](https://github.com/fleetyards/fleetyards/commit/70ccb78a8f7c5e7325a89c1c55e4e658473c4ae9))
+* use 1Password CLI for secrets and credentials management ([#3682](https://github.com/fleetyards/fleetyards/issues/3682)) ([97b9ddb](https://github.com/fleetyards/fleetyards/commit/97b9ddbe212c9d63f053afde0ad263053042383a))
+
 ## [6.6.1](https://github.com/fleetyards/fleetyards/compare/v6.6.0...v6.6.1) (2026-04-12)
 
 
