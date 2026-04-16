@@ -1,380 +1,330 @@
-# Migrate from rswag to openapi-ruby
+# Migrate from rswag + committee + rswag-schema_components to openapi-ruby
 
-## Goal
+## Context
 
-Replace `rswag-api`, `rswag-specs`, `rswag-schema_components`, and `committee` with the single `openapi-ruby` gem. This unifies spec generation, schema components, and runtime validation under one library.
+FleetYards currently uses three gems for OpenAPI:
+- **rswag** (rswag-api 2.17.0, rswag-specs 2.17.0) — test-driven spec generation
+- **rswag-schema_components** (0.6.0) — reusable schema component system
+- **committee** (5.6.2) — runtime request validation middleware
 
-## Current State
+**openapi-ruby** replaces all three with a single gem that provides the same DSL, component system, and middleware — plus OpenAPI 3.1 support, form data handling, eager $ref validation, and auto-injected 400 validation error responses.
 
-- **Gems**: `rswag-api` 2.17.0, `rswag-specs` 2.17.0, `rswag-schema_components` 0.6.0, `committee` (unused)
-- **Spec files**: 299 request specs in `spec/requests/`
-- **Component files**: 279 Ruby classes in `app/api_components/`
-- **Schema outputs**: 3 YAML schemas (v1, admin/v1, oauth/v1) in `swagger/`
-- **OpenAPI version**: 3.0.3 (configured in `config/app/api_schema.yml`)
-- **Test type**: `type: :request` with `swagger_doc:` metadata
-- **Helper**: `spec/swagger_helper.rb` (requires `rswag/specs`)
-- **Parameter passing**: body params via `parameter name: :input, in: :body` + `let(:input)`, query/path params via `let(:paramName)`, auth via `let(:Authorization)` or session cookies
-- **Shared examples**: `admin_auth` and `oauth_auth` for auth error responses
-- **Monkey patch**: `config/initializers/rswag_monkey_patch.rb` (form payload handling)
-- **ParamsHelper**: `app/api_components/params_helper.rb` — derives strong params from YAML schema, uses `Rswag::Api.config.openapi_root`
-- **Schema controllers**: 3 controllers serving YAML files (Api::SchemaController, Admin::Api::SchemaController, Oauth::SchemaController)
+---
 
-## Key Differences (rswag vs openapi-ruby)
+## Phase 1: Gem Swap + Configuration
 
-| Aspect | rswag | openapi-ruby |
-|--------|-------|-------------|
-| Gem(s) | rswag-api + rswag-specs + rswag-schema_components | openapi-ruby (single gem) |
-| RSpec type | `type: :request` | `type: :openapi` |
-| Schema selector | `swagger_doc: "v1/schema.yaml"` | Schema key in config + `openapi_schema` |
-| Require | `require "swagger_helper"` | `require "openapi_helper"` |
-| Component include | `Rswag::SchemaComponents::Component` | `OpenapiRuby::Components::Base` |
-| Config | `swagger_helper.rb` + `rswag_api.rb` initializer | `config/initializers/openapi_ruby.rb` |
-| Body params | `parameter name: :input, in: :body` + `let(:input)` | `request_body` DSL + `let(:request_body)` |
-| Query/path params | `let(:paramName)` (resolved via `#send`) | `let(:paramName)` (resolved via `resolve_let`) — **compatible** |
-| Auth params | `let(:Authorization)` (resolved via `#send`) | Resolved via security scheme config — **compatible** |
-| Schema generation | `rswag:specs:swaggerize` rake task | `openapi_ruby:generate` rake task + auto after suite |
-| Runtime validation | committee (separate) | Built-in middleware |
-| Strong params | `ParamsHelper` (custom, reads YAML) | `OpenapiRuby::ControllerHelpers` + `permitted_params` |
-| Swagger UI | Not used | Built-in engine (optional) |
-| Schema serving | Custom controllers | Built-in engine routes |
-| Scoping | `Rswag::SchemaComponents::Loader.new("v1")` | `component_scope_paths` config |
-| Key transformation | Handled in component classes | `config.camelize_keys = true` global setting |
-| Hidden responses | Not supported | `response 200, "desc", hidden: true` |
-
-## Migration Plan
-
-### Phase 1: Gem swap and configuration
-
-1. **Update Gemfile**
-   - Remove: `rswag-api`, `rswag-specs`, `rswag-schema_components`, `committee`
-   - Add: `gem "openapi-ruby"`
-   - Run `bundle install`
-
-2. **Create initializer** `config/initializers/openapi_ruby.rb`:
-   ```ruby
-   OpenapiRuby.configure do |config|
-     config.schemas = {
-       "v1/schema.yaml": {
-         openapi_version: "3.0.3",
-         info: {
-           title: "FleetYards.net API",
-           version: "v1",
-           license: { name: "GNU General Public License v3.0", url: "..." },
-           "x-logo": { url: "...", altText: "FleetYards.net logo" }
-         },
-         servers: [
-           { url: API_ENDPOINT, description: "Dev Server" },
-           { url: "https://api.fleetyards.net/v1", description: "Production Server" },
-           { url: "https://api.fleetyards.dev/v1", description: "Staging Server" }
-         ],
-         security: [],
-         component_scope: :v1
-       },
-       "admin/v1/schema.yaml": {
-         openapi_version: "3.0.3",
-         info: { title: "FleetYards.net Command API", version: "v1", ... },
-         servers: [...],
-         security: [{ SessionCookie: [] }],
-         component_scope: :admin_v1
-       },
-       "oauth/v1/schema.yaml": {
-         openapi_version: "3.0.3",
-         info: { title: "FleetYards.net OAuth API", version: "v1", ... },
-         servers: [...],
-         security: [],
-         component_scope: :oauth_v1
-       }
-     }
-
-     config.component_paths = [Rails.root.join("app/api_components").to_s]
-     config.component_scope_paths = {
-       "v1" => :v1,
-       "admin/v1" => :admin_v1,
-       "oauth/v1" => :oauth_v1,
-       "shared/v1" => :shared
-     }
-     config.camelize_keys = true
-     config.schema_output_dir = Rails.root.join("swagger").to_s
-     config.schema_output_format = :yaml
-     config.validate_responses_in_tests = true
-     config.request_validation = :disabled
-     config.response_validation = :disabled
-     config.ui_enabled = false
-   end
-   ```
-
-3. **Delete old config files**:
-   - `config/initializers/rswag_api.rb`
-   - `config/initializers/rswag_monkey_patch.rb`
-   - `config/app/api_schema.yml` (if no longer referenced elsewhere)
-
-4. **Mount engine** in `config/routes.rb`:
-   ```ruby
-   mount OpenapiRuby::Engine => "/api-docs"
-   ```
-
-5. **Remove old schema controller routes** and controllers:
-   - `app/controllers/api/schema_controller.rb`
-   - `app/controllers/admin/api/schema_controller.rb`
-   - `app/controllers/oauth/schema_controller.rb`
-   - Corresponding route entries
-
-### Phase 2: Migrate schema components (279 files)
-
-This is a bulk find-and-replace. Each component needs:
-
-**Before:**
+### 1.1 Update Gemfile
 ```ruby
-module V1
-  module Schemas
-    module Fleets
-      class Fleet
-        include Rswag::SchemaComponents::Component
+# Remove:
+gem "rswag-api"
+gem "rswag-specs", require: false
+gem "rswag-schema_components"
+gem "committee"
 
-        schema({ ... })
-      end
-    end
-  end
+# Add:
+gem "openapi-ruby"
+```
+
+Run `bundle install`.
+
+### 1.2 Create initializer
+
+Create `config/initializers/openapi_ruby.rb`:
+
+```ruby
+OpenapiRuby.configure do |config|
+  config.schemas = {
+    "v1/schema" => {
+      info: { title: "FleetYards.net API", version: "v1" },
+      servers: [
+        { url: API_ENDPOINT, description: "Dev" },
+        # add staging/production as needed
+      ],
+      component_scope: :v1,
+      prefix: URI.parse(API_ENDPOINT).path
+    },
+    "admin/v1/schema" => {
+      info: { title: "FleetYards.net Admin/CMD API", version: "v1" },
+      servers: [
+        { url: ADMIN_API_ENDPOINT, description: "Dev" },
+      ],
+      component_scope: :admin,
+      prefix: URI.parse(ADMIN_API_ENDPOINT).path
+    },
+    "oauth/v1/schema" => {
+      info: { title: "FleetYards.net OAuth", version: "v1" },
+      servers: [
+        { url: OAUTH_ENDPOINT, description: "Dev" },
+      ],
+      component_scope: :oauth
+    }
+  }
+
+  config.component_paths = ["app/api_components"]
+  config.component_scope_paths = {
+    "v1"        => :v1,
+    "admin/v1"  => :admin,
+    "oauth/v1"  => :oauth,
+    "shared/v1" => :shared
+  }
+
+  config.camelize_keys = false  # fleetyards already uses camelCase in component schemas
+  config.schema_output_format = :yaml
+  config.schema_output_dir = "swagger"
+
+  config.request_validation = ENV.fetch("SKIP_COMMITTEE", false) ? :disabled : :enabled
+  config.response_validation = :disabled
+  config.strict_reference_validation = true
+
+  config.auto_validation_error_response = true
+  config.validation_error_schema = {
+    "type" => "object",
+    "properties" => {
+      "code" => { "type" => "string" },
+      "message" => { "type" => "string" }
+    },
+    "required" => %w[code message]
+  }
 end
 ```
 
-**After:**
+### 1.3 Delete old config files
+- `config/initializers/rswag_api.rb`
+- `config/initializers/rswag_monkey_patch.rb`
+- `config/initializers/03_committee.rb`
+- `lib/api_validation_error.rb`
+
+---
+
+## Phase 2: Migrate Components (~277 files)
+
+### 2.1 Replace mixin in all component files
+
+Find-and-replace across `app/api_components/`:
+```
+# Before:
+include Rswag::SchemaComponents::Component
+
+# After:
+include OpenapiRuby::Components::Base
+```
+
+This is a single `sed` or IDE find-and-replace. The `schema({...})`, `schema_hidden`, and inheritance patterns are identical.
+
+### 2.2 Delete custom component infrastructure
+- `app/api_components/components_loader.rb` — replaced by built-in Loader
+- `app/api_components/concerns/schema_concern.rb` — replaced by Components::Base
+- `app/api_components/params_helper.rb` — check if still needed, may be replaced by `permitted_params`
+
+### 2.3 Verify component_type declarations
+
+Components that use non-default types need `component_type` calls. Check:
+- `shared/v1/parameters/*.rb` — should have `component_type :parameters`
+- `shared/v1/security_schemes/*.rb` — should have `component_type :security_schemes`
+
+In rswag-schema_components, the component type was inferred from the directory name by the custom loader. In openapi-ruby, it defaults to `:schemas` — so parameter and security_scheme components need explicit `component_type` declarations.
+
+### 2.4 Audit for nullable syntax (OpenAPI 3.0 → 3.1)
+
+Search for `nullable: true` in all component files:
+```bash
+grep -rn "nullable" app/api_components/
+```
+
+Convert any matches:
 ```ruby
-module V1
-  module Schemas
-    module Fleets
-      class Fleet
-        include OpenapiRuby::Components::Base
+# Before (3.0):
+name: { type: :string, nullable: true }
 
-        schema({ ... })
-      end
-    end
-  end
-end
+# After (3.1):
+name: { type: [:string, :null] }
 ```
 
-Changes:
-- Replace `include Rswag::SchemaComponents::Component` with `include OpenapiRuby::Components::Base` (all 279 files)
-- SecurityScheme components need `component_type :securitySchemes` added (check if rswag-schema_components auto-detected this from the namespace)
-- Parameter components need `component_type :parameters`
-- The `schema({...})` call is compatible — same API
+---
 
-**Automation**: single `sed` or search-and-replace across all files:
-```
-Rswag::SchemaComponents::Component -> OpenapiRuby::Components::Base
-```
+## Phase 3: Migrate Request Specs (~295 files)
 
-### Phase 3: Migrate test helper
+### 3.1 Replace swagger_helper with openapi_helper
 
-**Replace `spec/swagger_helper.rb`** with `spec/openapi_helper.rb`:
-
+Create `spec/openapi_helper.rb`:
 ```ruby
-# frozen_string_literal: true
-
 require "rails_helper"
 require "openapi_ruby/rspec"
+
+OpenapiRuby::Adapters::RSpec.install!
 ```
 
-That's it — the configuration is now in the initializer, not the helper.
+### 3.2 Update spec files
 
-### Phase 4: Migrate spec files (299 files)
-
-Each spec needs these changes:
-
-#### 4a. Require and metadata (all 299 files)
-
-**Before:**
+**In every request spec file**, change:
 ```ruby
+# Before:
 require "swagger_helper"
+RSpec.describe "...", type: :request, swagger_doc: "v1/schema.yaml" do
 
-RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
-```
-
-**After:**
-```ruby
+# After:
 require "openapi_helper"
-
-RSpec.describe "api/v1/models", type: :openapi do
+RSpec.describe "...", type: :openapi do
 ```
 
-Notes:
-- `type: :request` becomes `type: :openapi` (openapi-ruby auto-includes `RSpec::Rails::RequestExampleGroup`)
-- `swagger_doc: "v1/schema.yaml"` is removed — the schema is resolved from the server URL base path matching the `path` template, OR explicitly via `openapi_schema :"v1/schema.yaml"` at the top of the describe block
-- Since we have 3 schemas with different base paths, the specs should work without explicit schema selection IF the base paths are unique. However, the admin specs use relative paths like `/fleets` (not `/admin/api/v1/fleets`), so they'll need explicit schema assignment.
+The schema assignment (`swagger_doc: "v1/schema.yaml"`) maps to setting the schema name in the describe block metadata. Two approaches:
 
-**For public API specs** (165 files): Schema resolves from server URL, no explicit assignment needed if base path is unique.
-
-**For admin API specs** (132 files): Add `openapi_schema :"admin/v1/schema.yaml"` inside the describe block (or figure out if path prefix is sufficient).
-
-**For OAuth specs** (1 file): Add `openapi_schema :"oauth/v1/schema.yaml"`.
-
-**Simpler approach**: Always set `openapi_schema` explicitly in every spec to be safe — it's a one-line addition per file and avoids any ambiguity.
-
-#### 4b. Body parameter conversion (~74 files)
-
-**Before:**
+**Option A — Global default**: If most specs are for the same schema, set a default and override where needed:
 ```ruby
-parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetInput"}, required: true
-
-# value provided via:
-let(:input) do
-  { name: "Test Fleet", fid: "test-fleet" }
+# In openapi_helper.rb:
+RSpec.configure do |config|
+  config.add_setting :default_openapi_schema, default: :"v1/schema"
 end
 ```
 
-**After:**
+**Option B — Per-spec metadata**: Add `openapi_schema_name:` to each describe block:
 ```ruby
-request_body required: true, content: {
-  "application/json" => {
-    schema: { "$ref" => "#/components/schemas/FleetInput" }
-  }
-}
-
-# value provided via:
-let(:request_body) do
-  { name: "Test Fleet", fid: "test-fleet" }
-end
+RSpec.describe "...", type: :openapi, openapi_schema_name: "v1/schema" do
 ```
 
-Notes:
-- Every `parameter name: :input, in: :body, schema: ...` becomes a `request_body` DSL call
-- Every `let(:input) { ... }` becomes `let(:request_body) { ... }`
-- The `consumes "application/json"` line can stay (openapi-ruby supports it)
-- If a spec overrides `let(:input)` in nested contexts, those all become `let(:request_body)`
+Recommendation: Option B is more explicit. Use find-and-replace:
+- `swagger_doc: "v1/schema.yaml"` → `openapi_schema_name: :"v1/schema"`
+- `swagger_doc: "admin/v1/schema.yaml"` → `openapi_schema_name: :"admin/v1/schema"`
+- `swagger_doc: "oauth/v1/schema.yaml"` → `openapi_schema_name: :"oauth/v1/schema"`
 
-#### 4c. Query and path parameters — mostly compatible
+### 3.3 DSL compatibility
 
-`let(:q)`, `let(:perPage)`, `let(:id)` etc. work as-is — openapi-ruby's `resolve_let` resolves them by name, same as rswag's `#send`.
+The DSL is identical — no changes needed for:
+- `path "/endpoint" do ... end`
+- `get/post/put/patch/delete("summary") do ... end`
+- `operationId`, `tags`, `produces`, `consumes`
+- `parameter name:, in:, schema:, ...`
+- `request_body required:, content: { ... }`
+- `response(200, "description") do ... end`
+- `schema "$ref": "#/components/schemas/..."` 
+- `run_test!`
+- `let(:param)` blocks
 
-The `parameter` DSL calls are compatible.
+### 3.4 Update Rakefile
 
-#### 4d. Auth parameters — mostly compatible
-
-- `let(:Authorization)` works — openapi-ruby resolves security scheme params via `resolve_security_params` which looks up the scheme type and creates the right header/query param
-- Session cookie auth (admin specs using `sign_in(user)`) works unchanged — it's Rails test infrastructure, not rswag-specific
-
-#### 4e. run_test! block signature
-
-**Before:**
 ```ruby
-run_test! do |response|
-  data = JSON.parse(response.body)
-end
+# Before:
+require "rswag/specs"
+
+# After:
+require "openapi_ruby"
 ```
 
-**After:**
+The rake task changes from `rswag:specs:swaggerize` to `openapi_ruby:generate`.
+
+---
+
+## Phase 4: Verify Middleware
+
+### 4.1 Error format compatibility
+
+The old `ApiValidationError` returned `{ code: id, message: message }`. Configure the same in openapi-ruby:
+
+The `validation_error_schema` in the config (Phase 1.2) already matches this format. The actual error rendering is handled by the default `ErrorHandler` which returns `{ error: "...", details: [...] }`.
+
+If the exact `{ code, message }` format is required for API consumers, create a custom error handler:
 ```ruby
-run_test! do
-  data = JSON.parse(response.body)
-end
-```
-
-The openapi-ruby `run_test!` block does NOT pass `response` as a block argument. Instead, `response` is available as a method (standard Rails test). This is a subtle but widespread change — need to remove the `|response|` parameter from all `run_test!` blocks.
-
-**Count**: grep for `run_test! do |response|` to find affected files.
-
-#### 4f. Shared examples
-
-`admin_auth` and `oauth_auth` shared examples use the rswag DSL (`response`, `schema`, `run_test!`, `let`). These are all compatible with openapi-ruby since the DSL methods are the same. No changes needed.
-
-#### 4g. Duplicate status code responses
-
-Some specs have multiple `response(200, ...)` blocks with different test scenarios (e.g., `models/index_spec.rb`). In rswag, only the first one appears in the generated schema. openapi-ruby supports `hidden: true` for test-only responses:
-
-**Before:**
-```ruby
-response(200, "successful") do
-  schema "$ref": "#/components/schemas/Models"
-  run_test! # first one generates schema
-end
-
-response(200, "successful") do
-  schema "$ref": "#/components/schemas/Models"
-  let(:q) { ... }
-  run_test! # duplicate, doesn't appear in schema
-end
-```
-
-**After:**
-```ruby
-response(200, "successful") do
-  schema "$ref": "#/components/schemas/Models"
-  run_test!
-end
-
-response(200, "successful", hidden: true) do
-  schema "$ref": "#/components/schemas/Models"
-  let(:q) { ... }
-  run_test!
-end
-```
-
-This is optional but cleaner — duplicate responses without `hidden: true` will keep the first one.
-
-### Phase 5: Migrate ParamsHelper
-
-**Before** (`app/api_components/params_helper.rb`):
-- Reads YAML schema file using `Rswag::Api.config.openapi_root`
-- Extracts properties and builds permit list
-
-**After**: Replace with `OpenapiRuby::ControllerHelpers`:
-```ruby
-class Api::V1::UsersController < ActionController::API
-  include OpenapiRuby::ControllerHelpers
-
-  def create
-    user = User.new(openapi_permit(Schemas::UserInput))
+config.error_handler = Class.new(OpenapiRuby::Middleware::ErrorHandler) {
+  def invalid_request(errors)
+    body = { code: "validation_error", message: errors.first }.to_json
+    [400, { "content-type" => "application/json" }, [body]]
   end
-end
+}.new
 ```
 
-Or keep `ParamsHelper` but update the schema root reference:
+### 4.2 Verify prefix matching
+
+The committee setup uses `prefix: URI.parse(API_ENDPOINT).path`. The same pattern is used in the openapi-ruby config. Verify the prefixes match by comparing:
 ```ruby
-def load_schema(schema_path)
-  YAML.load_file(Rails.root.join(OpenapiRuby.configuration.schema_output_dir, schema_path))
-end
+URI.parse(API_ENDPOINT).path        # e.g., "/v1"
+URI.parse(ADMIN_API_ENDPOINT).path  # e.g., "/api/v1"
 ```
 
-Decision: check how many controllers use `ParamsHelper` and decide whether to migrate to `permitted_params` or just update the reference.
+---
 
-### Phase 6: Update CI/rake tasks
+## Phase 5: Generate + Compare
 
-- Replace `rake rswag:specs:swaggerize` with `rake openapi_ruby:generate` in any CI scripts
-- The `after(:suite)` hook auto-generates schemas when running the full test suite, so explicit rake calls may not be needed
-- Update `oasdiff` CI step if it references the old task
+### 5.1 Generate new specs
 
-### Phase 7: Cleanup
+```bash
+bundle exec rake openapi_ruby:generate
+```
 
-- Delete `spec/swagger_helper.rb` (replaced by `spec/openapi_helper.rb`)
-- Delete `config/initializers/rswag_api.rb`
-- Delete `config/initializers/rswag_monkey_patch.rb`
-- Remove `rswag-api`, `rswag-specs`, `rswag-schema_components`, `committee` from Gemfile
-- Delete schema controllers and routes (replaced by engine)
-- Remove `require "rswag/specs"` from `Rakefile` if present
-- Verify `swagger/` output matches before/after (diff the YAML files)
+### 5.2 Diff against old specs
 
-## Automation Strategy
+```bash
+diff swagger/v1/schema.yaml swagger/v1/schema.yaml.bak
+diff swagger/admin/v1/schema.yaml swagger/admin/v1/schema.yaml.bak
+diff swagger/oauth/v1/schema.yaml swagger/oauth/v1/schema.yaml.bak
+```
 
-Most changes are mechanical and can be scripted:
+Expected differences:
+- `openapi: "3.1.0"` instead of `"3.0.3"`
+- `nullable: true` replaced with `type: [string, null]` (from Phase 2.4)
+- New `components/responses/ValidationError` section
+- 400 responses auto-injected on all operations
+- Alphabetical sorting of paths, components, and tags
+- `title` field auto-added to schema components
 
-1. **Component include** (279 files): `sed` replace `Rswag::SchemaComponents::Component` -> `OpenapiRuby::Components::Base`
-2. **Spec require** (299 files): `sed` replace `require "swagger_helper"` -> `require "openapi_helper"`
-3. **Spec type** (299 files): regex replace `type: :request, swagger_doc: "..."` -> `type: :openapi`
-4. **Body params** (~74 files): script to convert `parameter name: :input, in: :body` to `request_body` DSL and `let(:input)` to `let(:request_body)`
-5. **run_test! blocks**: regex replace `run_test! do |response|` -> `run_test! do`
+### 5.3 Run full test suite
 
-The body param conversion (item 4) is the trickiest to automate since the schema ref and `let(:input)` blocks vary.
+```bash
+bundle exec rspec spec/requests/
+```
 
-## Risk Assessment
+All 295 request specs should pass. Fix any failures — most likely causes:
+- Missing `component_type :parameters` on parameter components
+- `nullable` syntax not converted
+- Schema name metadata mismatch
 
-- **Low risk**: Component migration (pure include swap), require changes, type metadata
-- **Medium risk**: Body param conversion (many files, varied patterns), ParamsHelper migration
-- **High risk**: Schema output parity — need to diff generated YAML before/after to catch regressions
+---
 
-## Verification
+## Phase 6: Cleanup
 
-1. Run full spec suite and confirm all 299 specs pass
-2. Diff `swagger/*.yaml` output before/after — schemas should be equivalent
-3. Verify API docs are accessible via the new engine routes
-4. Check that `oasdiff` CI step still works
-5. Test runtime middleware in staging (if enabled)
+### 6.1 Delete old files
+- `spec/swagger_helper.rb`
+- `config/initializers/rswag_api.rb`
+- `config/initializers/rswag_monkey_patch.rb`
+- `config/initializers/03_committee.rb`
+- `lib/api_validation_error.rb`
+- `app/api_components/components_loader.rb`
+- `app/api_components/concerns/schema_concern.rb`
+
+### 6.2 Update routes
+
+```ruby
+# Before (if rswag engine was mounted):
+mount Rswag::Api::Engine => "/api-docs"
+
+# After:
+mount OpenapiRuby::Engine => "/api-docs"
+```
+
+### 6.3 Update CI
+
+Replace any CI steps that reference:
+- `rswag:specs:swaggerize` → `openapi_ruby:generate`
+- `rswag` gem references in CI config
+
+---
+
+## Migration Checklist
+
+- [ ] Update Gemfile and bundle install
+- [ ] Create `config/initializers/openapi_ruby.rb`
+- [ ] Delete old initializers (rswag_api, rswag_monkey_patch, 03_committee)
+- [ ] Delete `lib/api_validation_error.rb`
+- [ ] Find-and-replace `Rswag::SchemaComponents::Component` → `OpenapiRuby::Components::Base` (~277 files)
+- [ ] Add `component_type` declarations to parameter/security_scheme components
+- [ ] Delete `components_loader.rb` and `schema_concern.rb`
+- [ ] Audit and convert `nullable: true` → `type: [:type, :null]`
+- [ ] Create `spec/openapi_helper.rb`
+- [ ] Find-and-replace `require "swagger_helper"` → `require "openapi_helper"` (~295 files)
+- [ ] Find-and-replace `type: :request, swagger_doc:` → `type: :openapi, openapi_schema_name:` (~295 files)
+- [ ] Update Rakefile
+- [ ] Update routes (engine mount)
+- [ ] Configure custom error handler if needed
+- [ ] Generate specs and diff against old output
+- [ ] Run full request spec suite
+- [ ] Update CI configuration
+- [ ] Delete `spec/swagger_helper.rb`
