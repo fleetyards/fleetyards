@@ -59,9 +59,10 @@ class ModulesImporter
   end
 
   private def extract_modules(import)
-    return if import.input.blank? || import.input.starts_with?("{")
+    return if import.input.blank?
 
-    imported_data = JSON.parse(import.input)
+    imported_data = import.input.is_a?(String) ? JSON.parse(import.input) : import.input
+    return unless imported_data.is_a?(Array)
 
     imported_data.filter_map do |item|
       next if item["type"] != "component"
