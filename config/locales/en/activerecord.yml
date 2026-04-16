@@ -255,6 +255,8 @@ en:
               taken: already present or has a pending invite
         user:
           attributes:
+            base:
+              has_permanent_fleet_memberships: "Cannot delete account while you are an admin of the following fleets: %{fleets}. Please transfer ownership first."
             confirmation_token:
               invalid: is invalid
             current_password:

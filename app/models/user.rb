@@ -83,6 +83,8 @@ class User < ApplicationRecord
     authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
+  before_destroy :check_fleet_memberships
+
   has_many :vehicles, dependent: :destroy
   has_many :purchased_vehicles,
     -> { where(wanted: false) },
@@ -355,6 +357,32 @@ class User < ApplicationRecord
     "TAL" => "T.āl",
     "YULIN" => "Yulin"
   }.freeze
+
+  private def check_fleet_memberships
+    permanent_memberships = fleet_memberships.joins(:fleet_role).where(fleet_roles: {permanent: true})
+    return unless permanent_memberships.exists?
+
+    blocking_fleets = []
+    sole_member_fleets_cleaned = false
+
+    permanent_memberships.each do |membership|
+      fleet = membership.fleet
+      if fleet.fleet_memberships.count == 1
+        membership.delete
+        fleet.destroy!
+        sole_member_fleets_cleaned = true
+      else
+        blocking_fleets << fleet.name
+      end
+    end
+
+    fleet_memberships.reload if sole_member_fleets_cleaned
+
+    return if blocking_fleets.empty?
+
+    errors.add(:base, I18n.t("activerecord.errors.models.user.attributes.base.has_permanent_fleet_memberships", fleets: blocking_fleets.join(", ")))
+    throw(:abort)
+  end
 
   private def match_current_system
     if current_system.blank?

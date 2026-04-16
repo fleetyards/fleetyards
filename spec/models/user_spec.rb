@@ -70,6 +70,42 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
+  describe "#destroy" do
+    let(:user) { create(:user) }
+
+    it "destroys a user without fleet memberships" do
+      expect(user.destroy).to be_truthy
+      expect(User.exists?(user.id)).to be false
+    end
+
+    it "destroys a user who is the sole member of a fleet with a permanent role" do
+      fleet = create(:fleet, admins: [user])
+
+      expect(user.destroy).to be_truthy
+      expect(User.exists?(user.id)).to be false
+      expect(Fleet.exists?(fleet.id)).to be false
+    end
+
+    it "prevents destruction when user has a permanent role in a multi-member fleet" do
+      other_user = create(:user)
+      fleet = create(:fleet, admins: [user], members: [other_user])
+
+      expect(user.destroy).to be false
+      expect(user.errors[:base]).to include(
+        I18n.t("activerecord.errors.models.user.attributes.base.has_permanent_fleet_memberships", fleets: fleet.name)
+      )
+      expect(User.exists?(user.id)).to be true
+    end
+
+    it "destroys a user with a non-permanent fleet role in a multi-member fleet" do
+      other_user = create(:user)
+      create(:fleet, admins: [other_user], members: [user])
+
+      expect(user.destroy).to be_truthy
+      expect(User.exists?(user.id)).to be false
+    end
+  end
+
   describe "url validation" do
     let(:user) { create(:user) }
 

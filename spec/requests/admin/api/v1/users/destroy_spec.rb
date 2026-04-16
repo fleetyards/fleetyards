@@ -25,6 +25,27 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
         run_test!
       end
 
+      response(200, "successful when sole fleet admin") do
+        schema "$ref": "#/components/schemas/User"
+
+        before do
+          create(:fleet, admins: [user])
+        end
+
+        run_test!
+      end
+
+      response(400, "blocked by permanent fleet role") do
+        schema "$ref": "#/components/schemas/ValidationError"
+
+        before do
+          other_user = create(:user)
+          create(:fleet, admins: [user], members: [other_user])
+        end
+
+        run_test!
+      end
+
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 

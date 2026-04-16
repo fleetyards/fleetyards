@@ -45,6 +45,27 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test!
       end
 
+      response(200, "successful when sole fleet admin") do
+        schema "$ref": "#/components/schemas/StandardMessage"
+
+        before do
+          create(:fleet, admins: [author])
+        end
+
+        run_test!
+      end
+
+      response(400, "blocked by permanent fleet role") do
+        schema "$ref": "#/components/schemas/ValidationError"
+
+        before do
+          other_user = create(:user)
+          create(:fleet, admins: [author], members: [other_user])
+        end
+
+        run_test!
+      end
+
       response(401, "bad request") do
         schema "$ref": "#/components/schemas/StandardError"
 
