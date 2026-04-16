@@ -30,6 +30,7 @@
         "stats": "Mes statistiques de Hangar",
         "import": "Importer",
         "public": "Hangar de %{user}",
+        "publicStats": "Statistiques du Hangar de %{user}",
         "wishlist": "Liste de souhait",
         "publicWishlist": "%{user} Liste de souhait"
       },

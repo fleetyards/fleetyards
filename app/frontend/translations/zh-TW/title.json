@@ -33,6 +33,7 @@
         "stats": "我的機庫統計",
         "import": "匯入",
         "public": "%{user} 機庫",
+        "publicStats": "%{user} 機庫統計",
         "wishlist": "心願清單",
         "publicWishlist": "%{user} 心願清單"
       },
