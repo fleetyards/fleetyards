@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.7.1](https://github.com/fleetyards/fleetyards/compare/v6.7.0...v6.7.1) (2026-04-16)
+
+
+### Bug Fixes
+
+* pass version flag to kamal exec in pre-deploy hook ([e28170d](https://github.com/fleetyards/fleetyards/commit/e28170d3c4d2349c2d29486c1f59bb3e0623305a))
+* skip non-module components silently during hangar sync ([33c182d](https://github.com/fleetyards/fleetyards/commit/33c182df8fc21715d3428a608b6bcb05c30a634c))
+* use will_save_change_to_location? in before_validation callback ([c0a2745](https://github.com/fleetyards/fleetyards/commit/c0a2745b30b5e3472f28df08b1923577e35209f8))
+
 ## [6.7.0](https://github.com/fleetyards/fleetyards/compare/v6.6.1...v6.7.0) (2026-04-16)
 
 
