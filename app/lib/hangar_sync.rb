@@ -241,10 +241,7 @@ class HangarSync < HangarImporter
 
       model_query = generate_model_query(model_name)
       model = Model.where(model_query).first
-      if model.blank?
-        missing_components << item[:name]
-        next
-      end
+      next if model.blank?
 
       component_query = generate_module_query(component_name)
       component = model.modules.where(component_query).first
