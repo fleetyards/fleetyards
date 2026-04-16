@@ -879,7 +879,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_174243) do
     t.string "otp_secret"
     t.boolean "public_hangar", default: true
     t.boolean "public_hangar_loaners", default: false
-    t.boolean "public_hangar_stats", default: false
     t.boolean "public_wishlist", default: false
     t.integer "purchased_vehicles_count", default: 0, null: false
     t.datetime "remember_created_at", precision: nil
