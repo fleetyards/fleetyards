@@ -9,6 +9,8 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import Heading from "@/shared/components/base/Heading/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilterForm from "@/frontend/components/Hangar/FilterForm/index.vue";
@@ -61,6 +63,16 @@ const { detailsVisible, gridView } = storeToRefs(wishlistStore);
 const fleetchartStore = useFleetchartStore();
 
 const fleetchartVisible = computed(() => fleetchartStore.isVisible("wishlist"));
+
+const shareTitle = computed(() => t("title.hangar.wishlist"));
+
+const shareUrl = computed(() => {
+  if (!currentUser?.value) {
+    return null;
+  }
+
+  return currentUser.value.publicWishlistUrl;
+});
 
 const { filters, isFilterSelected } = useHangarFilters(async () => {
   await refetch();
@@ -213,24 +225,26 @@ const openDisplayOptionsModal = () => {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-lg-12">
-      <div class="row">
-        <div class="col-12">
-          <BreadCrumbs
-            :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]"
-          />
-          <h1>{{ t("headlines.hangar.wishlist") }}</h1>
-        </div>
-      </div>
-    </div>
-  </div>
+  <BreadCrumbs :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]" />
+  <Heading size="hero" hero>{{ t("headlines.hangar.wishlist") }}</Heading>
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn data-test="fleetchart-link" @click="toggleFleetchart">
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
+
+    <Btn :to="{ name: 'hangar-stats' }">
+      <i class="fa-light fa-chart-bar" />
+      {{ t("labels.hangarStats") }}
+    </Btn>
+
+    <ShareBtn
+      v-if="currentUser && currentUser.publicWishlist && shareUrl"
+      :url="shareUrl"
+      :title="shareTitle"
+      no-label
+    />
   </Teleport>
 
   <FilteredList
@@ -260,6 +274,18 @@ const openDisplayOptionsModal = () => {
             <i class="fa-duotone fa-starship" />
             <span>{{ t("labels.fleetchart") }}</span>
           </Btn>
+
+          <Btn :to="{ name: 'hangar-stats' }" :size="BtnSizesEnum.SMALL">
+            <i class="fa-duotone fa-chart-bar" />
+            <span>{{ t("labels.hangarStats") }}</span>
+          </Btn>
+
+          <ShareBtn
+            v-if="currentUser && currentUser.publicWishlist && shareUrl"
+            :url="shareUrl"
+            :title="shareTitle"
+            :size="BtnSizesEnum.SMALL"
+          />
 
           <hr />
         </template>

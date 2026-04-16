@@ -5,12 +5,13 @@ module Api
     module Public
       class HangarStatsController < ::Api::PublicBaseController
         include HangarFiltersConcern
+        include ChartHelper
 
         before_action :set_user
 
         def show
           scope = @user.vehicles
-            .includes(:vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :model)
+            .includes(:model)
             .purchased
             .public
             .where(loaner: false)
@@ -24,6 +25,7 @@ module Api
           vehicles = @q.result
 
           models = vehicles.map(&:model)
+          non_loaner_models = vehicles.reject(&:loaner?).map(&:model)
 
           @quick_stats = QuickStats.new(
             total: vehicles.count,
@@ -42,14 +44,86 @@ module Api
                 id: group.id,
                 slug: group.slug
               )
-            end
+            end,
+            metrics: hangar_metrics(models, non_loaner_models)
           )
         end
 
-        private def set_user
+        def models_by_size
+          models_by_size = transform_for_pie_chart(
+            @user.vehicles.purchased.public.where(loaner: false)
+                 .joins(:model)
+                 .group("models.size").count
+                 .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
+                 .reduce(:merge) || []
+          )
+
+          render json: models_by_size.to_json
+        end
+
+        def models_by_production_status
+          models_by_production_status = transform_for_pie_chart(
+            @user.vehicles.purchased.public.where(loaner: false)
+                 .joins(:model)
+                 .group("models.production_status").count
+                 .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
+                 .reduce(:merge) || []
+          )
+
+          render json: models_by_production_status.to_json
+        end
+
+        def models_by_manufacturer
+          models_by_manufacturer = transform_for_pie_chart(
+            @user.manufacturers.uniq
+                .map do |manufacturer|
+                  model_ids = manufacturer.model_ids
+                  {manufacturer.name => @user.vehicles.purchased.public.where(loaner: false, model_id: model_ids).count}
+                end
+                .reduce(:merge) || []
+          )
+
+          render json: models_by_manufacturer.to_json
+        end
+
+        def models_by_classification
+          models_by_classification = transform_for_pie_chart(
+            @user.vehicles.purchased.public.where(loaner: false)
+                 .joins(:model)
+                 .group("models.classification").count
+                 .map { |label, count| {(label.present? ? label.humanize : I18n.t("labels.unknown")) => count} }
+                 .reduce(:merge) || []
+          )
+
+          render json: models_by_classification.to_json
+        end
+
+        private
+
+        def hangar_metrics(models, non_loaner_models)
+          lengths = models.filter_map { |m| m.length if m.length&.positive? }
+          unique_model_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.id) }
+          manufacturer_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.manufacturer_id) if m.manufacturer_id }
+          present_classifications = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.classification) if m.classification }
+          missing_classifications = Model.classifications - present_classifications.to_a
+
+          {
+            total_min_crew: models.map(&:min_crew).sum(&:to_i),
+            total_max_crew: models.map(&:max_crew).sum(&:to_i),
+            total_cargo: models.map(&:cargo).sum(&:to_i),
+            largest_ship: lengths.max,
+            smallest_ship: lengths.min,
+            flight_ready_count: non_loaner_models.count { |m| m.production_status == "flight-ready" },
+            unique_models_count: unique_model_ids.size,
+            manufacturer_count: manufacturer_ids.size,
+            missing_classifications: missing_classifications
+          }
+        end
+
+        def set_user
           @user = User.find_by!(normalized_username: params[:hangar_username].downcase)
 
-          authorize! @user, with: ::Public::UserPolicy
+          authorize! @user, to: :show_stats?, with: ::Public::UserPolicy
         end
       end
     end

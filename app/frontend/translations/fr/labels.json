@@ -334,6 +334,7 @@
         "saleNotify": "Je veux recevoir les notifications de vente",
         "publicHangar": "Hangar public activé",
         "publicHangarLoaners": "Afficher le marqueur des prêteurs dans le Hangar Public",
+        "publicHangarStats": "Statistiques du Hangar public activées",
         "publicWishlist": "Public Wishlist enabled",
         "hideOwner": "Hide Ownership for Fleets"
       },

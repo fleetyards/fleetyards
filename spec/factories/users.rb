@@ -37,6 +37,7 @@
 #  otp_secret                :string
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
+#  public_hangar_stats       :boolean          default(FALSE)
 #  public_wishlist           :boolean          default(FALSE)
 #  purchased_vehicles_count  :integer          default(0), not null
 #  remember_created_at       :datetime
@@ -101,12 +102,14 @@ FactoryBot.define do
     trait :public_hangar do
       public_hangar { true }
       public_hangar_loaners { true }
+      public_hangar_stats { true }
       public_wishlist { true }
     end
 
     trait :private_hangar do
       public_hangar { false }
       public_hangar_loaners { false }
+      public_hangar_stats { false }
       public_wishlist { false }
     end
 

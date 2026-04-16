@@ -8,3 +8,14 @@ end
 json.groups do
   json.array! @quick_stats.groups, partial: "api/v1/vehicles/group_quick_stats", as: :group_quick_stats
 end
+json.metrics do
+  json.total_min_crew @quick_stats.metrics[:total_min_crew]
+  json.total_max_crew @quick_stats.metrics[:total_max_crew]
+  json.total_cargo @quick_stats.metrics[:total_cargo]
+  json.largest_ship @quick_stats.metrics[:largest_ship]&.to_f
+  json.smallest_ship @quick_stats.metrics[:smallest_ship]&.to_f
+  json.flight_ready_count @quick_stats.metrics[:flight_ready_count]
+  json.unique_models_count @quick_stats.metrics[:unique_models_count]
+  json.manufacturer_count @quick_stats.metrics[:manufacturer_count]
+  json.missing_classifications @quick_stats.metrics[:missing_classifications]
+end

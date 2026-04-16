@@ -117,7 +117,7 @@ module Api
         @user_params ||= begin
           permitted = params.transform_keys(&:underscore)
             .permit(
-              :avatar, :remove_avatar, :sale_notify, :public_hangar, :public_wishlist, :rsi_handle,
+              :avatar, :remove_avatar, :sale_notify, :public_hangar, :public_hangar_stats, :public_wishlist, :rsi_handle,
               :discord, :homepage, :youtube, :twitch, :guilded, :public_hangar_loaners, :hide_owner,
               :location, :current_system
             )

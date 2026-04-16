@@ -22,10 +22,11 @@
           "h3": "Quelles sont les fonctionnalités du Hangar ?"
         },
         "alternativeNames": "Noms alternatifs",
-        "stats": "Mes statistiques de Hangar",
+        "stats": "Statistiques",
         "public": "Hangar de %{user}",
         "import": "Importer",
         "wishlist": "Liste de souhaits",
+        "publicStats": "Statistiques",
         "publicWishlist": "Liste de souhaits de %{user}",
         "resetIngame": "Réinitialiser les vaisseaux obtenus dans le jeu"
       },

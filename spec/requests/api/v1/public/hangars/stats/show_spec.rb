@@ -3,7 +3,7 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:user) { create(:user, vehicle_count: 2, wanted_vehicle_count: 3) }
+  let(:user) { create(:user, public_hangar_stats: true, vehicle_count: 2, wanted_vehicle_count: 3) }
   let(:username) { user.username }
 
   path "/public/hangars/{username}/stats" do
@@ -28,7 +28,7 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
 
         context "with public_wishlist enabled" do
           let(:user) do
-            u = create(:user, public_wishlist: true)
+            u = create(:user, public_hangar_stats: true, public_wishlist: true)
             create_list(:vehicle, 2, user: u)
             create_list(:vehicle, 3, user: u, wanted: true, public: true)
             u
@@ -44,7 +44,7 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
         end
 
         context "with public_wishlist disabled" do
-          let(:user) { create(:user, vehicle_count: 2, wanted_vehicle_count: 3, public_wishlist: false) }
+          let(:user) { create(:user, public_hangar_stats: true, vehicle_count: 2, wanted_vehicle_count: 3, public_wishlist: false) }
 
           it "does not include wishlist_total in response" do
             get "/api/v1/public/hangars/#{username}/stats"
@@ -61,7 +61,7 @@ RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/s
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:username) { "non-existent-username" }
+        let(:user) { create(:user, public_hangar_stats: false, vehicle_count: 2) }
 
         run_test!
       end
