@@ -75,7 +75,7 @@ class User < ApplicationRecord
 
   geocoded_by :location
   after_validation :geocode, if: :will_save_change_to_location?
-  before_validation :clear_coordinates, if: -> { location_changed? && location.blank? }
+  before_validation :clear_coordinates, if: -> { will_save_change_to_location? && location.blank? }
   before_validation :match_current_system, if: :will_save_change_to_current_system?
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
