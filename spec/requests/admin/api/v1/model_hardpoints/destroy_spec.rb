@@ -30,21 +30,7 @@ RSpec.describe "admin/api/v1/model_hardpoints", type: :request, swagger_doc: "ad
         run_test!
       end
 
-      response(403, "forbidden") do
-        schema "$ref": "#/components/schemas/StandardError"
-
-        let(:user) { create(:admin_user, resource_access: []) }
-
-        run_test!
-      end
-
-      response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
-
-        let(:user) { nil }
-
-        run_test!
-      end
+      include_examples "admin_auth"
     end
   end
 end

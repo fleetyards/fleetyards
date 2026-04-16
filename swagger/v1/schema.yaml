@@ -1361,7 +1361,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetMembersStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:

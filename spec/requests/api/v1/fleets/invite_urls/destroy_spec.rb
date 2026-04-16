@@ -50,21 +50,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
         run_test!
       end
 
-      response(204, "successful with OAuth token") do
-        let(:user) { nil }
-        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
-
-        run_test!
-      end
-
-      response(401, "unauthorized with wrong scope token") do
-        schema "$ref": "#/components/schemas/StandardError"
-
-        let(:user) { nil }
-        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
-
-        run_test!
-      end
+      include_examples "oauth_auth", success_status: 204
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
@@ -86,14 +72,6 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { member }
-
-        run_test!
-      end
-
-      response(401, "unauthorized") do
-        schema "$ref": "#/components/schemas/StandardError"
-
-        let(:user) { nil }
 
         run_test!
       end
