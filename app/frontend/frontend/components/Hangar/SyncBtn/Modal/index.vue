@@ -115,7 +115,11 @@ const processSteps = ref<ProcessStep[]>([
 ]);
 
 const onExtensionMessage = (event: FleetyardsSyncEvent) => {
-  handleExtensionMessage(event).catch(() => {});
+  handleExtensionMessage(event).catch((error) => {
+    console.error("Hangar sync error:", error);
+    updateStep("fetchHangar", "failure");
+    displayAlert({ text: t("messages.syncExtension.failure") });
+  });
 };
 
 onMounted(() => {
@@ -263,6 +267,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
   if (
     items === undefined ||
+    items.length === 0 ||
     (maxPage.value && currentPage.value >= maxPage.value)
   ) {
     updateStep("fetchHangar", "success");
