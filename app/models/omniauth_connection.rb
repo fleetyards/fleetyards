@@ -19,7 +19,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class OmniauthConnection < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, touch: true
 
   enum :provider, {
     google: 0,
