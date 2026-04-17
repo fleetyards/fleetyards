@@ -9,7 +9,7 @@ class AddManufacturerCodeToModelSlugs < ActiveRecord::Migration[8.1]
       next if model.manufacturer.blank?
 
       old_slug = model.slug
-      new_slug = "#{model.manufacturer.code}-#{old_slug}"
+      new_slug = "#{model.manufacturer.code.downcase}-#{old_slug}"
       model.update_columns(legacy_slug: old_slug, slug: new_slug)
     end
 

@@ -34,9 +34,9 @@ RSpec.describe HangarSync do
   end
 
   context "with existing vehicles" do
-    let(:andromeda_model) { Model.find_by!(slug: "RSI-constellation-andromeda") }
-    let(:corsair_model) { Model.find_by!(slug: "DRAK-corsair") }
-    let(:javelin_model) { Model.find_by!(slug: "AEGS-javelin") }
+    let(:andromeda_model) { Model.find_by!(slug: "rsi-constellation-andromeda") }
+    let(:corsair_model) { Model.find_by!(slug: "drak-corsair") }
+    let(:javelin_model) { Model.find_by!(slug: "aegs-javelin") }
 
     let!(:andromeda_ship) do
       create(:vehicle, user: user, model: andromeda_model, name: "USS Troi", wanted: false, public: true)
@@ -70,7 +70,7 @@ RSpec.describe HangarSync do
   end
 
   context "when rsi_pledge_id changes" do
-    let(:andromeda_model) { Model.find_by!(slug: "RSI-constellation-andromeda") }
+    let(:andromeda_model) { Model.find_by!(slug: "rsi-constellation-andromeda") }
 
     let!(:andromeda_ship) do
       create(:vehicle, user: user, model: andromeda_model, name: "USS Troi", wanted: false, public: true,

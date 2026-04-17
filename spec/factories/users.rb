@@ -37,6 +37,7 @@
 #  otp_secret                :string
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
+#  public_hangar_stats       :boolean          default(FALSE)
 #  public_wishlist           :boolean          default(FALSE)
 #  purchased_vehicles_count  :integer          default(0), not null
 #  remember_created_at       :datetime

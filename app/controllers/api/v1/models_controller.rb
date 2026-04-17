@@ -372,16 +372,18 @@ module Api
       end
 
       private def find_model_by_slug!(*includes, joins: nil)
+        slug = params[:slug].downcase
+
         scope = Model.visible.active
         scope = scope.includes(*includes) if includes.any?
         scope = scope.joins(joins) if joins
         model = scope
-          .where(slug: params[:slug])
-          .or(Model.where(rsi_slug: params[:slug]))
-          .or(Model.where(legacy_slug: params[:slug]))
+          .where(slug:)
+          .or(Model.where(rsi_slug: slug))
+          .or(Model.where(legacy_slug: slug))
           .first!
 
-        if model.slug != params[:slug]
+        if model.slug != slug
           redirect_to url_for(slug: model.slug), status: :moved_permanently
           return model
         end
@@ -390,13 +392,15 @@ module Api
       end
 
       private def find_model_by_slug(scope)
+        slug = params[:slug].downcase
+
         model = scope
-          .where(slug: params[:slug])
-          .or(Model.where(rsi_slug: params[:slug]))
-          .or(Model.where(legacy_slug: params[:slug]))
+          .where(slug:)
+          .or(Model.where(rsi_slug: slug))
+          .or(Model.where(legacy_slug: slug))
           .first
 
-        if model.present? && model.slug != params[:slug]
+        if model.present? && model.slug != slug
           redirect_to url_for(slug: model.slug), status: :moved_permanently
           return nil
         end
@@ -405,7 +409,7 @@ module Api
       end
 
       private def will_it_fit?(scope)
-        slug = model_query_params.delete("will_it_fit")
+        slug = model_query_params.delete("will_it_fit")&.downcase
         parent = Model.visible.active
           .where(slug:)
           .or(Model.where(rsi_slug: slug))
