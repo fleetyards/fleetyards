@@ -43,10 +43,10 @@ importers:
         version: 5.99.0(vue@3.5.32(typescript@6.0.2))
       '@tresjs/cientos':
         specifier: ^5.7.0
-        version: 5.7.0(@tresjs/core@5.8.0(three@0.183.2)(vue@3.5.32(typescript@6.0.2)))(@types/three@0.183.1)(react@19.1.0)(three@0.183.2)(vue@3.5.32(typescript@6.0.2))
+        version: 5.7.0(@tresjs/core@5.8.0(three@0.184.0)(vue@3.5.32(typescript@6.0.2)))(@types/three@0.184.0)(react@19.1.0)(three@0.184.0)(vue@3.5.32(typescript@6.0.2))
       '@tresjs/core':
         specifier: ^5.8.0
-        version: 5.8.0(three@0.183.2)(vue@3.5.32(typescript@6.0.2))
+        version: 5.8.0(three@0.184.0)(vue@3.5.32(typescript@6.0.2))
       '@vee-validate/rules':
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.32(typescript@6.0.2))
@@ -138,8 +138,8 @@ importers:
         specifier: ^5.32.4
         version: 5.32.4
       three:
-        specifier: 0.183.2
-        version: 0.183.2
+        specifier: 0.184.0
+        version: 0.184.0
       uuid:
         specifier: ^13.0.0
         version: 13.0.0
@@ -238,8 +238,8 @@ importers:
         specifier: ^3.30.6
         version: 3.30.6
       '@types/three':
-        specifier: ^0.183.1
-        version: 0.183.1
+        specifier: ^0.184.0
+        version: 0.184.0
       '@typescript-eslint/eslint-plugin':
         specifier: 8.58.2
         version: 8.58.2(@typescript-eslint/parser@8.58.2(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.2.0(jiti@2.6.1))(typescript@6.0.2)
@@ -326,7 +326,7 @@ importers:
         version: 1.0.0(stylelint@17.8.0(typescript@6.0.2))
       stylelint-config-standard-scss:
         specifier: ^17.0.0
-        version: 17.0.0(postcss@8.5.8)(stylelint@17.8.0(typescript@6.0.2))
+        version: 17.0.0(postcss@8.5.9)(stylelint@17.8.0(typescript@6.0.2))
       stylelint-scss:
         specifier: ^7.0.0
         version: 7.0.0(stylelint@17.8.0(typescript@6.0.2))
@@ -2169,8 +2169,8 @@ packages:
   '@types/swagger-ui@5.32.0':
     resolution: {integrity: sha512-diMOqNQf6gkc3ghDIgjs/AfwbwZidja2e02+fJRIfNbbQ25W0EMGLe+f9/tHh/UFRfwYR2UXR3QSPGGkBu7uNg==}
 
-  '@types/three@0.183.1':
-    resolution: {integrity: sha512-f2Pu5Hrepfgavttdye3PsH5RWyY/AvdZQwIVhrc4uNtvF7nOWJacQKcoVJn0S4f0yYbmAE6AR+ve7xDcuYtMGw==}
+  '@types/three@0.184.0':
+    resolution: {integrity: sha512-4mY2tZAu0y0B0567w7013BBXSpsP0+Z48NJvmNo4Y/Pf76yCyz6Jw4P3tUVs10WuYNXXZ+wmHyGWpCek3amJxA==}
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
@@ -2503,9 +2503,6 @@ packages:
     resolution: {integrity: sha512-shTJncjV9JTI4oVNyF1FQonetYAiTBd+Qj7cY89SWbXSkx7gyhrgtEdF2ZAVWS1S3SHlaROO6F2IesJxQEkZBw==}
     peerDependencies:
       vue: ^3.5.0
-
-  '@webgpu/types@0.1.69':
-    resolution: {integrity: sha512-RPmm6kgRbI8e98zSD3RVACvnuktIja5+yLgDAkTmxLr90BEwdTXRQWNLF3ETTTyH/8mKhznZuN5AveXYFEsMGQ==}
 
   abbrev@2.0.0:
     resolution: {integrity: sha512-6/mh1E2u2YgEsCHdY0Yx5oW+61gZU+1vXaoiHHrpKeuRNNgFvS+/jrwHiQhB5apAf5oB7UB7E19ol2R2LKH8hQ==}
@@ -4115,8 +4112,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  meshoptimizer@1.0.1:
-    resolution: {integrity: sha512-Vix+QlA1YYT3FwmBBZ+49cE5y/b+pRrcXKqGpS5ouh33d3lSp2PoTpCw19E0cKDFWalembrHnIaZetf27a+W2g==}
+  meshoptimizer@1.1.1:
+    resolution: {integrity: sha512-oRFNWJRDA/WTrVj7NWvqa5HqE1t9MYDj2VaWirQCzCCrAd2GHrqR/sQezCxiWATPNlKTcRaPRHPJwIRoPBAp5g==}
 
   micromatch@4.0.8:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
@@ -5011,8 +5008,8 @@ packages:
     peerDependencies:
       three: '>=0.128.0'
 
-  three@0.183.2:
-    resolution: {integrity: sha512-di3BsL2FEQ1PA7Hcvn4fyJOlxRRgFYBpMTcyOgkwJIaDOdJMebEFPA+t98EvjuljDx4hNulAGwF6KIjtwI5jgQ==}
+  three@0.184.0:
+    resolution: {integrity: sha512-wtTRjG92pM5eUg/KuUnHsqSAlPM296brTOcLgMRqEeylYTh/CdtvKUvCyyCQTzFuStieWxvZb8mVTMvdPyUpxg==}
 
   through2@0.6.5:
     resolution: {integrity: sha512-RkK/CCESdTKQZHdmKICijdKKsCRVHs5KsLZ6pACAmF/1GPUQhonHSXWNERctxEp7RmvjdNbZTL5z9V7nSCXKcg==}
@@ -7339,30 +7336,30 @@ snapshots:
       vue: 3.5.32(typescript@6.0.2)
       vue-demi: 0.14.10(vue@3.5.32(typescript@6.0.2))
 
-  '@tresjs/cientos@5.7.0(@tresjs/core@5.8.0(three@0.183.2)(vue@3.5.32(typescript@6.0.2)))(@types/three@0.183.1)(react@19.1.0)(three@0.183.2)(vue@3.5.32(typescript@6.0.2))':
+  '@tresjs/cientos@5.7.0(@tresjs/core@5.8.0(three@0.184.0)(vue@3.5.32(typescript@6.0.2)))(@types/three@0.184.0)(react@19.1.0)(three@0.184.0)(vue@3.5.32(typescript@6.0.2))':
     dependencies:
-      '@tresjs/core': 5.8.0(three@0.183.2)(vue@3.5.32(typescript@6.0.2))
+      '@tresjs/core': 5.8.0(three@0.184.0)(vue@3.5.32(typescript@6.0.2))
       '@vueuse/core': 13.9.0(vue@3.5.32(typescript@6.0.2))
-      camera-controls: 2.10.1(three@0.183.2)
-      stats-gl: 2.4.2(@types/three@0.183.1)(three@0.183.2)
+      camera-controls: 2.10.1(three@0.184.0)
+      stats-gl: 2.4.2(@types/three@0.184.0)(three@0.184.0)
       stats.js: 0.17.0
-      three: 0.183.2
-      three-custom-shader-material: 5.4.0(react@19.1.0)(three@0.183.2)
-      three-mesh-bvh: 0.9.9(three@0.183.2)
-      three-stdlib: 2.36.1(three@0.183.2)
+      three: 0.184.0
+      three-custom-shader-material: 5.4.0(react@19.1.0)(three@0.184.0)
+      three-mesh-bvh: 0.9.9(three@0.184.0)
+      three-stdlib: 2.36.1(three@0.184.0)
       vue: 3.5.32(typescript@6.0.2)
     transitivePeerDependencies:
       - '@react-three/fiber'
       - '@types/three'
       - react
 
-  '@tresjs/core@5.8.0(three@0.183.2)(vue@3.5.32(typescript@6.0.2))':
+  '@tresjs/core@5.8.0(three@0.184.0)(vue@3.5.32(typescript@6.0.2))':
     dependencies:
       '@pmndrs/pointer-events': 6.6.29
       '@vue/devtools-api': 7.7.9
       '@vueuse/core': 13.9.0(vue@3.5.32(typescript@6.0.2))
       radashi: 12.7.2
-      three: 0.183.2
+      three: 0.184.0
       vue: 3.5.32(typescript@6.0.2)
 
   '@trivago/prettier-plugin-sort-imports@6.0.2(@vue/compiler-sfc@3.5.32)(prettier@3.8.3)':
@@ -7484,15 +7481,14 @@ snapshots:
 
   '@types/swagger-ui@5.32.0': {}
 
-  '@types/three@0.183.1':
+  '@types/three@0.184.0':
     dependencies:
       '@dimforge/rapier3d-compat': 0.12.0
       '@tweenjs/tween.js': 23.1.3
       '@types/stats.js': 0.17.4
       '@types/webxr': 0.5.24
-      '@webgpu/types': 0.1.69
       fflate: 0.8.2
-      meshoptimizer: 1.0.1
+      meshoptimizer: 1.1.1
 
   '@types/trusted-types@2.0.7': {}
 
@@ -7976,8 +7972,6 @@ snapshots:
     dependencies:
       vue: 3.5.32(typescript@6.0.2)
 
-  '@webgpu/types@0.1.69': {}
-
   abbrev@2.0.0: {}
 
   acorn-jsx@5.3.2(acorn@8.16.0):
@@ -8246,9 +8240,9 @@ snapshots:
 
   camelcase@6.3.0: {}
 
-  camera-controls@2.10.1(three@0.183.2):
+  camera-controls@2.10.1(three@0.184.0):
     dependencies:
-      three: 0.183.2
+      three: 0.184.0
 
   caniuse-lite@1.0.30001777: {}
 
@@ -9620,7 +9614,7 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  meshoptimizer@1.0.1: {}
+  meshoptimizer@1.1.1: {}
 
   micromatch@4.0.8:
     dependencies:
@@ -10037,9 +10031,9 @@ snapshots:
     dependencies:
       postcss: 8.5.9
 
-  postcss-scss@4.0.9(postcss@8.5.8):
+  postcss-scss@4.0.9(postcss@8.5.9):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   postcss-selector-parser@7.1.1:
     dependencies:
@@ -10354,10 +10348,10 @@ snapshots:
 
   stackback@0.0.2: {}
 
-  stats-gl@2.4.2(@types/three@0.183.1)(three@0.183.2):
+  stats-gl@2.4.2(@types/three@0.184.0)(three@0.184.0):
     dependencies:
-      '@types/three': 0.183.1
-      three: 0.183.2
+      '@types/three': 0.184.0
+      three: 0.184.0
 
   stats.js@0.17.0: {}
 
@@ -10466,26 +10460,26 @@ snapshots:
     dependencies:
       stylelint: 17.8.0(typescript@6.0.2)
 
-  stylelint-config-recommended-scss@17.0.1(postcss@8.5.8)(stylelint@17.8.0(typescript@6.0.2)):
+  stylelint-config-recommended-scss@17.0.1(postcss@8.5.9)(stylelint@17.8.0(typescript@6.0.2)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@8.5.8)
+      postcss-scss: 4.0.9(postcss@8.5.9)
       stylelint: 17.8.0(typescript@6.0.2)
       stylelint-config-recommended: 18.0.0(stylelint@17.8.0(typescript@6.0.2))
       stylelint-scss: 7.0.0(stylelint@17.8.0(typescript@6.0.2))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   stylelint-config-recommended@18.0.0(stylelint@17.8.0(typescript@6.0.2)):
     dependencies:
       stylelint: 17.8.0(typescript@6.0.2)
 
-  stylelint-config-standard-scss@17.0.0(postcss@8.5.8)(stylelint@17.8.0(typescript@6.0.2)):
+  stylelint-config-standard-scss@17.0.0(postcss@8.5.9)(stylelint@17.8.0(typescript@6.0.2)):
     dependencies:
       stylelint: 17.8.0(typescript@6.0.2)
-      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.8)(stylelint@17.8.0(typescript@6.0.2))
+      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.9)(stylelint@17.8.0(typescript@6.0.2))
       stylelint-config-standard: 40.0.0(stylelint@17.8.0(typescript@6.0.2))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.9
 
   stylelint-config-standard@40.0.0(stylelint@17.8.0(typescript@6.0.2)):
     dependencies:
@@ -10626,21 +10620,21 @@ snapshots:
     dependencies:
       utrie: 1.0.2
 
-  three-custom-shader-material@5.4.0(react@19.1.0)(three@0.183.2):
+  three-custom-shader-material@5.4.0(react@19.1.0)(three@0.184.0):
     dependencies:
       glsl-token-functions: 1.0.1
       glsl-token-string: 1.0.1
       glsl-tokenizer: 2.1.5
       object-hash: 3.0.0
-      three: 0.183.2
+      three: 0.184.0
     optionalDependencies:
       react: 19.1.0
 
-  three-mesh-bvh@0.9.9(three@0.183.2):
+  three-mesh-bvh@0.9.9(three@0.184.0):
     dependencies:
-      three: 0.183.2
+      three: 0.184.0
 
-  three-stdlib@2.36.1(three@0.183.2):
+  three-stdlib@2.36.1(three@0.184.0):
     dependencies:
       '@types/draco3d': 1.4.10
       '@types/offscreencanvas': 2019.7.3
@@ -10648,9 +10642,9 @@ snapshots:
       draco3d: 1.5.7
       fflate: 0.6.10
       potpack: 1.0.2
-      three: 0.183.2
+      three: 0.184.0
 
-  three@0.183.2: {}
+  three@0.184.0: {}
 
   through2@0.6.5:
     dependencies:
