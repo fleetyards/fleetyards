@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 DEST_FLAG=""
 if [ -n "$KAMAL_DESTINATION" ]; then
