@@ -17,18 +17,18 @@ test.describe("Ship", () => {
     ).toBeVisible();
 
     await page
-      .getByTestId("model-panel-AEGS-ironclad")
+      .getByTestId("model-panel-aegs-ironclad")
       .getByTestId("panel-heading-title")
       .locator("a")
       .first()
       .click();
 
-    await expect(page).toHaveURL(/\/ships\/AEGS-ironclad/);
+    await expect(page).toHaveURL(/\/ships\/aegs-ironclad/);
 
     await expect(page.locator("h1")).toContainText("Ironclad");
 
     await dropdown.click("model", "compare");
 
-    await expect(page).toHaveURL(/\/compare\/\?models%5B%5D=AEGS-ironclad/);
+    await expect(page).toHaveURL(/\/compare\/\?models%5B%5D=aegs-ironclad/);
   });
 });
