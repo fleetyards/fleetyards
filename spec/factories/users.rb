@@ -118,6 +118,14 @@ FactoryBot.define do
       hide_owner { true }
     end
 
+    trait :oauth_only do
+      password_set_manually { false }
+
+      after(:create) do |user|
+        create(:omniauth_connection, user: user, provider: :discord)
+      end
+    end
+
     after(:create) do |user, evaluator|
       evaluator.vehicle_count.times do
         create(:vehicle, user: user)
