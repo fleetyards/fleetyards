@@ -37,6 +37,7 @@
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
 #  otp_secret                :string
+#  password_set_manually     :boolean          default(FALSE), not null
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
 #  public_hangar_stats       :boolean          default(FALSE)
@@ -260,6 +261,20 @@ class User < ApplicationRecord
     return if username.blank?
 
     self.username = username.strip
+  end
+
+  def oauth_only?
+    !password_set_manually && omniauth_connections.any?
+  end
+
+  def reset_password(new_password, new_password_confirmation)
+    self.password_set_manually = true
+    super
+  end
+
+  def update_with_password(params, *args)
+    self.password_set_manually = true if params[:password].present?
+    super
   end
 
   def confirm_access_token

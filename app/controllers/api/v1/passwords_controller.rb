@@ -3,6 +3,8 @@
 module Api
   module V1
     class PasswordsController < ::Api::BaseController
+      include AccessConfirmable
+
       skip_verify_authorized only: [:request_email, :update_with_token]
 
       before_action :authenticate_user!, except: [:request_email, :update_with_token]
@@ -21,10 +23,32 @@ module Api
       def update
         authorize! current_user
 
-        if current_user.update_with_password(change_password_params)
+        success = if current_user.oauth_only?
+          current_user.reset_password(change_password_params[:password], change_password_params[:password_confirmation])
+        else
+          current_user.update_with_password(change_password_params)
+        end
+
+        if success
           render json: {code: "change_pasword.success", message: I18n.t("devise.passwords.updated_not_active")}
         else
           render json: ValidationError.new("change_pasword", errors: current_user.errors), status: :bad_request
+        end
+      end
+
+      def set_initial
+        authorize! current_user
+
+        unless current_user.oauth_only?
+          render json: {code: "set_initial_password.not_allowed", message: I18n.t("devise.passwords.set_initial_not_allowed")}, status: :forbidden
+          return
+        end
+
+        if current_user.reset_password(change_password_params[:password], change_password_params[:password_confirmation])
+          result = issue_access_confirmation(current_user)
+          render json: {code: "set_initial_password.success", message: I18n.t("devise.passwords.updated_not_active"), **result}
+        else
+          render json: ValidationError.new("set_initial_password", errors: current_user.errors), status: :bad_request
         end
       end
 

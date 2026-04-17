@@ -3,6 +3,8 @@
 module Api
   module V1
     class SessionsController < ::Api::BaseController
+      include AccessConfirmable
+
       skip_verify_authorized except: [:confirm_access]
 
       before_action :authenticate_user!, except: [:create, :confirm_access]
@@ -66,21 +68,8 @@ module Api
           return
         end
 
-        if doorkeeper_token
-          token = access_confirmation_verifier.generate(user.id, expires_in: 15.minutes)
-          render json: {code: :success, message: I18n.t("labels.success"), token:}
-        else
-          cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
-            value: user.confirm_access_token,
-            domain: Rails.configuration.app.cookie_domain,
-            secure: Rails.env.production? || Rails.env.staging?,
-            expires: 15.minutes,
-            httponly: true,
-            same_site: :lax
-          }
-
-          render json: {code: :success, message: I18n.t("labels.success")}
-        end
+        result = issue_access_confirmation(user)
+        render json: {code: :success, message: I18n.t("labels.success"), **result}
       end
 
       private def set_user

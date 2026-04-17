@@ -26,6 +26,7 @@ v1_api_routes = lambda do
   resource :password, only: [:update] do
     collection do
       post "request", to: "passwords#request_email"
+      post "set-initial", to: "passwords#set_initial"
       put ":reset_password_token", to: "passwords#update_with_token"
     end
   end

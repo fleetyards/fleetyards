@@ -60,6 +60,9 @@ en:
         failure_with_reason: Could not connect your %{kind} account because "%{reason}".
         success: Successfully connected your %{kind} account.
         already_connected: Your %{kind} account is already connected to your FleetYards.net Account.
+      confirm_access:
+        success: Identity confirmed via %{kind}.
+        provider_mismatch: Could not confirm your identity via %{kind}. The account does not match.
     otp:
       backup_codes: Generate Backup Codes
       backup_explain: Copy the Backup Codes and keep them save and secure.
@@ -86,6 +89,7 @@ en:
       update_failure: Your password could not be updated.
       updated: Your password was changed successfully. You are now signed in.
       updated_not_active: Your password was changed successfully.
+      set_initial_not_allowed: You already have a password set.
     registrations:
       destroyed: Bye! Your account was successfully cancelled. We hope to see you again soon.
       signed_up: Welcome! You have signed up successfully.

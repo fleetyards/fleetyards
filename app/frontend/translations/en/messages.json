@@ -371,6 +371,10 @@
       "confirmAccess": {
         "failure": "Access could not be confirmed. Please check your password and try again."
       },
+      "setInitialPassword": {
+        "success": "Password set successfully.",
+        "failure": "Password could not be set. Please try again."
+      },
       "import": {
         "started": "%{type} import started...",
         "finished": "%{type} import completed successfully.",

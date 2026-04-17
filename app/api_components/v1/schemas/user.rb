@@ -36,13 +36,15 @@ module V1
           hangarUpdatedAt: {type: :string, format: "date-time"},
           resourceAccess: {type: :array, items: {type: :string}},
           authConnections: {type: :array, items: {type: :string}},
+          passwordSetManually: {type: :boolean},
+          oauthOnly: {type: :boolean},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
         required: %w[
           username email saleNotify publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner
-          twoFactorRequired resourceAccess authConnections createdAt updatedAt
+          twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly createdAt updatedAt
         ]
       })
     end

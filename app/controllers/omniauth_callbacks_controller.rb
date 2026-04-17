@@ -1,4 +1,6 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  include AccessConfirmable
+
   skip_forgery_protection
 
   def failure
@@ -62,9 +64,32 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
   end
 
+  private def confirm_access_origin?
+    origin = request.env["omniauth.origin"]
+    origin.present? && origin.include?("confirm-access-callback")
+  end
+
+  private def handle_confirm_access(kind)
+    unless current_user.omniauth_connections.exists?(provider: auth.provider, uid: auth.uid)
+      redirect_to frontend_security_settings_url,
+        alert: t("devise.omniauth.confirm_access.provider_mismatch", kind: kind),
+        allow_other_host: true
+      return
+    end
+
+    issue_access_confirmation(current_user)
+    redirect_to frontend_confirm_access_callback_url(access_confirmed: true),
+      notice: t("devise.omniauth.confirm_access.success", kind: kind),
+      allow_other_host: true
+  end
+
   private def handle_auth(kind)
     if current_user.present?
-      handle_connect(kind)
+      if confirm_access_origin?
+        handle_confirm_access(kind)
+      else
+        handle_connect(kind)
+      end
     else
       connection = OmniauthConnection.find_by(uid: auth.uid, provider: auth.provider)
 

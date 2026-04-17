@@ -35,6 +35,7 @@
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
 #  otp_secret                :string
+#  password_set_manually     :boolean          default(FALSE), not null
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
 #  public_hangar_stats       :boolean          default(FALSE)

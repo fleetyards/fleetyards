@@ -17,6 +17,7 @@ import {
   BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
+import { useSessionStore } from "@/frontend/stores/session";
 
 import { useUpdatePassword as useUpdatePasswordMutation } from "@/services/fyApi";
 
@@ -24,11 +25,17 @@ const { t } = useI18n();
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
-const validationSchema = {
-  currentPassword: "required",
+const sessionStore = useSessionStore();
+
+const isOauthOnly = computed(
+  () => sessionStore.currentUser?.oauthOnly ?? false,
+);
+
+const validationSchema = computed(() => ({
+  currentPassword: isOauthOnly.value ? "" : "required",
   password: "required|min:8",
   passwordConfirmation: "required|confirmed:@password",
-};
+}));
 
 const initialValues = ref<PasswordInput>({
   currentPassword: undefined,
@@ -67,9 +74,13 @@ const mutation = useUpdatePasswordMutation();
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
+  const data = isOauthOnly.value
+    ? { password: values.password, passwordConfirmation: values.passwordConfirmation }
+    : values;
+
   await mutation
     .mutateAsync({
-      data: values,
+      data,
     })
     .then(async () => {
       displaySuccess({
@@ -94,6 +105,7 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form @submit.prevent="onSubmit">
     <FormInput
+      v-if="!isOauthOnly"
       v-model="currentPassword"
       name="currentPassword"
       :rules="validationSchema.currentPassword"
@@ -121,9 +133,13 @@ const onSubmit = handleSubmit(async (values) => {
     />
     <div class="flex">
       <Btn :loading="submitting" :type="BtnTypesEnum.SUBMIT">
-        {{ t("actions.updatePassword") }}
+        {{ isOauthOnly ? t("actions.setPassword") : t("actions.updatePassword") }}
       </Btn>
-      <Btn :to="{ name: 'request-password' }" :variant="BtnVariantsEnum.LINK">
+      <Btn
+        v-if="!isOauthOnly"
+        :to="{ name: 'request-password' }"
+        :variant="BtnVariantsEnum.LINK"
+      >
         {{ t("actions.reset-password") }}
       </Btn>
     </div>
