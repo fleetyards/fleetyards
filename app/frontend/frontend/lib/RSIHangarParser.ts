@@ -52,8 +52,7 @@ export class RSIHangarParser {
       return undefined;
     }
 
-    const name =
-      item.getElementsByClassName("title")[0]?.textContent || "";
+    const name = item.getElementsByClassName("title")[0]?.textContent || "";
 
     let kindOverride: RSIHangarItemKind | undefined;
     if (

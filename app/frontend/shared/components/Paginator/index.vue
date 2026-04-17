@@ -64,7 +64,8 @@ const currentPage = computed(() => {
   <div
     v-if="
       pagination &&
-      (perPageSelectable || (pagination.totalCount > 0 && pagination.totalPages > 1))
+      (perPageSelectable ||
+        (pagination.totalCount > 0 && pagination.totalPages > 1))
     "
     class="pagination"
   >
