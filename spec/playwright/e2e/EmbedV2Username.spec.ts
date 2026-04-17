@@ -12,29 +12,29 @@ test.describe("EmbedV2Username", () => {
   test("Default Workflow", async ({ page }) => {
     await page.goto("/embed-v2-username-test");
 
-    await expect(page.getByTestId("model-freelancer")).toHaveCount(
+    await expect(page.getByTestId("model-misc-freelancer")).toHaveCount(
       1,
       EMBED_TIMEOUT,
     );
 
-    await expect(page.getByTestId("model-freelancer").getByTestId("top-metrics")).toBeVisible();
+    await expect(page.getByTestId("model-misc-freelancer").getByTestId("top-metrics")).toBeVisible();
 
     await page.getByTestId("fleetview-details-button").click();
 
     await expect(
-      page.getByTestId("model-freelancer").getByTestId("top-metrics"),
+      page.getByTestId("model-misc-freelancer").getByTestId("top-metrics"),
     ).not.toBeVisible();
 
     await page.getByTestId("fleetview-grouped-button").click();
 
-    await expect(page.getByTestId("model-freelancer")).toHaveCount(2);
+    await expect(page.getByTestId("model-misc-freelancer")).toHaveCount(2);
 
     await page.getByTestId("fleetview-fleetchart-button").click();
 
-    await expect(page.getByTestId("model-freelancer")).toHaveCount(2);
+    await expect(page.getByTestId("model-misc-freelancer")).toHaveCount(2);
 
     await page.getByTestId("fleetview-grouped-button").click();
 
-    await expect(page.getByTestId("model-freelancer")).toHaveCount(1);
+    await expect(page.getByTestId("model-misc-freelancer")).toHaveCount(1);
   });
 });

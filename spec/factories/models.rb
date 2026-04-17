@@ -28,6 +28,7 @@
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
 #  last_updated_at          :datetime
+#  legacy_slug              :string
 #  length                   :decimal(15, 2)   default(0.0), not null
 #  loaners_count            :integer          default(0), not null
 #  mass                     :decimal(15, 2)   default(0.0), not null
@@ -100,12 +101,13 @@
 #
 # Indexes
 #
-#  index_models_on_base_model_id      (base_model_id)
-#  index_models_on_classification     (classification)
-#  index_models_on_manufacturer_id    (manufacturer_id)
-#  index_models_on_name               (name)
-#  index_models_on_production_status  (production_status)
-#  index_models_on_size               (size)
+#  index_models_on_base_model_id             (base_model_id)
+#  index_models_on_classification            (classification)
+#  index_models_on_legacy_slug               (legacy_slug)
+#  index_models_on_manufacturer_id           (manufacturer_id)
+#  index_models_on_manufacturer_id_and_name  (manufacturer_id,name) UNIQUE
+#  index_models_on_production_status         (production_status)
+#  index_models_on_size                      (size)
 #
 FactoryBot.define do
   factory :model do

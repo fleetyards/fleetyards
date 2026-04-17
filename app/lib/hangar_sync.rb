@@ -358,7 +358,7 @@ class HangarSync < HangarImporter
     normalized_name = normalize(name)
 
     [
-      MODEL_FIND_QUERY.join(" OR "),
+      (MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "),
       {
         name: name.downcase,
         slug: name.downcase,

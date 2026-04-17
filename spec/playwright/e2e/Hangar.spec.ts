@@ -49,7 +49,7 @@ test.describe("Hangar", () => {
     await expect(page).toHaveURL(/\/ships\//);
 
     await page
-      .getByTestId("model-panel-300i")
+      .getByTestId("model-panel-orig-300i")
       .getByTestId("add-to-hangar")
       .click();
 
@@ -58,11 +58,11 @@ test.describe("Hangar", () => {
     await nav.click("hangar");
 
     await expect(
-      page.getByTestId("model-panel-300i").getByTestId("panel-heading-title").locator("a").first(),
+      page.getByTestId("model-panel-orig-300i").getByTestId("panel-heading-title").locator("a").first(),
     ).toContainText("300i");
 
     await page
-      .getByTestId("model-panel-300i")
+      .getByTestId("model-panel-orig-300i")
       .getByTestId("vehicle-menu")
       .click();
     await page
@@ -83,7 +83,7 @@ test.describe("Hangar", () => {
     await page.getByTestId("modal").waitFor({ state: "hidden" });
 
     await expect(
-      page.getByTestId("model-panel-300i").getByTestId("panel-heading-title").locator("a").first(),
+      page.getByTestId("model-panel-orig-300i").getByTestId("panel-heading-title").locator("a").first(),
     ).toContainText("Enterprise");
 
     await page.getByTestId("fleetchart-link").click();

@@ -42,11 +42,12 @@ if ENV["TEST_SEEDS"].present?
     email: "test@fleetyards.net"
   )
 
-  ["freelancer", "freelancer"].each_with_index do |slug, index|
+  freelancer = Model.find_by(name: "Freelancer")
+  2.times do |index|
     Vehicle.find_or_create_by!(
       user_id: test_user.id,
-      model_id: Model.find_by(slug: slug).id,
-      name: "#{slug}-#{index}",
+      model_id: freelancer.id,
+      name: "freelancer-#{index}",
       wanted: false,
       public: true
     )

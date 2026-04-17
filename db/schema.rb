@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_15_174001) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_15_174243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -623,6 +623,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_174001) do
     t.string "hydrogen_fuel_tanks"
     t.integer "images_count", default: 0
     t.datetime "last_updated_at", precision: nil
+    t.string "legacy_slug"
     t.decimal "length", precision: 15, scale: 2, default: "0.0", null: false
     t.integer "loaners_count", default: 0, null: false
     t.uuid "manufacturer_id"
@@ -692,8 +693,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_174001) do
     t.decimal "yaw_boosted", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
+    t.index ["legacy_slug"], name: "index_models_on_legacy_slug"
+    t.index ["manufacturer_id", "name"], name: "index_models_on_manufacturer_id_and_name", unique: true
     t.index ["manufacturer_id"], name: "index_models_on_manufacturer_id"
-    t.index ["name"], name: "index_models_on_name"
     t.index ["production_status"], name: "index_models_on_production_status"
     t.index ["size"], name: "index_models_on_size"
   end
