@@ -2,10 +2,12 @@
 
 origin = Manufacturer.find_or_create_by!(name: "Origin Jumpworks") do |m|
   m.slug = "origin-jumpworks"
+  m.code = "ORIG"
 end
 
 drake = Manufacturer.find_or_create_by!(name: "Drake Interplanetary") do |m|
   m.slug = "drake-interplanetary"
+  m.code = "DRAK"
 end
 
 explorer_600i = Model.find_or_create_by!(name: "600i Explorer") do |model|

@@ -7,7 +7,7 @@ frontend_options = {
 }.compact
 
 namespace :frontend, **frontend_options do
-  get "ships/mercury", to: redirect("/ships/mercury-star-runner")
+  get "ships/mercury", to: redirect("/ships/CRUS-mercury-star-runner")
   get "ships/compare", to: redirect("/compare/")
   get "compare/ships", to: redirect("/compare/")
 

@@ -7,7 +7,7 @@ module HangarFiltersConcern
 
   private def will_it_fit?(scope)
     slug = vehicle_query_params.delete("will_it_fit")
-    parent = Model.visible.active.where(slug:).or(Model.where(rsi_slug: slug)).first
+    parent = Model.visible.active.where(slug:).or(Model.where(rsi_slug: slug)).or(Model.where(legacy_slug: slug)).first
 
     return scope if parent.blank? || parent.docks.blank?
 

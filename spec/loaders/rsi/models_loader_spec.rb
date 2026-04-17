@@ -63,7 +63,7 @@ describe Rsi::ModelsLoader do
       manufacturers: Manufacturer.count
     )
 
-    assert_equal(Model.find_by(slug: "300i").rsi_chassis_id, Model.find_by(slug: "315p").rsi_chassis_id)
+    assert_equal(Model.find_by(slug: "orig-300i").rsi_chassis_id, Model.find_by(slug: "orig-315p").rsi_chassis_id)
   end
 
   it "#one" do

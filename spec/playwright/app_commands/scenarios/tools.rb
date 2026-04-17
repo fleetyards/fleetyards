@@ -9,9 +9,10 @@ Flipper.enable(:tools_cargo_grids)
 # Ships with cargo holds (for cargo grids)
 # Set cargo_holds YAML attribute via update so the before_save callback
 # creates CargoHold DB records (can't set on create - parent must be saved first)
+drak = Manufacturer.find_or_create_by!(name: "Drake Interplanetary") { |m| m.code = "DRAK" }
 model = Model.find_or_initialize_by(name: "Caterpillar")
 if model.new_record?
-  model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready")
+  model = FactoryBot.create(:model, :with_legacy_images, name: "Caterpillar", production_status: "flight-ready", manufacturer: drak)
 end
 model.update!(cargo_holds: [
   {
@@ -29,7 +30,8 @@ model.update!(cargo_holds: [
 ])
 
 unless Model.exists?(name: "Aurora MR")
-  FactoryBot.create(:model, :with_legacy_images, name: "Aurora MR", production_status: "flight-ready")
+  rsi = Manufacturer.find_or_create_by!(name: "Roberts Space Industries") { |m| m.code = "RSI" }
+  FactoryBot.create(:model, :with_legacy_images, name: "Aurora MR", production_status: "flight-ready", manufacturer: rsi)
 end
 
 # Quantum drives (for travel times)
