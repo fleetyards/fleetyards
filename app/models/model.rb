@@ -133,7 +133,7 @@ class Model < ApplicationRecord
 
   paginates_per 30
   max_paginates_per 240
-  per_page_steps [15, 30, 60, 120, 240]
+  per_page_steps [15, 30, 60, 120, 240, :all]
 
   belongs_to :manufacturer, optional: true
 
