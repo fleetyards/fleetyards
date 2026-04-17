@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.7.2](https://github.com/fleetyards/fleetyards/compare/v6.7.1...v6.7.2) (2026-04-17)
+
+
+### Bug Fixes
+
+* **ci:** pin oasdiff version to avoid GitHub API rate limiting ([67da757](https://github.com/fleetyards/fleetyards/commit/67da75754be113dcbfb111cc2f05e9c94948d1a6))
+* handle jsonb input in modules importer extract_modules ([14151e4](https://github.com/fleetyards/fleetyards/commit/14151e448b489fcee5630ad718616fd87d3e69ba))
+
+
+### Chores
+
+* **deps-dev:** bump faker from 3.7.1 to 3.8.0 ([#3710](https://github.com/fleetyards/fleetyards/issues/3710)) ([12db520](https://github.com/fleetyards/fleetyards/commit/12db5204cca752bcc4ecb59e0bfc206e839db27b))
+* **deps-dev:** bump msw from 2.13.3 to 2.13.4 ([#3709](https://github.com/fleetyards/fleetyards/issues/3709)) ([eb2aa90](https://github.com/fleetyards/fleetyards/commit/eb2aa9022ddda00a30108d5189d8e7e68c87fedc))
+* **deps-dev:** bump typescript from 6.0.2 to 6.0.3 ([#3712](https://github.com/fleetyards/fleetyards/issues/3712)) ([45bf45d](https://github.com/fleetyards/fleetyards/commit/45bf45de689860d1d3b5dc4e205e8aa50bc038b3))
+* **deps:** bump committee from 5.6.2 to 5.6.3 ([#3711](https://github.com/fleetyards/fleetyards/issues/3711)) ([a36cb80](https://github.com/fleetyards/fleetyards/commit/a36cb80695be773def05d1d96786abb9b33fb2ad))
+* **deps:** bump sidekiq from 8.1.2 to 8.1.3 ([#3708](https://github.com/fleetyards/fleetyards/issues/3708)) ([2d93ed7](https://github.com/fleetyards/fleetyards/commit/2d93ed789767f1b5a1e9bd1b2eadf0994e729af3))
+* **deps:** bump three and @types/three ([#3707](https://github.com/fleetyards/fleetyards/issues/3707)) ([80f73ed](https://github.com/fleetyards/fleetyards/commit/80f73ed1839c2086a868eefcb51197dfa36c11b3))
+
 ## [6.7.1](https://github.com/fleetyards/fleetyards/compare/v6.7.0...v6.7.1) (2026-04-16)
 
 
