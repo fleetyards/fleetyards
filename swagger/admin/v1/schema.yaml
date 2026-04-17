@@ -1414,14 +1414,14 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Image"
-        '401':
-          description: unauthorized
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1447,14 +1447,14 @@ paths:
       responses:
         '200':
           description: successful
-        '401':
-          description: unauthorized
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
