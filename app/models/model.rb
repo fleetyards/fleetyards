@@ -637,7 +637,7 @@ class Model < ApplicationRecord
 
   private def update_slugs
     self.rsi_slug = rsi_name&.parameterize.presence
-    if manufacturer.present?
+    if manufacturer&.code.present?
       self.slug = "#{manufacturer.code.downcase}-#{name.parameterize}"
     else
       super

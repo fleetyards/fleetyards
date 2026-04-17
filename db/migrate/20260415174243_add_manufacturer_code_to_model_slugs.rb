@@ -6,7 +6,7 @@ class AddManufacturerCodeToModelSlugs < ActiveRecord::Migration[8.1]
     add_index :models, :legacy_slug
 
     Model.includes(:manufacturer).find_each do |model|
-      next if model.manufacturer.blank?
+      next if model.manufacturer&.code.blank?
 
       old_slug = model.slug
       new_slug = "#{model.manufacturer.code.downcase}-#{old_slug}"
