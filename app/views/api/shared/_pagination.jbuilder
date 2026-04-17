@@ -1,4 +1,4 @@
-json.total_count result.respond_to?(:total_count) ? result.total_count : 0
+json.total_count result.respond_to?(:total_count) ? result.total_count : result.count
 json.current_page result.respond_to?(:current_page) ? result.current_page : 1
 json.total_pages result.respond_to?(:total_pages) ? result.total_pages : 1
 json.per_page result.limit_value

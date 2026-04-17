@@ -64,8 +64,7 @@ const currentPage = computed(() => {
   <div
     v-if="
       pagination &&
-      pagination.totalCount > 0 &&
-      (perPageSelectable || pagination.totalPages > 1)
+      (perPageSelectable || (pagination.totalCount > 0 && pagination.totalPages > 1))
     "
     class="pagination"
   >
@@ -77,46 +76,48 @@ const currentPage = computed(() => {
         :steps="pagination.perPageSteps"
         @change="updatePerPage"
       />
-      <Btn
-        :size="size"
-        :to="pageRoute(1)"
-        :disabled="currentPage <= 1"
-        route-active-class=""
-      >
-        <i class="fa fa-chevron-double-left" />
-      </Btn>
-      <Btn
-        :size="size"
-        :to="pageRoute(currentPage - 1)"
-        :disabled="currentPage <= 1"
-        route-active-class=""
-      >
-        <i class="fa fa-chevron-left" />
-      </Btn>
-      <span class="pagination__pages" style="flex-grow: none">
-        {{
-          t("paginator.labels.pages", {
-            page: String(currentPage),
-            total: String(pagination.totalPages || 1),
-          })
-        }}
-      </span>
-      <Btn
-        :size="size"
-        :to="pageRoute(currentPage + 1)"
-        :disabled="currentPage >= pagination.totalPages"
-        route-active-class=""
-      >
-        <i class="fa fa-chevron-right" />
-      </Btn>
-      <Btn
-        :size="size"
-        :to="pageRoute(pagination.totalPages)"
-        :disabled="currentPage >= pagination.totalPages"
-        route-active-class=""
-      >
-        <i class="fa fa-chevron-double-right" />
-      </Btn>
+      <template v-if="pagination.totalCount > 0 && pagination.totalPages > 1">
+        <Btn
+          :size="size"
+          :to="pageRoute(1)"
+          :disabled="currentPage <= 1"
+          route-active-class=""
+        >
+          <i class="fa fa-chevron-double-left" />
+        </Btn>
+        <Btn
+          :size="size"
+          :to="pageRoute(currentPage - 1)"
+          :disabled="currentPage <= 1"
+          route-active-class=""
+        >
+          <i class="fa fa-chevron-left" />
+        </Btn>
+        <span class="pagination__pages" style="flex-grow: none">
+          {{
+            t("paginator.labels.pages", {
+              page: String(currentPage),
+              total: String(pagination.totalPages || 1),
+            })
+          }}
+        </span>
+        <Btn
+          :size="size"
+          :to="pageRoute(currentPage + 1)"
+          :disabled="currentPage >= pagination.totalPages"
+          route-active-class=""
+        >
+          <i class="fa fa-chevron-right" />
+        </Btn>
+        <Btn
+          :size="size"
+          :to="pageRoute(pagination.totalPages)"
+          :disabled="currentPage >= pagination.totalPages"
+          route-active-class=""
+        >
+          <i class="fa fa-chevron-double-right" />
+        </Btn>
+      </template>
     </BtnGroup>
   </div>
 </template>
