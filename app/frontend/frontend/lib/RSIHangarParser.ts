@@ -52,7 +52,8 @@ export class RSIHangarParser {
       return undefined;
     }
 
-    const name = item.getElementsByClassName("title")[0].textContent || "";
+    const name =
+      item.getElementsByClassName("title")[0]?.textContent || "";
 
     let kindOverride: RSIHangarItemKind | undefined;
     if (
@@ -86,6 +87,11 @@ export class RSIHangarParser {
     const imageElement = item.getElementsByClassName(
       "image",
     )[0] as HTMLDivElement;
+
+    if (!imageElement?.style?.backgroundImage) {
+      return undefined;
+    }
+
     let imageUrl = imageElement.style.backgroundImage
       .slice(4, -1)
       .replace(/['"]+/g, "");
