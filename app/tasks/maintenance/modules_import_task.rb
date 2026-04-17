@@ -7,7 +7,11 @@ module Maintenance
     def process
       results = ::ModulesImporter.new.run
 
-      AdminMailer.modules_import_results(results).deliver_later
+      GithubIssueCreator.new(
+        task_type: "modules_import",
+        title: "Modules Import Results",
+        body: ::ModulesImporter.github_issue_body(results)
+      ).run
     end
   end
 end

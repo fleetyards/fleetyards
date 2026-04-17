@@ -7,7 +7,11 @@ module Maintenance
     def process
       results = ::PaintsImporter.new.run
 
-      AdminMailer.paints_import_results(results).deliver_later
+      GithubIssueCreator.new(
+        task_type: "paints_import",
+        title: "Paints Import Results",
+        body: ::PaintsImporter.github_issue_body(results)
+      ).run
     end
   end
 end
