@@ -110,7 +110,7 @@ Rails.application.configure do
     policy.worker_src(*worker_src)
     policy.prefetch_src(*img_src)
     policy.object_src :self
-    policy.frame_ancestors :none
+    policy.frame_ancestors :self
 
     policy.upgrade_insecure_requests true unless Rails.env.development? || Rails.env.test?
   end
