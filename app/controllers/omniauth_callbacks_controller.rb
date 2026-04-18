@@ -124,6 +124,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   private def sanitize_username(name)
-    name.to_s.parameterize(separator: "_")
+    ActiveSupport::Inflector.transliterate(name.to_s).gsub(/[^a-zA-Z0-9\-_]/, "-").squeeze("-").gsub(/\A-|-\z/, "")
   end
 end
