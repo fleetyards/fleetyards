@@ -93,7 +93,7 @@ const providerActive = computed(() => {
       v-if="providerActive"
       :size="size"
       :block="block"
-      :variant="variant"
+      :variant="connected && disconnectable ? BtnVariantsEnum.DANGER : variant"
       :inline="inline"
       :type="BtnTypesEnum.BUTTON"
       class="oauth-btn"
