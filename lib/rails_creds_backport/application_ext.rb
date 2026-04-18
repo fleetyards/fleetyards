@@ -7,10 +7,10 @@
 module RailsCredsBackport
   module ApplicationExt
     def creds
-      if Rails.env.development?
-        @creds ||= RailsCredsBackport::CombinedConfiguration.new(envs, dotenvs, credentials)
+      @creds ||= if Rails.env.development?
+        RailsCredsBackport::CombinedConfiguration.new(envs, dotenvs, credentials)
       else
-        @creds ||= RailsCredsBackport::CombinedConfiguration.new(envs, credentials)
+        RailsCredsBackport::CombinedConfiguration.new(envs, credentials)
       end
     end
 

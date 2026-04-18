@@ -1,0 +1,2 @@
+PUT /password request-property-removed currentPassword
+PUT /password/{token} request-property-removed currentPassword
