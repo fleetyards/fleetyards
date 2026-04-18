@@ -10,6 +10,7 @@ import { groupByHoldName } from "@/shared/utils/CargoHolds";
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
 import HardpointCargoItem from "@/frontend/components/Models/Hardpoints/CargoItem/index.vue";
 import HardpointFuelItem from "@/frontend/components/Models/Hardpoints/FuelItem/index.vue";
+import HardpointModuleItem from "@/frontend/components/Models/Hardpoints/ModuleItem/index.vue";
 import HardpointThrusterItem from "@/frontend/components/Models/Hardpoints/ThrusterItem/index.vue";
 import HardpointSeatItem from "@/frontend/components/Models/Hardpoints/SeatItem/index.vue";
 import { type Hardpoint } from "@/services/fyApi";
@@ -50,6 +51,9 @@ const cargoHoldGroups = computed(() => {
 const itemComponent = computed(() => {
   if (props.category === HardpointCategoryEnum.CARGOGRID) {
     return HardpointCargoItem;
+  }
+  if (props.category === HardpointCategoryEnum.MODULE) {
+    return HardpointModuleItem;
   }
   if (props.category === HardpointCategoryEnum.FUELTANKS) {
     return HardpointFuelItem;

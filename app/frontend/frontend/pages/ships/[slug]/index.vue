@@ -15,6 +15,10 @@ import LoanersList from "@/frontend/components/Models/LoanersList/index.vue";
 import VariantsList from "@/frontend/components/Models/VariantsList/index.vue";
 import UpgradesList from "@/frontend/components/Models/UpgradesList/index.vue";
 import ModulesList from "@/frontend/components/Models/ModulesList/index.vue";
+import {
+  useModelModules as useModelModulesQuery,
+  type ModelModule,
+} from "@/services/fyApi";
 import FleetchartImages from "@/frontend/components/Models/FleetchartImages/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
@@ -52,6 +56,33 @@ useWishlistItems();
 const { t, toDollar } = useI18n();
 
 const { updateMetaInfo } = useMetaInfo();
+
+const { data: modulesData } = useModelModulesQuery(props.model.slug);
+
+const modelModules = computed<ModelModule[]>(
+  () => modulesData.value?.items || [],
+);
+
+const equippedModules = ref<Record<string, ModelModule | null>>({});
+
+const setEquippedModule = (slotId: string, mod: ModelModule | null) => {
+  equippedModules.value = { ...equippedModules.value, [slotId]: mod };
+};
+
+provide("modelModules", modelModules);
+provide("equippedModules", equippedModules);
+provide("setEquippedModule", setEquippedModule);
+
+const moduleCargoHolds = computed(() => {
+  return Object.values(equippedModules.value)
+    .filter((mod): mod is ModelModule => mod !== null)
+    .flatMap((mod) => mod.cargoHolds || []);
+});
+
+const combinedCargoHolds = computed(() => [
+  ...(props.model.cargoHolds || []),
+  ...moduleCargoHolds.value,
+]);
 
 const route = useRoute();
 
@@ -420,14 +451,18 @@ const adiMap = computed(() => {
         </div>
       </div>
       <FleetchartImages :model="model" />
-      <ModelCargoMetrics v-if="model.cargoHolds?.length" :model="model" />
+      <ModelCargoMetrics
+        v-if="combinedCargoHolds.length"
+        :model="model"
+        :cargo-holds="combinedCargoHolds"
+      />
       <hr />
       <Hardpoints :model="model" />
     </div>
   </div>
 
   <PaintsList :model-slug="model.slug" />
-  <ModulesList :model-slug="model.slug" />
+  <ModulesList :model-slug="model.slug" :modules="modelModules" />
   <UpgradesList :model-slug="model.slug" />
   <VariantsList :model-slug="model.slug" />
   <LoanersList :model-slug="model.slug" />

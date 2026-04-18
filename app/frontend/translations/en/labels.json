@@ -645,6 +645,9 @@
           "emp": "EMP",
           "qed": "QED"
         },
+        "moduleSlotEmpty": "— Select Module —",
+        "selectModule": "Select Module",
+        "clearModule": "Clear Selection",
         "categories": {
           "radar": "Radar",
           "armor": "Armor",
