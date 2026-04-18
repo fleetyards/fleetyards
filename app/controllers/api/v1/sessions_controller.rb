@@ -80,21 +80,26 @@ module Api
           return
         end
 
-        token = access_confirmation_verifier.generate(user.id, expires_in: 15.minutes)
+        redirect_path = params[:redirect_path].presence || "account"
+
+        token = access_confirmation_verifier.generate(
+          {user_id: user.id, redirect_path:},
+          expires_in: 15.minutes
+        )
         ConfirmAccessMailer.confirm_access_email(user, token).deliver_later
 
         render json: {code: :success, message: I18n.t("messages.confirmAccessEmail.sent")}
       end
 
       def verify_confirm_access_email
-        user_id = access_confirmation_verifier.verified(params[:token])
+        payload = access_confirmation_verifier.verified(params[:token])
 
-        if user_id.blank?
+        if payload.blank? || payload[:user_id].blank?
           redirect_to frontend_settings_account_url(access_confirmed: "invalid"), allow_other_host: true
           return
         end
 
-        user = User.find_by(id: user_id)
+        user = User.find_by(id: payload[:user_id])
 
         if user.blank?
           redirect_to frontend_settings_account_url(access_confirmed: "invalid"), allow_other_host: true
@@ -112,7 +117,9 @@ module Api
           same_site: :lax
         }
 
-        redirect_to frontend_settings_account_url(access_confirmed: "true"), allow_other_host: true
+        redirect_path = payload[:redirect_path].presence || "account"
+        redirect_url = (redirect_path == "security") ? frontend_security_settings_url : frontend_settings_account_url
+        redirect_to "#{redirect_url}?access_confirmed=true", allow_other_host: true
       end
 
       private def set_user

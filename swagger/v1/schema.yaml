@@ -3695,46 +3695,6 @@ paths:
             schema:
               "$ref": "#/components/schemas/PasswordRequestInput"
         required: true
-  "/password/set-initial":
-    post:
-      summary: Set initial password for OAuth-only users
-      operationId: setInitialPassword
-      tags:
-      - Password
-      parameters: []
-      security:
-      - SessionCookie: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardMessage"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden - user already has password
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SetInitialPasswordInput"
-        required: true
   "/password":
     put:
       summary: Update password
@@ -4559,6 +4519,7 @@ paths:
       operationId: sendConfirmAccessEmail
       tags:
       - Sessions
+      parameters: []
       security:
       - SessionCookie: []
       responses:
@@ -4580,6 +4541,11 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ConfirmAccessEmailInput"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -7189,6 +7155,13 @@ components:
       additionalProperties: false
       example: {}
       title: ComponentQuery
+    ConfirmAccessEmailInput:
+      type: object
+      properties:
+        redirectPath:
+          type: string
+      additionalProperties: false
+      title: ConfirmAccessEmailInput
     ConfirmAccessInput:
       type: object
       properties:
@@ -9994,8 +9967,6 @@ components:
     PasswordInput:
       type: object
       properties:
-        currentPassword:
-          type: string
         password:
           type: string
         passwordConfirmation:
@@ -10043,18 +10014,6 @@ components:
           type: string
       additionalProperties: false
       title: SessionInput
-    SetInitialPasswordInput:
-      type: object
-      properties:
-        password:
-          type: string
-        passwordConfirmation:
-          type: string
-      additionalProperties: false
-      required:
-      - password
-      - passwordConfirmation
-      title: SetInitialPasswordInput
     Stats:
       type: object
       properties:

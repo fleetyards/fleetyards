@@ -153,7 +153,6 @@
       "requestPassword": "Request Password",
       "changePassword": "Change Password",
       "confirmAccess": "Confirm access",
-      "setInitialPassword": "Set a password",
       "oauthAuthorize": "Authorize Application",
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",

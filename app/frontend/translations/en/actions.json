@@ -52,8 +52,6 @@
       "signUp": "Sign Up",
       "confirmAccess": "Confirm password",
       "sendConfirmAccessEmail": "Send confirmation email",
-      "setPassword": "Set password",
-      "setPasswordInstead": "Or set a password instead",
       "reset-password": "Forgot password?",
       "edit": "Edit",
       "clear": "Clear",

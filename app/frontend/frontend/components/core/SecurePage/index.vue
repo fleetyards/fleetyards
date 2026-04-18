@@ -11,17 +11,13 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
-import {
-  BtnTypesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useRoute } from "vue-router";
 import {
   useConfirmAccess as useConfirmAccessMutation,
   useSendConfirmAccessEmail as useSendConfirmAccessEmailMutation,
-  useSetInitialPassword as useSetInitialPasswordMutation,
   type ConfirmAccessInput,
-  type SetInitialPasswordInput,
 } from "@/services/fyApi";
 import { useForm } from "vee-validate";
 
@@ -29,6 +25,7 @@ const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
 
 const sessionStore = useSessionStore();
+const route = useRoute();
 
 const submitting = ref(false);
 
@@ -36,12 +33,15 @@ const confirmed = ref(!!sessionStore.accessConfirmed);
 
 const comlink = useComlink();
 
-const showSetPasswordForm = ref(false);
 const emailSent = ref(false);
 
 const isOauthOnly = computed(
   () => sessionStore.currentUser?.oauthOnly ?? false,
 );
+
+const redirectPath = computed(() => {
+  return route.path.includes("security") ? "security" : "account";
+});
 
 // Password confirmation form
 const initialValues = ref<ConfirmAccessInput>({
@@ -57,29 +57,6 @@ const { defineField, handleSubmit, resetForm } = useForm({
 });
 
 const [password, passwordProps] = defineField("password");
-
-// Set initial password form
-const setPasswordInitialValues = ref<SetInitialPasswordInput>({
-  password: "",
-  passwordConfirmation: "",
-});
-
-const setPasswordValidationSchema = {
-  password: "required|min:8",
-  passwordConfirmation: "required|confirmed:@password",
-};
-
-const {
-  defineField: defineSetPasswordField,
-  handleSubmit: handleSetPasswordSubmit,
-  resetForm: resetSetPasswordForm,
-} = useForm({
-  initialValues: setPasswordInitialValues.value,
-});
-
-const [newPassword, newPasswordProps] = defineSetPasswordField("password");
-const [newPasswordConfirmation, newPasswordConfirmationProps] =
-  defineSetPasswordField("passwordConfirmation");
 
 // Comlink for access confirmation events
 const accessConfirmationRequiredComlink = ref();
@@ -169,7 +146,11 @@ const sendConfirmAccessEmail = async () => {
   submitting.value = true;
 
   await sendConfirmAccessEmailMutation
-    .mutateAsync({})
+    .mutateAsync({
+      data: {
+        redirectPath: redirectPath.value,
+      },
+    })
     .then(() => {
       submitting.value = false;
       emailSent.value = true;
@@ -188,43 +169,6 @@ const sendConfirmAccessEmail = async () => {
       });
     });
 };
-
-// Set initial password
-const setInitialPasswordMutation = useSetInitialPasswordMutation();
-
-const setInitialPassword = handleSetPasswordSubmit(async () => {
-  submitting.value = true;
-
-  await setInitialPasswordMutation
-    .mutateAsync({
-      data: {
-        password: newPassword.value,
-        passwordConfirmation: newPasswordConfirmation.value,
-      },
-    })
-    .then(async () => {
-      resetSetPasswordForm();
-
-      submitting.value = false;
-
-      displaySuccess({
-        text: t("messages.setInitialPassword.success"),
-      });
-
-      sessionStore.confirmAccess();
-
-      confirmed.value = true;
-    })
-    .catch((error) => {
-      console.error(error);
-
-      submitting.value = false;
-
-      displayAlert({
-        text: t("messages.setInitialPassword.failure"),
-      });
-    });
-});
 </script>
 
 <template>
@@ -232,7 +176,7 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
     <div class="row">
       <div class="col-12">
         <!-- OAuth-only user: email confirmation -->
-        <template v-if="isOauthOnly && !showSetPasswordForm">
+        <template v-if="isOauthOnly">
           <div class="oauth-confirm-access">
             <h1>{{ t("headlines.confirmAccess") }}</h1>
 
@@ -249,58 +193,7 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
             >
               {{ t("actions.sendConfirmAccessEmail") }}
             </Btn>
-
-            <div class="set-password-link">
-              <a
-                href="#"
-                data-test="set-password-instead"
-                @click.prevent="showSetPasswordForm = true"
-              >
-                {{ t("actions.setPasswordInstead") }}
-              </a>
-            </div>
           </div>
-        </template>
-
-        <!-- Set initial password form (OAuth fallback) -->
-        <template v-else-if="isOauthOnly && showSetPasswordForm">
-          <h1>{{ t("headlines.setInitialPassword") }}</h1>
-
-          <form @submit.prevent="setInitialPassword">
-            <FormInput
-              v-model="newPassword"
-              v-bind="newPasswordProps"
-              name="password"
-              :rules="setPasswordValidationSchema.password"
-              :label="t('labels.password')"
-              :type="InputTypesEnum.PASSWORD"
-            />
-
-            <FormInput
-              v-model="newPasswordConfirmation"
-              v-bind="newPasswordConfirmationProps"
-              name="passwordConfirmation"
-              :rules="setPasswordValidationSchema.passwordConfirmation"
-              :label="t('labels.passwordConfirmation')"
-              :type="InputTypesEnum.PASSWORD"
-            />
-
-            <div class="flex">
-              <Btn
-                :loading="submitting"
-                :type="BtnTypesEnum.SUBMIT"
-                data-test="submit-set-password"
-              >
-                {{ t("actions.setPassword") }}
-              </Btn>
-              <Btn
-                :variant="BtnVariantsEnum.LINK"
-                @click.prevent="showSetPasswordForm = false"
-              >
-                {{ t("actions.back") }}
-              </Btn>
-            </div>
-          </form>
         </template>
 
         <!-- Regular user: password confirmation -->
@@ -337,9 +230,4 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
 
 <style lang="scss" scoped>
 @import "./index.scss";
-
-.set-password-link {
-  margin-top: 1rem;
-  text-align: center;
-}
 </style>

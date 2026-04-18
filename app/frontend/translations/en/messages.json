@@ -371,10 +371,6 @@
       "confirmAccess": {
         "failure": "Access could not be confirmed. Please check your password and try again."
       },
-      "setInitialPassword": {
-        "success": "Password set successfully.",
-        "failure": "Password could not be set. Please try again."
-      },
       "confirmAccessEmail": {
         "sent": "A confirmation link has been sent to your email.",
         "failure": "Could not send confirmation email. Please try again.",

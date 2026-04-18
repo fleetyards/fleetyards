@@ -4,6 +4,7 @@ require "swagger_helper"
 
 RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" do
   let(:user) { create(:user, :oauth_only) }
+  let(:input) { {redirectPath: "account"} }
 
   before do
     sign_in(user) if user.present?
@@ -13,7 +14,10 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
     post("Send confirm access email") do
       operationId "sendConfirmAccessEmail"
       tags "Sessions"
+      consumes "application/json"
       produces "application/json"
+
+      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ConfirmAccessEmailInput"}, required: false
 
       security [{
         SessionCookie: []
