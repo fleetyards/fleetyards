@@ -92,7 +92,7 @@ module Api
       end
 
       def verify_confirm_access_email
-        payload = access_confirmation_verifier.verified(params[:token])
+        payload = access_confirmation_verifier.verified(params[:token])&.with_indifferent_access
 
         if payload.blank? || payload[:user_id].blank?
           redirect_to frontend_settings_account_url(access_confirmed: "invalid"), allow_other_host: true
