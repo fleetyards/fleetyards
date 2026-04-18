@@ -1,2 +1,2 @@
-PUT /password request-property-removed currentPassword
-PUT /password/{token} request-property-removed currentPassword
+PUT /password removed the request property 'currentPassword'
+PUT /password/{token} removed the request property 'currentPassword'
