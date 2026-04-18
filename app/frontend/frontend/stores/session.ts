@@ -29,7 +29,7 @@ export const useSessionStore = defineStore("session", {
         parseISO(state.accessConfirmed),
       );
 
-      return diff < 10;
+      return diff < 30;
     },
   },
   actions: {

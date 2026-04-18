@@ -42,7 +42,7 @@ en:
         subject: New Fleet Invite
     confirm_access:
       body: Use the following code to confirm access to your account settings.
-      expires: This code will expire in 15 minutes.
+      expires: This code will expire in 10 minutes.
       subject: Your confirmation code
     hello: Hello %{username}
     model:

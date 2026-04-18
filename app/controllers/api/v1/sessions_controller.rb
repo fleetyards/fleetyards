@@ -83,7 +83,7 @@ module Api
         confirmation_code = SecureRandom.random_number(10**6).to_s.rjust(6, "0")
         token = access_confirmation_verifier.generate(
           {user_id: user.id, code: confirmation_code},
-          expires_in: 15.minutes
+          expires_in: 10.minutes
         )
         ConfirmAccessMailer.confirm_access_email(user, confirmation_code).deliver_later
 
