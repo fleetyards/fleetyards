@@ -14,6 +14,8 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { csrfToken } from "@/shared/utils/Meta";
+import { useRedirectBackStore } from "@/shared/stores/redirectBack";
+import { useRouter } from "vue-router";
 
 type Props = {
   provider: `${OauthBtnProvidersEnum}`;
@@ -44,6 +46,9 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
+const redirectBackStore = useRedirectBackStore();
+const router = useRouter();
+
 const handleClick = () => {
   if (props.connected && props.disconnectable) {
     emit("disconnect", props.provider);
@@ -60,6 +65,15 @@ const handleClick = () => {
   csrfInput.name = "authenticity_token";
   csrfInput.value = csrfToken();
   form.appendChild(csrfInput);
+
+  const backRoute = redirectBackStore.backRoute;
+  if (backRoute) {
+    const originInput = document.createElement("input");
+    originInput.type = "hidden";
+    originInput.name = "origin";
+    originInput.value = window.location.origin + router.resolve(backRoute).href;
+    form.appendChild(originInput);
+  }
 
   document.body.appendChild(form);
 
