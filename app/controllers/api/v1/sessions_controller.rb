@@ -5,7 +5,7 @@ module Api
     class SessionsController < ::Api::BaseController
       include AccessConfirmable
 
-      skip_verify_authorized except: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_email]
+      skip_verify_authorized except: [:confirm_access, :send_confirm_access_email]
 
       before_action :authenticate_user!, except: [:create, :confirm_access, :verify_confirm_access_email]
       before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
