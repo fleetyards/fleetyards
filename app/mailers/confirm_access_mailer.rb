@@ -3,7 +3,7 @@
 class ConfirmAccessMailer < ApplicationMailer
   def confirm_access_email(user, token)
     @username = user.username
-    @confirm_url = api_v1_verify_confirm_access_email_url(token:)
+    @confirm_url = verify_confirm_access_email_api_v1_sessions_url(token:)
 
     mail(
       to: user.email,
