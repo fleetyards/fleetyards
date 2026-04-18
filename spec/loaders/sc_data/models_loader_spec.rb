@@ -10,7 +10,8 @@ RSpec.describe ScData::Loader::ModelsLoader do
     let(:model) do
       create(:model,
         name: "Constellation Andromeda",
-        manufacturer: manufacturer)
+        manufacturer: manufacturer,
+        in_game: true)
     end
 
     it "loads data from game files" do

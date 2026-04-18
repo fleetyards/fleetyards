@@ -27,6 +27,7 @@
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
+#  in_game                  :boolean          default(FALSE), not null
 #  last_updated_at          :datetime
 #  legacy_slug              :string
 #  length                   :decimal(15, 2)   default(0.0), not null

@@ -29,6 +29,7 @@
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
+#  in_game                  :boolean          default(FALSE), not null
 #  last_updated_at          :datetime
 #  legacy_slug              :string
 #  length                   :decimal(15, 2)   default(0.0), not null
@@ -262,7 +263,7 @@ class Model < ApplicationRecord
       "fleetchart_offset_length", "focus", "front_view",
       "ground", "ground_acceleration",
       "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
-      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value",
+      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game",
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
       "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
@@ -296,13 +297,6 @@ class Model < ApplicationRecord
 
   def sc_data_identifier
     slug&.tr("-", "_")
-  end
-
-  def in_game?
-    return @in_game if defined?(@in_game)
-
-    @in_game = sc_data_identifier.present? &&
-      File.exist?(Rails.root.join("data/sc_data/parsed/#{Rails.configuration.sc_data[:environment]}/models/#{sc_data_identifier}.json"))
   end
 
   def self.production_status_filters
