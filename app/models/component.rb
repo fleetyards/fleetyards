@@ -20,7 +20,6 @@
 #  item_type             :string
 #  name                  :string(255)
 #  power_connection      :string
-#  sc_identifier         :string
 #  sc_key                :string
 #  sc_ref                :string
 #  size                  :string(255)
@@ -87,7 +86,7 @@ class Component < ApplicationRecord
     [
       "ammunition", "component_class", "created_at", "description", "durability", "grade",
       "heat_connection", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
-      "power_connection", "sc_identifier", "size", "slug", "tracking_signal",
+      "power_connection", "size", "slug", "tracking_signal",
       "type_data", "updated_at"
     ]
   end

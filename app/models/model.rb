@@ -29,6 +29,7 @@
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
+#  in_game                  :boolean          default(FALSE), not null
 #  last_updated_at          :datetime
 #  legacy_slug              :string
 #  length                   :decimal(15, 2)   default(0.0), not null
@@ -80,7 +81,6 @@
 #  sales_page_url           :string
 #  sc_beam                  :decimal(15, 2)
 #  sc_height                :decimal(15, 2)
-#  sc_identifier            :string
 #  sc_length                :decimal(15, 2)
 #  scm_speed                :decimal(15, 2)
 #  scm_speed_acceleration   :decimal(15, 2)
@@ -263,7 +263,7 @@ class Model < ApplicationRecord
       "fleetchart_offset_length", "focus", "front_view",
       "ground", "ground_acceleration",
       "ground_decceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
-      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value",
+      "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game",
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
       "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
@@ -273,7 +273,7 @@ class Model < ApplicationRecord
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
       "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
       "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
-      "sc_identifier", "sc_length", "scm_speed", "scm_speed_acceleration",
+      "sc_length", "scm_speed", "scm_speed_acceleration",
       "scm_speed_decceleration", "search",
       "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",
       "updated_at", "upgrade_kits_count", "videos_count", "yaw"
@@ -295,8 +295,8 @@ class Model < ApplicationRecord
 
   PRODUCTION_STATUSES = %w[in-concept in-production flight-ready].freeze
 
-  def in_game?
-    sc_identifier.present? && production_status == "flight-ready"
+  def sc_data_identifier
+    slug&.tr("-", "_")
   end
 
   def self.production_status_filters

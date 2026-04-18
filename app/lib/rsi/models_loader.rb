@@ -58,11 +58,8 @@ module Rsi
 
     # rubocop:disable Metrics/CyclomaticComplexity
     private def create_or_update_model(data)
-      sc_identifier = resolve_sc_identifier(data)
-
       model = Model.find_by(rsi_id: data["id"])
-      model = Model.find_by(sc_identifier: sc_identifier) if sc_identifier.present? && model.blank?
-      model = Model.find_by(rsi_id: nil, name: strip_name(data["name"]), sc_identifier: nil) if model.blank?
+      model = Model.find_by(rsi_id: nil, name: strip_name(data["name"])) if model.blank?
       model = Model.create!(rsi_id: data["id"], name: strip_name(data["name"])) if model.blank?
 
       updates = {
@@ -71,11 +68,9 @@ module Rsi
         last_updated_at: new_time_modified(data)
       }
 
-      updates[:sc_identifier] = sc_identifier if model.sc_identifier.blank?
-
       if model_updated(model, data) || model.production_status.blank?
-        if ::Model::PRODUCTION_STATUSES.include?(data["production_status"])
-          updates[:production_status] = ::Model::PRODUCTION_STATUSES.include?(data["production_status"]) ? data["production_status"] : "in-concept"
+        if ::Model::PRODUCTION_STATUSES.include?(data["production_status"]) && !model.in_game?
+          updates[:production_status] = data["production_status"]
         end
         updates[:production_note] = data["production_note"]
       end
@@ -357,18 +352,5 @@ module Rsi
     end
     # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/MethodLength
-
-    private def resolve_sc_identifier(item)
-      sc_identifier_parts = [
-        item.dig("manufacturer", "code").upcase,
-        item["name"].tr(" ", "_").downcase
-      ].compact
-
-      if sc_identifier_parts.size > 1
-        return sc_identifier_parts.join("_")
-      end
-
-      nil
-    end
   end
 end

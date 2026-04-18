@@ -2,7 +2,9 @@ module ScData
   module Loader
     class ModelsLoader < ::ScData::Loader::BaseLoader
       def all
-        Model.where.not(sc_identifier: nil).find_each do |model|
+        update_in_game_flags
+
+        Model.where(in_game: true).find_each do |model|
           load_model(model)
         end
 
@@ -16,9 +18,7 @@ module ScData
       end
 
       def load_model(model)
-        return if model.sc_identifier.blank?
-
-        model_data = load_model_data(model.sc_identifier)
+        model_data = load_model_data(model.sc_data_identifier)
 
         return if model_data.blank?
 
@@ -39,8 +39,25 @@ module ScData
         model.update!(update_params.merge(update_reason: :sc_data_loader))
       end
 
-      private def load_model_data(sc_identifier)
-        load_item("models/#{sc_identifier.downcase}")
+      private def update_in_game_flags
+        Model.find_each do |model|
+          identifier = model.sc_data_identifier
+          next if identifier.blank?
+
+          file_exists = File.exist?(
+            Rails.root.join("data/sc_data/parsed/#{sc_environment}/models/#{identifier}.json")
+          )
+
+          if file_exists && !model.in_game?
+            model.update_columns(in_game: true, production_status: "flight-ready")
+          elsif !file_exists && model.in_game?
+            model.update_columns(in_game: false)
+          end
+        end
+      end
+
+      private def load_model_data(sc_data_identifier)
+        load_item("models/#{sc_data_identifier}")
       end
 
       private def update_metrics(model_data, update_params)

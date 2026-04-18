@@ -27,6 +27,7 @@
 #  hydrogen_fuel_tank_size  :decimal(15, 2)
 #  hydrogen_fuel_tanks      :string
 #  images_count             :integer          default(0)
+#  in_game                  :boolean          default(FALSE), not null
 #  last_updated_at          :datetime
 #  legacy_slug              :string
 #  length                   :decimal(15, 2)   default(0.0), not null
@@ -78,7 +79,6 @@
 #  sales_page_url           :string
 #  sc_beam                  :decimal(15, 2)
 #  sc_height                :decimal(15, 2)
-#  sc_identifier            :string
 #  sc_length                :decimal(15, 2)
 #  scm_speed                :decimal(15, 2)
 #  scm_speed_acceleration   :decimal(15, 2)

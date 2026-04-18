@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.id model.id
-json.sc_identifier model.sc_identifier
+json.sc_identifier model.sc_data_identifier
 json.in_game model.in_game?
 json.name model.name
 json.slug model.slug
