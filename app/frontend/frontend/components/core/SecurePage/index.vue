@@ -123,7 +123,7 @@ const sendConfirmAccessEmail = async () => {
   submitting.value = true;
 
   await sendConfirmAccessEmailMutation
-    .mutateAsync({})
+    .mutateAsync()
     .then((response) => {
       submitting.value = false;
       emailSent.value = true;

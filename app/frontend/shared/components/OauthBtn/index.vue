@@ -120,7 +120,10 @@ const providerActive = computed(() => {
       <slot>
         <i :class="`fa-brands fa-${provider}`" />
         <span v-if="!onlyIcon">{{ label }}</span>
-        <i v-if="connected && !disconnectable" class="fa-light fa-check text-success" />
+        <i
+          v-if="connected && !disconnectable"
+          class="fa-light fa-check text-success"
+        />
       </slot>
     </Btn>
   </Transition>
