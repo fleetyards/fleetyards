@@ -375,6 +375,11 @@
         "success": "Password set successfully.",
         "failure": "Password could not be set. Please try again."
       },
+      "confirmAccessEmail": {
+        "sent": "A confirmation link has been sent to your email.",
+        "failure": "Could not send confirmation email. Please try again.",
+        "invalid": "The confirmation link is invalid or has expired."
+      },
       "import": {
         "started": "%{type} import started...",
         "finished": "%{type} import completed successfully.",

@@ -8,7 +8,6 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
@@ -19,12 +18,12 @@ import {
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   useConfirmAccess as useConfirmAccessMutation,
+  useSendConfirmAccessEmail as useSendConfirmAccessEmailMutation,
   useSetInitialPassword as useSetInitialPasswordMutation,
   type ConfirmAccessInput,
   type SetInitialPasswordInput,
 } from "@/services/fyApi";
 import { useForm } from "vee-validate";
-import type { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
@@ -38,17 +37,10 @@ const confirmed = ref(!!sessionStore.accessConfirmed);
 const comlink = useComlink();
 
 const showSetPasswordForm = ref(false);
+const emailSent = ref(false);
 
 const isOauthOnly = computed(
   () => sessionStore.currentUser?.oauthOnly ?? false,
-);
-
-const authConnections = computed(
-  () => (sessionStore.currentUser?.authConnections ?? []) as `${OauthBtnProvidersEnum}`[],
-);
-
-const confirmAccessOrigin = computed(
-  () => `${window.location.origin}/settings/confirm-access-callback`,
 );
 
 // Password confirmation form
@@ -98,22 +90,31 @@ onMounted(() => {
     resetConfirmation,
   );
 
-  // Check for OAuth callback confirmation via URL params
+  // Check for email confirmation callback via URL params
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get("access_confirmed") === "true") {
+  const accessConfirmed = urlParams.get("access_confirmed");
+
+  if (accessConfirmed === "true") {
     sessionStore.confirmAccess();
     confirmed.value = true;
-
-    // Clean up URL
-    const url = new URL(window.location.href);
-    url.searchParams.delete("access_confirmed");
-    window.history.replaceState({}, "", url.toString());
+    cleanUpUrl();
+  } else if (accessConfirmed === "invalid") {
+    displayAlert({
+      text: t("messages.confirmAccessEmail.invalid"),
+    });
+    cleanUpUrl();
   }
 });
 
 onUnmounted(() => {
   accessConfirmationRequiredComlink.value();
 });
+
+const cleanUpUrl = () => {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("access_confirmed");
+  window.history.replaceState({}, "", url.toString());
+};
 
 watch(
   () => confirmed.value,
@@ -161,6 +162,33 @@ const confirmAccess = handleSubmit(async () => {
     });
 });
 
+// Email confirm access
+const sendConfirmAccessEmailMutation = useSendConfirmAccessEmailMutation();
+
+const sendConfirmAccessEmail = async () => {
+  submitting.value = true;
+
+  await sendConfirmAccessEmailMutation
+    .mutateAsync({})
+    .then(() => {
+      submitting.value = false;
+      emailSent.value = true;
+
+      displaySuccess({
+        text: t("messages.confirmAccessEmail.sent"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+
+      submitting.value = false;
+
+      displayAlert({
+        text: t("messages.confirmAccessEmail.failure"),
+      });
+    });
+};
+
 // Set initial password
 const setInitialPasswordMutation = useSetInitialPasswordMutation();
 
@@ -203,22 +231,24 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
   <section class="container confirm-access" data-test="confirm-access">
     <div class="row">
       <div class="col-12">
-        <!-- OAuth-only user: show provider buttons -->
+        <!-- OAuth-only user: email confirmation -->
         <template v-if="isOauthOnly && !showSetPasswordForm">
           <div class="oauth-confirm-access">
             <h1>{{ t("headlines.confirmAccess") }}</h1>
 
-            <div class="oauth-confirm-buttons">
-              <OauthBtn
-                v-for="provider in authConnections"
-                :key="provider"
-                :provider="provider"
-                :origin="confirmAccessOrigin"
-                inline
-                only-icon
-                data-test="confirm-via-oauth"
-              />
-            </div>
+            <p v-if="emailSent">
+              {{ t("messages.confirmAccessEmail.sent") }}
+            </p>
+
+            <Btn
+              :loading="submitting"
+              :disabled="emailSent"
+              :type="BtnTypesEnum.BUTTON"
+              data-test="send-confirm-access-email"
+              @click="sendConfirmAccessEmail"
+            >
+              {{ t("actions.sendConfirmAccessEmail") }}
+            </Btn>
 
             <div class="set-password-link">
               <a
@@ -307,13 +337,6 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
 
 <style lang="scss" scoped>
 @import "./index.scss";
-
-.oauth-confirm-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
 
 .set-password-link {
   margin-top: 1rem;

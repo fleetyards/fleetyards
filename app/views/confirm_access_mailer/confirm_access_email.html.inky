@@ -1,0 +1,15 @@
+<h2>
+  <%= I18n.t('mailer.hello', username: @username) %>
+</h2>
+<p>
+  <%= I18n.t('mailer.confirm_access.body') %>
+</p>
+<p>
+  <%= I18n.t('mailer.confirm_access.expires') %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <button href="<%= @confirm_url %>">
+    <%= I18n.t('mailer.confirm_access.action') %>
+  </button>
+</center>

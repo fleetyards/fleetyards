@@ -20,7 +20,11 @@ v1_api_routes = lambda do
   end
 
   resource :sessions, only: %i[create destroy] do
-    post "confirm-access", to: "sessions#confirm_access", on: :collection
+    collection do
+      post "confirm-access", to: "sessions#confirm_access"
+      post "confirm-access-email", to: "sessions#send_confirm_access_email"
+      get "confirm-access-email/:token", to: "sessions#verify_confirm_access_email", as: :verify_confirm_access_email
+    end
   end
 
   resource :password, only: [:update] do

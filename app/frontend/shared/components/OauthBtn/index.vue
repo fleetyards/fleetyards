@@ -23,7 +23,6 @@ type Props = {
   inline?: boolean;
   connected?: boolean;
   onlyIcon?: boolean;
-  origin?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,7 +32,6 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   connected: false,
   onlyIcon: false,
-  origin: undefined,
 });
 
 const { t } = useI18n();
@@ -49,14 +47,6 @@ const handleClick = () => {
   csrfInput.name = "authenticity_token";
   csrfInput.value = csrfToken();
   form.appendChild(csrfInput);
-
-  if (props.origin) {
-    const originInput = document.createElement("input");
-    originInput.type = "hidden";
-    originInput.name = "origin";
-    originInput.value = props.origin;
-    form.appendChild(originInput);
-  }
 
   document.body.appendChild(form);
 

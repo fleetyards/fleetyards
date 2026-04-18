@@ -4553,6 +4553,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/sessions/confirm-access-email":
+    post:
+      summary: Send confirm access email
+      operationId: sendConfirmAccessEmail
+      tags:
+      - Sessions
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - user has password
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class

@@ -5,11 +5,11 @@ module Api
     class SessionsController < ::Api::BaseController
       include AccessConfirmable
 
-      skip_verify_authorized except: [:confirm_access]
+      skip_verify_authorized except: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_email]
 
-      before_action :authenticate_user!, except: [:create, :confirm_access]
+      before_action :authenticate_user!, except: [:create, :confirm_access, :verify_confirm_access_email]
       before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
-      before_action :set_user, only: [:confirm_access]
+      before_action :set_user, only: [:confirm_access, :send_confirm_access_email]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
@@ -70,6 +70,49 @@ module Api
 
         result = issue_access_confirmation(user)
         render json: {code: :success, message: I18n.t("labels.success"), **result}
+      end
+
+      def send_confirm_access_email
+        user = current_resource_owner
+
+        unless user.oauth_only?
+          render json: {code: "session.confirmAccessEmail.notAllowed", message: I18n.t("messages.confirmAccessEmail.notAllowed")}, status: :forbidden
+          return
+        end
+
+        token = access_confirmation_verifier.generate(user.id, expires_in: 15.minutes)
+        ConfirmAccessMailer.confirm_access_email(user, token).deliver_later
+
+        render json: {code: :success, message: I18n.t("messages.confirmAccessEmail.sent")}
+      end
+
+      def verify_confirm_access_email
+        user_id = access_confirmation_verifier.verified(params[:token])
+
+        if user_id.blank?
+          redirect_to frontend_settings_account_url(access_confirmed: "invalid"), allow_other_host: true
+          return
+        end
+
+        user = User.find_by(id: user_id)
+
+        if user.blank?
+          redirect_to frontend_settings_account_url(access_confirmed: "invalid"), allow_other_host: true
+          return
+        end
+
+        sign_in(:user, user) unless warden.authenticate?(scope: :user)
+
+        cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
+          value: user.confirm_access_token,
+          domain: Rails.configuration.app.cookie_domain,
+          secure: Rails.env.production? || Rails.env.staging?,
+          expires: 15.minutes,
+          httponly: true,
+          same_site: :lax
+        }
+
+        redirect_to frontend_settings_account_url(access_confirmed: "true"), allow_other_host: true
       end
 
       private def set_user

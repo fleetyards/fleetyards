@@ -52,6 +52,9 @@ en:
       success: "%{resource} edited successfully."
     confirmAccess:
       failure: Access confirmation failed
+    confirmAccessEmail:
+      sent: A confirmation link has been sent to your email.
+      notAllowed: Email confirmation is only available for OAuth accounts.
     hangar_import:
       no_data: No Data found to import
     hangar_sync:

@@ -60,9 +60,6 @@ en:
         failure_with_reason: Could not connect your %{kind} account because "%{reason}".
         success: Successfully connected your %{kind} account.
         already_connected: Your %{kind} account is already connected to your FleetYards.net Account.
-      confirm_access:
-        success: Identity confirmed via %{kind}.
-        provider_mismatch: Could not confirm your identity via %{kind}. The account does not match.
     otp:
       backup_codes: Generate Backup Codes
       backup_explain: Copy the Backup Codes and keep them save and secure.

@@ -40,6 +40,11 @@ en:
         body: 'To accept the invite please click on the following link:'
         headline: You have been invited to Join %{fleet}
         subject: New Fleet Invite
+    confirm_access:
+      action: Confirm Access
+      body: Someone requested access to your account settings. Click the button below to confirm.
+      expires: This link will expire in 15 minutes.
+      subject: Confirm access to your account settings
     hello: Hello %{username}
     model:
       new:
