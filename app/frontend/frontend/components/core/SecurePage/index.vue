@@ -8,6 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
@@ -20,7 +21,7 @@ import {
   type SetInitialPasswordInput,
 } from "@/services/fyApi";
 import { useForm } from "vee-validate";
-import { csrfToken } from "@/shared/utils/Meta";
+import type { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
@@ -40,7 +41,11 @@ const isOauthOnly = computed(
 );
 
 const authConnections = computed(
-  () => sessionStore.currentUser?.authConnections ?? [],
+  () => (sessionStore.currentUser?.authConnections ?? []) as `${OauthBtnProvidersEnum}`[],
+);
+
+const confirmAccessOrigin = computed(
+  () => `${window.location.origin}/settings/confirm-access-callback`,
 );
 
 // Password confirmation form
@@ -153,30 +158,6 @@ const confirmAccess = handleSubmit(async () => {
     });
 });
 
-// OAuth re-auth
-const confirmViaOAuth = (provider: string) => {
-  const form = document.createElement("form");
-
-  form.method = "POST";
-  form.action = `/users/auth/${provider}`;
-
-  const csrfInput = document.createElement("input");
-  csrfInput.type = "hidden";
-  csrfInput.name = "authenticity_token";
-  csrfInput.value = csrfToken();
-  form.appendChild(csrfInput);
-
-  const originInput = document.createElement("input");
-  originInput.type = "hidden";
-  originInput.name = "origin";
-  originInput.value = `${window.location.origin}/settings/confirm-access-callback`;
-  form.appendChild(originInput);
-
-  document.body.appendChild(form);
-  form.submit();
-  document.body.removeChild(form);
-};
-
 // Set initial password
 const setInitialPasswordMutation = useSetInitialPasswordMutation();
 
@@ -213,10 +194,6 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
       });
     });
 });
-
-const providerLabel = (provider: string) => {
-  return provider.charAt(0).toUpperCase() + provider.slice(1);
-};
 </script>
 
 <template>
@@ -228,22 +205,14 @@ const providerLabel = (provider: string) => {
           <h1>{{ t("headlines.confirmAccess") }}</h1>
 
           <div class="oauth-confirm-buttons">
-            <Btn
+            <OauthBtn
               v-for="provider in authConnections"
               :key="provider"
-              :type="BtnTypesEnum.BUTTON"
-              :block="true"
-              class="oauth-btn"
+              :provider="provider"
+              :origin="confirmAccessOrigin"
+              block
               data-test="confirm-via-oauth"
-              @click="confirmViaOAuth(provider)"
-            >
-              <i :class="`fa-brands fa-${provider}`" />
-              {{
-                t("actions.confirmAccessViaProvider", {
-                  provider: providerLabel(provider),
-                })
-              }}
-            </Btn>
+            />
           </div>
 
           <div class="set-password-link">
