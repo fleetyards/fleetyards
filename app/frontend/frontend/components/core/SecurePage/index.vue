@@ -188,6 +188,7 @@ const verifyConfirmAccessCode = async () => {
               <Btn
                 :loading="submitting"
                 :type="BtnTypesEnum.BUTTON"
+                :block="true"
                 data-test="send-confirm-access-email"
                 @click="sendConfirmAccessEmail"
               >
