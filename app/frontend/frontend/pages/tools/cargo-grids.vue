@@ -18,9 +18,11 @@ import FilterGroup, {
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useModel as useModelQuery,
+  useModelModules as useModelModulesQuery,
   models as fetchModels,
   ModelProductionStatusEnum,
   type Model,
+  type ModelModule,
   type ModelQuery,
   type Models,
 } from "@/services/fyApi";
@@ -70,8 +72,8 @@ const requestedContainers = computed<ContainerRequest[]>(() => {
 });
 
 const fillGreedy = () => {
-  if (!selectedModel.value?.cargoHolds?.length) return;
-  const counts = computeGreedyFill(selectedModel.value.cargoHolds);
+  if (!combinedCargoHolds.value.length) return;
+  const counts = computeGreedyFill(combinedCargoHolds.value);
   for (const size of CONTAINER_SIZES) {
     containerRequests.value[size] = counts[size] || 0;
   }
@@ -137,6 +139,45 @@ const { data: modelData } = useModelQuery(
   },
 );
 
+const { data: modulesData } = useModelModulesQuery(
+  computed(() => selectedSlug.value || ""),
+  undefined,
+  {
+    query: {
+      enabled: computed(() => !!selectedSlug.value),
+    },
+  },
+);
+
+const availableModules = computed<ModelModule[]>(
+  () => modulesData.value?.items || [],
+);
+
+const modulesWithCargo = computed(() =>
+  availableModules.value.filter((m) => m.cargoHolds?.length),
+);
+
+const selectedModuleIds = ref<Set<string>>(new Set());
+
+const toggleModule = (moduleId: string) => {
+  const next = new Set(selectedModuleIds.value);
+  if (next.has(moduleId)) {
+    next.delete(moduleId);
+  } else {
+    next.add(moduleId);
+  }
+  selectedModuleIds.value = next;
+  fillGreedy();
+};
+
+const combinedCargoHolds = computed(() => {
+  const base = selectedModel.value?.cargoHolds || [];
+  const moduleCargo = availableModules.value
+    .filter((m) => selectedModuleIds.value.has(m.id))
+    .flatMap((m) => m.cargoHolds || []);
+  return [...base, ...moduleCargo];
+});
+
 watch(
   modelData,
   (data) => {
@@ -197,6 +238,7 @@ const resetFilters = () => {
 
 const onModelSelect = (value: ValueType<Model> | undefined) => {
   selectedSlug.value = (value as string) || undefined;
+  selectedModuleIds.value = new Set();
   if (!value) {
     selectedModel.value = undefined;
   }
@@ -296,11 +338,28 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
     </div>
 
     <template v-if="selectedModel">
-      <div v-if="selectedModel.cargoHolds?.length">
+      <div v-if="modulesWithCargo.length" class="row module-toggles">
+        <div class="col-12">
+          <span class="module-toggles__label">
+            {{ t("labels.model.modules") }}:
+          </span>
+          <Btn
+            v-for="mod in modulesWithCargo"
+            :key="mod.id"
+            :size="BtnSizesEnum.SMALL"
+            :active="selectedModuleIds.has(mod.id)"
+            inline
+            @click="toggleModule(mod.id)"
+          >
+            {{ mod.name }}
+          </Btn>
+        </div>
+      </div>
+      <div v-if="combinedCargoHolds.length">
         <div class="row">
           <div class="col-12">
             <CargoGridViewer
-              :cargo-holds="selectedModel.cargoHolds"
+              :cargo-holds="combinedCargoHolds"
               :container-requests="requestedContainers"
             />
           </div>

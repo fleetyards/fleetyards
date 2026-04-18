@@ -336,7 +336,15 @@ module Api
 
         scope = scope.with_dock if model_query_params.delete("with_dock")
         scope = scope.where(cargo: 0.1..) if model_query_params.delete("with_cargo")
-        scope = scope.joins(:cargo_holds_db).distinct if model_query_params.delete("with_cargo_grids")
+        if model_query_params.delete("with_cargo_grids")
+          scope = scope.where(
+            id: Model.joins(:cargo_holds_db).select(:id)
+          ).or(
+            scope.where(
+              id: Model.joins(:module_hardpoints).select(:id)
+            )
+          ).distinct
+        end
         scope = scope.where(id: current_resource_owner.models.select(:id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
         scope = container_fit(scope) if model_query_params["container_fit"].present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
