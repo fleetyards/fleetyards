@@ -12,7 +12,10 @@ import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   useConfirmAccess as useConfirmAccessMutation,
@@ -212,6 +215,7 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
                 :provider="provider"
                 :origin="confirmAccessOrigin"
                 inline
+                only-icon
                 data-test="confirm-via-oauth"
               />
             </div>
@@ -238,10 +242,8 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
               v-bind="newPasswordProps"
               name="password"
               :rules="setPasswordValidationSchema.password"
+              :label="t('labels.password')"
               :type="InputTypesEnum.PASSWORD"
-              :hide-label-on-empty="true"
-              :clearable="true"
-              :autofocus="true"
             />
 
             <FormInput
@@ -249,27 +251,24 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
               v-bind="newPasswordConfirmationProps"
               name="passwordConfirmation"
               :rules="setPasswordValidationSchema.passwordConfirmation"
+              :label="t('labels.passwordConfirmation')"
               :type="InputTypesEnum.PASSWORD"
-              :hide-label-on-empty="true"
-              :clearable="true"
             />
 
-            <Btn
-              :loading="submitting"
-              :type="BtnTypesEnum.SUBMIT"
-              :block="true"
-              data-test="submit-set-password"
-            >
-              {{ t("actions.setPassword") }}
-            </Btn>
-
-            <div class="set-password-link">
-              <a
-                href="#"
+            <div class="flex">
+              <Btn
+                :loading="submitting"
+                :type="BtnTypesEnum.SUBMIT"
+                data-test="submit-set-password"
+              >
+                {{ t("actions.setPassword") }}
+              </Btn>
+              <Btn
+                :variant="BtnVariantsEnum.LINK"
                 @click.prevent="showSetPasswordForm = false"
               >
                 {{ t("actions.back") }}
-              </a>
+              </Btn>
             </div>
           </form>
         </template>
