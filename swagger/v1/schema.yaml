@@ -4548,11 +4548,10 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
   "/sessions/confirm-access-email":
     post:
-      summary: Send confirm access email
+      summary: Send confirm access email with code
       operationId: sendConfirmAccessEmail
       tags:
       - Sessions
-      parameters: []
       security:
       - SessionCookie: []
       responses:
@@ -4561,7 +4560,7 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/StandardMessage"
+                "$ref": "#/components/schemas/ConfirmAccessEmailResponse"
         '401':
           description: unauthorized
           content:
@@ -4574,11 +4573,40 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/sessions/confirm-access-code":
+    post:
+      summary: Verify confirm access code
+      operationId: verifyConfirmAccessCode
+      tags:
+      - Sessions
+      parameters: []
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request - invalid code
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
       requestBody:
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/ConfirmAccessEmailInput"
+              "$ref": "#/components/schemas/ConfirmAccessCodeInput"
+        required: true
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -7188,13 +7216,33 @@ components:
       additionalProperties: false
       example: {}
       title: ComponentQuery
-    ConfirmAccessEmailInput:
+    ConfirmAccessCodeInput:
       type: object
       properties:
-        redirectPath:
+        token:
+          type: string
+        confirmationCode:
           type: string
       additionalProperties: false
-      title: ConfirmAccessEmailInput
+      required:
+      - token
+      - confirmationCode
+      title: ConfirmAccessCodeInput
+    ConfirmAccessEmailResponse:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        token:
+          type: string
+      additionalProperties: false
+      required:
+      - code
+      - message
+      - token
+      title: ConfirmAccessEmailResponse
     ConfirmAccessInput:
       type: object
       properties:

@@ -13,10 +13,10 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useRoute } from "vue-router";
 import {
   useConfirmAccess as useConfirmAccessMutation,
   useSendConfirmAccessEmail as useSendConfirmAccessEmailMutation,
+  useVerifyConfirmAccessCode as useVerifyConfirmAccessCodeMutation,
   type ConfirmAccessInput,
 } from "@/services/fyApi";
 import { useForm } from "vee-validate";
@@ -25,7 +25,6 @@ const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
 
 const sessionStore = useSessionStore();
-const route = useRoute();
 
 const submitting = ref(false);
 
@@ -34,14 +33,12 @@ const confirmed = ref(!!sessionStore.accessConfirmed);
 const comlink = useComlink();
 
 const emailSent = ref(false);
+const emailToken = ref("");
+const confirmationCode = ref("");
 
 const isOauthOnly = computed(
   () => sessionStore.currentUser?.oauthOnly ?? false,
 );
-
-const redirectPath = computed(() => {
-  return route.path.includes("security") ? "security" : "account";
-});
 
 // Password confirmation form
 const initialValues = ref<ConfirmAccessInput>({
@@ -61,60 +58,16 @@ const [password, passwordProps] = defineField("password");
 // Comlink for access confirmation events
 const accessConfirmationRequiredComlink = ref();
 
-const checkAccessConfirmedFromStore = () => {
-  if (emailSent.value && sessionStore.accessConfirmedDate) {
-    confirmed.value = true;
-  }
-};
-
-const onStorageChange = (event: StorageEvent) => {
-  if (event.key?.includes("session") && event.newValue?.includes("accessConfirmed")) {
-    checkAccessConfirmedFromStore();
-  }
-};
-
-const onVisibilityChange = () => {
-  if (document.visibilityState === "visible") {
-    checkAccessConfirmedFromStore();
-  }
-};
-
 onMounted(() => {
   accessConfirmationRequiredComlink.value = comlink.on(
     "access-confirmation-required",
     resetConfirmation,
   );
-
-  window.addEventListener("storage", onStorageChange);
-  document.addEventListener("visibilitychange", onVisibilityChange);
-
-  // Check for email confirmation callback via URL params
-  const urlParams = new URLSearchParams(window.location.search);
-  const accessConfirmed = urlParams.get("access_confirmed");
-
-  if (accessConfirmed === "true") {
-    sessionStore.confirmAccess();
-    confirmed.value = true;
-    cleanUpUrl();
-  } else if (accessConfirmed === "invalid") {
-    displayAlert({
-      text: t("messages.confirmAccessEmail.invalid"),
-    });
-    cleanUpUrl();
-  }
 });
 
 onUnmounted(() => {
   accessConfirmationRequiredComlink.value();
-  window.removeEventListener("storage", onStorageChange);
-  document.removeEventListener("visibilitychange", onVisibilityChange);
 });
-
-const cleanUpUrl = () => {
-  const url = new URL(window.location.href);
-  url.searchParams.delete("access_confirmed");
-  window.history.replaceState({}, "", url.toString());
-};
 
 watch(
   () => confirmed.value,
@@ -162,21 +115,19 @@ const confirmAccess = handleSubmit(async () => {
     });
 });
 
-// Email confirm access
+// Email code confirm access
 const sendConfirmAccessEmailMutation = useSendConfirmAccessEmailMutation();
+const verifyConfirmAccessCodeMutation = useVerifyConfirmAccessCodeMutation();
 
 const sendConfirmAccessEmail = async () => {
   submitting.value = true;
 
   await sendConfirmAccessEmailMutation
-    .mutateAsync({
-      data: {
-        redirectPath: redirectPath.value,
-      },
-    })
-    .then(() => {
+    .mutateAsync({})
+    .then((response) => {
       submitting.value = false;
       emailSent.value = true;
+      emailToken.value = response.token;
 
       displaySuccess({
         text: t("messages.confirmAccessEmail.sent"),
@@ -192,30 +143,82 @@ const sendConfirmAccessEmail = async () => {
       });
     });
 };
+
+const verifyConfirmAccessCode = async () => {
+  if (!confirmationCode.value) return;
+
+  submitting.value = true;
+
+  await verifyConfirmAccessCodeMutation
+    .mutateAsync({
+      data: {
+        token: emailToken.value,
+        confirmationCode: confirmationCode.value,
+      },
+    })
+    .then(() => {
+      submitting.value = false;
+
+      sessionStore.confirmAccess();
+
+      confirmed.value = true;
+    })
+    .catch((error) => {
+      console.error(error);
+
+      submitting.value = false;
+
+      displayAlert({
+        text: t("messages.confirmAccessCode.failure"),
+      });
+    });
+};
 </script>
 
 <template>
   <section class="container confirm-access" data-test="confirm-access">
     <div class="row">
       <div class="col-12">
-        <!-- OAuth-only user: email confirmation -->
+        <!-- OAuth-only user: email code confirmation -->
         <template v-if="isOauthOnly">
           <div class="oauth-confirm-access">
             <h1>{{ t("headlines.confirmAccess") }}</h1>
 
-            <p v-if="emailSent">
-              {{ t("messages.confirmAccessEmail.sent") }}
-            </p>
+            <template v-if="!emailSent">
+              <Btn
+                :loading="submitting"
+                :type="BtnTypesEnum.BUTTON"
+                data-test="send-confirm-access-email"
+                @click="sendConfirmAccessEmail"
+              >
+                {{ t("actions.sendConfirmAccessEmail") }}
+              </Btn>
+            </template>
 
-            <Btn
-              :loading="submitting"
-              :disabled="emailSent"
-              :type="BtnTypesEnum.BUTTON"
-              data-test="send-confirm-access-email"
-              @click="sendConfirmAccessEmail"
-            >
-              {{ t("actions.sendConfirmAccessEmail") }}
-            </Btn>
+            <template v-else>
+              <p>{{ t("messages.confirmAccessEmail.sent") }}</p>
+
+              <form @submit.prevent="verifyConfirmAccessCode">
+                <FormInput
+                  v-model="confirmationCode"
+                  name="confirmationCode"
+                  rules="required|length:6"
+                  :type="InputTypesEnum.TEXT"
+                  :hide-label-on-empty="true"
+                  :clearable="true"
+                  :autofocus="true"
+                />
+
+                <Btn
+                  :loading="submitting"
+                  :type="BtnTypesEnum.SUBMIT"
+                  :block="true"
+                  data-test="submit-confirm-access-code"
+                >
+                  {{ t("actions.confirmAccess") }}
+                </Btn>
+              </form>
+            </template>
           </div>
         </template>
 

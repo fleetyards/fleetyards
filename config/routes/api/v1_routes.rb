@@ -23,7 +23,7 @@ v1_api_routes = lambda do
     collection do
       post "confirm-access", to: "sessions#confirm_access"
       post "confirm-access-email", to: "sessions#send_confirm_access_email"
-      get "confirm-access-email/:token", to: "sessions#verify_confirm_access_email", as: :verify_confirm_access_email
+      post "confirm-access-code", to: "sessions#verify_confirm_access_code"
     end
   end
 

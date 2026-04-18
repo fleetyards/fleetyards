@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class ConfirmAccessMailer < ApplicationMailer
-  def confirm_access_email(user, token)
+  def confirm_access_email(user, confirmation_code)
     @username = user.username
-    @confirm_url = verify_confirm_access_email_api_v1_sessions_url(token:)
+    @confirmation_code = confirmation_code
 
     mail(
       to: user.email,

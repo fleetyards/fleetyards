@@ -5,11 +5,11 @@ module Api
     class SessionsController < ::Api::BaseController
       include AccessConfirmable
 
-      skip_verify_authorized except: [:confirm_access, :send_confirm_access_email]
+      skip_verify_authorized except: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
 
-      before_action :authenticate_user!, except: [:create, :confirm_access, :verify_confirm_access_email]
+      before_action :authenticate_user!, except: [:create, :confirm_access]
       before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
-      before_action :set_user, only: [:confirm_access, :send_confirm_access_email]
+      before_action :set_user, only: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
@@ -80,46 +80,28 @@ module Api
           return
         end
 
-        redirect_path = params[:redirect_path].presence || "account"
-
+        confirmation_code = SecureRandom.random_number(10**6).to_s.rjust(6, "0")
         token = access_confirmation_verifier.generate(
-          {user_id: user.id, redirect_path:},
+          {user_id: user.id, code: confirmation_code},
           expires_in: 15.minutes
         )
-        ConfirmAccessMailer.confirm_access_email(user, token).deliver_later
+        ConfirmAccessMailer.confirm_access_email(user, confirmation_code).deliver_later
 
-        render json: {code: :success, message: I18n.t("messages.confirmAccessEmail.sent")}
+        render json: {code: :success, message: I18n.t("messages.confirmAccessEmail.sent"), token:}
       end
 
-      def verify_confirm_access_email
+      def verify_confirm_access_code
+        user = current_resource_owner
+
         payload = access_confirmation_verifier.verified(params[:token])&.with_indifferent_access
 
-        if payload.blank? || payload[:user_id].blank?
-          redirect_to frontend_settings_account_url(access_confirmed: "invalid"), allow_other_host: true
+        if payload.blank? || payload[:user_id] != user.id || payload[:code] != params[:confirmation_code]
+          render json: {code: "session.confirmAccessCode.failure", message: I18n.t("messages.confirmAccessCode.failure")}, status: :bad_request
           return
         end
 
-        user = User.find_by(id: payload[:user_id])
-
-        if user.blank?
-          redirect_to frontend_settings_account_url(access_confirmed: "invalid"), allow_other_host: true
-          return
-        end
-
-        sign_in(:user, user) unless warden.authenticate?(scope: :user)
-
-        cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
-          value: user.confirm_access_token,
-          domain: Rails.configuration.app.cookie_domain,
-          secure: Rails.env.production? || Rails.env.staging?,
-          expires: 15.minutes,
-          httponly: true,
-          same_site: :lax
-        }
-
-        redirect_path = payload[:redirect_path].presence || "account"
-        redirect_url = (redirect_path == "security") ? frontend_security_settings_url : frontend_settings_account_url
-        redirect_to "#{redirect_url}?access_confirmed=true", allow_other_host: true
+        result = issue_access_confirmation(user)
+        render json: {code: :success, message: I18n.t("labels.success"), **result}
       end
 
       private def set_user

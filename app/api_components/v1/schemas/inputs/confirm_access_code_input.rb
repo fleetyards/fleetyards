@@ -3,15 +3,17 @@
 module V1
   module Schemas
     module Inputs
-      class ConfirmAccessEmailInput
+      class ConfirmAccessCodeInput
         include Rswag::SchemaComponents::Component
 
         schema({
           type: :object,
           properties: {
-            redirectPath: {type: :string}
+            token: {type: :string},
+            confirmationCode: {type: :string}
           },
-          additionalProperties: false
+          additionalProperties: false,
+          required: %w[token confirmationCode]
         })
       end
     end

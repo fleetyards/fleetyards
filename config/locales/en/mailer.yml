@@ -41,10 +41,9 @@ en:
         headline: You have been invited to Join %{fleet}
         subject: New Fleet Invite
     confirm_access:
-      action: Confirm Access
-      body: Someone requested access to your account settings. Click the button below to confirm.
-      expires: This link will expire in 15 minutes.
-      subject: Confirm access to your account settings
+      body: Use the following code to confirm access to your account settings.
+      expires: This code will expire in 15 minutes.
+      subject: Your confirmation code
     hello: Hello %{username}
     model:
       new:

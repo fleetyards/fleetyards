@@ -58,7 +58,6 @@ namespace :frontend, **frontend_options do
   get "login", to: "base#index", as: :login
 
   get "sign-up/auth-callback", to: "base#index", as: :sign_up_auth_callback
-  get "settings/confirm-access-email/:token", to: "base#index", as: :confirm_access_email
 
   root to: "base#index"
 end
