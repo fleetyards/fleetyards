@@ -14,7 +14,6 @@ module Admin
               idEq: {type: :string, format: :uuid},
               nameCont: {type: :string},
               nameEq: {type: :string},
-              modelIdEq: {type: :string, format: :uuid},
               moduleHardpointsModelIdEq: {type: :string, format: :uuid},
               moduleHardpointsModelIdNotEq: {type: :string, format: :uuid}
             },

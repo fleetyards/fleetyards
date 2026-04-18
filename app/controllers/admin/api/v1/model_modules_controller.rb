@@ -94,7 +94,7 @@ module Admin
 
         private def model_module_query_params
           @model_module_query_params ||= params.permit(q: [
-            :name_in, :id_eq, :name_cont, :name_eq, :model_id_eq,
+            :name_in, :id_eq, :name_cont, :name_eq,
             :module_hardpoints_model_id_eq, :module_hardpoints_model_id_not_eq, :sorts
           ]).fetch(:q, {})
         end

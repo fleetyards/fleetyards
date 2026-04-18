@@ -18,7 +18,6 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  manufacturer_id   :uuid
-#  model_id          :uuid
 #
 class ModelModule < ApplicationRecord
   include ActiveStorageVariants
@@ -62,7 +61,7 @@ class ModelModule < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "active", "created_at", "description", "hidden", "id", "id_value", "manufacturer_id",
-      "model_id", "name", "pledge_price", "production_status", "slug", "updated_at"
+      "name", "pledge_price", "production_status", "slug", "updated_at"
     ]
   end
 
