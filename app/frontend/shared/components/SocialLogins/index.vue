@@ -53,8 +53,8 @@ const handleDisconnect = async (provider: `${OauthBtnProvidersEnum}`) => {
 
   await disconnectMutation
     .mutateAsync({ provider })
-    .then((response) => {
-      sessionStore.currentUser = response.data;
+    .then((user) => {
+      sessionStore.currentUser = user;
 
       displaySuccess({
         text: t("messages.oauth.disconnect.success"),
