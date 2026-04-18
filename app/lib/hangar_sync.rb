@@ -91,10 +91,11 @@ class HangarSync < HangarImporter
     vehicle_scope = Vehicle.where(user_id: user_id, loaner: false, hidden: false, bought_via: :pledge_store).order(model_paint_id: :desc, created_at: :asc)
 
     @ships.each do |item|
-      query = generate_model_query(item[:name])
+      model_query = generate_model_query(item[:name])
+      paint_query = generate_paint_query(item[:name])
       params = default_params(user_id, item)
 
-      model = Model.where(query).first
+      model = Model.where(model_query).first
       if model.present?
         vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model.id,
@@ -138,7 +139,7 @@ class HangarSync < HangarImporter
         next
       end
 
-      model_paint = ModelPaint.where(query).first
+      model_paint = ModelPaint.where(paint_query).first
       if model_paint.present?
         vehicle_with_ref = vehicle_scope.where.not(id: vehicle_ids).find_by(
           model_id: model_paint.model_id,
@@ -359,6 +360,21 @@ class HangarSync < HangarImporter
 
     [
       (MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "),
+      {
+        name: name.downcase,
+        slug: name.downcase,
+        normalized_name:,
+        search: "%#{normalized_name}%"
+      }
+    ]
+  end
+
+  private def generate_paint_query(item_name)
+    name = rsi_hangar_mapping(item_name)
+    normalized_name = normalize(name)
+
+    [
+      MODEL_FIND_QUERY.join(" OR "),
       {
         name: name.downcase,
         slug: name.downcase,
