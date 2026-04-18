@@ -86,7 +86,7 @@ module Api
           {user_id: user.id, redirect_path:},
           expires_in: 15.minutes
         )
-        ConfirmAccessMailer.confirm_access_email(user, token).deliver_later
+        ConfirmAccessMailer.confirm_access_email(user, token).deliver_now
 
         render json: {code: :success, message: I18n.t("messages.confirmAccessEmail.sent")}
       end
