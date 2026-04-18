@@ -1,8 +1,8 @@
-# OAuth Security: Re-auth + Deferred Password Setup
+# OAuth Security: Email Code Confirmation + Password Simplification
 
 ## Goal
 
-OAuth-only users can access secure settings pages by re-authenticating via their OAuth provider (primary) or by setting a password (fallback).
+OAuth-only users can access secure settings pages by confirming their identity via a 6-digit email code. The change password form no longer requires the current password since the confirm-access gate already proves identity. OAuth connections can be disconnected from the security page.
 
 ## Context
 
@@ -10,118 +10,126 @@ OAuth users (Discord, Twitch, Google, GitHub, Bluesky) get a random 60-char pass
 
 ## Decisions
 
-### D1 — Dual approach: OAuth re-auth + password fallback
+### D1 — Email code confirmation for OAuth-only users
 
-OAuth re-auth is the primary path (no passwords needed, same security as password re-entry). Password setup is offered as a fallback for resilience (provider outages, user preference). Rejected: skip confirmation entirely (security risk with stolen sessions), force password at registration (defeats OAuth simplicity).
+Sends a 6-digit code via email. The user enters it on the same page — no new tabs, no provider dependency, simple UX. Rejected: OAuth re-auth (complex, provider-dependent), skip confirmation entirely (security risk), force password at registration (defeats OAuth simplicity).
 
 ### D2 — Track manual password status via database column
 
-Add `password_set_manually` boolean to users. Needed to distinguish OAuth-only users from regular users. The `encrypted_password` column is always populated (even for OAuth users), so we can't infer this from existing data.
+Add `password_set_manually` boolean to users. Needed to distinguish OAuth-only users from regular users. The `encrypted_password` column is always populated (even for OAuth users). Backfill uses a timestamp heuristic: if first OAuth connection was created within 1 minute of account creation, user signed up via OAuth.
 
-### D3 — Re-use existing confirm-access token/cookie mechanism
+### D3 — Remove current_password from change password flow
 
-The OAuth re-auth callback issues the same `access_confirmation_verifier` token or `ACCESS_CONFIRMED` cookie that the password-based `confirm_access` endpoint already uses. No new confirmation mechanism needed.
+The confirm-access gate already proves identity, making current password re-entry redundant. Simplifies the flow for all users.
 
-## Phase 1 — Database: track manual password status
+### D4 — OAuth connections can be disconnected
 
-1. Add migration `add_password_set_manually_to_users`
-   - `password_set_manually` boolean, default `false`, not null
-   - Backfill: `UPDATE users SET password_set_manually = true WHERE id NOT IN (SELECT DISTINCT user_id FROM omniauth_connections)`
+Users can disconnect OAuth providers from the security settings page. Guard prevents removing the last connection for OAuth-only users (no password set).
 
-## Phase 2 — Backend: User model
+## What changed
 
-1. Add `oauth_only?` method — `!password_set_manually && omniauth_connections.any?`
-2. Add callback or override to set `password_set_manually = true` when password is explicitly changed (via `reset_password` or `update_with_password`)
+### Phase 1 — Database: track manual password status
 
-## Phase 3 — Backend: OAuth re-auth for access confirmation
+- Migration `add_password_set_manually_to_users` with timestamp-based backfill
+- `User#oauth_only?` method
+- `User#reset_password` and `User#update_with_password` overrides to set `password_set_manually = true`
 
-1. Extract token/cookie generation from `SessionsController#confirm_access` into a shared concern (`AccessConfirmable`) on `Api::BaseController`
-2. In `OmniauthCallbacksController`, when user is already signed in and `omniauth.origin` contains a confirm-access marker:
-   - Verify the returning OAuth UID matches one of the current user's `omniauth_connections`
-   - Call the shared concern to issue confirm-access token/cookie
-   - Redirect to frontend settings URL with `?access_confirmed=true`
-3. Add `frontend_confirm_access_origin_url` route helper for the origin marker
+### Phase 2 — Backend: email code confirmation
 
-## Phase 4 — Backend: Set initial password endpoint
+- `SessionsController#send_confirm_access_email` generates 6-digit code, signs it with `MessageVerifier`, emails via `ConfirmAccessMailer`
+- `SessionsController#verify_confirm_access_code` validates code against signed token, issues access confirmation cookie
+- `AccessConfirmable` concern extracted for shared token/cookie generation
+- `ConfirmAccessMailer` with code template
 
-1. Add `set_initial` action to `Api::V1::PasswordsController`
-   - Guard: `current_user.oauth_only?` — return 403 if not
-   - Accepts `password` + `password_confirmation` (no `current_password`)
-   - Sets password and `password_set_manually = true`
-   - Also issues confirm-access token/cookie (so user gets immediate access after setting password)
-2. Add route: `POST /api/v1/passwords/set_initial`
+### Phase 3 — Backend: simplify password change
 
-## Phase 5 — Backend: Expose fields to frontend
+- `PasswordsController#update` uses `reset_password` instead of `update_with_password` (no current password needed)
+- Removed `currentPassword` from `PasswordInput` schema
+- Removed `set_initial` endpoint (no longer needed)
 
-1. Add `password_set_manually` and `oauth_only` to `app/views/api/v1/users/_base.jbuilder`
-2. Add fields to OpenAPI schema in `app/api_components/v1/schemas/user.rb`
+### Phase 4 — Backend: disconnect OAuth connections
 
-## Phase 6 — Backend: Adapt change password for OAuth-only users
+- `OmniauthConnectionsController#destroy` with ownership policy
+- Guard: cannot remove last connection for OAuth-only users
+- Returns updated user object
 
-1. In `PasswordsController#update`, if `current_user.oauth_only?`, use `user.reset_password(password, password_confirmation)` instead of `update_with_password`
+### Phase 5 — Backend: expose fields and sanitize usernames
 
-## Phase 7 — Frontend: Update User type
+- `password_set_manually` and `oauth_only` in user serializer and OpenAPI schema
+- OAuth username sanitized with `transliterate` + regex (preserves casing)
+- Username included in `failure_username_taken` error message
 
-1. Add `passwordSetManually: boolean` and `oauthOnly: boolean` to `User` interface in `app/frontend/services/fyApi/models/User.ts`
+### Phase 6 — Frontend: SecurePage
 
-## Phase 8 — Frontend: SecurePage component
+- OAuth-only users: "Send confirmation email" button → enter 6-digit code
+- Regular users: password prompt (unchanged)
 
-1. Modify `SecurePage` to detect OAuth-only user via `currentUser.oauthOnly`
-2. Three states:
-   - **Regular user:** Current password prompt (unchanged)
-   - **OAuth-only user:** "Confirm via [Provider]" button(s) for each `authConnections` entry + "Or set a password instead" link
-   - **Set password form:** New password + confirm fields, calls `set_initial` endpoint
-3. OAuth button triggers POST to `/users/auth/{provider}` with origin set to confirm-access marker (reuse `OauthBtn` form POST pattern)
-4. Handle `?access_confirmed=true` query param on return: call `sessionStore.confirmAccess()`, strip param from URL
+### Phase 7 — Frontend: ChangePasswordForm
 
-## Phase 9 — Frontend: ChangePasswordForm
+- Removed `currentPassword` field for all users
+- Removed "Forgot password?" link (not needed behind confirm-access)
 
-1. If `currentUser.oauthOnly`, hide `currentPassword` field, change button text to "Set Password"
-2. Adjust validation schema conditionally
+### Phase 8 — Frontend: OAuth disconnect
+
+- `OauthBtn` gains `disconnectable` mode with danger variant and disconnect emit
+- `SocialLogins` handles disconnect mutation, sorts connected providers first
+- Enabled on security settings page
+
+### Phase 9 — Frontend: misc improvements
+
+- `OauthBtn` passes stored redirect-back URL as OAuth origin for proper post-login redirect
+- Flash alert/warning notifications use 10s timeout instead of 3s
+- All translations added to 7 languages
 
 ## Intent Verification
 
-- [ ] **OAuth-only user can access Account settings** — sign up via Discord, navigate to Account settings, see "Confirm via Discord" button, click, re-auth, access granted
-- [ ] **Password fallback works** — on SecurePage, click "Set a password", set password, access confirmed immediately
-- [ ] **Regular user unchanged** — existing password prompt works as before
-- [ ] **Multi-provider user** — sees buttons for all connected providers
-- [ ] **Change password adapts** — OAuth-only user sees simplified form; after setting password, sees full form
-- [ ] **Post-password-set behavior** — once password is set, future visits show normal password prompt
+- [x] **OAuth-only user can confirm access** — send email, enter 6-digit code, access granted
+- [x] **Regular user unchanged** — existing password prompt works
+- [x] **Change password simplified** — no current password required for any user
+- [x] **OAuth disconnect works** — connected providers show disconnect button on security page
+- [x] **Last connection guard** — OAuth-only users cannot remove their last provider
+- [x] **Password reset flow** — sets `password_set_manually`, user gets password prompt going forward
+- [x] **Username sanitization** — OAuth names with spaces/unicode handled correctly
+- [x] **Post-login redirect** — OAuth login redirects back to intended page
 
 ## Key files
 
 | File | Role |
 |------|------|
-| `app/controllers/omniauth_callbacks_controller.rb` | OAuth callback handling — add confirm-access flow |
-| `app/controllers/api/v1/sessions_controller.rb` | Current confirm_access — extract shared concern |
-| `app/controllers/api/v1/passwords_controller.rb` | Password change — add set_initial, adapt update |
-| `app/controllers/api/base_controller.rb` | access_confirmed? helper — add shared concern |
-| `app/models/user.rb` | Add oauth_only?, password tracking |
-| `app/views/api/v1/users/_base.jbuilder` | Expose new fields |
-| `app/api_components/v1/schemas/user.rb` | OpenAPI schema |
-| `app/frontend/frontend/components/core/SecurePage/index.vue` | Main UI changes |
-| `app/frontend/frontend/components/Security/ChangePasswordForm/index.vue` | Adapt for OAuth users |
-| `app/frontend/services/fyApi/models/User.ts` | User type |
-| `app/frontend/frontend/stores/session.ts` | Access confirmation state |
+| `app/controllers/api/v1/sessions_controller.rb` | Confirm access: password, email code send/verify |
+| `app/controllers/api/v1/passwords_controller.rb` | Simplified password change (no current_password) |
+| `app/controllers/api/v1/omniauth_connections_controller.rb` | Disconnect OAuth providers |
+| `app/controllers/omniauth_callbacks_controller.rb` | Username sanitization, error messages |
+| `app/controllers/concerns/access_confirmable.rb` | Shared token/cookie generation |
+| `app/mailers/confirm_access_mailer.rb` | 6-digit code email |
+| `app/models/user.rb` | `oauth_only?`, password tracking |
+| `app/policies/omniauth_connection_policy.rb` | Authorization for disconnect |
+| `app/frontend/frontend/components/core/SecurePage/index.vue` | Email code + password confirm UI |
+| `app/frontend/frontend/components/Security/ChangePasswordForm/index.vue` | Simplified form |
+| `app/frontend/shared/components/OauthBtn/index.vue` | Disconnect mode, redirect-back origin |
+| `app/frontend/shared/components/SocialLogins/index.vue` | Disconnect handling, sorting |
+| `db/migrate/20260417123936_add_password_set_manually_to_users.rb` | Column + timestamp backfill |
 
 ## Not in scope (deferred)
 
-- **Revoking OAuth connections** — removing a provider while still OAuth-only would need password enforcement first
 - **2FA via OAuth** — using provider as a second factor
 
 ## Discovery Log
 
 - **2026-04-17** Initial research and plan creation
-- **2026-04-17** Implementation of all phases
+- **2026-04-17** Implementation started with OAuth re-auth approach
+- **2026-04-18** Refactored to email confirmation (simpler, no provider dependency)
+- **2026-04-18** Refactored to 6-digit code (no new tabs needed)
+- **2026-04-18** Added OAuth disconnect, username sanitization, redirect-back fix
 
 ## Progress
 
 - [x] Phase 1 — Database migration
-- [x] Phase 2 — User model
-- [x] Phase 3 — OAuth re-auth backend
-- [x] Phase 4 — Set initial password endpoint
-- [x] Phase 5 — Expose fields
-- [x] Phase 6 — Adapt change password
-- [x] Phase 7 — Frontend User type
-- [x] Phase 8 — SecurePage component
-- [x] Phase 9 — ChangePasswordForm
+- [x] Phase 2 — Email code confirmation
+- [x] Phase 3 — Simplify password change
+- [x] Phase 4 — Disconnect OAuth connections
+- [x] Phase 5 — Expose fields and sanitize usernames
+- [x] Phase 6 — SecurePage UI
+- [x] Phase 7 — ChangePasswordForm
+- [x] Phase 8 — OAuth disconnect UI
+- [x] Phase 9 — Misc improvements and i18n
