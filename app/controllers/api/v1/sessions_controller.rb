@@ -3,11 +3,13 @@
 module Api
   module V1
     class SessionsController < ::Api::BaseController
-      skip_verify_authorized except: [:confirm_access]
+      include AccessConfirmable
+
+      skip_verify_authorized except: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
 
       before_action :authenticate_user!, except: [:create, :confirm_access]
       before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }, only: [:confirm_access]
-      before_action :set_user, only: [:confirm_access]
+      before_action :set_user, only: [:confirm_access, :send_confirm_access_email, :verify_confirm_access_code]
 
       def create
         resource = User.find_for_database_authentication(login: login_params[:login])
@@ -66,21 +68,40 @@ module Api
           return
         end
 
-        if doorkeeper_token
-          token = access_confirmation_verifier.generate(user.id, expires_in: 15.minutes)
-          render json: {code: :success, message: I18n.t("labels.success"), token:}
-        else
-          cookies.encrypted["#{Rails.configuration.cookie_prefix}_ACCESS_CONFIRMED"] = {
-            value: user.confirm_access_token,
-            domain: Rails.configuration.app.cookie_domain,
-            secure: Rails.env.production? || Rails.env.staging?,
-            expires: 15.minutes,
-            httponly: true,
-            same_site: :lax
-          }
+        result = issue_access_confirmation(user)
+        render json: {code: :success, message: I18n.t("labels.success"), **result}
+      end
 
-          render json: {code: :success, message: I18n.t("labels.success")}
+      def send_confirm_access_email
+        user = current_resource_owner
+
+        unless user.oauth_only?
+          render json: {code: "session.confirmAccessEmail.notAllowed", message: I18n.t("messages.confirmAccessEmail.notAllowed")}, status: :forbidden
+          return
         end
+
+        confirmation_code = SecureRandom.random_number(10**6).to_s.rjust(6, "0")
+        token = access_confirmation_verifier.generate(
+          {user_id: user.id, code: confirmation_code},
+          expires_in: 10.minutes
+        )
+        ConfirmAccessMailer.confirm_access_email(user, confirmation_code).deliver_later
+
+        render json: {code: :success, message: I18n.t("messages.confirmAccessEmail.sent"), token:}
+      end
+
+      def verify_confirm_access_code
+        user = current_resource_owner
+
+        payload = access_confirmation_verifier.verified(params[:token])&.with_indifferent_access
+
+        if payload.blank? || payload[:user_id] != user.id || payload[:code] != params[:confirmation_code]
+          render json: {code: "session.confirmAccessCode.failure", message: I18n.t("messages.confirmAccessCode.failure")}, status: :bad_request
+          return
+        end
+
+        result = issue_access_confirmation(user)
+        render json: {code: :success, message: I18n.t("labels.success"), **result}
       end
 
       private def set_user

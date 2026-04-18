@@ -50,8 +50,16 @@ en:
     update:
       failure: "%{resource} could not be edited."
       success: "%{resource} edited successfully."
+    omniauth_connection:
+      destroy:
+        last_connection: You cannot remove your last login connection without setting a password first.
     confirmAccess:
       failure: Access confirmation failed
+    confirmAccessCode:
+      failure: The confirmation code is invalid or has expired.
+    confirmAccessEmail:
+      sent: A confirmation link has been sent to your email.
+      notAllowed: Email confirmation is only available for OAuth accounts.
     hangar_import:
       no_data: No Data found to import
     hangar_sync:

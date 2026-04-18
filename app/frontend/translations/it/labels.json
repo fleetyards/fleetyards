@@ -388,6 +388,7 @@
       "login": "Username o e-mail",
       "username": "Username",
       "twoFactorCode": "Codice due-fattori",
+      "confirmationCode": "Confirmation code",
       "email": "E-mail",
       "avatar": "Avatar",
       "alreadyRegistered": "Hai già un account?",

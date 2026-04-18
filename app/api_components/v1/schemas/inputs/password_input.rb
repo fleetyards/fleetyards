@@ -9,7 +9,6 @@ module V1
         schema({
           type: :object,
           properties: {
-            currentPassword: {type: :string},
             password: {type: :string},
             passwordConfirmation: {type: :string}
           },

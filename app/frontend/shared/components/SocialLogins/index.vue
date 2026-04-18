@@ -8,21 +8,31 @@ export default {
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useI18n } from "@/shared/composables/useI18n";
 import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
+import { useDisconnectOauthProvider as useDisconnectOauthProviderMutation } from "@/services/fyApi";
 
 type Props = {
   block?: boolean;
   onlyIcons?: boolean;
+  disconnectable?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   block: true,
   onlyIcons: false,
+  disconnectable: false,
 });
+
+const { t } = useI18n();
+const { displaySuccess, displayAlert } = useAppNotifications();
 
 const sessionStore = useSessionStore();
 
 const { isFeatureEnabled } = useFeatures();
+
+const disconnectingProvider = ref<string | null>(null);
 
 const providerActive = (provider: OauthBtnProvidersEnum) => {
   return isFeatureEnabled(`oauth-${provider}`);
@@ -33,8 +43,43 @@ const connections = computed(() => {
 });
 
 const activeProviders = computed(() => {
-  return Object.values(OauthBtnProvidersEnum).filter(providerActive);
+  const providers = Object.values(OauthBtnProvidersEnum).filter(providerActive);
+
+  if (!props.disconnectable) return providers;
+
+  return providers.sort((a, b) => {
+    const aConnected = connections.value.includes(a);
+    const bConnected = connections.value.includes(b);
+    if (aConnected === bConnected) return 0;
+    return aConnected ? -1 : 1;
+  });
 });
+
+const disconnectMutation = useDisconnectOauthProviderMutation();
+
+const handleDisconnect = async (provider: `${OauthBtnProvidersEnum}`) => {
+  disconnectingProvider.value = provider;
+
+  await disconnectMutation
+    .mutateAsync({ provider })
+    .then((user) => {
+      sessionStore.currentUser = user;
+
+      displaySuccess({
+        text: t("messages.oauth.disconnect.success"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+
+      displayAlert({
+        text: t("messages.oauth.disconnect.failure"),
+      });
+    })
+    .finally(() => {
+      disconnectingProvider.value = null;
+    });
+};
 
 defineExpose({
   connections,
@@ -53,8 +98,11 @@ defineExpose({
       :key="provider"
       :provider="provider"
       :connected="connections.includes(provider)"
+      :disconnectable="disconnectable && connections.includes(provider)"
+      :disconnecting="disconnectingProvider === provider"
       :only-icon="onlyIcons"
       inline
+      @disconnect="handleDisconnect"
     />
   </div>
 </template>

@@ -21,7 +21,7 @@ module Api
       def update
         authorize! current_user
 
-        if current_user.update_with_password(change_password_params)
+        if current_user.reset_password(change_password_params[:password], change_password_params[:password_confirmation])
           render json: {code: "change_pasword.success", message: I18n.t("devise.passwords.updated_not_active")}
         else
           render json: ValidationError.new("change_pasword", errors: current_user.errors), status: :bad_request
@@ -41,7 +41,7 @@ module Api
       private def change_password_params
         @change_password_params ||= params.transform_keys(&:underscore)
           .permit(
-            :reset_password_token, :current_password, :password, :password_confirmation
+            :reset_password_token, :password, :password_confirmation
           )
       end
     end

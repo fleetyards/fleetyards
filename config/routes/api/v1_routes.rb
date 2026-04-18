@@ -20,7 +20,11 @@ v1_api_routes = lambda do
   end
 
   resource :sessions, only: %i[create destroy] do
-    post "confirm-access", to: "sessions#confirm_access", on: :collection
+    collection do
+      post "confirm-access", to: "sessions#confirm_access"
+      post "confirm-access-email", to: "sessions#send_confirm_access_email"
+      post "confirm-access-code", to: "sessions#verify_confirm_access_code"
+    end
   end
 
   resource :password, only: [:update] do
@@ -29,6 +33,8 @@ v1_api_routes = lambda do
       put ":reset_password_token", to: "passwords#update_with_token"
     end
   end
+
+  delete "omniauth-connections/:provider", to: "omniauth_connections#destroy", as: :omniauth_connection
 
   draw "api/users_routes"
   draw "api/otp_routes"

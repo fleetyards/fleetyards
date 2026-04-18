@@ -12,10 +12,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import type { PasswordInput } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
-import {
-  BtnVariantsEnum,
-  BtnTypesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 
 import { useUpdatePassword as useUpdatePasswordMutation } from "@/services/fyApi";
@@ -25,13 +22,11 @@ const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 const validationSchema = {
-  currentPassword: "required",
   password: "required|min:8",
   passwordConfirmation: "required|confirmed:@password",
 };
 
 const initialValues = ref<PasswordInput>({
-  currentPassword: undefined,
   password: undefined,
   passwordConfirmation: undefined,
 });
@@ -40,7 +35,6 @@ const { defineField, handleSubmit } = useForm({
   initialValues: initialValues.value,
 });
 
-const [currentPassword, currentPasswordProps] = defineField("currentPassword");
 const [password, passwordProps] = defineField("password");
 const [passwordConfirmation, passwordConfirmationProps] = defineField(
   "passwordConfirmation",
@@ -54,7 +48,6 @@ onMounted(() => {
 
 const setupForm = () => {
   initialValues.value = {
-    currentPassword: undefined,
     password: undefined,
     passwordConfirmation: undefined,
   };
@@ -69,7 +62,10 @@ const onSubmit = handleSubmit(async (values) => {
 
   await mutation
     .mutateAsync({
-      data: values,
+      data: {
+        password: values.password,
+        passwordConfirmation: values.passwordConfirmation,
+      },
     })
     .then(async () => {
       displaySuccess({
@@ -94,15 +90,6 @@ const onSubmit = handleSubmit(async (values) => {
 <template>
   <form @submit.prevent="onSubmit">
     <FormInput
-      v-model="currentPassword"
-      name="currentPassword"
-      :rules="validationSchema.currentPassword"
-      :label="t('labels.currentPassword')"
-      v-bind="currentPasswordProps"
-      :type="InputTypesEnum.PASSWORD"
-    />
-
-    <FormInput
       v-model="password"
       name="password"
       :rules="validationSchema.password"
@@ -122,9 +109,6 @@ const onSubmit = handleSubmit(async (values) => {
     <div class="flex">
       <Btn :loading="submitting" :type="BtnTypesEnum.SUBMIT">
         {{ t("actions.updatePassword") }}
-      </Btn>
-      <Btn :to="{ name: 'request-password' }" :variant="BtnVariantsEnum.LINK">
-        {{ t("actions.reset-password") }}
       </Btn>
     </div>
   </form>

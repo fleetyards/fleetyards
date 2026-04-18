@@ -133,6 +133,7 @@ group :development do
   gem "kamal", require: false
 
   gem "letter_opener"
+  gem "letter_opener_web", "~> 3.0"
 end
 
 group :test do

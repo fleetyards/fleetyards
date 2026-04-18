@@ -220,6 +220,19 @@
           "generateBackupCodes": "¿Estás seguro de que quieres regenerar tus Códigos de Respaldo de Autenticación de dos factores?"
         }
       },
+      "oauth": {
+        "disconnect": {
+          "success": "Provider disconnected successfully.",
+          "failure": "Could not disconnect provider. Please try again."
+        }
+      },
+      "confirmAccessEmail": {
+        "sent": "A confirmation code has been sent to your email.",
+        "failure": "Could not send confirmation email. Please try again."
+      },
+      "confirmAccessCode": {
+        "failure": "The confirmation code is invalid or has expired."
+      },
       "syncExtension": {
         "started": "Sincronizando tu Hangar...",
         "success": "Tu Hangar ha sido sincronizado.",

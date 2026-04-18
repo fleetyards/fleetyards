@@ -78,7 +78,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         password = Devise.friendly_token[0, 60]
         user = User.new(
           email: auth.info.email,
-          username: auth.info.nickname || auth.info.name,
+          username: sanitize_username(auth.info.nickname || auth.info.name),
           password: password,
           password_confirmation: password
         )
@@ -114,12 +114,16 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         redirect_to origin || frontend_hangar_url, notice: t("devise.omniauth.success", kind: kind), allow_other_host: true
       else
         url = request.env["omniauth.origin"].presence || frontend_login_url
-        redirect_to url, alert: t("devise.omniauth.failure_username_taken", kind: kind), allow_other_host: true
+        redirect_to url, alert: t("devise.omniauth.failure_username_taken", kind: kind, username: user.username), allow_other_host: true
       end
     end
   end
 
   private def auth
     request.env["omniauth.auth"]
+  end
+
+  private def sanitize_username(name)
+    ActiveSupport::Inflector.transliterate(name.to_s).gsub(/[^a-zA-Z0-9\-_]/, "-").squeeze("-").gsub(/\A-|-\z/, "")
   end
 end

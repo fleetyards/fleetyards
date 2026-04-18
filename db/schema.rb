@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_15_174243) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_17_123936) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -877,6 +877,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_15_174243) do
     t.string "otp_backup_codes", array: true
     t.boolean "otp_required_for_login"
     t.string "otp_secret"
+    t.boolean "password_set_manually", default: false, null: false
     t.boolean "public_hangar", default: true
     t.boolean "public_hangar_loaners", default: false
     t.boolean "public_hangar_stats", default: false
