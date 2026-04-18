@@ -237,8 +237,14 @@ class HangarSync < HangarImporter
     missing_component_vehicles = []
 
     @components.each do |item|
-      model_name = item[:name].split(" ").first
-      component_name = item[:name].gsub(model_name, "").strip.delete_prefix("-").strip
+      mapped = component_mapping(item[:name])
+      if mapped
+        model_name = mapped[:model_name]
+        component_name = mapped[:module_name]
+      else
+        model_name = item[:name].split(" ").first
+        component_name = item[:name].gsub(model_name, "").strip.delete_prefix("-").strip
+      end
 
       model_query = generate_model_query(model_name)
       model = Model.where(model_query).first
@@ -431,6 +437,15 @@ class HangarSync < HangarImporter
     }
   end
 
+  private def component_mapping(name)
+    mapping = {
+      "Aurora Mk II TS Module" => {model_name: "Aurora Mk II", module_name: "Transport & Storage Module"},
+      "Aurora Mk II DM Module" => {model_name: "Aurora Mk II", module_name: "Defensive Measures Module"}
+    }
+
+    mapping[name.strip]
+  end
+
   # rubocop:disable Metrics/MethodLength
   private def rsi_hangar_mapping(name)
     name = name.tr("–", "-")
@@ -536,7 +551,9 @@ class HangarSync < HangarImporter
       "CARGO MODULE - STERN" => "Rear Cargo Module",
       "Personnel Module - Bow" => "Front Living Module",
       "Personnel Module - Stern" => "Rear Living Module",
-      "Drop Ship Module - Bow" => "Front Dropship Module"
+      "Drop Ship Module - Bow" => "Front Dropship Module",
+      "Transport & Storage Module" => "Transport & Storage Module",
+      "Defensive Measures Module" => "Defensive Measures Module"
     }
 
     return name if mapping[name.strip].nil?

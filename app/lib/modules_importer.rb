@@ -104,8 +104,14 @@ class ModulesImporter
       name = item["name"].tr("\u2013", "-")
       name = name.tr("\u00A0", " ").strip
 
-      model_name = name.split(" ").first
-      module_name = name.gsub(model_name, "").strip.delete_prefix("-").strip
+      mapped = component_mapping(name)
+      if mapped
+        model_name = mapped[:model_name]
+        module_name = mapped[:module_name]
+      else
+        model_name = name.split(" ").first
+        module_name = name.gsub(model_name, "").strip.delete_prefix("-").strip
+      end
 
       next if module_name.blank?
 
@@ -204,7 +210,9 @@ class ModulesImporter
       "front living module" => "AEGS_Retaliator_Module_Front_Base",
       "rear living module" => "AEGS_Retaliator_Module_Rear_Base",
       "front dropship module" => "AEGS_Retaliator_Module_Front",
-      "rear dropship module" => "AEGS_Retaliator_Module_Rear"
+      "rear dropship module" => "AEGS_Retaliator_Module_Rear",
+      "transport & storage module" => "RSI_Aurora_Mk2_Module_Cargo",
+      "defensive measures module" => "RSI_Aurora_Mk2_Module_Missile"
     }
   end
   # rubocop:enable Metrics/MethodLength
@@ -255,6 +263,15 @@ class ModulesImporter
     name
   end
   # rubocop:enable Metrics/MethodLength
+
+  private def component_mapping(name)
+    mapping = {
+      "Aurora Mk II TS Module" => {model_name: "Aurora Mk II", module_name: "Transport & Storage Module"},
+      "Aurora Mk II DM Module" => {model_name: "Aurora Mk II", module_name: "Defensive Measures Module"}
+    }
+
+    mapping[name.strip]
+  end
 
   private def model_mapping(name)
     mapping = {
