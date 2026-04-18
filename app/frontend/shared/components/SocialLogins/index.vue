@@ -19,7 +19,7 @@ type Props = {
   disconnectable?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   block: true,
   onlyIcons: false,
   disconnectable: false,
@@ -43,14 +43,16 @@ const connections = computed(() => {
 });
 
 const activeProviders = computed(() => {
-  return Object.values(OauthBtnProvidersEnum)
-    .filter(providerActive)
-    .sort((a, b) => {
-      const aConnected = connections.value.includes(a);
-      const bConnected = connections.value.includes(b);
-      if (aConnected === bConnected) return 0;
-      return aConnected ? -1 : 1;
-    });
+  const providers = Object.values(OauthBtnProvidersEnum).filter(providerActive);
+
+  if (!props.disconnectable) return providers;
+
+  return providers.sort((a, b) => {
+    const aConnected = connections.value.includes(a);
+    const bConnected = connections.value.includes(b);
+    if (aConnected === bConnected) return 0;
+    return aConnected ? -1 : 1;
+  });
 });
 
 const disconnectMutation = useDisconnectOauthProviderMutation();
