@@ -80,6 +80,12 @@ module ScData
         self.translations = parse_translations
 
         FileUtils.mkdir_p(export_path) unless File.directory?(export_path)
+
+        File.write("#{export_path}/version.json", JSON.pretty_generate({
+          version: sc_version,
+          environment: sc_environment,
+          parsed_at: Time.now.utc.iso8601
+        }))
       end
 
       private def load_data(path)
