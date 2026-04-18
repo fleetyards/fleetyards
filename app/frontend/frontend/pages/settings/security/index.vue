@@ -54,7 +54,7 @@ const socialLogins = ref<InstanceType<typeof SocialLogins> | undefined>();
 
       <hr v-if="socialLogins?.activeProviders.length" />
 
-      <SocialLogins :block="false" ref="socialLogins" />
+      <SocialLogins :block="false" ref="socialLogins" disconnectable />
 
       <hr />
 

@@ -34,6 +34,8 @@ v1_api_routes = lambda do
     end
   end
 
+  delete "omniauth-connections/:provider", to: "omniauth_connections#destroy", as: :omniauth_connection
+
   draw "api/users_routes"
   draw "api/otp_routes"
   draw "api/models_routes"

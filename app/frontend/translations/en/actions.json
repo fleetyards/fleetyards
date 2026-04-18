@@ -117,6 +117,13 @@
           "bluesky": "Connected to BlueSky",
           "github": "Connected to GitHub",
           "twitch": "Connected to Twitch"
+        },
+        "disconnect": {
+          "google": "Disconnect Google",
+          "discord": "Disconnect Discord",
+          "bluesky": "Disconnect BlueSky",
+          "github": "Disconnect GitHub",
+          "twitch": "Disconnect Twitch"
         }
       },
       "compare": {

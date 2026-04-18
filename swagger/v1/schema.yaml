@@ -3509,6 +3509,39 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/omniauth-connections/{provider}":
+    parameters:
+    - name: provider
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Disconnect OAuth provider
+      operationId: disconnectOauthProvider
+      tags:
+      - OmniAuth Connections
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - last connection for oauth-only user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/otp/disable":
     post:
       summary: Disable OTP Setup

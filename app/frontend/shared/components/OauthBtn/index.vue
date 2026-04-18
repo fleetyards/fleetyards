@@ -23,6 +23,8 @@ type Props = {
   inline?: boolean;
   connected?: boolean;
   onlyIcon?: boolean;
+  disconnectable?: boolean;
+  disconnecting?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,11 +34,22 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   connected: false,
   onlyIcon: false,
+  disconnectable: false,
+  disconnecting: false,
 });
+
+const emit = defineEmits<{
+  disconnect: [provider: `${OauthBtnProvidersEnum}`];
+}>();
 
 const { t } = useI18n();
 
 const handleClick = () => {
+  if (props.connected && props.disconnectable) {
+    emit("disconnect", props.provider);
+    return;
+  }
+
   const form = document.createElement("form");
 
   form.method = "POST";
@@ -56,6 +69,10 @@ const handleClick = () => {
 };
 
 const label = computed(() => {
+  if (props.connected && props.disconnectable) {
+    return t(`actions.oauth.disconnect.${props.provider}`);
+  }
+
   if (props.connected) {
     return t(`actions.oauth.connected.${props.provider}`);
   }
@@ -82,13 +99,14 @@ const providerActive = computed(() => {
       class="oauth-btn"
       :class="{ inline: inline }"
       data-test="oauth-btn"
-      :disabled="connected"
+      :disabled="(connected && !disconnectable) || disconnecting"
+      :loading="disconnecting"
       @click="handleClick"
     >
       <slot>
         <i :class="`fa-brands fa-${provider}`" />
         <span v-if="!onlyIcon">{{ label }}</span>
-        <i v-if="connected" class="fa-light fa-check text-success" />
+        <i v-if="connected && !disconnectable" class="fa-light fa-check text-success" />
       </slot>
     </Btn>
   </Transition>

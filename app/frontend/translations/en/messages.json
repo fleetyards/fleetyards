@@ -368,6 +368,12 @@
         "authorizeError": "Authorization failed.",
         "denyError": "Authorization denial failed."
       },
+      "oauth": {
+        "disconnect": {
+          "success": "Provider disconnected successfully.",
+          "failure": "Could not disconnect provider. Please try again."
+        }
+      },
       "confirmAccess": {
         "failure": "Access could not be confirmed. Please check your password and try again."
       },
