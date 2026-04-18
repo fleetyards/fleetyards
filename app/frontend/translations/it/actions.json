@@ -43,6 +43,7 @@
       "login": "Login",
       "signUp": "Registrati",
       "confirmAccess": "Conferma la password",
+      "sendConfirmAccessEmail": "Send confirmation email",
       "reset-password": "Password dimenticata?",
       "edit": "Modifica",
       "done": "Conferma",
@@ -76,6 +77,27 @@
       "showTableView": "Mostra come lista",
       "showGridView": "Mostra come griglia",
       "syncRsiHangar": "Sincronizza hangar RSI",
+      "oauth": {
+        "google": "Google",
+        "discord": "Discord",
+        "bluesky": "BlueSky",
+        "github": "GitHub",
+        "twitch": "Twitch",
+        "connected": {
+          "google": "Connected to Google",
+          "discord": "Connected to Discord",
+          "bluesky": "Connected to BlueSky",
+          "github": "Connected to GitHub",
+          "twitch": "Connected to Twitch"
+        },
+        "disconnect": {
+          "google": "Disconnect Google",
+          "discord": "Disconnect Discord",
+          "bluesky": "Disconnect BlueSky",
+          "github": "Disconnect GitHub",
+          "twitch": "Disconnect Twitch"
+        }
+      },
       "compare": { "ships": "Compara" },
       "hangar": {
         "editGroups": "Aggiungi o rimuovi gruppo",

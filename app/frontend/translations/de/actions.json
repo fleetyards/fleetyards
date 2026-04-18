@@ -49,6 +49,7 @@
       "login": "Anmelden",
       "signUp": "Registrieren",
       "confirmAccess": "Passwort bestätigen",
+      "sendConfirmAccessEmail": "Send confirmation email",
       "reset-password": "Passwort vergessen?",
       "edit": "Bearbeiten",
       "done": "Fertig",
@@ -98,6 +99,13 @@
           "bluesky": "Mit BlueSky verbunden",
           "github": "Mit GitHub verbunden",
           "twitch": "Mit Twitch verbunden"
+        },
+        "disconnect": {
+          "google": "Disconnect Google",
+          "discord": "Disconnect Discord",
+          "bluesky": "Disconnect BlueSky",
+          "github": "Disconnect GitHub",
+          "twitch": "Disconnect Twitch"
         }
       },
       "compare": { "ships": "Vergleichen" },

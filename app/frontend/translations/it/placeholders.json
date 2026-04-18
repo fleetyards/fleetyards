@@ -6,6 +6,7 @@
       "login": "Username o e-mail",
       "username": "Username",
       "twoFactorCode": "Codice due-fattori",
+      "confirmationCode": "Confirmation code",
       "email": "E-mail",
       "currentPassword": "Password Attuale",
       "password": "Password",

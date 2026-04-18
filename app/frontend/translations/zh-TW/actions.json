@@ -43,6 +43,7 @@
       "login": "登入",
       "signUp": "註冊",
       "confirmAccess": "確認密碼",
+      "sendConfirmAccessEmail": "Send confirmation email",
       "reset-password": "忘記密碼？",
       "edit": "編輯",
       "done": "完成",
@@ -76,6 +77,27 @@
       "showTableView": "顯示為清單",
       "showGridView": "顯示為網格",
       "syncRsiHangar": "同步RSI機庫",
+      "oauth": {
+        "google": "Google",
+        "discord": "Discord",
+        "bluesky": "BlueSky",
+        "github": "GitHub",
+        "twitch": "Twitch",
+        "connected": {
+          "google": "Connected to Google",
+          "discord": "Connected to Discord",
+          "bluesky": "Connected to BlueSky",
+          "github": "Connected to GitHub",
+          "twitch": "Connected to Twitch"
+        },
+        "disconnect": {
+          "google": "Disconnect Google",
+          "discord": "Disconnect Discord",
+          "bluesky": "Disconnect BlueSky",
+          "github": "Disconnect GitHub",
+          "twitch": "Disconnect Twitch"
+        }
+      },
       "compare": {
         "ships": "對比"
       },
