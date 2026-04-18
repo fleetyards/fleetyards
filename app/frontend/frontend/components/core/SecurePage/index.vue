@@ -205,7 +205,7 @@ const verifyConfirmAccessCode = async () => {
                   name="confirmationCode"
                   rules="required|min:6|max:6"
                   :type="InputTypesEnum.TEXT"
-                  :hide-label-on-empty="true"
+                  :no-label="true"
                   :clearable="true"
                   :autofocus="true"
                 />
@@ -234,7 +234,7 @@ const verifyConfirmAccessCode = async () => {
               name="password"
               :rules="validationSchema.password"
               :type="InputTypesEnum.PASSWORD"
-              :hide-label-on-empty="true"
+              :no-label="true"
               :clearable="true"
               :autofocus="true"
             />
