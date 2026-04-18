@@ -267,7 +267,6 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
   if (
     items === undefined ||
-    items.length === 0 ||
     (maxPage.value && currentPage.value >= maxPage.value)
   ) {
     updateStep("fetchHangar", "success");
