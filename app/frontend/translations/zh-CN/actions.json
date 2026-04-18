@@ -43,6 +43,7 @@
       "login": "登录",
       "signUp": "注册",
       "confirmAccess": "确认密码",
+      "sendConfirmAccessEmail": "Send confirmation email",
       "reset-password": "忘记密码？",
       "edit": "编辑",
       "done": "完成",
@@ -76,6 +77,27 @@
       "showTableView": "显示为列表",
       "showGridView": "显示为网格",
       "syncRsiHangar": "同步RSI机库",
+      "oauth": {
+        "google": "Google",
+        "discord": "Discord",
+        "bluesky": "BlueSky",
+        "github": "GitHub",
+        "twitch": "Twitch",
+        "connected": {
+          "google": "Connected to Google",
+          "discord": "Connected to Discord",
+          "bluesky": "Connected to BlueSky",
+          "github": "Connected to GitHub",
+          "twitch": "Connected to Twitch"
+        },
+        "disconnect": {
+          "google": "Disconnect Google",
+          "discord": "Disconnect Discord",
+          "bluesky": "Disconnect BlueSky",
+          "github": "Disconnect GitHub",
+          "twitch": "Disconnect Twitch"
+        }
+      },
       "compare": {
         "ships": "对比"
       },

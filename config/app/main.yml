@@ -22,23 +22,23 @@ shared:
   github_repo: <%= ENV["GITHUB_REPO"] || 'fleetyards/fleetyards' %>
 
   discord:
-    oauth_client_id: <%= Rails.application.credentials.dig(:discord, :oauth_client_id) rescue nil %>
-    oauth_secret: <%= Rails.application.credentials.dig(:discord, :oauth_secret) rescue nil %>
+    oauth_client_id: <%= Rails.app.creds.option(:discord, :oauth_client_id) %>
+    oauth_secret: <%= Rails.app.creds.option(:discord, :oauth_secret) %>
 
   github:
-    oauth_client_id: <%= Rails.application.credentials.dig(:github, :oauth_client_id) rescue nil %>
-    oauth_secret: <%= Rails.application.credentials.dig(:github, :oauth_secret) rescue nil %>
+    oauth_client_id: <%= Rails.app.creds.option(:github, :oauth_client_id) %>
+    oauth_secret: <%= Rails.app.creds.option(:github, :oauth_secret) %>
 
   twitch:
-    oauth_client_id: <%= Rails.application.credentials.dig(:twitch, :oauth_client_id) rescue nil %>
-    oauth_secret: <%= Rails.application.credentials.dig(:twitch, :oauth_secret) rescue nil %>
+    oauth_client_id: <%= Rails.app.creds.option(:twitch, :oauth_client_id) %>
+    oauth_secret: <%= Rails.app.creds.option(:twitch, :oauth_secret) %>
 
   google:
-    oauth_client_id: <%= Rails.application.credentials.dig(:google, :oauth_client_id) rescue nil %>
-    oauth_secret: <%= Rails.application.credentials.dig(:google, :oauth_secret) rescue nil %>
+    oauth_client_id: <%= Rails.app.creds.option(:google, :oauth_client_id) %>
+    oauth_secret: <%= Rails.app.creds.option(:google, :oauth_secret) %>
 
   bluesky:
-    client_id: <%= Rails.application.credentials.dig(:bluesky, :client_id) rescue nil %>
+    client_id: <%= Rails.app.creds.option(:bluesky, :client_id) %>
 
 staging:
   on_subdomain?: true

@@ -1,0 +1,14 @@
+<h2>
+  <%= I18n.t('mailer.hello', username: @username) %>
+</h2>
+<p>
+  <%= I18n.t('mailer.confirm_access.body') %>
+</p>
+<spacer size="16"></spacer>
+<center>
+  <h1><%= @confirmation_code %></h1>
+</center>
+<spacer size="16"></spacer>
+<p>
+  <%= I18n.t('mailer.confirm_access.expires') %>
+</p>

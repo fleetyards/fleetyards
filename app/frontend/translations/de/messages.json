@@ -281,6 +281,19 @@
           "destroy": "Bist du sicher, dass du dieses Fahrzeug löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         }
       },
+      "oauth": {
+        "disconnect": {
+          "success": "Provider disconnected successfully.",
+          "failure": "Could not disconnect provider. Please try again."
+        }
+      },
+      "confirmAccessEmail": {
+        "sent": "A confirmation code has been sent to your email.",
+        "failure": "Could not send confirmation email. Please try again."
+      },
+      "confirmAccessCode": {
+        "failure": "The confirmation code is invalid or has expired."
+      },
       "import": {
         "started": "%{type} Import gestartet...",
         "finished": "%{type} Import erfolgreich abgeschlossen.",

@@ -375,6 +375,11 @@ GEM
       logger (~> 1.6)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
+    letter_opener_web (3.0.0)
+      actionmailer (>= 6.1)
+      letter_opener (~> 1.9)
+      railties (>= 6.1)
+      rexml
     lexorank (0.4.0)
       activerecord
       activesupport
@@ -876,6 +881,7 @@ DEPENDENCIES
   kamal
   kaminari
   letter_opener
+  letter_opener_web (~> 3.0)
   lexorank
   listen
   logger

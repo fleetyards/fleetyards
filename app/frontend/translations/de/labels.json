@@ -450,6 +450,7 @@
       "login": "Username or email",
       "username": "Username",
       "twoFactorCode": "Two-factor code",
+      "confirmationCode": "Confirmation code",
       "email": "Email",
       "avatar": "Avatar",
       "alreadyRegistered": "Already have an Account?",

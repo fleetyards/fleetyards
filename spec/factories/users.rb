@@ -35,6 +35,7 @@
 #  otp_backup_codes          :string           is an Array
 #  otp_required_for_login    :boolean
 #  otp_secret                :string
+#  password_set_manually     :boolean          default(FALSE), not null
 #  public_hangar             :boolean          default(TRUE)
 #  public_hangar_loaners     :boolean          default(FALSE)
 #  public_hangar_stats       :boolean          default(FALSE)
@@ -115,6 +116,14 @@ FactoryBot.define do
 
     trait :hide_owner do
       hide_owner { true }
+    end
+
+    trait :oauth_only do
+      password_set_manually { false }
+
+      after(:create) do |user|
+        create(:omniauth_connection, user: user, provider: :discord)
+      end
     end
 
     after(:create) do |user, evaluator|

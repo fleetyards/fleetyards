@@ -7,7 +7,6 @@ RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" 
   let(:token) { user.send_reset_password_instructions }
   let(:input) do
     {
-      currentPassword: "enterprise",
       password: "73b8680678a4a2725bba6a88b84b550828b27ca606",
       passwordConfirmation: "73b8680678a4a2725bba6a88b84b550828b27ca606"
     }

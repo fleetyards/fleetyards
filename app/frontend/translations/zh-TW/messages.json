@@ -251,6 +251,19 @@
           "generateBackupCodes": "您確定要重新生成雙因素備份代碼嗎？"
         }
       },
+      "oauth": {
+        "disconnect": {
+          "success": "Provider disconnected successfully.",
+          "failure": "Could not disconnect provider. Please try again."
+        }
+      },
+      "confirmAccessEmail": {
+        "sent": "A confirmation code has been sent to your email.",
+        "failure": "Could not send confirmation email. Please try again."
+      },
+      "confirmAccessCode": {
+        "failure": "The confirmation code is invalid or has expired."
+      },
       "syncExtension": {
         "started": "正在同步您的機庫...",
         "success": "您的機庫已同步。",
