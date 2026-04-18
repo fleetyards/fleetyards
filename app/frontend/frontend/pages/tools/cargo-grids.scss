@@ -11,6 +11,15 @@
   }
 }
 
+.module-toggles {
+  margin-bottom: 1rem;
+
+  &__label {
+    color: color.scale($text-color, $lightness: -20%);
+    margin-right: 0.5rem;
+  }
+}
+
 .filters {
   display: flex;
   flex-wrap: wrap;

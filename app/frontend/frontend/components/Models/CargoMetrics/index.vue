@@ -16,9 +16,12 @@ const { t, toNumber } = useI18n();
 
 type Props = {
   model: Model;
+  cargoHolds?: CargoHold[];
 };
 
 const props = defineProps<Props>();
+
+const holds = computed(() => props.cargoHolds || props.model.cargoHolds || []);
 
 type ContainerCapacity = {
   size: number;
@@ -66,15 +69,17 @@ function computeMaxPerSize(holds: CargoHold[]): ContainerCapacity[] {
 }
 
 const containerCapacities = computed(() => {
-  if (!props.model.cargoHolds?.length) return [];
-  return computeMaxPerSize(props.model.cargoHolds);
+  if (!holds.value.length) return [];
+  return computeMaxPerSize(holds.value);
+});
+
+const totalCargo = computed(() => {
+  return holds.value.reduce((sum, h) => sum + (h.capacity || 0), 0);
 });
 
 const maxContainerSize = computed(() => {
-  if (!props.model.cargoHolds?.length) return null;
-  return Math.max(
-    ...props.model.cargoHolds.map((h) => h.maxContainerSize?.size || 0),
-  );
+  if (!holds.value.length) return null;
+  return Math.max(...holds.value.map((h) => h.maxContainerSize?.size || 0));
 });
 </script>
 
@@ -93,7 +98,7 @@ const maxContainerSize = computed(() => {
         <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ t("model.cargo") }}:</div>
           <div class="metrics-value">
-            {{ toNumber(model.metrics.cargo || "", "cargo") }}
+            {{ toNumber(totalCargo || model.metrics.cargo || "", "cargo") }}
           </div>
         </div>
         <div class="col-6 col-lg-4">
