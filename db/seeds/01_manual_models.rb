@@ -12,7 +12,6 @@ end
 
 explorer_600i = Model.find_or_create_by!(name: "600i Explorer") do |model|
   model.manufacturer = origin
-  model.sc_identifier = "orig_600i"
   model.classification = "exploration"
   model.production_status = "flight-ready"
   model.size = "large"
@@ -20,7 +19,6 @@ end
 
 dragonfly_black = Model.find_or_create_by!(name: "Dragonfly Black") do |model|
   model.manufacturer = drake
-  model.sc_identifier = "drak_dragonfly_black"
   model.classification = "competition"
   model.production_status = "flight-ready"
   model.size = "vehicle"
@@ -29,7 +27,6 @@ end
 Model.find_or_create_by!(name: "600i Executive-Edition") do |model|
   model.manufacturer = origin
   model.rsi_name = "600i Executive Edition"
-  model.sc_identifier = "orig_600i_executive_edition"
   model.classification = "exploration"
   model.production_status = "flight-ready"
   model.size = "large"
@@ -39,7 +36,6 @@ end
 Model.find_or_create_by!(name: "Dragonfly Starkitten Edition") do |model|
   model.manufacturer = drake
   model.rsi_name = "Dragonfly Star Kitten Edition"
-  model.sc_identifier = "drak_dragonfly"
   model.classification = "competition"
   model.production_status = "flight-ready"
   model.size = "vehicle"

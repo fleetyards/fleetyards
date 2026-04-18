@@ -18,7 +18,6 @@
 #  item_type             :string
 #  name                  :string(255)
 #  power_connection      :string
-#  sc_identifier         :string
 #  sc_key                :string
 #  sc_ref                :string
 #  size                  :string(255)

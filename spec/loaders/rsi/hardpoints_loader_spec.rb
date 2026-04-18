@@ -8,7 +8,6 @@ describe Rsi::HardpointsLoader do
     create(
       :model,
       name: "Constellation Andromeda",
-      sc_identifier: "rsi_constellation_andromeda",
       rsi_id: 45,
       rsi_chassis_id: 4
     )

@@ -2,7 +2,7 @@ module ScData
   module Loader
     class ModelsLoader < ::ScData::Loader::BaseLoader
       def all
-        Model.where.not(sc_identifier: nil).find_each do |model|
+        Model.find_each do |model|
           load_model(model)
         end
 
@@ -16,9 +16,9 @@ module ScData
       end
 
       def load_model(model)
-        return if model.sc_identifier.blank?
+        return if model.slug.blank?
 
-        model_data = load_model_data(model.sc_identifier)
+        model_data = load_model_data(model.sc_data_identifier)
 
         return if model_data.blank?
 
@@ -39,8 +39,8 @@ module ScData
         model.update!(update_params.merge(update_reason: :sc_data_loader))
       end
 
-      private def load_model_data(sc_identifier)
-        load_item("models/#{sc_identifier.downcase}")
+      private def load_model_data(sc_data_identifier)
+        load_item("models/#{sc_data_identifier}")
       end
 
       private def update_metrics(model_data, update_params)

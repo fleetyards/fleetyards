@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.id model.id
-json.sc_identifier model.sc_identifier
+json.sc_identifier model.sc_data_identifier
 json.in_game model.in_game?
 json.name model.name
 json.slug model.slug
@@ -32,7 +32,7 @@ json.crew do
 end
 
 json.description model.description
-json.erkul_identifier(model.erkul_identifier.presence || model.sc_identifier)
+json.erkul_identifier(model.erkul_identifier.presence || model.sc_data_identifier)
 json.focus model.focus
 json.has_images model.images_count.positive?
 json.has_modules model.module_hardpoints_count.positive?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_17_123936) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_18_100553) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -172,7 +172,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_17_123936) do
     t.uuid "manufacturer_id"
     t.string "name", limit: 255
     t.string "power_connection"
-    t.string "sc_identifier"
     t.string "sc_key"
     t.string "sc_ref"
     t.string "size", limit: 255
@@ -676,7 +675,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_17_123936) do
     t.string "sales_page_url"
     t.decimal "sc_beam", precision: 15, scale: 2
     t.decimal "sc_height", precision: 15, scale: 2
-    t.string "sc_identifier"
     t.decimal "sc_length", precision: 15, scale: 2
     t.decimal "scm_speed", precision: 15, scale: 2
     t.decimal "scm_speed_acceleration", precision: 15, scale: 2

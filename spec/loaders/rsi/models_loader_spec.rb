@@ -12,7 +12,6 @@ describe Rsi::ModelsLoader do
       :model,
       name: "Polaris",
       length: 20,
-      sc_identifier: "rsi_polaris",
       rsi_id: 116,
       rsi_chassis_id: 4
     )

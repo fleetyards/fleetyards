@@ -80,7 +80,6 @@
 #  sales_page_url           :string
 #  sc_beam                  :decimal(15, 2)
 #  sc_height                :decimal(15, 2)
-#  sc_identifier            :string
 #  sc_length                :decimal(15, 2)
 #  scm_speed                :decimal(15, 2)
 #  scm_speed_acceleration   :decimal(15, 2)
@@ -273,7 +272,7 @@ class Model < ApplicationRecord
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",
       "rsi_min_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
       "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height",
-      "sc_identifier", "sc_length", "scm_speed", "scm_speed_acceleration",
+      "sc_length", "scm_speed", "scm_speed_acceleration",
       "scm_speed_decceleration", "search",
       "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",
       "updated_at", "upgrade_kits_count", "videos_count", "yaw"
@@ -295,8 +294,15 @@ class Model < ApplicationRecord
 
   PRODUCTION_STATUSES = %w[in-concept in-production flight-ready].freeze
 
+  def sc_data_identifier
+    slug&.tr("-", "_")
+  end
+
   def in_game?
-    sc_identifier.present? && production_status == "flight-ready"
+    return @in_game if defined?(@in_game)
+
+    @in_game = sc_data_identifier.present? &&
+      File.exist?(Rails.root.join("data/sc_data/parsed/#{Rails.configuration.sc_data[:environment]}/models/#{sc_data_identifier}.json"))
   end
 
   def self.production_status_filters

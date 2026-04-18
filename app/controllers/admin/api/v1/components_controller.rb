@@ -67,7 +67,7 @@ module Admin
           @component_params ||= params.permit(
             :name, :component_class, :component_type, :component_sub_type,
             :size, :grade, :item_class, :item_type, :manufacturer_id,
-            :description, :hidden, :store_image, :sc_identifier, :sc_key, :sc_ref
+            :description, :hidden, :store_image, :sc_key, :sc_ref
           )
         end
 

@@ -122,7 +122,6 @@ module ScData
 
         component = Component.find_by(sc_key: normalized_key, version: sc_version) if normalized_key.present?
         component = Component.find_by(sc_ref: ref, version: sc_version) if component.blank? && ref.present?
-        component = Component.find_by(sc_identifier: key, version: sc_version) if component.blank? && key.present?
         component = Component.where(name: name, sc_key: nil, sc_ref: nil, version: sc_version).first if component.blank? && name.present?
 
         component
