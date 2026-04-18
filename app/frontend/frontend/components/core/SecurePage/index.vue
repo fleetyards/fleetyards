@@ -61,11 +61,32 @@ const [password, passwordProps] = defineField("password");
 // Comlink for access confirmation events
 const accessConfirmationRequiredComlink = ref();
 
+const checkAccessConfirmedFromStore = () => {
+  if (emailSent.value && sessionStore.accessConfirmedDate) {
+    confirmed.value = true;
+  }
+};
+
+const onStorageChange = (event: StorageEvent) => {
+  if (event.key?.includes("session") && event.newValue?.includes("accessConfirmed")) {
+    checkAccessConfirmedFromStore();
+  }
+};
+
+const onVisibilityChange = () => {
+  if (document.visibilityState === "visible") {
+    checkAccessConfirmedFromStore();
+  }
+};
+
 onMounted(() => {
   accessConfirmationRequiredComlink.value = comlink.on(
     "access-confirmation-required",
     resetConfirmation,
   );
+
+  window.addEventListener("storage", onStorageChange);
+  document.addEventListener("visibilitychange", onVisibilityChange);
 
   // Check for email confirmation callback via URL params
   const urlParams = new URLSearchParams(window.location.search);
@@ -85,6 +106,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   accessConfirmationRequiredComlink.value();
+  window.removeEventListener("storage", onStorageChange);
+  document.removeEventListener("visibilitychange", onVisibilityChange);
 });
 
 const cleanUpUrl = () => {
