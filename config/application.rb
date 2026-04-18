@@ -3,6 +3,10 @@ require_relative "boot"
 require "rails/all"
 require_relative "../lib/middleware/transform_parameters"
 
+# Backport of Rails 8.2 `Rails.app.creds` — must load before config_for calls.
+# REMOVAL: Delete this line and lib/rails_creds_backport/ when upgrading to Rails 8.2.
+require_relative "../lib/rails_creds_backport"
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
