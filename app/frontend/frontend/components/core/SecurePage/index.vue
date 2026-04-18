@@ -202,27 +202,29 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
       <div class="col-12">
         <!-- OAuth-only user: show provider buttons -->
         <template v-if="isOauthOnly && !showSetPasswordForm">
-          <h1>{{ t("headlines.confirmAccess") }}</h1>
+          <div class="oauth-confirm-access">
+            <h1>{{ t("headlines.confirmAccess") }}</h1>
 
-          <div class="oauth-confirm-buttons">
-            <OauthBtn
-              v-for="provider in authConnections"
-              :key="provider"
-              :provider="provider"
-              :origin="confirmAccessOrigin"
-              block
-              data-test="confirm-via-oauth"
-            />
-          </div>
+            <div class="oauth-confirm-buttons">
+              <OauthBtn
+                v-for="provider in authConnections"
+                :key="provider"
+                :provider="provider"
+                :origin="confirmAccessOrigin"
+                inline
+                data-test="confirm-via-oauth"
+              />
+            </div>
 
-          <div class="set-password-link">
-            <a
-              href="#"
-              data-test="set-password-instead"
-              @click.prevent="showSetPasswordForm = true"
-            >
-              {{ t("actions.setPasswordInstead") }}
-            </a>
+            <div class="set-password-link">
+              <a
+                href="#"
+                data-test="set-password-instead"
+                @click.prevent="showSetPasswordForm = true"
+              >
+                {{ t("actions.setPasswordInstead") }}
+              </a>
+            </div>
           </div>
         </template>
 
@@ -309,7 +311,7 @@ const setInitialPassword = handleSetPasswordSubmit(async () => {
 
 .oauth-confirm-buttons {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
