@@ -78,7 +78,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         password = Devise.friendly_token[0, 60]
         user = User.new(
           email: auth.info.email,
-          username: auth.info.nickname || auth.info.name,
+          username: sanitize_username(auth.info.nickname || auth.info.name),
           password: password,
           password_confirmation: password
         )
@@ -121,5 +121,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private def auth
     request.env["omniauth.auth"]
+  end
+
+  private def sanitize_username(name)
+    name.to_s.gsub(/[^a-zA-Z0-9\-_]/, "-").squeeze("-").gsub(/\A-|-\z/, "")
   end
 end
