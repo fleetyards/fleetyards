@@ -91,7 +91,7 @@ const countLabel = computed(() => {
     return "";
   }
 
-  const modelCount = props.modelCounts?.modelCounts[props.fleetVehicle.slug];
+  const modelCount = props.modelCounts?.modelCounts?.[props.fleetVehicle.slug];
 
   if (!modelCount) {
     return "";
