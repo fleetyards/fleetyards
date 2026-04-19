@@ -95,7 +95,12 @@
         },
         "modelModules": {
           "index": "模組",
-          "create": "建立模組"
+          "create": "建立模組",
+          "edit": {
+            "index": "基本資料",
+            "models": "模型",
+            "prices": "價格"
+          }
         },
         "modelModulePackages": {
           "index": "模組包",

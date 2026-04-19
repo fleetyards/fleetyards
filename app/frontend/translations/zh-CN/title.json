@@ -149,7 +149,12 @@
           "edit": "编辑模型涂装"
         },
         "modelModules": {
-          "index": "模型模块"
+          "index": "模型模块",
+          "edit": {
+            "index": "编辑 %{name} 基本数据",
+            "models": "编辑 %{name} 模型",
+            "prices": "编辑 %{name} 价格"
+          }
         },
         "modelModulePackages": {
           "index": "模型模块包"

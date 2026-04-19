@@ -147,7 +147,12 @@
           "edit": "Éditer la Peinture du Modèle"
         },
         "modelModules": {
-          "index": "Modules de Modèles"
+          "index": "Modules de Modèles",
+          "edit": {
+            "index": "Éditer %{name} Données de Base",
+            "models": "Éditer %{name} Modèles",
+            "prices": "Éditer %{name} Prix"
+          }
         },
         "modelModulePackages": {
           "index": "Paquets de Modules de Modèles"

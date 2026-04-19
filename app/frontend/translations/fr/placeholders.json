@@ -37,6 +37,14 @@
       },
       "user": { "rsiHandle": "RSI Handle" },
       "vehicle": { "serial": "Serial" },
+      "modelModule": {
+        "name": "Nom du Module",
+        "price": "0.00",
+        "pledgePrice": "0.00",
+        "productionStatus": "Annoncé, Prêt au Vol, En Concept...",
+        "scKey": "SC Key",
+        "search": "Rechercher des modules par nom..."
+      },
       "filters": {
         "vehicles": {
           "name": "Enterprise, Andromeda...",

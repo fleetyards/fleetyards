@@ -44,6 +44,14 @@
       "vehicle": {
         "serial": "Serial"
       },
+      "modelModule": {
+        "name": "模組名稱",
+        "price": "0.00",
+        "pledgePrice": "0.00",
+        "productionStatus": "已公佈, 可飛行, 概念中...",
+        "scKey": "SC Key",
+        "search": "按名稱搜尋模組..."
+      },
       "filters": {
         "vehicles": {
           "name": "Enterprise, Andromeda...",

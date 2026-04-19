@@ -149,7 +149,12 @@
           "edit": "編輯模型塗裝"
         },
         "modelModules": {
-          "index": "模型模組"
+          "index": "模型模組",
+          "edit": {
+            "index": "編輯 %{name} 基本資料",
+            "models": "編輯 %{name} 模型",
+            "prices": "編輯 %{name} 價格"
+          }
         },
         "modelModulePackages": {
           "index": "模型模組套件"

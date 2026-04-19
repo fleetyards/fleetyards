@@ -95,7 +95,12 @@
         },
         "modelModules": {
           "index": "模块",
-          "create": "创建模块"
+          "create": "创建模块",
+          "edit": {
+            "index": "基本数据",
+            "models": "模型",
+            "prices": "价格"
+          }
         },
         "modelModulePackages": {
           "index": "模块包",

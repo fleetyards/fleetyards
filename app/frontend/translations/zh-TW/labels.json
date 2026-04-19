@@ -567,6 +567,17 @@
       "table": {
         "selected": "%{count} Selected"
       },
+      "modelModule": {
+        "name": "名稱",
+        "description": "描述",
+        "price": "價格",
+        "pledgePrice": "承諾價格",
+        "productionStatus": "生產狀態",
+        "scKey": "SC Key",
+        "storeImage": "商店圖片",
+        "active": "啟用？",
+        "hidden": "隱藏？"
+      },
       "commodityPrice": {
         "shopId": "Shop",
         "station": "Station",

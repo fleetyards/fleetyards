@@ -569,6 +569,17 @@
       "table": {
         "selected": "%{count} sélectionné"
       },
+      "modelModule": {
+        "name": "Nom",
+        "description": "Description",
+        "price": "Prix",
+        "pledgePrice": "Prix Pledge",
+        "productionStatus": "Statut de Production",
+        "scKey": "SC Key",
+        "storeImage": "Image de Boutique",
+        "active": "Actif ?",
+        "hidden": "Caché ?"
+      },
       "commodityPrice": {
         "shopId": "Magasin",
         "station": "Station",

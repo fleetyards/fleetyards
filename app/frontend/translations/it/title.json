@@ -144,7 +144,12 @@
           "edit": "Modifica Verniciatura Modello"
         },
         "modelModules": {
-          "index": "Moduli Modelli"
+          "index": "Moduli Modelli",
+          "edit": {
+            "index": "Modifica %{name} Dati Base",
+            "models": "Modifica %{name} Modelli",
+            "prices": "Modifica %{name} Prezzi"
+          }
         },
         "modelModulePackages": {
           "index": "Pacchetti Moduli Modelli"
