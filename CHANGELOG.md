@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.9.1](https://github.com/fleetyards/fleetyards/compare/v6.9.0...v6.9.1) (2026-04-19)
+
+
+### Bug Fixes
+
+* add sc_key override field to models for SC data identifier mismatch ([8df5926](https://github.com/fleetyards/fleetyards/commit/8df5926819ca374aed6668004c009ace9f1c989b))
+
 ## [6.9.0](https://github.com/fleetyards/fleetyards/compare/v6.8.0...v6.9.0) (2026-04-19)
 
 
