@@ -11,7 +11,11 @@ import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
-import type { VehiclePublic, Model } from "@/services/fyApi";
+import type {
+  VehiclePublic,
+  Model,
+  FleetModelCountsStats,
+} from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
@@ -29,9 +33,24 @@ type Props = {
   vehicles: FleetVehicle[];
   loading?: boolean;
   emptyVisible?: boolean;
+  modelCounts?: FleetModelCountsStats;
 };
 
 const props = defineProps<Props>();
+
+const countLabel = (record: FleetVehicle) => {
+  if (!fleetStore.grouped || !record.slug) {
+    return "";
+  }
+
+  const modelCount = props.modelCounts?.modelCounts?.[record.slug];
+
+  if (!modelCount) {
+    return "";
+  }
+
+  return `${modelCount}x `;
+};
 
 const comlink = useComlink();
 
@@ -181,8 +200,8 @@ const openOwnersModal = (modelSlug: string) => {
               },
             }"
           >
-            <span v-if="record.name">{{ record.name }}</span>
-            <span v-else>{{ getModel(record).name }}</span>
+            <span v-if="record.name">{{ countLabel(record) }}{{ record.name }}</span>
+            <span v-else>{{ countLabel(record) }}{{ getModel(record).name }}</span>
           </router-link>
           <br />
           <small>

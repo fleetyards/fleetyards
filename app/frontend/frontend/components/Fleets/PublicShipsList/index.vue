@@ -169,6 +169,7 @@ const refetch = async () => {
           :loading="loading"
           :empty-visible="emptyVisible"
           :vehicles="fleetVehicles?.items || []"
+          :model-counts="modelCounts"
         />
 
         <FleetchartApp
