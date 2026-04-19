@@ -11,6 +11,7 @@ module Admin
             properties: {
               hidden: {type: :boolean},
               active: {type: :boolean},
+              scKey: {type: :string},
               scLength: {type: :number},
               scBeam: {type: :number},
               scHeight: {type: :number},

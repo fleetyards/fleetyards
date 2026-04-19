@@ -148,7 +148,7 @@ module Admin
         private def model_query_params
           @model_query_params ||= params.permit(q: [
             :search_cont, :name_cont, :id_eq, :front_view_blank, :fleetchart_image_blank,
-            :top_view_colored_blank, :holo_blank, :sorts,
+            :top_view_colored_blank, :holo_blank, :sc_key_blank, :sorts,
             name_in: [], id_in: [], id_not_in: [], production_status_in: [],
             manufacturer_in: [], sorts: []
           ]).fetch(:q, {})
@@ -158,7 +158,7 @@ module Admin
           @model_params ||= params.permit(
             :name, :description, :hidden, :active, :ground, :mass, :min_crew, :max_crew,
             :scm_speed, :scm_speed_boosted, :max_speed, :reverse_speed_boosted, :yaw, :yaw_boosted,
-            :pitch, :pitch_boosted, :roll, :roll_boosted, :erkul_identifier,
+            :pitch, :pitch_boosted, :roll, :roll_boosted, :erkul_identifier, :sc_key,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
             :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale,
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,

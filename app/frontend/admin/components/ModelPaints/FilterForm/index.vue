@@ -28,7 +28,7 @@ const prefillFormValues = () => {
     nameCont: filters.value.nameCont,
     manufacturerIn: filters.value.manufacturerIn || [],
     productionStatusIn: filters.value.productionStatusIn || [],
-    scIdentifierBlank: filters.value.scIdentifierBlank,
+    scKeyBlank: filters.value.scKeyBlank,
     fleetchartImageBlank: filters.value.fleetchartImageBlank,
     holoBlank: filters.value.holoBlank,
     topViewColoredBlank: filters.value.topViewColoredBlank,
@@ -115,11 +115,11 @@ watch(
     />
 
     <RadioList
-      v-model="form.scIdentifierBlank"
-      :label="t('labels.filters.models.scIdentifierBlank')"
+      v-model="form.scKeyBlank"
+      :label="t('labels.filters.models.scKeyBlank')"
       :reset-label="t('labels.all')"
       :options="booleanOptions"
-      name="scIdentifierBlank"
+      name="scKeyBlank"
     />
 
     <br />

@@ -28,7 +28,7 @@ module Admin
               pitchBoosted: {type: :number},
               roll: {type: :number},
               rollBoosted: {type: :number},
-              scIdentifier: {type: :string},
+              scKey: {type: :string},
               erkulIdentifier: {type: :string},
               manufacturerId: {type: :string, format: :uuid},
               rsiId: {type: :integer},

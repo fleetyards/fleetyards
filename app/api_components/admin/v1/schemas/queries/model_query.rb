@@ -18,7 +18,7 @@ module Admin
               manufacturerIn: {type: :array, items: {type: :string}},
               productionStatusIn: {type: :array, items: {type: :string}},
               searchCont: {type: :string},
-              scIdentifierBlank: {type: :boolean},
+              scKeyBlank: {type: :boolean},
               fleetchartImageBlank: {type: :boolean},
               holoBlank: {type: :boolean},
               topViewColoredBlank: {type: :boolean},

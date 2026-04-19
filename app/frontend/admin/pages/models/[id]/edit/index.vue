@@ -39,7 +39,7 @@ const initialValues = ref<ModelUpdateInput>({
   active: props.model.active,
   ground: props.model.metrics.isGroundVehicle,
   rsiId: props.model.rsiId,
-  scIdentifier: props.model.scIdentifier,
+  scKey: props.model.scKey,
   erkulIdentifier: props.model.erkulIdentifier,
   baseModelId: props.model.baseModelId,
   manufacturerId: props.model.manufacturer?.id,
@@ -67,7 +67,7 @@ const [hidden, hiddenProps] = defineField("hidden");
 const [active, activeProps] = defineField("active");
 const [ground, groundProps] = defineField("ground");
 const [rsiId, rsiIdProps] = defineField("rsiId");
-const [scIdentifier, scIdentifierProps] = defineField("scIdentifier");
+const [scKey, scKeyProps] = defineField("scKey");
 const [erkulIdentifier, erkulIdentifierProps] = defineField("erkulIdentifier");
 const [baseModelId, baseModelIdProps] = defineField("baseModelId");
 const [manufacturerId, manufacturerIdProps] = defineField("manufacturerId");
@@ -155,10 +155,11 @@ const [holo, holoProps] = defineField("holo");
         <div class="row">
           <div class="col-12 col-md-6">
             <FormInput
-              v-model="scIdentifier"
-              v-bind="scIdentifierProps"
-              translation-key="model.scIdentifier"
-              name="scIdentifier"
+              v-model="scKey"
+              v-bind="scKeyProps"
+              translation-key="model.scKey"
+              :placeholder="model.scIdentifier"
+              name="scKey"
             />
           </div>
           <div class="col-12 col-md-6">

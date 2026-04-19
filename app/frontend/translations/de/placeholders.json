@@ -50,7 +50,7 @@
         "storeUrl": "Store URL",
         "salesPageUrl": "Verkaufsseiten-URL",
         "rsiId": "RSI ID",
-        "scIdentifier": "SC Identifier",
+        "scKey": "SC Key",
         "erkulIdentifier": "Erkul Identifier",
         "productionNote": "Produktionsnotiz",
         "scmSpeed": "SCM Geschwindigkeit",

@@ -7628,6 +7628,8 @@ components:
           type: boolean
         active:
           type: boolean
+        scKey:
+          type: string
         scLength:
           type: number
         scBeam:
@@ -7697,7 +7699,7 @@ components:
           type: number
         rollBoosted:
           type: number
-        scIdentifier:
+        scKey:
           type: string
         erkulIdentifier:
           type: string
@@ -7997,6 +7999,8 @@ components:
           type: boolean
         active:
           type: boolean
+        scKey:
+          type: string
         scLength:
           type: number
         scBeam:
@@ -9039,7 +9043,7 @@ components:
             type: string
         searchCont:
           type: string
-        scIdentifierBlank:
+        scKeyBlank:
           type: boolean
         fleetchartImageBlank:
           type: boolean
@@ -9112,7 +9116,7 @@ components:
         rollBoosted:
           type: number
           nullable: true
-        scIdentifier:
+        scKey:
           type: string
           nullable: true
         erkulIdentifier:

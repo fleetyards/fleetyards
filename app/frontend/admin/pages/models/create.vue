@@ -45,7 +45,7 @@ const [hidden, hiddenProps] = defineField("hidden");
 const [active, activeProps] = defineField("active");
 const [ground, groundProps] = defineField("ground");
 const [rsiId, rsiIdProps] = defineField("rsiId");
-const [scIdentifier, scIdentifierProps] = defineField("scIdentifier");
+const [scKey, scKeyProps] = defineField("scKey");
 const [erkulIdentifier, erkulIdentifierProps] = defineField("erkulIdentifier");
 const [manufacturerId, manufacturerIdProps] = defineField("manufacturerId");
 const [productionStatus, productionStatusProps] =
@@ -155,10 +155,10 @@ const handleCancel = async () => {
         <div class="row">
           <div class="col-12 col-md-6">
             <FormInput
-              v-model="scIdentifier"
-              v-bind="scIdentifierProps"
-              translation-key="model.scIdentifier"
-              name="scIdentifier"
+              v-model="scKey"
+              v-bind="scKeyProps"
+              translation-key="model.scKey"
+              name="scKey"
             />
           </div>
           <div class="col-12 col-md-6">

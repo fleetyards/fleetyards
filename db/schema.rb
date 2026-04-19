@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_204910) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_224508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -676,6 +676,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_204910) do
     t.string "sales_page_url"
     t.decimal "sc_beam", precision: 15, scale: 2
     t.decimal "sc_height", precision: 15, scale: 2
+    t.string "sc_key"
     t.decimal "sc_length", precision: 15, scale: 2
     t.decimal "scm_speed", precision: 15, scale: 2
     t.decimal "scm_speed_acceleration", precision: 15, scale: 2

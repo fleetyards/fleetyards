@@ -81,6 +81,7 @@
 #  sales_page_url           :string
 #  sc_beam                  :decimal(15, 2)
 #  sc_height                :decimal(15, 2)
+#  sc_key                   :string
 #  sc_length                :decimal(15, 2)
 #  scm_speed                :decimal(15, 2)
 #  scm_speed_acceleration   :decimal(15, 2)
@@ -296,7 +297,7 @@ class Model < ApplicationRecord
   PRODUCTION_STATUSES = %w[in-concept in-production flight-ready].freeze
 
   def sc_data_identifier
-    slug&.tr("-", "_")
+    sc_key.presence || slug&.tr("-", "_")
   end
 
   def self.production_status_filters
