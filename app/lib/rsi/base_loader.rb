@@ -48,7 +48,7 @@ module Rsi
       begin
         JSON.parse(response.body).dig("data") || []
       rescue JSON::ParserError => e
-        Sentry.capture_exception(e)
+        Appsignal.report_error(e)
         Rails.logger.error "Model Data could not be parsed: #{response.body}"
         []
       end

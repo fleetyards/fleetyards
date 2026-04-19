@@ -35,7 +35,7 @@ module Rsi
         pledge_store_data = JSON.parse(response.body)
         pledge_store_data.first.dig("data", "store", "search", "resources")
       rescue JSON::ParserError => e
-        Sentry.capture_exception(e)
+        Appsignal.report_error(e)
         Rails.logger.error "Pledge Store Data could not be parsed: #{response.body}"
         []
       end

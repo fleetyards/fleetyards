@@ -110,7 +110,7 @@ class PaintsImporter
       }
     end
   rescue JSON::ParserError => e
-    Sentry.capture_exception(e)
+    Appsignal.report_error(e)
     Rails.logger.error "Paints Data could not be parsed: #{import.input}"
     nil
   end
@@ -171,7 +171,7 @@ class PaintsImporter
         error: false
       }
     rescue => e
-      Sentry.capture_exception(e)
+      Appsignal.report_error(e)
       Rails.logger.error "Paint could not be imported: #{paint[:name]}"
       {
         new: true,

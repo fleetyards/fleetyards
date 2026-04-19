@@ -113,7 +113,7 @@ class ModulesImporter
       }
     end
   rescue JSON::ParserError => e
-    Sentry.capture_exception(e)
+    Appsignal.report_error(e)
     Rails.logger.error "Modules Data could not be parsed: #{import.input}"
     nil
   end
@@ -189,7 +189,7 @@ class ModulesImporter
       enrich_from_sc_data(model_module) if model_module.present?
     end
   rescue => e
-    Sentry.capture_exception(e)
+    Appsignal.report_error(e)
     Rails.logger.error "Module could not be imported: #{mod[:name]}"
     [{
       new: true,
@@ -208,7 +208,7 @@ class ModulesImporter
     content_type = Marcel::MimeType.for(name: filename)
     model_module.store_image.attach(io: tempfile, filename: filename, content_type: content_type)
   rescue => e
-    Sentry.capture_exception(e)
+    Appsignal.report_error(e)
     Rails.logger.error "Store image could not be attached for module: #{model_module.name}"
   end
 
