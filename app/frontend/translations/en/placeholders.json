@@ -144,6 +144,7 @@
       },
       "modelModule": {
         "name": "Module Name",
+        "price": "0.00",
         "pledgePrice": "0.00",
         "scKey": "SC Key",
         "search": "Search modules by name..."

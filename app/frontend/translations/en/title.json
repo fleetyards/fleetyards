@@ -172,7 +172,12 @@
           "edit": "Edit Model Paint"
         },
         "modelModules": {
-          "index": "Model Modules"
+          "index": "Model Modules",
+          "edit": {
+            "index": "Edit %{name} Base Data",
+            "models": "Edit %{name} Models",
+            "prices": "Edit %{name} Prices"
+          }
         },
         "modelModulePackages": {
           "index": "Model Module Packages"

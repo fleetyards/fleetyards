@@ -8408,6 +8408,8 @@ components:
         updatedAt:
           type: string
           format: date-time
+        price:
+          type: number
         active:
           type: boolean
         hidden:
@@ -8454,6 +8456,9 @@ components:
         manufacturerId:
           type: string
           format: uuid
+        price:
+          type: number
+          nullable: true
         pledgePrice:
           type: number
           nullable: true

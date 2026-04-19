@@ -273,7 +273,14 @@ const crumbs = [
           />
         </template>
         <template #col-name="{ record }">
-          {{ record.name }}
+          <router-link
+            :to="{
+              name: 'admin-model-module-edit',
+              params: { id: record.id },
+            }"
+          >
+            {{ record.name }}
+          </router-link>
         </template>
         <template #col-models="{ record }">
           <ul v-if="record.models?.length" class="model-modules-models-list">

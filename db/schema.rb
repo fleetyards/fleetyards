@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_18_224607) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_19_204910) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -546,6 +546,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_18_224607) do
     t.uuid "manufacturer_id"
     t.string "name"
     t.decimal "pledge_price", precision: 15, scale: 2
+    t.decimal "price", precision: 15, scale: 2
     t.string "production_status"
     t.string "sc_key"
     t.string "slug"

@@ -12,6 +12,7 @@
 #  hidden            :boolean          default(TRUE)
 #  name              :string
 #  pledge_price      :decimal(15, 2)
+#  price             :decimal(15, 2)
 #  production_status :string
 #  sc_key            :string
 #  slug              :string

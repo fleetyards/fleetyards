@@ -514,8 +514,12 @@
       },
       "modelModule": {
         "name": "Name",
+        "description": "Description",
+        "price": "Price",
         "pledgePrice": "Pledge Price",
+        "productionStatus": "Production Status",
         "scKey": "SC Key",
+        "storeImage": "Store Image",
         "active": "Active?",
         "hidden": "Hidden?"
       },

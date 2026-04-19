@@ -112,7 +112,12 @@
 
         "modelModules": {
           "index": "Modules",
-          "create": "Create Module"
+          "create": "Create Module",
+          "edit": {
+            "index": "Base Data",
+            "models": "Models",
+            "prices": "Prices"
+          }
         },
         "modelModulePackages": {
           "index": "Module Packages",

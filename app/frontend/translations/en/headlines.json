@@ -62,7 +62,9 @@
         "modelModules": {
           "index": "Modules",
           "new": "New Module",
-          "edit": "Edit Module"
+          "edit": "Edit Module",
+          "models": "Linked Models",
+          "prices": "Prices"
         },
         "manufacturers": {
           "index": "Manufacturers",

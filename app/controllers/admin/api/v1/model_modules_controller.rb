@@ -110,7 +110,7 @@ module Admin
         private def model_module_params
           @model_module_params ||= params.permit(
             :name, :description, :manufacturer_id,
-            :pledge_price, :production_status, :active, :hidden,
+            :price, :pledge_price, :production_status, :active, :hidden,
             :store_image, :sc_key
           )
         end

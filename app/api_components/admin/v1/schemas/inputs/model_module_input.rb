@@ -14,6 +14,7 @@ module Admin
               description: {type: :string, nullable: true},
               modelId: {type: :string, format: :uuid, nullable: true},
               manufacturerId: {type: :string, format: :uuid},
+              price: {type: :number, nullable: true},
               pledgePrice: {type: :number, nullable: true},
               productionStatus: {type: :string},
               active: {type: :boolean},

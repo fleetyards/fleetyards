@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as modelModuleRoutes } from "@/admin/pages/models/modules/[id]/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -23,6 +24,17 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.modelModulePackages.index",
       nav: "hidden",
       activeRoute: "admin-models",
+    },
+  },
+  {
+    path: ":id/",
+    component: () => import("@/admin/pages/models/modules/[id].vue"),
+    children: modelModuleRoutes,
+    redirect: { name: modelModuleRoutes[0].name },
+    meta: {
+      needsAuthentication: true,
+      nav: "hidden",
+      activeRoute: "admin-model-modules",
     },
   },
 ];
