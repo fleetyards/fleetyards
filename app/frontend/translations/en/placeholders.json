@@ -146,6 +146,7 @@
         "name": "Module Name",
         "price": "0.00",
         "pledgePrice": "0.00",
+        "productionStatus": "Announced, Flight Ready, In Concept...",
         "scKey": "SC Key",
         "search": "Search modules by name..."
       },
