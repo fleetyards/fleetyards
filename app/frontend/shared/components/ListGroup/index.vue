@@ -12,11 +12,13 @@ type Props = {
   items: T[];
   loading?: boolean;
   emptyName?: string;
+  hideEmpty?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   loading: false,
   emptyName: "entries",
+  hideEmpty: false,
 });
 </script>
 
@@ -46,7 +48,7 @@ withDefaults(defineProps<Props>(), {
     <Loader :loading="loading" />
 
     <Empty
-      v-if="!items.length && !loading"
+      v-if="!items.length && !loading && !hideEmpty"
       variant="box"
       hide-actions
       :name="emptyName"

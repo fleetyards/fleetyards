@@ -191,7 +191,7 @@ defineExpose({
     </Collapsed>
   </div>
 
-  <ListGroup :items="items" :loading="loading" :empty-name="emptyName">
+  <ListGroup :items="items" :loading="loading" :empty-name="emptyName" :hide-empty="creating">
     <template #prepend>
       <div v-if="creating" key="__create__" class="list-group__item">
         <div class="list-group__row">
