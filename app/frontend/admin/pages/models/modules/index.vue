@@ -319,6 +319,20 @@ const crumbs = [
         <template #col-updatedAt="{ record }">
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
+        <template #actions="{ record }">
+          <BtnGroup inline>
+            <Btn
+              v-tooltip="t('actions.edit')"
+              :size="BtnSizesEnum.SMALL"
+              :to="{
+                name: 'admin-model-module-edit',
+                params: { id: record.id },
+              }"
+            >
+              <i class="fa-duotone fa-pencil" />
+            </Btn>
+          </BtnGroup>
+        </template>
       </BaseTable>
     </template>
     <template #pagination-top>

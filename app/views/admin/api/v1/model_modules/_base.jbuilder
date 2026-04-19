@@ -15,6 +15,7 @@ json.availability do
 end
 
 json.description model_module.description
+json.sc_key model_module.sc_key
 json.has_store_image model_module.store_image.attached?
 
 json.media({})
