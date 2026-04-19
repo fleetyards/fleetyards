@@ -235,8 +235,8 @@ class ModulesImporter
       "rear living module" => "AEGS_Retaliator_Module_Rear_Base",
       "front dropship module" => "AEGS_Retaliator_Module_Front",
       "rear dropship module" => "AEGS_Retaliator_Module_Rear",
-      "transport & storage module" => "RSI_Aurora_Mk2_Module_Cargo",
-      "defensive measures module" => "RSI_Aurora_Mk2_Module_Missile"
+      "cargo module" => "RSI_Aurora_Mk2_Module_Cargo",
+      "combat module" => "RSI_Aurora_Mk2_Module_Missile"
     }
   end
   # rubocop:enable Metrics/MethodLength

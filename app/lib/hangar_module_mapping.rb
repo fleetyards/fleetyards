@@ -6,8 +6,8 @@
 module HangarModuleMapping
   COMPONENT_MAPPING = {
     # Aurora Mk II
-    "aurora mk ii combat module" => {model_names: ["Aurora Mk II"], module_name: "Defensive Measures Module"},
-    "aurora mk ii cargo module" => {model_names: ["Aurora Mk II"], module_name: "Transport & Storage Module"},
+    "aurora mk ii combat module" => {model_names: ["Aurora Mk II"], module_name: "Combat Module"},
+    "aurora mk ii cargo module" => {model_names: ["Aurora Mk II"], module_name: "Cargo Module"},
 
     # Apollo (shared between Medivac and Triage)
     "apollo tier 1 module right" => {model_names: ["Apollo Medivac", "Apollo Triage"], module_name: "Tier 1 Module Right"},
