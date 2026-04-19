@@ -238,6 +238,8 @@ class HangarSync < HangarImporter
     missing_components = []
     missing_component_vehicles = []
 
+    user = User.find(user_id)
+
     @components.each do |item|
       mapped = component_mapping(item[:name])
       next if mapped.blank?
@@ -251,8 +253,6 @@ class HangarSync < HangarImporter
         missing_components << item[:name]
         next
       end
-
-      user = User.find(user_id)
 
       vehicle_module_with_ref = user.vehicle_modules.where(
         model_module_id: component.id,
@@ -304,6 +304,8 @@ class HangarSync < HangarImporter
     missing_upgrades = []
     missing_upgrade_vehicles = []
 
+    user = User.find(user_id)
+
     @upgrades.each do |item|
       upgrade_query = generate_upgrade_query(item[:name])
       upgrade = ModelUpgrade.where(upgrade_query).first
@@ -311,8 +313,6 @@ class HangarSync < HangarImporter
         missing_upgrades << item[:name]
         next
       end
-
-      user = User.find(user_id)
 
       vehicle_upgrade_with_ref = user.vehicle_upgrades.where(
         model_upgrade_id: upgrade.id,

@@ -323,6 +323,12 @@ class Vehicle < ApplicationRecord
   end
 
   def to_json(*_args)
+    ActiveRecord::Associations::Preloader.new(
+      records: [self],
+      associations: [:model_paint, :model_upgrades, :model_modules, :module_package, :hangar_groups, :task_forces,
+        model: [:manufacturer]]
+    ).call
+
     to_jbuilder_json
   end
 

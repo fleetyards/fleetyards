@@ -129,7 +129,7 @@ module Api
       return if current_user.blank?
       return if current_user.last_active_at.present? && current_user.last_active_at > 15.minutes.ago
 
-      current_user.update(last_active_at: Time.current)
+      current_user.update_column(:last_active_at, Time.current)
     end
 
     private def set_locale
