@@ -108,7 +108,8 @@ class ModulesImporter
 
       {
         name: mapped[:module_name],
-        model_names: mapped[:model_names]
+        model_names: mapped[:model_names],
+        image: item["image"]
       }
     end
   rescue JSON::ParserError => e
@@ -169,6 +170,8 @@ class ModulesImporter
         active: true
       )
 
+      attach_store_image(model_module, mod[:image]) if mod[:image].present? && !model_module.store_image.attached?
+
       ModuleHardpoint.create!(
         model_id: model.id,
         model_module_id: model_module.id
@@ -196,6 +199,17 @@ class ModulesImporter
       name: mod[:name],
       error: true
     }]
+  end
+
+  private def attach_store_image(model_module, image_url)
+    uri = URI.parse(image_url)
+    tempfile = uri.open # rubocop:disable Security/Open
+    filename = File.basename(uri.path)
+    content_type = Marcel::MimeType.for(name: filename)
+    model_module.store_image.attach(io: tempfile, filename: filename, content_type: content_type)
+  rescue => e
+    Sentry.capture_exception(e)
+    Rails.logger.error "Store image could not be attached for module: #{model_module.name}"
   end
 
   private def enrich_from_sc_data(model_module)
