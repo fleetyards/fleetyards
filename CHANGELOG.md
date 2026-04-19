@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.8.0](https://github.com/fleetyards/fleetyards/compare/v6.7.2...v6.8.0) (2026-04-19)
+
+
+### Features
+
+* add manufacturer codes to model URLs ([#3695](https://github.com/fleetyards/fleetyards/issues/3695)) ([aac5d00](https://github.com/fleetyards/fleetyards/commit/aac5d00dbe2f54dfe617b762d71b152b3c1381f7))
+* module hardpoints and cargo grids on model detail page ([#3717](https://github.com/fleetyards/fleetyards/issues/3717)) ([bcd8597](https://github.com/fleetyards/fleetyards/commit/bcd85979643b696ea7b7a537ce18b6dc0552588f))
+
+
+### Bug Fixes
+
+* add :all to Model per_page_steps for consistent pagination options ([3a583e1](https://github.com/fleetyards/fleetyards/commit/3a583e15fc9b2a81cd69c41ebc32f1261f4cca54))
+* add Aurora Mk II module mappings to importer and hangar sync ([3b349c6](https://github.com/fleetyards/fleetyards/commit/3b349c60e91b93a4b761793b1b578cdf52eed8c6))
+* add set -e to pre-deploy hook to fail fast on migration errors ([c4f1f6b](https://github.com/fleetyards/fleetyards/commit/c4f1f6bdef6c5a466fa3e1ff1c13ee44af51aa46))
+* ensure social login buttons render at consistent size ([2b6bbdc](https://github.com/fleetyards/fleetyards/commit/2b6bbdc7ae4bf2fbb1d4a3328e07cefe37b006af))
+* hangar sync getting stuck by handling empty pages and parse errors ([de7bcbe](https://github.com/fleetyards/fleetyards/commit/de7bcbe34cce9c17d33a7c577e111e7277b36b4b))
+* keep per-page dropdown visible when "all" is selected ([2f2a164](https://github.com/fleetyards/fleetyards/commit/2f2a164f57e4bf29f3e72a61a0cc3d0fbe44fb87))
+* prevent hangar sync from stopping early on pages with no matching items ([cd20b39](https://github.com/fleetyards/fleetyards/commit/cd20b39d291a705c38cba948946addd7ff41a110))
+* remove model_id from model_module_params to fix UnknownAttributeError ([707747e](https://github.com/fleetyards/fleetyards/commit/707747e968629c1dce283207817384c3c0529025))
+* remove unused model_id column from model_modules ([aafe93d](https://github.com/fleetyards/fleetyards/commit/aafe93dae229e6b9eeccfe6a5af791475bba419f))
+* touch user on omniauth connection changes to bust cache ([4552d72](https://github.com/fleetyards/fleetyards/commit/4552d720e36787a58b8e070488de13a331f7a493))
+* use GithubIssueCreator in import tasks and extract issue body to importers ([2528bc7](https://github.com/fleetyards/fleetyards/commit/2528bc7276970b26c225f8c70a365e3709744dff))
+* use separate query for ModelPaint without legacy_slug column ([fa03523](https://github.com/fleetyards/fleetyards/commit/fa0352351fd4186b71a4ed9d59e679803053a1b8))
+
+
+### Refactorings
+
+* remove sc_identifier, derive from slug ([#3714](https://github.com/fleetyards/fleetyards/issues/3714)) ([f8158a0](https://github.com/fleetyards/fleetyards/commit/f8158a0a8a40960e6c4f203fc199ed651b090eee))
+
+
+### Chores
+
+* apply prettier formatting fixes ([3ccef94](https://github.com/fleetyards/fleetyards/commit/3ccef9433841477adf7bd250a64da051b32c98dc))
+
 ## [6.7.2](https://github.com/fleetyards/fleetyards/compare/v6.7.1...v6.7.2) (2026-04-17)
 
 
