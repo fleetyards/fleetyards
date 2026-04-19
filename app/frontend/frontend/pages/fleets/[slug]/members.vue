@@ -15,7 +15,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const resourceAccess = computed(
-  () => props.membership.fleetRole.resourceAccess,
+  () => props.membership?.fleetRole?.resourceAccess,
 );
 </script>
 

@@ -58,7 +58,7 @@ const roleDisplay = computed(() => {
   if (props.member.status === "declined") {
     return t("labels.fleet.members.declined");
   }
-  return props.member.fleetRole.name;
+  return props.member.fleetRole?.name;
 });
 </script>
 

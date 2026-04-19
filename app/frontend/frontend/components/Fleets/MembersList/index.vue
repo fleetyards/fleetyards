@@ -125,7 +125,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     </template>
 
     <template #col-role="{ record }">
-      {{ record.fleetRole.name }}
+      {{ record.fleetRole?.name }}
     </template>
 
     <template #col-acceptedAt="{ record }">
