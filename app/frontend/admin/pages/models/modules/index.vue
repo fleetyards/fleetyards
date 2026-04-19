@@ -22,7 +22,6 @@ import {
   useListModelModules,
   getListModelModulesQueryKey,
   type ModelModule,
-  type Model,
 } from "@/services/fyAdminApi";
 
 const modulesQueryParams = computed(() => {
@@ -121,9 +120,6 @@ const crumbs = [
   },
 ];
 
-const getModels = (record: ModelModule): Model[] => {
-  return (record as ModelModule & { models?: Model[] }).models || [];
-};
 </script>
 
 <template>
@@ -175,8 +171,8 @@ const getModels = (record: ModelModule): Model[] => {
           {{ record.name }}
         </template>
         <template #col-models="{ record }">
-          <ul v-if="getModels(record).length" class="model-modules-models-list">
-            <li v-for="model in getModels(record)" :key="model.id">
+          <ul v-if="record.models.length" class="model-modules-models-list">
+            <li v-for="model in record.models" :key="model.id">
               <router-link
                 :to="{
                   name: 'admin-model-edit',

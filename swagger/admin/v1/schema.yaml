@@ -8359,6 +8359,10 @@ components:
           type: boolean
         model:
           "$ref": "#/components/schemas/Model"
+        models:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Model"
       additionalProperties: false
       required:
       - id
