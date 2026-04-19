@@ -145,6 +145,7 @@
       "modelModule": {
         "name": "Module Name",
         "pledgePrice": "0.00",
+        "scKey": "SC Key",
         "search": "Search modules by name..."
       },
       "modelUpgrade": {

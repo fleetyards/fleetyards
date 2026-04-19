@@ -87,6 +87,7 @@ const onStartEdit = (record: ModelModule) => {
     manufacturerId: record.manufacturer?.id,
     pledgePrice: record.pledgePrice,
     productionStatus: record.productionStatus,
+    scKey: record.scKey,
     storeImage: undefined,
   };
 };
@@ -226,6 +227,9 @@ const onUnlink = (record: ModelModule) => {
       <template v-if="item.manufacturer">
         <span class="text-muted">{{ item.manufacturer.name }}</span>
       </template>
+      <template v-if="item.scKey">
+        <span class="text-muted">{{ item.scKey }}</span>
+      </template>
       <template v-if="item.pledgePrice">
         <span class="text-muted" v-html="toUEC(item.pledgePrice)" />
       </template>
@@ -304,6 +308,11 @@ const onUnlink = (record: ModelModule) => {
           :type="InputTypesEnum.NUMBER"
           translation-key="modelModule.pledgePrice"
         />
+        <FormInput
+          v-model="editForm.scKey"
+          name="edit-sc-key"
+          translation-key="modelModule.scKey"
+        />
       </div>
     </template>
 
@@ -341,6 +350,11 @@ const onUnlink = (record: ModelModule) => {
           name="create-pledge-price"
           :type="InputTypesEnum.NUMBER"
           translation-key="modelModule.pledgePrice"
+        />
+        <FormInput
+          v-model="createForm.scKey"
+          name="create-sc-key"
+          translation-key="modelModule.scKey"
         />
       </div>
     </template>

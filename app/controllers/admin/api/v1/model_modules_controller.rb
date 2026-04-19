@@ -111,7 +111,7 @@ module Admin
           @model_module_params ||= params.permit(
             :name, :description, :manufacturer_id,
             :pledge_price, :production_status, :active, :hidden,
-            :store_image
+            :store_image, :sc_key
           )
         end
 
