@@ -8414,8 +8414,6 @@ components:
           type: boolean
         hidden:
           type: boolean
-        model:
-          "$ref": "#/components/schemas/Model"
         models:
           type: array
           items:

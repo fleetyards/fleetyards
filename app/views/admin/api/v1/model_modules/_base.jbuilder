@@ -25,12 +25,6 @@ json.media do
   end
 end
 
-if model_module.models.any?
-  json.model do
-    json.partial! "admin/api/v1/models/base", model: model_module.models.first
-  end
-end
-
 json.models do
   json.array! model_module.models, partial: "admin/api/v1/models/base", as: :model
 end

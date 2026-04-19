@@ -13,7 +13,6 @@ module Admin
                 price: {type: :number},
                 active: {type: :boolean},
                 hidden: {type: :boolean},
-                model: {"$ref": "#/components/schemas/Model"},
                 models: {type: :array, items: {"$ref": "#/components/schemas/Model"}}
               }
             })
