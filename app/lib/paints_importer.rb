@@ -92,9 +92,9 @@ class PaintsImporter
   end
 
   private def extract_paints(import)
-    return if import.input.blank? || import.input.starts_with?("{")
+    return if import.input.blank? || import.input.is_a?(Hash)
 
-    imported_data = JSON.parse(import.input)
+    imported_data = import.input
 
     imported_data.filter_map do |item|
       next if item["type"] != "skin" || item["image"].blank?

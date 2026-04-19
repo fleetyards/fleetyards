@@ -3,6 +3,8 @@
 require "json"
 
 class ModulesImporter
+  include HangarModuleMapping
+
   def run
     modules = []
 
@@ -95,29 +97,18 @@ class ModulesImporter
   private def extract_modules(import)
     return if import.input.blank?
 
-    imported_data = import.input.is_a?(String) ? JSON.parse(import.input) : import.input
+    imported_data = import.input
     return unless imported_data.is_a?(Array)
 
     imported_data.filter_map do |item|
       next if item["type"] != "component"
 
-      name = item["name"].tr("\u2013", "-")
-      name = name.tr("\u00A0", " ").strip
-
-      mapped = component_mapping(name)
-      if mapped
-        model_name = mapped[:model_name]
-        module_name = mapped[:module_name]
-      else
-        model_name = name.split(" ").first
-        module_name = name.gsub(model_name, "").strip.delete_prefix("-").strip
-      end
-
-      next if module_name.blank?
+      mapped = component_mapping(item["name"])
+      next if mapped.blank?
 
       {
-        name: module_mapping(module_name),
-        model_name: model_mapping(model_name)
+        name: mapped[:module_name],
+        model_names: mapped[:model_names]
       }
     end
   rescue JSON::ParserError => e
@@ -127,14 +118,14 @@ class ModulesImporter
   end
 
   private def import_module(mod)
-    model = Model.find_by("lower(name) = :name OR slug = :slug", name: mod[:model_name].downcase, slug: mod[:model_name].parameterize)
+    model = Model.where(name: mod[:model_names]).first
 
     if model.blank?
       return {
         new: false,
         module_id: nil,
         model_id: nil,
-        model_name: mod[:model_name],
+        model_name: mod[:model_names].first,
         name: mod[:name],
         error: false
       }
@@ -182,7 +173,7 @@ class ModulesImporter
       new: true,
       module_id: nil,
       model_id: model&.id,
-      model_name: mod[:model_name],
+      model_name: mod[:model_names].first,
       name: mod[:name],
       error: true
     }
@@ -216,70 +207,4 @@ class ModulesImporter
     }
   end
   # rubocop:enable Metrics/MethodLength
-
-  # rubocop:disable Metrics/MethodLength
-  private def module_mapping(name)
-    name = name.tr("\u2013", "-")
-
-    mapping = {
-      "RETALIATOR FRONT LIVING MODULE" => "Front Living Module",
-      "Retaliator Front Living Module" => "Front Living Module",
-      "RETALIATOR REAR LIVING MODULE" => "Rear Living Module",
-      "Retaliator Rear Living Module" => "Rear Living Module",
-      "RETALIATOR FRONT DROP SHIP MODULE" => "Front Dropship Module",
-      "Retaliator Front Drop Ship Module" => "Front Dropship Module",
-      "RETALIATOR TORPEDO Module - Bow" => "Front Torpedo Bay",
-      "Retaliator Torpedo Module - Bow" => "Front Torpedo Bay",
-      "RETALIATOR TORPEDO Module - Stern" => "Rear Torpedo Bay",
-      "Retaliator Torpedo Module - Stern" => "Rear Torpedo Bay",
-      "RETALIATOR CARGO MODULE - BOW" => "Front Cargo Module",
-      "RETALIATOR CARGO MODULE - STERN" => "Rear Cargo Module",
-      "Retaliator Cargo Module - Bow" => "Front Cargo Module",
-      "Retaliator Cargo Module - Stern" => "Rear Cargo Module",
-      "Retaliator Personnel Module - Bow" => "Front Living Module",
-      "Retaliator Personnel Module - Stern" => "Rear Living Module",
-      "Retaliator Drop Ship Module - Bow" => "Front Dropship Module",
-      "FRONT LIVING MODULE" => "Front Living Module",
-      "Front Living Module" => "Front Living Module",
-      "REAR LIVING MODULE" => "Rear Living Module",
-      "Rear Living Module" => "Rear Living Module",
-      "FRONT DROP SHIP MODULE" => "Front Dropship Module",
-      "Front Drop Ship Module" => "Front Dropship Module",
-      "TORPEDO Module - Bow" => "Front Torpedo Bay",
-      "Torpedo Module - Bow" => "Front Torpedo Bay",
-      "TORPEDO Module - Stern" => "Rear Torpedo Bay",
-      "Torpedo Module - Stern" => "Rear Torpedo Bay",
-      "Cargo Module - Bow" => "Front Cargo Module",
-      "Cargo Module - Stern" => "Rear Cargo Module",
-      "CARGO MODULE - BOW" => "Front Cargo Module",
-      "CARGO MODULE - STERN" => "Rear Cargo Module",
-      "Personnel Module - Bow" => "Front Living Module",
-      "Personnel Module - Stern" => "Rear Living Module",
-      "Drop Ship Module - Bow" => "Front Dropship Module"
-    }
-
-    return mapping[name.strip] if mapping[name.strip].present?
-
-    name
-  end
-  # rubocop:enable Metrics/MethodLength
-
-  private def component_mapping(name)
-    mapping = {
-      "Aurora Mk II TS Module" => {model_name: "Aurora Mk II", module_name: "Transport & Storage Module"},
-      "Aurora Mk II DM Module" => {model_name: "Aurora Mk II", module_name: "Defensive Measures Module"}
-    }
-
-    mapping[name.strip]
-  end
-
-  private def model_mapping(name)
-    mapping = {
-      "Retaliator" => "Retaliator"
-    }
-
-    return mapping[name.strip] if mapping[name.strip].present?
-
-    name
-  end
 end
