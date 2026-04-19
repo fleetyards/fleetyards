@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.9.0](https://github.com/fleetyards/fleetyards/compare/v6.8.0...v6.9.0) (2026-04-19)
+
+
+### Features
+
+* add admin model modules overview page ([9c92270](https://github.com/fleetyards/fleetyards/commit/9c922706b001a2fb9a25edc805d20fcbb2cf96fc))
+* add bulk actions (activate, hide, destroy) to admin modules list ([1543e3c](https://github.com/fleetyards/fleetyards/commit/1543e3cb3736d92118a70f722b58cc8a2e1352a7))
+* add sc_key field to admin model modules edit page ([b9f2fcc](https://github.com/fleetyards/fleetyards/commit/b9f2fccb138b7c8b22f9c64eac8ab592e19b3b80))
+* add tabbed edit form for admin modules with models and prices tabs ([678fd04](https://github.com/fleetyards/fleetyards/commit/678fd04e8c9e69b3e297489a21d5459e64571d02))
+* display model count in fleet table view when grouped ([8401c41](https://github.com/fleetyards/fleetyards/commit/8401c410c03d193350bd5ffbcc3777782e756698))
+
+
+### Bug Fixes
+
+* add missing productionStatus placeholder for module form ([73d501e](https://github.com/fleetyards/fleetyards/commit/73d501ef5721d279e60c7d8f5df414a4b2d54aae))
+* add missing sc_key to admin module API response and edit action to module list ([2fd0ba5](https://github.com/fleetyards/fleetyards/commit/2fd0ba50707891b80452e29d171432ecaefb3296))
+* add models array to ModelModule API schema ([735469b](https://github.com/fleetyards/fleetyards/commit/735469bc5239ad4d34c00cd09c3ea4707d044b17))
+* add module edit translations for es, fr, it, zh-CN, zh-TW ([0fdeff8](https://github.com/fleetyards/fleetyards/commit/0fdeff89ade0d888510ebd7bc251996c2c6b2c7d))
+* attach store_image when importing new modules ([8a03186](https://github.com/fleetyards/fleetyards/commit/8a03186e3079e153aaf44be220a0bf015a632a23))
+* create module hardpoints for all matching models in modules importer ([df8583b](https://github.com/fleetyards/fleetyards/commit/df8583b891eb796b27889711407f2a223c31a4f7))
+* hide empty box in InlineEditableList when create form is open ([302fe3f](https://github.com/fleetyards/fleetyards/commit/302fe3f39ed1d5af4af92d99ffdcef4e376e7b18))
+* optional chain on possibly undefined fleetRole in fleet member components ([ae01aa6](https://github.com/fleetyards/fleetyards/commit/ae01aa617b82439a2d3917f3c160c6d2d88b9b2d))
+* optional chain on possibly undefined models array ([f729203](https://github.com/fleetyards/fleetyards/commit/f729203887dc1a55ad04045555d1caaa19c49dc5))
+* prevent jbuilder deep_format_keys from camelizing model count slug keys ([df1416d](https://github.com/fleetyards/fleetyards/commit/df1416db09e1a0af0d3e54e539e45e43dcffb06e))
+* remove redundant JSON.parse for jsonb input columns ([1d22aef](https://github.com/fleetyards/fleetyards/commit/1d22aefaa8d8f38ede6d2048cfc1dfe6c005b297))
+* remove singular model key from module API response ([2484a82](https://github.com/fleetyards/fleetyards/commit/2484a820a6806771124d48eb0282ae7a72ff58ba))
+* rename Aurora module names to match in-game names ([9ec1d8f](https://github.com/fleetyards/fleetyards/commit/9ec1d8f143be4cd49fd0c50927ac9ece0b23882f))
+* replace Sentry.capture_exception with Appsignal.report_error ([d4cc27e](https://github.com/fleetyards/fleetyards/commit/d4cc27e42f9ae7590e216387085e24fe5f0faee8))
+* resolve N+1 queries and unnecessary validations causing high server load ([fcfa909](https://github.com/fleetyards/fleetyards/commit/fcfa909d3acb75c6e91f30a797ff25f7e82e3c61))
+* restrict DocsController#index to HTML format ([cface58](https://github.com/fleetyards/fleetyards/commit/cface58b9fba418fdcd372b7f81aa35fc9d60051))
+* skip GitHub issue creation when token is not configured ([fbc48c6](https://github.com/fleetyards/fleetyards/commit/fbc48c6c377ed1779dccc3a5d8792edafa9bcb4b))
+* unify module mappings and fix false positives in modules import ([#3718](https://github.com/fleetyards/fleetyards/issues/3718)) ([98e34dd](https://github.com/fleetyards/fleetyards/commit/98e34dd90dca74e12f397d27fc710e1abb65c561))
+* use production status select, add German translations, set flight-ready from SC data ([39f361a](https://github.com/fleetyards/fleetyards/commit/39f361a5ccea0001dc751b31a9e794b235a244fb))
+
 ## [6.8.0](https://github.com/fleetyards/fleetyards/compare/v6.7.2...v6.8.0) (2026-04-19)
 
 
