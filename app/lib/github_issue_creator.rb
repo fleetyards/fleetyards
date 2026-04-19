@@ -8,6 +8,8 @@ class GithubIssueCreator
   end
 
   def run
+    return if Rails.application.credentials.github_token.blank?
+
     digest = Digest::SHA256.hexdigest(@body)
 
     last_log = GithubIssueLog.where(task_type: @task_type).order(created_at: :desc).first
