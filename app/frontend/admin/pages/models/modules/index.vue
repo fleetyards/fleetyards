@@ -119,7 +119,6 @@ const crumbs = [
     label: t("headlines.admin.modelModules.index"),
   },
 ];
-
 </script>
 
 <template>
