@@ -12,7 +12,8 @@ module Admin
               properties: {
                 active: {type: :boolean},
                 hidden: {type: :boolean},
-                model: {"$ref": "#/components/schemas/Model"}
+                model: {"$ref": "#/components/schemas/Model"},
+                models: {type: :array, items: {"$ref": "#/components/schemas/Model"}}
               }
             })
           end
