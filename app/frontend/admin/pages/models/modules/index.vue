@@ -21,8 +21,12 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   useListModelModules,
   getListModelModulesQueryKey,
+  useUpdateBulkModelModule as useUpdateBulkModelModuleMutation,
+  useDestroyBulkModelModule as useDestroyBulkModelModuleMutation,
   type ModelModule,
 } from "@/services/fyAdminApi";
+import { useQueryClient } from "@tanstack/vue-query";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const modulesQueryParams = computed(() => {
   return {
@@ -47,6 +51,78 @@ const {
   refetch,
   ...asyncStatus
 } = useListModelModules(modulesQueryParams);
+
+const queryClient = useQueryClient();
+
+const invalidateModules = () =>
+  queryClient.invalidateQueries({ queryKey: getListModelModulesQueryKey() });
+
+const selected = ref<string[]>([]);
+
+const onSelectedChange = (ids: string[]) => {
+  selected.value = ids;
+};
+
+const updateBulkMutation = useUpdateBulkModelModuleMutation();
+const destroyBulkMutation = useDestroyBulkModelModuleMutation();
+
+const updating = ref(false);
+
+const activateSelected = async () => {
+  updating.value = true;
+
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: selected.value,
+        active: true,
+      },
+    })
+    .then(async () => {
+      selected.value = [];
+      await invalidateModules();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
+};
+
+const hideSelected = async () => {
+  updating.value = true;
+
+  await updateBulkMutation
+    .mutateAsync({
+      data: {
+        ids: selected.value,
+        hidden: true,
+      },
+    })
+    .then(async () => {
+      selected.value = [];
+      await invalidateModules();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
+};
+
+const destroySelected = async () => {
+  updating.value = true;
+
+  await destroyBulkMutation
+    .mutateAsync({
+      data: {
+        ids: selected.value,
+      },
+    })
+    .then(async () => {
+      selected.value = [];
+      await invalidateModules();
+    })
+    .finally(() => {
+      updating.value = false;
+    });
+};
 
 const columns: BaseTableCol<ModelModule>[] = [
   {
@@ -156,7 +232,37 @@ const crumbs = [
         :empty-visible="emptyVisible"
         default-sort="name asc"
         selectable
+        :selected="selected"
+        @selected-change="onSelectedChange"
       >
+        <template #selected-actions>
+          <BtnGroup inline>
+            <Btn
+              v-tooltip="t('actions.enableSelected')"
+              :size="BtnSizesEnum.SMALL"
+              :disabled="updating"
+              @click="activateSelected"
+            >
+              <i class="fa-duotone fa-check" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.disableSelected')"
+              :size="BtnSizesEnum.SMALL"
+              :disabled="updating"
+              @click="hideSelected"
+            >
+              <i class="fa-duotone fa-eye-slash" />
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.deleteSelected')"
+              :size="BtnSizesEnum.SMALL"
+              :disabled="updating"
+              @click="destroySelected"
+            >
+              <i class="fa-duotone fa-trash" />
+            </Btn>
+          </BtnGroup>
+        </template>
         <template #col-storeImage="{ record }">
           <ViewImage
             :image="record.media.storeImage"

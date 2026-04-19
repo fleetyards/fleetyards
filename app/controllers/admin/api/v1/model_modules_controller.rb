@@ -5,6 +5,7 @@ module Admin
     module V1
       class ModelModulesController < ::Admin::Api::BaseController
         before_action :set_model_module, only: %i[show update destroy link unlink]
+        before_action :set_model_modules, only: %i[update_bulk destroy_bulk]
 
         def index
           authorize! with: ::Admin::ModelModulePolicy
@@ -49,8 +50,30 @@ module Admin
           end
         end
 
+        def update_bulk
+          errors = []
+
+          ModelModule.transaction do
+            @model_modules.find_each do |model_module|
+              errors << model_module.errors unless model_module.update(model_module_bulk_params)
+            end
+          end
+
+          return head :ok if errors.blank?
+
+          render json: ValidationError.new("model_module.bulk_update", errors: errors.first), status: :bad_request
+        end
+
         def destroy
           @model_module.destroy
+
+          head :no_content
+        end
+
+        def destroy_bulk
+          ModelModule.transaction do
+            @model_modules.destroy_all
+          end
 
           head :no_content
         end
@@ -90,6 +113,16 @@ module Admin
             :pledge_price, :production_status, :active, :hidden,
             :store_image
           )
+        end
+
+        private def set_model_modules
+          authorize! with: ::Admin::ModelModulePolicy
+
+          @model_modules = ModelModule.where(id: params[:ids])
+        end
+
+        private def model_module_bulk_params
+          @model_module_bulk_params ||= params.permit(:active, :hidden)
         end
 
         private def model_module_query_params

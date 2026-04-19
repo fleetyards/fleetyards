@@ -37,6 +37,10 @@ v1_admin_api_routes = lambda do
 
   resources :videos, only: %i[index show create update destroy]
   resources :model_modules, path: "model-modules", only: %i[index show create update destroy] do
+    collection do
+      put "bulk", to: "model_modules#update_bulk"
+      delete "bulk", to: "model_modules#destroy_bulk"
+    end
     member do
       put :link
       put :unlink

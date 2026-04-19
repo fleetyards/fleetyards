@@ -2651,6 +2651,61 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/model-modules/bulk":
+    delete:
+      summary: Bulk destroy model modules
+      operationId: destroyBulkModelModule
+      tags:
+      - ModelModules
+      parameters: []
+      responses:
+        '204':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModuleDestroyBulkInput"
+        required: true
+    put:
+      summary: Bulk update model modules
+      operationId: updateBulkModelModule
+      tags:
+      - ModelModules
+      parameters: []
+      responses:
+        '200':
+          description: successful
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModuleUpdateBulkInput"
+        required: true
   "/model-modules/{id}":
     parameters:
     - name: id
@@ -8372,6 +8427,18 @@ components:
       - createdAt
       - updatedAt
       title: ModelModule
+    ModelModuleDestroyBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - ids
+      title: ModelModuleDestroyBulkInput
     ModelModuleInput:
       type: object
       properties:
@@ -8617,6 +8684,22 @@ components:
       additionalProperties: false
       example: {}
       title: ModelModuleQuery
+    ModelModuleUpdateBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        active:
+          type: boolean
+        hidden:
+          type: boolean
+      additionalProperties: false
+      required:
+      - ids
+      title: ModelModuleUpdateBulkInput
     ModelModules:
       type: object
       properties:
