@@ -1,4 +1,6 @@
 class HangarSync < HangarImporter
+  include HangarModuleMapping
+
   attr_accessor :data, :ships, :components, :upgrades
 
   ITEM_TYPES = %w[ship component upgrade skin].freeze
@@ -238,19 +240,12 @@ class HangarSync < HangarImporter
 
     @components.each do |item|
       mapped = component_mapping(item[:name])
-      if mapped
-        model_name = mapped[:model_name]
-        component_name = mapped[:module_name]
-      else
-        model_name = item[:name].split(" ").first
-        component_name = item[:name].gsub(model_name, "").strip.delete_prefix("-").strip
-      end
+      next if mapped.blank?
 
-      model_query = generate_model_query(model_name)
-      model = Model.where(model_query).first
+      model = Model.where(name: mapped[:model_names]).first
       next if model.blank?
 
-      component_query = generate_module_query(component_name)
+      component_query = generate_module_query(mapped[:module_name])
       component = model.modules.where(component_query).first
       if component.blank?
         missing_components << item[:name]
@@ -391,7 +386,7 @@ class HangarSync < HangarImporter
   end
 
   private def generate_module_query(item_name)
-    name = rsi_hangar_module_mapping(item_name)
+    name = item_name
     normalized_name = normalize(name)
 
     [
@@ -435,15 +430,6 @@ class HangarSync < HangarImporter
       rsi_pledge_id: item[:id],
       rsi_pledge_synced_at: Time.current
     }
-  end
-
-  private def component_mapping(name)
-    mapping = {
-      "Aurora Mk II TS Module" => {model_name: "Aurora Mk II", module_name: "Transport & Storage Module"},
-      "Aurora Mk II DM Module" => {model_name: "Aurora Mk II", module_name: "Defensive Measures Module"}
-    }
-
-    mapping[name.strip]
   end
 
   # rubocop:disable Metrics/MethodLength
@@ -505,55 +491,6 @@ class HangarSync < HangarImporter
       "Crusader A1 Spirit" => "A1 Spirit",
       "Crusader C1 Spirit" => "C1 Spirit",
       "Crusader E1 Spirit" => "E1 Spirit"
-    }
-
-    return name if mapping[name.strip].nil?
-
-    mapping[name.strip]
-  end
-  # rubocop:enable Metrics/MethodLength
-
-  # rubocop:disable Metrics/MethodLength
-  private def rsi_hangar_module_mapping(name)
-    name = name.tr("–", "-")
-
-    mapping = {
-      "RETALIATOR FRONT LIVING MODULE" => "Front Living Module",
-      "Retaliator Front Living Module" => "Front Living Module",
-      "RETALIATOR REAR LIVING MODULE" => "Rear Living Module",
-      "Retaliator Rear Living Module" => "Rear Living Module",
-      "RETALIATOR FRONT DROP SHIP MODULE" => "Front Dropship Module",
-      "Retaliator Front Drop Ship Module" => "Front Dropship Module",
-      "RETALIATOR TORPEDO Module - Bow" => "Front Torpedo Bay",
-      "Retaliator Torpedo Module - Bow" => "Front Torpedo Bay",
-      "RETALIATOR TORPEDO Module - Stern" => "Rear Torpedo Bay",
-      "Retaliator Torpedo Module - Stern" => "Rear Torpedo Bay",
-      "RETALIATOR CARGO MODULE - BOW" => "Front Cargo Module",
-      "RETALIATOR CARGO MODULE - STERN" => "Rear Cargo Module",
-      "Retaliator Cargo Module - Bow" => "Front Cargo Module",
-      "Retaliator Cargo Module - Stern" => "Rear Cargo Module",
-      "Retaliator Personnel Module - Bow" => "Front Living Module",
-      "Retaliator Personnel Module - Stern" => "Rear Living Module",
-      "Retaliator Drop Ship Module - Bow" => "Front Dropship Module",
-      "FRONT LIVING MODULE" => "Front Living Module",
-      "Front Living Module" => "Front Living Module",
-      "REAR LIVING MODULE" => "Rear Living Module",
-      "Rear Living Module" => "Rear Living Module",
-      "FRONT DROP SHIP MODULE" => "Front Dropship Module",
-      "Front Drop Ship Module" => "Front Dropship Module",
-      "TORPEDO Module - Bow" => "Front Torpedo Bay",
-      "Torpedo Module - Bow" => "Front Torpedo Bay",
-      "TORPEDO Module - Stern" => "Rear Torpedo Bay",
-      "Torpedo Module - Stern" => "Rear Torpedo Bay",
-      "Cargo Module - Bow" => "Front Cargo Module",
-      "Cargo Module - Stern" => "Rear Cargo Module",
-      "CARGO MODULE - BOW" => "Front Cargo Module",
-      "CARGO MODULE - STERN" => "Rear Cargo Module",
-      "Personnel Module - Bow" => "Front Living Module",
-      "Personnel Module - Stern" => "Rear Living Module",
-      "Drop Ship Module - Bow" => "Front Dropship Module",
-      "Transport & Storage Module" => "Transport & Storage Module",
-      "Defensive Measures Module" => "Defensive Measures Module"
     }
 
     return name if mapping[name.strip].nil?
