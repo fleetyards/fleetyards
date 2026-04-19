@@ -170,7 +170,7 @@ const crumbs = [
           {{ record.name }}
         </template>
         <template #col-models="{ record }">
-          <ul v-if="record.models.length" class="model-modules-models-list">
+          <ul v-if="record.models?.length" class="model-modules-models-list">
             <li v-for="model in record.models" :key="model.id">
               <router-link
                 :to="{
