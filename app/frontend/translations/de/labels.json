@@ -677,7 +677,12 @@
       },
       "modelModule": {
         "name": "Name",
+        "description": "Beschreibung",
+        "price": "Preis",
         "pledgePrice": "Pledge-Preis",
+        "productionStatus": "Produktionsstatus",
+        "scKey": "SC Key",
+        "storeImage": "Shop-Bild",
         "active": "Aktiv?",
         "hidden": "Versteckt?"
       },

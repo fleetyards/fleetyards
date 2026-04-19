@@ -104,7 +104,12 @@
         },
         "modelModules": {
           "index": "Module",
-          "create": "Modul erstellen"
+          "create": "Modul erstellen",
+          "edit": {
+            "index": "Basisdaten",
+            "models": "Modelle",
+            "prices": "Preise"
+          }
         },
         "modelModulePackages": {
           "index": "Modulpakete",

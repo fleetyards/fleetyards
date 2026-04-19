@@ -18,7 +18,9 @@ module ScData
 
         update_loadout(model_module, module_data)
 
-        update_params = {}
+        update_params = {
+          production_status: "flight-ready"
+        }
 
         update_params = update_metrics(module_data, update_params)
         update_params = update_cargo_holds(model_module.hardpoints, update_params)

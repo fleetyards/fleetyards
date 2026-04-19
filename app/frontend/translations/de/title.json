@@ -151,7 +151,12 @@
           "edit": "Modell Lackierung bearbeiten"
         },
         "modelModules": {
-          "index": "Modell Module"
+          "index": "Modell Module",
+          "edit": {
+            "index": "%{name} Basisdaten bearbeiten",
+            "models": "%{name} Modelle bearbeiten",
+            "prices": "%{name} Preise bearbeiten"
+          }
         },
         "modelModulePackages": {
           "index": "Modell Modul Pakete"

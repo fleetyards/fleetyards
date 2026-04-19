@@ -22,6 +22,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
+import ProductionStatusFilterGroup from "@/admin/components/base/ProductionStatusFilterGroup/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useQueryClient } from "@tanstack/vue-query";
 
@@ -153,10 +154,11 @@ const handleCancel = async () => {
           </div>
         </div>
         <hr />
-        <FormInput
+        <ProductionStatusFilterGroup
           v-model="productionStatus"
           v-bind="productionStatusProps"
-          translation-key="modelModule.productionStatus"
+          :no-label="false"
+          :multiple="false"
           name="productionStatus"
         />
         <FormFileInput

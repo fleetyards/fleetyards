@@ -72,7 +72,10 @@
       },
       "modelModule": {
         "name": "Modulname",
+        "price": "0.00",
         "pledgePrice": "0.00",
+        "productionStatus": "Angekündigt, Flugbereit, Im Konzept...",
+        "scKey": "SC Key",
         "search": "Module nach Name suchen..."
       },
       "modelUpgrade": {

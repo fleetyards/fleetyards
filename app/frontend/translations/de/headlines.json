@@ -57,7 +57,9 @@
         "modelModules": {
           "index": "Module",
           "new": "Neues Modul",
-          "edit": "Modul bearbeiten"
+          "edit": "Modul bearbeiten",
+          "models": "Verknüpfte Modelle",
+          "prices": "Preise"
         },
         "manufacturers": {
           "index": "Hersteller",
