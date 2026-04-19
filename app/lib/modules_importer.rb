@@ -118,65 +118,84 @@ class ModulesImporter
   end
 
   private def import_module(mod)
-    model = Model.where(name: mod[:model_names]).first
+    models = Model.where(name: mod[:model_names])
 
-    if model.blank?
-      return {
+    if models.empty?
+      return mod[:model_names].map do |model_name|
+        {
+          new: false,
+          module_id: nil,
+          model_id: nil,
+          model_name: model_name,
+          name: mod[:name],
+          error: false
+        }
+      end
+    end
+
+    model_module = nil
+    found_names = models.pluck(:name)
+    missing_names = mod[:model_names] - found_names
+
+    results = missing_names.map do |model_name|
+      {
         new: false,
         module_id: nil,
         model_id: nil,
-        model_name: mod[:model_names].first,
+        model_name: model_name,
         name: mod[:name],
         error: false
       }
     end
 
-    existing_module = model.modules.find_by("lower(model_modules.name) = :name OR model_modules.slug = :slug",
-      name: mod[:name].downcase, slug: mod[:name].parameterize)
+    results + models.map do |model|
+      existing_module = model.modules.find_by("lower(model_modules.name) = :name OR model_modules.slug = :slug",
+        name: mod[:name].downcase, slug: mod[:name].parameterize)
 
-    if existing_module.present?
-      return {
-        new: false,
-        module_id: existing_module.id,
+      if existing_module.present?
+        next {
+          new: false,
+          module_id: existing_module.id,
+          model_id: model.id,
+          model_name: model.name,
+          name: mod[:name],
+          error: false
+        }
+      end
+
+      model_module ||= ModelModule.create!(
+        name: mod[:name],
+        hidden: false,
+        active: true
+      )
+
+      ModuleHardpoint.create!(
+        model_id: model.id,
+        model_module_id: model_module.id
+      )
+
+      {
+        new: true,
+        module_id: model_module.id,
         model_id: model.id,
         model_name: model.name,
         name: mod[:name],
         error: false
       }
+    end.tap do
+      enrich_from_sc_data(model_module) if model_module.present?
     end
-
-    model_module = ModelModule.create!(
-      name: mod[:name],
-      hidden: false,
-      active: true
-    )
-
-    ModuleHardpoint.create!(
-      model_id: model.id,
-      model_module_id: model_module.id
-    )
-
-    enrich_from_sc_data(model_module)
-
-    {
-      new: true,
-      module_id: model_module.id,
-      model_id: model.id,
-      model_name: model.name,
-      name: mod[:name],
-      error: false
-    }
   rescue => e
     Sentry.capture_exception(e)
     Rails.logger.error "Module could not be imported: #{mod[:name]}"
-    {
+    [{
       new: true,
       module_id: nil,
-      model_id: model&.id,
+      model_id: nil,
       model_name: mod[:model_names].first,
       name: mod[:name],
       error: true
-    }
+    }]
   end
 
   private def enrich_from_sc_data(model_module)
