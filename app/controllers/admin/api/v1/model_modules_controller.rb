@@ -25,9 +25,9 @@ module Admin
           authorize! @model_module, with: ::Admin::ModelModulePolicy
 
           if @model_module.save
-            if model_module_params[:model_id].present?
+            if params[:model_id].present?
               ModuleHardpoint.find_or_create_by!(
-                model_id: model_module_params[:model_id],
+                model_id: params[:model_id],
                 model_module_id: @model_module.id
               )
             end
@@ -86,7 +86,7 @@ module Admin
 
         private def model_module_params
           @model_module_params ||= params.permit(
-            :name, :description, :model_id, :manufacturer_id,
+            :name, :description, :manufacturer_id,
             :pledge_price, :production_status, :active, :hidden,
             :store_image
           )
