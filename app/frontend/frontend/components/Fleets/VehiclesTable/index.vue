@@ -200,8 +200,12 @@ const openOwnersModal = (modelSlug: string) => {
               },
             }"
           >
-            <span v-if="record.name">{{ countLabel(record) }}{{ record.name }}</span>
-            <span v-else>{{ countLabel(record) }}{{ getModel(record).name }}</span>
+            <span v-if="record.name"
+              >{{ countLabel(record) }}{{ record.name }}</span
+            >
+            <span v-else
+              >{{ countLabel(record) }}{{ getModel(record).name }}</span
+            >
           </router-link>
           <br />
           <small>
