@@ -1,84 +1,60 @@
 <script lang="ts">
 export default {
-  name: "AdminModelsModulesPage",
+  name: "AdminModelModulesPage",
 };
 </script>
 
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
-import LazyImage from "@/shared/components/LazyImage/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
-import ModelActions from "@/admin/components/Models/Actions/index.vue";
-import FilterForm from "@/admin/components/Models/FilterForm/index.vue";
-import { useModelFilters } from "@/admin/composables/useModelFilters";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import FilterForm from "@/admin/components/ModelModules/FilterForm/index.vue";
+import { useModelModuleFilters } from "@/admin/composables/useModelModuleFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  useModels as useModelsQuery,
-  getModelsQueryKey,
+  useListModelModules,
+  getListModelModulesQueryKey,
+  type ModelModule,
   type Model,
 } from "@/services/fyAdminApi";
 
-const route = useRoute();
-
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
-});
-
-watch(
-  () => sorts.value,
-  async () => {
-    await refetch();
-  },
-);
-
-const modelsQueryParams = computed(() => {
+const modulesQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: getQuery(),
-    s: sorts.value,
+    q: filters.value,
   };
 });
 
-const modelsQueryKey = computed(() => {
-  return getModelsQueryKey(modelsQueryParams);
+const modulesQueryKey = computed(() => {
+  return getListModelModulesQueryKey(modulesQueryParams.value);
 });
 
-const { perPage, page, updatePerPage } = usePagination(modelsQueryKey);
+const { perPage, page, updatePerPage } = usePagination(modulesQueryKey);
 
-const { getQuery, isFilterSelected } = useModelFilters(async () => {
+const { filters, isFilterSelected } = useModelModuleFilters(async () => {
   await refetch();
 });
 
 const {
-  data: models,
+  data: modules,
   refetch,
   ...asyncStatus
-} = useModelsQuery(modelsQueryParams);
+} = useListModelModules(modulesQueryParams);
 
-const columns: BaseTableCol<Model>[] = [
+const columns: BaseTableCol<ModelModule>[] = [
   {
     name: "storeImage",
     label: "",
+    width: "120px",
     alignment: "center",
-  },
-  {
-    name: "rsiStoreImage",
-    label: "",
-    mobile: false,
-  },
-  {
-    name: "angledView",
-    label: "",
-    alignment: "center",
-    mobile: false,
   },
   {
     name: "name",
@@ -86,9 +62,24 @@ const columns: BaseTableCol<Model>[] = [
     sortable: true,
   },
   {
-    name: "rsiId",
-    label: "RSI ID",
-    attributeKey: "rsiId",
+    name: "models",
+    label: "Models",
+  },
+  {
+    name: "manufacturer",
+    label: "Manufacturer",
+    mobile: false,
+  },
+  {
+    name: "productionStatus",
+    label: "Status",
+    mobile: false,
+    sortable: true,
+  },
+  {
+    name: "pledgePrice",
+    label: "Pledge Price",
+    mobile: false,
     sortable: true,
   },
   {
@@ -103,34 +94,56 @@ const columns: BaseTableCol<Model>[] = [
     mobile: false,
     sortable: true,
   },
+  {
+    name: "createdAt",
+    label: "created at?",
+    mobile: false,
+    sortable: true,
+  },
+  {
+    name: "updatedAt",
+    label: "updated at?",
+    mobile: false,
+    sortable: true,
+  },
 ];
 
-const { t } = useI18n();
+const { t, l, toDollar } = useI18n();
+
+const crumbs = [
+  {
+    to: { name: "admin-models" },
+    label: t("nav.admin.models.index"),
+  },
+  {
+    to: { name: "admin-model-modules" },
+    label: t("headlines.admin.modelModules.index"),
+  },
+];
+
+const getModels = (record: ModelModule): Model[] => {
+  return (record as ModelModule & { models?: Model[] }).models || [];
+};
 </script>
 
 <template>
+  <BreadCrumbs :crumbs="crumbs" />
+
   <Heading hero>
-    {{ t("headlines.models.index") }}
-    <HeadingSmall v-if="models">
+    {{ t("headlines.admin.modelModules.index") }}
+    <HeadingSmall v-if="modules">
       {{
         t("headlines.pagination.count", {
-          current: models?.items.length,
-          total: models?.meta.pagination?.totalCount,
+          current: modules?.items.length,
+          total: modules?.meta.pagination?.totalCount,
         })
       }}
     </HeadingSmall>
   </Heading>
 
-  <Teleport to="#header-right">
-    <Btn :to="{ name: 'admin-model-create' }">
-      <i class="fa fa-plus" />
-      {{ t("actions.create") }}
-    </Btn>
-  </Teleport>
-
   <FilteredList
-    name="admin-models"
-    :records="models?.items || []"
+    name="admin-model-modules"
+    :records="modules?.items || []"
     :async-status="asyncStatus"
     hide-loading
     hide-empty
@@ -141,7 +154,7 @@ const { t } = useI18n();
     </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
-        :records="models?.items || []"
+        :records="modules?.items || []"
         primary-key="id"
         :columns="columns"
         :loading="loading || refetching"
@@ -149,49 +162,40 @@ const { t } = useI18n();
         default-sort="name asc"
         selectable
       >
-        <template #loader="{ loading }">
-          <Loader :loading="loading" admin />
-        </template>
         <template #col-storeImage="{ record }">
-          <LazyImage
-            v-if="record.media.storeImage"
+          <ViewImage
+            :image="record.media.storeImage"
+            size="small"
+            alt="image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.smallUrl"
-            alt="Model storeImage"
             shadow
-          />
-        </template>
-        <template #col-rsiStoreImage="{ record }">
-          <LazyImage
-            v-if="record.media.storeImage"
-            :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.storeImage.smallUrl"
-            alt="Model rsiStoreImage"
-            shadow
-          />
-        </template>
-        <template #col-angledView="{ record }">
-          <LazyImage
-            v-if="record.media.angledView"
-            :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            :src="record.media.angledView.smallUrl"
-            alt="Model angledView"
           />
         </template>
         <template #col-name="{ record }">
-          <router-link
-            :to="{
-              name: 'admin-model-edit',
-              params: {
-                id: record.id,
-              },
-            }"
-          >
-            {{ record.manufacturer?.code }} {{ record.name }}
-          </router-link>
+          {{ record.name }}
         </template>
-        <template #col-rsiId="{ record }">
-          {{ record.rsiId }}
+        <template #col-models="{ record }">
+          <ul v-if="getModels(record).length" class="model-modules-models-list">
+            <li v-for="model in getModels(record)" :key="model.id">
+              <router-link
+                :to="{
+                  name: 'admin-model-edit',
+                  params: { id: model.id },
+                }"
+              >
+                {{ model.name }}
+              </router-link>
+            </li>
+          </ul>
+        </template>
+        <template #col-manufacturer="{ record }">
+          {{ record.manufacturer?.name }}
+        </template>
+        <template #col-productionStatus="{ record }">
+          {{ record.productionStatus }}
+        </template>
+        <template #col-pledgePrice="{ record }">
+          <span class="no-break">{{ toDollar(record.pledgePrice) }}</span>
         </template>
         <template #col-hidden="{ record }">
           <i v-if="record.hidden" class="fa-duotone fa-check" />
@@ -201,26 +205,37 @@ const { t } = useI18n();
           <i v-if="record.active" class="fa-duotone fa-check" />
           <i v-else class="fa-duotone fa-times" />
         </template>
-        <template #actions="{ record }">
-          <ModelActions :model="record" />
+        <template #col-createdAt="{ record }">
+          {{ l(record.createdAt, "datetime.formats.short") }}
+        </template>
+        <template #col-updatedAt="{ record }">
+          {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
       </BaseTable>
     </template>
     <template #pagination-top>
       <Paginator
-        v-if="models"
-        :query-result-ref="models"
+        v-if="modules"
+        :query-result-ref="modules"
         :per-page="perPage"
         :update-per-page="updatePerPage"
       />
     </template>
     <template #pagination-bottom>
       <Paginator
-        v-if="models"
-        :query-result-ref="models"
+        v-if="modules"
+        :query-result-ref="modules"
         :per-page="perPage"
         :update-per-page="updatePerPage"
       />
     </template>
   </FilteredList>
 </template>
+
+<style lang="scss" scoped>
+.model-modules-models-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+</style>

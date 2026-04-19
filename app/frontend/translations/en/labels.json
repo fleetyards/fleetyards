@@ -894,6 +894,9 @@
           "frontViewBlank": "Without Front View Image?",
           "topViewColoredBlank": "Without Top View Colored Image?"
         },
+        "modelModules": {
+          "name": "Name"
+        },
         "manufacturers": {
           "name": "Name",
           "withModels": "With Models",

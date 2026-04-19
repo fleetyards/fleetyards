@@ -185,6 +185,9 @@
           "onSale": "Yes or No",
           "productionStatus": "Announced, Flight Ready, In Concept..."
         },
+        "modelModules": {
+          "name": "Bio Dome, Cargo Module..."
+        },
         "manufacturers": {
           "name": "Origin, Robert Space Industries, Aegis..."
         },

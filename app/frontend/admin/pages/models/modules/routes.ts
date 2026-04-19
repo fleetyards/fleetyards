@@ -11,6 +11,7 @@ export const routes: RouteRecordRaw[] = [
       title: "admin.modelModules.index",
       icon: "fa-duotone fa-puzzle",
       access: ["model_modules"],
+      activeRoute: "admin-models",
     },
   },
   {
@@ -21,6 +22,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "admin.modelModulePackages.index",
       nav: "hidden",
+      activeRoute: "admin-models",
     },
   },
 ];

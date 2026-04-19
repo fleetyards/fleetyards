@@ -30,6 +30,10 @@ if model_module.models.any?
   end
 end
 
+json.models do
+  json.array! model_module.models, partial: "admin/api/v1/models/base", as: :model
+end
+
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status
 

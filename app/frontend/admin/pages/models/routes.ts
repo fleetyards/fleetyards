@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as modelRoutes } from "@/admin/pages/models/[id]/routes";
+import { routes as modelModulesRoutes } from "@/admin/pages/models/modules/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -13,6 +14,20 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-list",
       mobileNav: 1,
       access: ["models"],
+    },
+  },
+  {
+    path: "modules/",
+    component: () => import("@/admin/pages/models.vue"),
+    children: modelModulesRoutes,
+    redirect: { name: modelModulesRoutes[0].name },
+    meta: {
+      needsAuthentication: true,
+      title: "admin.modelModules.index",
+      icon: "fa-duotone fa-puzzle",
+      nav: "hidden",
+      activeRoute: "admin-models",
+      access: ["model_modules"],
     },
   },
   {

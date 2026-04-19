@@ -209,6 +209,13 @@ watch(
   <Teleport to="#header-right">
     <Btn
       :size="BtnSizesEnum.SMALL"
+      :to="{ name: 'admin-model-modules' }"
+    >
+      <i class="fa-duotone fa-puzzle" />
+      {{ t("headlines.admin.modelModules.index") }}
+    </Btn>
+    <Btn
+      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingMatrix"
       :confirm="t('messages.confirm.model.reloadMatrix')"
       spinner
