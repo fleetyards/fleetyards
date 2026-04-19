@@ -4,8 +4,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "",
     name: "admin-model-module-edit",
-    component: () =>
-      import("@/admin/pages/models/modules/[id]/edit/index.vue"),
+    component: () => import("@/admin/pages/models/modules/[id]/edit/index.vue"),
     meta: {
       title: "admin.modelModules.edit.index",
       customTitle: true,

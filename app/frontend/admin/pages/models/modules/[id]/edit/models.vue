@@ -121,9 +121,7 @@ const onUnlinkModel = (item: Model) => {
     </template>
 
     <template #display="{ item }">
-      <router-link
-        :to="{ name: 'admin-model-edit', params: { id: item.id } }"
-      >
+      <router-link :to="{ name: 'admin-model-edit', params: { id: item.id } }">
         {{ item.name }}
       </router-link>
     </template>
