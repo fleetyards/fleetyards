@@ -1,7 +1,7 @@
 .hardpoint-items {
   flex-grow: 1;
-  min-width: 300px;
-  max-width: 100%;
+  min-width: 0;
+  width: 100%;
 
   &__hold-group {
     &:not(:first-child) {

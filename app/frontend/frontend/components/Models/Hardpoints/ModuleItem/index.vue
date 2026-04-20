@@ -18,7 +18,6 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { humanizeHoldName } from "@/shared/utils/CargoHolds";
 
 type Props = {
   hardpoints: Hardpoint[];
@@ -26,7 +25,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toNumber } = useI18n();
+const { t } = useI18n();
 
 const comlink = useComlink();
 
@@ -122,12 +121,8 @@ const moduleCategories = computed(() => {
   return result;
 });
 
-const moduleCargoHolds = computed(() => selectedModule.value?.cargoHolds || []);
-
 const hasExpandableContent = computed(
-  () =>
-    Object.keys(moduleCategories.value).length > 0 ||
-    moduleCargoHolds.value.length > 0,
+  () => Object.keys(moduleCategories.value).length > 0,
 );
 </script>
 
@@ -161,31 +156,6 @@ const hasExpandableContent = computed(
         v-if="expanded && selectedModule && hasExpandableContent"
         class="module-loadout"
       >
-        <div v-if="moduleCargoHolds.length" class="module-cargo-holds">
-          <div class="module-cargo-holds__label">
-            <i class="fa-duotone fa-thin fa-cubes" />
-            {{ t("labels.hardpoint.categories.cargogrid") }}
-          </div>
-          <div
-            v-for="(hold, index) in moduleCargoHolds"
-            :key="index"
-            class="module-cargo-hold"
-          >
-            <span class="module-cargo-hold__name">
-              {{ humanizeHoldName(hold.name || "") }}
-            </span>
-            <span class="module-cargo-hold__capacity">
-              {{ toNumber(hold.capacity || "", "cargo") }}
-            </span>
-            <span
-              v-if="hold.maxContainerSize?.size"
-              class="module-cargo-hold__max-container text-muted"
-            >
-              {{ t("labels.hardpoint.maxContainerSize") }}:
-              {{ hold.maxContainerSize.size }} SCU
-            </span>
-          </div>
-        </div>
         <HardpointCategory
           v-for="(items, category) in moduleCategories"
           :key="category"
