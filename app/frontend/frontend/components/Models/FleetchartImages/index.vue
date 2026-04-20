@@ -159,10 +159,7 @@ onMounted(() => {
       />
     </div>
     <div>
-      <img
-        v-if="fleetchartImageFront"
-        :src="fleetchartImageFront"
-      />
+      <img v-if="fleetchartImageFront" :src="fleetchartImageFront" />
     </div>
     <div>
       <img
