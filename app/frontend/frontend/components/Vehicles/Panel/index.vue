@@ -107,7 +107,7 @@ const loanersTooltip = computed(() =>
 const hasLoaners = computed(() => model.value?.loaners?.length);
 
 const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
-  manufacturerIn: [manufacturer],
+  manufacturerIn: [manufacturer.slug],
 });
 
 const comlink = useComlink();

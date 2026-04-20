@@ -44,7 +44,7 @@ const { t } = useI18n();
 const internalId = computed(() => props.id || props.model.id);
 
 const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
-  manufacturerIn: [manufacturer],
+  manufacturerIn: [manufacturer.slug],
 });
 
 const { supported: webpSupported } = useWebpCheck();
