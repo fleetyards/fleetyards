@@ -1,1 +1,15 @@
+---
 de:
+  resources:
+    component: Komponente
+    equipment: Ausrüstung
+    image: Bild
+    locale: Sprachen
+    manufacturer: Hersteller
+    messages:
+      password: Passwort
+    model: Modell
+    model_module: Modul
+    model_paint: Lackierung
+    models: Modelle
+    user: Benutzer

@@ -2,6 +2,7 @@
 it:
   actions:
     add: Aggiungi
+    add_dock: Aggiungi dock
     add_module_hardpoint: Aggiungi Modello
     add_module_package_item: Aggiungi Modulo
     add_upgrade_kit: Aggiungi Modello
@@ -19,8 +20,12 @@ it:
         new_loaner_upload: Carica Loaner
       model_module:
         new: Crea nuovo Modulo
+      model_module_package:
+        new: Crea nuovo pacchetto di moduli
       model_paint:
         new: Crea nuova Paint
+      model_upgrade:
+        new: Crea nuovo upgrade
       user:
         new: Crea nuovo Utente
     back: Indietro
@@ -44,6 +49,6 @@ it:
     reset_password: Password dimenticata?
     save: Salva
     save_password: Salva password
-    sign_in: Login
+    sign_in: Accedi
     sign_out: Esci
     unlock: Sblocca account

@@ -2,21 +2,21 @@
   "zh-CN": {
     "models": {
       "image": {
-        "background": "Use as Background?",
-        "enabled": "Enabled?",
-        "global": "Global?",
-        "delete": "Delete",
-        "start": "Start",
-        "cancel": "Cancel",
-        "processing": "Processing...",
-        "error": "Error",
-        "name": "Name",
-        "size": "File size",
-        "dropzone": "Drop images here",
-        "cancelUpload": "Cancel upload",
-        "startUpload": "Start upload",
-        "selectImages": "Add images...",
-        "selectFolder": "Add a folder..."
+        "background": "用作背景?",
+        "enabled": "已启用?",
+        "global": "全局?",
+        "delete": "删除",
+        "start": "开始",
+        "cancel": "取消",
+        "processing": "处理中...",
+        "error": "错误",
+        "name": "名称",
+        "size": "文件大小",
+        "dropzone": "将图片拖放到此处",
+        "cancelUpload": "取消上传",
+        "startUpload": "开始上传",
+        "selectImages": "添加图片...",
+        "selectFolder": "添加文件夹..."
       }
     }
   }

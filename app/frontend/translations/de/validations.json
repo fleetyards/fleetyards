@@ -1,16 +1,16 @@
 {
   "de": {
     "validations": {
-      "required": "The %{field} field is required",
-      "min": "The %{field} field must be at least %{min} characters",
-      "max": "The %{field} field must be at most %{max} characters",
+      "required": "Das Feld %{field} ist erforderlich",
+      "min": "Das Feld %{field} muss mindestens %{min} Zeichen haben",
+      "max": "Das Feld %{field} darf höchstens %{max} Zeichen haben",
       "alpha_dash": "The %{field} field may contain alpha-numeric characters as well as dashes and underscores",
-      "email": "The %{field} field must be a valid email address",
-      "confirmed": "The %{field} field does not match",
-      "numeric": "The %{field} field may only contain numeric characters",
-      "between": "The %{field} field must be between %{min} and %{max}",
-      "min_value": "The %{field} field must be %{min} or more",
-      "url": "The %{field} field is not a valid URL"
+      "email": "Das Feld %{field} muss eine gültige E-Mail-Adresse sein",
+      "confirmed": "Das Feld %{field} stimmt nicht überein",
+      "numeric": "Das Feld %{field} darf nur numerische Zeichen enthalten",
+      "between": "Das Feld %{field} muss zwischen %{min} und %{max} liegen",
+      "min_value": "Das Feld %{field} muss %{min} oder mehr betragen",
+      "url": "Das Feld %{field} ist keine gültige URL"
     }
   }
 }

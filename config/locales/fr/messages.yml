@@ -1,1 +1,82 @@
+---
 fr:
+  messages:
+    background_disabled:
+      success: "%{resource} non utilisé comme fond."
+    background_enabled:
+      success: "%{resource} utilisé comme fond."
+    confirm:
+      delete: Êtes-vous sûr de vouloir supprimer cette entrée ?
+      resend_confirmation: Êtes-vous sûr de vouloir renvoyer les instructions de confirmation
+        pour cet utilisateur ?
+      admin_login_in_as: Êtes-vous sûr de vouloir vous connecter en tant que cet utilisateur
+        ?
+    create:
+      failure: "%{resource} n'a pas pu être créé."
+      success: "%{resource} créé."
+    destroy:
+      success: "%{resource} supprimé avec succès."
+    disabled:
+      success: "%{resource} désactivé."
+    enabled:
+      success: "%{resource} activé."
+    fleet:
+      join:
+        success: Demande d'adhésion à la flotte reçue.
+    loaner_upload:
+      failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
+      success: Téléchargement des prêts réussi.
+    record_not_found:
+      base: Aucune entrée trouvée
+      fleet: Aucune flotte trouvée
+      fleet_membership: Aucun membre de flotte trouvé
+      user: Aucun utilisateur trouvé
+      invite: Aucune invitation trouvée
+      model: Aucun modèle trouvé
+    reload:
+      started: "%{resource} rechargement démarré."
+      success: "%{resource} rechargé avec succès."
+    resend_confirmation:
+      failure: "%{resource} impossible de renvoyer la confirmation."
+      success: "%{resource} confirmation envoyée."
+    send_password_reset:
+      success: "%{resource} instructions de réinitialisation du mot de passe envoyées."
+    rsi_verification:
+      failure: Le compte n'a pas pu être vérifié.
+      success: Compte vérifié avec succès.
+    signup:
+      already_signed_in: Vous êtes déjà connecté.
+      username_invalid: Le nom d'utilisateur est invalide.
+      reserved_username: Le nom d'utilisateur est réservé/interdit sur FleetYards.net.
+        Veuillez en choisir un autre !
+      blocked: You have been blocked from FleetYards.net.<br>This can have multiple
+        Reasons.<br>For further Information please Contact us under info@fleetyards.net
+    update:
+      failure: "%{resource} n'a pas pu être modifié."
+      success: "%{resource} modifié avec succès."
+    omniauth_connection:
+      destroy:
+        last_connection: Vous ne pouvez pas supprimer votre dernière connexion sans
+          définir un mot de passe au préalable.
+    confirmAccess:
+      failure: Confirmation d'accès échouée
+    confirmAccessCode:
+      failure: Le code de confirmation est invalide ou a expiré.
+    confirmAccessEmail:
+      sent: Un lien de confirmation a été envoyé à votre e-mail.
+      notAllowed: La confirmation par e-mail n'est disponible que pour les comptes
+        OAuth.
+    hangar_import:
+      no_data: Aucune donnée trouvée à importer
+    hangar_sync:
+      no_data: Aucune donnée trouvée à synchroniser
+      already_running: Une synchronisation du hangar est déjà en cours
+    user:
+      requires_access_confirmation: Confirmation d'accès en attente
+    otp:
+      active: L'authentification à deux facteurs est déjà active
+      inactive: L'authentification à deux facteurs est déjà inactive
+      disable:
+        failure: Impossible de désactiver l'authentification à deux facteurs
+      enable:
+        failure: Impossible d'activer l'authentification à deux facteurs

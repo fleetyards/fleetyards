@@ -2,6 +2,58 @@
 it:
   headlines:
     account: Le mie informazioni
+    admin:
+      admin_user:
+        edit: Edit %{admin_user}
+        index: Utenti amministratori
+        new: Nuovo utente amministratore
+      component:
+        edit: Edit %{component}
+        index: Componente
+        new: Nuovo componente
+      dashboard: Pannello di controllo
+      equipment:
+        edit: Equipaggiamento %{equipment}
+        index: Equipaggiamento
+        new: Nuovo equipaggiamento
+      image:
+        index: Immagini
+      loaner_uploads:
+        new: Nuovo caricamento prestiti
+      manufacturer:
+        edit: Modifica %{manufacturer}
+        index: Produttore
+        new: Nuovo produttore
+      model:
+        edit: Modifica %{model}
+        images: Caricamento immagini per %{model}
+        index: Modelli
+        name_diff: Modelli con nome RSI diverso
+        new: Nuovo modello
+        price_diff: Modelli con prezzo Pledge obsoleto
+      model_module:
+        edit: Modulo %{model_module}
+        index: Moduli
+        new: Nuovo modulo
+      model_module_package:
+        edit: Pacchetto di moduli %{model_module_package}
+        index: Pacchetti di moduli
+        new: Nuovo pacchetto di moduli
+      model_paint:
+        edit: Verniciatura %{model_paint}
+        index: Verniciature
+        new: Nuova verniciatura
+      model_upgrade:
+        edit: Upgrade %{model_upgrade}
+        index: Upgrade
+        new: Nuovo upgrade
+      user:
+        edit: Modifica %{user}
+        index: Utenti
+        new: Nuovo utente
+      maintenance:
+        rsi_api_status:
+          index: Stato API RSI
     change_password: Cambia la tua password
     comments: Commenti
     confirm: Conferma il tuo Account
@@ -10,7 +62,8 @@ it:
     not_found: Errore di Navigazione
     privacy: Informativa sulla privacy
     server_error: Errore del server
-    sign_in: Login
+    sign_in: Accedi
     sign_up: Registrati
     unlock: Sblocca il tuo account
+    unprocessable_entity: Richiesta non valida
     welcome: Benvenuto

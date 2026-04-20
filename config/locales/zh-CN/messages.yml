@@ -1,1 +1,77 @@
+---
 zh-CN:
+  messages:
+    background_disabled:
+      success: "%{resource} 未用作背景。"
+    background_enabled:
+      success: "%{resource} 已用作背景。"
+    confirm:
+      delete: 确定要删除此条目吗?
+      resend_confirmation: 确定要为此用户重新发送确认说明吗?
+      admin_login_in_as: 确定要以此用户身份登录吗?
+    create:
+      failure: "%{resource} 无法创建。"
+      success: "%{resource} 已创建。"
+    destroy:
+      success: "%{resource} 删除成功。"
+    disabled:
+      success: "%{resource} 已禁用。"
+    enabled:
+      success: "%{resource} 已启用。"
+    fleet:
+      join:
+        success: 收到舰队加入请求。
+    loaner_upload:
+      failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
+      success: 借用船上传成功。
+    record_not_found:
+      base: 未找到条目
+      fleet: 未找到舰队
+      fleet_membership: 未找到舰队成员
+      user: 未找到用户
+      invite: 未找到邀请
+      model: 未找到型号
+    reload:
+      started: "%{resource} 重载已开始。"
+      success: "%{resource} 重载成功。"
+    resend_confirmation:
+      failure: "%{resource} 无法重新发送确认。"
+      success: "%{resource} 确认已发送。"
+    send_password_reset:
+      success: "%{resource} 密码重置说明已发送。"
+    rsi_verification:
+      failure: 账户无法验证。
+      success: 账户验证成功。
+    signup:
+      already_signed_in: 您已登录。
+      username_invalid: 用户名无效。
+      reserved_username: 此用户名在 FleetYards.net 上已被保留/禁止。请选择其他用户名！
+      blocked: You have been blocked from FleetYards.net.<br>This can have multiple
+        Reasons.<br>For further Information please Contact us under info@fleetyards.net
+    update:
+      failure: "%{resource} 无法编辑。"
+      success: "%{resource} 编辑成功。"
+    omniauth_connection:
+      destroy:
+        last_connection: 在设置密码之前，您不能移除最后一个登录连接。
+    confirmAccess:
+      failure: 访问确认失败
+    confirmAccessCode:
+      failure: 确认码无效或已过期。
+    confirmAccessEmail:
+      sent: 确认链接已发送到您的电子邮件。
+      notAllowed: 电子邮件确认仅适用于 OAuth 账户。
+    hangar_import:
+      no_data: 未找到要导入的数据
+    hangar_sync:
+      no_data: 未找到要同步的数据
+      already_running: 机库同步已在进行中
+    user:
+      requires_access_confirmation: 访问确认待处理
+    otp:
+      active: 两步验证已经处于激活状态
+      inactive: 两步验证已经处于停用状态
+      disable:
+        failure: 无法停用两步验证
+      enable:
+        failure: 无法激活两步验证

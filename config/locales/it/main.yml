@@ -1,56 +1,87 @@
 ---
 it:
-  "true": Yes
-  "false": No
+  admin_app: FleetYards.net Command
+  app: FleetYards.net
+  copyright: Copyright
+  error_pages:
+    not_found: You are currently venturing unknown space. In the event you are lost,
+      the UEE highly recommends plotting a new destination back towards home-space.
+    server_error: La pagina non è attualmente disponibile. Riprova più tardi.
+    unprocessable_entity: La tua richiesta non è stata elaborata.
+  nav:
+    admin_users: Amministratori
+    components: Componenti
+    equipment: Equipaggiamento
+    home: Home
+    images: Immagini
+    admin_maintenance:
+      index: Manutenzione
+      rsi_api_status: Stato API RSI
+    manufacturers: Produttori
+    model:
+      overview: Indice
+    model_module_packages: Pacchetti di moduli
+    models: Modelli
+    models_name_diff: Nome RSI diverso
+    models_price_diff: Prezzo Pledge obsoleto
+    otp: Auth a due fattori
+    pghero: PGHero
+    features: Funzionalità
+    users: Utenti
+    workers: Workers
+    header:
+      toggle: Mostra/nascondi navigazione
+  'true': true
+  'false': false
   date:
     abbr_day_names:
-      - Dom
-      - Lun
-      - Mar
-      - Mer
-      - Gio
-      - Ven
-      - Sab
+    - Dom
+    - Lun
+    - Mar
+    - Mer
+    - Gio
+    - Ven
+    - Sab
     abbr_month_names:
-      - 
-      - Gen
-      - Feb
-      - Mar
-      - Apr
-      - Mag
-      - Giu
-      - Lug
-      - Ago
-      - Set
-      - Ott
-      - Nov
-      - Dic
+    -
+    - Gen
+    - Feb
+    - Mar
+    - Apr
+    - Mag
+    - Giu
+    - Lug
+    - Ago
+    - Set
+    - Ott
+    - Nov
+    - Dic
     day_names:
-      - Domenica
-      - Lunedì
-      - Martedì
-      - Mercoledì
-      - Giovedì
-      - Venerdì
-      - Sabato
+    - Domenica
+    - Lunedì
+    - Martedì
+    - Mercoledì
+    - Giovedì
+    - Venerdì
+    - Sabato
     month_names:
-      - 
-      - Gennaio
-      - Febbraio
-      - Marzo
-      - Aprile
-      - Maggio
-      - Giugno
-      - Luglio
-      - Agosto
-      - Settembre
-      - Ottobre
-      - Novembre
-      - Dicembre
+    -
+    - Gennaio
+    - Febbraio
+    - Marzo
+    - Aprile
+    - Maggio
+    - Giugno
+    - Luglio
+    - Agosto
+    - Settembre
+    - Ottobre
+    - Novembre
+    - Dicembre
   errors:
     messages:
       restrict_dependent_destroy:
-        one: "Impossibile eliminare il record perché un %{record} dipendente esiste"
+        one: Impossibile eliminare il record perché un %{record} dipendente esiste
   number:
     currency:
       format:

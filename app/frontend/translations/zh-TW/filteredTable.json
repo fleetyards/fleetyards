@@ -5,10 +5,10 @@
         "unselect": "Unselect all Selected"
       },
       "labels": {
-        "selected": "%{count} Selected"
+        "selected": "%{count} 已選擇"
       },
       "empty": {
-        "info": "We could not find any Records."
+        "info": "我們未找到任何記錄。"
       }
     }
   }

@@ -1,1 +1,98 @@
+---
 fr:
+  mailer:
+    account:
+      action: Gérer les paramètres du compte
+    admin:
+      notify_block:
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Connexion à RSI bloquée
+        text: Les mises à jour automatiques depuis RSI via "%{url}" ont été bloquées
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Connexion à RSI rétablie
+        text: Les mises à jour automatiques depuis RSI via "%{url}" ont été rétablies
+      weekly:
+        fleets: Nouvelles flottes
+        headline: FleetYards.net Command - Weekly
+        registrations: Nouvelles inscriptions
+        ships: Nouveaux vaisseaux
+        subject: FleetYards.net Command Weekly
+        vehicles: Nouveaux véhicules
+    fleet_membership:
+      fleet_accepted:
+        action: Page d'accueil de %{fleet}
+        body: 'Pour voir les vaisseaux et autres membres de la flotte, veuillez cliquer
+          sur le lien suivant :'
+        headline: Votre demande d'adhésion à %{fleet} a été acceptée
+        subject: "%{fleet} a accepté votre demande d'adhésion"
+      member_accepted:
+        action: Liste des membres de %{fleet}
+        body: 'Pour consulter les informations du nouveau membre, veuillez cliquer
+          sur le lien suivant :'
+        headline: "%{username} a accepté l'invitation à la flotte"
+        subject: Nouveau membre de flotte
+      member_requested:
+        action: Invitations de %{fleet}
+        body: 'Pour accepter la demande, veuillez cliquer sur le lien suivant :'
+        headline: "%{username} veut rejoindre %{fleet}"
+        subject: Nouvelle demande d'adhésion à la flotte
+      new_invite:
+        action: Rejoindre %{fleet}
+        body: 'Pour accepter l''invitation, veuillez cliquer sur le lien suivant :'
+        headline: Vous avez été invité à rejoindre %{fleet}
+        subject: Nouvelle invitation de flotte
+    confirm_access:
+      body: Utilisez le code suivant pour confirmer l'accès aux paramètres de votre
+        compte.
+      expires: Ce code expirera dans 10 minutes.
+      subject: Votre code de confirmation
+    hello: Bonjour %{username}
+    model:
+      new:
+        headline_part_1: 'Permettez-moi de présenter :'
+        headline_part_2: Le %{manufacturer}
+        subject: Nouveau vaisseau/véhicule
+    notification_settings: Se désabonner des notifications
+    plain_hello: Bonjour
+    privacy: Politique de confidentialité
+    progress_tracker:
+      admin:
+        body: Il y a eu %{changes} changements dans le suivi de progression
+        headline: Nouveaux changements dans le suivi de progression
+        subject: Nouveaux changements dans le suivi de progression
+    roadmap:
+      admin:
+        body: Il y a eu %{changes} changements sur la feuille de route
+        headline: Nouveaux changements sur la feuille de route
+        subject: Nouveaux changements sur la feuille de route
+    security:
+      action: Gérer les paramètres de sécurité
+      info: Si vous n'avez pas initié le changement, veuillez nous contacter à info@fleetyards.net.
+    transmission_end: "--- transmission entrante ---"
+    transmission_start: "--- transmission entrante ---"
+    two_factor:
+      disabled:
+        body: Vous avez désactivé l'authentification à deux facteurs pour votre compte
+          Fleetyards.net.
+        subject: Deux facteurs désactivé
+      enabled:
+        body: Super, vous avez activé l'authentification à deux facteurs pour votre
+          compte Fleetyards.net.
+        subject: Deux facteurs activé
+      login:
+        body: Veuillez entrer le code suivant sur la page de connexion pour vérifier
+          votre identité.
+        headline: Code d'authentification à deux facteurs
+        subject: Code d'authentification à deux facteurs
+    user:
+      username_changed:
+        body: Vous avez changé votre nom d'utilisateur Fleetyards.net.
+        subject: Nom d'utilisateur changé
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: est maintenant en vente !
+        price: À partir de %{price}
+        subject: "%{model} maintenant en vente !"

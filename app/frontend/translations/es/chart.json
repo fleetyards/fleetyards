@@ -22,6 +22,10 @@
           "one": "%{label}:<br><b>%{count}</b> Usuario",
           "other": "%{label}:<br><b>%{count}</b> Usuarios"
         },
+        "user-pie": {
+          "one": "%{label}:<br><b>%{count}</b> User (%{percentage} %)",
+          "other": "%{label}:<br><b>%{count}</b> Users (%{percentage} %)"
+        },
         "visit": {
           "one": "%{label}:<br><b>%{count}</b> Visita",
           "other": "%{label}:<br><b>%{count}</b> Visitas"

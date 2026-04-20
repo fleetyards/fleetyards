@@ -1,1 +1,70 @@
+---
 es:
+  helpers:
+    label:
+      user:
+        remember_me: Recordarme
+    placeholder:
+      admin_user:
+        email: Correo electrónico
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+        username: Nombre de usuario
+      component:
+        grade: Grado
+        size: Tamaño
+      description: Descripción
+      dock:
+        beam: Manga
+        height: Altura
+        length: Longitud
+        name: Nombre
+      equipment:
+        damage_reduction: Reducción de daño
+        extras: Extras
+        grade: Grado
+        range: Alcance
+        rate_of_fire: Cadencia de fuego
+        size: Tamaño
+        storage: almacenamiento
+        temperature_rating: Calificación temp.
+        volume: Volumen
+      manufacturer:
+        code: Código corto del nombre
+        known_for: "..."
+      name: Nombre
+      user:
+        email: Correo electrónico
+        login: Nombre de usuario o correo electrónico
+        otp_token: 2FA-Token
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+        username: Nombre de usuario
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: "¿Oculto?"
+        active: "¿Activo?"
+        ground: "¿Terrestre?"
+        map: Map?
+        on_sale: "¿En venta?"
+    prompt:
+      component:
+        component_class: Seleccione una clase de componente
+        item_class: Seleccione una clase de objeto
+        item_type: Seleccione un tipo de objeto
+        manufacturer: Seleccione un fabricante
+      docks:
+        dock_type: Seleccione un tipo de muelle
+        ship_size: Seleccione un tamaño de nave
+      equipment:
+        backpack_compatibility: Compatibilidad de mochila
+        core_compatibility: Compatibilidad del núcleo
+        equipment_type: Seleccione un tipo
+        item_type: Seleccione un tipo de objeto
+        slot: Seleccione un slot
+        weapon_class: Seleccione una clase de arma
+      models:
+        dock_size: Seleccione un tamaño de muelle
+      video:
+        video_type: Seleccione un tipo de video

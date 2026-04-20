@@ -1,4 +1,276 @@
 ---
 fr:
   activerecord:
-    attributes: {}
+    attributes:
+      vehicle:
+        bought_via:
+          pledge_store: Magasin de Pledge
+          ingame: Boutique en jeu
+      component:
+        component_classes:
+          RSIAvionic: Avionique
+          RSIModular: Modulaire
+          RSIPropulsion: Propulsion
+          RSIThruster: Propulseur
+          RSIWeapon: Arme
+        item_classes:
+          civilian: Civil
+          competition: Compétition
+          industrial: Industriel
+          military: Militaire
+          stealth: Furtivité
+        item_types:
+          cargo_grids: Grilles de cargaison
+          coolers: Refroidisseurs
+          countermeasure_launcher: Lanceur de contre-mesures
+          fixed_thrusters: Propulseurs fixes
+          fuel_intakes: Prises de carburant
+          fuel_tanks: Réservoirs de carburant
+          mid_range_radar: Radar de moyenne portée
+          joint_thrusters: Propulseurs articulés
+          manned_turrets: Tourelles habitées
+          manned_utility_turrets: Tourelles utilitaires habitées
+          mining_lasers: Lasers de minage
+          missile_racks: Racks de missiles
+          missile_turrets: Tourelles de missiles
+          missiles: Missiles
+          power_plants: Réacteurs
+          quantum_drives: Moteurs Quantum
+          quantum_fuel_tanks: Réservoirs de carburant Quantum
+          remote_turrets: Tourelles télécommandées
+          scanners: Scanners
+          shield_generators: Générateurs de boucliers
+          thrusters: Propulseurs
+          turrets: Tourelles
+          weapon_defensive: Weapon Defensive
+          weapons: Armes du vaisseau
+          emps: EMPs
+          armor_medium: Blindage moyen
+        tracking_signals:
+          cross_section: Section transversale
+          electromagnetic: Électromagnétique
+          infrared: infrarouge
+      dock:
+        dock_types:
+          dockingport: Port d'amarrage
+          garage: Garage
+          hangar: Hangar
+          landingpad: Plateforme d'atterrissage
+          vehiclepad: Plateforme de véhicules
+        ship_sizes:
+          capital: Capital (C)
+          extra_extra_small: Snubcraft (XXS)
+          extra_large: Très grand (XL)
+          extra_small: Très petit (XS)
+          large: Grand (L)
+          medium: Moyen (M)
+          small: Petit (S)
+      equipment:
+        backpack_compatibilities:
+          all: Tous
+          light: Léger
+          light_medium: Light & Medium
+        core_compatibilities:
+          all: Tous
+          heavy: Lourd
+          medium_heavy: Medium & Heavy
+        equipment_types:
+          armor: Blindage
+          clothing: Vêtements
+          hacking_tool: Outil de piratage
+          medical: Médical
+          tool: Outil
+          undersuit: Sous-combinaison
+          weapon: Arme
+          weapon_attachment: Accessoire d'arme
+        hidden: masqué ?
+        item_types:
+          assault_rifle: Fusil d'assaut
+          backpack: Sac à dos
+          battery: Batterie
+          flightsuit: Combinaison de vol
+          grenade: Grenade
+          grenade_launcher: Lance-grenades
+          heavy_armor: Blindage lourd
+          heavy_backpack: Sac à dos lourd
+          knife: Couteau
+          light_armor: Blindage léger
+          light_backpack: Sac à dos léger
+          lmg: LMG
+          magazine: Chargeur
+          medium_armor: Blindage moyen
+          medium_backpack: Medium Backpack
+          pistol: Pistolet
+          rifle: Fusil
+          rocket_launcher: Lance-roquettes
+          shotgun: Fusil à pompe
+          smg: SMG
+          sniper_rifle: Fusil de précision
+          special_railgun: Special - Railgun
+          utility: Utilitaire
+          weapon_scope: Lunette
+        slots:
+          arms: Bras
+          backpack: Sac à dos
+          footwear: Chaussures
+          gloves: Gants
+          hat: Chapeau
+          helmet: Casque
+          jacket: Veste
+          legs: Jambes
+          pants: Pantalon
+          shirt: Chemise
+          torso: Torse
+          undersuit: Sous-combinaison
+        temperature_rating: Temp.
+        types:
+          additional: Équipement supplémentaire
+          powerplant: Réacteur
+          primary_thrusters: Propulseurs principaux
+          shield: Boucliers
+          thrusters: Propulseurs de manœuvre
+        weapon_classes:
+          ballistic: Balistique
+          energy: Énergie
+          frag: Frag
+      fleet_membership:
+        roles:
+          admin: Admin
+          member: Membre
+          officer: Officier
+        user_id: Membre
+      habitation:
+        habitation_types:
+          container: Conteneur
+          large_apartment: Large Apartment
+          medium_apartment: Medium Apartment
+          small_apartment: Small Apartment
+          suite: Suite
+      manufacturer:
+        code: CODE
+        known_for: Connu pour ?
+      model:
+        active: actif ?
+        beam: Largeur
+        cargo: Cargaison
+        crew: Équipage
+        equipment: Équipement
+        ground: Véhicule terrestre ?
+        adi_map: Atlas 3d Map?
+        hardpoints: Points d'attache
+        height: Hauteur
+        hidden: masqué ?
+        holo_colored: 3D File has colored Materials?
+        length: Longueur
+        manufacturer: Fabricant
+        mass: Masse
+        max_upgrades: Améliorations
+        notified: Supprimer la notification "Nouveau vaisseau" ?
+        on_sale: En vente ?
+        production_status: Statut de production
+        variants: Variantes
+        weapons: Armes
+        fleetchart_image: Lagacy Fleetchart Image
+      model_hardpoint:
+        categories:
+          fixed: Propulseur de manœuvre fixe
+          gimbal: Propulseur de manœuvre à cardan
+          joint: Propulseur de manœuvre articulé
+          main: Propulseur principal
+          manned_turret: Tourelle habitée
+          missile_turret: Tourelle de missiles
+          remote_turret: Tourelle télécommandée
+          retro: Rétro-propulseur
+          vtol: Propulseur VTOL
+          qed: QED
+          emp: EMP
+        sizes:
+          capital: C (4)
+          eight: 8
+          eleven: 11
+          five: 5
+          four: 4
+          large: L (3)
+          medium: M (2)
+          nine: 9
+          one: 1
+          seven: 7
+          six: 6
+          small: S (1)
+          tbd: TBD
+          ten: 10
+          three: 3
+          twelve: 12
+          two: 2
+          vehicle: V (0)
+          snub: Snub (0)
+      progress_tracker_item:
+        statuses:
+          done: Terminé
+          in_progress: En cours
+          planned: Planifié
+      setting:
+        base:
+          registration: Inscription active ?
+        mailer:
+          default_from: Expéditeur par défaut
+          host: SMTP Host
+          password: SMPT Password or Token
+          port: SMTP Port
+          user: SMTP User
+      updated_at: il y a %{time}
+      user:
+        admin: Admin ?
+        confirmation_token: Token
+        current_password: Mot de passe
+        email: E-mail
+        enabled: Actif ?
+        gravatar: Adresse e-mail Gravatar
+        login: Nom d'utilisateur ou e-mail
+        username: Nom d'utilisateur
+      weapon:
+        classes:
+          class1: Class 1
+          class2: Class 2
+          class3: Class 3
+          class4: Class 4
+          class5: Class 5
+          class6: Class 6
+          class7: Class 7
+          class8: Class 8
+    errors:
+      messages:
+        blank: ne peut pas être vide
+        record_invalid: Données incorrectes
+      models:
+        fleet_role:
+          attributes:
+            resource_access:
+              changed: Les privilèges d'accès ne peuvent pas être modifiés
+        fleet_membership:
+          attributes:
+            base:
+              cannot_destroy_from_permanent_role: Impossible de retirer un membre
+                de la flotte d'un rôle permanent
+            user_id:
+              taken: déjà présent ou a une invitation en attente
+        user:
+          attributes:
+            base:
+              has_permanent_fleet_memberships: 'Cannot delete account while you are
+                an admin of the following fleets: %{fleets}. Please transfer ownership
+                first.'
+            confirmation_token:
+              invalid: est invalide
+            current_password:
+              invalid: est invalide.
+            email:
+              taken: est déjà pris.
+            password:
+              too_short:
+            password_confirmation:
+              confirmation: Les mots de passe ne correspondent pas
+            reset_password_token:
+              invalid: Token invalide
+            username:
+              taken: est déjà pris.

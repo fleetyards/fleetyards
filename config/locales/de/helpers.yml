@@ -1,1 +1,70 @@
+---
 de:
+  helpers:
+    label:
+      user:
+        remember_me: Angemeldet bleiben
+    placeholder:
+      admin_user:
+        email: E-Mail
+        password: Passwort
+        password_confirmation: Passwort bestätigen
+        username: Benutzername
+      component:
+        grade: Qualität
+        size: Größe
+      description: Beschreibung
+      dock:
+        beam: Breite
+        height: Höhe
+        length: Länge
+        name: Name
+      equipment:
+        damage_reduction: Schadensreduktion
+        extras: Extras
+        grade: Qualität
+        range: Reichweite
+        rate_of_fire: Feuerrate
+        size: Größe
+        storage: Speicher
+        temperature_rating: Temp.-Bewertung
+        volume: Volumen
+      manufacturer:
+        code: Kurzcode des Namens
+        known_for: "..."
+      name: Name
+      user:
+        email: E-Mail
+        login: Benutzername oder E-Mail
+        otp_token: 2FA-Token
+        password: Passwort
+        password_confirmation: Passwort bestätigen
+        username: Benutzername
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: Versteckt?
+        active: Aktiv?
+        ground: Boden?
+        map: Map?
+        on_sale: Im Angebot?
+    prompt:
+      component:
+        component_class: Bitte wählen Sie eine Komponentenklasse
+        item_class: Bitte wählen Sie eine Gegenstandsklasse
+        item_type: Bitte wählen Sie einen Gegenstandstyp
+        manufacturer: Bitte wählen Sie einen Hersteller
+      docks:
+        dock_type: Bitte wählen Sie einen Dock-Typ
+        ship_size: Bitte wählen Sie eine Schiffsgröße
+      equipment:
+        backpack_compatibility: Rucksack-Kompatibilität
+        core_compatibility: Kernkompatibilität
+        equipment_type: Bitte wählen Sie einen Typ
+        item_type: Bitte wählen Sie einen Gegenstandstyp
+        slot: Bitte wählen Sie einen Slot
+        weapon_class: Bitte wählen Sie eine Waffenklasse
+      models:
+        dock_size: Bitte wählen Sie eine Dock-Größe
+      video:
+        video_type: Bitte wählen Sie einen Videotyp

@@ -10,12 +10,23 @@
       "units": {
         "au": "AU",
         "uec": "aUEC",
-        "uecPerUnit": "aUEC / Unit"
+        "currency": "$",
+        "uecPerUnit": "aUEC / Unit",
+        "distance": "m",
+        "weight": "t",
+        "speed": "m/s",
+        "cargo": "SCU",
+        "person": "Person",
+        "people": {
+          "one": "Person",
+          "other": "Personen"
+        }
       },
       "uec": "%{count} <span class=\"text-muted\">aUEC</span>",
       "uecPerUnit": "%{count} <span class=\"text-muted\">aUEC/unit</span>",
       "percent": "%{count} %",
       "distance": "%{count} m",
+      "newton": "%{count} KN",
       "weight": "%{count} t",
       "speed": "%{count} m/s",
       "seconds": "%{count} s",
@@ -24,12 +35,12 @@
       "cargo": "%{count} SCU",
       "fuel": "%{count}",
       "ships": {
-        "one": "%{count} ship",
-        "other": "%{count} ships"
+        "one": "%{count} Schiff",
+        "other": "%{count} Schiffe"
       },
       "people": {
-        "one": "%{count} person",
-        "other": "%{count} persons"
+        "one": "%{count} Person",
+        "other": "%{count} Personen"
       }
     }
   }

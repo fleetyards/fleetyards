@@ -5,17 +5,14 @@
       "indexQuote": "\"Allaccia le cinture in una delle dozzine di astronavi e imbarcati in una vita nell'universo di Star Citizen. <br> Slegato da professioni o Abilità, sei libero di scegliere il percorso della tua vita.\"",
       "indexQuoteSource": "Autore Sconosciuto, Fonte:",
       "support": {
+        "info": "Se ti piace FleetYards.net e vuoi supportare lo sviluppo e la manutenzione del progetto, per favore dai un upvote sul nostro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> e il nostro Post su <a href=\"https://robertsspaceindustries.com/community/deep-space-radar/1730-FleetYardsnet\" target=\"_blank\" rel=\"noopener\"><b>Deep Space Radar</b></a>.",
         "code": "Inoltre puoi ottenere 5000 UEC come denaro iniziale usando il seguente codice di reclutamento <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> quando acquisti Star Citizen o puoi:",
-        "info": "Se ti piace FleetYards.net e vuoi supportare lo sviluppo e la manutenzione del progetto, per favore dai un upvote sul nostro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> e il nostro Post su <a href=\"https://robertsspaceindustries.com/community/deep-space-radar/1730-FleetYardsnet\" target=\"_blank\" rel=\"noopener\"><b>Deep Space Radar</b></a>."
+        "subline": "o puoi supportarci direttamente tramite:"
       },
       "notFound": "Attualmente stai avventurando uno spazio sconosciuto. In caso di smarrimento, l'UEE raccomanda vivamente di tracciare una nuova destinazione di nuovo verso lo spazio di casa.",
-      "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
-      "empty": {
-        "hangar": {
-          "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
-          "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
-        }
-      },
+      "featureNotReady": "Questa funzione non è ancora pronta e sarà disponibile a breve. Resta sintonizzato!",
+      "accessDenied": "Non sei autorizzato a visualizzare questa pagina.",
+      "serverError": "Il server sta riscontrando difficoltà tecniche. Riprova più tardi.",
       "compare": {
         "ships": {
           "info": "Per iniziare a selezionare almeno due e non più di otto Navi che si desiderano confrontare."
@@ -60,7 +57,7 @@
           "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
         },
         "fleetchart": {
-          "headline": "Fleetchart",
+          "headline": "Grafico flotta",
           "text": "Visualizza la tua flotta come una vista dall'alto scalata ed esportala come immagine."
         }
       },
@@ -80,7 +77,18 @@
         },
         "liabilityExternal": "Il nostro sito contiene link a siti web di terze parti (“link esterni”). Poiché il contenuto di questi siti non è sotto il nostro controllo, non possiamo assumerci alcuna responsabilità per tali contenuti esterni. In ogni caso, il fornitore di informazioni sui siti collegati è responsabile per il contenuto e l'accuratezza delle informazioni fornite. Al momento in cui i links erano stati creati, non ci era nota alcuna violazione della legge. Nel caso venissimo a conoscenza di una violazione di legge, avremo cura di eliminare immediatamente il link in questione."
       },
-      "privacy": "L'uso del nostro sito è solitamente possibile senza fornire alcun dato personale. La raccolta di dati personali (ad esempio indirizzo email) sui nostri siti sarà, per quanto possibile, su base volontaria. Nessun dato personale sarà trasmesso a terzi senza il suo esplicito consenso.<br>Facciamo notare che la trasmissione di dati su Internet (ad esempio quando si comunica via email) può avere lacune di sicurezza. Non è possibile una protezione completa dei dati contro l'accesso da parte di terzi.",
+      "privacy": {
+        "text": "The use of our site is usually possible without providing any personal data. The collecting of personal data (eg email address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by email) can have security gaps. A complete protection of data against access by third parties is not possible.",
+        "p1": "Below you can read about what Information we are using to provide you the services on %{app}. For most parts this only concerns registered Users but please read further to get a full overview.",
+        "p2": {
+          "headline": "Quali informazioni utilizziamo?",
+          "text": "Depending on if you are a registered User or only using %{app} as a Guest we use more or less Information from you."
+        },
+        "p3": {
+          "headline": "Come ospite",
+          "text": "Come ospite su %{app} raccogliamo i seguenti dati:"
+        }
+      },
       "signup": {
         "blocked": "Sei stato bloccato da FleetYards.net.<br>Questo può avere molteplici motivi.<br>Per ulteriori informazioni, ti preghiamo di contattarci su info ( at ) fleetyards.net"
       },
@@ -92,8 +100,20 @@
         "disable": "Per disabilitare l'autenticazione a due fattori basta inserire un Token valido.",
         "enable": " Per proteggere il tuo account FleetYards.net puoi generare Token per l'autenticazione a due fattori con Google Authenticator, 1Password o Authy."
       },
+      "oauthAuthorize": {
+        "requestingAccess": "{clientName} sta richiedendo l'accesso al tuo account.",
+        "scopesIntro": "Questa applicazione potrà:"
+      },
       "syncExtension": {
-        "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?"
+        "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
+        "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
+        "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento."
+      },
+      "empty": {
+        "hangar": {
+          "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
+          "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
+        }
       }
     }
   }

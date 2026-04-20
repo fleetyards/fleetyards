@@ -1,0 +1,232 @@
+it:
+  "true": Sì
+  "false": "No"
+  date:
+    abbr_day_names:
+    - dom
+    - lun
+    - mar
+    - mer
+    - gio
+    - ven
+    - sab
+    abbr_month_names:
+    -
+    - gen
+    - feb
+    - mar
+    - apr
+    - mag
+    - giu
+    - lug
+    - ago
+    - set
+    - ott
+    - nov
+    - dic
+    day_names:
+    - domenica
+    - lunedì
+    - martedì
+    - mercoledì
+    - giovedì
+    - venerdì
+    - sabato
+    formats:
+      default: "%d/%m/%Y"
+      long: "%A %e %B %Y"
+      short: "%d %b"
+      month: "%B"
+      label: "%e %B %Y"
+      month_short: "%b."
+      month_year_short: "%b. %y"
+      month_year: "%B %Y"
+      day_month_short: "%e %b."
+      day_month: "%A %e %B"
+    month_names:
+    -
+    - gennaio
+    - febbraio
+    - marzo
+    - aprile
+    - maggio
+    - giugno
+    - luglio
+    - agosto
+    - settembre
+    - ottobre
+    - novembre
+    - dicembre
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: circa 1 ora
+        other: "circa %{count} ore"
+      about_x_months:
+        one: circa 1 mese
+        other: "circa %{count} mesi"
+      about_x_years:
+        one: circa 1 anno
+        other: "circa %{count} anni"
+      almost_x_years:
+        one: quasi 1 anno
+        other: "quasi %{count} anni"
+      half_a_minute: mezzo minuto
+      less_than_x_minutes:
+        one: meno di un minuto
+        other: "meno di %{count} minuti"
+      less_than_x_seconds:
+        one: meno di 1 secondo
+        other: "meno di %{count} secondi"
+      over_x_years:
+        one: più di 1 anno
+        other: "più di %{count} anni"
+      x_days:
+        one: 1 giorno
+        other: "%{count} giorni"
+      x_minutes:
+        one: 1 minuto
+        other: "%{count} minuti"
+      x_months:
+        one: 1 mese
+        other: "%{count} mesi"
+      x_seconds:
+        one: 1 secondo
+        other: "%{count} secondi"
+    prompts:
+      day: Giorno
+      hour: Ora
+      minute: Minuto
+      month: Mese
+      second: Secondi
+      year: Anno
+  errors: &errors
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: deve essere accettato
+      blank: non può essere vuoto
+      present: deve essere vuoto
+      confirmation: "non corrisponde a %{attribute}"
+      empty: non può essere vuoto
+      equal_to: "deve essere uguale a %{count}"
+      even: deve essere pari
+      exclusion: è riservato
+      greater_than: "deve essere maggiore di %{count}"
+      greater_than_or_equal_to: "deve essere maggiore o uguale a %{count}"
+      inclusion: non è incluso nella lista
+      invalid: non è valido
+      less_than: "deve essere minore di %{count}"
+      less_than_or_equal_to: "deve essere minore o uguale a %{count}"
+      not_a_number: non è un numero
+      not_an_integer: deve essere un numero intero
+      odd: deve essere dispari
+      record_invalid: "Validazione fallita: %{errors}"
+      restrict_dependent_destroy:
+        one: "Impossibile eliminare il record perché esiste un %{record} dipendente"
+        many: "Impossibile eliminare il record perché esistono %{record} dipendenti"
+      taken: è già stato preso
+      too_long:
+        one: è troppo lungo (massimo 1 carattere)
+        other: "è troppo lungo (massimo %{count} caratteri)"
+      too_short:
+        one: è troppo corto (minimo 1 carattere)
+        other: "è troppo corto (minimo %{count} caratteri)"
+      wrong_length:
+        one: ha la lunghezza sbagliata (deve essere 1 carattere)
+        other: "ha la lunghezza sbagliata (deve essere %{count} caratteri)"
+      other_than: "deve essere diverso da %{count}"
+    template:
+      body: "Si sono verificati problemi con i seguenti campi:"
+      header:
+        one: "Impossibile salvare %{model}: 1 errore"
+        other: "Impossibile salvare %{model}: %{count} errori"
+  helpers:
+    select:
+      prompt: Seleziona
+    submit:
+      create: "Crea %{model}"
+      submit: "Salva %{model}"
+      update: "Aggiorna %{model}"
+  distance:
+    centi: cm
+    unit: m
+    thousand: km
+  weight:
+    centi: kg
+    unit: t
+    thousand: mt
+  people:
+    unit:
+      one: persona
+      other: persone
+  number:
+    currency:
+      format:
+        delimiter: "."
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: $
+    format:
+      delimiter: "."
+      precision: 3
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Miliardo
+          million: Milione
+          quadrillion: Biliardo
+          thousand: Mille
+          trillion: Bilione
+          unit: ""
+      format:
+        delimiter: ""
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ""
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ""
+  support:
+    array:
+      last_word_connector: " e "
+      two_words_connector: " e "
+      words_connector: ", "
+  time:
+    am: am
+    formats:
+      default: "%a %d %b %Y %H:%M:%S %z"
+      label: "%e %B %Y alle %H:%M %Z"
+      long: "%d %B %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
+  activemodel:
+    errors:
+      <<: *errors
+  activerecord:
+    errors:
+      <<: *errors

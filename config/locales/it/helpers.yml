@@ -1,1 +1,70 @@
+---
 it:
+  helpers:
+    label:
+      user:
+        remember_me: Ricordami
+    placeholder:
+      admin_user:
+        email: E-mail
+        password: Password
+        password_confirmation: Conferma password
+        username: Nome utente
+      component:
+        grade: Grado
+        size: Dimensione
+      description: Descrizione
+      dock:
+        beam: Larghezza
+        height: Altezza
+        length: Lunghezza
+        name: Nome
+      equipment:
+        damage_reduction: Riduzione danno
+        extras: Extra
+        grade: Grado
+        range: Portata
+        rate_of_fire: Cadenza di fuoco
+        size: Dimensione
+        storage: archiviazione
+        temperature_rating: Valutazione temp.
+        volume: Volume
+      manufacturer:
+        code: Codice breve del nome
+        known_for: "..."
+      name: Nome
+      user:
+        email: E-mail
+        login: Nome utente o e-mail
+        otp_token: 2FA-Token
+        password: Password
+        password_confirmation: Conferma password
+        username: Nome utente
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: Nascosto?
+        active: Attivo?
+        ground: Terrestre?
+        map: Map?
+        on_sale: In vendita?
+    prompt:
+      component:
+        component_class: Seleziona una classe di componente
+        item_class: Seleziona una classe di oggetto
+        item_type: Seleziona un tipo di oggetto
+        manufacturer: Seleziona un produttore
+      docks:
+        dock_type: Seleziona un tipo di dock
+        ship_size: Seleziona una dimensione nave
+      equipment:
+        backpack_compatibility: Compatibilità zaino
+        core_compatibility: Compatibilità del nucleo
+        equipment_type: Seleziona un tipo
+        item_type: Seleziona un tipo di oggetto
+        slot: Seleziona uno slot
+        weapon_class: Seleziona una classe di arma
+      models:
+        dock_size: Seleziona una dimensione dock
+      video:
+        video_type: Seleziona un tipo di video

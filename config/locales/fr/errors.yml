@@ -13,3 +13,11 @@ fr:
       message: Entité impossible à traiter
     pagination:
       max_per_page_reached: Le maximum par page est atteint
+    messages:
+      extension_allowlist_error: 'extension not allowed. You are not allowed to upload
+        %{extension} files, allowed types: %{allowed_types}'
+      content_type_allowlist_error: 'content type not allowed. You are not allowed
+        to upload %{content_type} files, allowed types: %{allowed_types}'
+      hangar:
+        import:
+          no_data: Aucune donnée trouvée dans le fichier d'import

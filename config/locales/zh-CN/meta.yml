@@ -1,0 +1,16 @@
+---
+zh-CN:
+  meta:
+    admin_description: FleetYards.net Command App.
+    compare_ships:
+      description:
+        default: 比较您喜欢的飞船。
+        vs: 比较 %{models}。
+    description: FleetYards.net, Your Database for all Information related to Ships
+      from “Star Citizen“.
+    keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star,
+      Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
+    ship_images:
+      description: "%{model} 图片"
+    ship_videos:
+      description: "%{model} 视频"

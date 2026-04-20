@@ -13,7 +13,8 @@
         "uexCorp": "即時商品交易平台，包含價格追蹤、貿易路線優化和市場分析工具",
         "cargoGridViewer": "3D貨物網格檢視器，顯示所有飛船的貨艙尺寸和集裝箱適配情況",
         "scmdb": "瀏覽星際公民的任務、獎勵、聲望路徑、採礦資源等",
-        "regolith": "星際公民採礦工具，提供岩石掃描、精煉計算和採礦頭比較"
+        "regolith": "星際公民採礦工具，提供岩石掃描、精煉計算和採礦頭比較",
+        "spviewer": "Ship performance analysis tool with detailed flight characteristics, speed comparisons, and maneuverability data"
       },
       "categories": {
         "trading": "貿易與經濟",

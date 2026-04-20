@@ -5,7 +5,7 @@
       "keywords": "Star Citizen, Astronavi, Navi, Caccia, Database, Squadron, 42, Star, Citizen, Italiano, Chris, Roberts, Online, Gioco, Spazio, Simulazione"
     },
     "model": {
-      "focus": "Focus",
+      "focus": "Specializzazione",
       "classification": "Classificazione",
       "size": "Dimensione",
       "beam": "Raggio",
@@ -43,17 +43,17 @@
         "groundDecceleration": "Decelerazione a Terra"
       },
       "pledgePrice": "Prezzo del Pledge",
-      "quantumFuelTankSize": "Quantum Fuel",
+      "quantumFuelTankSize": "Carburante Quantum",
       "hydrogenFuelTankSize": "Carburante",
       "height": "Altezza",
       "length": "Lunghezza",
       "mass": "Massa",
       "manufacturer": "Produttore",
-      "hardpoints": "Hardpoints",
+      "hardpoints": "Punti di montaggio",
       "weapons": "Armamenti",
       "equipment": "Equipaggiamento",
       "variants": "Varianti",
-      "maxUpgrades": "Upgrades",
+      "maxUpgrades": "Upgrade",
       "productionStatus": "Stato Della Produzione",
       "propulsion": "Propulsione",
       "ordnance": "Ordinanza",
@@ -73,7 +73,7 @@
     },
     "resources": {
       "models": "Navi",
-      "hardpoints": "Hardpoints",
+      "hardpoints": "Punti di montaggio",
       "images": "Immagini"
     },
     "pagination": {

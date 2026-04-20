@@ -1,0 +1,13 @@
+---
+zh-TW:
+  doorkeeper:
+    scopes:
+      public: 公開存取
+      profile:read: 讀取個人資料
+      profile:write: 管理個人資料
+      hangar: 完整機庫存取權限
+      hangar:read: 讀取機庫
+      hangar:write: 管理機庫
+      fleet: 完整艦隊存取權限
+      fleet:read: 讀取艦隊
+      fleet:write: 管理艦隊

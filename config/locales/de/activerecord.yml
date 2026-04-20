@@ -1,1 +1,276 @@
+---
 de:
+  activerecord:
+    attributes:
+      vehicle:
+        bought_via:
+          pledge_store: Pledge-Store
+          ingame: Ingame-Shop
+      component:
+        component_classes:
+          RSIAvionic: Avionik
+          RSIModular: Modular
+          RSIPropulsion: Antrieb
+          RSIThruster: Triebwerk
+          RSIWeapon: Waffe
+        item_classes:
+          civilian: Zivil
+          competition: Wettbewerb
+          industrial: Industriell
+          military: Militärisch
+          stealth: Tarnung
+        item_types:
+          cargo_grids: Frachtraster
+          coolers: Kühler
+          countermeasure_launcher: Gegenmaßnahmen-Werfer
+          fixed_thrusters: Feste Triebwerke
+          fuel_intakes: Treibstoffeinlässe
+          fuel_tanks: Treibstofftanks
+          mid_range_radar: Mittelstreckenradar
+          joint_thrusters: Gelenkige Triebwerke
+          manned_turrets: Bemannte Geschütztürme
+          manned_utility_turrets: Bemannte Hilfsgeschütztürme
+          mining_lasers: Bergbaulaser
+          missile_racks: Raketenträger
+          missile_turrets: Raketengeschütztürme
+          missiles: Raketen
+          power_plants: Kraftwerke
+          quantum_drives: Quantum-Antriebe
+          quantum_fuel_tanks: Quantum-Treibstofftanks
+          remote_turrets: Ferngesteuerte Geschütztürme
+          scanners: Scanner
+          shield_generators: Schildgeneratoren
+          thrusters: Triebwerke
+          turrets: Geschütztürme
+          weapon_defensive: Weapon Defensive
+          weapons: Schiffswaffen
+          emps: EMPs
+          armor_medium: Mittlere Panzerung
+        tracking_signals:
+          cross_section: Querschnitt
+          electromagnetic: Elektromagnetisch
+          infrared: Infrarot
+      dock:
+        dock_types:
+          dockingport: Andockport
+          garage: Garage
+          hangar: Hangar
+          landingpad: Landeplatz
+          vehiclepad: Fahrzeugplatz
+        ship_sizes:
+          capital: Kapital (C)
+          extra_extra_small: Snubcraft (XXS)
+          extra_large: Extra groß (XL)
+          extra_small: Extra klein (XS)
+          large: Groß (L)
+          medium: Mittel (M)
+          small: Klein (S)
+      equipment:
+        backpack_compatibilities:
+          all: Alle
+          light: Leicht
+          light_medium: Light & Medium
+        core_compatibilities:
+          all: Alle
+          heavy: Schwer
+          medium_heavy: Medium & Heavy
+        equipment_types:
+          armor: Panzerung
+          clothing: Kleidung
+          hacking_tool: Hacking-Werkzeug
+          medical: Medizinisch
+          tool: Werkzeug
+          undersuit: Unteranzug
+          weapon: Waffe
+          weapon_attachment: Waffenaufsatz
+        hidden: versteckt?
+        item_types:
+          assault_rifle: Sturmgewehr
+          backpack: Rucksack
+          battery: Batterie
+          flightsuit: Fluganzug
+          grenade: Granate
+          grenade_launcher: Granatwerfer
+          heavy_armor: Schwere Panzerung
+          heavy_backpack: Schwerer Rucksack
+          knife: Messer
+          light_armor: Leichte Panzerung
+          light_backpack: Leichter Rucksack
+          lmg: LMG
+          magazine: Magazin
+          medium_armor: Mittlere Panzerung
+          medium_backpack: Medium Backpack
+          pistol: Pistole
+          rifle: Gewehr
+          rocket_launcher: Raketenwerfer
+          shotgun: Schrotflinte
+          smg: SMG
+          sniper_rifle: Scharfschützengewehr
+          special_railgun: Special - Railgun
+          utility: Hilfsgeräte
+          weapon_scope: Zielfernrohr
+        slots:
+          arms: Arme
+          backpack: Rucksack
+          footwear: Schuhwerk
+          gloves: Handschuhe
+          hat: Hut
+          helmet: Helm
+          jacket: Jacke
+          legs: Beine
+          pants: Hose
+          shirt: Hemd
+          torso: Oberkörper
+          undersuit: Unteranzug
+        temperature_rating: Temp.
+        types:
+          additional: Zusätzliche Ausrüstung
+          powerplant: Kraftwerk
+          primary_thrusters: Primäre Triebwerke
+          shield: Schilde
+          thrusters: Manövriertriebwerke
+        weapon_classes:
+          ballistic: Ballistisch
+          energy: Energie
+          frag: Frag
+      fleet_membership:
+        roles:
+          admin: Admin
+          member: Mitglied
+          officer: Offizier
+        user_id: Mitglied
+      habitation:
+        habitation_types:
+          container: Container
+          large_apartment: Large Apartment
+          medium_apartment: Medium Apartment
+          small_apartment: Small Apartment
+          suite: Suite
+      manufacturer:
+        code: CODE
+        known_for: Bekannt für?
+      model:
+        active: aktiv?
+        beam: Breite
+        cargo: Fracht
+        crew: Besatzung
+        equipment: Ausrüstung
+        ground: Bodenfahrzeug?
+        adi_map: Atlas 3d Map?
+        hardpoints: Aufhängungspunkte
+        height: Höhe
+        hidden: versteckt?
+        holo_colored: 3D File has colored Materials?
+        length: Länge
+        manufacturer: Hersteller
+        mass: Masse
+        max_upgrades: Upgrades
+        notified: '"Neues Schiff"-Benachrichtigung unterdrücken?'
+        on_sale: Im Angebot?
+        production_status: Produktionsstatus
+        variants: Varianten
+        weapons: Waffen
+        fleetchart_image: Lagacy Fleetchart Image
+      model_hardpoint:
+        categories:
+          fixed: Festes Manövriertriebwerk
+          gimbal: Gimbal-Manövriertriebwerk
+          joint: Gelenkiges Manövriertriebwerk
+          main: Haupttriebwerk
+          manned_turret: Bemannter Geschützturm
+          missile_turret: Raketengeschützturm
+          remote_turret: Ferngesteuerter Geschützturm
+          retro: Retro-Triebwerk
+          vtol: VTOL-Triebwerk
+          qed: QED
+          emp: EMP
+        sizes:
+          capital: C (4)
+          eight: 8
+          eleven: 11
+          five: 5
+          four: 4
+          large: L (3)
+          medium: M (2)
+          nine: 9
+          one: 1
+          seven: 7
+          six: 6
+          small: S (1)
+          tbd: TBD
+          ten: 10
+          three: 3
+          twelve: 12
+          two: 2
+          vehicle: V (0)
+          snub: Snub (0)
+      progress_tracker_item:
+        statuses:
+          done: Fertig
+          in_progress: In Bearbeitung
+          planned: Geplant
+      setting:
+        base:
+          registration: Registrierung aktiv?
+        mailer:
+          default_from: Standard-Absender
+          host: SMTP Host
+          password: SMPT Password or Token
+          port: SMTP Port
+          user: SMTP User
+      updated_at: vor %{time}
+      user:
+        admin: Admin?
+        confirmation_token: Token
+        current_password: Passwort
+        email: E-Mail
+        enabled: Aktiv?
+        gravatar: Gravatar-E-Mail-Adresse
+        login: Benutzername oder E-Mail
+        username: Benutzername
+      weapon:
+        classes:
+          class1: Class 1
+          class2: Class 2
+          class3: Class 3
+          class4: Class 4
+          class5: Class 5
+          class6: Class 6
+          class7: Class 7
+          class8: Class 8
+    errors:
+      messages:
+        blank: darf nicht leer sein
+        record_invalid: Ungültige Daten
+      models:
+        fleet_role:
+          attributes:
+            resource_access:
+              changed: Zugriffsrechte können nicht geändert werden
+        fleet_membership:
+          attributes:
+            base:
+              cannot_destroy_from_permanent_role: Mitglied einer Flotte kann nicht
+                aus einer permanenten Rolle entfernt werden
+            user_id:
+              taken: bereits vorhanden oder hat eine ausstehende Einladung
+        user:
+          attributes:
+            base:
+              has_permanent_fleet_memberships: 'Cannot delete account while you are
+                an admin of the following fleets: %{fleets}. Please transfer ownership
+                first.'
+            confirmation_token:
+              invalid: ist ungültig
+            current_password:
+              invalid: ist ungültig.
+            email:
+              taken: ist bereits vergeben.
+            password:
+              too_short:
+            password_confirmation:
+              confirmation: Passwörter stimmen nicht überein
+            reset_password_token:
+              invalid: Token ist ungültig
+            username:
+              taken: ist bereits vergeben.

@@ -1,16 +1,16 @@
 {
   "zh-CN": {
     "validations": {
-      "required": "The %{field} field is required",
-      "min": "The %{field} field must be at least %{min} characters",
-      "max": "The %{field} field must be at most %{max} characters",
+      "required": "%{field} 字段是必填的",
+      "min": "%{field} 字段至少需要 %{min} 个字符",
+      "max": "%{field} 字段最多 %{max} 个字符",
       "alpha_dash": "The %{field} field may contain alpha-numeric characters as well as dashes and underscores",
-      "email": "The %{field} field must be a valid email address",
-      "confirmed": "The %{field} field does not match",
-      "numeric": "The %{field} field may only contain numeric characters",
-      "between": "The %{field} field must be between %{min} and %{max}",
-      "min_value": "The %{field} field must be %{min} or more",
-      "url": "The %{field} field is not a valid URL"
+      "email": "%{field} 字段必须是有效的电子邮件地址",
+      "confirmed": "%{field} 字段不匹配",
+      "numeric": "%{field} 字段只能包含数字",
+      "between": "%{field} 字段必须在 %{min} 和 %{max} 之间",
+      "min_value": "%{field} 字段必须为 %{min} 或更多",
+      "url": "%{field} 字段不是有效的 URL"
     }
   }
 }

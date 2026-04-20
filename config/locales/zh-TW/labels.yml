@@ -1,1 +1,78 @@
+---
 zh-TW:
+  labels:
+    actions: 操作
+    charts:
+      component-pie:
+        one: "%{label}:<br><b>%{count}</b> 組件 (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> 組件 (%{percentage} %)"
+      ship:
+        one: "%{label}:<br><b>%{count}</b> 飛船"
+        other: "%{label}:<br><b>%{count}</b> 飛船"
+      ship-pie:
+        one: "%{label}:<br><b>%{count}</b> 飛船 (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> 飛船 (%{percentage} %)"
+      user:
+        one: "%{label}:<br><b>%{count}</b> 使用者"
+        other: "%{label}:<br><b>%{count}</b> 使用者"
+      view:
+        one: "%{label}:<br><b>%{count}</b> 瀏覽"
+        other: "%{label}:<br><b>%{count}</b> 瀏覽"
+      visit:
+        one: "%{label}:<br><b>%{count}</b> 訪問"
+        other: "%{label}:<br><b>%{count}</b> 訪問"
+    panels:
+      components_by_class: 按類別分組件
+      fleets_count_total: 總艦隊數
+      latest_components: 新組件
+      latest_manufacturers: 新製造商
+      latest_models: 已重新載入型號
+      latest_users: 新使用者
+      models_by_classification: 按分類整理
+      models_by_manufacturer: 按製造商分類
+      models_by_production_status: 按生產狀態分類
+      models_by_size: 按尺寸分類
+      models_per_month: 每月型號
+      most_viewed_pages: 瀏覽最多的頁面
+      online_count: 線上使用者
+      registrations: 每月註冊數
+      ships_count_total: 總飛船數
+      ships_count_year: "%{year} 新飛船"
+      users_count_total: 總使用者數
+      visits_per_day: 每日訪問
+      visits_per_month: 每月訪問
+    success: 成功
+    table:
+      actions: 操作
+      blank:
+        admin_user: 未找到管理員。
+        default: 未找到項目。
+        equipment: 未找到裝備。
+        image: 未找到圖片。
+        model: 未找到型號。
+        model_module: 未找到模組。
+        model_module_package: 未找到模組套件。
+        model_upgrade: 未找到升級。
+        model_paints: 未找到塗裝。
+        planet: 未找到行星。
+        user: 未找到使用者。
+        rsi_api_status: 沒有未解決的 RSI API 事件
+      component:
+        category: 分類
+      model:
+        manufacturer: 製造商
+      name: 名稱
+      page:
+        count: 數量
+        path: 路徑
+      updated_at: 最後重載
+      user:
+        created_at: 建立於
+        email: 電子郵件
+        last_sign_in_at: 最後登入
+        last_active_at: 最後活躍
+        username: 使用者名稱
+      created_at: 建立於
+      url: URL
+    tax_excluded: 不含增值稅
+    unknown: 未知

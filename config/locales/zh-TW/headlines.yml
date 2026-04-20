@@ -1,1 +1,69 @@
+---
 zh-TW:
+  headlines:
+    account: My Information
+    admin:
+      admin_user:
+        edit: Edit %{admin_user}
+        index: 管理員使用者
+        new: 新管理員使用者
+      component:
+        edit: Edit %{component}
+        index: 組件
+        new: 新組件
+      dashboard: 儀表板
+      equipment:
+        edit: 裝備 %{equipment}
+        index: 裝備
+        new: 新裝備
+      image:
+        index: 圖片
+      loaner_uploads:
+        new: 新借用船上傳
+      manufacturer:
+        edit: 編輯 %{manufacturer}
+        index: 製造商
+        new: 新製造商
+      model:
+        edit: 編輯 %{model}
+        images: "%{model} 圖片上傳"
+        index: 型號
+        name_diff: RSI 名稱不同的型號
+        new: 新型號
+        price_diff: 質押價格過期的型號
+      model_module:
+        edit: 模組 %{model_module}
+        index: 模組
+        new: 新模組
+      model_module_package:
+        edit: 模組套件 %{model_module_package}
+        index: 模組套件
+        new: 新模組套件
+      model_paint:
+        edit: 塗裝 %{model_paint}
+        index: 塗裝
+        new: 新塗裝
+      model_upgrade:
+        edit: 升級 %{model_upgrade}
+        index: 升級
+        new: 新升級
+      user:
+        edit: 編輯 %{user}
+        index: 使用者
+        new: 新使用者
+      maintenance:
+        rsi_api_status:
+          index: RSI API 狀態
+    change_password: 變更您的密碼
+    comments: 評論
+    confirm: 確認您的帳戶
+    forgot_password: 忘記密碼?
+    impressum: 法律聲明
+    not_found: 導航錯誤
+    privacy: 隱私政策
+    server_error: 伺服器錯誤
+    sign_in: 登入
+    sign_up: 註冊
+    unlock: Unlock your Account
+    unprocessable_entity: 無效請求
+    welcome: Welcome

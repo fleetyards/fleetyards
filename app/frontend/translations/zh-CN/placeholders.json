@@ -1,24 +1,29 @@
 {
   "zh-CN": {
     "placeholders": {
-      "name": "Name",
-      "description": "Description",
-      "login": "Username or email",
-      "username": "Username",
-      "twoFactorCode": "Two-factor code",
-      "confirmationCode": "Confirmation code",
-      "email": "Email",
-      "currentPassword": "Current Password",
-      "password": "Password",
-      "passwordConfirmation": "Password Confirmation",
-      "homepage": "Homepage",
-      "discord": "Discord Server",
-      "youtube": "Youtube Channel",
-      "twitch": "Twitch Channel",
-      "distance": "Distance",
-      "guilded": "Guilded Server",
-      "color": "Color",
-      "fleetInviteToken": "Fleet Invite",
+      "name": "名称",
+      "description": "描述",
+      "login": "用户名或电子邮件",
+      "username": "用户名",
+      "twoFactorCode": "两步验证码",
+      "confirmationCode": "确认码",
+      "email": "电子邮件",
+      "currentPassword": "当前密码",
+      "password": "密码",
+      "passwordConfirmation": "确认密码",
+      "homepage": "主页",
+      "discord": "Discord 服务器",
+      "youtube": "Youtube 频道",
+      "twitch": "Twitch 频道",
+      "distance": "距离",
+      "guilded": "Guilded 服务器",
+      "color": "颜色",
+      "features": {
+        "username": "Username or User ID",
+        "fleetFid": "Fleet FID or Fleet ID",
+        "name": "功能名称"
+      },
+      "fleetInviteToken": "舰队邀请",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
         "models-fleetchart": "Avenger, Carrack, Cutlass...",
@@ -28,21 +33,114 @@
       },
       "search": {
         "default": "Search the Verse...",
-        "roadmap-progress-tracker": "Search"
+        "roadmap-progress-tracker": "搜索"
       },
       "home": {
-        "search": "Search for Ships..."
+        "search": "搜索飞船..."
+      },
+      "container-1": "0",
+      "container-2": "0",
+      "container-4": "0",
+      "container-8": "0",
+      "container-16": "0",
+      "container-24": "0",
+      "container-32": "0",
+      "image": {
+        "caption": "标题"
+      },
+      "model": {
+        "length": "长度",
+        "beam": "宽度",
+        "height": "高度",
+        "price": "价格",
+        "pledgePrice": "质押价格",
+        "onSale": "在售",
+        "mass": "质量",
+        "minCrew": "最少船员",
+        "maxCrew": "最多船员",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "生产备注",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "最大速度",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "quantumFuelTankSize": "量子燃料箱大小",
+        "hydrogenFuelTankSize": "氢燃料箱大小",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "偏航（增强）",
+        "pitchBoosted": "俯仰（增强）",
+        "rollBoosted": "翻滚（增强）",
+        "fleetchartOffsetLength": "舰队图表长度偏移",
+        "fleetchartOffsetBeam": "舰队图表宽度偏移",
+        "cargo": "货物",
+        "baseModel": "基础型号"
+      },
+      "cargoHold": {
+        "offsetX": "偏移 X",
+        "offsetY": "偏移 Y",
+        "offsetZ": "偏移 Z",
+        "rotation": "0 or 90"
+      },
+      "manufacturer": {
+        "longName": "全名",
+        "code": "代码",
+        "scRef": "SC Ref"
+      },
+      "component": {
+        "componentClass": "组件类别",
+        "componentType": "组件类型",
+        "componentSubType": "组件子类型",
+        "itemType": "物品类型",
+        "size": "尺寸",
+        "grade": "等级",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "pledgePrice": "质押价格",
+        "productionStatus": "生产状态",
+        "productionNote": "生产备注"
       },
       "fleet": {
-        "fid": "Fleet ID",
+        "fid": "舰队 ID",
         "rsiSid": "RSI SID",
-        "ts": "Teamspeak Server"
+        "ts": "Teamspeak 服务器",
+        "description": "描述",
+        "discord": "Discord 服务器",
+        "guilded": "Guilded 服务器",
+        "homepage": "主页",
+        "twitch": "Twitch 频道",
+        "youtube": "Youtube 频道"
+      },
+      "adminUser": {
+        "passwordConfirmation": "确认密码"
       },
       "user": {
-        "rsiHandle": "RSI Handle"
+        "rsiHandle": "RSI 用户名",
+        "location": "e.g. Berlin, Germany",
+        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+      },
+      "oauthApplication": {
+        "name": "我的应用",
+        "redirectUri": "https://example.com/callback",
+        "scopes": "公开"
       },
       "vehicle": {
         "serial": "Serial"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "位置",
+        "locationUrl": "位置 URL"
+      },
+      "video": {
+        "url": "YouTube Video ID"
       },
       "modelModule": {
         "name": "模块名称",
@@ -52,23 +150,66 @@
         "scKey": "SC Key",
         "search": "按名称搜索模块..."
       },
+      "modelUpgrade": {
+        "name": "升级名称",
+        "pledgePrice": "0.00",
+        "description": "描述"
+      },
+      "modelModulePackage": {
+        "name": "套餐名称",
+        "pledgePrice": "0.00",
+        "description": "描述"
+      },
+      "dock": {
+        "name": "停靠口名称"
+      },
+      "modelHardpoint": {
+        "name": "挂载点名称",
+        "key": "hardpoint_key",
+        "details": "详情",
+        "mount": "挂载类型",
+        "itemSlots": "0",
+        "loadoutIdentifier": "配置标识"
+      },
+      "modelHardpointLoadout": {
+        "name": "配置名称"
+      },
       "filters": {
         "vehicles": {
           "name": "Enterprise, Andromeda...",
-          "priceLt": "Price <=",
-          "priceGt": "Price >="
+          "priceLt": "价格 <=",
+          "priceGt": "价格 >="
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Capital Ship, Fighter...",
-          "classification": "Vehicle, Fighter, Cargo...",
+          "shipRole": "货船、主力舰、战斗机...",
+          "classification": "载具、战斗机、货船...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
-          "onSale": "Yes or No",
-          "productionStatus": "Announced, Flight Ready, In Concept..."
+          "onSale": "是或否",
+          "productionStatus": "已公布、可飞行、概念阶段..."
+        },
+        "modelModules": {
+          "name": "Bio Dome, Cargo Module..."
+        },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "users": {
+          "search": "用户名或电子邮件",
+          "username": "用户名",
+          "rsiHandle": "RSI 用户名",
+          "email": "电子邮件"
+        },
+        "components": {
+          "name": "名称",
+          "itemType": "物品类型",
+          "componentClass": "组件类别"
         },
         "fleets": {
+          "name": "名称",
+          "fid": "FID",
           "members": {
-            "username": "Username"
+            "username": "用户名"
           }
         }
       }

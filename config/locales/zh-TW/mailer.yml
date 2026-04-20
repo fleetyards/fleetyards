@@ -1,1 +1,92 @@
+---
 zh-TW:
+  mailer:
+    account:
+      action: 管理帳戶設定
+    admin:
+      notify_block:
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: RSI 連線已被封鎖
+        text: 透過 "%{url}" 的 RSI 自動更新已被封鎖
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: RSI 連線已恢復
+        text: 透過 "%{url}" 的 RSI 自動更新已恢復
+      weekly:
+        fleets: 新艦隊
+        headline: FleetYards.net Command - Weekly
+        registrations: 新註冊
+        ships: 新飛船
+        subject: FleetYards.net Command Weekly
+        vehicles: 新載具
+    fleet_membership:
+      fleet_accepted:
+        action: "%{fleet} 首頁"
+        body: 要檢視艦隊的飛船和其他成員，請點擊以下連結：
+        headline: 您加入 %{fleet} 的請求已被接受
+        subject: "%{fleet} 接受了您的加入請求"
+      member_accepted:
+        action: "%{fleet} 成員列表"
+        body: 要檢視新成員資訊，請點擊以下連結：
+        headline: "%{username} 接受了艦隊邀請"
+        subject: 新艦隊成員
+      member_requested:
+        action: "%{fleet} 邀請"
+        body: 要接受請求，請點擊以下連結：
+        headline: "%{username} 想要加入 %{fleet}"
+        subject: 新艦隊成員請求
+      new_invite:
+        action: 加入 %{fleet}
+        body: 要接受邀請，請點擊以下連結：
+        headline: 您已被邀請加入 %{fleet}
+        subject: 新艦隊邀請
+    confirm_access:
+      body: 請使用以下驗證碼確認存取您的帳戶設定。
+      expires: 此驗證碼將在 10 分鐘後過期。
+      subject: 您的確認碼
+    hello: 你好 %{username}
+    model:
+      new:
+        headline_part_1: 請允許我介紹：
+        headline_part_2: "%{manufacturer}"
+        subject: 新飛船/載具
+    notification_settings: 取消訂閱通知
+    plain_hello: 你好
+    privacy: 隱私政策
+    progress_tracker:
+      admin:
+        body: 進度追蹤有 %{changes} 項變更
+        headline: 進度追蹤新變更
+        subject: 進度追蹤新變更
+    roadmap:
+      admin:
+        body: 路線圖有 %{changes} 項變更
+        headline: 路線圖新變更
+        subject: 路線圖新變更
+    security:
+      action: 管理安全設定
+      info: 如果您沒有發起此變更，請透過 info@fleetyards.net 聯繫我們。
+    transmission_end: "--- 收到傳輸 ---"
+    transmission_start: "--- 收到傳輸 ---"
+    two_factor:
+      disabled:
+        body: 您已為 Fleetyards.net 帳戶停用了兩步驟驗證。
+        subject: 兩步驟驗證已停用
+      enabled:
+        body: 很好，您已為 Fleetyards.net 帳戶啟用了兩步驟驗證。
+        subject: 兩步驟驗證已啟用
+      login:
+        body: 請在登入頁面輸入以下驗證碼以驗證您的身分。
+        headline: 兩步驟驗證碼
+        subject: 兩步驟驗證碼
+    user:
+      username_changed:
+        body: 您已變更 Fleetyards.net 帳戶使用者名稱。
+        subject: 使用者名稱已變更
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: 現在開始出售！
+        price: 起價 %{price}
+        subject: "%{model} 現在開始出售！"

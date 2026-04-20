@@ -1,1 +1,78 @@
+---
 de:
+  labels:
+    actions: Aktionen
+    charts:
+      component-pie:
+        one: "%{label}:<br><b>%{count}</b> Komponente (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Komponenten (%{percentage} %)"
+      ship:
+        one: "%{label}:<br><b>%{count}</b> Schiff"
+        other: "%{label}:<br><b>%{count}</b> Schiffe"
+      ship-pie:
+        one: "%{label}:<br><b>%{count}</b> Schiff (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Schiffe (%{percentage} %)"
+      user:
+        one: "%{label}:<br><b>%{count}</b> Benutzer"
+        other: "%{label}:<br><b>%{count}</b> Benutzer"
+      view:
+        one: "%{label}:<br><b>%{count}</b> Aufruf"
+        other: "%{label}:<br><b>%{count}</b> Aufrufe"
+      visit:
+        one: "%{label}:<br><b>%{count}</b> Besuch"
+        other: "%{label}:<br><b>%{count}</b> Besuche"
+    panels:
+      components_by_class: Komponenten nach Klasse
+      fleets_count_total: Flotten gesamt
+      latest_components: Neue Komponenten
+      latest_manufacturers: Neue Hersteller
+      latest_models: Modelle neu geladen
+      latest_users: Neue Benutzer
+      models_by_classification: Modelle nach Klassifizierung
+      models_by_manufacturer: Modelle nach Hersteller
+      models_by_production_status: Modelle nach Produktionsstatus
+      models_by_size: Modelle nach Größe
+      models_per_month: Modelle pro Monat
+      most_viewed_pages: Meistbesuchte Seiten
+      online_count: Benutzer online
+      registrations: Registrierungen pro Monat
+      ships_count_total: Schiffe gesamt
+      ships_count_year: Neue Schiffe in %{year}
+      users_count_total: Benutzer gesamt
+      visits_per_day: Besuche pro Tag
+      visits_per_month: Besuche pro Monat
+    success: Erfolg
+    table:
+      actions: Aktionen
+      blank:
+        admin_user: Es konnte kein Admin gefunden werden.
+        default: Keine Einträge konnten gefunden werden.
+        equipment: Keine Ausrüstung konnte gefunden werden.
+        image: Kein Bild konnte gefunden werden.
+        model: Keine Modelle konnten gefunden werden.
+        model_module: Kein Modul konnte gefunden werden.
+        model_module_package: Kein Modulpaket konnte gefunden werden.
+        model_upgrade: Kein Upgrade konnte gefunden werden.
+        model_paints: Keine Lackierung konnte gefunden werden.
+        planet: Keine Planeten konnten gefunden werden.
+        user: Kein Benutzer konnte gefunden werden.
+        rsi_api_status: Keine ungelösten RSI-API-Vorfälle
+      component:
+        category: Kategorie
+      model:
+        manufacturer: Hersteller
+      name: Name
+      page:
+        count: Anzahl
+        path: Pfad
+      updated_at: letzte Aktualisierung
+      user:
+        created_at: Erstellt am
+        email: E-Mail
+        last_sign_in_at: Letzte Anmeldung
+        last_active_at: Zuletzt aktiv
+        username: Benutzername
+      created_at: Erstellt am
+      url: URL
+    tax_excluded: zzgl. MwSt.
+    unknown: Unbekannt

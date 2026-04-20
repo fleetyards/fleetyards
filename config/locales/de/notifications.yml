@@ -1,0 +1,31 @@
+---
+de:
+  notifications:
+    hangar_create:
+      title: "%{model} zum Hangar hinzugefügt"
+    hangar_destroy:
+      title: "%{model} aus dem Hangar entfernt"
+    wishlist_create:
+      title: "%{model} zur Wunschliste hinzugefügt"
+    wishlist_destroy:
+      title: "%{model} von der Wunschliste entfernt"
+    model_on_sale:
+      title: "%{model} ist im Angebot"
+      body: "%{model} ist derzeit im Pledge-Store erhältlich."
+    hangar_sync_finished:
+      title: Hangar-Synchronisierung abgeschlossen
+      body: Ihr RSI-Hangar wurde erfolgreich synchronisiert.
+    hangar_sync_failed:
+      title: Hangar-Synchronisierung fehlgeschlagen
+      body: 'Ihre RSI-Hangar-Synchronisierung ist fehlgeschlagen: %{error}'
+    new_model:
+      title: 'Neues Schiff: %{model}'
+      body: "%{model} wurde zur Schiffsdatenbank hinzugefügt."
+    fleet_invite:
+      title: Sie wurden zu %{fleet} eingeladen
+    fleet_member_requested:
+      title: "%{username} hat eine Beitrittsanfrage für %{fleet} gestellt"
+    fleet_member_accepted:
+      title: "%{username} ist %{fleet} beigetreten"
+    fleet_request_accepted:
+      title: Sie wurden in %{fleet} aufgenommen

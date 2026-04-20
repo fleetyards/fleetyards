@@ -1,0 +1,72 @@
+---
+es:
+  title:
+    default: FleetYards.net
+    default_short: FleetYards
+    default_admin: FleetYards.net Command
+    default_admin_short: FltYrds Command
+    not_found: 404
+    server_error: 500
+    unprocessable_entity: 422
+    frontend:
+      compare_ships: Comparar naves
+      confirm: Confirmar cuenta
+      cookie-policy: Política de cookies
+      fleet_invite: Unirse a %{fleet}
+      fleet_members: Miembros de %{fleet}
+      fleet_members_index: Miembros de %{fleet}
+      fleet_members_invites: Invitaciones de %{fleet}
+      fleet_settings: Configuración de %{fleet}
+      fleet_settings_roles: Roles de %{fleet}
+      fleet_stats: Estadísticas de %{fleet}
+      fleets: Flotas
+      fleets_add: Crear nueva flota
+      fleets_invites: Invitaciones de flota
+      fleets_preview: Vista previa de flota
+      hangar: Mi hangar
+      hangar_import: Importar
+      hangar_preview: Vista previa de mi hangar
+      hangar_stats: Estadísticas de mi hangar
+      hangar_wishlist: Lista de deseos
+      home: Inicio
+      images: Imágenes
+      impressum: Aviso legal
+      login: Iniciar sesión
+      password_change: Cambiar contraseña
+      password_request: Solicitar contraseña
+      privacy-policy: Política de privacidad
+      public_hangar: Hangar de %{user}
+      public_wishlist: Lista de deseos de %{user}
+      roadmap: Hoja de ruta
+      roadmap_changes: Cambios de la hoja de ruta
+      roadmap_progress-tracker: Rastreador de progreso
+      roadmap_ships: Hoja de ruta de naves
+      search: Resultados de búsqueda
+      settings: Configuración
+      settings_account: Cuenta
+      settings_change-password: Cambiar contraseña
+      settings_hangar: Configuración del hangar
+      settings_notifications: Configuración de notificaciones
+      settings_profile: Configuración del perfil
+      settings_security: Seguridad de la cuenta
+      settings_security_two-factor_backup-codes: Generar códigos de respaldo de dos
+        factores
+      settings_security_two-factor_disable: Deshabilitar autenticación de dos factores
+      settings_security_two-factor_enable: Habilitar autenticación de dos factores
+      ship_images: Imágenes de %{model}
+      ship_videos: Videos de %{model}
+      ships: Naves
+      sign-up: Registrarse
+      stats: Estadísticas
+      tools: Herramientas
+      tools_travel-times: Tiempos de viaje
+      visual-tests: Pruebas visuales
+      visual-tests_panels: Panels - Visual Tests
+    api:
+      docs:
+        swagger: Swagger
+    admin:
+      dashboard: Panel de control
+      models: Modelos
+      models_edit_fleetchart: Editar imágenes de gráfico de flota de %{manufacturer}
+        %{model}

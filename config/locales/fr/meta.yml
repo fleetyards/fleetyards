@@ -1,0 +1,16 @@
+---
+fr:
+  meta:
+    admin_description: FleetYards.net Command App.
+    compare_ships:
+      description:
+        default: Comparez vos vaisseaux préférés.
+        vs: Comparer %{models}.
+    description: FleetYards.net, Your Database for all Information related to Ships
+      from “Star Citizen“.
+    keywords: Star, Citizen, Spaceships, Ships, Fighter, Database, Squadron, 42, Star,
+      Citizen, English, Chris, Roberts, Online, Game, Space, Simulation
+    ship_images:
+      description: Images de %{model}
+    ship_videos:
+      description: Vidéos de %{model}

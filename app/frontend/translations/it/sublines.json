@@ -5,8 +5,8 @@
         "headline": "forse dovremmo cambiare questo ;)",
         "add": "Come aggiungere una nave?",
         "edit": "Come modificare una nave?",
-        "wishlist": "How to add a ship to your wishlist?",
-        "fleetchart": "Fleetchart?",
+        "wishlist": "Come aggiungere una nave alla lista dei desideri?",
+        "fleetchart": "Grafico flotta?",
         "public": "URL Pubblico?",
         "groups": "Come creare e aggiornare i gruppi?"
       },
@@ -15,11 +15,13 @@
         "disclaimer": "Disclaimer",
         "copyright": "Copyright",
         "thirdpartycontent": "Crediti",
-        "sponsors": "Sponsors",
+        "sponsors": "Sponsor",
         "liabilityInternal": "Limitazione della responsabilità per il contenuto interno",
         "liabilityExternal": "Limitazione della responsabilità per i collegamenti esterni"
       },
-      "settings": { "rsiData": "Informazioni RSI" }
+      "settings": {
+        "rsiData": "Informazioni RSI"
+      }
     }
   }
 }

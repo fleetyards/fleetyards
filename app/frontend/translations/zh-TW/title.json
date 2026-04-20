@@ -22,11 +22,11 @@
       "signUp": "註冊",
       "embed": "嵌入式小工具",
       "apiV1": "API V1",
-      "apiV1Schema": "Schema",
+      "apiV1Schema": "架構",
       "apiV1Pagination": "分頁",
       "authApiV1": "Auth API V1",
       "authApiV1OpenId": "OpenID Connect",
-      "authApiV1Schema": "Schema",
+      "authApiV1Schema": "架構",
       "hangar": {
         "index": "我的機庫",
         "preview": "我的機庫預覽",
@@ -43,12 +43,18 @@
         "add": "建立新艦隊",
         "preview": "艦隊預覽",
         "invites": "艦隊邀請",
-        "members": "%{fleet} 成員",
+        "members": {
+          "index": "%{fleet} Members",
+          "invites": "%{fleet} Invites",
+          "worldmap": "%{fleet} 成員世界地圖",
+          "starmap": "%{fleet} 成員星圖"
+        },
         "stats": "%{fleet} 統計",
         "settings": {
           "index": "%{fleet} 設定",
           "fleet": "%{fleet} 設定",
-          "membership": "%{fleet} 成員資格"
+          "membership": "%{fleet} 成員資格",
+          "roles": "%{fleet} 角色"
         }
       },
       "roadmap": {
@@ -58,8 +64,11 @@
       },
       "settings": {
         "index": "個人設定",
+        "profile": "個人資料設定",
         "account": "帳戶",
         "hangar": "機庫設定",
+        "features": "功能標誌",
+        "oauthApplications": "OAuth 應用程式",
         "notifications": "通知設定",
         "security": "帳戶安全",
         "twoFactor": {
@@ -97,6 +106,7 @@
             "fleetchart": "編輯模型艦隊圖",
             "hardpoints": "編輯模型硬點",
             "cargoAndFuel": "貨物和燃料",
+            "cargoHolds": "編輯 %{manufacturer} %{model} 貨艙",
             "docks": "編輯模型停靠點",
             "modules": "編輯模型模組",
             "paints": "編輯模型塗裝",
@@ -110,7 +120,10 @@
         "components": {
           "index": "組件",
           "new": "新組件",
-          "edit": "編輯組件"
+          "edit": {
+            "index": "編輯組件",
+            "prices": "Edit Component Prices"
+          }
         },
         "manufacturers": {
           "index": "製造商",
@@ -133,6 +146,15 @@
           "index": "艦隊",
           "edit": "編輯艦隊"
         },
+        "oauthApplications": {
+          "index": "OAuth 應用程式",
+          "new": "新增 OAuth 應用程式",
+          "edit": "編輯 OAuth 應用程式"
+        },
+        "features": {
+          "index": "功能標誌",
+          "show": "功能詳情"
+        },
         "images": {
           "index": "圖片"
         },
@@ -140,6 +162,7 @@
           "index": "維護",
           "pghero": "PgHero",
           "features": "功能",
+          "flipper": "Flipper UI",
           "workers": "工作程序",
           "tasks": "任務",
           "rsiApiStatus": "RSI API 狀態"

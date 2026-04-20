@@ -2,25 +2,25 @@
   "zh-TW": {
     "sublines": {
       "hangarGuide": {
-        "headline": "maybe we should change that ;)",
-        "add": "How to add a ship?",
-        "edit": "How to edit a ship?",
-        "wishlist": "How to add a ship to your wishlist?",
-        "fleetchart": "Fleetchart?",
-        "public": "Public URL?",
-        "groups": "How to create and update groups?"
+        "headline": "也許我們應該改變這一點 ;)",
+        "add": "如何新增飛船?",
+        "edit": "如何編輯飛船?",
+        "wishlist": "如何將飛船新增到願望清單?",
+        "fleetchart": "艦隊圖表?",
+        "public": "公開 URL?",
+        "groups": "如何建立和更新群組?"
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
-        "disclaimer": "Disclaimer",
-        "copyright": "Copyright",
-        "thirdpartycontent": "Credits",
-        "sponsors": "Sponsors",
+        "disclaimer": "免責聲明",
+        "copyright": "版權",
+        "thirdpartycontent": "點數",
+        "sponsors": "贊助商",
         "liabilityInternal": "Limitation of liability for internal content",
         "liabilityExternal": "Limitation of liability for external links"
       },
       "settings": {
-        "rsiData": "RSI Information"
+        "rsiData": "RSI 資訊"
       }
     }
   }

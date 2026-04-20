@@ -1,0 +1,47 @@
+---
+es:
+  oauth:
+    applications:
+      confirmations:
+        destroy: "¿Está seguro?"
+      buttons:
+        edit: Editar
+        destroy: Destruir
+        submit: Enviar
+        cancel: Cancelar
+        authorize: Autorizar
+      form:
+        error: "¡Ups! Verifique su formulario por posibles errores"
+      help:
+        confidential: Application will be used where the client secret can be kept
+          confidential. Native mobile apps and Single Page Apps are considered non-confidential.
+        redirect_uri: Use una línea por URI
+        blank_redirect_uri: Leave it blank if you configured your provider to use
+          Client Credentials, Resource Owner Password Credentials or any other grant
+          type that doesn't require redirect URI.
+        scopes: Separe los alcances con espacios. Deje en blanco para usar los alcances
+          predeterminados.
+      edit:
+        title: Editar aplicación
+      index:
+        title: Sus aplicaciones
+        new: Nueva aplicación
+        name: Nombre
+        callback_url: URL de callback
+        confidential: "¿Confidencial?"
+        actions: Acciones
+        confidentiality:
+          'yes': Sí
+          'no': 'No'
+      new:
+        title: Nueva aplicación
+      show:
+        title: 'Aplicación: %{name}'
+        application_id: UID
+        secret: Secreto
+        secret_hashed: Secreto hasheado
+        scopes: Alcances
+        confidential: Confidencial
+        callback_urls: URLs de callback
+        actions: Acciones
+        not_defined: No definido

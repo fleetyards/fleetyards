@@ -1,1 +1,77 @@
+---
 zh-TW:
+  messages:
+    background_disabled:
+      success: "%{resource} 未用作背景。"
+    background_enabled:
+      success: "%{resource} 已用作背景。"
+    confirm:
+      delete: 確定要刪除此項目嗎?
+      resend_confirmation: 確定要為此使用者重新傳送確認說明嗎?
+      admin_login_in_as: 確定要以此使用者身分登入嗎?
+    create:
+      failure: "%{resource} 無法建立。"
+      success: "%{resource} 已建立。"
+    destroy:
+      success: "%{resource} 刪除成功。"
+    disabled:
+      success: "%{resource} 已停用。"
+    enabled:
+      success: "%{resource} 已啟用。"
+    fleet:
+      join:
+        success: 收到艦隊加入請求。
+    loaner_upload:
+      failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
+      success: 借用船上傳成功。
+    record_not_found:
+      base: 未找到項目
+      fleet: 未找到艦隊
+      fleet_membership: 未找到艦隊成員
+      user: 未找到使用者
+      invite: 未找到邀請
+      model: 未找到型號
+    reload:
+      started: "%{resource} 重載已開始。"
+      success: "%{resource} 重載成功。"
+    resend_confirmation:
+      failure: "%{resource} 無法重新傳送確認。"
+      success: "%{resource} 確認已傳送。"
+    send_password_reset:
+      success: "%{resource} 密碼重設說明已傳送。"
+    rsi_verification:
+      failure: 帳戶無法驗證。
+      success: 帳戶驗證成功。
+    signup:
+      already_signed_in: 您已登入。
+      username_invalid: 使用者名稱無效。
+      reserved_username: 此使用者名稱在 FleetYards.net 上已被保留/禁止。請選擇其他使用者名稱！
+      blocked: You have been blocked from FleetYards.net.<br>This can have multiple
+        Reasons.<br>For further Information please Contact us under info@fleetyards.net
+    update:
+      failure: "%{resource} 無法編輯。"
+      success: "%{resource} 編輯成功。"
+    omniauth_connection:
+      destroy:
+        last_connection: 在設定密碼之前，您不能移除最後一個登入連線。
+    confirmAccess:
+      failure: 存取確認失敗
+    confirmAccessCode:
+      failure: 確認碼無效或已過期。
+    confirmAccessEmail:
+      sent: 確認連結已傳送到您的電子郵件。
+      notAllowed: 電子郵件確認僅適用於 OAuth 帳戶。
+    hangar_import:
+      no_data: 未找到要匯入的資料
+    hangar_sync:
+      no_data: 未找到要同步的資料
+      already_running: 機庫同步已在進行中
+    user:
+      requires_access_confirmation: 存取確認待處理
+    otp:
+      active: 兩步驟驗證已經處於啟用狀態
+      inactive: 兩步驟驗證已經處於停用狀態
+      disable:
+        failure: 無法停用兩步驟驗證
+      enable:
+        failure: 無法啟用兩步驟驗證
