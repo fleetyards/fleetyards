@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.9.5](https://github.com/fleetyards/fleetyards/compare/v6.9.4...v6.9.5) (2026-04-20)
+
+
+### Bug Fixes
+
+* fix hardpoint overflow and unify module cargo grid rendering ([42016bd](https://github.com/fleetyards/fleetyards/commit/42016bd4ba1b289d3f378ec5110a8311a6c02c8f))
+* pass manufacturer slug instead of full object in filter query ([a610383](https://github.com/fleetyards/fleetyards/commit/a6103833d5cbd06792d6b93322f2db7013fc01b3))
+* redesign module panels to card layout with image on top ([70bf73a](https://github.com/fleetyards/fleetyards/commit/70bf73a5582f1e8b4e2914b9b2d0dc7990066d03))
+* use correct key for module cargo calculation from hardpoints ([8dbe2d5](https://github.com/fleetyards/fleetyards/commit/8dbe2d55b50a8cac531702cd0ae4acb86975b412))
+
 ## [6.9.4](https://github.com/fleetyards/fleetyards/compare/v6.9.3...v6.9.4) (2026-04-20)
 
 
