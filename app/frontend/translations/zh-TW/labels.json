@@ -14,8 +14,6 @@
       "actions": "操作",
       "enabled": "已啟用",
       "disabled": "已禁用",
-      "findModel": "輸入以查找飛船",
-      "find": "輸入以搜尋",
       "collapse": "摺疊",
       "price": "價格",
       "expand": "展開",
@@ -23,12 +21,69 @@
       "anonymous": "匿名",
       "toggleNavigation": "切換導航",
       "enableYoutube": "點擊啟用YouTube嵌入或右鍵複製視頻鏈接",
+      "openInNewWindow": "全螢幕開啟",
       "or": "或",
       "deselect": "點擊取消選擇",
       "networkStatusOffline": "網絡狀態：離線 - 服務不可用",
       "groups": "分組",
+      "features": {
+        "stateOn": "已啟用",
+        "stateOff": "已停用",
+        "stateConditional": "有條件",
+        "selfService": "自助服務",
+        "selfServiceEnabled": "使用者可以切換此功能",
+        "selfServiceDisabled": "使用者無法切換此功能",
+        "actors": "角色",
+        "groups": "群組",
+        "noGroups": "此功能沒有啟用的群組。",
+        "noActors": "此功能沒有啟用的個人角色。",
+        "user": "使用者",
+        "fleet": "艦隊",
+        "actorType": "角色類型",
+        "percentageOfActors": "的角色",
+        "percentageOfTime": "的時間",
+        "currentState": "目前狀態",
+        "toggle": "切換",
+        "settingsIntro": "為您的帳戶啟用或停用實驗性功能。這些功能可能不完整或隨時變更。",
+        "noFeaturesAvailable": "目前沒有可用的自助服務功能。",
+        "descriptions": {
+          "tools_travel_times": "顯示地點之間的預計旅行時間。",
+          "tools_cargo_grids": "顯示飛船的互動式貨物網格檢視器。",
+          "fleet_starmap": "在艦隊成員頁面顯示 Star Citizen 星圖。"
+        }
+      },
+      "oauthApplication": {
+        "name": "應用程式名稱",
+        "clientId": "客戶端 ID",
+        "clientSecret": "客戶端密鑰",
+        "redirectUri": "重導向 URI",
+        "redirectUriHint": "每行一個 URI。",
+        "confidential": "機密",
+        "scopes": "權限範圍",
+        "scopesHint": "如果未選擇權限範圍，將使用預設範圍: %{scopes}"
+      },
+      "rsiRequestLogs": {
+        "resolved": "已解決",
+        "unresolved": "未解決"
+      },
+      "oauthApplications": {
+        "settingsIntro": "管理您的 OAuth 應用程式。這些應用程式可以代表使用者存取 FleetYards API。",
+        "name": "應用程式名稱",
+        "redirectUri": "重導向 URI",
+        "confidential": "機密",
+        "clientId": "客戶端 ID",
+        "clientSecret": "客戶端密鑰",
+        "scopes": "權限範圍",
+        "defaultScopes": "預設權限範圍",
+        "confidentialShort": "機密",
+        "publicShort": "公開"
+      },
       "fleetInviteToken": "艦隊邀請",
       "scDataVersion": "補丁版本",
+      "lastReload": "最後重載",
+      "createdAt": "建立於",
+      "updatedAt": "更新於",
+      "addToHangar": "新增到機庫",
       "home": {
         "search": "搜尋飛船..."
       },
@@ -67,14 +122,23 @@
         "quickStats": {
           "newShips": "%{year} 年新飛船",
           "totalShips": "飛船總數",
-          "totalMembers": "成員總數"
+          "totalMembers": "成員總數",
+          "vehicles": "機庫飛船",
+          "wishlists": "願望清單飛船",
+          "shipOfTheMonth": "月度飛船"
         },
         "modelsByClassification": "按分類劃分的飛船",
         "modelsBySize": "按大小劃分的飛船",
         "vehiclesByModel": "按型號劃分的飛船 (前 %{limit})",
         "modelsPerMonth": "每月飛船數量",
         "modelsByManufacturer": "按製造商劃分的飛船",
-        "modelsByProductionStatus": "按生產狀態劃分的飛船"
+        "modelsByProductionStatus": "按生產狀態劃分的飛船",
+        "vehiclesPerMonth": "每月機庫飛船",
+        "topVehiclesByModel": "前 10 機庫飛船",
+        "shipsOfTheMonth": "月度飛船",
+        "crewDeficit": "船員缺口",
+        "crewSurplus": "船員盈餘",
+        "membersByRole": "按角色分組成員"
       },
       "roadmap": {
         "selectWeek": "選擇週",
@@ -87,6 +151,8 @@
         "committed": "已承諾",
         "lastVersion": {
           "active": {
+            "false": "條目已從路線圖移除",
+            "true": "條目已重新新增到路線圖",
             "decreased": "項目已從路線圖中移除",
             "increased": "項目已重新添加到路線圖"
           },
@@ -123,6 +189,7 @@
       "twitch": "Twitch 頻道",
       "guilded": "Guilded 伺服器",
       "3dView": "3D",
+      "3dMap": "Map",
       "filter": "篩選",
       "taxExcluded": "不含稅",
       "hangar": "機庫",
@@ -131,8 +198,8 @@
       "wishlist": "願望清單",
       "fleetchart": "艦隊圖表",
       "fleetchartApp": {
-        "screenHeight": "Screen Height",
-        "viewpoint": "Viewpoint",
+        "screenHeight": "螢幕高度",
+        "viewpoint": "視角",
         "screenHeightOptions": {
           "1x": "1x",
           "1_5x": "1.5x",
@@ -141,85 +208,155 @@
           "4x": "4x"
         },
         "viewpointOptions": {
-          "side": "Side",
-          "top": "Top",
-          "angled": "Angled"
+          "side": "側面",
+          "top": "頂部",
+          "angled": "斜角",
+          "front": "正面"
         },
-        "gridSize": "%{size} meter per grid box",
-        "mode": "Mode",
+        "gridSize": "每格 %{size} 公尺",
+        "mode": "模式",
         "modeOptions": {
-          "classic": "Classic",
+          "classic": "經典",
           "panzoom": "v2"
         }
       },
-      "fleetStats": "Stats",
+      "fleetStats": "統計",
       "hangarMetrics": {
-        "total": "Total",
+        "total": "總計",
         "totalMoney": "Money Value",
         "totalCredits": "Credits",
-        "totalMinCrew": "Min. Crew",
-        "totalMaxCrew": "Max. Crew",
-        "totalCargo": "Total Cargo"
+        "totalIngameValue": "機庫 aUEC 價值",
+        "totalMinCrew": "最少船員",
+        "totalMaxCrew": "最多船員",
+        "totalCargo": "總貨物",
+        "largestShip": "最大飛船",
+        "smallestShip": "最小飛船",
+        "averagePledgePrice": "平均質押價格",
+        "flightReady": "可飛行",
+        "uniqueModels": "獨特型號",
+        "manufacturerCount": "製造商",
+        "missingClassifications": "缺失角色",
+        "wishlistTotalMoney": "願望清單質押價值",
+        "wishlistTotalCredits": "願望清單遊戲內價值"
       },
-      "selectModel": "Select a Ship",
+      "selectModel": "選擇飛船",
+      "findModel": "輸入以查找飛船",
+      "find": "輸入以搜尋",
+      "selectUser": "選擇使用者",
+      "findUser": "輸入以搜尋使用者",
+      "selectFleet": "選擇艦隊",
+      "findFleet": "輸入以搜尋艦隊",
       "compare": {
-        "removeModel": "Remove Ship",
+        "removeModel": "移除飛船",
         "addModel": {
-          "nullablePrompt": "Add a Ship"
+          "nullablePrompt": "新增飛船"
         },
         "enough": "Don't you think 8 Ships are enough? ;)"
       },
-      "cargoRoutes": "Cargo routes",
+      "cargoRoutes": "貨物路線",
       "uecPerUnit": "aUEC / Unit",
       "au": "AU",
       "uec": "aUEC",
-      "sell": "Sell",
-      "buy": "Buy",
-      "yourFlagship": "Your Flagship",
-      "flagship": "Flagship",
+      "sell": "賣出",
+      "buy": "買入",
+      "yourFlagship": "您的旗艦",
+      "flagship": "旗艦",
       "fleet": {
-        "classes": "Fleet",
-        "fid": "Fleet ID",
-        "name": "Name",
-        "logo": "Logo",
+        "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
+        "classes": "艦隊",
+        "fid": "艦隊 ID",
+        "name": "名稱",
+        "logo": "標誌",
         "rsiSid": "SID",
-        "public": "Public Fleetview",
-        "ts": "Teamspeak Server",
-        "awaitingConfirmation": "Awaiting confirmation by Fleet",
+        "description": "描述",
+        "public": "公開艦隊檢視",
+        "publicFleet": "公開艦隊",
+        "publicStats": "公開統計",
+        "publicFleetStats": "公開艦隊統計",
+        "discord": "Discord 伺服器",
+        "guilded": "Guilded 伺服器",
+        "homepage": "首頁",
+        "twitch": "Twitch 頻道",
+        "youtube": "Youtube 頻道",
+        "backgroundImage": "背景圖片",
+        "ts": "Teamspeak 伺服器",
+        "awaitingConfirmation": "等待艦隊確認",
         "members": {
-          "primary": "Primary Fleet?",
-          "hideShips": "Hide your Ships for this Fleet?",
+          "primary": "主艦隊?",
+          "hideShips": "為此艦隊隱藏您的飛船?",
           "shipsFilter": {
-            "label": "Which Ships should be added to the Fleet?",
-            "nullablePrompt": "No Option selected",
-            "field": "Ships Select",
+            "label": "哪些飛船應該新增到艦隊?",
+            "nullablePrompt": "未選擇選項",
+            "field": "飛船選擇",
             "values": {
-              "all": "All Ships",
-              "hangar_group": "All Ships in a given Hangar Group",
-              "hide": "No Ships"
+              "all": "所有飛船",
+              "hangar_group": "指定機庫群組中的所有飛船",
+              "hide": "無飛船"
             }
           },
           "hangarGroupId": {
-            "field": "Hangar Group",
-            "label": "Specify a Hangar Group",
-            "nullablePrompt": "No Group selected"
+            "field": "機庫群組",
+            "label": "指定機庫群組",
+            "nullablePrompt": "未選擇群組"
           },
-          "total": "Total: %{count}",
-          "joined": "Joined at",
-          "invited": "Invited",
-          "invitedAt": "Invited / Requested at",
-          "requested": "Membership Requested",
-          "declined": "Declined",
+          "total": "總計: %{count}",
+          "joined": "加入於",
+          "invited": "已邀請",
+          "invitedAt": "邀請/請求於",
+          "requested": "已請求加入",
+          "declined": "已拒絕",
+          "pending": "待處理的邀請與請求",
+          "accepted": "成員",
+          "declinedMembers": "已拒絕",
+          "role": "角色",
           "roles": {
-            "admin": "Admin",
-            "officer": "Officer",
-            "member": "Member"
+            "admin": "管理員",
+            "officer": "軍官",
+            "member": "成員"
+          }
+        },
+        "roles": {
+          "permanent": "永久",
+          "privilegeGroups": {
+            "fleet": "艦隊",
+            "memberships": "成員",
+            "invites": "邀請",
+            "vehicles": "載具",
+            "roles": "角色"
+          },
+          "privileges": {
+            "fleet:update": "更新艦隊",
+            "fleet:update:images": "更新圖片",
+            "fleet:update:description": "更新描述",
+            "fleet:delete": "刪除艦隊",
+            "fleet:manage": "管理艦隊",
+            "fleet:memberships:read": "檢視成員",
+            "fleet:memberships:create": "邀請成員",
+            "fleet:memberships:update": "更新成員",
+            "fleet:memberships:delete": "移除成員",
+            "fleet:memberships:manage": "管理成員",
+            "fleet:invites:read": "檢視邀請",
+            "fleet:invites:create": "建立邀請",
+            "fleet:invites:delete": "刪除邀請",
+            "fleet:invites:manage": "管理邀請",
+            "fleet:vehicles:read": "檢視載具",
+            "fleet:vehicles:create": "新增載具",
+            "fleet:vehicles:update": "更新載具",
+            "fleet:vehicles:delete": "移除載具",
+            "fleet:vehicles:manage": "管理載具",
+            "fleet:roles:read": "檢視角色",
+            "fleet:roles:create": "建立角色",
+            "fleet:roles:update": "更新角色",
+            "fleet:roles:delete": "刪除角色",
+            "fleet:roles:manage": "管理角色"
           }
         },
         "inviteUrls": {
           "noLimit": "No limit",
           "noExpiration": "Never expires",
           "usesLeft": "%{count} uses left",
+          "used": "已使用 %{count} 次",
+          "usedOfLimit": "已使用 %{count} / %{limit}",
           "expiresIn": "Expires in %{time}",
           "expired": "Expired",
           "expiresAfterOptions": {
@@ -228,7 +365,7 @@
             "1_hour": "1 hour",
             "6_hours": "6 hours",
             "12_hours": "12 hours",
-            "1_day": "1 day",
+            "1_day": "1 天",
             "7_days": "7 days"
           },
           "limitOptions": {
@@ -243,212 +380,467 @@
         }
       },
       "hangarGroup": {
-        "name": "Name",
-        "color": "Color",
-        "sort": "Sort Order",
-        "public": "Show on Public Hangar?"
+        "name": "名稱",
+        "color": "顏色",
+        "sort": "排序",
+        "public": "在公開機庫顯示?"
       },
-      "source": "Source",
+      "source": "來源",
       "model": {
-        "variants": "Variants",
-        "manufacturer": "Manufacturer",
-        "loaners": "Loaners",
-        "paints": "Paints",
-        "modules": "Modules",
-        "modulePackages": "Module Packages",
-        "upgrades": "Upgrade-Kits",
-        "brochure": "Brochure",
-        "onSale": "On Sale",
-        "salesPage": "Sales Page",
-        "addons": "Modules & Upgrade-Kits",
+        "hidden": "隱藏?",
+        "active": "活躍?",
+        "ground": "地面載具?",
+        "productionNote": "生產備註",
+        "rsiId": "RSI ID",
+        "length": "長度",
+        "beam": "寬度",
+        "height": "高度",
+        "scIdentifier": "SC Identifier",
+        "price": "價格",
+        "pledgePrice": "質押價格",
+        "erkulIdentifier": "Erkul Identifier",
+        "mass": "質量",
+        "minCrew": "最少船員",
+        "maxCrew": "最多船員",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "最大速度",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "cargo": "貨物",
+        "cargoHolds": "貨艙",
+        "hydrogenFuelTankSize": "氫燃料箱大小",
+        "hydrogenFuelTanks": "氫燃料箱",
+        "quantumFuelTankSize": "量子燃料箱大小",
+        "quantumFuelTanks": "量子燃料箱",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "偏航（增強）",
+        "pitchBoosted": "俯仰（增強）",
+        "rollBoosted": "翻滾（增強）",
+        "variants": "變體",
+        "manufacturer": "製造商",
+        "loaners": "借用船",
+        "paints": "塗裝",
+        "modules": "模組",
+        "modulePackages": "模組套件",
+        "upgrades": "升級套件",
+        "brochure": "手冊",
+        "holo": "Holo",
+        "angledView": "斜視圖",
+        "angledViewColored": "斜視圖（彩色）",
+        "sideView": "側視圖",
+        "sideViewColored": "側視圖（彩色）",
+        "frontView": "前視圖",
+        "frontViewColored": "前視圖（彩色）",
+        "topView": "俯視圖",
+        "topViewColored": "俯視圖（彩色）",
+        "onSale": "販售中",
+        "salesPage": "銷售頁面",
+        "addons": "模組與升級套件",
+        "storeImage": "商店圖片",
+        "wiki": "Star Citizen Wiki",
+        "baseModel": "基礎型號",
+        "fleetchartOffsetLength": "艦隊圖表長度偏移",
+        "fleetchartOffsetBeam": "艦隊圖表寬度偏移",
         "productionStatus": {
-          "in-production": "In Production",
-          "in-concept": "In Concept",
-          "ready": "Hangar Ready",
-          "flight-ready": "Flight Ready",
-          "announced": "Announced"
+          "in-production": "生產中",
+          "in-concept": "概念階段",
+          "ready": "機庫就緒",
+          "flight-ready": "可飛行",
+          "announced": "已公佈"
+        }
+      },
+      "models": {
+        "extraColumns": "欄",
+        "table": {
+          "columns": {
+            "storeImage": "圖片",
+            "storeImageWide": "寬圖片",
+            "rsiStoreImage": "RSI 圖片",
+            "rsiStoreImageWide": "寬 RSI 圖片",
+            "angledView": "3D 圖片",
+            "angledViewWide": "寬 3D 圖片",
+            "rsiId": "RSI ID",
+            "hidden": "隱藏",
+            "active": "活躍",
+            "createdAt": "建立於",
+            "updatedAt": "更新於",
+            "manufacturerName": "製造商",
+            "length": "長度",
+            "beam": "寬度",
+            "height": "高度",
+            "mass": "質量",
+            "cargo": "貨物",
+            "quantumFuelTankSize": "量子燃料",
+            "hydrogenFuelTankSize": "氫燃料",
+            "minCrew": "船員",
+            "maxCrew": "最多船員",
+            "scmSpeed": "SCM Speed",
+            "maxSpeed": "最大速度",
+            "groundMaxSpeed": "地面速度",
+            "focus": "定位",
+            "productionStatus": "生產狀態",
+            "price": "價格",
+            "pledgePrice": "質押價格"
+          }
         }
       },
       "metrics": {
-        "info": "Info",
-        "levels": "Levels",
-        "topView": "Top View",
-        "base": "Base",
-        "crew": "Crew",
-        "speed": "Speed",
-        "missileOptions": "Missle Options (if available)"
+        "info": "資訊",
+        "levels": "等級",
+        "views": "檢視",
+        "base": "基礎",
+        "crew": "船員",
+        "speed": "速度",
+        "cargo": "貨物",
+        "hardpoints": "掛載點",
+        "missileOptions": "飛彈選項（如果可用）",
+        "topView": "Top View"
+      },
+      "manufacturer": {
+        "longName": "全名",
+        "code": "代碼",
+        "logo": "標誌",
+        "scRef": "SC Ref"
+      },
+      "itemPrice": {
+        "price": "價格",
+        "location": "位置",
+        "locationUrl": "位置 URL"
+      },
+      "video": {
+        "url": "URL",
+        "videoType": "類型"
+      },
+      "modelModule": {
+        "name": "名稱",
+        "description": "描述",
+        "price": "價格",
+        "pledgePrice": "承諾價格",
+        "productionStatus": "生產狀態",
+        "scKey": "SC Key",
+        "storeImage": "商店圖片",
+        "active": "啟用？",
+        "hidden": "隱藏？"
+      },
+      "dock": {
+        "name": "名稱",
+        "dockType": "停靠類型",
+        "shipSize": "飛船尺寸"
+      },
+      "modelHardpoint": {
+        "name": "名稱",
+        "key": "鍵",
+        "source": "來源",
+        "group": "群組",
+        "hardpointType": "類型",
+        "size": "尺寸",
+        "category": "分類",
+        "subCategory": "子分類",
+        "details": "詳情",
+        "mount": "掛載",
+        "itemSlots": "物品槽",
+        "loadoutIdentifier": "配置標識"
+      },
+      "modelHardpointLoadout": {
+        "name": "名稱"
+      },
+      "modelUpgrade": {
+        "name": "名稱",
+        "description": "描述",
+        "pledgePrice": "質押價格",
+        "active": "活躍?",
+        "hidden": "隱藏?"
+      },
+      "modelModulePackage": {
+        "name": "名稱",
+        "description": "描述",
+        "pledgePrice": "質押價格",
+        "modules": "模組",
+        "active": "活躍?",
+        "hidden": "隱藏?"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X (SCU)",
+        "offsetY": "Offset Y (SCU)",
+        "offsetZ": "Offset Z (SCU)",
+        "rotation": "旋轉 (°)"
+      },
+      "modelLoaner": {
+        "hidden": "隱藏?",
+        "loanerModel": "借用型號"
+      },
+      "modelPaint": {
+        "hidden": "隱藏?",
+        "active": "活躍?",
+        "onSale": "販售中",
+        "pledgePrice": "質押價格",
+        "productionStatus": "生產狀態",
+        "productionNote": "生產備註"
       },
       "component": {
-        "size": "Size: %{size}"
+        "size": "Size: %{size}",
+        "grade": "等級",
+        "hidden": "隱藏?",
+        "componentClass": "組件類別",
+        "componentType": "組件類型",
+        "componentSubType": "組件子類型",
+        "itemType": "物品類型",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
       },
       "hardpoint": {
         "legend": {
-          "headline": "Legend",
-          "slotTaken": "Slot taken",
-          "slotAvailable": "Slot available"
+          "headline": "圖例",
+          "slotTaken": "插槽已佔用",
+          "slotAvailable": "插槽可用"
         },
-        "size": "Size",
-        "rackSize": "Rack Size",
-        "details": "Details",
-        "group": "Group",
+        "size": "尺寸",
+        "rackSize": "架尺寸",
+        "details": "詳情",
+        "group": "群組",
+        "thrusters": {
+          "thrust": "推力",
+          "subTypes": {
+            "JointThruster": "Joint",
+            "FixedThruster": "Fix",
+            "FlexThruster": "Flex",
+            "Retro": "Fix"
+          }
+        },
+        "sources": {
+          "game_files": "遊戲檔案",
+          "ship_matrix": "Ship Matrix"
+        },
+        "fuelTanks": {
+          "hydrogen": "氫燃料箱",
+          "quantum": "量子燃料箱"
+        },
+        "jumpDrive": "跳躍引擎",
+        "maxContainerSize": "最大貨櫃尺寸",
         "groups": {
-          "avionic": "Avionics",
-          "system": "Systems",
-          "propulsion": "Propulsion",
-          "thruster": "Thruster",
-          "weapon": "Weapons"
+          "avionic": "航電",
+          "system": "系統",
+          "propulsion": "推進",
+          "thruster": "推進器",
+          "weapon": "武器",
+          "other": "其他",
+          "auxiliary": "輔助",
+          "seat": "座位"
         },
         "types": {
-          "radar": "Radar",
-          "computers": "Computers",
-          "power_plants": "Power Plants",
-          "coolers": "Coolers",
-          "shield_generators": "Shield Generators",
-          "fuel_intakes": "Fuel Intakes",
-          "fuel_tanks": "Fuel Tanks",
-          "quantum_drives": "Quantum Drives",
-          "jump_modules": "Jump Modules",
-          "quantum_fuel_tanks": "Quantum Fuel Tanks",
-          "main_thrusters": "Main Thrusters",
-          "maneuvering_thrusters": "Maneuvering Thrusters",
-          "weapons": "Weapons",
-          "turrets": "Turrets",
-          "missiles": "Missiles",
-          "utility_items": "Utility Items",
+          "radar": "雷達",
+          "computers": "電腦",
+          "power_plants": "發電機",
+          "coolers": "冷卻器",
+          "shield_generators": "護盾產生器",
+          "fuel_intakes": "燃料進氣口",
+          "fuel_tanks": "燃料箱",
+          "quantum_drives": "量子引擎",
+          "jump_modules": "跳躍模組",
+          "jumpdrive": "跳躍模組",
+          "quantum_fuel_tanks": "量子燃料箱",
+          "main_thrusters": "主推進器",
+          "maneuvering_thrusters": "機動推進器",
+          "weapons": "武器",
+          "turrets": "砲塔",
+          "missiles": "飛彈",
+          "utility_items": "實用設備",
+          "utility": "實用設備",
           "emp": "EMP",
           "qed": "QED"
+        },
+        "moduleSlotEmpty": "— 選擇模組 —",
+        "selectModule": "選擇模組",
+        "clearModule": "清除選擇",
+        "categories": {
+          "radar": "雷達",
+          "armor": "裝甲",
+          "relay": "中繼",
+          "countermeasures": "反制措施",
+          "lifesupport": "生命維持",
+          "selfdestruct": "自毀",
+          "batteries": "電池",
+          "computers": "電腦",
+          "powerplant": "發電機",
+          "cooler": "冷卻器",
+          "module": "模組",
+          "shieldgenerator": "護盾產生器",
+          "fuel_intakes": "燃料進氣口",
+          "fueltanks": "燃料箱",
+          "quantumdrive": "量子引擎與跳躍模組",
+          "jump_modules": "跳躍模組",
+          "jumpdrive": "跳躍模組",
+          "quantum_fuel_tanks": "量子燃料箱",
+          "main_thrusters": "主推進器",
+          "maneuvering_thrusters": "機動推進器",
+          "retro_thrusters": "反推推進器",
+          "vtol_thrusters": "VTOL 推進器",
+          "weapons": "武器",
+          "weapon_mounts": "武器掛載",
+          "turret": "砲塔",
+          "missiles": "飛彈",
+          "missile_racks": "飛彈架",
+          "utility_items": "實用設備",
+          "utility": "實用設備",
+          "emp": "EMP",
+          "quantumenforcementdevice": "QED",
+          "salvagefillerstation": "打撈填充站",
+          "cargogrid": "貨物網格",
+          "seat": "座位"
         }
       },
       "blank": {
-        "propulsion": "No Propulsion present",
-        "ordnance": "No Ordnance present",
-        "modular": "No Modular present",
-        "avionics": "No Avionics present",
-        "fleetInvites": "No Invites present",
-        "shopCommodities": "No Commodites available",
+        "propulsion": "沒有推進系統",
+        "ordnance": "沒有武器彈藥",
+        "modular": "沒有模組",
+        "avionics": "沒有航電系統",
+        "fleetInvites": "沒有邀請",
+        "shopCommodities": "沒有可用的商品",
         "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
       },
       "user": {
-        "rsiHandle": "Handle",
-        "avatar": "Avatar",
-        "unconfirmedEmail": "Unconfirmed email",
-        "saleNotify": "I want to receive Sale Notifications",
-        "publicHangar": "Public Hangar enabled",
-        "publicHangarLoaners": "Show Loaners Hint on Public Hangar",
-        "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets"
+        "rsiHandle": "使用者名",
+        "location": "位置",
+        "currentSystem": "目前星系",
+        "tester": "測試者?",
+        "avatar": "頭像",
+        "unconfirmedEmail": "未確認的郵件",
+        "saleNotify": "我希望收到銷售通知",
+        "publicHangar": "公開機庫已啟用",
+        "publicHangarLoaners": "在公開機庫顯示借用船提示",
+        "publicHangarStats": "公開機庫統計已啟用",
+        "publicWishlist": "公開願望清單已啟用",
+        "hideOwner": "為艦隊隱藏擁有權",
+        "lastActiveAt": "最後活躍",
+        "confirmedAt": "確認於"
+      },
+      "adminUser": {
+        "superAdmin": "超級管理員",
+        "passwordConfirmation": "確認密碼"
       },
       "vehicle": {
-        "name": "Name",
-        "serial": "Serial",
-        "owner": "commanded by",
-        "flagship": "Flagship",
-        "wanted": "Wanted",
-        "loaner": "Loaner",
-        "public": "Public Visible",
-        "fullPublic": "Public Visible including Name",
-        "publicShort": "Public",
-        "nameVisible": "Public Visible",
-        "saleNotify": "I want to receive Sale Notifications",
-        "hangarGroups": "Groups",
-        "selectGroup": "Select a Group",
+        "name": "名稱",
+        "states": "狀態",
+        "serial": "序號",
+        "owner": "指揮官",
+        "flagship": "旗艦",
+        "wanted": "想要",
+        "loaner": "借用",
+        "public": "公開可見",
+        "fullPublic": "公開可見（包括名稱）",
+        "publicShort": "公開",
+        "nameVisible": "公開可見",
+        "saleNotify": "我希望收到銷售通知",
+        "hangarGroups": "群組",
+        "selectGroup": "選擇群組",
         "modelPaintSelect": {
-          "nullablePrompt": "Select a Paint",
-          "label": "Paint"
+          "nullablePrompt": "選擇塗裝",
+          "label": "塗裝"
         },
         "bulkGroupEdit": {
-          "hint": "Existing Groups will be overridden!"
+          "hint": "現有群組將被覆蓋！"
         },
-        "hasLoaners": "Loaners",
+        "hasLoaners": "借用船",
         "boughtViaSelect": {
-          "label": "Bought via"
+          "label": "購買方式"
         }
       },
       "image": {
-        "active": "Active?",
-        "background": "Use as Background?",
-        "enabled": "Enabled?",
-        "global": "Global?",
-        "delete": "Delete",
-        "start": "Start",
-        "cancel": "Cancel",
-        "processing": "Processing...",
-        "error": "Error",
-        "name": "Name",
-        "size": "File size",
-        "dropzone": "Drop images here",
-        "cancelUpload": "Cancel upload",
-        "startUpload": "Start upload",
-        "selectImages": "Add images...",
-        "selectFolder": "Add a folder..."
+        "active": "活躍?",
+        "background": "用作背景?",
+        "caption": "標題",
+        "enabled": "已啟用?",
+        "file": "圖片檔案",
+        "global": "全域?",
+        "delete": "刪除",
+        "start": "開始",
+        "cancel": "取消",
+        "processing": "處理中...",
+        "error": "錯誤",
+        "name": "名稱",
+        "size": "檔案大小",
+        "dropzone": "將圖片拖放到此處",
+        "cancelUpload": "取消上傳",
+        "startUpload": "開始上傳",
+        "selectImages": "新增圖片...",
+        "selectFolder": "新增資料夾..."
       },
       "signup": {
-        "link": "Don't have an Account?",
-        "privacyPolicy": "By creating a FleetYards account, you agree to our"
+        "link": "還沒有帳戶?",
+        "privacyPolicy": "建立 FleetYards 帳戶即表示您同意我們的"
       },
-      "privacyPolicy": "Privacy Policy",
-      "login": "Username or email",
-      "username": "Username",
-      "twoFactorCode": "Two-factor code",
-      "confirmationCode": "Confirmation code",
-      "email": "Email",
-      "avatar": "Avatar",
-      "alreadyRegistered": "Already have an Account?",
-      "currentPassword": "Current Password",
-      "password": "Password",
-      "passwordConfirmation": "Password Confirmation",
-      "rememberMe": "Remember me",
-      "emptyList": "No %{name} present",
-      "all": "All",
+      "privacyPolicy": "隱私政策",
+      "login": "使用者名稱或電子郵件",
+      "username": "使用者名稱",
+      "twoFactorCode": "兩步驟驗證碼",
+      "confirmationCode": "確認碼",
+      "email": "電子郵件",
+      "avatar": "頭像",
+      "alreadyRegistered": "已有帳戶?",
+      "currentPassword": "目前密碼",
+      "password": "密碼",
+      "passwordConfirmation": "確認密碼",
+      "rememberMe": "記住我",
+      "emptyList": "沒有 %{name}",
+      "all": "全部",
       "supportUs": "Support FleetYards.net",
       "account": {
         "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
       },
       "filters": {
+        "components": {
+          "name": "名稱",
+          "itemType": "物品類型",
+          "componentClass": "組件類別"
+        },
         "shops": {
-          "name": "Name",
-          "type": "Type",
-          "celestialObject": "Celestial object",
-          "model": "Ship",
-          "equipment": "Equipment",
-          "component": "Component",
-          "commodity": "Commodity",
-          "commodityType": "Commodity Type",
-          "starsystem": "Starsystem",
-          "station": "Station"
+          "name": "名稱",
+          "type": "類型",
+          "celestialObject": "天體",
+          "model": "飛船",
+          "equipment": "裝備",
+          "component": "組件",
+          "commodity": "商品",
+          "commodityType": "商品類型",
+          "starsystem": "星系",
+          "station": "太空站"
         },
         "shopCommodities": {
-          "commodityType": "Commodity Type",
-          "station": "Station",
-          "shopId": "Shop",
-          "equipment": "Equipment",
-          "component": "Component",
+          "commodityType": "商品類型",
+          "station": "太空站",
+          "shopId": "商店",
+          "equipment": "裝備",
+          "component": "組件",
           "componentItemTypeFilter": "Component Item Types",
           "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "Equipment Type",
+          "equipmentTypeFilter": "裝備類型",
           "equipmentSlotFilter": "Equipment Slot",
-          "commodity": "Commodity",
-          "model": "Ship",
-          "name": "Name"
+          "commodity": "商品",
+          "model": "飛船",
+          "name": "名稱"
         },
         "shopItems": {
-          "category": "Category",
-          "subCategory": "Sub Category",
-          "name": "Name",
-          "manufacturer": "Manufacturer",
+          "category": "分類",
+          "subCategory": "子分類",
+          "name": "名稱",
+          "manufacturer": "製造商",
           "minPrice": "min. Price",
           "maxPrice": "max. Price"
         },
         "stations": {
-          "name": "Name",
-          "celestialObject": "Celestial Object",
-          "starsystem": "Starsystem",
-          "type": "Station Type",
-          "shops": "Shops",
-          "docks": "Docks",
-          "habs": "Habitation?",
-          "cargoHub": "Cargo Hub?",
-          "refinery": "Refinery Station?"
+          "name": "名稱",
+          "celestialObject": "天體",
+          "starsystem": "星系",
+          "type": "太空站類型",
+          "shops": "商店",
+          "docks": "停靠口",
+          "habs": "居住區?",
+          "cargoHub": "貨運中心?",
+          "refinery": "精煉站?"
         },
         "vehicles": {
           "name": "Name or Ship name",
@@ -456,13 +848,14 @@
           "lengthGt": "Length >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
-          "wanted": "Wanted",
-          "public": "Public",
-          "group": "Group",
-          "loaner": "Loaners",
-          "boughtVia": "Bought via?"
+          "priceLt": "價格 <=",
+          "priceGt": "價格 >=",
+          "wanted": "想要",
+          "hidden": "隱藏",
+          "public": "公開",
+          "group": "群組",
+          "loaner": "借用船",
+          "boughtVia": "購買方式?"
         },
         "tradeRoutes": {
           "sortBy": "Sort by",
@@ -480,15 +873,17 @@
           "destinationStarsystem": "Destination Starsystem"
         },
         "models": {
-          "shipRole": "Ship Role",
-          "classification": "Classification",
-          "focus": "Focus",
-          "manufacturer": "Manufacturer",
-          "onSale": "On Sale",
-          "size": "Size",
-          "price": "Price",
-          "pledgePrice": "Pledge Price",
-          "productionStatus": "Production Status",
+          "name": "名稱",
+          "shipRole": "飛船角色",
+          "classification": "分類",
+          "focus": "定位",
+          "manufacturer": "製造商",
+          "onSale": "販售中",
+          "size": "尺寸",
+          "dockSize": "停靠尺寸",
+          "price": "價格",
+          "pledgePrice": "質押價格",
+          "productionStatus": "生產狀態",
           "lengthLt": "Length <=",
           "lengthGt": "Length >=",
           "beamLt": "Beam <=",
@@ -497,19 +892,41 @@
           "heightGt": "Height >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
-          "willItFit": "Will it Fit?"
+          "priceLt": "價格 <=",
+          "priceGt": "價格 >=",
+          "willItFit": "Will it Fit?",
+          "withCargo": "有貨物?",
+          "scIdentifierBlank": "沒有 SC 標識?",
+          "fleetchartImageBlank": "沒有艦隊圖表圖片?",
+          "holoBlank": "沒有 Holo?",
+          "frontViewBlank": "沒有前視圖圖片?",
+          "topViewColoredBlank": "沒有彩色俯視圖圖片?"
+        },
+        "modelModules": {
+          "name": "名稱"
+        },
+        "manufacturers": {
+          "name": "名稱",
+          "withModels": "有型號的",
+          "logoBlank": "無標誌"
         },
         "images": {
-          "station": "Station",
-          "model": "Ship"
+          "station": "太空站",
+          "model": "飛船"
+        },
+        "users": {
+          "search": "搜尋",
+          "username": "使用者名稱",
+          "email": "電子郵件",
+          "rsiHandle": "RSI 使用者名"
         },
         "fleets": {
-          "member": "Member",
+          "name": "名稱",
+          "fid": "FID",
+          "member": "成員",
           "members": {
-            "role": "Role",
-            "state": "Status",
+            "role": "角色",
+            "state": "狀態",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",
             "invitedAtGt": "Invited from",
@@ -524,15 +941,15 @@
             "limit": "Max number of uses"
           }
         },
-        "manufacturer": "Manufacturer"
+        "manufacturer": "製造商"
       },
       "station": {
-        "docks": "Docks",
-        "location": "Location",
-        "type": "Type",
-        "habitation": "Habitation",
-        "habs": "Habs",
-        "shops": "Shops",
+        "docks": "停靠口",
+        "location": "位置",
+        "type": "類型",
+        "habitation": "居住區",
+        "habs": "居住艙",
+        "shops": "商店",
         "locationPrefix": {
           "default": "on",
           "asteriod": "on asteroid near",
@@ -550,61 +967,52 @@
         "showAveragePrices": "Display average Prices",
         "showLatestPrices": "Display latest Prices"
       },
-      "erkul": {
-        "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
+      "hardpoints": {
+        "prefix": "使用以下工具試用配置",
+        "erkul": "Erkul's DPS Calculator",
+        "spviewer": "SP Viewer",
+        "spviewerTitle": "SC Ships Performances Viewer"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",
         "link": "SCunpacked"
       },
       "newVehicle": {
-        "nullablePrompt": "Select a Ship"
+        "nullablePrompt": "選擇飛船"
       },
       "addAddon": {
         "nullablePrompt": ""
       },
       "table": {
-        "selected": "%{count} Selected"
-      },
-      "modelModule": {
-        "name": "名稱",
-        "description": "描述",
-        "price": "價格",
-        "pledgePrice": "承諾價格",
-        "productionStatus": "生產狀態",
-        "scKey": "SC Key",
-        "storeImage": "商店圖片",
-        "active": "啟用？",
-        "hidden": "隱藏？"
+        "selected": "%{count} 已選擇"
       },
       "commodityPrice": {
-        "shopId": "Shop",
-        "station": "Station",
-        "commodityItemType": "Commodity Type",
-        "commodityItemId": "Commodity Item",
+        "shopId": "商店",
+        "station": "太空站",
+        "commodityItemType": "商品類型",
+        "commodityItemId": "商品物品",
         "item": "ShopCommodity",
-        "price": "Price",
-        "type": "Type",
-        "shop": "Shop",
-        "submittedBy": "Submitted By"
+        "price": "價格",
+        "type": "類型",
+        "shop": "商店",
+        "submittedBy": "提交者"
       },
       "syncExtension": {
         "status": {
-          "started": "Import Started...",
-          "finished": "Import Finished",
-          "failed": "Import Failed!"
+          "started": "匯入已開始...",
+          "finished": "匯入完成",
+          "failed": "匯入失敗!"
         },
         "processSteps": {
-          "fetchHangar": "Fetching Data from the RSI Hangar",
-          "submitData": "Submitting Data to the Fleetyards.net Backend"
+          "fetchHangar": "正在從 RSI 機庫取得資料",
+          "submitData": "正在提交資料到 Fleetyards.net 後台"
         },
-        "sessionStatus": "RSI Session status",
-        "checkIdentity": "Check RSI Session",
+        "sessionStatus": "RSI 工作階段狀態",
+        "checkIdentity": "檢查 RSI 工作階段",
         "identityStatus": {
-          "pending": "Checking...",
-          "notFound": "not found",
-          "connected": "connected"
+          "pending": "檢查中...",
+          "notFound": "未找到",
+          "connected": "已連接"
         },
         "platforms": {
           "chrome": "Google Chrome or Chromium based Browsers",
@@ -614,27 +1022,103 @@
           "github": "GitHub"
         },
         "pledgeItems": {
-          "pages": "Pages",
-          "all": "All Pledge Items",
-          "ships": "Ships",
-          "components": "Modules",
-          "skins": "Paints",
-          "upgrades": "Upgrades"
+          "pages": "頁面",
+          "all": "所有質押物品",
+          "ships": "飛船",
+          "components": "模組",
+          "skins": "塗裝",
+          "upgrades": "升級"
         },
         "importedItems": {
-          "importedVehicles": "Added Ships",
-          "foundVehicles": "Found Ships",
-          "movedVehiclesToWanted": "Moved Ships to Wishlist",
-          "missingModels": "Ships not found",
-          "importedComponents": "Added Components",
-          "foundComponents": "Found Components",
-          "missingComponents": "Components not found",
-          "missingComponentVehicles": "No matching Ship found for Components",
-          "importedUpgrades": "Added Upgrades",
-          "foundUpgrades": "Found Upgrades",
-          "missingUpgrades": "Upgrades not found",
-          "missingUpgradeVehicles": "No matching Ship found for Upgrades"
+          "importedVehicles": "已新增飛船",
+          "foundVehicles": "找到的飛船",
+          "movedVehiclesToWanted": "飛船已移至願望清單",
+          "missingModels": "未找到飛船",
+          "importedComponents": "已新增組件",
+          "foundComponents": "找到的組件",
+          "missingComponents": "未找到組件",
+          "missingComponentVehicles": "未找到匹配的飛船用於組件",
+          "importedUpgrades": "已新增升級",
+          "foundUpgrades": "找到的升級",
+          "missingUpgrades": "未找到升級",
+          "missingUpgradeVehicles": "未找到匹配的飛船用於升級"
         }
+      },
+      "cargoGridViewer": {
+        "capacity": "容量",
+        "maxContainerSize": "最大貨櫃",
+        "packed": "已裝載",
+        "totalCargo": "總貨物",
+        "didNotFit": "放不下",
+        "openInTool": "在貨物網格工具中開啟",
+        "myHangar": "僅顯示我的飛船",
+        "filterShips": "按貨櫃大小篩選飛船"
+      },
+      "admin": {
+        "dashboard": {
+          "quickStats": {
+            "onlineUsers": "線上使用者",
+            "totalUsers": "總使用者數",
+            "totalShips": "總飛船數",
+            "newShipsInYear": "%{year} 新飛船",
+            "totalFleets": "總艦隊數"
+          }
+        },
+        "modelHardpoint": {
+          "loadouts": "配置"
+        }
+      },
+      "hangarTable": {
+        "extraColumns": "欄",
+        "columns": {
+          "storeImage": "圖片",
+          "storeImageWide": "寬圖片",
+          "angledView": "3D 圖片",
+          "angledViewWide": "寬 3D 圖片",
+          "modelManufacturerName": "製造商",
+          "modelLength": "長度",
+          "modelBeam": "寬度",
+          "modelHeight": "高度",
+          "modelMass": "質量",
+          "modelCargo": "貨物",
+          "modelMinCrew": "船員",
+          "modelMaxCrew": "最多船員",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "最大速度",
+          "modelGroundMaxSpeed": "地面速度",
+          "modelFocus": "定位",
+          "modelProductionStatus": "生產狀態",
+          "modelPrice": "價格",
+          "modelPledgePrice": "質押價格"
+        }
+      },
+      "fleetTable": {
+        "extraColumns": "欄",
+        "columns": {
+          "storeImage": "圖片",
+          "storeImageWide": "寬圖片",
+          "angledView": "3D 圖片",
+          "angledViewWide": "寬 3D 圖片",
+          "modelManufacturerName": "製造商",
+          "modelLength": "長度",
+          "modelBeam": "寬度",
+          "modelHeight": "高度",
+          "modelMass": "質量",
+          "modelCargo": "貨物",
+          "modelMinCrew": "船員",
+          "modelMaxCrew": "最多船員",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "最大速度",
+          "modelGroundMaxSpeed": "地面速度",
+          "modelProductionStatus": "生產狀態",
+          "modelPrice": "價格",
+          "modelPledgePrice": "質押價格",
+          "owner": "擁有者"
+        }
+      },
+      "erkul": {
+        "prefix": "Tryout Loadouts with",
+        "link": "Erkul's DPS Calculator"
       }
     }
   }

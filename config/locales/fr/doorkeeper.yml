@@ -1,0 +1,13 @@
+---
+fr:
+  doorkeeper:
+    scopes:
+      public: Accès public
+      profile:read: Lire le profil
+      profile:write: Gérer le profil
+      hangar: Accès complet au hangar
+      hangar:read: Lire le hangar
+      hangar:write: Gérer le hangar
+      fleet: Accès complet à la flotte
+      fleet:read: Lire la flotte
+      fleet:write: Gérer la flotte

@@ -1,0 +1,31 @@
+---
+es:
+  notifications:
+    hangar_create:
+      title: "%{model} agregado al hangar"
+    hangar_destroy:
+      title: "%{model} eliminado del hangar"
+    wishlist_create:
+      title: "%{model} agregado a la lista de deseos"
+    wishlist_destroy:
+      title: "%{model} eliminado de la lista de deseos"
+    model_on_sale:
+      title: "%{model} está en venta"
+      body: "%{model} está actualmente en venta en la tienda de pledge."
+    hangar_sync_finished:
+      title: Sincronización del hangar completada
+      body: Su hangar RSI ha sido sincronizado exitosamente.
+    hangar_sync_failed:
+      title: Sincronización del hangar fallida
+      body: 'La sincronización de su hangar RSI falló: %{error}'
+    new_model:
+      title: 'Nueva nave: %{model}'
+      body: "%{model} ha sido agregado a la base de datos de naves."
+    fleet_invite:
+      title: Ha sido invitado a %{fleet}
+    fleet_member_requested:
+      title: "%{username} solicitó unirse a %{fleet}"
+    fleet_member_accepted:
+      title: "%{username} se unió a %{fleet}"
+    fleet_request_accepted:
+      title: Ha sido aceptado en %{fleet}

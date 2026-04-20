@@ -3,6 +3,7 @@
     "nav": {
       "home": "主页",
       "back": "返回",
+      "navigation": "导航",
       "ships": {
         "index": "飞船"
       },
@@ -17,11 +18,11 @@
       "login": "登录",
       "logout": "登出",
       "apiV1": "API v1",
-      "apiV1Schema": "Schema",
+      "apiV1Schema": "架构",
       "apiV1Pagination": "分页",
       "authApiV1": "Auth API v1",
       "authApiV1OpenId": "OpenID Connect",
-      "authApiV1Schema": "Schema",
+      "authApiV1Schema": "架构",
       "embed": "嵌入小部件",
       "signUp": "注册",
       "privacyPolicy": "隐私政策",
@@ -31,12 +32,18 @@
         "add": "创建新舰队",
         "invites": "邀请",
         "ships": "飞船",
-        "members": "成员",
+        "members": {
+          "index": "Members",
+          "invites": "Invites",
+          "worldmap": "世界地图",
+          "starmap": "星图"
+        },
         "stats": "统计",
         "settings": {
           "index": "设置",
           "fleet": "舰队设置",
-          "membership": "成员设置"
+          "membership": "成员设置",
+          "roles": "角色"
         }
       },
       "rsiProfile": "RSI 档案",
@@ -64,6 +71,8 @@
         "security": "安全",
         "notifications": "通知",
         "hangar": "机库",
+        "features": "功能",
+        "oauthApplications": "OAuth 应用",
         "verify": "RSI 账户验证"
       },
       "reload": "有可用更新！",
@@ -83,10 +92,17 @@
             "metrics": "指标",
             "prices": "价格",
             "docks": "停靠点",
+            "modules": "模块",
+            "paints": "涂装",
+            "images": "图片",
             "videos": "视频",
             "cargoAndFuel": "货物和燃料",
+            "cargoHolds": "货舱",
             "fleetchart": "舰队图表图片",
-            "hardpoints": "武器挂点"
+            "hardpoints": "武器挂点",
+            "loaners": "借用船",
+            "upgrades": "升级",
+            "packages": "套餐"
           }
         },
         "modelPaints": {
@@ -107,7 +123,11 @@
           "create": "创建模块包"
         },
         "components": {
-          "index": "组件"
+          "index": "组件",
+          "edit": {
+            "index": "基础数据",
+            "prices": "价格"
+          }
         },
         "manufacturers": {
           "index": "制造商"
@@ -126,6 +146,9 @@
         },
         "admins": {
           "index": "管理员"
+        },
+        "oauthApplications": {
+          "index": "OAuth 应用"
         },
         "maintenance": {
           "index": "维护",

@@ -1,0 +1,4 @@
+---
+it:
+  action_policy:
+    unauthorized: Non sei autorizzato a eseguire questa azione.

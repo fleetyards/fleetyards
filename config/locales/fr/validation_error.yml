@@ -3,13 +3,38 @@ fr:
   validation_error:
     change_pasword: Le changement de mot de passe a échoué.
     confirmation: Échec de la confirmation.
+    vehicle:
+      create: Le vaisseau n'a pas pu être ajouté.
+      destroy: Le vaisseau n'a pas pu être retiré.
+      update: Le vaisseau n'a pas pu être mis à jour.
     fleet:
       create: La flotte n’a pas pu être créée.
       destroy: La flotte n’a pas pu être détruite.
       update: La flotte n'a pas pu être mise à jour.
+    fleet_members:
+      create: Impossible d'inviter le membre de la flotte
+      accept: Impossible d'accepter le membre de la flotte.
+      decline: Impossible de refuser le membre de la flotte.
+      destroy: Impossible de retirer le membre de la flotte.
+    fleet_memberships:
+      create: L'invitation à la flotte n'a pas pu être utilisée
+      destroy: Impossible de quitter la flotte.
+      accept: L'invitation à la flotte n'a pas pu être acceptée.
+      decline: L'invitation à la flotte n'a pas pu être refusée.
+      demote_not_permitted: Vous ne pouvez pas rétrograder le dernier membre d'un
+        rôle de flotte permanent.
     hangar_group:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit
       update: Le groupe n'a pas pu être mise à jour
+    image:
+      create: Impossible de créer l'image
+      update: Impossible de mettre à jour l'image
     request_password: La demande de mot de passe a échoué.
     signup: Échec de l'inscription. Veuillez résoudre toutes les erreurs et réessayer.
+    oauth_application:
+      create: L'application OAuth n'a pas pu être créée.
+      update: L'application OAuth n'a pas pu être mise à jour.
+      destroy: L'application OAuth n'a pas pu être supprimée.
+    hangar:
+      import: Échec de l'import

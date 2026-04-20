@@ -1,1 +1,99 @@
+---
 de:
+  mailer:
+    account:
+      action: Kontoeinstellungen verwalten
+    admin:
+      notify_block:
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Verbindung zu RSI blockiert
+        text: Automatische Aktualisierungen von RSI über "%{url}" wurden blockiert
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Verbindung zu RSI wiederhergestellt
+        text: Automatische Aktualisierungen von RSI über "%{url}" wurden wiederhergestellt
+      weekly:
+        fleets: Neue Flotten
+        headline: FleetYards.net Command - Weekly
+        registrations: Neue Registrierungen
+        ships: Neue Schiffe
+        subject: FleetYards.net Command Weekly
+        vehicles: Neue Fahrzeuge
+    fleet_membership:
+      fleet_accepted:
+        action: "%{fleet} Homepage"
+        body: 'Um die Schiffe und anderen Mitglieder der Flotte anzusehen, klicken
+          Sie bitte auf den folgenden Link:'
+        headline: Ihre Beitrittsanfrage für %{fleet} wurde akzeptiert
+        subject: "%{fleet} hat Ihre Beitrittsanfrage akzeptiert"
+      member_accepted:
+        action: "%{fleet} Mitgliederliste"
+        body: 'Um die Informationen des neuen Mitglieds einzusehen, klicken Sie bitte
+          auf den folgenden Link:'
+        headline: "%{username} hat die Flotteneinladung angenommen"
+        subject: Neues Flottenmitglied
+      member_requested:
+        action: "%{fleet} Einladungen"
+        body: 'Um die Anfrage anzunehmen, klicken Sie bitte auf den folgenden Link:'
+        headline: "%{username} möchte %{fleet} beitreten"
+        subject: Neue Flottenmitgliedschaftsanfrage
+      new_invite:
+        action: "%{fleet} beitreten"
+        body: 'Um die Einladung anzunehmen, klicken Sie bitte auf den folgenden Link:'
+        headline: Sie wurden eingeladen, %{fleet} beizutreten
+        subject: Neue Flotteneinladung
+    confirm_access:
+      body: Verwenden Sie den folgenden Code, um den Zugriff auf Ihre Kontoeinstellungen
+        zu bestätigen.
+      expires: Dieser Code läuft in 10 Minuten ab.
+      subject: Ihr Bestätigungscode
+    hello: Hallo %{username}
+    model:
+      new:
+        headline_part_1: 'Darf ich vorstellen:'
+        headline_part_2: Der %{manufacturer}
+        subject: Neues Schiff/Fahrzeug
+    notification_settings: Benachrichtigungen abbestellen
+    plain_hello: Hallo
+    privacy: Datenschutzerklärung
+    progress_tracker:
+      admin:
+        body: Es gab %{changes} Änderungen im Progress Tracker
+        headline: Neue Änderungen im Progress Tracker
+        subject: Neue Änderungen im Progress Tracker
+    roadmap:
+      admin:
+        body: Es gab %{changes} Änderungen an der Roadmap
+        headline: Neue Änderungen auf der Roadmap
+        subject: Neue Änderungen auf der Roadmap
+    security:
+      action: Sicherheitseinstellungen verwalten
+      info: Wenn Sie die Änderung nicht veranlasst haben, kontaktieren Sie uns bitte
+        unter info@fleetyards.net.
+    transmission_end: "--- eingehende Übertragung ---"
+    transmission_start: "--- eingehende Übertragung ---"
+    two_factor:
+      disabled:
+        body: Sie haben die Zwei-Faktor-Authentifizierung für Ihr Fleetyards.net-Konto
+          deaktiviert.
+        subject: Zwei-Faktor deaktiviert
+      enabled:
+        body: Großartig, Sie haben die Zwei-Faktor-Authentifizierung für Ihr Fleetyards.net-Konto
+          aktiviert.
+        subject: Zwei-Faktor aktiviert
+      login:
+        body: Bitte geben Sie den folgenden Code auf der Anmeldeseite ein, um Ihre
+          Identität zu bestätigen.
+        headline: Zwei-Faktor-Authentifizierungscode
+        subject: Zwei-Faktor-Authentifizierungscode
+    user:
+      username_changed:
+        body: Sie haben Ihren Fleetyards.net-Benutzernamen geändert.
+        subject: Benutzername geändert
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: ist jetzt im Angebot!
+        price: Ab %{price}
+        subject: "%{model} jetzt im Angebot!"

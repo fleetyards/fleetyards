@@ -3,8 +3,11 @@ fr:
   devise:
     confirmations:
       confirmed: Votre compte a été valider avec succès.
-      send_instructions: Vous recevrez un e-mail avec des instructions sur comment valider votre compte dans quelques minutes.
-      send_paranoid_instructions: Si votre e-mail existe sur notre base de données, vous recevrez sous quelques minutes un message avec des instructions pour valider votre compte.
+      send_instructions: Vous recevrez un e-mail avec des instructions sur comment
+        valider votre compte dans quelques minutes.
+      send_paranoid_instructions: Si votre e-mail existe sur notre base de données,
+        vous recevrez sous quelques minutes un message avec des instructions pour
+        valider votre compte.
     failure:
       already_authenticated: Vous êtes déjà connecté.
       inactive: Votre compte n’est pas encore activé.
@@ -13,12 +16,75 @@ fr:
       locked: Votre compte est verrouillé.
       not_confirmed: Votre compte n'a pas pu être validé.
       not_found_in_database: Identifiants invalides.
+      two_factor_required: 2FA requis pour la connexion.
+      two_factor_invalid: Code 2FA invalide.
+      timeout: Votre session a expiré. Veuillez vous reconnecter pour continuer.
+      unauthenticated: Vous devez vous connecter ou vous inscrire avant de continuer.
+      unconfirmed: Vous devez confirmer votre compte avant de continuer.
+    mailer:
+      confirmation_instructions:
+        content:
+          confirm_email_link: Confirmer l'e-mail
+          confirm_email_text: 'Pour confirmer votre nouvel e-mail, veuillez cliquer
+            sur le lien suivant :'
+          confirm_link: Activer le compte
+          confirm_text: 'Pour activer votre compte, veuillez cliquer sur le lien suivant
+            :'
+          welcome: Bienvenue %{username}
+        subject: Instructions de confirmation
+      email_changed:
+        content:
+          text_confirmed: Nous vous contactons pour vous informer que votre e-mail
+            a été changé en %{email}.
+          text_unconfirmed: Nous vous contactons pour vous informer que votre e-mail
+            est en cours de changement vers %{email}.
+      password_change:
+        content:
+          text: Nous vous contactons pour vous informer que votre mot de passe a été
+            changé.
+      reset_password_instructions:
+        content:
+          change_link: Changer mon mot de passe
+          first_text: Quelqu'un a demandé un lien pour changer votre mot de passe.
+            Vous pouvez le faire via le lien ci-dessous.
+          hello: Bonjour
+          second_text: Si vous n'avez pas fait cette demande, veuillez ignorer cet
+            e-mail.
+          third_text: Votre mot de passe ne changera pas tant que vous n'aurez pas
+            accédé au lien ci-dessus et créé un nouveau.
+        subject: Instructions de réinitialisation du mot de passe
+      unlock_instructions:
+        subject: Instructions de déverrouillage
+    omniauth:
+      provider:
+        discord: Discord
+        google: Google
+        github: GitHub
+        bluesky: Bluesky
+        twitch: Twitch
+      failure: Impossible de vous authentifier avec %{kind}.
+      failure_with_reason: Impossible de vous authentifier avec %{kind} car "%{reason}".
+      failure_username_taken: |-
+        Could not authenticate you with %{kind} because there is already an account with the username "%{username}".
+        Please sign in your existing account or sign up to a new account and connect your %{kind} account.
+      success: Authentification réussie avec %{kind}.
+      connect:
+        failure: Impossible de connecter votre compte %{kind}.
+        failure_with_reason: Impossible de connecter votre compte %{kind} car "%{reason}".
+        success: Votre compte %{kind} a été connecté avec succès.
+        already_connected: Votre compte %{kind} est déjà connecté à votre compte FleetYards.net.
     otp:
+      backup_codes: Générer des codes de secours
+      backup_explain: Copiez les codes de secours et conservez-les en lieu sûr.
       disable: Désactiver
-      disable_explain: Pour désactiver l'authentification à deux facteurs, il suffit d'entrer un code valide.
+      disable_explain: Pour désactiver l'authentification à deux facteurs, il suffit
+        d'entrer un code valide.
       enable: Activer
       enable_explain: Scannez le QR-Code et saisissez un code généré.
-      explain: Pour sécuriser votre compte FleetYards.net, vous pouvez générer des codes d'authentification de deuxième niveau avec <a href="%{google_auth_link}" target="_blank">Google Authenticator</a>, <a href="%{one_password_link}" target="_blank">1Password</a> ou <a href="%{authy_link}" target="_blank">Authy</a>.
+      explain: Pour sécuriser votre compte FleetYards.net, vous pouvez générer des
+        codes d'authentification de deuxième niveau avec <a href="%{google_auth_link}"
+        target="_blank">Google Authenticator</a>, <a href="%{one_password_link}" target="_blank">1Password</a>
+        ou <a href="%{authy_link}" target="_blank">Authy</a>.
       messages:
         backup_codes: Codes de sauvegarde régénérés.
         disable:
@@ -27,3 +93,42 @@ fr:
         enable:
           failure: Merci de saisir un code valide.
           success: L'authentification à deux facteurs est maintenant activée.
+      otp_enabled: Authentification à deux facteurs activée ?
+      otp_token: Token
+      title: Authentification à deux facteurs
+    passwords:
+      no_token: You can't access this page without coming from a password reset email.
+        If you do come from a password reset email, please make sure you used the
+        full URL provided.
+      send_instructions: Vous recevrez un e-mail avec des instructions pour réinitialiser
+        votre mot de passe dans quelques minutes.
+      send_paranoid_instructions: If your email address exists in our database, you
+        will receive a password recovery link at your email address in a few minutes.
+      update_failure: Votre mot de passe n'a pas pu être mis à jour.
+      updated: Votre mot de passe a été changé avec succès. Vous êtes maintenant connecté.
+      updated_not_active: Votre mot de passe a été changé avec succès.
+    registrations:
+      destroyed: Au revoir ! Votre compte a été annulé avec succès. Nous espérons
+        vous revoir bientôt.
+      signed_up: Bienvenue ! Vous vous êtes inscrit avec succès.
+      signed_up_but_inactive: You have signed up successfully. However, we could not
+        sign you in because your account is not yet activated.
+      signed_up_but_locked: You have signed up successfully. However, we could not
+        sign you in because your account is locked.
+      signed_up_but_unconfirmed: A message with a confirmation link has been sent
+        to your email address. Please open the link to activate your account.
+      update_needs_confirmation: You updated your account successfully, but we need
+        to verify your new email address. Please check your email and click on the
+        confirm link to finalize confirming your new email address.
+      updated: Vous avez mis à jour votre compte avec succès.
+    sessions:
+      failure:
+        jwt: JWT invalide. Veuillez vous connecter.
+      signed_in: Connecté avec succès.
+      signed_out: Déconnecté avec succès.
+    unlocks:
+      send_instructions: You will receive an email with instructions about how to
+        unlock your account in a few minutes.
+      send_paranoid_instructions: If your account exists, you will receive an email
+        with instructions about how to unlock it in a few minutes.
+      unlocked: Your account has been unlocked successfully. Please sign in to continue.

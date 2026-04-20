@@ -8,7 +8,10 @@
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
       "home": "Accueil",
-      "ships": { "index": "Vaisseaux", "viewer": "Ship Viewer" },
+      "ships": {
+        "index": "Vaisseaux",
+        "viewer": "Ship Viewer"
+      },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "Images de %{name}",
       "shipVideos": "Vidéos de %{name}",
@@ -40,23 +43,32 @@
         "add": "Créer une nouvelle flotte",
         "preview": "Aperçu de la flotte",
         "invites": "Invitations",
-        "members": "Membres de %{fleet}",
+        "members": {
+          "index": "%{fleet} Members",
+          "invites": "%{fleet} Invites",
+          "worldmap": "Carte du monde des membres de %{fleet}",
+          "starmap": "Carte stellaire des membres de %{fleet}"
+        },
         "stats": "Statistiques sur %{fleet}",
         "settings": {
           "index": "Paramètres de %{fleet}",
           "fleet": "Paramètres de %{fleet}",
-          "membership": "Adhésion à %{fleet}"
+          "membership": "Adhésion à %{fleet}",
+          "roles": "Rôles de %{fleet}"
         }
       },
       "roadmap": {
-        "index": "Roadmap",
+        "index": "Feuille de route",
         "ships": "Roadmap vaisseaux",
         "changes": "Changement Roadmap"
       },
       "settings": {
         "index": "Paramètres du profil",
+        "profile": "Paramètres du profil",
         "account": "Compte",
         "hangar": "Paramètres de Hangar",
+        "features": "Indicateurs de fonctionnalités",
+        "oauthApplications": "Applications OAuth",
         "notifications": "Paramètres de notification",
         "security": "Sécurité du Compte",
         "twoFactor": {
@@ -65,12 +77,14 @@
           "backupCodes": "Générer des codes de sauvegarde"
         }
       },
-      "compare": { "ships": "Comparer les vaisseaux" },
+      "compare": {
+        "ships": "Comparer les vaisseaux"
+      },
       "notFound": "404",
       "tools": {
         "index": "Outils",
         "travelTimes": "Temps de Voyage",
-        "cargoGrids": "Cargo Grids"
+        "cargoGrids": "Grilles de cargaison"
       },
       "impressum": "Mentions légales",
       "privacyPolicy": "Politique de confidentialité",
@@ -92,6 +106,7 @@
             "fleetchart": "Éditer les Images du Modèle",
             "hardpoints": "Éditer les Points de Montage du Modèle",
             "cargoAndFuel": "Cargaison et Carburant",
+            "cargoHolds": "Modifier les soutes de %{manufacturer} %{model}",
             "docks": "Éditer les Quais du Modèle",
             "modules": "Éditer les Modules du Modèle",
             "paints": "Éditer les Peintures du Modèle",
@@ -124,12 +139,21 @@
           "edit": "Éditer le Véhicule"
         },
         "admins": {
-          "index": "Admins",
+          "index": "Administrateurs",
           "edit": "Éditer l'Admin"
         },
         "fleets": {
           "index": "Flottes",
           "edit": "Éditer la Flotte"
+        },
+        "oauthApplications": {
+          "index": "Applications OAuth",
+          "new": "Nouvelle application OAuth",
+          "edit": "Modifier l'application OAuth"
+        },
+        "features": {
+          "index": "Indicateurs de fonctionnalités",
+          "show": "Détails de la fonctionnalité"
         },
         "images": {
           "index": "Images"
@@ -137,10 +161,11 @@
         "maintenance": {
           "index": "Maintenance",
           "pghero": "PgHero",
-          "features": "Features",
+          "features": "Fonctionnalités",
+          "flipper": "Flipper UI",
           "workers": "Workers",
           "tasks": "Tâches",
-          "rsiApiStatus": "RSI API Status"
+          "rsiApiStatus": "Statut de l'API RSI"
         },
         "modelPaints": {
           "index": "Peintures de Modèles",

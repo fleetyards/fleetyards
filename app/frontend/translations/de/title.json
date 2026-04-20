@@ -8,7 +8,10 @@
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
       "home": "Startseite",
-      "ships": { "index": "Schiffe", "viewer": "Schiff Viewer" },
+      "ships": {
+        "index": "Schiffe",
+        "viewer": "Schiff Viewer"
+      },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} Bilder",
       "shipVideos": "%{name} Videos",
@@ -42,7 +45,9 @@
         "invites": "Flotten Einladungen",
         "members": {
           "index": "%{fleet} Mitglieder",
-          "invites": "%{fleet} Einladungen"
+          "invites": "%{fleet} Einladungen",
+          "worldmap": "%{fleet} Mitglieder-Weltkarte",
+          "starmap": "%{fleet} Mitglieder-Sternenkarte"
         },
         "stats": "%{fleet} Statistiken",
         "settings": {
@@ -59,8 +64,11 @@
       },
       "settings": {
         "index": "Profil Einstellungen",
+        "profile": "Profileinstellungen",
         "account": "Konto",
         "hangar": "Hangar Einstellungen",
+        "features": "Feature-Flags",
+        "oauthApplications": "OAuth-Anwendungen",
         "notifications": "Benachrichtigungseinstellungen",
         "security": "Konto Sicherheit",
         "twoFactor": {
@@ -69,7 +77,9 @@
           "backupCodes": "Zwei-Faktor-Backup-Codes generieren"
         }
       },
-      "compare": { "ships": "Schiffe vergleichen" },
+      "compare": {
+        "ships": "Schiffe vergleichen"
+      },
       "notFound": "404",
       "tools": {
         "index": "Werkzeuge",
@@ -96,6 +106,7 @@
             "fleetchart": "Modell Flottendiagramm-Bilder bearbeiten",
             "hardpoints": "Modell Hardpoints bearbeiten",
             "cargoAndFuel": "Fracht und Treibstoff",
+            "cargoHolds": "%{manufacturer} %{model} Frachträume bearbeiten",
             "docks": "Modell Docks bearbeiten",
             "modules": "Modell Module bearbeiten",
             "paints": "Modell Lackierungen bearbeiten",
@@ -128,12 +139,21 @@
           "edit": "Fahrzeug bearbeiten"
         },
         "admins": {
-          "index": "Admins",
+          "index": "Administratoren",
           "edit": "Admin bearbeiten"
         },
         "fleets": {
           "index": "Flotten",
           "edit": "Flotte bearbeiten"
+        },
+        "oauthApplications": {
+          "index": "OAuth-Anwendungen",
+          "new": "Neue OAuth-Anwendung",
+          "edit": "OAuth-Anwendung bearbeiten"
+        },
+        "features": {
+          "index": "Feature-Flags",
+          "show": "Funktionsdetails"
         },
         "images": {
           "index": "Bilder"
@@ -141,10 +161,11 @@
         "maintenance": {
           "index": "Wartung",
           "pghero": "PgHero",
-          "features": "Features",
+          "features": "Funktionen",
+          "flipper": "Flipper UI",
           "workers": "Workers",
           "tasks": "Aufgaben",
-          "rsiApiStatus": "RSI API Status"
+          "rsiApiStatus": "RSI-API-Status"
         },
         "modelPaints": {
           "index": "Modell Lackierungen",

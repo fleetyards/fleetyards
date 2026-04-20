@@ -2,24 +2,26 @@
   "fr": {
     "sublines": {
       "hangarGuide": {
-        "headline": "maybe we should change that ;)",
-        "add": "How to add a ship?",
-        "edit": "How to edit a ship?",
-        "wishlist": "How to add a ship to your wishlist?",
-        "fleetchart": "Fleetchart?",
-        "public": "Public URL?",
-        "groups": "How to create and update groups?"
+        "headline": "peut-être devrions-nous changer cela ;)",
+        "add": "Comment ajouter un vaisseau ?",
+        "edit": "Comment modifier un vaisseau ?",
+        "wishlist": "Comment ajouter un vaisseau à votre liste de souhaits ?",
+        "fleetchart": "Diagramme de flotte ?",
+        "public": "URL publique ?",
+        "groups": "Comment créer et mettre à jour des groupes ?"
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
-        "disclaimer": "Disclaimer",
-        "copyright": "Copyright",
-        "thirdpartycontent": "Credits",
+        "disclaimer": "Avis de non-responsabilité",
+        "copyright": "Droits d'auteur",
+        "thirdpartycontent": "Crédits",
         "sponsors": "Sponsors",
         "liabilityInternal": "Limitation of liability for internal content",
         "liabilityExternal": "Limitation of liability for external links"
       },
-      "settings": { "rsiData": "RSI Information" }
+      "settings": {
+        "rsiData": "Informations RSI"
+      }
     }
   }
 }

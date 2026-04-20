@@ -1,1 +1,54 @@
+---
 zh-TW:
+  actions:
+    add: 新增
+    add_dock: 新增停靠口
+    add_module_hardpoint: Add Model
+    add_module_package_item: Add Module
+    add_upgrade_kit: Add Model
+    add_video: Add Video
+    login_in_as: Login as
+    admin:
+      component:
+        new: Create new Component
+      equipment:
+        new: Create new Equipment
+      manufacturer:
+        new: Create new Manufacturer
+      model:
+        new: Create new Model
+        new_loaner_upload: Loaner Upload
+      model_module:
+        new: Create new Module
+      model_module_package:
+        new: 建立新模組套件
+      model_paint:
+        new: Create new Paint
+      model_upgrade:
+        new: 建立新升級
+      user:
+        new: Create new User
+    back: 返回
+    cancel: 取消
+    confirm: 確認帳戶
+    copy: Copy
+    delete: 刪除
+    edit: 編輯
+    loading: Please wait...
+    model:
+      images: 圖片
+      reload: 重新載入模型
+      reload_data: Reload Models Data
+      use_rsi_image: 使用 RSI 圖片
+    more: More Entries
+    ok: OK
+    prefill_attachments: Add all Attachments
+    prefill_utilities: Add all Utilities
+    prefill_weapons: Add all Weapons
+    resend_confirmation: 重新傳送確認
+    reset_password: Forgot password?
+    save: 儲存
+    save_password: Save password
+    sign_in: 登入
+    sign_out: 登出
+    unlock: Unlock Account

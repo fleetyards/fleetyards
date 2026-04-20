@@ -1,0 +1,4 @@
+---
+zh-TW:
+  action_policy:
+    unauthorized: 您無權執行此操作。

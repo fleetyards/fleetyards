@@ -7,9 +7,45 @@ zh-CN:
           pledge_store: 质押商店
           ingame: 游戏内商店
       component:
+        component_classes:
+          RSIAvionic: 航电
+          RSIModular: 模块化
+          RSIPropulsion: 推进
+          RSIThruster: 推进器
+          RSIWeapon: 武器
+        item_classes:
+          civilian: 民用
+          competition: 竞赛
+          industrial: 工业
+          military: 军用
+          stealth: 隐身
         item_types:
+          cargo_grids: 货物网格
+          coolers: 冷却器
+          countermeasure_launcher: 对抗措施发射器
+          fixed_thrusters: 固定推进器
+          fuel_intakes: 燃料进气口
+          fuel_tanks: 燃料箱
+          mid_range_radar: 中程雷达
+          joint_thrusters: 关节推进器
+          manned_turrets: 有人炮塔
+          manned_utility_turrets: 有人实用炮塔
+          mining_lasers: 采矿激光
+          missile_racks: 导弹架
+          missile_turrets: 导弹炮塔
+          missiles: 导弹
+          power_plants: 发电机
+          quantum_drives: 量子引擎
+          quantum_fuel_tanks: 量子燃料箱
+          remote_turrets: 遥控炮塔
+          scanners: 扫描仪
+          shield_generators: 护盾发生器
+          thrusters: 推进器
+          turrets: 炮塔
           weapon_defensive: 武器防御
           weapons: 船舶武器
+          emps: EMPs
+          armor_medium: 中型装甲
         tracking_signals:
           cross_section: 横截面
           electromagnetic: 电磁
@@ -67,7 +103,66 @@ zh-CN:
           pistol: 枪械
           rifle: 步枪
           rocket_launcher: 火箭筒
+          shotgun: 霰弹枪
+          smg: SMG
+          sniper_rifle: 狙击步枪
+          special_railgun: Special - Railgun
+          utility: 实用
+          weapon_scope: 瞄准镜
+        slots:
+          arms: 手臂
+          backpack: 背包
+          footwear: 鞋类
+          gloves: 手套
+          hat: 帽子
+          helmet: 头盔
+          jacket: 夹克
+          legs: 腿部
+          pants: 裤子
+          shirt: 衬衫
+          torso: 躯干
+          undersuit: 内衬
+        temperature_rating: 温度
+        types:
+          additional: 额外装备
+          powerplant: 发电机
+          primary_thrusters: 主推进器
+          shield: 护盾
+          thrusters: 机动推进器
+        weapon_classes:
+          ballistic: 弹道
+          energy: 能量
+          frag: Frag
+      fleet_membership:
+        roles:
+          admin: 管理员
+          member: 成员
+          officer: 军官
+        user_id: 成员
+      habitation:
+        habitation_types:
+          container: 集装箱
+          large_apartment: Large Apartment
+          medium_apartment: Medium Apartment
+          small_apartment: Small Apartment
+          suite: 套房
+      manufacturer:
+        code: CODE
+        known_for: 以什么闻名?
       model:
+        active: 活跃?
+        beam: 宽度
+        cargo: 货物
+        crew: 船员
+        equipment: 装备
+        ground: 地面载具?
+        adi_map: Atlas 3d Map?
+        hardpoints: 挂载点
+        height: 高度
+        hidden: 隐藏?
+        holo_colored: 3D File has colored Materials?
+        length: 长度
+        manufacturer: 制造商
         mass: 质量
         max_upgrades: 升级
         notified: 禁止“新建船舶”通知？
@@ -123,9 +218,6 @@ zh-CN:
           password: SMPT 密码或令牌
           port: SMTP 端口
           user: SMTP 用户名
-      trade_commodity:
-        buy: 购买
-        sell: 出售？
       updated_at: "%{time}前"
       user:
         admin: 管理员
@@ -146,23 +238,38 @@ zh-CN:
           class6: Class 6
           class7: Class 7
           class8: Class 8
+      trade_commodity:
+        buy: 购买
+        sell: 出售？
     errors:
       messages:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        fleet_role:
+          attributes:
+            resource_access:
+              changed: 访问权限无法更改
         fleet_membership:
           attributes:
+            base:
+              cannot_destroy_from_permanent_role: 无法将成员从永久角色中移除
             user_id:
               taken: 已经存在或有一个待处理的邀请
         user:
           attributes:
+            base:
+              has_permanent_fleet_memberships: 'Cannot delete account while you are
+                an admin of the following fleets: %{fleets}. Please transfer ownership
+                first.'
             confirmation_token:
               invalid: 无效
             current_password:
               invalid: 无效
             email:
               taken: 电子邮箱已注册。
+            password:
+              too_short:
             password_confirmation:
               confirmation: 密码不匹配
             reset_password_token:

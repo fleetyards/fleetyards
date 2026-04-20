@@ -1,1 +1,70 @@
+---
 de:
+  title:
+    default: FleetYards.net
+    default_short: FleetYards
+    default_admin: FleetYards.net Command
+    default_admin_short: FltYrds Command
+    not_found: 404
+    server_error: 500
+    unprocessable_entity: 422
+    frontend:
+      compare_ships: Schiffe vergleichen
+      confirm: Konto bestätigen
+      cookie-policy: Cookie-Richtlinie
+      fleet_invite: "%{fleet} beitreten"
+      fleet_members: "%{fleet} Mitglieder"
+      fleet_members_index: "%{fleet} Mitglieder"
+      fleet_members_invites: "%{fleet} Einladungen"
+      fleet_settings: "%{fleet} Einstellungen"
+      fleet_settings_roles: "%{fleet} Rollen"
+      fleet_stats: "%{fleet} Statistiken"
+      fleets: Flotten
+      fleets_add: Neue Flotte erstellen
+      fleets_invites: Flotteneinladungen
+      fleets_preview: Flottenvorschau
+      hangar: Mein Hangar
+      hangar_import: Importieren
+      hangar_preview: Mein Hangar Vorschau
+      hangar_stats: Mein Hangar Statistiken
+      hangar_wishlist: Wunschliste
+      home: Startseite
+      images: Bilder
+      impressum: Impressum
+      login: Anmelden
+      password_change: Passwort ändern
+      password_request: Passwort anfordern
+      privacy-policy: Datenschutzerklärung
+      public_hangar: "%{user} Hangar"
+      public_wishlist: "%{user} Wunschliste"
+      roadmap: Roadmap
+      roadmap_changes: Roadmap-Änderungen
+      roadmap_progress-tracker: Fortschrittstracker
+      roadmap_ships: Schiff-Roadmap
+      search: Suchergebnisse
+      settings: Einstellungen
+      settings_account: Konto
+      settings_change-password: Passwort ändern
+      settings_hangar: Hangar-Einstellungen
+      settings_notifications: Benachrichtigungseinstellungen
+      settings_profile: Profileinstellungen
+      settings_security: Kontosicherheit
+      settings_security_two-factor_backup-codes: Zwei-Faktor-Backup-Codes generieren
+      settings_security_two-factor_disable: Zwei-Faktor-Authentifizierung deaktivieren
+      settings_security_two-factor_enable: Zwei-Faktor-Authentifizierung aktivieren
+      ship_images: "%{model} Bilder"
+      ship_videos: "%{model} Videos"
+      ships: Schiffe
+      sign-up: Registrieren
+      stats: Statistiken
+      tools: Werkzeuge
+      tools_travel-times: Reisezeiten
+      visual-tests: Visuelle Tests
+      visual-tests_panels: Panels - Visual Tests
+    api:
+      docs:
+        swagger: Swagger
+    admin:
+      dashboard: Dashboard
+      models: Modelle
+      models_edit_fleetchart: "%{manufacturer} %{model} Flottenübersicht-Bilder bearbeiten"

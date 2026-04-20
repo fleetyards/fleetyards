@@ -1,0 +1,31 @@
+---
+zh-TW:
+  notifications:
+    hangar_create:
+      title: "%{model} 已新增到機庫"
+    hangar_destroy:
+      title: "%{model} 已從機庫移除"
+    wishlist_create:
+      title: "%{model} 已新增到願望清單"
+    wishlist_destroy:
+      title: "%{model} 已從願望清單移除"
+    model_on_sale:
+      title: "%{model} 正在出售"
+      body: "%{model} 目前在質押商店中出售。"
+    hangar_sync_finished:
+      title: 機庫同步完成
+      body: 您的 RSI 機庫已成功同步。
+    hangar_sync_failed:
+      title: 機庫同步失敗
+      body: '您的 RSI 機庫同步失敗: %{error}'
+    new_model:
+      title: '新飛船: %{model}'
+      body: "%{model} 已新增到飛船資料庫。"
+    fleet_invite:
+      title: 您已被邀請加入 %{fleet}
+    fleet_member_requested:
+      title: "%{username} 請求加入 %{fleet}"
+    fleet_member_accepted:
+      title: "%{username} 加入了 %{fleet}"
+    fleet_request_accepted:
+      title: 您已被 %{fleet} 接受

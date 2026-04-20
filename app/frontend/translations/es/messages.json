@@ -49,15 +49,66 @@
         "success": "Tu contraseña ha sido cambiada exitosamente.",
         "failure": "Tu contraseña no pudo ser actualizada."
       },
-      "updateProfile": { "success": "Perfil actualizado." },
-      "updateHangar": { "success": "Configuración del Hangar actualizada." },
+      "updateProfile": {
+        "success": "Perfil actualizado.",
+        "failure": "Profile could not be updated."
+      },
+      "updateHangar": {
+        "success": "Configuración del Hangar actualizada."
+      },
+      "features": {
+        "updated": "Función actualizada.",
+        "error": "No se pudo actualizar la función.",
+        "actorAdded": "Actor agregado a la función.",
+        "actorRemoved": "Actor eliminado de la función.",
+        "groupAdded": "Grupo agregado a la función.",
+        "groupRemoved": "Grupo eliminado de la función.",
+        "created": "Función creada.",
+        "destroyed": "Función eliminada.",
+        "createError": "No se pudo crear la función."
+      },
+      "rsiRequestLogs": {
+        "resolved": "Registro de solicitud marcado como resuelto.",
+        "error": "No se pudo actualizar el registro de solicitud."
+      },
       "updateNotifications": {
         "success": "Configuración de Notificaciones actualizada."
       },
-      "updateAccount": { "success": "Cuenta actualizada." },
+      "updateAccount": {
+        "success": "Cuenta actualizada."
+      },
+      "oauthApplications": {
+        "create": {
+          "success": "Aplicación OAuth creada.",
+          "error": "No se pudo crear la aplicación OAuth."
+        },
+        "update": {
+          "success": "Aplicación OAuth actualizada.",
+          "error": "No se pudo actualizar la aplicación OAuth."
+        },
+        "destroy": {
+          "success": "Aplicación OAuth eliminada.",
+          "error": "No se pudo eliminar la aplicación OAuth."
+        },
+        "regenerateSecret": {
+          "success": "Secreto de cliente regenerado.",
+          "error": "No se pudo regenerar el secreto del cliente."
+        },
+        "copied": "Copiado al portapapeles.",
+        "copyError": "No se pudo copiar al portapapeles.",
+        "secretWarning": "Copie su secreto de cliente ahora. No podrá verlo de nuevo."
+      },
       "avatarUpload": {
-        "success": "Avatar subido",
-        "invalidExtension": "La imagen que proporcionaste tiene un formato inválido. Los formatos soportados son: %{extensions}."
+        "create": {
+          "success": "Avatar uploaded",
+          "failure": "Could not upload Avatar"
+        },
+        "destroy": {
+          "success": "Avatar removed",
+          "failure": "Could not remove Avatar"
+        },
+        "invalidExtension": "La imagen que proporcionaste tiene un formato inválido. Los formatos soportados son: %{extensions}.",
+        "success": "Avatar subido"
       },
       "hangarImport": {
         "success": "Importación completada",
@@ -70,10 +121,17 @@
       },
       "vehicle": {
         "add": {
-          "success": "Tu nueva <b>%{model}</b> será entregada a tu <a href=\"/hangar\">Hangar</a>"
+          "success": {
+            "noHtml": "Your new %{model} will be delivered to your Hangar",
+            "paragraph1": "Your new ",
+            "paragraph2": "will be delivered to your "
+          }
         },
         "addToWishlist": {
-          "success": "Tu nueva <b>%{model}</b> fue añadida a tu <a href=\"/hangar/wishlist\">Lista de Deseos</a>"
+          "success": {
+            "noHtml": "Your new %{model} was added to your Wishlist",
+            "paragraph2": "was added to your "
+          }
         },
         "resetIngame": {
           "moveToWishlist": {
@@ -86,7 +144,12 @@
           }
         }
       },
-      "model": { "onSale": "¡%{model} ahora en oferta!" },
+      "model": {
+        "onSale": "¡%{model} ahora en oferta!",
+        "syncStarted": "Model sync started. You will be notified when it completes.",
+        "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
+        "syncScDataStarted": "Model SC data sync started. You will be notified when it completes."
+      },
       "notification": {
         "granted": "¡Bienvenido a las Notificaciones de FleetYards.net!"
       },
@@ -109,10 +172,16 @@
         "urlInvalid": "La URL es inválida",
         "emailTaken": "El email ya está tomado.",
         "fleetTaken": "La flota ya está tomada.",
+        "colorInvalid": "Color is invalid",
         "serialTaken": "El número de serie ya está tomado.",
         "textInvalid": "%{field} es inválido",
         "hangar": {
-          "accountRequired": "Necesitas <a href=\"/sign-up/\">Registrarte</a> o <a href=\"/login/\">Iniciar sesión</a> para añadir Naves a tu Hangar.<br>Obtén más información <a href=\"/hangar/preview/\">aquí</a>"
+          "accountRequired": {
+            "noHtml": "You need to Sign up or Login to add Ships to your Hangar.",
+            "paragraph1": "You need to ",
+            "paragraph2": " to add Ships to your Hangar.",
+            "paragraph3": "Get more Information "
+          }
         },
         "default": "<b>Algo salió mal.</b> <br>¿Has intentado apagarlo y volverlo a encender?"
       },
@@ -148,7 +217,9 @@
             "success": "Invitación rechazada.",
             "failure": "No se pudo rechazar la Invitación."
           },
-          "create": { "failure": "No se pudo invitar al Usuario." }
+          "create": {
+            "failure": "No se pudo invitar al Usuario."
+          }
         },
         "members": {
           "update": {
@@ -188,6 +259,9 @@
           "failure": "¡No pudimos cargar el modelo 3D solicitado! Por favor inténtalo más tarde."
         }
       },
+      "cargoGridViewer": {
+        "noCargoHolds": "Esta nave no tiene bodegas de carga."
+      },
       "confirm": {
         "vehicle": {
           "destroy": "¿Estás seguro de que quieres eliminar esta Nave de tu Hangar?"
@@ -206,6 +280,9 @@
         "account": {
           "destroy": "¿Estás seguro de que quieres destruir tu Cuenta? Esta acción no se puede revertir."
         },
+        "itemPrice": {
+          "destroy": "Are you sure you want to destroy this Item Price? This Action can't be reverted."
+        },
         "fleet": {
           "leave": "¿Estás seguro de que quieres abandonar la Flota? Esta acción no se puede revertir.",
           "destroy": "¿Estás seguro de que quieres destruir tu Flota? Esta acción no se puede revertir.",
@@ -216,22 +293,102 @@
             "decline": "¿Estás seguro de que quieres rechazar esta Invitación? Esta acción no se puede revertir."
           }
         },
+        "oauthApplication": {
+          "destroy": "¿Está seguro de que desea eliminar esta aplicación OAuth? Esta acción no se puede revertir.",
+          "regenerateSecret": "¿Está seguro de que desea regenerar el secreto del cliente? Las integraciones existentes dejarán de funcionar."
+        },
         "twoFactor": {
           "generateBackupCodes": "¿Estás seguro de que quieres regenerar tus Códigos de Respaldo de Autenticación de dos factores?"
+        },
+        "user": {
+          "loginAs": "Are you sure you want to login as this user?",
+          "resendConfirmation": "Are you sure you want to resend the confirmation email for this user?",
+          "sendPasswordReset": "Are you sure you want to send a password reset email for this user?",
+          "destroy": "Are you sure you want to delete this user? This action can't be reverted."
+        },
+        "model": {
+          "destroy": "Are you sure you want to delete this model? This action can't be reverted.",
+          "sync": "Are you sure you want to sync this model from RSI?",
+          "syncMatrix": "Are you sure you want to sync the ship matrix data for this model?",
+          "syncScData": "Are you sure you want to sync the SC data for this model?",
+          "exchangeStoreImage": "Are you sure you want to replace the store image with the RSI image?",
+          "reloadMatrix": "Are you sure you want to reload the models matrix? This will enqueue background jobs.",
+          "reloadScData": "Are you sure you want to reload SC data? This will enqueue background jobs."
+        },
+        "manufacturer": {
+          "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "modelHardpoint": {
+          "destroy": "¿Está seguro de que desea eliminar este punto de montaje? Esta acción no se puede revertir."
+        },
+        "modelHardpointLoadout": {
+          "destroy": "¿Está seguro de que desea eliminar esta configuración? Esta acción no se puede revertir."
+        },
+        "modelLoaner": {
+          "destroy": "¿Está seguro de que desea eliminar este préstamo? Esta acción no se puede revertir."
+        },
+        "modelPaint": {
+          "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
+        },
+        "video": {
+          "destroy": "Are you sure you want to delete this video? This action can't be reverted."
+        },
+        "modelModule": {
+          "destroy": "Are you sure you want to delete this module? This action can't be reverted.",
+          "unlink": "Are you sure you want to unlink this module from the model? The module will still exist but won't be associated with this model."
+        },
+        "modelUpgrade": {
+          "destroy": "Are you sure you want to delete this upgrade? This action can't be reverted.",
+          "unlink": "Are you sure you want to unlink this upgrade from the model? The upgrade will still exist but won't be associated with this model."
+        },
+        "modelModulePackage": {
+          "destroy": "Are you sure you want to delete this module package? This action can't be reverted."
+        },
+        "dock": {
+          "destroy": "Are you sure you want to delete this dock? This action can't be reverted."
+        },
+        "component": {
+          "destroy": "Are you sure you want to delete this component? This action can't be reverted."
+        },
+        "adminFleet": {
+          "destroy": "Are you sure you want to delete this fleet? This action can't be reverted."
+        },
+        "adminUser": {
+          "destroy": "Are you sure you want to delete this admin user? This action can't be reverted."
+        },
+        "image": {
+          "destroy": "Are you sure you want to delete this image? This action can't be reverted."
+        },
+        "adminVehicle": {
+          "destroy": "Are you sure you want to delete this vehicle? This action can't be reverted."
         }
+      },
+      "oauthAuthorize": {
+        "loading": "Cargando...",
+        "loadError": "Error al cargar los detalles de autorización.",
+        "authorizeError": "Autorización fallida.",
+        "denyError": "La denegación de autorización falló."
       },
       "oauth": {
         "disconnect": {
-          "success": "Provider disconnected successfully.",
-          "failure": "Could not disconnect provider. Please try again."
+          "success": "Proveedor desconectado exitosamente.",
+          "failure": "No se pudo desconectar el proveedor. Inténtelo de nuevo."
         }
       },
+      "confirmAccess": {
+        "failure": "No se pudo confirmar el acceso. Verifique su contraseña e intente nuevamente."
+      },
       "confirmAccessEmail": {
-        "sent": "A confirmation code has been sent to your email.",
-        "failure": "Could not send confirmation email. Please try again."
+        "sent": "Se ha enviado un código de confirmación a su correo electrónico.",
+        "failure": "No se pudo enviar el correo de confirmación. Inténtelo de nuevo."
       },
       "confirmAccessCode": {
-        "failure": "The confirmation code is invalid or has expired."
+        "failure": "El código de confirmación es inválido o ha expirado."
+      },
+      "import": {
+        "started": "Importación de %{type} iniciada...",
+        "finished": "Importación de %{type} completada exitosamente.",
+        "failed": "Importación de %{type} fallida: %{info}"
       },
       "syncExtension": {
         "started": "Sincronizando tu Hangar...",

@@ -1,7 +1,38 @@
 ---
 zh-CN:
-  "true": Yes
-  "false": No
+  admin_app: FleetYards.net Command
+  app: FleetYards.net
+  copyright: 版权
+  error_pages:
+    not_found: You are currently venturing unknown space. In the event you are lost,
+      the UEE highly recommends plotting a new destination back towards home-space.
+    server_error: 页面当前不可用。请稍后再试。
+    unprocessable_entity: 您的请求无法处理。
+  nav:
+    admin_users: 管理员
+    components: 组件
+    equipment: 装备
+    home: 首页
+    images: 图片
+    admin_maintenance:
+      index: 维护
+      rsi_api_status: RSI API 状态
+    manufacturers: 制造商
+    model:
+      overview: 索引
+    model_module_packages: 模块包
+    models: 型号
+    models_name_diff: 不同的 RSI 名称
+    models_price_diff: 过时的质押价格
+    otp: 两步验证
+    pghero: PGHero
+    features: 功能
+    users: 用户
+    workers: Workers
+    header:
+      toggle: 切换导航
+  'true': true
+  'false': false
   number:
     currency:
       format:

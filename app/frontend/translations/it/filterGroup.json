@@ -1,10 +1,64 @@
 {
   "it": {
     "filterGroup": {
+      "actions": {
+        "fetchMore": "Carica altro"
+      },
       "labels": {
         "search": "Scrivi per cercare",
         "nullablePrompt": "Nessuna opzione selezionata",
-        "prompt": "Per favore seleziona un'opzione"
+        "prompt": "Per favore seleziona un'opzione",
+        "removeTooltip": "Clicca per rimuovere l'opzione"
+      },
+      "model": {
+        "baseModel": {
+          "label": "Modello base"
+        }
+      },
+      "modelLoaner": {
+        "loanerModel": {
+          "label": "Modello in prestito"
+        }
+      },
+      "modelHardpoint": {
+        "source": {
+          "label": "Fonte",
+          "prompt": "Seleziona fonte"
+        },
+        "group": {
+          "label": "Gruppo",
+          "prompt": "Seleziona gruppo"
+        },
+        "hardpointType": {
+          "label": "Tipo",
+          "prompt": "Seleziona tipo"
+        },
+        "size": {
+          "label": "Dimensione",
+          "nullablePrompt": "Seleziona dimensione"
+        },
+        "category": {
+          "label": "Categoria",
+          "nullablePrompt": "Seleziona categoria"
+        },
+        "subCategory": {
+          "label": "Sottocategoria",
+          "nullablePrompt": "Seleziona sottocategoria"
+        }
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "Filtro navi",
+            "prompt": "Seleziona quali navi mostrare",
+            "nullablePrompt": "Seleziona un'opzione"
+          },
+          "hangarGroupId": {
+            "label": "Gruppo hangar",
+            "prompt": "Seleziona un gruppo hangar",
+            "nullablePrompt": "Seleziona un gruppo"
+          }
+        }
       }
     }
   }

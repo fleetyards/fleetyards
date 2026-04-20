@@ -1,6 +1,12 @@
 {
   "it": {
     "actions": {
+      "admin": {
+        "dashboard": {
+          "reloadModels": "Ricarica modelli",
+          "reloadScData": "Ricarica dati SC"
+        }
+      },
       "showReleased": "Mostra vecchi rilasci",
       "hideReleased": "Nascondi vecchi rilasci",
       "upgrade": "Aggiornamento disponibile!",
@@ -11,6 +17,7 @@
       "ungrouped": "Non raggruppati",
       "destroyAccount": "Elimina Account",
       "saveScreenshot": "Salva come PNG",
+      "resolve": "Risolvi",
       "verify": "Verifica",
       "clearHistory": "Pulisci la cronologia",
       "sortBy": "Ordina per",
@@ -22,6 +29,7 @@
       "export": "Esporta",
       "import": "Importa",
       "here": "qui",
+      "backToList": "Torna alla lista",
       "backToTop": "Torna all'inizio",
       "cancel": "Annulla",
       "ok": "Ok",
@@ -34,23 +42,31 @@
       "hideDetails": "Nascondi i dettagli",
       "showGuide": "Mostra guida",
       "hideGuide": "Nascondi guida",
-      "showFleetchart": "Fleetchart",
+      "showFleetchart": "Grafico flotta",
       "hideFleetchart": "Vista di default",
       "showLabels": "Mostra etichette",
       "hideLabels": "Nascondi etichette",
       "resetZoom": "Resetta lo zoom",
       "supportUs": "Supporta FleetYards.net",
-      "login": "Login",
+      "login": "Accedi",
       "signUp": "Registrati",
       "confirmAccess": "Conferma la password",
-      "sendConfirmAccessEmail": "Send confirmation email",
+      "sendConfirmAccessEmail": "Invia e-mail di conferma",
       "reset-password": "Password dimenticata?",
       "edit": "Modifica",
+      "clear": "Cancella",
       "done": "Conferma",
       "share": "Condividi",
       "change": "Cambia",
       "upload": "Carica",
       "save": "Salva",
+      "enable": "Attiva",
+      "disable": "Disattiva",
+      "manage": "Gestisci",
+      "enableGlobally": "Attiva globalmente",
+      "disableGlobally": "Disattiva globalmente",
+      "addActor": "Aggiungi attore",
+      "addGroup": "Aggiungi gruppo",
       "remove": "Rimuovi",
       "delete": "Elimina",
       "deleteSelected": "Elimina selezionati",
@@ -68,15 +84,26 @@
       "updatePassword": "Aggiorna la password",
       "copyBackupCodes": "Copia i codici di backup",
       "add": "Aggiungi",
+      "create": "Crea",
       "addToWishlist": "Aggiungi alla lista dei desideri",
       "addAnother": "Aggiungi un altro",
       "addVehicle": "Aggiungi nave",
-      "addGroup": "Aggiungi gruppo",
       "addModule": "Aggiungi un altro modulo",
       "addUpgrade": "Aggiungi un altro upgrade",
       "showTableView": "Mostra come lista",
       "showGridView": "Mostra come griglia",
+      "linkExisting": "Collega esistente",
+      "loadMore": "Carica altro",
+      "unlink": "Scollega",
       "syncRsiHangar": "Sincronizza hangar RSI",
+      "oauthApplications": {
+        "create": "Nuova applicazione",
+        "regenerateSecret": "Rigenera segreto"
+      },
+      "oauthAuthorize": {
+        "authorize": "Autorizza",
+        "deny": "Rifiuta"
+      },
       "oauth": {
         "google": "Google",
         "discord": "Discord",
@@ -84,21 +111,23 @@
         "github": "GitHub",
         "twitch": "Twitch",
         "connected": {
-          "google": "Connected to Google",
-          "discord": "Connected to Discord",
-          "bluesky": "Connected to BlueSky",
-          "github": "Connected to GitHub",
-          "twitch": "Connected to Twitch"
+          "google": "Connesso a Google",
+          "discord": "Connesso a Discord",
+          "bluesky": "Connesso a BlueSky",
+          "github": "Connesso a GitHub",
+          "twitch": "Connesso a Twitch"
         },
         "disconnect": {
-          "google": "Disconnect Google",
-          "discord": "Disconnect Discord",
-          "bluesky": "Disconnect BlueSky",
-          "github": "Disconnect GitHub",
-          "twitch": "Disconnect Twitch"
+          "google": "Disconnetti Google",
+          "discord": "Disconnetti Discord",
+          "bluesky": "Disconnetti BlueSky",
+          "github": "Disconnetti GitHub",
+          "twitch": "Disconnetti Twitch"
         }
       },
-      "compare": { "ships": "Compara" },
+      "compare": {
+        "ships": "Compara"
+      },
       "hangar": {
         "editGroups": "Aggiungi o rimuovi gruppo",
         "editName": "Rinomina la nave",
@@ -116,16 +145,24 @@
       "syncExtension": {
         "cancel": "Annulla",
         "start": "Avvia sincronizzazione",
-        "close": "Chiudi"
+        "retry": "Riprova sincronizzazione",
+        "close": "Chiudi",
+        "refresh": "Aggiorna pagina"
       },
       "empty": {
-        "hangarGuide": "Serve aiuto?"
+        "hangarGuide": "Serve aiuto?",
+        "reset": "Cancella filtri"
       },
+      "destroyFleet": "Distruggi flotta",
       "fleet": {
         "join": "Unisciti a %{fleet}!",
         "leave": "Abbandona %{fleet}",
         "createInviteUrl": "Crea Urls d'invito",
         "inviteMember": "Invita nuovi membri",
+        "manageInvites": "Inviti",
+        "worldmap": "Mappa mondiale",
+        "starmap": "Mappa stellare",
+        "membersList": "Membri",
         "acceptInvite": "Accetta l'invito",
         "declineInvite": "Rifiuta l'invito",
         "acceptRequest": "Accetta la richiesta",
@@ -139,12 +176,27 @@
           "decline": "Rifiuta",
           "remove": "Rimuovi"
         },
-        "inviteUrls": { "create": "Crea nuovo URL per invito" }
+        "inviteUrls": {
+          "create": "Crea nuovo URL per invito"
+        }
       },
       "model": {
         "gallery": "Galleria",
         "onSale": "In vendita %{price}",
         "store": "Pagina su RSI"
+      },
+      "models": {
+        "sync": "Sincronizza da RSI",
+        "syncMatrix": "Sincronizza matrice",
+        "syncScData": "Sincronizza dati SC",
+        "exchangeStoreImage": "Usa immagine RSI",
+        "images": "Immagini",
+        "openTableConfiguration": "Apri configurazione tabella"
+      },
+      "users": {
+        "loginAs": "Accedi come utente",
+        "resendConfirmation": "Reinvia conferma",
+        "sendPasswordReset": "Invia reset password"
       },
       "unselect": "Deseleziona tutti i selezionati",
       "openPriceModal": "Invia Prezzo",

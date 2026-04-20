@@ -1,1 +1,70 @@
+---
 fr:
+  helpers:
+    label:
+      user:
+        remember_me: Se souvenir de moi
+    placeholder:
+      admin_user:
+        email: E-mail
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        username: Nom d'utilisateur
+      component:
+        grade: Grade
+        size: Taille
+      description: Description
+      dock:
+        beam: Largeur
+        height: Hauteur
+        length: Longueur
+        name: Nom
+      equipment:
+        damage_reduction: Réduction de dégâts
+        extras: Extras
+        grade: Grade
+        range: Portée
+        rate_of_fire: Cadence de tir
+        size: Taille
+        storage: stockage
+        temperature_rating: Note temp.
+        volume: Volume
+      manufacturer:
+        code: Code court du nom
+        known_for: "..."
+      name: Nom
+      user:
+        email: E-mail
+        login: Nom d'utilisateur ou e-mail
+        otp_token: 2FA-Token
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        username: Nom d'utilisateur
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: Masqué ?
+        active: Actif ?
+        ground: Terrestre ?
+        map: Map?
+        on_sale: En vente ?
+    prompt:
+      component:
+        component_class: Veuillez sélectionner une classe de composant
+        item_class: Veuillez sélectionner une classe d'objet
+        item_type: Veuillez sélectionner un type d'objet
+        manufacturer: Veuillez sélectionner un fabricant
+      docks:
+        dock_type: Veuillez sélectionner un type de quai
+        ship_size: Veuillez sélectionner une taille de vaisseau
+      equipment:
+        backpack_compatibility: Compatibilité sac à dos
+        core_compatibility: Compatibilité du noyau
+        equipment_type: Veuillez sélectionner un type
+        item_type: Veuillez sélectionner un type d'objet
+        slot: Veuillez sélectionner un emplacement
+        weapon_class: Veuillez sélectionner une classe d'arme
+      models:
+        dock_size: Veuillez sélectionner une taille de quai
+      video:
+        video_type: Veuillez sélectionner un type de vidéo

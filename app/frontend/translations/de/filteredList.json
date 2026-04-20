@@ -1,4 +1,12 @@
 {
+  "de": {
+    "filteredList": {
+      "actions": {
+        "showFilter": "Show Filters",
+        "hideFilter": "Hide Filters"
+      }
+    }
+  },
   "en": {
     "filteredList": {
       "actions": {

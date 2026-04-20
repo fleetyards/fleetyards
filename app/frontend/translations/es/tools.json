@@ -13,7 +13,8 @@
         "uexCorp": "Plataforma de comercio de materias primas en tiempo real con seguimiento de precios, optimización de rutas comerciales y herramientas de análisis de mercado",
         "cargoGridViewer": "Visor 3D de cuadrícula de carga que muestra dimensiones de bodega y ajuste de contenedores para todas las naves",
         "scmdb": "Explora misiones, recompensas, rutas de reputación, recursos mineros y más para Star Citizen",
-        "regolith": "Herramienta de minería de Star Citizen con escaneo de rocas, cálculos de refinamiento y comparaciones de cabezales de minería"
+        "regolith": "Herramienta de minería de Star Citizen con escaneo de rocas, cálculos de refinamiento y comparaciones de cabezales de minería",
+        "spviewer": "Ship performance analysis tool with detailed flight characteristics, speed comparisons, and maneuverability data"
       },
       "categories": {
         "trading": "Comercio y Economía",

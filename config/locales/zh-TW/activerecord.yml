@@ -1,1 +1,275 @@
+---
 zh-TW:
+  activerecord:
+    attributes:
+      vehicle:
+        bought_via:
+          pledge_store: 質押商店
+          ingame: 遊戲內商店
+      component:
+        component_classes:
+          RSIAvionic: 航電
+          RSIModular: 模組化
+          RSIPropulsion: 推進
+          RSIThruster: 推進器
+          RSIWeapon: 武器
+        item_classes:
+          civilian: 民用
+          competition: 競賽
+          industrial: 工業
+          military: 軍用
+          stealth: 隱身
+        item_types:
+          cargo_grids: 貨物網格
+          coolers: 冷卻器
+          countermeasure_launcher: 反制措施發射器
+          fixed_thrusters: 固定推進器
+          fuel_intakes: 燃料進氣口
+          fuel_tanks: 燃料箱
+          mid_range_radar: 中程雷達
+          joint_thrusters: 關節推進器
+          manned_turrets: 有人砲塔
+          manned_utility_turrets: 有人實用砲塔
+          mining_lasers: 採礦雷射
+          missile_racks: 飛彈架
+          missile_turrets: 飛彈砲塔
+          missiles: 飛彈
+          power_plants: 發電機
+          quantum_drives: 量子引擎
+          quantum_fuel_tanks: 量子燃料箱
+          remote_turrets: 遙控砲塔
+          scanners: 掃描儀
+          shield_generators: 護盾產生器
+          thrusters: 推進器
+          turrets: 砲塔
+          weapon_defensive: Weapon Defensive
+          weapons: 飛船武器
+          emps: EMPs
+          armor_medium: 中型裝甲
+        tracking_signals:
+          cross_section: 截面
+          electromagnetic: 電磁
+          infrared: 紅外
+      dock:
+        dock_types:
+          dockingport: 對接口
+          garage: 車庫
+          hangar: 機庫
+          landingpad: 停機坪
+          vehiclepad: 載具停放點
+        ship_sizes:
+          capital: 主力艦 (C)
+          extra_extra_small: 小型飛船 (XXS)
+          extra_large: 超大型 (XL)
+          extra_small: 超小型 (XS)
+          large: 大型 (L)
+          medium: 中型 (M)
+          small: 小型 (S)
+      equipment:
+        backpack_compatibilities:
+          all: 全部
+          light: 輕型
+          light_medium: Light & Medium
+        core_compatibilities:
+          all: 全部
+          heavy: 重型
+          medium_heavy: Medium & Heavy
+        equipment_types:
+          armor: 裝甲
+          clothing: 服裝
+          hacking_tool: 駭客工具
+          medical: 醫療
+          tool: 工具
+          undersuit: 內襯
+          weapon: 武器
+          weapon_attachment: 武器配件
+        hidden: 隱藏?
+        item_types:
+          assault_rifle: 突擊步槍
+          backpack: 背包
+          battery: 電池
+          flightsuit: 飛行服
+          grenade: 手榴彈
+          grenade_launcher: 榴彈發射器
+          heavy_armor: 重型裝甲
+          heavy_backpack: 重型背包
+          knife: 刀
+          light_armor: 輕型裝甲
+          light_backpack: 輕型背包
+          lmg: LMG
+          magazine: 彈匣
+          medium_armor: 中型裝甲
+          medium_backpack: Medium Backpack
+          pistol: 手槍
+          rifle: 步槍
+          rocket_launcher: 火箭發射器
+          shotgun: 霰彈槍
+          smg: SMG
+          sniper_rifle: 狙擊步槍
+          special_railgun: Special - Railgun
+          utility: 實用
+          weapon_scope: 瞄準鏡
+        slots:
+          arms: 手臂
+          backpack: 背包
+          footwear: 鞋類
+          gloves: 手套
+          hat: 帽子
+          helmet: 頭盔
+          jacket: 夾克
+          legs: 腿部
+          pants: 褲子
+          shirt: 襯衫
+          torso: 軀幹
+          undersuit: 內襯
+        temperature_rating: 溫度
+        types:
+          additional: 額外裝備
+          powerplant: 發電機
+          primary_thrusters: 主推進器
+          shield: 護盾
+          thrusters: 機動推進器
+        weapon_classes:
+          ballistic: 彈道
+          energy: 能量
+          frag: Frag
+      fleet_membership:
+        roles:
+          admin: 管理員
+          member: 成員
+          officer: 軍官
+        user_id: 成員
+      habitation:
+        habitation_types:
+          container: 貨櫃
+          large_apartment: Large Apartment
+          medium_apartment: Medium Apartment
+          small_apartment: Small Apartment
+          suite: 套房
+      manufacturer:
+        code: CODE
+        known_for: 以什麼聞名?
+      model:
+        active: 活躍?
+        beam: 寬度
+        cargo: 貨物
+        crew: 船員
+        equipment: 裝備
+        ground: 地面載具?
+        adi_map: Atlas 3d Map?
+        hardpoints: 掛載點
+        height: 高度
+        hidden: 隱藏?
+        holo_colored: 3D File has colored Materials?
+        length: 長度
+        manufacturer: 製造商
+        mass: 質量
+        max_upgrades: 升級
+        notified: 抑制"新飛船"通知?
+        on_sale: 販售中?
+        production_status: 生產狀態
+        variants: 變體
+        weapons: 武器
+        fleetchart_image: Lagacy Fleetchart Image
+      model_hardpoint:
+        categories:
+          fixed: 固定機動推進器
+          gimbal: 萬向機動推進器
+          joint: 關節機動推進器
+          main: 主推進器
+          manned_turret: 有人砲塔
+          missile_turret: 飛彈砲塔
+          remote_turret: 遙控砲塔
+          retro: 反推推進器
+          vtol: VTOL 推進器
+          qed: QED
+          emp: EMP
+        sizes:
+          capital: C (4)
+          eight: 8
+          eleven: 11
+          five: 5
+          four: 4
+          large: L (3)
+          medium: M (2)
+          nine: 9
+          one: 1
+          seven: 7
+          six: 6
+          small: S (1)
+          tbd: TBD
+          ten: 10
+          three: 3
+          twelve: 12
+          two: 2
+          vehicle: V (0)
+          snub: Snub (0)
+      progress_tracker_item:
+        statuses:
+          done: 完成
+          in_progress: 進行中
+          planned: 已計劃
+      setting:
+        base:
+          registration: 註冊已啟用?
+        mailer:
+          default_from: 預設寄件人
+          host: SMTP Host
+          password: SMPT Password or Token
+          port: SMTP Port
+          user: SMTP User
+      updated_at: "%{time}前"
+      user:
+        admin: 管理員?
+        confirmation_token: 權杖
+        current_password: 密碼
+        email: 電子郵件
+        enabled: 活躍?
+        gravatar: Gravatar 電子郵件地址
+        login: 使用者名稱或電子郵件
+        username: 使用者名稱
+      weapon:
+        classes:
+          class1: Class 1
+          class2: Class 2
+          class3: Class 3
+          class4: Class 4
+          class5: Class 5
+          class6: Class 6
+          class7: Class 7
+          class8: Class 8
+    errors:
+      messages:
+        blank: 不能為空
+        record_invalid: 無效資料
+      models:
+        fleet_role:
+          attributes:
+            resource_access:
+              changed: 存取權限無法變更
+        fleet_membership:
+          attributes:
+            base:
+              cannot_destroy_from_permanent_role: 無法將成員從永久角色中移除
+            user_id:
+              taken: 已存在或有待處理的邀請
+        user:
+          attributes:
+            base:
+              has_permanent_fleet_memberships: 'Cannot delete account while you are
+                an admin of the following fleets: %{fleets}. Please transfer ownership
+                first.'
+            confirmation_token:
+              invalid: 無效
+            current_password:
+              invalid: 無效。
+            email:
+              taken: 已被佔用。
+            password:
+              too_short:
+            password_confirmation:
+              confirmation: 密碼不符
+            reset_password_token:
+              invalid: 權杖無效
+            username:
+              taken: 已被佔用。

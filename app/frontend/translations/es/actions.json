@@ -1,6 +1,12 @@
 {
   "es": {
     "actions": {
+      "admin": {
+        "dashboard": {
+          "reloadModels": "Recargar modelos",
+          "reloadScData": "Recargar datos SC"
+        }
+      },
       "showReleased": "Mostrar versiones anteriores",
       "hideReleased": "Ocultar versiones anteriores",
       "upgrade": "¡Actualización disponible!",
@@ -11,6 +17,7 @@
       "ungrouped": "Sin agrupar",
       "destroyAccount": "Eliminar cuenta",
       "saveScreenshot": "Guardar como PNG",
+      "resolve": "Resolver",
       "verify": "Verificar",
       "clearHistory": "Limpiar historial",
       "sortBy": "Ordenar por",
@@ -22,6 +29,7 @@
       "export": "Exportar",
       "import": "Importar",
       "here": "aquí",
+      "backToList": "Volver a la lista",
       "backToTop": "Volver arriba",
       "cancel": "Cancelar",
       "ok": "Aceptar",
@@ -43,14 +51,22 @@
       "login": "Iniciar sesión",
       "signUp": "Registrarse",
       "confirmAccess": "Confirmar contraseña",
-      "sendConfirmAccessEmail": "Send confirmation email",
+      "sendConfirmAccessEmail": "Enviar correo de confirmación",
       "reset-password": "¿Olvidó la contraseña?",
       "edit": "Editar",
+      "clear": "Borrar",
       "done": "Hecho",
       "share": "Compartir",
       "change": "Cambiar",
       "upload": "Subir",
       "save": "Guardar",
+      "enable": "Habilitar",
+      "disable": "Deshabilitar",
+      "manage": "Administrar",
+      "enableGlobally": "Habilitar globalmente",
+      "disableGlobally": "Deshabilitar globalmente",
+      "addActor": "Agregar actor",
+      "addGroup": "Añadir grupo",
       "remove": "Eliminar",
       "delete": "Borrar",
       "deleteSelected": "Borrar seleccionados",
@@ -68,15 +84,26 @@
       "updatePassword": "Actualizar contraseña",
       "copyBackupCodes": "Copiar códigos de respaldo",
       "add": "Añadir",
+      "create": "Crear",
       "addToWishlist": "Añadir a lista de deseos",
       "addAnother": "Añadir otro",
       "addVehicle": "Añadir naves",
-      "addGroup": "Añadir grupo",
       "addModule": "Añadir otro módulo",
       "addUpgrade": "Añadir otra mejora",
       "showTableView": "Mostrar como lista",
       "showGridView": "Mostrar como cuadrícula",
+      "linkExisting": "Vincular existente",
+      "loadMore": "Cargar más",
+      "unlink": "Desvincular",
       "syncRsiHangar": "Sincronizar hangar RSI",
+      "oauthApplications": {
+        "create": "Nueva aplicación",
+        "regenerateSecret": "Regenerar secreto"
+      },
+      "oauthAuthorize": {
+        "authorize": "Autorizar",
+        "deny": "Denegar"
+      },
       "oauth": {
         "google": "Google",
         "discord": "Discord",
@@ -84,21 +111,23 @@
         "github": "GitHub",
         "twitch": "Twitch",
         "connected": {
-          "google": "Connected to Google",
-          "discord": "Connected to Discord",
-          "bluesky": "Connected to BlueSky",
-          "github": "Connected to GitHub",
-          "twitch": "Connected to Twitch"
+          "google": "Conectado a Google",
+          "discord": "Conectado a Discord",
+          "bluesky": "Conectado a BlueSky",
+          "github": "Conectado a GitHub",
+          "twitch": "Conectado a Twitch"
         },
         "disconnect": {
-          "google": "Disconnect Google",
-          "discord": "Disconnect Discord",
-          "bluesky": "Disconnect BlueSky",
-          "github": "Disconnect GitHub",
-          "twitch": "Disconnect Twitch"
+          "google": "Desconectar Google",
+          "discord": "Desconectar Discord",
+          "bluesky": "Desconectar BlueSky",
+          "github": "Desconectar GitHub",
+          "twitch": "Desconectar Twitch"
         }
       },
-      "compare": { "ships": "Comparar" },
+      "compare": {
+        "ships": "Comparar"
+      },
       "hangar": {
         "editGroups": "Añadir o eliminar grupos",
         "editName": "Nombrar tu nave",
@@ -116,16 +145,24 @@
       "syncExtension": {
         "cancel": "Cancelar",
         "start": "Iniciar sincronización",
-        "close": "Cerrar"
+        "retry": "Reintentar sincronización",
+        "close": "Cerrar",
+        "refresh": "Actualizar página"
       },
       "empty": {
-        "hangarGuide": "¿Necesitas ayuda?"
+        "hangarGuide": "¿Necesitas ayuda?",
+        "reset": "Borrar filtros"
       },
+      "destroyFleet": "Destruir flota",
       "fleet": {
         "join": "¡Unirse a %{fleet}!",
         "leave": "Abandonar %{fleet}",
         "createInviteUrl": "Crear URLs de invitación",
         "inviteMember": "Invitar nuevo miembro",
+        "manageInvites": "Invitaciones",
+        "worldmap": "Mapa mundial",
+        "starmap": "Mapa estelar",
+        "membersList": "Miembros",
         "acceptInvite": "Aceptar invitación",
         "declineInvite": "Rechazar invitación",
         "acceptRequest": "Aceptar solicitud",
@@ -139,12 +176,27 @@
           "decline": "Rechazar",
           "remove": "Eliminar"
         },
-        "inviteUrls": { "create": "Crear nueva URL de invitación" }
+        "inviteUrls": {
+          "create": "Crear nueva URL de invitación"
+        }
       },
       "model": {
         "gallery": "Galería",
         "onSale": "En venta: %{price}",
         "store": "Página RSI"
+      },
+      "models": {
+        "sync": "Sincronizar desde RSI",
+        "syncMatrix": "Sincronizar matriz",
+        "syncScData": "Sincronizar datos SC",
+        "exchangeStoreImage": "Usar imagen RSI",
+        "images": "Imágenes",
+        "openTableConfiguration": "Abrir configuración de tabla"
+      },
+      "users": {
+        "loginAs": "Iniciar sesión como usuario",
+        "resendConfirmation": "Reenviar confirmación",
+        "sendPasswordReset": "Enviar restablecimiento de contraseña"
       },
       "unselect": "Deseleccionar todo",
       "openPriceModal": "Enviar precio",

@@ -1,1 +1,97 @@
+---
 es:
+  mailer:
+    account:
+      action: Administrar configuración de cuenta
+    admin:
+      notify_block:
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Conexión a RSI bloqueada
+        text: Las actualizaciones automáticas de RSI usando "%{url}" han sido bloqueadas
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Conexión con RSI restaurada
+        text: Las actualizaciones automáticas de RSI usando "%{url}" han sido restauradas
+      weekly:
+        fleets: Nuevas flotas
+        headline: FleetYards.net Command - Weekly
+        registrations: Nuevos registros
+        ships: Nuevas naves
+        subject: FleetYards.net Command Weekly
+        vehicles: Nuevos vehículos
+    fleet_membership:
+      fleet_accepted:
+        action: Página principal de %{fleet}
+        body: 'Para ver las naves y otros miembros de la flota, haga clic en el siguiente
+          enlace:'
+        headline: Su solicitud de membresía para unirse a %{fleet} ha sido aceptada
+        subject: "%{fleet} aceptó su solicitud de membresía"
+      member_accepted:
+        action: Lista de miembros de %{fleet}
+        body: 'Para ver la información del nuevo miembro, haga clic en el siguiente
+          enlace:'
+        headline: "%{username} aceptó la invitación a la flota"
+        subject: Nuevo miembro de flota
+      member_requested:
+        action: Invitaciones de %{fleet}
+        body: 'Para aceptar la solicitud, haga clic en el siguiente enlace:'
+        headline: "%{username} quiere unirse a %{fleet}"
+        subject: Nueva solicitud de membresía de flota
+      new_invite:
+        action: Unirse a %{fleet}
+        body: 'Para aceptar la invitación, haga clic en el siguiente enlace:'
+        headline: Ha sido invitado a unirse a %{fleet}
+        subject: Nueva invitación de flota
+    confirm_access:
+      body: Use el siguiente código para confirmar el acceso a la configuración de
+        su cuenta.
+      expires: Este código expirará en 10 minutos.
+      subject: Su código de confirmación
+    hello: Hola %{username}
+    model:
+      new:
+        headline_part_1: 'Permítame presentar:'
+        headline_part_2: El %{manufacturer}
+        subject: Nueva nave/vehículo
+    notification_settings: Cancelar suscripción de notificaciones
+    plain_hello: Hola
+    privacy: Política de privacidad
+    progress_tracker:
+      admin:
+        body: Ha habido %{changes} cambios en el rastreador de progreso
+        headline: Nuevos cambios en el rastreador de progreso
+        subject: Nuevos cambios en el rastreador de progreso
+    roadmap:
+      admin:
+        body: Ha habido %{changes} cambios en la hoja de ruta
+        headline: Nuevos cambios en la hoja de ruta
+        subject: Nuevos cambios en la hoja de ruta
+    security:
+      action: Administrar configuración de seguridad
+      info: Si no inició el cambio, contáctenos en info@fleetyards.net.
+    transmission_end: "--- transmisión entrante ---"
+    transmission_start: "--- transmisión entrante ---"
+    two_factor:
+      disabled:
+        body: Ha desactivado la autenticación de dos factores para su cuenta de Fleetyards.net.
+        subject: Dos factores deshabilitado
+      enabled:
+        body: Genial, ha activado la autenticación de dos factores para su cuenta
+          de Fleetyards.net.
+        subject: Dos factores habilitado
+      login:
+        body: Ingrese el siguiente código en la página de inicio de sesión para verificar
+          su identidad.
+        headline: Código de autenticación de dos factores
+        subject: Código de autenticación de dos factores
+    user:
+      username_changed:
+        body: Ha cambiado su nombre de usuario de Fleetyards.net.
+        subject: Nombre de usuario cambiado
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: "¡está ahora en venta!"
+        price: Desde %{price}
+        subject: "¡%{model} ahora en venta!"

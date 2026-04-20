@@ -1,0 +1,232 @@
+fr:
+  "true": Oui
+  "false": "Non"
+  date:
+    abbr_day_names:
+    - dim
+    - lun
+    - mar
+    - mer
+    - jeu
+    - ven
+    - sam
+    abbr_month_names:
+    -
+    - jan.
+    - fév.
+    - mar.
+    - avr.
+    - mai
+    - juin
+    - juil.
+    - août
+    - sept.
+    - oct.
+    - nov.
+    - déc.
+    day_names:
+    - dimanche
+    - lundi
+    - mardi
+    - mercredi
+    - jeudi
+    - vendredi
+    - samedi
+    formats:
+      default: "%d/%m/%Y"
+      long: "%A %e %B %Y"
+      short: "%d %b"
+      month: "%B"
+      label: "%e %B %Y"
+      month_short: "%b."
+      month_year_short: "%b. %y"
+      month_year: "%B %Y"
+      day_month_short: "%e %b."
+      day_month: "%A %e %B"
+    month_names:
+    -
+    - janvier
+    - février
+    - mars
+    - avril
+    - mai
+    - juin
+    - juillet
+    - août
+    - septembre
+    - octobre
+    - novembre
+    - décembre
+    order:
+    - :day
+    - :month
+    - :year
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: environ 1 heure
+        other: "environ %{count} heures"
+      about_x_months:
+        one: environ 1 mois
+        other: "environ %{count} mois"
+      about_x_years:
+        one: environ 1 an
+        other: "environ %{count} ans"
+      almost_x_years:
+        one: presque 1 an
+        other: "presque %{count} ans"
+      half_a_minute: une demi-minute
+      less_than_x_minutes:
+        one: moins d'une minute
+        other: "moins de %{count} minutes"
+      less_than_x_seconds:
+        one: moins d'une seconde
+        other: "moins de %{count} secondes"
+      over_x_years:
+        one: plus d'un an
+        other: "plus de %{count} ans"
+      x_days:
+        one: 1 jour
+        other: "%{count} jours"
+      x_minutes:
+        one: 1 minute
+        other: "%{count} minutes"
+      x_months:
+        one: 1 mois
+        other: "%{count} mois"
+      x_seconds:
+        one: 1 seconde
+        other: "%{count} secondes"
+    prompts:
+      day: Jour
+      hour: Heure
+      minute: Minute
+      month: Mois
+      second: Secondes
+      year: Année
+  errors: &errors
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: doit être accepté
+      blank: ne peut pas être vide
+      present: doit être vide
+      confirmation: "ne correspond pas à %{attribute}"
+      empty: ne peut pas être vide
+      equal_to: "doit être égal à %{count}"
+      even: doit être pair
+      exclusion: est réservé
+      greater_than: "doit être supérieur à %{count}"
+      greater_than_or_equal_to: "doit être supérieur ou égal à %{count}"
+      inclusion: n'est pas inclus dans la liste
+      invalid: n'est pas valide
+      less_than: "doit être inférieur à %{count}"
+      less_than_or_equal_to: "doit être inférieur ou égal à %{count}"
+      not_a_number: n'est pas un nombre
+      not_an_integer: doit être un nombre entier
+      odd: doit être impair
+      record_invalid: "La validation a échoué : %{errors}"
+      restrict_dependent_destroy:
+        one: "Impossible de supprimer l'enregistrement car un %{record} dépendant existe"
+        many: "Impossible de supprimer l'enregistrement car des %{record} dépendants existent"
+      taken: est déjà pris
+      too_long:
+        one: est trop long (maximum 1 caractère)
+        other: "est trop long (maximum %{count} caractères)"
+      too_short:
+        one: est trop court (minimum 1 caractère)
+        other: "est trop court (minimum %{count} caractères)"
+      wrong_length:
+        one: n'a pas la bonne longueur (doit être de 1 caractère)
+        other: "n'a pas la bonne longueur (doit être de %{count} caractères)"
+      other_than: "doit être différent de %{count}"
+    template:
+      body: "Des problèmes ont été trouvés avec les champs suivants :"
+      header:
+        one: "Impossible d'enregistrer %{model} : 1 erreur"
+        other: "Impossible d'enregistrer %{model} : %{count} erreurs"
+  helpers:
+    select:
+      prompt: Veuillez sélectionner
+    submit:
+      create: "Créer %{model}"
+      submit: "Enregistrer %{model}"
+      update: "Modifier %{model}"
+  distance:
+    centi: cm
+    unit: m
+    thousand: km
+  weight:
+    centi: kg
+    unit: t
+    thousand: mt
+  people:
+    unit:
+      one: personne
+      other: personnes
+  number:
+    currency:
+      format:
+        delimiter: " "
+        format: "%n %u"
+        precision: 2
+        separator: ","
+        significant: false
+        strip_insignificant_zeros: false
+        unit: $
+    format:
+      delimiter: " "
+      precision: 3
+      separator: ","
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: Milliard
+          million: Million
+          quadrillion: Billiard
+          thousand: Millier
+          trillion: Billion
+          unit: ""
+      format:
+        delimiter: ""
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: Octet
+            other: Octets
+          gb: Go
+          kb: Ko
+          mb: Mo
+          tb: To
+    percentage:
+      format:
+        delimiter: ""
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ""
+  support:
+    array:
+      last_word_connector: " et "
+      two_words_connector: " et "
+      words_connector: ", "
+  time:
+    am: am
+    formats:
+      default: "%a %d %b %Y %H:%M:%S %z"
+      label: "%e %B %Y à %H:%M %Z"
+      long: "%d %B %Y %H:%M"
+      short: "%d %b %H:%M"
+    pm: pm
+  activemodel:
+    errors:
+      <<: *errors
+  activerecord:
+    errors:
+      <<: *errors

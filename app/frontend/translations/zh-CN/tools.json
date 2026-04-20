@@ -13,7 +13,8 @@
         "uexCorp": "实时商品交易平台，包含价格跟踪、贸易路线优化和市场分析工具",
         "cargoGridViewer": "3D货物网格查看器，显示所有飞船的货舱尺寸和集装箱适配情况",
         "scmdb": "浏览星际公民的任务、奖励、声望路径、采矿资源等",
-        "regolith": "星际公民采矿工具，提供岩石扫描、精炼计算和采矿头比较"
+        "regolith": "星际公民采矿工具，提供岩石扫描、精炼计算和采矿头比较",
+        "spviewer": "Ship performance analysis tool with detailed flight characteristics, speed comparisons, and maneuverability data"
       },
       "categories": {
         "trading": "贸易与经济",

@@ -2,13 +2,63 @@
   "zh-TW": {
     "filterGroup": {
       "actions": {
-        "fetchMore": "Load more"
+        "fetchMore": "載入更多"
       },
       "labels": {
-        "search": "Type to search",
-        "nullablePrompt": "No Option selected",
+        "search": "輸入以搜尋",
+        "nullablePrompt": "未選擇選項",
         "prompt": "Please select an Option",
-        "removeTooltip": "Click to remove Option"
+        "removeTooltip": "點擊移除選項"
+      },
+      "model": {
+        "baseModel": {
+          "label": "基礎型號"
+        }
+      },
+      "modelLoaner": {
+        "loanerModel": {
+          "label": "借用型號"
+        }
+      },
+      "modelHardpoint": {
+        "source": {
+          "label": "來源",
+          "prompt": "選擇來源"
+        },
+        "group": {
+          "label": "群組",
+          "prompt": "選擇群組"
+        },
+        "hardpointType": {
+          "label": "類型",
+          "prompt": "選擇類型"
+        },
+        "size": {
+          "label": "尺寸",
+          "nullablePrompt": "選擇尺寸"
+        },
+        "category": {
+          "label": "分類",
+          "nullablePrompt": "選擇分類"
+        },
+        "subCategory": {
+          "label": "子分類",
+          "nullablePrompt": "選擇子分類"
+        }
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "飛船篩選",
+            "prompt": "選擇要顯示的飛船",
+            "nullablePrompt": "選擇一個選項"
+          },
+          "hangarGroupId": {
+            "label": "機庫群組",
+            "prompt": "選擇機庫群組",
+            "nullablePrompt": "選擇群組"
+          }
+        }
       }
     }
   }

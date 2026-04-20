@@ -1,1 +1,69 @@
+---
 es:
+  headlines:
+    account: My Information
+    admin:
+      admin_user:
+        edit: Edit %{admin_user}
+        index: Usuarios administradores
+        new: Nuevo usuario administrador
+      component:
+        edit: Edit %{component}
+        index: Componente
+        new: Nuevo componente
+      dashboard: Panel de control
+      equipment:
+        edit: Equipamiento %{equipment}
+        index: Equipamiento
+        new: Nuevo equipamiento
+      image:
+        index: Imágenes
+      loaner_uploads:
+        new: Nueva subida de préstamos
+      manufacturer:
+        edit: Editar %{manufacturer}
+        index: Fabricante
+        new: Nuevo fabricante
+      model:
+        edit: Editar %{model}
+        images: Subir imagen para %{model}
+        index: Modelos
+        name_diff: Modelos con nombre RSI diferente
+        new: Nuevo modelo
+        price_diff: Modelos con precio de Pledge desactualizado
+      model_module:
+        edit: Módulo %{model_module}
+        index: Módulos
+        new: Nuevo módulo
+      model_module_package:
+        edit: Paquete de módulos %{model_module_package}
+        index: Paquetes de módulos
+        new: Nuevo paquete de módulos
+      model_paint:
+        edit: Pintura %{model_paint}
+        index: Pinturas
+        new: Nueva pintura
+      model_upgrade:
+        edit: Mejora %{model_upgrade}
+        index: Mejoras
+        new: Nueva mejora
+      user:
+        edit: Editar %{user}
+        index: Usuarios
+        new: Nuevo usuario
+      maintenance:
+        rsi_api_status:
+          index: Estado de API RSI
+    change_password: Cambie su contraseña
+    comments: Comentarios
+    confirm: Confirme su cuenta
+    forgot_password: "¿Olvidó su contraseña?"
+    impressum: Aviso legal
+    not_found: Error de navegación
+    privacy: Política de privacidad
+    server_error: Error del servidor
+    sign_in: Iniciar sesión
+    sign_up: Registrarse
+    unlock: Unlock your Account
+    unprocessable_entity: Solicitud falsa
+    welcome: Welcome

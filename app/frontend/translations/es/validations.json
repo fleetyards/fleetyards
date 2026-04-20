@@ -1,16 +1,16 @@
 {
   "es": {
     "validations": {
-      "required": "The %{field} field is required",
-      "min": "The %{field} field must be at least %{min} characters",
-      "max": "The %{field} field must be at most %{max} characters",
+      "required": "El campo %{field} es obligatorio",
+      "min": "El campo %{field} debe tener al menos %{min} caracteres",
+      "max": "El campo %{field} debe tener como máximo %{max} caracteres",
       "alpha_dash": "The %{field} field may contain alpha-numeric characters as well as dashes and underscores",
-      "email": "The %{field} field must be a valid email address",
-      "confirmed": "The %{field} field does not match",
-      "numeric": "The %{field} field may only contain numeric characters",
-      "between": "The %{field} field must be between %{min} and %{max}",
-      "min_value": "The %{field} field must be %{min} or more",
-      "url": "The %{field} field is not a valid URL"
+      "email": "El campo %{field} debe ser una dirección de correo electrónico válida",
+      "confirmed": "El campo %{field} no coincide",
+      "numeric": "El campo %{field} solo puede contener caracteres numéricos",
+      "between": "El campo %{field} debe estar entre %{min} y %{max}",
+      "min_value": "El campo %{field} debe ser %{min} o más",
+      "url": "El campo %{field} no es una URL válida"
     }
   }
 }

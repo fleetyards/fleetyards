@@ -1,0 +1,4 @@
+---
+de:
+  action_policy:
+    unauthorized: Sie sind nicht berechtigt, diese Aktion auszuführen.

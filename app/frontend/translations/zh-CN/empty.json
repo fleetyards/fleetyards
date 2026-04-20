@@ -2,15 +2,25 @@
   "zh-CN": {
     "empty": {
       "headlines": {
-        "default": "There's nothing to see here..."
+        "default": "There's nothing to see here...",
+        "forName": "未找到 %{name}",
+        "hangar": "您的机库是空的",
+        "wishlist": "您的愿望清单是空的",
+        "features": "没有可用功能"
       },
       "actions": {
         "reset": "Reset Filters/Pages",
         "resetPage": "Go to First Page"
       },
       "texts": {
-        "info": "We could not find any Records.",
+        "info": "我们未找到任何记录。",
         "query": "It seems like you have some Filters active or visited a Page without any Records."
+      },
+      "info": {
+        "hangar": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
+        "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
+        "wishlist": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
+        "features": "目前没有可用的自助服务功能。请稍后再查看，我们会定期添加新功能。"
       }
     }
   }

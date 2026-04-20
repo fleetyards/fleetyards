@@ -1,0 +1,46 @@
+---
+zh-TW:
+  oauth:
+    applications:
+      confirmations:
+        destroy: 確定嗎?
+      buttons:
+        edit: 編輯
+        destroy: 銷毀
+        submit: 提交
+        cancel: 取消
+        authorize: 授權
+      form:
+        error: 糟糕！請檢查表單是否有錯誤
+      help:
+        confidential: Application will be used where the client secret can be kept
+          confidential. Native mobile apps and Single Page Apps are considered non-confidential.
+        redirect_uri: 每行一個 URI
+        blank_redirect_uri: Leave it blank if you configured your provider to use
+          Client Credentials, Resource Owner Password Credentials or any other grant
+          type that doesn't require redirect URI.
+        scopes: 用空格分隔權限範圍。留空使用預設範圍。
+      edit:
+        title: 編輯應用程式
+      index:
+        title: 您的應用程式
+        new: 新增應用程式
+        name: 名稱
+        callback_url: 回呼 URL
+        confidential: 機密?
+        actions: 操作
+        confidentiality:
+          'yes': 是
+          'no': 否
+      new:
+        title: 新增應用程式
+      show:
+        title: '應用程式: %{name}'
+        application_id: UID
+        secret: 密鑰
+        secret_hashed: 密鑰已加密
+        scopes: 權限範圍
+        confidential: 機密
+        callback_urls: 回呼 URL
+        actions: 操作
+        not_defined: 未定義

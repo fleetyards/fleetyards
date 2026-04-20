@@ -1,1 +1,97 @@
+---
 it:
+  mailer:
+    account:
+      action: Gestisci impostazioni account
+    admin:
+      notify_block:
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Connessione a RSI bloccata
+        text: Gli aggiornamenti automatici da RSI tramite "%{url}" sono stati bloccati
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Connessione a RSI ripristinata
+        text: Gli aggiornamenti automatici da RSI tramite "%{url}" sono stati ripristinati
+      weekly:
+        fleets: Nuove flotte
+        headline: FleetYards.net Command - Weekly
+        registrations: Nuove registrazioni
+        ships: Nuove navi
+        subject: FleetYards.net Command Weekly
+        vehicles: Nuovi veicoli
+    fleet_membership:
+      fleet_accepted:
+        action: Homepage di %{fleet}
+        body: 'Per visualizzare le navi e gli altri membri della flotta, clicca sul
+          seguente link:'
+        headline: La tua richiesta di iscrizione a %{fleet} è stata accettata
+        subject: "%{fleet} ha accettato la tua richiesta di iscrizione"
+      member_accepted:
+        action: Lista membri di %{fleet}
+        body: 'Per visualizzare le informazioni del nuovo membro, clicca sul seguente
+          link:'
+        headline: "%{username} ha accettato l'invito alla flotta"
+        subject: Nuovo membro della flotta
+      member_requested:
+        action: Inviti di %{fleet}
+        body: 'Per accettare la richiesta, clicca sul seguente link:'
+        headline: "%{username} vuole unirsi a %{fleet}"
+        subject: Nuova richiesta di iscrizione alla flotta
+      new_invite:
+        action: Unisciti a %{fleet}
+        body: 'Per accettare l''invito, clicca sul seguente link:'
+        headline: Sei stato invitato a unirti a %{fleet}
+        subject: Nuovo invito flotta
+    confirm_access:
+      body: Usa il seguente codice per confermare l'accesso alle impostazioni del
+        tuo account.
+      expires: Questo codice scadrà tra 10 minuti.
+      subject: Il tuo codice di conferma
+    hello: Ciao %{username}
+    model:
+      new:
+        headline_part_1: 'Permettimi di presentare:'
+        headline_part_2: Il %{manufacturer}
+        subject: Nuova nave/veicolo
+    notification_settings: Annulla iscrizione alle notifiche
+    plain_hello: Ciao
+    privacy: Informativa sulla privacy
+    progress_tracker:
+      admin:
+        body: Ci sono stati %{changes} cambiamenti nel tracker dei progressi
+        headline: Nuove modifiche nel tracker dei progressi
+        subject: Nuove modifiche nel tracker dei progressi
+    roadmap:
+      admin:
+        body: Ci sono stati %{changes} cambiamenti sulla roadmap
+        headline: Nuove modifiche sulla roadmap
+        subject: Nuove modifiche sulla roadmap
+    security:
+      action: Gestisci impostazioni di sicurezza
+      info: Se non hai avviato la modifica, contattaci a info@fleetyards.net.
+    transmission_end: "--- trasmissione in arrivo ---"
+    transmission_start: "--- trasmissione in arrivo ---"
+    two_factor:
+      disabled:
+        body: Hai disattivato l'autenticazione a due fattori per il tuo account Fleetyards.net.
+        subject: Due fattori disabilitato
+      enabled:
+        body: Ottimo, hai attivato l'autenticazione a due fattori per il tuo account
+          Fleetyards.net.
+        subject: Due fattori abilitato
+      login:
+        body: Inserisci il seguente codice nella pagina di accesso per verificare
+          la tua identità.
+        headline: Codice di autenticazione a due fattori
+        subject: Codice di autenticazione a due fattori
+    user:
+      username_changed:
+        body: Hai cambiato il tuo nome utente di Fleetyards.net.
+        subject: Nome utente cambiato
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: è ora in vendita!
+        price: A partire da %{price}
+        subject: "%{model} ora in vendita!"

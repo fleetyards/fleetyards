@@ -1,23 +1,29 @@
 {
   "fr": {
     "placeholders": {
-      "name": "Name",
+      "name": "Nom",
       "description": "Description",
-      "login": "Username or email",
-      "username": "Username",
-      "twoFactorCode": "Two-factor code",
-      "confirmationCode": "Confirmation code",
-      "email": "Email",
-      "currentPassword": "Current Password",
-      "password": "Password",
-      "passwordConfirmation": "Password Confirmation",
-      "homepage": "Homepage",
-      "discord": "Discord Server",
-      "youtube": "Youtube Channel",
-      "twitch": "Twitch Channel",
-      "guilded": "Guilded Server",
-      "color": "Color",
-      "fleetInviteToken": "Fleet Invite",
+      "login": "Nom d'utilisateur ou e-mail",
+      "username": "Nom d'utilisateur",
+      "twoFactorCode": "Code à deux facteurs",
+      "confirmationCode": "Code de confirmation",
+      "email": "E-mail",
+      "currentPassword": "Mot de passe actuel",
+      "password": "Mot de passe",
+      "passwordConfirmation": "Confirmation du mot de passe",
+      "homepage": "Page d'accueil",
+      "discord": "Serveur Discord",
+      "youtube": "Chaîne Youtube",
+      "twitch": "Chaîne Twitch",
+      "distance": "Distance",
+      "guilded": "Serveur Guilded",
+      "color": "Couleur",
+      "features": {
+        "username": "Username or User ID",
+        "fleetFid": "Fleet FID or Fleet ID",
+        "name": "Nom de fonctionnalité"
+      },
+      "fleetInviteToken": "Invitation de flotte",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
         "models-fleetchart": "Avenger, Carrack, Cutlass...",
@@ -27,16 +33,115 @@
       },
       "search": {
         "default": "Search the Verse...",
-        "roadmap-progress-tracker": "Search"
+        "roadmap-progress-tracker": "Rechercher"
       },
-      "home": { "search": "Search for Ships..." },
+      "home": {
+        "search": "Rechercher des vaisseaux..."
+      },
+      "container-1": "0",
+      "container-2": "0",
+      "container-4": "0",
+      "container-8": "0",
+      "container-16": "0",
+      "container-24": "0",
+      "container-32": "0",
+      "image": {
+        "caption": "Légende"
+      },
+      "model": {
+        "length": "Longueur",
+        "beam": "Largeur",
+        "height": "Hauteur",
+        "price": "Prix",
+        "pledgePrice": "Prix de Pledge",
+        "onSale": "En vente",
+        "mass": "Masse",
+        "minCrew": "Équipage min.",
+        "maxCrew": "Équipage max.",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Note de production",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "Vitesse max.",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "quantumFuelTankSize": "Taille du réservoir Quantum",
+        "hydrogenFuelTankSize": "Taille du réservoir hydrogène",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "Lacet boosté",
+        "pitchBoosted": "Tangage boosté",
+        "rollBoosted": "Roulis boosté",
+        "fleetchartOffsetLength": "Décalage longueur du diagramme de flotte",
+        "fleetchartOffsetBeam": "Décalage largeur du diagramme de flotte",
+        "cargo": "Cargaison",
+        "baseModel": "Modèle de base"
+      },
+      "cargoHold": {
+        "offsetX": "Décalage X",
+        "offsetY": "Décalage Y",
+        "offsetZ": "Décalage Z",
+        "rotation": "0 or 90"
+      },
+      "manufacturer": {
+        "longName": "Nom complet",
+        "code": "Code",
+        "scRef": "SC Ref"
+      },
+      "component": {
+        "componentClass": "Classe de composant",
+        "componentType": "Type de composant",
+        "componentSubType": "Sous-type de composant",
+        "itemType": "Type d'objet",
+        "size": "Taille",
+        "grade": "Grade",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "pledgePrice": "Prix de Pledge",
+        "productionStatus": "Statut de production",
+        "productionNote": "Note de production"
+      },
       "fleet": {
-        "fid": "Fleet ID",
+        "fid": "ID de flotte",
         "rsiSid": "RSI SID",
-        "ts": "Teamspeak Server"
+        "ts": "Serveur Teamspeak",
+        "description": "Description",
+        "discord": "Serveur Discord",
+        "guilded": "Serveur Guilded",
+        "homepage": "Page d'accueil",
+        "twitch": "Chaîne Twitch",
+        "youtube": "Chaîne Youtube"
       },
-      "user": { "rsiHandle": "RSI Handle" },
-      "vehicle": { "serial": "Serial" },
+      "adminUser": {
+        "passwordConfirmation": "Confirmation du mot de passe"
+      },
+      "user": {
+        "rsiHandle": "Pseudo RSI",
+        "location": "e.g. Berlin, Germany",
+        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+      },
+      "oauthApplication": {
+        "name": "Mon application",
+        "redirectUri": "https://example.com/callback",
+        "scopes": "public"
+      },
+      "vehicle": {
+        "serial": "Serial"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "Emplacement",
+        "locationUrl": "URL de l'emplacement"
+      },
+      "video": {
+        "url": "YouTube Video ID"
+      },
       "modelModule": {
         "name": "Nom du Module",
         "price": "0.00",
@@ -45,21 +150,68 @@
         "scKey": "SC Key",
         "search": "Rechercher des modules par nom..."
       },
+      "modelUpgrade": {
+        "name": "Nom d'amélioration",
+        "pledgePrice": "0.00",
+        "description": "Description"
+      },
+      "modelModulePackage": {
+        "name": "Nom du paquet",
+        "pledgePrice": "0.00",
+        "description": "Description"
+      },
+      "dock": {
+        "name": "Nom du quai"
+      },
+      "modelHardpoint": {
+        "name": "Nom du point d'attache",
+        "key": "hardpoint_key",
+        "details": "Détails",
+        "mount": "Type de support",
+        "itemSlots": "0",
+        "loadoutIdentifier": "Identifiant de configuration"
+      },
+      "modelHardpointLoadout": {
+        "name": "Nom de configuration"
+      },
       "filters": {
         "vehicles": {
           "name": "Enterprise, Andromeda...",
-          "priceLt": "Price <=",
-          "priceGt": "Price >="
+          "priceLt": "Prix <=",
+          "priceGt": "Prix >="
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Capital Ship, Fighter...",
-          "classification": "Vehicle, Fighter, Cargo...",
+          "shipRole": "Cargo, Vaisseau capital, Chasseur...",
+          "classification": "Véhicule, Chasseur, Cargo...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
-          "onSale": "Yes or No",
-          "productionStatus": "Announced, Flight Ready, In Concept..."
+          "onSale": "Oui ou Non",
+          "productionStatus": "Annoncé, Prêt au vol, En concept..."
         },
-        "fleets": { "members": { "username": "Username" } }
+        "modelModules": {
+          "name": "Bio Dome, Cargo Module..."
+        },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "users": {
+          "search": "Nom d'utilisateur ou e-mail",
+          "username": "Nom d'utilisateur",
+          "rsiHandle": "Pseudo RSI",
+          "email": "E-mail"
+        },
+        "components": {
+          "name": "Nom",
+          "itemType": "Type d'objet",
+          "componentClass": "Classe de composant"
+        },
+        "fleets": {
+          "name": "Nom",
+          "fid": "FID",
+          "members": {
+            "username": "Nom d'utilisateur"
+          }
+        }
       }
     }
   }
