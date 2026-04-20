@@ -158,7 +158,7 @@ onMounted(() => {
         :width="length"
       />
     </div>
-    <div>
+    <div :class="{ small: mobile }">
       <img v-if="fleetchartImageFront" :src="fleetchartImageFront" />
     </div>
     <div>
