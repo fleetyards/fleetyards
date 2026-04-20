@@ -162,6 +162,9 @@ module Frontend
     private def render_frontend
       respond_to do |format|
         format.html do
+          response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+          response.headers["Pragma"] = "no-cache"
+          response.headers["Expires"] = "0"
           render "frontend/index", status: :ok
         end
         format.all do
