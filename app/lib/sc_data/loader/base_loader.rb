@@ -93,6 +93,11 @@ module ScData
             item["default_loadout"] = default_loadout["default_loadout"] if default_loadout["default_loadout"].present?
           end
 
+          if item["key"].blank? && item["ref"].blank? && parent.is_a?(Model) && item["name"]&.end_with?("_module")
+            derived_key = "#{parent.sc_data_identifier}_module"
+            item["key"] = derived_key if Component.exists?(sc_key: derived_key, version: sc_version)
+          end
+
           component = if item["key"].present?
             Component.find_by(sc_key: item["key"]&.downcase, version: sc_version)
           elsif item["ref"].present?
