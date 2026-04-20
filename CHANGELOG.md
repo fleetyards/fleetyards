@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.9.4](https://github.com/fleetyards/fleetyards/compare/v6.9.3...v6.9.4) (2026-04-20)
+
+
+### Bug Fixes
+
+* constrain front view size on mobile ([6add2e1](https://github.com/fleetyards/fleetyards/commit/6add2e1559d3a82464d2a1909bfebcc4724e3894))
+* show pagination on mobile for single-page results ([6e4d0ca](https://github.com/fleetyards/fleetyards/commit/6e4d0ca67c5682f987bbeea22825398c5ab8f3ec))
+
 ## [6.9.3](https://github.com/fleetyards/fleetyards/compare/v6.9.2...v6.9.3) (2026-04-20)
 
 
