@@ -101,7 +101,7 @@ class ModelModule < ApplicationRecord
     return if cargo_holds.blank? || (cargo.present? && !cargo_holds_change_to_be_saved)
 
     self.cargo = cargo_holds.sum do |cargo_hold|
-      cargo_hold.dig("dimensions", "scu")&.to_f || 0
+      cargo_hold["capacity"]&.to_f || 0
     end
   end
 
