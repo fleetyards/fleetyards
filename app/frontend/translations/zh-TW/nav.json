@@ -3,6 +3,7 @@
     "nav": {
       "home": "首頁",
       "back": "返回",
+      "navigation": "導航",
       "ships": {
         "index": "飛船"
       },
@@ -31,12 +32,18 @@
         "add": "建立新艦隊",
         "invites": "邀請",
         "ships": "飛船",
-        "members": "成員",
+        "members": {
+          "index": "Members",
+          "invites": "Invites",
+          "worldmap": "Worldmap",
+          "starmap": "Starmap"
+        },
         "stats": "統計",
         "settings": {
           "index": "設定",
           "fleet": "艦隊設定",
-          "membership": "成員設定"
+          "membership": "成員設定",
+          "roles": "角色"
         }
       },
       "rsiProfile": "RSI 檔案",
@@ -64,6 +71,8 @@
         "security": "安全",
         "notifications": "通知",
         "hangar": "機庫",
+        "features": "功能",
+        "oauthApplications": "OAuth 應用",
         "verify": "RSI 帳戶驗證"
       },
       "reload": "有可用更新！",
@@ -83,10 +92,17 @@
             "metrics": "指標",
             "prices": "價格",
             "docks": "停靠點",
+            "modules": "模組",
+            "paints": "塗裝",
+            "images": "圖片",
             "videos": "影片",
             "cargoAndFuel": "貨物和燃料",
+            "cargoHolds": "貨艙",
             "fleetchart": "艦隊圖表圖片",
-            "hardpoints": "武器掛點"
+            "hardpoints": "武器掛點",
+            "loaners": "借用船",
+            "upgrades": "升級",
+            "packages": "Packages"
           }
         },
         "modelPaints": {
@@ -107,7 +123,11 @@
           "create": "建立模組包"
         },
         "components": {
-          "index": "組件"
+          "index": "組件",
+          "edit": {
+            "index": "Base Data",
+            "prices": "價格"
+          }
         },
         "manufacturers": {
           "index": "製造商"
@@ -126,6 +146,9 @@
         },
         "admins": {
           "index": "管理員"
+        },
+        "oauthApplications": {
+          "index": "OAuth 應用"
         },
         "maintenance": {
           "index": "維護",

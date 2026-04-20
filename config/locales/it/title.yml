@@ -1,0 +1,70 @@
+---
+it:
+  title:
+    default: FleetYards.net
+    default_short: FleetYards
+    default_admin: FleetYards.net Command
+    default_admin_short: FltYrds Command
+    not_found: 404
+    server_error: 500
+    unprocessable_entity: 422
+    frontend:
+      compare_ships: Confronta navi
+      confirm: Conferma account
+      cookie-policy: Cookie Policy
+      fleet_invite: Unisciti a %{fleet}
+      fleet_members: Membri di %{fleet}
+      fleet_members_index: Membri di %{fleet}
+      fleet_members_invites: Inviti di %{fleet}
+      fleet_settings: Impostazioni di %{fleet}
+      fleet_settings_roles: Ruoli di %{fleet}
+      fleet_stats: Statistiche di %{fleet}
+      fleets: Flotte
+      fleets_add: Create new Fleet
+      fleets_invites: Inviti flotta
+      fleets_preview: Anteprima flotta
+      hangar: Il mio hangar
+      hangar_import: Importa
+      hangar_preview: Anteprima del mio hangar
+      hangar_stats: Statistiche del mio hangar
+      hangar_wishlist: Lista dei desideri
+      home: Home
+      images: Immagini
+      impressum: Note legali
+      login: Accedi
+      password_change: Cambia password
+      password_request: Richiedi password
+      privacy-policy: Informativa sulla privacy
+      public_hangar: Hangar di %{user}
+      public_wishlist: Lista dei desideri di %{user}
+      roadmap: Roadmap
+      roadmap_changes: Modifiche roadmap
+      roadmap_progress-tracker: Progress Tracker
+      roadmap_ships: Roadmap navi
+      search: Search Results
+      settings: Impostazioni
+      settings_account: Account
+      settings_change-password: Cambia password
+      settings_hangar: Impostazioni hangar
+      settings_notifications: Impostazioni notifiche
+      settings_profile: Impostazioni profilo
+      settings_security: Sicurezza account
+      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
+      settings_security_two-factor_disable: Disable Two-factor Authentication
+      settings_security_two-factor_enable: Enable Two-factor Authentication
+      ship_images: Immagini di %{model}
+      ship_videos: Video di %{model}
+      ships: Navi
+      sign-up: Registrati
+      stats: Statistiche
+      tools: Strumenti
+      tools_travel-times: Tempi di viaggio
+      visual-tests: Visual Tests
+      visual-tests_panels: Panels - Visual Tests
+    api:
+      docs:
+        swagger: Swagger
+    admin:
+      dashboard: Pannello di controllo
+      models: Modelli
+      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images

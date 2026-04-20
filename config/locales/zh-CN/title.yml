@@ -1,0 +1,70 @@
+---
+zh-CN:
+  title:
+    default: FleetYards.net
+    default_short: FleetYards
+    default_admin: FleetYards.net Command
+    default_admin_short: FltYrds Command
+    not_found: 404
+    server_error: 500
+    unprocessable_entity: 422
+    frontend:
+      compare_ships: 比较飞船
+      confirm: 确认账户
+      cookie-policy: Cookie Policy
+      fleet_invite: 加入 %{fleet}
+      fleet_members: "%{fleet} 成员"
+      fleet_members_index: "%{fleet} 成员"
+      fleet_members_invites: "%{fleet} 邀请"
+      fleet_settings: "%{fleet} 设置"
+      fleet_settings_roles: "%{fleet} 角色"
+      fleet_stats: "%{fleet} 统计"
+      fleets: 舰队
+      fleets_add: Create new Fleet
+      fleets_invites: 舰队邀请
+      fleets_preview: 舰队预览
+      hangar: 我的机库
+      hangar_import: 导入
+      hangar_preview: 我的机库预览
+      hangar_stats: 我的机库统计
+      hangar_wishlist: 愿望清单
+      home: 首页
+      images: 图片
+      impressum: 法律声明
+      login: 登录
+      password_change: 修改密码
+      password_request: 请求密码
+      privacy-policy: 隐私政策
+      public_hangar: "%{user} 的机库"
+      public_wishlist: "%{user} 的愿望清单"
+      roadmap: 路线图
+      roadmap_changes: 路线图变更
+      roadmap_progress-tracker: Progress Tracker
+      roadmap_ships: 飞船路线图
+      search: Search Results
+      settings: 设置
+      settings_account: 账户
+      settings_change-password: 修改密码
+      settings_hangar: 机库设置
+      settings_notifications: 通知设置
+      settings_profile: 个人资料设置
+      settings_security: 账户安全
+      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
+      settings_security_two-factor_disable: Disable Two-factor Authentication
+      settings_security_two-factor_enable: Enable Two-factor Authentication
+      ship_images: "%{model} 图片"
+      ship_videos: "%{model} 视频"
+      ships: 飞船
+      sign-up: 注册
+      stats: 统计
+      tools: 工具
+      tools_travel-times: 旅行时间
+      visual-tests: Visual Tests
+      visual-tests_panels: Panels - Visual Tests
+    api:
+      docs:
+        swagger: Swagger
+    admin:
+      dashboard: 仪表板
+      models: 型号
+      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images

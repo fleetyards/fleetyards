@@ -1,1 +1,70 @@
+---
 es:
+  helpers:
+    label:
+      user:
+        remember_me: Recordarme
+    placeholder:
+      admin_user:
+        email: Correo electrónico
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+        username: Nombre de usuario
+      component:
+        grade: Grado
+        size: Tamaño
+      description: Descripción
+      dock:
+        beam: Manga
+        height: Altura
+        length: Longitud
+        name: Nombre
+      equipment:
+        damage_reduction: Damage Reduction
+        extras: Extras
+        grade: Grado
+        range: Range
+        rate_of_fire: Rate of Fire
+        size: Tamaño
+        storage: storage
+        temperature_rating: Temp. Rating
+        volume: Volume
+      manufacturer:
+        code: Shortcode of Name
+        known_for: "..."
+      name: Nombre
+      user:
+        email: Correo electrónico
+        login: Nombre de usuario o correo electrónico
+        otp_token: 2FA-Token
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+        username: Nombre de usuario
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: "¿Oculto?"
+        active: "¿Activo?"
+        ground: Ground?
+        map: Map?
+        on_sale: "¿En venta?"
+    prompt:
+      component:
+        component_class: Please select a Component Class
+        item_class: Please select a Item Class
+        item_type: Seleccione un tipo de objeto
+        manufacturer: Please select a Manufacturer
+      docks:
+        dock_type: Please select a Dock Type
+        ship_size: Please select a Ship size
+      equipment:
+        backpack_compatibility: Backpack compatibility
+        core_compatibility: Core compatibility
+        equipment_type: Please select a Type
+        item_type: Seleccione un tipo de objeto
+        slot: Please select a Slot
+        weapon_class: Please select a Weapon Class
+      models:
+        dock_size: Please select a Dock size
+      video:
+        video_type: Please select a Video Type

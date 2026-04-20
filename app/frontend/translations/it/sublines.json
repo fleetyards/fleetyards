@@ -15,11 +15,13 @@
         "disclaimer": "Disclaimer",
         "copyright": "Copyright",
         "thirdpartycontent": "Crediti",
-        "sponsors": "Sponsors",
+        "sponsors": "Sponsor",
         "liabilityInternal": "Limitazione della responsabilità per il contenuto interno",
         "liabilityExternal": "Limitazione della responsabilità per i collegamenti esterni"
       },
-      "settings": { "rsiData": "Informazioni RSI" }
+      "settings": {
+        "rsiData": "Informazioni RSI"
+      }
     }
   }
 }

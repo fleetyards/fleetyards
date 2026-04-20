@@ -12,6 +12,56 @@ zh-CN:
         index: 项目组件
         new: 新组件
       dashboard: 控制台
+      equipment:
+        edit: Equipment %{equipment}
+        index: 装备
+        new: New Equipment
+      image:
+        index: 图片
+      loaner_uploads:
+        new: New Loaner Upload
+      manufacturer:
+        edit: Edit %{manufacturer}
+        index: 制造商
+        new: 新制造商
+      model:
+        edit: Edit %{model}
+        images: Imageupload for %{model}
+        index: 型号
+        name_diff: Models with different RSI Name
+        new: 新型号
+        price_diff: Models with outdated Pledge price
+      model_module:
+        edit: Module %{model_module}
+        index: 模块
+        new: 新模块
+      model_module_package:
+        edit: Module Package %{model_module_package}
+        index: 模块包
+        new: New Module Package
+      model_paint:
+        edit: Paint %{model_paint}
+        index: 涂装
+        new: 新涂装
+      model_upgrade:
+        edit: Upgrade %{model_upgrade}
+        index: 升级
+        new: New Upgrade
+      user:
+        edit: Edit %{user}
+        index: 用户
+        new: 新用户
+      maintenance:
+        rsi_api_status:
+          index: RSI API 状态
+    change_password: Change your Password
+    comments: Comments
+    confirm: Confirm your Account
+    forgot_password: Forgot your Password?
+    impressum: 法律声明
+    not_found: Navigation Error
+    privacy: 隐私政策
+    server_error: 服务器错误
     sign_in: 登入
     sign_up: 注册
     unlock: 解锁我的账户

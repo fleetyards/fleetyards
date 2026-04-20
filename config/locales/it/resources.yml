@@ -1,1 +1,15 @@
+---
 it:
+  resources:
+    component: Componente
+    equipment: Equipaggiamento
+    image: Immagine
+    locale: Locales
+    manufacturer: Produttore
+    messages:
+      password: Password
+    model: Modello
+    model_module: Modulo
+    model_paint: Verniciatura
+    models: Modelli
+    user: Utente

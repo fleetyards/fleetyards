@@ -4,9 +4,9 @@
       "name": "Nome",
       "description": "Descrizione",
       "login": "Username o e-mail",
-      "username": "Username",
+      "username": "Nome utente",
       "twoFactorCode": "Codice due-fattori",
-      "confirmationCode": "Confirmation code",
+      "confirmationCode": "Codice di conferma",
       "email": "E-mail",
       "currentPassword": "Password Attuale",
       "password": "Password",
@@ -15,8 +15,14 @@
       "discord": "Server Discord",
       "youtube": "Canale YouTube",
       "twitch": "Canale Twitch",
+      "distance": "Distanza",
       "guilded": "Server Guilded",
       "color": "Colore",
+      "features": {
+        "username": "Username or User ID",
+        "fleetFid": "Fleet FID or Fleet ID",
+        "name": "Feature name"
+      },
       "fleetInviteToken": "Inviti Alla Flotta",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
@@ -29,14 +35,113 @@
         "default": "Cerca nel Verse...",
         "roadmap-progress-tracker": "Cerca"
       },
-      "home": { "search": "Cerca Navi..." },
+      "home": {
+        "search": "Cerca Navi..."
+      },
+      "container-1": "0",
+      "container-2": "0",
+      "container-4": "0",
+      "container-8": "0",
+      "container-16": "0",
+      "container-24": "0",
+      "container-32": "0",
+      "image": {
+        "caption": "Didascalia"
+      },
+      "model": {
+        "length": "Lunghezza",
+        "beam": "Larghezza",
+        "height": "Altezza",
+        "price": "Prezzo",
+        "pledgePrice": "Prezzo Pledge",
+        "onSale": "In vendita",
+        "mass": "Massa",
+        "minCrew": "Equipaggio min.",
+        "maxCrew": "Equipaggio max.",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Nota di produzione",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "Velocità max.",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "quantumFuelTankSize": "Dimensione serbatoio Quantum",
+        "hydrogenFuelTankSize": "Dimensione serbatoio idrogeno",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "Imbardata potenziata",
+        "pitchBoosted": "Beccheggio potenziato",
+        "rollBoosted": "Rollio potenziato",
+        "fleetchartOffsetLength": "Offset lunghezza grafico flotta",
+        "fleetchartOffsetBeam": "Offset larghezza grafico flotta",
+        "cargo": "Carico",
+        "baseModel": "Modello base"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X",
+        "offsetY": "Offset Y",
+        "offsetZ": "Offset Z",
+        "rotation": "0 or 90"
+      },
+      "manufacturer": {
+        "longName": "Nome completo",
+        "code": "Codice",
+        "scRef": "SC Ref"
+      },
+      "component": {
+        "componentClass": "Classe componente",
+        "componentType": "Tipo componente",
+        "componentSubType": "Sottotipo componente",
+        "itemType": "Tipo di oggetto",
+        "size": "Dimensione",
+        "grade": "Grado",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "pledgePrice": "Prezzo Pledge",
+        "productionStatus": "Stato di produzione",
+        "productionNote": "Nota di produzione"
+      },
       "fleet": {
         "fid": "ID Flotta",
         "rsiSid": "RSI SID",
-        "ts": "Server Teamspeak"
+        "ts": "Server Teamspeak",
+        "description": "Descrizione",
+        "discord": "Server Discord",
+        "guilded": "Server Guilded",
+        "homepage": "Homepage",
+        "twitch": "Canale Twitch",
+        "youtube": "Canale Youtube"
       },
-      "user": { "rsiHandle": "RSI Handle" },
-      "vehicle": { "serial": "Seriale" },
+      "adminUser": {
+        "passwordConfirmation": "Conferma password"
+      },
+      "user": {
+        "rsiHandle": "Handle RSI",
+        "location": "e.g. Berlin, Germany",
+        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+      },
+      "oauthApplication": {
+        "name": "My Application",
+        "redirectUri": "https://example.com/callback",
+        "scopes": "public"
+      },
+      "vehicle": {
+        "serial": "Seriale"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "Posizione",
+        "locationUrl": "URL posizione"
+      },
+      "video": {
+        "url": "YouTube Video ID"
+      },
       "modelModule": {
         "name": "Nome del Modulo",
         "price": "0.00",
@@ -44,6 +149,30 @@
         "productionStatus": "Annunciato, Pronto al Volo, In Concept...",
         "scKey": "SC Key",
         "search": "Cerca moduli per nome..."
+      },
+      "modelUpgrade": {
+        "name": "Upgrade Name",
+        "pledgePrice": "0.00",
+        "description": "Descrizione"
+      },
+      "modelModulePackage": {
+        "name": "Package Name",
+        "pledgePrice": "0.00",
+        "description": "Descrizione"
+      },
+      "dock": {
+        "name": "Dock Name"
+      },
+      "modelHardpoint": {
+        "name": "Hardpoint Name",
+        "key": "hardpoint_key",
+        "details": "Dettagli",
+        "mount": "Tipo di montaggio",
+        "itemSlots": "0",
+        "loadoutIdentifier": "Identificatore configurazione"
+      },
+      "modelHardpointLoadout": {
+        "name": "Loadout Name"
       },
       "filters": {
         "vehicles": {
@@ -59,7 +188,30 @@
           "onSale": "Sì o No",
           "productionStatus": "Announced, Flight Ready, In Concept..."
         },
-        "fleets": { "members": { "username": "Username" } }
+        "modelModules": {
+          "name": "Bio Dome, Cargo Module..."
+        },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "users": {
+          "search": "Username or Email",
+          "username": "Nome utente",
+          "rsiHandle": "Handle RSI",
+          "email": "E-mail"
+        },
+        "components": {
+          "name": "Nome",
+          "itemType": "Tipo di oggetto",
+          "componentClass": "Classe componente"
+        },
+        "fleets": {
+          "name": "Nome",
+          "fid": "FID",
+          "members": {
+            "username": "Nome utente"
+          }
+        }
       }
     }
   }

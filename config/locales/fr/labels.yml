@@ -1,1 +1,78 @@
+---
 fr:
+  labels:
+    actions: Actions
+    charts:
+      component-pie:
+        one: "%{label}:<br><b>%{count}</b> Component (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
+      ship:
+        one: "%{label}:<br><b>%{count}</b> Ship"
+        other: "%{label}:<br><b>%{count}</b> Ships"
+      ship-pie:
+        one: "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+      user:
+        one: "%{label}:<br><b>%{count}</b> User"
+        other: "%{label}:<br><b>%{count}</b> Users"
+      view:
+        one: "%{label}:<br><b>%{count}</b> View"
+        other: "%{label}:<br><b>%{count}</b> Views"
+      visit:
+        one: "%{label}:<br><b>%{count}</b> Visit"
+        other: "%{label}:<br><b>%{count}</b> Visits"
+    panels:
+      components_by_class: Composants par classe
+      fleets_count_total: Flottes totales
+      latest_components: New Components
+      latest_manufacturers: New Manufacturers
+      latest_models: Modèles rechargés
+      latest_users: Nouveaux utilisateurs
+      models_by_classification: Modèles par classification
+      models_by_manufacturer: Modèles par fabricant
+      models_by_production_status: Models by Production Status
+      models_by_size: Modèles par taille
+      models_per_month: Modèles par mois
+      most_viewed_pages: Most viewed Pages
+      online_count: Users Online
+      registrations: Inscriptions par mois
+      ships_count_total: Vaisseaux totaux
+      ships_count_year: Nouveaux vaisseaux en %{year}
+      users_count_total: Utilisateurs totaux
+      visits_per_day: Visites par jour
+      visits_per_month: Visites par mois
+    success: Succès
+    table:
+      actions: Actions
+      blank:
+        admin_user: No Admin could be found.
+        default: No Entries could be found.
+        equipment: No Equipment could be found.
+        image: No Image could be found.
+        model: No Models could be found.
+        model_module: No Module could be found.
+        model_module_package: No Module Package could be found.
+        model_upgrade: No Upgrade could be found.
+        model_paints: No Paint could be found.
+        planet: No Planets could be found.
+        user: No User could be found.
+        rsi_api_status: No unresolved RSI API Insidents
+      component:
+        category: Catégorie
+      model:
+        manufacturer: Fabricant
+      name: Nom
+      page:
+        count: Count
+        path: Path
+      updated_at: last reload
+      user:
+        created_at: Créé le
+        email: E-mail
+        last_sign_in_at: Last sign in
+        last_active_at: Last active
+        username: Nom d'utilisateur
+      created_at: Créé le
+      url: URL
+    tax_excluded: hors TVA
+    unknown: Inconnu

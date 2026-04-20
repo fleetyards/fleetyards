@@ -3,6 +3,7 @@
     "nav": {
       "home": "Accueil",
       "back": "Retour",
+      "navigation": "Navigation",
       "ships": {
         "index": "Vaisseaux"
       },
@@ -31,12 +32,18 @@
         "add": "Créer une nouvelle Flotte",
         "invites": "Invitations",
         "ships": "Vaisseaux",
-        "members": "Membres",
+        "members": {
+          "index": "Members",
+          "invites": "Invites",
+          "worldmap": "Worldmap",
+          "starmap": "Starmap"
+        },
         "stats": "Statistiques",
         "settings": {
           "index": "Paramètres",
           "fleet": "Paramètres de Flotte",
-          "membership": "Paramètres d'Adhésion"
+          "membership": "Paramètres d'Adhésion",
+          "roles": "Rôles"
         }
       },
       "rsiProfile": "Profil RSI",
@@ -64,6 +71,8 @@
         "security": "Sécurité",
         "notifications": "Notifications",
         "hangar": "Hangar",
+        "features": "Fonctionnalités",
+        "oauthApplications": "Apps OAuth",
         "verify": "Vérification du compte RSI"
       },
       "reload": "Mise à jour disponible!",
@@ -83,10 +92,17 @@
             "metrics": "Métriques",
             "prices": "Prix",
             "docks": "Quais",
+            "modules": "Modules",
+            "paints": "Peintures",
+            "images": "Images",
             "videos": "Vidéos",
             "cargoAndFuel": "Fret et Carburant",
+            "cargoHolds": "Soutes à cargaison",
             "fleetchart": "Images Fleetchart",
-            "hardpoints": "Points de Fixation"
+            "hardpoints": "Points de Fixation",
+            "loaners": "Prêts",
+            "upgrades": "Améliorations",
+            "packages": "Packages"
           }
         },
         "modelPaints": {
@@ -110,7 +126,7 @@
           "index": "Composants",
           "edit": {
             "index": "Base Data",
-            "prices": "Prices"
+            "prices": "Prix"
           }
         },
         "manufacturers": {
@@ -130,6 +146,9 @@
         },
         "admins": {
           "index": "Administrateurs"
+        },
+        "oauthApplications": {
+          "index": "Apps OAuth"
         },
         "maintenance": {
           "index": "Maintenance",

@@ -3,6 +3,7 @@
     "nav": {
       "home": "Home",
       "back": "Indietro",
+      "navigation": "Navigazione",
       "ships": {
         "index": "Navi"
       },
@@ -14,7 +15,7 @@
       "images": "Immagini",
       "videos": "Video",
       "hangar": "Il Mio Hangar",
-      "login": "Login",
+      "login": "Accedi",
       "logout": "Esci",
       "apiV1": "API v1",
       "apiV1Schema": "Schema",
@@ -31,12 +32,18 @@
         "add": "Crea una nuova Flotta",
         "invites": "Inviti",
         "ships": "Navi",
-        "members": "Membri",
+        "members": {
+          "index": "Members",
+          "invites": "Invites",
+          "worldmap": "Worldmap",
+          "starmap": "Starmap"
+        },
         "stats": "Statistiche",
         "settings": {
           "index": "Impostazioni",
           "fleet": "Impostazioni Della Flotta",
-          "membership": "Impostazioni dei Membri"
+          "membership": "Impostazioni dei Membri",
+          "roles": "Ruoli"
         }
       },
       "rsiProfile": "Profilo RSI",
@@ -64,6 +71,8 @@
         "security": "Sicurezza",
         "notifications": "Notifiche",
         "hangar": "Hangar",
+        "features": "Funzionalità",
+        "oauthApplications": "App OAuth",
         "verify": "Verifica dell'account RSI"
       },
       "reload": "Aggiornamento disponibile!",
@@ -82,11 +91,18 @@
             "index": "Dati di Base",
             "metrics": "Metriche",
             "prices": "Prezzi",
-            "docks": "Docks",
+            "docks": "Dock",
+            "modules": "Moduli",
+            "paints": "Verniciature",
+            "images": "Immagini",
             "videos": "Video",
             "cargoAndFuel": "Carico e Carburante",
+            "cargoHolds": "Stive di carico",
             "fleetchart": "Immagini Fleetchart",
-            "hardpoints": "Punti di Attacco"
+            "hardpoints": "Punti di Attacco",
+            "loaners": "Prestiti",
+            "upgrades": "Upgrade",
+            "packages": "Packages"
           }
         },
         "modelPaints": {
@@ -107,7 +123,11 @@
           "create": "Crea Pacchetto Moduli"
         },
         "components": {
-          "index": "Componenti"
+          "index": "Componenti",
+          "edit": {
+            "index": "Base Data",
+            "prices": "Prezzi"
+          }
         },
         "manufacturers": {
           "index": "Produttori"
@@ -126,6 +146,9 @@
         },
         "admins": {
           "index": "Amministratori"
+        },
+        "oauthApplications": {
+          "index": "App OAuth"
         },
         "maintenance": {
           "index": "Manutenzione",

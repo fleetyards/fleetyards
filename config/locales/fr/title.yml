@@ -1,0 +1,70 @@
+---
+fr:
+  title:
+    default: FleetYards.net
+    default_short: FleetYards
+    default_admin: FleetYards.net Command
+    default_admin_short: FltYrds Command
+    not_found: 404
+    server_error: 500
+    unprocessable_entity: 422
+    frontend:
+      compare_ships: Comparer les vaisseaux
+      confirm: Confirmer le compte
+      cookie-policy: Cookie Policy
+      fleet_invite: Rejoindre %{fleet}
+      fleet_members: Membres de %{fleet}
+      fleet_members_index: Membres de %{fleet}
+      fleet_members_invites: Invitations de %{fleet}
+      fleet_settings: Paramètres de %{fleet}
+      fleet_settings_roles: Rôles de %{fleet}
+      fleet_stats: Statistiques de %{fleet}
+      fleets: Flottes
+      fleets_add: Create new Fleet
+      fleets_invites: Invitations de flotte
+      fleets_preview: Aperçu de la flotte
+      hangar: Mon hangar
+      hangar_import: Importer
+      hangar_preview: Aperçu de mon hangar
+      hangar_stats: Statistiques de mon hangar
+      hangar_wishlist: Liste de souhaits
+      home: Accueil
+      images: Images
+      impressum: Mentions légales
+      login: Connexion
+      password_change: Changer le mot de passe
+      password_request: Demander un mot de passe
+      privacy-policy: Politique de confidentialité
+      public_hangar: Hangar de %{user}
+      public_wishlist: Liste de souhaits de %{user}
+      roadmap: Feuille de route
+      roadmap_changes: Changements de la feuille de route
+      roadmap_progress-tracker: Progress Tracker
+      roadmap_ships: Feuille de route des vaisseaux
+      search: Search Results
+      settings: Paramètres
+      settings_account: Compte
+      settings_change-password: Changer le mot de passe
+      settings_hangar: Paramètres du hangar
+      settings_notifications: Paramètres de notification
+      settings_profile: Paramètres du profil
+      settings_security: Sécurité du compte
+      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
+      settings_security_two-factor_disable: Disable Two-factor Authentication
+      settings_security_two-factor_enable: Enable Two-factor Authentication
+      ship_images: Images de %{model}
+      ship_videos: Vidéos de %{model}
+      ships: Vaisseaux
+      sign-up: S'inscrire
+      stats: Statistiques
+      tools: Outils
+      tools_travel-times: Temps de trajet
+      visual-tests: Visual Tests
+      visual-tests_panels: Panels - Visual Tests
+    api:
+      docs:
+        swagger: Swagger
+    admin:
+      dashboard: Tableau de bord
+      models: Modèles
+      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images

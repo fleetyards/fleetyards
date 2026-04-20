@@ -10,6 +10,42 @@
         "prompt": "Bitte wähle eine Option",
         "removeTooltip": "Klicke um eine Option abzuwählen"
       },
+      "model": {
+        "baseModel": {
+          "label": "Basismodell"
+        }
+      },
+      "modelLoaner": {
+        "loanerModel": {
+          "label": "Leihmodell"
+        }
+      },
+      "modelHardpoint": {
+        "source": {
+          "label": "Quelle",
+          "prompt": "Select Source"
+        },
+        "group": {
+          "label": "Gruppe",
+          "prompt": "Select Group"
+        },
+        "hardpointType": {
+          "label": "Typ",
+          "prompt": "Select Type"
+        },
+        "size": {
+          "label": "Größe",
+          "nullablePrompt": "Select Size"
+        },
+        "category": {
+          "label": "Kategorie",
+          "nullablePrompt": "Select Category"
+        },
+        "subCategory": {
+          "label": "Unterkategorie",
+          "nullablePrompt": "Select Sub Category"
+        }
+      },
       "fleet": {
         "members": {
           "shipsFilter": {

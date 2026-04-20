@@ -1,1 +1,70 @@
+---
 zh-TW:
+  helpers:
+    label:
+      user:
+        remember_me: 記住我
+    placeholder:
+      admin_user:
+        email: 電子郵件
+        password: 密碼
+        password_confirmation: 確認密碼
+        username: 使用者名稱
+      component:
+        grade: 等級
+        size: 尺寸
+      description: 描述
+      dock:
+        beam: 寬度
+        height: 高度
+        length: 長度
+        name: 名稱
+      equipment:
+        damage_reduction: Damage Reduction
+        extras: Extras
+        grade: 等級
+        range: Range
+        rate_of_fire: Rate of Fire
+        size: 尺寸
+        storage: storage
+        temperature_rating: Temp. Rating
+        volume: Volume
+      manufacturer:
+        code: Shortcode of Name
+        known_for: "..."
+      name: 名稱
+      user:
+        email: 電子郵件
+        login: 使用者名稱或電子郵件
+        otp_token: 2FA-Token
+        password: 密碼
+        password_confirmation: 確認密碼
+        username: 使用者名稱
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: 隱藏?
+        active: 活躍?
+        ground: Ground?
+        map: Map?
+        on_sale: 販售中?
+    prompt:
+      component:
+        component_class: Please select a Component Class
+        item_class: Please select a Item Class
+        item_type: 請選擇物品類型
+        manufacturer: Please select a Manufacturer
+      docks:
+        dock_type: Please select a Dock Type
+        ship_size: Please select a Ship size
+      equipment:
+        backpack_compatibility: Backpack compatibility
+        core_compatibility: Core compatibility
+        equipment_type: Please select a Type
+        item_type: 請選擇物品類型
+        slot: Please select a Slot
+        weapon_class: Please select a Weapon Class
+      models:
+        dock_size: Please select a Dock size
+      video:
+        video_type: Please select a Video Type

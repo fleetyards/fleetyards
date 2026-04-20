@@ -33,9 +33,6 @@ zh-CN:
         code: 名称短码
         known_for: "..."
       name: 名称
-      trade_commodity:
-        buy: 购买
-        sell: 出售？
       user:
         email: 电子邮件
         login: 用户名或电子邮件
@@ -45,4 +42,32 @@ zh-CN:
         username: 用户名
       video:
         url: 网址或YouTube ID
-    prompt: {}
+      model:
+        hidden: 隐藏?
+        active: 活跃?
+        ground: Ground?
+        map: Map?
+        on_sale: 在售?
+      trade_commodity:
+        buy: 购买
+        sell: 出售？
+    prompt:
+      component:
+        component_class: Please select a Component Class
+        item_class: Please select a Item Class
+        item_type: 请选择物品类型
+        manufacturer: Please select a Manufacturer
+      docks:
+        dock_type: Please select a Dock Type
+        ship_size: Please select a Ship size
+      equipment:
+        backpack_compatibility: Backpack compatibility
+        core_compatibility: Core compatibility
+        equipment_type: Please select a Type
+        item_type: 请选择物品类型
+        slot: Please select a Slot
+        weapon_class: Please select a Weapon Class
+      models:
+        dock_size: Please select a Dock size
+      video:
+        video_type: Please select a Video Type

@@ -1,8 +1,51 @@
 ---
 zh-CN:
   labels:
+    actions: 操作
+    charts:
+      component-pie:
+        one: "%{label}:<br><b>%{count}</b> Component (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
+      ship:
+        one: "%{label}:<br><b>%{count}</b> Ship"
+        other: "%{label}:<br><b>%{count}</b> Ships"
+      ship-pie:
+        one: "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+      user:
+        one: "%{label}:<br><b>%{count}</b> User"
+        other: "%{label}:<br><b>%{count}</b> Users"
+      view:
+        one: "%{label}:<br><b>%{count}</b> View"
+        other: "%{label}:<br><b>%{count}</b> Views"
+      visit:
+        one: "%{label}:<br><b>%{count}</b> Visit"
+        other: "%{label}:<br><b>%{count}</b> Visits"
+    panels:
+      components_by_class: 按类别分组件
+      fleets_count_total: 总舰队数
+      latest_components: New Components
+      latest_manufacturers: New Manufacturers
+      latest_models: 已重新加载型号
+      latest_users: 新用户
+      models_by_classification: 按分类整理
+      models_by_manufacturer: 按制造商分类
+      models_by_production_status: Models by Production Status
+      models_by_size: 按尺寸分类
+      models_per_month: 每月型号
+      most_viewed_pages: Most viewed Pages
+      online_count: Users Online
+      registrations: 每月注册数
+      ships_count_total: 总飞船数
+      ships_count_year: "%{year} 新飞船"
+      users_count_total: 总用户数
+      visits_per_day: 每日访问
+      visits_per_month: 每月访问
+    success: 成功
     table:
+      actions: 操作
       blank:
+        admin_user: No Admin could be found.
         default: 没有找到匹配结果
         equipment: 没有找到匹配结果
         image: 未找到任何玩家。

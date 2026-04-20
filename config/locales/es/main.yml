@@ -1,7 +1,38 @@
 ---
 es:
-  "true": Yes
-  "false": No
+  admin_app: FleetYards.net Command
+  app: FleetYards.net
+  copyright: Derechos de autor
+  error_pages:
+    not_found: You are currently venturing unknown space. In the event you are lost,
+      the UEE highly recommends plotting a new destination back towards home-space.
+    server_error: The Page is currently not available. Please try again later.
+    unprocessable_entity: Your Request could not be processed.
+  nav:
+    admin_users: Administradores
+    components: Componentes
+    equipment: Equipamiento
+    home: Inicio
+    images: Imágenes
+    admin_maintenance:
+      index: Mantenimiento
+      rsi_api_status: Estado de API RSI
+    manufacturers: Fabricantes
+    model:
+      overview: Índice
+    model_module_packages: Paquetes de módulos
+    models: Modelos
+    models_name_diff: Different RSI Name
+    models_price_diff: Outdated Pledge Price
+    otp: Two Factor Auth
+    pghero: PGHero
+    features: Funciones
+    users: Usuarios
+    workers: Trabajadores
+    header:
+      toggle: Alternar navegación
+  'true': true
+  'false': false
   number:
     currency:
       format:

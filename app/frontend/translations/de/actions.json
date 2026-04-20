@@ -17,6 +17,7 @@
       "ungrouped": "Ungruppiert",
       "destroyAccount": "Konto löschen",
       "saveScreenshot": "Als PNG speichern",
+      "resolve": "Auflösen",
       "verify": "Bestätigen",
       "clearHistory": "Verlauf löschen",
       "sortBy": "Sortieren nach",
@@ -26,8 +27,9 @@
       "more": "Mehr...",
       "showMore": "Mehr anzeigen",
       "export": "Export",
-      "import": "Import",
+      "import": "Importieren",
       "here": "hier",
+      "backToList": "Zurück zur Liste",
       "backToTop": "Zurück zum Anfang",
       "cancel": "Abbrechen",
       "ok": "Ok",
@@ -52,11 +54,19 @@
       "sendConfirmAccessEmail": "Send confirmation email",
       "reset-password": "Passwort vergessen?",
       "edit": "Bearbeiten",
+      "clear": "Löschen",
       "done": "Fertig",
       "share": "Teilen",
       "change": "Ändern",
       "upload": "Hochladen",
       "save": "Speichern",
+      "enable": "Aktivieren",
+      "disable": "Deaktivieren",
+      "manage": "Verwalten",
+      "enableGlobally": "Global aktivieren",
+      "disableGlobally": "Global deaktivieren",
+      "addActor": "Akteur hinzufügen",
+      "addGroup": "Gruppe hinzufügen",
       "remove": "Entfernen",
       "delete": "Löschen",
       "deleteSelected": "Ausgewählte löschen",
@@ -78,7 +88,6 @@
       "addToWishlist": "Zur Wunschliste hinzufügen",
       "addAnother": "Weitere hinzufügen",
       "addVehicle": "Schiffe hinzufügen",
-      "addGroup": "Gruppe hinzufügen",
       "addModule": "Neues Modul hinzufügen",
       "addUpgrade": "Neues Upgrade hinzufügen",
       "showTableView": "Als Liste anzeigen",
@@ -86,7 +95,15 @@
       "linkExisting": "Vorhandenes verknüpfen",
       "loadMore": "Mehr laden",
       "unlink": "Verknüpfung aufheben",
-      "syncRsiHangar": "Sync RSI Hangar",
+      "syncRsiHangar": "RSI-Hangar synchronisieren",
+      "oauthApplications": {
+        "create": "Neue Anwendung",
+        "regenerateSecret": "Schlüssel neu generieren"
+      },
+      "oauthAuthorize": {
+        "authorize": "Autorisieren",
+        "deny": "Ablehnen"
+      },
       "oauth": {
         "google": "Google",
         "discord": "Discord",
@@ -108,7 +125,9 @@
           "twitch": "Disconnect Twitch"
         }
       },
-      "compare": { "ships": "Vergleichen" },
+      "compare": {
+        "ships": "Vergleichen"
+      },
       "hangar": {
         "editGroups": "Gruppen hinzufügen oder löschen",
         "editName": "Benenne dein Schiff",
@@ -126,6 +145,7 @@
       "syncExtension": {
         "cancel": "Abbrechen",
         "start": "Synchronisation starten",
+        "retry": "Synchronisierung wiederholen",
         "close": "Schließen",
         "refresh": "Seite aktualisieren"
       },
@@ -133,12 +153,16 @@
         "hangarGuide": "Hilfe benötigt?",
         "reset": "Filter zurücksetzen"
       },
+      "destroyFleet": "Flotte auflösen",
       "fleet": {
         "join": "%{fleet} beitreten!",
         "leave": "%{fleet} verlassen",
         "createInviteUrl": "Einladungs-Urls erstellen",
         "inviteMember": "Neues Mitglied einladen",
         "manageInvites": "Einladungen",
+        "worldmap": "Weltkarte",
+        "starmap": "Sternenkarte",
+        "membersList": "Mitglieder",
         "acceptInvite": "Einladung annehmen",
         "declineInvite": "Einladung ablehnen",
         "acceptRequest": "Anfrage akzeptieren",
@@ -152,7 +176,9 @@
           "decline": "Ablehnen",
           "remove": "Entfernen"
         },
-        "inviteUrls": { "create": "Neue Einladungs-URL erstellen" }
+        "inviteUrls": {
+          "create": "Neue Einladungs-URL erstellen"
+        }
       },
       "model": {
         "gallery": "Galerie",

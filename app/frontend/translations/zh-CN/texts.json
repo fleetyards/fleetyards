@@ -10,16 +10,9 @@
         "subline": "or you can support us directly via:"
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "featureNotReady": "This feature is not yet ready and will be available soon. Stay tuned!",
+      "accessDenied": "You are not authorized to view this page.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
-      "empty": {
-        "hangar": {
-          "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
-          "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
-        },
-        "wishlist": {
-          "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
-        }
-      },
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."
@@ -64,7 +57,7 @@
           "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
         },
         "fleetchart": {
-          "headline": "Fleetchart",
+          "headline": "舰队图表",
           "text": "View your Fleet as a scaled topview Fleetchart and export it as an image."
         }
       },
@@ -84,7 +77,18 @@
         },
         "liabilityExternal": "Our site contains links to websites of third parties (“external links”). As the content of these sites is not under our control, We cannot assume any liability for such external content. In all cases, the provider of information of the linked sites is liable for the content and accuracy of the information provided. At the point in time when the links were placed, no infringements of the law were recognisable to us. As soon as an infringement of the law becomes known to us, We will immediately remove the link in question."
       },
-      "privacy": "The use of our site is usually possible without providing any personal data. The collecting of personal data (eg email address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by email) can have security gaps. A complete protection of data against access by third parties is not possible.",
+      "privacy": {
+        "text": "The use of our site is usually possible without providing any personal data. The collecting of personal data (eg email address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by email) can have security gaps. A complete protection of data against access by third parties is not possible.",
+        "p1": "Below you can read about what Information we are using to provide you the services on %{app}. For most parts this only concerns registered Users but please read further to get a full overview.",
+        "p2": {
+          "headline": "What Information do we use?",
+          "text": "Depending on if you are a registered User or only using %{app} as a Guest we use more or less Information from you."
+        },
+        "p3": {
+          "headline": "As a Guest",
+          "text": "As a Guest on %{app} we collect the following data:"
+        }
+      },
       "signup": {
         "blocked": "You have been blocked from FleetYards.net.<br>This can have multiple Reasons.<br>For further Information please Contact us under info ( at ) fleetyards.net"
       },
@@ -96,9 +100,23 @@
         "disable": "To disable 2-Factor-Auth just enter a valid Token.",
         "enable": " To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy."
       },
+      "oauthAuthorize": {
+        "requestingAccess": "{clientName} is requesting access to your account.",
+        "scopesIntro": "This application will be able to:"
+      },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?"
+        "info": "We will try to match the ships from your RSI Hangar with your exisiting ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar and ships from your Fleetyards Hangar which could not be found in your RSI Hangar will be moved to your Wishlist.<br><br>Do you want to continue?",
+        "alreadyRunning": "A Hangar Sync is already in progress. Please wait for it to finish."
+      },
+      "empty": {
+        "hangar": {
+          "info": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
+          "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension."
+        },
+        "wishlist": {
+          "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
+        }
       }
     }
   }

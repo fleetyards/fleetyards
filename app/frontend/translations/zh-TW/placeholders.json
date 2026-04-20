@@ -1,24 +1,29 @@
 {
   "zh-TW": {
     "placeholders": {
-      "name": "Name",
-      "description": "Description",
-      "login": "Username or email",
-      "username": "Username",
+      "name": "名稱",
+      "description": "描述",
+      "login": "使用者名稱或電子郵件",
+      "username": "使用者名稱",
       "twoFactorCode": "Two-factor code",
-      "confirmationCode": "Confirmation code",
-      "email": "Email",
+      "confirmationCode": "確認碼",
+      "email": "電子郵件",
       "currentPassword": "Current Password",
-      "password": "Password",
-      "passwordConfirmation": "Password Confirmation",
-      "homepage": "Homepage",
-      "discord": "Discord Server",
-      "youtube": "Youtube Channel",
-      "twitch": "Twitch Channel",
-      "distance": "Distance",
-      "guilded": "Guilded Server",
-      "color": "Color",
-      "fleetInviteToken": "Fleet Invite",
+      "password": "密碼",
+      "passwordConfirmation": "確認密碼",
+      "homepage": "首頁",
+      "discord": "Discord 伺服器",
+      "youtube": "Youtube 頻道",
+      "twitch": "Twitch 頻道",
+      "distance": "距離",
+      "guilded": "Guilded 伺服器",
+      "color": "顏色",
+      "features": {
+        "username": "Username or User ID",
+        "fleetFid": "Fleet FID or Fleet ID",
+        "name": "Feature name"
+      },
+      "fleetInviteToken": "艦隊邀請",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
         "models-fleetchart": "Avenger, Carrack, Cutlass...",
@@ -28,21 +33,114 @@
       },
       "search": {
         "default": "Search the Verse...",
-        "roadmap-progress-tracker": "Search"
+        "roadmap-progress-tracker": "搜尋"
       },
       "home": {
-        "search": "Search for Ships..."
+        "search": "搜尋飛船..."
+      },
+      "container-1": "0",
+      "container-2": "0",
+      "container-4": "0",
+      "container-8": "0",
+      "container-16": "0",
+      "container-24": "0",
+      "container-32": "0",
+      "image": {
+        "caption": "標題"
+      },
+      "model": {
+        "length": "長度",
+        "beam": "寬度",
+        "height": "高度",
+        "price": "價格",
+        "pledgePrice": "質押價格",
+        "onSale": "販售中",
+        "mass": "質量",
+        "minCrew": "最少船員",
+        "maxCrew": "最多船員",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "生產備註",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "最大速度",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "quantumFuelTankSize": "量子燃料箱大小",
+        "hydrogenFuelTankSize": "氫燃料箱大小",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "偏航（增強）",
+        "pitchBoosted": "俯仰（增強）",
+        "rollBoosted": "翻滾（增強）",
+        "fleetchartOffsetLength": "艦隊圖表長度偏移",
+        "fleetchartOffsetBeam": "艦隊圖表寬度偏移",
+        "cargo": "貨物",
+        "baseModel": "基礎型號"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X",
+        "offsetY": "Offset Y",
+        "offsetZ": "Offset Z",
+        "rotation": "0 or 90"
+      },
+      "manufacturer": {
+        "longName": "全名",
+        "code": "代碼",
+        "scRef": "SC Ref"
+      },
+      "component": {
+        "componentClass": "組件類別",
+        "componentType": "組件類型",
+        "componentSubType": "組件子類型",
+        "itemType": "物品類型",
+        "size": "尺寸",
+        "grade": "等級",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "pledgePrice": "質押價格",
+        "productionStatus": "生產狀態",
+        "productionNote": "生產備註"
       },
       "fleet": {
-        "fid": "Fleet ID",
+        "fid": "艦隊 ID",
         "rsiSid": "RSI SID",
-        "ts": "Teamspeak Server"
+        "ts": "Teamspeak 伺服器",
+        "description": "描述",
+        "discord": "Discord 伺服器",
+        "guilded": "Guilded 伺服器",
+        "homepage": "首頁",
+        "twitch": "Twitch 頻道",
+        "youtube": "Youtube 頻道"
+      },
+      "adminUser": {
+        "passwordConfirmation": "確認密碼"
       },
       "user": {
-        "rsiHandle": "RSI Handle"
+        "rsiHandle": "RSI 使用者名",
+        "location": "e.g. Berlin, Germany",
+        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+      },
+      "oauthApplication": {
+        "name": "My Application",
+        "redirectUri": "https://example.com/callback",
+        "scopes": "public"
       },
       "vehicle": {
         "serial": "Serial"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "位置",
+        "locationUrl": "位置 URL"
+      },
+      "video": {
+        "url": "YouTube Video ID"
       },
       "modelModule": {
         "name": "模組名稱",
@@ -51,6 +149,30 @@
         "productionStatus": "已公佈, 可飛行, 概念中...",
         "scKey": "SC Key",
         "search": "按名稱搜尋模組..."
+      },
+      "modelUpgrade": {
+        "name": "Upgrade Name",
+        "pledgePrice": "0.00",
+        "description": "描述"
+      },
+      "modelModulePackage": {
+        "name": "Package Name",
+        "pledgePrice": "0.00",
+        "description": "描述"
+      },
+      "dock": {
+        "name": "Dock Name"
+      },
+      "modelHardpoint": {
+        "name": "Hardpoint Name",
+        "key": "hardpoint_key",
+        "details": "詳情",
+        "mount": "掛載類型",
+        "itemSlots": "0",
+        "loadoutIdentifier": "配置標識"
+      },
+      "modelHardpointLoadout": {
+        "name": "Loadout Name"
       },
       "filters": {
         "vehicles": {
@@ -66,9 +188,28 @@
           "onSale": "Yes or No",
           "productionStatus": "Announced, Flight Ready, In Concept..."
         },
+        "modelModules": {
+          "name": "Bio Dome, Cargo Module..."
+        },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "users": {
+          "search": "Username or Email",
+          "username": "使用者名稱",
+          "rsiHandle": "RSI 使用者名",
+          "email": "電子郵件"
+        },
+        "components": {
+          "name": "名稱",
+          "itemType": "物品類型",
+          "componentClass": "組件類別"
+        },
         "fleets": {
+          "name": "名稱",
+          "fid": "FID",
           "members": {
-            "username": "Username"
+            "username": "使用者名稱"
           }
         }
       }

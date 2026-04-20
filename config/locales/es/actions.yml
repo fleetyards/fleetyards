@@ -1,1 +1,54 @@
+---
 es:
+  actions:
+    add: Agregar
+    add_dock: Add Dock
+    add_module_hardpoint: Add Model
+    add_module_package_item: Add Module
+    add_upgrade_kit: Add Model
+    add_video: Add Video
+    login_in_as: Login as
+    admin:
+      component:
+        new: Create new Component
+      equipment:
+        new: Create new Equipment
+      manufacturer:
+        new: Create new Manufacturer
+      model:
+        new: Create new Model
+        new_loaner_upload: Loaner Upload
+      model_module:
+        new: Create new Module
+      model_module_package:
+        new: Create new Module Package
+      model_paint:
+        new: Create new Paint
+      model_upgrade:
+        new: Create new Upgrade
+      user:
+        new: Create new User
+    back: Atrás
+    cancel: Cancelar
+    confirm: Confirmar cuenta
+    copy: Copy
+    delete: Eliminar
+    edit: Editar
+    loading: Please wait...
+    model:
+      images: Imágenes
+      reload: Recargar modelos
+      reload_data: Reload Models Data
+      use_rsi_image: Usar imagen RSI
+    more: More Entries
+    ok: OK
+    prefill_attachments: Add all Attachments
+    prefill_utilities: Add all Utilities
+    prefill_weapons: Add all Weapons
+    resend_confirmation: Reenviar confirmación
+    reset_password: Forgot password?
+    save: Guardar
+    save_password: Save password
+    sign_in: Iniciar sesión
+    sign_out: Cerrar sesión
+    unlock: Unlock Account

@@ -1,6 +1,12 @@
 {
   "fr": {
     "actions": {
+      "admin": {
+        "dashboard": {
+          "reloadModels": "Recharger les modèles",
+          "reloadScData": "Recharger les données SC"
+        }
+      },
       "showReleased": "Afficher les versions précédentes",
       "hideReleased": "Masquer les anciennes versions",
       "upgrade": "Une mise à jour est disponible !",
@@ -11,6 +17,7 @@
       "ungrouped": "Dégroupé",
       "destroyAccount": "Supprimer le compte",
       "saveScreenshot": "Enregistrer au format PNG",
+      "resolve": "Résoudre",
       "verify": "Vérifier",
       "clearHistory": "Vider l'historique",
       "sortBy": "Trier par",
@@ -22,6 +29,7 @@
       "export": "Exporter",
       "import": "Importer",
       "here": "ici",
+      "backToList": "Retour à la liste",
       "backToTop": "Revenir en haut",
       "cancel": "Annuler",
       "ok": "Ok",
@@ -34,7 +42,7 @@
       "hideDetails": "Masquer les détails",
       "showGuide": "Afficher le guide",
       "hideGuide": "Masquer le guide",
-      "showFleetchart": "Fleetchart",
+      "showFleetchart": "Diagramme de flotte",
       "hideFleetchart": "Affichage par défaut",
       "showLabels": "Afficher les labels",
       "hideLabels": "Masquer les labels",
@@ -46,11 +54,19 @@
       "sendConfirmAccessEmail": "Send confirmation email",
       "reset-password": "Mot de passe oublié ?",
       "edit": "Modifier",
+      "clear": "Effacer",
       "done": "Terminer",
       "share": "Partager",
       "change": "Modifier",
       "upload": "Charger",
       "save": "Sauvegarder",
+      "enable": "Activer",
+      "disable": "Désactiver",
+      "manage": "Gérer",
+      "enableGlobally": "Activer globalement",
+      "disableGlobally": "Désactiver globalement",
+      "addActor": "Ajouter un acteur",
+      "addGroup": "Ajouter un groupe",
       "remove": "Retirer",
       "delete": "Supprimer",
       "deleteSelected": "Supprimer la sélection",
@@ -68,15 +84,26 @@
       "updatePassword": "Changer le mot de passe",
       "copyBackupCodes": "Copier les codes de sauvegarde",
       "add": "Ajouter",
+      "create": "Créer",
       "addToWishlist": "Ajouter à la liste de souhaits",
       "addAnother": "Ajouter un autre",
       "addVehicle": "Ajouter un vaisseau",
-      "addGroup": "Ajouter un groupe",
       "addModule": "Ajouter un autre module",
       "addUpgrade": "Ajouter une autre mise à niveau",
       "showTableView": "Afficher sous forme de liste",
       "showGridView": "Afficher sous forme de grille",
+      "linkExisting": "Lier existant",
+      "loadMore": "Charger plus",
+      "unlink": "Délier",
       "syncRsiHangar": "Synchroniser le hangar RSI",
+      "oauthApplications": {
+        "create": "Nouvelle application",
+        "regenerateSecret": "Régénérer le secret"
+      },
+      "oauthAuthorize": {
+        "authorize": "Autoriser",
+        "deny": "Refuser"
+      },
       "oauth": {
         "google": "Google",
         "discord": "Discord",
@@ -98,7 +125,9 @@
           "twitch": "Disconnect Twitch"
         }
       },
-      "compare": { "ships": "Comparer" },
+      "compare": {
+        "ships": "Comparer"
+      },
       "hangar": {
         "editGroups": "Ajouter ou supprimer des groupes",
         "editName": "Nommez votre vaisseau",
@@ -116,16 +145,24 @@
       "syncExtension": {
         "cancel": "Annuler",
         "start": "Démarrer la synchronisation",
-        "close": "Fermer"
+        "retry": "Réessayer la synchronisation",
+        "close": "Fermer",
+        "refresh": "Actualiser la page"
       },
       "empty": {
-        "hangarGuide": "Besoin d'aide ?"
+        "hangarGuide": "Besoin d'aide ?",
+        "reset": "Effacer les filtres"
       },
+      "destroyFleet": "Détruire la flotte",
       "fleet": {
         "join": "Rejoignez la flotte %{fleet}!",
         "leave": "Quitter la flotte %{fleet}",
         "createInviteUrl": "Créer un lien d'invitation",
         "inviteMember": "Inviter un nouveau membre",
+        "manageInvites": "Invitations",
+        "worldmap": "Carte du monde",
+        "starmap": "Carte stellaire",
+        "membersList": "Membres",
         "acceptInvite": "Accepter l'invitation",
         "declineInvite": "Décliner l'invitation",
         "acceptRequest": "Accepter la demande",
@@ -139,12 +176,27 @@
           "decline": "Décliner",
           "remove": "Retirer"
         },
-        "inviteUrls": { "create": "Créer le nouveau lien d'invitation" }
+        "inviteUrls": {
+          "create": "Créer le nouveau lien d'invitation"
+        }
       },
       "model": {
         "gallery": "Galerie",
         "onSale": "En vente : %{price}",
         "store": "Page RSI"
+      },
+      "models": {
+        "sync": "Synchroniser depuis RSI",
+        "syncMatrix": "Synchroniser la matrice",
+        "syncScData": "Synchroniser les données SC",
+        "exchangeStoreImage": "Utiliser l'image RSI",
+        "images": "Images",
+        "openTableConfiguration": "Ouvrir la configuration du tableau"
+      },
+      "users": {
+        "loginAs": "Se connecter en tant qu'utilisateur",
+        "resendConfirmation": "Renvoyer la confirmation",
+        "sendPasswordReset": "Envoyer la réinitialisation du mot de passe"
       },
       "unselect": "Retirer la sélection",
       "openPriceModal": "Soumettre le prix",

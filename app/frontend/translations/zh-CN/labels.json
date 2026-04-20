@@ -14,8 +14,6 @@
       "actions": "操作",
       "enabled": "已启用",
       "disabled": "已禁用",
-      "findModel": "输入以查找飞船",
-      "find": "输入以搜索",
       "collapse": "折叠",
       "price": "价格",
       "expand": "展开",
@@ -23,12 +21,69 @@
       "anonymous": "匿名",
       "toggleNavigation": "切换导航",
       "enableYoutube": "点击启用YouTube嵌入或右键复制视频链接",
+      "openInNewWindow": "全屏打开",
       "or": "或",
       "deselect": "点击取消选择",
       "networkStatusOffline": "网络状态：离线 - 服务不可用",
       "groups": "分组",
+      "features": {
+        "stateOn": "已启用",
+        "stateOff": "已禁用",
+        "stateConditional": "有条件",
+        "selfService": "自助服务",
+        "selfServiceEnabled": "用户可以切换此功能",
+        "selfServiceDisabled": "用户无法切换此功能",
+        "actors": "角色",
+        "groups": "群组",
+        "noGroups": "此功能没有启用的群组。",
+        "noActors": "此功能没有启用的个人角色。",
+        "user": "用户",
+        "fleet": "舰队",
+        "actorType": "角色类型",
+        "percentageOfActors": "的角色",
+        "percentageOfTime": "的时间",
+        "currentState": "当前状态",
+        "toggle": "切换",
+        "settingsIntro": "为您的账户启用或禁用实验性功能。这些功能可能不完整或随时更改。",
+        "noFeaturesAvailable": "目前没有可用的自助服务功能。",
+        "descriptions": {
+          "tools_travel_times": "显示地点之间的预计旅行时间。",
+          "tools_cargo_grids": "显示飞船的交互式货物网格查看器。",
+          "fleet_starmap": "在舰队成员页面显示 Star Citizen 星图。"
+        }
+      },
+      "oauthApplication": {
+        "name": "应用名称",
+        "clientId": "客户端 ID",
+        "clientSecret": "客户端密钥",
+        "redirectUri": "重定向 URI",
+        "redirectUriHint": "每行一个 URI。",
+        "confidential": "机密",
+        "scopes": "权限范围",
+        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+      },
+      "rsiRequestLogs": {
+        "resolved": "已解决",
+        "unresolved": "未解决"
+      },
+      "oauthApplications": {
+        "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
+        "name": "应用名称",
+        "redirectUri": "重定向 URI",
+        "confidential": "机密",
+        "clientId": "客户端 ID",
+        "clientSecret": "客户端密钥",
+        "scopes": "权限范围",
+        "defaultScopes": "默认权限范围",
+        "confidentialShort": "机密",
+        "publicShort": "公开"
+      },
       "fleetInviteToken": "舰队邀请",
       "scDataVersion": "补丁版本",
+      "lastReload": "最后重载",
+      "createdAt": "创建于",
+      "updatedAt": "更新于",
+      "addToHangar": "添加到机库",
       "home": {
         "search": "搜索飞船..."
       },
@@ -38,20 +93,20 @@
         "buyPrice": "购买价格"
       },
       "shopCommodity": {
-        "item": "Item",
-        "shop": "Shop",
-        "sellPrices": "Sell Prices",
-        "buyPrices": "Buy Prices",
-        "rentalPrices": "Rental Prices",
-        "confirmed": "Confirmed?",
-        "submittedBy": "Submitted By",
+        "item": "物品",
+        "shop": "商店",
+        "sellPrices": "卖出价格",
+        "buyPrices": "买入价格",
+        "rentalPrices": "租赁价格",
+        "confirmed": "已确认?",
+        "submittedBy": "提交者",
         "prices": {
-          "label": "Prices",
-          "rentalPrice": "rental",
+          "label": "价格",
+          "rentalPrice": "租赁",
           "averageRentalPrice": "rental (Ø)",
-          "sellPrice": "sells for",
+          "sellPrice": "售价",
           "averageSellPrice": "sells for (Ø)",
-          "buyPrice": "buys for",
+          "buyPrice": "买入价",
           "averageBuyPrice": "buys for (Ø)",
           "rentalPrice1Day": "1 Day for",
           "averageRentalPrice1Day": "1 Day for (Ø)",
@@ -65,28 +120,39 @@
       },
       "stats": {
         "quickStats": {
-          "newShips": "New Ships in %{year}",
-          "totalShips": "Total Ships",
-          "totalMembers": "Total Members"
+          "newShips": "%{year} 新飞船",
+          "totalShips": "总飞船数",
+          "totalMembers": "总成员数",
+          "vehicles": "机库飞船",
+          "wishlists": "愿望清单飞船",
+          "shipOfTheMonth": "月度飞船"
         },
         "modelsByClassification": "Ships by Classification",
         "modelsBySize": "Ships by Size",
         "vehiclesByModel": "Ships by Model (Top %{limit})",
         "modelsPerMonth": "Ships per Month",
         "modelsByManufacturer": "Ships by Manufacturer",
-        "modelsByProductionStatus": "Ships by Production Status"
+        "modelsByProductionStatus": "Ships by Production Status",
+        "vehiclesPerMonth": "Hangared Ships per Month",
+        "topVehiclesByModel": "Top 10 Hangared Ships",
+        "shipsOfTheMonth": "月度飞船",
+        "crewDeficit": "Crew Deficit",
+        "crewSurplus": "Crew Surplus",
+        "membersByRole": "Members by Role"
       },
       "roadmap": {
-        "selectWeek": "Select Week",
-        "shipRoadmap": "Ship-Roadmap",
-        "releases": "Releases",
-        "unscheduled": "Unscheduled",
-        "lastUpdate": "Last Update",
-        "released": "Released",
-        "recentlyUpdated": "Recently Updated",
-        "committed": "Committed",
+        "selectWeek": "选择周",
+        "shipRoadmap": "飞船路线图",
+        "releases": "发布",
+        "unscheduled": "未计划",
+        "lastUpdate": "最后更新",
+        "released": "已发布",
+        "recentlyUpdated": "最近更新",
+        "committed": "已确认",
         "lastVersion": {
           "active": {
+            "false": "Item was removed from the Roadmap",
+            "true": "Item was readded to the Roadmap",
             "decreased": "Item was removed from the Roadmap",
             "increased": "Item was readded to the Roadmap"
           },
@@ -109,30 +175,31 @@
         }
       },
       "rsiRoadmap": "RSI Roadmap",
-      "unknown": "Unknown",
+      "unknown": "未知",
       "none": "-",
       "notAvailable": "N/A",
       "unknownModel": "%{slug} Unknown",
       "not-available": "N/A",
       "receiveSaleNotifications": "",
-      "publicUrl": "Public URL",
-      "name": "Name",
-      "homepage": "Homepage",
-      "discord": "Discord Server",
-      "youtube": "Youtube Channel",
-      "twitch": "Twitch Channel",
-      "guilded": "Guilded Server",
+      "publicUrl": "公开 URL",
+      "name": "名称",
+      "homepage": "主页",
+      "discord": "Discord 服务器",
+      "youtube": "Youtube 频道",
+      "twitch": "Twitch 频道",
+      "guilded": "Guilded 服务器",
       "3dView": "3D",
-      "filter": "Filter",
-      "taxExcluded": "excl. VAT",
-      "hangar": "Hangar",
-      "public": "Public",
-      "hangarStats": "Stats",
-      "wishlist": "Wishlist",
-      "fleetchart": "Fleetchart",
+      "3dMap": "Map",
+      "filter": "筛选",
+      "taxExcluded": "不含增值税",
+      "hangar": "机库",
+      "public": "公开",
+      "hangarStats": "统计",
+      "wishlist": "愿望清单",
+      "fleetchart": "舰队图表",
       "fleetchartApp": {
-        "screenHeight": "Screen Height",
-        "viewpoint": "Viewpoint",
+        "screenHeight": "屏幕高度",
+        "viewpoint": "视角",
         "screenHeightOptions": {
           "1x": "1x",
           "1_5x": "1.5x",
@@ -141,54 +208,82 @@
           "4x": "4x"
         },
         "viewpointOptions": {
-          "side": "Side",
-          "top": "Top",
-          "angled": "Angled"
+          "side": "侧面",
+          "top": "顶部",
+          "angled": "斜角",
+          "front": "正面"
         },
         "gridSize": "%{size} meter per grid box",
         "mode": "Mode",
         "modeOptions": {
-          "classic": "Classic",
+          "classic": "经典",
           "panzoom": "v2"
         }
       },
-      "fleetStats": "Stats",
+      "fleetStats": "统计",
       "hangarMetrics": {
-        "total": "Total",
+        "total": "总计",
         "totalMoney": "Money Value",
         "totalCredits": "Credits",
-        "totalMinCrew": "Min. Crew",
-        "totalMaxCrew": "Max. Crew",
-        "totalCargo": "Total Cargo"
+        "totalIngameValue": "Hangar aUEC Value",
+        "totalMinCrew": "最少船员",
+        "totalMaxCrew": "最多船员",
+        "totalCargo": "总货物",
+        "largestShip": "最大飞船",
+        "smallestShip": "最小飞船",
+        "averagePledgePrice": "Avg. Pledge Price",
+        "flightReady": "可飞行",
+        "uniqueModels": "独特型号",
+        "manufacturerCount": "制造商",
+        "missingClassifications": "缺失角色",
+        "wishlistTotalMoney": "Wishlist Pledge Value",
+        "wishlistTotalCredits": "Wishlist In-Game Value"
       },
-      "selectModel": "Select a Ship",
+      "selectModel": "选择飞船",
+      "findModel": "输入以查找飞船",
+      "find": "输入以搜索",
+      "selectUser": "选择用户",
+      "findUser": "输入以搜索用户",
+      "selectFleet": "选择舰队",
+      "findFleet": "输入以搜索舰队",
       "compare": {
-        "removeModel": "Remove Ship",
+        "removeModel": "移除飞船",
         "addModel": {
-          "nullablePrompt": "Add a Ship"
+          "nullablePrompt": "添加飞船"
         },
         "enough": "Don't you think 8 Ships are enough? ;)"
       },
-      "cargoRoutes": "Cargo routes",
+      "cargoRoutes": "货物路线",
       "uecPerUnit": "aUEC / Unit",
       "au": "AU",
       "uec": "aUEC",
-      "sell": "Sell",
-      "buy": "Buy",
-      "yourFlagship": "Your Flagship",
-      "flagship": "Flagship",
+      "sell": "卖出",
+      "buy": "买入",
+      "yourFlagship": "您的旗舰",
+      "flagship": "旗舰",
       "fleet": {
-        "classes": "Fleet",
-        "fid": "Fleet ID",
-        "name": "Name",
-        "logo": "Logo",
+        "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
+        "classes": "舰队",
+        "fid": "舰队 ID",
+        "name": "名称",
+        "logo": "标志",
         "rsiSid": "SID",
-        "public": "Public Fleetview",
-        "ts": "Teamspeak Server",
-        "awaitingConfirmation": "Awaiting confirmation by Fleet",
+        "description": "描述",
+        "public": "公开舰队视图",
+        "publicFleet": "公开舰队",
+        "publicStats": "公开统计",
+        "publicFleetStats": "公开舰队统计",
+        "discord": "Discord 服务器",
+        "guilded": "Guilded 服务器",
+        "homepage": "主页",
+        "twitch": "Twitch 频道",
+        "youtube": "Youtube 频道",
+        "backgroundImage": "背景图片",
+        "ts": "Teamspeak 服务器",
+        "awaitingConfirmation": "等待舰队确认",
         "members": {
-          "primary": "Primary Fleet?",
-          "hideShips": "Hide your Ships for this Fleet?",
+          "primary": "主舰队?",
+          "hideShips": "为此舰队隐藏您的飞船?",
           "shipsFilter": {
             "label": "Which Ships should be added to the Fleet?",
             "nullablePrompt": "No Option selected",
@@ -200,26 +295,68 @@
             }
           },
           "hangarGroupId": {
-            "field": "Hangar Group",
+            "field": "机库群组",
             "label": "Specify a Hangar Group",
             "nullablePrompt": "No Group selected"
           },
           "total": "Total: %{count}",
           "joined": "Joined at",
-          "invited": "Invited",
+          "invited": "已邀请",
           "invitedAt": "Invited / Requested at",
           "requested": "Membership Requested",
-          "declined": "Declined",
+          "declined": "已拒绝",
+          "pending": "Pending Invites & Requests",
+          "accepted": "成员",
+          "declinedMembers": "已拒绝",
+          "role": "角色",
           "roles": {
-            "admin": "Admin",
-            "officer": "Officer",
-            "member": "Member"
+            "admin": "管理员",
+            "officer": "军官",
+            "member": "成员"
+          }
+        },
+        "roles": {
+          "permanent": "永久",
+          "privilegeGroups": {
+            "fleet": "舰队",
+            "memberships": "成员",
+            "invites": "邀请",
+            "vehicles": "Vehicles",
+            "roles": "角色"
+          },
+          "privileges": {
+            "fleet:update": "Update Fleet",
+            "fleet:update:images": "Update Images",
+            "fleet:update:description": "Update Description",
+            "fleet:delete": "Delete Fleet",
+            "fleet:manage": "管理舰队",
+            "fleet:memberships:read": "View Members",
+            "fleet:memberships:create": "Invite Members",
+            "fleet:memberships:update": "Update Members",
+            "fleet:memberships:delete": "Remove Members",
+            "fleet:memberships:manage": "Manage Members",
+            "fleet:invites:read": "View Invites",
+            "fleet:invites:create": "Create Invites",
+            "fleet:invites:delete": "Delete Invites",
+            "fleet:invites:manage": "Manage Invites",
+            "fleet:vehicles:read": "View Vehicles",
+            "fleet:vehicles:create": "Add Vehicles",
+            "fleet:vehicles:update": "Update Vehicles",
+            "fleet:vehicles:delete": "Remove Vehicles",
+            "fleet:vehicles:manage": "Manage Vehicles",
+            "fleet:roles:read": "View Roles",
+            "fleet:roles:create": "Create Roles",
+            "fleet:roles:update": "Update Roles",
+            "fleet:roles:delete": "Delete Roles",
+            "fleet:roles:manage": "Manage Roles"
           }
         },
         "inviteUrls": {
           "noLimit": "No limit",
           "noExpiration": "Never expires",
           "usesLeft": "%{count} uses left",
+          "used": "Used %{count} times",
+          "usedOfLimit": "Used %{count} of %{limit}",
           "expiresIn": "Expires in %{time}",
           "expired": "Expired",
           "expiresAfterOptions": {
@@ -243,80 +380,317 @@
         }
       },
       "hangarGroup": {
-        "name": "Name",
-        "color": "Color",
-        "sort": "Sort Order",
-        "public": "Show on Public Hangar?"
+        "name": "名称",
+        "color": "颜色",
+        "sort": "排序",
+        "public": "在公开机库显示?"
       },
-      "source": "Source",
+      "source": "来源",
       "model": {
-        "variants": "Variants",
-        "manufacturer": "Manufacturer",
-        "loaners": "Loaners",
-        "paints": "Paints",
-        "modules": "Modules",
-        "modulePackages": "Module Packages",
-        "upgrades": "Upgrade-Kits",
-        "brochure": "Brochure",
-        "onSale": "On Sale",
-        "salesPage": "Sales Page",
-        "addons": "Modules & Upgrade-Kits",
+        "hidden": "隐藏?",
+        "active": "活跃?",
+        "ground": "地面载具?",
+        "productionNote": "生产备注",
+        "rsiId": "RSI ID",
+        "length": "长度",
+        "beam": "宽度",
+        "height": "高度",
+        "scIdentifier": "SC Identifier",
+        "price": "价格",
+        "pledgePrice": "质押价格",
+        "erkulIdentifier": "Erkul Identifier",
+        "mass": "质量",
+        "minCrew": "最少船员",
+        "maxCrew": "最多船员",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "最大速度",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "cargo": "货物",
+        "cargoHolds": "货舱",
+        "hydrogenFuelTankSize": "氢燃料箱大小",
+        "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
+        "quantumFuelTankSize": "量子燃料箱大小",
+        "quantumFuelTanks": "量子燃料箱",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "偏航（增强）",
+        "pitchBoosted": "俯仰（增强）",
+        "rollBoosted": "翻滚（增强）",
+        "variants": "变体",
+        "manufacturer": "制造商",
+        "loaners": "借用船",
+        "paints": "涂装",
+        "modules": "模块",
+        "modulePackages": "模块包",
+        "upgrades": "升级套件",
+        "brochure": "手册",
+        "holo": "Holo",
+        "angledView": "斜视图",
+        "angledViewColored": "斜视图（彩色）",
+        "sideView": "侧视图",
+        "sideViewColored": "侧视图（彩色）",
+        "frontView": "前视图",
+        "frontViewColored": "前视图（彩色）",
+        "topView": "俯视图",
+        "topViewColored": "俯视图（彩色）",
+        "onSale": "在售",
+        "salesPage": "销售页面",
+        "addons": "模块与升级套件",
+        "storeImage": "商店图片",
+        "wiki": "Star Citizen Wiki",
+        "baseModel": "基础型号",
+        "fleetchartOffsetLength": "舰队图表长度偏移",
+        "fleetchartOffsetBeam": "舰队图表宽度偏移",
         "productionStatus": {
-          "in-production": "In Production",
-          "in-concept": "In Concept",
-          "ready": "Hangar Ready",
-          "flight-ready": "Flight Ready",
-          "announced": "Announced"
+          "in-production": "生产中",
+          "in-concept": "概念阶段",
+          "ready": "机库就绪",
+          "flight-ready": "可飞行",
+          "announced": "已公布"
+        }
+      },
+      "models": {
+        "extraColumns": "列",
+        "table": {
+          "columns": {
+            "storeImage": "图片",
+            "storeImageWide": "宽图片",
+            "rsiStoreImage": "RSI 图片",
+            "rsiStoreImageWide": "宽 RSI 图片",
+            "angledView": "3D 图片",
+            "angledViewWide": "宽 3D 图片",
+            "rsiId": "RSI ID",
+            "hidden": "隐藏",
+            "active": "活跃",
+            "createdAt": "创建于",
+            "updatedAt": "更新于",
+            "manufacturerName": "制造商",
+            "length": "长度",
+            "beam": "宽度",
+            "height": "高度",
+            "mass": "质量",
+            "cargo": "货物",
+            "quantumFuelTankSize": "量子燃料",
+            "hydrogenFuelTankSize": "氢燃料",
+            "minCrew": "船员",
+            "maxCrew": "最多船员",
+            "scmSpeed": "SCM Speed",
+            "maxSpeed": "最大速度",
+            "groundMaxSpeed": "地面速度",
+            "focus": "定位",
+            "productionStatus": "生产状态",
+            "price": "价格",
+            "pledgePrice": "质押价格"
+          }
         }
       },
       "metrics": {
-        "info": "Info",
-        "levels": "Levels",
-        "topView": "Top View",
-        "base": "Base",
-        "crew": "Crew",
-        "speed": "Speed",
-        "missileOptions": "Missle Options (if available)"
+        "info": "信息",
+        "levels": "等级",
+        "views": "视图",
+        "base": "基础",
+        "crew": "船员",
+        "speed": "速度",
+        "cargo": "货物",
+        "hardpoints": "挂载点",
+        "missileOptions": "导弹选项（如果可用）",
+        "topView": "Top View"
+      },
+      "manufacturer": {
+        "longName": "全名",
+        "code": "代码",
+        "logo": "标志",
+        "scRef": "SC Ref"
+      },
+      "itemPrice": {
+        "price": "价格",
+        "location": "位置",
+        "locationUrl": "位置 URL"
+      },
+      "video": {
+        "url": "URL",
+        "videoType": "类型"
+      },
+      "modelModule": {
+        "name": "名称",
+        "description": "描述",
+        "price": "价格",
+        "pledgePrice": "承诺价格",
+        "productionStatus": "生产状态",
+        "scKey": "SC Key",
+        "storeImage": "商店图片",
+        "active": "激活？",
+        "hidden": "隐藏？"
+      },
+      "dock": {
+        "name": "名称",
+        "dockType": "停靠类型",
+        "shipSize": "飞船尺寸"
+      },
+      "modelHardpoint": {
+        "name": "名称",
+        "key": "键",
+        "source": "来源",
+        "group": "群组",
+        "hardpointType": "类型",
+        "size": "尺寸",
+        "category": "分类",
+        "subCategory": "子分类",
+        "details": "详情",
+        "mount": "挂载",
+        "itemSlots": "物品槽",
+        "loadoutIdentifier": "配置标识"
+      },
+      "modelHardpointLoadout": {
+        "name": "名称"
+      },
+      "modelUpgrade": {
+        "name": "名称",
+        "description": "描述",
+        "pledgePrice": "质押价格",
+        "active": "活跃?",
+        "hidden": "隐藏?"
+      },
+      "modelModulePackage": {
+        "name": "名称",
+        "description": "描述",
+        "pledgePrice": "质押价格",
+        "modules": "模块",
+        "active": "活跃?",
+        "hidden": "隐藏?"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X (SCU)",
+        "offsetY": "Offset Y (SCU)",
+        "offsetZ": "Offset Z (SCU)",
+        "rotation": "Rotation (°)"
+      },
+      "modelLoaner": {
+        "hidden": "隐藏?",
+        "loanerModel": "借用型号"
+      },
+      "modelPaint": {
+        "hidden": "隐藏?",
+        "active": "活跃?",
+        "onSale": "在售",
+        "pledgePrice": "质押价格",
+        "productionStatus": "生产状态",
+        "productionNote": "生产备注"
       },
       "component": {
-        "size": "Size: %{size}"
+        "size": "Size: %{size}",
+        "grade": "等级",
+        "hidden": "隐藏?",
+        "componentClass": "组件类别",
+        "componentType": "组件类型",
+        "componentSubType": "组件子类型",
+        "itemType": "物品类型",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
       },
       "hardpoint": {
         "legend": {
-          "headline": "Legend",
-          "slotTaken": "Slot taken",
-          "slotAvailable": "Slot available"
+          "headline": "图例",
+          "slotTaken": "插槽已占用",
+          "slotAvailable": "插槽可用"
         },
-        "size": "Size",
-        "rackSize": "Rack Size",
-        "details": "Details",
-        "group": "Group",
+        "size": "尺寸",
+        "rackSize": "架尺寸",
+        "details": "详情",
+        "group": "群组",
+        "thrusters": {
+          "thrust": "推力",
+          "subTypes": {
+            "JointThruster": "Joint",
+            "FixedThruster": "Fix",
+            "FlexThruster": "Flex",
+            "Retro": "Fix"
+          }
+        },
+        "sources": {
+          "game_files": "游戏文件",
+          "ship_matrix": "Ship Matrix"
+        },
+        "fuelTanks": {
+          "hydrogen": "氢燃料箱",
+          "quantum": "量子燃料箱"
+        },
+        "jumpDrive": "跳跃引擎",
+        "maxContainerSize": "最大集装箱尺寸",
         "groups": {
-          "avionic": "Avionics",
-          "system": "Systems",
-          "propulsion": "Propulsion",
-          "thruster": "Thruster",
-          "weapon": "Weapons"
+          "avionic": "航电",
+          "system": "系统",
+          "propulsion": "推进",
+          "thruster": "推进器",
+          "weapon": "武器",
+          "other": "其他",
+          "auxiliary": "辅助",
+          "seat": "座位"
         },
         "types": {
-          "radar": "Radar",
-          "computers": "Computers",
-          "power_plants": "Power Plants",
-          "coolers": "Coolers",
-          "shield_generators": "Shield Generators",
-          "fuel_intakes": "Fuel Intakes",
-          "fuel_tanks": "Fuel Tanks",
-          "quantum_drives": "Quantum Drives",
-          "jump_modules": "Jump Modules",
-          "quantum_fuel_tanks": "Quantum Fuel Tanks",
-          "main_thrusters": "Main Thrusters",
-          "maneuvering_thrusters": "Maneuvering Thrusters",
-          "weapons": "Weapons",
-          "turrets": "Turrets",
-          "missiles": "Missiles",
-          "utility_items": "Utility Items",
+          "radar": "雷达",
+          "computers": "电脑",
+          "power_plants": "发电机",
+          "coolers": "冷却器",
+          "shield_generators": "护盾发生器",
+          "fuel_intakes": "燃料进气口",
+          "fuel_tanks": "燃料箱",
+          "quantum_drives": "量子引擎",
+          "jump_modules": "跳跃模块",
+          "jumpdrive": "跳跃模块",
+          "quantum_fuel_tanks": "量子燃料箱",
+          "main_thrusters": "主推进器",
+          "maneuvering_thrusters": "机动推进器",
+          "weapons": "武器",
+          "turrets": "炮塔",
+          "missiles": "导弹",
+          "utility_items": "实用设备",
+          "utility": "实用设备",
           "emp": "EMP",
           "qed": "QED"
+        },
+        "moduleSlotEmpty": "— 选择模块 —",
+        "selectModule": "选择模块",
+        "clearModule": "清除选择",
+        "categories": {
+          "radar": "雷达",
+          "armor": "装甲",
+          "relay": "中继",
+          "countermeasures": "对抗措施",
+          "lifesupport": "生命维持",
+          "selfdestruct": "自毁",
+          "batteries": "电池",
+          "computers": "电脑",
+          "powerplant": "发电机",
+          "cooler": "冷却器",
+          "module": "模块",
+          "shieldgenerator": "护盾发生器",
+          "fuel_intakes": "燃料进气口",
+          "fueltanks": "燃料箱",
+          "quantumdrive": "量子引擎与跳跃模块",
+          "jump_modules": "跳跃模块",
+          "jumpdrive": "跳跃模块",
+          "quantum_fuel_tanks": "量子燃料箱",
+          "main_thrusters": "主推进器",
+          "maneuvering_thrusters": "机动推进器",
+          "retro_thrusters": "反推推进器",
+          "vtol_thrusters": "VTOL 推进器",
+          "weapons": "武器",
+          "weapon_mounts": "武器挂载",
+          "turret": "炮塔",
+          "missiles": "导弹",
+          "missile_racks": "导弹架",
+          "utility_items": "实用设备",
+          "utility": "实用设备",
+          "emp": "EMP",
+          "quantumenforcementdevice": "QED",
+          "salvagefillerstation": "打捞填充站",
+          "cargogrid": "货物网格",
+          "seat": "座位"
         }
       },
       "blank": {
@@ -330,125 +704,143 @@
       },
       "user": {
         "rsiHandle": "Handle",
-        "avatar": "Avatar",
+        "location": "位置",
+        "currentSystem": "Current Star System",
+        "tester": "测试者?",
+        "avatar": "头像",
         "unconfirmedEmail": "Unconfirmed email",
         "saleNotify": "I want to receive Sale Notifications",
         "publicHangar": "Public Hangar enabled",
         "publicHangarLoaners": "Show Loaners Hint on Public Hangar",
+        "publicHangarStats": "Public Hangar Stats enabled",
         "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets"
+        "hideOwner": "Hide Ownership for Fleets",
+        "lastActiveAt": "最后活跃",
+        "confirmedAt": "确认于"
+      },
+      "adminUser": {
+        "superAdmin": "超级管理员",
+        "passwordConfirmation": "确认密码"
       },
       "vehicle": {
-        "name": "Name",
-        "serial": "Serial",
-        "owner": "commanded by",
-        "flagship": "Flagship",
-        "wanted": "Wanted",
-        "loaner": "Loaner",
-        "public": "Public Visible",
+        "name": "名称",
+        "states": "状态",
+        "serial": "序列号",
+        "owner": "指挥官",
+        "flagship": "旗舰",
+        "wanted": "想要",
+        "loaner": "借用",
+        "public": "公开可见",
         "fullPublic": "Public Visible including Name",
-        "publicShort": "Public",
-        "nameVisible": "Public Visible",
+        "publicShort": "公开",
+        "nameVisible": "公开可见",
         "saleNotify": "I want to receive Sale Notifications",
-        "hangarGroups": "Groups",
+        "hangarGroups": "群组",
         "selectGroup": "Select a Group",
         "modelPaintSelect": {
           "nullablePrompt": "Select a Paint",
-          "label": "Paint"
+          "label": "涂装"
         },
         "bulkGroupEdit": {
           "hint": "Existing Groups will be overridden!"
         },
-        "hasLoaners": "Loaners",
+        "hasLoaners": "借用船",
         "boughtViaSelect": {
           "label": "Bought via"
         }
       },
       "image": {
-        "active": "Active?",
-        "background": "Use as Background?",
-        "enabled": "Enabled?",
-        "global": "Global?",
-        "delete": "Delete",
-        "start": "Start",
-        "cancel": "Cancel",
-        "processing": "Processing...",
-        "error": "Error",
-        "name": "Name",
-        "size": "File size",
-        "dropzone": "Drop images here",
-        "cancelUpload": "Cancel upload",
-        "startUpload": "Start upload",
-        "selectImages": "Add images...",
-        "selectFolder": "Add a folder..."
+        "active": "活跃?",
+        "background": "用作背景?",
+        "caption": "标题",
+        "enabled": "已启用?",
+        "file": "图片文件",
+        "global": "全局?",
+        "delete": "删除",
+        "start": "开始",
+        "cancel": "取消",
+        "processing": "处理中...",
+        "error": "错误",
+        "name": "名称",
+        "size": "文件大小",
+        "dropzone": "将图片拖放到此处",
+        "cancelUpload": "取消上传",
+        "startUpload": "开始上传",
+        "selectImages": "添加图片...",
+        "selectFolder": "添加文件夹..."
       },
       "signup": {
         "link": "Don't have an Account?",
         "privacyPolicy": "By creating a FleetYards account, you agree to our"
       },
-      "privacyPolicy": "Privacy Policy",
-      "login": "Username or email",
-      "username": "Username",
+      "privacyPolicy": "隐私政策",
+      "login": "用户名或电子邮件",
+      "username": "用户名",
       "twoFactorCode": "Two-factor code",
-      "confirmationCode": "Confirmation code",
-      "email": "Email",
-      "avatar": "Avatar",
+      "confirmationCode": "确认码",
+      "email": "电子邮件",
+      "avatar": "头像",
       "alreadyRegistered": "Already have an Account?",
       "currentPassword": "Current Password",
-      "password": "Password",
-      "passwordConfirmation": "Password Confirmation",
-      "rememberMe": "Remember me",
+      "password": "密码",
+      "passwordConfirmation": "确认密码",
+      "rememberMe": "记住我",
       "emptyList": "No %{name} present",
-      "all": "All",
+      "all": "全部",
       "supportUs": "Support FleetYards.net",
       "account": {
         "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
       },
       "filters": {
+        "components": {
+          "name": "名称",
+          "itemType": "物品类型",
+          "componentClass": "组件类别"
+        },
         "shops": {
-          "name": "Name",
-          "type": "Type",
-          "celestialObject": "Celestial object",
-          "model": "Ship",
-          "equipment": "Equipment",
-          "component": "Component",
-          "commodity": "Commodity",
-          "commodityType": "Commodity Type",
-          "starsystem": "Starsystem",
-          "station": "Station"
+          "name": "名称",
+          "type": "类型",
+          "celestialObject": "天体",
+          "model": "飞船",
+          "equipment": "装备",
+          "component": "组件",
+          "commodity": "商品",
+          "commodityType": "商品类型",
+          "starsystem": "星系",
+          "station": "空间站"
         },
         "shopCommodities": {
-          "commodityType": "Commodity Type",
-          "station": "Station",
-          "shopId": "Shop",
-          "equipment": "Equipment",
-          "component": "Component",
+          "commodityType": "商品类型",
+          "station": "空间站",
+          "shopId": "商店",
+          "equipment": "装备",
+          "component": "组件",
           "componentItemTypeFilter": "Component Item Types",
           "equipmentItemTypeFilter": "Equipment Item Types",
           "equipmentTypeFilter": "Equipment Type",
           "equipmentSlotFilter": "Equipment Slot",
-          "commodity": "Commodity",
-          "model": "Ship",
-          "name": "Name"
+          "commodity": "商品",
+          "model": "飞船",
+          "name": "名称"
         },
         "shopItems": {
-          "category": "Category",
-          "subCategory": "Sub Category",
-          "name": "Name",
-          "manufacturer": "Manufacturer",
+          "category": "分类",
+          "subCategory": "子分类",
+          "name": "名称",
+          "manufacturer": "制造商",
           "minPrice": "min. Price",
           "maxPrice": "max. Price"
         },
         "stations": {
-          "name": "Name",
-          "celestialObject": "Celestial Object",
-          "starsystem": "Starsystem",
-          "type": "Station Type",
-          "shops": "Shops",
-          "docks": "Docks",
-          "habs": "Habitation?",
-          "cargoHub": "Cargo Hub?",
-          "refinery": "Refinery Station?"
+          "name": "名称",
+          "celestialObject": "天体",
+          "starsystem": "星系",
+          "type": "空间站类型",
+          "shops": "商店",
+          "docks": "停靠口",
+          "habs": "居住区?",
+          "cargoHub": "货运中心?",
+          "refinery": "精炼站?"
         },
         "vehicles": {
           "name": "Name or Ship name",
@@ -458,10 +850,11 @@
           "pledgePriceGt": "Pledge Price >=",
           "priceLt": "Price <=",
           "priceGt": "Price >=",
-          "wanted": "Wanted",
-          "public": "Public",
-          "group": "Group",
-          "loaner": "Loaners",
+          "wanted": "想要",
+          "hidden": "隐藏",
+          "public": "公开",
+          "group": "群组",
+          "loaner": "借用船",
           "boughtVia": "Bought via?"
         },
         "tradeRoutes": {
@@ -480,15 +873,17 @@
           "destinationStarsystem": "Destination Starsystem"
         },
         "models": {
-          "shipRole": "Ship Role",
-          "classification": "Classification",
-          "focus": "Focus",
-          "manufacturer": "Manufacturer",
-          "onSale": "On Sale",
-          "size": "Size",
-          "price": "Price",
-          "pledgePrice": "Pledge Price",
-          "productionStatus": "Production Status",
+          "name": "名称",
+          "shipRole": "飞船角色",
+          "classification": "分类",
+          "focus": "定位",
+          "manufacturer": "制造商",
+          "onSale": "在售",
+          "size": "尺寸",
+          "dockSize": "停靠尺寸",
+          "price": "价格",
+          "pledgePrice": "质押价格",
+          "productionStatus": "生产状态",
           "lengthLt": "Length <=",
           "lengthGt": "Length >=",
           "beamLt": "Beam <=",
@@ -499,17 +894,39 @@
           "pledgePriceGt": "Pledge Price >=",
           "priceLt": "Price <=",
           "priceGt": "Price >=",
-          "willItFit": "Will it Fit?"
+          "willItFit": "Will it Fit?",
+          "withCargo": "With Cargo?",
+          "scIdentifierBlank": "Without SC Identifier?",
+          "fleetchartImageBlank": "Without Fleetchart Image?",
+          "holoBlank": "Without Holo?",
+          "frontViewBlank": "Without Front View Image?",
+          "topViewColoredBlank": "Without Top View Colored Image?"
+        },
+        "modelModules": {
+          "name": "名称"
+        },
+        "manufacturers": {
+          "name": "名称",
+          "withModels": "有型号的",
+          "logoBlank": "无标志"
         },
         "images": {
-          "station": "Station",
-          "model": "Ship"
+          "station": "空间站",
+          "model": "飞船"
+        },
+        "users": {
+          "search": "搜索",
+          "username": "用户名",
+          "email": "电子邮件",
+          "rsiHandle": "RSI 用户名"
         },
         "fleets": {
-          "member": "Member",
+          "name": "名称",
+          "fid": "FID",
+          "member": "成员",
           "members": {
-            "role": "Role",
-            "state": "Status",
+            "role": "角色",
+            "state": "状态",
             "acceptedAtGt": "Joined from",
             "acceptedAtLt": "Joined until",
             "invitedAtGt": "Invited from",
@@ -524,15 +941,15 @@
             "limit": "Max number of uses"
           }
         },
-        "manufacturer": "Manufacturer"
+        "manufacturer": "制造商"
       },
       "station": {
-        "docks": "Docks",
-        "location": "Location",
-        "type": "Type",
-        "habitation": "Habitation",
-        "habs": "Habs",
-        "shops": "Shops",
+        "docks": "停靠口",
+        "location": "位置",
+        "type": "类型",
+        "habitation": "居住区",
+        "habs": "居住舱",
+        "shops": "商店",
         "locationPrefix": {
           "default": "on",
           "asteriod": "on asteroid near",
@@ -550,16 +967,18 @@
         "showAveragePrices": "Display average Prices",
         "showLatestPrices": "Display latest Prices"
       },
-      "erkul": {
+      "hardpoints": {
         "prefix": "Tryout Loadouts with",
-        "link": "Erkul's DPS Calculator"
+        "erkul": "Erkul's DPS Calculator",
+        "spviewer": "SP Viewer",
+        "spviewerTitle": "SC Ships Performances Viewer"
       },
       "scunpacked": {
         "prefix": "Loadouts based on Gamefiles powered by",
         "link": "SCunpacked"
       },
       "newVehicle": {
-        "nullablePrompt": "Select a Ship"
+        "nullablePrompt": "选择飞船"
       },
       "addAddon": {
         "nullablePrompt": ""
@@ -567,44 +986,33 @@
       "table": {
         "selected": "%{count} Selected"
       },
-      "modelModule": {
-        "name": "名称",
-        "description": "描述",
-        "price": "价格",
-        "pledgePrice": "承诺价格",
-        "productionStatus": "生产状态",
-        "scKey": "SC Key",
-        "storeImage": "商店图片",
-        "active": "激活？",
-        "hidden": "隐藏？"
-      },
       "commodityPrice": {
-        "shopId": "Shop",
-        "station": "Station",
-        "commodityItemType": "Commodity Type",
+        "shopId": "商店",
+        "station": "空间站",
+        "commodityItemType": "商品类型",
         "commodityItemId": "Commodity Item",
         "item": "ShopCommodity",
-        "price": "Price",
-        "type": "Type",
-        "shop": "Shop",
-        "submittedBy": "Submitted By"
+        "price": "价格",
+        "type": "类型",
+        "shop": "商店",
+        "submittedBy": "提交者"
       },
       "syncExtension": {
         "status": {
-          "started": "Import Started...",
-          "finished": "Import Finished",
-          "failed": "Import Failed!"
+          "started": "导入已开始...",
+          "finished": "导入完成",
+          "failed": "导入失败!"
         },
         "processSteps": {
-          "fetchHangar": "Fetching Data from the RSI Hangar",
-          "submitData": "Submitting Data to the Fleetyards.net Backend"
+          "fetchHangar": "正在从 RSI 机库获取数据",
+          "submitData": "正在提交数据到 Fleetyards.net 后台"
         },
-        "sessionStatus": "RSI Session status",
-        "checkIdentity": "Check RSI Session",
+        "sessionStatus": "RSI 会话状态",
+        "checkIdentity": "检查 RSI 会话",
         "identityStatus": {
-          "pending": "Checking...",
-          "notFound": "not found",
-          "connected": "connected"
+          "pending": "检查中...",
+          "notFound": "未找到",
+          "connected": "已连接"
         },
         "platforms": {
           "chrome": "Google Chrome or Chromium based Browsers",
@@ -614,27 +1022,103 @@
           "github": "GitHub"
         },
         "pledgeItems": {
-          "pages": "Pages",
-          "all": "All Pledge Items",
-          "ships": "Ships",
-          "components": "Modules",
-          "skins": "Paints",
-          "upgrades": "Upgrades"
+          "pages": "页面",
+          "all": "所有质押物品",
+          "ships": "飞船",
+          "components": "模块",
+          "skins": "涂装",
+          "upgrades": "升级"
         },
         "importedItems": {
-          "importedVehicles": "Added Ships",
-          "foundVehicles": "Found Ships",
-          "movedVehiclesToWanted": "Moved Ships to Wishlist",
-          "missingModels": "Ships not found",
-          "importedComponents": "Added Components",
-          "foundComponents": "Found Components",
-          "missingComponents": "Components not found",
+          "importedVehicles": "已添加飞船",
+          "foundVehicles": "找到的飞船",
+          "movedVehiclesToWanted": "飞船已移至愿望清单",
+          "missingModels": "未找到飞船",
+          "importedComponents": "已添加组件",
+          "foundComponents": "找到的组件",
+          "missingComponents": "未找到组件",
           "missingComponentVehicles": "No matching Ship found for Components",
-          "importedUpgrades": "Added Upgrades",
-          "foundUpgrades": "Found Upgrades",
-          "missingUpgrades": "Upgrades not found",
+          "importedUpgrades": "已添加升级",
+          "foundUpgrades": "找到的升级",
+          "missingUpgrades": "未找到升级",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
         }
+      },
+      "cargoGridViewer": {
+        "capacity": "容量",
+        "maxContainerSize": "最大集装箱",
+        "packed": "已装载",
+        "totalCargo": "总货物",
+        "didNotFit": "放不下",
+        "openInTool": "在货物网格工具中打开",
+        "myHangar": "仅显示我的飞船",
+        "filterShips": "按集装箱大小筛选飞船"
+      },
+      "admin": {
+        "dashboard": {
+          "quickStats": {
+            "onlineUsers": "在线用户",
+            "totalUsers": "总用户数",
+            "totalShips": "总飞船数",
+            "newShipsInYear": "%{year} 新飞船",
+            "totalFleets": "总舰队数"
+          }
+        },
+        "modelHardpoint": {
+          "loadouts": "配置"
+        }
+      },
+      "hangarTable": {
+        "extraColumns": "列",
+        "columns": {
+          "storeImage": "图片",
+          "storeImageWide": "宽图片",
+          "angledView": "3D 图片",
+          "angledViewWide": "宽 3D 图片",
+          "modelManufacturerName": "制造商",
+          "modelLength": "长度",
+          "modelBeam": "宽度",
+          "modelHeight": "高度",
+          "modelMass": "质量",
+          "modelCargo": "货物",
+          "modelMinCrew": "船员",
+          "modelMaxCrew": "最多船员",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "最大速度",
+          "modelGroundMaxSpeed": "地面速度",
+          "modelFocus": "定位",
+          "modelProductionStatus": "生产状态",
+          "modelPrice": "价格",
+          "modelPledgePrice": "质押价格"
+        }
+      },
+      "fleetTable": {
+        "extraColumns": "列",
+        "columns": {
+          "storeImage": "图片",
+          "storeImageWide": "宽图片",
+          "angledView": "3D 图片",
+          "angledViewWide": "宽 3D 图片",
+          "modelManufacturerName": "制造商",
+          "modelLength": "长度",
+          "modelBeam": "宽度",
+          "modelHeight": "高度",
+          "modelMass": "质量",
+          "modelCargo": "货物",
+          "modelMinCrew": "船员",
+          "modelMaxCrew": "最多船员",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "最大速度",
+          "modelGroundMaxSpeed": "地面速度",
+          "modelProductionStatus": "生产状态",
+          "modelPrice": "价格",
+          "modelPledgePrice": "质押价格",
+          "owner": "所有者"
+        }
+      },
+      "erkul": {
+        "prefix": "Tryout Loadouts with",
+        "link": "Erkul's DPS Calculator"
       }
     }
   }

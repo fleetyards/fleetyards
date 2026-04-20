@@ -1,4 +1,67 @@
 {
+  "es": {
+    "filterGroup": {
+      "actions": {
+        "fetchMore": "Cargar más"
+      },
+      "labels": {
+        "search": "Escriba para buscar",
+        "nullablePrompt": "No Option selected",
+        "prompt": "Please select an Option",
+        "removeTooltip": "Click to remove Option"
+      },
+      "model": {
+        "baseModel": {
+          "label": "Modelo base"
+        }
+      },
+      "modelLoaner": {
+        "loanerModel": {
+          "label": "Modelo prestado"
+        }
+      },
+      "modelHardpoint": {
+        "source": {
+          "label": "Fuente",
+          "prompt": "Select Source"
+        },
+        "group": {
+          "label": "Grupo",
+          "prompt": "Select Group"
+        },
+        "hardpointType": {
+          "label": "Tipo",
+          "prompt": "Select Type"
+        },
+        "size": {
+          "label": "Tamaño",
+          "nullablePrompt": "Select Size"
+        },
+        "category": {
+          "label": "Categoría",
+          "nullablePrompt": "Select Category"
+        },
+        "subCategory": {
+          "label": "Subcategoría",
+          "nullablePrompt": "Select Sub Category"
+        }
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "Ships Filter",
+            "prompt": "Select which ships to show",
+            "nullablePrompt": "Select an option"
+          },
+          "hangarGroupId": {
+            "label": "Grupo de hangar",
+            "prompt": "Select a hangar group",
+            "nullablePrompt": "Select a group"
+          }
+        }
+      }
+    }
+  },
   "en": {
     "filterGroup": {
       "actions": {

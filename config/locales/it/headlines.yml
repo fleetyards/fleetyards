@@ -2,6 +2,58 @@
 it:
   headlines:
     account: Le mie informazioni
+    admin:
+      admin_user:
+        edit: Edit %{admin_user}
+        index: Admin Users
+        new: New Admin User
+      component:
+        edit: Edit %{component}
+        index: Componente
+        new: Nuovo componente
+      dashboard: Pannello di controllo
+      equipment:
+        edit: Equipment %{equipment}
+        index: Equipaggiamento
+        new: New Equipment
+      image:
+        index: Immagini
+      loaner_uploads:
+        new: New Loaner Upload
+      manufacturer:
+        edit: Edit %{manufacturer}
+        index: Produttore
+        new: Nuovo produttore
+      model:
+        edit: Edit %{model}
+        images: Imageupload for %{model}
+        index: Modelli
+        name_diff: Models with different RSI Name
+        new: Nuovo modello
+        price_diff: Models with outdated Pledge price
+      model_module:
+        edit: Module %{model_module}
+        index: Moduli
+        new: Nuovo modulo
+      model_module_package:
+        edit: Module Package %{model_module_package}
+        index: Pacchetti di moduli
+        new: New Module Package
+      model_paint:
+        edit: Paint %{model_paint}
+        index: Verniciature
+        new: Nuova verniciatura
+      model_upgrade:
+        edit: Upgrade %{model_upgrade}
+        index: Upgrade
+        new: New Upgrade
+      user:
+        edit: Edit %{user}
+        index: Utenti
+        new: Nuovo utente
+      maintenance:
+        rsi_api_status:
+          index: Stato API RSI
     change_password: Cambia la tua password
     comments: Commenti
     confirm: Conferma il tuo Account
@@ -10,7 +62,8 @@ it:
     not_found: Errore di Navigazione
     privacy: Informativa sulla privacy
     server_error: Errore del server
-    sign_in: Login
+    sign_in: Accedi
     sign_up: Registrati
     unlock: Sblocca il tuo account
+    unprocessable_entity: False Request
     welcome: Benvenuto

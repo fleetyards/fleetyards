@@ -1,1 +1,70 @@
+---
 de:
+  helpers:
+    label:
+      user:
+        remember_me: Angemeldet bleiben
+    placeholder:
+      admin_user:
+        email: E-Mail
+        password: Passwort
+        password_confirmation: Passwort bestätigen
+        username: Benutzername
+      component:
+        grade: Qualität
+        size: Größe
+      description: Beschreibung
+      dock:
+        beam: Breite
+        height: Höhe
+        length: Länge
+        name: Name
+      equipment:
+        damage_reduction: Damage Reduction
+        extras: Extras
+        grade: Qualität
+        range: Range
+        rate_of_fire: Rate of Fire
+        size: Größe
+        storage: storage
+        temperature_rating: Temp. Rating
+        volume: Volume
+      manufacturer:
+        code: Shortcode of Name
+        known_for: "..."
+      name: Name
+      user:
+        email: E-Mail
+        login: Benutzername oder E-Mail
+        otp_token: 2FA-Token
+        password: Passwort
+        password_confirmation: Passwort bestätigen
+        username: Benutzername
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: Versteckt?
+        active: Aktiv?
+        ground: Ground?
+        map: Map?
+        on_sale: Im Angebot?
+    prompt:
+      component:
+        component_class: Please select a Component Class
+        item_class: Please select a Item Class
+        item_type: Bitte wählen Sie einen Gegenstandstyp
+        manufacturer: Please select a Manufacturer
+      docks:
+        dock_type: Please select a Dock Type
+        ship_size: Please select a Ship size
+      equipment:
+        backpack_compatibility: Backpack compatibility
+        core_compatibility: Core compatibility
+        equipment_type: Please select a Type
+        item_type: Bitte wählen Sie einen Gegenstandstyp
+        slot: Please select a Slot
+        weapon_class: Please select a Weapon Class
+      models:
+        dock_size: Please select a Dock size
+      video:
+        video_type: Please select a Video Type

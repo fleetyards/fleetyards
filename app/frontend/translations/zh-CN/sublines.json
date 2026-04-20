@@ -12,10 +12,10 @@
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
-        "disclaimer": "Disclaimer",
-        "copyright": "Copyright",
+        "disclaimer": "免责声明",
+        "copyright": "版权",
         "thirdpartycontent": "Credits",
-        "sponsors": "Sponsors",
+        "sponsors": "赞助商",
         "liabilityInternal": "Limitation of liability for internal content",
         "liabilityExternal": "Limitation of liability for external links"
       },

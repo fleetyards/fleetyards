@@ -49,15 +49,66 @@
         "success": "Dein Passwort wurde erfolgreich geändert.",
         "failure": "Dein Passwort konnte nicht aktualisiert werden."
       },
-      "updateProfile": { "success": "Profil aktualisiert." },
-      "updateHangar": { "success": "Hangar-Einstellungen aktualisiert." },
+      "updateProfile": {
+        "success": "Profil aktualisiert.",
+        "failure": "Profile could not be updated."
+      },
+      "updateHangar": {
+        "success": "Hangar-Einstellungen aktualisiert."
+      },
+      "features": {
+        "updated": "Feature updated.",
+        "error": "Could not update feature.",
+        "actorAdded": "Actor added to feature.",
+        "actorRemoved": "Actor removed from feature.",
+        "groupAdded": "Group added to feature.",
+        "groupRemoved": "Group removed from feature.",
+        "created": "Feature created.",
+        "destroyed": "Feature removed.",
+        "createError": "Could not create feature."
+      },
+      "rsiRequestLogs": {
+        "resolved": "Request log marked as resolved.",
+        "error": "Could not update request log."
+      },
       "updateNotifications": {
         "success": "Benachrichtigungs-Einstellungen aktualisiert."
       },
-      "updateAccount": { "success": "Konto aktualisiert." },
+      "updateAccount": {
+        "success": "Konto aktualisiert."
+      },
+      "oauthApplications": {
+        "create": {
+          "success": "OAuth application created.",
+          "error": "Could not create OAuth application."
+        },
+        "update": {
+          "success": "OAuth application updated.",
+          "error": "Could not update OAuth application."
+        },
+        "destroy": {
+          "success": "OAuth application deleted.",
+          "error": "Could not delete OAuth application."
+        },
+        "regenerateSecret": {
+          "success": "Client secret regenerated.",
+          "error": "Could not regenerate client secret."
+        },
+        "copied": "Copied to clipboard.",
+        "copyError": "Could not copy to clipboard.",
+        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+      },
       "avatarUpload": {
-        "success": "Avatar hochgeladen",
-        "invalidExtension": "Das von dir bereitgestellte Bild hat ein ungültiges Format. Unterstützte Formate sind: %{extensions}."
+        "create": {
+          "success": "Avatar uploaded",
+          "failure": "Could not upload Avatar"
+        },
+        "destroy": {
+          "success": "Avatar removed",
+          "failure": "Could not remove Avatar"
+        },
+        "invalidExtension": "Das von dir bereitgestellte Bild hat ein ungültiges Format. Unterstützte Formate sind: %{extensions}.",
+        "success": "Avatar hochgeladen"
       },
       "hangarImport": {
         "success": "Import abgeschlossen",
@@ -70,10 +121,17 @@
       },
       "vehicle": {
         "add": {
-          "success": "Deine neue <b>%{model}</b> wird an deinen "
+          "success": {
+            "noHtml": "Your new %{model} will be delivered to your Hangar",
+            "paragraph1": "Your new ",
+            "paragraph2": "will be delivered to your "
+          }
         },
         "addToWishlist": {
-          "success": "Deine neue <b>%{model}</b> wurde zu deiner "
+          "success": {
+            "noHtml": "Your new %{model} was added to your Wishlist",
+            "paragraph2": "was added to your "
+          }
         },
         "resetIngame": {
           "moveToWishlist": {
@@ -114,10 +172,16 @@
         "urlInvalid": "URL ist ungültig",
         "emailTaken": "E-Mail-Adresse ist bereits vergeben.",
         "fleetTaken": "Flotte ist bereits vergeben.",
+        "colorInvalid": "Color is invalid",
         "serialTaken": "Seriennummer ist bereits vergeben.",
         "textInvalid": "%{field} ist ungültig",
         "hangar": {
-          "accountRequired": "Du musst dich <a href=\"/sign-up/\">registrieren</a> oder <a href=\"/login/\">anmelden</a>, um Schiffe zu deinem Hangar hinzuzufügen.<br>Weitere Informationen findest du <a href=\"/hangar/preview/\">hier</a>"
+          "accountRequired": {
+            "noHtml": "You need to Sign up or Login to add Ships to your Hangar.",
+            "paragraph1": "You need to ",
+            "paragraph2": " to add Ships to your Hangar.",
+            "paragraph3": "Get more Information "
+          }
         },
         "default": "<b>Etwas ist schief gelaufen.</b> <br>Hast du schon versucht, es aus- und wieder einzuschalten?"
       },
@@ -153,7 +217,9 @@
             "success": "Einladung abgelehnt.",
             "failure": "Einladung konnte nicht abgelehnt werden."
           },
-          "create": { "failure": "Benutzer konnte nicht eingeladen werden." }
+          "create": {
+            "failure": "Benutzer konnte nicht eingeladen werden."
+          }
         },
         "members": {
           "update": {
@@ -193,6 +259,9 @@
           "failure": "Wir konnten das angeforderte 3D-Modell nicht laden! Bitte versuche es später erneut."
         }
       },
+      "cargoGridViewer": {
+        "noCargoHolds": "This ship has no cargo holds."
+      },
       "confirm": {
         "vehicle": {
           "destroy": "Bist du sicher, dass du dieses Schiff aus deinem Hangar entfernen möchtest?"
@@ -211,6 +280,9 @@
         "account": {
           "destroy": "Bist du sicher, dass du dein Konto löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
+        "itemPrice": {
+          "destroy": "Bist du sicher, dass du diesen Artikelpreis löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
         "fleet": {
           "leave": "Bist du sicher, dass du die Flotte verlassen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
           "destroy": "Bist du sicher, dass du deine Flotte löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
@@ -220,6 +292,10 @@
           "invites": {
             "decline": "Bist du sicher, dass du diese Einladung ablehnen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
           }
+        },
+        "oauthApplication": {
+          "destroy": "Are you sure you want to delete this OAuth application? This action can't be reverted.",
+          "regenerateSecret": "Are you sure you want to regenerate the client secret? Existing integrations will stop working."
         },
         "twoFactor": {
           "generateBackupCodes": "Bist du sicher, dass du deine Zwei-Faktor-Backup-Codes neu generieren möchtest?"
@@ -241,6 +317,15 @@
         },
         "manufacturer": {
           "destroy": "Bist du sicher, dass du diesen Hersteller löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "modelHardpoint": {
+          "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
+        },
+        "modelHardpointLoadout": {
+          "destroy": "Are you sure you want to delete this loadout? This action can't be reverted."
+        },
+        "modelLoaner": {
+          "destroy": "Are you sure you want to delete this loaner? This action can't be reverted."
         },
         "modelPaint": {
           "destroy": "Bist du sicher, dass du diese Lackierung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
@@ -271,9 +356,6 @@
         "adminUser": {
           "destroy": "Bist du sicher, dass du diesen Admin-Benutzer löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
-        "itemPrice": {
-          "destroy": "Bist du sicher, dass du diesen Artikelpreis löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
-        },
         "image": {
           "destroy": "Bist du sicher, dass du dieses Bild löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
@@ -281,18 +363,27 @@
           "destroy": "Bist du sicher, dass du dieses Fahrzeug löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         }
       },
+      "oauthAuthorize": {
+        "loading": "Laden...",
+        "loadError": "Failed to load authorization details.",
+        "authorizeError": "Authorization failed.",
+        "denyError": "Authorization denial failed."
+      },
       "oauth": {
         "disconnect": {
           "success": "Provider disconnected successfully.",
           "failure": "Could not disconnect provider. Please try again."
         }
       },
+      "confirmAccess": {
+        "failure": "Access could not be confirmed. Please check your password and try again."
+      },
       "confirmAccessEmail": {
         "sent": "A confirmation code has been sent to your email.",
         "failure": "Could not send confirmation email. Please try again."
       },
       "confirmAccessCode": {
-        "failure": "The confirmation code is invalid or has expired."
+        "failure": "Der Bestätigungscode ist ungültig oder abgelaufen."
       },
       "import": {
         "started": "%{type} Import gestartet...",

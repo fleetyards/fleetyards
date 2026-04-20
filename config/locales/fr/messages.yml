@@ -1,1 +1,80 @@
+---
 fr:
+  messages:
+    background_disabled:
+      success: "%{resource} not used for Background."
+    background_enabled:
+      success: "%{resource} used for Background."
+    confirm:
+      delete: Are you sure you want to delete this entry?
+      resend_confirmation: Are you sure you want to resend confirmation instructions
+        for this user?
+      admin_login_in_as: Are you sure you want to login as the user?
+    create:
+      failure: "%{resource} could not be created."
+      success: "%{resource} created."
+    destroy:
+      success: "%{resource} successfully deleted."
+    disabled:
+      success: "%{resource} disabled."
+    enabled:
+      success: "%{resource} enabled."
+    fleet:
+      join:
+        success: Fleet Join Request received.
+    loaner_upload:
+      failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
+      success: Loaner Upload successfull.
+    record_not_found:
+      base: No Entry found
+      fleet: No Fleet found
+      fleet_membership: No Fleet Member found
+      user: No User found
+      invite: No Invite found
+      model: No Model found
+    reload:
+      started: "%{resource} reload started."
+      success: "%{resource} successfully reloaded."
+    resend_confirmation:
+      failure: "%{resource} could not resend confirmation."
+      success: "%{resource} confirmation send."
+    send_password_reset:
+      success: "%{resource} password reset instructions sent."
+    rsi_verification:
+      failure: Account could not be verified.
+      success: Account successfully verified.
+    signup:
+      already_signed_in: Vous êtes déjà connecté.
+      username_invalid: Username is invalid.
+      reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
+        choose something else!
+      blocked: You have been blocked from FleetYards.net.<br>This can have multiple
+        Reasons.<br>For further Information please Contact us under info@fleetyards.net
+    update:
+      failure: "%{resource} could not be edited."
+      success: "%{resource} edited successfully."
+    omniauth_connection:
+      destroy:
+        last_connection: You cannot remove your last login connection without setting
+          a password first.
+    confirmAccess:
+      failure: Access confirmation failed
+    confirmAccessCode:
+      failure: Le code de confirmation est invalide ou a expiré.
+    confirmAccessEmail:
+      sent: A confirmation link has been sent to your email.
+      notAllowed: Email confirmation is only available for OAuth accounts.
+    hangar_import:
+      no_data: No Data found to import
+    hangar_sync:
+      no_data: No Data found to sync
+      already_running: A Hangar Sync is already in progress
+    user:
+      requires_access_confirmation: Access confirmation pending
+    otp:
+      active: Two-factor Authentication already active
+      inactive: Two-factor Authentication already inactive
+      disable:
+        failure: Could not deactivate Two-factor Authentication
+      enable:
+        failure: Could not activate Two-factor Authentication

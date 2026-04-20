@@ -1,1 +1,70 @@
+---
 fr:
+  helpers:
+    label:
+      user:
+        remember_me: Se souvenir de moi
+    placeholder:
+      admin_user:
+        email: E-mail
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        username: Nom d'utilisateur
+      component:
+        grade: Grade
+        size: Taille
+      description: Description
+      dock:
+        beam: Largeur
+        height: Hauteur
+        length: Longueur
+        name: Nom
+      equipment:
+        damage_reduction: Damage Reduction
+        extras: Extras
+        grade: Grade
+        range: Range
+        rate_of_fire: Rate of Fire
+        size: Taille
+        storage: storage
+        temperature_rating: Temp. Rating
+        volume: Volume
+      manufacturer:
+        code: Shortcode of Name
+        known_for: "..."
+      name: Nom
+      user:
+        email: E-mail
+        login: Nom d'utilisateur ou e-mail
+        otp_token: 2FA-Token
+        password: Mot de passe
+        password_confirmation: Confirmation du mot de passe
+        username: Nom d'utilisateur
+      video:
+        url: URL or YouTube ID
+      model:
+        hidden: Masqué ?
+        active: Actif ?
+        ground: Ground?
+        map: Map?
+        on_sale: En vente ?
+    prompt:
+      component:
+        component_class: Please select a Component Class
+        item_class: Please select a Item Class
+        item_type: Veuillez sélectionner un type d'objet
+        manufacturer: Please select a Manufacturer
+      docks:
+        dock_type: Please select a Dock Type
+        ship_size: Please select a Ship size
+      equipment:
+        backpack_compatibility: Backpack compatibility
+        core_compatibility: Core compatibility
+        equipment_type: Please select a Type
+        item_type: Veuillez sélectionner un type d'objet
+        slot: Please select a Slot
+        weapon_class: Please select a Weapon Class
+      models:
+        dock_size: Please select a Dock size
+      video:
+        video_type: Please select a Video Type

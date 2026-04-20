@@ -1,6 +1,116 @@
 {
   "it": {
     "headlines": {
+      "admin": {
+        "dashboard": {
+          "title": "Pannello di controllo",
+          "modelsByClassification": "Modelli per classificazione",
+          "models": "Modelli ricaricati",
+          "modelsByManufacturer": "Modelli per produttore",
+          "manufacturers": "Produttori",
+          "modelsByStatus": "Models by Status",
+          "modelsBySize": "Modelli per dimensione",
+          "modelsPerMonth": "Modelli al mese",
+          "componentsByClass": "Componenti per classe",
+          "components": "Componenti",
+          "visitsPerDay": "Visite al giorno",
+          "visitsPerMonth": "Visite al mese",
+          "mostViewedPages": "Most Viewed Pages",
+          "registrationsPerMonth": "Registrazioni al mese",
+          "users": "Utenti"
+        },
+        "models": {
+          "index": "Modelli",
+          "edit": {
+            "index": "Edit Model",
+            "fleetchart": "Fleetchart Images",
+            "hardpoints": "Punti di montaggio",
+            "cargoAndFuel": "Carburante",
+            "cargoHolds": "Stive di carico",
+            "metrics": "Metrics",
+            "prices": "Prezzi",
+            "docks": "Dock",
+            "modules": "Moduli",
+            "paints": "Verniciature",
+            "videos": "Video",
+            "images": "Immagini",
+            "itemPrices": "Item Prices",
+            "linkModule": "Link Existing Module",
+            "loaners": "Prestiti",
+            "upgrades": "Upgrade",
+            "packages": "Packages",
+            "linkUpgrade": "Link Existing Upgrade"
+          },
+          "new": "Nuovo modello",
+          "show": "Modello",
+          "images": "Immagini",
+          "tableConfigurationModal": "Table Configuration"
+        },
+        "components": {
+          "index": "Componenti",
+          "new": "Nuovo componente",
+          "edit": {
+            "index": "Edit Component",
+            "itemPrices": "Item Prices"
+          }
+        },
+        "modelPaints": {
+          "index": "Verniciature",
+          "new": "Nuova verniciatura",
+          "edit": "Edit Paint"
+        },
+        "modelModules": {
+          "index": "Moduli",
+          "new": "Nuovo modulo",
+          "edit": "Edit Module",
+          "models": "Linked Models",
+          "prices": "Prezzi"
+        },
+        "manufacturers": {
+          "index": "Produttori",
+          "new": "Nuovo produttore",
+          "edit": "Edit Manufacturer"
+        },
+        "users": {
+          "index": "Utenti",
+          "edit": "Edit User"
+        },
+        "vehicles": {
+          "index": "Vehicles",
+          "edit": "Edit Vehicle"
+        },
+        "fleets": {
+          "index": "Flotte",
+          "edit": "Edit Fleet"
+        },
+        "admins": {
+          "index": "Amministratori",
+          "new": "New Admin",
+          "edit": "Edit Admin"
+        },
+        "oauthApplications": {
+          "index": "Applicazioni OAuth",
+          "new": "Nuova applicazione OAuth",
+          "edit": "Modifica applicazione OAuth"
+        },
+        "features": {
+          "index": "Flag funzionalità",
+          "show": "Dettagli funzionalità",
+          "globalState": "Global State",
+          "groups": "Gruppi",
+          "actors": "Attori",
+          "selfService": "Self-Service",
+          "percentageOfActors": "Percentage of Actors",
+          "percentageOfTime": "Percentage of Time",
+          "addActor": "Aggiungi attore"
+        },
+        "rsiApiStatus": {
+          "index": "Stato API RSI"
+        },
+        "images": {
+          "index": "Immagini"
+        }
+      },
       "welcome": "Benvenuto su",
       "welcomeShips": "Ultime Navi",
       "welcomeImages": "Immagini Casuali",
@@ -11,9 +121,11 @@
       "images": "Indice Delle Immagini",
       "stats": "Statistiche",
       "notFound": "Errore di Navigazione",
-      "serverError": "Server Error",
+      "featureNotReady": "Coming Soon",
+      "accessDenied": "Accesso negato",
+      "serverError": "Errore del server",
       "comments": "Commenti",
-      "login": "Login",
+      "login": "Accedi",
       "hangar": {
         "index": "Il Mio Hangar",
         "preview": {
@@ -25,12 +137,12 @@
         "stats": "Statistiche",
         "public": "Hangar di %{user}",
         "import": "Importa",
-        "wishlist": "Wishlist",
+        "wishlist": "Lista dei desideri",
         "publicStats": "Statistiche",
-        "publicWishlist": "%{user} Wishlist",
+        "publicWishlist": "Lista dei desideri di %{user}",
         "resetIngame": "Reset Ingame Ships after Wipe"
       },
-      "syncExtension": "Sync RSI Hangar",
+      "syncExtension": "Sincronizza hangar RSI",
       "editMyVehicle": "Modifica il mio %{vehicle}",
       "nameMyVehicle": "Dai un nome al mio %{vehicle}",
       "editGroups": "Modifica i Gruppi",
@@ -43,16 +155,19 @@
       "requestPassword": "Richiedi la password",
       "changePassword": "Cambia la password",
       "confirmAccess": "Conferma l'accesso",
+      "oauthAuthorize": "Authorize Application",
       "filterModels": "Filtra Le Navi",
       "filterVehicles": "Filtra Hangar",
-      "filterCargoRoutes": "Filtra rotte di carico",
-      "filterCommodities": "Filtra Merci",
       "fleets": {
         "owners": "Proprietari",
         "add": "Crea una nuova flotta",
         "invites": "Inviti Alla Flotta",
         "inviteUrls": "URL d'invito",
-        "members": "Membri",
+        "members": {
+          "index": "Members",
+          "worldmap": "Member Worldmap",
+          "starmap": "Member Starmap"
+        },
         "stats": "Statistiche",
         "preview": {
           "h1": "Anteprima della Flotta",
@@ -61,7 +176,8 @@
         },
         "settings": {
           "fleet": "Impostazioni Della Flotta",
-          "membership": "Impostazioni dei Membri"
+          "membership": "Impostazioni dei Membri",
+          "roles": "Fleet Roles"
         },
         "inviteMember": "Invita nuovo membro"
       },
@@ -69,11 +185,15 @@
         "create": "Crea Gruppo",
         "edit": "Modifica Gruppo"
       },
-      "compare": { "ships": "Confronta Navi" },
+      "compare": {
+        "ships": "Confronta Navi"
+      },
       "settings": {
         "account": "Profilo",
         "profile": "Impostazioni del Profilo",
         "hangar": "Impostazioni dell'Hangar",
+        "features": "Flag funzionalità",
+        "oauthApplications": "Applicazioni OAuth",
         "notifications": "Impostazioni Notifiche",
         "verify": "Verifica il tuo account RSI",
         "security": {
@@ -86,14 +206,59 @@
           "backupCodes": "Genera Codici Di Backup Autenticazione a Due Fattori"
         }
       },
+      "oauthApplications": {
+        "new": "Nuova applicazione OAuth",
+        "edit": "Modifica applicazione OAuth"
+      },
       "roadmap": "Roadmap Delle Navi",
       "tools": {
-        "profitCalculator": { "index": "Calcolatore Dei Profitti" },
+        "index": "Strumenti",
+        "travelTimes": "Tempi di viaggio",
+        "cargoGrids": "Griglie di carico",
+        "profitCalculator": {
+          "index": "Calcolatore Dei Profitti"
+        },
         "tradeRoutes": {
           "index": "Rotte Commerciali",
           "withShip": "Rotte Commerciali per %{name} (%{cargo})"
         }
       },
+      "rsiVerification": "Verifica il tuo account RSI",
+      "hangarGuideEmpty": "Non c'è molto da vedere qui?",
+      "hangarGuide": "Guida all'Hangar",
+      "support": "Supporta FleetYards.net",
+      "vehicle": {
+        "bulkGroupEdit": "Aggiungi/rimuovi Gruppi"
+      },
+      "pagination": {
+        "count": "%{current} of %{total}"
+      },
+      "models": {
+        "index": "Modelli"
+      },
+      "modals": {
+        "models": {
+          "displayOptions": "Display Options"
+        },
+        "shopCommodity": {
+          "update": "Aggiorna Merce %{shopCommodity}",
+          "create": "Aggiungi Merce",
+          "sellPrices": "Prezzi di vendita di %{shopCommodity}",
+          "buyPrices": "Prezzi di Acquisto %{shopCommodity}",
+          "rentalPrices": "Prezzi di Noleggio %{shopCommodity}"
+        },
+        "commodityPrice": {
+          "create": "Invia Prezzo"
+        }
+      },
+      "visualTests": {
+        "overview": "Panoramica",
+        "panels": "Pannelli",
+        "buttons": "Pulsanti",
+        "tables": "Tabelle"
+      },
+      "filterCargoRoutes": "Filtra rotte di carico",
+      "filterCommodities": "Filtra Merci",
       "starsystems": "Sistemi Stellari",
       "starsystem": "Sistema Stellare %{starsystem}",
       "celestialObjects": "Oggetto Celeste",
@@ -104,22 +269,7 @@
       "stationImages": "Immagini di %{station} vicino a %{celestialObject}",
       "shops": "Negozi",
       "shop": "%{shop} su %{station}",
-      "commodities": "Merci",
-      "rsiVerification": "Verifica il tuo account RSI",
-      "hangarGuideEmpty": "Non c'è molto da vedere qui?",
-      "hangarGuide": "Guida all'Hangar",
-      "support": "Supporta FleetYards.net",
-      "vehicle": { "bulkGroupEdit": "Aggiungi/rimuovi Gruppi" },
-      "modals": {
-        "shopCommodity": {
-          "update": "Aggiorna Merce %{shopCommodity}",
-          "create": "Aggiungi Merce",
-          "sellPrices": "Prezzi di vendita di %{shopCommodity}",
-          "buyPrices": "Prezzi di Acquisto %{shopCommodity}",
-          "rentalPrices": "Prezzi di Noleggio %{shopCommodity}"
-        },
-        "commodityPrice": { "create": "Invia Prezzo" }
-      }
+      "commodities": "Merci"
     }
   }
 }

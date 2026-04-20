@@ -3,6 +3,7 @@
     "nav": {
       "home": "Inicio",
       "back": "Atrás",
+      "navigation": "Navegación",
       "ships": {
         "index": "Naves"
       },
@@ -31,12 +32,18 @@
         "add": "Crear una nueva flota",
         "invites": "Invitaciones",
         "ships": "Naves",
-        "members": "Miembros",
+        "members": {
+          "index": "Members",
+          "invites": "Invites",
+          "worldmap": "Worldmap",
+          "starmap": "Starmap"
+        },
         "stats": "Estadísticas",
         "settings": {
           "index": "Configuración",
           "fleet": "Configuración de flota",
-          "membership": "Configuración de membresía"
+          "membership": "Configuración de membresía",
+          "roles": "Roles"
         }
       },
       "rsiProfile": "Perfil RSI",
@@ -51,7 +58,7 @@
       "toggleSlimCollapse": "Contraer",
       "toggleSlimExpand": "Expandir",
       "roadmap": {
-        "index": "Roadmap",
+        "index": "Hoja de ruta",
         "overview": "Visión general",
         "changes": "Cambios",
         "ships": "Roadmap de naves"
@@ -64,6 +71,8 @@
         "security": "Seguridad",
         "notifications": "Notificaciones",
         "hangar": "Hangar",
+        "features": "Funciones",
+        "oauthApplications": "Apps OAuth",
         "verify": "Verificación de cuenta RSI"
       },
       "reload": "¡Actualización disponible!",
@@ -83,10 +92,17 @@
             "metrics": "Métricas",
             "prices": "Precios",
             "docks": "Muelles",
+            "modules": "Módulos",
+            "paints": "Pinturas",
+            "images": "Imágenes",
             "videos": "Videos",
             "cargoAndFuel": "Carga y Combustible",
+            "cargoHolds": "Bodegas de carga",
             "fleetchart": "Imágenes Fleetchart",
-            "hardpoints": "Puntos de Conexión"
+            "hardpoints": "Puntos de Conexión",
+            "loaners": "Prestados",
+            "upgrades": "Mejoras",
+            "packages": "Packages"
           }
         },
         "modelPaints": {
@@ -110,7 +126,7 @@
           "index": "Componentes",
           "edit": {
             "index": "Base Data",
-            "prices": "Prices"
+            "prices": "Precios"
           }
         },
         "manufacturers": {
@@ -130,6 +146,9 @@
         },
         "admins": {
           "index": "Administradores"
+        },
+        "oauthApplications": {
+          "index": "Apps OAuth"
         },
         "maintenance": {
           "index": "Mantenimiento",

@@ -1,1 +1,15 @@
+---
 zh-TW:
+  resources:
+    component: 組件
+    equipment: 裝備
+    image: 圖片
+    locale: Locales
+    manufacturer: 製造商
+    messages:
+      password: 密碼
+    model: 型號
+    model_module: 模組
+    model_paint: 塗裝
+    models: 型號
+    user: 使用者

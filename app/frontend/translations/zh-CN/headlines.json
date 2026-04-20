@@ -1,6 +1,116 @@
 {
   "zh-CN": {
     "headlines": {
+      "admin": {
+        "dashboard": {
+          "title": "仪表板",
+          "modelsByClassification": "按分类整理",
+          "models": "已重新加载型号",
+          "modelsByManufacturer": "按制造商分类",
+          "manufacturers": "制造商",
+          "modelsByStatus": "Models by Status",
+          "modelsBySize": "按尺寸分类",
+          "modelsPerMonth": "每月型号",
+          "componentsByClass": "按类别分组件",
+          "components": "组件",
+          "visitsPerDay": "每日访问",
+          "visitsPerMonth": "每月访问",
+          "mostViewedPages": "Most Viewed Pages",
+          "registrationsPerMonth": "每月注册数",
+          "users": "用户"
+        },
+        "models": {
+          "index": "型号",
+          "edit": {
+            "index": "Edit Model",
+            "fleetchart": "Fleetchart Images",
+            "hardpoints": "挂载点",
+            "cargoAndFuel": "燃料",
+            "cargoHolds": "货舱",
+            "metrics": "Metrics",
+            "prices": "价格",
+            "docks": "停靠口",
+            "modules": "模块",
+            "paints": "涂装",
+            "videos": "视频",
+            "images": "图片",
+            "itemPrices": "Item Prices",
+            "linkModule": "Link Existing Module",
+            "loaners": "借用船",
+            "upgrades": "升级",
+            "packages": "Packages",
+            "linkUpgrade": "Link Existing Upgrade"
+          },
+          "new": "新型号",
+          "show": "型号",
+          "images": "图片",
+          "tableConfigurationModal": "Table Configuration"
+        },
+        "components": {
+          "index": "组件",
+          "new": "新组件",
+          "edit": {
+            "index": "Edit Component",
+            "itemPrices": "Item Prices"
+          }
+        },
+        "modelPaints": {
+          "index": "涂装",
+          "new": "新涂装",
+          "edit": "Edit Paint"
+        },
+        "modelModules": {
+          "index": "模块",
+          "new": "新模块",
+          "edit": "Edit Module",
+          "models": "Linked Models",
+          "prices": "价格"
+        },
+        "manufacturers": {
+          "index": "制造商",
+          "new": "新制造商",
+          "edit": "Edit Manufacturer"
+        },
+        "users": {
+          "index": "用户",
+          "edit": "Edit User"
+        },
+        "vehicles": {
+          "index": "Vehicles",
+          "edit": "Edit Vehicle"
+        },
+        "fleets": {
+          "index": "舰队",
+          "edit": "Edit Fleet"
+        },
+        "admins": {
+          "index": "管理员",
+          "new": "New Admin",
+          "edit": "Edit Admin"
+        },
+        "oauthApplications": {
+          "index": "OAuth 应用",
+          "new": "新建 OAuth 应用",
+          "edit": "编辑 OAuth 应用"
+        },
+        "features": {
+          "index": "功能标志",
+          "show": "功能详情",
+          "globalState": "Global State",
+          "groups": "群组",
+          "actors": "角色",
+          "selfService": "Self-Service",
+          "percentageOfActors": "Percentage of Actors",
+          "percentageOfTime": "Percentage of Time",
+          "addActor": "添加角色"
+        },
+        "rsiApiStatus": {
+          "index": "RSI API 状态"
+        },
+        "images": {
+          "index": "图片"
+        }
+      },
       "welcome": "Welcome to",
       "welcomeShips": "Latest Ships",
       "welcomeImages": "Random Images",
@@ -9,59 +119,65 @@
         "fleetchart": "Ships Fleetchart"
       },
       "images": "Images Index",
-      "stats": "Stats",
+      "stats": "统计",
       "notFound": "Navigation Error",
-      "serverError": "Server Error",
+      "featureNotReady": "Coming Soon",
+      "accessDenied": "拒绝访问",
+      "serverError": "服务器错误",
       "comments": "Comments",
-      "login": "Login",
+      "login": "登录",
       "hangar": {
-        "index": "My Hangar",
+        "index": "我的机库",
         "preview": {
-          "h1": "My Hangar Preview",
+          "h1": "我的机库预览",
           "h2": "Your personal Hangar requires an FleetYards.net Account",
           "h3": "What Features does the Hangar include?"
         },
         "alternativeNames": "Alternative Names",
-        "stats": "Stats",
-        "public": "%{user} Hangar",
-        "import": "Import",
-        "wishlist": "Wishlist",
-        "publicStats": "Stats",
-        "publicWishlist": "%{user} Wishlist",
+        "stats": "统计",
+        "public": "%{user} 的机库",
+        "import": "导入",
+        "wishlist": "愿望清单",
+        "publicStats": "统计",
+        "publicWishlist": "%{user} 的愿望清单",
         "resetIngame": "Reset Ingame Ships after Wipe"
       },
-      "syncExtension": "Sync RSI Hangar",
+      "syncExtension": "同步 RSI 机库",
       "editMyVehicle": "Edit my %{vehicle}",
       "nameMyVehicle": "Name my %{vehicle}",
       "editGroups": "Edit Groups",
       "newVehicles": "Add Ships",
       "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
       "addToHangar": "Add \"%{model}\" to your Hangar",
-      "impressum": "Impressum",
-      "privacy": "Privacy policy",
+      "impressum": "法律声明",
+      "privacy": "隐私政策",
       "cookie": "Cookie policy",
-      "requestPassword": "Request Password",
-      "changePassword": "Change Password",
+      "requestPassword": "请求密码",
+      "changePassword": "修改密码",
       "confirmAccess": "Confirm access",
+      "oauthAuthorize": "Authorize Application",
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
-      "filterCargoRoutes": "Filter Cargo routes",
-      "filterCommodities": "Filter Commodities",
       "fleets": {
         "owners": "Owners",
         "add": "Create a new Fleet",
-        "invites": "Fleet Invites",
+        "invites": "舰队邀请",
         "inviteUrls": "Invite Urls",
-        "members": "Members",
-        "stats": "Stats",
+        "members": {
+          "index": "Members",
+          "worldmap": "Member Worldmap",
+          "starmap": "Member Starmap"
+        },
+        "stats": "统计",
         "preview": {
-          "h1": "Fleet Preview",
+          "h1": "舰队预览",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",
           "h3": "What Features does your Fleet include?"
         },
         "settings": {
           "fleet": "Fleet Settings",
-          "membership": "Membership Settings"
+          "membership": "Membership Settings",
+          "roles": "Fleet Roles"
         },
         "inviteMember": "Invite new Member"
       },
@@ -70,16 +186,18 @@
         "edit": "Edit Group"
       },
       "compare": {
-        "ships": "Compare Ships"
+        "ships": "比较飞船"
       },
       "settings": {
-        "account": "Account",
-        "profile": "Profile Settings",
-        "hangar": "Hangar Settings",
-        "notifications": "Notification Settings",
+        "account": "账户",
+        "profile": "个人资料设置",
+        "hangar": "机库设置",
+        "features": "功能标志",
+        "oauthApplications": "OAuth 应用",
+        "notifications": "通知设置",
         "verify": "Verify your RSI Account",
         "security": {
-          "index": "Account Security",
+          "index": "账户安全",
           "twoFactor": "Two-factor Authentiation"
         },
         "twoFactor": {
@@ -88,8 +206,15 @@
           "backupCodes": "Generate Two-Factor Backup Codes"
         }
       },
-      "roadmap": "Ship-Roadmap",
+      "oauthApplications": {
+        "new": "新建 OAuth 应用",
+        "edit": "编辑 OAuth 应用"
+      },
+      "roadmap": "飞船路线图",
       "tools": {
+        "index": "工具",
+        "travelTimes": "旅行时间",
+        "cargoGrids": "货物网格",
         "profitCalculator": {
           "index": "Profit Calculator"
         },
@@ -98,17 +223,6 @@
           "withShip": "Trade Routes for %{name} (%{cargo})"
         }
       },
-      "starsystems": "Starsystems",
-      "starsystem": "%{starsystem} Starsystem",
-      "celestialObjects": "Celestial Objects",
-      "celestialObject": "%{celestialObject} in the %{starsystem} System",
-      "moons": "Moons",
-      "stations": "Stations",
-      "station": "%{station} near %{celestialObject}",
-      "stationImages": "Images of %{station} near %{celestialObject}",
-      "shops": "Shops",
-      "shop": "%{shop} on %{station}",
-      "commodities": "Commodities",
       "rsiVerification": "Verify your RSI-Account",
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
@@ -116,7 +230,16 @@
       "vehicle": {
         "bulkGroupEdit": "Add/Remove Groups"
       },
+      "pagination": {
+        "count": "%{current} of %{total}"
+      },
+      "models": {
+        "index": "型号"
+      },
       "modals": {
+        "models": {
+          "displayOptions": "Display Options"
+        },
         "shopCommodity": {
           "update": "Update Commodity %{shopCommodity}",
           "create": "Add Commodity",
@@ -127,7 +250,26 @@
         "commodityPrice": {
           "create": "Submit Price"
         }
-      }
+      },
+      "visualTests": {
+        "overview": "概览",
+        "panels": "面板",
+        "buttons": "按钮",
+        "tables": "表格"
+      },
+      "filterCargoRoutes": "Filter Cargo routes",
+      "filterCommodities": "Filter Commodities",
+      "starsystems": "Starsystems",
+      "starsystem": "%{starsystem} Starsystem",
+      "celestialObjects": "Celestial Objects",
+      "celestialObject": "%{celestialObject} in the %{starsystem} System",
+      "moons": "Moons",
+      "stations": "Stations",
+      "station": "%{station} near %{celestialObject}",
+      "stationImages": "Images of %{station} near %{celestialObject}",
+      "shops": "Shops",
+      "shop": "%{shop} on %{station}",
+      "commodities": "Commodities"
     }
   }
 }

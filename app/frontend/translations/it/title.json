@@ -8,14 +8,17 @@
       "defaultDocs": "FleetYards.net Documentation",
       "defaultDocsShort": "FleetYards Docs",
       "home": "Home",
-      "ships": { "index": "Navi", "viewer": "Ship Viewer" },
+      "ships": {
+        "index": "Navi",
+        "viewer": "Ship Viewer"
+      },
       "ship": "%{name} - %{manufacturer}",
       "shipImages": "%{name} Immagini",
       "shipVideos": "%{name} Video",
       "shipViewer": "%{name} Viewer",
       "images": "Immagini",
       "stats": "Statistiche",
-      "login": "Login",
+      "login": "Accedi",
       "signUp": "Registrati",
       "embed": "Widget Incorporato",
       "apiV1": "API V1",
@@ -31,8 +34,8 @@
         "import": "Importa",
         "public": "Hangar di %{user}",
         "publicStats": "Statistiche dell'Hangar di %{user}",
-        "wishlist": "Wishlist",
-        "publicWishlist": "%{user} Wishlist"
+        "wishlist": "Lista dei desideri",
+        "publicWishlist": "Lista dei desideri di %{user}"
       },
       "requestPassword": "Richiedi la password",
       "changePassword": "Cambia la password",
@@ -40,12 +43,18 @@
         "add": "Crea una nuova Flotta",
         "preview": "Anteprima della Flotta",
         "invites": "Inviti Alla Flotta",
-        "members": "Membri di %{fleet}",
+        "members": {
+          "index": "%{fleet} Members",
+          "invites": "%{fleet} Invites",
+          "worldmap": "%{fleet} Member Worldmap",
+          "starmap": "%{fleet} Member Starmap"
+        },
         "stats": "Statistiche di %{fleet}",
         "settings": {
           "index": "Impostazioni di %{fleet}",
           "fleet": "Impostazioni di %{fleet}",
-          "membership": "Appartenenza a %{fleet}"
+          "membership": "Appartenenza a %{fleet}",
+          "roles": "Ruoli di %{fleet}"
         }
       },
       "roadmap": {
@@ -55,8 +64,11 @@
       },
       "settings": {
         "index": "Impostazioni del Profilo",
+        "profile": "Impostazioni profilo",
         "account": "Account",
         "hangar": "Impostazioni dell'Hangar",
+        "features": "Flag funzionalità",
+        "oauthApplications": "Applicazioni OAuth",
         "notifications": "Impostazioni Notifiche",
         "security": "Sicurezza dell'account",
         "twoFactor": {
@@ -65,12 +77,14 @@
           "backupCodes": "Genera Codici Di Backup Autenticazione a Due Fattori"
         }
       },
-      "compare": { "ships": "Confronta Navi" },
+      "compare": {
+        "ships": "Confronta Navi"
+      },
       "notFound": "404",
       "tools": {
         "index": "Strumenti",
         "travelTimes": "Tempi di Viaggio",
-        "cargoGrids": "Cargo Grids"
+        "cargoGrids": "Griglie di carico"
       },
       "impressum": "Info legali",
       "privacyPolicy": "Informativa sulla privacy",
@@ -92,6 +106,7 @@
             "fleetchart": "Modifica Immagini Modello",
             "hardpoints": "Modifica Hardpoint Modello",
             "cargoAndFuel": "Carico e Carburante",
+            "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
             "docks": "Modifica Docks Modello",
             "modules": "Modifica Moduli Modello",
             "paints": "Modifica Verniciature Modello",
@@ -105,7 +120,10 @@
         "components": {
           "index": "Componenti",
           "new": "Nuovo Componente",
-          "edit": "Modifica Componente"
+          "edit": {
+            "index": "Edit Component",
+            "prices": "Edit Component Prices"
+          }
         },
         "manufacturers": {
           "index": "Produttori",
@@ -121,12 +139,21 @@
           "edit": "Modifica Veicolo"
         },
         "admins": {
-          "index": "Admins",
+          "index": "Amministratori",
           "edit": "Modifica Admin"
         },
         "fleets": {
           "index": "Flotte",
           "edit": "Modifica Flotta"
+        },
+        "oauthApplications": {
+          "index": "Applicazioni OAuth",
+          "new": "Nuova applicazione OAuth",
+          "edit": "Modifica applicazione OAuth"
+        },
+        "features": {
+          "index": "Flag funzionalità",
+          "show": "Dettagli funzionalità"
         },
         "images": {
           "index": "Immagini"
@@ -134,10 +161,11 @@
         "maintenance": {
           "index": "Manutenzione",
           "pghero": "PgHero",
-          "features": "Features",
+          "features": "Funzionalità",
+          "flipper": "Flipper UI",
           "workers": "Workers",
           "tasks": "Attività",
-          "rsiApiStatus": "RSI API Status"
+          "rsiApiStatus": "Stato API RSI"
         },
         "modelPaints": {
           "index": "Verniciature Modelli",

@@ -1,23 +1,29 @@
 {
   "es": {
     "placeholders": {
-      "name": "Name",
-      "description": "Description",
-      "login": "Username or email",
-      "username": "Username",
+      "name": "Nombre",
+      "description": "Descripción",
+      "login": "Nombre de usuario o correo electrónico",
+      "username": "Nombre de usuario",
       "twoFactorCode": "Two-factor code",
-      "confirmationCode": "Confirmation code",
-      "email": "Email",
+      "confirmationCode": "Código de confirmación",
+      "email": "Correo electrónico",
       "currentPassword": "Current Password",
-      "password": "Password",
-      "passwordConfirmation": "Password Confirmation",
-      "homepage": "Homepage",
-      "discord": "Discord Server",
-      "youtube": "Youtube Channel",
-      "twitch": "Twitch Channel",
-      "guilded": "Guilded Server",
+      "password": "Contraseña",
+      "passwordConfirmation": "Confirmación de contraseña",
+      "homepage": "Página principal",
+      "discord": "Servidor de Discord",
+      "youtube": "Canal de Youtube",
+      "twitch": "Canal de Twitch",
+      "distance": "Distancia",
+      "guilded": "Servidor de Guilded",
       "color": "Color",
-      "fleetInviteToken": "Fleet Invite",
+      "features": {
+        "username": "Username or User ID",
+        "fleetFid": "Fleet FID or Fleet ID",
+        "name": "Feature name"
+      },
+      "fleetInviteToken": "Invitación de flota",
       "quicksearch": {
         "models": "Avenger, Carrack, Cutlass...",
         "models-fleetchart": "Avenger, Carrack, Cutlass...",
@@ -27,16 +33,115 @@
       },
       "search": {
         "default": "Search the Verse...",
-        "roadmap-progress-tracker": "Search"
+        "roadmap-progress-tracker": "Buscar"
       },
-      "home": { "search": "Search for Ships..." },
+      "home": {
+        "search": "Buscar naves..."
+      },
+      "container-1": "0",
+      "container-2": "0",
+      "container-4": "0",
+      "container-8": "0",
+      "container-16": "0",
+      "container-24": "0",
+      "container-32": "0",
+      "image": {
+        "caption": "Descripción"
+      },
+      "model": {
+        "length": "Longitud",
+        "beam": "Manga",
+        "height": "Altura",
+        "price": "Precio",
+        "pledgePrice": "Precio de Pledge",
+        "onSale": "En venta",
+        "mass": "Masa",
+        "minCrew": "Tripulación mín.",
+        "maxCrew": "Tripulación máx.",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "rsiId": "RSI ID",
+        "scIdentifier": "SC Identifier",
+        "erkulIdentifier": "Erkul Identifier",
+        "productionNote": "Nota de producción",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "Velocidad máx.",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "quantumFuelTankSize": "Tamaño del tanque Quantum",
+        "hydrogenFuelTankSize": "Tamaño del tanque de hidrógeno",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "Guiñada potenciada",
+        "pitchBoosted": "Cabeceo potenciado",
+        "rollBoosted": "Balanceo potenciado",
+        "fleetchartOffsetLength": "Desfase de longitud del gráfico de flota",
+        "fleetchartOffsetBeam": "Desfase de manga del gráfico de flota",
+        "cargo": "Carga",
+        "baseModel": "Modelo base"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X",
+        "offsetY": "Offset Y",
+        "offsetZ": "Offset Z",
+        "rotation": "0 or 90"
+      },
+      "manufacturer": {
+        "longName": "Nombre completo",
+        "code": "Código",
+        "scRef": "SC Ref"
+      },
+      "component": {
+        "componentClass": "Clase de componente",
+        "componentType": "Tipo de componente",
+        "componentSubType": "Subtipo de componente",
+        "itemType": "Tipo de objeto",
+        "size": "Tamaño",
+        "grade": "Grado",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
+      },
+      "modelPaint": {
+        "pledgePrice": "Precio de Pledge",
+        "productionStatus": "Estado de producción",
+        "productionNote": "Nota de producción"
+      },
       "fleet": {
-        "fid": "Fleet ID",
+        "fid": "ID de flota",
         "rsiSid": "RSI SID",
-        "ts": "Teamspeak Server"
+        "ts": "Servidor Teamspeak",
+        "description": "Descripción",
+        "discord": "Servidor de Discord",
+        "guilded": "Servidor de Guilded",
+        "homepage": "Página principal",
+        "twitch": "Canal de Twitch",
+        "youtube": "Canal de Youtube"
       },
-      "user": { "rsiHandle": "RSI Handle" },
-      "vehicle": { "serial": "Serial" },
+      "adminUser": {
+        "passwordConfirmation": "Confirmación de contraseña"
+      },
+      "user": {
+        "rsiHandle": "Handle de RSI",
+        "location": "e.g. Berlin, Germany",
+        "currentSystem": "e.g. Stanton, Pyro, Nyx"
+      },
+      "oauthApplication": {
+        "name": "My Application",
+        "redirectUri": "https://example.com/callback",
+        "scopes": "public"
+      },
+      "vehicle": {
+        "serial": "Serial"
+      },
+      "itemPrice": {
+        "price": "0.00",
+        "location": "Ubicación",
+        "locationUrl": "URL de ubicación"
+      },
+      "video": {
+        "url": "YouTube Video ID"
+      },
       "modelModule": {
         "name": "Nombre del Módulo",
         "price": "0.00",
@@ -44,6 +149,30 @@
         "productionStatus": "Anunciado, Listo para Volar, En Concepto...",
         "scKey": "SC Key",
         "search": "Buscar módulos por nombre..."
+      },
+      "modelUpgrade": {
+        "name": "Upgrade Name",
+        "pledgePrice": "0.00",
+        "description": "Descripción"
+      },
+      "modelModulePackage": {
+        "name": "Package Name",
+        "pledgePrice": "0.00",
+        "description": "Descripción"
+      },
+      "dock": {
+        "name": "Dock Name"
+      },
+      "modelHardpoint": {
+        "name": "Hardpoint Name",
+        "key": "hardpoint_key",
+        "details": "Detalles",
+        "mount": "Tipo de montaje",
+        "itemSlots": "0",
+        "loadoutIdentifier": "Identificador de configuración"
+      },
+      "modelHardpointLoadout": {
+        "name": "Loadout Name"
       },
       "filters": {
         "vehicles": {
@@ -59,7 +188,30 @@
           "onSale": "Yes or No",
           "productionStatus": "Announced, Flight Ready, In Concept..."
         },
-        "fleets": { "members": { "username": "Username" } }
+        "modelModules": {
+          "name": "Bio Dome, Cargo Module..."
+        },
+        "manufacturers": {
+          "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "users": {
+          "search": "Username or Email",
+          "username": "Nombre de usuario",
+          "rsiHandle": "Handle de RSI",
+          "email": "Correo electrónico"
+        },
+        "components": {
+          "name": "Nombre",
+          "itemType": "Tipo de objeto",
+          "componentClass": "Clase de componente"
+        },
+        "fleets": {
+          "name": "Nombre",
+          "fid": "FID",
+          "members": {
+            "username": "Nombre de usuario"
+          }
+        }
       }
     }
   }

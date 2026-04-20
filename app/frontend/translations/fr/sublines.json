@@ -12,14 +12,16 @@
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
-        "disclaimer": "Disclaimer",
-        "copyright": "Copyright",
+        "disclaimer": "Avis de non-responsabilité",
+        "copyright": "Droits d'auteur",
         "thirdpartycontent": "Credits",
         "sponsors": "Sponsors",
         "liabilityInternal": "Limitation of liability for internal content",
         "liabilityExternal": "Limitation of liability for external links"
       },
-      "settings": { "rsiData": "RSI Information" }
+      "settings": {
+        "rsiData": "RSI Information"
+      }
     }
   }
 }

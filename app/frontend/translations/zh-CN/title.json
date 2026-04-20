@@ -43,12 +43,18 @@
         "add": "创建新舰队",
         "preview": "舰队预览",
         "invites": "舰队邀请",
-        "members": "%{fleet} 成员",
+        "members": {
+          "index": "%{fleet} Members",
+          "invites": "%{fleet} Invites",
+          "worldmap": "%{fleet} Member Worldmap",
+          "starmap": "%{fleet} Member Starmap"
+        },
         "stats": "%{fleet} 统计",
         "settings": {
           "index": "%{fleet} 设置",
           "fleet": "%{fleet} 设置",
-          "membership": "%{fleet} 成员资格"
+          "membership": "%{fleet} 成员资格",
+          "roles": "%{fleet} 角色"
         }
       },
       "roadmap": {
@@ -58,8 +64,11 @@
       },
       "settings": {
         "index": "个人设置",
+        "profile": "个人资料设置",
         "account": "账户",
         "hangar": "机库设置",
+        "features": "功能标志",
+        "oauthApplications": "OAuth 应用",
         "notifications": "通知设置",
         "security": "账户安全",
         "twoFactor": {
@@ -97,6 +106,7 @@
             "fleetchart": "编辑模型舰队图",
             "hardpoints": "编辑模型硬点",
             "cargoAndFuel": "货物和燃料",
+            "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
             "docks": "编辑模型停靠点",
             "modules": "编辑模型模块",
             "paints": "编辑模型涂装",
@@ -110,7 +120,10 @@
         "components": {
           "index": "组件",
           "new": "新组件",
-          "edit": "编辑组件"
+          "edit": {
+            "index": "Edit Component",
+            "prices": "Edit Component Prices"
+          }
         },
         "manufacturers": {
           "index": "制造商",
@@ -133,6 +146,15 @@
           "index": "舰队",
           "edit": "编辑舰队"
         },
+        "oauthApplications": {
+          "index": "OAuth 应用",
+          "new": "新建 OAuth 应用",
+          "edit": "编辑 OAuth 应用"
+        },
+        "features": {
+          "index": "功能标志",
+          "show": "功能详情"
+        },
         "images": {
           "index": "图片"
         },
@@ -140,6 +162,7 @@
           "index": "维护",
           "pghero": "PgHero",
           "features": "功能",
+          "flipper": "Flipper UI",
           "workers": "工作进程",
           "tasks": "任务",
           "rsiApiStatus": "RSI API 状态"

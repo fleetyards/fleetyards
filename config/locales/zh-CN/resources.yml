@@ -1,1 +1,15 @@
+---
 zh-CN:
+  resources:
+    component: 组件
+    equipment: 装备
+    image: 图片
+    locale: Locales
+    manufacturer: 制造商
+    messages:
+      password: 密码
+    model: 型号
+    model_module: 模块
+    model_paint: 涂装
+    models: 型号
+    user: 用户

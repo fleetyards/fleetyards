@@ -2,21 +2,21 @@
   "it": {
     "models": {
       "image": {
-        "background": "Use as Background?",
-        "enabled": "Enabled?",
-        "global": "Global?",
-        "delete": "Delete",
-        "start": "Start",
-        "cancel": "Cancel",
-        "processing": "Processing...",
-        "error": "Error",
-        "name": "Name",
-        "size": "File size",
-        "dropzone": "Drop images here",
-        "cancelUpload": "Cancel upload",
-        "startUpload": "Start upload",
-        "selectImages": "Add images...",
-        "selectFolder": "Add a folder..."
+        "background": "Usare come sfondo?",
+        "enabled": "Abilitato?",
+        "global": "Globale?",
+        "delete": "Elimina",
+        "start": "Avvia",
+        "cancel": "Annulla",
+        "processing": "Elaborazione...",
+        "error": "Errore",
+        "name": "Nome",
+        "size": "Dimensione file",
+        "dropzone": "Trascina le immagini qui",
+        "cancelUpload": "Annulla caricamento",
+        "startUpload": "Avvia caricamento",
+        "selectImages": "Aggiungi immagini...",
+        "selectFolder": "Aggiungi una cartella..."
       }
     }
   }

@@ -2,13 +2,63 @@
   "zh-CN": {
     "filterGroup": {
       "actions": {
-        "fetchMore": "Load more"
+        "fetchMore": "加载更多"
       },
       "labels": {
-        "search": "Type to search",
+        "search": "输入以搜索",
         "nullablePrompt": "No Option selected",
         "prompt": "Please select an Option",
         "removeTooltip": "Click to remove Option"
+      },
+      "model": {
+        "baseModel": {
+          "label": "基础型号"
+        }
+      },
+      "modelLoaner": {
+        "loanerModel": {
+          "label": "借用型号"
+        }
+      },
+      "modelHardpoint": {
+        "source": {
+          "label": "来源",
+          "prompt": "Select Source"
+        },
+        "group": {
+          "label": "群组",
+          "prompt": "Select Group"
+        },
+        "hardpointType": {
+          "label": "类型",
+          "prompt": "Select Type"
+        },
+        "size": {
+          "label": "尺寸",
+          "nullablePrompt": "Select Size"
+        },
+        "category": {
+          "label": "分类",
+          "nullablePrompt": "Select Category"
+        },
+        "subCategory": {
+          "label": "子分类",
+          "nullablePrompt": "Select Sub Category"
+        }
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "Ships Filter",
+            "prompt": "Select which ships to show",
+            "nullablePrompt": "Select an option"
+          },
+          "hangarGroupId": {
+            "label": "机库群组",
+            "prompt": "Select a hangar group",
+            "nullablePrompt": "Select a group"
+          }
+        }
       }
     }
   }

@@ -15,10 +15,9 @@
       "enabled": "Abilitato",
       "disabled": "Disabilitato",
       "collapse": "Comprimi",
-      "findModel": "Scrivi per cercare una nave",
-      "find": "Scrivi per cercare",
       "price": "Prezzo",
       "expand": "Espandi",
+      "distance": "Distanza",
       "anonymous": "Anonimo",
       "toggleNavigation": "Attiva/disattiva navigazione",
       "enableYoutube": "Clicca per abilitare Youtube embeds o clicca con il tasto destro per copiare l'URL del video",
@@ -27,8 +26,64 @@
       "deselect": "Fare clic per deselezionare",
       "networkStatusOffline": "Stato Della Rete: Offline - Servizio Non Disponibile",
       "groups": "Gruppi",
+      "features": {
+        "stateOn": "Abilitato",
+        "stateOff": "Disabilitato",
+        "stateConditional": "Condizionale",
+        "selfService": "Self-service",
+        "selfServiceEnabled": "Gli utenti possono attivare/disattivare questa funzione",
+        "selfServiceDisabled": "Gli utenti non possono attivare/disattivare questa funzione",
+        "actors": "Attori",
+        "groups": "Gruppi",
+        "noGroups": "Nessun gruppo abilitato per questa funzione.",
+        "noActors": "Nessun attore individuale abilitato per questa funzione.",
+        "user": "Utente",
+        "fleet": "Flotta",
+        "actorType": "Tipo di attore",
+        "percentageOfActors": "degli attori",
+        "percentageOfTime": "del tempo",
+        "currentState": "Stato attuale",
+        "toggle": "Attiva/Disattiva",
+        "settingsIntro": "Attiva o disattiva le funzioni sperimentali per il tuo account. Queste funzioni potrebbero essere incomplete o cambiare senza preavviso.",
+        "noFeaturesAvailable": "Attualmente non sono disponibili funzioni self-service.",
+        "descriptions": {
+          "tools_travel_times": "Mostra i tempi di viaggio stimati tra le posizioni.",
+          "tools_cargo_grids": "Mostra il visualizzatore interattivo della griglia di carico per le navi.",
+          "fleet_starmap": "Mostra la mappa stellare di Star Citizen nelle pagine dei membri della flotta."
+        }
+      },
+      "oauthApplication": {
+        "name": "Nome applicazione",
+        "clientId": "ID client",
+        "clientSecret": "Segreto client",
+        "redirectUri": "URI di reindirizzamento",
+        "redirectUriHint": "Usare un URI per riga.",
+        "confidential": "Riservato",
+        "scopes": "Ambiti",
+        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+      },
+      "rsiRequestLogs": {
+        "resolved": "Risolto",
+        "unresolved": "Non risolto"
+      },
+      "oauthApplications": {
+        "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
+        "name": "Nome applicazione",
+        "redirectUri": "URI di reindirizzamento",
+        "confidential": "Riservato",
+        "clientId": "ID client",
+        "clientSecret": "Segreto client",
+        "scopes": "Ambiti",
+        "defaultScopes": "Ambiti predefiniti",
+        "confidentialShort": "Riservato",
+        "publicShort": "Pubblico"
+      },
       "fleetInviteToken": "Inviti Alla Flotta",
       "scDataVersion": "Versione Della Patch",
+      "lastReload": "Ultimo ricaricamento",
+      "createdAt": "Creato il",
+      "updatedAt": "Aggiornato il",
+      "addToHangar": "Aggiungi all'hangar",
       "home": {
         "search": "Cerca Navi..."
       },
@@ -67,14 +122,23 @@
         "quickStats": {
           "newShips": "Nuove navi in %{year}",
           "totalShips": "Navi Totali",
-          "totalMembers": "Membri Totali"
+          "totalMembers": "Membri Totali",
+          "vehicles": "Navi in hangar",
+          "wishlists": "Navi nella lista dei desideri",
+          "shipOfTheMonth": "Nave del mese"
         },
         "modelsByClassification": "Navi per Classificazione",
         "modelsBySize": "Navi per Dimensioni",
         "vehiclesByModel": "Navi per Modello (Top %{limit})",
         "modelsPerMonth": "Navi al Mese",
         "modelsByManufacturer": "Navi per Produttore",
-        "modelsByProductionStatus": "Navi per Stato di Produzione"
+        "modelsByProductionStatus": "Navi per Stato di Produzione",
+        "vehiclesPerMonth": "Hangared Ships per Month",
+        "topVehiclesByModel": "Top 10 Hangared Ships",
+        "shipsOfTheMonth": "Nave del mese",
+        "crewDeficit": "Crew Deficit",
+        "crewSurplus": "Crew Surplus",
+        "membersByRole": "Members by Role"
       },
       "roadmap": {
         "selectWeek": "Seleziona Settimana",
@@ -84,9 +148,11 @@
         "lastUpdate": "Ultimo Aggiornamento",
         "released": "Rilasciato",
         "recentlyUpdated": "Aggiornato Di Recente",
-        "committed": "Committed",
+        "committed": "Confermato",
         "lastVersion": {
           "active": {
+            "false": "Item was removed from the Roadmap",
+            "true": "Item was readded to the Roadmap",
             "decreased": "L'Elemento é stato rimosso dalla Roadmap",
             "increased": "L'Elemento è stato ri-aggiunto alla Roadmap"
           },
@@ -111,6 +177,7 @@
       "rsiRoadmap": "RSI Roadmap",
       "unknown": "Sconosciuto",
       "none": "-",
+      "notAvailable": "N/A",
       "unknownModel": "%{slug} Sconosciuto",
       "not-available": "N/A",
       "receiveSaleNotifications": "",
@@ -122,16 +189,17 @@
       "twitch": "Canale Twitch",
       "guilded": "Server Guilded",
       "3dView": "3D",
+      "3dMap": "Map",
       "filter": "Filtra",
       "taxExcluded": "IVA esclusa",
       "hangar": "Hangar",
       "public": "Pubblico",
       "hangarStats": "Statistiche",
-      "wishlist": "Wishlist",
-      "fleetchart": "Fleetchart",
+      "wishlist": "Lista dei desideri",
+      "fleetchart": "Grafico flotta",
       "fleetchartApp": {
         "screenHeight": "Altezza dello schermo",
-        "viewpoint": "Viewpoint",
+        "viewpoint": "Punto di vista",
         "screenHeightOptions": {
           "1x": "1x",
           "1_5x": "1.5x",
@@ -141,13 +209,14 @@
         },
         "viewpointOptions": {
           "side": "Lato",
-          "top": "Top",
-          "angled": "Angolato"
+          "top": "Alto",
+          "angled": "Angolato",
+          "front": "Fronte"
         },
         "gridSize": "%{size} meter per grid box",
         "mode": "Mode",
         "modeOptions": {
-          "classic": "Classic",
+          "classic": "Classico",
           "panzoom": "v2"
         }
       },
@@ -156,11 +225,27 @@
         "total": "Totale",
         "totalMoney": "Valore Monetario",
         "totalCredits": "Credits",
+        "totalIngameValue": "Hangar aUEC Value",
         "totalMinCrew": "Min. Equipaggio",
         "totalMaxCrew": "Max. Equipaggio",
-        "totalCargo": "Carico Totale"
+        "totalCargo": "Carico Totale",
+        "largestShip": "Nave più grande",
+        "smallestShip": "Nave più piccola",
+        "averagePledgePrice": "Avg. Pledge Price",
+        "flightReady": "Pronto al volo",
+        "uniqueModels": "Modelli unici",
+        "manufacturerCount": "Produttori",
+        "missingClassifications": "Ruoli mancanti",
+        "wishlistTotalMoney": "Wishlist Pledge Value",
+        "wishlistTotalCredits": "Wishlist In-Game Value"
       },
       "selectModel": "Seleziona una Nave",
+      "findModel": "Scrivi per cercare una nave",
+      "find": "Scrivi per cercare",
+      "selectUser": "Seleziona un utente",
+      "findUser": "Digita per trovare un utente",
+      "selectFleet": "Seleziona una flotta",
+      "findFleet": "Digita per trovare una flotta",
       "compare": {
         "removeModel": "Rimuovi Nave",
         "addModel": {
@@ -177,12 +262,23 @@
       "yourFlagship": "La tua Ammiraglia",
       "flagship": "Ammiraglia",
       "fleet": {
+        "destroyInfo": "If you want to delete this Fleet and remove all its information from Fleetyards.net click the button below. Be aware that this is a permanent action and can't be reverted.",
         "classes": "Flotta",
         "fid": "ID Flotta",
         "name": "Nome",
         "logo": "Logo",
         "rsiSid": "SID",
+        "description": "Descrizione",
         "public": "Fleetview Pubblica",
+        "publicFleet": "Flotta pubblica",
+        "publicStats": "Statistiche pubbliche",
+        "publicFleetStats": "Statistiche flotta pubbliche",
+        "discord": "Server Discord",
+        "guilded": "Server Guilded",
+        "homepage": "Homepage",
+        "twitch": "Canale Twitch",
+        "youtube": "Canale Youtube",
+        "backgroundImage": "Immagine di sfondo",
         "ts": "Server Teamspeak",
         "awaitingConfirmation": "In attesa di conferma dalla Flotta",
         "members": {
@@ -209,16 +305,58 @@
           "invitedAt": "Invitato / Richiesto il",
           "requested": "Iscrizione Richiesta",
           "declined": "Rifiutata",
+          "pending": "Pending Invites & Requests",
+          "accepted": "Membri",
+          "declinedMembers": "Rifiutato",
+          "role": "Ruolo",
           "roles": {
             "admin": "Admin",
             "officer": "Ufficiale",
             "member": "Membro"
           }
         },
+        "roles": {
+          "permanent": "Permanente",
+          "privilegeGroups": {
+            "fleet": "Flotta",
+            "memberships": "Membri",
+            "invites": "Inviti",
+            "vehicles": "Vehicles",
+            "roles": "Ruoli"
+          },
+          "privileges": {
+            "fleet:update": "Update Fleet",
+            "fleet:update:images": "Update Images",
+            "fleet:update:description": "Update Description",
+            "fleet:delete": "Delete Fleet",
+            "fleet:manage": "Gestisci flotta",
+            "fleet:memberships:read": "View Members",
+            "fleet:memberships:create": "Invite Members",
+            "fleet:memberships:update": "Update Members",
+            "fleet:memberships:delete": "Remove Members",
+            "fleet:memberships:manage": "Manage Members",
+            "fleet:invites:read": "View Invites",
+            "fleet:invites:create": "Create Invites",
+            "fleet:invites:delete": "Delete Invites",
+            "fleet:invites:manage": "Manage Invites",
+            "fleet:vehicles:read": "View Vehicles",
+            "fleet:vehicles:create": "Add Vehicles",
+            "fleet:vehicles:update": "Update Vehicles",
+            "fleet:vehicles:delete": "Remove Vehicles",
+            "fleet:vehicles:manage": "Manage Vehicles",
+            "fleet:roles:read": "View Roles",
+            "fleet:roles:create": "Create Roles",
+            "fleet:roles:update": "Update Roles",
+            "fleet:roles:delete": "Delete Roles",
+            "fleet:roles:manage": "Manage Roles"
+          }
+        },
         "inviteUrls": {
           "noLimit": "Nessun limite",
           "noExpiration": "Nessuna scadenza",
           "usesLeft": "%{count} usi rimasti",
+          "used": "Used %{count} times",
+          "usedOfLimit": "Used %{count} of %{limit}",
           "expiresIn": "Scade tra %{time}",
           "expired": "Scaduto",
           "expiresAfterOptions": {
@@ -249,36 +387,210 @@
       },
       "source": "Fonte",
       "model": {
+        "hidden": "Nascosto?",
+        "active": "Attivo?",
+        "ground": "Veicolo terrestre?",
+        "productionNote": "Nota di produzione",
+        "rsiId": "RSI ID",
+        "length": "Lunghezza",
+        "beam": "Larghezza",
+        "height": "Altezza",
+        "scIdentifier": "SC Identifier",
+        "price": "Prezzo",
+        "pledgePrice": "Prezzo Pledge",
+        "erkulIdentifier": "Erkul Identifier",
+        "mass": "Massa",
+        "minCrew": "Equipaggio min.",
+        "maxCrew": "Equipaggio max.",
+        "storeUrl": "Store URL",
+        "salesPageUrl": "Sales Page URL",
+        "scmSpeed": "SCM Speed",
+        "scmSpeedBoosted": "SCM Speed Boosted",
+        "maxSpeed": "Velocità max.",
+        "reverseSpeedBoosted": "Reverse Speed Boosted",
+        "cargo": "Carico",
+        "cargoHolds": "Stive di carico",
+        "hydrogenFuelTankSize": "Dimensione serbatoio idrogeno",
+        "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
+        "quantumFuelTankSize": "Dimensione serbatoio Quantum",
+        "quantumFuelTanks": "Serbatoi carburante Quantum",
+        "yaw": "Yaw",
+        "pitch": "Pitch",
+        "roll": "Roll",
+        "yawBoosted": "Imbardata potenziata",
+        "pitchBoosted": "Beccheggio potenziato",
+        "rollBoosted": "Rollio potenziato",
         "variants": "Varianti",
         "manufacturer": "Produttore",
         "loaners": "Navi in comodato",
-        "paints": "Paints",
+        "paints": "Verniciature",
         "modules": "Moduli",
         "modulePackages": "Pacchetti Modulo",
         "upgrades": "Kit Di Potenziamento",
         "brochure": "Opuscolo",
+        "holo": "Holo",
+        "angledView": "Vista angolata",
+        "angledViewColored": "Vista angolata a colori",
+        "sideView": "Vista laterale",
+        "sideViewColored": "Vista laterale a colori",
+        "frontView": "Vista frontale",
+        "frontViewColored": "Vista frontale a colori",
+        "topView": "Vista dall'alto",
+        "topViewColored": "Vista dall'alto a colori",
         "onSale": "In Vendita",
         "salesPage": "Pagina Di Vendita",
         "addons": "Moduli E Kit Di Potenziamento",
+        "storeImage": "Immagine negozio",
+        "wiki": "Star Citizen Wiki",
+        "baseModel": "Modello base",
+        "fleetchartOffsetLength": "Offset lunghezza grafico flotta",
+        "fleetchartOffsetBeam": "Offset larghezza grafico flotta",
         "productionStatus": {
           "in-production": "In Produzione",
-          "in-concept": "In Concept",
-          "ready": "Hangar Ready",
-          "flight-ready": "Flight Ready",
+          "in-concept": "In fase di progettazione",
+          "ready": "Pronto per l'hangar",
+          "flight-ready": "Pronto al volo",
           "announced": "Annunciato"
+        }
+      },
+      "models": {
+        "extraColumns": "Colonne",
+        "table": {
+          "columns": {
+            "storeImage": "Immagine",
+            "storeImageWide": "Immagine larga",
+            "rsiStoreImage": "Immagine RSI",
+            "rsiStoreImageWide": "Immagine RSI larga",
+            "angledView": "Immagine 3D",
+            "angledViewWide": "Immagine 3D larga",
+            "rsiId": "RSI ID",
+            "hidden": "Nascosto",
+            "active": "Attivo",
+            "createdAt": "Creato il",
+            "updatedAt": "Aggiornato il",
+            "manufacturerName": "Produttore",
+            "length": "Lunghezza",
+            "beam": "Larghezza",
+            "height": "Altezza",
+            "mass": "Massa",
+            "cargo": "Carico",
+            "quantumFuelTankSize": "Carburante Quantum",
+            "hydrogenFuelTankSize": "Carburante idrogeno",
+            "minCrew": "Equipaggio",
+            "maxCrew": "Equipaggio max.",
+            "scmSpeed": "SCM Speed",
+            "maxSpeed": "Velocità max.",
+            "groundMaxSpeed": "Velocità a terra",
+            "focus": "Specializzazione",
+            "productionStatus": "Stato di produzione",
+            "price": "Prezzo",
+            "pledgePrice": "Prezzo Pledge"
+          }
         }
       },
       "metrics": {
         "info": "Info",
         "levels": "Livelli",
-        "topView": "Vista dall'Alto",
+        "views": "Visualizzazioni",
         "base": "Base",
         "crew": "Equipaggio",
         "speed": "Velocità",
-        "missileOptions": "Opzioni Missili (se disponibili)"
+        "cargo": "Carico",
+        "hardpoints": "Punti di montaggio",
+        "missileOptions": "Opzioni Missili (se disponibili)",
+        "topView": "Vista dall'Alto"
+      },
+      "manufacturer": {
+        "longName": "Nome completo",
+        "code": "Codice",
+        "logo": "Logo",
+        "scRef": "SC Ref"
+      },
+      "itemPrice": {
+        "price": "Prezzo",
+        "location": "Posizione",
+        "locationUrl": "URL posizione"
+      },
+      "video": {
+        "url": "URL",
+        "videoType": "Tipo"
+      },
+      "modelModule": {
+        "name": "Nome",
+        "description": "Descrizione",
+        "price": "Prezzo",
+        "pledgePrice": "Prezzo Pledge",
+        "productionStatus": "Stato di Produzione",
+        "scKey": "SC Key",
+        "storeImage": "Immagine Negozio",
+        "active": "Attivo?",
+        "hidden": "Nascosto?"
+      },
+      "dock": {
+        "name": "Nome",
+        "dockType": "Tipo di dock",
+        "shipSize": "Dimensione nave"
+      },
+      "modelHardpoint": {
+        "name": "Nome",
+        "key": "Chiave",
+        "source": "Fonte",
+        "group": "Gruppo",
+        "hardpointType": "Tipo",
+        "size": "Dimensione",
+        "category": "Categoria",
+        "subCategory": "Sottocategoria",
+        "details": "Dettagli",
+        "mount": "Montaggio",
+        "itemSlots": "Slot oggetti",
+        "loadoutIdentifier": "Identificatore configurazione"
+      },
+      "modelHardpointLoadout": {
+        "name": "Nome"
+      },
+      "modelUpgrade": {
+        "name": "Nome",
+        "description": "Descrizione",
+        "pledgePrice": "Prezzo Pledge",
+        "active": "Attivo?",
+        "hidden": "Nascosto?"
+      },
+      "modelModulePackage": {
+        "name": "Nome",
+        "description": "Descrizione",
+        "pledgePrice": "Prezzo Pledge",
+        "modules": "Moduli",
+        "active": "Attivo?",
+        "hidden": "Nascosto?"
+      },
+      "cargoHold": {
+        "offsetX": "Offset X (SCU)",
+        "offsetY": "Offset Y (SCU)",
+        "offsetZ": "Offset Z (SCU)",
+        "rotation": "Rotation (°)"
+      },
+      "modelLoaner": {
+        "hidden": "Nascosto?",
+        "loanerModel": "Modello in prestito"
+      },
+      "modelPaint": {
+        "hidden": "Nascosto?",
+        "active": "Attivo?",
+        "onSale": "In vendita",
+        "pledgePrice": "Prezzo Pledge",
+        "productionStatus": "Stato di produzione",
+        "productionNote": "Nota di produzione"
       },
       "component": {
-        "size": "Dimensione: %{size}"
+        "size": "Dimensione: %{size}",
+        "grade": "Grado",
+        "hidden": "Nascosto?",
+        "componentClass": "Classe componente",
+        "componentType": "Tipo componente",
+        "componentSubType": "Sottotipo componente",
+        "itemType": "Tipo di oggetto",
+        "scKey": "SC Key",
+        "scRef": "SC Ref"
       },
       "hardpoint": {
         "legend": {
@@ -290,12 +602,34 @@
         "rackSize": "Dimensione Rack",
         "details": "Dettagli",
         "group": "Gruppo",
+        "thrusters": {
+          "thrust": "Spinta",
+          "subTypes": {
+            "JointThruster": "Joint",
+            "FixedThruster": "Fix",
+            "FlexThruster": "Flex",
+            "Retro": "Fix"
+          }
+        },
+        "sources": {
+          "game_files": "File di gioco",
+          "ship_matrix": "Ship Matrix"
+        },
+        "fuelTanks": {
+          "hydrogen": "Serbatoio carburante idrogeno",
+          "quantum": "Serbatoio carburante Quantum"
+        },
+        "jumpDrive": "Motore di salto",
+        "maxContainerSize": "Dimensione max. container",
         "groups": {
-          "avionic": "Avionics",
+          "avionic": "Avionica",
           "system": "Sistema",
           "propulsion": "Propulsione",
           "thruster": "Propulsori",
-          "weapon": "Armamenti"
+          "weapon": "Armamenti",
+          "other": "Altro",
+          "auxiliary": "Ausiliario",
+          "seat": "Sedili"
         },
         "types": {
           "radar": "Radar",
@@ -306,16 +640,57 @@
           "fuel_intakes": "Bocchettoni carburante",
           "fuel_tanks": "Serbatoi Carburante",
           "quantum_drives": "Drive Quantici",
-          "jump_modules": "Jump Modules",
+          "jump_modules": "Moduli di salto",
+          "jumpdrive": "Moduli di salto",
           "quantum_fuel_tanks": "Serbatoi di Carburante Quantico",
           "main_thrusters": "Propulsori Principali",
           "maneuvering_thrusters": "Propulsori di Manovra",
           "weapons": "Armamenti",
           "turrets": "Torrette",
           "missiles": "Missili",
-          "utility_items": "Utility Items",
+          "utility_items": "Oggetti di utilità",
+          "utility": "Oggetti di utilità",
           "emp": "EMP",
           "qed": "QED"
+        },
+        "moduleSlotEmpty": "— Seleziona modulo —",
+        "selectModule": "Seleziona modulo",
+        "clearModule": "Cancella selezione",
+        "categories": {
+          "radar": "Radar",
+          "armor": "Corazza",
+          "relay": "Relè",
+          "countermeasures": "Contromisure",
+          "lifesupport": "Supporto vitale",
+          "selfdestruct": "Autodistruzione",
+          "batteries": "Batterie",
+          "computers": "Computer",
+          "powerplant": "Centrali energetiche",
+          "cooler": "Raffreddatori",
+          "module": "Moduli",
+          "shieldgenerator": "Generatori di scudi",
+          "fuel_intakes": "Prese di carburante",
+          "fueltanks": "Serbatoi di carburante",
+          "quantumdrive": "Motori Quantum e moduli di salto",
+          "jump_modules": "Moduli di salto",
+          "jumpdrive": "Moduli di salto",
+          "quantum_fuel_tanks": "Serbatoi carburante Quantum",
+          "main_thrusters": "Propulsori principali",
+          "maneuvering_thrusters": "Propulsori di manovra",
+          "retro_thrusters": "Propulsori retro",
+          "vtol_thrusters": "Propulsori VTOL",
+          "weapons": "Armi",
+          "weapon_mounts": "Supporti armi",
+          "turret": "Torrette",
+          "missiles": "Missili",
+          "missile_racks": "Rack missili",
+          "utility_items": "Oggetti di utilità",
+          "utility": "Oggetti di utilità",
+          "emp": "EMP",
+          "quantumenforcementdevice": "QED",
+          "salvagefillerstation": "Stazione di riempimento salvataggio",
+          "cargogrid": "Griglia di carico",
+          "seat": "Sedili"
         }
       },
       "blank": {
@@ -329,21 +704,32 @@
       },
       "user": {
         "rsiHandle": "Handle",
+        "location": "Posizione",
+        "currentSystem": "Current Star System",
+        "tester": "Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Email non confermata",
         "saleNotify": "Voglio ricevere notifiche di vendita",
         "publicHangar": "Hangar Pubblico abilitato",
         "publicHangarLoaners": "Mostra suggerimento Navi di Cortesia su Hangar Pubblico",
+        "publicHangarStats": "Public Hangar Stats enabled",
         "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets"
+        "hideOwner": "Hide Ownership for Fleets",
+        "lastActiveAt": "Ultima attività",
+        "confirmedAt": "Confermato il"
+      },
+      "adminUser": {
+        "superAdmin": "Super admin",
+        "passwordConfirmation": "Conferma password"
       },
       "vehicle": {
         "name": "Nome",
+        "states": "Stati",
         "serial": "Seriale",
         "owner": "comandata da",
         "flagship": "Ammiraglia",
-        "wanted": "Wanted",
-        "loaner": "Loaner",
+        "wanted": "Desiderato",
+        "loaner": "Prestito",
         "public": "Pubblicamente Visibile",
         "fullPublic": "Pubblicamente Visibile incluso il nome",
         "publicShort": "Pubblico",
@@ -352,7 +738,8 @@
         "hangarGroups": "Gruppi",
         "selectGroup": "Seleziona un Gruppo",
         "modelPaintSelect": {
-          "nullablePrompt": "Seleziona una Paint"
+          "nullablePrompt": "Seleziona una Paint",
+          "label": "Verniciatura"
         },
         "bulkGroupEdit": {
           "hint": "I Gruppi esistenti saranno sovrascritti!"
@@ -363,9 +750,11 @@
         }
       },
       "image": {
-        "active": "Active?",
+        "active": "Attivo?",
         "background": "Utilizzare come background?",
+        "caption": "Didascalia",
         "enabled": "Abilitato?",
+        "file": "File immagine",
         "global": "Globale?",
         "delete": "Elimina",
         "start": "Avvia",
@@ -386,9 +775,9 @@
       },
       "privacyPolicy": "Informativa sulla privacy",
       "login": "Username o e-mail",
-      "username": "Username",
+      "username": "Nome utente",
       "twoFactorCode": "Codice due-fattori",
-      "confirmationCode": "Confirmation code",
+      "confirmationCode": "Codice di conferma",
       "email": "E-mail",
       "avatar": "Avatar",
       "alreadyRegistered": "Hai già un account?",
@@ -403,6 +792,11 @@
         "destroyInfo": "Se si desidera eliminare il tuo account e rimuovere tutte le informazioni da Fleetyards,nett e i suoi servizi fare clic sul pulsante qui sotto. Sii consapevole che questa è un'azione permanente e non può essere annullata."
       },
       "filters": {
+        "components": {
+          "name": "Nome",
+          "itemType": "Tipo di oggetto",
+          "componentClass": "Classe componente"
+        },
         "shops": {
           "name": "Nome",
           "type": "Tipo",
@@ -445,7 +839,7 @@
           "shops": "Negozi",
           "docks": "Moli",
           "habs": "Abitazioni?",
-          "cargoHub": "Cargo Hub?",
+          "cargoHub": "Hub di carico?",
           "refinery": "Stazione Di Raffinazione?"
         },
         "vehicles": {
@@ -456,7 +850,8 @@
           "pledgePriceGt": "Prezzo del Pledge >=",
           "priceLt": "Prezzo <=",
           "priceGt": "Prezzo >=",
-          "wanted": "Wanted",
+          "wanted": "Desiderato",
+          "hidden": "Nascosto",
           "public": "Pubblico",
           "group": "Gruppo",
           "loaner": "Navi in comodato",
@@ -478,12 +873,14 @@
           "destinationStarsystem": "Sistema Stellare di Destinazione"
         },
         "models": {
+          "name": "Nome",
           "shipRole": "Ruolo Della Nave",
           "classification": "Classificazione",
-          "focus": "Focus",
+          "focus": "Specializzazione",
           "manufacturer": "Produttore",
           "onSale": "In Vendita",
           "size": "Dimensione",
+          "dockSize": "Dimensione dock",
           "price": "Prezzo",
           "pledgePrice": "Prezzo del Pledge",
           "productionStatus": "Stato Della Produzione",
@@ -497,13 +894,35 @@
           "pledgePriceGt": "Prezzo del Pledge >=",
           "priceLt": "Prezzo <=",
           "priceGt": "Prezzo >=",
-          "willItFit": "Ci starà?"
+          "willItFit": "Ci starà?",
+          "withCargo": "With Cargo?",
+          "scIdentifierBlank": "Without SC Identifier?",
+          "fleetchartImageBlank": "Without Fleetchart Image?",
+          "holoBlank": "Without Holo?",
+          "frontViewBlank": "Without Front View Image?",
+          "topViewColoredBlank": "Without Top View Colored Image?"
+        },
+        "modelModules": {
+          "name": "Nome"
+        },
+        "manufacturers": {
+          "name": "Nome",
+          "withModels": "Con modelli",
+          "logoBlank": "Senza logo"
         },
         "images": {
           "station": "Stazione",
           "model": "Nave"
         },
+        "users": {
+          "search": "Cerca",
+          "username": "Nome utente",
+          "email": "E-mail",
+          "rsiHandle": "Handle RSI"
+        },
         "fleets": {
+          "name": "Nome",
+          "fid": "FID",
           "member": "Membro",
           "members": {
             "role": "Ruolo",
@@ -521,14 +940,15 @@
             "expiresAfter": "Scade dopo",
             "limit": "Numero massimo di utilizzi"
           }
-        }
+        },
+        "manufacturer": "Produttore"
       },
       "station": {
         "docks": "Moli",
         "location": "Posizione",
         "type": "Tipo",
         "habitation": "Abitazione",
-        "habs": "Habs",
+        "habs": "Abitazioni",
         "shops": "Negozi",
         "locationPrefix": {
           "default": "su",
@@ -547,9 +967,11 @@
         "showAveragePrices": "Mostra i prezzi medi",
         "showLatestPrices": "Mostra i prezzi più recenti"
       },
-      "erkul": {
-        "prefix": "Prova Loadouts con",
-        "link": "Calcolatore DPS Di Erkul"
+      "hardpoints": {
+        "prefix": "Tryout Loadouts with",
+        "erkul": "Erkul's DPS Calculator",
+        "spviewer": "SP Viewer",
+        "spviewerTitle": "SC Ships Performances Viewer"
       },
       "scunpacked": {
         "prefix": "Loadouts basato sui Gamefiles powered by",
@@ -564,17 +986,6 @@
       "table": {
         "selected": "%{count} selezionati"
       },
-      "modelModule": {
-        "name": "Nome",
-        "description": "Descrizione",
-        "price": "Prezzo",
-        "pledgePrice": "Prezzo Pledge",
-        "productionStatus": "Stato di Produzione",
-        "scKey": "SC Key",
-        "storeImage": "Immagine Negozio",
-        "active": "Attivo?",
-        "hidden": "Nascosto?"
-      },
       "commodityPrice": {
         "shopId": "Negozio",
         "station": "Stazione",
@@ -582,26 +993,26 @@
         "commodityItemId": "Commodity Item",
         "item": "ShopCommodity",
         "price": "Prezzo",
-        "type": "Type",
+        "type": "Tipo",
         "shop": "Negozio",
         "submittedBy": "Inviato da"
       },
       "syncExtension": {
         "status": {
-          "started": "Import Started...",
-          "finished": "Import Finished",
-          "failed": "Import Failed!"
+          "started": "Importazione avviata...",
+          "finished": "Importazione completata",
+          "failed": "Importazione fallita!"
         },
         "processSteps": {
-          "fetchHangar": "Fetching Data from the RSI Hangar",
-          "submitData": "Submitting Data to the Fleetyards.net Backend"
+          "fetchHangar": "Recupero dati dall'hangar RSI",
+          "submitData": "Invio dati al backend di Fleetyards.net"
         },
-        "sessionStatus": "RSI Session status",
-        "checkIdentity": "Check RSI Session",
+        "sessionStatus": "Stato sessione RSI",
+        "checkIdentity": "Verifica sessione RSI",
         "identityStatus": {
-          "pending": "Checking...",
-          "notFound": "not found",
-          "connected": "connected"
+          "pending": "Verifica...",
+          "notFound": "non trovato",
+          "connected": "connesso"
         },
         "platforms": {
           "chrome": "Google Chrome",
@@ -611,18 +1022,107 @@
           "github": "GitHub"
         },
         "pledgeItems": {
-          "pages": "Pages",
-          "all": "All Pledge Items",
-          "ships": "Ships",
-          "components": "Modules",
-          "skins": "Paints"
+          "pages": "Pagine",
+          "all": "Tutti gli oggetti Pledge",
+          "ships": "Navi",
+          "components": "Moduli",
+          "skins": "Verniciature",
+          "upgrades": "Upgrade"
         },
         "importedItems": {
+          "importedVehicles": "Navi aggiunte",
+          "foundVehicles": "Navi trovate",
+          "movedVehiclesToWanted": "Navi spostate nella lista dei desideri",
+          "missingModels": "Navi non trovate",
+          "importedComponents": "Componenti aggiunti",
+          "foundComponents": "Componenti trovati",
+          "missingComponents": "Componenti non trovati",
+          "missingComponentVehicles": "No matching Ship found for Components",
+          "importedUpgrades": "Upgrade aggiunti",
+          "foundUpgrades": "Upgrade trovati",
+          "missingUpgrades": "Upgrade non trovati",
+          "missingUpgradeVehicles": "No matching Ship found for Upgrades",
           "new": "New",
           "updated": "Updated",
           "movedToWanted": "Moved to Wishlist",
           "missing": "Unable to Import"
         }
+      },
+      "cargoGridViewer": {
+        "capacity": "Capacità",
+        "maxContainerSize": "Container max.",
+        "packed": "Impacchettato",
+        "totalCargo": "Carico totale",
+        "didNotFit": "Non entra",
+        "openInTool": "Apri nello strumento griglia di carico",
+        "myHangar": "Mostra solo le mie navi",
+        "filterShips": "Filtra navi per dimensione container"
+      },
+      "admin": {
+        "dashboard": {
+          "quickStats": {
+            "onlineUsers": "Utenti online",
+            "totalUsers": "Utenti totali",
+            "totalShips": "Navi totali",
+            "newShipsInYear": "Nuove navi nel %{year}",
+            "totalFleets": "Flotte totali"
+          }
+        },
+        "modelHardpoint": {
+          "loadouts": "Configurazioni"
+        }
+      },
+      "hangarTable": {
+        "extraColumns": "Colonne",
+        "columns": {
+          "storeImage": "Immagine",
+          "storeImageWide": "Immagine larga",
+          "angledView": "Immagine 3D",
+          "angledViewWide": "Immagine 3D larga",
+          "modelManufacturerName": "Produttore",
+          "modelLength": "Lunghezza",
+          "modelBeam": "Larghezza",
+          "modelHeight": "Altezza",
+          "modelMass": "Massa",
+          "modelCargo": "Carico",
+          "modelMinCrew": "Equipaggio",
+          "modelMaxCrew": "Equipaggio max.",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "Velocità max.",
+          "modelGroundMaxSpeed": "Velocità a terra",
+          "modelFocus": "Specializzazione",
+          "modelProductionStatus": "Stato di produzione",
+          "modelPrice": "Prezzo",
+          "modelPledgePrice": "Prezzo Pledge"
+        }
+      },
+      "fleetTable": {
+        "extraColumns": "Colonne",
+        "columns": {
+          "storeImage": "Immagine",
+          "storeImageWide": "Immagine larga",
+          "angledView": "Immagine 3D",
+          "angledViewWide": "Immagine 3D larga",
+          "modelManufacturerName": "Produttore",
+          "modelLength": "Lunghezza",
+          "modelBeam": "Larghezza",
+          "modelHeight": "Altezza",
+          "modelMass": "Massa",
+          "modelCargo": "Carico",
+          "modelMinCrew": "Equipaggio",
+          "modelMaxCrew": "Equipaggio max.",
+          "modelScmSpeed": "SCM Speed",
+          "modelMaxSpeed": "Velocità max.",
+          "modelGroundMaxSpeed": "Velocità a terra",
+          "modelProductionStatus": "Stato di produzione",
+          "modelPrice": "Prezzo",
+          "modelPledgePrice": "Prezzo Pledge",
+          "owner": "Proprietario"
+        }
+      },
+      "erkul": {
+        "prefix": "Prova Loadouts con",
+        "link": "Calcolatore DPS Di Erkul"
       }
     }
   }

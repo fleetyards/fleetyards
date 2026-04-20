@@ -1,1 +1,95 @@
+---
 de:
+  mailer:
+    account:
+      action: Manage Account Settings
+    admin:
+      notify_block:
+        headline: FleetYards.net Command - Connection to RSI blocked
+        subject: Connection to RSI blocked
+        text: Automated updates from RSI using "%{url}" has been blocked
+      notify_unblock:
+        headline: FleetYards.net Command - Connection to RSI restored
+        subject: Connection to RSI restored
+        text: Automated updates from RSI using "%{url}" has been restored
+      weekly:
+        fleets: Neue Flotten
+        headline: FleetYards.net Command - Weekly
+        registrations: New Registrations
+        ships: Neue Schiffe
+        subject: FleetYards.net Command Weekly
+        vehicles: New Vehicles
+    fleet_membership:
+      fleet_accepted:
+        action: "%{fleet} Homepage"
+        body: 'To view the fleets Ships and other Members please click on the following
+          link:'
+        headline: Your Membership Request to Join %{fleet} has been accepted
+        subject: "%{fleet} accepted your Membership Request"
+      member_accepted:
+        action: "%{fleet} Mitgliederliste"
+        body: 'To look at the new members information please click on the following
+          link:'
+        headline: "%{username} accepted his Fleet Invitation"
+        subject: New Fleet Member
+      member_requested:
+        action: "%{fleet} Einladungen"
+        body: 'To accept the request please click on the following link:'
+        headline: "%{username} wants to Join %{fleet}"
+        subject: New Fleet Membership Request
+      new_invite:
+        action: "%{fleet} beitreten"
+        body: 'To accept the invite please click on the following link:'
+        headline: You have been invited to Join %{fleet}
+        subject: New Fleet Invite
+    confirm_access:
+      body: Use the following code to confirm access to your account settings.
+      expires: This code will expire in 10 minutes.
+      subject: Your confirmation code
+    hello: Hello %{username}
+    model:
+      new:
+        headline_part_1: 'Allow me to introduce:'
+        headline_part_2: The %{manufacturer}
+        subject: New Ship/Vehicle
+    notification_settings: Unsubscribe Notifications
+    plain_hello: Hallo
+    privacy: Datenschutzerklärung
+    progress_tracker:
+      admin:
+        body: There have been %{changes} changes on the Progress Tracker
+        headline: Neue Änderungen im Progress Tracker
+        subject: Neue Änderungen im Progress Tracker
+    roadmap:
+      admin:
+        body: There have been %{changes} changes to the Roadmap
+        headline: Neue Änderungen auf der Roadmap
+        subject: Neue Änderungen auf der Roadmap
+    security:
+      action: Manage Security Settings
+      info: If you did not initiate the change please contact us at info@fleetyards.net.
+    transmission_end: "--- eingehende Übertragung ---"
+    transmission_start: "--- eingehende Übertragung ---"
+    two_factor:
+      disabled:
+        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
+        subject: Two-factor disabled
+      enabled:
+        body: Great, you activated Two-factor Authentication for your Fleetyards.net
+          Account.
+        subject: Two-factor enabled
+      login:
+        body: Please enter the following Code on the Login page to verify your identity.
+        headline: Zwei-Faktor-Authentifizierungscode
+        subject: Zwei-Faktor-Authentifizierungscode
+    user:
+      username_changed:
+        body: You changed your Fleetyards.net Account Username.
+        subject: Username changed
+    vehicle:
+      on_sale:
+        headline:
+          part_one: The
+          part_two: is now on Sale!
+        price: Starting at %{price}
+        subject: "%{model} now on Sale!"

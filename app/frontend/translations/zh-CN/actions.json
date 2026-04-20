@@ -1,6 +1,12 @@
 {
   "zh-CN": {
     "actions": {
+      "admin": {
+        "dashboard": {
+          "reloadModels": "重新加载模型",
+          "reloadScData": "重新加载 SC 数据"
+        }
+      },
       "showReleased": "显示旧版本",
       "hideReleased": "隐藏旧版本",
       "upgrade": "更新可用！",
@@ -11,6 +17,7 @@
       "ungrouped": "未分组",
       "destroyAccount": "删除账户",
       "saveScreenshot": "保存为PNG",
+      "resolve": "解决",
       "verify": "验证",
       "clearHistory": "清除历史",
       "sortBy": "排序方式",
@@ -22,6 +29,7 @@
       "export": "导出",
       "import": "导入",
       "here": "这里",
+      "backToList": "返回列表",
       "backToTop": "返回顶部",
       "cancel": "取消",
       "ok": "确定",
@@ -46,11 +54,19 @@
       "sendConfirmAccessEmail": "Send confirmation email",
       "reset-password": "忘记密码？",
       "edit": "编辑",
+      "clear": "清除",
       "done": "完成",
       "share": "分享",
       "change": "更改",
       "upload": "上传",
       "save": "保存",
+      "enable": "启用",
+      "disable": "禁用",
+      "manage": "管理",
+      "enableGlobally": "全局启用",
+      "disableGlobally": "全局禁用",
+      "addActor": "添加角色",
+      "addGroup": "添加组",
       "remove": "移除",
       "delete": "删除",
       "deleteSelected": "删除选中项",
@@ -68,15 +84,26 @@
       "updatePassword": "更新密码",
       "copyBackupCodes": "复制备份代码",
       "add": "添加",
+      "create": "创建",
       "addToWishlist": "添加到愿望清单",
       "addAnother": "添加另一个",
       "addVehicle": "添加飞船",
-      "addGroup": "添加组",
       "addModule": "添加另一个模块",
       "addUpgrade": "添加另一个升级",
       "showTableView": "显示为列表",
       "showGridView": "显示为网格",
+      "linkExisting": "链接现有",
+      "loadMore": "加载更多",
+      "unlink": "取消链接",
       "syncRsiHangar": "同步RSI机库",
+      "oauthApplications": {
+        "create": "新建应用",
+        "regenerateSecret": "重新生成密钥"
+      },
+      "oauthAuthorize": {
+        "authorize": "授权",
+        "deny": "拒绝"
+      },
       "oauth": {
         "google": "Google",
         "discord": "Discord",
@@ -116,19 +143,26 @@
         }
       },
       "syncExtension": {
-        "cancel": "Cancel",
+        "cancel": "取消",
         "start": "Start Sync",
-        "close": "Close",
-        "refresh": "Refresh Page"
+        "retry": "重试同步",
+        "close": "关闭",
+        "refresh": "刷新页面"
       },
       "empty": {
-        "hangarGuide": "Need Help?"
+        "hangarGuide": "Need Help?",
+        "reset": "清除筛选"
       },
+      "destroyFleet": "解散舰队",
       "fleet": {
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
+        "manageInvites": "邀请",
+        "worldmap": "世界地图",
+        "starmap": "星图",
+        "membersList": "成员",
         "acceptInvite": "Accept Invitation",
         "declineInvite": "Decline Invitation",
         "acceptRequest": "accept Request",
@@ -140,7 +174,7 @@
           "demote": "Demote",
           "accept": "Accept",
           "decline": "Decline",
-          "remove": "Remove"
+          "remove": "移除"
         },
         "inviteUrls": {
           "create": "Create new Invite Url"
@@ -151,12 +185,25 @@
         "onSale": "On Sale: %{price}",
         "store": "RSI Page"
       },
+      "models": {
+        "sync": "从 RSI 同步",
+        "syncMatrix": "同步矩阵",
+        "syncScData": "同步 SC 数据",
+        "exchangeStoreImage": "使用 RSI 图片",
+        "images": "图片",
+        "openTableConfiguration": "打开表格配置"
+      },
+      "users": {
+        "loginAs": "以用户身份登录",
+        "resendConfirmation": "重新发送确认",
+        "sendPasswordReset": "发送密码重置"
+      },
       "unselect": "Unselect all Selected",
       "openPriceModal": "Submit Price",
       "twoFactor": {
         "enable": "Enable Two-factor",
         "disable": "Disable Two-factor",
-        "generateBackupCodes": "Generate Backup Codes"
+        "generateBackupCodes": "生成备用码"
       },
       "holoViewer": {
         "autoRotate": {

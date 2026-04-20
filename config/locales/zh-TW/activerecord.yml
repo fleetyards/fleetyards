@@ -1,1 +1,276 @@
+---
 zh-TW:
+  activerecord:
+    attributes:
+      vehicle:
+        bought_via:
+          pledge_store: Pledge Store
+          ingame: Ingame Store
+      component:
+        component_classes:
+          RSIAvionic: Avionic
+          RSIModular: 模組化
+          RSIPropulsion: 推進
+          RSIThruster: 推進器
+          RSIWeapon: 武器
+        item_classes:
+          civilian: Civilian
+          competition: Competition
+          industrial: Industrial
+          military: Military
+          stealth: 隱身
+        item_types:
+          cargo_grids: Cargogrids
+          coolers: 冷卻器
+          countermeasure_launcher: Countermeasure Launcher
+          fixed_thrusters: Fixed Thrusters
+          fuel_intakes: 燃料進氣口
+          fuel_tanks: 燃料箱
+          mid_range_radar: Midrange Radar
+          joint_thrusters: Joint Thrusters
+          manned_turrets: Manned Turrets
+          manned_utility_turrets: Manned Utility Turrets
+          mining_lasers: Mining Lasers
+          missile_racks: Missle Racks
+          missile_turrets: Missile Turrets
+          missiles: 飛彈
+          power_plants: 發電機
+          quantum_drives: 量子引擎
+          quantum_fuel_tanks: 量子燃料箱
+          remote_turrets: Remote Turrets
+          scanners: 掃描儀
+          shield_generators: 護盾產生器
+          thrusters: Thrusters
+          turrets: 砲塔
+          weapon_defensive: Weapon Defensive
+          weapons: Ship Weapons
+          emps: EMPs
+          armor_medium: 中型裝甲
+        tracking_signals:
+          cross_section: Cross Section
+          electromagnetic: Electromagnetic
+          infrared: infrared
+      dock:
+        dock_types:
+          dockingport: Dockingport
+          garage: Garage
+          hangar: 機庫
+          landingpad: Landingpad
+          vehiclepad: Vehiclepad
+        ship_sizes:
+          capital: Capital (C)
+          extra_extra_small: Snubcraft (XXS)
+          extra_large: Extra Large (XL)
+          extra_small: Extra Small (XS)
+          large: Large (L)
+          medium: Medium (M)
+          small: Small (S)
+      equipment:
+        backpack_compatibilities:
+          all: 全部
+          light: Light
+          light_medium: Light & Medium
+        core_compatibilities:
+          all: 全部
+          heavy: Heavy
+          medium_heavy: Medium & Heavy
+        equipment_types:
+          armor: 裝甲
+          clothing: Clothing
+          hacking_tool: Hacking Tool
+          medical: Medical
+          tool: Tool
+          undersuit: 內襯
+          weapon: 武器
+          weapon_attachment: Weapon Attachment
+        hidden: hidden?
+        item_types:
+          assault_rifle: Assault Rifle
+          backpack: 背包
+          battery: Battery
+          flightsuit: Flightsuit
+          grenade: Grenade
+          grenade_launcher: Grenade Launcher
+          heavy_armor: Heavy Armor
+          heavy_backpack: Heavy Backpack
+          knife: Knife
+          light_armor: Light Armor
+          light_backpack: Light Backpack
+          lmg: LMG
+          magazine: Magazine
+          medium_armor: 中型裝甲
+          medium_backpack: Medium Backpack
+          pistol: Pistol
+          rifle: Rifle
+          rocket_launcher: Rocket Launcher
+          shotgun: Shotgun
+          smg: SMG
+          sniper_rifle: Sniper Rifle
+          special_railgun: Special - Railgun
+          utility: Utility
+          weapon_scope: Scope
+        slots:
+          arms: Arms
+          backpack: 背包
+          footwear: Footwear
+          gloves: Gloves
+          hat: Hat
+          helmet: Helmet
+          jacket: Jacket
+          legs: Legs
+          pants: Pants
+          shirt: Shirt
+          torso: Torso
+          undersuit: 內襯
+        temperature_rating: Temp.
+        types:
+          additional: Additional Equipment
+          powerplant: Powerplant
+          primary_thrusters: Primary Thrusters
+          shield: Shields
+          thrusters: 機動推進器
+        weapon_classes:
+          ballistic: Ballistic
+          energy: Energy
+          frag: Frag
+      fleet_membership:
+        roles:
+          admin: 管理員
+          member: 成員
+          officer: 軍官
+        user_id: 成員
+      habitation:
+        habitation_types:
+          container: 貨櫃
+          large_apartment: Large Apartment
+          medium_apartment: Medium Apartment
+          small_apartment: Small Apartment
+          suite: Suite
+      manufacturer:
+        code: CODE
+        known_for: Known for?
+      model:
+        active: active?
+        beam: 寬度
+        cargo: 貨物
+        crew: 船員
+        equipment: 裝備
+        ground: 地面載具?
+        adi_map: Atlas 3d Map?
+        hardpoints: 掛載點
+        height: 高度
+        hidden: hidden?
+        holo_colored: 3D File has colored Materials?
+        length: 長度
+        manufacturer: 製造商
+        mass: 質量
+        max_upgrades: 升級
+        notified: Suppress "New Ship" Notification?
+        on_sale: On sale?
+        production_status: 生產狀態
+        variants: 變體
+        weapons: 武器
+        fleetchart_image: Lagacy Fleetchart Image
+      model_hardpoint:
+        categories:
+          fixed: Fixed Maneuvering Thruster
+          gimbal: Gimbal Maneuvering Thruster
+          joint: Joint Maneuvering Thruster
+          main: Main Thruster
+          manned_turret: Manned Turret
+          missile_turret: Missile Turret
+          remote_turret: Remote Turret
+          retro: Retro Thruster
+          vtol: VTOL Thruster
+          qed: QED
+          emp: EMP
+        sizes:
+          capital: C (4)
+          eight: 8
+          eleven: 11
+          five: 5
+          four: 4
+          large: L (3)
+          medium: M (2)
+          nine: 9
+          one: 1
+          seven: 7
+          six: 6
+          small: S (1)
+          tbd: TBD
+          ten: 10
+          three: 3
+          twelve: 12
+          two: 2
+          vehicle: V (0)
+          snub: Snub (0)
+      progress_tracker_item:
+        statuses:
+          done: Done
+          in_progress: In Progress
+          planned: Planned
+      setting:
+        base:
+          registration: Registration active?
+        mailer:
+          default_from: Default From
+          host: SMTP Host
+          password: SMPT Password or Token
+          port: SMTP Port
+          user: SMTP User
+      updated_at: "%{time} ago"
+      user:
+        admin: Admin?
+        confirmation_token: 權杖
+        current_password: 密碼
+        email: 電子郵件
+        enabled: 活躍?
+        gravatar: Gravatar email Address
+        login: 使用者名稱或電子郵件
+        username: 使用者名稱
+      weapon:
+        classes:
+          class1: Class 1
+          class2: Class 2
+          class3: Class 3
+          class4: Class 4
+          class5: Class 5
+          class6: Class 6
+          class7: Class 7
+          class8: Class 8
+    errors:
+      messages:
+        blank: can't be blank
+        record_invalid: Bad Data
+      models:
+        fleet_role:
+          attributes:
+            resource_access:
+              changed: Access privileges can not be changed
+        fleet_membership:
+          attributes:
+            base:
+              cannot_destroy_from_permanent_role: Cannot remove member of Fleet from
+                permanent role
+            user_id:
+              taken: already present or has a pending invite
+        user:
+          attributes:
+            base:
+              has_permanent_fleet_memberships: 'Cannot delete account while you are
+                an admin of the following fleets: %{fleets}. Please transfer ownership
+                first.'
+            confirmation_token:
+              invalid: is invalid
+            current_password:
+              invalid: is invalid.
+            email:
+              taken: is already taken.
+            password:
+              too_short:
+            password_confirmation:
+              confirmation: Passwords do not match
+            reset_password_token:
+              invalid: Token is invalid
+            username:
+              taken: is already taken.

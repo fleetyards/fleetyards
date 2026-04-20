@@ -1,0 +1,232 @@
+zh-TW:
+  "true": 是
+  "false": 否
+  date:
+    abbr_day_names:
+    - 週日
+    - 週一
+    - 週二
+    - 週三
+    - 週四
+    - 週五
+    - 週六
+    abbr_month_names:
+    -
+    - 1月
+    - 2月
+    - 3月
+    - 4月
+    - 5月
+    - 6月
+    - 7月
+    - 8月
+    - 9月
+    - 10月
+    - 11月
+    - 12月
+    day_names:
+    - 星期日
+    - 星期一
+    - 星期二
+    - 星期三
+    - 星期四
+    - 星期五
+    - 星期六
+    formats:
+      default: "%Y-%m-%d"
+      long: "%Y年%m月%d日 %A"
+      short: "%m月%d日"
+      month: "%B"
+      label: "%Y年%m月%d日"
+      month_short: "%m月"
+      month_year_short: "%y年%m月"
+      month_year: "%Y年%m月"
+      day_month_short: "%m月%d日"
+      day_month: "%m月%d日 %A"
+    month_names:
+    -
+    - 一月
+    - 二月
+    - 三月
+    - 四月
+    - 五月
+    - 六月
+    - 七月
+    - 八月
+    - 九月
+    - 十月
+    - 十一月
+    - 十二月
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    distance_in_words:
+      about_x_hours:
+        one: 大約 1 小時
+        other: "大約 %{count} 小時"
+      about_x_months:
+        one: 大約 1 個月
+        other: "大約 %{count} 個月"
+      about_x_years:
+        one: 大約 1 年
+        other: "大約 %{count} 年"
+      almost_x_years:
+        one: 接近 1 年
+        other: "接近 %{count} 年"
+      half_a_minute: 半分鐘
+      less_than_x_minutes:
+        one: 不到 1 分鐘
+        other: "不到 %{count} 分鐘"
+      less_than_x_seconds:
+        one: 不到 1 秒
+        other: "不到 %{count} 秒"
+      over_x_years:
+        one: 超過 1 年
+        other: "超過 %{count} 年"
+      x_days:
+        one: 1 天
+        other: "%{count} 天"
+      x_minutes:
+        one: 1 分鐘
+        other: "%{count} 分鐘"
+      x_months:
+        one: 1 個月
+        other: "%{count} 個月"
+      x_seconds:
+        one: 1 秒
+        other: "%{count} 秒"
+    prompts:
+      day: 日
+      hour: 時
+      minute: 分
+      month: 月
+      second: 秒
+      year: 年
+  errors: &errors
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: 必須接受
+      blank: 不能為空
+      present: 必須為空
+      confirmation: "與 %{attribute} 不符"
+      empty: 不能為空
+      equal_to: "必須等於 %{count}"
+      even: 必須是偶數
+      exclusion: 已被保留
+      greater_than: "必須大於 %{count}"
+      greater_than_or_equal_to: "必須大於或等於 %{count}"
+      inclusion: 不在列表中
+      invalid: 無效
+      less_than: "必須小於 %{count}"
+      less_than_or_equal_to: "必須小於或等於 %{count}"
+      not_a_number: 不是數字
+      not_an_integer: 必須是整數
+      odd: 必須是奇數
+      record_invalid: "驗證失敗：%{errors}"
+      restrict_dependent_destroy:
+        one: "無法刪除記錄，因為存在依賴的 %{record}"
+        many: "無法刪除記錄，因為存在依賴的 %{record}"
+      taken: 已被使用
+      too_long:
+        one: 太長（最多 1 個字元）
+        other: "太長（最多 %{count} 個字元）"
+      too_short:
+        one: 太短（最少 1 個字元）
+        other: "太短（最少 %{count} 個字元）"
+      wrong_length:
+        one: 長度錯誤（應為 1 個字元）
+        other: "長度錯誤（應為 %{count} 個字元）"
+      other_than: "必須不等於 %{count}"
+    template:
+      body: "以下欄位存在問題："
+      header:
+        one: "無法儲存 %{model}：1 個錯誤"
+        other: "無法儲存 %{model}：%{count} 個錯誤"
+  helpers:
+    select:
+      prompt: 請選擇
+    submit:
+      create: "建立 %{model}"
+      submit: "儲存 %{model}"
+      update: "更新 %{model}"
+  distance:
+    centi: cm
+    unit: m
+    thousand: km
+  weight:
+    centi: kg
+    unit: t
+    thousand: mt
+  people:
+    unit:
+      one: 人
+      other: 人
+  number:
+    currency:
+      format:
+        delimiter: ","
+        format: "%u%n"
+        precision: 2
+        separator: "."
+        significant: false
+        strip_insignificant_zeros: false
+        unit: $
+    format:
+      delimiter: ","
+      precision: 3
+      separator: "."
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: "%n %u"
+        units:
+          billion: 十億
+          million: 百萬
+          quadrillion: 千萬億
+          thousand: 千
+          trillion: 萬億
+          unit: ""
+      format:
+        delimiter: ""
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: "%n %u"
+        units:
+          byte:
+            one: 位元組
+            other: 位元組
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ""
+        format: "%n%"
+    precision:
+      format:
+        delimiter: ""
+  support:
+    array:
+      last_word_connector: "和"
+      two_words_connector: "和"
+      words_connector: "、"
+  time:
+    am: 上午
+    formats:
+      default: "%Y年%m月%d日 %A %H:%M:%S %z"
+      label: "%Y年%m月%d日 %H:%M %Z"
+      long: "%Y年%m月%d日 %H:%M"
+      short: "%m月%d日 %H:%M"
+    pm: 下午
+  activemodel:
+    errors:
+      <<: *errors
+  activerecord:
+    errors:
+      <<: *errors

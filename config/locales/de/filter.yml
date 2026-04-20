@@ -1,1 +1,15 @@
+---
 de:
+  filter:
+    all: Alle
+    component:
+      class:
+        items:
+          rsiavionic: Avionic
+          rsimodular: System
+          rsipropulsion: Antrieb
+          rsithruster: Triebwerk
+          rsiweapon: Waffe
+    image:
+      model:
+        title: Modell

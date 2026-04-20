@@ -2,13 +2,63 @@
   "zh-TW": {
     "filterGroup": {
       "actions": {
-        "fetchMore": "Load more"
+        "fetchMore": "載入更多"
       },
       "labels": {
-        "search": "Type to search",
+        "search": "輸入以搜尋",
         "nullablePrompt": "No Option selected",
         "prompt": "Please select an Option",
         "removeTooltip": "Click to remove Option"
+      },
+      "model": {
+        "baseModel": {
+          "label": "基礎型號"
+        }
+      },
+      "modelLoaner": {
+        "loanerModel": {
+          "label": "借用型號"
+        }
+      },
+      "modelHardpoint": {
+        "source": {
+          "label": "來源",
+          "prompt": "Select Source"
+        },
+        "group": {
+          "label": "群組",
+          "prompt": "Select Group"
+        },
+        "hardpointType": {
+          "label": "類型",
+          "prompt": "Select Type"
+        },
+        "size": {
+          "label": "尺寸",
+          "nullablePrompt": "Select Size"
+        },
+        "category": {
+          "label": "分類",
+          "nullablePrompt": "Select Category"
+        },
+        "subCategory": {
+          "label": "子分類",
+          "nullablePrompt": "Select Sub Category"
+        }
+      },
+      "fleet": {
+        "members": {
+          "shipsFilter": {
+            "label": "Ships Filter",
+            "prompt": "Select which ships to show",
+            "nullablePrompt": "Select an option"
+          },
+          "hangarGroupId": {
+            "label": "機庫群組",
+            "prompt": "Select a hangar group",
+            "nullablePrompt": "Select a group"
+          }
+        }
       }
     }
   }

@@ -2,7 +2,11 @@
   "it": {
     "empty": {
       "headlines": {
-        "default": "Non c'è niente da vedere qui..."
+        "default": "Non c'è niente da vedere qui...",
+        "forName": "No %{name} found",
+        "hangar": "Your Hangar is empty",
+        "wishlist": "Your Wishlist is empty",
+        "features": "No features available"
       },
       "actions": {
         "reset": "Resetta i filtri/pagine",
@@ -11,6 +15,12 @@
       "texts": {
         "info": "Non abbiamo trovato alcun record.",
         "query": "Sembra che tu abbia alcuni filtri attivi o visitati una pagina senza alcun record."
+      },
+      "info": {
+        "hangar": "You can add Ships to your Hangar by clicking on the bookmark icon in the top right corner of a Ship or by using the Plus Button in the bottom right corner.",
+        "extension": "Additionally you can import your Hangar from the RSI Website via the Fleetyards Sync Browser extension.",
+        "wishlist": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship.",
+        "features": "There are currently no self-service features available. Check back later as new features are added regularly."
       }
     }
   }

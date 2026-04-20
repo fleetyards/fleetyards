@@ -3,6 +3,7 @@
     "nav": {
       "home": "Startseite",
       "back": "Zurück",
+      "navigation": "Navigation",
       "ships": {
         "index": "Schiffe"
       },
@@ -33,7 +34,9 @@
         "ships": "Schiffe",
         "members": {
           "index": "Mitglieder",
-          "invites": "Einladungen"
+          "invites": "Einladungen",
+          "worldmap": "Weltkarte",
+          "starmap": "Sternenkarte"
         },
         "stats": "Statistiken",
         "settings": {
@@ -68,13 +71,15 @@
         "security": "Sicherheit",
         "notifications": "Benachrichtigungen",
         "hangar": "Hangar",
+        "features": "Funktionen",
+        "oauthApplications": "OAuth-Apps",
         "verify": "RSI-Kontoverifizierung"
       },
       "reload": "Update verfügbar!",
       "visualTests": {
         "index": "Visuelle Tests",
-        "panels": "Panels",
-        "buttons": "Buttons",
+        "panels": "Bereiche",
+        "buttons": "Schaltflächen",
         "tables": "Tabellen"
       },
       "admin": {
@@ -86,14 +91,16 @@
             "index": "Basisdaten",
             "metrics": "Metriken",
             "prices": "Preise",
-            "docks": "Docks",
+            "docks": "Andockplätze",
             "modules": "Module",
             "paints": "Lackierungen",
             "images": "Bilder",
             "videos": "Videos",
             "cargoAndFuel": "Fracht und Treibstoff",
+            "cargoHolds": "Frachträume",
             "fleetchart": "Flottenkarten-Bilder",
-            "hardpoints": "Hardpoints",
+            "hardpoints": "Aufhängungspunkte",
+            "loaners": "Leihschiffe",
             "upgrades": "Upgrades",
             "packages": "Pakete"
           }
@@ -140,10 +147,13 @@
         "admins": {
           "index": "Administratoren"
         },
+        "oauthApplications": {
+          "index": "OAuth-Apps"
+        },
         "maintenance": {
           "index": "Wartung",
           "pghero": "PG-Hero",
-          "features": "Features",
+          "features": "Funktionen",
           "workers": "Worker",
           "tasks": "Aufgaben",
           "rsiApiStatus": "RSI-API-Status"
