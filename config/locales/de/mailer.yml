@@ -25,17 +25,17 @@ de:
         body: 'To view the fleets Ships and other Members please click on the following
           link:'
         headline: Your Membership Request to Join %{fleet} has been accepted
-        subject: "%{fleet} accepted your Membership Request"
+        subject: "%{fleet} hat Ihre Beitrittsanfrage akzeptiert"
       member_accepted:
         action: "%{fleet} Mitgliederliste"
         body: 'To look at the new members information please click on the following
           link:'
-        headline: "%{username} accepted his Fleet Invitation"
+        headline: "%{username} hat die Flotteneinladung angenommen"
         subject: New Fleet Member
       member_requested:
         action: "%{fleet} Einladungen"
         body: 'To accept the request please click on the following link:'
-        headline: "%{username} wants to Join %{fleet}"
+        headline: "%{username} möchte %{fleet} beitreten"
         subject: New Fleet Membership Request
       new_invite:
         action: "%{fleet} beitreten"
@@ -49,7 +49,7 @@ de:
     hello: Hello %{username}
     model:
       new:
-        headline_part_1: 'Allow me to introduce:'
+        headline_part_1: 'Darf ich vorstellen:'
         headline_part_2: The %{manufacturer}
         subject: New Ship/Vehicle
     notification_settings: Unsubscribe Notifications
@@ -92,4 +92,4 @@ de:
           part_one: The
           part_two: is now on Sale!
         price: Starting at %{price}
-        subject: "%{model} now on Sale!"
+        subject: "%{model} jetzt im Angebot!"

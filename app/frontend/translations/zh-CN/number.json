@@ -35,12 +35,12 @@
       "cargo": "%{count} SCU",
       "fuel": "%{count}",
       "ships": {
-        "one": "%{count} ship",
-        "other": "%{count} ships"
+        "one": "%{count} 飞船",
+        "other": "%{count} 飞船"
       },
       "people": {
-        "one": "%{count} person",
-        "other": "%{count} persons"
+        "one": "%{count} 人",
+        "other": "%{count} 人"
       }
     }
   }

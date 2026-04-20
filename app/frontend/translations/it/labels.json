@@ -214,7 +214,7 @@
           "front": "Fronte"
         },
         "gridSize": "%{size} meter per grid box",
-        "mode": "Mode",
+        "mode": "Modalità",
         "modeOptions": {
           "classic": "Classico",
           "panzoom": "v2"

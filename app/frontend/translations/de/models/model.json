@@ -31,16 +31,16 @@
         "roll": "Roll",
         "price": "Preis",
         "groundAcceleration": "Beschleunigung",
-        "groundDecceleration": "Decceleration",
-        "scmSpeedAcceleration": "Zero to SCM",
-        "scmSpeedDecceleration": "SCM to Zero",
-        "maxSpeedAcceleration": "Zero to Max",
-        "maxSpeedDecceleration": "Max to Zero",
+        "groundDecceleration": "Verzögerung",
+        "scmSpeedAcceleration": "Null auf SCM",
+        "scmSpeedDecceleration": "SCM auf Null",
+        "maxSpeedAcceleration": "Null auf Max",
+        "maxSpeedDecceleration": "Max auf Null",
         "compare": {
           "groundMaxSpeed": "Max. Bodengeschwindigkeit",
           "groundReverseSpeed": "Rückwärts-Bodengeschwindigkeit",
           "groundAcceleration": "Bodenbeschleunigung",
-          "groundDecceleration": "Ground Decceleration"
+          "groundDecceleration": "Bodenverzögerung"
         },
         "quantumFuelTankSize": "Quantum-Treibstoff",
         "hydrogenFuelTankSize": "Treibstoff",

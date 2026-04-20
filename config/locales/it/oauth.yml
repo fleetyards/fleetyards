@@ -35,7 +35,7 @@ it:
       new:
         title: Nuova applicazione
       show:
-        title: 'Application: %{name}'
+        title: 'Applicazione: %{name}'
         application_id: UID
         secret: Segreto
         secret_hashed: Secret hashed

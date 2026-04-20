@@ -20,7 +20,7 @@ zh-CN:
           military: Military
           stealth: 隐身
         item_types:
-          cargo_grids: Cargogrids
+          cargo_grids: 货物网格
           coolers: 冷却器
           countermeasure_launcher: Countermeasure Launcher
           fixed_thrusters: Fixed Thrusters
@@ -122,7 +122,7 @@ zh-CN:
           shirt: Shirt
           torso: Torso
           undersuit: 内衬
-        temperature_rating: Temp.
+        temperature_rating: 温度
         types:
           additional: Additional Equipment
           powerplant: Powerplant
@@ -145,7 +145,7 @@ zh-CN:
           large_apartment: Large Apartment
           medium_apartment: Medium Apartment
           small_apartment: Small Apartment
-          suite: Suite
+          suite: 套房
       manufacturer:
         code: CODE
         known_for: Known for?
@@ -159,7 +159,7 @@ zh-CN:
         adi_map: Atlas 3d Map?
         hardpoints: 挂载点
         height: 高度
-        hidden: hidden?
+        hidden: 隐藏?
         holo_colored: 3D File has colored Materials?
         length: 长度
         manufacturer: 制造商
@@ -249,7 +249,7 @@ zh-CN:
         fleet_role:
           attributes:
             resource_access:
-              changed: Access privileges can not be changed
+              changed: 访问权限无法更改
         fleet_membership:
           attributes:
             base:

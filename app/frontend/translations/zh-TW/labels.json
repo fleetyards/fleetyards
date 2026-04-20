@@ -214,7 +214,7 @@
           "front": "正面"
         },
         "gridSize": "%{size} meter per grid box",
-        "mode": "Mode",
+        "mode": "模式",
         "modeOptions": {
           "classic": "經典",
           "panzoom": "v2"
@@ -365,7 +365,7 @@
             "1_hour": "1 hour",
             "6_hours": "6 hours",
             "12_hours": "12 hours",
-            "1_day": "1 day",
+            "1_day": "1 天",
             "7_days": "7 days"
           },
           "limitOptions": {

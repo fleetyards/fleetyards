@@ -2,16 +2,16 @@
 zh-CN:
   notifications:
     hangar_create:
-      title: "%{model} added to hangar"
+      title: "%{model} 已添加到机库"
     hangar_destroy:
-      title: "%{model} removed from hangar"
+      title: "%{model} 已从机库移除"
     wishlist_create:
-      title: "%{model} added to wishlist"
+      title: "%{model} 已添加到愿望清单"
     wishlist_destroy:
-      title: "%{model} removed from wishlist"
+      title: "%{model} 已从愿望清单移除"
     model_on_sale:
-      title: "%{model} is on sale"
-      body: "%{model} is currently on sale in the pledge store."
+      title: "%{model} 正在出售"
+      body: "%{model} 目前在质押商店中出售。"
     hangar_sync_finished:
       title: Hangar sync completed
       body: Your RSI hangar has been synced successfully.
@@ -20,12 +20,12 @@ zh-CN:
       body: 'Your RSI hangar sync failed: %{error}'
     new_model:
       title: 'New ship: %{model}'
-      body: "%{model} has been added to the ship database."
+      body: "%{model} 已添加到飞船数据库。"
     fleet_invite:
       title: You've been invited to %{fleet}
     fleet_member_requested:
-      title: "%{username} requested to join %{fleet}"
+      title: "%{username} 请求加入 %{fleet}"
     fleet_member_accepted:
-      title: "%{username} joined %{fleet}"
+      title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:
       title: You've been accepted into %{fleet}

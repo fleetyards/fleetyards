@@ -82,9 +82,9 @@
         "baseModel": "Basismodell"
       },
       "cargoHold": {
-        "offsetX": "Offset X",
-        "offsetY": "Offset Y",
-        "offsetZ": "Offset Z",
+        "offsetX": "Versatz X",
+        "offsetY": "Versatz Y",
+        "offsetZ": "Versatz Z",
         "rotation": "0 or 90"
       },
       "manufacturer": {
@@ -129,7 +129,7 @@
       "oauthApplication": {
         "name": "My Application",
         "redirectUri": "https://example.com/callback",
-        "scopes": "public"
+        "scopes": "öffentlich"
       },
       "vehicle": {
         "serial": "Serial"
@@ -186,7 +186,7 @@
           "classification": "Vehicle, Fighter, Cargo...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
           "onSale": "Yes or No",
-          "productionStatus": "Announced, Flight Ready, In Concept..."
+          "productionStatus": "Angekündigt, Flugbereit, Im Konzept..."
         },
         "modelModules": {
           "name": "Bio Dome, Cargo Module..."

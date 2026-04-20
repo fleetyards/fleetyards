@@ -20,7 +20,7 @@ zh-TW:
           military: Military
           stealth: 隱身
         item_types:
-          cargo_grids: Cargogrids
+          cargo_grids: 貨物網格
           coolers: 冷卻器
           countermeasure_launcher: Countermeasure Launcher
           fixed_thrusters: Fixed Thrusters
@@ -83,7 +83,7 @@ zh-TW:
           undersuit: 內襯
           weapon: 武器
           weapon_attachment: Weapon Attachment
-        hidden: hidden?
+        hidden: 隱藏?
         item_types:
           assault_rifle: Assault Rifle
           backpack: 背包
@@ -122,7 +122,7 @@ zh-TW:
           shirt: Shirt
           torso: Torso
           undersuit: 內襯
-        temperature_rating: Temp.
+        temperature_rating: 溫度
         types:
           additional: Additional Equipment
           powerplant: Powerplant
@@ -145,7 +145,7 @@ zh-TW:
           large_apartment: Large Apartment
           medium_apartment: Medium Apartment
           small_apartment: Small Apartment
-          suite: Suite
+          suite: 套房
       manufacturer:
         code: CODE
         known_for: Known for?
@@ -159,7 +159,7 @@ zh-TW:
         adi_map: Atlas 3d Map?
         hardpoints: 掛載點
         height: 高度
-        hidden: hidden?
+        hidden: 隱藏?
         holo_colored: 3D File has colored Materials?
         length: 長度
         manufacturer: 製造商
@@ -246,7 +246,7 @@ zh-TW:
         fleet_role:
           attributes:
             resource_access:
-              changed: Access privileges can not be changed
+              changed: 存取權限無法變更
         fleet_membership:
           attributes:
             base:

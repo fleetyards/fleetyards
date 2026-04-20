@@ -59,8 +59,8 @@
       "features": {
         "updated": "Feature updated.",
         "error": "Could not update feature.",
-        "actorAdded": "Actor added to feature.",
-        "actorRemoved": "Actor removed from feature.",
+        "actorAdded": "角色已添加到功能。",
+        "actorRemoved": "角色已从功能中移除。",
         "groupAdded": "Group added to feature.",
         "groupRemoved": "Group removed from feature.",
         "created": "Feature created.",
@@ -293,8 +293,8 @@
           }
         },
         "oauthApplication": {
-          "destroy": "Are you sure you want to delete this OAuth application? This action can't be reverted.",
-          "regenerateSecret": "Are you sure you want to regenerate the client secret? Existing integrations will stop working."
+          "destroy": "确定要删除此 OAuth 应用吗? 此操作无法撤销。",
+          "regenerateSecret": "确定要重新生成客户端密钥吗? 现有集成将停止工作。"
         },
         "twoFactor": {
           "generateBackupCodes": "您确定要重新生成您的双因素认证备份代码吗？"
@@ -318,13 +318,13 @@
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
         },
         "modelHardpoint": {
-          "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
+          "destroy": "确定要删除此挂载点吗? 此操作无法撤销。"
         },
         "modelHardpointLoadout": {
-          "destroy": "Are you sure you want to delete this loadout? This action can't be reverted."
+          "destroy": "确定要删除此配置吗? 此操作无法撤销。"
         },
         "modelLoaner": {
-          "destroy": "Are you sure you want to delete this loaner? This action can't be reverted."
+          "destroy": "确定要删除此借用船吗? 此操作无法撤销。"
         },
         "modelPaint": {
           "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
@@ -365,8 +365,8 @@
       "oauthAuthorize": {
         "loading": "加载中...",
         "loadError": "Failed to load authorization details.",
-        "authorizeError": "Authorization failed.",
-        "denyError": "Authorization denial failed."
+        "authorizeError": "授权失败。",
+        "denyError": "授权拒绝失败。"
       },
       "oauth": {
         "disconnect": {
@@ -375,10 +375,10 @@
         }
       },
       "confirmAccess": {
-        "failure": "Access could not be confirmed. Please check your password and try again."
+        "failure": "无法确认访问。请检查密码并重试。"
       },
       "confirmAccessEmail": {
-        "sent": "A confirmation code has been sent to your email.",
+        "sent": "确认码已发送到您的电子邮件。",
         "failure": "Could not send confirmation email. Please try again."
       },
       "confirmAccessCode": {

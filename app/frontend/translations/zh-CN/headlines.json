@@ -155,7 +155,7 @@
       "requestPassword": "请求密码",
       "changePassword": "修改密码",
       "confirmAccess": "Confirm access",
-      "oauthAuthorize": "Authorize Application",
+      "oauthAuthorize": "授权应用",
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {

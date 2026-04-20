@@ -35,7 +35,7 @@ zh-CN:
       new:
         title: 新建应用
       show:
-        title: 'Application: %{name}'
+        title: '应用: %{name}'
         application_id: UID
         secret: 密钥
         secret_hashed: Secret hashed

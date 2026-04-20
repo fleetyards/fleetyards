@@ -35,12 +35,12 @@
       "cargo": "%{count} SCU",
       "fuel": "%{count}",
       "ships": {
-        "one": "%{count} ship",
-        "other": "%{count} ships"
+        "one": "%{count} nave",
+        "other": "%{count} naves"
       },
       "people": {
-        "one": "%{count} person",
-        "other": "%{count} persons"
+        "one": "%{count} persona",
+        "other": "%{count} personas"
       }
     }
   }

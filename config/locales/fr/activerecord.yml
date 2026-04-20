@@ -20,7 +20,7 @@ fr:
           military: Military
           stealth: Furtivité
         item_types:
-          cargo_grids: Cargogrids
+          cargo_grids: Grilles de cargaison
           coolers: Refroidisseurs
           countermeasure_launcher: Countermeasure Launcher
           fixed_thrusters: Fixed Thrusters
@@ -83,7 +83,7 @@ fr:
           undersuit: Sous-combinaison
           weapon: Arme
           weapon_attachment: Weapon Attachment
-        hidden: hidden?
+        hidden: masqué ?
         item_types:
           assault_rifle: Assault Rifle
           backpack: Sac à dos
@@ -159,7 +159,7 @@ fr:
         adi_map: Atlas 3d Map?
         hardpoints: Points d'attache
         height: Hauteur
-        hidden: hidden?
+        hidden: masqué ?
         holo_colored: 3D File has colored Materials?
         length: Longueur
         manufacturer: Fabricant
@@ -246,7 +246,7 @@ fr:
         fleet_role:
           attributes:
             resource_access:
-              changed: Access privileges can not be changed
+              changed: Les privilèges d'accès ne peuvent pas être modifiés
         fleet_membership:
           attributes:
             base:

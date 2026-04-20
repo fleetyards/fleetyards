@@ -46,8 +46,8 @@
         "members": {
           "index": "%{fleet} Members",
           "invites": "%{fleet} Invites",
-          "worldmap": "%{fleet} Member Worldmap",
-          "starmap": "%{fleet} Member Starmap"
+          "worldmap": "Mappa mondiale dei membri di %{fleet}",
+          "starmap": "Mappa stellare dei membri di %{fleet}"
         },
         "stats": "Statistiche di %{fleet}",
         "settings": {

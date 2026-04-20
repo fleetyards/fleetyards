@@ -13,8 +13,8 @@ zh-CN:
       locked: 您的账户已锁定
       not_confirmed: 您的账户无法充值
       not_found_in_database: 电子邮件或密码无效。
-      two_factor_required: 2FA required for login.
-      two_factor_invalid: 2FA Code invalid.
+      two_factor_required: 登录需要 2FA。
+      two_factor_invalid: 2FA 验证码无效。
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: You need to sign in or sign up before continuing.
       unconfirmed: You have to confirm your account before continuing.
@@ -24,7 +24,7 @@ zh-CN:
           confirm_email_link: Confirm email
           confirm_email_text: 'To confirm your new email please click on the following
             link:'
-          confirm_link: Activate Account
+          confirm_link: 激活账户
           confirm_text: 'To activate your Account please click on the following link:'
           welcome: Welcome %{username}
         subject: Confirmation instructions
@@ -87,9 +87,9 @@ zh-CN:
         enable:
           failure: Please enter a valid Token.
           success: 2-Factor-Authentication is now enabled.
-      otp_enabled: 2-Factor-Authentication enabled?
+      otp_enabled: 两步验证已启用?
       otp_token: 令牌
-      title: 2-Factor-Authentication
+      title: 两步验证
     passwords:
       no_token: You can't access this page without coming from a password reset email.
         If you do come from a password reset email, please make sure you used the

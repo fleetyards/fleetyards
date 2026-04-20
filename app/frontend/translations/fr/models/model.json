@@ -31,16 +31,16 @@
         "roll": "Roll",
         "price": "Prix",
         "groundAcceleration": "Accélération",
-        "groundDecceleration": "Decceleration",
-        "scmSpeedAcceleration": "Zero to SCM",
-        "scmSpeedDecceleration": "SCM to Zero",
-        "maxSpeedAcceleration": "Zero to Max",
-        "maxSpeedDecceleration": "Max to Zero",
+        "groundDecceleration": "Décélération",
+        "scmSpeedAcceleration": "Zéro à SCM",
+        "scmSpeedDecceleration": "SCM à Zéro",
+        "maxSpeedAcceleration": "Zéro à Max",
+        "maxSpeedDecceleration": "Max à Zéro",
         "compare": {
           "groundMaxSpeed": "Vitesse au sol max.",
           "groundReverseSpeed": "Vitesse de recul au sol",
           "groundAcceleration": "Accélération au sol",
-          "groundDecceleration": "Ground Decceleration"
+          "groundDecceleration": "Décélération au sol"
         },
         "quantumFuelTankSize": "Carburant Quantum",
         "hydrogenFuelTankSize": "Carburant",

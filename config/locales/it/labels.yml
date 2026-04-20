@@ -4,23 +4,23 @@ it:
     actions: Azioni
     charts:
       component-pie:
-        one: "%{label}:<br><b>%{count}</b> Component (%{percentage} %)"
-        other: "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
+        one: "%{label}:<br><b>%{count}</b> Componente (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Componenti (%{percentage} %)"
       ship:
-        one: "%{label}:<br><b>%{count}</b> Ship"
-        other: "%{label}:<br><b>%{count}</b> Ships"
+        one: "%{label}:<br><b>%{count}</b> Nave"
+        other: "%{label}:<br><b>%{count}</b> Navi"
       ship-pie:
-        one: "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)"
-        other: "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+        one: "%{label}:<br><b>%{count}</b> Nave (%{percentage} %)"
+        other: "%{label}:<br><b>%{count}</b> Navi (%{percentage} %)"
       user:
-        one: "%{label}:<br><b>%{count}</b> User"
-        other: "%{label}:<br><b>%{count}</b> Users"
+        one: "%{label}:<br><b>%{count}</b> Utente"
+        other: "%{label}:<br><b>%{count}</b> Utenti"
       view:
-        one: "%{label}:<br><b>%{count}</b> View"
-        other: "%{label}:<br><b>%{count}</b> Views"
+        one: "%{label}:<br><b>%{count}</b> Visualizzazione"
+        other: "%{label}:<br><b>%{count}</b> Visualizzazioni"
       visit:
-        one: "%{label}:<br><b>%{count}</b> Visit"
-        other: "%{label}:<br><b>%{count}</b> Visits"
+        one: "%{label}:<br><b>%{count}</b> Visita"
+        other: "%{label}:<br><b>%{count}</b> Visite"
     panels:
       components_by_class: Componenti per classe
       fleets_count_total: Flotte totali

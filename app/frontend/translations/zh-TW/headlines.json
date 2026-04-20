@@ -155,7 +155,7 @@
       "requestPassword": "請求密碼",
       "changePassword": "變更密碼",
       "confirmAccess": "Confirm access",
-      "oauthAuthorize": "Authorize Application",
+      "oauthAuthorize": "授權應用程式",
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {

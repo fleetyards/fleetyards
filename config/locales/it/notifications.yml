@@ -2,16 +2,16 @@
 it:
   notifications:
     hangar_create:
-      title: "%{model} added to hangar"
+      title: "%{model} aggiunto all'hangar"
     hangar_destroy:
-      title: "%{model} removed from hangar"
+      title: "%{model} rimosso dall'hangar"
     wishlist_create:
-      title: "%{model} added to wishlist"
+      title: "%{model} aggiunto alla lista dei desideri"
     wishlist_destroy:
-      title: "%{model} removed from wishlist"
+      title: "%{model} rimosso dalla lista dei desideri"
     model_on_sale:
-      title: "%{model} is on sale"
-      body: "%{model} is currently on sale in the pledge store."
+      title: "%{model} è in vendita"
+      body: "%{model} è attualmente in vendita nel negozio pledge."
     hangar_sync_finished:
       title: Hangar sync completed
       body: Your RSI hangar has been synced successfully.
@@ -20,12 +20,12 @@ it:
       body: 'Your RSI hangar sync failed: %{error}'
     new_model:
       title: 'New ship: %{model}'
-      body: "%{model} has been added to the ship database."
+      body: "%{model} è stato aggiunto al database delle navi."
     fleet_invite:
       title: You've been invited to %{fleet}
     fleet_member_requested:
-      title: "%{username} requested to join %{fleet}"
+      title: "%{username} ha chiesto di unirsi a %{fleet}"
     fleet_member_accepted:
-      title: "%{username} joined %{fleet}"
+      title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:
       title: You've been accepted into %{fleet}

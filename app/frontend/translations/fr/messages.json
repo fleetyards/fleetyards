@@ -59,8 +59,8 @@
       "features": {
         "updated": "Feature updated.",
         "error": "Could not update feature.",
-        "actorAdded": "Actor added to feature.",
-        "actorRemoved": "Actor removed from feature.",
+        "actorAdded": "Acteur ajouté à la fonctionnalité.",
+        "actorRemoved": "Acteur retiré de la fonctionnalité.",
         "groupAdded": "Group added to feature.",
         "groupRemoved": "Group removed from feature.",
         "created": "Feature created.",
@@ -294,8 +294,8 @@
           }
         },
         "oauthApplication": {
-          "destroy": "Are you sure you want to delete this OAuth application? This action can't be reverted.",
-          "regenerateSecret": "Are you sure you want to regenerate the client secret? Existing integrations will stop working."
+          "destroy": "Êtes-vous sûr de vouloir supprimer cette application OAuth ? Cette action est irréversible.",
+          "regenerateSecret": "Êtes-vous sûr de vouloir régénérer le secret client ? Les intégrations existantes cesseront de fonctionner."
         },
         "twoFactor": {
           "generateBackupCodes": "Êtes-vous sûr de vouloir régénérer vos codes de sauvegarde d'authentification à deux facteurs ?"
@@ -319,13 +319,13 @@
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
         },
         "modelHardpoint": {
-          "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
+          "destroy": "Êtes-vous sûr de vouloir supprimer ce point d'attache ? Cette action est irréversible."
         },
         "modelHardpointLoadout": {
-          "destroy": "Are you sure you want to delete this loadout? This action can't be reverted."
+          "destroy": "Êtes-vous sûr de vouloir supprimer cette configuration ? Cette action est irréversible."
         },
         "modelLoaner": {
-          "destroy": "Are you sure you want to delete this loaner? This action can't be reverted."
+          "destroy": "Êtes-vous sûr de vouloir supprimer ce prêt ? Cette action est irréversible."
         },
         "modelPaint": {
           "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
@@ -366,8 +366,8 @@
       "oauthAuthorize": {
         "loading": "Chargement...",
         "loadError": "Failed to load authorization details.",
-        "authorizeError": "Authorization failed.",
-        "denyError": "Authorization denial failed."
+        "authorizeError": "Autorisation échouée.",
+        "denyError": "Le refus d'autorisation a échoué."
       },
       "oauth": {
         "disconnect": {
@@ -376,10 +376,10 @@
         }
       },
       "confirmAccess": {
-        "failure": "Access could not be confirmed. Please check your password and try again."
+        "failure": "L'accès n'a pas pu être confirmé. Veuillez vérifier votre mot de passe et réessayer."
       },
       "confirmAccessEmail": {
-        "sent": "A confirmation code has been sent to your email.",
+        "sent": "Un code de confirmation a été envoyé à votre e-mail.",
         "failure": "Could not send confirmation email. Please try again."
       },
       "confirmAccessCode": {

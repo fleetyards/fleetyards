@@ -35,7 +35,7 @@ fr:
       new:
         title: Nouvelle application
       show:
-        title: 'Application: %{name}'
+        title: 'Application : %{name}'
         application_id: UID
         secret: Secret
         secret_hashed: Secret hashed

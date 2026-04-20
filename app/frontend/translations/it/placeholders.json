@@ -129,7 +129,7 @@
       "oauthApplication": {
         "name": "My Application",
         "redirectUri": "https://example.com/callback",
-        "scopes": "public"
+        "scopes": "pubblico"
       },
       "vehicle": {
         "serial": "Seriale"
@@ -186,7 +186,7 @@
           "classification": "Vehicle, Fighter, Cargo...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
           "onSale": "Sì o No",
-          "productionStatus": "Announced, Flight Ready, In Concept..."
+          "productionStatus": "Annunciato, Pronto al volo, In fase di progettazione..."
         },
         "modelModules": {
           "name": "Bio Dome, Cargo Module..."

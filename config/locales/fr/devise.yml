@@ -16,8 +16,8 @@ fr:
       locked: Votre compte est verrouillé.
       not_confirmed: Votre compte n'a pas pu être validé.
       not_found_in_database: Identifiants invalides.
-      two_factor_required: 2FA required for login.
-      two_factor_invalid: 2FA Code invalid.
+      two_factor_required: 2FA requis pour la connexion.
+      two_factor_invalid: Code 2FA invalide.
       timeout: Your session expired. Please sign in again to continue.
       unauthenticated: You need to sign in or sign up before continuing.
       unconfirmed: You have to confirm your account before continuing.
@@ -27,7 +27,7 @@ fr:
           confirm_email_link: Confirm email
           confirm_email_text: 'To confirm your new email please click on the following
             link:'
-          confirm_link: Activate Account
+          confirm_link: Activer le compte
           confirm_text: 'To activate your Account please click on the following link:'
           welcome: Welcome %{username}
         subject: Confirmation instructions
@@ -91,9 +91,9 @@ fr:
         enable:
           failure: Merci de saisir un code valide.
           success: L'authentification à deux facteurs est maintenant activée.
-      otp_enabled: 2-Factor-Authentication enabled?
+      otp_enabled: Authentification à deux facteurs activée ?
       otp_token: Token
-      title: 2-Factor-Authentication
+      title: Authentification à deux facteurs
     passwords:
       no_token: You can't access this page without coming from a password reset email.
         If you do come from a password reset email, please make sure you used the

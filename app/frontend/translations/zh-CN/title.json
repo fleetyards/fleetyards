@@ -46,8 +46,8 @@
         "members": {
           "index": "%{fleet} Members",
           "invites": "%{fleet} Invites",
-          "worldmap": "%{fleet} Member Worldmap",
-          "starmap": "%{fleet} Member Starmap"
+          "worldmap": "%{fleet} 成员世界地图",
+          "starmap": "%{fleet} 成员星图"
         },
         "stats": "%{fleet} 统计",
         "settings": {

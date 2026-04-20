@@ -20,7 +20,7 @@ de:
           military: Military
           stealth: Tarnung
         item_types:
-          cargo_grids: Cargogrids
+          cargo_grids: Frachtraster
           coolers: Kühler
           countermeasure_launcher: Countermeasure Launcher
           fixed_thrusters: Fixed Thrusters
@@ -83,7 +83,7 @@ de:
           undersuit: Unteranzug
           weapon: Waffe
           weapon_attachment: Weapon Attachment
-        hidden: hidden?
+        hidden: versteckt?
         item_types:
           assault_rifle: Assault Rifle
           backpack: Rucksack
@@ -159,7 +159,7 @@ de:
         adi_map: Atlas 3d Map?
         hardpoints: Aufhängungspunkte
         height: Höhe
-        hidden: hidden?
+        hidden: versteckt?
         holo_colored: 3D File has colored Materials?
         length: Länge
         manufacturer: Hersteller
@@ -246,7 +246,7 @@ de:
         fleet_role:
           attributes:
             resource_access:
-              changed: Access privileges can not be changed
+              changed: Zugriffsrechte können nicht geändert werden
         fleet_membership:
           attributes:
             base:

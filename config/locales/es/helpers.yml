@@ -45,7 +45,7 @@ es:
       model:
         hidden: "¿Oculto?"
         active: "¿Activo?"
-        ground: Ground?
+        ground: "¿Terrestre?"
         map: Map?
         on_sale: "¿En venta?"
     prompt:
@@ -58,7 +58,7 @@ es:
         dock_type: Please select a Dock Type
         ship_size: Please select a Ship size
       equipment:
-        backpack_compatibility: Backpack compatibility
+        backpack_compatibility: Compatibilidad de mochila
         core_compatibility: Core compatibility
         equipment_type: Please select a Type
         item_type: Seleccione un tipo de objeto

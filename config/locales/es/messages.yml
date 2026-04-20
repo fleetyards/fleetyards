@@ -2,23 +2,23 @@
 es:
   messages:
     background_disabled:
-      success: "%{resource} not used for Background."
+      success: "%{resource} no usado como fondo."
     background_enabled:
-      success: "%{resource} used for Background."
+      success: "%{resource} usado como fondo."
     confirm:
-      delete: Are you sure you want to delete this entry?
-      resend_confirmation: Are you sure you want to resend confirmation instructions
-        for this user?
-      admin_login_in_as: Are you sure you want to login as the user?
+      delete: "¿Está seguro de que desea eliminar esta entrada?"
+      resend_confirmation: "¿Está seguro de que desea reenviar las instrucciones de
+        confirmación para este usuario?"
+      admin_login_in_as: "¿Está seguro de que desea iniciar sesión como este usuario?"
     create:
-      failure: "%{resource} could not be created."
-      success: "%{resource} created."
+      failure: "%{resource} no pudo ser creado."
+      success: "%{resource} creado."
     destroy:
-      success: "%{resource} successfully deleted."
+      success: "%{resource} eliminado exitosamente."
     disabled:
-      success: "%{resource} disabled."
+      success: "%{resource} deshabilitado."
     enabled:
-      success: "%{resource} enabled."
+      success: "%{resource} habilitado."
     fleet:
       join:
         success: Fleet Join Request received.
@@ -33,16 +33,16 @@ es:
       invite: No Invite found
       model: No Model found
     reload:
-      started: "%{resource} reload started."
-      success: "%{resource} successfully reloaded."
+      started: "%{resource} recarga iniciada."
+      success: "%{resource} recargado exitosamente."
     resend_confirmation:
-      failure: "%{resource} could not resend confirmation."
-      success: "%{resource} confirmation send."
+      failure: "%{resource} no se pudo reenviar la confirmación."
+      success: "%{resource} confirmación enviada."
     send_password_reset:
-      success: "%{resource} password reset instructions sent."
+      success: "%{resource} instrucciones de restablecimiento de contraseña enviadas."
     rsi_verification:
-      failure: Account could not be verified.
-      success: Account successfully verified.
+      failure: La cuenta no pudo ser verificada.
+      success: Cuenta verificada exitosamente.
     signup:
       already_signed_in: Ya ha iniciado sesión.
       username_invalid: Username is invalid.
@@ -51,26 +51,26 @@ es:
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
         Reasons.<br>For further Information please Contact us under info@fleetyards.net
     update:
-      failure: "%{resource} could not be edited."
-      success: "%{resource} edited successfully."
+      failure: "%{resource} no pudo ser editado."
+      success: "%{resource} editado exitosamente."
     omniauth_connection:
       destroy:
         last_connection: You cannot remove your last login connection without setting
           a password first.
     confirmAccess:
-      failure: Access confirmation failed
+      failure: Confirmación de acceso fallida
     confirmAccessCode:
       failure: El código de confirmación es inválido o ha expirado.
     confirmAccessEmail:
-      sent: A confirmation link has been sent to your email.
+      sent: Se ha enviado un enlace de confirmación a su correo electrónico.
       notAllowed: Email confirmation is only available for OAuth accounts.
     hangar_import:
       no_data: No Data found to import
     hangar_sync:
       no_data: No Data found to sync
-      already_running: A Hangar Sync is already in progress
+      already_running: Ya hay una sincronización de hangar en progreso
     user:
-      requires_access_confirmation: Access confirmation pending
+      requires_access_confirmation: Confirmación de acceso pendiente
     otp:
       active: Two-factor Authentication already active
       inactive: Two-factor Authentication already inactive

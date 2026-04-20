@@ -155,7 +155,7 @@
       "requestPassword": "Passwort anfordern",
       "changePassword": "Passwort ändern",
       "confirmAccess": "Confirm access",
-      "oauthAuthorize": "Authorize Application",
+      "oauthAuthorize": "Anwendung autorisieren",
       "filterModels": "Filter Ships",
       "filterVehicles": "Filter Hangar",
       "fleets": {

@@ -45,7 +45,7 @@ fr:
       model:
         hidden: Masqué ?
         active: Actif ?
-        ground: Ground?
+        ground: Terrestre ?
         map: Map?
         on_sale: En vente ?
     prompt:
@@ -58,7 +58,7 @@ fr:
         dock_type: Please select a Dock Type
         ship_size: Please select a Ship size
       equipment:
-        backpack_compatibility: Backpack compatibility
+        backpack_compatibility: Compatibilité sac à dos
         core_compatibility: Core compatibility
         equipment_type: Please select a Type
         item_type: Veuillez sélectionner un type d'objet

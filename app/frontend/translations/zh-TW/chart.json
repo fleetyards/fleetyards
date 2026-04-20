@@ -3,32 +3,32 @@
     "chart": {
       "labels": {
         "view": {
-          "one": "%{label}:<br><b>%{count}</b> View",
-          "other": "%{label}:<br><b>%{count}</b> Views"
+          "one": "%{label}:<br><b>%{count}</b> 瀏覽",
+          "other": "%{label}:<br><b>%{count}</b> 瀏覽"
         },
         "ship": {
-          "one": "%{label}:<br><b>%{count}</b> Ship",
-          "other": "%{label}:<br><b>%{count}</b> Ships"
+          "one": "%{label}:<br><b>%{count}</b> 飛船",
+          "other": "%{label}:<br><b>%{count}</b> 飛船"
         },
         "ship-pie": {
-          "one": "%{label}:<br><b>%{count}</b> Ship (%{percentage} %)",
-          "other": "%{label}:<br><b>%{count}</b> Ships (%{percentage} %)"
+          "one": "%{label}:<br><b>%{count}</b> 飛船 (%{percentage} %)",
+          "other": "%{label}:<br><b>%{count}</b> 飛船 (%{percentage} %)"
         },
         "component-pie": {
-          "one": "%{label}:<br><b>%{count}</b> Component (%{percentage} %)",
-          "other": "%{label}:<br><b>%{count}</b> Components (%{percentage} %)"
+          "one": "%{label}:<br><b>%{count}</b> 組件 (%{percentage} %)",
+          "other": "%{label}:<br><b>%{count}</b> 組件 (%{percentage} %)"
         },
         "user": {
-          "one": "%{label}:<br><b>%{count}</b> User",
-          "other": "%{label}:<br><b>%{count}</b> Users"
+          "one": "%{label}:<br><b>%{count}</b> 使用者",
+          "other": "%{label}:<br><b>%{count}</b> 使用者"
         },
         "user-pie": {
           "one": "%{label}:<br><b>%{count}</b> User (%{percentage} %)",
           "other": "%{label}:<br><b>%{count}</b> Users (%{percentage} %)"
         },
         "visit": {
-          "one": "%{label}:<br><b>%{count}</b> Visit",
-          "other": "%{label}:<br><b>%{count}</b> Visits"
+          "one": "%{label}:<br><b>%{count}</b> 訪問",
+          "other": "%{label}:<br><b>%{count}</b> 訪問"
         }
       }
     }

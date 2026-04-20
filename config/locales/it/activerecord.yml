@@ -20,7 +20,7 @@ it:
           military: Militare
           stealth: Furtività
         item_types:
-          cargo_grids: Cargogrids
+          cargo_grids: Griglie di carico
           coolers: Refrigeranti
           countermeasure_launcher: Lanciatore Contromisure
           fixed_thrusters: Propulsori fissi
@@ -83,7 +83,7 @@ it:
           undersuit: Sottotuta
           weapon: Arma
           weapon_attachment: Weapon Attachment
-        hidden: hidden?
+        hidden: nascosto?
         item_types:
           assault_rifle: Assault Rifle
           backpack: Zaino
@@ -246,7 +246,7 @@ it:
         fleet_role:
           attributes:
             resource_access:
-              changed: Access privileges can not be changed
+              changed: I privilegi di accesso non possono essere modificati
         fleet_membership:
           attributes:
             base:

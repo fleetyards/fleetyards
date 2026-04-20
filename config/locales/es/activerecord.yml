@@ -20,7 +20,7 @@ es:
           military: Military
           stealth: Sigilo
         item_types:
-          cargo_grids: Cargogrids
+          cargo_grids: Grillas de carga
           coolers: Enfriadores
           countermeasure_launcher: Countermeasure Launcher
           fixed_thrusters: Fixed Thrusters
@@ -83,7 +83,7 @@ es:
           undersuit: Traje interior
           weapon: Arma
           weapon_attachment: Weapon Attachment
-        hidden: hidden?
+        hidden: "¿oculto?"
         item_types:
           assault_rifle: Assault Rifle
           backpack: Mochila
@@ -159,7 +159,7 @@ es:
         adi_map: Atlas 3d Map?
         hardpoints: Puntos de montaje
         height: Altura
-        hidden: hidden?
+        hidden: "¿oculto?"
         holo_colored: 3D File has colored Materials?
         length: Longitud
         manufacturer: Fabricante
@@ -246,7 +246,7 @@ es:
         fleet_role:
           attributes:
             resource_access:
-              changed: Access privileges can not be changed
+              changed: Los privilegios de acceso no se pueden cambiar
         fleet_membership:
           attributes:
             base:

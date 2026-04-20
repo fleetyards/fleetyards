@@ -35,7 +35,7 @@ zh-TW:
       new:
         title: 新增應用程式
       show:
-        title: 'Application: %{name}'
+        title: '應用程式: %{name}'
         application_id: UID
         secret: 密鑰
         secret_hashed: Secret hashed

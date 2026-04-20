@@ -9,5 +9,5 @@ zh-CN:
       hangar:read: Read Hangar
       hangar:write: Manage Hangar
       fleet: Full Fleet Access
-      fleet:read: Read Fleet
+      fleet:read: 读取舰队
       fleet:write: 管理舰队

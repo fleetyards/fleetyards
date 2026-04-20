@@ -45,7 +45,7 @@ zh-TW:
       model:
         hidden: 隱藏?
         active: 活躍?
-        ground: Ground?
+        ground: 地面?
         map: Map?
         on_sale: 販售中?
     prompt:
@@ -58,7 +58,7 @@ zh-TW:
         dock_type: Please select a Dock Type
         ship_size: Please select a Ship size
       equipment:
-        backpack_compatibility: Backpack compatibility
+        backpack_compatibility: 背包相容性
         core_compatibility: Core compatibility
         equipment_type: Please select a Type
         item_type: 請選擇物品類型
