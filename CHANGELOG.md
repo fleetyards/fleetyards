@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.9.2](https://github.com/fleetyards/fleetyards/compare/v6.9.1...v6.9.2) (2026-04-20)
+
+
+### Bug Fixes
+
+* correct ship detail fleetchart view proportions and layout ([9f325ca](https://github.com/fleetyards/fleetyards/commit/9f325cac591e11416f27d64b139f5a679d88107f))
+* derive module component key for ships with unlinked module hardpoints ([5a423cd](https://github.com/fleetyards/fleetyards/commit/5a423cd7119e69074a3a35b9f5e5b4cea732072b))
+* prevent stale cached HTML from causing 404s on Vite assets after deploys ([3d86d74](https://github.com/fleetyards/fleetyards/commit/3d86d74dc3a38cac24204955dd511b01c04a2a1d))
+
 ## [6.9.1](https://github.com/fleetyards/fleetyards/compare/v6.9.0...v6.9.1) (2026-04-19)
 
 
