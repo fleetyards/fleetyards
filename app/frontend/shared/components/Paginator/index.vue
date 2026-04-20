@@ -64,8 +64,7 @@ const currentPage = computed(() => {
   <div
     v-if="
       pagination &&
-      (perPageSelectable ||
-        (pagination.totalCount > 0 && pagination.totalPages > 1))
+      (perPageSelectable || pagination.totalCount > 0)
     "
     class="pagination"
   >
@@ -94,14 +93,20 @@ const currentPage = computed(() => {
         >
           <i class="fa fa-chevron-left" />
         </Btn>
-        <span class="pagination__pages" style="flex-grow: none">
-          {{
-            t("paginator.labels.pages", {
-              page: String(currentPage),
-              total: String(pagination.totalPages || 1),
-            })
-          }}
-        </span>
+      </template>
+      <span
+        v-if="pagination.totalCount > 0"
+        class="pagination__pages"
+        style="flex-grow: none"
+      >
+        {{
+          t("paginator.labels.pages", {
+            page: String(currentPage),
+            total: String(pagination.totalPages || 1),
+          })
+        }}
+      </span>
+      <template v-if="pagination.totalCount > 0 && pagination.totalPages > 1">
         <Btn
           :size="size"
           :to="pageRoute(currentPage + 1)"
