@@ -68,8 +68,8 @@
         "createError": "无法创建功能。"
       },
       "rsiRequestLogs": {
-        "resolved": "Request log marked as resolved.",
-        "error": "Could not update request log."
+        "resolved": "请求日志已标记为已解决。",
+        "error": "无法更新请求日志。"
       },
       "updateNotifications": {
         "success": "通知设置已更新。"
@@ -80,23 +80,23 @@
       "oauthApplications": {
         "create": {
           "success": "OAuth 应用已创建。",
-          "error": "Could not create OAuth application."
+          "error": "无法创建 OAuth 应用。"
         },
         "update": {
           "success": "OAuth 应用已更新。",
-          "error": "Could not update OAuth application."
+          "error": "无法更新 OAuth 应用。"
         },
         "destroy": {
           "success": "OAuth 应用已删除。",
-          "error": "Could not delete OAuth application."
+          "error": "无法删除 OAuth 应用。"
         },
         "regenerateSecret": {
           "success": "客户端密钥已重新生成。",
-          "error": "Could not regenerate client secret."
+          "error": "无法重新生成客户端密钥。"
         },
         "copied": "已复制到剪贴板。",
         "copyError": "无法复制到剪贴板。",
-        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+        "secretWarning": "请立即复制客户端密钥。您将无法再次查看。"
       },
       "avatarUpload": {
         "create": {
@@ -364,14 +364,14 @@
       },
       "oauthAuthorize": {
         "loading": "加载中...",
-        "loadError": "Failed to load authorization details.",
+        "loadError": "加载授权详情失败。",
         "authorizeError": "授权失败。",
         "denyError": "授权拒绝失败。"
       },
       "oauth": {
         "disconnect": {
-          "success": "Provider disconnected successfully.",
-          "failure": "Could not disconnect provider. Please try again."
+          "success": "服务商已成功断开。",
+          "failure": "无法断开服务商。请重试。"
         }
       },
       "confirmAccess": {
@@ -379,7 +379,7 @@
       },
       "confirmAccessEmail": {
         "sent": "确认码已发送到您的电子邮件。",
-        "failure": "Could not send confirmation email. Please try again."
+        "failure": "无法发送确认邮件。请重试。"
       },
       "confirmAccessCode": {
         "failure": "确认码无效或已过期。"

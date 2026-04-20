@@ -13,7 +13,7 @@ zh-TW:
         new: 新組件
       dashboard: 儀表板
       equipment:
-        edit: Equipment %{equipment}
+        edit: 裝備 %{equipment}
         index: 裝備
         new: 新裝備
       image:
@@ -32,19 +32,19 @@ zh-TW:
         new: 新型號
         price_diff: 質押價格過期的型號
       model_module:
-        edit: Module %{model_module}
+        edit: 模組 %{model_module}
         index: 模組
         new: 新模組
       model_module_package:
-        edit: Module Package %{model_module_package}
+        edit: 模組套件 %{model_module_package}
         index: 模組套件
         new: 新模組套件
       model_paint:
-        edit: Paint %{model_paint}
+        edit: 塗裝 %{model_paint}
         index: 塗裝
         new: 新塗裝
       model_upgrade:
-        edit: Upgrade %{model_upgrade}
+        edit: 升級 %{model_upgrade}
         index: 升級
         new: 新升級
       user:
@@ -57,7 +57,7 @@ zh-TW:
     change_password: Change your Password
     comments: 評論
     confirm: Confirm your Account
-    forgot_password: Forgot your Password?
+    forgot_password: 忘記密碼?
     impressum: 法律聲明
     not_found: Navigation Error
     privacy: 隱私政策

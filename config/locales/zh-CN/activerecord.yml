@@ -253,8 +253,7 @@ zh-CN:
         fleet_membership:
           attributes:
             base:
-              cannot_destroy_from_permanent_role: Cannot remove member of Fleet from
-                permanent role
+              cannot_destroy_from_permanent_role: 无法将成员从永久角色中移除
             user_id:
               taken: 已经存在或有一个待处理的邀请
         user:

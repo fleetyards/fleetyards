@@ -25,30 +25,30 @@ it:
       confirmation_instructions:
         content:
           confirm_email_link: Conferma e-mail
-          confirm_email_text: 'To confirm your new email please click on the following
+          confirm_email_text: 'Per confermare la tua nuova e-mail, clicca sul seguente
             link:'
           confirm_link: Attiva account
-          confirm_text: 'To activate your Account please click on the following link:'
+          confirm_text: 'Per attivare il tuo account, clicca sul seguente link:'
           welcome: Benvenuto %{username}
         subject: Istruzioni di conferma
       email_changed:
         content:
-          text_confirmed: We're contacting you to notify you that your email has been
-            changed to %{email}.
-          text_unconfirmed: We're contacting you to notify you that your email is
-            being changed to %{email}.
+          text_confirmed: Ti contattiamo per informarti che la tua e-mail è stata
+            cambiata in %{email}.
+          text_unconfirmed: Ti contattiamo per informarti che la tua e-mail sta per
+            essere cambiata in %{email}.
       password_change:
         content:
-          text: We're contacting you to notify you that your password has been changed.
+          text: Ti contattiamo per informarti che la tua password è stata cambiata.
       reset_password_instructions:
         content:
           change_link: Cambia la mia password
-          first_text: Someone has requested a link to change your password, and you
-            can do this through the link below.
+          first_text: Qualcuno ha richiesto un link per cambiare la tua password.
+            Puoi farlo tramite il link qui sotto.
           hello: Ciao
-          second_text: If you didn't request this, please ignore this email.
-          third_text: Your password won't change until you access the link above and
-            create a new one.
+          second_text: Se non hai fatto questa richiesta, ignora questa e-mail.
+          third_text: La tua password non cambierà finché non accederai al link sopra
+            e ne creerai una nuova.
         subject: Istruzioni per il reset della password
       unlock_instructions:
         subject: Istruzioni di sblocco
@@ -59,18 +59,17 @@ it:
         github: GitHub
         bluesky: Bluesky
         twitch: Twitch
-      failure: Could not authenticate you with %{kind}.
-      failure_with_reason: Could not authenticate you with %{kind} because "%{reason}".
+      failure: Impossibile autenticarti con %{kind}.
+      failure_with_reason: Impossibile autenticarti con %{kind} perché "%{reason}".
       failure_username_taken: |-
         Could not authenticate you with %{kind} because there is already an account with the username "%{username}".
         Please sign in your existing account or sign up to a new account and connect your %{kind} account.
-      success: Successfully authenticated with %{kind}.
+      success: Autenticazione riuscita con %{kind}.
       connect:
-        failure: Could not connect your %{kind} account.
-        failure_with_reason: Could not connect your %{kind} account because "%{reason}".
-        success: Successfully connected your %{kind} account.
-        already_connected: Your %{kind} account is already connected to your FleetYards.net
-          Account.
+        failure: Impossibile collegare il tuo account %{kind}.
+        failure_with_reason: Impossibile collegare il tuo account %{kind} perché "%{reason}".
+        success: Il tuo account %{kind} è stato collegato con successo.
+        already_connected: Il tuo account %{kind} è già collegato al tuo account FleetYards.net.
     otp:
       backup_codes: Genera codici di backup
       backup_explain: Copia i codici di backup e conservali al sicuro.
@@ -106,8 +105,8 @@ it:
       updated: La tua password è stata cambiata con successo. Ora sei connesso.
       updated_not_active: La tua password è stata cambiata con successo.
     registrations:
-      destroyed: Bye! Your account was successfully cancelled. We hope to see you
-        again soon.
+      destroyed: Ciao! Il tuo account è stato cancellato con successo. Speriamo di
+        rivederti presto.
       signed_up: Benvenuto! Ti sei registrato con successo.
       signed_up_but_inactive: You have signed up successfully. However, we could not
         sign you in because your account is not yet activated.

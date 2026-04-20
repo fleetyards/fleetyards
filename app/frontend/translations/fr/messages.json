@@ -68,8 +68,8 @@
         "createError": "Impossible de créer la fonctionnalité."
       },
       "rsiRequestLogs": {
-        "resolved": "Request log marked as resolved.",
-        "error": "Could not update request log."
+        "resolved": "Journal de requêtes marqué comme résolu.",
+        "error": "Impossible de mettre à jour le journal de requêtes."
       },
       "updateNotifications": {
         "success": "Paramètres de notification mis à jour."
@@ -80,23 +80,23 @@
       "oauthApplications": {
         "create": {
           "success": "Application OAuth créée.",
-          "error": "Could not create OAuth application."
+          "error": "Impossible de créer l'application OAuth."
         },
         "update": {
           "success": "Application OAuth mise à jour.",
-          "error": "Could not update OAuth application."
+          "error": "Impossible de mettre à jour l'application OAuth."
         },
         "destroy": {
           "success": "Application OAuth supprimée.",
-          "error": "Could not delete OAuth application."
+          "error": "Impossible de supprimer l'application OAuth."
         },
         "regenerateSecret": {
           "success": "Secret client régénéré.",
-          "error": "Could not regenerate client secret."
+          "error": "Impossible de régénérer le secret client."
         },
         "copied": "Copié dans le presse-papiers.",
         "copyError": "Impossible de copier dans le presse-papiers.",
-        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+        "secretWarning": "Copiez votre secret client maintenant. Vous ne pourrez plus le voir."
       },
       "avatarUpload": {
         "create": {
@@ -365,14 +365,14 @@
       },
       "oauthAuthorize": {
         "loading": "Chargement...",
-        "loadError": "Failed to load authorization details.",
+        "loadError": "Échec du chargement des détails d'autorisation.",
         "authorizeError": "Autorisation échouée.",
         "denyError": "Le refus d'autorisation a échoué."
       },
       "oauth": {
         "disconnect": {
-          "success": "Provider disconnected successfully.",
-          "failure": "Could not disconnect provider. Please try again."
+          "success": "Fournisseur déconnecté avec succès.",
+          "failure": "Impossible de déconnecter le fournisseur. Veuillez réessayer."
         }
       },
       "confirmAccess": {
@@ -380,7 +380,7 @@
       },
       "confirmAccessEmail": {
         "sent": "Un code de confirmation a été envoyé à votre e-mail.",
-        "failure": "Could not send confirmation email. Please try again."
+        "failure": "Impossible d'envoyer l'e-mail de confirmation. Veuillez réessayer."
       },
       "confirmAccessCode": {
         "failure": "Le code de confirmation est invalide ou a expiré."

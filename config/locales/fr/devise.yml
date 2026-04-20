@@ -25,30 +25,33 @@ fr:
       confirmation_instructions:
         content:
           confirm_email_link: Confirmer l'e-mail
-          confirm_email_text: 'To confirm your new email please click on the following
-            link:'
+          confirm_email_text: 'Pour confirmer votre nouvel e-mail, veuillez cliquer
+            sur le lien suivant :'
           confirm_link: Activer le compte
-          confirm_text: 'To activate your Account please click on the following link:'
+          confirm_text: 'Pour activer votre compte, veuillez cliquer sur le lien suivant
+            :'
           welcome: Bienvenue %{username}
         subject: Instructions de confirmation
       email_changed:
         content:
-          text_confirmed: We're contacting you to notify you that your email has been
-            changed to %{email}.
-          text_unconfirmed: We're contacting you to notify you that your email is
-            being changed to %{email}.
+          text_confirmed: Nous vous contactons pour vous informer que votre e-mail
+            a été changé en %{email}.
+          text_unconfirmed: Nous vous contactons pour vous informer que votre e-mail
+            est en cours de changement vers %{email}.
       password_change:
         content:
-          text: We're contacting you to notify you that your password has been changed.
+          text: Nous vous contactons pour vous informer que votre mot de passe a été
+            changé.
       reset_password_instructions:
         content:
           change_link: Changer mon mot de passe
-          first_text: Someone has requested a link to change your password, and you
-            can do this through the link below.
+          first_text: Quelqu'un a demandé un lien pour changer votre mot de passe.
+            Vous pouvez le faire via le lien ci-dessous.
           hello: Bonjour
-          second_text: If you didn't request this, please ignore this email.
-          third_text: Your password won't change until you access the link above and
-            create a new one.
+          second_text: Si vous n'avez pas fait cette demande, veuillez ignorer cet
+            e-mail.
+          third_text: Votre mot de passe ne changera pas tant que vous n'aurez pas
+            accédé au lien ci-dessus et créé un nouveau.
         subject: Instructions de réinitialisation du mot de passe
       unlock_instructions:
         subject: Instructions de déverrouillage
@@ -59,18 +62,17 @@ fr:
         github: GitHub
         bluesky: Bluesky
         twitch: Twitch
-      failure: Could not authenticate you with %{kind}.
-      failure_with_reason: Could not authenticate you with %{kind} because "%{reason}".
+      failure: Impossible de vous authentifier avec %{kind}.
+      failure_with_reason: Impossible de vous authentifier avec %{kind} car "%{reason}".
       failure_username_taken: |-
         Could not authenticate you with %{kind} because there is already an account with the username "%{username}".
         Please sign in your existing account or sign up to a new account and connect your %{kind} account.
-      success: Successfully authenticated with %{kind}.
+      success: Authentification réussie avec %{kind}.
       connect:
-        failure: Could not connect your %{kind} account.
-        failure_with_reason: Could not connect your %{kind} account because "%{reason}".
-        success: Successfully connected your %{kind} account.
-        already_connected: Your %{kind} account is already connected to your FleetYards.net
-          Account.
+        failure: Impossible de connecter votre compte %{kind}.
+        failure_with_reason: Impossible de connecter votre compte %{kind} car "%{reason}".
+        success: Votre compte %{kind} a été connecté avec succès.
+        already_connected: Votre compte %{kind} est déjà connecté à votre compte FleetYards.net.
     otp:
       backup_codes: Générer des codes de secours
       backup_explain: Copiez les codes de secours et conservez-les en lieu sûr.
@@ -106,8 +108,8 @@ fr:
       updated: Votre mot de passe a été changé avec succès. Vous êtes maintenant connecté.
       updated_not_active: Votre mot de passe a été changé avec succès.
     registrations:
-      destroyed: Bye! Your account was successfully cancelled. We hope to see you
-        again soon.
+      destroyed: Au revoir ! Votre compte a été annulé avec succès. Nous espérons
+        vous revoir bientôt.
       signed_up: Bienvenue ! Vous vous êtes inscrit avec succès.
       signed_up_but_inactive: You have signed up successfully. However, we could not
         sign you in because your account is not yet activated.

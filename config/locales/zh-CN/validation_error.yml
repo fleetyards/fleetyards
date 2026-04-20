@@ -12,17 +12,16 @@ zh-CN:
       destroy: Fleet could not be destroyed.
       update: Fleet could not be updated.
     fleet_members:
-      create: Fleet Member could not be invited
-      accept: Fleet Member could not be accepted.
-      decline: Fleet Member could not be declined.
-      destroy: Fleet Member could not be removed.
+      create: 无法邀请舰队成员
+      accept: 无法接受舰队成员。
+      decline: 无法拒绝舰队成员。
+      destroy: 无法移除舰队成员。
     fleet_memberships:
-      create: Fleet Invitation could not be used
+      create: 舰队邀请无法使用
       destroy: 无法离开舰队。
-      accept: Fleet Invitation could not be accepted.
-      decline: Fleet Invitation could not be declined.
-      demote_not_permitted: You can't demote the last Member of a permanent Fleet
-        Role.
+      accept: 舰队邀请无法接受。
+      decline: 舰队邀请无法拒绝。
+      demote_not_permitted: 您不能降级永久舰队角色的最后一个成员。
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed
@@ -33,8 +32,8 @@ zh-CN:
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
     oauth_application:
-      create: OAuth application could not be created.
-      update: OAuth application could not be updated.
-      destroy: OAuth application could not be destroyed.
+      create: OAuth 应用无法创建。
+      update: OAuth 应用无法更新。
+      destroy: OAuth 应用无法删除。
     hangar:
       import: 导入失败

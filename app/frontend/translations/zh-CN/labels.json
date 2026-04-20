@@ -1037,11 +1037,11 @@
           "importedComponents": "已添加组件",
           "foundComponents": "找到的组件",
           "missingComponents": "未找到组件",
-          "missingComponentVehicles": "No matching Ship found for Components",
+          "missingComponentVehicles": "未找到匹配的飞船用于组件",
           "importedUpgrades": "已添加升级",
           "foundUpgrades": "找到的升级",
           "missingUpgrades": "未找到升级",
-          "missingUpgradeVehicles": "No matching Ship found for Upgrades"
+          "missingUpgradeVehicles": "未找到匹配的飞船用于升级"
         }
       },
       "cargoGridViewer": {

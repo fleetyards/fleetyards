@@ -13,7 +13,7 @@ fr:
         new: Nouveau composant
       dashboard: Tableau de bord
       equipment:
-        edit: Equipment %{equipment}
+        edit: Équipement %{equipment}
         index: Équipement
         new: Nouvel équipement
       image:
@@ -36,15 +36,15 @@ fr:
         index: Modules
         new: Nouveau module
       model_module_package:
-        edit: Module Package %{model_module_package}
+        edit: Paquet de modules %{model_module_package}
         index: Paquets de modules
         new: Nouveau paquet de modules
       model_paint:
-        edit: Paint %{model_paint}
+        edit: Peinture %{model_paint}
         index: Peintures
         new: Nouvelle peinture
       model_upgrade:
-        edit: Upgrade %{model_upgrade}
+        edit: Amélioration %{model_upgrade}
         index: Améliorations
         new: Nouvelle amélioration
       user:
@@ -57,7 +57,7 @@ fr:
     change_password: Change your Password
     comments: Commentaires
     confirm: Confirm your Account
-    forgot_password: Forgot your Password?
+    forgot_password: Mot de passe oublié ?
     impressum: Mentions légales
     not_found: Navigation Error
     privacy: Politique de confidentialité

@@ -14,18 +14,18 @@ zh-CN:
       body: "%{model} 目前在质押商店中出售。"
     hangar_sync_finished:
       title: 机库同步完成
-      body: Your RSI hangar has been synced successfully.
+      body: 您的 RSI 机库已成功同步。
     hangar_sync_failed:
       title: 机库同步失败
-      body: 'Your RSI hangar sync failed: %{error}'
+      body: '您的 RSI 机库同步失败: %{error}'
     new_model:
       title: '新飞船: %{model}'
       body: "%{model} 已添加到飞船数据库。"
     fleet_invite:
-      title: You've been invited to %{fleet}
+      title: 您已被邀请加入 %{fleet}
     fleet_member_requested:
       title: "%{username} 请求加入 %{fleet}"
     fleet_member_accepted:
       title: "%{username} 加入了 %{fleet}"
     fleet_request_accepted:
-      title: You've been accepted into %{fleet}
+      title: 您已被 %{fleet} 接受

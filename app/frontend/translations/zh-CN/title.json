@@ -106,7 +106,7 @@
             "fleetchart": "编辑模型舰队图",
             "hardpoints": "编辑模型硬点",
             "cargoAndFuel": "货物和燃料",
-            "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
+            "cargoHolds": "编辑 %{manufacturer} %{model} 货舱",
             "docks": "编辑模型停靠点",
             "modules": "编辑模型模块",
             "paints": "编辑模型涂装",

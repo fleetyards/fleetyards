@@ -68,8 +68,8 @@
         "createError": "Funktion konnte nicht erstellt werden."
       },
       "rsiRequestLogs": {
-        "resolved": "Request log marked as resolved.",
-        "error": "Could not update request log."
+        "resolved": "Anfrage-Log als gelöst markiert.",
+        "error": "Anfrage-Log konnte nicht aktualisiert werden."
       },
       "updateNotifications": {
         "success": "Benachrichtigungs-Einstellungen aktualisiert."
@@ -80,23 +80,23 @@
       "oauthApplications": {
         "create": {
           "success": "OAuth-Anwendung erstellt.",
-          "error": "Could not create OAuth application."
+          "error": "OAuth-Anwendung konnte nicht erstellt werden."
         },
         "update": {
           "success": "OAuth-Anwendung aktualisiert.",
-          "error": "Could not update OAuth application."
+          "error": "OAuth-Anwendung konnte nicht aktualisiert werden."
         },
         "destroy": {
           "success": "OAuth-Anwendung gelöscht.",
-          "error": "Could not delete OAuth application."
+          "error": "OAuth-Anwendung konnte nicht gelöscht werden."
         },
         "regenerateSecret": {
           "success": "Client-Secret neu generiert.",
-          "error": "Could not regenerate client secret."
+          "error": "Client-Secret konnte nicht neu generiert werden."
         },
         "copied": "In die Zwischenablage kopiert.",
         "copyError": "Konnte nicht in die Zwischenablage kopiert werden.",
-        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+        "secretWarning": "Kopieren Sie jetzt Ihren Client-Secret. Sie werden ihn nicht erneut sehen können."
       },
       "avatarUpload": {
         "create": {
@@ -365,14 +365,14 @@
       },
       "oauthAuthorize": {
         "loading": "Laden...",
-        "loadError": "Failed to load authorization details.",
+        "loadError": "Autorisierungsdetails konnten nicht geladen werden.",
         "authorizeError": "Autorisierung fehlgeschlagen.",
         "denyError": "Autorisierungsablehnung fehlgeschlagen."
       },
       "oauth": {
         "disconnect": {
-          "success": "Provider disconnected successfully.",
-          "failure": "Could not disconnect provider. Please try again."
+          "success": "Anbieter erfolgreich getrennt.",
+          "failure": "Anbieter konnte nicht getrennt werden. Bitte versuchen Sie es erneut."
         }
       },
       "confirmAccess": {
@@ -380,7 +380,7 @@
       },
       "confirmAccessEmail": {
         "sent": "Ein Bestätigungscode wurde an Ihre E-Mail gesendet.",
-        "failure": "Could not send confirmation email. Please try again."
+        "failure": "Bestätigungs-E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es erneut."
       },
       "confirmAccessCode": {
         "failure": "Der Bestätigungscode ist ungültig oder abgelaufen."

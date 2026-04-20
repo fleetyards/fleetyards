@@ -13,7 +13,7 @@ zh-CN:
         new: 新组件
       dashboard: 控制台
       equipment:
-        edit: Equipment %{equipment}
+        edit: 装备 %{equipment}
         index: 装备
         new: 新装备
       image:
@@ -32,19 +32,19 @@ zh-CN:
         new: 新型号
         price_diff: 质押价格过期的型号
       model_module:
-        edit: Module %{model_module}
+        edit: 模块 %{model_module}
         index: 模块
         new: 新模块
       model_module_package:
-        edit: Module Package %{model_module_package}
+        edit: 模块包 %{model_module_package}
         index: 模块包
         new: 新模块包
       model_paint:
-        edit: Paint %{model_paint}
+        edit: 涂装 %{model_paint}
         index: 涂装
         new: 新涂装
       model_upgrade:
-        edit: Upgrade %{model_upgrade}
+        edit: 升级 %{model_upgrade}
         index: 升级
         new: 新升级
       user:
@@ -57,7 +57,7 @@ zh-CN:
     change_password: Change your Password
     comments: 评论
     confirm: Confirm your Account
-    forgot_password: Forgot your Password?
+    forgot_password: 忘记密码?
     impressum: 法律声明
     not_found: Navigation Error
     privacy: 隐私政策

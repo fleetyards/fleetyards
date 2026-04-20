@@ -6,8 +6,8 @@ zh-CN:
   error_pages:
     not_found: You are currently venturing unknown space. In the event you are lost,
       the UEE highly recommends plotting a new destination back towards home-space.
-    server_error: The Page is currently not available. Please try again later.
-    unprocessable_entity: Your Request could not be processed.
+    server_error: 页面当前不可用。请稍后再试。
+    unprocessable_entity: 您的请求无法处理。
   nav:
     admin_users: 管理员
     components: 组件

@@ -45,8 +45,7 @@ zh-TW:
     signup:
       already_signed_in: 您已登入。
       username_invalid: 使用者名稱無效。
-      reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
-        choose something else!
+      reserved_username: 此使用者名稱在 FleetYards.net 上已被保留/禁止。請選擇其他使用者名稱！
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
         Reasons.<br>For further Information please Contact us under info@fleetyards.net
     update:
@@ -54,15 +53,14 @@ zh-TW:
       success: "%{resource} 編輯成功。"
     omniauth_connection:
       destroy:
-        last_connection: You cannot remove your last login connection without setting
-          a password first.
+        last_connection: 在設定密碼之前，您不能移除最後一個登入連線。
     confirmAccess:
       failure: 存取確認失敗
     confirmAccessCode:
       failure: 確認碼無效或已過期。
     confirmAccessEmail:
       sent: 確認連結已傳送到您的電子郵件。
-      notAllowed: Email confirmation is only available for OAuth accounts.
+      notAllowed: 電子郵件確認僅適用於 OAuth 帳戶。
     hangar_import:
       no_data: 未找到要匯入的資料
     hangar_sync:
@@ -71,9 +69,9 @@ zh-TW:
     user:
       requires_access_confirmation: 存取確認待處理
     otp:
-      active: Two-factor Authentication already active
-      inactive: Two-factor Authentication already inactive
+      active: 兩步驟驗證已經處於啟用狀態
+      inactive: 兩步驟驗證已經處於停用狀態
       disable:
-        failure: Could not deactivate Two-factor Authentication
+        failure: 無法停用兩步驟驗證
       enable:
-        failure: Could not activate Two-factor Authentication
+        failure: 無法啟用兩步驟驗證

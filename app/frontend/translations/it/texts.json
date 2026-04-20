@@ -7,12 +7,12 @@
       "support": {
         "info": "Se ti piace FleetYards.net e vuoi supportare lo sviluppo e la manutenzione del progetto, per favore dai un upvote sul nostro <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Spectrum Post</b></a> e il nostro Post su <a href=\"https://robertsspaceindustries.com/community/deep-space-radar/1730-FleetYardsnet\" target=\"_blank\" rel=\"noopener\"><b>Deep Space Radar</b></a>.",
         "code": "Inoltre puoi ottenere 5000 UEC come denaro iniziale usando il seguente codice di reclutamento <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> quando acquisti Star Citizen o puoi:",
-        "subline": "or you can support us directly via:"
+        "subline": "o puoi supportarci direttamente tramite:"
       },
       "notFound": "Attualmente stai avventurando uno spazio sconosciuto. In caso di smarrimento, l'UEE raccomanda vivamente di tracciare una nuova destinazione di nuovo verso lo spazio di casa.",
-      "featureNotReady": "This feature is not yet ready and will be available soon. Stay tuned!",
-      "accessDenied": "You are not authorized to view this page.",
-      "serverError": "The server is currently experiencing technical difficulties. Please try again later.",
+      "featureNotReady": "Questa funzione non è ancora pronta e sarà disponibile a breve. Resta sintonizzato!",
+      "accessDenied": "Non sei autorizzato a visualizzare questa pagina.",
+      "serverError": "Il server sta riscontrando difficoltà tecniche. Riprova più tardi.",
       "compare": {
         "ships": {
           "info": "Per iniziare a selezionare almeno due e non più di otto Navi che si desiderano confrontare."
@@ -86,7 +86,7 @@
         },
         "p3": {
           "headline": "Come ospite",
-          "text": "As a Guest on %{app} we collect the following data:"
+          "text": "Come ospite su %{app} raccogliamo i seguenti dati:"
         }
       },
       "signup": {
@@ -101,7 +101,7 @@
         "enable": " Per proteggere il tuo account FleetYards.net puoi generare Token per l'autenticazione a due fattori con Google Authenticator, 1Password o Authy."
       },
       "oauthAuthorize": {
-        "requestingAccess": "{clientName} is requesting access to your account.",
+        "requestingAccess": "{clientName} sta richiedendo l'accesso al tuo account.",
         "scopesIntro": "Questa applicazione potrà:"
       },
       "syncExtension": {

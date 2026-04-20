@@ -6,8 +6,9 @@ fr:
   error_pages:
     not_found: You are currently venturing unknown space. In the event you are lost,
       the UEE highly recommends plotting a new destination back towards home-space.
-    server_error: The Page is currently not available. Please try again later.
-    unprocessable_entity: Your Request could not be processed.
+    server_error: La page n'est actuellement pas disponible. Veuillez réessayer plus
+      tard.
+    unprocessable_entity: Votre demande n'a pas pu être traitée.
   nav:
     admin_users: Administrateurs
     components: Composants

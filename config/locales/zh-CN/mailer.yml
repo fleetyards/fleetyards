@@ -7,11 +7,11 @@ zh-CN:
       notify_block:
         headline: FleetYards.net 命令 - 与 RSI 的连接被阻止
         subject: 到 RSI 的连接已被阻止
-        text: Automated updates from RSI using "%{url}" has been blocked
+        text: 通过 "%{url}" 的 RSI 自动更新已被阻止
       notify_unblock:
         headline: FleetYards.net Command - Connection to RSI restored
         subject: RSI 连接已恢复
-        text: Automated updates from RSI using "%{url}" has been restored
+        text: 通过 "%{url}" 的 RSI 自动更新已恢复
       weekly:
         fleets: 新舰队
         headline: FleetYards.net Command - Weekly
@@ -25,29 +25,27 @@ zh-CN:
     fleet_membership:
       fleet_accepted:
         action: "%{fleet} 主页"
-        body: 'To view the fleets Ships and other Members please click on the following
-          link:'
-        headline: Your Membership Request to Join %{fleet} has been accepted
+        body: 要查看舰队的飞船和其他成员，请点击以下链接：
+        headline: 您加入 %{fleet} 的请求已被接受
         subject: "%{fleet} 接受了您的加入请求"
       member_accepted:
         action: "%{fleet} 成员列表"
-        body: 'To look at the new members information please click on the following
-          link:'
+        body: 要查看新成员信息，请点击以下链接：
         headline: "%{username} 接受了舰队邀请"
         subject: 新舰队成员
       member_requested:
         action: "%{fleet} 邀请"
-        body: 'To accept the request please click on the following link:'
+        body: 要接受请求，请点击以下链接：
         headline: "%{username} 想要加入 %{fleet}"
         subject: 新舰队成员请求
       new_invite:
         action: 加入 %{fleet}
-        body: 'To accept the invite please click on the following link:'
-        headline: You have been invited to Join %{fleet}
+        body: 要接受邀请，请点击以下链接：
+        headline: 您已被邀请加入 %{fleet}
         subject: 新舰队邀请
     confirm_access:
-      body: Use the following code to confirm access to your account settings.
-      expires: This code will expire in 10 minutes.
+      body: 请使用以下验证码确认访问您的账户设置。
+      expires: 此验证码将在 10 分钟后过期。
       subject: 您的确认码
     hello: 你好 %{username}
     model:
@@ -70,24 +68,23 @@ zh-CN:
         subject: 路线图新变更
     security:
       action: 管理安全设置
-      info: If you did not initiate the change please contact us at info@fleetyards.net.
+      info: 如果您没有发起此更改，请通过 info@fleetyards.net 联系我们。
     transmission_end: "--- 收到传输 ---"
     transmission_start: "--- 收到传输 ---"
     two_factor:
       disabled:
-        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
+        body: 您已为 Fleetyards.net 账户停用了两步验证。
         subject: 两步验证已禁用
       enabled:
-        body: Great, you activated Two-factor Authentication for your Fleetyards.net
-          Account.
+        body: 很好，您已为 Fleetyards.net 账户启用了两步验证。
         subject: 两步验证已启用
       login:
-        body: Please enter the following Code on the Login page to verify your identity.
+        body: 请在登录页面输入以下验证码以验证您的身份。
         headline: 两步验证码
         subject: 两步验证码
     user:
       username_changed:
-        body: You changed your Fleetyards.net Account Username.
+        body: 您已更改 Fleetyards.net 账户用户名。
         subject: 用户名已更改
     vehicle:
       on_sale:

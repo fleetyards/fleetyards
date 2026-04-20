@@ -13,7 +13,7 @@ de:
         new: Neue Komponente
       dashboard: Dashboard
       equipment:
-        edit: Equipment %{equipment}
+        edit: Ausrüstung %{equipment}
         index: Ausrüstung
         new: Neue Ausrüstung
       image:
@@ -32,15 +32,15 @@ de:
         new: Neues Modell
         price_diff: Modelle mit veraltetem Pledge-Preis
       model_module:
-        edit: Module %{model_module}
+        edit: Modul %{model_module}
         index: Module
         new: Neues Modul
       model_module_package:
-        edit: Module Package %{model_module_package}
+        edit: Modulpaket %{model_module_package}
         index: Modulpakete
         new: Neues Modulpaket
       model_paint:
-        edit: Paint %{model_paint}
+        edit: Lackierung %{model_paint}
         index: Lackierungen
         new: Neue Lackierung
       model_upgrade:
@@ -57,7 +57,7 @@ de:
     change_password: Change your Password
     comments: Kommentare
     confirm: Confirm your Account
-    forgot_password: Forgot your Password?
+    forgot_password: Passwort vergessen?
     impressum: Impressum
     not_found: Navigation Error
     privacy: Datenschutzerklärung

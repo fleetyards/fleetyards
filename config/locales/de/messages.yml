@@ -47,8 +47,8 @@ de:
     signup:
       already_signed_in: Sie sind bereits angemeldet.
       username_invalid: Benutzername ist ungültig.
-      reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
-        choose something else!
+      reserved_username: Der Benutzername ist auf FleetYards.net reserviert/verboten.
+        Bitte wählen Sie einen anderen!
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
         Reasons.<br>For further Information please Contact us under info@fleetyards.net
     update:
@@ -56,15 +56,15 @@ de:
       success: "%{resource} erfolgreich bearbeitet."
     omniauth_connection:
       destroy:
-        last_connection: You cannot remove your last login connection without setting
-          a password first.
+        last_connection: Sie können Ihre letzte Login-Verbindung nicht entfernen,
+          ohne zuerst ein Passwort festzulegen.
     confirmAccess:
       failure: Zugriffsbestätigung fehlgeschlagen
     confirmAccessCode:
       failure: Der Bestätigungscode ist ungültig oder abgelaufen.
     confirmAccessEmail:
       sent: Ein Bestätigungslink wurde an Ihre E-Mail gesendet.
-      notAllowed: Email confirmation is only available for OAuth accounts.
+      notAllowed: E-Mail-Bestätigung ist nur für OAuth-Konten verfügbar.
     hangar_import:
       no_data: Keine Daten zum Importieren gefunden
     hangar_sync:
@@ -73,9 +73,9 @@ de:
     user:
       requires_access_confirmation: Zugriffsbestätigung ausstehend
     otp:
-      active: Two-factor Authentication already active
-      inactive: Two-factor Authentication already inactive
+      active: Zwei-Faktor-Authentifizierung bereits aktiv
+      inactive: Zwei-Faktor-Authentifizierung bereits inaktiv
       disable:
-        failure: Could not deactivate Two-factor Authentication
+        failure: Zwei-Faktor-Authentifizierung konnte nicht deaktiviert werden
       enable:
-        failure: Could not activate Two-factor Authentication
+        failure: Zwei-Faktor-Authentifizierung konnte nicht aktiviert werden

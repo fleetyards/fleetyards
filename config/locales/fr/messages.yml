@@ -47,8 +47,8 @@ fr:
     signup:
       already_signed_in: Vous êtes déjà connecté.
       username_invalid: Le nom d'utilisateur est invalide.
-      reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
-        choose something else!
+      reserved_username: Le nom d'utilisateur est réservé/interdit sur FleetYards.net.
+        Veuillez en choisir un autre !
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
         Reasons.<br>For further Information please Contact us under info@fleetyards.net
     update:
@@ -56,15 +56,16 @@ fr:
       success: "%{resource} modifié avec succès."
     omniauth_connection:
       destroy:
-        last_connection: You cannot remove your last login connection without setting
-          a password first.
+        last_connection: Vous ne pouvez pas supprimer votre dernière connexion sans
+          définir un mot de passe au préalable.
     confirmAccess:
       failure: Confirmation d'accès échouée
     confirmAccessCode:
       failure: Le code de confirmation est invalide ou a expiré.
     confirmAccessEmail:
       sent: Un lien de confirmation a été envoyé à votre e-mail.
-      notAllowed: Email confirmation is only available for OAuth accounts.
+      notAllowed: La confirmation par e-mail n'est disponible que pour les comptes
+        OAuth.
     hangar_import:
       no_data: Aucune donnée trouvée à importer
     hangar_sync:
@@ -73,9 +74,9 @@ fr:
     user:
       requires_access_confirmation: Confirmation d'accès en attente
     otp:
-      active: Two-factor Authentication already active
-      inactive: Two-factor Authentication already inactive
+      active: L'authentification à deux facteurs est déjà active
+      inactive: L'authentification à deux facteurs est déjà inactive
       disable:
-        failure: Could not deactivate Two-factor Authentication
+        failure: Impossible de désactiver l'authentification à deux facteurs
       enable:
-        failure: Could not activate Two-factor Authentication
+        failure: Impossible d'activer l'authentification à deux facteurs

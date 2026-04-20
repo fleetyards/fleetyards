@@ -7,11 +7,11 @@ it:
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
         subject: Connection to RSI blocked
-        text: Automated updates from RSI using "%{url}" has been blocked
+        text: Gli aggiornamenti automatici da RSI tramite "%{url}" sono stati bloccati
       notify_unblock:
         headline: FleetYards.net Command - Connection to RSI restored
         subject: Connessione a RSI ripristinata
-        text: Automated updates from RSI using "%{url}" has been restored
+        text: Gli aggiornamenti automatici da RSI tramite "%{url}" sono stati ripristinati
       weekly:
         fleets: Nuove flotte
         headline: FleetYards.net Command - Weekly
@@ -22,29 +22,30 @@ it:
     fleet_membership:
       fleet_accepted:
         action: Homepage di %{fleet}
-        body: 'To view the fleets Ships and other Members please click on the following
-          link:'
-        headline: Your Membership Request to Join %{fleet} has been accepted
+        body: 'Per visualizzare le navi e gli altri membri della flotta, clicca sul
+          seguente link:'
+        headline: La tua richiesta di iscrizione a %{fleet} è stata accettata
         subject: "%{fleet} ha accettato la tua richiesta di iscrizione"
       member_accepted:
         action: Lista membri di %{fleet}
-        body: 'To look at the new members information please click on the following
+        body: 'Per visualizzare le informazioni del nuovo membro, clicca sul seguente
           link:'
         headline: "%{username} ha accettato l'invito alla flotta"
         subject: Nuovo membro della flotta
       member_requested:
         action: Inviti di %{fleet}
-        body: 'To accept the request please click on the following link:'
+        body: 'Per accettare la richiesta, clicca sul seguente link:'
         headline: "%{username} vuole unirsi a %{fleet}"
         subject: Nuova richiesta di iscrizione alla flotta
       new_invite:
         action: Unisciti a %{fleet}
-        body: 'To accept the invite please click on the following link:'
-        headline: You have been invited to Join %{fleet}
+        body: 'Per accettare l''invito, clicca sul seguente link:'
+        headline: Sei stato invitato a unirti a %{fleet}
         subject: Nuovo invito flotta
     confirm_access:
-      body: Use the following code to confirm access to your account settings.
-      expires: This code will expire in 10 minutes.
+      body: Usa il seguente codice per confermare l'accesso alle impostazioni del
+        tuo account.
+      expires: Questo codice scadrà tra 10 minuti.
       subject: Il tuo codice di conferma
     hello: Ciao %{username}
     model:
@@ -67,24 +68,25 @@ it:
         subject: Nuove modifiche sulla roadmap
     security:
       action: Gestisci impostazioni di sicurezza
-      info: If you did not initiate the change please contact us at info@fleetyards.net.
+      info: Se non hai avviato la modifica, contattaci a info@fleetyards.net.
     transmission_end: "--- trasmissione in arrivo ---"
     transmission_start: "--- trasmissione in arrivo ---"
     two_factor:
       disabled:
-        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
+        body: Hai disattivato l'autenticazione a due fattori per il tuo account Fleetyards.net.
         subject: Due fattori disabilitato
       enabled:
-        body: Great, you activated Two-factor Authentication for your Fleetyards.net
-          Account.
+        body: Ottimo, hai attivato l'autenticazione a due fattori per il tuo account
+          Fleetyards.net.
         subject: Due fattori abilitato
       login:
-        body: Please enter the following Code on the Login page to verify your identity.
+        body: Inserisci il seguente codice nella pagina di accesso per verificare
+          la tua identità.
         headline: Codice di autenticazione a due fattori
         subject: Codice di autenticazione a due fattori
     user:
       username_changed:
-        body: You changed your Fleetyards.net Account Username.
+        body: Hai cambiato il tuo nome utente di Fleetyards.net.
         subject: Nome utente cambiato
     vehicle:
       on_sale:

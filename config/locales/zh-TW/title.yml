@@ -49,9 +49,9 @@ zh-TW:
       settings_notifications: 通知設定
       settings_profile: 個人資料設定
       settings_security: 帳戶安全
-      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
-      settings_security_two-factor_disable: Disable Two-factor Authentication
-      settings_security_two-factor_enable: Enable Two-factor Authentication
+      settings_security_two-factor_backup-codes: 產生兩步驟驗證備用碼
+      settings_security_two-factor_disable: 停用兩步驟驗證
+      settings_security_two-factor_enable: 啟用兩步驟驗證
       ship_images: "%{model} 圖片"
       ship_videos: "%{model} 影片"
       ships: 飛船
@@ -67,4 +67,4 @@ zh-TW:
     admin:
       dashboard: 儀表板
       models: 型號
-      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images
+      models_edit_fleetchart: 編輯 %{manufacturer} %{model} 艦隊圖表圖片

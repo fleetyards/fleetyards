@@ -46,8 +46,8 @@ es:
     signup:
       already_signed_in: Ya ha iniciado sesión.
       username_invalid: El nombre de usuario es inválido.
-      reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
-        choose something else!
+      reserved_username: El nombre de usuario está reservado/prohibido en FleetYards.net.
+        ¡Elija otro!
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
         Reasons.<br>For further Information please Contact us under info@fleetyards.net
     update:
@@ -55,15 +55,16 @@ es:
       success: "%{resource} editado exitosamente."
     omniauth_connection:
       destroy:
-        last_connection: You cannot remove your last login connection without setting
-          a password first.
+        last_connection: No puede eliminar su última conexión de inicio de sesión
+          sin establecer una contraseña primero.
     confirmAccess:
       failure: Confirmación de acceso fallida
     confirmAccessCode:
       failure: El código de confirmación es inválido o ha expirado.
     confirmAccessEmail:
       sent: Se ha enviado un enlace de confirmación a su correo electrónico.
-      notAllowed: Email confirmation is only available for OAuth accounts.
+      notAllowed: La confirmación por correo electrónico solo está disponible para
+        cuentas OAuth.
     hangar_import:
       no_data: No se encontraron datos para importar
     hangar_sync:
@@ -72,9 +73,9 @@ es:
     user:
       requires_access_confirmation: Confirmación de acceso pendiente
     otp:
-      active: Two-factor Authentication already active
-      inactive: Two-factor Authentication already inactive
+      active: La autenticación de dos factores ya está activa
+      inactive: La autenticación de dos factores ya está inactiva
       disable:
-        failure: Could not deactivate Two-factor Authentication
+        failure: No se pudo desactivar la autenticación de dos factores
       enable:
-        failure: Could not activate Two-factor Authentication
+        failure: No se pudo activar la autenticación de dos factores

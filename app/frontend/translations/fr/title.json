@@ -106,7 +106,7 @@
             "fleetchart": "Éditer les Images du Modèle",
             "hardpoints": "Éditer les Points de Montage du Modèle",
             "cargoAndFuel": "Cargaison et Carburant",
-            "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
+            "cargoHolds": "Modifier les soutes de %{manufacturer} %{model}",
             "docks": "Éditer les Quais du Modèle",
             "modules": "Éditer les Modules du Modèle",
             "paints": "Éditer les Peintures du Modèle",

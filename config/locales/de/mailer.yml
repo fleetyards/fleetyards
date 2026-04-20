@@ -7,11 +7,11 @@ de:
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
         subject: Connection to RSI blocked
-        text: Automated updates from RSI using "%{url}" has been blocked
+        text: Automatische Aktualisierungen von RSI über "%{url}" wurden blockiert
       notify_unblock:
         headline: FleetYards.net Command - Connection to RSI restored
         subject: Verbindung zu RSI wiederhergestellt
-        text: Automated updates from RSI using "%{url}" has been restored
+        text: Automatische Aktualisierungen von RSI über "%{url}" wurden wiederhergestellt
       weekly:
         fleets: Neue Flotten
         headline: FleetYards.net Command - Weekly
@@ -22,29 +22,30 @@ de:
     fleet_membership:
       fleet_accepted:
         action: "%{fleet} Homepage"
-        body: 'To view the fleets Ships and other Members please click on the following
-          link:'
-        headline: Your Membership Request to Join %{fleet} has been accepted
+        body: 'Um die Schiffe und anderen Mitglieder der Flotte anzusehen, klicken
+          Sie bitte auf den folgenden Link:'
+        headline: Ihre Beitrittsanfrage für %{fleet} wurde akzeptiert
         subject: "%{fleet} hat Ihre Beitrittsanfrage akzeptiert"
       member_accepted:
         action: "%{fleet} Mitgliederliste"
-        body: 'To look at the new members information please click on the following
-          link:'
+        body: 'Um die Informationen des neuen Mitglieds einzusehen, klicken Sie bitte
+          auf den folgenden Link:'
         headline: "%{username} hat die Flotteneinladung angenommen"
         subject: Neues Flottenmitglied
       member_requested:
         action: "%{fleet} Einladungen"
-        body: 'To accept the request please click on the following link:'
+        body: 'Um die Anfrage anzunehmen, klicken Sie bitte auf den folgenden Link:'
         headline: "%{username} möchte %{fleet} beitreten"
         subject: Neue Flottenmitgliedschaftsanfrage
       new_invite:
         action: "%{fleet} beitreten"
-        body: 'To accept the invite please click on the following link:'
-        headline: You have been invited to Join %{fleet}
+        body: 'Um die Einladung anzunehmen, klicken Sie bitte auf den folgenden Link:'
+        headline: Sie wurden eingeladen, %{fleet} beizutreten
         subject: Neue Flotteneinladung
     confirm_access:
-      body: Use the following code to confirm access to your account settings.
-      expires: This code will expire in 10 minutes.
+      body: Verwenden Sie den folgenden Code, um den Zugriff auf Ihre Kontoeinstellungen
+        zu bestätigen.
+      expires: Dieser Code läuft in 10 Minuten ab.
       subject: Ihr Bestätigungscode
     hello: Hallo %{username}
     model:
@@ -67,24 +68,27 @@ de:
         subject: Neue Änderungen auf der Roadmap
     security:
       action: Sicherheitseinstellungen verwalten
-      info: If you did not initiate the change please contact us at info@fleetyards.net.
+      info: Wenn Sie die Änderung nicht veranlasst haben, kontaktieren Sie uns bitte
+        unter info@fleetyards.net.
     transmission_end: "--- eingehende Übertragung ---"
     transmission_start: "--- eingehende Übertragung ---"
     two_factor:
       disabled:
-        body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
+        body: Sie haben die Zwei-Faktor-Authentifizierung für Ihr Fleetyards.net-Konto
+          deaktiviert.
         subject: Zwei-Faktor deaktiviert
       enabled:
-        body: Great, you activated Two-factor Authentication for your Fleetyards.net
-          Account.
+        body: Großartig, Sie haben die Zwei-Faktor-Authentifizierung für Ihr Fleetyards.net-Konto
+          aktiviert.
         subject: Zwei-Faktor aktiviert
       login:
-        body: Please enter the following Code on the Login page to verify your identity.
+        body: Bitte geben Sie den folgenden Code auf der Anmeldeseite ein, um Ihre
+          Identität zu bestätigen.
         headline: Zwei-Faktor-Authentifizierungscode
         subject: Zwei-Faktor-Authentifizierungscode
     user:
       username_changed:
-        body: You changed your Fleetyards.net Account Username.
+        body: Sie haben Ihren Fleetyards.net-Benutzernamen geändert.
         subject: Benutzername geändert
     vehicle:
       on_sale:

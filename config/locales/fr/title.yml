@@ -49,9 +49,10 @@ fr:
       settings_notifications: Paramètres de notification
       settings_profile: Paramètres du profil
       settings_security: Sécurité du compte
-      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
-      settings_security_two-factor_disable: Disable Two-factor Authentication
-      settings_security_two-factor_enable: Enable Two-factor Authentication
+      settings_security_two-factor_backup-codes: Générer des codes de secours à deux
+        facteurs
+      settings_security_two-factor_disable: Désactiver l'authentification à deux facteurs
+      settings_security_two-factor_enable: Activer l'authentification à deux facteurs
       ship_images: Images de %{model}
       ship_videos: Vidéos de %{model}
       ships: Vaisseaux
@@ -67,4 +68,5 @@ fr:
     admin:
       dashboard: Tableau de bord
       models: Modèles
-      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images
+      models_edit_fleetchart: Modifier les images de diagramme de %{manufacturer}
+        %{model}

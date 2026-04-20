@@ -13,7 +13,7 @@ it:
         new: Nuovo componente
       dashboard: Pannello di controllo
       equipment:
-        edit: Equipment %{equipment}
+        edit: Equipaggiamento %{equipment}
         index: Equipaggiamento
         new: Nuovo equipaggiamento
       image:
@@ -32,15 +32,15 @@ it:
         new: Nuovo modello
         price_diff: Modelli con prezzo Pledge obsoleto
       model_module:
-        edit: Module %{model_module}
+        edit: Modulo %{model_module}
         index: Moduli
         new: Nuovo modulo
       model_module_package:
-        edit: Module Package %{model_module_package}
+        edit: Pacchetto di moduli %{model_module_package}
         index: Pacchetti di moduli
         new: Nuovo pacchetto di moduli
       model_paint:
-        edit: Paint %{model_paint}
+        edit: Verniciatura %{model_paint}
         index: Verniciature
         new: Nuova verniciatura
       model_upgrade:

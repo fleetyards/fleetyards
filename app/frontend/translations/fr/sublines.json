@@ -2,10 +2,10 @@
   "fr": {
     "sublines": {
       "hangarGuide": {
-        "headline": "maybe we should change that ;)",
+        "headline": "peut-être devrions-nous changer cela ;)",
         "add": "How to add a ship?",
         "edit": "How to edit a ship?",
-        "wishlist": "How to add a ship to your wishlist?",
+        "wishlist": "Comment ajouter un vaisseau à votre liste de souhaits ?",
         "fleetchart": "Diagramme de flotte ?",
         "public": "URL publique ?",
         "groups": "How to create and update groups?"

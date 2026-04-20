@@ -49,9 +49,10 @@ es:
       settings_notifications: Configuración de notificaciones
       settings_profile: Configuración del perfil
       settings_security: Seguridad de la cuenta
-      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
-      settings_security_two-factor_disable: Disable Two-factor Authentication
-      settings_security_two-factor_enable: Enable Two-factor Authentication
+      settings_security_two-factor_backup-codes: Generar códigos de respaldo de dos
+        factores
+      settings_security_two-factor_disable: Deshabilitar autenticación de dos factores
+      settings_security_two-factor_enable: Habilitar autenticación de dos factores
       ship_images: Imágenes de %{model}
       ship_videos: Videos de %{model}
       ships: Naves
@@ -67,4 +68,5 @@ es:
     admin:
       dashboard: Panel de control
       models: Modelos
-      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images
+      models_edit_fleetchart: Editar imágenes de gráfico de flota de %{manufacturer}
+        %{model}

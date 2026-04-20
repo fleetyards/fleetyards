@@ -49,9 +49,9 @@ zh-CN:
       settings_notifications: 通知设置
       settings_profile: 个人资料设置
       settings_security: 账户安全
-      settings_security_two-factor_backup-codes: Generate Two-factor Backup Codes
-      settings_security_two-factor_disable: Disable Two-factor Authentication
-      settings_security_two-factor_enable: Enable Two-factor Authentication
+      settings_security_two-factor_backup-codes: 生成两步验证备用码
+      settings_security_two-factor_disable: 禁用两步验证
+      settings_security_two-factor_enable: 启用两步验证
       ship_images: "%{model} 图片"
       ship_videos: "%{model} 视频"
       ships: 飞船
@@ -67,4 +67,4 @@ zh-CN:
     admin:
       dashboard: 仪表板
       models: 型号
-      models_edit_fleetchart: Edit %{manufacturer} %{model} Fleetchart Images
+      models_edit_fleetchart: 编辑 %{manufacturer} %{model} 舰队图表图片

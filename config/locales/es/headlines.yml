@@ -13,7 +13,7 @@ es:
         new: Nuevo componente
       dashboard: Panel de control
       equipment:
-        edit: Equipment %{equipment}
+        edit: Equipamiento %{equipment}
         index: Equipamiento
         new: Nuevo equipamiento
       image:
@@ -32,19 +32,19 @@ es:
         new: Nuevo modelo
         price_diff: Modelos con precio de Pledge desactualizado
       model_module:
-        edit: Module %{model_module}
+        edit: Módulo %{model_module}
         index: Módulos
         new: Nuevo módulo
       model_module_package:
-        edit: Module Package %{model_module_package}
+        edit: Paquete de módulos %{model_module_package}
         index: Paquetes de módulos
         new: Nuevo paquete de módulos
       model_paint:
-        edit: Paint %{model_paint}
+        edit: Pintura %{model_paint}
         index: Pinturas
         new: Nueva pintura
       model_upgrade:
-        edit: Upgrade %{model_upgrade}
+        edit: Mejora %{model_upgrade}
         index: Mejoras
         new: Nueva mejora
       user:
@@ -57,7 +57,7 @@ es:
     change_password: Change your Password
     comments: Comentarios
     confirm: Confirm your Account
-    forgot_password: Forgot your Password?
+    forgot_password: "¿Olvidó su contraseña?"
     impressum: Aviso legal
     not_found: Navigation Error
     privacy: Política de privacidad

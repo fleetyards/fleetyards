@@ -250,8 +250,8 @@ es:
         fleet_membership:
           attributes:
             base:
-              cannot_destroy_from_permanent_role: Cannot remove member of Fleet from
-                permanent role
+              cannot_destroy_from_permanent_role: No se puede eliminar al miembro
+                de la flota del rol permanente
             user_id:
               taken: already present or has a pending invite
         user:
@@ -269,7 +269,7 @@ es:
             password:
               too_short:
             password_confirmation:
-              confirmation: Passwords do not match
+              confirmation: Las contraseñas no coinciden
             reset_password_token:
               invalid: Token is invalid
             username:

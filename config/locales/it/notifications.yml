@@ -14,18 +14,18 @@ it:
       body: "%{model} è attualmente in vendita nel negozio pledge."
     hangar_sync_finished:
       title: Sincronizzazione hangar completata
-      body: Your RSI hangar has been synced successfully.
+      body: Il tuo hangar RSI è stato sincronizzato con successo.
     hangar_sync_failed:
       title: Sincronizzazione hangar fallita
-      body: 'Your RSI hangar sync failed: %{error}'
+      body: 'La sincronizzazione del tuo hangar RSI è fallita: %{error}'
     new_model:
       title: 'Nuova nave: %{model}'
       body: "%{model} è stato aggiunto al database delle navi."
     fleet_invite:
-      title: You've been invited to %{fleet}
+      title: Sei stato invitato a %{fleet}
     fleet_member_requested:
       title: "%{username} ha chiesto di unirsi a %{fleet}"
     fleet_member_accepted:
       title: "%{username} si è unito a %{fleet}"
     fleet_request_accepted:
-      title: You've been accepted into %{fleet}
+      title: Sei stato accettato in %{fleet}

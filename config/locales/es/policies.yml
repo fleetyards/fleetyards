@@ -1,4 +1,4 @@
 ---
 es:
   action_policy:
-    unauthorized: You are not authorized to perform this action.
+    unauthorized: No está autorizado para realizar esta acción.

@@ -250,8 +250,7 @@ zh-TW:
         fleet_membership:
           attributes:
             base:
-              cannot_destroy_from_permanent_role: Cannot remove member of Fleet from
-                permanent role
+              cannot_destroy_from_permanent_role: 無法將成員從永久角色中移除
             user_id:
               taken: already present or has a pending invite
         user:
@@ -269,7 +268,7 @@ zh-TW:
             password:
               too_short:
             password_confirmation:
-              confirmation: Passwords do not match
+              confirmation: 密碼不符
             reset_password_token:
               invalid: Token is invalid
             username:

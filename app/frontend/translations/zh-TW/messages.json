@@ -68,8 +68,8 @@
         "createError": "無法建立功能。"
       },
       "rsiRequestLogs": {
-        "resolved": "Request log marked as resolved.",
-        "error": "Could not update request log."
+        "resolved": "請求日誌已標記為已解決。",
+        "error": "無法更新請求日誌。"
       },
       "updateNotifications": {
         "success": "通知設定已更新。"
@@ -80,23 +80,23 @@
       "oauthApplications": {
         "create": {
           "success": "OAuth 應用程式已建立。",
-          "error": "Could not create OAuth application."
+          "error": "無法建立 OAuth 應用程式。"
         },
         "update": {
           "success": "OAuth 應用程式已更新。",
-          "error": "Could not update OAuth application."
+          "error": "無法更新 OAuth 應用程式。"
         },
         "destroy": {
           "success": "OAuth 應用程式已刪除。",
-          "error": "Could not delete OAuth application."
+          "error": "無法刪除 OAuth 應用程式。"
         },
         "regenerateSecret": {
           "success": "客戶端密鑰已重新產生。",
-          "error": "Could not regenerate client secret."
+          "error": "無法重新產生客戶端密鑰。"
         },
         "copied": "已複製到剪貼簿。",
         "copyError": "無法複製到剪貼簿。",
-        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+        "secretWarning": "請立即複製客戶端密鑰。您將無法再次檢視。"
       },
       "avatarUpload": {
         "create": {
@@ -364,14 +364,14 @@
       },
       "oauthAuthorize": {
         "loading": "載入中...",
-        "loadError": "Failed to load authorization details.",
+        "loadError": "載入授權詳情失敗。",
         "authorizeError": "授權失敗。",
         "denyError": "授權拒絕失敗。"
       },
       "oauth": {
         "disconnect": {
-          "success": "Provider disconnected successfully.",
-          "failure": "Could not disconnect provider. Please try again."
+          "success": "服務商已成功中斷。",
+          "failure": "無法中斷服務商。請重試。"
         }
       },
       "confirmAccess": {
@@ -379,7 +379,7 @@
       },
       "confirmAccessEmail": {
         "sent": "確認碼已傳送到您的電子郵件。",
-        "failure": "Could not send confirmation email. Please try again."
+        "failure": "無法傳送確認郵件。請重試。"
       },
       "confirmAccessCode": {
         "failure": "確認碼無效或已過期。"

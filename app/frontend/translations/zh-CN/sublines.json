@@ -2,10 +2,10 @@
   "zh-CN": {
     "sublines": {
       "hangarGuide": {
-        "headline": "maybe we should change that ;)",
+        "headline": "也许我们应该改变这一点 ;)",
         "add": "How to add a ship?",
         "edit": "How to edit a ship?",
-        "wishlist": "How to add a ship to your wishlist?",
+        "wishlist": "如何将飞船添加到愿望清单?",
         "fleetchart": "舰队图表?",
         "public": "公开 URL?",
         "groups": "How to create and update groups?"

@@ -46,8 +46,8 @@ it:
     signup:
       already_signed_in: Hai già effettuato l'accesso.
       username_invalid: Il nome utente non è valido.
-      reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
-        choose something else!
+      reserved_username: Il nome utente è riservato/vietato su FleetYards.net. Scegli
+        qualcos'altro!
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
         Reasons.<br>For further Information please Contact us under info@fleetyards.net
     update:
@@ -55,15 +55,15 @@ it:
       success: "%{resource} modificato con successo."
     omniauth_connection:
       destroy:
-        last_connection: You cannot remove your last login connection without setting
-          a password first.
+        last_connection: Non puoi rimuovere la tua ultima connessione di accesso senza
+          prima impostare una password.
     confirmAccess:
       failure: Conferma di accesso fallita
     confirmAccessCode:
       failure: Il codice di conferma non è valido o è scaduto.
     confirmAccessEmail:
       sent: Un link di conferma è stato inviato alla tua e-mail.
-      notAllowed: Email confirmation is only available for OAuth accounts.
+      notAllowed: La conferma e-mail è disponibile solo per gli account OAuth.
     hangar_import:
       no_data: Nessun dato trovato da importare
     hangar_sync:
@@ -72,9 +72,9 @@ it:
     user:
       requires_access_confirmation: Conferma di accesso in attesa
     otp:
-      active: Two-factor Authentication already active
-      inactive: Two-factor Authentication already inactive
+      active: L'autenticazione a due fattori è già attiva
+      inactive: L'autenticazione a due fattori è già inattiva
       disable:
-        failure: Could not deactivate Two-factor Authentication
+        failure: Impossibile disattivare l'autenticazione a due fattori
       enable:
-        failure: Could not activate Two-factor Authentication
+        failure: Impossibile attivare l'autenticazione a due fattori

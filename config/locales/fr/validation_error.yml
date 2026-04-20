@@ -12,17 +12,17 @@ fr:
       destroy: La flotte n’a pas pu être détruite.
       update: La flotte n'a pas pu être mise à jour.
     fleet_members:
-      create: Fleet Member could not be invited
-      accept: Fleet Member could not be accepted.
-      decline: Fleet Member could not be declined.
-      destroy: Fleet Member could not be removed.
+      create: Impossible d'inviter le membre de la flotte
+      accept: Impossible d'accepter le membre de la flotte.
+      decline: Impossible de refuser le membre de la flotte.
+      destroy: Impossible de retirer le membre de la flotte.
     fleet_memberships:
-      create: Fleet Invitation could not be used
+      create: L'invitation à la flotte n'a pas pu être utilisée
       destroy: Impossible de quitter la flotte.
-      accept: Fleet Invitation could not be accepted.
-      decline: Fleet Invitation could not be declined.
-      demote_not_permitted: You can't demote the last Member of a permanent Fleet
-        Role.
+      accept: L'invitation à la flotte n'a pas pu être acceptée.
+      decline: L'invitation à la flotte n'a pas pu être refusée.
+      demote_not_permitted: Vous ne pouvez pas rétrograder le dernier membre d'un
+        rôle de flotte permanent.
     hangar_group:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit
@@ -33,8 +33,8 @@ fr:
     request_password: La demande de mot de passe a échoué.
     signup: Échec de l'inscription. Veuillez résoudre toutes les erreurs et réessayer.
     oauth_application:
-      create: OAuth application could not be created.
-      update: OAuth application could not be updated.
-      destroy: OAuth application could not be destroyed.
+      create: L'application OAuth n'a pas pu être créée.
+      update: L'application OAuth n'a pas pu être mise à jour.
+      destroy: L'application OAuth n'a pas pu être supprimée.
     hangar:
       import: Échec de l'import

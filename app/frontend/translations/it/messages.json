@@ -68,8 +68,8 @@
         "createError": "Impossibile creare la funzione."
       },
       "rsiRequestLogs": {
-        "resolved": "Request log marked as resolved.",
-        "error": "Could not update request log."
+        "resolved": "Log delle richieste contrassegnato come risolto.",
+        "error": "Impossibile aggiornare il log delle richieste."
       },
       "updateNotifications": {
         "success": "Impostazioni notifiche aggiornate."
@@ -80,23 +80,23 @@
       "oauthApplications": {
         "create": {
           "success": "Applicazione OAuth creata.",
-          "error": "Could not create OAuth application."
+          "error": "Impossibile creare l'applicazione OAuth."
         },
         "update": {
           "success": "Applicazione OAuth aggiornata.",
-          "error": "Could not update OAuth application."
+          "error": "Impossibile aggiornare l'applicazione OAuth."
         },
         "destroy": {
           "success": "Applicazione OAuth eliminata.",
-          "error": "Could not delete OAuth application."
+          "error": "Impossibile eliminare l'applicazione OAuth."
         },
         "regenerateSecret": {
           "success": "Segreto client rigenerato.",
-          "error": "Could not regenerate client secret."
+          "error": "Impossibile rigenerare il segreto client."
         },
         "copied": "Copiato negli appunti.",
         "copyError": "Impossibile copiare negli appunti.",
-        "secretWarning": "Copy your client secret now. You won't be able to see it again."
+        "secretWarning": "Copia il tuo segreto client ora. Non potrai vederlo di nuovo."
       },
       "avatarUpload": {
         "create": {
@@ -364,14 +364,14 @@
       },
       "oauthAuthorize": {
         "loading": "Caricamento...",
-        "loadError": "Failed to load authorization details.",
+        "loadError": "Impossibile caricare i dettagli di autorizzazione.",
         "authorizeError": "Autorizzazione fallita.",
         "denyError": "Il rifiuto dell'autorizzazione è fallito."
       },
       "oauth": {
         "disconnect": {
-          "success": "Provider disconnected successfully.",
-          "failure": "Could not disconnect provider. Please try again."
+          "success": "Provider disconnesso con successo.",
+          "failure": "Impossibile disconnettere il provider. Riprova."
         }
       },
       "confirmAccess": {
@@ -379,7 +379,7 @@
       },
       "confirmAccessEmail": {
         "sent": "Un codice di conferma è stato inviato alla tua e-mail.",
-        "failure": "Could not send confirmation email. Please try again."
+        "failure": "Impossibile inviare l'e-mail di conferma. Riprova."
       },
       "confirmAccessCode": {
         "failure": "Il codice di conferma non è valido o è scaduto."

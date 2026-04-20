@@ -22,30 +22,25 @@ zh-TW:
       confirmation_instructions:
         content:
           confirm_email_link: 確認郵件
-          confirm_email_text: 'To confirm your new email please click on the following
-            link:'
+          confirm_email_text: 要確認您的新電子郵件，請點擊以下連結：
           confirm_link: 啟用帳戶
-          confirm_text: 'To activate your Account please click on the following link:'
+          confirm_text: 要啟用您的帳戶，請點擊以下連結：
           welcome: 歡迎 %{username}
         subject: 確認說明
       email_changed:
         content:
-          text_confirmed: We're contacting you to notify you that your email has been
-            changed to %{email}.
-          text_unconfirmed: We're contacting you to notify you that your email is
-            being changed to %{email}.
+          text_confirmed: 我們聯繫您是為了通知您電子郵件已變更為 %{email}。
+          text_unconfirmed: 我們聯繫您是為了通知您電子郵件正在變更為 %{email}。
       password_change:
         content:
-          text: We're contacting you to notify you that your password has been changed.
+          text: 我們聯繫您是為了通知您密碼已變更。
       reset_password_instructions:
         content:
           change_link: 變更我的密碼
-          first_text: Someone has requested a link to change your password, and you
-            can do this through the link below.
+          first_text: 有人請求了變更密碼的連結。您可以透過以下連結完成操作。
           hello: 你好
-          second_text: If you didn't request this, please ignore this email.
-          third_text: Your password won't change until you access the link above and
-            create a new one.
+          second_text: 如果您沒有提出此請求，請忽略此郵件。
+          third_text: 在您存取上方連結並建立新密碼之前，密碼不會變更。
         subject: 密碼重設說明
       unlock_instructions:
         subject: 解鎖說明
@@ -56,18 +51,17 @@ zh-TW:
         github: GitHub
         bluesky: Bluesky
         twitch: Twitch
-      failure: Could not authenticate you with %{kind}.
-      failure_with_reason: Could not authenticate you with %{kind} because "%{reason}".
+      failure: 無法透過 %{kind} 認證。
+      failure_with_reason: 無法透過 %{kind} 認證，原因："%{reason}"。
       failure_username_taken: |-
         Could not authenticate you with %{kind} because there is already an account with the username "%{username}".
         Please sign in your existing account or sign up to a new account and connect your %{kind} account.
-      success: Successfully authenticated with %{kind}.
+      success: 已透過 %{kind} 成功認證。
       connect:
-        failure: Could not connect your %{kind} account.
-        failure_with_reason: Could not connect your %{kind} account because "%{reason}".
-        success: Successfully connected your %{kind} account.
-        already_connected: Your %{kind} account is already connected to your FleetYards.net
-          Account.
+        failure: 無法連接您的 %{kind} 帳戶。
+        failure_with_reason: 無法連接您的 %{kind} 帳戶，原因："%{reason}"。
+        success: 已成功連接您的 %{kind} 帳戶。
+        already_connected: 您的 %{kind} 帳戶已連接到 FleetYards.net 帳戶。
     otp:
       backup_codes: 產生備用碼
       backup_explain: 複製備用碼並妥善保管。
@@ -101,8 +95,7 @@ zh-TW:
       updated: 密碼已成功變更。您現在已登入。
       updated_not_active: 密碼已成功變更。
     registrations:
-      destroyed: Bye! Your account was successfully cancelled. We hope to see you
-        again soon.
+      destroyed: 再見！您的帳戶已成功註銷。希望很快能再見到您。
       signed_up: 歡迎！您已成功註冊。
       signed_up_but_inactive: You have signed up successfully. However, we could not
         sign you in because your account is not yet activated.

@@ -106,7 +106,7 @@
             "fleetchart": "Modell Flottendiagramm-Bilder bearbeiten",
             "hardpoints": "Modell Hardpoints bearbeiten",
             "cargoAndFuel": "Fracht und Treibstoff",
-            "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
+            "cargoHolds": "%{manufacturer} %{model} Frachträume bearbeiten",
             "docks": "Modell Docks bearbeiten",
             "modules": "Modell Module bearbeiten",
             "paints": "Modell Lackierungen bearbeiten",
