@@ -21,13 +21,13 @@ it:
         name: Nome
       equipment:
         damage_reduction: Damage Reduction
-        extras: Extras
+        extras: Extra
         grade: Grado
-        range: Range
-        rate_of_fire: Rate of Fire
+        range: Portata
+        rate_of_fire: Cadenza di fuoco
         size: Dimensione
-        storage: storage
-        temperature_rating: Temp. Rating
+        storage: archiviazione
+        temperature_rating: Valutazione temp.
         volume: Volume
       manufacturer:
         code: Shortcode of Name
@@ -50,21 +50,21 @@ it:
         on_sale: In vendita?
     prompt:
       component:
-        component_class: Please select a Component Class
-        item_class: Please select a Item Class
+        component_class: Seleziona una classe di componente
+        item_class: Seleziona una classe di oggetto
         item_type: Seleziona un tipo di oggetto
-        manufacturer: Please select a Manufacturer
+        manufacturer: Seleziona un produttore
       docks:
-        dock_type: Please select a Dock Type
-        ship_size: Please select a Ship size
+        dock_type: Seleziona un tipo di dock
+        ship_size: Seleziona una dimensione nave
       equipment:
         backpack_compatibility: Compatibilità zaino
         core_compatibility: Compatibilità del nucleo
         equipment_type: Seleziona un tipo
         item_type: Seleziona un tipo di oggetto
         slot: Seleziona uno slot
-        weapon_class: Please select a Weapon Class
+        weapon_class: Seleziona una classe di arma
       models:
-        dock_size: Please select a Dock size
+        dock_size: Seleziona una dimensione dock
       video:
-        video_type: Please select a Video Type
+        video_type: Seleziona un tipo di video

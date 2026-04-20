@@ -11,7 +11,7 @@ zh-TW:
     frontend:
       compare_ships: 比較飛船
       confirm: 確認帳戶
-      cookie-policy: Cookie Policy
+      cookie-policy: Cookie 政策
       fleet_invite: 加入 %{fleet}
       fleet_members: "%{fleet} 成員"
       fleet_members_index: "%{fleet} 成員"
@@ -59,7 +59,7 @@ zh-TW:
       stats: 統計
       tools: 工具
       tools_travel-times: 旅行時間
-      visual-tests: Visual Tests
+      visual-tests: 視覺測試
       visual-tests_panels: Panels - Visual Tests
     api:
       docs:

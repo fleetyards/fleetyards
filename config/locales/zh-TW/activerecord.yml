@@ -4,20 +4,20 @@ zh-TW:
     attributes:
       vehicle:
         bought_via:
-          pledge_store: Pledge Store
-          ingame: Ingame Store
+          pledge_store: 質押商店
+          ingame: 遊戲內商店
       component:
         component_classes:
-          RSIAvionic: Avionic
+          RSIAvionic: 航電
           RSIModular: 模組化
           RSIPropulsion: 推進
           RSIThruster: 推進器
           RSIWeapon: 武器
         item_classes:
-          civilian: Civilian
-          competition: Competition
-          industrial: Industrial
-          military: Military
+          civilian: 民用
+          competition: 競賽
+          industrial: 工業
+          military: 軍用
           stealth: 隱身
         item_types:
           cargo_grids: 貨物網格
@@ -26,12 +26,12 @@ zh-TW:
           fixed_thrusters: Fixed Thrusters
           fuel_intakes: 燃料進氣口
           fuel_tanks: 燃料箱
-          mid_range_radar: Midrange Radar
+          mid_range_radar: 中程雷達
           joint_thrusters: Joint Thrusters
-          manned_turrets: Manned Turrets
+          manned_turrets: 有人砲塔
           manned_utility_turrets: 有人實用砲塔
-          mining_lasers: Mining Lasers
-          missile_racks: Missle Racks
+          mining_lasers: 採礦雷射
+          missile_racks: 飛彈架
           missile_turrets: Missile Turrets
           missiles: 飛彈
           power_plants: 發電機
@@ -40,23 +40,23 @@ zh-TW:
           remote_turrets: Remote Turrets
           scanners: 掃描儀
           shield_generators: 護盾產生器
-          thrusters: Thrusters
+          thrusters: 推進器
           turrets: 砲塔
           weapon_defensive: Weapon Defensive
-          weapons: Ship Weapons
+          weapons: 飛船武器
           emps: EMPs
           armor_medium: 中型裝甲
         tracking_signals:
-          cross_section: Cross Section
+          cross_section: 截面
           electromagnetic: Electromagnetic
-          infrared: infrared
+          infrared: 紅外
       dock:
         dock_types:
-          dockingport: Dockingport
-          garage: Garage
+          dockingport: 對接口
+          garage: 車庫
           hangar: 機庫
-          landingpad: Landingpad
-          vehiclepad: Vehiclepad
+          landingpad: 停機坪
+          vehiclepad: 載具停放點
         ship_sizes:
           capital: Capital (C)
           extra_extra_small: Snubcraft (XXS)
@@ -68,70 +68,70 @@ zh-TW:
       equipment:
         backpack_compatibilities:
           all: 全部
-          light: Light
+          light: 輕型
           light_medium: Light & Medium
         core_compatibilities:
           all: 全部
-          heavy: Heavy
+          heavy: 重型
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: 裝甲
-          clothing: Clothing
-          hacking_tool: Hacking Tool
-          medical: Medical
-          tool: Tool
+          clothing: 服裝
+          hacking_tool: 駭客工具
+          medical: 醫療
+          tool: 工具
           undersuit: 內襯
           weapon: 武器
           weapon_attachment: Weapon Attachment
         hidden: 隱藏?
         item_types:
-          assault_rifle: Assault Rifle
+          assault_rifle: 突擊步槍
           backpack: 背包
-          battery: Battery
-          flightsuit: Flightsuit
-          grenade: Grenade
+          battery: 電池
+          flightsuit: 飛行服
+          grenade: 手榴彈
           grenade_launcher: Grenade Launcher
-          heavy_armor: Heavy Armor
-          heavy_backpack: Heavy Backpack
-          knife: Knife
-          light_armor: Light Armor
-          light_backpack: Light Backpack
+          heavy_armor: 重型裝甲
+          heavy_backpack: 重型背包
+          knife: 刀
+          light_armor: 輕型裝甲
+          light_backpack: 輕型背包
           lmg: LMG
-          magazine: Magazine
+          magazine: 彈匣
           medium_armor: 中型裝甲
           medium_backpack: Medium Backpack
-          pistol: Pistol
-          rifle: Rifle
+          pistol: 手槍
+          rifle: 步槍
           rocket_launcher: Rocket Launcher
-          shotgun: Shotgun
+          shotgun: 霰彈槍
           smg: SMG
-          sniper_rifle: Sniper Rifle
+          sniper_rifle: 狙擊步槍
           special_railgun: Special - Railgun
-          utility: Utility
-          weapon_scope: Scope
+          utility: 實用
+          weapon_scope: 瞄準鏡
         slots:
-          arms: Arms
+          arms: 手臂
           backpack: 背包
-          footwear: Footwear
-          gloves: Gloves
-          hat: Hat
-          helmet: Helmet
-          jacket: Jacket
-          legs: Legs
-          pants: Pants
-          shirt: Shirt
-          torso: Torso
+          footwear: 鞋類
+          gloves: 手套
+          hat: 帽子
+          helmet: 頭盔
+          jacket: 夾克
+          legs: 腿部
+          pants: 褲子
+          shirt: 襯衫
+          torso: 軀幹
           undersuit: 內襯
         temperature_rating: 溫度
         types:
           additional: Additional Equipment
-          powerplant: Powerplant
+          powerplant: 發電機
           primary_thrusters: Primary Thrusters
-          shield: Shields
+          shield: 護盾
           thrusters: 機動推進器
         weapon_classes:
-          ballistic: Ballistic
-          energy: Energy
+          ballistic: 彈道
+          energy: 能量
           frag: Frag
       fleet_membership:
         roles:
@@ -148,9 +148,9 @@ zh-TW:
           suite: 套房
       manufacturer:
         code: CODE
-        known_for: Known for?
+        known_for: 以什麼聞名?
       model:
-        active: active?
+        active: 活躍?
         beam: 寬度
         cargo: 貨物
         crew: 船員
@@ -166,7 +166,7 @@ zh-TW:
         mass: 質量
         max_upgrades: 升級
         notified: Suppress "New Ship" Notification?
-        on_sale: On sale?
+        on_sale: 販售中?
         production_status: 生產狀態
         variants: 變體
         weapons: 武器
@@ -176,12 +176,12 @@ zh-TW:
           fixed: Fixed Maneuvering Thruster
           gimbal: Gimbal Maneuvering Thruster
           joint: Joint Maneuvering Thruster
-          main: Main Thruster
-          manned_turret: Manned Turret
+          main: 主推進器
+          manned_turret: 有人砲塔
           missile_turret: Missile Turret
-          remote_turret: Remote Turret
+          remote_turret: 遙控砲塔
           retro: Retro Thruster
-          vtol: VTOL Thruster
+          vtol: VTOL 推進器
           qed: QED
           emp: EMP
         sizes:
@@ -206,21 +206,21 @@ zh-TW:
           snub: Snub (0)
       progress_tracker_item:
         statuses:
-          done: Done
-          in_progress: In Progress
-          planned: Planned
+          done: 完成
+          in_progress: 進行中
+          planned: 已計劃
       setting:
         base:
           registration: Registration active?
         mailer:
-          default_from: Default From
+          default_from: 預設寄件人
           host: SMTP Host
           password: SMPT Password or Token
           port: SMTP Port
           user: SMTP User
-      updated_at: "%{time} ago"
+      updated_at: "%{time}前"
       user:
-        admin: Admin?
+        admin: 管理員?
         confirmation_token: 權杖
         current_password: 密碼
         email: 電子郵件
@@ -241,7 +241,7 @@ zh-TW:
     errors:
       messages:
         blank: can't be blank
-        record_invalid: Bad Data
+        record_invalid: 無效資料
       models:
         fleet_role:
           attributes:
@@ -261,9 +261,9 @@ zh-TW:
                 an admin of the following fleets: %{fleets}. Please transfer ownership
                 first.'
             confirmation_token:
-              invalid: is invalid
+              invalid: 無效
             current_password:
-              invalid: is invalid.
+              invalid: 無效。
             email:
               taken: is already taken.
             password:

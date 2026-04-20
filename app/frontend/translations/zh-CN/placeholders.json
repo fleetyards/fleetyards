@@ -21,7 +21,7 @@
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
-        "name": "Feature name"
+        "name": "功能名称"
       },
       "fleetInviteToken": "舰队邀请",
       "quicksearch": {
@@ -127,7 +127,7 @@
         "currentSystem": "e.g. Stanton, Pyro, Nyx"
       },
       "oauthApplication": {
-        "name": "My Application",
+        "name": "我的应用",
         "redirectUri": "https://example.com/callback",
         "scopes": "公开"
       },
@@ -151,20 +151,20 @@
         "search": "按名称搜索模块..."
       },
       "modelUpgrade": {
-        "name": "Upgrade Name",
+        "name": "升级名称",
         "pledgePrice": "0.00",
         "description": "描述"
       },
       "modelModulePackage": {
-        "name": "Package Name",
+        "name": "套餐名称",
         "pledgePrice": "0.00",
         "description": "描述"
       },
       "dock": {
-        "name": "Dock Name"
+        "name": "停靠口名称"
       },
       "modelHardpoint": {
-        "name": "Hardpoint Name",
+        "name": "挂载点名称",
         "key": "hardpoint_key",
         "details": "详情",
         "mount": "挂载类型",
@@ -172,20 +172,20 @@
         "loadoutIdentifier": "配置标识"
       },
       "modelHardpointLoadout": {
-        "name": "Loadout Name"
+        "name": "配置名称"
       },
       "filters": {
         "vehicles": {
           "name": "Enterprise, Andromeda...",
-          "priceLt": "Price <=",
-          "priceGt": "Price >="
+          "priceLt": "价格 <=",
+          "priceGt": "价格 >="
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Capital Ship, Fighter...",
-          "classification": "Vehicle, Fighter, Cargo...",
+          "shipRole": "货船、主力舰、战斗机...",
+          "classification": "载具、战斗机、货船...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
-          "onSale": "Yes or No",
+          "onSale": "是或否",
           "productionStatus": "已公布、可飞行、概念阶段..."
         },
         "modelModules": {

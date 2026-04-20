@@ -15,7 +15,7 @@ zh-CN:
       equipment:
         edit: Equipment %{equipment}
         index: 装备
-        new: New Equipment
+        new: 新装备
       image:
         index: 图片
       loaner_uploads:
@@ -25,12 +25,12 @@ zh-CN:
         index: 制造商
         new: 新制造商
       model:
-        edit: Edit %{model}
+        edit: 编辑 %{model}
         images: "%{model} 图片上传"
         index: 型号
-        name_diff: Models with different RSI Name
+        name_diff: RSI 名称不同的型号
         new: 新型号
-        price_diff: Models with outdated Pledge price
+        price_diff: 质押价格过期的型号
       model_module:
         edit: Module %{model_module}
         index: 模块
@@ -46,16 +46,16 @@ zh-CN:
       model_upgrade:
         edit: Upgrade %{model_upgrade}
         index: 升级
-        new: New Upgrade
+        new: 新升级
       user:
-        edit: Edit %{user}
+        edit: 编辑 %{user}
         index: 用户
         new: 新用户
       maintenance:
         rsi_api_status:
           index: RSI API 状态
     change_password: Change your Password
-    comments: Comments
+    comments: 评论
     confirm: Confirm your Account
     forgot_password: Forgot your Password?
     impressum: 法律声明

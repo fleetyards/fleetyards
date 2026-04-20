@@ -81,7 +81,7 @@
         "text": "The use of our site is usually possible without providing any personal data. The collecting of personal data (eg email address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by email) can have security gaps. A complete protection of data against access by third parties is not possible.",
         "p1": "Below you can read about what Information we are using to provide you the services on %{app}. For most parts this only concerns registered Users but please read further to get a full overview.",
         "p2": {
-          "headline": "What Information do we use?",
+          "headline": "Quali informazioni utilizziamo?",
           "text": "Depending on if you are a registered User or only using %{app} as a Guest we use more or less Information from you."
         },
         "p3": {
@@ -102,7 +102,7 @@
       },
       "oauthAuthorize": {
         "requestingAccess": "{clientName} is requesting access to your account.",
-        "scopesIntro": "This application will be able to:"
+        "scopesIntro": "Questa applicazione potrà:"
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

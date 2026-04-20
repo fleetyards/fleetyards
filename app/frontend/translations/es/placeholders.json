@@ -21,7 +21,7 @@
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
-        "name": "Feature name"
+        "name": "Nombre de función"
       },
       "fleetInviteToken": "Invitación de flota",
       "quicksearch": {
@@ -127,7 +127,7 @@
         "currentSystem": "e.g. Stanton, Pyro, Nyx"
       },
       "oauthApplication": {
-        "name": "My Application",
+        "name": "Mi aplicación",
         "redirectUri": "https://example.com/callback",
         "scopes": "público"
       },
@@ -151,20 +151,20 @@
         "search": "Buscar módulos por nombre..."
       },
       "modelUpgrade": {
-        "name": "Upgrade Name",
+        "name": "Nombre de mejora",
         "pledgePrice": "0.00",
         "description": "Descripción"
       },
       "modelModulePackage": {
-        "name": "Package Name",
+        "name": "Nombre del paquete",
         "pledgePrice": "0.00",
         "description": "Descripción"
       },
       "dock": {
-        "name": "Dock Name"
+        "name": "Nombre del muelle"
       },
       "modelHardpoint": {
-        "name": "Hardpoint Name",
+        "name": "Nombre del punto de montaje",
         "key": "hardpoint_key",
         "details": "Detalles",
         "mount": "Tipo de montaje",
@@ -172,20 +172,20 @@
         "loadoutIdentifier": "Identificador de configuración"
       },
       "modelHardpointLoadout": {
-        "name": "Loadout Name"
+        "name": "Nombre de configuración"
       },
       "filters": {
         "vehicles": {
           "name": "Enterprise, Andromeda...",
-          "priceLt": "Price <=",
-          "priceGt": "Price >="
+          "priceLt": "Precio <=",
+          "priceGt": "Precio >="
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Capital Ship, Fighter...",
-          "classification": "Vehicle, Fighter, Cargo...",
+          "shipRole": "Carga, Nave capital, Caza...",
+          "classification": "Vehículo, Caza, Carga...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
-          "onSale": "Yes or No",
+          "onSale": "Sí o No",
           "productionStatus": "Anunciado, Listo para volar, En concepto..."
         },
         "modelModules": {

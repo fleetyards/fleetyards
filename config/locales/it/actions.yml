@@ -2,7 +2,7 @@
 it:
   actions:
     add: Aggiungi
-    add_dock: Add Dock
+    add_dock: Aggiungi dock
     add_module_hardpoint: Aggiungi Modello
     add_module_package_item: Aggiungi Modulo
     add_upgrade_kit: Aggiungi Modello

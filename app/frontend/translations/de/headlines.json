@@ -50,8 +50,8 @@
           "index": "Komponenten",
           "new": "Neue Komponente",
           "edit": {
-            "index": "Edit Component",
-            "itemPrices": "Item Prices"
+            "index": "Komponente bearbeiten",
+            "itemPrices": "Artikelpreise"
           }
         },
         "modelPaints": {
@@ -96,7 +96,7 @@
         "features": {
           "index": "Feature-Flags",
           "show": "Funktionsdetails",
-          "globalState": "Global State",
+          "globalState": "Globaler Status",
           "groups": "Gruppen",
           "actors": "Akteure",
           "selfService": "Self-Service",
@@ -121,10 +121,10 @@
       "images": "Images Index",
       "stats": "Statistiken",
       "notFound": "Navigation Error",
-      "featureNotReady": "Coming Soon",
+      "featureNotReady": "Demnächst",
       "accessDenied": "Zugriff verweigert",
       "serverError": "Serverfehler",
-      "comments": "Comments",
+      "comments": "Kommentare",
       "login": "Anmelden",
       "hangar": {
         "index": "Mein Hangar",

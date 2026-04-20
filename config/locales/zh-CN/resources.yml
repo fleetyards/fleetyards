@@ -4,7 +4,7 @@ zh-CN:
     component: 组件
     equipment: 装备
     image: 图片
-    locale: Locales
+    locale: 语言
     manufacturer: 制造商
     messages:
       password: 密码

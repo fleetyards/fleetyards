@@ -21,7 +21,7 @@
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
-        "name": "Feature name"
+        "name": "Funktionsname"
       },
       "fleetInviteToken": "Flotteneinladung",
       "quicksearch": {
@@ -127,7 +127,7 @@
         "currentSystem": "e.g. Stanton, Pyro, Nyx"
       },
       "oauthApplication": {
-        "name": "My Application",
+        "name": "Meine Anwendung",
         "redirectUri": "https://example.com/callback",
         "scopes": "öffentlich"
       },
@@ -164,7 +164,7 @@
         "name": "Dock-Name"
       },
       "modelHardpoint": {
-        "name": "Hardpoint Name",
+        "name": "Aufhängungspunkt-Name",
         "key": "hardpoint_key",
         "details": "Details",
         "mount": "Halterungstyp",
@@ -172,20 +172,20 @@
         "loadoutIdentifier": "Loadout-Kennung"
       },
       "modelHardpointLoadout": {
-        "name": "Loadout Name"
+        "name": "Konfigurationsname"
       },
       "filters": {
         "vehicles": {
           "name": "Enterprise, Andromeda...",
-          "priceLt": "Price <=",
-          "priceGt": "Price >="
+          "priceLt": "Preis <=",
+          "priceGt": "Preis >="
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Capital Ship, Fighter...",
-          "classification": "Vehicle, Fighter, Cargo...",
+          "shipRole": "Fracht, Großkampfschiff, Jäger...",
+          "classification": "Fahrzeug, Jäger, Fracht...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
-          "onSale": "Yes or No",
+          "onSale": "Ja oder Nein",
           "productionStatus": "Angekündigt, Flugbereit, Im Konzept..."
         },
         "modelModules": {

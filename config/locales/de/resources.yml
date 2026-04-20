@@ -4,7 +4,7 @@ de:
     component: Komponente
     equipment: Ausrüstung
     image: Bild
-    locale: Locales
+    locale: Sprachen
     manufacturer: Hersteller
     messages:
       password: Passwort

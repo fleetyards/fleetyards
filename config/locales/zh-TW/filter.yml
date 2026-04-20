@@ -5,7 +5,7 @@ zh-TW:
     component:
       class:
         items:
-          rsiavionic: Avionic
+          rsiavionic: 航電
           rsimodular: System
           rsipropulsion: 推進
           rsithruster: 推進器

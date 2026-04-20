@@ -23,19 +23,19 @@
       "modelHardpoint": {
         "source": {
           "label": "來源",
-          "prompt": "Select Source"
+          "prompt": "選擇來源"
         },
         "group": {
           "label": "群組",
-          "prompt": "Select Group"
+          "prompt": "選擇群組"
         },
         "hardpointType": {
           "label": "類型",
-          "prompt": "Select Type"
+          "prompt": "選擇類型"
         },
         "size": {
           "label": "尺寸",
-          "nullablePrompt": "Select Size"
+          "nullablePrompt": "選擇尺寸"
         },
         "category": {
           "label": "分類",
@@ -49,7 +49,7 @@
       "fleet": {
         "members": {
           "shipsFilter": {
-            "label": "Ships Filter",
+            "label": "飛船篩選",
             "prompt": "Select which ships to show",
             "nullablePrompt": "Select an option"
           },

@@ -4,9 +4,9 @@ it:
     change_pasword: Password Change failed.
     confirmation: Confirmation failed.
     vehicle:
-      create: Ship could not be added.
-      destroy: Ship could not be removed.
-      update: Ship could not be updated.
+      create: La nave non è stata aggiunta.
+      destroy: La nave non è stata rimossa.
+      update: La nave non è stata aggiornata.
     fleet:
       create: Fleet could not be created.
       destroy: Fleet could not be destroyed.
@@ -18,7 +18,7 @@ it:
       destroy: Fleet Member could not be removed.
     fleet_memberships:
       create: Fleet Invitation could not be used
-      destroy: Fleet could not be leaved.
+      destroy: Impossibile lasciare la flotta.
       accept: Fleet Invitation could not be accepted.
       decline: Fleet Invitation could not be declined.
       demote_not_permitted: You can't demote the last Member of a permanent Fleet
@@ -28,8 +28,8 @@ it:
       destroy: Group could not be destroyed
       update: Group could not be updated
     image:
-      create: Image could not be created
-      update: Image could not be updated
+      create: Impossibile creare l'immagine
+      update: Impossibile aggiornare l'immagine
     request_password: Request Password failed.
     signup: Signup failed. Please resolve all Errors and try again.
     oauth_application:
@@ -37,4 +37,4 @@ it:
       update: OAuth application could not be updated.
       destroy: OAuth application could not be destroyed.
     hangar:
-      import: Import failed
+      import: Importazione fallita

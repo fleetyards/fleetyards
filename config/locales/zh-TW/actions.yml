@@ -2,7 +2,7 @@
 zh-TW:
   actions:
     add: 新增
-    add_dock: Add Dock
+    add_dock: 新增停靠口
     add_module_hardpoint: Add Model
     add_module_package_item: Add Module
     add_upgrade_kit: Add Model

@@ -136,8 +136,8 @@
         "vehiclesPerMonth": "Hangared Ships per Month",
         "topVehiclesByModel": "Top 10 Hangared Ships",
         "shipsOfTheMonth": "Vaisseau du mois",
-        "crewDeficit": "Crew Deficit",
-        "crewSurplus": "Crew Surplus",
+        "crewDeficit": "Déficit d'équipage",
+        "crewSurplus": "Excédent d'équipage",
         "membersByRole": "Members by Role"
       },
       "roadmap": {
@@ -151,8 +151,8 @@
         "committed": "enclenchée",
         "lastVersion": {
           "active": {
-            "false": "Item was removed from the Roadmap",
-            "true": "Item was readded to the Roadmap",
+            "false": "Élément retiré de la feuille de route",
+            "true": "Élément réajouté à la feuille de route",
             "decreased": "L'élément a été retiré de la roadmap",
             "increased": "L'élément a été rajouté à la roadmap"
           },
@@ -321,34 +321,34 @@
             "fleet": "Flotte",
             "memberships": "Membres",
             "invites": "Invitations",
-            "vehicles": "Vehicles",
+            "vehicles": "Véhicules",
             "roles": "Rôles"
           },
           "privileges": {
-            "fleet:update": "Update Fleet",
-            "fleet:update:images": "Update Images",
+            "fleet:update": "Mettre à jour la flotte",
+            "fleet:update:images": "Mettre à jour les images",
             "fleet:update:description": "Update Description",
-            "fleet:delete": "Delete Fleet",
+            "fleet:delete": "Supprimer la flotte",
             "fleet:manage": "Gérer la flotte",
-            "fleet:memberships:read": "View Members",
-            "fleet:memberships:create": "Invite Members",
+            "fleet:memberships:read": "Voir les membres",
+            "fleet:memberships:create": "Inviter des membres",
             "fleet:memberships:update": "Update Members",
             "fleet:memberships:delete": "Remove Members",
-            "fleet:memberships:manage": "Manage Members",
-            "fleet:invites:read": "View Invites",
-            "fleet:invites:create": "Create Invites",
-            "fleet:invites:delete": "Delete Invites",
-            "fleet:invites:manage": "Manage Invites",
-            "fleet:vehicles:read": "View Vehicles",
-            "fleet:vehicles:create": "Add Vehicles",
+            "fleet:memberships:manage": "Gérer les membres",
+            "fleet:invites:read": "Voir les invitations",
+            "fleet:invites:create": "Créer des invitations",
+            "fleet:invites:delete": "Supprimer des invitations",
+            "fleet:invites:manage": "Gérer les invitations",
+            "fleet:vehicles:read": "Voir les véhicules",
+            "fleet:vehicles:create": "Ajouter des véhicules",
             "fleet:vehicles:update": "Update Vehicles",
             "fleet:vehicles:delete": "Remove Vehicles",
             "fleet:vehicles:manage": "Manage Vehicles",
-            "fleet:roles:read": "View Roles",
-            "fleet:roles:create": "Create Roles",
-            "fleet:roles:update": "Update Roles",
-            "fleet:roles:delete": "Delete Roles",
-            "fleet:roles:manage": "Manage Roles"
+            "fleet:roles:read": "Voir les rôles",
+            "fleet:roles:create": "Créer des rôles",
+            "fleet:roles:update": "Mettre à jour les rôles",
+            "fleet:roles:delete": "Supprimer des rôles",
+            "fleet:roles:manage": "Gérer les rôles"
           }
         },
         "inviteUrls": {
@@ -895,12 +895,12 @@
           "priceLt": "Prix <=",
           "priceGt": "Prix >=",
           "willItFit": "Est-ce que cela conviendra ?",
-          "withCargo": "With Cargo?",
-          "scIdentifierBlank": "Without SC Identifier?",
-          "fleetchartImageBlank": "Without Fleetchart Image?",
-          "holoBlank": "Without Holo?",
-          "frontViewBlank": "Without Front View Image?",
-          "topViewColoredBlank": "Without Top View Colored Image?"
+          "withCargo": "Avec cargaison ?",
+          "scIdentifierBlank": "Sans identifiant SC ?",
+          "fleetchartImageBlank": "Sans image de diagramme de flotte ?",
+          "holoBlank": "Sans Holo ?",
+          "frontViewBlank": "Sans image de vue de face ?",
+          "topViewColoredBlank": "Sans image de vue de dessus colorée ?"
         },
         "modelModules": {
           "name": "Nom"

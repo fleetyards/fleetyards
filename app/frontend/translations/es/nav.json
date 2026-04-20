@@ -18,11 +18,11 @@
       "login": "Iniciar sesión",
       "logout": "Cerrar sesión",
       "apiV1": "API v1",
-      "apiV1Schema": "Schema",
+      "apiV1Schema": "Esquema",
       "apiV1Pagination": "Paginación",
       "authApiV1": "Auth API v1",
       "authApiV1OpenId": "OpenID Connect",
-      "authApiV1Schema": "Schema",
+      "authApiV1Schema": "Esquema",
       "embed": "Widget Incrustado",
       "signUp": "Registrarse",
       "privacyPolicy": "Política de privacidad",
@@ -35,8 +35,8 @@
         "members": {
           "index": "Members",
           "invites": "Invites",
-          "worldmap": "Worldmap",
-          "starmap": "Starmap"
+          "worldmap": "Mapa mundial",
+          "starmap": "Mapa estelar"
         },
         "stats": "Estadísticas",
         "settings": {
@@ -102,7 +102,7 @@
             "hardpoints": "Puntos de Conexión",
             "loaners": "Prestados",
             "upgrades": "Mejoras",
-            "packages": "Packages"
+            "packages": "Paquetes"
           }
         },
         "modelPaints": {
@@ -125,7 +125,7 @@
         "components": {
           "index": "Componentes",
           "edit": {
-            "index": "Base Data",
+            "index": "Datos base",
             "prices": "Precios"
           }
         },

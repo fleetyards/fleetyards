@@ -23,19 +23,19 @@
       "modelHardpoint": {
         "source": {
           "label": "Fuente",
-          "prompt": "Select Source"
+          "prompt": "Seleccionar fuente"
         },
         "group": {
           "label": "Grupo",
-          "prompt": "Select Group"
+          "prompt": "Seleccionar grupo"
         },
         "hardpointType": {
           "label": "Tipo",
-          "prompt": "Select Type"
+          "prompt": "Seleccionar tipo"
         },
         "size": {
           "label": "Tamaño",
-          "nullablePrompt": "Select Size"
+          "nullablePrompt": "Seleccionar tamaño"
         },
         "category": {
           "label": "Categoría",
@@ -49,7 +49,7 @@
       "fleet": {
         "members": {
           "shipsFilter": {
-            "label": "Ships Filter",
+            "label": "Filtro de naves",
             "prompt": "Select which ships to show",
             "nullablePrompt": "Select an option"
           },

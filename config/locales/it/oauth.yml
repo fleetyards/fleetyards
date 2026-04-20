@@ -26,8 +26,8 @@ it:
         title: Le tue applicazioni
         new: Nuova applicazione
         name: Nome
-        callback_url: Callback URL
-        confidential: Confidential?
+        callback_url: URL di callback
+        confidential: Riservato?
         actions: Azioni
         confidentiality:
           'yes': Sì
@@ -38,9 +38,9 @@ it:
         title: 'Applicazione: %{name}'
         application_id: UID
         secret: Segreto
-        secret_hashed: Secret hashed
+        secret_hashed: Segreto hashato
         scopes: Ambiti
         confidential: Riservato
-        callback_urls: Callback urls
+        callback_urls: URL di callback
         actions: Azioni
         not_defined: Non definito

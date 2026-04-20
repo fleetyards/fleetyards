@@ -24,17 +24,17 @@ zh-CN:
     panels:
       components_by_class: 按类别分组件
       fleets_count_total: 总舰队数
-      latest_components: New Components
+      latest_components: 新组件
       latest_manufacturers: 新制造商
       latest_models: 已重新加载型号
       latest_users: 新用户
       models_by_classification: 按分类整理
       models_by_manufacturer: 按制造商分类
-      models_by_production_status: Models by Production Status
+      models_by_production_status: 按生产状态分类
       models_by_size: 按尺寸分类
       models_per_month: 每月型号
       most_viewed_pages: 浏览最多的页面
-      online_count: Users Online
+      online_count: 在线用户
       registrations: 每月注册数
       ships_count_total: 总飞船数
       ships_count_year: "%{year} 新飞船"
@@ -45,7 +45,7 @@ zh-CN:
     table:
       actions: 操作
       blank:
-        admin_user: No Admin could be found.
+        admin_user: 未找到管理员。
         default: 没有找到匹配结果
         equipment: 没有找到匹配结果
         image: 未找到任何玩家。

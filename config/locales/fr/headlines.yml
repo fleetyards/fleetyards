@@ -5,7 +5,7 @@ fr:
     admin:
       admin_user:
         edit: Edit %{admin_user}
-        index: Admin Users
+        index: Utilisateurs administrateurs
         new: New Admin User
       component:
         edit: Edit %{component}
@@ -15,7 +15,7 @@ fr:
       equipment:
         edit: Equipment %{equipment}
         index: Équipement
-        new: New Equipment
+        new: Nouvel équipement
       image:
         index: Images
       loaner_uploads:
@@ -25,12 +25,12 @@ fr:
         index: Fabricant
         new: Nouveau fabricant
       model:
-        edit: Edit %{model}
+        edit: Modifier %{model}
         images: Téléchargement d'image pour %{model}
         index: Modèles
-        name_diff: Models with different RSI Name
+        name_diff: Modèles avec un nom RSI différent
         new: Nouveau modèle
-        price_diff: Models with outdated Pledge price
+        price_diff: Modèles avec prix de Pledge obsolète
       model_module:
         edit: Module %{model_module}
         index: Modules
@@ -46,16 +46,16 @@ fr:
       model_upgrade:
         edit: Upgrade %{model_upgrade}
         index: Améliorations
-        new: New Upgrade
+        new: Nouvelle amélioration
       user:
-        edit: Edit %{user}
+        edit: Modifier %{user}
         index: Utilisateurs
         new: Nouvel utilisateur
       maintenance:
         rsi_api_status:
           index: Statut de l'API RSI
     change_password: Change your Password
-    comments: Comments
+    comments: Commentaires
     confirm: Confirm your Account
     forgot_password: Forgot your Password?
     impressum: Mentions légales
@@ -65,5 +65,5 @@ fr:
     sign_in: Connexion
     sign_up: S'inscrire
     unlock: Unlock your Account
-    unprocessable_entity: False Request
+    unprocessable_entity: Requête invalide
     welcome: Welcome

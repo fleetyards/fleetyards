@@ -53,21 +53,21 @@ zh-CN:
         sell: 出售？
     prompt:
       component:
-        component_class: Please select a Component Class
-        item_class: Please select a Item Class
+        component_class: 请选择组件类别
+        item_class: 请选择物品类别
         item_type: 请选择物品类型
-        manufacturer: Please select a Manufacturer
+        manufacturer: 请选择制造商
       docks:
-        dock_type: Please select a Dock Type
-        ship_size: Please select a Ship size
+        dock_type: 请选择停靠类型
+        ship_size: 请选择飞船大小
       equipment:
         backpack_compatibility: 背包兼容性
         core_compatibility: 核心兼容性
         equipment_type: 请选择类型
         item_type: 请选择物品类型
         slot: 请选择插槽
-        weapon_class: Please select a Weapon Class
+        weapon_class: 请选择武器类别
       models:
-        dock_size: Please select a Dock size
+        dock_size: 请选择停靠大小
       video:
-        video_type: Please select a Video Type
+        video_type: 请选择视频类型

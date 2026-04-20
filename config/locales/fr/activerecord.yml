@@ -4,20 +4,20 @@ fr:
     attributes:
       vehicle:
         bought_via:
-          pledge_store: Pledge Store
-          ingame: Ingame Store
+          pledge_store: Magasin de Pledge
+          ingame: Boutique en jeu
       component:
         component_classes:
-          RSIAvionic: Avionic
+          RSIAvionic: Avionique
           RSIModular: Modulaire
           RSIPropulsion: Propulsion
           RSIThruster: Propulseur
           RSIWeapon: Arme
         item_classes:
-          civilian: Civilian
-          competition: Competition
-          industrial: Industrial
-          military: Military
+          civilian: Civil
+          competition: Compétition
+          industrial: Industriel
+          military: Militaire
           stealth: Furtivité
         item_types:
           cargo_grids: Grilles de cargaison
@@ -26,12 +26,12 @@ fr:
           fixed_thrusters: Fixed Thrusters
           fuel_intakes: Prises de carburant
           fuel_tanks: Réservoirs de carburant
-          mid_range_radar: Midrange Radar
+          mid_range_radar: Radar de moyenne portée
           joint_thrusters: Joint Thrusters
-          manned_turrets: Manned Turrets
+          manned_turrets: Tourelles habitées
           manned_utility_turrets: Tourelles utilitaires habitées
-          mining_lasers: Mining Lasers
-          missile_racks: Missle Racks
+          mining_lasers: Lasers de minage
+          missile_racks: Racks de missiles
           missile_turrets: Missile Turrets
           missiles: Missiles
           power_plants: Réacteurs
@@ -40,23 +40,23 @@ fr:
           remote_turrets: Remote Turrets
           scanners: Scanners
           shield_generators: Générateurs de boucliers
-          thrusters: Thrusters
+          thrusters: Propulseurs
           turrets: Tourelles
           weapon_defensive: Weapon Defensive
-          weapons: Ship Weapons
+          weapons: Armes du vaisseau
           emps: EMPs
           armor_medium: Blindage moyen
         tracking_signals:
-          cross_section: Cross Section
+          cross_section: Section transversale
           electromagnetic: Electromagnetic
-          infrared: infrared
+          infrared: infrarouge
       dock:
         dock_types:
-          dockingport: Dockingport
+          dockingport: Port d'amarrage
           garage: Garage
           hangar: Hangar
-          landingpad: Landingpad
-          vehiclepad: Vehiclepad
+          landingpad: Plateforme d'atterrissage
+          vehiclepad: Plateforme de véhicules
         ship_sizes:
           capital: Capital (C)
           extra_extra_small: Snubcraft (XXS)
@@ -68,70 +68,70 @@ fr:
       equipment:
         backpack_compatibilities:
           all: Tous
-          light: Light
+          light: Léger
           light_medium: Light & Medium
         core_compatibilities:
           all: Tous
-          heavy: Heavy
+          heavy: Lourd
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: Blindage
-          clothing: Clothing
-          hacking_tool: Hacking Tool
-          medical: Medical
-          tool: Tool
+          clothing: Vêtements
+          hacking_tool: Outil de piratage
+          medical: Médical
+          tool: Outil
           undersuit: Sous-combinaison
           weapon: Arme
           weapon_attachment: Weapon Attachment
         hidden: masqué ?
         item_types:
-          assault_rifle: Assault Rifle
+          assault_rifle: Fusil d'assaut
           backpack: Sac à dos
-          battery: Battery
-          flightsuit: Flightsuit
+          battery: Batterie
+          flightsuit: Combinaison de vol
           grenade: Grenade
           grenade_launcher: Grenade Launcher
-          heavy_armor: Heavy Armor
-          heavy_backpack: Heavy Backpack
-          knife: Knife
-          light_armor: Light Armor
-          light_backpack: Light Backpack
+          heavy_armor: Blindage lourd
+          heavy_backpack: Sac à dos lourd
+          knife: Couteau
+          light_armor: Blindage léger
+          light_backpack: Sac à dos léger
           lmg: LMG
-          magazine: Magazine
+          magazine: Chargeur
           medium_armor: Blindage moyen
           medium_backpack: Medium Backpack
-          pistol: Pistol
-          rifle: Rifle
+          pistol: Pistolet
+          rifle: Fusil
           rocket_launcher: Rocket Launcher
-          shotgun: Shotgun
+          shotgun: Fusil à pompe
           smg: SMG
-          sniper_rifle: Sniper Rifle
+          sniper_rifle: Fusil de précision
           special_railgun: Special - Railgun
-          utility: Utility
-          weapon_scope: Scope
+          utility: Utilitaire
+          weapon_scope: Lunette
         slots:
-          arms: Arms
+          arms: Bras
           backpack: Sac à dos
-          footwear: Footwear
-          gloves: Gloves
-          hat: Hat
-          helmet: Helmet
-          jacket: Jacket
-          legs: Legs
-          pants: Pants
-          shirt: Shirt
-          torso: Torso
+          footwear: Chaussures
+          gloves: Gants
+          hat: Chapeau
+          helmet: Casque
+          jacket: Veste
+          legs: Jambes
+          pants: Pantalon
+          shirt: Chemise
+          torso: Torse
           undersuit: Sous-combinaison
         temperature_rating: Temp.
         types:
           additional: Additional Equipment
-          powerplant: Powerplant
+          powerplant: Réacteur
           primary_thrusters: Primary Thrusters
-          shield: Shields
+          shield: Boucliers
           thrusters: Propulseurs de manœuvre
         weapon_classes:
-          ballistic: Ballistic
-          energy: Energy
+          ballistic: Balistique
+          energy: Énergie
           frag: Frag
       fleet_membership:
         roles:
@@ -148,9 +148,9 @@ fr:
           suite: Suite
       manufacturer:
         code: CODE
-        known_for: Known for?
+        known_for: Connu pour ?
       model:
-        active: active?
+        active: actif ?
         beam: Largeur
         cargo: Cargaison
         crew: Équipage
@@ -166,7 +166,7 @@ fr:
         mass: Masse
         max_upgrades: Améliorations
         notified: Suppress "New Ship" Notification?
-        on_sale: On sale?
+        on_sale: En vente ?
         production_status: Statut de production
         variants: Variantes
         weapons: Armes
@@ -176,12 +176,12 @@ fr:
           fixed: Fixed Maneuvering Thruster
           gimbal: Gimbal Maneuvering Thruster
           joint: Joint Maneuvering Thruster
-          main: Main Thruster
-          manned_turret: Manned Turret
+          main: Propulseur principal
+          manned_turret: Tourelle habitée
           missile_turret: Missile Turret
-          remote_turret: Remote Turret
+          remote_turret: Tourelle télécommandée
           retro: Retro Thruster
-          vtol: VTOL Thruster
+          vtol: Propulseur VTOL
           qed: QED
           emp: EMP
         sizes:
@@ -206,21 +206,21 @@ fr:
           snub: Snub (0)
       progress_tracker_item:
         statuses:
-          done: Done
-          in_progress: In Progress
-          planned: Planned
+          done: Terminé
+          in_progress: En cours
+          planned: Planifié
       setting:
         base:
           registration: Registration active?
         mailer:
-          default_from: Default From
+          default_from: Expéditeur par défaut
           host: SMTP Host
           password: SMPT Password or Token
           port: SMTP Port
           user: SMTP User
-      updated_at: "%{time} ago"
+      updated_at: il y a %{time}
       user:
-        admin: Admin?
+        admin: Admin ?
         confirmation_token: Token
         current_password: Mot de passe
         email: E-mail
@@ -241,7 +241,7 @@ fr:
     errors:
       messages:
         blank: can't be blank
-        record_invalid: Bad Data
+        record_invalid: Données incorrectes
       models:
         fleet_role:
           attributes:
@@ -261,9 +261,9 @@ fr:
                 an admin of the following fleets: %{fleets}. Please transfer ownership
                 first.'
             confirmation_token:
-              invalid: is invalid
+              invalid: est invalide
             current_password:
-              invalid: is invalid.
+              invalid: est invalide.
             email:
               taken: is already taken.
             password:

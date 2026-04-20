@@ -26,8 +26,8 @@ zh-TW:
         title: 您的應用程式
         new: 新增應用程式
         name: 名稱
-        callback_url: Callback URL
-        confidential: Confidential?
+        callback_url: 回呼 URL
+        confidential: 機密?
         actions: 操作
         confidentiality:
           'yes': 是
@@ -38,9 +38,9 @@ zh-TW:
         title: '應用程式: %{name}'
         application_id: UID
         secret: 密鑰
-        secret_hashed: Secret hashed
+        secret_hashed: 密鑰已加密
         scopes: 權限範圍
         confidential: 機密
-        callback_urls: Callback urls
+        callback_urls: 回呼 URL
         actions: 操作
         not_defined: 未定義

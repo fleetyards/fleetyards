@@ -4,8 +4,8 @@ it:
     attributes:
       vehicle:
         bought_via:
-          pledge_store: Pledge Store
-          ingame: Ingame Store
+          pledge_store: Negozio Pledge
+          ingame: Negozio in gioco
       component:
         component_classes:
           RSIAvionic: Avionica
@@ -43,20 +43,20 @@ it:
           thrusters: Propulsori
           turrets: Torrette
           weapon_defensive: Armi Difensive
-          weapons: Ship Weapons
+          weapons: Armi nave
           emps: EMPs
           armor_medium: Corazza media
         tracking_signals:
-          cross_section: Cross Section
+          cross_section: Sezione trasversale
           electromagnetic: Electromagnetic
-          infrared: infrared
+          infrared: infrarosso
       dock:
         dock_types:
-          dockingport: Dockingport
+          dockingport: Porta di attracco
           garage: Garage
           hangar: Hangar
-          landingpad: Landingpad
-          vehiclepad: Vehiclepad
+          landingpad: Piattaforma di atterraggio
+          vehiclepad: Piattaforma veicoli
         ship_sizes:
           capital: Capital (C)
           extra_extra_small: Snubcraft (XXS)
@@ -68,40 +68,40 @@ it:
       equipment:
         backpack_compatibilities:
           all: Tutti
-          light: Light
+          light: Leggero
           light_medium: Light & Medium
         core_compatibilities:
           all: Tutti
-          heavy: Heavy
+          heavy: Pesante
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: Corazza
-          clothing: Clothing
-          hacking_tool: Hacking Tool
-          medical: Medical
-          tool: Tool
+          clothing: Abbigliamento
+          hacking_tool: Strumento di hacking
+          medical: Medico
+          tool: Strumento
           undersuit: Sottotuta
           weapon: Arma
           weapon_attachment: Weapon Attachment
         hidden: nascosto?
         item_types:
-          assault_rifle: Assault Rifle
+          assault_rifle: Fucile d'assalto
           backpack: Zaino
-          battery: Battery
-          flightsuit: Flightsuit
-          grenade: Grenade
+          battery: Batteria
+          flightsuit: Tuta di volo
+          grenade: Granata
           grenade_launcher: Grenade Launcher
-          heavy_armor: Heavy Armor
-          heavy_backpack: Heavy Backpack
-          knife: Knife
-          light_armor: Light Armor
-          light_backpack: Light Backpack
+          heavy_armor: Corazza pesante
+          heavy_backpack: Zaino pesante
+          knife: Coltello
+          light_armor: Corazza leggera
+          light_backpack: Zaino leggero
           lmg: LMG
-          magazine: Magazine
+          magazine: Caricatore
           medium_armor: Corazza media
           medium_backpack: Medium Backpack
-          pistol: Pistol
-          rifle: Rifle
+          pistol: Pistola
+          rifle: Fucile
           rocket_launcher: Rocket Launcher
           shotgun: Fucile a Pompa
           smg: SMG
@@ -166,7 +166,7 @@ it:
         mass: Massa
         max_upgrades: Upgrade
         notified: Suppress "New Ship" Notification?
-        on_sale: On sale?
+        on_sale: In vendita?
         production_status: Stato di produzione
         variants: Varianti
         weapons: Armi
@@ -176,12 +176,12 @@ it:
           fixed: Fixed Maneuvering Thruster
           gimbal: Gimbal Maneuvering Thruster
           joint: Joint Maneuvering Thruster
-          main: Main Thruster
-          manned_turret: Manned Turret
+          main: Propulsore principale
+          manned_turret: Torretta con equipaggio
           missile_turret: Missile Turret
-          remote_turret: Remote Turret
+          remote_turret: Torretta remota
           retro: Retro Thruster
-          vtol: VTOL Thruster
+          vtol: Propulsore VTOL
           qed: QED
           emp: EMP
         sizes:
@@ -206,19 +206,19 @@ it:
           snub: Snub (0)
       progress_tracker_item:
         statuses:
-          done: Done
-          in_progress: In Progress
-          planned: Planned
+          done: Fatto
+          in_progress: In corso
+          planned: Pianificato
       setting:
         base:
           registration: Registration active?
         mailer:
-          default_from: Default From
+          default_from: Mittente predefinito
           host: SMTP Host
           password: SMPT Password or Token
           port: SMTP Port
           user: SMTP User
-      updated_at: "%{time} ago"
+      updated_at: "%{time} fa"
       user:
         admin: Admin?
         confirmation_token: Token
@@ -241,7 +241,7 @@ it:
     errors:
       messages:
         blank: can't be blank
-        record_invalid: Bad Data
+        record_invalid: Dati non validi
       models:
         fleet_role:
           attributes:
@@ -261,9 +261,9 @@ it:
                 an admin of the following fleets: %{fleets}. Please transfer ownership
                 first.'
             confirmation_token:
-              invalid: is invalid
+              invalid: non è valido
             current_password:
-              invalid: is invalid.
+              invalid: non è valido.
             email:
               taken: is already taken.
             password:

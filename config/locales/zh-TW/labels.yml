@@ -24,17 +24,17 @@ zh-TW:
     panels:
       components_by_class: 按類別分組件
       fleets_count_total: 總艦隊數
-      latest_components: New Components
+      latest_components: 新組件
       latest_manufacturers: 新製造商
       latest_models: 已重新載入型號
       latest_users: 新使用者
       models_by_classification: 按分類整理
       models_by_manufacturer: 按製造商分類
-      models_by_production_status: Models by Production Status
+      models_by_production_status: 按生產狀態分類
       models_by_size: 按尺寸分類
       models_per_month: 每月型號
       most_viewed_pages: 瀏覽最多的頁面
-      online_count: Users Online
+      online_count: 線上使用者
       registrations: 每月註冊數
       ships_count_total: 總飛船數
       ships_count_year: "%{year} 新飛船"
@@ -45,7 +45,7 @@ zh-TW:
     table:
       actions: 操作
       blank:
-        admin_user: No Admin could be found.
+        admin_user: 未找到管理員。
         default: No Entries could be found.
         equipment: No Equipment could be found.
         image: No Image could be found.
@@ -63,14 +63,14 @@ zh-TW:
         manufacturer: 製造商
       name: 名稱
       page:
-        count: Count
-        path: Path
-      updated_at: last reload
+        count: 數量
+        path: 路徑
+      updated_at: 最後重載
       user:
         created_at: 建立於
         email: 電子郵件
-        last_sign_in_at: Last sign in
-        last_active_at: Last active
+        last_sign_in_at: 最後登入
+        last_active_at: 最後活躍
         username: 使用者名稱
       created_at: 建立於
       url: URL

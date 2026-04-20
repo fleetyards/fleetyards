@@ -5,7 +5,7 @@ zh-TW:
     admin:
       admin_user:
         edit: Edit %{admin_user}
-        index: Admin Users
+        index: 管理員使用者
         new: New Admin User
       component:
         edit: Edit %{component}
@@ -15,7 +15,7 @@ zh-TW:
       equipment:
         edit: Equipment %{equipment}
         index: 裝備
-        new: New Equipment
+        new: 新裝備
       image:
         index: 圖片
       loaner_uploads:
@@ -25,12 +25,12 @@ zh-TW:
         index: 製造商
         new: 新製造商
       model:
-        edit: Edit %{model}
+        edit: 編輯 %{model}
         images: "%{model} 圖片上傳"
         index: 型號
-        name_diff: Models with different RSI Name
+        name_diff: RSI 名稱不同的型號
         new: 新型號
-        price_diff: Models with outdated Pledge price
+        price_diff: 質押價格過期的型號
       model_module:
         edit: Module %{model_module}
         index: 模組
@@ -46,16 +46,16 @@ zh-TW:
       model_upgrade:
         edit: Upgrade %{model_upgrade}
         index: 升級
-        new: New Upgrade
+        new: 新升級
       user:
-        edit: Edit %{user}
+        edit: 編輯 %{user}
         index: 使用者
         new: 新使用者
       maintenance:
         rsi_api_status:
           index: RSI API 狀態
     change_password: Change your Password
-    comments: Comments
+    comments: 評論
     confirm: Confirm your Account
     forgot_password: Forgot your Password?
     impressum: 法律聲明
@@ -65,5 +65,5 @@ zh-TW:
     sign_in: 登入
     sign_up: 註冊
     unlock: Unlock your Account
-    unprocessable_entity: False Request
+    unprocessable_entity: 無效請求
     welcome: Welcome

@@ -21,7 +21,7 @@
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
-        "name": "Feature name"
+        "name": "Nome funzione"
       },
       "fleetInviteToken": "Inviti Alla Flotta",
       "quicksearch": {
@@ -127,7 +127,7 @@
         "currentSystem": "e.g. Stanton, Pyro, Nyx"
       },
       "oauthApplication": {
-        "name": "My Application",
+        "name": "La mia applicazione",
         "redirectUri": "https://example.com/callback",
         "scopes": "pubblico"
       },
@@ -151,20 +151,20 @@
         "search": "Cerca moduli per nome..."
       },
       "modelUpgrade": {
-        "name": "Upgrade Name",
+        "name": "Nome upgrade",
         "pledgePrice": "0.00",
         "description": "Descrizione"
       },
       "modelModulePackage": {
-        "name": "Package Name",
+        "name": "Nome pacchetto",
         "pledgePrice": "0.00",
         "description": "Descrizione"
       },
       "dock": {
-        "name": "Dock Name"
+        "name": "Nome dock"
       },
       "modelHardpoint": {
-        "name": "Hardpoint Name",
+        "name": "Nome punto di montaggio",
         "key": "hardpoint_key",
         "details": "Dettagli",
         "mount": "Tipo di montaggio",
@@ -172,7 +172,7 @@
         "loadoutIdentifier": "Identificatore configurazione"
       },
       "modelHardpointLoadout": {
-        "name": "Loadout Name"
+        "name": "Nome configurazione"
       },
       "filters": {
         "vehicles": {
@@ -182,8 +182,8 @@
         },
         "models": {
           "name": "Gladius, Andromeda...",
-          "shipRole": "Cargo, Capital Ship, Fighter...",
-          "classification": "Vehicle, Fighter, Cargo...",
+          "shipRole": "Cargo, Nave capitale, Caccia...",
+          "classification": "Veicolo, Caccia, Cargo...",
           "manufacturer": "Origin, Robert Space Industries, Aegis...",
           "onSale": "Sì o No",
           "productionStatus": "Annunciato, Pronto al volo, In fase di progettazione..."

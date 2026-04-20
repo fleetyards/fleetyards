@@ -11,7 +11,7 @@ de:
     frontend:
       compare_ships: Schiffe vergleichen
       confirm: Konto bestätigen
-      cookie-policy: Cookie Policy
+      cookie-policy: Cookie-Richtlinie
       fleet_invite: "%{fleet} beitreten"
       fleet_members: "%{fleet} Mitglieder"
       fleet_members_index: "%{fleet} Mitglieder"
@@ -59,7 +59,7 @@ de:
       stats: Statistiken
       tools: Werkzeuge
       tools_travel-times: Reisezeiten
-      visual-tests: Visual Tests
+      visual-tests: Visuelle Tests
       visual-tests_panels: Panels - Visual Tests
     api:
       docs:

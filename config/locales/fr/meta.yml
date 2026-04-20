@@ -4,7 +4,7 @@ fr:
     admin_description: FleetYards.net Command App.
     compare_ships:
       description:
-        default: Compare your favorite Ships.
+        default: Comparez vos vaisseaux préférés.
         vs: Comparer %{models}.
     description: FleetYards.net, Your Database for all Information related to Ships
       from “Star Citizen“.

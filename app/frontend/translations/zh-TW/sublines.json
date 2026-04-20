@@ -6,15 +6,15 @@
         "add": "How to add a ship?",
         "edit": "How to edit a ship?",
         "wishlist": "How to add a ship to your wishlist?",
-        "fleetchart": "Fleetchart?",
-        "public": "Public URL?",
+        "fleetchart": "艦隊圖表?",
+        "public": "公開 URL?",
         "groups": "How to create and update groups?"
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
         "disclaimer": "免責聲明",
         "copyright": "版權",
-        "thirdpartycontent": "Credits",
+        "thirdpartycontent": "點數",
         "sponsors": "贊助商",
         "liabilityInternal": "Limitation of liability for internal content",
         "liabilityExternal": "Limitation of liability for external links"

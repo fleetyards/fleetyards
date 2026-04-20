@@ -22,11 +22,11 @@
       "signUp": "註冊",
       "embed": "嵌入式小工具",
       "apiV1": "API V1",
-      "apiV1Schema": "Schema",
+      "apiV1Schema": "架構",
       "apiV1Pagination": "分頁",
       "authApiV1": "Auth API V1",
       "authApiV1OpenId": "OpenID Connect",
-      "authApiV1Schema": "Schema",
+      "authApiV1Schema": "架構",
       "hangar": {
         "index": "我的機庫",
         "preview": "我的機庫預覽",
@@ -121,7 +121,7 @@
           "index": "組件",
           "new": "新組件",
           "edit": {
-            "index": "Edit Component",
+            "index": "編輯組件",
             "prices": "Edit Component Prices"
           }
         },

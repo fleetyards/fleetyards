@@ -18,11 +18,11 @@
       "login": "登入",
       "logout": "登出",
       "apiV1": "API v1",
-      "apiV1Schema": "Schema",
+      "apiV1Schema": "架構",
       "apiV1Pagination": "分頁",
       "authApiV1": "Auth API v1",
       "authApiV1OpenId": "OpenID Connect",
-      "authApiV1Schema": "Schema",
+      "authApiV1Schema": "架構",
       "embed": "嵌入小工具",
       "signUp": "註冊",
       "privacyPolicy": "隱私政策",
@@ -35,8 +35,8 @@
         "members": {
           "index": "Members",
           "invites": "Invites",
-          "worldmap": "Worldmap",
-          "starmap": "Starmap"
+          "worldmap": "世界地圖",
+          "starmap": "星圖"
         },
         "stats": "統計",
         "settings": {
@@ -102,7 +102,7 @@
             "hardpoints": "武器掛點",
             "loaners": "借用船",
             "upgrades": "升級",
-            "packages": "Packages"
+            "packages": "套餐"
           }
         },
         "modelPaints": {
@@ -125,7 +125,7 @@
         "components": {
           "index": "組件",
           "edit": {
-            "index": "Base Data",
+            "index": "基礎資料",
             "prices": "價格"
           }
         },

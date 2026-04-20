@@ -26,8 +26,8 @@ fr:
         title: Vos applications
         new: Nouvelle application
         name: Nom
-        callback_url: Callback URL
-        confidential: Confidential?
+        callback_url: URL de rappel
+        confidential: Confidentiel ?
         actions: Actions
         confidentiality:
           'yes': Oui
@@ -38,9 +38,9 @@ fr:
         title: 'Application : %{name}'
         application_id: UID
         secret: Secret
-        secret_hashed: Secret hashed
+        secret_hashed: Secret haché
         scopes: Portées
         confidential: Confidentiel
-        callback_urls: Callback urls
+        callback_urls: URLs de rappel
         actions: Actions
         not_defined: Non défini

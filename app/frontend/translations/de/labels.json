@@ -151,8 +151,8 @@
         "committed": "Festgelegt",
         "lastVersion": {
           "active": {
-            "false": "Item was removed from the Roadmap",
-            "true": "Item was readded to the Roadmap",
+            "false": "Element wurde von der Roadmap entfernt",
+            "true": "Element wurde wieder zur Roadmap hinzugefügt",
             "decreased": "Item was removed from the Roadmap",
             "increased": "Item was readded to the Roadmap"
           },
@@ -289,7 +289,7 @@
             "nullablePrompt": "No Option selected",
             "field": "Ships Select",
             "values": {
-              "all": "All Ships",
+              "all": "Alle Schiffe",
               "hangar_group": "All Ships in a given Hangar Group",
               "hide": "No Ships"
             }
@@ -817,7 +817,7 @@
           "component": "Komponente",
           "componentItemTypeFilter": "Component Item Types",
           "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "Equipment Type",
+          "equipmentTypeFilter": "Ausrüstungstyp",
           "equipmentSlotFilter": "Equipment Slot",
           "commodity": "Ware",
           "model": "Schiff",
@@ -848,14 +848,14 @@
           "lengthGt": "Length >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
+          "priceLt": "Preis <=",
+          "priceGt": "Preis >=",
           "wanted": "Gewünscht",
           "hidden": "Versteckt",
           "public": "Öffentlich",
           "group": "Gruppe",
           "loaner": "Leihschiffe",
-          "boughtVia": "Bought via?"
+          "boughtVia": "Gekauft über?"
         },
         "tradeRoutes": {
           "sortBy": "Sort by",
@@ -892,15 +892,15 @@
           "heightGt": "Height >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
+          "priceLt": "Preis <=",
+          "priceGt": "Preis >=",
           "willItFit": "Will it Fit?",
-          "withCargo": "With Cargo?",
-          "scIdentifierBlank": "Without SC Identifier?",
-          "fleetchartImageBlank": "Without Fleetchart Image?",
-          "holoBlank": "Without Holo?",
-          "frontViewBlank": "Without Front View Image?",
-          "topViewColoredBlank": "Without Top View Colored Image?"
+          "withCargo": "Mit Fracht?",
+          "scIdentifierBlank": "Ohne SC-Kennung?",
+          "fleetchartImageBlank": "Ohne Flottenübersicht-Bild?",
+          "holoBlank": "Ohne Holo?",
+          "frontViewBlank": "Ohne Frontansicht-Bild?",
+          "topViewColoredBlank": "Ohne farbige Draufsicht?"
         },
         "modelModules": {
           "name": "Name"
@@ -990,7 +990,7 @@
         "shopId": "Geschäft",
         "station": "Station",
         "commodityItemType": "Warentyp",
-        "commodityItemId": "Commodity Item",
+        "commodityItemId": "Ware",
         "item": "ShopCommodity",
         "price": "Preis",
         "type": "Typ",

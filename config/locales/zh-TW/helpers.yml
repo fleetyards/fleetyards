@@ -21,14 +21,14 @@ zh-TW:
         name: 名稱
       equipment:
         damage_reduction: Damage Reduction
-        extras: Extras
+        extras: 額外
         grade: 等級
-        range: Range
-        rate_of_fire: Rate of Fire
+        range: 射程
+        rate_of_fire: 射速
         size: 尺寸
-        storage: storage
-        temperature_rating: Temp. Rating
-        volume: Volume
+        storage: 儲存
+        temperature_rating: 溫度等級
+        volume: 體積
       manufacturer:
         code: Shortcode of Name
         known_for: "..."
@@ -50,21 +50,21 @@ zh-TW:
         on_sale: 販售中?
     prompt:
       component:
-        component_class: Please select a Component Class
-        item_class: Please select a Item Class
+        component_class: 請選擇組件類別
+        item_class: 請選擇物品類別
         item_type: 請選擇物品類型
-        manufacturer: Please select a Manufacturer
+        manufacturer: 請選擇製造商
       docks:
-        dock_type: Please select a Dock Type
-        ship_size: Please select a Ship size
+        dock_type: 請選擇停靠類型
+        ship_size: 請選擇飛船大小
       equipment:
         backpack_compatibility: 背包相容性
         core_compatibility: 核心相容性
         equipment_type: 請選擇類型
         item_type: 請選擇物品類型
         slot: 請選擇插槽
-        weapon_class: Please select a Weapon Class
+        weapon_class: 請選擇武器類別
       models:
-        dock_size: Please select a Dock size
+        dock_size: 請選擇停靠大小
       video:
-        video_type: Please select a Video Type
+        video_type: 請選擇影片類型

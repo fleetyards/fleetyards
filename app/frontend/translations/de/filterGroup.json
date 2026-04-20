@@ -23,19 +23,19 @@
       "modelHardpoint": {
         "source": {
           "label": "Quelle",
-          "prompt": "Select Source"
+          "prompt": "Quelle auswählen"
         },
         "group": {
           "label": "Gruppe",
-          "prompt": "Select Group"
+          "prompt": "Gruppe auswählen"
         },
         "hardpointType": {
           "label": "Typ",
-          "prompt": "Select Type"
+          "prompt": "Typ auswählen"
         },
         "size": {
           "label": "Größe",
-          "nullablePrompt": "Select Size"
+          "nullablePrompt": "Größe auswählen"
         },
         "category": {
           "label": "Kategorie",

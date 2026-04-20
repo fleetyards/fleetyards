@@ -6,15 +6,15 @@
         "add": "How to add a ship?",
         "edit": "How to edit a ship?",
         "wishlist": "How to add a ship to your wishlist?",
-        "fleetchart": "Fleetchart?",
-        "public": "Public URL?",
+        "fleetchart": "¿Gráfico de flota?",
+        "public": "¿URL pública?",
         "groups": "How to create and update groups?"
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
         "disclaimer": "Descargo de responsabilidad",
         "copyright": "Derechos de autor",
-        "thirdpartycontent": "Credits",
+        "thirdpartycontent": "Créditos",
         "sponsors": "Patrocinadores",
         "liabilityInternal": "Limitation of liability for internal content",
         "liabilityExternal": "Limitation of liability for external links"

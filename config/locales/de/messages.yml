@@ -22,17 +22,17 @@ de:
       success: "%{resource} aktiviert."
     fleet:
       join:
-        success: Fleet Join Request received.
+        success: Flotteneinladungsanfrage erhalten.
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
-      success: Loaner Upload successfull.
+      success: Leihschiff-Upload erfolgreich.
     record_not_found:
-      base: No Entry found
+      base: Kein Eintrag gefunden
       fleet: Keine Flotte gefunden
       fleet_membership: Kein Flottenmitglied gefunden
-      user: No User found
+      user: Kein Benutzer gefunden
       invite: Keine Einladung gefunden
-      model: No Model found
+      model: Kein Modell gefunden
     reload:
       started: "%{resource} Neuladen gestartet."
       success: "%{resource} erfolgreich neu geladen."

@@ -35,8 +35,8 @@
         "members": {
           "index": "Members",
           "invites": "Invites",
-          "worldmap": "Worldmap",
-          "starmap": "Starmap"
+          "worldmap": "Carte du monde",
+          "starmap": "Carte stellaire"
         },
         "stats": "Statistiques",
         "settings": {
@@ -102,7 +102,7 @@
             "hardpoints": "Points de Fixation",
             "loaners": "Prêts",
             "upgrades": "Améliorations",
-            "packages": "Packages"
+            "packages": "Paquets"
           }
         },
         "modelPaints": {
@@ -125,7 +125,7 @@
         "components": {
           "index": "Composants",
           "edit": {
-            "index": "Base Data",
+            "index": "Données de base",
             "prices": "Prix"
           }
         },

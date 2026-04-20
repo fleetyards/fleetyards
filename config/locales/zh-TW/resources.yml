@@ -4,7 +4,7 @@ zh-TW:
     component: 組件
     equipment: 裝備
     image: 圖片
-    locale: Locales
+    locale: 語言
     manufacturer: 製造商
     messages:
       password: 密碼

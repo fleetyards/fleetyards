@@ -58,14 +58,14 @@
       },
       "features": {
         "updated": "功能已更新。",
-        "error": "Could not update feature.",
+        "error": "無法更新功能。",
         "actorAdded": "角色已新增到功能。",
         "actorRemoved": "角色已從功能中移除。",
         "groupAdded": "群組已新增到功能。",
         "groupRemoved": "群組已從功能中移除。",
         "created": "功能已建立。",
         "destroyed": "功能已移除。",
-        "createError": "Could not create feature."
+        "createError": "無法建立功能。"
       },
       "rsiRequestLogs": {
         "resolved": "Request log marked as resolved.",
@@ -79,23 +79,23 @@
       },
       "oauthApplications": {
         "create": {
-          "success": "OAuth application created.",
+          "success": "OAuth 應用程式已建立。",
           "error": "Could not create OAuth application."
         },
         "update": {
-          "success": "OAuth application updated.",
+          "success": "OAuth 應用程式已更新。",
           "error": "Could not update OAuth application."
         },
         "destroy": {
-          "success": "OAuth application deleted.",
+          "success": "OAuth 應用程式已刪除。",
           "error": "Could not delete OAuth application."
         },
         "regenerateSecret": {
-          "success": "Client secret regenerated.",
+          "success": "客戶端密鑰已重新產生。",
           "error": "Could not regenerate client secret."
         },
         "copied": "已複製到剪貼簿。",
-        "copyError": "Could not copy to clipboard.",
+        "copyError": "無法複製到剪貼簿。",
         "secretWarning": "Copy your client secret now. You won't be able to see it again."
       },
       "avatarUpload": {
@@ -259,7 +259,7 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "This ship has no cargo holds."
+        "noCargoHolds": "此飛船沒有貨艙。"
       },
       "confirm": {
         "vehicle": {

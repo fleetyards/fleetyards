@@ -136,8 +136,8 @@
         "vehiclesPerMonth": "Hangared Ships per Month",
         "topVehiclesByModel": "Top 10 Hangared Ships",
         "shipsOfTheMonth": "Nave del mese",
-        "crewDeficit": "Crew Deficit",
-        "crewSurplus": "Crew Surplus",
+        "crewDeficit": "Deficit equipaggio",
+        "crewSurplus": "Surplus equipaggio",
         "membersByRole": "Members by Role"
       },
       "roadmap": {
@@ -151,8 +151,8 @@
         "committed": "Confermato",
         "lastVersion": {
           "active": {
-            "false": "Item was removed from the Roadmap",
-            "true": "Item was readded to the Roadmap",
+            "false": "Elemento rimosso dalla roadmap",
+            "true": "Elemento riagiunto alla roadmap",
             "decreased": "L'Elemento é stato rimosso dalla Roadmap",
             "increased": "L'Elemento è stato ri-aggiunto alla Roadmap"
           },
@@ -289,7 +289,7 @@
             "nullablePrompt": "Nessuna opzione selezionata",
             "field": "Seleziona Navi",
             "values": {
-              "all": "All Ships",
+              "all": "Tutte le navi",
               "hangar_group": "Tutte le navi in un dato gruppo Hangar",
               "hide": "Nessuna Nave"
             }
@@ -321,34 +321,34 @@
             "fleet": "Flotta",
             "memberships": "Membri",
             "invites": "Inviti",
-            "vehicles": "Vehicles",
+            "vehicles": "Veicoli",
             "roles": "Ruoli"
           },
           "privileges": {
-            "fleet:update": "Update Fleet",
-            "fleet:update:images": "Update Images",
+            "fleet:update": "Aggiorna flotta",
+            "fleet:update:images": "Aggiorna immagini",
             "fleet:update:description": "Update Description",
-            "fleet:delete": "Delete Fleet",
+            "fleet:delete": "Elimina flotta",
             "fleet:manage": "Gestisci flotta",
-            "fleet:memberships:read": "View Members",
-            "fleet:memberships:create": "Invite Members",
+            "fleet:memberships:read": "Visualizza membri",
+            "fleet:memberships:create": "Invita membri",
             "fleet:memberships:update": "Update Members",
             "fleet:memberships:delete": "Remove Members",
-            "fleet:memberships:manage": "Manage Members",
-            "fleet:invites:read": "View Invites",
-            "fleet:invites:create": "Create Invites",
-            "fleet:invites:delete": "Delete Invites",
-            "fleet:invites:manage": "Manage Invites",
-            "fleet:vehicles:read": "View Vehicles",
-            "fleet:vehicles:create": "Add Vehicles",
+            "fleet:memberships:manage": "Gestisci membri",
+            "fleet:invites:read": "Visualizza inviti",
+            "fleet:invites:create": "Crea inviti",
+            "fleet:invites:delete": "Elimina inviti",
+            "fleet:invites:manage": "Gestisci inviti",
+            "fleet:vehicles:read": "Visualizza veicoli",
+            "fleet:vehicles:create": "Aggiungi veicoli",
             "fleet:vehicles:update": "Update Vehicles",
             "fleet:vehicles:delete": "Remove Vehicles",
             "fleet:vehicles:manage": "Manage Vehicles",
-            "fleet:roles:read": "View Roles",
-            "fleet:roles:create": "Create Roles",
-            "fleet:roles:update": "Update Roles",
-            "fleet:roles:delete": "Delete Roles",
-            "fleet:roles:manage": "Manage Roles"
+            "fleet:roles:read": "Visualizza ruoli",
+            "fleet:roles:create": "Crea ruoli",
+            "fleet:roles:update": "Aggiorna ruoli",
+            "fleet:roles:delete": "Elimina ruoli",
+            "fleet:roles:manage": "Gestisci ruoli"
           }
         },
         "inviteUrls": {
@@ -567,7 +567,7 @@
         "offsetX": "Offset X (SCU)",
         "offsetY": "Offset Y (SCU)",
         "offsetZ": "Offset Z (SCU)",
-        "rotation": "Rotation (°)"
+        "rotation": "Rotazione (°)"
       },
       "modelLoaner": {
         "hidden": "Nascosto?",
@@ -817,7 +817,7 @@
           "component": "Componente",
           "componentItemTypeFilter": "Tipo di componente",
           "equipmentItemTypeFilter": "Tipo d'equipaggiamento",
-          "equipmentTypeFilter": "Equipment Type",
+          "equipmentTypeFilter": "Tipo di equipaggiamento",
           "equipmentSlotFilter": "Slot Equipaggiamento",
           "commodity": "Prodotto",
           "model": "Nave",
@@ -855,7 +855,7 @@
           "public": "Pubblico",
           "group": "Gruppo",
           "loaner": "Navi in comodato",
-          "boughtVia": "Bought via?"
+          "boughtVia": "Acquistato tramite?"
         },
         "tradeRoutes": {
           "sortBy": "Ordina per",
@@ -895,12 +895,12 @@
           "priceLt": "Prezzo <=",
           "priceGt": "Prezzo >=",
           "willItFit": "Ci starà?",
-          "withCargo": "With Cargo?",
-          "scIdentifierBlank": "Without SC Identifier?",
-          "fleetchartImageBlank": "Without Fleetchart Image?",
-          "holoBlank": "Without Holo?",
-          "frontViewBlank": "Without Front View Image?",
-          "topViewColoredBlank": "Without Top View Colored Image?"
+          "withCargo": "Con carico?",
+          "scIdentifierBlank": "Senza identificatore SC?",
+          "fleetchartImageBlank": "Senza immagine grafico flotta?",
+          "holoBlank": "Senza Holo?",
+          "frontViewBlank": "Senza immagine vista frontale?",
+          "topViewColoredBlank": "Senza immagine vista dall'alto a colori?"
         },
         "modelModules": {
           "name": "Nome"
@@ -990,7 +990,7 @@
         "shopId": "Negozio",
         "station": "Stazione",
         "commodityItemType": "Tipo Di Prodotto",
-        "commodityItemId": "Commodity Item",
+        "commodityItemId": "Articolo merce",
         "item": "ShopCommodity",
         "price": "Prezzo",
         "type": "Tipo",

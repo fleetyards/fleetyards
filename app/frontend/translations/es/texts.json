@@ -49,7 +49,7 @@
       },
       "fleetPreview": {
         "notified": {
-          "headline": "Analyze",
+          "headline": "Analizar",
           "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
         },
         "overview": {
@@ -62,7 +62,7 @@
         }
       },
       "impressum": {
-        "visit": "Visit",
+        "visit": "Visita",
         "ytShipImages": "The Awesome Ship Images in the Hangar Fleetchart view are the work of <a href=\"https://twitter.com/WhyTeeZero\" target=\"_blank\" rel=\"noopener\">YT (Twitter: @WhyTeeZero)</a>.<br>Please visit his Spectrum post (see links below) and give him a upvote.",
         "appSignal": "AppSignal provided a sponsored Open Source Account which helps to improve Fleetyards.net even further. Thanks :)",
         "copyright": "The contents and works created by the page operators, on these pages are subject to German copyright. Duplication, processing, distribution and any kind of exploitation outside the limits of Copyright require the written consent of the respective author or creator. Downloads and copies of this page are only for private, non-commercial use. Insofar as the content on This page was not created by the operator, are third-party copyrights respected. In particular, Third-party content as such. Please Contact us if you notice any sort of copyright infringement. We will remove any content immediately as we become aware of such violations.",
@@ -81,7 +81,7 @@
         "text": "The use of our site is usually possible without providing any personal data. The collecting of personal data (eg email address) on our sites will be, as far as possible, on a voluntary basis. No personal data will be passed on to third parties without your explicit consent.<br>We point out that data transmission over the Internet (eg when communicating by email) can have security gaps. A complete protection of data against access by third parties is not possible.",
         "p1": "Below you can read about what Information we are using to provide you the services on %{app}. For most parts this only concerns registered Users but please read further to get a full overview.",
         "p2": {
-          "headline": "What Information do we use?",
+          "headline": "¿Qué información usamos?",
           "text": "Depending on if you are a registered User or only using %{app} as a Guest we use more or less Information from you."
         },
         "p3": {
@@ -102,7 +102,7 @@
       },
       "oauthAuthorize": {
         "requestingAccess": "{clientName} is requesting access to your account.",
-        "scopesIntro": "This application will be able to:"
+        "scopesIntro": "Esta aplicación podrá:"
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",

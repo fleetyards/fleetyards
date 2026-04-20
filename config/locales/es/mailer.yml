@@ -10,7 +10,7 @@ es:
         text: Automated updates from RSI using "%{url}" has been blocked
       notify_unblock:
         headline: FleetYards.net Command - Connection to RSI restored
-        subject: Connection to RSI restored
+        subject: Conexión con RSI restaurada
         text: Automated updates from RSI using "%{url}" has been restored
       weekly:
         fleets: Nuevas flotas
@@ -18,7 +18,7 @@ es:
         registrations: Nuevos registros
         ships: Nuevas naves
         subject: FleetYards.net Command Weekly
-        vehicles: New Vehicles
+        vehicles: Nuevos vehículos
     fleet_membership:
       fleet_accepted:
         action: Página principal de %{fleet}
@@ -36,7 +36,7 @@ es:
         action: Invitaciones de %{fleet}
         body: 'To accept the request please click on the following link:'
         headline: "%{username} quiere unirse a %{fleet}"
-        subject: New Fleet Membership Request
+        subject: Nueva solicitud de membresía de flota
       new_invite:
         action: Unirse a %{fleet}
         body: 'To accept the invite please click on the following link:'
@@ -52,7 +52,7 @@ es:
         headline_part_1: 'Permítame presentar:'
         headline_part_2: El %{manufacturer}
         subject: Nueva nave/vehículo
-    notification_settings: Unsubscribe Notifications
+    notification_settings: Cancelar suscripción de notificaciones
     plain_hello: Hola
     privacy: Política de privacidad
     progress_tracker:
@@ -66,7 +66,7 @@ es:
         headline: Nuevos cambios en la hoja de ruta
         subject: Nuevos cambios en la hoja de ruta
     security:
-      action: Manage Security Settings
+      action: Administrar configuración de seguridad
       info: If you did not initiate the change please contact us at info@fleetyards.net.
     transmission_end: "--- transmisión entrante ---"
     transmission_start: "--- transmisión entrante ---"

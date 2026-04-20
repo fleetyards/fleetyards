@@ -22,23 +22,23 @@
         "models": {
           "index": "Modelli",
           "edit": {
-            "index": "Edit Model",
+            "index": "Modifica modello",
             "fleetchart": "Fleetchart Images",
             "hardpoints": "Punti di montaggio",
             "cargoAndFuel": "Carburante",
             "cargoHolds": "Stive di carico",
-            "metrics": "Metrics",
+            "metrics": "Metriche",
             "prices": "Prezzi",
             "docks": "Dock",
             "modules": "Moduli",
             "paints": "Verniciature",
             "videos": "Video",
             "images": "Immagini",
-            "itemPrices": "Item Prices",
+            "itemPrices": "Prezzi degli articoli",
             "linkModule": "Link Existing Module",
             "loaners": "Prestiti",
             "upgrades": "Upgrade",
-            "packages": "Packages",
+            "packages": "Pacchetti",
             "linkUpgrade": "Link Existing Upgrade"
           },
           "new": "Nuovo modello",
@@ -50,20 +50,20 @@
           "index": "Componenti",
           "new": "Nuovo componente",
           "edit": {
-            "index": "Edit Component",
-            "itemPrices": "Item Prices"
+            "index": "Modifica componente",
+            "itemPrices": "Prezzi degli articoli"
           }
         },
         "modelPaints": {
           "index": "Verniciature",
           "new": "Nuova verniciatura",
-          "edit": "Edit Paint"
+          "edit": "Modifica verniciatura"
         },
         "modelModules": {
           "index": "Moduli",
           "new": "Nuovo modulo",
-          "edit": "Edit Module",
-          "models": "Linked Models",
+          "edit": "Modifica modulo",
+          "models": "Modelli collegati",
           "prices": "Prezzi"
         },
         "manufacturers": {
@@ -73,20 +73,20 @@
         },
         "users": {
           "index": "Utenti",
-          "edit": "Edit User"
+          "edit": "Modifica utente"
         },
         "vehicles": {
-          "index": "Vehicles",
-          "edit": "Edit Vehicle"
+          "index": "Veicoli",
+          "edit": "Modifica veicolo"
         },
         "fleets": {
           "index": "Flotte",
-          "edit": "Edit Fleet"
+          "edit": "Modifica flotta"
         },
         "admins": {
           "index": "Amministratori",
-          "new": "New Admin",
-          "edit": "Edit Admin"
+          "new": "Nuovo amministratore",
+          "edit": "Modifica amministratore"
         },
         "oauthApplications": {
           "index": "Applicazioni OAuth",
@@ -96,10 +96,10 @@
         "features": {
           "index": "Flag funzionalità",
           "show": "Dettagli funzionalità",
-          "globalState": "Global State",
+          "globalState": "Stato globale",
           "groups": "Gruppi",
           "actors": "Attori",
-          "selfService": "Self-Service",
+          "selfService": "Self-service",
           "percentageOfActors": "Percentuale degli attori",
           "percentageOfTime": "Percentuale di tempo",
           "addActor": "Aggiungi attore"
@@ -121,7 +121,7 @@
       "images": "Indice Delle Immagini",
       "stats": "Statistiche",
       "notFound": "Errore di Navigazione",
-      "featureNotReady": "Coming Soon",
+      "featureNotReady": "In arrivo",
       "accessDenied": "Accesso negato",
       "serverError": "Errore del server",
       "comments": "Commenti",
@@ -177,7 +177,7 @@
         "settings": {
           "fleet": "Impostazioni Della Flotta",
           "membership": "Impostazioni dei Membri",
-          "roles": "Fleet Roles"
+          "roles": "Ruoli flotta"
         },
         "inviteMember": "Invita nuovo membro"
       },

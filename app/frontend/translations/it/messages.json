@@ -58,14 +58,14 @@
       },
       "features": {
         "updated": "Funzione aggiornata.",
-        "error": "Could not update feature.",
+        "error": "Impossibile aggiornare la funzione.",
         "actorAdded": "Attore aggiunto alla funzione.",
         "actorRemoved": "Attore rimosso dalla funzione.",
         "groupAdded": "Gruppo aggiunto alla funzione.",
         "groupRemoved": "Gruppo rimosso dalla funzione.",
         "created": "Funzione creata.",
         "destroyed": "Funzione rimossa.",
-        "createError": "Could not create feature."
+        "createError": "Impossibile creare la funzione."
       },
       "rsiRequestLogs": {
         "resolved": "Request log marked as resolved.",
@@ -79,23 +79,23 @@
       },
       "oauthApplications": {
         "create": {
-          "success": "OAuth application created.",
+          "success": "Applicazione OAuth creata.",
           "error": "Could not create OAuth application."
         },
         "update": {
-          "success": "OAuth application updated.",
+          "success": "Applicazione OAuth aggiornata.",
           "error": "Could not update OAuth application."
         },
         "destroy": {
-          "success": "OAuth application deleted.",
+          "success": "Applicazione OAuth eliminata.",
           "error": "Could not delete OAuth application."
         },
         "regenerateSecret": {
-          "success": "Client secret regenerated.",
+          "success": "Segreto client rigenerato.",
           "error": "Could not regenerate client secret."
         },
         "copied": "Copiato negli appunti.",
-        "copyError": "Could not copy to clipboard.",
+        "copyError": "Impossibile copiare negli appunti.",
         "secretWarning": "Copy your client secret now. You won't be able to see it again."
       },
       "avatarUpload": {
@@ -259,7 +259,7 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "This ship has no cargo holds."
+        "noCargoHolds": "Questa nave non ha stive di carico."
       },
       "confirm": {
         "vehicle": {

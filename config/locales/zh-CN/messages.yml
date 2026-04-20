@@ -20,17 +20,17 @@ zh-CN:
       success: "%{resource} 已启用。"
     fleet:
       join:
-        success: Fleet Join Request received.
+        success: 收到舰队加入请求。
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
-      success: Loaner Upload successfull.
+      success: 借用船上传成功。
     record_not_found:
-      base: No Entry found
+      base: 未找到条目
       fleet: 未找到舰队
       fleet_membership: 未找到舰队成员
-      user: No User found
+      user: 未找到用户
       invite: 未找到邀请
-      model: No Model found
+      model: 未找到型号
     reload:
       started: "%{resource} 重载已开始。"
       success: "%{resource} 重载成功。"

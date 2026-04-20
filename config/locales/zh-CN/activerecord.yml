@@ -8,16 +8,16 @@ zh-CN:
           ingame: 游戏内商店
       component:
         component_classes:
-          RSIAvionic: Avionic
+          RSIAvionic: 航电
           RSIModular: 模块化
           RSIPropulsion: 推进
           RSIThruster: 推进器
           RSIWeapon: 武器
         item_classes:
-          civilian: Civilian
-          competition: Competition
-          industrial: Industrial
-          military: Military
+          civilian: 民用
+          competition: 竞赛
+          industrial: 工业
+          military: 军用
           stealth: 隐身
         item_types:
           cargo_grids: 货物网格
@@ -26,12 +26,12 @@ zh-CN:
           fixed_thrusters: Fixed Thrusters
           fuel_intakes: 燃料进气口
           fuel_tanks: 燃料箱
-          mid_range_radar: Midrange Radar
+          mid_range_radar: 中程雷达
           joint_thrusters: Joint Thrusters
-          manned_turrets: Manned Turrets
+          manned_turrets: 有人炮塔
           manned_utility_turrets: 有人实用炮塔
-          mining_lasers: Mining Lasers
-          missile_racks: Missle Racks
+          mining_lasers: 采矿激光
+          missile_racks: 导弹架
           missile_turrets: Missile Turrets
           missiles: 导弹
           power_plants: 发电机
@@ -40,7 +40,7 @@ zh-CN:
           remote_turrets: Remote Turrets
           scanners: 扫描仪
           shield_generators: 护盾发生器
-          thrusters: Thrusters
+          thrusters: 推进器
           turrets: 炮塔
           weapon_defensive: 武器防御
           weapons: 船舶武器
@@ -103,35 +103,35 @@ zh-CN:
           pistol: 枪械
           rifle: 步枪
           rocket_launcher: 火箭筒
-          shotgun: Shotgun
+          shotgun: 霰弹枪
           smg: SMG
-          sniper_rifle: Sniper Rifle
+          sniper_rifle: 狙击步枪
           special_railgun: Special - Railgun
-          utility: Utility
-          weapon_scope: Scope
+          utility: 实用
+          weapon_scope: 瞄准镜
         slots:
-          arms: Arms
+          arms: 手臂
           backpack: 背包
-          footwear: Footwear
-          gloves: Gloves
-          hat: Hat
-          helmet: Helmet
-          jacket: Jacket
-          legs: Legs
-          pants: Pants
-          shirt: Shirt
-          torso: Torso
+          footwear: 鞋类
+          gloves: 手套
+          hat: 帽子
+          helmet: 头盔
+          jacket: 夹克
+          legs: 腿部
+          pants: 裤子
+          shirt: 衬衫
+          torso: 躯干
           undersuit: 内衬
         temperature_rating: 温度
         types:
           additional: Additional Equipment
-          powerplant: Powerplant
+          powerplant: 发电机
           primary_thrusters: Primary Thrusters
-          shield: Shields
+          shield: 护盾
           thrusters: 机动推进器
         weapon_classes:
-          ballistic: Ballistic
-          energy: Energy
+          ballistic: 弹道
+          energy: 能量
           frag: Frag
       fleet_membership:
         roles:
@@ -148,9 +148,9 @@ zh-CN:
           suite: 套房
       manufacturer:
         code: CODE
-        known_for: Known for?
+        known_for: 以什么闻名?
       model:
-        active: active?
+        active: 活跃?
         beam: 宽度
         cargo: 货物
         crew: 船员

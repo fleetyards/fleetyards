@@ -2,12 +2,12 @@
 es:
   doorkeeper:
     scopes:
-      public: Public Access
-      profile:read: Read Profile
-      profile:write: Manage Profile
+      public: Acceso público
+      profile:read: Leer perfil
+      profile:write: Administrar perfil
       hangar: Acceso completo al hangar
-      hangar:read: Read Hangar
-      hangar:write: Manage Hangar
+      hangar:read: Leer hangar
+      hangar:write: Administrar hangar
       fleet: Acceso completo a la flota
       fleet:read: Leer flota
       fleet:write: Administrar flota

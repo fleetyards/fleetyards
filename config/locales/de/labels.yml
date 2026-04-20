@@ -24,17 +24,17 @@ de:
     panels:
       components_by_class: Komponenten nach Klasse
       fleets_count_total: Flotten gesamt
-      latest_components: New Components
+      latest_components: Neue Komponenten
       latest_manufacturers: Neue Hersteller
       latest_models: Modelle neu geladen
       latest_users: Neue Benutzer
       models_by_classification: Modelle nach Klassifizierung
       models_by_manufacturer: Modelle nach Hersteller
-      models_by_production_status: Models by Production Status
+      models_by_production_status: Modelle nach Produktionsstatus
       models_by_size: Modelle nach Größe
       models_per_month: Modelle pro Monat
       most_viewed_pages: Meistbesuchte Seiten
-      online_count: Users Online
+      online_count: Benutzer online
       registrations: Registrierungen pro Monat
       ships_count_total: Schiffe gesamt
       ships_count_year: Neue Schiffe in %{year}
@@ -45,7 +45,7 @@ de:
     table:
       actions: Aktionen
       blank:
-        admin_user: No Admin could be found.
+        admin_user: Es konnte kein Admin gefunden werden.
         default: No Entries could be found.
         equipment: No Equipment could be found.
         image: No Image could be found.
@@ -63,14 +63,14 @@ de:
         manufacturer: Hersteller
       name: Name
       page:
-        count: Count
-        path: Path
-      updated_at: last reload
+        count: Anzahl
+        path: Pfad
+      updated_at: letzte Aktualisierung
       user:
         created_at: Erstellt am
         email: E-Mail
-        last_sign_in_at: Last sign in
-        last_active_at: Last active
+        last_sign_in_at: Letzte Anmeldung
+        last_active_at: Zuletzt aktiv
         username: Benutzername
       created_at: Erstellt am
       url: URL

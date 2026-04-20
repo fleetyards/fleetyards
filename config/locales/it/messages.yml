@@ -21,17 +21,17 @@ it:
       success: "%{resource} abilitato."
     fleet:
       join:
-        success: Fleet Join Request received.
+        success: Richiesta di adesione alla flotta ricevuta.
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
-      success: Loaner Upload successfull.
+      success: Caricamento prestiti riuscito.
     record_not_found:
-      base: No Entry found
+      base: Nessuna voce trovata
       fleet: Nessuna flotta trovata
       fleet_membership: Nessun membro della flotta trovato
-      user: No User found
+      user: Nessun utente trovato
       invite: Nessun invito trovato
-      model: No Model found
+      model: Nessun modello trovato
     reload:
       started: "%{resource} ricaricamento avviato."
       success: "%{resource} ricaricato con successo."

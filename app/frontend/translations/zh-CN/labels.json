@@ -136,8 +136,8 @@
         "vehiclesPerMonth": "Hangared Ships per Month",
         "topVehiclesByModel": "Top 10 Hangared Ships",
         "shipsOfTheMonth": "月度飞船",
-        "crewDeficit": "Crew Deficit",
-        "crewSurplus": "Crew Surplus",
+        "crewDeficit": "船员缺口",
+        "crewSurplus": "船员盈余",
         "membersByRole": "Members by Role"
       },
       "roadmap": {
@@ -151,8 +151,8 @@
         "committed": "已确认",
         "lastVersion": {
           "active": {
-            "false": "Item was removed from the Roadmap",
-            "true": "Item was readded to the Roadmap",
+            "false": "条目已从路线图移除",
+            "true": "条目已重新添加到路线图",
             "decreased": "Item was removed from the Roadmap",
             "increased": "Item was readded to the Roadmap"
           },
@@ -289,7 +289,7 @@
             "nullablePrompt": "No Option selected",
             "field": "Ships Select",
             "values": {
-              "all": "All Ships",
+              "all": "所有飞船",
               "hangar_group": "All Ships in a given Hangar Group",
               "hide": "No Ships"
             }
@@ -321,34 +321,34 @@
             "fleet": "舰队",
             "memberships": "成员",
             "invites": "邀请",
-            "vehicles": "Vehicles",
+            "vehicles": "载具",
             "roles": "角色"
           },
           "privileges": {
-            "fleet:update": "Update Fleet",
-            "fleet:update:images": "Update Images",
+            "fleet:update": "更新舰队",
+            "fleet:update:images": "更新图片",
             "fleet:update:description": "Update Description",
-            "fleet:delete": "Delete Fleet",
+            "fleet:delete": "删除舰队",
             "fleet:manage": "管理舰队",
-            "fleet:memberships:read": "View Members",
-            "fleet:memberships:create": "Invite Members",
+            "fleet:memberships:read": "查看成员",
+            "fleet:memberships:create": "邀请成员",
             "fleet:memberships:update": "Update Members",
             "fleet:memberships:delete": "Remove Members",
-            "fleet:memberships:manage": "Manage Members",
-            "fleet:invites:read": "View Invites",
-            "fleet:invites:create": "Create Invites",
-            "fleet:invites:delete": "Delete Invites",
-            "fleet:invites:manage": "Manage Invites",
-            "fleet:vehicles:read": "View Vehicles",
-            "fleet:vehicles:create": "Add Vehicles",
+            "fleet:memberships:manage": "管理成员",
+            "fleet:invites:read": "查看邀请",
+            "fleet:invites:create": "创建邀请",
+            "fleet:invites:delete": "删除邀请",
+            "fleet:invites:manage": "管理邀请",
+            "fleet:vehicles:read": "查看载具",
+            "fleet:vehicles:create": "添加载具",
             "fleet:vehicles:update": "Update Vehicles",
             "fleet:vehicles:delete": "Remove Vehicles",
             "fleet:vehicles:manage": "Manage Vehicles",
-            "fleet:roles:read": "View Roles",
-            "fleet:roles:create": "Create Roles",
-            "fleet:roles:update": "Update Roles",
-            "fleet:roles:delete": "Delete Roles",
-            "fleet:roles:manage": "Manage Roles"
+            "fleet:roles:read": "查看角色",
+            "fleet:roles:create": "创建角色",
+            "fleet:roles:update": "更新角色",
+            "fleet:roles:delete": "删除角色",
+            "fleet:roles:manage": "管理角色"
           }
         },
         "inviteUrls": {
@@ -567,7 +567,7 @@
         "offsetX": "Offset X (SCU)",
         "offsetY": "Offset Y (SCU)",
         "offsetZ": "Offset Z (SCU)",
-        "rotation": "Rotation (°)"
+        "rotation": "旋转 (°)"
       },
       "modelLoaner": {
         "hidden": "隐藏?",
@@ -703,7 +703,7 @@
         "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
       },
       "user": {
-        "rsiHandle": "Handle",
+        "rsiHandle": "用户名",
         "location": "位置",
         "currentSystem": "当前星系",
         "tester": "测试者?",
@@ -817,7 +817,7 @@
           "component": "组件",
           "componentItemTypeFilter": "Component Item Types",
           "equipmentItemTypeFilter": "Equipment Item Types",
-          "equipmentTypeFilter": "Equipment Type",
+          "equipmentTypeFilter": "装备类型",
           "equipmentSlotFilter": "Equipment Slot",
           "commodity": "商品",
           "model": "飞船",
@@ -848,14 +848,14 @@
           "lengthGt": "Length >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
+          "priceLt": "价格 <=",
+          "priceGt": "价格 >=",
           "wanted": "想要",
           "hidden": "隐藏",
           "public": "公开",
           "group": "群组",
           "loaner": "借用船",
-          "boughtVia": "Bought via?"
+          "boughtVia": "购买方式?"
         },
         "tradeRoutes": {
           "sortBy": "Sort by",
@@ -892,15 +892,15 @@
           "heightGt": "Height >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
-          "priceLt": "Price <=",
-          "priceGt": "Price >=",
+          "priceLt": "价格 <=",
+          "priceGt": "价格 >=",
           "willItFit": "Will it Fit?",
-          "withCargo": "With Cargo?",
-          "scIdentifierBlank": "Without SC Identifier?",
-          "fleetchartImageBlank": "Without Fleetchart Image?",
-          "holoBlank": "Without Holo?",
-          "frontViewBlank": "Without Front View Image?",
-          "topViewColoredBlank": "Without Top View Colored Image?"
+          "withCargo": "有货物?",
+          "scIdentifierBlank": "没有 SC 标识?",
+          "fleetchartImageBlank": "没有舰队图表图片?",
+          "holoBlank": "没有 Holo?",
+          "frontViewBlank": "没有前视图图片?",
+          "topViewColoredBlank": "没有彩色俯视图图片?"
         },
         "modelModules": {
           "name": "名称"
@@ -990,7 +990,7 @@
         "shopId": "商店",
         "station": "空间站",
         "commodityItemType": "商品类型",
-        "commodityItemId": "Commodity Item",
+        "commodityItemId": "商品物品",
         "item": "ShopCommodity",
         "price": "价格",
         "type": "类型",

@@ -26,8 +26,8 @@ zh-CN:
         title: 您的应用
         new: 新建应用
         name: 名称
-        callback_url: Callback URL
-        confidential: Confidential?
+        callback_url: 回调 URL
+        confidential: 机密?
         actions: 操作
         confidentiality:
           'yes': 是
@@ -38,9 +38,9 @@ zh-CN:
         title: '应用: %{name}'
         application_id: UID
         secret: 密钥
-        secret_hashed: Secret hashed
+        secret_hashed: 密钥已加密
         scopes: 权限范围
         confidential: 机密
-        callback_urls: Callback urls
+        callback_urls: 回调 URL
         actions: 操作
         not_defined: 未定义

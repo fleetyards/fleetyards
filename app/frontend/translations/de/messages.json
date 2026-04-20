@@ -58,14 +58,14 @@
       },
       "features": {
         "updated": "Funktion aktualisiert.",
-        "error": "Could not update feature.",
+        "error": "Funktion konnte nicht aktualisiert werden.",
         "actorAdded": "Akteur zur Funktion hinzugefügt.",
         "actorRemoved": "Akteur von der Funktion entfernt.",
         "groupAdded": "Gruppe zur Funktion hinzugefügt.",
         "groupRemoved": "Gruppe von der Funktion entfernt.",
         "created": "Funktion erstellt.",
         "destroyed": "Funktion entfernt.",
-        "createError": "Could not create feature."
+        "createError": "Funktion konnte nicht erstellt werden."
       },
       "rsiRequestLogs": {
         "resolved": "Request log marked as resolved.",
@@ -79,23 +79,23 @@
       },
       "oauthApplications": {
         "create": {
-          "success": "OAuth application created.",
+          "success": "OAuth-Anwendung erstellt.",
           "error": "Could not create OAuth application."
         },
         "update": {
-          "success": "OAuth application updated.",
+          "success": "OAuth-Anwendung aktualisiert.",
           "error": "Could not update OAuth application."
         },
         "destroy": {
-          "success": "OAuth application deleted.",
+          "success": "OAuth-Anwendung gelöscht.",
           "error": "Could not delete OAuth application."
         },
         "regenerateSecret": {
-          "success": "Client secret regenerated.",
+          "success": "Client-Secret neu generiert.",
           "error": "Could not regenerate client secret."
         },
         "copied": "In die Zwischenablage kopiert.",
-        "copyError": "Could not copy to clipboard.",
+        "copyError": "Konnte nicht in die Zwischenablage kopiert werden.",
         "secretWarning": "Copy your client secret now. You won't be able to see it again."
       },
       "avatarUpload": {
@@ -260,7 +260,7 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "This ship has no cargo holds."
+        "noCargoHolds": "Dieses Schiff hat keine Frachträume."
       },
       "confirm": {
         "vehicle": {

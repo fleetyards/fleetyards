@@ -22,23 +22,23 @@
         "models": {
           "index": "型號",
           "edit": {
-            "index": "Edit Model",
+            "index": "編輯型號",
             "fleetchart": "Fleetchart Images",
             "hardpoints": "掛載點",
             "cargoAndFuel": "燃料",
             "cargoHolds": "貨艙",
-            "metrics": "Metrics",
+            "metrics": "指標",
             "prices": "價格",
             "docks": "停靠口",
             "modules": "模組",
             "paints": "塗裝",
             "videos": "影片",
             "images": "圖片",
-            "itemPrices": "Item Prices",
+            "itemPrices": "物品價格",
             "linkModule": "Link Existing Module",
             "loaners": "借用船",
             "upgrades": "升級",
-            "packages": "Packages",
+            "packages": "套餐",
             "linkUpgrade": "Link Existing Upgrade"
           },
           "new": "新型號",
@@ -50,20 +50,20 @@
           "index": "組件",
           "new": "新組件",
           "edit": {
-            "index": "Edit Component",
-            "itemPrices": "Item Prices"
+            "index": "編輯組件",
+            "itemPrices": "物品價格"
           }
         },
         "modelPaints": {
           "index": "塗裝",
           "new": "新塗裝",
-          "edit": "Edit Paint"
+          "edit": "編輯塗裝"
         },
         "modelModules": {
           "index": "模組",
           "new": "新模組",
-          "edit": "Edit Module",
-          "models": "Linked Models",
+          "edit": "編輯模組",
+          "models": "關聯型號",
           "prices": "價格"
         },
         "manufacturers": {
@@ -73,20 +73,20 @@
         },
         "users": {
           "index": "使用者",
-          "edit": "Edit User"
+          "edit": "編輯使用者"
         },
         "vehicles": {
-          "index": "Vehicles",
-          "edit": "Edit Vehicle"
+          "index": "載具",
+          "edit": "編輯載具"
         },
         "fleets": {
           "index": "艦隊",
-          "edit": "Edit Fleet"
+          "edit": "編輯艦隊"
         },
         "admins": {
           "index": "管理員",
-          "new": "New Admin",
-          "edit": "Edit Admin"
+          "new": "新管理員",
+          "edit": "編輯管理員"
         },
         "oauthApplications": {
           "index": "OAuth 應用程式",
@@ -96,10 +96,10 @@
         "features": {
           "index": "功能標誌",
           "show": "功能詳情",
-          "globalState": "Global State",
+          "globalState": "全域狀態",
           "groups": "群組",
           "actors": "角色",
-          "selfService": "Self-Service",
+          "selfService": "自助服務",
           "percentageOfActors": "角色百分比",
           "percentageOfTime": "時間百分比",
           "addActor": "新增角色"
@@ -121,10 +121,10 @@
       "images": "Images Index",
       "stats": "統計",
       "notFound": "Navigation Error",
-      "featureNotReady": "Coming Soon",
+      "featureNotReady": "即將推出",
       "accessDenied": "拒絕存取",
       "serverError": "伺服器錯誤",
-      "comments": "Comments",
+      "comments": "評論",
       "login": "登入",
       "hangar": {
         "index": "我的機庫",
@@ -177,7 +177,7 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Fleet Roles"
+          "roles": "艦隊角色"
         },
         "inviteMember": "Invite new Member"
       },

@@ -58,14 +58,14 @@
       },
       "features": {
         "updated": "Fonctionnalité mise à jour.",
-        "error": "Could not update feature.",
+        "error": "Impossible de mettre à jour la fonctionnalité.",
         "actorAdded": "Acteur ajouté à la fonctionnalité.",
         "actorRemoved": "Acteur retiré de la fonctionnalité.",
         "groupAdded": "Groupe ajouté à la fonctionnalité.",
         "groupRemoved": "Groupe retiré de la fonctionnalité.",
         "created": "Fonctionnalité créée.",
         "destroyed": "Fonctionnalité supprimée.",
-        "createError": "Could not create feature."
+        "createError": "Impossible de créer la fonctionnalité."
       },
       "rsiRequestLogs": {
         "resolved": "Request log marked as resolved.",
@@ -79,23 +79,23 @@
       },
       "oauthApplications": {
         "create": {
-          "success": "OAuth application created.",
+          "success": "Application OAuth créée.",
           "error": "Could not create OAuth application."
         },
         "update": {
-          "success": "OAuth application updated.",
+          "success": "Application OAuth mise à jour.",
           "error": "Could not update OAuth application."
         },
         "destroy": {
-          "success": "OAuth application deleted.",
+          "success": "Application OAuth supprimée.",
           "error": "Could not delete OAuth application."
         },
         "regenerateSecret": {
-          "success": "Client secret regenerated.",
+          "success": "Secret client régénéré.",
           "error": "Could not regenerate client secret."
         },
         "copied": "Copié dans le presse-papiers.",
-        "copyError": "Could not copy to clipboard.",
+        "copyError": "Impossible de copier dans le presse-papiers.",
         "secretWarning": "Copy your client secret now. You won't be able to see it again."
       },
       "avatarUpload": {
@@ -260,7 +260,7 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "This ship has no cargo holds."
+        "noCargoHolds": "Ce vaisseau n'a pas de soutes à cargaison."
       },
       "confirm": {
         "vehicle": {

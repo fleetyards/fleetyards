@@ -2,7 +2,7 @@
 es:
   actions:
     add: Agregar
-    add_dock: Add Dock
+    add_dock: Agregar muelle
     add_module_hardpoint: Add Model
     add_module_package_item: Add Module
     add_upgrade_kit: Add Model

@@ -2,12 +2,12 @@
 zh-CN:
   doorkeeper:
     scopes:
-      public: Public Access
-      profile:read: Read Profile
-      profile:write: Manage Profile
+      public: 公开访问
+      profile:read: 读取个人资料
+      profile:write: 管理个人资料
       hangar: 完整机库访问权限
-      hangar:read: Read Hangar
-      hangar:write: Manage Hangar
+      hangar:read: 读取机库
+      hangar:write: 管理机库
       fleet: 完整舰队访问权限
       fleet:read: 读取舰队
       fleet:write: 管理舰队

@@ -10,7 +10,7 @@ zh-TW:
         text: Automated updates from RSI using "%{url}" has been blocked
       notify_unblock:
         headline: FleetYards.net Command - Connection to RSI restored
-        subject: Connection to RSI restored
+        subject: RSI 連線已恢復
         text: Automated updates from RSI using "%{url}" has been restored
       weekly:
         fleets: 新艦隊
@@ -18,7 +18,7 @@ zh-TW:
         registrations: 新註冊
         ships: 新飛船
         subject: FleetYards.net Command Weekly
-        vehicles: New Vehicles
+        vehicles: 新載具
     fleet_membership:
       fleet_accepted:
         action: "%{fleet} 首頁"
@@ -36,7 +36,7 @@ zh-TW:
         action: "%{fleet} 邀請"
         body: 'To accept the request please click on the following link:'
         headline: "%{username} 想要加入 %{fleet}"
-        subject: New Fleet Membership Request
+        subject: 新艦隊成員請求
       new_invite:
         action: 加入 %{fleet}
         body: 'To accept the invite please click on the following link:'
@@ -52,7 +52,7 @@ zh-TW:
         headline_part_1: 請允許我介紹：
         headline_part_2: "%{manufacturer}"
         subject: 新飛船/載具
-    notification_settings: Unsubscribe Notifications
+    notification_settings: 取消訂閱通知
     plain_hello: 你好
     privacy: 隱私政策
     progress_tracker:
@@ -66,7 +66,7 @@ zh-TW:
         headline: 路線圖新變更
         subject: 路線圖新變更
     security:
-      action: Manage Security Settings
+      action: 管理安全設定
       info: If you did not initiate the change please contact us at info@fleetyards.net.
     transmission_end: "--- 收到傳輸 ---"
     transmission_start: "--- 收到傳輸 ---"

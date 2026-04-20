@@ -11,7 +11,7 @@ it:
     frontend:
       compare_ships: Confronta navi
       confirm: Conferma account
-      cookie-policy: Cookie Policy
+      cookie-policy: Politica dei cookie
       fleet_invite: Unisciti a %{fleet}
       fleet_members: Membri di %{fleet}
       fleet_members_index: Membri di %{fleet}
@@ -59,7 +59,7 @@ it:
       stats: Statistiche
       tools: Strumenti
       tools_travel-times: Tempi di viaggio
-      visual-tests: Visual Tests
+      visual-tests: Test visivi
       visual-tests_panels: Panels - Visual Tests
     api:
       docs:
