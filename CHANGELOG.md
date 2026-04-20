@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.9.3](https://github.com/fleetyards/fleetyards/compare/v6.9.2...v6.9.3) (2026-04-20)
+
+
+### Bug Fixes
+
+* restore correct fleetchart view order (angled first, top second) ([2d67b3b](https://github.com/fleetyards/fleetyards/commit/2d67b3bf85ce28e0617b315d40a76c8a1ad0bb44))
+
 ## [6.9.2](https://github.com/fleetyards/fleetyards/compare/v6.9.1...v6.9.2) (2026-04-20)
 
 
