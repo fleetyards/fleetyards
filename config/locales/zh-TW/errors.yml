@@ -20,4 +20,4 @@ zh-TW:
         to upload %{content_type} files, allowed types: %{allowed_types}'
       hangar:
         import:
-          no_data: No data found in the import file
+          no_data: 匯入檔案中未找到資料

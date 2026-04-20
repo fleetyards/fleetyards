@@ -21,11 +21,11 @@ it:
       model_module:
         new: Crea nuovo Modulo
       model_module_package:
-        new: Create new Module Package
+        new: Crea nuovo pacchetto di moduli
       model_paint:
         new: Crea nuova Paint
       model_upgrade:
-        new: Create new Upgrade
+        new: Crea nuovo upgrade
       user:
         new: Crea nuovo Utente
     back: Indietro

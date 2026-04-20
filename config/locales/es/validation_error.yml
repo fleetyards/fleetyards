@@ -1,16 +1,16 @@
 ---
 es:
   validation_error:
-    change_pasword: Password Change failed.
-    confirmation: Confirmation failed.
+    change_pasword: Cambio de contraseña fallido.
+    confirmation: Confirmación fallida.
     vehicle:
       create: La nave no pudo ser agregada.
       destroy: La nave no pudo ser eliminada.
       update: La nave no pudo ser actualizada.
     fleet:
-      create: Fleet could not be created.
-      destroy: Fleet could not be destroyed.
-      update: Fleet could not be updated.
+      create: No se pudo crear la flota.
+      destroy: No se pudo destruir la flota.
+      update: No se pudo actualizar la flota.
     fleet_members:
       create: No se pudo invitar al miembro de la flota
       accept: No se pudo aceptar al miembro de la flota.
@@ -24,14 +24,14 @@ es:
       demote_not_permitted: No puede degradar al último miembro de un rol de flota
         permanente.
     hangar_group:
-      create: Group could not be created
-      destroy: Group could not be destroyed
-      update: Group could not be updated
+      create: No se pudo crear el grupo
+      destroy: No se pudo destruir el grupo
+      update: No se pudo actualizar el grupo
     image:
       create: No se pudo crear la imagen
       update: No se pudo actualizar la imagen
-    request_password: Request Password failed.
-    signup: Signup failed. Please resolve all Errors and try again.
+    request_password: Solicitud de contraseña fallida.
+    signup: Registro fallido. Resuelva todos los errores e intente de nuevo.
     oauth_application:
       create: La aplicación OAuth no pudo ser creada.
       update: La aplicación OAuth no pudo ser actualizada.

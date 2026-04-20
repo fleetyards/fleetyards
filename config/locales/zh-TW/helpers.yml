@@ -20,7 +20,7 @@ zh-TW:
         length: 長度
         name: 名稱
       equipment:
-        damage_reduction: Damage Reduction
+        damage_reduction: 傷害減免
         extras: 額外
         grade: 等級
         range: 射程
@@ -30,7 +30,7 @@ zh-TW:
         temperature_rating: 溫度等級
         volume: 體積
       manufacturer:
-        code: Shortcode of Name
+        code: 名稱簡碼
         known_for: "..."
       name: 名稱
       user:

@@ -116,11 +116,11 @@
       "welcomeImages": "Random Images",
       "ships": {
         "index": "Ships Index",
-        "fleetchart": "Ships Fleetchart"
+        "fleetchart": "Schiffe Flottenübersicht"
       },
       "images": "Images Index",
       "stats": "Statistiken",
-      "notFound": "Navigation Error",
+      "notFound": "Navigationsfehler",
       "featureNotReady": "Demnächst",
       "accessDenied": "Zugriff verweigert",
       "serverError": "Serverfehler",
@@ -133,14 +133,14 @@
           "h2": "Your personal Hangar requires an FleetYards.net Account",
           "h3": "What Features does the Hangar include?"
         },
-        "alternativeNames": "Alternative Names",
+        "alternativeNames": "Alternative Namen",
         "stats": "Statistiken",
         "public": "%{user} Hangar",
         "import": "Importieren",
         "wishlist": "Wunschliste",
         "publicStats": "Statistiken",
         "publicWishlist": "%{user} Wunschliste",
-        "resetIngame": "Reset Ingame Ships after Wipe"
+        "resetIngame": "Ingame-Schiffe nach Wipe zurücksetzen"
       },
       "syncExtension": "RSI-Hangar synchronisieren",
       "editMyVehicle": "Edit my %{vehicle}",
@@ -228,7 +228,7 @@
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
       "vehicle": {
-        "bulkGroupEdit": "Add/Remove Groups"
+        "bulkGroupEdit": "Gruppen hinzufügen/entfernen"
       },
       "pagination": {
         "count": "%{current} von %{total}"

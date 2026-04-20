@@ -6,9 +6,9 @@
       },
       "labels": {
         "search": "输入以搜索",
-        "nullablePrompt": "No Option selected",
+        "nullablePrompt": "未选择选项",
         "prompt": "Please select an Option",
-        "removeTooltip": "Click to remove Option"
+        "removeTooltip": "点击移除选项"
       },
       "model": {
         "baseModel": {
@@ -50,13 +50,13 @@
         "members": {
           "shipsFilter": {
             "label": "飞船筛选",
-            "prompt": "Select which ships to show",
-            "nullablePrompt": "Select an option"
+            "prompt": "选择要显示的飞船",
+            "nullablePrompt": "选择一个选项"
           },
           "hangarGroupId": {
             "label": "机库群组",
-            "prompt": "Select a hangar group",
-            "nullablePrompt": "Select a group"
+            "prompt": "选择机库群组",
+            "nullablePrompt": "选择群组"
           }
         }
       }

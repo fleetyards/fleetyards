@@ -111,11 +111,11 @@
         "github": "GitHub",
         "twitch": "Twitch",
         "connected": {
-          "google": "Connected to Google",
-          "discord": "Connected to Discord",
-          "bluesky": "Connected to BlueSky",
-          "github": "Connected to GitHub",
-          "twitch": "Connected to Twitch"
+          "google": "Connesso a Google",
+          "discord": "Connesso a Discord",
+          "bluesky": "Connesso a BlueSky",
+          "github": "Connesso a GitHub",
+          "twitch": "Connesso a Twitch"
         },
         "disconnect": {
           "google": "Disconnetti Google",

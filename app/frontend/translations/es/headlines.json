@@ -8,14 +8,14 @@
           "models": "Modelos recargados",
           "modelsByManufacturer": "Modelos por fabricante",
           "manufacturers": "Fabricantes",
-          "modelsByStatus": "Models by Status",
+          "modelsByStatus": "Modelos por estado",
           "modelsBySize": "Modelos por tamaño",
           "modelsPerMonth": "Modelos por mes",
           "componentsByClass": "Componentes por clase",
           "components": "Componentes",
           "visitsPerDay": "Visitas por día",
           "visitsPerMonth": "Visitas por mes",
-          "mostViewedPages": "Most Viewed Pages",
+          "mostViewedPages": "Páginas más vistas",
           "registrationsPerMonth": "Registros por mes",
           "users": "Usuarios"
         },
@@ -23,7 +23,7 @@
           "index": "Modelos",
           "edit": {
             "index": "Editar modelo",
-            "fleetchart": "Fleetchart Images",
+            "fleetchart": "Imágenes de gráfico de flota",
             "hardpoints": "Puntos de montaje",
             "cargoAndFuel": "Combustible",
             "cargoHolds": "Bodegas de carga",
@@ -35,16 +35,16 @@
             "videos": "Videos",
             "images": "Imágenes",
             "itemPrices": "Precios de artículos",
-            "linkModule": "Link Existing Module",
+            "linkModule": "Vincular módulo existente",
             "loaners": "Prestados",
             "upgrades": "Mejoras",
             "packages": "Paquetes",
-            "linkUpgrade": "Link Existing Upgrade"
+            "linkUpgrade": "Vincular mejora existente"
           },
           "new": "Nuevo modelo",
           "show": "Modelo",
           "images": "Imágenes",
-          "tableConfigurationModal": "Table Configuration"
+          "tableConfigurationModal": "Configuración de tabla"
         },
         "components": {
           "index": "Componentes",
@@ -69,7 +69,7 @@
         "manufacturers": {
           "index": "Fabricantes",
           "new": "Nuevo fabricante",
-          "edit": "Edit Manufacturer"
+          "edit": "Editar fabricante"
         },
         "users": {
           "index": "Usuarios",
@@ -116,11 +116,11 @@
       "welcomeImages": "Random Images",
       "ships": {
         "index": "Ships Index",
-        "fleetchart": "Ships Fleetchart"
+        "fleetchart": "Gráfico de flota de naves"
       },
       "images": "Images Index",
       "stats": "Estadísticas",
-      "notFound": "Navigation Error",
+      "notFound": "Error de navegación",
       "featureNotReady": "Próximamente",
       "accessDenied": "Acceso denegado",
       "serverError": "Error del servidor",
@@ -133,14 +133,14 @@
           "h2": "Your personal Hangar requires an FleetYards.net Account",
           "h3": "What Features does the Hangar include?"
         },
-        "alternativeNames": "Alternative Names",
+        "alternativeNames": "Nombres alternativos",
         "stats": "Estadísticas",
         "public": "Hangar de %{user}",
         "import": "Importar",
         "wishlist": "Lista de deseos",
         "publicStats": "Estadísticas",
         "publicWishlist": "Lista de deseos de %{user}",
-        "resetIngame": "Reset Ingame Ships after Wipe"
+        "resetIngame": "Restablecer naves del juego después del reinicio"
       },
       "syncExtension": "Sincronizar hangar RSI",
       "editMyVehicle": "Edit my %{vehicle}",
@@ -228,10 +228,10 @@
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
       "vehicle": {
-        "bulkGroupEdit": "Add/Remove Groups"
+        "bulkGroupEdit": "Agregar/eliminar grupos"
       },
       "pagination": {
-        "count": "%{current} of %{total}"
+        "count": "%{current} de %{total}"
       },
       "models": {
         "index": "Modelos"

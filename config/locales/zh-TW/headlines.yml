@@ -6,7 +6,7 @@ zh-TW:
       admin_user:
         edit: Edit %{admin_user}
         index: 管理員使用者
-        new: New Admin User
+        new: 新管理員使用者
       component:
         edit: Edit %{component}
         index: 組件
@@ -54,12 +54,12 @@ zh-TW:
       maintenance:
         rsi_api_status:
           index: RSI API 狀態
-    change_password: Change your Password
+    change_password: 變更您的密碼
     comments: 評論
-    confirm: Confirm your Account
+    confirm: 確認您的帳戶
     forgot_password: 忘記密碼?
     impressum: 法律聲明
-    not_found: Navigation Error
+    not_found: 導航錯誤
     privacy: 隱私政策
     server_error: 伺服器錯誤
     sign_in: 登入

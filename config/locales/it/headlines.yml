@@ -6,7 +6,7 @@ it:
       admin_user:
         edit: Edit %{admin_user}
         index: Utenti amministratori
-        new: New Admin User
+        new: Nuovo utente amministratore
       component:
         edit: Edit %{component}
         index: Componente

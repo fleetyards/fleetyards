@@ -386,9 +386,9 @@
         "failure": "Le code de confirmation est invalide ou a expiré."
       },
       "import": {
-        "started": "%{type} import started...",
-        "finished": "%{type} import completed successfully.",
-        "failed": "%{type} import failed: %{info}"
+        "started": "Import de %{type} démarré...",
+        "finished": "Import de %{type} terminé avec succès.",
+        "failed": "Import de %{type} échoué : %{info}"
       },
       "syncExtension": {
         "started": "Synchronisation de votre Hangar...",

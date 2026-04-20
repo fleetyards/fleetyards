@@ -6,7 +6,7 @@ es:
       admin_user:
         edit: Edit %{admin_user}
         index: Usuarios administradores
-        new: New Admin User
+        new: Nuevo usuario administrador
       component:
         edit: Edit %{component}
         index: Componente
@@ -54,12 +54,12 @@ es:
       maintenance:
         rsi_api_status:
           index: Estado de API RSI
-    change_password: Change your Password
+    change_password: Cambie su contraseña
     comments: Comentarios
-    confirm: Confirm your Account
+    confirm: Confirme su cuenta
     forgot_password: "¿Olvidó su contraseña?"
     impressum: Aviso legal
-    not_found: Navigation Error
+    not_found: Error de navegación
     privacy: Política de privacidad
     server_error: Error del servidor
     sign_in: Iniciar sesión

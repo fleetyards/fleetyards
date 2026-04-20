@@ -385,9 +385,9 @@
         "failure": "確認碼無效或已過期。"
       },
       "import": {
-        "started": "%{type} import started...",
-        "finished": "%{type} import completed successfully.",
-        "failed": "%{type} import failed: %{info}"
+        "started": "%{type} 匯入已開始...",
+        "finished": "%{type} 匯入成功完成。",
+        "failed": "%{type} 匯入失敗: %{info}"
       },
       "syncExtension": {
         "started": "正在同步您的機庫...",

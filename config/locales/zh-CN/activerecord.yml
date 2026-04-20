@@ -22,22 +22,22 @@ zh-CN:
         item_types:
           cargo_grids: 货物网格
           coolers: 冷却器
-          countermeasure_launcher: Countermeasure Launcher
-          fixed_thrusters: Fixed Thrusters
+          countermeasure_launcher: 对抗措施发射器
+          fixed_thrusters: 固定推进器
           fuel_intakes: 燃料进气口
           fuel_tanks: 燃料箱
           mid_range_radar: 中程雷达
-          joint_thrusters: Joint Thrusters
+          joint_thrusters: 关节推进器
           manned_turrets: 有人炮塔
           manned_utility_turrets: 有人实用炮塔
           mining_lasers: 采矿激光
           missile_racks: 导弹架
-          missile_turrets: Missile Turrets
+          missile_turrets: 导弹炮塔
           missiles: 导弹
           power_plants: 发电机
           quantum_drives: 量子引擎
           quantum_fuel_tanks: 量子燃料箱
-          remote_turrets: Remote Turrets
+          remote_turrets: 遥控炮塔
           scanners: 扫描仪
           shield_generators: 护盾发生器
           thrusters: 推进器
@@ -124,9 +124,9 @@ zh-CN:
           undersuit: 内衬
         temperature_rating: 温度
         types:
-          additional: Additional Equipment
+          additional: 额外装备
           powerplant: 发电机
-          primary_thrusters: Primary Thrusters
+          primary_thrusters: 主推进器
           shield: 护盾
           thrusters: 机动推进器
         weapon_classes:

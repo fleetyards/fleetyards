@@ -8,14 +8,14 @@
           "models": "Modèles rechargés",
           "modelsByManufacturer": "Modèles par fabricant",
           "manufacturers": "Fabricants",
-          "modelsByStatus": "Models by Status",
+          "modelsByStatus": "Modèles par statut",
           "modelsBySize": "Modèles par taille",
           "modelsPerMonth": "Modèles par mois",
           "componentsByClass": "Composants par classe",
           "components": "Composants",
           "visitsPerDay": "Visites par jour",
           "visitsPerMonth": "Visites par mois",
-          "mostViewedPages": "Most Viewed Pages",
+          "mostViewedPages": "Pages les plus vues",
           "registrationsPerMonth": "Inscriptions par mois",
           "users": "Utilisateurs"
         },
@@ -23,7 +23,7 @@
           "index": "Modèles",
           "edit": {
             "index": "Modifier le modèle",
-            "fleetchart": "Fleetchart Images",
+            "fleetchart": "Images de diagramme de flotte",
             "hardpoints": "Points d'attache",
             "cargoAndFuel": "Carburant",
             "cargoHolds": "Soutes à cargaison",
@@ -35,16 +35,16 @@
             "videos": "Vidéos",
             "images": "Images",
             "itemPrices": "Prix des articles",
-            "linkModule": "Link Existing Module",
+            "linkModule": "Lier un module existant",
             "loaners": "Prêts",
             "upgrades": "Améliorations",
             "packages": "Paquets",
-            "linkUpgrade": "Link Existing Upgrade"
+            "linkUpgrade": "Lier une amélioration existante"
           },
           "new": "Nouveau modèle",
           "show": "Modèle",
           "images": "Images",
-          "tableConfigurationModal": "Table Configuration"
+          "tableConfigurationModal": "Configuration du tableau"
         },
         "components": {
           "index": "Composants",
@@ -69,7 +69,7 @@
         "manufacturers": {
           "index": "Fabricants",
           "new": "Nouveau fabricant",
-          "edit": "Edit Manufacturer"
+          "edit": "Modifier le fabricant"
         },
         "users": {
           "index": "Utilisateurs",
@@ -231,7 +231,7 @@
         "bulkGroupEdit": "Ajouter/Retirer des groupes"
       },
       "pagination": {
-        "count": "%{current} of %{total}"
+        "count": "%{current} sur %{total}"
       },
       "models": {
         "index": "Modèles"

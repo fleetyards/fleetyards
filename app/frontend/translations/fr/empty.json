@@ -13,7 +13,7 @@
         "resetPage": "Aller à la première page"
       },
       "texts": {
-        "info": "We could not find any Records.",
+        "info": "Nous n'avons trouvé aucun enregistrement.",
         "query": "It seems like you have some Filters active or visited a Page without any Records."
       },
       "info": {

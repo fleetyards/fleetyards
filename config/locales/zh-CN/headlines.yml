@@ -54,12 +54,12 @@ zh-CN:
       maintenance:
         rsi_api_status:
           index: RSI API 状态
-    change_password: Change your Password
+    change_password: 更改您的密码
     comments: 评论
-    confirm: Confirm your Account
+    confirm: 确认您的账户
     forgot_password: 忘记密码?
     impressum: 法律声明
-    not_found: Navigation Error
+    not_found: 导航错误
     privacy: 隐私政策
     server_error: 服务器错误
     sign_in: 登入

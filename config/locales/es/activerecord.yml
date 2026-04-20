@@ -22,22 +22,22 @@ es:
         item_types:
           cargo_grids: Grillas de carga
           coolers: Enfriadores
-          countermeasure_launcher: Countermeasure Launcher
-          fixed_thrusters: Fixed Thrusters
+          countermeasure_launcher: Lanzador de contramedidas
+          fixed_thrusters: Propulsores fijos
           fuel_intakes: Tomas de combustible
           fuel_tanks: Tanques de combustible
           mid_range_radar: Radar de medio alcance
-          joint_thrusters: Joint Thrusters
+          joint_thrusters: Propulsores articulados
           manned_turrets: Torretas tripuladas
           manned_utility_turrets: Torretas de utilidad tripuladas
           mining_lasers: Láseres de minería
           missile_racks: Racks de misiles
-          missile_turrets: Missile Turrets
+          missile_turrets: Torretas de misiles
           missiles: Misiles
           power_plants: Plantas de energía
           quantum_drives: Motores Quantum
           quantum_fuel_tanks: Tanques de combustible Quantum
-          remote_turrets: Remote Turrets
+          remote_turrets: Torretas remotas
           scanners: Escáneres
           shield_generators: Generadores de escudo
           thrusters: Propulsores
@@ -48,7 +48,7 @@ es:
           armor_medium: Blindaje medio
         tracking_signals:
           cross_section: Sección transversal
-          electromagnetic: Electromagnetic
+          electromagnetic: Electromagnético
           infrared: infrarrojo
       dock:
         dock_types:
@@ -60,11 +60,11 @@ es:
         ship_sizes:
           capital: Capital (C)
           extra_extra_small: Snubcraft (XXS)
-          extra_large: Extra Large (XL)
-          extra_small: Extra Small (XS)
-          large: Large (L)
-          medium: Medium (M)
-          small: Small (S)
+          extra_large: Extra grande (XL)
+          extra_small: Extra pequeño (XS)
+          large: Grande (L)
+          medium: Mediano (M)
+          small: Pequeño (S)
       equipment:
         backpack_compatibilities:
           all: Todos
@@ -82,7 +82,7 @@ es:
           tool: Herramienta
           undersuit: Traje interior
           weapon: Arma
-          weapon_attachment: Weapon Attachment
+          weapon_attachment: Accesorio de arma
         hidden: "¿oculto?"
         item_types:
           assault_rifle: Rifle de asalto
@@ -90,7 +90,7 @@ es:
           battery: Batería
           flightsuit: Traje de vuelo
           grenade: Granada
-          grenade_launcher: Grenade Launcher
+          grenade_launcher: Lanzagranadas
           heavy_armor: Blindaje pesado
           heavy_backpack: Mochila pesada
           knife: Cuchillo
@@ -102,7 +102,7 @@ es:
           medium_backpack: Medium Backpack
           pistol: Pistola
           rifle: Rifle
-          rocket_launcher: Rocket Launcher
+          rocket_launcher: Lanzacohetes
           shotgun: Escopeta
           smg: SMG
           sniper_rifle: Rifle de francotirador
@@ -124,9 +124,9 @@ es:
           undersuit: Traje interior
         temperature_rating: Temp.
         types:
-          additional: Additional Equipment
+          additional: Equipamiento adicional
           powerplant: Planta de energía
-          primary_thrusters: Primary Thrusters
+          primary_thrusters: Propulsores primarios
           shield: Escudos
           thrusters: Propulsores de maniobra
         weapon_classes:
@@ -165,7 +165,7 @@ es:
         manufacturer: Fabricante
         mass: Masa
         max_upgrades: Mejoras
-        notified: Suppress "New Ship" Notification?
+        notified: ¿Suprimir notificación de "Nueva nave"?
         on_sale: "¿En venta?"
         production_status: Estado de producción
         variants: Variantes
@@ -173,14 +173,14 @@ es:
         fleetchart_image: Lagacy Fleetchart Image
       model_hardpoint:
         categories:
-          fixed: Fixed Maneuvering Thruster
-          gimbal: Gimbal Maneuvering Thruster
-          joint: Joint Maneuvering Thruster
+          fixed: Propulsor de maniobra fijo
+          gimbal: Propulsor de maniobra gimbal
+          joint: Propulsor de maniobra articulado
           main: Propulsor principal
           manned_turret: Torreta tripulada
-          missile_turret: Missile Turret
+          missile_turret: Torreta de misiles
           remote_turret: Torreta remota
-          retro: Retro Thruster
+          retro: Propulsor retro
           vtol: Propulsor VTOL
           qed: QED
           emp: EMP
@@ -211,7 +211,7 @@ es:
           planned: Planificado
       setting:
         base:
-          registration: Registration active?
+          registration: "¿Registro activo?"
         mailer:
           default_from: Remitente predeterminado
           host: SMTP Host
@@ -225,7 +225,7 @@ es:
         current_password: Contraseña
         email: Correo electrónico
         enabled: "¿Activo?"
-        gravatar: Gravatar email Address
+        gravatar: Dirección de correo Gravatar
         login: Nombre de usuario o correo electrónico
         username: Nombre de usuario
       weapon:
@@ -240,7 +240,7 @@ es:
           class8: Class 8
     errors:
       messages:
-        blank: can't be blank
+        blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
         fleet_role:
@@ -253,7 +253,7 @@ es:
               cannot_destroy_from_permanent_role: No se puede eliminar al miembro
                 de la flota del rol permanente
             user_id:
-              taken: already present or has a pending invite
+              taken: ya presente o tiene una invitación pendiente
         user:
           attributes:
             base:
@@ -265,12 +265,12 @@ es:
             current_password:
               invalid: es inválido.
             email:
-              taken: is already taken.
+              taken: ya ha sido tomado.
             password:
               too_short:
             password_confirmation:
               confirmation: Las contraseñas no coinciden
             reset_password_token:
-              invalid: Token is invalid
+              invalid: Token es inválido
             username:
-              taken: is already taken.
+              taken: ya ha sido tomado.

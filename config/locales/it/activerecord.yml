@@ -48,7 +48,7 @@ it:
           armor_medium: Corazza media
         tracking_signals:
           cross_section: Sezione trasversale
-          electromagnetic: Electromagnetic
+          electromagnetic: Elettromagnetico
           infrared: infrarosso
       dock:
         dock_types:
@@ -58,13 +58,13 @@ it:
           landingpad: Piattaforma di atterraggio
           vehiclepad: Piattaforma veicoli
         ship_sizes:
-          capital: Capital (C)
+          capital: Capitale (C)
           extra_extra_small: Snubcraft (XXS)
-          extra_large: Extra Large (XL)
-          extra_small: Extra Small (XS)
-          large: Large (L)
-          medium: Medium (M)
-          small: Small (S)
+          extra_large: Extra grande (XL)
+          extra_small: Extra piccolo (XS)
+          large: Grande (L)
+          medium: Medio (M)
+          small: Piccolo (S)
       equipment:
         backpack_compatibilities:
           all: Tutti
@@ -82,7 +82,7 @@ it:
           tool: Strumento
           undersuit: Sottotuta
           weapon: Arma
-          weapon_attachment: Weapon Attachment
+          weapon_attachment: Accessorio arma
         hidden: nascosto?
         item_types:
           assault_rifle: Fucile d'assalto
@@ -90,7 +90,7 @@ it:
           battery: Batteria
           flightsuit: Tuta di volo
           grenade: Granata
-          grenade_launcher: Grenade Launcher
+          grenade_launcher: Lanciagranate
           heavy_armor: Corazza pesante
           heavy_backpack: Zaino pesante
           knife: Coltello
@@ -102,7 +102,7 @@ it:
           medium_backpack: Medium Backpack
           pistol: Pistola
           rifle: Fucile
-          rocket_launcher: Rocket Launcher
+          rocket_launcher: Lanciarazzi
           shotgun: Fucile a Pompa
           smg: SMG
           sniper_rifle: Fucile da Cecchino
@@ -165,7 +165,7 @@ it:
         manufacturer: Produttore
         mass: Massa
         max_upgrades: Upgrade
-        notified: Suppress "New Ship" Notification?
+        notified: Sopprimere la notifica "Nuova nave"?
         on_sale: In vendita?
         production_status: Stato di produzione
         variants: Varianti
@@ -173,14 +173,14 @@ it:
         fleetchart_image: Lagacy Fleetchart Image
       model_hardpoint:
         categories:
-          fixed: Fixed Maneuvering Thruster
-          gimbal: Gimbal Maneuvering Thruster
-          joint: Joint Maneuvering Thruster
+          fixed: Propulsore di manovra fisso
+          gimbal: Propulsore di manovra gimbal
+          joint: Propulsore di manovra articolato
           main: Propulsore principale
           manned_turret: Torretta con equipaggio
-          missile_turret: Missile Turret
+          missile_turret: Torretta missili
           remote_turret: Torretta remota
-          retro: Retro Thruster
+          retro: Propulsore retro
           vtol: Propulsore VTOL
           qed: QED
           emp: EMP
@@ -211,7 +211,7 @@ it:
           planned: Pianificato
       setting:
         base:
-          registration: Registration active?
+          registration: Registrazione attiva?
         mailer:
           default_from: Mittente predefinito
           host: SMTP Host
@@ -225,7 +225,7 @@ it:
         current_password: Password
         email: E-mail
         enabled: Attivo?
-        gravatar: Gravatar email Address
+        gravatar: Indirizzo e-mail Gravatar
         login: Nome utente o e-mail
         username: Nome utente
       weapon:
@@ -240,7 +240,7 @@ it:
           class8: Class 8
     errors:
       messages:
-        blank: can't be blank
+        blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
         fleet_role:
@@ -253,7 +253,7 @@ it:
               cannot_destroy_from_permanent_role: Impossibile rimuovere il membro
                 della flotta dal ruolo permanente
             user_id:
-              taken: already present or has a pending invite
+              taken: già presente o ha un invito in attesa
         user:
           attributes:
             base:
@@ -265,12 +265,12 @@ it:
             current_password:
               invalid: non è valido.
             email:
-              taken: is already taken.
+              taken: è già stato preso.
             password:
               too_short:
             password_confirmation:
               confirmation: Le password non corrispondono
             reset_password_token:
-              invalid: Token is invalid
+              invalid: Token non valido
             username:
-              taken: is already taken.
+              taken: è già stato preso.

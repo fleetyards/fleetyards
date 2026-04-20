@@ -22,22 +22,22 @@ fr:
         item_types:
           cargo_grids: Grilles de cargaison
           coolers: Refroidisseurs
-          countermeasure_launcher: Countermeasure Launcher
-          fixed_thrusters: Fixed Thrusters
+          countermeasure_launcher: Lanceur de contre-mesures
+          fixed_thrusters: Propulseurs fixes
           fuel_intakes: Prises de carburant
           fuel_tanks: Réservoirs de carburant
           mid_range_radar: Radar de moyenne portée
-          joint_thrusters: Joint Thrusters
+          joint_thrusters: Propulseurs articulés
           manned_turrets: Tourelles habitées
           manned_utility_turrets: Tourelles utilitaires habitées
           mining_lasers: Lasers de minage
           missile_racks: Racks de missiles
-          missile_turrets: Missile Turrets
+          missile_turrets: Tourelles de missiles
           missiles: Missiles
           power_plants: Réacteurs
           quantum_drives: Moteurs Quantum
           quantum_fuel_tanks: Réservoirs de carburant Quantum
-          remote_turrets: Remote Turrets
+          remote_turrets: Tourelles télécommandées
           scanners: Scanners
           shield_generators: Générateurs de boucliers
           thrusters: Propulseurs
@@ -48,7 +48,7 @@ fr:
           armor_medium: Blindage moyen
         tracking_signals:
           cross_section: Section transversale
-          electromagnetic: Electromagnetic
+          electromagnetic: Électromagnétique
           infrared: infrarouge
       dock:
         dock_types:
@@ -60,11 +60,11 @@ fr:
         ship_sizes:
           capital: Capital (C)
           extra_extra_small: Snubcraft (XXS)
-          extra_large: Extra Large (XL)
-          extra_small: Extra Small (XS)
-          large: Large (L)
-          medium: Medium (M)
-          small: Small (S)
+          extra_large: Très grand (XL)
+          extra_small: Très petit (XS)
+          large: Grand (L)
+          medium: Moyen (M)
+          small: Petit (S)
       equipment:
         backpack_compatibilities:
           all: Tous
@@ -82,7 +82,7 @@ fr:
           tool: Outil
           undersuit: Sous-combinaison
           weapon: Arme
-          weapon_attachment: Weapon Attachment
+          weapon_attachment: Accessoire d'arme
         hidden: masqué ?
         item_types:
           assault_rifle: Fusil d'assaut
@@ -90,7 +90,7 @@ fr:
           battery: Batterie
           flightsuit: Combinaison de vol
           grenade: Grenade
-          grenade_launcher: Grenade Launcher
+          grenade_launcher: Lance-grenades
           heavy_armor: Blindage lourd
           heavy_backpack: Sac à dos lourd
           knife: Couteau
@@ -102,7 +102,7 @@ fr:
           medium_backpack: Medium Backpack
           pistol: Pistolet
           rifle: Fusil
-          rocket_launcher: Rocket Launcher
+          rocket_launcher: Lance-roquettes
           shotgun: Fusil à pompe
           smg: SMG
           sniper_rifle: Fusil de précision
@@ -124,9 +124,9 @@ fr:
           undersuit: Sous-combinaison
         temperature_rating: Temp.
         types:
-          additional: Additional Equipment
+          additional: Équipement supplémentaire
           powerplant: Réacteur
-          primary_thrusters: Primary Thrusters
+          primary_thrusters: Propulseurs principaux
           shield: Boucliers
           thrusters: Propulseurs de manœuvre
         weapon_classes:
@@ -165,7 +165,7 @@ fr:
         manufacturer: Fabricant
         mass: Masse
         max_upgrades: Améliorations
-        notified: Suppress "New Ship" Notification?
+        notified: Supprimer la notification "Nouveau vaisseau" ?
         on_sale: En vente ?
         production_status: Statut de production
         variants: Variantes
@@ -173,14 +173,14 @@ fr:
         fleetchart_image: Lagacy Fleetchart Image
       model_hardpoint:
         categories:
-          fixed: Fixed Maneuvering Thruster
-          gimbal: Gimbal Maneuvering Thruster
-          joint: Joint Maneuvering Thruster
+          fixed: Propulseur de manœuvre fixe
+          gimbal: Propulseur de manœuvre à cardan
+          joint: Propulseur de manœuvre articulé
           main: Propulseur principal
           manned_turret: Tourelle habitée
-          missile_turret: Missile Turret
+          missile_turret: Tourelle de missiles
           remote_turret: Tourelle télécommandée
-          retro: Retro Thruster
+          retro: Rétro-propulseur
           vtol: Propulseur VTOL
           qed: QED
           emp: EMP
@@ -211,7 +211,7 @@ fr:
           planned: Planifié
       setting:
         base:
-          registration: Registration active?
+          registration: Inscription active ?
         mailer:
           default_from: Expéditeur par défaut
           host: SMTP Host
@@ -225,7 +225,7 @@ fr:
         current_password: Mot de passe
         email: E-mail
         enabled: Actif ?
-        gravatar: Gravatar email Address
+        gravatar: Adresse e-mail Gravatar
         login: Nom d'utilisateur ou e-mail
         username: Nom d'utilisateur
       weapon:
@@ -240,7 +240,7 @@ fr:
           class8: Class 8
     errors:
       messages:
-        blank: can't be blank
+        blank: ne peut pas être vide
         record_invalid: Données incorrectes
       models:
         fleet_role:
@@ -253,7 +253,7 @@ fr:
               cannot_destroy_from_permanent_role: Impossible de retirer un membre
                 de la flotte d'un rôle permanent
             user_id:
-              taken: already present or has a pending invite
+              taken: déjà présent ou a une invitation en attente
         user:
           attributes:
             base:
@@ -265,12 +265,12 @@ fr:
             current_password:
               invalid: est invalide.
             email:
-              taken: is already taken.
+              taken: est déjà pris.
             password:
               too_short:
             password_confirmation:
               confirmation: Les mots de passe ne correspondent pas
             reset_password_token:
-              invalid: Token is invalid
+              invalid: Token invalide
             username:
-              taken: is already taken.
+              taken: est déjà pris.

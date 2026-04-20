@@ -385,9 +385,9 @@
         "failure": "Il codice di conferma non è valido o è scaduto."
       },
       "import": {
-        "started": "%{type} import started...",
-        "finished": "%{type} import completed successfully.",
-        "failed": "%{type} import failed: %{info}"
+        "started": "Importazione %{type} avviata...",
+        "finished": "Importazione %{type} completata con successo.",
+        "failed": "Importazione %{type} fallita: %{info}"
       },
       "syncExtension": {
         "started": "Sincronizzazione del tuo Hangar in corso...",

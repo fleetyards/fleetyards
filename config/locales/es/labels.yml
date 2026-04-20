@@ -46,17 +46,17 @@ es:
       actions: Acciones
       blank:
         admin_user: No se pudo encontrar ningún administrador.
-        default: No Entries could be found.
-        equipment: No Equipment could be found.
-        image: No Image could be found.
-        model: No Models could be found.
-        model_module: No Module could be found.
-        model_module_package: No Module Package could be found.
-        model_upgrade: No Upgrade could be found.
-        model_paints: No Paint could be found.
-        planet: No Planets could be found.
-        user: No User could be found.
-        rsi_api_status: No unresolved RSI API Insidents
+        default: No se pudieron encontrar entradas.
+        equipment: No se pudo encontrar ningún equipamiento.
+        image: No se pudo encontrar ninguna imagen.
+        model: No se pudieron encontrar modelos.
+        model_module: No se pudo encontrar ningún módulo.
+        model_module_package: No se pudo encontrar ningún paquete de módulos.
+        model_upgrade: No se pudo encontrar ninguna mejora.
+        model_paints: No se pudo encontrar ninguna pintura.
+        planet: No se pudieron encontrar planetas.
+        user: No se pudo encontrar ningún usuario.
+        rsi_api_status: No hay incidentes de API RSI sin resolver
       component:
         category: Categoría
       model:

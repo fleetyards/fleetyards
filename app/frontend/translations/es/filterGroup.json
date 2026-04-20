@@ -6,9 +6,9 @@
       },
       "labels": {
         "search": "Escriba para buscar",
-        "nullablePrompt": "No Option selected",
+        "nullablePrompt": "No se seleccionó ninguna opción",
         "prompt": "Please select an Option",
-        "removeTooltip": "Click to remove Option"
+        "removeTooltip": "Haga clic para eliminar la opción"
       },
       "model": {
         "baseModel": {
@@ -50,13 +50,13 @@
         "members": {
           "shipsFilter": {
             "label": "Filtro de naves",
-            "prompt": "Select which ships to show",
-            "nullablePrompt": "Select an option"
+            "prompt": "Seleccione qué naves mostrar",
+            "nullablePrompt": "Seleccionar una opción"
           },
           "hangarGroupId": {
             "label": "Grupo de hangar",
-            "prompt": "Select a hangar group",
-            "nullablePrompt": "Select a group"
+            "prompt": "Seleccionar un grupo de hangar",
+            "nullablePrompt": "Seleccionar un grupo"
           }
         }
       }

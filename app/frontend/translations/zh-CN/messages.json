@@ -385,9 +385,9 @@
         "failure": "确认码无效或已过期。"
       },
       "import": {
-        "started": "%{type} import started...",
-        "finished": "%{type} import completed successfully.",
-        "failed": "%{type} import failed: %{info}"
+        "started": "%{type} 导入已开始...",
+        "finished": "%{type} 导入成功完成。",
+        "failed": "%{type} 导入失败: %{info}"
       },
       "syncExtension": {
         "started": "正在同步您的机库...",

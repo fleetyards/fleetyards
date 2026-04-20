@@ -46,17 +46,17 @@ zh-TW:
       actions: 操作
       blank:
         admin_user: 未找到管理員。
-        default: No Entries could be found.
-        equipment: No Equipment could be found.
-        image: No Image could be found.
-        model: No Models could be found.
-        model_module: No Module could be found.
-        model_module_package: No Module Package could be found.
-        model_upgrade: No Upgrade could be found.
-        model_paints: No Paint could be found.
-        planet: No Planets could be found.
-        user: No User could be found.
-        rsi_api_status: No unresolved RSI API Insidents
+        default: 未找到項目。
+        equipment: 未找到裝備。
+        image: 未找到圖片。
+        model: 未找到型號。
+        model_module: 未找到模組。
+        model_module_package: 未找到模組套件。
+        model_upgrade: 未找到升級。
+        model_paints: 未找到塗裝。
+        planet: 未找到行星。
+        user: 未找到使用者。
+        rsi_api_status: 沒有未解決的 RSI API 事件
       component:
         category: 分類
       model:

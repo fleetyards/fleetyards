@@ -2,11 +2,11 @@
 it:
   mailer:
     account:
-      action: Manage Account Settings
+      action: Gestisci impostazioni account
     admin:
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
-        subject: Connection to RSI blocked
+        subject: Connessione a RSI bloccata
         text: Gli aggiornamenti automatici da RSI tramite "%{url}" sono stati bloccati
       notify_unblock:
         headline: FleetYards.net Command - Connection to RSI restored

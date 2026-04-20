@@ -2,11 +2,11 @@
 zh-TW:
   mailer:
     account:
-      action: Manage Account Settings
+      action: 管理帳戶設定
     admin:
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
-        subject: Connection to RSI blocked
+        subject: RSI 連線已被封鎖
         text: 透過 "%{url}" 的 RSI 自動更新已被封鎖
       notify_unblock:
         headline: FleetYards.net Command - Connection to RSI restored

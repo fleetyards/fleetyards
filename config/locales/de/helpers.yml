@@ -20,7 +20,7 @@ de:
         length: Länge
         name: Name
       equipment:
-        damage_reduction: Damage Reduction
+        damage_reduction: Schadensreduktion
         extras: Extras
         grade: Qualität
         range: Reichweite
@@ -30,7 +30,7 @@ de:
         temperature_rating: Temp.-Bewertung
         volume: Volumen
       manufacturer:
-        code: Shortcode of Name
+        code: Kurzcode des Namens
         known_for: "..."
       name: Name
       user:

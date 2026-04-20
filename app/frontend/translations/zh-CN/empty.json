@@ -13,7 +13,7 @@
         "resetPage": "Go to First Page"
       },
       "texts": {
-        "info": "We could not find any Records.",
+        "info": "我们未找到任何记录。",
         "query": "It seems like you have some Filters active or visited a Page without any Records."
       },
       "info": {

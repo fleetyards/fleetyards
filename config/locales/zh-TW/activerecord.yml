@@ -22,22 +22,22 @@ zh-TW:
         item_types:
           cargo_grids: 貨物網格
           coolers: 冷卻器
-          countermeasure_launcher: Countermeasure Launcher
-          fixed_thrusters: Fixed Thrusters
+          countermeasure_launcher: 反制措施發射器
+          fixed_thrusters: 固定推進器
           fuel_intakes: 燃料進氣口
           fuel_tanks: 燃料箱
           mid_range_radar: 中程雷達
-          joint_thrusters: Joint Thrusters
+          joint_thrusters: 關節推進器
           manned_turrets: 有人砲塔
           manned_utility_turrets: 有人實用砲塔
           mining_lasers: 採礦雷射
           missile_racks: 飛彈架
-          missile_turrets: Missile Turrets
+          missile_turrets: 飛彈砲塔
           missiles: 飛彈
           power_plants: 發電機
           quantum_drives: 量子引擎
           quantum_fuel_tanks: 量子燃料箱
-          remote_turrets: Remote Turrets
+          remote_turrets: 遙控砲塔
           scanners: 掃描儀
           shield_generators: 護盾產生器
           thrusters: 推進器
@@ -48,7 +48,7 @@ zh-TW:
           armor_medium: 中型裝甲
         tracking_signals:
           cross_section: 截面
-          electromagnetic: Electromagnetic
+          electromagnetic: 電磁
           infrared: 紅外
       dock:
         dock_types:
@@ -58,13 +58,13 @@ zh-TW:
           landingpad: 停機坪
           vehiclepad: 載具停放點
         ship_sizes:
-          capital: Capital (C)
-          extra_extra_small: Snubcraft (XXS)
-          extra_large: Extra Large (XL)
-          extra_small: Extra Small (XS)
-          large: Large (L)
-          medium: Medium (M)
-          small: Small (S)
+          capital: 主力艦 (C)
+          extra_extra_small: 小型飛船 (XXS)
+          extra_large: 超大型 (XL)
+          extra_small: 超小型 (XS)
+          large: 大型 (L)
+          medium: 中型 (M)
+          small: 小型 (S)
       equipment:
         backpack_compatibilities:
           all: 全部
@@ -82,7 +82,7 @@ zh-TW:
           tool: 工具
           undersuit: 內襯
           weapon: 武器
-          weapon_attachment: Weapon Attachment
+          weapon_attachment: 武器配件
         hidden: 隱藏?
         item_types:
           assault_rifle: 突擊步槍
@@ -90,7 +90,7 @@ zh-TW:
           battery: 電池
           flightsuit: 飛行服
           grenade: 手榴彈
-          grenade_launcher: Grenade Launcher
+          grenade_launcher: 榴彈發射器
           heavy_armor: 重型裝甲
           heavy_backpack: 重型背包
           knife: 刀
@@ -102,7 +102,7 @@ zh-TW:
           medium_backpack: Medium Backpack
           pistol: 手槍
           rifle: 步槍
-          rocket_launcher: Rocket Launcher
+          rocket_launcher: 火箭發射器
           shotgun: 霰彈槍
           smg: SMG
           sniper_rifle: 狙擊步槍
@@ -124,9 +124,9 @@ zh-TW:
           undersuit: 內襯
         temperature_rating: 溫度
         types:
-          additional: Additional Equipment
+          additional: 額外裝備
           powerplant: 發電機
-          primary_thrusters: Primary Thrusters
+          primary_thrusters: 主推進器
           shield: 護盾
           thrusters: 機動推進器
         weapon_classes:
@@ -165,7 +165,7 @@ zh-TW:
         manufacturer: 製造商
         mass: 質量
         max_upgrades: 升級
-        notified: Suppress "New Ship" Notification?
+        notified: 抑制"新飛船"通知?
         on_sale: 販售中?
         production_status: 生產狀態
         variants: 變體
@@ -173,14 +173,14 @@ zh-TW:
         fleetchart_image: Lagacy Fleetchart Image
       model_hardpoint:
         categories:
-          fixed: Fixed Maneuvering Thruster
-          gimbal: Gimbal Maneuvering Thruster
-          joint: Joint Maneuvering Thruster
+          fixed: 固定機動推進器
+          gimbal: 萬向機動推進器
+          joint: 關節機動推進器
           main: 主推進器
           manned_turret: 有人砲塔
-          missile_turret: Missile Turret
+          missile_turret: 飛彈砲塔
           remote_turret: 遙控砲塔
-          retro: Retro Thruster
+          retro: 反推推進器
           vtol: VTOL 推進器
           qed: QED
           emp: EMP
@@ -211,7 +211,7 @@ zh-TW:
           planned: 已計劃
       setting:
         base:
-          registration: Registration active?
+          registration: 註冊已啟用?
         mailer:
           default_from: 預設寄件人
           host: SMTP Host
@@ -225,7 +225,7 @@ zh-TW:
         current_password: 密碼
         email: 電子郵件
         enabled: 活躍?
-        gravatar: Gravatar email Address
+        gravatar: Gravatar 電子郵件地址
         login: 使用者名稱或電子郵件
         username: 使用者名稱
       weapon:
@@ -240,7 +240,7 @@ zh-TW:
           class8: Class 8
     errors:
       messages:
-        blank: can't be blank
+        blank: 不能為空
         record_invalid: 無效資料
       models:
         fleet_role:
@@ -252,7 +252,7 @@ zh-TW:
             base:
               cannot_destroy_from_permanent_role: 無法將成員從永久角色中移除
             user_id:
-              taken: already present or has a pending invite
+              taken: 已存在或有待處理的邀請
         user:
           attributes:
             base:
@@ -264,12 +264,12 @@ zh-TW:
             current_password:
               invalid: 無效。
             email:
-              taken: is already taken.
+              taken: 已被佔用。
             password:
               too_short:
             password_confirmation:
               confirmation: 密碼不符
             reset_password_token:
-              invalid: Token is invalid
+              invalid: 權杖無效
             username:
-              taken: is already taken.
+              taken: 已被佔用。

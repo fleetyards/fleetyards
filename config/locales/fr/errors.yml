@@ -20,4 +20,4 @@ fr:
         to upload %{content_type} files, allowed types: %{allowed_types}'
       hangar:
         import:
-          no_data: No data found in the import file
+          no_data: Aucune donnée trouvée dans le fichier d'import

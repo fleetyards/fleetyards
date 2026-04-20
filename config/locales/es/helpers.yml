@@ -20,7 +20,7 @@ es:
         length: Longitud
         name: Nombre
       equipment:
-        damage_reduction: Damage Reduction
+        damage_reduction: Reducción de daño
         extras: Extras
         grade: Grado
         range: Alcance
@@ -30,7 +30,7 @@ es:
         temperature_rating: Calificación temp.
         volume: Volumen
       manufacturer:
-        code: Shortcode of Name
+        code: Código corto del nombre
         known_for: "..."
       name: Nombre
       user:

@@ -1,16 +1,16 @@
 ---
 zh-CN:
   validation_error:
-    change_pasword: Password Change failed.
-    confirmation: Confirmation failed.
+    change_pasword: 密码更改失败。
+    confirmation: 确认失败。
     vehicle:
       create: 飞船无法添加。
       destroy: 飞船无法移除。
       update: 飞船无法更新。
     fleet:
-      create: Fleet could not be created.
-      destroy: Fleet could not be destroyed.
-      update: Fleet could not be updated.
+      create: 无法创建舰队。
+      destroy: 无法删除舰队。
+      update: 无法更新舰队。
     fleet_members:
       create: 无法邀请舰队成员
       accept: 无法接受舰队成员。
@@ -23,14 +23,14 @@ zh-CN:
       decline: 舰队邀请无法拒绝。
       demote_not_permitted: 您不能降级永久舰队角色的最后一个成员。
     hangar_group:
-      create: Group could not be created
-      destroy: Group could not be destroyed
-      update: Group could not be updated
+      create: 无法创建群组
+      destroy: 无法删除群组
+      update: 无法更新群组
     image:
       create: 无法创建图片
       update: 无法更新图片
-    request_password: Request Password failed.
-    signup: Signup failed. Please resolve all Errors and try again.
+    request_password: 密码请求失败。
+    signup: 注册失败。请解决所有错误后重试。
     oauth_application:
       create: OAuth 应用无法创建。
       update: OAuth 应用无法更新。

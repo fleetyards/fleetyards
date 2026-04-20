@@ -3,12 +3,12 @@
     "sublines": {
       "hangarGuide": {
         "headline": "也许我们应该改变这一点 ;)",
-        "add": "How to add a ship?",
-        "edit": "How to edit a ship?",
+        "add": "如何添加飞船?",
+        "edit": "如何编辑飞船?",
         "wishlist": "如何将飞船添加到愿望清单?",
         "fleetchart": "舰队图表?",
         "public": "公开 URL?",
-        "groups": "How to create and update groups?"
+        "groups": "如何创建和更新群组?"
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
@@ -20,7 +20,7 @@
         "liabilityExternal": "Limitation of liability for external links"
       },
       "settings": {
-        "rsiData": "RSI Information"
+        "rsiData": "RSI 信息"
       }
     }
   }

@@ -3,12 +3,12 @@
     "sublines": {
       "hangarGuide": {
         "headline": "vielleicht sollten wir das ändern ;)",
-        "add": "How to add a ship?",
-        "edit": "How to edit a ship?",
+        "add": "Wie füge ich ein Schiff hinzu?",
+        "edit": "Wie bearbeite ich ein Schiff?",
         "wishlist": "Wie füge ich ein Schiff zur Wunschliste hinzu?",
         "fleetchart": "Flottenübersicht?",
         "public": "Öffentliche URL?",
-        "groups": "How to create and update groups?"
+        "groups": "Wie erstelle und aktualisiere ich Gruppen?"
       },
       "impressum": {
         "general": "General Information (according to § 5 TMG)",
@@ -20,7 +20,7 @@
         "liabilityExternal": "Limitation of liability for external links"
       },
       "settings": {
-        "rsiData": "RSI Information"
+        "rsiData": "RSI-Informationen"
       }
     }
   }

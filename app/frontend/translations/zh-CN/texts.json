@@ -35,15 +35,15 @@
       },
       "hangarPreview": {
         "notified": {
-          "headline": "Get notified about new Ships and Sales",
+          "headline": "获取新飞船和促销通知",
           "text": "Get notified once a new Ship is released on <a href=\"https://robertsspaceindustries.com\" target=\"_blank\" rel=\"noopener\">robertsspaceindustries.com</a> and never miss a Sale. You can also enable Sale Notifications for Ships in your Hangar."
         },
         "manage": {
-          "headline": "Manage your Hangar",
+          "headline": "管理您的机库",
           "text": "Add Ships to your Hangar, name your Ships, mark them as wanted or get notified if a Ship gets on Sale. Decide which Ship you want to show on your Public Hangar. Get further Insides into your Hangar: Which Roles can your Ships fulfil? How many Ships are Flight Ready? What is your main Manufacturer? How much money did you spend?"
         },
         "fleetchart": {
-          "headline": "Fleetchart and Public Hangar",
+          "headline": "舰队图表和公开机库",
           "text": "View your Ships as a scaled topview Fleetchart and export it as an image. Get a Public Hangar page which you can share with others, you decide what Ships will be visible on your Public Hangar."
         }
       },
@@ -53,7 +53,7 @@
           "text": "View stats of your Fleet - analyze and optimize for roles, cargo capacity etc."
         },
         "overview": {
-          "headline": "Overview & Manage",
+          "headline": "概览与管理",
           "text": "Invite your Org Mates and get a filterable and searchable list of all public Ships. "
         },
         "fleetchart": {

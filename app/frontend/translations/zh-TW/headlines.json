@@ -8,14 +8,14 @@
           "models": "已重新載入型號",
           "modelsByManufacturer": "按製造商分類",
           "manufacturers": "製造商",
-          "modelsByStatus": "Models by Status",
+          "modelsByStatus": "按狀態分類型號",
           "modelsBySize": "按尺寸分類",
           "modelsPerMonth": "每月型號",
           "componentsByClass": "按類別分組件",
           "components": "組件",
           "visitsPerDay": "每日訪問",
           "visitsPerMonth": "每月訪問",
-          "mostViewedPages": "Most Viewed Pages",
+          "mostViewedPages": "瀏覽最多的頁面",
           "registrationsPerMonth": "每月註冊數",
           "users": "使用者"
         },
@@ -23,7 +23,7 @@
           "index": "型號",
           "edit": {
             "index": "編輯型號",
-            "fleetchart": "Fleetchart Images",
+            "fleetchart": "艦隊圖表圖片",
             "hardpoints": "掛載點",
             "cargoAndFuel": "燃料",
             "cargoHolds": "貨艙",
@@ -35,16 +35,16 @@
             "videos": "影片",
             "images": "圖片",
             "itemPrices": "物品價格",
-            "linkModule": "Link Existing Module",
+            "linkModule": "連結現有模組",
             "loaners": "借用船",
             "upgrades": "升級",
             "packages": "套餐",
-            "linkUpgrade": "Link Existing Upgrade"
+            "linkUpgrade": "連結現有升級"
           },
           "new": "新型號",
           "show": "型號",
           "images": "圖片",
-          "tableConfigurationModal": "Table Configuration"
+          "tableConfigurationModal": "表格設定"
         },
         "components": {
           "index": "組件",
@@ -69,7 +69,7 @@
         "manufacturers": {
           "index": "製造商",
           "new": "新製造商",
-          "edit": "Edit Manufacturer"
+          "edit": "編輯製造商"
         },
         "users": {
           "index": "使用者",
@@ -116,11 +116,11 @@
       "welcomeImages": "Random Images",
       "ships": {
         "index": "Ships Index",
-        "fleetchart": "Ships Fleetchart"
+        "fleetchart": "飛船艦隊圖表"
       },
       "images": "Images Index",
       "stats": "統計",
-      "notFound": "Navigation Error",
+      "notFound": "導航錯誤",
       "featureNotReady": "即將推出",
       "accessDenied": "拒絕存取",
       "serverError": "伺服器錯誤",
@@ -133,14 +133,14 @@
           "h2": "Your personal Hangar requires an FleetYards.net Account",
           "h3": "What Features does the Hangar include?"
         },
-        "alternativeNames": "Alternative Names",
+        "alternativeNames": "別名",
         "stats": "統計",
         "public": "%{user} 的機庫",
         "import": "匯入",
         "wishlist": "願望清單",
         "publicStats": "統計",
         "publicWishlist": "%{user} 的願望清單",
-        "resetIngame": "Reset Ingame Ships after Wipe"
+        "resetIngame": "資料重置後重設遊戲內飛船"
       },
       "syncExtension": "同步 RSI 機庫",
       "editMyVehicle": "Edit my %{vehicle}",
@@ -228,10 +228,10 @@
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
       "vehicle": {
-        "bulkGroupEdit": "Add/Remove Groups"
+        "bulkGroupEdit": "新增/移除群組"
       },
       "pagination": {
-        "count": "%{current} of %{total}"
+        "count": "%{current} / %{total}"
       },
       "models": {
         "index": "型號"

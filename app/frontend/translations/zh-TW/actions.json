@@ -111,11 +111,11 @@
         "github": "GitHub",
         "twitch": "Twitch",
         "connected": {
-          "google": "Connected to Google",
-          "discord": "Connected to Discord",
-          "bluesky": "Connected to BlueSky",
-          "github": "Connected to GitHub",
-          "twitch": "Connected to Twitch"
+          "google": "已連接到 Google",
+          "discord": "已連接到 Discord",
+          "bluesky": "已連接到 BlueSky",
+          "github": "已連接到 GitHub",
+          "twitch": "已連接到 Twitch"
         },
         "disconnect": {
           "google": "中斷 Google 連線",
@@ -137,7 +137,7 @@
         "hideFromPublicHangar": "Hide from Public",
         "editGroupsSelected": "Add/Remove from Groups",
         "resetIngame": {
-          "openModal": "Reset Ingame Ships after Wipe",
+          "openModal": "資料重置後重設遊戲內飛船",
           "moveToWishlist": "Move to Wishlist",
           "removeAll": "Remove all"
         }

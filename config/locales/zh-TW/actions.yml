@@ -21,11 +21,11 @@ zh-TW:
       model_module:
         new: Create new Module
       model_module_package:
-        new: Create new Module Package
+        new: 建立新模組套件
       model_paint:
         new: Create new Paint
       model_upgrade:
-        new: Create new Upgrade
+        new: 建立新升級
       user:
         new: Create new User
     back: 返回

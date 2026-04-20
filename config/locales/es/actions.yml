@@ -21,11 +21,11 @@ es:
       model_module:
         new: Create new Module
       model_module_package:
-        new: Create new Module Package
+        new: Crear nuevo paquete de módulos
       model_paint:
         new: Create new Paint
       model_upgrade:
-        new: Create new Upgrade
+        new: Crear nueva mejora
       user:
         new: Create new User
     back: Atrás
