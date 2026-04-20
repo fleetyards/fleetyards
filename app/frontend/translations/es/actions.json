@@ -51,7 +51,7 @@
       "login": "Iniciar sesión",
       "signUp": "Registrarse",
       "confirmAccess": "Confirmar contraseña",
-      "sendConfirmAccessEmail": "Send confirmation email",
+      "sendConfirmAccessEmail": "Enviar correo de confirmación",
       "reset-password": "¿Olvidó la contraseña?",
       "edit": "Editar",
       "clear": "Borrar",
@@ -118,11 +118,11 @@
           "twitch": "Connected to Twitch"
         },
         "disconnect": {
-          "google": "Disconnect Google",
-          "discord": "Disconnect Discord",
-          "bluesky": "Disconnect BlueSky",
-          "github": "Disconnect GitHub",
-          "twitch": "Disconnect Twitch"
+          "google": "Desconectar Google",
+          "discord": "Desconectar Discord",
+          "bluesky": "Desconectar BlueSky",
+          "github": "Desconectar GitHub",
+          "twitch": "Desconectar Twitch"
         }
       },
       "compare": {

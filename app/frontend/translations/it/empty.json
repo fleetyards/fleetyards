@@ -3,10 +3,10 @@
     "empty": {
       "headlines": {
         "default": "Non c'è niente da vedere qui...",
-        "forName": "No %{name} found",
-        "hangar": "Your Hangar is empty",
-        "wishlist": "Your Wishlist is empty",
-        "features": "No features available"
+        "forName": "Nessun %{name} trovato",
+        "hangar": "Il tuo hangar è vuoto",
+        "wishlist": "La tua lista dei desideri è vuota",
+        "features": "Nessuna funzione disponibile"
       },
       "actions": {
         "reset": "Resetta i filtri/pagine",

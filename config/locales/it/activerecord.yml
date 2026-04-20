@@ -29,7 +29,7 @@ it:
           mid_range_radar: Radar a Medio Raggio
           joint_thrusters: Propulsori articolati
           manned_turrets: Torrette
-          manned_utility_turrets: Manned Utility Turrets
+          manned_utility_turrets: Torrette di utilità con equipaggio
           mining_lasers: Laser per Mining
           missile_racks: Scomparti Missili
           missile_turrets: Torrette Missilistiche

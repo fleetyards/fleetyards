@@ -15,7 +15,7 @@ zh-CN:
       weekly:
         fleets: 新舰队
         headline: FleetYards.net Command - Weekly
-        registrations: New Registrations
+        registrations: 新注册
         ships: 新飞船
         subject: FleetYards.net Command Weekly
         vehicles: New Vehicles
@@ -34,7 +34,7 @@ zh-CN:
         body: 'To look at the new members information please click on the following
           link:'
         headline: "%{username} 接受了舰队邀请"
-        subject: New Fleet Member
+        subject: 新舰队成员
       member_requested:
         action: "%{fleet} 邀请"
         body: 'To accept the request please click on the following link:'
@@ -44,28 +44,28 @@ zh-CN:
         action: 加入 %{fleet}
         body: 'To accept the invite please click on the following link:'
         headline: You have been invited to Join %{fleet}
-        subject: New Fleet Invite
+        subject: 新舰队邀请
     confirm_access:
       body: Use the following code to confirm access to your account settings.
       expires: This code will expire in 10 minutes.
-      subject: Your confirmation code
-    hello: Hello %{username}
+      subject: 您的确认码
+    hello: 你好 %{username}
     model:
       new:
         headline_part_1: 请允许我介绍：
-        headline_part_2: The %{manufacturer}
-        subject: New Ship/Vehicle
+        headline_part_2: "%{manufacturer}"
+        subject: 新飞船/载具
     notification_settings: Unsubscribe Notifications
     plain_hello: 你好
     privacy: 隐私政策
     progress_tracker:
       admin:
-        body: There have been %{changes} changes on the Progress Tracker
+        body: 进度追踪有 %{changes} 项变更
         headline: 进度追踪新变更
         subject: 进度追踪新变更
     roadmap:
       admin:
-        body: There have been %{changes} changes to the Roadmap
+        body: 路线图有 %{changes} 项变更
         headline: 路线图新变更
         subject: 路线图新变更
     security:
@@ -76,11 +76,11 @@ zh-CN:
     two_factor:
       disabled:
         body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
-        subject: Two-factor disabled
+        subject: 两步验证已禁用
       enabled:
         body: Great, you activated Two-factor Authentication for your Fleetyards.net
           Account.
-        subject: Two-factor enabled
+        subject: 两步验证已启用
       login:
         body: Please enter the following Code on the Login page to verify your identity.
         headline: 两步验证码
@@ -88,11 +88,11 @@ zh-CN:
     user:
       username_changed:
         body: You changed your Fleetyards.net Account Username.
-        subject: Username changed
+        subject: 用户名已更改
     vehicle:
       on_sale:
         headline:
           part_one: The
-          part_two: is now on Sale!
-        price: Starting at %{price}
+          part_two: 现在开始出售！
+        price: 起价 %{price}
         subject: "%{model} 现在开始出售！"

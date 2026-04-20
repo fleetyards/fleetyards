@@ -5,10 +5,10 @@ es:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added
     progress_tracker_update:
-      message: There have been %{changes} changes on the Progress Tracker
+      message: Ha habido %{changes} cambios en el rastreador de progreso
       title: Nuevos cambios en el rastreador de progreso
     roadmap_update:
-      message: There have been %{changes} changes to the Roadmap
+      message: Ha habido %{changes} cambios en la hoja de ruta
       title: Nuevos cambios en la hoja de ruta
     ship_on_sale:
       message: Starting at %{price} excl. VAT

@@ -57,14 +57,14 @@
         "success": "Configuración del Hangar actualizada."
       },
       "features": {
-        "updated": "Feature updated.",
+        "updated": "Función actualizada.",
         "error": "Could not update feature.",
         "actorAdded": "Actor agregado a la función.",
         "actorRemoved": "Actor eliminado de la función.",
-        "groupAdded": "Group added to feature.",
-        "groupRemoved": "Group removed from feature.",
-        "created": "Feature created.",
-        "destroyed": "Feature removed.",
+        "groupAdded": "Grupo agregado a la función.",
+        "groupRemoved": "Grupo eliminado de la función.",
+        "created": "Función creada.",
+        "destroyed": "Función eliminada.",
         "createError": "Could not create feature."
       },
       "rsiRequestLogs": {
@@ -94,7 +94,7 @@
           "success": "Client secret regenerated.",
           "error": "Could not regenerate client secret."
         },
-        "copied": "Copied to clipboard.",
+        "copied": "Copiado al portapapeles.",
         "copyError": "Could not copy to clipboard.",
         "secretWarning": "Copy your client secret now. You won't be able to see it again."
       },

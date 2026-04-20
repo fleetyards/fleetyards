@@ -20,7 +20,7 @@ it:
       fleet_settings_roles: Ruoli di %{fleet}
       fleet_stats: Statistiche di %{fleet}
       fleets: Flotte
-      fleets_add: Create new Fleet
+      fleets_add: Crea nuova flotta
       fleets_invites: Inviti flotta
       fleets_preview: Anteprima flotta
       hangar: Il mio hangar
@@ -39,9 +39,9 @@ it:
       public_wishlist: Lista dei desideri di %{user}
       roadmap: Roadmap
       roadmap_changes: Modifiche roadmap
-      roadmap_progress-tracker: Progress Tracker
+      roadmap_progress-tracker: Tracker dei progressi
       roadmap_ships: Roadmap navi
-      search: Search Results
+      search: Risultati di ricerca
       settings: Impostazioni
       settings_account: Account
       settings_change-password: Cambia password

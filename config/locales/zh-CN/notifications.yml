@@ -13,13 +13,13 @@ zh-CN:
       title: "%{model} 正在出售"
       body: "%{model} 目前在质押商店中出售。"
     hangar_sync_finished:
-      title: Hangar sync completed
+      title: 机库同步完成
       body: Your RSI hangar has been synced successfully.
     hangar_sync_failed:
-      title: Hangar sync failed
+      title: 机库同步失败
       body: 'Your RSI hangar sync failed: %{error}'
     new_model:
-      title: 'New ship: %{model}'
+      title: '新飞船: %{model}'
       body: "%{model} 已添加到飞船数据库。"
     fleet_invite:
       title: You've been invited to %{fleet}

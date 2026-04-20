@@ -60,14 +60,14 @@
         "redirectUriHint": "Utilisez une URI par ligne.",
         "confidential": "Confidentiel",
         "scopes": "Portées",
-        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+        "scopesHint": "Si aucune portée n'est sélectionnée, les portées par défaut seront utilisées : %{scopes}"
       },
       "rsiRequestLogs": {
         "resolved": "Résolu",
         "unresolved": "Non résolu"
       },
       "oauthApplications": {
-        "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
+        "settingsIntro": "Gérez vos applications OAuth. Ces applications peuvent accéder à l'API FleetYards au nom des utilisateurs.",
         "name": "Nom de l'application",
         "redirectUri": "URI de redirection",
         "confidential": "Confidentiel",
@@ -411,7 +411,7 @@
         "cargo": "Cargaison",
         "cargoHolds": "Soutes à cargaison",
         "hydrogenFuelTankSize": "Taille du réservoir hydrogène",
-        "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
+        "hydrogenFuelTanks": "Réservoirs de carburant hydrogène",
         "quantumFuelTankSize": "Taille du réservoir Quantum",
         "quantumFuelTanks": "Réservoirs de carburant Quantum",
         "yaw": "Yaw",
@@ -705,7 +705,7 @@
       "user": {
         "rsiHandle": "Pseudo",
         "location": "Emplacement",
-        "currentSystem": "Current Star System",
+        "currentSystem": "Système stellaire actuel",
         "tester": "Testeur ?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Adresse email non confirmée",
@@ -713,8 +713,8 @@
         "publicHangar": "Hangar public activé",
         "publicHangarLoaners": "Afficher le marqueur des prêteurs dans le Hangar Public",
         "publicHangarStats": "Statistiques du Hangar public activées",
-        "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets",
+        "publicWishlist": "Liste de souhaits publique activée",
+        "hideOwner": "Masquer la propriété pour les flottes",
         "lastActiveAt": "Dernière activité",
         "confirmedAt": "Confirmé le"
       },
@@ -968,7 +968,7 @@
         "showLatestPrices": "Affichage des derniers prix"
       },
       "hardpoints": {
-        "prefix": "Tryout Loadouts with",
+        "prefix": "Essayer les configurations avec",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer"

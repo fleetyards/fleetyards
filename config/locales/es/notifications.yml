@@ -13,13 +13,13 @@ es:
       title: "%{model} está en venta"
       body: "%{model} está actualmente en venta en la tienda de pledge."
     hangar_sync_finished:
-      title: Hangar sync completed
+      title: Sincronización del hangar completada
       body: Your RSI hangar has been synced successfully.
     hangar_sync_failed:
-      title: Hangar sync failed
+      title: Sincronización del hangar fallida
       body: 'Your RSI hangar sync failed: %{error}'
     new_model:
-      title: 'New ship: %{model}'
+      title: 'Nueva nave: %{model}'
       body: "%{model} ha sido agregado a la base de datos de naves."
     fleet_invite:
       title: You've been invited to %{fleet}

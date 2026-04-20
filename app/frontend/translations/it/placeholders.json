@@ -195,7 +195,7 @@
           "name": "Origin, Robert Space Industries, Aegis..."
         },
         "users": {
-          "search": "Username or Email",
+          "search": "Nome utente o e-mail",
           "username": "Nome utente",
           "rsiHandle": "Handle RSI",
           "email": "E-mail"

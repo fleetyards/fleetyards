@@ -5,9 +5,9 @@ it:
       public: Public Access
       profile:read: Read Profile
       profile:write: Manage Profile
-      hangar: Full Hangar Access
+      hangar: Accesso completo all'hangar
       hangar:read: Read Hangar
       hangar:write: Manage Hangar
-      fleet: Full Fleet Access
+      fleet: Accesso completo alla flotta
       fleet:read: Leggi flotta
       fleet:write: Gestisci flotta

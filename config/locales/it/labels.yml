@@ -25,7 +25,7 @@ it:
       components_by_class: Componenti per classe
       fleets_count_total: Flotte totali
       latest_components: New Components
-      latest_manufacturers: New Manufacturers
+      latest_manufacturers: Nuovi produttori
       latest_models: Modelli ricaricati
       latest_users: Nuovi utenti
       models_by_classification: Modelli per classificazione
@@ -33,7 +33,7 @@ it:
       models_by_production_status: Models by Production Status
       models_by_size: Modelli per dimensione
       models_per_month: Modelli al mese
-      most_viewed_pages: Most viewed Pages
+      most_viewed_pages: Pagine più visitate
       online_count: Users Online
       registrations: Registrazioni al mese
       ships_count_total: Navi totali

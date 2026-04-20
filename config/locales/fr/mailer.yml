@@ -15,7 +15,7 @@ fr:
       weekly:
         fleets: Nouvelles flottes
         headline: FleetYards.net Command - Weekly
-        registrations: New Registrations
+        registrations: Nouvelles inscriptions
         ships: Nouveaux vaisseaux
         subject: FleetYards.net Command Weekly
         vehicles: New Vehicles
@@ -31,7 +31,7 @@ fr:
         body: 'To look at the new members information please click on the following
           link:'
         headline: "%{username} a accepté l'invitation à la flotte"
-        subject: New Fleet Member
+        subject: Nouveau membre de flotte
       member_requested:
         action: Invitations de %{fleet}
         body: 'To accept the request please click on the following link:'
@@ -41,28 +41,28 @@ fr:
         action: Rejoindre %{fleet}
         body: 'To accept the invite please click on the following link:'
         headline: You have been invited to Join %{fleet}
-        subject: New Fleet Invite
+        subject: Nouvelle invitation de flotte
     confirm_access:
       body: Use the following code to confirm access to your account settings.
       expires: This code will expire in 10 minutes.
-      subject: Your confirmation code
-    hello: Hello %{username}
+      subject: Votre code de confirmation
+    hello: Bonjour %{username}
     model:
       new:
         headline_part_1: 'Permettez-moi de présenter :'
-        headline_part_2: The %{manufacturer}
-        subject: New Ship/Vehicle
+        headline_part_2: Le %{manufacturer}
+        subject: Nouveau vaisseau/véhicule
     notification_settings: Unsubscribe Notifications
     plain_hello: Bonjour
     privacy: Politique de confidentialité
     progress_tracker:
       admin:
-        body: There have been %{changes} changes on the Progress Tracker
+        body: Il y a eu %{changes} changements dans le suivi de progression
         headline: Nouveaux changements dans le suivi de progression
         subject: Nouveaux changements dans le suivi de progression
     roadmap:
       admin:
-        body: There have been %{changes} changes to the Roadmap
+        body: Il y a eu %{changes} changements sur la feuille de route
         headline: Nouveaux changements sur la feuille de route
         subject: Nouveaux changements sur la feuille de route
     security:
@@ -73,11 +73,11 @@ fr:
     two_factor:
       disabled:
         body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
-        subject: Two-factor disabled
+        subject: Deux facteurs désactivé
       enabled:
         body: Great, you activated Two-factor Authentication for your Fleetyards.net
           Account.
-        subject: Two-factor enabled
+        subject: Deux facteurs activé
       login:
         body: Please enter the following Code on the Login page to verify your identity.
         headline: Code d'authentification à deux facteurs
@@ -85,11 +85,11 @@ fr:
     user:
       username_changed:
         body: You changed your Fleetyards.net Account Username.
-        subject: Username changed
+        subject: Nom d'utilisateur changé
     vehicle:
       on_sale:
         headline:
           part_one: The
-          part_two: is now on Sale!
-        price: Starting at %{price}
+          part_two: est maintenant en vente !
+        price: À partir de %{price}
         subject: "%{model} maintenant en vente !"

@@ -59,10 +59,10 @@ it:
         ship_size: Please select a Ship size
       equipment:
         backpack_compatibility: Compatibilità zaino
-        core_compatibility: Core compatibility
-        equipment_type: Please select a Type
+        core_compatibility: Compatibilità del nucleo
+        equipment_type: Seleziona un tipo
         item_type: Seleziona un tipo di oggetto
-        slot: Please select a Slot
+        slot: Seleziona uno slot
         weapon_class: Please select a Weapon Class
       models:
         dock_size: Please select a Dock size

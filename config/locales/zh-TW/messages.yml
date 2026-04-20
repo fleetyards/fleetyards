@@ -26,10 +26,10 @@ zh-TW:
       success: Loaner Upload successfull.
     record_not_found:
       base: No Entry found
-      fleet: No Fleet found
-      fleet_membership: No Fleet Member found
+      fleet: 未找到艦隊
+      fleet_membership: 未找到艦隊成員
       user: No User found
-      invite: No Invite found
+      invite: 未找到邀請
       model: No Model found
     reload:
       started: "%{resource} 重載已開始。"
@@ -44,7 +44,7 @@ zh-TW:
       success: 帳戶驗證成功。
     signup:
       already_signed_in: 您已登入。
-      username_invalid: Username is invalid.
+      username_invalid: 使用者名稱無效。
       reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
         choose something else!
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
@@ -64,9 +64,9 @@ zh-TW:
       sent: 確認連結已傳送到您的電子郵件。
       notAllowed: Email confirmation is only available for OAuth accounts.
     hangar_import:
-      no_data: No Data found to import
+      no_data: 未找到要匯入的資料
     hangar_sync:
-      no_data: No Data found to sync
+      no_data: 未找到要同步的資料
       already_running: 機庫同步已在進行中
     user:
       requires_access_confirmation: 存取確認待處理

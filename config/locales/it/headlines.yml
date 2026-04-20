@@ -19,14 +19,14 @@ it:
       image:
         index: Immagini
       loaner_uploads:
-        new: New Loaner Upload
+        new: Nuovo caricamento prestiti
       manufacturer:
-        edit: Edit %{manufacturer}
+        edit: Modifica %{manufacturer}
         index: Produttore
         new: Nuovo produttore
       model:
         edit: Edit %{model}
-        images: Imageupload for %{model}
+        images: Caricamento immagini per %{model}
         index: Modelli
         name_diff: Models with different RSI Name
         new: Nuovo modello
@@ -38,7 +38,7 @@ it:
       model_module_package:
         edit: Module Package %{model_module_package}
         index: Pacchetti di moduli
-        new: New Module Package
+        new: Nuovo pacchetto di moduli
       model_paint:
         edit: Paint %{model_paint}
         index: Verniciature

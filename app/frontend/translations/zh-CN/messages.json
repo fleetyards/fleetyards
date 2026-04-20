@@ -57,14 +57,14 @@
         "success": "机库设置已更新。"
       },
       "features": {
-        "updated": "Feature updated.",
+        "updated": "功能已更新。",
         "error": "Could not update feature.",
         "actorAdded": "角色已添加到功能。",
         "actorRemoved": "角色已从功能中移除。",
-        "groupAdded": "Group added to feature.",
-        "groupRemoved": "Group removed from feature.",
-        "created": "Feature created.",
-        "destroyed": "Feature removed.",
+        "groupAdded": "群组已添加到功能。",
+        "groupRemoved": "群组已从功能中移除。",
+        "created": "功能已创建。",
+        "destroyed": "功能已移除。",
         "createError": "Could not create feature."
       },
       "rsiRequestLogs": {
@@ -94,7 +94,7 @@
           "success": "Client secret regenerated.",
           "error": "Could not regenerate client secret."
         },
-        "copied": "Copied to clipboard.",
+        "copied": "已复制到剪贴板。",
         "copyError": "Could not copy to clipboard.",
         "secretWarning": "Copy your client secret now. You won't be able to see it again."
       },

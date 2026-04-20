@@ -60,14 +60,14 @@
         "redirectUriHint": "Usare un URI per riga.",
         "confidential": "Riservato",
         "scopes": "Ambiti",
-        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+        "scopesHint": "Se non vengono selezionati ambiti, verranno utilizzati quelli predefiniti: %{scopes}"
       },
       "rsiRequestLogs": {
         "resolved": "Risolto",
         "unresolved": "Non risolto"
       },
       "oauthApplications": {
-        "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
+        "settingsIntro": "Gestisci le tue applicazioni OAuth. Queste applicazioni possono accedere all'API di FleetYards per conto degli utenti.",
         "name": "Nome applicazione",
         "redirectUri": "URI di reindirizzamento",
         "confidential": "Riservato",
@@ -411,7 +411,7 @@
         "cargo": "Carico",
         "cargoHolds": "Stive di carico",
         "hydrogenFuelTankSize": "Dimensione serbatoio idrogeno",
-        "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
+        "hydrogenFuelTanks": "Serbatoi carburante idrogeno",
         "quantumFuelTankSize": "Dimensione serbatoio Quantum",
         "quantumFuelTanks": "Serbatoi carburante Quantum",
         "yaw": "Yaw",
@@ -695,8 +695,8 @@
       },
       "blank": {
         "propulsion": "Nessun Propulsione presente",
-        "ordnance": "No Ordnance present",
-        "modular": "No Modular present",
+        "ordnance": "Nessun armamento presente",
+        "modular": "Nessun modulare presente",
         "avionics": "Nessuna Avionica presente",
         "fleetInvites": "Nessun Invito presente",
         "shopCommodities": "Nessun Prodotto disponibile",
@@ -705,16 +705,16 @@
       "user": {
         "rsiHandle": "Handle",
         "location": "Posizione",
-        "currentSystem": "Current Star System",
+        "currentSystem": "Sistema stellare attuale",
         "tester": "Tester?",
         "avatar": "Avatar",
         "unconfirmedEmail": "Email non confermata",
         "saleNotify": "Voglio ricevere notifiche di vendita",
         "publicHangar": "Hangar Pubblico abilitato",
         "publicHangarLoaners": "Mostra suggerimento Navi di Cortesia su Hangar Pubblico",
-        "publicHangarStats": "Public Hangar Stats enabled",
-        "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets",
+        "publicHangarStats": "Statistiche hangar pubbliche abilitate",
+        "publicWishlist": "Lista dei desideri pubblica abilitata",
+        "hideOwner": "Nascondi proprietà per le flotte",
         "lastActiveAt": "Ultima attività",
         "confirmedAt": "Confermato il"
       },
@@ -746,7 +746,7 @@
         },
         "hasLoaners": "Navi in comodato",
         "boughtViaSelect": {
-          "label": "Bought via"
+          "label": "Acquistato tramite"
         }
       },
       "image": {
@@ -968,7 +968,7 @@
         "showLatestPrices": "Mostra i prezzi più recenti"
       },
       "hardpoints": {
-        "prefix": "Tryout Loadouts with",
+        "prefix": "Prova le configurazioni con",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer"

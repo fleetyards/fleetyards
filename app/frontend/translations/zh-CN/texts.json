@@ -97,7 +97,7 @@
       },
       "twoFactor": {
         "backupCodes": "Save a copy of your Backup-Codes. They will only be visible this one time.",
-        "disable": "To disable 2-Factor-Auth just enter a valid Token.",
+        "disable": "要禁用两步验证，只需输入一个有效的令牌。",
         "enable": " To secure your FleetYards.net Account you can generate 2-Factor-Auth Tokens with Google Authenticator, 1Password or Authy."
       },
       "oauthAuthorize": {

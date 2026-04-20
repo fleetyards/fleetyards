@@ -19,14 +19,14 @@ zh-TW:
       image:
         index: 圖片
       loaner_uploads:
-        new: New Loaner Upload
+        new: 新借用船上傳
       manufacturer:
-        edit: Edit %{manufacturer}
+        edit: 編輯 %{manufacturer}
         index: 製造商
         new: 新製造商
       model:
         edit: Edit %{model}
-        images: Imageupload for %{model}
+        images: "%{model} 圖片上傳"
         index: 型號
         name_diff: Models with different RSI Name
         new: 新型號
@@ -38,7 +38,7 @@ zh-TW:
       model_module_package:
         edit: Module Package %{model_module_package}
         index: 模組套件
-        new: New Module Package
+        new: 新模組套件
       model_paint:
         edit: Paint %{model_paint}
         index: 塗裝

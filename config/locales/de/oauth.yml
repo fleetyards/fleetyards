@@ -15,15 +15,15 @@ de:
       help:
         confidential: Application will be used where the client secret can be kept
           confidential. Native mobile apps and Single Page Apps are considered non-confidential.
-        redirect_uri: Use one line per URI
+        redirect_uri: Verwenden Sie eine Zeile pro URI
         blank_redirect_uri: Leave it blank if you configured your provider to use
           Client Credentials, Resource Owner Password Credentials or any other grant
           type that doesn't require redirect URI.
         scopes: Separate scopes with spaces. Leave blank to use the default scopes.
       edit:
-        title: Edit application
+        title: Anwendung bearbeiten
       index:
-        title: Your applications
+        title: Ihre Anwendungen
         new: Neue Anwendung
         name: Name
         callback_url: Callback URL

@@ -5,10 +5,10 @@ zh-TW:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added
     progress_tracker_update:
-      message: There have been %{changes} changes on the Progress Tracker
+      message: 進度追蹤有 %{changes} 項變更
       title: 進度追蹤新變更
     roadmap_update:
-      message: There have been %{changes} changes to the Roadmap
+      message: 路線圖有 %{changes} 項變更
       title: 路線圖新變更
     ship_on_sale:
       message: Starting at %{price} excl. VAT

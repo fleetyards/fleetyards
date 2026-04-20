@@ -19,14 +19,14 @@ de:
       image:
         index: Bilder
       loaner_uploads:
-        new: New Loaner Upload
+        new: Neuer Leihschiff-Upload
       manufacturer:
-        edit: Edit %{manufacturer}
+        edit: "%{manufacturer} bearbeiten"
         index: Hersteller
         new: Neuer Hersteller
       model:
         edit: Edit %{model}
-        images: Imageupload for %{model}
+        images: Bildupload für %{model}
         index: Modelle
         name_diff: Models with different RSI Name
         new: Neues Modell
@@ -38,7 +38,7 @@ de:
       model_module_package:
         edit: Module Package %{model_module_package}
         index: Modulpakete
-        new: New Module Package
+        new: Neues Modulpaket
       model_paint:
         edit: Paint %{model_paint}
         index: Lackierungen

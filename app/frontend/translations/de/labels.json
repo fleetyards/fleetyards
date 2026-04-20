@@ -60,14 +60,14 @@
         "redirectUriHint": "Verwenden Sie eine URI pro Zeile.",
         "confidential": "Vertraulich",
         "scopes": "Berechtigungen",
-        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+        "scopesHint": "Wenn keine Berechtigungen ausgewählt sind, werden die Standardberechtigungen verwendet: %{scopes}"
       },
       "rsiRequestLogs": {
         "resolved": "Gelöst",
         "unresolved": "Ungelöst"
       },
       "oauthApplications": {
-        "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
+        "settingsIntro": "Verwalten Sie Ihre OAuth-Anwendungen. Diese Anwendungen können im Namen von Benutzern auf die FleetYards-API zugreifen.",
         "name": "Anwendungsname",
         "redirectUri": "Weiterleitungs-URI",
         "confidential": "Vertraulich",
@@ -411,7 +411,7 @@
         "cargo": "Fracht",
         "cargoHolds": "Frachträume",
         "hydrogenFuelTankSize": "Hydrogen-Tankgröße",
-        "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
+        "hydrogenFuelTanks": "Hydrogen-Treibstofftanks",
         "quantumFuelTankSize": "Quantum-Tankgröße",
         "quantumFuelTanks": "Quantum-Treibstofftanks",
         "yaw": "Yaw",
@@ -694,27 +694,27 @@
         }
       },
       "blank": {
-        "propulsion": "No Propulsion present",
-        "ordnance": "No Ordnance present",
-        "modular": "No Modular present",
-        "avionics": "No Avionics present",
-        "fleetInvites": "No Invites present",
-        "shopCommodities": "No Commodites available",
+        "propulsion": "Kein Antrieb vorhanden",
+        "ordnance": "Keine Bewaffnung vorhanden",
+        "modular": "Kein Modular vorhanden",
+        "avionics": "Keine Avionik vorhanden",
+        "fleetInvites": "Keine Einladungen vorhanden",
+        "shopCommodities": "Keine Waren verfügbar",
         "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
       },
       "user": {
         "rsiHandle": "Handle",
         "location": "Standort",
-        "currentSystem": "Current Star System",
+        "currentSystem": "Aktuelles Sternensystem",
         "tester": "Tester?",
         "avatar": "Avatar",
-        "unconfirmedEmail": "Unconfirmed email",
-        "saleNotify": "I want to receive Sale Notifications",
-        "publicHangar": "Public Hangar enabled",
-        "publicHangarLoaners": "Show Loaners Hint on Public Hangar",
-        "publicHangarStats": "Public Hangar Stats enabled",
-        "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets",
+        "unconfirmedEmail": "Unbestätigte E-Mail",
+        "saleNotify": "Ich möchte Angebotsbenachrichtigungen erhalten",
+        "publicHangar": "Öffentlicher Hangar aktiviert",
+        "publicHangarLoaners": "Leihschiff-Hinweis im öffentlichen Hangar anzeigen",
+        "publicHangarStats": "Öffentliche Hangar-Statistiken aktiviert",
+        "publicWishlist": "Öffentliche Wunschliste aktiviert",
+        "hideOwner": "Besitz für Flotten verbergen",
         "lastActiveAt": "Zuletzt aktiv",
         "confirmedAt": "Bestätigt am"
       },
@@ -731,22 +731,22 @@
         "wanted": "Gewünscht",
         "loaner": "Leihschiff",
         "public": "Öffentlich sichtbar",
-        "fullPublic": "Public Visible including Name",
+        "fullPublic": "Öffentlich sichtbar inkl. Name",
         "publicShort": "Öffentlich",
         "nameVisible": "Öffentlich sichtbar",
-        "saleNotify": "I want to receive Sale Notifications",
+        "saleNotify": "Ich möchte Angebotsbenachrichtigungen erhalten",
         "hangarGroups": "Gruppen",
-        "selectGroup": "Select a Group",
+        "selectGroup": "Gruppe auswählen",
         "modelPaintSelect": {
-          "nullablePrompt": "Select a Paint",
+          "nullablePrompt": "Lackierung auswählen",
           "label": "Lackierung"
         },
         "bulkGroupEdit": {
-          "hint": "Existing Groups will be overridden!"
+          "hint": "Bestehende Gruppen werden überschrieben!"
         },
         "hasLoaners": "Leihschiffe",
         "boughtViaSelect": {
-          "label": "Bought via"
+          "label": "Gekauft über"
         }
       },
       "image": {
@@ -785,7 +785,7 @@
       "password": "Passwort",
       "passwordConfirmation": "Passwort bestätigen",
       "rememberMe": "Angemeldet bleiben",
-      "emptyList": "No %{name} present",
+      "emptyList": "Keine %{name} vorhanden",
       "all": "Alle",
       "supportUs": "Support FleetYards.net",
       "account": {
@@ -968,7 +968,7 @@
         "showLatestPrices": "Display latest Prices"
       },
       "hardpoints": {
-        "prefix": "Tryout Loadouts with",
+        "prefix": "Konfigurationen testen mit",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer"
@@ -984,7 +984,7 @@
         "nullablePrompt": ""
       },
       "table": {
-        "selected": "%{count} Selected"
+        "selected": "%{count} ausgewählt"
       },
       "commodityPrice": {
         "shopId": "Geschäft",

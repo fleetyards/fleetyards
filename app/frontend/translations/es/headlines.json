@@ -100,8 +100,8 @@
           "groups": "Grupos",
           "actors": "Actores",
           "selfService": "Self-Service",
-          "percentageOfActors": "Percentage of Actors",
-          "percentageOfTime": "Percentage of Time",
+          "percentageOfActors": "Porcentaje de actores",
+          "percentageOfTime": "Porcentaje de tiempo",
           "addActor": "Agregar actor"
         },
         "rsiApiStatus": {
@@ -165,8 +165,8 @@
         "inviteUrls": "Invite Urls",
         "members": {
           "index": "Members",
-          "worldmap": "Member Worldmap",
-          "starmap": "Member Starmap"
+          "worldmap": "Mapa mundial de miembros",
+          "starmap": "Mapa estelar de miembros"
         },
         "stats": "Estadísticas",
         "preview": {
@@ -238,7 +238,7 @@
       },
       "modals": {
         "models": {
-          "displayOptions": "Display Options"
+          "displayOptions": "Opciones de visualización"
         },
         "shopCommodity": {
           "update": "Update Commodity %{shopCommodity}",

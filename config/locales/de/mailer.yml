@@ -15,7 +15,7 @@ de:
       weekly:
         fleets: Neue Flotten
         headline: FleetYards.net Command - Weekly
-        registrations: New Registrations
+        registrations: Neue Registrierungen
         ships: Neue Schiffe
         subject: FleetYards.net Command Weekly
         vehicles: New Vehicles
@@ -31,7 +31,7 @@ de:
         body: 'To look at the new members information please click on the following
           link:'
         headline: "%{username} hat die Flotteneinladung angenommen"
-        subject: New Fleet Member
+        subject: Neues Flottenmitglied
       member_requested:
         action: "%{fleet} Einladungen"
         body: 'To accept the request please click on the following link:'
@@ -41,28 +41,28 @@ de:
         action: "%{fleet} beitreten"
         body: 'To accept the invite please click on the following link:'
         headline: You have been invited to Join %{fleet}
-        subject: New Fleet Invite
+        subject: Neue Flotteneinladung
     confirm_access:
       body: Use the following code to confirm access to your account settings.
       expires: This code will expire in 10 minutes.
-      subject: Your confirmation code
-    hello: Hello %{username}
+      subject: Ihr Bestätigungscode
+    hello: Hallo %{username}
     model:
       new:
         headline_part_1: 'Darf ich vorstellen:'
-        headline_part_2: The %{manufacturer}
-        subject: New Ship/Vehicle
+        headline_part_2: Der %{manufacturer}
+        subject: Neues Schiff/Fahrzeug
     notification_settings: Unsubscribe Notifications
     plain_hello: Hallo
     privacy: Datenschutzerklärung
     progress_tracker:
       admin:
-        body: There have been %{changes} changes on the Progress Tracker
+        body: Es gab %{changes} Änderungen im Progress Tracker
         headline: Neue Änderungen im Progress Tracker
         subject: Neue Änderungen im Progress Tracker
     roadmap:
       admin:
-        body: There have been %{changes} changes to the Roadmap
+        body: Es gab %{changes} Änderungen an der Roadmap
         headline: Neue Änderungen auf der Roadmap
         subject: Neue Änderungen auf der Roadmap
     security:
@@ -73,11 +73,11 @@ de:
     two_factor:
       disabled:
         body: You deactivated Two-factor Authentication for your Fleetyards.net Account.
-        subject: Two-factor disabled
+        subject: Zwei-Faktor deaktiviert
       enabled:
         body: Great, you activated Two-factor Authentication for your Fleetyards.net
           Account.
-        subject: Two-factor enabled
+        subject: Zwei-Faktor aktiviert
       login:
         body: Please enter the following Code on the Login page to verify your identity.
         headline: Zwei-Faktor-Authentifizierungscode
@@ -85,11 +85,11 @@ de:
     user:
       username_changed:
         body: You changed your Fleetyards.net Account Username.
-        subject: Username changed
+        subject: Benutzername geändert
     vehicle:
       on_sale:
         headline:
           part_one: The
-          part_two: is now on Sale!
-        price: Starting at %{price}
+          part_two: ist jetzt im Angebot!
+        price: Ab %{price}
         subject: "%{model} jetzt im Angebot!"

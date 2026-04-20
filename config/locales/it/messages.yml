@@ -27,10 +27,10 @@ it:
       success: Loaner Upload successfull.
     record_not_found:
       base: No Entry found
-      fleet: No Fleet found
-      fleet_membership: No Fleet Member found
+      fleet: Nessuna flotta trovata
+      fleet_membership: Nessun membro della flotta trovato
       user: No User found
-      invite: No Invite found
+      invite: Nessun invito trovato
       model: No Model found
     reload:
       started: "%{resource} ricaricamento avviato."
@@ -45,7 +45,7 @@ it:
       success: Account verificato con successo.
     signup:
       already_signed_in: Hai già effettuato l'accesso.
-      username_invalid: Username is invalid.
+      username_invalid: Il nome utente non è valido.
       reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
         choose something else!
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
@@ -65,9 +65,9 @@ it:
       sent: Un link di conferma è stato inviato alla tua e-mail.
       notAllowed: Email confirmation is only available for OAuth accounts.
     hangar_import:
-      no_data: No Data found to import
+      no_data: Nessun dato trovato da importare
     hangar_sync:
-      no_data: No Data found to sync
+      no_data: Nessun dato trovato da sincronizzare
       already_running: Una sincronizzazione dell'hangar è già in corso
     user:
       requires_access_confirmation: Conferma di accesso in attesa

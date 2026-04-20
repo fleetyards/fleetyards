@@ -19,14 +19,14 @@ zh-CN:
       image:
         index: 图片
       loaner_uploads:
-        new: New Loaner Upload
+        new: 新借用船上传
       manufacturer:
-        edit: Edit %{manufacturer}
+        edit: 编辑 %{manufacturer}
         index: 制造商
         new: 新制造商
       model:
         edit: Edit %{model}
-        images: Imageupload for %{model}
+        images: "%{model} 图片上传"
         index: 型号
         name_diff: Models with different RSI Name
         new: 新型号
@@ -38,7 +38,7 @@ zh-CN:
       model_module_package:
         edit: Module Package %{model_module_package}
         index: 模块包
-        new: New Module Package
+        new: 新模块包
       model_paint:
         edit: Paint %{model_paint}
         index: 涂装

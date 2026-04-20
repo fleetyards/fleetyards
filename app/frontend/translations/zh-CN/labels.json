@@ -60,14 +60,14 @@
         "redirectUriHint": "每行一个 URI。",
         "confidential": "机密",
         "scopes": "权限范围",
-        "scopesHint": "If no scopes are selected, the default scopes will be used: %{scopes}"
+        "scopesHint": "如果未选择权限范围，将使用默认范围: %{scopes}"
       },
       "rsiRequestLogs": {
         "resolved": "已解决",
         "unresolved": "未解决"
       },
       "oauthApplications": {
-        "settingsIntro": "Manage your OAuth applications. These applications can access the FleetYards API on behalf of users.",
+        "settingsIntro": "管理您的 OAuth 应用。这些应用可以代表用户访问 FleetYards API。",
         "name": "应用名称",
         "redirectUri": "重定向 URI",
         "confidential": "机密",
@@ -411,7 +411,7 @@
         "cargo": "货物",
         "cargoHolds": "货舱",
         "hydrogenFuelTankSize": "氢燃料箱大小",
-        "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
+        "hydrogenFuelTanks": "氢燃料箱",
         "quantumFuelTankSize": "量子燃料箱大小",
         "quantumFuelTanks": "量子燃料箱",
         "yaw": "Yaw",
@@ -694,27 +694,27 @@
         }
       },
       "blank": {
-        "propulsion": "No Propulsion present",
-        "ordnance": "No Ordnance present",
-        "modular": "No Modular present",
-        "avionics": "No Avionics present",
-        "fleetInvites": "No Invites present",
-        "shopCommodities": "No Commodites available",
+        "propulsion": "没有推进系统",
+        "ordnance": "没有武器弹药",
+        "modular": "没有模块",
+        "avionics": "没有航电系统",
+        "fleetInvites": "没有邀请",
+        "shopCommodities": "没有可用的商品",
         "userShips": "Your Hangar is currently Empty. To Add Ships / Vehicles to Your Hangar click the following Icon on Any Ship in the Database:"
       },
       "user": {
         "rsiHandle": "Handle",
         "location": "位置",
-        "currentSystem": "Current Star System",
+        "currentSystem": "当前星系",
         "tester": "测试者?",
         "avatar": "头像",
-        "unconfirmedEmail": "Unconfirmed email",
-        "saleNotify": "I want to receive Sale Notifications",
-        "publicHangar": "Public Hangar enabled",
-        "publicHangarLoaners": "Show Loaners Hint on Public Hangar",
-        "publicHangarStats": "Public Hangar Stats enabled",
-        "publicWishlist": "Public Wishlist enabled",
-        "hideOwner": "Hide Ownership for Fleets",
+        "unconfirmedEmail": "未确认的邮件",
+        "saleNotify": "我希望收到销售通知",
+        "publicHangar": "公开机库已启用",
+        "publicHangarLoaners": "在公开机库显示借用船提示",
+        "publicHangarStats": "公开机库统计已启用",
+        "publicWishlist": "公开愿望清单已启用",
+        "hideOwner": "为舰队隐藏所有权",
         "lastActiveAt": "最后活跃",
         "confirmedAt": "确认于"
       },
@@ -731,22 +731,22 @@
         "wanted": "想要",
         "loaner": "借用",
         "public": "公开可见",
-        "fullPublic": "Public Visible including Name",
+        "fullPublic": "公开可见（包括名称）",
         "publicShort": "公开",
         "nameVisible": "公开可见",
-        "saleNotify": "I want to receive Sale Notifications",
+        "saleNotify": "我希望收到销售通知",
         "hangarGroups": "群组",
-        "selectGroup": "Select a Group",
+        "selectGroup": "选择群组",
         "modelPaintSelect": {
-          "nullablePrompt": "Select a Paint",
+          "nullablePrompt": "选择涂装",
           "label": "涂装"
         },
         "bulkGroupEdit": {
-          "hint": "Existing Groups will be overridden!"
+          "hint": "现有群组将被覆盖！"
         },
         "hasLoaners": "借用船",
         "boughtViaSelect": {
-          "label": "Bought via"
+          "label": "购买方式"
         }
       },
       "image": {
@@ -785,7 +785,7 @@
       "password": "密码",
       "passwordConfirmation": "确认密码",
       "rememberMe": "记住我",
-      "emptyList": "No %{name} present",
+      "emptyList": "没有 %{name}",
       "all": "全部",
       "supportUs": "Support FleetYards.net",
       "account": {
@@ -968,7 +968,7 @@
         "showLatestPrices": "Display latest Prices"
       },
       "hardpoints": {
-        "prefix": "Tryout Loadouts with",
+        "prefix": "使用以下工具试用配置",
         "erkul": "Erkul's DPS Calculator",
         "spviewer": "SP Viewer",
         "spviewerTitle": "SC Ships Performances Viewer"
@@ -984,7 +984,7 @@
         "nullablePrompt": ""
       },
       "table": {
-        "selected": "%{count} Selected"
+        "selected": "%{count} 已选择"
       },
       "commodityPrice": {
         "shopId": "商店",

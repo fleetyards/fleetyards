@@ -3,10 +3,10 @@
     "empty": {
       "headlines": {
         "default": "There's nothing to see here...",
-        "forName": "No %{name} found",
-        "hangar": "Your Hangar is empty",
-        "wishlist": "Your Wishlist is empty",
-        "features": "No features available"
+        "forName": "未找到 %{name}",
+        "hangar": "您的機庫是空的",
+        "wishlist": "您的願望清單是空的",
+        "features": "沒有可用功能"
       },
       "actions": {
         "reset": "Reset Filters/Pages",

@@ -39,11 +39,11 @@
         },
         "category": {
           "label": "Categoria",
-          "nullablePrompt": "Select Category"
+          "nullablePrompt": "Seleziona categoria"
         },
         "subCategory": {
           "label": "Sottocategoria",
-          "nullablePrompt": "Select Sub Category"
+          "nullablePrompt": "Seleziona sottocategoria"
         }
       },
       "fleet": {

@@ -2,35 +2,32 @@
 zh-TW:
   devise:
     confirmations:
-      confirmed: Your account was successfully confirmed.
-      send_instructions: You will receive an email with instructions about how to
-        confirm your account in a few minutes.
-      send_paranoid_instructions: If your email address exists in our database, you
-        will receive an email with instructions about how to confirm your account
-        in a few minutes.
+      confirmed: 您的帳戶已確認成功。
+      send_instructions: 您將在幾分鐘內收到一封包含帳戶確認說明的電子郵件。
+      send_paranoid_instructions: 如果您的電子郵件地址存在於我們的資料庫中，您將在幾分鐘內收到帳戶確認說明。
     failure:
       already_authenticated: 您已登入。
-      inactive: Your account is not activated yet.
-      invalid: Invalid email/username or password.
-      last_attempt: You have one more attempt before your account will be locked.
-      locked: Your account is locked.
-      not_confirmed: Your account could not be confirmed.
-      not_found_in_database: Invalid email or password.
+      inactive: 您的帳戶尚未啟用。
+      invalid: 電子郵件/使用者名稱或密碼無效。
+      last_attempt: 您還有一次嘗試機會，之後帳戶將被鎖定。
+      locked: 您的帳戶已鎖定。
+      not_confirmed: 您的帳戶無法確認。
+      not_found_in_database: 電子郵件或密碼無效。
       two_factor_required: 登入需要 2FA。
       two_factor_invalid: 2FA 驗證碼無效。
-      timeout: Your session expired. Please sign in again to continue.
-      unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: You have to confirm your account before continuing.
+      timeout: 您的工作階段已過期。請重新登入以繼續。
+      unauthenticated: 您需要先登入或註冊才能繼續。
+      unconfirmed: 您需要先確認帳戶才能繼續。
     mailer:
       confirmation_instructions:
         content:
-          confirm_email_link: Confirm email
+          confirm_email_link: 確認郵件
           confirm_email_text: 'To confirm your new email please click on the following
             link:'
           confirm_link: 啟用帳戶
           confirm_text: 'To activate your Account please click on the following link:'
-          welcome: Welcome %{username}
-        subject: Confirmation instructions
+          welcome: 歡迎 %{username}
+        subject: 確認說明
       email_changed:
         content:
           text_confirmed: We're contacting you to notify you that your email has been
@@ -42,16 +39,16 @@ zh-TW:
           text: We're contacting you to notify you that your password has been changed.
       reset_password_instructions:
         content:
-          change_link: Change my Password
+          change_link: 變更我的密碼
           first_text: Someone has requested a link to change your password, and you
             can do this through the link below.
           hello: 你好
           second_text: If you didn't request this, please ignore this email.
           third_text: Your password won't change until you access the link above and
             create a new one.
-        subject: Reset password instructions
+        subject: 密碼重設說明
       unlock_instructions:
-        subject: Unlock Instructions
+        subject: 解鎖說明
     omniauth:
       provider:
         discord: Discord
@@ -73,23 +70,23 @@ zh-TW:
           Account.
     otp:
       backup_codes: 產生備用碼
-      backup_explain: Copy the Backup Codes and keep them save and secure.
+      backup_explain: 複製備用碼並妥善保管。
       disable: 停用
-      disable_explain: To disable 2-Factor-Auth just enter a valid Token.
+      disable_explain: 要停用兩步驟驗證，只需輸入一個有效的權杖。
       enable: 啟用
-      enable_explain: Scan the QR-Code and enter a generated Token.
+      enable_explain: 掃描 QR 碼並輸入產生的權杖。
       explain: To secure your FleetYards.net Account you can generate 2-Factor-Auth
         Tokens with <a href="%{google_auth_link}" target="_blank">Google Authenticator</a>,
         <a href="%{one_password_link}" target="_blank">1Password</a> or <a href="%{authy_link}"
         target="_blank">Authy</a>.
       messages:
-        backup_codes: Backup Codes generated.
+        backup_codes: 備用碼已產生。
         disable:
-          failure: Please enter a valid Token.
-          success: 2-Factor-Authentication is now disabled.
+          failure: 請輸入有效的權杖。
+          success: 兩步驟驗證已停用。
         enable:
-          failure: Please enter a valid Token.
-          success: 2-Factor-Authentication is now enabled.
+          failure: 請輸入有效的權杖。
+          success: 兩步驟驗證已啟用。
       otp_enabled: 兩步驟驗證已啟用?
       otp_token: 權杖
       title: 兩步驟驗證
@@ -97,17 +94,16 @@ zh-TW:
       no_token: You can't access this page without coming from a password reset email.
         If you do come from a password reset email, please make sure you used the
         full URL provided.
-      send_instructions: You will receive an email with instructions about how to
-        reset your password in a few minutes.
+      send_instructions: 您將在幾分鐘內收到密碼重設說明。
       send_paranoid_instructions: If your email address exists in our database, you
         will receive a password recovery link at your email address in a few minutes.
-      update_failure: Your password could not be updated.
-      updated: Your password was changed successfully. You are now signed in.
-      updated_not_active: Your password was changed successfully.
+      update_failure: 密碼無法更新。
+      updated: 密碼已成功變更。您現在已登入。
+      updated_not_active: 密碼已成功變更。
     registrations:
       destroyed: Bye! Your account was successfully cancelled. We hope to see you
         again soon.
-      signed_up: Welcome! You have signed up successfully.
+      signed_up: 歡迎！您已成功註冊。
       signed_up_but_inactive: You have signed up successfully. However, we could not
         sign you in because your account is not yet activated.
       signed_up_but_locked: You have signed up successfully. However, we could not
@@ -117,12 +113,12 @@ zh-TW:
       update_needs_confirmation: You updated your account successfully, but we need
         to verify your new email address. Please check your email and click on the
         confirm link to finalize confirming your new email address.
-      updated: You updated your account successfully.
+      updated: 帳戶更新成功。
     sessions:
       failure:
-        jwt: JWT Invalid. Please Login.
-      signed_in: Signed in successfully.
-      signed_out: Signed out successfully.
+        jwt: JWT 無效。請登入。
+      signed_in: 登入成功。
+      signed_out: 登出成功。
     unlocks:
       send_instructions: You will receive an email with instructions about how to
         unlock your account in a few minutes.

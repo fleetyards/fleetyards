@@ -25,7 +25,7 @@ zh-TW:
       components_by_class: 按類別分組件
       fleets_count_total: 總艦隊數
       latest_components: New Components
-      latest_manufacturers: New Manufacturers
+      latest_manufacturers: 新製造商
       latest_models: 已重新載入型號
       latest_users: 新使用者
       models_by_classification: 按分類整理
@@ -33,7 +33,7 @@ zh-TW:
       models_by_production_status: Models by Production Status
       models_by_size: 按尺寸分類
       models_per_month: 每月型號
-      most_viewed_pages: Most viewed Pages
+      most_viewed_pages: 瀏覽最多的頁面
       online_count: Users Online
       registrations: 每月註冊數
       ships_count_total: 總飛船數

@@ -39,11 +39,11 @@
         },
         "category": {
           "label": "分類",
-          "nullablePrompt": "Select Category"
+          "nullablePrompt": "選擇分類"
         },
         "subCategory": {
           "label": "子分類",
-          "nullablePrompt": "Select Sub Category"
+          "nullablePrompt": "選擇子分類"
         }
       },
       "fleet": {

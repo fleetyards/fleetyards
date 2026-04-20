@@ -2,35 +2,35 @@
 es:
   devise:
     confirmations:
-      confirmed: Your account was successfully confirmed.
-      send_instructions: You will receive an email with instructions about how to
-        confirm your account in a few minutes.
-      send_paranoid_instructions: If your email address exists in our database, you
-        will receive an email with instructions about how to confirm your account
-        in a few minutes.
+      confirmed: Su cuenta fue confirmada exitosamente.
+      send_instructions: Recibirá un correo electrónico con instrucciones sobre cómo
+        confirmar su cuenta en unos minutos.
+      send_paranoid_instructions: Si su dirección de correo electrónico existe en
+        nuestra base de datos, recibirá un correo con instrucciones para confirmar
+        su cuenta en unos minutos.
     failure:
       already_authenticated: Ya ha iniciado sesión.
-      inactive: Your account is not activated yet.
-      invalid: Invalid email/username or password.
-      last_attempt: You have one more attempt before your account will be locked.
-      locked: Your account is locked.
-      not_confirmed: Your account could not be confirmed.
-      not_found_in_database: Invalid email or password.
+      inactive: Su cuenta aún no está activada.
+      invalid: Correo electrónico/nombre de usuario o contraseña inválidos.
+      last_attempt: Tiene un intento más antes de que su cuenta sea bloqueada.
+      locked: Su cuenta está bloqueada.
+      not_confirmed: Su cuenta no pudo ser confirmada.
+      not_found_in_database: Correo electrónico o contraseña inválidos.
       two_factor_required: 2FA requerido para iniciar sesión.
       two_factor_invalid: Código 2FA inválido.
-      timeout: Your session expired. Please sign in again to continue.
-      unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: You have to confirm your account before continuing.
+      timeout: Su sesión ha expirado. Inicie sesión nuevamente para continuar.
+      unauthenticated: Necesita iniciar sesión o registrarse antes de continuar.
+      unconfirmed: Debe confirmar su cuenta antes de continuar.
     mailer:
       confirmation_instructions:
         content:
-          confirm_email_link: Confirm email
+          confirm_email_link: Confirmar correo electrónico
           confirm_email_text: 'To confirm your new email please click on the following
             link:'
           confirm_link: Activar cuenta
           confirm_text: 'To activate your Account please click on the following link:'
-          welcome: Welcome %{username}
-        subject: Confirmation instructions
+          welcome: Bienvenido %{username}
+        subject: Instrucciones de confirmación
       email_changed:
         content:
           text_confirmed: We're contacting you to notify you that your email has been
@@ -42,16 +42,16 @@ es:
           text: We're contacting you to notify you that your password has been changed.
       reset_password_instructions:
         content:
-          change_link: Change my Password
+          change_link: Cambiar mi contraseña
           first_text: Someone has requested a link to change your password, and you
             can do this through the link below.
           hello: Hola
           second_text: If you didn't request this, please ignore this email.
           third_text: Your password won't change until you access the link above and
             create a new one.
-        subject: Reset password instructions
+        subject: Instrucciones para restablecer la contraseña
       unlock_instructions:
-        subject: Unlock Instructions
+        subject: Instrucciones de desbloqueo
     omniauth:
       provider:
         discord: Discord
@@ -73,23 +73,24 @@ es:
           Account.
     otp:
       backup_codes: Generar códigos de respaldo
-      backup_explain: Copy the Backup Codes and keep them save and secure.
+      backup_explain: Copie los códigos de respaldo y guárdelos de forma segura.
       disable: Deshabilitar
-      disable_explain: To disable 2-Factor-Auth just enter a valid Token.
+      disable_explain: Para deshabilitar la autenticación de dos factores, simplemente
+        ingrese un token válido.
       enable: Habilitar
-      enable_explain: Scan the QR-Code and enter a generated Token.
+      enable_explain: Escanee el código QR e ingrese un token generado.
       explain: To secure your FleetYards.net Account you can generate 2-Factor-Auth
         Tokens with <a href="%{google_auth_link}" target="_blank">Google Authenticator</a>,
         <a href="%{one_password_link}" target="_blank">1Password</a> or <a href="%{authy_link}"
         target="_blank">Authy</a>.
       messages:
-        backup_codes: Backup Codes generated.
+        backup_codes: Códigos de respaldo generados.
         disable:
-          failure: Please enter a valid Token.
-          success: 2-Factor-Authentication is now disabled.
+          failure: Ingrese un token válido.
+          success: La autenticación de dos factores está ahora deshabilitada.
         enable:
-          failure: Please enter a valid Token.
-          success: 2-Factor-Authentication is now enabled.
+          failure: Ingrese un token válido.
+          success: La autenticación de dos factores está ahora habilitada.
       otp_enabled: "¿Autenticación de dos factores habilitada?"
       otp_token: Token
       title: Autenticación de dos factores
@@ -97,17 +98,17 @@ es:
       no_token: You can't access this page without coming from a password reset email.
         If you do come from a password reset email, please make sure you used the
         full URL provided.
-      send_instructions: You will receive an email with instructions about how to
-        reset your password in a few minutes.
+      send_instructions: Recibirá un correo electrónico con instrucciones para restablecer
+        su contraseña en unos minutos.
       send_paranoid_instructions: If your email address exists in our database, you
         will receive a password recovery link at your email address in a few minutes.
-      update_failure: Your password could not be updated.
-      updated: Your password was changed successfully. You are now signed in.
-      updated_not_active: Your password was changed successfully.
+      update_failure: Su contraseña no pudo ser actualizada.
+      updated: Su contraseña fue cambiada exitosamente. Ahora ha iniciado sesión.
+      updated_not_active: Su contraseña fue cambiada exitosamente.
     registrations:
       destroyed: Bye! Your account was successfully cancelled. We hope to see you
         again soon.
-      signed_up: Welcome! You have signed up successfully.
+      signed_up: "¡Bienvenido! Se ha registrado exitosamente."
       signed_up_but_inactive: You have signed up successfully. However, we could not
         sign you in because your account is not yet activated.
       signed_up_but_locked: You have signed up successfully. However, we could not
@@ -117,12 +118,12 @@ es:
       update_needs_confirmation: You updated your account successfully, but we need
         to verify your new email address. Please check your email and click on the
         confirm link to finalize confirming your new email address.
-      updated: You updated your account successfully.
+      updated: Ha actualizado su cuenta exitosamente.
     sessions:
       failure:
-        jwt: JWT Invalid. Please Login.
-      signed_in: Signed in successfully.
-      signed_out: Signed out successfully.
+        jwt: JWT inválido. Inicie sesión.
+      signed_in: Sesión iniciada exitosamente.
+      signed_out: Sesión cerrada exitosamente.
     unlocks:
       send_instructions: You will receive an email with instructions about how to
         unlock your account in a few minutes.

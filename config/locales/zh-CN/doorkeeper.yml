@@ -5,9 +5,9 @@ zh-CN:
       public: Public Access
       profile:read: Read Profile
       profile:write: Manage Profile
-      hangar: Full Hangar Access
+      hangar: 完整机库访问权限
       hangar:read: Read Hangar
       hangar:write: Manage Hangar
-      fleet: Full Fleet Access
+      fleet: 完整舰队访问权限
       fleet:read: 读取舰队
       fleet:write: 管理舰队

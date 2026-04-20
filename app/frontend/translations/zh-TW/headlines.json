@@ -100,8 +100,8 @@
           "groups": "群組",
           "actors": "角色",
           "selfService": "Self-Service",
-          "percentageOfActors": "Percentage of Actors",
-          "percentageOfTime": "Percentage of Time",
+          "percentageOfActors": "角色百分比",
+          "percentageOfTime": "時間百分比",
           "addActor": "新增角色"
         },
         "rsiApiStatus": {
@@ -165,8 +165,8 @@
         "inviteUrls": "Invite Urls",
         "members": {
           "index": "Members",
-          "worldmap": "Member Worldmap",
-          "starmap": "Member Starmap"
+          "worldmap": "成員世界地圖",
+          "starmap": "成員星圖"
         },
         "stats": "統計",
         "preview": {
@@ -238,7 +238,7 @@
       },
       "modals": {
         "models": {
-          "displayOptions": "Display Options"
+          "displayOptions": "顯示選項"
         },
         "shopCommodity": {
           "update": "Update Commodity %{shopCommodity}",

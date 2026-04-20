@@ -5,10 +5,10 @@ it:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added
     progress_tracker_update:
-      message: There have been %{changes} changes on the Progress Tracker
+      message: Ci sono stati %{changes} cambiamenti nel tracker dei progressi
       title: Nuove modifiche nel tracker dei progressi
     roadmap_update:
-      message: There have been %{changes} changes to the Roadmap
+      message: Ci sono stati %{changes} cambiamenti sulla roadmap
       title: Nuove modifiche sulla roadmap
     ship_on_sale:
       message: Starting at %{price} excl. VAT

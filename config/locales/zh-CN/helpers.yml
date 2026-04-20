@@ -62,10 +62,10 @@ zh-CN:
         ship_size: Please select a Ship size
       equipment:
         backpack_compatibility: 背包兼容性
-        core_compatibility: Core compatibility
-        equipment_type: Please select a Type
+        core_compatibility: 核心兼容性
+        equipment_type: 请选择类型
         item_type: 请选择物品类型
-        slot: Please select a Slot
+        slot: 请选择插槽
         weapon_class: Please select a Weapon Class
       models:
         dock_size: Please select a Dock size

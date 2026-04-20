@@ -22,9 +22,9 @@ zh-CN:
       overview: 索引
     model_module_packages: 模块包
     models: 型号
-    models_name_diff: Different RSI Name
-    models_price_diff: Outdated Pledge Price
-    otp: Two Factor Auth
+    models_name_diff: 不同的 RSI 名称
+    models_price_diff: 过时的质押价格
+    otp: 两步验证
     pghero: PGHero
     features: 功能
     users: 用户

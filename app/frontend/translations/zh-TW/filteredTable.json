@@ -5,7 +5,7 @@
         "unselect": "Unselect all Selected"
       },
       "labels": {
-        "selected": "%{count} Selected"
+        "selected": "%{count} 已選擇"
       },
       "empty": {
         "info": "We could not find any Records."

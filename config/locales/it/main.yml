@@ -22,9 +22,9 @@ it:
       overview: Indice
     model_module_packages: Pacchetti di moduli
     models: Modelli
-    models_name_diff: Different RSI Name
-    models_price_diff: Outdated Pledge Price
-    otp: Two Factor Auth
+    models_name_diff: Nome RSI diverso
+    models_price_diff: Prezzo Pledge obsoleto
+    otp: Auth a due fattori
     pghero: PGHero
     features: Funzionalità
     users: Utenti

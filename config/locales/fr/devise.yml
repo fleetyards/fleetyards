@@ -18,19 +18,19 @@ fr:
       not_found_in_database: Identifiants invalides.
       two_factor_required: 2FA requis pour la connexion.
       two_factor_invalid: Code 2FA invalide.
-      timeout: Your session expired. Please sign in again to continue.
-      unauthenticated: You need to sign in or sign up before continuing.
-      unconfirmed: You have to confirm your account before continuing.
+      timeout: Votre session a expiré. Veuillez vous reconnecter pour continuer.
+      unauthenticated: Vous devez vous connecter ou vous inscrire avant de continuer.
+      unconfirmed: Vous devez confirmer votre compte avant de continuer.
     mailer:
       confirmation_instructions:
         content:
-          confirm_email_link: Confirm email
+          confirm_email_link: Confirmer l'e-mail
           confirm_email_text: 'To confirm your new email please click on the following
             link:'
           confirm_link: Activer le compte
           confirm_text: 'To activate your Account please click on the following link:'
-          welcome: Welcome %{username}
-        subject: Confirmation instructions
+          welcome: Bienvenue %{username}
+        subject: Instructions de confirmation
       email_changed:
         content:
           text_confirmed: We're contacting you to notify you that your email has been
@@ -42,16 +42,16 @@ fr:
           text: We're contacting you to notify you that your password has been changed.
       reset_password_instructions:
         content:
-          change_link: Change my Password
+          change_link: Changer mon mot de passe
           first_text: Someone has requested a link to change your password, and you
             can do this through the link below.
           hello: Bonjour
           second_text: If you didn't request this, please ignore this email.
           third_text: Your password won't change until you access the link above and
             create a new one.
-        subject: Reset password instructions
+        subject: Instructions de réinitialisation du mot de passe
       unlock_instructions:
-        subject: Unlock Instructions
+        subject: Instructions de déverrouillage
     omniauth:
       provider:
         discord: Discord
@@ -73,7 +73,7 @@ fr:
           Account.
     otp:
       backup_codes: Générer des codes de secours
-      backup_explain: Copy the Backup Codes and keep them save and secure.
+      backup_explain: Copiez les codes de secours et conservez-les en lieu sûr.
       disable: Désactiver
       disable_explain: Pour désactiver l'authentification à deux facteurs, il suffit
         d'entrer un code valide.
@@ -98,17 +98,17 @@ fr:
       no_token: You can't access this page without coming from a password reset email.
         If you do come from a password reset email, please make sure you used the
         full URL provided.
-      send_instructions: You will receive an email with instructions about how to
-        reset your password in a few minutes.
+      send_instructions: Vous recevrez un e-mail avec des instructions pour réinitialiser
+        votre mot de passe dans quelques minutes.
       send_paranoid_instructions: If your email address exists in our database, you
         will receive a password recovery link at your email address in a few minutes.
-      update_failure: Your password could not be updated.
-      updated: Your password was changed successfully. You are now signed in.
-      updated_not_active: Your password was changed successfully.
+      update_failure: Votre mot de passe n'a pas pu être mis à jour.
+      updated: Votre mot de passe a été changé avec succès. Vous êtes maintenant connecté.
+      updated_not_active: Votre mot de passe a été changé avec succès.
     registrations:
       destroyed: Bye! Your account was successfully cancelled. We hope to see you
         again soon.
-      signed_up: Welcome! You have signed up successfully.
+      signed_up: Bienvenue ! Vous vous êtes inscrit avec succès.
       signed_up_but_inactive: You have signed up successfully. However, we could not
         sign you in because your account is not yet activated.
       signed_up_but_locked: You have signed up successfully. However, we could not
@@ -118,12 +118,12 @@ fr:
       update_needs_confirmation: You updated your account successfully, but we need
         to verify your new email address. Please check your email and click on the
         confirm link to finalize confirming your new email address.
-      updated: You updated your account successfully.
+      updated: Vous avez mis à jour votre compte avec succès.
     sessions:
       failure:
-        jwt: JWT Invalid. Please Login.
-      signed_in: Signed in successfully.
-      signed_out: Signed out successfully.
+        jwt: JWT invalide. Veuillez vous connecter.
+      signed_in: Connecté avec succès.
+      signed_out: Déconnecté avec succès.
     unlocks:
       send_instructions: You will receive an email with instructions about how to
         unlock your account in a few minutes.

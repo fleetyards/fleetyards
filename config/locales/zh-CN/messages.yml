@@ -26,10 +26,10 @@ zh-CN:
       success: Loaner Upload successfull.
     record_not_found:
       base: No Entry found
-      fleet: No Fleet found
-      fleet_membership: No Fleet Member found
+      fleet: 未找到舰队
+      fleet_membership: 未找到舰队成员
       user: No User found
-      invite: No Invite found
+      invite: 未找到邀请
       model: No Model found
     reload:
       started: "%{resource} 重载已开始。"
@@ -44,7 +44,7 @@ zh-CN:
       success: 账户验证成功。
     signup:
       already_signed_in: 您已登录。
-      username_invalid: Username is invalid.
+      username_invalid: 用户名无效。
       reserved_username: The Username is reserved/forbidden on FleetYards.net. Please
         choose something else!
       blocked: You have been blocked from FleetYards.net.<br>This can have multiple
@@ -64,9 +64,9 @@ zh-CN:
       sent: 确认链接已发送到您的电子邮件。
       notAllowed: Email confirmation is only available for OAuth accounts.
     hangar_import:
-      no_data: No Data found to import
+      no_data: 未找到要导入的数据
     hangar_sync:
-      no_data: No Data found to sync
+      no_data: 未找到要同步的数据
       already_running: 机库同步已在进行中
     user:
       requires_access_confirmation: 访问确认待处理

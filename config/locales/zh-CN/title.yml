@@ -20,7 +20,7 @@ zh-CN:
       fleet_settings_roles: "%{fleet} 角色"
       fleet_stats: "%{fleet} 统计"
       fleets: 舰队
-      fleets_add: Create new Fleet
+      fleets_add: 创建新舰队
       fleets_invites: 舰队邀请
       fleets_preview: 舰队预览
       hangar: 我的机库
@@ -39,9 +39,9 @@ zh-CN:
       public_wishlist: "%{user} 的愿望清单"
       roadmap: 路线图
       roadmap_changes: 路线图变更
-      roadmap_progress-tracker: Progress Tracker
+      roadmap_progress-tracker: 进度追踪
       roadmap_ships: 飞船路线图
-      search: Search Results
+      search: 搜索结果
       settings: 设置
       settings_account: 账户
       settings_change-password: 修改密码
