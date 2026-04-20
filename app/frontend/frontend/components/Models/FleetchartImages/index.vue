@@ -146,15 +146,15 @@ onMounted(() => {
   <div v-if="hasImages" class="fleetchart-views">
     <div>
       <img
-        v-if="fleetchartImageTop"
-        :src="fleetchartImageTop"
+        v-if="fleetchartImageAngled"
+        :src="fleetchartImageAngled"
         :width="(length > beam ? length : beam) * 1.2"
       />
     </div>
     <div>
       <img
-        v-if="fleetchartImageAngled"
-        :src="fleetchartImageAngled"
+        v-if="fleetchartImageTop"
+        :src="fleetchartImageTop"
         :width="length"
       />
     </div>
