@@ -92,7 +92,6 @@ gem "rack-rewrite"
 gem "lograge"
 
 gem "pry-rails"
-gem "readline-ext"
 
 gem "bootsnap", ">= 1.1.0", require: false
 
