@@ -6,6 +6,9 @@ class BackfillModuleCargoHolds < ActiveRecord::Migration[7.2]
       next if mod.cargo_holds.blank?
 
       mod.update_cargo_holds_db
+
+      total = mod.cargo_holds.sum { |h| h["capacity"]&.to_f || 0 }
+      mod.update_column(:cargo, total) if mod.cargo != total
     end
   end
 

@@ -157,23 +157,37 @@ const modulesWithCargo = computed(() =>
   availableModules.value.filter((m) => m.cargoHolds?.length),
 );
 
-const selectedModuleIds = ref<Set<string>>(new Set());
+const initialModuleSlugs = route.query.modules
+  ? (route.query.modules as string).split(",")
+  : [];
+const selectedModuleSlugs = ref<Set<string>>(new Set(initialModuleSlugs));
 
-const toggleModule = (moduleId: string) => {
-  const next = new Set(selectedModuleIds.value);
-  if (next.has(moduleId)) {
-    next.delete(moduleId);
+const syncModulesToUrl = () => {
+  const query = { ...route.query };
+  if (selectedModuleSlugs.value.size > 0) {
+    query.modules = [...selectedModuleSlugs.value].join(",");
   } else {
-    next.add(moduleId);
+    delete query.modules;
   }
-  selectedModuleIds.value = next;
+  void router.replace({ query });
+};
+
+const toggleModule = (moduleSlug: string) => {
+  const next = new Set(selectedModuleSlugs.value);
+  if (next.has(moduleSlug)) {
+    next.delete(moduleSlug);
+  } else {
+    next.add(moduleSlug);
+  }
+  selectedModuleSlugs.value = next;
+  syncModulesToUrl();
   fillGreedy();
 };
 
 const combinedCargoHolds = computed(() => {
   const base = selectedModel.value?.cargoHolds || [];
   const moduleCargo = availableModules.value
-    .filter((m) => selectedModuleIds.value.has(m.id))
+    .filter((m) => m.slug && selectedModuleSlugs.value.has(m.slug))
     .flatMap((m) => m.cargoHolds || []);
   return [...base, ...moduleCargo];
 });
@@ -197,6 +211,12 @@ watch(selectedModel, (model) => {
   }
 });
 
+watch(modulesData, () => {
+  if (selectedModuleSlugs.value.size > 0) {
+    fillGreedy();
+  }
+});
+
 const containerFilterVersion = ref(0);
 
 const filterKey = computed(
@@ -208,9 +228,11 @@ const applyContainerFilter = () => {
   containerFilterVersion.value++;
   selectedSlug.value = undefined;
   selectedModel.value = undefined;
+  selectedModuleSlugs.value = new Set();
 
   const query = { ...route.query };
   delete query.ship;
+  delete query.modules;
   void router.replace({ query });
 };
 
@@ -218,9 +240,11 @@ const toggleHangarOnly = () => {
   hangarOnly.value = !hangarOnly.value;
   selectedSlug.value = undefined;
   selectedModel.value = undefined;
+  selectedModuleSlugs.value = new Set();
 
   const query = { ...route.query };
   delete query.ship;
+  delete query.modules;
   void router.replace({ query });
 };
 
@@ -230,15 +254,17 @@ const resetFilters = () => {
   clearContainers();
   selectedSlug.value = undefined;
   selectedModel.value = undefined;
+  selectedModuleSlugs.value = new Set();
 
   const query = { ...route.query };
   delete query.ship;
+  delete query.modules;
   void router.replace({ query });
 };
 
 const onModelSelect = (value: ValueType<Model> | undefined) => {
   selectedSlug.value = (value as string) || undefined;
-  selectedModuleIds.value = new Set();
+  selectedModuleSlugs.value = new Set();
   if (!value) {
     selectedModel.value = undefined;
   }
@@ -249,6 +275,7 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
   } else {
     delete query.ship;
   }
+  delete query.modules;
   void router.replace({ query });
 };
 </script>
@@ -347,9 +374,9 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
             v-for="mod in modulesWithCargo"
             :key="mod.id"
             :size="BtnSizesEnum.SMALL"
-            :active="selectedModuleIds.has(mod.id)"
+            :active="!!mod.slug && selectedModuleSlugs.has(mod.slug)"
             inline
-            @click="toggleModule(mod.id)"
+            @click="mod.slug && toggleModule(mod.slug)"
           >
             {{ mod.name }}
           </Btn>
