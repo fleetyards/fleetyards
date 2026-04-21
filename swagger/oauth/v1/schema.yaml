@@ -7,7 +7,7 @@ info:
     name: GNU General Public License v3.0
     url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
 servers:
-- url: http://localhost:3000/oauth
+- url: http://fleetyards.test/oauth
   description: Dev Server
 - url: https://fleetyards.net/oauth
   description: Production Server
