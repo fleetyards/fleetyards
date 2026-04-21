@@ -11,6 +11,7 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
       curl \
       imagemagick \
+      libjemalloc2 \
       libcurl4 \
       libpq5 \
       libvips42 \
@@ -19,6 +20,9 @@ RUN apt-get update -qq && \
       shared-mime-info \
       postgresql-client \
     && rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Use jemalloc for better memory allocation performance
+ENV LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2
 
 # Set production environment
 ARG RAILS_ENV="production"
