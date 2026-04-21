@@ -11,6 +11,29 @@ module Maintenance
         {position: 2, x: 6.25, y: 0, z: 0},
         {position: 3, x: 6.25, y: 0, z: 3.75}
       ],
+      "misc-hull-b" => [
+        # Hull-B: 16 holds in diamond pattern, 2 sections (front/rear)
+        # Each hold: 2.5x10.0x2.5. Diamond stagger: 1 SCU inset on narrow rows
+        # Gaps: 0.5 SCU within quadrant, 2 SCU vertical / 5 SCU horizontal between quadrants
+        # Section 1 — front (y=0)
+        {position: 1, x: 0.0, y: 0.0, z: 8.125},             # top front left lower (wide)
+        {position: 2, x: 1.25, y: 0.0, z: 11.25},            # top front left upper (narrow)
+        {position: 5, x: 1.25, y: 0.0, z: 0.0},              # bottom front left lower (narrow)
+        {position: 6, x: 0.0, y: 0.0, z: 3.125},             # bottom front left upper (wide)
+        {position: 7, x: 7.5, y: 0.0, z: 0.0},               # bottom front right lower (narrow)
+        {position: 8, x: 8.75, y: 0.0, z: 3.125},            # bottom front right upper (wide)
+        {position: 12, x: 8.75, y: 0.0, z: 8.125},           # top front right lower (wide)
+        {position: 13, x: 7.5, y: 0.0, z: 11.25},            # top front right upper (narrow)
+        # Section 2 — rear (y=11.25)
+        {position: 0, x: 8.75, y: 11.25, z: 3.125},          # bottom rear right upper (wide)
+        {position: 3, x: 0.0, y: 11.25, z: 8.125},           # top rear left lower (wide)
+        {position: 4, x: 7.5, y: 11.25, z: 11.25},           # top rear right upper (narrow)
+        {position: 9, x: 1.25, y: 11.25, z: 0.0},            # bottom rear left lower (narrow)
+        {position: 10, x: 0.0, y: 11.25, z: 3.125},          # bottom rear left upper (wide)
+        {position: 11, x: 7.5, y: 11.25, z: 0.0},            # bottom rear right lower (narrow)
+        {position: 14, x: 1.25, y: 11.25, z: 11.25},         # top rear left upper (narrow)
+        {position: 15, x: 8.75, y: 11.25, z: 8.125}          # top rear right lower (wide)
+      ],
       "misc-hull-c" => [
         # Hull-C: 16 holds in + cross pattern, 2 sections (fore/aft)
         # Positions are stable after sort_by(&:sc_name) fix in extract_cargo_holds
