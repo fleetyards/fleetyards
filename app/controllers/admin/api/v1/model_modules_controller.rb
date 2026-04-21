@@ -30,7 +30,9 @@ module Admin
               ModuleHardpoint.find_or_create_by!(
                 model_id: params[:model_id],
                 model_module_id: @model_module.id
-              )
+              ) do |mh|
+                mh.slot = params[:slot]
+              end
             end
 
             render :show, status: :created
@@ -84,7 +86,9 @@ module Admin
           ModuleHardpoint.find_or_create_by!(
             model_id: model.id,
             model_module_id: @model_module.id
-          )
+          ) do |mh|
+            mh.slot = params[:slot]
+          end
 
           render :show, status: :ok
         end

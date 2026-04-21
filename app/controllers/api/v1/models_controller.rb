@@ -222,6 +222,11 @@ module Api
           .order(name: :asc)
           .page(params[:page])
           .per(per_page(ModelModule))
+
+        @module_slots = model.module_hardpoints
+          .where(model_module_id: @model_modules.map(&:id))
+          .pluck(:model_module_id, :slot)
+          .to_h
       end
 
       def module_packages

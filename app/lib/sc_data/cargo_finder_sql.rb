@@ -8,20 +8,38 @@ module ScData
 
     CARGO_CONTAINER_DIMENSIONS = CargoFinder::CARGO_CONTAINER_DIMENSIONS
 
-    # SQL condition matching cargo holds belonging to a model directly OR via its modules
+    # SQL condition matching cargo holds belonging to a model directly OR via its modules.
+    # For modules with slot data, only includes the highest-cargo module per slot.
     CARGO_HOLDS_FOR_MODEL_SQL = <<~SQL.squish
       (cargo_holds.parent_type = 'Model' AND cargo_holds.parent_id = models.id)
       OR (cargo_holds.parent_type = 'ModelModule' AND cargo_holds.parent_id IN (
-        SELECT mh.model_module_id FROM module_hardpoints mh WHERE mh.model_id = models.id
+        SELECT best.model_module_id FROM module_hardpoints best
+        INNER JOIN model_modules bmm ON bmm.id = best.model_module_id
+        WHERE best.model_id = models.id
+          AND best.model_module_id = (
+            SELECT mh2.model_module_id FROM module_hardpoints mh2
+            INNER JOIN model_modules mm2 ON mm2.id = mh2.model_module_id
+            WHERE mh2.model_id = models.id
+              AND COALESCE(mh2.slot, mh2.id::text) = COALESCE(best.slot, best.id::text)
+            ORDER BY COALESCE(mm2.cargo, 0) DESC
+            LIMIT 1
+          )
       ))
     SQL
 
-    # SQL subquery for total cargo including module cargo
+    # SQL subquery for total cargo including module cargo (slot-aware).
+    # Groups modules by slot and takes MAX(cargo) per slot to avoid counting
+    # mutually exclusive modules (e.g. Retaliator front cargo vs torpedo bay).
+    # Modules without a slot are treated as independent (no grouping).
     MODULE_CARGO_SQL = <<~SQL.squish
       COALESCE((
-        SELECT SUM(mm.cargo) FROM model_modules mm
-        INNER JOIN module_hardpoints mh ON mh.model_module_id = mm.id
-        WHERE mh.model_id = models.id AND mm.cargo IS NOT NULL AND mm.cargo > 0
+        SELECT SUM(max_cargo_per_slot) FROM (
+          SELECT COALESCE(mh.slot, mh.id::text) AS slot_key, MAX(mm.cargo) AS max_cargo_per_slot
+          FROM model_modules mm
+          INNER JOIN module_hardpoints mh ON mh.model_module_id = mm.id
+          WHERE mh.model_id = models.id AND mm.cargo IS NOT NULL AND mm.cargo > 0
+          GROUP BY slot_key
+        ) slot_groups
       ), 0)
     SQL
 
@@ -183,9 +201,11 @@ module ScData
       results.sort_by { |r| -r[:remaining_capacity] }.take(limit)
     end
 
-    # All cargo holds for a model: its own + those from linked modules
+    # All cargo holds for a model: its own + those from the best-cargo module per slot.
+    # For slots with multiple modules, picks the one with the highest cargo value.
+    # Modules without a slot are treated as independent.
     def self.all_cargo_holds_for(model)
-      module_ids = model.module_hardpoints.pluck(:model_module_id)
+      module_ids = best_module_ids_per_slot(model)
 
       holds = model.cargo_holds_db.ordered.to_a
 
@@ -194,6 +214,18 @@ module ScData
       end
 
       holds
+    end
+
+    # Returns one module_id per slot: the module with the highest cargo value.
+    def self.best_module_ids_per_slot(model)
+      hardpoints = model.module_hardpoints.includes(:model_module).to_a
+      return [] if hardpoints.empty?
+
+      hardpoints
+        .group_by { |mh| mh.slot || mh.id }
+        .map { |_slot, mhs| mhs.max_by { |mh| mh.model_module&.cargo.to_f } }
+        .map(&:model_module_id)
+        .compact
     end
   end
 end

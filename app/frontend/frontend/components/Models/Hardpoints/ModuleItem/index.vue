@@ -57,6 +57,15 @@ const slotPosition = computed(() => {
 });
 
 const compatibleModules = computed(() => {
+  const hpName = hardpoint.value.name || "";
+
+  // Prefer slot-based filtering: match modules whose slot matches this hardpoint's name
+  const slotFiltered = modelModules.value.filter((m) => m.slot === hpName);
+  if (slotFiltered.length > 0) {
+    return slotFiltered;
+  }
+
+  // Fallback: keyword-based heuristic for modules without slot data
   if (!slotPosition.value || modelModules.value.length <= 1) {
     return modelModules.value;
   }

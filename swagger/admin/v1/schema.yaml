@@ -8407,6 +8407,10 @@ components:
           type: string
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
+        slot:
+          type: string
+          description: Module slot identifier (hardpoint sc_name). Present when fetched
+            via a model's modules endpoint.
         hardpoints:
           type: array
           items:
@@ -8427,6 +8431,20 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/Model"
+        moduleHardpoints:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              modelId:
+                type: string
+                format: uuid
+              slot:
+                type: string
+            additionalProperties: false
       additionalProperties: false
       required:
       - id

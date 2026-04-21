@@ -174,7 +174,8 @@ class ModulesImporter
 
       ModuleHardpoint.create!(
         model_id: model.id,
-        model_module_id: model_module.id
+        model_module_id: model_module.id,
+        slot: ModuleHardpoint.derive_slot(model, model_module)
       )
 
       {

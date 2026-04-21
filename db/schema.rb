@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_21_211439) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -706,7 +706,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_180000) do
     t.datetime "created_at", precision: nil, null: false
     t.uuid "model_id"
     t.uuid "model_module_id"
+    t.string "slot"
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["model_id", "slot"], name: "index_module_hardpoints_on_model_id_and_slot"
   end
 
   create_table "notification_preferences", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
