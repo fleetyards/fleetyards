@@ -88,7 +88,7 @@ const openModuleModal = () => {
       import("@/frontend/components/Models/Hardpoints/ModuleItem/Modal/index.vue"),
     props: {
       modules: compatibleModules.value,
-      selectedModuleId: selectedModule.value?.id,
+      selectedModuleSlug: selectedModule.value?.slug,
       onSelect: onModuleSelect,
     },
   });

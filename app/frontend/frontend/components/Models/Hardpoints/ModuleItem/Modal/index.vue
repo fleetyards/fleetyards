@@ -23,7 +23,7 @@ import fallbackImage from "@/images/fallback/store_image.webp";
 
 type Props = {
   modules: ModelModule[];
-  selectedModuleId?: string;
+  selectedModuleSlug?: string;
   onSelect: (mod: ModelModule | null) => void;
 };
 
@@ -63,7 +63,7 @@ const clearModule = () => {
   comlink.emit("close-modal");
 };
 
-const isSelected = (mod: ModelModule) => mod.id === props.selectedModuleId;
+const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
 </script>
 
 <template>
@@ -109,7 +109,7 @@ const isSelected = (mod: ModelModule) => mod.id === props.selectedModuleId;
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          v-if="selectedModuleId"
+          v-if="selectedModuleSlug"
           :size="BtnSizesEnum.SMALL"
           :inline="true"
           @click="clearModule"

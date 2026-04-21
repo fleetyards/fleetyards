@@ -62,7 +62,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name availability media createdAt updatedAt]
+            required: %w[id name slug availability media createdAt updatedAt]
           })
         end
       end

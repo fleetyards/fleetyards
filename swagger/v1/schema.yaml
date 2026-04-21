@@ -10,7 +10,7 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 servers:
-- url: http://api.fleetyards.test/v1
+- url: http://localhost:3000/api/v1
   description: Dev Server
 - url: https://api.fleetyards.net/v1
   description: Production Server
@@ -9341,6 +9341,7 @@ components:
       required:
       - id
       - name
+      - slug
       - availability
       - media
       - createdAt

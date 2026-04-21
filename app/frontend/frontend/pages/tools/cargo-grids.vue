@@ -187,7 +187,7 @@ const toggleModule = (moduleSlug: string) => {
 const combinedCargoHolds = computed(() => {
   const base = selectedModel.value?.cargoHolds || [];
   const moduleCargo = availableModules.value
-    .filter((m) => m.slug && selectedModuleSlugs.value.has(m.slug))
+    .filter((m) => selectedModuleSlugs.value.has(m.slug))
     .flatMap((m) => m.cargoHolds || []);
   return [...base, ...moduleCargo];
 });
@@ -374,9 +374,9 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
             v-for="mod in modulesWithCargo"
             :key="mod.id"
             :size="BtnSizesEnum.SMALL"
-            :active="!!mod.slug && selectedModuleSlugs.has(mod.slug)"
+            :active="selectedModuleSlugs.has(mod.slug)"
             inline
-            @click="mod.slug && toggleModule(mod.slug)"
+            @click="toggleModule(mod.slug)"
           >
             {{ mod.name }}
           </Btn>
