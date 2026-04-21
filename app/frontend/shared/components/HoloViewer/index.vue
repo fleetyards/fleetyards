@@ -50,6 +50,21 @@ const { displayAlert } = useAppNotifications();
 
 const mobile = useMobile();
 
+const webglSupported = ref(true);
+
+onMounted(() => {
+  try {
+    const canvas = document.createElement("canvas");
+    const gl =
+      canvas.getContext("webgl2") || canvas.getContext("webgl");
+    if (!gl) {
+      webglSupported.value = false;
+    }
+  } catch {
+    webglSupported.value = false;
+  }
+});
+
 const dpr = computed(() =>
   mobile.value
     ? Math.min(window.devicePixelRatio, 1.5)
@@ -193,6 +208,7 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
 
 const handleRenderError = (error: Error) => {
   console.error("HoloViewer render error:", error);
+  webglSupported.value = false;
 };
 
 const handleModelError = (error: unknown) => {
@@ -286,9 +302,14 @@ defineExpose({
       </Btn>
     </BtnGroup>
 
-    <Loader v-if="loading" :loading="loading" :progress="progress" />
+    <Loader v-if="loading && webglSupported" :loading="loading" :progress="progress" />
     <input v-if="debug" v-model="modelColor" type="color" />
+    <div v-if="!webglSupported" class="holo-viewer__fallback">
+      <i class="fa-light fa-cube" />
+      <p>{{ t("messages.holoViewer.webglNotSupported") }}</p>
+    </div>
     <TresCanvas
+      v-else
       :clear-alpha="0"
       :shadows="!mobile"
       :dpr="dpr"

@@ -256,7 +256,8 @@
       "holoViewer": {
         "modelLoader": {
           "failure": "We could not load the requested 3D model! Please try again later."
-        }
+        },
+        "webglNotSupported": "3D viewer is not available on this device."
       },
       "cargoGridViewer": {
         "noCargoHolds": "This ship has no cargo holds."

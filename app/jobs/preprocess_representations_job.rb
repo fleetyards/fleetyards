@@ -12,5 +12,7 @@ class PreprocessRepresentationsJob
     ActiveStorageVariants::REPRESENTATION_SIZES.each_value do |transformations|
       blob.representation(transformations).processed
     end
+  rescue ActiveStorage::FileNotFoundError
+    Rails.logger.warn "PreprocessRepresentationsJob: blob #{blob_id} not found in storage, skipping"
   end
 end

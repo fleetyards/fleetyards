@@ -56,4 +56,24 @@
     opacity: 0;
     transition: opacity $transition-base-speed ease;
   }
+
+  &__fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--body-muted);
+
+    i {
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+  }
 }
