@@ -55,8 +55,7 @@ const webglSupported = ref(true);
 onMounted(() => {
   try {
     const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl2") || canvas.getContext("webgl");
+    const gl = canvas.getContext("webgl2") || canvas.getContext("webgl");
     if (!gl) {
       webglSupported.value = false;
     }
@@ -302,7 +301,11 @@ defineExpose({
       </Btn>
     </BtnGroup>
 
-    <Loader v-if="loading && webglSupported" :loading="loading" :progress="progress" />
+    <Loader
+      v-if="loading && webglSupported"
+      :loading="loading"
+      :progress="progress"
+    />
     <input v-if="debug" v-model="modelColor" type="color" />
     <div v-if="!webglSupported" class="holo-viewer__fallback">
       <i class="fa-light fa-cube" />
