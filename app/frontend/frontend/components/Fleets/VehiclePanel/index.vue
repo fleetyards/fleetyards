@@ -103,6 +103,8 @@ const countLabel = computed(() => {
 const filterManufacturerQuery = (manufacturer: string) => {
   return { manufacturerIn: [manufacturer] };
 };
+
+const route = useRoute();
 </script>
 
 <template>
@@ -136,13 +138,12 @@ const filterManufacturerQuery = (manufacturer: string) => {
     <template #heading-subtitle>
       <router-link
         v-if="model.manufacturer"
-        :to="
-          {
-            query: {
-              q: filterManufacturerQuery(model.manufacturer.slug),
-            },
-          } as any
-        "
+        :to="{
+          query: {
+            ...route.query,
+            ...filterManufacturerQuery(model.manufacturer.slug),
+          },
+        }"
       >
         {{ model.manufacturer.name }}
       </router-link>

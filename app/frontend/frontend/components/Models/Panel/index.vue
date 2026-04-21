@@ -64,6 +64,8 @@ const image = computed(() => {
 
   return fallbackImageJpg;
 });
+
+const route = useRoute();
 </script>
 
 <template>
@@ -98,9 +100,8 @@ const image = computed(() => {
             <router-link
               :to="{
                 query: {
-                  q: filterManufacturerQuery(
-                    model.manufacturer,
-                  ) as unknown as string,
+                  ...route.query,
+                  ...filterManufacturerQuery(model.manufacturer),
                 },
               }"
             >

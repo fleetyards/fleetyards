@@ -21,33 +21,35 @@ withDefaults(defineProps<Props>(), {
 const router = useRouter();
 const route = useRoute();
 
-const filter = async (event: Event, filter: string) => {
+const toArray = (value: string | string[] | undefined): string[] => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return [value];
+};
+
+const filter = async (event: Event, filterSlug: string) => {
   event.preventDefault();
 
-  if (!filter || !route.name) {
+  if (!filterSlug || !route.name) {
     return;
   }
 
-  const query = JSON.parse(JSON.stringify(route.query.q || {}));
+  const currentGroups = toArray(
+    route.query.hangarGroupsIn as string | string[] | undefined,
+  );
+  let hangarGroupsIn: string[];
 
-  if ((query.hangarGroupsIn || []).includes(filter)) {
-    const index = (query.hangarGroupsIn as string[]).findIndex(
-      (item) => item === filter,
-    );
-    if (index > -1) {
-      query.hangarGroupsIn.splice(index, 1);
-    }
+  if (currentGroups.includes(filterSlug)) {
+    hangarGroupsIn = currentGroups.filter((g) => g !== filterSlug);
   } else {
-    if (!query.hangarGroupsIn) {
-      query.hangarGroupsIn = [];
-    }
-    query.hangarGroupsIn.push(filter);
+    hangarGroupsIn = [...currentGroups, filterSlug];
   }
 
   await router.replace({
     name: route.name,
     query: {
-      q: query,
+      ...route.query,
+      hangarGroupsIn: hangarGroupsIn.length ? hangarGroupsIn : undefined,
     },
   });
 };

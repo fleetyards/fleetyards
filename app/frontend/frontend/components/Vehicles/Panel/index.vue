@@ -176,9 +176,8 @@ const shouldHighlight = computed(() => {
           v-if="model.manufacturer"
           :to="{
             query: {
-              q: filterManufacturerQuery(
-                model.manufacturer,
-              ) as unknown as string,
+              ...route.query,
+              ...filterManufacturerQuery(model.manufacturer),
             },
           }"
           class="truncate"
