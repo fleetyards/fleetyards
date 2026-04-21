@@ -75,9 +75,8 @@ const handleCancel = async () => {
   <Transition name="app-confirm-fade">
     <div v-if="visible" class="app-confirm" data-test="confirm-dialog">
       <div class="app-confirm__inner">
-        <div class="app-confirm__text">
-          {{ text }}
-        </div>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="app-confirm__text" v-html="text" />
         <div class="app-confirm__buttons" data-test="confirm-buttons">
           <Btn
             inline
