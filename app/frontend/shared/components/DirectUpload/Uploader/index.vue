@@ -30,6 +30,7 @@ type Props = {
   allowedTypes?: string[];
   allowedSizeMb?: number;
   directUpload?: boolean;
+  inputOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -40,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   allowedTypes: undefined,
   allowedSizeMb: undefined,
   directUpload: false,
+  inputOnly: false,
 });
 
 const { t } = useI18n();
@@ -275,10 +277,11 @@ defineExpose({
     class="direct-upload__uploader"
     :class="{
       'direct-upload__uploader--multiple': multiple,
+      'direct-upload__uploader--input-only': inputOnly,
     }"
   >
     <div
-      v-if="multiple || !files.length"
+      v-if="!inputOnly && (multiple || !files.length)"
       ref="dropzone"
       class="direct-upload__dropzone"
       :class="{
@@ -312,9 +315,12 @@ defineExpose({
       @change="onInputChange"
     />
     <Transition name="fade">
-      <ProgressBar :progress="overallProgress" v-if="isProgressBarVisible" />
+      <ProgressBar
+        :progress="overallProgress"
+        v-if="isProgressBarVisible && !inputOnly"
+      />
     </Transition>
-    <template v-if="!props.directUpload">
+    <template v-if="!props.directUpload && !inputOnly">
       <div v-if="props.multiple" class="direct-upload__preview-files">
         <TransitionGroup name="fade">
           <DirectUploadPreview

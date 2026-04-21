@@ -5,9 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import VueUploadComponent from "vue-upload-component";
-import type { VueUploadItem } from "vue-upload-component";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import DirectUpload, {
+  type FileUpload,
+} from "@/shared/components/DirectUpload/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -31,16 +32,9 @@ const { t } = useI18n();
 const { displayWarning, displayAlert, displaySuccess, displayConfirm } =
   useAppNotifications();
 
-const fileExtensions = "json";
-const acceptedMimeTypes = "application/json";
-
 const disabled = ref(false);
 
-const fileExtensionsList = computed(() => {
-  return fileExtensions.split(",");
-});
-
-const upload = ref<InstanceType<typeof VueUploadComponent> | undefined>();
+const directUpload = ref<InstanceType<typeof DirectUpload>>();
 
 const selectFile = () => {
   disabled.value = true;
@@ -48,7 +42,7 @@ const selectFile = () => {
   displayConfirm({
     text: t("messages.confirm.hangar.import"),
     onConfirm: async () => {
-      upload.value?.$el.querySelector("input").click();
+      directUpload.value?.$el.querySelector("input[type=file]")?.click();
     },
     onClose: () => {
       disabled.value = false;
@@ -56,48 +50,17 @@ const selectFile = () => {
   });
 };
 
-const inputFilter = (
-  newFile: VueUploadItem,
-  oldFile: VueUploadItem,
-  prevent: () => void,
-) => {
-  if (newFile && !oldFile) {
-    if (
-      !fileExtensionsList.value.some((extension) =>
-        newFile.name?.endsWith(extension),
-      )
-    ) {
-      displayAlert({
-        text: t("messages.hangarImport.invalidExtension", {
-          extensions: fileExtensions,
-        }),
-      });
-      return prevent();
-    }
-  }
-  if (newFile && (!oldFile || newFile.file !== oldFile.file)) {
-    newFile.url = "";
-    const URL = window.URL || window.webkitURL;
-    if (URL && URL.createObjectURL && newFile.file) {
-      newFile.url = URL.createObjectURL(newFile.file);
-    }
-  }
-
-  return null;
-};
-
 const emit = defineEmits(["finished"]);
 
-const importJson = async (value: VueUploadItem) => {
-  const importFile = (value && value[0]) || {};
-
-  if (!importFile || !importFile.file) {
+const onUploadDone = async (files: FileUpload[]) => {
+  if (!files.length || !files[0].blob) {
+    disabled.value = false;
     return;
   }
 
   try {
     const result = await hangarImport({
-      import: importFile.file,
+      import: files[0].blob.signed_id,
     });
 
     if (result.missing.length) {
@@ -121,6 +84,7 @@ const importJson = async (value: VueUploadItem) => {
     });
   }
 
+  directUpload.value?.clear();
   disabled.value = false;
 };
 </script>
@@ -136,14 +100,14 @@ const importJson = async (value: VueUploadItem) => {
     <i class="fa-light fa-upload" />
     <span>
       {{ t("actions.import") }}
-      <VueUploadComponent
-        ref="upload"
-        name="uploadAvatar"
-        :extensions="fileExtensions"
-        :accept="acceptedMimeTypes"
+      <DirectUpload
+        ref="directUpload"
         class="hangar-importer"
-        @input="importJson"
-        @input-filter="inputFilter"
+        :multiple="false"
+        :allowed-types="['application/json']"
+        :direct-upload="true"
+        :input-only="true"
+        @upload:done="onUploadDone"
       />
     </span>
   </Btn>

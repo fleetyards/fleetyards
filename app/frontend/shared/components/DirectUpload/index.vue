@@ -24,6 +24,7 @@ type Props = {
   allowedTypes?: string[];
   allowedSizeMb?: number;
   directUpload?: boolean;
+  inputOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   allowedTypes: undefined,
   allowedSizeMb: undefined,
   directUpload: false,
+  inputOnly: false,
 });
 
 const uploader = ref<InstanceType<typeof DirectUploadUploader>>();
@@ -100,6 +102,7 @@ defineExpose({
         :allowed-types="allowedTypes"
         :allowed-size-mb="allowedSizeMb"
         :direct-upload="directUpload"
+        :input-only="inputOnly"
         @upload:done="handleUploadDone"
         @upload:progress="handleUploadProgress"
         @upload:start="handleUploadStart"

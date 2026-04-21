@@ -9,6 +9,12 @@
     padding: 10px;
     display: flex;
 
+    &--input-only {
+      min-height: 0;
+      height: auto;
+      padding: 0;
+    }
+
     &:hover {
       .direct-upload__dropzone {
         opacity: 1;
