@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import draggable from "vuedraggable";
+import Sortable from "sortablejs";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -37,14 +37,10 @@ const { t } = useI18n();
 
 const mobile = useMobile();
 
-onMounted(() => {
-  groups.value = props.hangarGroups;
-});
-
 watch(
   () => props.hangarGroups,
-  () => {
-    groups.value = props.hangarGroups;
+  (newGroups) => {
+    groups.value = newGroups;
   },
 );
 
@@ -96,31 +92,54 @@ const isInverted = (group: string) => {
   return toArray(filters.value.hangarGroupsNotIn).includes(group);
 };
 
-const drag = ref(false);
-
 const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
 
 const { displayAlert } = useAppNotifications();
 
 const sortMutation = useHangarGroupSortMutation();
 
-watch(
-  () => groups.value,
-  async () => {
-    if (groups.value !== props.hangarGroups) {
-      await updateSort();
-    }
-  },
-);
+const sortableContainer = ref<HTMLElement | null>(null);
+let sortableInstance: Sortable | null = null;
 
-const sortIndex = computed(() => {
-  return groups.value.map((item) => item.id);
+const initSortable = () => {
+  if (sortableInstance) {
+    sortableInstance.destroy();
+  }
+
+  if (!sortableContainer.value) return;
+
+  sortableInstance = Sortable.create(sortableContainer.value, {
+    animation: 150,
+    onEnd: async () => {
+      const items = sortableContainer.value?.querySelectorAll("[data-group-id]");
+      if (!items) return;
+
+      const newOrder = Array.from(items).map((el) =>
+        el.getAttribute("data-group-id"),
+      );
+      groups.value = newOrder
+        .map((id) => groups.value.find((g) => g.id === id))
+        .filter(Boolean) as (HangarGroup | HangarGroupPublic)[];
+
+      await updateSort();
+    },
+  });
+};
+
+onMounted(() => {
+  groups.value = props.hangarGroups;
+  nextTick(() => initSortable());
+});
+
+onUnmounted(() => {
+  sortableInstance?.destroy();
 });
 
 const updateSort = async () => {
+  const sorting = groups.value.map((item) => item.id);
   await sortMutation
     .mutateAsync({
-      data: { sorting: sortIndex.value },
+      data: { sorting },
     })
     .catch((error) => {
       displayAlert({
@@ -205,38 +224,32 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
     <h3 v-if="groups.length || editable" class="label-title">
       {{ t("labels.groups") }}:
     </h3>
-    <draggable
-      v-model="groups"
-      group="hangarGroups"
-      item-key="id"
-      @start="drag = true"
-      @end="drag = false"
-    >
-      <template #item="{ element: group }">
-        <a
-          :key="group.id"
-          :class="{
-            active: isActive(group.slug),
-            inverted: isInverted(group.slug),
-          }"
-          class="label label-link fade-list-item"
-          @click.exact="filterGroup(group.slug)"
-          @click.right.prevent="openGroupModal(group)"
-          @mouseenter="highlight(group)"
-          @mouseleave="highlight()"
-        >
-          <span class="label-inner">
-            <span
-              :style="{
-                'background-color': group.color,
-              }"
-              class="label-color"
-            />
-            {{ group.name }}: {{ groupCount(group).count }}
-          </span>
-        </a>
-      </template>
-    </draggable>
+    <div ref="sortableContainer" class="labels-sortable">
+      <a
+        v-for="group in groups"
+        :key="group.id"
+        :data-group-id="group.id"
+        :class="{
+          active: isActive(group.slug),
+          inverted: isInverted(group.slug),
+        }"
+        class="label label-link fade-list-item"
+        @click.exact="filterGroup(group.slug)"
+        @click.right.prevent="openGroupModal(group)"
+        @mouseenter="highlight(group)"
+        @mouseleave="highlight()"
+      >
+        <span class="label-inner">
+          <span
+            :style="{
+              'background-color': group.color,
+            }"
+            class="label-color"
+          />
+          {{ group.name }}: {{ groupCount(group).count }}
+        </span>
+      </a>
+    </div>
     <a
       v-if="editable"
       v-tooltip="t('actions.addGroup')"
