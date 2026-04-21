@@ -49,7 +49,8 @@ const errorType = computed(() => {
 
 const loading = computed(() => {
   return (
-    (props.asyncStatus.isFetching?.value ||
+    (props.asyncStatus.isPending?.value ||
+      props.asyncStatus.isFetching?.value ||
       props.asyncStatus.isLoading?.value) &&
     !props.asyncStatus.isRefetching?.value
   );

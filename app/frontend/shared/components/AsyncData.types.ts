@@ -4,6 +4,7 @@ import { type AxiosError } from "axios";
 export type AsyncStatus = {
   fetchStatus: Ref<string>;
   isError: Ref<boolean>;
+  isPending: Ref<boolean>;
   isLoading: Ref<boolean>;
   isFetching: Ref<boolean>;
   isRefetching: Ref<boolean>;
