@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.10.0](https://github.com/fleetyards/fleetyards/compare/v6.9.5...v6.10.0) (2026-04-21)
+
+
+### Features
+
+* **ci:** Upload Vite assets to Bunny Storage before deploy ([035791f](https://github.com/fleetyards/fleetyards/commit/035791f7c56b2973b0ff9f96ed0a70eee07ab7ec))
+
+
+### Bug Fixes
+
+* render HTML in confirm dialog text ([568185f](https://github.com/fleetyards/fleetyards/commit/568185f3422e99a4c8732f22a1369c62e9e47011))
+* replace vue-upload-component with DirectUpload in hangar import ([9dfe9fd](https://github.com/fleetyards/fleetyards/commit/9dfe9fd15b105376d9efda5a7c744bce289c2a05))
+* replace vuedraggable with sortablejs for hangar group labels ([7545a44](https://github.com/fleetyards/fleetyards/commit/7545a44305e21937a76d4991b788420763181d3a))
+* resolve eslint errors in hangar group labels sortable ([5e511ac](https://github.com/fleetyards/fleetyards/commit/5e511ac26f05958d7793e30338f7f928b2c19510))
+* write filter params flat to route query instead of nesting under q ([3fd3816](https://github.com/fleetyards/fleetyards/commit/3fd38160dd18e163fdeadb99fd86a7eddf860a60))
+
 ## [6.9.5](https://github.com/fleetyards/fleetyards/compare/v6.9.4...v6.9.5) (2026-04-20)
 
 
