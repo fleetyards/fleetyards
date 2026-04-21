@@ -65,5 +65,5 @@ const loading = computed(() => {
   <slot v-else-if="loading" name="loading">
     <Loader v-if="showSpinner" :loading="true" />
   </slot>
-  <slot v-else name="resolved"></slot>
+  <slot v-else-if="!error" name="resolved"></slot>
 </template>

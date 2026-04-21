@@ -9,6 +9,16 @@ const setupConsumer = (): Consumer | undefined => {
     return undefined;
   }
 
+  try {
+    new URL(window.CABLE_ENDPOINT);
+  } catch {
+    console.warn(
+      "Subscriptions: CABLE_ENDPOINT is not a valid URL:",
+      window.CABLE_ENDPOINT,
+    );
+    return undefined;
+  }
+
   console.info("Subscriptions: Setup consumer on:", window.CABLE_ENDPOINT);
 
   return createConsumer(window.CABLE_ENDPOINT);
