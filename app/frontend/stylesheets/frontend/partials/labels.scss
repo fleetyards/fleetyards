@@ -46,6 +46,7 @@ $innerBorderWidth: 2px;
     .label-inner {
       display: block;
       padding: 3px 6px;
+      white-space: nowrap;
       border-radius: $border-radius-base;
     }
 
