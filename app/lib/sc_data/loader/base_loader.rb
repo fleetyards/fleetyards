@@ -65,7 +65,7 @@ module ScData
       end
 
       def extract_cargo_holds(hardpoints)
-        hardpoints.filter_map do |hardpoint|
+        hardpoints.sort_by(&:sc_name).filter_map do |hardpoint|
           if hardpoint.hardpoints.present?
             extract_cargo_holds(hardpoint.hardpoints)
           else
