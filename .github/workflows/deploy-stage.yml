@@ -17,8 +17,16 @@ jobs:
       packages: write
     secrets: inherit
 
-  deploy:
+  cdn-upload:
     needs: [build]
+    uses: ./.github/workflows/cdn-upload.job.yml
+    with:
+      tag: stage-${{ github.sha }}
+      destination: stage
+    secrets: inherit
+
+  deploy:
+    needs: [cdn-upload]
     uses: ./.github/workflows/deploy.job.yml
     with:
       destination: stage

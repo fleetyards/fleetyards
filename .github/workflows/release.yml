@@ -14,8 +14,16 @@ jobs:
       packages: write
     secrets: inherit
 
-  deploy-to-live:
+  cdn-upload:
     needs: [build]
+    uses: ./.github/workflows/cdn-upload.job.yml
+    with:
+      tag: ${{ github.event.release.tag_name }}
+      destination: live
+    secrets: inherit
+
+  deploy-to-live:
+    needs: [cdn-upload]
     uses: ./.github/workflows/deploy.job.yml
     with:
       destination: live
