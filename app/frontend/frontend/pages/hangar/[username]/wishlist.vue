@@ -64,6 +64,7 @@ const refetch = wishlistQuery.refetch;
 const asyncStatus = {
   fetchStatus: wishlistQuery.fetchStatus,
   isError: wishlistQuery.isError,
+  isPending: wishlistQuery.isPending,
   isLoading: wishlistQuery.isLoading,
   isFetching: wishlistQuery.isFetching,
   isRefetching: wishlistQuery.isRefetching,
