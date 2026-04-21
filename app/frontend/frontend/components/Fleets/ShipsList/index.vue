@@ -355,7 +355,17 @@ const {
             namespace="fleet"
             :loading="loading"
             :download-name="`${fleet.slug}-fleetchart`"
-          />
+          >
+            <template #pagination>
+              <Paginator
+                v-if="fleetVehicles"
+                :query-result-ref="fleetVehicles"
+                :per-page="perPage"
+                :size="BtnSizesEnum.SMALL"
+                :update-per-page="updatePerPage"
+              />
+            </template>
+          </FleetchartApp>
         </template>
         <template #pagination-top>
           <Paginator
