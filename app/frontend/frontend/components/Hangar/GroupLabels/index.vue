@@ -110,8 +110,9 @@ const initSortable = () => {
 
   sortableInstance = Sortable.create(sortableContainer.value, {
     animation: 150,
-    onEnd: async () => {
-      const items = sortableContainer.value?.querySelectorAll("[data-group-id]");
+    onEnd: () => {
+      const items =
+        sortableContainer.value?.querySelectorAll("[data-group-id]");
       if (!items) return;
 
       const newOrder = Array.from(items).map((el) =>
@@ -121,14 +122,14 @@ const initSortable = () => {
         .map((id) => groups.value.find((g) => g.id === id))
         .filter(Boolean) as (HangarGroup | HangarGroupPublic)[];
 
-      await updateSort();
+      void updateSort();
     },
   });
 };
 
 onMounted(() => {
   groups.value = props.hangarGroups;
-  nextTick(() => initSortable());
+  void nextTick(() => initSortable());
 });
 
 onUnmounted(() => {

@@ -20,6 +20,7 @@ jobs:
     with:
       tag: ${{ github.event.release.tag_name }}
       destination: live
+      cleanup: true
     secrets: inherit
 
   deploy-to-live:

@@ -11,6 +11,11 @@ on:
         description: "Deployment destination (live, stage)"
         required: true
         type: string
+      cleanup:
+        description: "Remove assets older than 3 months from storage"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   upload:
@@ -87,3 +92,47 @@ jobs:
           find . -type f -print0 | xargs -0 -P 20 -n 1 /tmp/upload.sh
 
           echo "Upload complete."
+
+      - name: Clean up old assets
+        if: inputs.cleanup
+        env:
+          BUNNY_STORAGE_PASSWORD: ${{ steps.secrets.outputs.password }}
+          BUNNY_STORAGE_ZONE: ${{ steps.secrets.outputs.zone_name }}
+          BUNNY_STORAGE_ENDPOINT: ${{ steps.secrets.outputs.endpoint }}
+        run: |
+          STORAGE_URL="${BUNNY_STORAGE_ENDPOINT}/${BUNNY_STORAGE_ZONE}"
+
+          # List all files in vite/assets/ and find ones older than 3 months
+          curl -sS -H "AccessKey: ${BUNNY_STORAGE_PASSWORD}" \
+            "${STORAGE_URL}/vite/assets/" | \
+            python3 -c "
+          import json, sys
+          from datetime import datetime, timedelta, timezone
+
+          cutoff = datetime.now(timezone.utc) - timedelta(days=90)
+          data = json.load(sys.stdin)
+
+          for f in data:
+              if f.get('IsDirectory'):
+                  continue
+              changed = datetime.fromisoformat(f['LastChanged'].rstrip('Z')).replace(tzinfo=timezone.utc)
+              if changed < cutoff:
+                  print(f['ObjectName'])
+          " > /tmp/old_assets.txt
+
+          COUNT=$(wc -l < /tmp/old_assets.txt | tr -d ' ')
+          echo "Deleting ${COUNT} assets older than 3 months..."
+
+          if [ "$COUNT" -gt 0 ]; then
+            export BUNNY_STORAGE_PASSWORD STORAGE_URL
+            cat > /tmp/delete.sh << 'EOF'
+          #!/bin/bash
+          curl -sSf -X DELETE \
+            -H "AccessKey: ${BUNNY_STORAGE_PASSWORD}" \
+            "${STORAGE_URL}/vite/assets/${1}" > /dev/null
+          EOF
+            chmod +x /tmp/delete.sh
+            cat /tmp/old_assets.txt | xargs -P 20 -n 1 /tmp/delete.sh
+          fi
+
+          echo "Cleanup complete."
