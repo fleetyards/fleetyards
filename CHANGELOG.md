@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.10.1](https://github.com/fleetyards/fleetyards/compare/v6.10.0...v6.10.1) (2026-04-21)
+
+
+### Bug Fixes
+
+* add missing isPending to asyncStatus in public wishlist ([28a24a6](https://github.com/fleetyards/fleetyards/commit/28a24a642ea0169127344409fc6a26a9973f8e6e))
+* handle UnknownFormat and empty multipart errors gracefully ([d529d96](https://github.com/fleetyards/fleetyards/commit/d529d96f62b4dfdb2f55bcb8048f7af118a4fe31))
+* prevent resolved slot render on hidden errors, validate WebSocket URL ([b203c41](https://github.com/fleetyards/fleetyards/commit/b203c41aebf661a1968ad88662dfa4fecc44b82c))
+* show spinner in AsyncData when query is pending ([ad85f05](https://github.com/fleetyards/fleetyards/commit/ad85f058d24fee76086b9433fea6ffa8f1571817))
+* WebGL fallback for HoloViewer, skip missing blobs in preprocessing ([4670a60](https://github.com/fleetyards/fleetyards/commit/4670a606a0d2893e8b12acabbcdaa214a99cd4c2))
+
 ## [6.10.0](https://github.com/fleetyards/fleetyards/compare/v6.9.5...v6.10.0) (2026-04-21)
 
 
