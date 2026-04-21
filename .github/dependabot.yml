@@ -19,6 +19,10 @@ updates:
       - dependencies
       - javascript
     groups:
+      tailwindcss:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
       playwright:
         patterns:
           - "playwright"
