@@ -6443,7 +6443,9 @@ components:
         id:
           type: string
           format: uuid
-        modelId:
+        parentType:
+          type: string
+        parentId:
           type: string
           format: uuid
         name:
@@ -6472,7 +6474,7 @@ components:
         rotation:
           type: integer
           nullable: true
-        model:
+        parent:
           type: object
           properties:
             id:
@@ -6482,10 +6484,10 @@ components:
               type: string
             slug:
               type: string
+              nullable: true
           required:
           - id
           - name
-          - slug
         createdAt:
           type: string
           format: date-time
@@ -6495,7 +6497,8 @@ components:
       additionalProperties: false
       required:
       - id
-      - modelId
+      - parentType
+      - parentId
       - capacityScu
       - dimensionX
       - dimensionY
@@ -6608,7 +6611,9 @@ components:
     CargoHoldQuery:
       type: object
       properties:
-        modelIdEq:
+        parentTypeEq:
+          type: string
+        parentIdEq:
           type: string
           format: uuid
       additionalProperties: false

@@ -27,7 +27,7 @@ module ScData
         subquery = CargoHoldContainerCapacity
           .joins(:cargo_hold)
           .where(container_size_scu: container_size)
-          .where("cargo_holds.model_id = models.id")
+          .where("cargo_holds.parent_type = 'Model' AND cargo_holds.parent_id = models.id")
           .select("COALESCE(SUM(cargo_hold_container_capacities.max_quantity), 0)")
 
         query = query.where(
@@ -121,7 +121,7 @@ module ScData
         models_with_cargo: Model.visible.active.where("cargo > 0").count,
         models_with_cargo_holds: Model.visible.active.joins(:cargo_holds_db).distinct.count,
         total_cargo_holds: CargoHold.count,
-        average_cargo_holds_per_model: CargoHold.group(:model_id).count.values.sum.to_f / CargoHold.distinct.count(:model_id),
+        average_cargo_holds_per_model: CargoHold.where(parent_type: "Model").group(:parent_id).count.values.sum.to_f / CargoHold.where(parent_type: "Model").distinct.count(:parent_id),
         container_size_distribution: CargoHoldContainerCapacity
           .where("max_quantity > 0")
           .group(:container_size_scu)

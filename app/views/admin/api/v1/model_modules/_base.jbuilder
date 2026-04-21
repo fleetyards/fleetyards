@@ -39,4 +39,10 @@ if model_module.manufacturer.present?
   end
 end
 
+json.cargo_holds model_module.cargo_holds
+
+json.hardpoints do
+  json.array! model_module.hardpoints, partial: "api/v1/hardpoints/hardpoint", as: :hardpoint
+end
+
 json.partial! "api/shared/dates", record: model_module

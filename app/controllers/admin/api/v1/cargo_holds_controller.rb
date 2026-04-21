@@ -9,7 +9,7 @@ module Admin
         def index
           authorize! with: ::Admin::CargoHoldPolicy
 
-          @q = authorized_scope(CargoHold.includes(:model)).ransack(cargo_hold_query_params)
+          @q = authorized_scope(CargoHold.includes(:parent)).ransack(cargo_hold_query_params)
 
           @cargo_holds = @q.result
             .order(:name)
@@ -42,7 +42,7 @@ module Admin
 
         private def cargo_hold_query_params
           @cargo_hold_query_params ||= params.permit(q: [
-            :model_id_eq, :sorts
+            :parent_type_eq, :parent_id_eq, :sorts
           ]).fetch(:q, {})
         end
       end

@@ -176,7 +176,9 @@
           "edit": {
             "index": "Edit %{name} Base Data",
             "models": "Edit %{name} Models",
-            "prices": "Edit %{name} Prices"
+            "prices": "Edit %{name} Prices",
+            "hardpoints": "Edit %{name} Hardpoints",
+            "cargoHolds": "Edit %{name} Cargo Holds"
           }
         },
         "modelModulePackages": {

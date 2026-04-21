@@ -12,7 +12,8 @@ module Admin
               type: :object,
               properties: {
                 id: {type: :string, format: :uuid},
-                modelId: {type: :string, format: :uuid},
+                parentType: {type: :string},
+                parentId: {type: :string, format: :uuid},
                 name: {type: :string, nullable: true},
                 position: {type: :integer, nullable: true},
                 capacityScu: {type: :number},
@@ -23,20 +24,20 @@ module Admin
                 offsetY: {type: :number, nullable: true},
                 offsetZ: {type: :number, nullable: true},
                 rotation: {type: :integer, nullable: true},
-                model: {
+                parent: {
                   type: :object,
                   properties: {
                     id: {type: :string, format: :uuid},
                     name: {type: :string},
-                    slug: {type: :string}
+                    slug: {type: :string, nullable: true}
                   },
-                  required: %w[id name slug]
+                  required: %w[id name]
                 },
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"}
               },
               additionalProperties: false,
-              required: %w[id modelId capacityScu dimensionX dimensionY dimensionZ createdAt updatedAt]
+              required: %w[id parentType parentId capacityScu dimensionX dimensionY dimensionZ createdAt updatedAt]
             })
           end
         end

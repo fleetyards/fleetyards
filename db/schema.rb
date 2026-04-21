@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_19_224508) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_21_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -142,16 +142,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_224508) do
     t.decimal "min_container_dimension_y", precision: 15, scale: 2
     t.decimal "min_container_dimension_z", precision: 15, scale: 2
     t.integer "min_container_size_scu"
-    t.uuid "model_id", null: false
     t.string "name"
     t.decimal "offset_x", precision: 15, scale: 2
     t.decimal "offset_y", precision: 15, scale: 2
     t.decimal "offset_z", precision: 15, scale: 2
+    t.uuid "parent_id", null: false
+    t.string "parent_type", null: false
     t.integer "position"
     t.integer "rotation"
     t.datetime "updated_at", null: false
     t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
-    t.index ["model_id", "max_container_size_scu"], name: "index_cargo_holds_on_model_id_and_max_container_size_scu"
+    t.index ["parent_type", "parent_id", "max_container_size_scu"], name: "index_cargo_holds_on_parent_and_max_container_size"
+    t.index ["parent_type", "parent_id"], name: "index_cargo_holds_on_parent_type_and_parent_id"
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -987,7 +989,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_224508) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
-  add_foreign_key "cargo_holds", "models"
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"

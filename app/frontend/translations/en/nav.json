@@ -116,7 +116,9 @@
           "edit": {
             "index": "Base Data",
             "models": "Models",
-            "prices": "Prices"
+            "prices": "Prices",
+            "hardpoints": "Hardpoints",
+            "cargoHolds": "Cargo Holds"
           }
         },
         "modelModulePackages": {

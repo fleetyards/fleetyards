@@ -194,7 +194,7 @@ class Model < ApplicationRecord
 
   has_many :docks, dependent: :destroy
 
-  has_many :cargo_holds_db, class_name: "CargoHold", dependent: :destroy
+  has_many :cargo_holds_db, class_name: "CargoHold", as: :parent, dependent: :destroy
   has_many :cargo_hold_container_capacities, through: :cargo_holds_db
 
   enum :dock_size,

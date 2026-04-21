@@ -64,7 +64,9 @@
           "new": "New Module",
           "edit": "Edit Module",
           "models": "Linked Models",
-          "prices": "Prices"
+          "prices": "Prices",
+          "hardpoints": "Hardpoints",
+          "cargoHolds": "Cargo Holds"
         },
         "manufacturers": {
           "index": "Manufacturers",

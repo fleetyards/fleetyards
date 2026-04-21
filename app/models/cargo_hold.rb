@@ -21,23 +21,21 @@
 #  offset_x                  :decimal(15, 2)
 #  offset_y                  :decimal(15, 2)
 #  offset_z                  :decimal(15, 2)
+#  parent_type               :string           not null
 #  position                  :integer
 #  rotation                  :integer
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
-#  model_id                  :uuid             not null
+#  parent_id                 :uuid             not null
 #
 # Indexes
 #
-#  index_cargo_holds_on_capacity_scu                         (capacity_scu)
-#  index_cargo_holds_on_model_id_and_max_container_size_scu  (model_id,max_container_size_scu)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (model_id => models.id)
+#  index_cargo_holds_on_capacity_scu                   (capacity_scu)
+#  index_cargo_holds_on_parent_and_max_container_size  (parent_type,parent_id,max_container_size_scu)
+#  index_cargo_holds_on_parent_type_and_parent_id      (parent_type,parent_id)
 #
 class CargoHold < ApplicationRecord
-  belongs_to :model, touch: true
+  belongs_to :parent, polymorphic: true, touch: true
   has_many :cargo_hold_container_capacities, dependent: :destroy
 
   validates :dimension_x, :dimension_y, :dimension_z, :capacity_scu,
@@ -50,7 +48,7 @@ class CargoHold < ApplicationRecord
   scope :ordered, -> { order(:position, :id) }
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[model_id name position]
+    %w[parent_type parent_id name position]
   end
 
   # Calculate and populate container capacities for all container sizes

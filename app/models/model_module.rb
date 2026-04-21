@@ -48,6 +48,8 @@ class ModelModule < ApplicationRecord
 
   has_many :item_prices, as: :item, dependent: :destroy
 
+  has_many :cargo_holds_db, class_name: "CargoHold", as: :parent, dependent: :destroy
+
   serialize :cargo_holds, coder: YAML
 
   has_one_attached :store_image
@@ -102,6 +104,76 @@ class ModelModule < ApplicationRecord
 
     self.cargo = cargo_holds.sum do |cargo_hold|
       cargo_hold["capacity"]&.to_f || 0
+    end
+
+    update_cargo_holds_db
+  end
+
+  def cargo_holds_with_offsets
+    db_records = cargo_holds_db.where.not(offset_x: nil)
+      .or(cargo_holds_db.where.not(offset_y: nil))
+      .or(cargo_holds_db.where.not(offset_z: nil))
+      .or(cargo_holds_db.where.not(rotation: nil))
+      .index_by(&:position)
+
+    return cargo_holds if db_records.empty?
+
+    cargo_holds.each_with_index.map do |hold_data, index|
+      db_record = db_records[index]
+      if db_record
+        extra = {
+          "offset" => {
+            "x" => db_record.offset_x&.to_f || 0.0,
+            "y" => db_record.offset_y&.to_f || 0.0,
+            "z" => db_record.offset_z&.to_f || 0.0
+          }
+        }
+        extra["rotation"] = db_record.rotation if db_record.rotation.present?
+        hold_data.merge(extra)
+      else
+        hold_data
+      end
+    end
+  end
+
+  def update_cargo_holds_db
+    existing_offsets = cargo_holds_db.where.not(offset_x: nil).or(
+      cargo_holds_db.where.not(offset_y: nil)
+    ).or(
+      cargo_holds_db.where.not(offset_z: nil)
+    ).or(
+      cargo_holds_db.where.not(rotation: nil)
+    ).index_by(&:position)
+
+    cargo_holds_db.destroy_all
+
+    cargo_holds.each_with_index do |hold_data, index|
+      next if hold_data.blank? || hold_data["dimensions"].blank?
+
+      previous = existing_offsets[index]
+
+      cargo_hold = cargo_holds_db.create!(
+        name: hold_data["name"],
+        dimension_x: hold_data["dimensions"]["x"],
+        dimension_y: hold_data["dimensions"]["y"],
+        dimension_z: hold_data["dimensions"]["z"],
+        capacity_scu: hold_data["capacity"],
+        max_container_size_scu: hold_data.dig("max_container_size", "size"),
+        max_container_dimension_x: hold_data.dig("max_container_size", "dimensions", "x"),
+        max_container_dimension_y: hold_data.dig("max_container_size", "dimensions", "y"),
+        max_container_dimension_z: hold_data.dig("max_container_size", "dimensions", "z"),
+        min_container_size_scu: hold_data.dig("limits", "min", "capacity"),
+        min_container_dimension_x: hold_data.dig("limits", "min", "dimensions", "x"),
+        min_container_dimension_y: hold_data.dig("limits", "min", "dimensions", "y"),
+        min_container_dimension_z: hold_data.dig("limits", "min", "dimensions", "z"),
+        position: index,
+        offset_x: previous&.offset_x,
+        offset_y: previous&.offset_y,
+        offset_z: previous&.offset_z,
+        rotation: previous&.rotation
+      )
+
+      cargo_hold.calculate_container_capacities!
     end
   end
 

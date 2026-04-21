@@ -39,4 +39,30 @@ export const routes: RouteRecordRaw[] = [
       activeRoute: "admin-model-modules",
     },
   },
+  {
+    path: "hardpoints/",
+    name: "admin-model-module-edit-hardpoints",
+    component: () =>
+      import("@/admin/pages/models/modules/[id]/edit/hardpoints.vue"),
+    meta: {
+      title: "admin.modelModules.edit.hardpoints",
+      customTitle: true,
+      needsAuthentication: true,
+      nav: "editTabs",
+      activeRoute: "admin-model-modules",
+    },
+  },
+  {
+    path: "cargo-holds/",
+    name: "admin-model-module-edit-cargo-holds",
+    component: () =>
+      import("@/admin/pages/models/modules/[id]/edit/cargo-holds.vue"),
+    meta: {
+      title: "admin.modelModules.edit.cargoHolds",
+      customTitle: true,
+      needsAuthentication: true,
+      nav: "editTabs",
+      activeRoute: "admin-model-modules",
+    },
+  },
 ];
