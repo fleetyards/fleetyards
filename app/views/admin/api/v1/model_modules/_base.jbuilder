@@ -2,6 +2,7 @@
 
 json.id model_module.id
 json.name model_module.name
+json.slug model_module.slug
 json.active model_module.active
 json.hidden model_module.hidden
 
