@@ -15,6 +15,12 @@ module Middleware
       end
 
       @app.call(env)
+    rescue ActionController::BadRequest => e
+      if e.message.include?("EmptyContentError")
+        [400, {"content-type" => "application/json"}, ['{"code":"bad_request","message":"Invalid request parameters"}']]
+      else
+        raise
+      end
     end
 
     private def decamelize(camel_cased_word)

@@ -26,6 +26,7 @@ class ErrorsController < ActionController::Base
       format.json do
         render json: {code: "method_not_allowed", message: I18n.t("errors.method_not_allowed.message")}, status: :method_not_allowed
       end
+      format.all { head :method_not_allowed }
     end
   end
 
@@ -48,6 +49,7 @@ class ErrorsController < ActionController::Base
       format.json do
         render json: {code: "not_acceptable", message: I18n.t("errors.not_acceptable.message")}, status: :not_acceptable
       end
+      format.all { head :not_acceptable }
     end
   end
 
@@ -63,6 +65,7 @@ class ErrorsController < ActionController::Base
       format.json do
         render json: {code: "server_error", message: I18n.t("errors.server_error.message")}, status: :internal_server_error
       end
+      format.all { head :internal_server_error }
     end
   end
 end
