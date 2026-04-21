@@ -230,7 +230,11 @@ function groupCargoHolds(
   // If all holds have offsets, the backend fully specifies the layout —
   // collapse everything into a single group so offsets work across all holds.
   const allHaveOffsets = holds.every(
-    (h) => h.offset && h.offset.x != null && h.offset.y != null && h.offset.z != null,
+    (h) =>
+      h.offset &&
+      h.offset.x != null &&
+      h.offset.y != null &&
+      h.offset.z != null,
   );
 
   if (allHaveOffsets && holds.length > 1) {
@@ -238,7 +242,8 @@ function groupCargoHolds(
       groupKeys.reduce((prefix, key) => {
         while (prefix && !key.startsWith(prefix)) {
           const lastUnderscore = prefix.lastIndexOf("_");
-          prefix = lastUnderscore > 0 ? prefix.substring(0, lastUnderscore) : "";
+          prefix =
+            lastUnderscore > 0 ? prefix.substring(0, lastUnderscore) : "";
         }
         return prefix;
       }, groupKeys[0]) || "cargo";
