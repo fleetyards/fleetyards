@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/oauth_applications", type: :openapi, openapi_schema
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/OauthApplication"

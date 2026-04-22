@@ -24,7 +24,7 @@ RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"adm
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ImageUpdateBulkInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/ImageUpdateBulkInput"}
 
       response(200, "successful") do
         run_test!

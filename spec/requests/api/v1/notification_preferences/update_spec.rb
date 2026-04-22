@@ -41,14 +41,14 @@ RSpec.describe "api/v1/notification_preferences", type: :openapi, openapi_schema
         {OpenId: ["notifications", "notifications:write"]}
       ]
 
-      request_body content: { "application/json" => { schema: {
+      request_body schema: {
         type: :object,
         properties: {
           app: {type: :boolean},
           mail: {type: :boolean},
           push: {type: :boolean}
         }
-      } } }
+      }
 
       let(:id) { "hangar_create" }
       let(:request_body) { {app: false} }

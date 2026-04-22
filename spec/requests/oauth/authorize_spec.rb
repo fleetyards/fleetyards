@@ -71,7 +71,7 @@ RSpec.describe "oauth/authorize", type: :openapi, openapi_schema_name: :"oauth/v
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"}
 
       security [{
         SessionCookie: []
@@ -116,7 +116,7 @@ RSpec.describe "oauth/authorize", type: :openapi, openapi_schema_name: :"oauth/v
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"}
 
       security [{
         SessionCookie: []

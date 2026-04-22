@@ -39,7 +39,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/VehicleDestroyBulkInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleDestroyBulkInput"}
 
       security [
         {SessionCookie: []},

@@ -21,13 +21,13 @@ RSpec.describe "admin/api/v1/model_modules", type: :openapi, openapi_schema_name
       produces "application/json"
 
       parameter name: :id, in: :path, required: true, schema: {type: :string, format: :uuid}
-      request_body required: true, content: { "application/json" => { schema: {
+      request_body required: true, schema: {
         type: :object,
         properties: {
           modelId: {type: :string, format: :uuid}
         },
         required: [:modelId]
-      } } }
+      }
 
       let(:request_body) { {modelId: model.id} }
 
@@ -52,13 +52,13 @@ RSpec.describe "admin/api/v1/model_modules", type: :openapi, openapi_schema_name
       produces "application/json"
 
       parameter name: :id, in: :path, required: true, schema: {type: :string, format: :uuid}
-      request_body required: true, content: { "application/json" => { schema: {
+      request_body required: true, schema: {
         type: :object,
         properties: {
           modelId: {type: :string, format: :uuid}
         },
         required: [:modelId]
-      } } }
+      }
 
       let(:request_body) { {modelId: model.id} }
 

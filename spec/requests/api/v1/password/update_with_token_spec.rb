@@ -21,7 +21,7 @@ RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/PasswordInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/PasswordInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"

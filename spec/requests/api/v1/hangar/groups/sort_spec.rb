@@ -42,7 +42,7 @@ RSpec.describe "api/v1/hangar/groups", type: :openapi, openapi_schema_name: :"v1
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/HangarGroupSortInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/HangarGroupSortInput"}
 
       security [
         {SessionCookie: []},

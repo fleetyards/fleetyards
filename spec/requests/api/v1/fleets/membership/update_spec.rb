@@ -32,7 +32,7 @@ RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: 
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/FleetMembershipUpdateInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetMembershipUpdateInput"}
 
       let(:request_body) do
         {

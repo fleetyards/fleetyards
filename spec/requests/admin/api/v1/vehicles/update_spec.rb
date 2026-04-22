@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/vehicles", type: :openapi, openapi_schema_name: :"a
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/VehicleInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Vehicle"

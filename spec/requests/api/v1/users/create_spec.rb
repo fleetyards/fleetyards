@@ -21,7 +21,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/UserCreateInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/UserCreateInput"}
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/User"

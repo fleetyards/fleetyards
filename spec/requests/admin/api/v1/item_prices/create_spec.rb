@@ -27,7 +27,7 @@ RSpec.describe "admin/api/v1/item_prices", type: :openapi, openapi_schema_name: 
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ItemPriceInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/ItemPriceInput"}
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/ItemPrice"

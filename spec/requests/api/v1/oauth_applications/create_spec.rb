@@ -34,7 +34,7 @@ RSpec.describe "api/v1/oauth_applications", type: :openapi, openapi_schema_name:
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthApplicationInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/OauthApplicationInput"}
 
       security [
         {SessionCookie: []},

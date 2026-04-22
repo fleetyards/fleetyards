@@ -26,7 +26,7 @@ RSpec.describe "admin/api/v1/model_hardpoints", type: :openapi, openapi_schema_n
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ModelHardpointInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelHardpointInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelHardpoint"
