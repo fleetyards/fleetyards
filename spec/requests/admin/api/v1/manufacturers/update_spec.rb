@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/manufacturers", type: :openapi, openapi_schema_name
   let(:user) { create(:admin_user, resource_access: [:manufacturers]) }
   let(:manufacturer) { create(:manufacturer) }
   let(:id) { manufacturer.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Manufacturer"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/manufacturers", type: :openapi, openapi_schema_name
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ManufacturerInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ManufacturerInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Manufacturer"

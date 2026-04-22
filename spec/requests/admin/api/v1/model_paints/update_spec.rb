@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/model_paints", type: :openapi, openapi_schema_name:
   let(:user) { create(:admin_user, resource_access: [:model_paints]) }
   let(:model_paint) { create(:model_paint) }
   let(:id) { model_paint.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Paint"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/model_paints", type: :openapi, openapi_schema_name:
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelPaintInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ModelPaintInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelPaint"

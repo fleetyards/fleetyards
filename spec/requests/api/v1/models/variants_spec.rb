@@ -7,7 +7,7 @@ RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema
   let(:slug) { model.slug }
 
   path "/models/{slug}/variants" do
-    parameter name: "slug", in: :path, type: :string, description: "Model slug", required: true
+    parameter name: "slug", in: :path, schema: { type: :string }, description: "Model slug", required: true
 
     get("Model Variants") do
       operationId "modelVariants"

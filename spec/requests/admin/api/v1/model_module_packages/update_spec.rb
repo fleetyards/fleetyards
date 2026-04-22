@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/model_module_packages", type: :openapi, openapi_sch
   let(:user) { create(:admin_user, resource_access: [:model_module_packages]) }
   let(:model_module_package) { create(:model_module_package) }
   let(:id) { model_module_package.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Package"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/model_module_packages", type: :openapi, openapi_sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelModulePackageInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ModelModulePackageInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelModulePackage"

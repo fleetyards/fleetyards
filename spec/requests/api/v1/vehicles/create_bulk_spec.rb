@@ -21,7 +21,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
     )
   end
   let(:model) { create(:model) }
-  let(:input) do
+  let(:request_body) do
     {
       vehicles: [
         {
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateBulkInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/VehicleCreateBulkInput"} } }
 
       security [{
         SessionCookie: [],

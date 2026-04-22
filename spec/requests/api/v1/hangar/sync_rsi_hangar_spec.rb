@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       items: [{
         id: "1",
@@ -42,10 +42,7 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input,
-        in: :body,
-        schema: {"$ref": "#/components/schemas/SyncRsiHangarInput"},
-        required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/SyncRsiHangarInput"} } }
 
       security [
         {SessionCookie: []},
@@ -64,7 +61,7 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

@@ -24,7 +24,7 @@ RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: 
   end
 
   path "/fleets/{fleetSlug}/membership" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: { type: :string }, description: "Fleet slug"
 
     put("Update Membership") do
       operationId "updateFleetMembership"
@@ -32,9 +32,9 @@ RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMembershipUpdateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/FleetMembershipUpdateInput"} } }
 
-      let(:input) do
+      let(:request_body) do
         {
           primary: true
         }
@@ -83,7 +83,7 @@ RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: 
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) do
+        let(:request_body) do
           {
             shipsFilter: "unknown"
           }

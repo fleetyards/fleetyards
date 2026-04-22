@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/docks", type: :openapi, openapi_schema_name: :"admi
   let(:user) { create(:admin_user, resource_access: [:docks]) }
   let(:dock) { create(:dock) }
   let(:id) { dock.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Pad"
     }
@@ -26,7 +26,7 @@ RSpec.describe "admin/api/v1/docks", type: :openapi, openapi_schema_name: :"admi
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/DockInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/DockInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Dock"

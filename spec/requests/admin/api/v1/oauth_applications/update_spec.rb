@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/oauth_applications", type: :openapi, openapi_schema
   let(:user) { create(:admin_user, resource_access: [:oauth_applications]) }
   let(:oauth_application) { create(:oauth_application) }
   let(:id) { oauth_application.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Admin App"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/oauth_applications", type: :openapi, openapi_schema
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/OauthApplication"

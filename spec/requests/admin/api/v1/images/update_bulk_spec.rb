@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:images]) }
   let(:images) { create_list(:image, 3) }
-  let(:input) do
+  let(:request_body) do
     {
       ids: images.pluck(:id),
       enabled: true
@@ -24,7 +24,7 @@ RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"adm
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ImageUpdateBulkInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ImageUpdateBulkInput"} } }
 
       response(200, "successful") do
         run_test!

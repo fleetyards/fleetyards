@@ -6,7 +6,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
   let(:author) { create(:user) }
   let(:user) { author }
   let(:model) { create(:model) }
-  let(:input) do
+  let(:request_body) do
     {
       modelId: model.id
     }
@@ -39,7 +39,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/VehicleCreateInput"} } }
 
       security [
         {SessionCookie: []},
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       response(201, "successful with boughtVia enum value") do
         schema "$ref": "#/components/schemas/Vehicle"
 
-        let(:input) do
+        let(:request_body) do
           {
             modelId: model.id,
             boughtVia: "pledge_store"

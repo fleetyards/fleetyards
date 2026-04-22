@@ -13,7 +13,7 @@ RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v
   end
 
   path "/public/hangars/{username}" do
-    parameter name: "username", in: :path, type: :string, required: true
+    parameter name: "username", in: :path, schema: { type: :string }, required: true
 
     get("Public Hangar") do
       operationId "publicHangar"

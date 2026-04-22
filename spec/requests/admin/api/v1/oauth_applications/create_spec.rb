@@ -4,7 +4,7 @@ require "openapi_helper"
 
 RSpec.describe "admin/api/v1/oauth_applications", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:oauth_applications]) }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Admin App",
       redirectUri: "https://example.com/callback",
@@ -23,7 +23,7 @@ RSpec.describe "admin/api/v1/oauth_applications", type: :openapi, openapi_schema
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthApplicationInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthApplicationInput"} } }
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/OauthApplication"

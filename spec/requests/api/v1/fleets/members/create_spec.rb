@@ -9,7 +9,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
   let(:user) { admin }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:fleetSlug) { fleet.slug }
-  let(:input) do
+  let(:request_body) do
     {
       username: new_member.username
     }
@@ -36,7 +36,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
   end
 
   path "/fleets/{fleetSlug}/members" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: { type: :string }, description: "Fleet slug"
 
     post("Create Member") do
       operationId "createFleetMember"
@@ -44,7 +44,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMemberCreateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/FleetMemberCreateInput"} } }
 
       security [
         {SessionCookie: []},
@@ -72,7 +72,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) do
+        let(:request_body) do
           {
             username: "unknown"
           }

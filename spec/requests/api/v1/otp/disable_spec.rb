@@ -6,7 +6,7 @@ RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" d
   let(:password) { "testtest" }
   let(:author) { create :user, password: password, otp_secret: User.generate_otp_secret, otp_required_for_login: true }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       otpCode: author.current_otp
     }
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" d
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/SetupOtpInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/SetupOtpInput"} } }
       parameter name: "X-Access-Confirmation", in: :header, schema: {type: :string},
         description: "Access confirmation token obtained from confirm-access endpoint. Required when using OAuth/OpenID authentication.",
         required: false
@@ -75,7 +75,7 @@ RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" d
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end
@@ -100,7 +100,7 @@ RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" d
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { nil }
-        let(:input) { {otpCode: "000000"} }
+        let(:request_body) { {otpCode: "000000"} }
 
         run_test!
       end

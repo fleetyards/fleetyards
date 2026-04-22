@@ -40,7 +40,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/CheckInput"} } }
 
       security [
         {SessionCookie: []},
@@ -51,7 +51,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Check"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: serial
           }
@@ -67,7 +67,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       response(200, "successful with OAuth token") do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
-        let(:input) { {value: serial} }
+        let(:request_body) { {value: serial} }
 
         run_test!
       end
@@ -77,7 +77,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
 
         let(:user) { nil }
         let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
-        let(:input) { {value: serial} }
+        let(:request_body) { {value: serial} }
 
         run_test!
       end
@@ -85,7 +85,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Check"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: "00-0000-00"
           }
@@ -101,7 +101,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Check"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: serial_other
           }
@@ -117,7 +117,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: "foo"
           }

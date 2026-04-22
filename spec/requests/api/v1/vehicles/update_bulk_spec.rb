@@ -6,7 +6,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
   let(:author) { create(:user) }
   let(:user) { author }
   let(:vehicles) { create_list(:vehicle, 3, user: author) }
-  let(:input) do
+  let(:request_body) do
     {
       ids: vehicles.pluck(:id),
       wanted: true
@@ -40,7 +40,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleUpdateBulkInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/VehicleUpdateBulkInput"} } }
 
       security [
         {SessionCookie: []},

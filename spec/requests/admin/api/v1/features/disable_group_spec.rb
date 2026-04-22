@@ -21,9 +21,9 @@ RSpec.describe "admin/api/v1/features", type: :openapi, openapi_schema_name: :"a
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :body, in: :body, schema: {"$ref": "#/components/schemas/FeatureGroupInput"}
+      request_body content: { "application/json" => { schema: {"$ref": "#/components/schemas/FeatureGroupInput"} } }
 
-      let(:body) { {group: "testers"} }
+      let(:request_body) { {group: "testers"} }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Feature"

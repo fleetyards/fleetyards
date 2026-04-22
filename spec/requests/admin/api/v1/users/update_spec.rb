@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/users", type: :openapi, openapi_schema_name: :"admi
   let(:admin) { create(:admin_user, resource_access: [:users]) }
   let(:user) { create(:user) }
   let(:id) { user.id }
-  let(:input) do
+  let(:request_body) do
     {
       username: "updated_username"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/users", type: :openapi, openapi_schema_name: :"admi
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/UserInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/UserInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/User"

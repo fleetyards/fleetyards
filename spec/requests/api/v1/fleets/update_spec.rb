@@ -8,7 +8,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:user) { admin }
   let(:slug) { fleet.slug }
-  let(:input) do
+  let(:request_body) do
     {
       discord: "https://discord.gg/1234567890"
     }
@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
   end
 
   path "/fleets/{slug}" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+    parameter name: "slug", in: :path, schema: { type: :string }, description: "slug"
 
     put("Update Fleet") do
       operationId "updateFleet"
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetUpdateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/FleetUpdateInput"} } }
 
       security [
         {SessionCookie: []},
@@ -64,7 +64,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
       response(200, "successful with nullable fields") do
         schema "$ref": "#/components/schemas/Fleet"
 
-        let(:input) do
+        let(:request_body) do
           {
             fid: fleet.fid,
             name: fleet.name,

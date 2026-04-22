@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "admin/api/v1/model_hardpoint_loadouts", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_hardpoints]) }
   let(:model_hardpoint) { create(:model_hardpoint) }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Loadout 01",
       modelHardpointId: model_hardpoint.id
@@ -24,7 +24,7 @@ RSpec.describe "admin/api/v1/model_hardpoint_loadouts", type: :openapi, openapi_
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelHardpointLoadoutInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ModelHardpointLoadoutInput"} } }
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/ModelHardpointLoadout"
@@ -35,7 +35,7 @@ RSpec.describe "admin/api/v1/model_hardpoint_loadouts", type: :openapi, openapi_
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { {name: "Missing hardpoint"} }
+        let(:request_body) { {name: "Missing hardpoint"} }
 
         run_test!
       end

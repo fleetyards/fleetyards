@@ -11,7 +11,7 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
       filename: "hangar_import.json"
     )
   end
-  let(:input) do
+  let(:request_body) do
     {
       import: import_blob.signed_id
     }
@@ -44,10 +44,7 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input,
-        in: :body,
-        schema: {"$ref": "#/components/schemas/ImportInput"},
-        required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ImportInput"} } }
 
       security [
         {SessionCookie: []},
@@ -79,7 +76,7 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

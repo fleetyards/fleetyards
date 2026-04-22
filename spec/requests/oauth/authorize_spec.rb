@@ -21,13 +21,13 @@ RSpec.describe "oauth/authorize", type: :openapi, openapi_schema_name: :"oauth/v
       tags "OAuth"
       produces "application/json"
 
-      parameter name: :client_id, in: :query, type: :string, required: true
-      parameter name: :redirect_uri, in: :query, type: :string, required: true
-      parameter name: :response_type, in: :query, type: :string, required: true
-      parameter name: :scope, in: :query, type: :string, required: true
-      parameter name: :state, in: :query, type: :string, required: false
-      parameter name: :code_challenge, in: :query, type: :string, required: false
-      parameter name: :code_challenge_method, in: :query, type: :string, required: false
+      parameter name: :client_id, in: :query, schema: { type: :string }, required: true
+      parameter name: :redirect_uri, in: :query, schema: { type: :string }, required: true
+      parameter name: :response_type, in: :query, schema: { type: :string }, required: true
+      parameter name: :scope, in: :query, schema: { type: :string }, required: true
+      parameter name: :state, in: :query, schema: { type: :string }, required: false
+      parameter name: :code_challenge, in: :query, schema: { type: :string }, required: false
+      parameter name: :code_challenge_method, in: :query, schema: { type: :string }, required: false
 
       security [{
         SessionCookie: []
@@ -71,13 +71,13 @@ RSpec.describe "oauth/authorize", type: :openapi, openapi_schema_name: :"oauth/v
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"} } }
 
       security [{
         SessionCookie: []
       }]
 
-      let(:input) do
+      let(:request_body) do
         {
           clientId: oauth_application.uid,
           redirectUri: "http://localhost:3000/oauth2-redirect.html",
@@ -116,13 +116,13 @@ RSpec.describe "oauth/authorize", type: :openapi, openapi_schema_name: :"oauth/v
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthAuthorizationInput"} } }
 
       security [{
         SessionCookie: []
       }]
 
-      let(:input) do
+      let(:request_body) do
         {
           clientId: oauth_application.uid,
           redirectUri: "http://localhost:3000/oauth2-redirect.html",

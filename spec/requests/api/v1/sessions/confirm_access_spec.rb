@@ -6,7 +6,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
   let(:password) { "enterprise" }
   let(:author) { create(:user, password:) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       password: password
     }
@@ -32,7 +32,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ConfirmAccessInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ConfirmAccessInput"} } }
 
       security [
         {SessionCookie: []},
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

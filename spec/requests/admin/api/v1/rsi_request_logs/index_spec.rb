@@ -18,7 +18,7 @@ RSpec.describe "admin/api/v1/rsi_request_logs", type: :openapi, openapi_schema_n
       parameter "$ref": "#/components/parameters/PageParameter"
       parameter name: "perPage", in: :query, schema: {type: :string, default: RsiRequestLog.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
-      parameter name: "cacheId", in: :query, type: :string, required: false
+      parameter name: "cacheId", in: :query, schema: { type: :string }, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/RsiRequestLogs"

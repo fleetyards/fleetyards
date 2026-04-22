@@ -7,7 +7,7 @@ RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"adm
   let(:image) { create(:image) }
   let(:gallery) { create(:model) }
   let(:id) { image.id }
-  let(:input) do
+  let(:request_body) do
     {
       galleryId: gallery.id,
       galleryType: gallery.class.name,
@@ -29,7 +29,7 @@ RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"adm
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ImageInput"}
+      request_body content: { "application/json" => { schema: {"$ref": "#/components/schemas/ImageInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"

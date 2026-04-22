@@ -8,7 +8,7 @@ RSpec.describe "api/v1/hangar/groups", type: :openapi, openapi_schema_name: :"v1
   let(:hangar_group) { create(:hangar_group, user: author) }
   let(:id) { hangar_group.id }
 
-  let(:input) do
+  let(:request_body) do
     {
       name: "Hangar Group One Test"
     }
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/hangar/groups", type: :openapi, openapi_schema_name: :"v1
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/HangarGroupUpdateInput"} } }
 
       security [
         {SessionCookie: []},

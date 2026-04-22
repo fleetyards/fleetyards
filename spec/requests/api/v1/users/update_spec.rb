@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       discord: "DiscordServer"
     }
@@ -32,7 +32,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/UserUpdateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/UserUpdateInput"} } }
 
       security [
         {SessionCookie: []},

@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user) }
   let(:token) { user.send_reset_password_instructions }
-  let(:input) do
+  let(:request_body) do
     {
       password: "73b8680678a4a2725bba6a88b84b550828b27ca606",
       passwordConfirmation: "73b8680678a4a2725bba6a88b84b550828b27ca606"
@@ -13,7 +13,7 @@ RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/sche
   end
 
   path "/password/{token}" do
-    parameter name: :token, in: :path, type: :string, required: true
+    parameter name: :token, in: :path, schema: { type: :string }, required: true
 
     put("Update Password with Token") do
       operationId "updatePasswordWithToken"
@@ -21,7 +21,7 @@ RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/PasswordInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/PasswordInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
@@ -40,7 +40,7 @@ RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/sche
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

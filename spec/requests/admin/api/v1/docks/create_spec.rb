@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "admin/api/v1/docks", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:docks]) }
   let(:model) { create(:model) }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Pad 01",
       dockType: "landingpad",
@@ -26,7 +26,7 @@ RSpec.describe "admin/api/v1/docks", type: :openapi, openapi_schema_name: :"admi
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/DockInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/DockInput"} } }
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/Dock"
@@ -37,7 +37,7 @@ RSpec.describe "admin/api/v1/docks", type: :openapi, openapi_schema_name: :"admi
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { {name: "Missing required fields"} }
+        let(:request_body) { {name: "Missing required fields"} }
 
         run_test!
       end

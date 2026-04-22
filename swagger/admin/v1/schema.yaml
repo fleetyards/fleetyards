@@ -16,6 +16,12 @@ paths:
       tags:
       - AdminUsers
       operationId: createAdminUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminUserInput"
       responses:
         '200':
           description: successful
@@ -37,12 +43,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/AdminUserInput"
     get:
       summary: Admin Users list
       tags:
@@ -165,6 +165,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminUserInput"
       responses:
         '200':
           description: successful
@@ -192,12 +198,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/AdminUserInput"
   "/admin_users/me":
     get:
       summary: My Data
@@ -276,6 +276,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CargoHoldInput"
       responses:
         '200':
           description: successful
@@ -303,18 +309,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CargoHoldInput"
   "/components":
     post:
       summary: Create Component
       tags:
       - Components
       operationId: createComponent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ComponentInput"
       responses:
         '200':
           description: successful
@@ -336,12 +342,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ComponentInput"
     get:
       summary: Components list
       tags:
@@ -366,9 +366,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -484,6 +484,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ComponentInput"
       responses:
         '200':
           description: successful
@@ -511,18 +517,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ComponentInput"
   "/docks":
     post:
       summary: Create new Dock
       tags:
       - Docks
       operationId: createDock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DockInput"
       responses:
         '201':
           description: successful
@@ -548,12 +554,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/DockInput"
     get:
       summary: Docks list
       tags:
@@ -686,6 +686,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/DockInput"
       responses:
         '200':
           description: successful
@@ -713,18 +719,17 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/DockInput"
   "/features":
     post:
       summary: Create Feature
       tags:
       - Features
       operationId: createAdminFeature
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureInput"
       responses:
         '201':
           description: created
@@ -752,12 +757,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeatureInput"
     get:
       summary: Features list
       tags:
@@ -874,6 +873,11 @@ paths:
           type: string
         description: Feature name
         required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureActorInput"
       responses:
         '200':
           description: successful
@@ -901,12 +905,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeatureActorInput"
   "/features/{id}/disable-group":
     put:
       summary: Disable Feature for Group
@@ -920,6 +918,11 @@ paths:
           type: string
         description: Feature name
         required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureGroupInput"
       responses:
         '200':
           description: successful
@@ -947,12 +950,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeatureGroupInput"
   "/features/{id}/disable":
     put:
       summary: Disable Feature
@@ -1006,6 +1003,11 @@ paths:
           type: string
         description: Feature name
         required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureActorInput"
       responses:
         '200':
           description: successful
@@ -1033,12 +1035,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeatureActorInput"
   "/features/{id}/enable-group":
     put:
       summary: Enable Feature for Group
@@ -1052,6 +1048,11 @@ paths:
           type: string
         description: Feature name
         required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeatureGroupInput"
       responses:
         '200':
           description: successful
@@ -1079,12 +1080,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeatureGroupInput"
   "/features/{id}/enable-percentage-of-actors":
     put:
       summary: Enable Feature for Percentage of Actors
@@ -1098,6 +1093,11 @@ paths:
           type: string
         description: Feature name
         required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeaturePercentageInput"
       responses:
         '200':
           description: successful
@@ -1125,12 +1125,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeaturePercentageInput"
   "/features/{id}/enable-percentage-of-time":
     put:
       summary: Enable Feature for Percentage of Time
@@ -1144,6 +1138,11 @@ paths:
           type: string
         description: Feature name
         required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FeaturePercentageInput"
       responses:
         '200':
           description: successful
@@ -1171,12 +1170,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeaturePercentageInput"
   "/features/{id}/enable":
     put:
       summary: Enable Feature
@@ -1263,6 +1256,12 @@ paths:
       tags:
       - Fleets
       operationId: createFleet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInput"
       responses:
         '200':
           description: successful
@@ -1284,12 +1283,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetInput"
     get:
       summary: Fleets list
       tags:
@@ -1419,6 +1412,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInput"
       responses:
         '200':
           description: successful
@@ -1446,18 +1445,17 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetInput"
   "/images":
     post:
       summary: Image create
       tags:
       - Images
       operationId: createImage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImageInputCreate"
       responses:
         '200':
           description: successful
@@ -1479,12 +1477,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ImageInputCreate"
     get:
       summary: Images list
       tags:
@@ -1579,6 +1571,11 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImageInput"
       responses:
         '200':
           description: successful
@@ -1606,18 +1603,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ImageInput"
   "/images/bulk":
     put:
       summary: Bulk update images
       tags:
       - Images
       operationId: updateBulkImage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImageUpdateBulkInput"
       responses:
         '200':
           description: successful
@@ -1635,12 +1632,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ImageUpdateBulkInput"
   "/imports":
     get:
       summary: Imports list
@@ -1727,6 +1718,12 @@ paths:
       tags:
       - ItemPrices
       operationId: createItemPrice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ItemPriceInput"
       responses:
         '201':
           description: successful
@@ -1752,12 +1749,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ItemPriceInput"
     get:
       summary: Item Prices list
       tags:
@@ -1891,6 +1882,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ItemPriceInput"
       responses:
         '200':
           description: successful
@@ -1922,18 +1919,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ItemPriceInput"
   "/manufacturers":
     post:
       summary: Create Manufacturer
       tags:
       - Manufacturers
       operationId: createManufacturer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ManufacturerInput"
       responses:
         '200':
           description: successful
@@ -1955,12 +1952,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ManufacturerInput"
     get:
       summary: Manufacturers list
       tags:
@@ -1985,9 +1976,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -2103,6 +2094,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ManufacturerInput"
       responses:
         '200':
           description: successful
@@ -2130,18 +2127,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ManufacturerInput"
   "/model-hardpoint-loadouts":
     post:
       summary: Create Model Hardpoint Loadout
       tags:
       - ModelHardpointLoadouts
       operationId: createModelHardpointLoadout
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointLoadoutInput"
       responses:
         '201':
           description: successful
@@ -2167,12 +2164,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelHardpointLoadoutInput"
     get:
       summary: Model Hardpoint Loadouts list
       tags:
@@ -2305,6 +2296,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointLoadoutInput"
       responses:
         '200':
           description: successful
@@ -2332,18 +2329,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelHardpointLoadoutInput"
   "/model-hardpoints":
     post:
       summary: Create Model Hardpoint
       tags:
       - ModelHardpoints
       operationId: createModelHardpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointInput"
       responses:
         '201':
           description: successful
@@ -2369,12 +2366,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelHardpointInput"
     get:
       summary: Model Hardpoints list
       tags:
@@ -2507,6 +2498,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelHardpointInput"
       responses:
         '200':
           description: successful
@@ -2534,18 +2531,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelHardpointInput"
   "/model-loaners":
     post:
       summary: Create Model Loaner
       tags:
       - ModelLoaners
       operationId: createModelLoaner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelLoanerInput"
       responses:
         '201':
           description: successful
@@ -2571,12 +2568,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelLoanerInput"
     get:
       summary: Model Loaners list
       tags:
@@ -2709,6 +2700,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelLoanerInput"
       responses:
         '200':
           description: successful
@@ -2736,18 +2733,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelLoanerInput"
   "/model-module-packages":
     post:
       summary: Create Model Module Package
       tags:
       - ModelModulePackages
       operationId: createModelModulePackage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModulePackageInput"
       responses:
         '200':
           description: successful
@@ -2769,12 +2766,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelModulePackageInput"
     get:
       summary: Model Module Packages list
       tags:
@@ -2908,6 +2899,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModulePackageInput"
       responses:
         '200':
           description: successful
@@ -2935,18 +2932,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelModulePackageInput"
   "/model-modules":
     post:
       summary: Create new Model Module
       tags:
       - ModelModules
       operationId: createModelModule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModuleInput"
       responses:
         '201':
           description: successful
@@ -2968,12 +2965,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelModuleInput"
     get:
       summary: Model Modules list
       tags:
@@ -3022,6 +3013,12 @@ paths:
       tags:
       - ModelModules
       operationId: destroyBulkModelModule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModuleDestroyBulkInput"
       responses:
         '204':
           description: successful
@@ -3039,17 +3036,17 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelModuleDestroyBulkInput"
     put:
       summary: Bulk update model modules
       tags:
       - ModelModules
       operationId: updateBulkModelModule
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModuleUpdateBulkInput"
       responses:
         '200':
           description: successful
@@ -3067,12 +3064,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelModuleUpdateBulkInput"
   "/model-modules/{id}":
     delete:
       summary: Model Module destroy
@@ -3163,6 +3154,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelModuleInput"
       responses:
         '200':
           description: successful
@@ -3190,12 +3187,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelModuleInput"
   "/model-modules/{id}/link":
     put:
       summary: Link Model Module to Model
@@ -3209,6 +3200,18 @@ paths:
         schema:
           type: string
           format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                  format: uuid
+              required:
+              - modelId
       responses:
         '200':
           description: successful
@@ -3230,18 +3233,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
   "/model-modules/{id}/unlink":
     put:
       summary: Unlink Model Module from Model
@@ -3255,6 +3246,18 @@ paths:
         schema:
           type: string
           format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                  format: uuid
+              required:
+              - modelId
       responses:
         '200':
           description: successful
@@ -3276,24 +3279,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
   "/model-paints":
     post:
       summary: Create Model Paint
       tags:
       - ModelPaints
       operationId: createModelPaint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelPaintInput"
       responses:
         '200':
           description: successful
@@ -3315,12 +3312,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelPaintInput"
     get:
       summary: Paints list
       tags:
@@ -3458,6 +3449,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelPaintInput"
       responses:
         '200':
           description: successful
@@ -3485,18 +3482,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelPaintInput"
   "/model-upgrades":
     post:
       summary: Create Model Upgrade
       tags:
       - ModelUpgrades
       operationId: createModelUpgrade
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpgradeInput"
       responses:
         '201':
           description: successful
@@ -3518,12 +3515,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelUpgradeInput"
     get:
       summary: Model Upgrades list
       tags:
@@ -3657,6 +3648,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpgradeInput"
       responses:
         '200':
           description: successful
@@ -3684,12 +3681,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelUpgradeInput"
   "/model-upgrades/{id}/link":
     put:
       summary: Link Model Upgrade to Model
@@ -3703,6 +3694,18 @@ paths:
         schema:
           type: string
           format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                  format: uuid
+              required:
+              - modelId
       responses:
         '200':
           description: successful
@@ -3724,18 +3727,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
   "/model-upgrades/{id}/unlink":
     put:
       summary: Unlink Model Upgrade from Model
@@ -3749,6 +3740,18 @@ paths:
         schema:
           type: string
           format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                  format: uuid
+              required:
+              - modelId
       responses:
         '200':
           description: successful
@@ -3770,24 +3773,18 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                modelId:
-                  type: string
-                  format: uuid
-              required:
-              - modelId
   "/models":
     post:
       summary: Create Model
       tags:
       - Models
       operationId: createModel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelCreateInput"
       responses:
         '200':
           description: successful
@@ -3809,12 +3806,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelCreateInput"
     get:
       summary: Models list
       tags:
@@ -3952,6 +3943,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpdateInput"
       responses:
         '200':
           description: successful
@@ -3979,12 +3976,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelUpdateInput"
   "/models/production-states":
     get:
       summary: Model Production states
@@ -4263,6 +4254,12 @@ paths:
       tags:
       - OauthApplications
       operationId: createOauthApplication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthApplicationInput"
       responses:
         '201':
           description: successful
@@ -4284,12 +4281,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/OauthApplicationInput"
     get:
       summary: OAuth Applications list
       tags:
@@ -4418,6 +4409,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthApplicationUpdateInput"
       responses:
         '200':
           description: successful
@@ -4445,12 +4442,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/OauthApplicationUpdateInput"
   "/rsi-request-logs":
     get:
       summary: RSI Request Logs list
@@ -4468,9 +4459,9 @@ paths:
       - "$ref": "#/components/parameters/SortingParameter"
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -4533,6 +4524,12 @@ paths:
       tags:
       - Sessions
       operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SessionInput"
       responses:
         '200':
           description: successful
@@ -4546,12 +4543,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SessionInput"
     delete:
       summary: Destroy Session
       tags:
@@ -4779,6 +4770,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserInput"
       responses:
         '200':
           description: successful
@@ -4806,12 +4803,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UserInput"
   "/users":
     get:
       summary: Users list
@@ -4837,9 +4828,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -5066,6 +5057,12 @@ paths:
           type: string
           format: uuid
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleInput"
       responses:
         '200':
           description: successful
@@ -5093,12 +5090,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleInput"
   "/vehicles":
     get:
       summary: Vehicles list
@@ -5149,6 +5140,12 @@ paths:
       tags:
       - Videos
       operationId: createVideo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VideoInput"
       responses:
         '201':
           description: successful
@@ -5174,12 +5171,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VideoInput"
     get:
       summary: Videos list
       tags:
@@ -5312,6 +5303,12 @@ paths:
           format: uuid
         description: id
         required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VideoInput"
       responses:
         '200':
           description: successful
@@ -5339,12 +5336,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VideoInput"
 servers:
 - url: http://admin.fleetyards.test/api/v1
   description: Dev Server
@@ -6169,57 +6160,25 @@ components:
     Dock:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
         name:
-          type: string
-          nullable: true
-        dockType:
-          type: string
-        dockTypeLabel:
-          type: string
-        shipSize:
-          type: string
-        shipSizeLabel:
           type: string
         group:
           type: string
-          nullable: true
-        length:
-          type: number
-          nullable: true
-        beam:
-          type: number
-          nullable: true
-        height:
-          type: number
-          nullable: true
-        minShipSize:
-          type: integer
-          nullable: true
-        maxShipSize:
-          type: integer
-          nullable: true
-        modelId:
+        size:
+          "$ref": "#/components/schemas/DockShipSizeEnum"
+        sizeLabel:
           type: string
-          format: uuid
-          nullable: true
-        createdAt:
+        type:
+          "$ref": "#/components/schemas/DockTypeEnum"
+        typeLabel:
           type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
       additionalProperties: false
       required:
-      - id
-      - dockType
-      - dockTypeLabel
-      - shipSize
-      - shipSizeLabel
-      - createdAt
-      - updatedAt
+      - name
+      - size
+      - sizeLabel
+      - type
+      - typeLabel
       title: Dock
     DockCount:
       type: object

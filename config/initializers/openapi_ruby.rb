@@ -75,7 +75,7 @@ OpenapiRuby.configure do |config|
     "v1" => :v1,
     "admin/v1" => :admin,
     "oauth/v1" => :oauth,
-    "shared/v1" => :shared
+    "shared/v1" => [:v1, :admin]
   }
 
   config.camelize_keys = false
@@ -107,52 +107,5 @@ end
 # Force-load all component files so they register in the Registry.
 # Required for security scheme resolution in tests and middleware.
 Rails.application.config.after_initialize do
-  loader = OpenapiRuby::Components::Loader.new
-  loader.load!
-
-  # Workaround for two gem bugs in the Loader's scope inference:
-  #
-  # 1. Cross-scope inheritance: when Admin::V1::Schemas::X inherits from
-  #    V1::Schemas::X, the parent gets loaded during the admin file require,
-  #    so the Loader maps it to the admin scope instead of v1.
-  #
-  # 2. Shared scope: the Loader sets _component_scopes = [] for shared
-  #    components but doesn't set _component_scopes_explicitly_set, so they're
-  #    excluded when filtering by scope.
-  #
-  # Fix: re-infer scopes from class name prefixes after loading.
-  scope_prefixes = {
-    "Admin::V1::" => :admin,
-    "Oauth::V1::" => :oauth,
-    "V1::" => :v1
-  }
-
-  OpenapiRuby::Components::Registry.instance.all_registered_classes.each do |klass|
-    next if klass._component_scopes_explicitly_set
-    next unless klass.name
-
-    OpenapiRuby::Components::Registry.instance.unregister(klass)
-
-    if klass.name.start_with?("Shared::V1::")
-      # Match old behavior: shared components only in v1 and admin, not oauth
-      klass._component_scopes = [:v1, :admin]
-      klass._component_scopes_explicitly_set = true
-    else
-      matched = scope_prefixes.find { |prefix, _| klass.name.start_with?(prefix) }
-      unless matched
-        OpenapiRuby::Components::Registry.instance.register(klass)
-        next
-      end
-
-      expected_scope = matched[1]
-      if klass._component_scopes == [expected_scope]
-        OpenapiRuby::Components::Registry.instance.register(klass)
-        next
-      end
-
-      klass._component_scopes = [expected_scope]
-    end
-
-    OpenapiRuby::Components::Registry.instance.register(klass)
-  end
+  OpenapiRuby::Components::Loader.new.load!
 end

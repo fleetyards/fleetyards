@@ -15,7 +15,7 @@ RSpec.describe "api/v1/omniauth_connections", type: :openapi, openapi_schema_nam
   end
 
   path "/omniauth-connections/{provider}" do
-    parameter name: :provider, in: :path, type: :string, required: true
+    parameter name: :provider, in: :path, schema: { type: :string }, required: true
 
     delete("Disconnect OAuth provider") do
       operationId "disconnectOauthProvider"

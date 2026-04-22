@@ -7,7 +7,7 @@ RSpec.describe "api/v1/hangar/groups", type: :openapi, openapi_schema_name: :"v1
   let(:user) { author }
   let(:hangar_groups) { create_list(:hangar_group, 3, user: author) }
 
-  let(:input) do
+  let(:request_body) do
     {
       sorting: hangar_groups.reverse.map(&:id)
     }
@@ -42,7 +42,7 @@ RSpec.describe "api/v1/hangar/groups", type: :openapi, openapi_schema_name: :"v1
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupSortInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/HangarGroupSortInput"} } }
 
       security [
         {SessionCookie: []},
