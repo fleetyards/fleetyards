@@ -31,10 +31,11 @@ module ScData
         update_params = {}
 
         update_params = update_metrics(model_data, update_params)
-        update_params = update_cargo_holds(model.hardpoints, update_params)
-        update_params = update_quantum_fuel_tanks(model.hardpoints, update_params)
-        update_params = update_hydrogen_fuel_tanks(model.hardpoints, update_params)
-        update_params = update_speeds(model.hardpoints, update_params)
+        hardpoints = model.hardpoints.game_files
+        update_params = update_cargo_holds(hardpoints, update_params)
+        update_params = update_quantum_fuel_tanks(hardpoints, update_params)
+        update_params = update_hydrogen_fuel_tanks(hardpoints, update_params)
+        update_params = update_speeds(hardpoints, update_params)
 
         model.update!(update_params.merge(update_reason: :sc_data_loader))
       end

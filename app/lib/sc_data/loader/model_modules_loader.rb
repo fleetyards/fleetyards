@@ -23,7 +23,7 @@ module ScData
         }
 
         update_params = update_metrics(module_data, update_params)
-        update_params = update_cargo_holds(model_module.hardpoints, update_params)
+        update_params = update_cargo_holds(model_module.hardpoints.game_files, update_params)
 
         model_module.update!(update_params.merge(update_reason: :sc_loader))
       end
