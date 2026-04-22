@@ -82,7 +82,7 @@ OpenapiRuby.configure do |config|
   config.schema_output_format = :yaml
   config.schema_output_dir = "swagger"
 
-  config.request_validation = (Rails.env.test? || ENV.fetch("SKIP_COMMITTEE", false)) ? :disabled : :enabled
+  config.request_validation = ENV.fetch("SKIP_REQUEST_VALIDATION", false) ? :disabled : :enabled
   config.response_validation = :disabled
   config.strict_reference_validation = true
 
