@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { OauthBtnProvidersEnum } from "./types";
+import citizenIdIcon from "@/images/icons/citizenid.jpg";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -100,12 +101,9 @@ const providerActive = computed(() => {
   return isFeatureEnabled(`oauth-${props.provider}`);
 });
 
-const iconClass = computed(() => {
-  if (props.provider === OauthBtnProvidersEnum.CITIZEN_ID) {
-    return "fa-light fa-id-badge";
-  }
-  return `fa-brands fa-${props.provider}`;
-});
+const isCitizenId = computed(
+  () => props.provider === OauthBtnProvidersEnum.CITIZEN_ID,
+);
 </script>
 
 <template>
@@ -125,7 +123,13 @@ const iconClass = computed(() => {
       @click="handleClick"
     >
       <slot>
-        <i :class="iconClass" />
+        <img
+          v-if="isCitizenId"
+          :src="citizenIdIcon"
+          alt="CitizenID"
+          class="oauth-icon"
+        />
+        <i v-else :class="`fa-brands fa-${provider}`" />
         <span v-if="!onlyIcon">{{ label }}</span>
         <i
           v-if="connected && !disconnectable"
