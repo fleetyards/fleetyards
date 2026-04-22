@@ -16,39 +16,39 @@ paths:
       parameters:
       - name: client_id
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: redirect_uri
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: response_type
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: scope
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: state
         in: query
-        required: false
         schema:
           type: string
+        required: false
       - name: code_challenge
         in: query
-        required: false
         schema:
           type: string
+        required: false
       - name: code_challenge_method
         in: query
-        required: false
         schema:
           type: string
+        required: false
       security:
       - SessionCookie: []
       responses:
@@ -73,6 +73,12 @@ paths:
       operationId: oauthAuthorize
       security:
       - SessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthAuthorizationInput"
       responses:
         '200':
           description: successful
@@ -88,12 +94,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/OauthAuthorizationInput"
     delete:
       summary: Deny OAuth authorization
       tags:
@@ -101,6 +101,12 @@ paths:
       operationId: oauthDeny
       security:
       - SessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthAuthorizationInput"
       responses:
         '400':
           description: denied
@@ -114,12 +120,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/OauthAuthorizationInput"
 servers:
 - url: http://fleetyards.test/oauth
   description: Dev Server

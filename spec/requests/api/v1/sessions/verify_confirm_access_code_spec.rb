@@ -9,7 +9,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
     verifier = ActiveSupport::MessageVerifier.new(Rails.application.credentials.confirm_access_secret!, purpose: :access_confirmation)
     verifier.generate({user_id: user.id, code: confirmation_code}, expires_in: 15.minutes)
   end
-  let(:input) { {token:, confirmationCode: confirmation_code} }
+  let(:request_body) { {token:, confirmationCode: confirmation_code} }
 
   before do
     sign_in(user) if user.present?
@@ -22,7 +22,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ConfirmAccessCodeInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ConfirmAccessCodeInput"} } }
 
       security [{
         SessionCookie: []
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
       response(400, "bad request - invalid code") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { {token:, confirmationCode: "000000"} }
+        let(:request_body) { {token:, confirmationCode: "000000"} }
 
         run_test!
       end
@@ -47,7 +47,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
 
         let(:user) { nil }
         let(:token) { "invalid" }
-        let(:input) { {token:, confirmationCode: "000000"} }
+        let(:request_body) { {token:, confirmationCode: "000000"} }
 
         run_test!
       end

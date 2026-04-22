@@ -4,7 +4,7 @@ require "openapi_helper"
 
 RSpec.describe "admin/api/v1/admin_users", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, super_admin: true) }
-  let(:input) do
+  let(:request_body) do
     {
       username: "newadmin",
       email: "newadmin@example.com",
@@ -24,7 +24,7 @@ RSpec.describe "admin/api/v1/admin_users", type: :openapi, openapi_schema_name: 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/AdminUserInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/AdminUserInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/AdminUser"

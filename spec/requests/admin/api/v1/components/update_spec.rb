@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/components", type: :openapi, openapi_schema_name: :
   let(:user) { create(:admin_user, resource_access: [:components]) }
   let(:component) { create(:component) }
   let(:id) { component.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Component"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/components", type: :openapi, openapi_schema_name: :
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ComponentInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ComponentInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Component"

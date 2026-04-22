@@ -29,7 +29,7 @@ RSpec.describe "admin/api/v1/users", type: :openapi, openapi_schema_name: :"admi
         style: :deepObject,
         explode: true,
         required: false
-      parameter name: "cacheId", in: :query, type: :string, required: false
+      parameter name: "cacheId", in: :query, schema: { type: :string }, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Users"

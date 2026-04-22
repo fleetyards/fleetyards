@@ -3,7 +3,7 @@
 require "openapi_helper"
 
 RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema" do
-  let(:input) do
+  let(:request_body) do
     {
       username: "TestUser",
       email: "test@fleetyards.net",
@@ -21,7 +21,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/UserCreateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/UserCreateInput"} } }
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/User"
@@ -56,7 +56,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

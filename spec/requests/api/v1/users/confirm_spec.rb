@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:token) { SecureRandom.hex(16) }
   let(:user) { create :user, confirmed_at: nil, confirmation_token: token }
-  let(:input) do
+  let(:request_body) do
     {
       token: token
     }
@@ -22,7 +22,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ConfirmAccountInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ConfirmAccountInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/StandardMessage"
@@ -33,7 +33,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) do
+        let(:request_body) do
           {
             token: "invalid"
           }

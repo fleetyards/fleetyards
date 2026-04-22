@@ -7,7 +7,7 @@ RSpec.describe "api/v1/public/hangars/stats", type: :openapi, openapi_schema_nam
   let(:username) { user.username }
 
   path "/public/hangars/{username}/stats/models-by-production-status" do
-    parameter name: "username", in: :path, type: :string, description: "username"
+    parameter name: "username", in: :path, schema: { type: :string }, description: "username"
 
     get("Public Hangar Models by Production Status") do
       operationId "publicHangarModelsByProductionStatus"

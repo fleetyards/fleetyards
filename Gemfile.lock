@@ -1,4 +1,15 @@
 GIT
+  remote: https://github.com/openapi-ruby/openapi-ruby.git
+  revision: 98fe3b006a1f290c72960645de6b438869f9a20f
+  branch: main
+  specs:
+    openapi-ruby (3.1.0)
+      activesupport (>= 7.0)
+      json_schemer (~> 2.4)
+      rack (>= 2.0)
+      railties (>= 7.0)
+
+GIT
   remote: https://github.com/r38y/griddler-postmark.git
   revision: 55904355a44066d94c24b49613a22e1face387a5
   specs:
@@ -512,11 +523,6 @@ GEM
     omniauth_openid_connect (0.8.0)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
-    openapi-ruby (3.0.3)
-      activesupport (>= 7.0)
-      json_schemer (~> 2.4)
-      rack (>= 2.0)
-      railties (>= 7.0)
     openid_connect (2.3.1)
       activemodel
       attr_required (>= 1.0.0)
@@ -943,7 +949,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   omniauth-twitch
   omniauth_openid_connect
-  openapi-ruby (~> 3.0.3)
+  openapi-ruby!
   ostruct
   paper_trail
   pg (~> 1.0)

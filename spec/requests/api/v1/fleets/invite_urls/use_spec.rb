@@ -9,7 +9,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name:
   let(:author) { create(:user) }
   let(:user) { author }
   let(:invite_url) { create(:fleet_invite_url, fleet: fleet, user: admin) }
-  let(:input) do
+  let(:request_body) do
     {
       token: invite_url.token
     }
@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name:
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMembershipCreateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/FleetMembershipCreateInput"} } }
 
       security [
         {SessionCookie: []},
@@ -68,7 +68,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name:
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) do
+        let(:request_body) do
           {
             token: "unknown"
           }

@@ -27,7 +27,7 @@ RSpec.describe "api/v1/notification_preferences", type: :openapi, openapi_schema
   end
 
   path "/notification-preferences/{id}" do
-    parameter name: "id", in: :path, type: :string, required: true
+    parameter name: "id", in: :path, schema: { type: :string }, required: true
 
     put("Update a notification preference") do
       operationId "updateNotificationPreference"
@@ -41,17 +41,17 @@ RSpec.describe "api/v1/notification_preferences", type: :openapi, openapi_schema
         {OpenId: ["notifications", "notifications:write"]}
       ]
 
-      parameter name: :input, in: :body, schema: {
+      request_body content: { "application/json" => { schema: {
         type: :object,
         properties: {
           app: {type: :boolean},
           mail: {type: :boolean},
           push: {type: :boolean}
         }
-      }
+      } } }
 
       let(:id) { "hangar_create" }
-      let(:input) { {app: false} }
+      let(:request_body) { {app: false} }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/NotificationPreference"

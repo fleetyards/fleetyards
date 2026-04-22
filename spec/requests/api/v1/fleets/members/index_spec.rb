@@ -31,7 +31,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
   end
 
   path "/fleets/{fleetSlug}/members" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: { type: :string }, description: "Fleet slug"
 
     get("Fleet Member List") do
       operationId "fleetMembers"
@@ -48,7 +48,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
         style: :deepObject,
         explode: true,
         required: false
-      parameter name: "cacheId", in: :query, type: :string, required: false
+      parameter name: "cacheId", in: :query, schema: { type: :string }, required: false
 
       security [
         {SessionCookie: []},

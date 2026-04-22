@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/model_loaners", type: :openapi, openapi_schema_name
   let(:user) { create(:admin_user, resource_access: [:model_loaners]) }
   let(:model_loaner) { create(:model_loaner) }
   let(:id) { model_loaner.id }
-  let(:input) do
+  let(:request_body) do
     {
       hidden: true
     }
@@ -26,7 +26,7 @@ RSpec.describe "admin/api/v1/model_loaners", type: :openapi, openapi_schema_name
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelLoanerInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ModelLoanerInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelLoaner"

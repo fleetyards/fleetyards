@@ -39,9 +39,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -235,6 +235,12 @@ paths:
       - OpenId:
         - fleet
         - fleet:read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
       responses:
         '200':
           description: successful
@@ -250,12 +256,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CheckInput"
   "/fleets":
     post:
       summary: Create Fleet
@@ -266,6 +266,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetCreateInput"
       responses:
         '201':
           description: successful
@@ -285,12 +291,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetCreateInput"
   "/fleets/{slug}":
     delete:
       summary: Destroy Fleet
@@ -301,10 +301,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: slug
-        required: true
         schema:
           type: string
+        description: slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -344,10 +344,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: slug
-        required: true
         schema:
           type: string
+        description: slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -392,10 +392,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: slug
-        required: true
         schema:
           type: string
+        description: slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -404,6 +404,12 @@ paths:
       - OpenId:
         - fleet
         - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetUpdateInput"
       responses:
         '200':
           description: successful
@@ -431,12 +437,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetUpdateInput"
   "/fleets/find-by-invite/{token}":
     post:
       summary: Find Fleet by Invite
@@ -446,10 +446,10 @@ paths:
       parameters:
       - name: token
         in: path
-        description: Fleet Invite Token
-        required: true
         schema:
           type: string
+        description: Fleet Invite Token
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -482,10 +482,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -494,6 +494,12 @@ paths:
       - OpenId:
         - fleet
         - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInviteUrlCreateInput"
       responses:
         '201':
           description: successful
@@ -525,12 +531,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetInviteUrlCreateInput"
     get:
       summary: Fleet Invite Urls List
       tags:
@@ -539,10 +539,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: page
         in: query
         schema:
@@ -601,16 +601,16 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
+        schema:
+          type: string
         description: Fleet slug
         required: true
-        schema:
-          type: string
       - name: token
         in: path
-        description: Invite Url Token
-        required: true
         schema:
           type: string
+        description: Invite Url Token
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -653,6 +653,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMembershipCreateInput"
       responses:
         '201':
           description: successful
@@ -678,12 +684,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetMembershipCreateInput"
   "/fleets/invites":
     get:
       summary: Fleet Invites current User
@@ -725,16 +725,16 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
+        schema:
+          type: string
         description: Fleet slug
         required: true
-        schema:
-          type: string
       - name: username
         in: path
-        description: Username
-        required: true
         schema:
           type: string
+        description: Username
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -783,10 +783,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -795,6 +795,12 @@ paths:
       - OpenId:
         - fleet
         - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMemberCreateInput"
       responses:
         '201':
           description: successful
@@ -826,12 +832,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetMemberCreateInput"
     get:
       summary: Fleet Member List
       tags:
@@ -840,10 +840,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: page
         in: query
         schema:
@@ -866,9 +866,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -908,16 +908,16 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
+        schema:
+          type: string
         description: Fleet slug
         required: true
-        schema:
-          type: string
       - name: username
         in: path
-        description: Username
-        required: true
         schema:
           type: string
+        description: Username
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -967,16 +967,16 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
+        schema:
+          type: string
         description: Fleet slug
         required: true
-        schema:
-          type: string
       - name: username
         in: path
-        description: Username
-        required: true
         schema:
           type: string
+        description: Username
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1026,16 +1026,16 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
+        schema:
+          type: string
         description: Fleet slug
         required: true
-        schema:
-          type: string
       - name: username
         in: path
-        description: username
-        required: true
         schema:
           type: string
+        description: username
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1077,16 +1077,16 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
+        schema:
+          type: string
         description: Fleet slug
         required: true
-        schema:
-          type: string
       - name: username
         in: path
-        description: Username
-        required: true
         schema:
           type: string
+        description: Username
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1131,10 +1131,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1173,10 +1173,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1215,10 +1215,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1248,10 +1248,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1286,14 +1286,20 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMembershipUpdateInput"
       responses:
         '200':
           description: successful
@@ -1319,12 +1325,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetMembershipUpdateInput"
   "/fleets/my":
     get:
       summary: Fleets for current User
@@ -1365,10 +1365,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1409,10 +1409,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: q
         in: query
         schema:
@@ -1453,10 +1453,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: q
         in: query
         schema:
@@ -1503,10 +1503,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1541,10 +1541,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1579,10 +1579,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1617,10 +1617,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1655,10 +1655,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1693,10 +1693,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1735,10 +1735,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: q
         in: query
         schema:
@@ -1787,10 +1787,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: page
         in: query
         schema:
@@ -1813,14 +1813,14 @@ paths:
         required: false
       - name: grouped
         in: query
-        required: false
         schema:
           type: boolean
+        required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1982,6 +1982,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarGroupCreateInput"
       responses:
         '201':
           description: successful
@@ -1997,12 +2003,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/HangarGroupCreateInput"
     get:
       summary: HangarGroup list
       tags:
@@ -2103,6 +2103,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarGroupUpdateInput"
       responses:
         '200':
           description: successful
@@ -2130,12 +2136,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/HangarGroupUpdateInput"
   "/hangar/groups/sort":
     put:
       summary: HangarGroup sort
@@ -2150,6 +2150,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarGroupSortInput"
       responses:
         '200':
           description: successful
@@ -2168,12 +2174,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/HangarGroupSortInput"
   "/hangar/import":
     put:
       summary: Import to your personal Hangar
@@ -2188,6 +2188,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImportInput"
       responses:
         '200':
           description: successful
@@ -2207,12 +2213,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ImportInput"
   "/hangar/items":
     get:
       summary: Your personal Hangar items
@@ -2445,6 +2445,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SyncRsiHangarInput"
       responses:
         '200':
           description: successful
@@ -2464,12 +2470,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SyncRsiHangarInput"
   "/hangar/sync-rsi-hangar/status":
     get:
       summary: Sync RSI Hangar Status
@@ -2528,9 +2528,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -2596,9 +2596,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -2670,10 +2670,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       responses:
         '302':
           description: successful
@@ -2689,10 +2689,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       responses:
         '302':
           description: successful
@@ -2740,10 +2740,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       - name: source
         in: query
         schema:
@@ -2777,10 +2777,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       - name: page
         in: query
         schema:
@@ -2846,9 +2846,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -2884,10 +2884,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       - name: page
         in: query
         schema:
@@ -2924,10 +2924,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       - name: page
         in: query
         schema:
@@ -2964,10 +2964,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       - name: page
         in: query
         schema:
@@ -3004,10 +3004,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       responses:
         '200':
           description: successful
@@ -3034,10 +3034,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       responses:
         '200':
           description: successful
@@ -3073,10 +3073,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       responses:
         '200':
           description: successful
@@ -3130,10 +3130,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       responses:
         '200':
           description: successful
@@ -3160,10 +3160,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       - name: page
         in: query
         schema:
@@ -3200,10 +3200,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: Model slug
-        required: true
         schema:
           type: string
+        description: Model slug
+        required: true
       - name: page
         in: query
         schema:
@@ -3260,9 +3260,9 @@ paths:
         required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -3312,9 +3312,9 @@ paths:
       parameters:
       - name: id
         in: path
-        required: true
         schema:
           type: string
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -3323,6 +3323,18 @@ paths:
       - OpenId:
         - notifications
         - notifications:write
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app:
+                  type: boolean
+                mail:
+                  type: boolean
+                push:
+                  type: boolean
       responses:
         '200':
           description: successful
@@ -3340,19 +3352,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                app:
-                  type: boolean
-                mail:
-                  type: boolean
-                push:
-                  type: boolean
   "/notifications/destroy-all":
     delete:
       summary: Delete all notifications
@@ -3387,9 +3386,9 @@ paths:
       parameters:
       - name: id
         in: path
-        required: true
         schema:
           type: string
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -3492,9 +3491,9 @@ paths:
       parameters:
       - name: id
         in: path
-        required: true
         schema:
           type: string
+        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -3528,6 +3527,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthApplicationInput"
       responses:
         '201':
           description: successful
@@ -3547,12 +3552,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/OauthApplicationInput"
     get:
       summary: OAuth Applications list
       tags:
@@ -3669,6 +3668,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthApplicationUpdateInput"
       responses:
         '200':
           description: successful
@@ -3690,12 +3695,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/OauthApplicationUpdateInput"
   "/oauth-applications/{id}/regenerate-secret":
     put:
       summary: Regenerate OAuth Application secret
@@ -3744,9 +3743,9 @@ paths:
       parameters:
       - name: provider
         in: path
-        required: true
         schema:
           type: string
+        required: true
       security:
       - SessionCookie: []
       responses:
@@ -3788,6 +3787,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SetupOtpInput"
       responses:
         '200':
           description: successful
@@ -3807,12 +3812,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SetupOtpInput"
   "/otp/enable":
     post:
       summary: Enable OTP Setup
@@ -3831,6 +3830,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SetupOtpInput"
       responses:
         '200':
           description: successful
@@ -3850,12 +3855,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SetupOtpInput"
   "/otp/generate-backup-codes":
     post:
       summary: Generate OTP Backup Codes
@@ -3936,6 +3935,12 @@ paths:
       tags:
       - Password
       operationId: requestPasswordReset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PasswordRequestInput"
       responses:
         '200':
           description: successful
@@ -3949,12 +3954,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PasswordRequestInput"
   "/password":
     put:
       summary: Update password
@@ -3963,6 +3962,12 @@ paths:
       operationId: updatePassword
       security:
       - SessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PasswordInput"
       responses:
         '200':
           description: successful
@@ -3982,12 +3987,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PasswordInput"
   "/password/{token}":
     put:
       summary: Update Password with Token
@@ -3997,9 +3996,15 @@ paths:
       parameters:
       - name: token
         in: path
-        required: true
         schema:
           type: string
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PasswordInput"
       responses:
         '200':
           description: successful
@@ -4013,12 +4018,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PasswordInput"
   "/public/fleets/{slug}":
     get:
       summary: Fleet Detail
@@ -4028,10 +4027,10 @@ paths:
       parameters:
       - name: slug
         in: path
-        description: slug
-        required: true
         schema:
           type: string
+        description: slug
+        required: true
       responses:
         '200':
           description: successful for admin of fleet
@@ -4056,10 +4055,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       responses:
         '200':
           description: successful
@@ -4084,10 +4083,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: q
         in: query
         schema:
@@ -4120,10 +4119,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       responses:
         '200':
           description: successful
@@ -4150,10 +4149,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       responses:
         '200':
           description: successful
@@ -4180,10 +4179,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       responses:
         '200':
           description: successful
@@ -4210,10 +4209,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       responses:
         '200':
           description: successful
@@ -4240,10 +4239,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       responses:
         '200':
           description: successful
@@ -4270,10 +4269,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       responses:
         '200':
           description: successful
@@ -4298,10 +4297,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: q
         in: query
         schema:
@@ -4336,10 +4335,10 @@ paths:
       parameters:
       - name: fleetSlug
         in: path
-        description: Fleet slug
-        required: true
         schema:
           type: string
+        description: Fleet slug
+        required: true
       - name: page
         in: query
         schema:
@@ -4362,14 +4361,14 @@ paths:
         required: false
       - name: grouped
         in: query
-        required: false
         schema:
           type: boolean
+        required: false
       - name: cacheId
         in: query
-        required: false
         schema:
           type: string
+        required: false
       responses:
         '200':
           description: successful
@@ -4420,10 +4419,10 @@ paths:
       parameters:
       - name: username
         in: path
-        description: Username
-        required: true
         schema:
           type: string
+        description: Username
+        required: true
       responses:
         '200':
           description: successful
@@ -4444,9 +4443,9 @@ paths:
       parameters:
       - name: username
         in: path
-        required: true
         schema:
           type: string
+        required: true
       - name: page
         in: query
         schema:
@@ -4491,10 +4490,10 @@ paths:
       parameters:
       - name: username
         in: path
-        description: username
-        required: true
         schema:
           type: string
+        description: username
+        required: true
       responses:
         '200':
           description: successful
@@ -4521,10 +4520,10 @@ paths:
       parameters:
       - name: username
         in: path
-        description: username
-        required: true
         schema:
           type: string
+        description: username
+        required: true
       responses:
         '200':
           description: successful
@@ -4551,10 +4550,10 @@ paths:
       parameters:
       - name: username
         in: path
-        description: username
-        required: true
         schema:
           type: string
+        description: username
+        required: true
       responses:
         '200':
           description: successful
@@ -4581,10 +4580,10 @@ paths:
       parameters:
       - name: username
         in: path
-        description: username
-        required: true
         schema:
           type: string
+        description: username
+        required: true
       responses:
         '200':
           description: successful
@@ -4611,10 +4610,10 @@ paths:
       parameters:
       - name: username
         in: path
-        description: username
-        required: true
         schema:
           type: string
+        description: username
+        required: true
       - name: q
         in: query
         schema:
@@ -4647,9 +4646,9 @@ paths:
       parameters:
       - name: username
         in: path
-        required: true
         schema:
           type: string
+        required: true
       responses:
         '200':
           description: successful
@@ -4674,9 +4673,9 @@ paths:
       parameters:
       - name: username
         in: path
-        required: true
         schema:
           type: string
+        required: true
       - name: page
         in: query
         schema:
@@ -4737,6 +4736,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ConfirmAccessInput"
       responses:
         '200':
           description: successful
@@ -4756,18 +4761,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ConfirmAccessInput"
   "/sessions":
     post:
       summary: create session
       tags:
       - Sessions
       operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SessionInput"
       responses:
         '200':
           description: successful
@@ -4781,12 +4786,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/SessionInput"
     delete:
       summary: Destroy Session
       tags:
@@ -4846,6 +4845,12 @@ paths:
       operationId: verifyConfirmAccessCode
       security:
       - SessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ConfirmAccessCodeInput"
       responses:
         '200':
           description: successful
@@ -4865,12 +4870,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ConfirmAccessCodeInput"
   "/stats/components-by-class":
     get:
       summary: Stats Components by Class
@@ -5164,6 +5163,12 @@ paths:
       tags:
       - Users
       operationId: checkEmail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
       responses:
         '200':
           description: successful
@@ -5173,18 +5178,18 @@ paths:
                 "$ref": "#/components/schemas/Check"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CheckInput"
   "/users/check-username":
     post:
       summary: Check Username Availability
       tags:
       - Users
       operationId: checkUsername
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
       responses:
         '200':
           description: successful
@@ -5194,18 +5199,18 @@ paths:
                 "$ref": "#/components/schemas/Check"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CheckInput"
   "/users/confirm":
     post:
       summary: Confirm Account
       tags:
       - Users
       operationId: confirmAccount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ConfirmAccountInput"
       responses:
         '200':
           description: successful
@@ -5219,18 +5224,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ConfirmAccountInput"
   "/users/signup":
     post:
       summary: Create new User
       tags:
       - Users
       operationId: signup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserCreateInput"
       responses:
         '201':
           description: successful
@@ -5250,12 +5255,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UserCreateInput"
   "/users/me":
     delete:
       summary: Destroy Account
@@ -5318,6 +5317,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UserUpdateInput"
       responses:
         '200':
           description: successful
@@ -5333,12 +5338,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UserUpdateInput"
   "/users/account":
     put:
       summary: Update My Account
@@ -5357,6 +5356,12 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AccountUpdateInput"
       responses:
         '200':
           description: successful
@@ -5376,12 +5381,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/AccountUpdateInput"
   "/vehicles/check-serial":
     post:
       summary: Check Vehicle Serial
@@ -5396,6 +5395,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
       responses:
         '200':
           description: successful
@@ -5411,12 +5416,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CheckInput"
   "/vehicles/bulk":
     post:
       summary: Create multiple vehicles
@@ -5431,6 +5430,12 @@ paths:
         OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleCreateBulkInput"
       responses:
         '204':
           description: successful
@@ -5442,12 +5447,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleCreateBulkInput"
     put:
       summary: Update multiple vehicles
       tags:
@@ -5461,6 +5460,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleUpdateBulkInput"
       responses:
         '204':
           description: successful
@@ -5472,12 +5477,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleUpdateBulkInput"
   "/vehicles":
     post:
       summary: Create new Vehicle
@@ -5492,6 +5491,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleCreateInput"
       responses:
         '201':
           description: successful
@@ -5507,12 +5512,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleCreateInput"
   "/vehicles/destroy-all-ingame":
     delete:
       summary: Delete all ingame bought Vehicles
@@ -5552,6 +5551,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleDestroyBulkInput"
       responses:
         '204':
           description: successful
@@ -5563,12 +5568,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleDestroyBulkInput"
   "/vehicles/{id}":
     delete:
       summary: Delete Vehicle
@@ -5633,6 +5632,12 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleUpdateInput"
       responses:
         '200':
           description: successful
@@ -5654,12 +5659,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleUpdateInput"
   "/version":
     get:
       summary: Version of Fleetyards

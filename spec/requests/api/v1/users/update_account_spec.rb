@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user, password: "enterprise") }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       username: "TestUser"
     }
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/AccountUpdateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/AccountUpdateInput"} } }
       parameter name: "X-Access-Confirmation", in: :header, schema: {type: :string},
         description: "Access confirmation token obtained from confirm-access endpoint. Required when using OAuth/OpenID authentication.",
         required: false
@@ -79,7 +79,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
       response(400, "bad request") do
         schema "$ref" => "#/components/schemas/ValidationError"
 
-        let(:input) do
+        let(:request_body) do
           {
             username: ""
           }

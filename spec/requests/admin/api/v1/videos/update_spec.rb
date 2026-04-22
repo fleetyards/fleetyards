@@ -6,7 +6,7 @@ RSpec.describe "admin/api/v1/videos", type: :openapi, openapi_schema_name: :"adm
   let(:user) { create(:admin_user, resource_access: [:videos]) }
   let(:video) { create(:video) }
   let(:id) { video.id }
-  let(:input) do
+  let(:request_body) do
     {
       url: "newVideoId123"
     }
@@ -26,7 +26,7 @@ RSpec.describe "admin/api/v1/videos", type: :openapi, openapi_schema_name: :"adm
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VideoInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/VideoInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Video"

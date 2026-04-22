@@ -7,7 +7,7 @@ RSpec.describe "api/v1/oauth_applications", type: :openapi, openapi_schema_name:
   let(:user) { author }
   let(:oauth_application) { create(:oauth_application, owner: author) }
   let(:id) { oauth_application.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated App"
     }
@@ -36,7 +36,7 @@ RSpec.describe "api/v1/oauth_applications", type: :openapi, openapi_schema_name:
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"} } }
 
       security [
         {SessionCookie: []},

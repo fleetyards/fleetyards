@@ -7,7 +7,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
   let(:user) { author }
   let(:fid) { "STF" }
   let(:fleet) { create(:fleet, fid: fid) }
-  let(:input) do
+  let(:request_body) do
     {
       value: fid
     }
@@ -42,7 +42,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/CheckInput"} } }
 
       security [
         {SessionCookie: []},

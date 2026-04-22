@@ -5,7 +5,7 @@ require "openapi_helper"
 RSpec.describe "api/v1/oauth_applications", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       name: "My App",
       redirectUri: "https://example.com/callback",
@@ -34,7 +34,7 @@ RSpec.describe "api/v1/oauth_applications", type: :openapi, openapi_schema_name:
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthApplicationInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/OauthApplicationInput"} } }
 
       security [
         {SessionCookie: []},
@@ -62,7 +62,7 @@ RSpec.describe "api/v1/oauth_applications", type: :openapi, openapi_schema_name:
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { {name: ""} }
+        let(:request_body) { {name: ""} }
 
         run_test!
       end

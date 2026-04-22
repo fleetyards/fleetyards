@@ -4,7 +4,7 @@ require "openapi_helper"
 
 RSpec.describe "admin/api/v1/components", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:components]) }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Power Plant"
     }
@@ -21,7 +21,7 @@ RSpec.describe "admin/api/v1/components", type: :openapi, openapi_schema_name: :
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ComponentInput"}, required: true
+      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ComponentInput"} } }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Component"
