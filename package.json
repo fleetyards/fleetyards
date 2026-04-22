@@ -41,7 +41,7 @@
     "@vee-validate/rules": "^4.15.1",
     "@vueuse/core": "^14.2.1",
     "ahoy.js": "0.4.5",
-    "axios": "1.15.1",
+    "axios": "1.15.2",
     "clipboard": "2.0.11",
     "core-js": "3.49.0",
     "date-fns": "4.1.0",
