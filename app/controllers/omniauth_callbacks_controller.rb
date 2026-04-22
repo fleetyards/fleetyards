@@ -15,7 +15,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       )
     end
 
-    redirect_to frontend_sign_up_url, alert: alert, allow_other_host: true
+    url = current_user.present? ? frontend_security_settings_url : frontend_sign_up_url
+    redirect_to url, alert: alert, allow_other_host: true
   end
 
   def google
