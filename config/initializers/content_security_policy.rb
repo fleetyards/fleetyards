@@ -41,7 +41,7 @@ Rails.application.configure do
       "https://*.basemaps.cartocdn.com"
     ].compact
 
-    connect_src.push("ws://#{ViteRuby.config.host_with_port}") if Rails.env.development? || Rails.env.test?
+    connect_src.push("ws://#{ViteRuby.config.host_with_port}", "http://#{ViteRuby.config.host_with_port}") if Rails.env.development? || Rails.env.test?
     connect_src.push("ws://127.0.0.1:3035", "http://127.0.0.1:3035", "ws://127.0.0.1:3136", "http://127.0.0.1:3136", "ws://127.0.0.1:3137", "http://127.0.0.1:3137") if Rails.env.development? || Rails.env.test?
     connect_src.push("ws://localhost:3035", "http://localhost:3035", "ws://localhost:3136", "http://localhost:3136", "ws://localhost:3137", "http://localhost:3137") if Rails.env.development? || Rails.env.test?
     connect_src.push("ws://fleetyards.test:3035", "http://fleetyards.test:3035", "ws://fleetyards.test:3136", "http://fleetyards.test:3136") if Rails.env.development?
