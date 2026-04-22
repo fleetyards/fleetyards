@@ -44,6 +44,11 @@ export const useVehicleMutations = () => {
         onMutate: async ({ data }) => {
           const vehicleForMutation = unref(vehicle);
 
+          const needsInvalidation =
+            ("wanted" in data && data.wanted !== vehicleForMutation.wanted) ||
+            ("flagship" in data &&
+              data.flagship !== vehicleForMutation.flagship);
+
           const updatedVehicle = {
             ...vehicleForMutation,
             ...data,
@@ -52,7 +57,7 @@ export const useVehicleMutations = () => {
           const queryData = await getPreviousHangarQueryData();
 
           if (!queryData?.length) {
-            return;
+            return { needsInvalidation };
           }
 
           queryData.forEach((query) => {
@@ -74,7 +79,15 @@ export const useVehicleMutations = () => {
             });
           });
 
-          return { queryData };
+          return { queryData, needsInvalidation };
+        },
+        onSuccess: (updatedVehicle, _variables, context) => {
+          if (context?.needsInvalidation) {
+            void invalidateHangarQueries();
+            return;
+          }
+
+          updateVehicleInCache(updatedVehicle);
         },
         onError: (_error, _variables, context) => {
           if (!context?.queryData) {
@@ -86,9 +99,6 @@ export const useVehicleMutations = () => {
 
             queryClient.setQueryData(queryKey, previousVehicles);
           });
-        },
-        onSettled: () => {
-          void invalidateHangarQueries();
         },
       },
     });
@@ -146,9 +156,6 @@ export const useVehicleMutations = () => {
             queryClient.setQueryData(queryKey, previousVehicles);
           });
         },
-        onSettled: () => {
-          void invalidateHangarQueries();
-        },
       },
     });
   };
@@ -160,6 +167,25 @@ export const useVehicleMutations = () => {
           void invalidateHangarQueries();
         },
       },
+    });
+  };
+
+  const updateVehicleInCache = (updatedVehicle: Vehicle) => {
+    const queryKeys = [getHangarQueryKey(), getWishlistQueryKey()];
+
+    queryKeys.forEach((queryKey) => {
+      queryClient
+        .getQueriesData<Hangar>({ queryKey })
+        .forEach(([key, data]) => {
+          if (!data?.items) return;
+
+          queryClient.setQueryData(key, {
+            ...data,
+            items: data.items.map((v) =>
+              v.id === updatedVehicle.id ? updatedVehicle : v,
+            ),
+          });
+        });
     });
   };
 
