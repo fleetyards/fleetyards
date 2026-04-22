@@ -264,6 +264,7 @@ Devise.setup do |config|
     scope: [:openid, :profile, :email, "rsi.profile"],
     response_type: :code,
     pkce: true,
+    send_scope_to_token_endpoint: false,
     issuer: Rails.configuration.app.citizenid[:issuer],
     discovery: true,
     client_options: {
