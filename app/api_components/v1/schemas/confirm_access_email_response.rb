@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class ConfirmAccessEmailResponse
-      include Rswag::SchemaComponents::Component
+      include OpenapiRuby::Components::Base
 
       schema({
         type: :object,
