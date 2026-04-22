@@ -70,6 +70,7 @@ COPY . .
 
 # Write git revision for the admin UI version display
 ARG GIT_REVISION=""
+ARG CDN_ENDPOINT=""
 RUN if [ -n "$GIT_REVISION" ]; then echo "$GIT_REVISION" > REVISION; fi
 
 # Run postinstall scripts now that full source is available
@@ -82,6 +83,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 RUN --mount=type=secret,id=RAILS_MASTER_KEY \
     RAILS_MASTER_KEY="$(cat /run/secrets/RAILS_MASTER_KEY)" \
     SECRET_KEY_BASE_DUMMY=1 \
+    VITE_RUBY_ASSET_HOST="${CDN_ENDPOINT}" \
     bin/rails assets:precompile
 
 # Copy PWA files to public root (Vite outputs to public/vite/ but they need root scope)

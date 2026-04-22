@@ -12,6 +12,10 @@ servers:
     hosts:
 <%= web_ips.map { |ip| "      - #{ip}" }.join("\n") %>
 
+builder:
+  args:
+    CDN_ENDPOINT: "https://cdn.fltyrd.net"
+
 proxy:
   ssl: false
 

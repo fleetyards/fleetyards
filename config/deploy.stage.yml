@@ -19,6 +19,7 @@ servers:
 builder:
   args:
     RAILS_ENV: staging
+    CDN_ENDPOINT: "https://cdn.fltyrd.dev"
 
 proxy:
   ssl: true

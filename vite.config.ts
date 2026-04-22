@@ -59,7 +59,7 @@ export default defineConfig({
         modifyURLPrefix: {
           "": "/vite/",
         },
-        globPatterns: ["**/*.{js,css,ico,png,svg}"],
+        globPatterns: ["**/*.{js,css,ico,png,svg,woff2}"],
         cleanupOutdatedCaches: true,
         clientsClaim: true,
         skipWaiting: true,
