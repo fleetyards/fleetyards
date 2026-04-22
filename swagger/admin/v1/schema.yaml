@@ -6169,25 +6169,57 @@ components:
     Dock:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         name:
+          type: string
+          nullable: true
+        dockType:
+          type: string
+        dockTypeLabel:
+          type: string
+        shipSize:
+          type: string
+        shipSizeLabel:
           type: string
         group:
           type: string
-        size:
-          "$ref": "#/components/schemas/DockShipSizeEnum"
-        sizeLabel:
+          nullable: true
+        length:
+          type: number
+          nullable: true
+        beam:
+          type: number
+          nullable: true
+        height:
+          type: number
+          nullable: true
+        minShipSize:
+          type: integer
+          nullable: true
+        maxShipSize:
+          type: integer
+          nullable: true
+        modelId:
           type: string
-        type:
-          "$ref": "#/components/schemas/DockTypeEnum"
-        typeLabel:
+          format: uuid
+          nullable: true
+        createdAt:
           type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
       additionalProperties: false
       required:
-      - name
-      - size
-      - sizeLabel
-      - type
-      - typeLabel
+      - id
+      - dockType
+      - dockTypeLabel
+      - shipSize
+      - shipSizeLabel
+      - createdAt
+      - updatedAt
       title: Dock
     DockCount:
       type: object

@@ -69,7 +69,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
         run_test!
       end
 
-      response(400, "requires access confirmation with OAuth token") do
+      response(400, "requires access confirmation with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 

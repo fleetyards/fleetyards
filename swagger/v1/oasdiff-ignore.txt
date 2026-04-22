@@ -1,42 +1,7 @@
 PUT /password removed the request property 'currentPassword'
 PUT /password/{token} removed the request property 'currentPassword'
-GET /notification-preferences added the new 'fleet_inventory_item_added' enum value to the '/items/notificationType' response property for the response status '200'
-PUT /notification-preferences/{id} added the new 'fleet_inventory_item_added' enum value to the 'notificationType' response property for the response status '200'
-GET /notifications added the new 'fleet_inventory_item_added' enum value to the 'items/items/notificationType' response property for the response status '200'
-PUT /notifications/{id}/read added the new 'fleet_inventory_item_added' enum value to the 'notificationType' response property for the response status '200'
-DELETE /vehicles/{id} removed the optional property 'modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-DELETE /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-DELETE /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/hardpoint/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-DELETE /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /components removed the optional property 'items/items/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /fleets/{fleetSlug}/vehicles removed the optional property 'items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /hangar removed the optional property 'items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /models/{slug}/hardpoints removed the optional property '/items/anyOf[subschema #1: Hardpoint]/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /models/{slug}/hardpoints removed the optional property '/items/anyOf[subschema #2: ModelHardpoint]/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /models/{slug}/hardpoints removed the optional property '/items/anyOf[subschema #2: ModelHardpoint]/loadouts/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /models/{slug}/module-packages removed the optional property 'items/items/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /models/{slug}/modules removed the optional property 'items/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /public/fleets/{fleetSlug}/vehicles removed the optional property 'items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property '/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /public/hangars/{username} removed the optional property 'items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /public/hangars/embed removed the optional property '/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /public/wishlists/{username} removed the optional property 'items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /vehicles/{id} removed the optional property 'modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /vehicles/{vehicle_id}/loadouts removed the optional property '/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /vehicles/{vehicle_id}/loadouts removed the optional property '/items/hardpoints/items/hardpoint/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /vehicles/{vehicle_id}/loadouts removed the optional property '/items/hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/hardpoint/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-GET /wishlist removed the optional property 'items/items/modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-POST /vehicles removed the optional property 'modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '201' status
-POST /vehicles/{vehicle_id}/loadouts removed the optional property 'hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '201' status
-POST /vehicles/{vehicle_id}/loadouts removed the optional property 'hardpoints/items/hardpoint/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '201' status
-POST /vehicles/{vehicle_id}/loadouts removed the optional property 'hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '201' status
-PUT /vehicles/{id} removed the optional property 'modulePackage/modules/items/hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-PUT /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-PUT /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/hardpoint/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-PUT /vehicles/{vehicle_id}/loadouts/{id} removed the optional property 'hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-PUT /vehicles/{vehicle_id}/loadouts/{id}/activate removed the optional property 'hardpoints/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-PUT /vehicles/{vehicle_id}/loadouts/{id}/activate removed the optional property 'hardpoints/items/hardpoint/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
-PUT /vehicles/{vehicle_id}/loadouts/{id}/activate removed the optional property 'hardpoints/items/hardpoint/loadouts/items/component/typeData/anyOf[subschema #5: ComponentWeapon]/weaponClass' from the response with the '200' status
+POST /otp/disable removed the media type 'application/json' for the response with the status '400'
+POST /otp/enable removed the media type 'application/json' for the response with the status '400'
+POST /otp/generate-backup-codes removed the media type 'application/json' for the response with the status '400'
+POST /otp/start removed the media type 'application/json' for the response with the status '400'
+PUT /users/account removed the media type 'application/json' for the response with the status '400'
