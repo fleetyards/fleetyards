@@ -227,8 +227,6 @@ function groupCargoHolds(
     }
   }
 
-  // If all holds have offsets, the backend fully specifies the layout —
-  // collapse everything into a single group so offsets work across all holds.
   const allHaveOffsets = holds.every(
     (h) =>
       h.offset &&
@@ -236,26 +234,6 @@ function groupCargoHolds(
       h.offset.y != null &&
       h.offset.z != null,
   );
-
-  if (allHaveOffsets && holds.length > 1) {
-    const commonPrefix =
-      groupKeys.reduce((prefix, key) => {
-        while (prefix && !key.startsWith(prefix)) {
-          const lastUnderscore = prefix.lastIndexOf("_");
-          prefix =
-            lastUnderscore > 0 ? prefix.substring(0, lastUnderscore) : "";
-        }
-        return prefix;
-      }, groupKeys[0]) || "cargo";
-
-    return [
-      {
-        key: commonPrefix,
-        label: humanizeHoldName(commonPrefix),
-        holdIndices: holds.map((_, i) => i),
-      },
-    ];
-  }
 
   // Build groups maintaining insertion order
   const groupMap = new Map<string, number[]>();
@@ -268,6 +246,37 @@ function groupCargoHolds(
       groupOrder.push(key);
     }
     groupMap.get(key)!.push(i);
+  }
+
+  // If all holds have offsets and every natural group is small (≤ 2 holds),
+  // collapse into a single group so the backend fully controls the cross-group
+  // layout (e.g. Hull B diamond pattern spanning 8 name-based groups).
+  // Ships with larger groups (e.g. Caterpillar modules with 3 holds each)
+  // keep their per-group arrangement so offsets work within each group.
+  if (allHaveOffsets && holds.length > 1) {
+    const maxGroupSize = Math.max(
+      ...groupOrder.map((key) => groupMap.get(key)!.length),
+    );
+
+    if (maxGroupSize <= 2) {
+      const commonPrefix =
+        groupKeys.reduce((prefix, key) => {
+          while (prefix && !key.startsWith(prefix)) {
+            const lastUnderscore = prefix.lastIndexOf("_");
+            prefix =
+              lastUnderscore > 0 ? prefix.substring(0, lastUnderscore) : "";
+          }
+          return prefix;
+        }, groupKeys[0]) || "cargo";
+
+      return [
+        {
+          key: commonPrefix,
+          label: humanizeHoldName(commonPrefix),
+          holdIndices: holds.map((_, i) => i),
+        },
+      ];
+    }
   }
 
   return groupOrder.map((key) => ({
@@ -418,7 +427,9 @@ function findBestHoldArrangement(
   if (dims.length >= 2) {
     for (let i = 0; i < dims.length; i++) {
       const side = dims[i];
-      const main = dims.filter((_, j) => j !== i);
+      const main = dims
+        .filter((_, j) => j !== i)
+        .sort((a, b) => b.x * b.y * b.z - a.x * a.y * a.z);
 
       for (const mainAxis of ["x", "z"] as const) {
         let offset = 0;
