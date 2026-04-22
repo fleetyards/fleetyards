@@ -132,8 +132,11 @@ Rails.application.config.after_initialize do
     next unless klass.name
 
     if klass.name.start_with?("Shared::V1::")
-      klass._component_scopes = []
+      # Match old behavior: shared components only in v1 and admin, not oauth
+      OpenapiRuby::Components::Registry.instance.unregister(klass)
+      klass._component_scopes = [:v1, :admin]
       klass._component_scopes_explicitly_set = true
+      OpenapiRuby::Components::Registry.instance.register(klass)
     else
       matched = scope_prefixes.find { |prefix, _| klass.name.start_with?(prefix) }
       next unless matched
