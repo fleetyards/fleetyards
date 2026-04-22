@@ -37,10 +37,10 @@ jobs:
           done
 
       - name: Check public API breaking changes
-        run: oasdiff breaking .base/swagger/v1/schema.yaml swagger/v1/schema.yaml --fail-on WARN --err-ignore swagger/v1/oasdiff-ignore.txt --warn-ignore swagger/v1/oasdiff-ignore.txt
+        run: oasdiff breaking --flatten-params .base/swagger/v1/schema.yaml swagger/v1/schema.yaml --fail-on WARN --err-ignore swagger/v1/oasdiff-ignore.txt --warn-ignore swagger/v1/oasdiff-ignore.txt
 
       - name: Check OAuth API breaking changes
-        run: oasdiff breaking .base/swagger/oauth/v1/schema.yaml swagger/oauth/v1/schema.yaml --fail-on WARN --err-ignore swagger/oauth/v1/oasdiff-ignore.txt --warn-ignore swagger/oauth/v1/oasdiff-ignore.txt
+        run: oasdiff breaking --flatten-params .base/swagger/oauth/v1/schema.yaml swagger/oauth/v1/schema.yaml --fail-on WARN --err-ignore swagger/oauth/v1/oasdiff-ignore.txt --warn-ignore swagger/oauth/v1/oasdiff-ignore.txt
 
       - name: Check admin API breaking changes (warn only)
-        run: oasdiff breaking .base/swagger/admin/v1/schema.yaml swagger/admin/v1/schema.yaml --fail-on ERR --err-ignore swagger/admin/v1/oasdiff-ignore.txt
+        run: oasdiff breaking --flatten-params .base/swagger/admin/v1/schema.yaml swagger/admin/v1/schema.yaml --fail-on ERR --err-ignore swagger/admin/v1/oasdiff-ignore.txt
