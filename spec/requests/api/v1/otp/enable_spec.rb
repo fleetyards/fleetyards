@@ -37,7 +37,7 @@ RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" d
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/SetupOtpInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/SetupOtpInput"}
       parameter name: "X-Access-Confirmation", in: :header, schema: {type: :string},
         description: "Access confirmation token obtained from confirm-access endpoint. Required when using OAuth/OpenID authentication.",
         required: false

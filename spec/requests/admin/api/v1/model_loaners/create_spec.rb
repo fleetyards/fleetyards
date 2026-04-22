@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/model_loaners", type: :openapi, openapi_schema_name
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ModelLoanerInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelLoanerInput"}
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/ModelLoaner"

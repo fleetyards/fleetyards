@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/model_module_packages", type: :openapi, openapi_sch
       consumes "application/json"
       produces "application/json"
 
-      request_body required: true, content: { "application/json" => { schema: {"$ref": "#/components/schemas/ModelModulePackageInput"} } }
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModulePackageInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelModulePackage"

@@ -31,7 +31,7 @@ RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"adm
       consumes "application/json"
       produces "application/json"
 
-      request_body content: { "application/json" => { schema: {"$ref": "#/components/schemas/ImageInputCreate"} } }
+      request_body schema: {"$ref": "#/components/schemas/ImageInputCreate"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"
