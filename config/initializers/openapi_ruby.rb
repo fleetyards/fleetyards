@@ -87,19 +87,4 @@ OpenapiRuby.configure do |config|
   config.strict_reference_validation = true
 
   config.auto_validation_error_response = true
-  config.validation_error_schema = {
-    "type" => "object",
-    "properties" => {
-      "code" => {"type" => "string"},
-      "message" => {"type" => "string"}
-    },
-    "required" => %w[code message]
-  }
-
-  config.error_handler = Class.new(OpenapiRuby::Middleware::ErrorHandler) {
-    def invalid_request(errors)
-      body = {code: "validation_error", message: errors.first}.to_json
-      [400, {"content-type" => "application/json"}, [body]]
-    end
-  }.new
 end
