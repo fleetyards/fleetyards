@@ -5,7 +5,7 @@ module V1
     module Hangar
       module Groups
         class HangarGroup
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

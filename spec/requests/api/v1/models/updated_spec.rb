@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema" do
   path "/models/updated" do
     get("Updated Models") do
       operationId "modelsUpdated"
@@ -14,14 +14,6 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
       response(200, "successful") do
         let(:from) { 1.day.ago }
-
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
 
         run_test!
       end

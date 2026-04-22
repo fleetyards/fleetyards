@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class ThrusterClassEnum
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           TYPES = %w[main retro vtol mav].freeze
 

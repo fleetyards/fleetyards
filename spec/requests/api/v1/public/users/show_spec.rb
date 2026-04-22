@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/users", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/users", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, :with_avatar, :with_rsi_handle, :with_social_links, :public_hangar) }
   let(:user_without_public_hangar) { create(:user, :private_hangar) }
 

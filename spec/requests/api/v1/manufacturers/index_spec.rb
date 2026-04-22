@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/manufacturers", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/manufacturers", type: :openapi, openapi_schema_name: :"v1/schema" do
   let!(:manufacturers) { create_list(:manufacturer, 2) }
   let!(:manufacturers_with_models) { create_list(:manufacturer, 5, :with_models) }
 

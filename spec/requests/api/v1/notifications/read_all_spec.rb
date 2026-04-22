@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/notifications", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/notifications", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let!(:notifications) { create_list(:notification, 3, user: author) }

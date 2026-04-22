@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:import) { create(:import, :scdata_all, aasm_state: :finished, version: "1.0.0") }
 
   before do

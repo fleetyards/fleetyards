@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:embeded_models) { create_list(:model, 3) }
 
   path "/models/embed" do
@@ -26,7 +26,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           data = JSON.parse(response.body)
           expect(data.count).to eq(3)
 
-          example.metadata[:response] = {code: response.status.to_s}
+          # response example metadata removed — not supported by openapi-ruby
         end
       end
     end

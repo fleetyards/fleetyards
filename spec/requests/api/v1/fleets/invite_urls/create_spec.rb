@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:member) { create(:user) }
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, members: [member], admins: [admin]) }

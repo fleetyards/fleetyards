@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Models
       class ModelExtended < Model
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           properties: {

@@ -6,7 +6,7 @@ module Admin
       module Models
         module Loaners
           class ModelLoaner
-            include Rswag::SchemaComponents::Component
+            include OpenapiRuby::Components::Base
 
             schema({
               type: :object,

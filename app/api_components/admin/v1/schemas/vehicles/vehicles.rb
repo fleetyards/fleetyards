@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Vehicles
         class Vehicles < ::Shared::V1::Schemas::BaseList
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             properties: {

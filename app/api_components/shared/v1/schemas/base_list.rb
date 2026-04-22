@@ -4,7 +4,7 @@ module Shared
   module V1
     module Schemas
       class BaseList
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           type: :object,

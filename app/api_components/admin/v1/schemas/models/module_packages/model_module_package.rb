@@ -6,7 +6,7 @@ module Admin
       module Models
         module ModulePackages
           class ModelModulePackage
-            include Rswag::SchemaComponents::Component
+            include OpenapiRuby::Components::Base
 
             schema({
               type: :object,

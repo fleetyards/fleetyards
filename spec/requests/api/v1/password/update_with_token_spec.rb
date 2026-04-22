@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user) }
   let(:token) { user.send_reset_password_instructions }
   let(:input) do

@@ -4,7 +4,7 @@ module Oauth
   module V1
     module Schemas
       class StandardError
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
