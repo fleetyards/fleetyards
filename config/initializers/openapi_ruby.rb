@@ -131,22 +131,28 @@ Rails.application.config.after_initialize do
     next if klass._component_scopes_explicitly_set
     next unless klass.name
 
+    OpenapiRuby::Components::Registry.instance.unregister(klass)
+
     if klass.name.start_with?("Shared::V1::")
       # Match old behavior: shared components only in v1 and admin, not oauth
-      OpenapiRuby::Components::Registry.instance.unregister(klass)
       klass._component_scopes = [:v1, :admin]
       klass._component_scopes_explicitly_set = true
-      OpenapiRuby::Components::Registry.instance.register(klass)
     else
       matched = scope_prefixes.find { |prefix, _| klass.name.start_with?(prefix) }
-      next unless matched
+      unless matched
+        OpenapiRuby::Components::Registry.instance.register(klass)
+        next
+      end
 
       expected_scope = matched[1]
-      next if klass._component_scopes == [expected_scope]
+      if klass._component_scopes == [expected_scope]
+        OpenapiRuby::Components::Registry.instance.register(klass)
+        next
+      end
 
-      OpenapiRuby::Components::Registry.instance.unregister(klass)
       klass._component_scopes = [expected_scope]
-      OpenapiRuby::Components::Registry.instance.register(klass)
     end
+
+    OpenapiRuby::Components::Registry.instance.register(klass)
   end
 end
