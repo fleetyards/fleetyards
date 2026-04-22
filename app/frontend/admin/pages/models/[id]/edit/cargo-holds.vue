@@ -101,13 +101,24 @@ const updateMutation = useUpdateCargoHoldMutation({
   },
 });
 
+const toNumberOrNull = (val: unknown): number | null => {
+  if (val === "" || val === undefined || val === null) return null;
+  const num = Number(val);
+  return Number.isNaN(num) ? null : num;
+};
+
 const onSaveEdit = async () => {
   const id = editableList.value?.editingId;
   if (!id) return;
 
   await updateMutation.mutateAsync({
     id,
-    data: editForm.value,
+    data: {
+      offsetX: toNumberOrNull(editForm.value.offsetX),
+      offsetY: toNumberOrNull(editForm.value.offsetY),
+      offsetZ: toNumberOrNull(editForm.value.offsetZ),
+      rotation: toNumberOrNull(editForm.value.rotation),
+    },
   });
 
   editableList.value?.finishEdit();
