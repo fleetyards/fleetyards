@@ -6,21 +6,13 @@ info:
   license:
     name: GNU General Public License v3.0
     url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
-servers:
-- url: http://fleetyards.test/oauth
-  description: Dev Server
-- url: https://fleetyards.net/oauth
-  description: Production Server
-- url: https://fleetyards.dev/oauth
-  description: Staging Server
-security: []
 paths:
   "/authorize":
     get:
       summary: Pre-authorize OAuth application
-      operationId: oauthPreAuthorize
       tags:
       - OAuth
+      operationId: oauthPreAuthorize
       parameters:
       - name: client_id
         in: query
@@ -72,12 +64,13 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     post:
       summary: Authorize OAuth application
-      operationId: oauthAuthorize
       tags:
       - OAuth
-      parameters: []
+      operationId: oauthAuthorize
       security:
       - SessionCookie: []
       responses:
@@ -93,18 +86,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               "$ref": "#/components/schemas/OauthAuthorizationInput"
-        required: true
     delete:
       summary: Deny OAuth authorization
-      operationId: oauthDeny
       tags:
       - OAuth
-      parameters: []
+      operationId: oauthDeny
       security:
       - SessionCookie: []
       responses:
@@ -121,11 +115,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               "$ref": "#/components/schemas/OauthAuthorizationInput"
-        required: true
+servers:
+- url: http://fleetyards.test/oauth
+  description: Dev Server
+- url: https://fleetyards.net/oauth
+  description: Production Server
+- url: https://fleetyards.dev/oauth
+  description: Staging Server
 components:
   schemas:
     OauthAuthorizationInput:
@@ -237,3 +238,19 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
+  responses:
+    SchemaValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+            required:
+            - code
+            - message
+security: []
