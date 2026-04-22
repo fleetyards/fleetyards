@@ -141,8 +141,9 @@ Devise.setup do |config|
 
   # Options to be passed to the created cookie. For instance, you can set
   # :secure => true in order to force SSL only cookies.
+  # Strip port from domain — cookie domains must not include ports
   config.rememberable_options = {
-    domain: ".#{Rails.configuration.app.domain}",
+    domain: ".#{Rails.configuration.app.domain.split(":").first}",
     secure: Rails.env.production? || Rails.env.staging?,
     same_site: :lax
   }
