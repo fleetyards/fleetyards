@@ -81,7 +81,7 @@ class User < ApplicationRecord
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
-    omniauth_providers: [:discord, :twitch, :google, :github, :bluesky, :citizen_id],
+    omniauth_providers: [:discord, :twitch, :google, :github, :bluesky, :citizenid],
     authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 

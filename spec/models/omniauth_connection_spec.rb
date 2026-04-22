@@ -52,7 +52,7 @@ RSpec.describe OmniauthConnection, type: :model do
         "github" => 2,
         "bluesky" => 3,
         "twitch" => 4,
-        "citizen_id" => 5
+        "citizenid" => 5
       )
     end
   end

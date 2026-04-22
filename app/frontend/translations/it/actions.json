@@ -110,14 +110,14 @@
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
-        "citizen_id": "CitizenID",
+        "citizenid": "CitizenID",
         "connected": {
           "google": "Connesso a Google",
           "discord": "Connesso a Discord",
           "bluesky": "Connesso a BlueSky",
           "github": "Connesso a GitHub",
           "twitch": "Connesso a Twitch",
-          "citizen_id": "Connesso a CitizenID"
+          "citizenid": "Connesso a CitizenID"
         },
         "disconnect": {
           "google": "Disconnetti Google",
@@ -125,7 +125,7 @@
           "bluesky": "Disconnetti BlueSky",
           "github": "Disconnetti GitHub",
           "twitch": "Disconnetti Twitch",
-          "citizen_id": "Disconnetti CitizenID"
+          "citizenid": "Disconnetti CitizenID"
         }
       },
       "compare": {

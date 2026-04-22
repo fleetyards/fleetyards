@@ -51,7 +51,7 @@ zh-CN:
         github: GitHub
         bluesky: Bluesky
         twitch: Twitch
-        citizen_id: CitizenID
+        citizenid: CitizenID
       failure: 无法通过 %{kind} 认证。
       failure_with_reason: 无法通过 %{kind} 认证，原因："%{reason}"。
       failure_username_taken: |-

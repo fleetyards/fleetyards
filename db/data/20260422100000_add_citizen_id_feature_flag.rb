@@ -2,7 +2,7 @@
 
 class AddCitizenIdFeatureFlag < ActiveRecord::Migration[8.1]
   def up
-    Flipper.add("oauth-citizen_id")
+    Flipper.add("oauth-citizenid")
   end
 
   def down

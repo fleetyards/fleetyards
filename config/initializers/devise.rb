@@ -260,15 +260,15 @@ Devise.setup do |config|
   end
 
   config.omniauth :openid_connect, {
-    name: :citizen_id,
+    name: :citizenid,
     scope: [:openid, :profile, :email, "rsi.profile"],
     response_type: :code,
     pkce: true,
-    issuer: Rails.configuration.app.citizen_id[:issuer],
+    issuer: Rails.configuration.app.citizenid[:issuer],
     discovery: true,
     client_options: {
-      identifier: Rails.configuration.app.citizen_id[:oauth_client_id],
-      redirect_uri: "#{FRONTEND_ENDPOINT}/users/auth/citizen_id/callback"
+      redirect_uri: "#{FRONTEND_ENDPOINT}/users/auth/citizenid/callback",
+      identifier: Rails.configuration.app.citizenid[:oauth_client_id]
     }
   }
 

@@ -40,9 +40,9 @@ shared:
   bluesky:
     client_id: <%= Rails.app.creds.option(:bluesky, :client_id) %>
 
-  citizen_id:
-    oauth_client_id: <%= Rails.app.creds.option(:citizen_id, :oauth_client_id) %>
-    issuer: <%= ENV["CITIZEN_ID_ISSUER"] || "https://citizenid.dev/" %>
+  citizenid:
+    oauth_client_id: <%= Rails.app.creds.option(:citizenid, :oauth_client_id) %>
+    issuer: <%= ENV["CITIZENID__ISSUER"] || "https://citizenid.dev/" %>
 
 staging:
   on_subdomain?: true
@@ -50,7 +50,7 @@ staging:
 production:
   on_subdomain?: true
 
-  citizen_id:
+  citizenid:
     issuer: <%= ENV["CITIZEN_ID_ISSUER"] || "https://citizenid.space/" %>
 
   cdn_endpoint: <%= ENV["CDN_ENDPOINT"] || "https://cdn.fltyrd.net" %>

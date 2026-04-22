@@ -38,8 +38,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     handle_auth(t("devise.omniauth.provider.bluesky"))
   end
 
-  def citizen_id
-    handle_auth(t("devise.omniauth.provider.citizen_id"))
+  def citizenid
+    handle_auth(t("devise.omniauth.provider.citizenid"))
   end
 
   private def handle_connect(kind)

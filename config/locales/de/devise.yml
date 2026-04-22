@@ -62,7 +62,7 @@ de:
         github: GitHub
         bluesky: Bluesky
         twitch: Twitch
-        citizen_id: CitizenID
+        citizenid: CitizenID
       failure: Authentifizierung mit %{kind} fehlgeschlagen.
       failure_with_reason: 'Authentifizierung mit %{kind} fehlgeschlagen: "%{reason}".'
       failure_username_taken: |-

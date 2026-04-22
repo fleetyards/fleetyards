@@ -102,7 +102,7 @@ const providerActive = computed(() => {
 });
 
 const isCitizenId = computed(
-  () => props.provider === OauthBtnProvidersEnum.CITIZEN_ID,
+  () => props.provider === OauthBtnProvidersEnum.CITIZENID,
 );
 </script>
 
