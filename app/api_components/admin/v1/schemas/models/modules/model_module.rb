@@ -13,7 +13,19 @@ module Admin
                 price: {type: :number},
                 active: {type: :boolean},
                 hidden: {type: :boolean},
-                models: {type: :array, items: {"$ref": "#/components/schemas/Model"}}
+                models: {type: :array, items: {"$ref": "#/components/schemas/Model"}},
+                moduleHardpoints: {
+                  type: :array,
+                  items: {
+                    type: :object,
+                    properties: {
+                      id: {type: :string, format: :uuid},
+                      modelId: {type: :string, format: :uuid},
+                      slot: {type: :string}
+                    },
+                    additionalProperties: false
+                  }
+                }
               }
             })
           end

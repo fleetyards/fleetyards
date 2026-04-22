@@ -1,5 +1,7 @@
 # Exec Plan: Module Slot Tracking on module_hardpoints
 
+Resolves #3750
+
 ## Problem
 
 `module_hardpoints` is a bare join table (`model_id`, `model_module_id`, timestamps) with no slot/position info. All possible modules are linked to a model during import, but some modules are mutually exclusive — they compete for the same physical slot on the ship.

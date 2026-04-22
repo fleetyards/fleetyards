@@ -90,6 +90,7 @@ def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_red
     PORT=#{port}
     DB_PORT=#{db_port}
     REDIS_URL=redis://localhost:#{redis_port}
+    VITE_RUBY_HOST=localhost
     VITE_RUBY_PORT=#{vite_port}
     WORKTREE_SUFFIX=#{db_suffix}
     SIDEKIQ_REDIS_DB=#{sidekiq_redis_db}

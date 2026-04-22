@@ -30,6 +30,14 @@ json.models do
   json.array! model_module.models, partial: "admin/api/v1/models/base", as: :model
 end
 
+json.module_hardpoints do
+  json.array! model_module.module_hardpoints do |mh|
+    json.id mh.id
+    json.model_id mh.model_id
+    json.slot mh.slot
+  end
+end
+
 json.price model_module.price
 json.pledge_price model_module.pledge_price
 json.production_status model_module.production_status

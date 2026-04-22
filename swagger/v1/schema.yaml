@@ -2691,6 +2691,15 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: containerFit
+        in: query
+        schema:
+          type: object
+          additionalProperties:
+            type: integer
+        style: deepObject
+        explode: true
+        required: false
       - name: cacheId
         in: query
         required: false
@@ -9327,6 +9336,10 @@ components:
           type: string
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
+        slot:
+          type: string
+          description: Module slot identifier (hardpoint sc_name). Present when fetched
+            via a model's modules endpoint.
         hardpoints:
           type: array
           items:
@@ -9787,10 +9800,6 @@ components:
           type: boolean
         inHangar:
           type: boolean
-        containerFit:
-          type: object
-          additionalProperties:
-            type: integer
         sorts:
           anyOf:
           - type: array

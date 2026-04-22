@@ -27,10 +27,11 @@ module Admin
 
           if @model_module.save
             if params[:model_id].present?
-              ModuleHardpoint.find_or_create_by!(
+              mh = ModuleHardpoint.find_or_create_by!(
                 model_id: params[:model_id],
                 model_module_id: @model_module.id
               )
+              mh.update!(slot: params[:slot]) if params[:slot].present? && mh.slot != params[:slot]
             end
 
             render :show, status: :created
@@ -81,10 +82,11 @@ module Admin
         def link
           model = Model.find(params[:model_id])
 
-          ModuleHardpoint.find_or_create_by!(
+          mh = ModuleHardpoint.find_or_create_by!(
             model_id: model.id,
             model_module_id: @model_module.id
           )
+          mh.update!(slot: params[:slot]) if params[:slot].present? && mh.slot != params[:slot]
 
           render :show, status: :ok
         end
