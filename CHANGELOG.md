@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.11.0](https://github.com/fleetyards/fleetyards/compare/v6.10.1...v6.11.0) (2026-04-22)
+
+
+### Features
+
+* add cargo grid overrides for modules ([dc144c2](https://github.com/fleetyards/fleetyards/commit/dc144c2085ae9b3070b2e4f06597f2a054a4df03))
+* add slot tracking to module_hardpoints ([#3751](https://github.com/fleetyards/fleetyards/issues/3751)) ([b4cf518](https://github.com/fleetyards/fleetyards/commit/b4cf518f641da868e9b52f8cd71acd036cd75c94))
+* include module cargo holds in container size filter ([26441e3](https://github.com/fleetyards/fleetyards/commit/26441e3ce82944ceff4f097a64022567ce424801))
+* persist selected modules in URL and use slug for module identification ([77db635](https://github.com/fleetyards/fleetyards/commit/77db635d2d74944d19b73e9a43772473a56885e7))
+
+
+### Bug Fixes
+
+* add Hull B diamond offsets and single-group mode for full-offset models ([c2e8bbd](https://github.com/fleetyards/fleetyards/commit/c2e8bbda020b66e956fb4057bca4ed0165d8c570))
+* add missing pagination to fleet ships list fleetchart ([2da242a](https://github.com/fleetyards/fleetyards/commit/2da242a8c2c778ca96723ab9e5f16ae383cb36ca))
+* add missing slug to admin model_modules API response ([db1ec87](https://github.com/fleetyards/fleetyards/commit/db1ec8710e6192821f35fbad1db1c97064266f51))
+* add readline-ext gem for Pry pager compatibility with Ruby 4.0 ([ece1609](https://github.com/fleetyards/fleetyards/commit/ece1609bc800d2bb3888371e0517265f9add5898))
+* add readline-ext gem to vendor cache ([3d0226b](https://github.com/fleetyards/fleetyards/commit/3d0226be8a6534d0496ef3e317aaf704661c9455))
+* correct cookie domain handling for dev/worktree environments ([47bd6b2](https://github.com/fleetyards/fleetyards/commit/47bd6b265f81cd45a49bae17cc97832fd8e2680b))
+* deterministic cargo hold ordering and offset maintenance task ([bd39bee](https://github.com/fleetyards/fleetyards/commit/bd39bee93c71912a292dc7b0e5920abb30ecf8bb))
+* remove readline-ext gem and disable Pry pager ([e2bbd4e](https://github.com/fleetyards/fleetyards/commit/e2bbd4e56cf10e0e3dcdf51eca917a68f0917c0a))
+* update swagger dev server URLs to use .test domains ([ad25137](https://github.com/fleetyards/fleetyards/commit/ad251376d739821d0e72a9a54c847c638f90b27d))
+
 ## [6.10.1](https://github.com/fleetyards/fleetyards/compare/v6.10.0...v6.10.1) (2026-04-21)
 
 
