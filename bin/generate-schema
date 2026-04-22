@@ -4,7 +4,7 @@ set -euo pipefail
 
 # Pin DOMAIN and ON_SUBDOMAIN so the generated schema always contains
 # canonical dev-server URLs, regardless of the local environment.
-DOMAIN=fleetyards.test ON_SUBDOMAIN=true SKIP_REQUEST_VALIDATION=true bundle exec rake openapi_ruby:generate
+DOMAIN=fleetyards.test ON_SUBDOMAIN=true bundle exec rake openapi_ruby:generate
 
 echo "cleanup old generated files"
 
