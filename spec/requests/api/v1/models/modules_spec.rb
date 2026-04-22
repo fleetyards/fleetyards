@@ -29,23 +29,6 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
-      response(200, "includes slot when set") do
-        schema "$ref": "#/components/schemas/ModelModules"
-
-        let(:model) do
-          m = create(:model)
-          create(:module_hardpoint, model: m, slot: "hardpoint_front_module")
-          m
-        end
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          items = data["items"]
-
-          expect(items.first["slot"]).to eq("hardpoint_front_module")
-        end
-      end
-
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
@@ -53,6 +36,20 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
 
         run_test!
       end
+    end
+  end
+
+  describe "GET /models/:slug/modules slot data" do
+    it "includes slot when set on module_hardpoint" do
+      model = create(:model)
+      create(:module_hardpoint, model: model, slot: "hardpoint_front_module")
+
+      get "/api/v1/models/#{model.slug}/modules", headers: {"Accept" => "application/json"}
+
+      expect(response).to have_http_status(:ok)
+
+      items = JSON.parse(response.body)["items"]
+      expect(items.first["slot"]).to eq("hardpoint_front_module")
     end
   end
 end
