@@ -15,7 +15,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       )
     end
 
-    url = current_user.present? ? frontend_security_settings_url : frontend_sign_up_url
+    url = current_user.present? ? frontend_connections_settings_url : frontend_sign_up_url
     redirect_to url, alert: alert, allow_other_host: true
   end
 
@@ -45,7 +45,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private def handle_connect(kind)
     if current_user.omniauth_connections.exists?(provider: auth.provider, uid: auth.uid)
-      redirect_to frontend_security_settings_url, notice: t("devise.omniauth.connect.already_connected", kind: kind), allow_other_host: true
+      redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.already_connected", kind: kind), allow_other_host: true
       return
     end
 
@@ -57,13 +57,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if connection.save
-      redirect_to frontend_security_settings_url, notice: t("devise.omniauth.connect.success", kind: kind), allow_other_host: true
+      redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.success", kind: kind), allow_other_host: true
     else
       alert = t("devise.omniauth.connect.failure", kind: kind)
       if Rails.env.development?
         alert = t("devise.omniauth.connect.failure_with_reason", kind: kind)
       end
-      redirect_to frontend_security_settings_url, alert: alert, allow_other_host: true
+      redirect_to frontend_connections_settings_url, alert: alert, allow_other_host: true
     end
   end
 

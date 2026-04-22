@@ -47,6 +47,7 @@ namespace :frontend, **frontend_options do
 
   get "settings", to: "base#index", as: :settings_account
   get "settings/notifications", to: "base#index"
+  get "settings/connections", to: "base#index", as: :connections_settings
   get "settings/security", to: "base#index", as: :security_settings
 
   get "privacy-policy", to: "base#index"
