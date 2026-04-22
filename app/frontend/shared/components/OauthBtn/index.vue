@@ -99,6 +99,13 @@ const { isFeatureEnabled } = useFeatures();
 const providerActive = computed(() => {
   return isFeatureEnabled(`oauth-${props.provider}`);
 });
+
+const iconClass = computed(() => {
+  if (props.provider === OauthBtnProvidersEnum.CITIZEN_ID) {
+    return "fa-light fa-id-badge";
+  }
+  return `fa-brands fa-${props.provider}`;
+});
 </script>
 
 <template>
@@ -118,7 +125,7 @@ const providerActive = computed(() => {
       @click="handleClick"
     >
       <slot>
-        <i :class="`fa-brands fa-${provider}`" />
+        <i :class="iconClass" />
         <span v-if="!onlyIcon">{{ label }}</span>
         <i
           v-if="connected && !disconnectable"

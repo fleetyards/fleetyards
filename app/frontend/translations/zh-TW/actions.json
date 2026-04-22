@@ -110,19 +110,22 @@
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
+        "citizen_id": "CitizenID",
         "connected": {
           "google": "已連接到 Google",
           "discord": "已連接到 Discord",
           "bluesky": "已連接到 BlueSky",
           "github": "已連接到 GitHub",
-          "twitch": "已連接到 Twitch"
+          "twitch": "已連接到 Twitch",
+          "citizen_id": "已連接到 CitizenID"
         },
         "disconnect": {
           "google": "中斷 Google 連線",
           "discord": "中斷 Discord 連線",
           "bluesky": "中斷 BlueSky 連線",
           "github": "中斷 GitHub 連線",
-          "twitch": "中斷 Twitch 連線"
+          "twitch": "中斷 Twitch 連線",
+          "citizen_id": "中斷 CitizenID 連線"
         }
       },
       "compare": {

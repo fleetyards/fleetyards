@@ -38,6 +38,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     handle_auth(t("devise.omniauth.provider.bluesky"))
   end
 
+  def citizen_id
+    handle_auth(t("devise.omniauth.provider.citizen_id"))
+  end
+
   private def handle_connect(kind)
     if current_user.omniauth_connections.exists?(provider: auth.provider, uid: auth.uid)
       redirect_to frontend_security_settings_url, notice: t("devise.omniauth.connect.already_connected", kind: kind), allow_other_host: true

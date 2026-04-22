@@ -90,6 +90,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
+    aes_key_wrap (1.1.0)
     after_commit_everywhere (1.6.0)
       activerecord (>= 4.2)
       activesupport
@@ -109,9 +110,10 @@ GEM
     atproto_client (0.1.5)
       jwt (>= 2.7)
       openssl (>= 3.0)
+    attr_required (1.0.2)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1240.0)
-    aws-sdk-core (3.245.0)
+    aws-partitions (1.1236.0)
+    aws-sdk-core (3.244.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -122,7 +124,7 @@ GEM
     aws-sdk-kms (1.123.0)
       aws-sdk-core (~> 3, >= 3.244.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.220.0)
+    aws-sdk-s3 (1.219.0)
       aws-sdk-core (~> 3, >= 3.244.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
@@ -133,6 +135,7 @@ GEM
     bcrypt_pbkdf (1.1.2)
     benchmark (0.5.0)
     bigdecimal (4.1.2)
+    bindata (2.5.1)
     bindex (0.8.1)
     bootsnap (1.23.0)
       msgpack (~> 1.2)
@@ -142,7 +145,7 @@ GEM
       json (>= 2.0)
       xrpc (>= 0.0.4)
     builder (3.3.0)
-    bullet (8.1.1)
+    bullet (8.1.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.9.3)
@@ -214,6 +217,8 @@ GEM
     drb (2.2.3)
     dry-cli (1.4.1)
     ed25519 (1.4.0)
+    email_validator (2.2.4)
+      activemodel
     enum_attributes_validation (0.1.7)
       activerecord
       activesupport
@@ -235,6 +240,8 @@ GEM
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
+    faraday-follow_redirects (0.5.0)
+      faraday (>= 1, < 3)
     faraday-net_http (3.4.2)
       net-http (~> 0.5)
     faraday-retry (2.4.0)
@@ -339,7 +346,14 @@ GEM
       activejob (>= 6.1)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.19.4)
+    json (2.19.3)
+    json-jwt (1.17.0)
+      activesupport (>= 4.2)
+      aes_key_wrap
+      base64
+      bindata
+      faraday (~> 2.0)
+      faraday-follow_redirects
     json-schema (4.3.1)
       addressable (>= 2.8)
     json_schema (0.21.0)
@@ -422,7 +436,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.5)
+    minitest (6.0.4)
       drb (~> 2.0)
       prism (~> 1.5)
     mocha (3.1.0)
@@ -496,7 +510,23 @@ GEM
       omniauth (~> 2.0)
     omniauth-twitch (1.2.0)
       omniauth-oauth2 (~> 1.6)
+    omniauth_openid_connect (0.8.0)
+      omniauth (>= 1.9, < 3)
+      openid_connect (~> 2.2)
     openapi_parser (2.3.1)
+    openid_connect (2.3.1)
+      activemodel
+      attr_required (>= 1.0.0)
+      email_validator
+      faraday (~> 2.0)
+      faraday-follow_redirects
+      json-jwt (>= 1.16)
+      mail
+      rack-oauth2 (~> 2.2)
+      swd (~> 2.0)
+      tzinfo
+      validate_url
+      webfinger (~> 2.0)
     openssl (4.0.1)
     options (2.3.2)
     orm_adapter (0.5.0)
@@ -558,6 +588,13 @@ GEM
     rack-cors (3.0.0)
       logger
       rack (>= 3.0.14)
+    rack-oauth2 (2.3.0)
+      activesupport
+      attr_required
+      faraday (~> 2.0)
+      faraday-follow_redirects
+      json-jwt (>= 1.11.0)
+      rack (>= 2.1.0)
     rack-protection (4.2.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -771,6 +808,11 @@ GEM
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.26.0)
     stringio (3.2.0)
+    swd (2.0.3)
+      activesupport (>= 3)
+      attr_required (>= 0.0.5)
+      faraday (~> 2.0)
+      faraday-follow_redirects
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.5.0)
@@ -790,6 +832,9 @@ GEM
     url_plumber (0.1.2)
       activesupport (>= 3.0.0)
     useragent (0.16.11)
+    validate_url (1.0.15)
+      activemodel (>= 3.0.0)
+      public_suffix
     version_gem (1.1.9)
     vite_rails (3.10.0)
       railties (>= 5.1, < 9)
@@ -806,6 +851,10 @@ GEM
       actionview (>= 8.0.0)
       bindex (>= 0.4.0)
       railties (>= 8.0.0)
+    webfinger (2.1.3)
+      activesupport
+      faraday (~> 2.0)
+      faraday-follow_redirects
     webmock (3.26.2)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
@@ -900,6 +949,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
   omniauth-twitch
+  omniauth_openid_connect
   ostruct
   paper_trail
   pg (~> 1.0)

@@ -110,19 +110,22 @@
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
+        "citizen_id": "CitizenID",
         "connected": {
           "google": "Mit Google verbunden",
           "discord": "Mit Discord verbunden",
           "bluesky": "Mit BlueSky verbunden",
           "github": "Mit GitHub verbunden",
-          "twitch": "Mit Twitch verbunden"
+          "twitch": "Mit Twitch verbunden",
+          "citizen_id": "Mit CitizenID verbunden"
         },
         "disconnect": {
           "google": "Google trennen",
           "discord": "Discord trennen",
           "bluesky": "BlueSky trennen",
           "github": "GitHub trennen",
-          "twitch": "Twitch trennen"
+          "twitch": "Twitch trennen",
+          "citizen_id": "CitizenID trennen"
         }
       },
       "compare": {

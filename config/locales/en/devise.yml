@@ -51,6 +51,7 @@ en:
         github: "GitHub"
         bluesky: "Bluesky"
         twitch: "Twitch"
+        citizen_id: "CitizenID"
       failure: Could not authenticate you with %{kind}.
       failure_with_reason: Could not authenticate you with %{kind} because "%{reason}".
       failure_username_taken: "Could not authenticate you with %{kind} because there is already an account with the username \"%{username}\".\nPlease sign in your existing account or sign up to a new account and connect your %{kind} account."
