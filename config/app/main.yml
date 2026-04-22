@@ -42,7 +42,6 @@ shared:
 
   citizen_id:
     oauth_client_id: <%= Rails.app.creds.option(:citizen_id, :oauth_client_id) %>
-    oauth_secret: <%= Rails.app.creds.option(:citizen_id, :oauth_secret) %>
     issuer: <%= ENV["CITIZEN_ID_ISSUER"] || "https://citizenid.dev/" %>
 
 staging:

@@ -263,11 +263,11 @@ Devise.setup do |config|
     name: :citizen_id,
     scope: [:openid, :profile, :email, "rsi.profile"],
     response_type: :code,
+    pkce: true,
     issuer: Rails.configuration.app.citizen_id[:issuer],
     discovery: true,
     client_options: {
-      identifier: Rails.configuration.app.citizen_id[:oauth_client_id],
-      secret: Rails.configuration.app.citizen_id[:oauth_secret]
+      identifier: Rails.configuration.app.citizen_id[:oauth_client_id]
     }
   }
 
