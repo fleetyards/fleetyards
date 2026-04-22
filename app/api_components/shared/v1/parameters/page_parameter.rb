@@ -4,7 +4,9 @@ module Shared
   module V1
     module Parameters
       class PageParameter
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
+
+        component_type :parameters
 
         schema({
           name: :page,

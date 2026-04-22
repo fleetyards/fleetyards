@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/admin_users", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/admin_users", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, super_admin: true) }
 
   before do

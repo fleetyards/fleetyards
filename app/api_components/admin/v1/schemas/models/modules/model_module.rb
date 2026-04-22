@@ -6,7 +6,7 @@ module Admin
       module Models
         module Modules
           class ModelModule < ::V1::Schemas::Models::Modules::ModelModule
-            include Rswag::SchemaComponents::Component
+            include OpenapiRuby::Components::Base
 
             schema({
               properties: {

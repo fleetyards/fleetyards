@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/wishlists", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, public_wishlist: true, wanted_vehicle_count: 2) }
   let(:user_without_public_wishlist) { create(:user, public_wishlist: false, wanted_vehicle_count: 2) }
 

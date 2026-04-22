@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Inputs
         class CheckInput
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Inputs
         class OauthApplicationInput
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

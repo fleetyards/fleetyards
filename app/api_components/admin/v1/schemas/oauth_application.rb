@@ -4,7 +4,7 @@ module Admin
   module V1
     module Schemas
       class OauthApplication
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           type: :object,

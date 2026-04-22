@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class ChannelsEnum
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           def self.channels
             [Rails.root.join("app/channels")].flat_map do |base_path|

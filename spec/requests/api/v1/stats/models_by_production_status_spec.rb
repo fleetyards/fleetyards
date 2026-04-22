@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/stats", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/stats", type: :openapi, openapi_schema_name: :"v1/schema" do
   path "/stats/models-by-production-status" do
     get("Stats Models by Production-Status") do
       operationId "modelsByProductionStatus"

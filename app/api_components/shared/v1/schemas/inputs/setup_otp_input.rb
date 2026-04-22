@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Inputs
         class SetupOtpInput
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

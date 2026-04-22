@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/images", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/images", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:images) { create_list(:image, 5) }
 
   before do

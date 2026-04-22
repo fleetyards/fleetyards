@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class GalleryTypeEnum
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           TYPES = %w[Model Album].freeze
 

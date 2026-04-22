@@ -6,7 +6,7 @@ module Admin
       module Models
         module Upgrades
           class ModelUpgrade
-            include Rswag::SchemaComponents::Component
+            include OpenapiRuby::Components::Base
 
             schema({
               type: :object,

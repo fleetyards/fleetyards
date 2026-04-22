@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Inputs
         class FeatureActorInput
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

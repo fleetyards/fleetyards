@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/sessions", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/sessions", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user) }
 
   before do
@@ -16,14 +16,6 @@ RSpec.describe "admin/api/v1/sessions", type: :request, swagger_doc: "admin/v1/s
       produces "application/json"
 
       response(200, "successful") do
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test!
       end
 

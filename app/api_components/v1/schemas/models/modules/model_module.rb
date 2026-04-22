@@ -5,7 +5,7 @@ module V1
     module Models
       module Modules
         class ModelModule
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

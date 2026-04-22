@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Queries
         class DockQuery
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

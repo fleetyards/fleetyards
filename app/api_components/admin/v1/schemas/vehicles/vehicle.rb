@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Vehicles
         class Vehicle
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

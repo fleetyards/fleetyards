@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/cargo_holds", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/cargo_holds", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:cargo_holds]) }
   let(:cargo_holds) { create_list(:cargo_hold, 3) }
 

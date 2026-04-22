@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class BoughtViaEnum
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :string,

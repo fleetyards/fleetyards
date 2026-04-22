@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "oauth/authorize", type: :request, swagger_doc: "oauth/v1/schema.yaml" do
+RSpec.describe "oauth/authorize", type: :openapi, openapi_schema_name: :"oauth/v1/schema" do
   let(:user) { create(:user) }
   let(:oauth_application) do
     create(:oauth_application,
