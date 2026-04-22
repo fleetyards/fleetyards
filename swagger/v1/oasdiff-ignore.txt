@@ -1,7 +1,2 @@
 PUT /password removed the request property 'currentPassword'
 PUT /password/{token} removed the request property 'currentPassword'
-POST /otp/disable removed the media type 'application/json' for the response with the status '400'
-POST /otp/enable removed the media type 'application/json' for the response with the status '400'
-POST /otp/generate-backup-codes removed the media type 'application/json' for the response with the status '400'
-POST /otp/start removed the media type 'application/json' for the response with the status '400'
-PUT /users/account removed the media type 'application/json' for the response with the status '400'
