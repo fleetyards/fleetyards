@@ -35,11 +35,11 @@ const { mutateAsync } = useCreateMutation();
 
 const addToWishlist = async () => {
   await mutateAsync({
-      data: {
-        modelId: props.model.id,
-        wanted: true,
-      },
-    })
+    data: {
+      modelId: props.model.id,
+      wanted: true,
+    },
+  })
     .then((vehicle) => {
       wishlistStore.add(props.model.slug);
 
@@ -64,10 +64,10 @@ const addToWishlist = async () => {
 
 const addToHangar = async () => {
   await mutateAsync({
-      data: {
-        modelId: props.model.id,
-      },
-    })
+    data: {
+      modelId: props.model.id,
+    },
+  })
     .then((vehicle) => {
       hangarStore.add(props.model.slug);
 

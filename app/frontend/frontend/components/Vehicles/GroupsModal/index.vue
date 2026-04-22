@@ -68,9 +68,9 @@ const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
   await mutateAsync({
-      id: props.vehicle.id,
-      data: values,
-    })
+    id: props.vehicle.id,
+    data: values,
+  })
     .then(() => {
       comlink.emit("close-modal");
     })

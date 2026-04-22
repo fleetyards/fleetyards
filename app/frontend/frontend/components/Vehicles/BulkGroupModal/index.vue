@@ -61,11 +61,11 @@ const save = async () => {
   submitting.value = true;
 
   await bulkUpdateMutateAsync({
-      data: {
-        ids: props.vehicleIds,
-        hangarGroupIds: hangarGroupIds.value,
-      },
-    })
+    data: {
+      ids: props.vehicleIds,
+      hangarGroupIds: hangarGroupIds.value,
+    },
+  })
     .then(() => {
       comlink.emit("close-modal");
     })
