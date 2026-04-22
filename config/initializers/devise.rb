@@ -267,7 +267,8 @@ Devise.setup do |config|
     issuer: Rails.configuration.app.citizen_id[:issuer],
     discovery: true,
     client_options: {
-      identifier: Rails.configuration.app.citizen_id[:oauth_client_id]
+      identifier: Rails.configuration.app.citizen_id[:oauth_client_id],
+      redirect_uri: "#{FRONTEND_ENDPOINT}/users/auth/citizen_id/callback"
     }
   }
 
