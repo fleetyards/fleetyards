@@ -11,10 +11,10 @@ import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   useHangarGroups as useHangarGroupsQuery,
-  useUpdateVehicle as useUpdateVehicleMutation,
   type Vehicle,
   type VehicleUpdateInput,
 } from "@/services/fyApi";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -60,13 +60,14 @@ const setupForm = () => {
 
 const comlink = useComlink();
 
-const mutation = useUpdateVehicleMutation();
+const vehicleRef = computed(() => props.vehicle);
+const { useUpdateMutation } = useVehicleMutations();
+const { mutateAsync } = useUpdateMutation(vehicleRef);
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  await mutation
-    .mutateAsync({
+  await mutateAsync({
       id: props.vehicle.id,
       data: values,
     })

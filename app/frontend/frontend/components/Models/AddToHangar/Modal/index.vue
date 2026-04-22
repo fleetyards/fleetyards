@@ -13,7 +13,7 @@ import type { Model } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
-import { useCreateVehicle as useCreateVehicleMutation } from "@/services/fyApi";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 
 type Props = {
   model: Model;
@@ -30,11 +30,11 @@ const wishlistStore = useWishlistStore();
 
 const comlink = useComlink();
 
-const mutation = useCreateVehicleMutation();
+const { useCreateMutation } = useVehicleMutations();
+const { mutateAsync } = useCreateMutation();
 
 const addToWishlist = async () => {
-  await mutation
-    .mutateAsync({
+  await mutateAsync({
       data: {
         modelId: props.model.id,
         wanted: true,
@@ -63,8 +63,7 @@ const addToWishlist = async () => {
 };
 
 const addToHangar = async () => {
-  await mutation
-    .mutateAsync({
+  await mutateAsync({
       data: {
         modelId: props.model.id,
       },

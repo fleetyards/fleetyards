@@ -12,8 +12,8 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   type HangarGroup,
   useHangarGroups as useHangarGroupsQuery,
-  useUpdateBulkVehicle as useUpdateBulkVehicleMutation,
 } from "@/services/fyApi";
+import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -54,13 +54,13 @@ const changeGroup = (group: HangarGroup) => {
   }
 };
 
-const bulkUpdateMutation = useUpdateBulkVehicleMutation();
+const { useUpdateBulkMutation } = useVehicleMutations();
+const { mutateAsync: bulkUpdateMutateAsync } = useUpdateBulkMutation();
 
 const save = async () => {
   submitting.value = true;
 
-  await bulkUpdateMutation
-    .mutateAsync({
+  await bulkUpdateMutateAsync({
       data: {
         ids: props.vehicleIds,
         hangarGroupIds: hangarGroupIds.value,
