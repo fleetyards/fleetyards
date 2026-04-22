@@ -45,5 +45,6 @@ json.auth_connections user.omniauth_connections.pluck(:provider)
 
 json.password_set_manually user.password_set_manually
 json.oauth_only user.oauth_only?
+json.placeholder_email user.placeholder_email?
 
 json.partial! "api/shared/dates", record: user

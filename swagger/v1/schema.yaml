@@ -10221,6 +10221,8 @@ components:
           type: boolean
         oauthOnly:
           type: boolean
+        placeholderEmail:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -10242,6 +10244,7 @@ components:
       - authConnections
       - passwordSetManually
       - oauthOnly
+      - placeholderEmail
       - createdAt
       - updatedAt
       title: User

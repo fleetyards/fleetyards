@@ -377,6 +377,10 @@
       "confirmAccess": {
         "failure": "無法確認存取。請檢查密碼並重試。"
       },
+      "setEmail": {
+        "success": "確認郵件已發送到您的新郵箱地址，請檢查收件匣。",
+        "failure": "無法更新電子郵件地址，請重試。"
+      },
       "confirmAccessEmail": {
         "sent": "確認碼已傳送到您的電子郵件。",
         "failure": "無法傳送確認郵件。請重試。"

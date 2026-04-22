@@ -99,6 +99,7 @@ const settingsActive = computed(() => {
     "settings-two-factor-disable",
     "settings-two-factor-backup-codes",
     "settings-change-password",
+    "settings-connections",
     "settings-oauth-applications",
     "settings-oauth-application",
     "settings-oauth-application-create",

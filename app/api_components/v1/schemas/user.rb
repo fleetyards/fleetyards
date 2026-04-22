@@ -38,13 +38,14 @@ module V1
           authConnections: {type: :array, items: {type: :string}},
           passwordSetManually: {type: :boolean},
           oauthOnly: {type: :boolean},
+          placeholderEmail: {type: :boolean},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
         required: %w[
           username email saleNotify publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner
-          twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly createdAt updatedAt
+          twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })
     end

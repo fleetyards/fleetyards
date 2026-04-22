@@ -267,6 +267,10 @@ class User < ApplicationRecord
     !password_set_manually && omniauth_connections.any?
   end
 
+  def placeholder_email?
+    email.ends_with?("@users.noreply.fleetyards.net")
+  end
+
   def reset_password(new_password, new_password_confirmation)
     self.password_set_manually = true
     super

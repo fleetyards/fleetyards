@@ -17,6 +17,7 @@ import {
   useConfirmAccess as useConfirmAccessMutation,
   useSendConfirmAccessEmail as useSendConfirmAccessEmailMutation,
   useVerifyConfirmAccessCode as useVerifyConfirmAccessCodeMutation,
+  useUpdateAccount as useUpdateAccountMutation,
   type ConfirmAccessInput,
 } from "@/services/fyApi";
 import { useForm } from "vee-validate";
@@ -38,6 +39,10 @@ const confirmationCode = ref("");
 
 const isOauthOnly = computed(
   () => sessionStore.currentUser?.oauthOnly ?? false,
+);
+
+const hasPlaceholderEmail = computed(
+  () => sessionStore.currentUser?.placeholderEmail ?? false,
 );
 
 // Password confirmation form
@@ -144,6 +149,39 @@ const sendConfirmAccessEmail = async () => {
     });
 };
 
+// Set email for placeholder email users
+const newEmail = ref("");
+const updateAccountMutation = useUpdateAccountMutation();
+
+const submitSetEmail = async () => {
+  if (!newEmail.value) return;
+
+  submitting.value = true;
+
+  await updateAccountMutation
+    .mutateAsync({
+      data: {
+        email: newEmail.value,
+      },
+    })
+    .then(() => {
+      submitting.value = false;
+
+      displaySuccess({
+        text: t("messages.setEmail.success"),
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+
+      submitting.value = false;
+
+      displayAlert({
+        text: t("messages.setEmail.failure"),
+      });
+    });
+};
+
 const verifyConfirmAccessCode = async () => {
   if (!confirmationCode.value) return;
 
@@ -179,8 +217,36 @@ const verifyConfirmAccessCode = async () => {
   <section class="container confirm-access" data-test="confirm-access">
     <div class="row">
       <div class="col-12">
+        <!-- Placeholder email user: set a real email first -->
+        <template v-if="hasPlaceholderEmail">
+          <div class="set-email">
+            <h1>{{ t("headlines.setEmail") }}</h1>
+            <p>{{ t("texts.setEmail") }}</p>
+
+            <form @submit.prevent="submitSetEmail">
+              <FormInput
+                v-model="newEmail"
+                name="email"
+                :type="InputTypesEnum.EMAIL"
+                :no-label="true"
+                :clearable="true"
+                :autofocus="true"
+              />
+
+              <Btn
+                :loading="submitting"
+                :type="BtnTypesEnum.SUBMIT"
+                :block="true"
+                data-test="submit-set-email"
+              >
+                {{ t("actions.save") }}
+              </Btn>
+            </form>
+          </div>
+        </template>
+
         <!-- OAuth-only user: email code confirmation -->
-        <template v-if="isOauthOnly">
+        <template v-else-if="isOauthOnly">
           <div class="oauth-confirm-access">
             <h1>{{ t("headlines.confirmAccess") }}</h1>
 

@@ -68,6 +68,7 @@
         "account": "账户",
         "hangar": "机库设置",
         "features": "功能标志",
+        "connections": "连接",
         "oauthApplications": "OAuth 应用",
         "notifications": "通知设置",
         "security": "账户安全",
