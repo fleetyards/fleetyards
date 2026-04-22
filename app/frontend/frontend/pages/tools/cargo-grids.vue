@@ -105,20 +105,20 @@ const fetchCargoModels = async (params: FilterGroupParams<Model>) => {
     q.inHangar = true;
   }
 
+  const containerFit: Record<string, number> = {};
   if (containerFilterActive.value && hasContainerRequests.value) {
-    const fit: Record<string, number> = {};
     for (const size of CONTAINER_SIZES) {
       const qty = Number(containerRequests.value[size]);
       if (qty > 0) {
-        fit[String(size)] = qty;
+        containerFit[String(size)] = qty;
       }
     }
-    q.containerFit = fit;
   }
 
   return fetchModels({
     page: String(params.page || 1),
     q,
+    containerFit,
   });
 };
 

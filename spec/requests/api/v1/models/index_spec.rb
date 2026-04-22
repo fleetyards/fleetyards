@@ -21,6 +21,11 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
         style: :deepObject,
         explode: true,
         required: false
+      parameter name: "containerFit", in: :query,
+        schema: {type: :object, additionalProperties: {type: :integer}},
+        style: :deepObject,
+        explode: true,
+        required: false
       parameter name: "cacheId", in: :query, type: :string, required: false
 
       response(200, "successful") do

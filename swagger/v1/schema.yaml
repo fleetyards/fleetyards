@@ -2691,6 +2691,15 @@ paths:
         style: deepObject
         explode: true
         required: false
+      - name: containerFit
+        in: query
+        schema:
+          type: object
+          additionalProperties:
+            type: integer
+        style: deepObject
+        explode: true
+        required: false
       - name: cacheId
         in: query
         required: false
@@ -9791,10 +9800,6 @@ components:
           type: boolean
         inHangar:
           type: boolean
-        containerFit:
-          type: object
-          additionalProperties:
-            type: integer
         sorts:
           anyOf:
           - type: array
