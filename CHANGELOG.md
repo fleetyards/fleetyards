@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.11.1](https://github.com/fleetyards/fleetyards/compare/v6.11.0...v6.11.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* sanitize empty cargo hold offset values before API submission ([8276655](https://github.com/fleetyards/fleetyards/commit/8276655fecb796810135eb4889a3b16fcbc2ba51))
+* scope sc_data loaders to game_files hardpoints only ([0120351](https://github.com/fleetyards/fleetyards/commit/012035117477d73729cb1c504a000ee928b7e59f))
+
 ## [6.11.0](https://github.com/fleetyards/fleetyards/compare/v6.10.1...v6.11.0) (2026-04-22)
 
 
