@@ -5,21 +5,21 @@ OpenapiRuby.configure do |config|
     "v1/schema" => {
       openapi_version: "3.0.3",
       info: {
-        "title" => "FleetYards.net API",
-        "version" => "v1",
-        "license" => {
-          "name" => "GNU General Public License v3.0",
-          "url" => "https://github.com/fleetyards/fleetyards/blob/main/LICENSE"
+        title: "FleetYards.net API",
+        version: "v1",
+        license: {
+          name: "GNU General Public License v3.0",
+          url: "https://github.com/fleetyards/fleetyards/blob/main/LICENSE"
         },
-        "x-logo" => {
-          "url" => "https://fleetyards.net/docs/logo.png",
-          "altText" => "FleetYards.net logo"
+        "x-logo": {
+          url: "https://fleetyards.net/docs/logo.png",
+          altText: "FleetYards.net logo"
         }
       },
       servers: [
-        {"url" => API_ENDPOINT, "description" => "Dev Server"},
-        {"url" => "https://api.fleetyards.net/v1", "description" => "Production Server"},
-        {"url" => "https://api.fleetyards.dev/v1", "description" => "Staging Server"}
+        {url: API_ENDPOINT, description: "Dev Server"},
+        {url: "https://api.fleetyards.net/v1", description: "Production Server"},
+        {url: "https://api.fleetyards.dev/v1", description: "Staging Server"}
       ],
       security: [],
       component_scope: :v1,
@@ -28,24 +28,24 @@ OpenapiRuby.configure do |config|
     "admin/v1/schema" => {
       openapi_version: "3.0.3",
       info: {
-        "title" => "FleetYards.net Command API",
-        "version" => "v1",
-        "license" => {
-          "name" => "GNU General Public License v3.0",
-          "url" => "https://github.com/fleetyards/fleetyards/blob/main/LICENSE"
+        title: "FleetYards.net Command API",
+        version: "v1",
+        license: {
+          name: "GNU General Public License v3.0",
+          url: "https://github.com/fleetyards/fleetyards/blob/main/LICENSE"
         },
-        "x-logo" => {
-          "url" => "https://fleetyards.net/docs/logo.png",
-          "altText" => "FleetYards.net logo"
+        "x-logo": {
+          url: "https://fleetyards.net/docs/logo.png",
+          altText: "FleetYards.net logo"
         }
       },
       servers: [
-        {"url" => ADMIN_API_ENDPOINT, "description" => "Dev Server"},
-        {"url" => "http://admin.fleetyards.test/api/v1", "description" => "Production Server"},
-        {"url" => "https://admin.fleetyards.dev/api/v1", "description" => "Staging Server"}
+        {url: ADMIN_API_ENDPOINT, description: "Dev Server"},
+        {url: "http://admin.fleetyards.test/api/v1", description: "Production Server"},
+        {url: "https://admin.fleetyards.dev/api/v1", description: "Staging Server"}
       ],
       security: [
-        {"SessionCookie" => []}
+        {SessionCookie: []}
       ],
       component_scope: :admin,
       prefix: URI.parse(ADMIN_API_ENDPOINT).path
@@ -53,17 +53,17 @@ OpenapiRuby.configure do |config|
     "oauth/v1/schema" => {
       openapi_version: "3.0.3",
       info: {
-        "title" => "FleetYards.net OAuth API",
-        "version" => "v1",
-        "license" => {
-          "name" => "GNU General Public License v3.0",
-          "url" => "https://github.com/fleetyards/fleetyards/blob/main/LICENSE"
+        title: "FleetYards.net OAuth API",
+        version: "v1",
+        license: {
+          name: "GNU General Public License v3.0",
+          url: "https://github.com/fleetyards/fleetyards/blob/main/LICENSE"
         }
       },
       servers: [
-        {"url" => OAUTH_ENDPOINT, "description" => "Dev Server"},
-        {"url" => "https://fleetyards.net/oauth", "description" => "Production Server"},
-        {"url" => "https://fleetyards.dev/oauth", "description" => "Staging Server"}
+        {url: OAUTH_ENDPOINT, description: "Dev Server"},
+        {url: "https://fleetyards.net/oauth", description: "Production Server"},
+        {url: "https://fleetyards.dev/oauth", description: "Staging Server"}
       ],
       security: [],
       component_scope: :oauth
