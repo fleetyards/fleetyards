@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.12.0](https://github.com/fleetyards/fleetyards/compare/v6.11.1...v6.12.0) (2026-04-22)
+
+
+### Features
+
+* add ship image and detail link to cargo grid page ([6457670](https://github.com/fleetyards/fleetyards/commit/64576701f8b4d83a589985b8d863957f0f022b2d))
+
+
+### Bug Fixes
+
+* correct indentation in mutateAsync call arguments ([dac0ed8](https://github.com/fleetyards/fleetyards/commit/dac0ed8f8496761057d9100114d900c5f1678dcd))
+* update vehicle in cache instead of refetching entire hangar ([1c6b3c7](https://github.com/fleetyards/fleetyards/commit/1c6b3c74bbc88ca622433c2652c28297aa2dc643))
+* use useVehicleMutations composable for hangar/wishlist query invalidation ([0014a3b](https://github.com/fleetyards/fleetyards/commit/0014a3b23f738404a390c48cd0b73c8a148ba66a))
+
 ## [6.11.1](https://github.com/fleetyards/fleetyards/compare/v6.11.0...v6.11.1) (2026-04-22)
 
 
