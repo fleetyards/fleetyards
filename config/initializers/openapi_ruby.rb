@@ -103,9 +103,3 @@ OpenapiRuby.configure do |config|
     end
   }.new
 end
-
-# Force-load all component files so they register in the Registry.
-# Required for security scheme resolution in tests and middleware.
-Rails.application.config.after_initialize do
-  OpenapiRuby::Components::Loader.new.load!
-end
