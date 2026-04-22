@@ -34,6 +34,8 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 
 const { t } = useI18n();
 
@@ -262,6 +264,19 @@ const resetFilters = () => {
   void router.replace({ query });
 };
 
+const angledImage = computed(() => {
+  if (!selectedModel.value) return undefined;
+  return (
+    selectedModel.value.media.angledViewColored ||
+    selectedModel.value.media.angledView
+  );
+});
+
+const shipRoute = computed(() => {
+  if (!selectedModel.value) return undefined;
+  return { name: "ship", params: { slug: selectedModel.value.slug } };
+});
+
 const onModelSelect = (value: ValueType<Model> | undefined) => {
   selectedSlug.value = (value as string) || undefined;
   selectedModuleSlugs.value = new Set();
@@ -284,8 +299,8 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
   <FeatureGuard feature="tools_cargo_grids">
     <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
-    <div class="row">
-      <div class="col-12">
+    <div class="row toolbar">
+      <div class="col-12 col-lg-8">
         <div class="filters">
           <FilterGroup
             :key="filterKey"
@@ -361,6 +376,21 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
             </Btn>
           </div>
         </div>
+      </div>
+      <div v-if="selectedModel" class="col-12 col-lg-4">
+        <router-link v-if="shipRoute" :to="shipRoute" class="ship-info">
+          <ViewImage
+            v-if="angledImage"
+            :image="angledImage"
+            size="medium"
+            :alt="selectedModel.name"
+            :variant="LazyImageVariantsEnum.WIDE"
+            transparent
+            without-fallback
+            class="ship-info__image"
+          />
+          <span class="ship-info__name">{{ selectedModel.name }}</span>
+        </router-link>
       </div>
     </div>
 
