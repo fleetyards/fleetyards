@@ -11214,11 +11214,13 @@ components:
           schema:
             type: object
             properties:
-              code:
+              error:
                 type: string
-              message:
-                type: string
+              details:
+                type: array
+                items:
+                  type: string
             required:
-            - code
-            - message
+            - error
+            - details
 security: []
