@@ -21,6 +21,7 @@ import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
 import OauthBtn from "@/shared/components/OauthBtn/index.vue";
 import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 
 const { t } = useI18n();
 
@@ -179,37 +180,38 @@ const onSubmit = handleSubmit(async (values) => {
     </div>
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormInput
-          v-model="rsiHandle"
-          name="rsiHandle"
-          v-bind="rsiHandleProps"
-          icon="icon icon-rsi icon-label"
-          translation-key="user.rsiHandle"
-          :disabled="rsiHandleVerified"
-        >
-          <template v-if="rsiHandleVerified" #suffix>
-            <a
-              :href="sessionStore.currentUser?.citizenidProfileUrl"
-              :aria-label="t('labels.user.rsiHandleVerified')"
-              target="_blank"
-              rel="noopener"
-            >
-              <i
-                v-tooltip="t('labels.user.rsiHandleVerified')"
-                class="fa-duotone fa-badge-check text-success"
-              />
-            </a>
-          </template>
-        </FormInput>
-        <OauthBtn
-          v-if="!citizenIdConnected"
-          :provider="OauthBtnProvidersEnum.CITIZENID"
-          :size="BtnSizesEnum.SMALL"
-          inline
-          class="rsi-handle-verify-btn"
-        >
-          {{ t("actions.verifyWithCitizenId") }}
-        </OauthBtn>
+        <FormInputGroup>
+          <FormInput
+            v-model="rsiHandle"
+            name="rsiHandle"
+            v-bind="rsiHandleProps"
+            icon="icon icon-rsi icon-label"
+            translation-key="user.rsiHandle"
+            :disabled="rsiHandleVerified"
+          >
+            <template v-if="rsiHandleVerified" #suffix>
+              <a
+                :href="sessionStore.currentUser?.citizenidProfileUrl"
+                :aria-label="t('labels.user.rsiHandleVerified')"
+                target="_blank"
+                rel="noopener"
+              >
+                <i
+                  v-tooltip="t('labels.user.rsiHandleVerified')"
+                  class="fa-duotone fa-badge-check text-success"
+                />
+              </a>
+            </template>
+          </FormInput>
+          <OauthBtn
+            v-if="!citizenIdConnected"
+            :provider="OauthBtnProvidersEnum.CITIZENID"
+            :size="BtnSizesEnum.SMALL"
+            inline
+          >
+            {{ t("actions.verifyWithCitizenId") }}
+          </OauthBtn>
+        </FormInputGroup>
       </div>
       <div class="col-12 col-md-6">
         <FormInput
@@ -290,10 +292,3 @@ const onSubmit = handleSubmit(async (values) => {
     />
   </form>
 </template>
-
-<style lang="scss" scoped>
-.rsi-handle-verify-btn {
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
-}
-</style>

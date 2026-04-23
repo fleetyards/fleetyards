@@ -9,6 +9,7 @@ import VueScrollTo from "vue-scrollto";
 import { RouteLocationRaw } from "vue-router";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -96,27 +97,25 @@ const routeForImage = (image: Image) => {
             <div class="row md:justify-center">
               <div class="col-12 col-lg-6">
                 <form @submit.prevent="search">
-                  <div class="form-group">
-                    <div class="input-group-flex">
-                      <FormInput
-                        v-model="searchQuery"
-                        name="search"
-                        :size="InputSizesEnum.LARGE"
-                        :autofocus="!mobile"
-                        translation-key="search.default"
-                        no-label
-                        clearable
-                      />
-                      <Btn
-                        id="search-submit"
-                        :aria-label="t('labels.search')"
-                        :size="BtnSizesEnum.LARGE"
-                        @click="search"
-                      >
-                        <i class="fa-light fa-search" />
-                      </Btn>
-                    </div>
-                  </div>
+                  <FormInputGroup>
+                    <FormInput
+                      v-model="searchQuery"
+                      name="search"
+                      :size="InputSizesEnum.LARGE"
+                      :autofocus="!mobile"
+                      translation-key="search.default"
+                      no-label
+                      clearable
+                    />
+                    <Btn
+                      id="search-submit"
+                      :aria-label="t('labels.search')"
+                      :size="BtnSizesEnum.LARGE"
+                      @click="search"
+                    >
+                      <i class="fa-light fa-search" />
+                    </Btn>
+                  </FormInputGroup>
                 </form>
               </div>
             </div>
