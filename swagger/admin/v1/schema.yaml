@@ -6454,14 +6454,14 @@ components:
     FeatureActorInput:
       type: object
       properties:
-        actor_type:
+        actorType:
           type: string
-        actor_id:
+        actorId:
           type: string
       additionalProperties: false
       required:
-      - actor_type
-      - actor_id
+      - actorType
+      - actorId
       title: FeatureActorInput
     FeatureGroupInput:
       type: object
@@ -10653,11 +10653,13 @@ components:
           schema:
             type: object
             properties:
-              code:
+              error:
                 type: string
-              message:
-                type: string
+              details:
+                type: array
+                items:
+                  type: string
             required:
-            - code
-            - message
+            - error
+            - details
 security: []
