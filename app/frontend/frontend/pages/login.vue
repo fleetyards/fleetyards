@@ -178,7 +178,11 @@ const signupRoute = computed(() => {
 
         <hr />
 
-        <SocialLogins ref="socialLogins" only-icons />
+        <SocialLogins
+          ref="socialLogins"
+          only-icons
+          :primary-providers="['citizenid']"
+        />
 
         <hr v-if="socialLogins?.activeProviders?.length" />
 

@@ -75,7 +75,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       user = if connection.present?
         User.find_by(id: connection.user_id)
-      elsif auth.info.email.present?
+      elsif auth.info.email.present? && email_verified_by_provider?
         User.find_by(normalized_email: auth.info.email.downcase)
       end
 
@@ -100,7 +100,15 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         )
       end
 
-      user.skip_reconfirmation!
+      extract_citizenid_claims(user) if auth.provider == "citizenid"
+
+      if user.new_record?
+        if auth.info.email.blank? || email_verified_by_provider?
+          user.skip_confirmation!
+        end
+      else
+        user.skip_reconfirmation!
+      end
 
       if user.save
         if connection.blank?
@@ -127,6 +135,44 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private def auth
     request.env["omniauth.auth"]
+  end
+
+  private def email_verified_by_provider?
+    case auth.provider
+    when "google", "citizenid"
+      auth.info.email_verified == true
+    when "discord"
+      auth.extra&.raw_info&.[]("verified") == true
+    when "github"
+      emails = auth.extra&.[]("all_emails")
+      return false if emails.blank?
+
+      primary_email = emails.find { |e| e["primary"] }
+      primary_email&.[]("verified") == true
+    else
+      false
+    end
+  end
+
+  private def extract_citizenid_claims(user)
+    raw_info = auth.extra&.raw_info
+    return if raw_info.blank?
+
+    rsi_handle = raw_info["urn:user:rsi:username"]
+    user.rsi_handle = rsi_handle if rsi_handle.present? && user.rsi_handle.blank?
+
+    return if user.avatar.attached?
+
+    rsi_avatar_url = raw_info["urn:user:rsi:avatar:url"]
+    return if rsi_avatar_url.blank?
+
+    avatar_uri = URI.parse(rsi_avatar_url)
+    filename = "avatar#{File.extname(avatar_uri.path)}"
+    user.avatar.attach(
+      io: avatar_uri.open,
+      filename: filename,
+      content_type: Marcel::MimeType.for(name: filename)
+    )
   end
 
   private def sanitize_username(name)

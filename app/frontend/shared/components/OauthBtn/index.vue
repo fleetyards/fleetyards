@@ -123,14 +123,21 @@ const isCitizenId = computed(
       @click="handleClick"
     >
       <slot>
-        <img
-          v-if="isCitizenId"
-          :src="citizenIdIcon"
-          alt="CitizenID"
-          class="oauth-icon"
-        />
-        <i v-else :class="`fa-brands fa-${provider}`" />
-        <span v-if="!onlyIcon">{{ label }}</span>
+        <template v-if="isCitizenId">
+          <img
+            :src="citizenIdIcon"
+            alt="Citizen iD"
+            class="oauth-icon--citizenid"
+          />
+          <span v-if="onlyIcon">
+            {{ t("actions.oauth.signInWith") }} {{ label }}
+          </span>
+          <span v-else>{{ label }}</span>
+        </template>
+        <template v-else>
+          <i :class="`fa-brands fa-${provider}`" />
+          <span v-if="!onlyIcon">{{ label }}</span>
+        </template>
         <i
           v-if="connected && !disconnectable"
           class="fa-light fa-check text-success"

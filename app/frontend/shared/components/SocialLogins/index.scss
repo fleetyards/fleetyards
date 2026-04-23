@@ -10,6 +10,11 @@
     > * {
       flex: 1 1 0;
       max-width: calc(33.333% - 10px);
+
+      &.panel-btn-block {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
     }
   }
 }
