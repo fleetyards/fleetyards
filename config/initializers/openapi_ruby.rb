@@ -78,6 +78,7 @@ OpenapiRuby.configure do |config|
     "shared/v1" => [:v1, :admin]
   }
 
+  config.camelize_keys = false
   config.schema_output_format = :yaml
   config.schema_output_dir = "swagger"
 

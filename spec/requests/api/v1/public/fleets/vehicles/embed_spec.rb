@@ -16,7 +16,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :openapi, openapi_schema_n
   end
 
   path "/public/fleets/{fleetSlug}/vehicles/embed" do
-    parameter name: "fleetSlug", in: :path, schema: { type: :string }, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     get("Public Fleet Vehicles Embed for the Fleetyards Widget") do
       operationId "publicFleetVehiclesEmbed"

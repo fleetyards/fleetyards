@@ -32,8 +32,8 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name:
   end
 
   path "/fleets/{fleetSlug}/invite-urls/{token}" do
-    parameter name: "fleetSlug", in: :path, schema: { type: :string }, description: "Fleet slug"
-    parameter name: "token", in: :path, schema: { type: :string }, description: "Invite Url Token"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "token", in: :path, schema: {type: :string}, description: "Invite Url Token"
 
     delete("Remove Fleet Invite Url") do
       operationId "destroyFleetInviteUrl"

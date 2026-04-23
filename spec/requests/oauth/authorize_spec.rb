@@ -21,13 +21,13 @@ RSpec.describe "oauth/authorize", type: :openapi, openapi_schema_name: :"oauth/v
       tags "OAuth"
       produces "application/json"
 
-      parameter name: :client_id, in: :query, schema: { type: :string }, required: true
-      parameter name: :redirect_uri, in: :query, schema: { type: :string }, required: true
-      parameter name: :response_type, in: :query, schema: { type: :string }, required: true
-      parameter name: :scope, in: :query, schema: { type: :string }, required: true
-      parameter name: :state, in: :query, schema: { type: :string }, required: false
-      parameter name: :code_challenge, in: :query, schema: { type: :string }, required: false
-      parameter name: :code_challenge_method, in: :query, schema: { type: :string }, required: false
+      parameter name: :client_id, in: :query, schema: {type: :string}, required: true
+      parameter name: :redirect_uri, in: :query, schema: {type: :string}, required: true
+      parameter name: :response_type, in: :query, schema: {type: :string}, required: true
+      parameter name: :scope, in: :query, schema: {type: :string}, required: true
+      parameter name: :state, in: :query, schema: {type: :string}, required: false
+      parameter name: :code_challenge, in: :query, schema: {type: :string}, required: false
+      parameter name: :code_challenge_method, in: :query, schema: {type: :string}, required: false
 
       security [{
         SessionCookie: []

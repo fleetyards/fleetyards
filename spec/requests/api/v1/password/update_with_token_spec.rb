@@ -13,7 +13,7 @@ RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/sche
   end
 
   path "/password/{token}" do
-    parameter name: :token, in: :path, schema: { type: :string }, required: true
+    parameter name: :token, in: :path, schema: {type: :string}, required: true
 
     put("Update Password with Token") do
       operationId "updatePasswordWithToken"

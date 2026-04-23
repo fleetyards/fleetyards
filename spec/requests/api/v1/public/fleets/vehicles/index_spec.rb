@@ -16,7 +16,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :openapi, openapi_schema_n
   end
 
   path "/public/fleets/{fleetSlug}/vehicles" do
-    parameter name: "fleetSlug", in: :path, schema: { type: :string }, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     get("Public Fleet Vehicles List") do
       operationId "publicFleetVehicles"
@@ -33,8 +33,8 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :openapi, openapi_schema_n
         style: :deepObject,
         explode: true,
         required: false
-      parameter name: "grouped", in: :query, schema: { type: :boolean }, required: false
-      parameter name: "cacheId", in: :query, schema: { type: :string }, required: false
+      parameter name: "grouped", in: :query, schema: {type: :boolean}, required: false
+      parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetPublicVehicles"

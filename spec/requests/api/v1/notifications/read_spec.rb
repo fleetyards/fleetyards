@@ -28,7 +28,7 @@ RSpec.describe "api/v1/notifications", type: :openapi, openapi_schema_name: :"v1
   end
 
   path "/notifications/{id}/read" do
-    parameter name: "id", in: :path, schema: { type: :string }, required: true
+    parameter name: "id", in: :path, schema: {type: :string}, required: true
 
     put("Mark notification as read") do
       operationId "readNotification"

@@ -7,7 +7,7 @@ RSpec.describe "api/v1/public/wishlists", type: :openapi, openapi_schema_name: :
   let(:user_without_public_wishlist) { create(:user, public_wishlist: false, wanted_vehicle_count: 2) }
 
   path "/public/wishlists/{username}" do
-    parameter name: "username", in: :path, schema: { type: :string }, required: true
+    parameter name: "username", in: :path, schema: {type: :string}, required: true
 
     get("Your Wishlist") do
       operationId "publicWishlist"

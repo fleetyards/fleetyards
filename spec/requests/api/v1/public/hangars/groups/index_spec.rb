@@ -11,7 +11,7 @@ RSpec.describe "api/v1/hangars/groups", type: :openapi, openapi_schema_name: :"v
   end
 
   path "/public/hangars/{username}/groups" do
-    parameter name: "username", in: :path, schema: { type: :string }, description: "Username", required: true
+    parameter name: "username", in: :path, schema: {type: :string}, description: "Username", required: true
 
     get("HangarGroup list") do
       operationId "publicHangarGroups"

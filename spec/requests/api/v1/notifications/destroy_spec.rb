@@ -28,7 +28,7 @@ RSpec.describe "api/v1/notifications", type: :openapi, openapi_schema_name: :"v1
   end
 
   path "/notifications/{id}" do
-    parameter name: "id", in: :path, schema: { type: :string }, required: true
+    parameter name: "id", in: :path, schema: {type: :string}, required: true
 
     delete("Delete a notification") do
       operationId "destroyNotification"
