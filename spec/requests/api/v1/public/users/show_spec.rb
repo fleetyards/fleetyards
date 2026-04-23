@@ -34,7 +34,7 @@ RSpec.describe "api/v1/public/users", type: :openapi, openapi_schema_name: :"v1/
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:username) { "not-a-user" }

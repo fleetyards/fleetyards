@@ -64,7 +64,7 @@ RSpec.describe "api/v1/notification_preferences", type: :openapi, openapi_schema
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
@@ -86,7 +86,7 @@ RSpec.describe "api/v1/notification_preferences", type: :openapi, openapi_schema
         run_test!
       end
 
-      response(401, "unauthorized") do
+      response(401, "unauthorized", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { nil }

@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/users", type: :openapi, openapi_schema_name: :"admi
         run_test!
       end
 
-      response(200, "successful when sole fleet admin") do
+      response(200, "successful when sole fleet admin", hidden: true) do
         schema "$ref": "#/components/schemas/User"
 
         before do

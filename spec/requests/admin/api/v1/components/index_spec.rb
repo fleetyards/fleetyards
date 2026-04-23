@@ -42,7 +42,7 @@ RSpec.describe "admin/api/v1/components", type: :openapi, openapi_schema_name: :
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Components"
 
         let(:q) do
@@ -60,7 +60,7 @@ RSpec.describe "admin/api/v1/components", type: :openapi, openapi_schema_name: :
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Components"
 
         let(:perPage) { 2 }

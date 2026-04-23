@@ -41,7 +41,7 @@ RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: 
         run_test!
       end
 
-      response(204, "successful with OAuth token") do
+      response(204, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 

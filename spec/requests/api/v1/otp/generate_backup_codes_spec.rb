@@ -47,7 +47,7 @@ RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" d
         run_test!
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
         let(:"X-Access-Confirmation") do
@@ -73,7 +73,7 @@ RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" d
         run_test!
       end
 
-      response(400, "bad request") do
+      response(400, "bad request", hidden: true) do
         schema "$ref": "#/components/schemas/ValidationError"
 
         let(:user) { create :user, password: "otherpassword" }

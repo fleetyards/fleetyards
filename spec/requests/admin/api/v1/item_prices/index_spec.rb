@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/item_prices", type: :openapi, openapi_schema_name: 
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ItemPrices"
 
         let(:q) do

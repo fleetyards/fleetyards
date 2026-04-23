@@ -66,7 +66,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
         run_test!
       end
 
-      response(403, "forbidden") do
+      response(403, "forbidden", hidden: true) do
         description "You are not the owner of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 

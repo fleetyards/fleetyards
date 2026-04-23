@@ -49,8 +49,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Components"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     get:
       summary: Feature Flags for User
@@ -66,8 +64,6 @@ paths:
                 type: array
                 items:
                   type: string
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/components/item-types":
     get:
       summary: Components Item Types Filters
@@ -83,8 +79,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/components/classes":
     get:
       summary: Components Classes Filters
@@ -100,8 +94,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/classifications":
     get:
       summary: Model classifications Filters
@@ -117,8 +109,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/dock-sizes":
     get:
       summary: Model Dock Sizes Filters
@@ -134,8 +124,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/focus":
     get:
       summary: Model focus Filters
@@ -151,8 +139,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models":
     get:
       summary: Models Filters
@@ -168,8 +154,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/production-states":
     get:
       summary: Model Production states Filters
@@ -185,8 +169,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/sizes":
     get:
       summary: Model Sizes Filters
@@ -202,8 +184,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/vehicles/bought-via":
     get:
       summary: Vehicles Bought Via Filters
@@ -219,8 +199,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/check":
     post:
       summary: Check Fleet FID Availability
@@ -249,13 +227,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Check"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets":
     post:
       summary: Create Fleet
@@ -317,7 +293,7 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -334,8 +310,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Fleet Detail
       tags:
@@ -364,7 +338,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Fleet"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -381,8 +355,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Fleet
       tags:
@@ -418,7 +390,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Fleet"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -435,8 +407,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/find-by-invite/{token}":
     post:
       summary: Find Fleet by Invite
@@ -466,13 +436,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Fleet"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/invite-urls":
     post:
       summary: Create Fleet Invite Url
@@ -508,7 +476,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetInviteUrl"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -573,7 +541,7 @@ paths:
                 items:
                   "$ref": "#/components/schemas/FleetInviteUrl"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -590,8 +558,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/invite-urls/{token}":
     delete:
       summary: Remove Fleet Invite Url
@@ -623,7 +589,7 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -640,8 +606,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/use-invite":
     post:
       summary: Create Fleet Membership by Invite
@@ -708,13 +672,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/FleetMember"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/members/{username}/accept":
     put:
       summary: Accept Member
@@ -751,7 +713,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardMessage"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -809,7 +771,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetMember"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -885,7 +847,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetMembersList"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -896,8 +858,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/members/{username}/decline":
     put:
       summary: Decline Member
@@ -934,7 +894,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardMessage"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -993,7 +953,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetMember"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1048,7 +1008,7 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1065,8 +1025,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/members/{username}/promote":
     put:
       summary: Promote Member
@@ -1103,7 +1061,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetMember"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1120,8 +1078,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/membership/accept":
     put:
       summary: Accept Membership
@@ -1238,8 +1194,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Fleet Membership Detail
       tags:
@@ -1275,8 +1229,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Membership
       tags:
@@ -1349,13 +1301,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/Fleet"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/roles":
     get:
       summary: Fleet Role List
@@ -1387,7 +1337,7 @@ paths:
                 items:
                   "$ref": "#/components/schemas/FleetRoleExtended"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1398,8 +1348,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/members":
     get:
       summary: Fleet Members Stats
@@ -1437,13 +1385,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetMembersStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/model-counts":
     get:
       summary: Fleet Stats Model Counts
@@ -1481,7 +1427,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetModelCountsStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1492,8 +1438,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/models-by-classification":
     get:
       summary: Fleet Stats - Models by Classification
@@ -1525,13 +1469,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/models-by-manufacturer":
     get:
       summary: Fleet Stats - Models by Manufacturer
@@ -1563,13 +1505,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/models-by-production-status":
     get:
       summary: Fleet Stats - Models by Production Status
@@ -1601,13 +1541,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/models-by-size":
     get:
       summary: Fleet Stats - Models by Size
@@ -1639,13 +1577,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/vehicles-by-model":
     get:
       summary: Fleet Stats - Vehicles by Model
@@ -1677,13 +1613,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/vehicles":
     get:
       summary: Fleet Vehicles Stats
@@ -1713,7 +1647,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetVehiclesStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1724,8 +1658,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/vehicles/export":
     get:
       summary: Fleet Vehicles List
@@ -1765,7 +1697,7 @@ paths:
                 items:
                   "$ref": "#/components/schemas/FleetVehicleExport"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1776,8 +1708,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/vehicles":
     get:
       summary: Fleet Vehicles List
@@ -1837,7 +1767,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/FleetVehicles"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1848,8 +1778,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar":
     delete:
       summary: Clear your personal Hangar
@@ -1868,13 +1796,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Your personal Hangar
       tags:
@@ -1917,7 +1843,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Hangar"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -1961,13 +1887,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/VehicleExport"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/groups":
     post:
       summary: HangarGroup create
@@ -1996,13 +1920,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/HangarGroup"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: HangarGroup list
       tags:
@@ -2026,13 +1948,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/HangarGroup"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/groups/{id}":
     delete:
       summary: HangarGroup Destroy
@@ -2063,7 +1983,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/HangarGroup"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -2080,8 +2000,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: HangarGroup Update
       tags:
@@ -2117,7 +2035,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/HangarGroup"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -2134,8 +2052,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/groups/sort":
     put:
       summary: HangarGroup sort
@@ -2167,13 +2083,11 @@ paths:
                   success:
                     type: boolean
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/import":
     put:
       summary: Import to your personal Hangar
@@ -2202,7 +2116,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/HangarImportResult"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -2237,13 +2151,11 @@ paths:
                 items:
                   type: string
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/move-all-ingame-to-wishlist":
     put:
       summary: Move all Ingame Ships from your Hangar to your Wishlist
@@ -2262,13 +2174,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats/models-by-classification":
     get:
       summary: Hangar Stats - Models by Classification
@@ -2293,13 +2203,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats/models-by-manufacturer":
     get:
       summary: Hangar Stats - Models by Manufacturer
@@ -2324,13 +2232,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats/models-by-production-status":
     get:
       summary: Hangar Stats - Models by Production Status
@@ -2355,13 +2261,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats/models-by-size":
     get:
       summary: Hangar Stats - Models by Size
@@ -2386,13 +2290,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats":
     get:
       summary: Your Hangar Stats
@@ -2424,13 +2326,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/HangarStats"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/sync-rsi-hangar":
     put:
       summary: Sync RSI Hangar
@@ -2459,7 +2359,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/HangarSyncSubmitResult"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -2497,8 +2397,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     get:
       summary: Images list
@@ -2538,8 +2436,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Images"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/images/random":
     get:
       summary: Images random list
@@ -2565,8 +2461,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Image"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers":
     get:
       summary: Manufacturers list
@@ -2606,8 +2500,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers/with-models":
     get:
       summary: with_models manufacturer
@@ -2620,8 +2512,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/model-paints":
     get:
       summary: Model Paints List
@@ -2658,8 +2548,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/ModelPaint"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/store-image":
     get:
       summary: Model Storeimage
@@ -2677,8 +2565,6 @@ paths:
       responses:
         '302':
           description: successful
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/fleetchart-image":
     get:
       summary: Model Fleetchart Image
@@ -2702,8 +2588,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/embed":
     get:
       summary: Embed Models
@@ -2729,8 +2613,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Model"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/hardpoints":
     get:
       summary: Model Hardpoints
@@ -2766,8 +2648,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/images":
     get:
       summary: Model Images
@@ -2806,8 +2686,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models":
     get:
       summary: Models List
@@ -2856,8 +2734,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/latest":
     get:
       summary: Latest Models
@@ -2873,8 +2749,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Model"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/loaners":
     get:
       summary: Model Loaners
@@ -2913,8 +2787,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/module-packages":
     get:
       summary: Model Module Packages
@@ -2953,8 +2825,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/modules":
     get:
       summary: Model Modules
@@ -2993,8 +2863,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/paints":
     get:
       summary: Model Paints
@@ -3023,8 +2891,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}":
     get:
       summary: Model Detail
@@ -3051,8 +2917,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/slugs":
     get:
       summary: Available Model-Slugs
@@ -3062,8 +2926,6 @@ paths:
       responses:
         '200':
           description: successful
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/snub-crafts":
     get:
       summary: Model Snubcrafts
@@ -3092,8 +2954,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/updated":
     get:
       summary: Updated Models
@@ -3119,8 +2979,6 @@ paths:
           description: successful
         '304':
           description: not modified
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/upgrades":
     get:
       summary: Model Upgrades
@@ -3149,8 +3007,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/variants":
     get:
       summary: Model Variants
@@ -3189,8 +3045,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/videos":
     get:
       summary: Model Videos
@@ -3229,8 +3083,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/with-docks":
     get:
       summary: Models with Docks
@@ -3270,8 +3122,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Models"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notification-preferences":
     get:
       summary: List notification preferences
@@ -3296,13 +3146,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/NotificationPreference"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notification-preferences/{id}":
     put:
       summary: Update a notification preference
@@ -3350,8 +3198,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/destroy-all":
     delete:
       summary: Delete all notifications
@@ -3370,13 +3216,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/{id}":
     delete:
       summary: Delete a notification
@@ -3401,13 +3245,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications":
     get:
       summary: List notifications
@@ -3450,13 +3292,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Notifications"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/read-all":
     put:
       summary: Mark all notifications as read
@@ -3475,13 +3315,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/{id}/read":
     put:
       summary: Mark notification as read
@@ -3510,13 +3348,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Notification"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/oauth-applications":
     post:
       summary: Create OAuth Application
@@ -3576,8 +3412,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/oauth-applications/{id}":
     delete:
       summary: Destroy OAuth Application
@@ -3611,8 +3445,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: OAuth Application detail
       tags:
@@ -3649,8 +3481,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update OAuth Application
       tags:
@@ -3693,8 +3523,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/oauth-applications/{id}/regenerate-secret":
     put:
       summary: Regenerate OAuth Application secret
@@ -3732,8 +3560,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/omniauth-connections/{provider}":
     delete:
       summary: Disconnect OAuth provider
@@ -3767,8 +3593,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/otp/disable":
     post:
       summary: Disable OTP Setup
@@ -4033,7 +3857,7 @@ paths:
         required: true
       responses:
         '200':
-          description: successful for admin of fleet
+          description: successful
           content:
             application/json:
               schema:
@@ -4044,8 +3868,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/members":
     get:
       summary: Public Fleet Members Stats
@@ -4072,8 +3894,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/model-counts":
     get:
       summary: Public Fleet Stats Model Counts
@@ -4108,8 +3928,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/models-by-classification":
     get:
       summary: Public Fleet Models by Classification
@@ -4138,8 +3956,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/models-by-manufacturer":
     get:
       summary: Public Fleet Models by Manufacturer
@@ -4168,8 +3984,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/models-by-production-status":
     get:
       summary: Public Fleet Models by Production Status
@@ -4198,8 +4012,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/models-by-size":
     get:
       summary: Public Fleet Models by Size
@@ -4228,8 +4040,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/vehicles-by-model":
     get:
       summary: Public Fleet Vehicles by Model
@@ -4258,8 +4068,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/vehicles":
     get:
       summary: Public Fleet Vehicles Stats
@@ -4286,8 +4094,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/vehicles/embed":
     get:
       summary: Public Fleet Vehicles Embed for the Fleetyards Widget
@@ -4324,8 +4130,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/vehicles":
     get:
       summary: Public Fleet Vehicles List
@@ -4382,8 +4186,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/embed":
     get:
       summary: Public Hangar embed
@@ -4408,8 +4210,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/VehiclePublic"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/groups":
     get:
       summary: HangarGroup list
@@ -4432,8 +4232,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/HangarGroupPublic"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}":
     get:
       summary: Public Hangar
@@ -4479,8 +4277,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats/models-by-classification":
     get:
       summary: Public Hangar Models by Classification
@@ -4509,8 +4305,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats/models-by-manufacturer":
     get:
       summary: Public Hangar Models by Manufacturer
@@ -4539,8 +4333,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats/models-by-production-status":
     get:
       summary: Public Hangar Models by Production Status
@@ -4569,8 +4361,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats/models-by-size":
     get:
       summary: Public Hangar Models by Size
@@ -4599,8 +4389,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/stats":
     get:
       summary: Public Hangar Stats
@@ -4635,8 +4423,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/users/{username}":
     get:
       summary: Public User
@@ -4662,8 +4448,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/wishlists/{username}":
     get:
       summary: Your Wishlist
@@ -4709,8 +4493,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/sc-data/version":
     get:
       summary: SC Data Version
@@ -4724,8 +4506,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataVersion"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/sessions/confirm-access":
     post:
       summary: confirm_access session
@@ -4806,8 +4586,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/sessions/confirm-access-email":
     post:
       summary: Send confirm access email with code
@@ -4835,8 +4613,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/sessions/confirm-access-code":
     post:
       summary: Verify confirm access code
@@ -4885,8 +4661,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/models-by-classification":
     get:
       summary: Stats Models by Classification
@@ -4902,8 +4676,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/models-by-manufacturer":
     get:
       summary: Stats Models by Manufacturer
@@ -4919,8 +4691,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/models-by-production-status":
     get:
       summary: Stats Models by Production-Status
@@ -4936,8 +4706,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/models-by-size":
     get:
       summary: Stats Models by Size
@@ -4953,8 +4721,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/PieChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/models-per-month":
     get:
       summary: Stats Models per Month
@@ -4970,8 +4736,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/ships-of-the-month":
     get:
       summary: Stats Ships of the Month
@@ -4987,8 +4751,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/quick-stats":
     get:
       summary: Stats
@@ -5002,8 +4764,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Stats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/vehicles-by-model":
     get:
       summary: Stats Vehicles by Model
@@ -5019,8 +4779,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/stats/vehicles-per-month":
     get:
       summary: Stats Vehicles per Month
@@ -5036,8 +4794,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/user-features/{id}/disable":
     put:
       summary: Disable User Feature
@@ -5065,7 +4821,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/UserFeature"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -5081,8 +4837,6 @@ paths:
                     type: string
                   message:
                     type: string
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/user-features/{id}/enable":
     put:
       summary: Enable User Feature
@@ -5110,7 +4864,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/UserFeature"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -5126,8 +4880,6 @@ paths:
                     type: string
                   message:
                     type: string
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -5150,13 +4902,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/UserFeature"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/users/check-email":
     post:
       summary: Check E-Mail Availability
@@ -5176,8 +4926,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Check"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/users/check-username":
     post:
       summary: Check Username Availability
@@ -5197,8 +4945,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Check"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/users/confirm":
     post:
       summary: Confirm Account
@@ -5306,8 +5052,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update My Data
       tags:
@@ -5336,8 +5080,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/users/account":
     put:
       summary: Update My Account
@@ -5414,8 +5156,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/bulk":
     post:
       summary: Create multiple vehicles
@@ -5445,8 +5185,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update multiple vehicles
       tags:
@@ -5470,13 +5208,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles":
     post:
       summary: Create new Vehicle
@@ -5505,13 +5241,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Vehicle"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/destroy-all-ingame":
     delete:
       summary: Delete all ingame bought Vehicles
@@ -5530,13 +5264,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/destroy-bulk":
     put:
       summary: Destroy multiple Vehicles
@@ -5561,13 +5293,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/{id}":
     delete:
       summary: Delete Vehicle
@@ -5598,7 +5328,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Vehicle"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -5609,8 +5339,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Vehicle
       tags:
@@ -5646,7 +5374,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Vehicle"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -5657,8 +5385,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/version":
     get:
       summary: Version of Fleetyards
@@ -5672,8 +5398,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Version"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/wishlist":
     delete:
       summary: Clear your Wishlist
@@ -5692,13 +5416,11 @@ paths:
         '204':
           description: successful
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Your Wishlist
       tags:
@@ -5741,13 +5463,11 @@ paths:
               schema:
                 "$ref": "#/components/schemas/Hangar"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/wishlist/export":
     get:
       summary: Export your Wishlist
@@ -5772,13 +5492,11 @@ paths:
                 items:
                   "$ref": "#/components/schemas/VehicleExport"
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/wishlist/items":
     get:
       summary: Your Wishlist items
@@ -5803,13 +5521,11 @@ paths:
                 items:
                   type: string
         '401':
-          description: unauthorized with wrong scope token
+          description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
 servers:
 - url: http://api.fleetyards.test/v1
   description: Dev Server
@@ -11206,21 +10922,4 @@ components:
           type: string
       description: Sorting
       required: false
-  responses:
-    SchemaValidationError:
-      description: Request validation failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-              details:
-                type: array
-                items:
-                  type: string
-            required:
-            - error
-            - details
 security: []

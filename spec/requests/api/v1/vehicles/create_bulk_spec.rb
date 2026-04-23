@@ -57,7 +57,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
         run_test!
       end
 
-      response(204, "successful") do
+      response(204, "successful", hidden: true) do
         let(:user) { author }
 
         run_test!
@@ -71,7 +71,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
         run_test!
       end
 
-      response(401, "unauthorized") do
+      response(401, "unauthorized", hidden: true) do
         let(:Authorization) { "Bearer NOT_AUTHORIZED" }
 
         schema "$ref": "#/components/schemas/StandardError"
@@ -79,7 +79,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
         run_test!
       end
 
-      response(401, "unauthorized") do
+      response(401, "unauthorized", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         run_test!

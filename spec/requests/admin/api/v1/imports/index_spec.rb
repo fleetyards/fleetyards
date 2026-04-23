@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/imports", type: :openapi, openapi_schema_name: :"ad
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Imports"
 
         let(:q) do

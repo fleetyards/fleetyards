@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/model_upgrades", type: :openapi, openapi_schema_nam
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ModelUpgrades"
 
         let(:q) do

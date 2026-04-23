@@ -37,7 +37,7 @@ RSpec.describe "api/v1/public/fleets/stats", type: :openapi, openapi_schema_name
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleetSlug) { "unknown-fleet" }

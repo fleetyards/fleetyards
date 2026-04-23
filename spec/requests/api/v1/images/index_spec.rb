@@ -41,7 +41,7 @@ RSpec.describe "api/v1/images", type: :openapi, openapi_schema_name: :"v1/schema
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Images"
 
         let(:q) do
@@ -58,7 +58,7 @@ RSpec.describe "api/v1/images", type: :openapi, openapi_schema_name: :"v1/schema
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Images"
 
         let(:perPage) { 1 }

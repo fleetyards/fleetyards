@@ -46,7 +46,7 @@ RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/sche
         run_test!
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 

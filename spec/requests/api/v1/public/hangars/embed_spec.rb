@@ -39,7 +39,7 @@ RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v
         end
       end
 
-      response(200, "empty response") do
+      response(200, "empty response", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
@@ -52,7 +52,7 @@ RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v
         end
       end
 
-      response(200, "empty response") do
+      response(200, "empty response", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 

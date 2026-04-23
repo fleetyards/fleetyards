@@ -36,7 +36,7 @@ RSpec.describe "api/v1/manufacturers", type: :openapi, openapi_schema_name: :"v1
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Manufacturers"
 
         let(:q) do
@@ -53,7 +53,7 @@ RSpec.describe "api/v1/manufacturers", type: :openapi, openapi_schema_name: :"v1
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Manufacturers"
 
         let(:perPage) { 2 }

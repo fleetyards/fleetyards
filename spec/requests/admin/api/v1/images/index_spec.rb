@@ -42,7 +42,7 @@ RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"adm
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Images"
 
         let(:q) do

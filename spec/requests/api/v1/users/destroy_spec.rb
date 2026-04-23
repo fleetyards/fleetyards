@@ -38,14 +38,14 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
         run_test!
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
         run_test!
       end
 
-      response(200, "successful when sole fleet admin") do
+      response(200, "successful when sole fleet admin", hidden: true) do
         schema "$ref": "#/components/schemas/StandardMessage"
 
         before do
