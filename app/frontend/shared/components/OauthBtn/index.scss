@@ -1,7 +1,8 @@
 .oauth-btn {
   min-width: 70px;
 
-  &.inline {
+  &.inline,
+  &.panel-btn-block {
     margin-right: 0;
   }
 
