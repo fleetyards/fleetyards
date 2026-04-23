@@ -147,7 +147,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private def email_verified_by_provider?
     case auth.provider
-    when "google", "citizenid"
+    when "google", "citizenid", "twitch"
       auth.info.email_verified == true
     when "discord"
       auth.extra&.raw_info&.[]("verified") == true
