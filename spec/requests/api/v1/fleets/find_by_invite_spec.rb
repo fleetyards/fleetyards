@@ -30,7 +30,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
   end
 
   path "/fleets/find-by-invite/{token}" do
-    parameter name: "token", in: :path, schema: { type: :string }, description: "Fleet Invite Token"
+    parameter name: "token", in: :path, schema: {type: :string}, description: "Fleet Invite Token"
 
     post("Find Fleet by Invite") do
       operationId "findFleetByInvite"

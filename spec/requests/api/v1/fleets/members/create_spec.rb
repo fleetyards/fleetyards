@@ -36,7 +36,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
   end
 
   path "/fleets/{fleetSlug}/members" do
-    parameter name: "fleetSlug", in: :path, schema: { type: :string }, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     post("Create Member") do
       operationId "createFleetMember"

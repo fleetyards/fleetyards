@@ -27,7 +27,7 @@ RSpec.describe "api/v1/notification_preferences", type: :openapi, openapi_schema
   end
 
   path "/notification-preferences/{id}" do
-    parameter name: "id", in: :path, schema: { type: :string }, required: true
+    parameter name: "id", in: :path, schema: {type: :string}, required: true
 
     put("Update a notification preference") do
       operationId "updateNotificationPreference"

@@ -7,7 +7,7 @@ RSpec.describe "api/v1/public/users", type: :openapi, openapi_schema_name: :"v1/
   let(:user_without_public_hangar) { create(:user, :private_hangar) }
 
   path "/public/users/{username}" do
-    parameter name: "username", in: :path, schema: { type: :string }, required: true
+    parameter name: "username", in: :path, schema: {type: :string}, required: true
 
     get("Public User") do
       operationId "publicUser"

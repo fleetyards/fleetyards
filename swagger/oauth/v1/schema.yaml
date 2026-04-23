@@ -167,12 +167,12 @@ components:
           enum:
           - redirect
           - post
-        redirectUri:
+        redirect_uri:
           type: string
       additionalProperties: false
       required:
       - status
-      - redirectUri
+      - redirect_uri
       title: OauthAuthorizationRedirect
     OauthPreAuthorization:
       type: object

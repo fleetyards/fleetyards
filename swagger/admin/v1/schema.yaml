@@ -6454,14 +6454,14 @@ components:
     FeatureActorInput:
       type: object
       properties:
-        actorType:
+        actor_type:
           type: string
-        actorId:
+        actor_id:
           type: string
       additionalProperties: false
       required:
-      - actorType
-      - actorId
+      - actor_type
+      - actor_id
       title: FeatureActorInput
     FeatureGroupInput:
       type: object
