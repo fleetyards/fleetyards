@@ -64,8 +64,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     post:
       summary: Authorize OAuth application
       tags:
@@ -92,8 +90,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     delete:
       summary: Deny OAuth authorization
       tags:
@@ -238,21 +234,4 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
-  responses:
-    SchemaValidationError:
-      description: Request validation failed
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              error:
-                type: string
-              details:
-                type: array
-                items:
-                  type: string
-            required:
-            - error
-            - details
 security: []

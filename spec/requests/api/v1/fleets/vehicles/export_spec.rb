@@ -71,7 +71,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :openapi, openapi_schema_name: :"
 
       include_examples "oauth_auth"
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
 
         let(:q) do
@@ -88,7 +88,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :openapi, openapi_schema_name: :"
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
 
         let(:user) { member }

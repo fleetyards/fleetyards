@@ -61,7 +61,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
         end
       end
 
-      response(200, "successful with nullable fields") do
+      response(200, "successful with nullable fields", hidden: true) do
         schema "$ref": "#/components/schemas/Fleet"
 
         let(:request_body) do
@@ -101,7 +101,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
         run_test!
       end
 
-      response(403, "forbidden") do
+      response(403, "forbidden", hidden: true) do
         description "You are not an Admin or Officer of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 

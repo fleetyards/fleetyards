@@ -33,7 +33,7 @@ RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema"
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Check"
 
         let(:request_body) do

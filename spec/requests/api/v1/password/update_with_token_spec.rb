@@ -37,7 +37,7 @@ RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/sche
         run_test!
       end
 
-      response(400, "bad request") do
+      response(400, "bad request", hidden: true) do
         schema "$ref": "#/components/schemas/ValidationError"
 
         let(:request_body) { nil }

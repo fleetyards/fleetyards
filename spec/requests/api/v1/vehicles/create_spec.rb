@@ -57,7 +57,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
         end
       end
 
-      response(201, "successful with boughtVia enum value") do
+      response(201, "successful with boughtVia enum value", hidden: true) do
         schema "$ref": "#/components/schemas/Vehicle"
 
         let(:request_body) do

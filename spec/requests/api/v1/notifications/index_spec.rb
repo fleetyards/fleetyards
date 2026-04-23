@@ -65,7 +65,7 @@ RSpec.describe "api/v1/notifications", type: :openapi, openapi_schema_name: :"v1
 
       include_examples "oauth_auth"
 
-      response(200, "successful with type filter") do
+      response(200, "successful with type filter", hidden: true) do
         schema "$ref": "#/components/schemas/Notifications"
 
         let(:q) do

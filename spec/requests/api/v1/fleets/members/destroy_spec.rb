@@ -52,7 +52,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
 
       include_examples "oauth_auth", success_status: 204
 
-      response(204, "successful") do
+      response(204, "successful", hidden: true) do
         description "Delete own membership if not admin"
         let(:user) { member }
 
@@ -68,7 +68,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         description "Member not found"
         schema "$ref": "#/components/schemas/StandardError"
 
@@ -86,7 +86,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
         run_test!
       end
 
-      response(403, "forbidden") do
+      response(403, "forbidden", hidden: true) do
         description "You are not the owner of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 

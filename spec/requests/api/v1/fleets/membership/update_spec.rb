@@ -56,7 +56,7 @@ RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: 
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
@@ -71,7 +71,7 @@ RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: 
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         description "Fleet for this slug and user does not exist"
         schema "$ref": "#/components/schemas/StandardError"
 

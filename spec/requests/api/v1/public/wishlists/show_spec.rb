@@ -38,7 +38,7 @@ RSpec.describe "api/v1/public/wishlists", type: :openapi, openapi_schema_name: :
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:username) { user.username }
@@ -57,7 +57,7 @@ RSpec.describe "api/v1/public/wishlists", type: :openapi, openapi_schema_name: :
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:username) { user.username }
@@ -79,7 +79,7 @@ RSpec.describe "api/v1/public/wishlists", type: :openapi, openapi_schema_name: :
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:username) { user_without_public_wishlist.username }

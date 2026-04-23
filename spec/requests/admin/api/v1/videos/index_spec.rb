@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/videos", type: :openapi, openapi_schema_name: :"adm
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Videos"
 
         let(:q) do

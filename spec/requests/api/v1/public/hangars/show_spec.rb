@@ -42,7 +42,7 @@ RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:q) do
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:perPage) { 1 }
@@ -81,7 +81,7 @@ RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:username) { "not-a-user" }

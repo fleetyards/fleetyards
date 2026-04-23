@@ -65,7 +65,7 @@ RSpec.describe "api/v1/wishlist", type: :openapi, openapi_schema_name: :"v1/sche
 
       include_examples "oauth_auth"
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Hangar"
 
         let(:q) do
@@ -83,7 +83,7 @@ RSpec.describe "api/v1/wishlist", type: :openapi, openapi_schema_name: :"v1/sche
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Hangar"
 
         let(:perPage) { 1 }

@@ -79,7 +79,7 @@ RSpec.describe "api/v1/fleets/stats", type: :openapi, openapi_schema_name: :"v1/
 
       include_examples "oauth_auth"
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/FleetModelCountsStats"
 
         let(:q) do

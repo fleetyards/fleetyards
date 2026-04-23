@@ -60,7 +60,7 @@ RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/sche
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:id) { other_vehicle.id }

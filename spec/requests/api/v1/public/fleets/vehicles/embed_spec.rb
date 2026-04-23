@@ -43,7 +43,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :openapi, openapi_schema_n
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
@@ -69,7 +69,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :openapi, openapi_schema_n
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleetSlug) { "unknown-fleet" }

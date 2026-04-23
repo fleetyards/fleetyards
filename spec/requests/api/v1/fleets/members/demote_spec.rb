@@ -64,7 +64,7 @@ RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         description "No Member found"
         schema "$ref": "#/components/schemas/StandardError"
 

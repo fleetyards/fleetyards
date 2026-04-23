@@ -50,7 +50,7 @@ RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema
         end
       end
 
-      response(201, "successful with OAuth token") do
+      response(201, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 

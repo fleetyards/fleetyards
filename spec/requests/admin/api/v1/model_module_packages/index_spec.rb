@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/model_module_packages", type: :openapi, openapi_sch
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ModelModulePackages"
 
         let(:q) do

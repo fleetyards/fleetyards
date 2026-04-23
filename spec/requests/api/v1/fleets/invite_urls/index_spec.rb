@@ -63,7 +63,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name:
 
       include_examples "oauth_auth"
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/FleetInviteUrl"}
 

@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/model_paints", type: :openapi, openapi_schema_name:
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ModelPaints"
 
         let(:q) do
@@ -57,7 +57,7 @@ RSpec.describe "admin/api/v1/model_paints", type: :openapi, openapi_schema_name:
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ModelPaints"
 
         let(:perPage) { 2 }
