@@ -44,11 +44,11 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   private def handle_connect(kind)
-    existing_connection = current_user.omniauth_connections.find_by(provider: auth.provider, uid: auth.uid)
+    existing_connection = current_user.omniauth_connections.find_by(provider: auth.provider.to_s, uid: auth.uid)
     if existing_connection.present?
       existing_connection.update!(auth_payload: auth.to_h)
 
-      if auth.provider == "citizenid"
+      if citizenid_provider?
         extract_citizenid_claims(current_user)
         current_user.save!
         verify_fleet_memberships(current_user)
@@ -60,13 +60,13 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     connection = current_user.omniauth_connections.find_or_initialize_by(
       uid: auth.uid,
-      provider: auth.provider
+      provider: auth.provider.to_s
     ) do |connection|
       connection.auth_payload = auth.to_h
     end
 
     if connection.save
-      if auth.provider == "citizenid"
+      if citizenid_provider?
         extract_citizenid_claims(current_user)
         current_user.save!
         verify_fleet_memberships(current_user)
@@ -86,7 +86,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if current_user.present?
       handle_connect(kind)
     else
-      connection = OmniauthConnection.find_by(uid: auth.uid, provider: auth.provider)
+      connection = OmniauthConnection.find_by(uid: auth.uid, provider: auth.provider.to_s)
 
       user = if connection.present?
         User.find_by(id: connection.user_id)
@@ -115,7 +115,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         )
       end
 
-      extract_citizenid_claims(user) if auth.provider == "citizenid"
+      extract_citizenid_claims(user) if citizenid_provider?
 
       if user.new_record?
         if auth.info.email.blank? || email_verified_by_provider?
@@ -129,14 +129,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         if connection.blank?
           user.omniauth_connections.create!(
             uid: auth.uid,
-            provider: auth.provider,
+            provider: auth.provider.to_s,
             auth_payload: auth.to_h
           )
         else
           connection.update!(auth_payload: auth.to_h)
         end
 
-        verify_fleet_memberships(user) if auth.provider == "citizenid"
+        verify_fleet_memberships(user) if citizenid_provider?
 
         user.remember_me = true
 
@@ -156,8 +156,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     request.env["omniauth.auth"]
   end
 
+  private def citizenid_provider?
+    auth.provider.to_s == "citizenid"
+  end
+
   private def email_verified_by_provider?
-    case auth.provider
+    case auth.provider.to_s
     when "google", "citizenid", "twitch"
       auth.info.email_verified == true
     when "discord"
@@ -201,7 +205,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     raw_info = auth.extra&.raw_info
     return if raw_info.blank?
 
-    public_sids = Array(raw_info["urn:user:rsi:orgs:public"]).map(&:upcase)
+    public_sids = Array(raw_info["urn:user:rsi:orgs:public"]).reject(&:blank?).map(&:upcase)
 
     # rubocop:disable Rails/SkipsModelValidations
     user.fleet_memberships.where(verified: true).update_all(verified: false)
