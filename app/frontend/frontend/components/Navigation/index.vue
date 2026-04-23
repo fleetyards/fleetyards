@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type LocationQueryRaw } from "vue-router";
+import { type LocationQueryRaw, useRouter } from "vue-router";
 import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
@@ -84,8 +84,11 @@ const filterFor = (routeName: string) => {
   } as unknown as LocationQueryRaw;
 };
 
-const logout = async () => {
-  await sessionStore.logout();
+const router = useRouter();
+
+const logout = () => {
+  void sessionStore.logout();
+  void router.replace({ name: "login" });
 };
 
 const settingsActive = computed(() => {
