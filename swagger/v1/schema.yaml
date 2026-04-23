@@ -268,19 +268,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: slug
+      required: true
     delete:
       summary: Destroy Fleet
       tags:
       - Fleets
       operationId: destroyFleet
       description: You are not the owner of this Fleet
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -315,13 +315,6 @@ paths:
       tags:
       - Fleets
       operationId: fleet
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -361,13 +354,6 @@ paths:
       - Fleets
       operationId: updateFleet
       description: You are not an Admin or Officer of this Fleet
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -408,18 +394,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/find-by-invite/{token}":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      description: Fleet Invite Token
+      required: true
     post:
       summary: Find Fleet by Invite
       tags:
       - Fleets
       operationId: findFleetByInvite
-      parameters:
-      - name: token
-        in: path
-        schema:
-          type: string
-        description: Fleet Invite Token
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -442,18 +428,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/invite-urls":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     post:
       summary: Create Fleet Invite Url
       tags:
       - FleetInviteUrls
       operationId: createFleetInviteUrl
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -505,12 +491,6 @@ paths:
       - fleetInviteUrls
       operationId: fleetInviteUrls
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: page
         in: query
         schema:
@@ -559,24 +539,24 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/invite-urls/{token}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: token
+      in: path
+      schema:
+        type: string
+      description: Invite Url Token
+      required: true
     delete:
       summary: Remove Fleet Invite Url
       tags:
       - FleetInviteUrls
       operationId: destroyFleetInviteUrl
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
-      - name: token
-        in: path
-        schema:
-          type: string
-        description: Invite Url Token
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -678,25 +658,25 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members/{username}/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
     put:
       summary: Accept Member
       tags:
       - FleetMembers
       operationId: acceptFleetMember
       description: No Member found
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: Username
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -737,18 +717,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     post:
       summary: Create Member
       tags:
       - FleetMembers
       operationId: createFleetMember
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -800,12 +780,6 @@ paths:
       - FleetMembers
       operationId: fleetMembers
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: page
         in: query
         schema:
@@ -859,25 +833,25 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members/{username}/decline":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
     put:
       summary: Decline Member
       tags:
       - FleetMembers
       operationId: declineFleetMember
       description: No Member found
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: Username
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -918,25 +892,25 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members/{username}/demote":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
     put:
       summary: Demote Member
       tags:
       - FleetMembers
       operationId: demoteFleetMember
       description: No Member found
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: Username
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -977,25 +951,25 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members/{username}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
     delete:
       summary: Remove Fleet Member
       tags:
       - FleetMembers
       operationId: destroyFleetMember
       description: Without authentication
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: username
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1026,25 +1000,25 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members/{username}/promote":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
     put:
       summary: Promote Member
       tags:
       - FleetMembers
       operationId: promoteFleetMember
       description: No Member found
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: Username
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1079,18 +1053,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/membership/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     put:
       summary: Accept Membership
       tags:
       - FleetMembership
       operationId: acceptFleetMembership
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1121,18 +1095,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/membership/decline":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     put:
       summary: Decline Membership
       tags:
       - FleetMembership
       operationId: declineFleetMembership
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1163,18 +1137,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/membership":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     delete:
       summary: Leave Fleet
       tags:
       - FleetMembership
       operationId: leaveFleet
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1199,13 +1173,6 @@ paths:
       tags:
       - FleetMembership
       operationId: fleetMembership
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1235,13 +1202,6 @@ paths:
       - FleetMembership
       operationId: updateFleetMembership
       description: Fleet for this slug and user does not exist
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -1307,18 +1267,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/roles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Role List
       tags:
       - FleetRoles
       operationId: fleetRoles
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1349,18 +1309,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/members":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Members Stats
       tags:
       - FleetStats
       operationId: fleetMembersStats
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: q
         in: query
         schema:
@@ -1391,18 +1352,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/model-counts":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Stats Model Counts
       tags:
       - FleetStats
       operationId: fleetModelCounts
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: q
         in: query
         schema:
@@ -1439,18 +1401,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/models-by-classification":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Stats - Models by Classification
       tags:
       - FleetStats
       operationId: fleetModelsByClassification
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1475,18 +1437,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/models-by-manufacturer":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Stats - Models by Manufacturer
       tags:
       - FleetStats
       operationId: fleetModelsByManufacturer
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1511,18 +1473,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/models-by-production-status":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Stats - Models by Production Status
       tags:
       - FleetStats
       operationId: fleetModelsByProductionStatus
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1547,18 +1509,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/models-by-size":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Stats - Models by Size
       tags:
       - FleetStats
       operationId: fleetModelsBySize
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1583,18 +1545,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/vehicles-by-model":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Stats - Vehicles by Model
       tags:
       - FleetStats
       operationId: fleetVehiclesByModel
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1619,18 +1581,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/stats/vehicles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Vehicles Stats
       tags:
       - FleetStats
       operationId: fleetVehiclesStats
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1659,18 +1621,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/vehicles/export":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Vehicles List
       tags:
       - Fleets
       operationId: fleetVehiclesExport
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: q
         in: query
         schema:
@@ -1709,18 +1672,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/vehicles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Fleet Vehicles List
       tags:
       - Fleets
       operationId: fleetVehicles
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: page
         in: query
         schema:
@@ -1954,19 +1918,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/hangar/groups/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: HangarGroup ID
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: HangarGroup Destroy
       tags:
       - HangarGroups
       operationId: destroyHangarGroup
-      parameters:
-      - name: id
-        in: path
-        description: HangarGroup ID
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -2005,14 +1969,6 @@ paths:
       tags:
       - HangarGroups
       operationId: updateHangarGroup
-      parameters:
-      - name: id
-        in: path
-        description: HangarGroup ID
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -2549,36 +2505,36 @@ paths:
                 items:
                   "$ref": "#/components/schemas/ModelPaint"
   "/models/{slug}/store-image":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Storeimage
       tags:
       - Models
       operationId: modelStoreImage
       deprecated: true
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       responses:
         '302':
           description: successful
   "/models/{slug}/fleetchart-image":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Fleetchart Image
       tags:
       - Models
       operationId: modelFleetchartImage
       deprecated: true
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       responses:
         '302':
           description: successful
@@ -2614,18 +2570,19 @@ paths:
                 items:
                   "$ref": "#/components/schemas/Model"
   "/models/{slug}/hardpoints":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Hardpoints
       tags:
       - Models
       operationId: modelHardpoints
       parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       - name: source
         in: query
         schema:
@@ -2649,18 +2606,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{slug}/images":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Images
       tags:
       - Models
       operationId: modelImages
       parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       - name: page
         in: query
         schema:
@@ -2750,18 +2708,19 @@ paths:
                 items:
                   "$ref": "#/components/schemas/Model"
   "/models/{slug}/loaners":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Loaners
       tags:
       - Models
       operationId: modelLoaners
       parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       - name: page
         in: query
         schema:
@@ -2788,18 +2747,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{slug}/module-packages":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Module Packages
       tags:
       - Models
       operationId: modelModulePackages
       parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       - name: page
         in: query
         schema:
@@ -2826,18 +2786,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{slug}/modules":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Modules
       tags:
       - Models
       operationId: modelModules
       parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       - name: page
         in: query
         schema:
@@ -2864,18 +2825,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{slug}/paints":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Paints
       tags:
       - Models
       operationId: modelPaints
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       responses:
         '200':
           description: successful
@@ -2892,18 +2853,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Detail
       tags:
       - Models
       operationId: model
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       responses:
         '200':
           description: successful
@@ -2927,18 +2888,18 @@ paths:
         '200':
           description: successful
   "/models/{slug}/snub-crafts":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Snubcrafts
       tags:
       - Models
       operationId: modelSnubCrafts
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       responses:
         '200':
           description: successful
@@ -2980,18 +2941,18 @@ paths:
         '304':
           description: not modified
   "/models/{slug}/upgrades":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Upgrades
       tags:
       - Models
       operationId: modelUpgrades
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       responses:
         '200':
           description: successful
@@ -3008,18 +2969,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{slug}/variants":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Variants
       tags:
       - Models
       operationId: modelVariants
       parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       - name: page
         in: query
         schema:
@@ -3046,18 +3008,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{slug}/videos":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
       summary: Model Videos
       tags:
       - Models
       operationId: modelVideos
       parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: Model slug
-        required: true
       - name: page
         in: query
         schema:
@@ -3152,17 +3115,17 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/notification-preferences/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
     put:
       summary: Update a notification preference
       tags:
       - NotificationPreferences
       operationId: updateNotificationPreference
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -3222,17 +3185,17 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/notifications/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
     delete:
       summary: Delete a notification
       tags:
       - Notifications
       operationId: destroyNotification
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -3321,17 +3284,17 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/notifications/{id}/read":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
     put:
       summary: Mark notification as read
       tags:
       - Notifications
       operationId: readNotification
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -3413,19 +3376,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/oauth-applications/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: OAuth Application id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy OAuth Application
       tags:
       - OauthApplications
       operationId: destroyOauthApplication
-      parameters:
-      - name: id
-        in: path
-        description: OAuth Application id
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -3450,14 +3413,6 @@ paths:
       tags:
       - OauthApplications
       operationId: oauthApplication
-      parameters:
-      - name: id
-        in: path
-        description: OAuth Application id
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -3486,14 +3441,6 @@ paths:
       tags:
       - OauthApplications
       operationId: updateOauthApplication
-      parameters:
-      - name: id
-        in: path
-        description: OAuth Application id
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -3524,19 +3471,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/oauth-applications/{id}/regenerate-secret":
+    parameters:
+    - name: id
+      in: path
+      description: OAuth Application id
+      schema:
+        type: string
+        format: uuid
+      required: true
     put:
       summary: Regenerate OAuth Application secret
       tags:
       - OauthApplications
       operationId: regenerateOauthApplicationSecret
-      parameters:
-      - name: id
-        in: path
-        description: OAuth Application id
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -3561,17 +3508,17 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/omniauth-connections/{provider}":
+    parameters:
+    - name: provider
+      in: path
+      schema:
+        type: string
+      required: true
     delete:
       summary: Disconnect OAuth provider
       tags:
       - OmniAuth Connections
       operationId: disconnectOauthProvider
-      parameters:
-      - name: provider
-        in: path
-        schema:
-          type: string
-        required: true
       security:
       - SessionCookie: []
       responses:
@@ -3812,17 +3759,17 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/password/{token}":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      required: true
     put:
       summary: Update Password with Token
       tags:
       - Password
       operationId: updatePasswordWithToken
-      parameters:
-      - name: token
-        in: path
-        schema:
-          type: string
-        required: true
       requestBody:
         required: true
         content:
@@ -3843,18 +3790,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
   "/public/fleets/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: slug
+      required: true
     get:
       summary: Fleet Detail
       tags:
       - Fleets
       operationId: publicFleet
-      parameters:
-      - name: slug
-        in: path
-        schema:
-          type: string
-        description: slug
-        required: true
       responses:
         '200':
           description: successful
@@ -3869,18 +3816,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/members":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Members Stats
       tags:
       - FleetStats
       operationId: publicFleetMembersStats
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       responses:
         '200':
           description: successful
@@ -3895,18 +3842,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/model-counts":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Stats Model Counts
       tags:
       - Fleets
       operationId: publicFleetStatsModelCounts
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: q
         in: query
         schema:
@@ -3929,18 +3877,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/models-by-classification":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Models by Classification
       tags:
       - FleetStats
       operationId: publicFleetModelsByClassification
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       responses:
         '200':
           description: successful
@@ -3957,18 +3905,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/models-by-manufacturer":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Models by Manufacturer
       tags:
       - FleetStats
       operationId: publicFleetModelsByManufacturer
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       responses:
         '200':
           description: successful
@@ -3985,18 +3933,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/models-by-production-status":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Models by Production Status
       tags:
       - FleetStats
       operationId: publicFleetModelsByProductionStatus
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       responses:
         '200':
           description: successful
@@ -4013,18 +3961,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/models-by-size":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Models by Size
       tags:
       - FleetStats
       operationId: publicFleetModelsBySize
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       responses:
         '200':
           description: successful
@@ -4041,18 +3989,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/vehicles-by-model":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Vehicles by Model
       tags:
       - FleetStats
       operationId: publicFleetVehiclesByModel
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       responses:
         '200':
           description: successful
@@ -4069,18 +4017,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/stats/vehicles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Vehicles Stats
       tags:
       - FleetStats
       operationId: publicFleetVehiclesStats
-      parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       responses:
         '200':
           description: successful
@@ -4095,18 +4043,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/vehicles/embed":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Vehicles Embed for the Fleetyards Widget
       tags:
       - Fleets
       operationId: publicFleetVehiclesEmbed
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: q
         in: query
         schema:
@@ -4131,18 +4080,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/fleets/{fleetSlug}/vehicles":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
     get:
       summary: Public Fleet Vehicles List
       tags:
       - Fleets
       operationId: publicFleetVehicles
       parameters:
-      - name: fleetSlug
-        in: path
-        schema:
-          type: string
-        description: Fleet slug
-        required: true
       - name: page
         in: query
         schema:
@@ -4211,18 +4161,18 @@ paths:
                 items:
                   "$ref": "#/components/schemas/VehiclePublic"
   "/public/hangars/{username}/groups":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
     get:
       summary: HangarGroup list
       tags:
       - PublicHangarGroups
       operationId: publicHangarGroups
-      parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: Username
-        required: true
       responses:
         '200':
           description: successful
@@ -4233,17 +4183,18 @@ paths:
                 items:
                   "$ref": "#/components/schemas/HangarGroupPublic"
   "/public/hangars/{username}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      required: true
     get:
       summary: Public Hangar
       tags:
       - PublicHangar
       operationId: publicHangar
       parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        required: true
       - name: page
         in: query
         schema:
@@ -4278,18 +4229,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/hangars/{username}/stats/models-by-classification":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
     get:
       summary: Public Hangar Models by Classification
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByClassification
-      parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: username
-        required: true
       responses:
         '200':
           description: successful
@@ -4306,18 +4257,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/hangars/{username}/stats/models-by-manufacturer":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
     get:
       summary: Public Hangar Models by Manufacturer
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByManufacturer
-      parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: username
-        required: true
       responses:
         '200':
           description: successful
@@ -4334,18 +4285,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/hangars/{username}/stats/models-by-production-status":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
     get:
       summary: Public Hangar Models by Production Status
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsByProductionStatus
-      parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: username
-        required: true
       responses:
         '200':
           description: successful
@@ -4362,18 +4313,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/hangars/{username}/stats/models-by-size":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
     get:
       summary: Public Hangar Models by Size
       tags:
       - PublicHangarStats
       operationId: publicHangarModelsBySize
-      parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: username
-        required: true
       responses:
         '200':
           description: successful
@@ -4390,18 +4341,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/hangars/{username}/stats":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
     get:
       summary: Public Hangar Stats
       tags:
       - PublicHangarStats
       operationId: publicHangarStats
       parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        description: username
-        required: true
       - name: q
         in: query
         schema:
@@ -4424,17 +4376,17 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/users/{username}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      required: true
     get:
       summary: Public User
       tags:
       - PublicUser
       operationId: publicUser
-      parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        required: true
       responses:
         '200':
           description: successful
@@ -4449,17 +4401,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/public/wishlists/{username}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      required: true
     get:
       summary: Your Wishlist
       tags:
       - PublicWishlist
       operationId: publicWishlist
       parameters:
-      - name: username
-        in: path
-        schema:
-          type: string
-        required: true
       - name: page
         in: query
         schema:
@@ -4795,18 +4748,18 @@ paths:
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
   "/user-features/{id}/disable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Disable User Feature
       tags:
       - UserFeatures
       operationId: disableUserFeature
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -4838,18 +4791,18 @@ paths:
                   message:
                     type: string
   "/user-features/{id}/enable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Enable User Feature
       tags:
       - UserFeatures
       operationId: enableUserFeature
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -5299,19 +5252,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/vehicles/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Delete Vehicle
       tags:
       - Vehicles
       operationId: destroyVehicle
-      parameters:
-      - name: id
-        in: path
-        description: id
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:
@@ -5344,14 +5297,6 @@ paths:
       tags:
       - Vehicles
       operationId: updateVehicle
-      parameters:
-      - name: id
-        in: path
-        description: id
-        schema:
-          type: string
-          format: uuid
-        required: true
       security:
       - SessionCookie: []
       - Oauth2:

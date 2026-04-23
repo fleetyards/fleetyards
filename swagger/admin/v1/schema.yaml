@@ -68,19 +68,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/admin_users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Admin User id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Admin User
       tags:
       - AdminUsers
       operationId: destroyAdminUser
-      parameters:
-      - name: id
-        in: path
-        description: Admin User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -111,14 +111,6 @@ paths:
       tags:
       - AdminUsers
       operationId: adminUser
-      parameters:
-      - name: id
-        in: path
-        description: Admin User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -149,14 +141,6 @@ paths:
       tags:
       - AdminUsers
       operationId: updateAdminUser
-      parameters:
-      - name: id
-        in: path
-        description: Admin User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -249,19 +233,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/cargo-holds/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     put:
       summary: Update Cargo Hold
       tags:
       - CargoHolds
       operationId: updateCargoHold
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
@@ -371,19 +355,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/components/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Component id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Component
       tags:
       - Components
       operationId: destroyComponent
-      parameters:
-      - name: id
-        in: path
-        description: Component id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -414,14 +398,6 @@ paths:
       tags:
       - Components
       operationId: component
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: Component id
-        required: true
       responses:
         '200':
           description: successful
@@ -452,14 +428,6 @@ paths:
       tags:
       - Components
       operationId: updateComponent
-      parameters:
-      - name: id
-        in: path
-        description: Component id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -569,19 +537,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/docks/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Dock destroy
       tags:
       - Docks
       operationId: destroyDock
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -608,14 +576,6 @@ paths:
       tags:
       - Docks
       operationId: dock
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -646,14 +606,6 @@ paths:
       tags:
       - Docks
       operationId: updateDock
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
@@ -748,18 +700,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     delete:
       summary: Delete Feature
       tags:
       - Features
       operationId: destroyAdminFeature
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       responses:
         '204':
           description: deleted
@@ -786,13 +738,6 @@ paths:
       tags:
       - Features
       operationId: adminFeature
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       responses:
         '200':
           description: successful
@@ -819,18 +764,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/disable-actor":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Disable Feature for Actor
       tags:
       - Features
       operationId: disableAdminFeatureActor
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       requestBody:
         content:
           application/json:
@@ -862,18 +807,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/disable-group":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Disable Feature for Group
       tags:
       - Features
       operationId: disableAdminFeatureGroup
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       requestBody:
         content:
           application/json:
@@ -905,18 +850,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/disable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Disable Feature
       tags:
       - Features
       operationId: disableAdminFeature
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       responses:
         '200':
           description: successful
@@ -943,18 +888,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/enable-actor":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Enable Feature for Actor
       tags:
       - Features
       operationId: enableAdminFeatureActor
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       requestBody:
         content:
           application/json:
@@ -986,18 +931,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/enable-group":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Enable Feature for Group
       tags:
       - Features
       operationId: enableAdminFeatureGroup
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       requestBody:
         content:
           application/json:
@@ -1029,18 +974,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/enable-percentage-of-actors":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Enable Feature for Percentage of Actors
       tags:
       - Features
       operationId: enableAdminFeaturePercentageOfActors
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       requestBody:
         content:
           application/json:
@@ -1072,18 +1017,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/enable-percentage-of-time":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Enable Feature for Percentage of Time
       tags:
       - Features
       operationId: enableAdminFeaturePercentageOfTime
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       requestBody:
         content:
           application/json:
@@ -1115,18 +1060,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/enable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Enable Feature
       tags:
       - Features
       operationId: enableAdminFeature
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       responses:
         '200':
           description: successful
@@ -1153,18 +1098,18 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/features/{id}/toggle-self-service":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
     put:
       summary: Toggle Feature Self-Service
       tags:
       - Features
       operationId: toggleAdminFeatureSelfService
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-        description: Feature name
-        required: true
       responses:
         '200':
           description: successful
@@ -1255,19 +1200,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/fleets/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Fleet
       tags:
       - Fleets
       operationId: destroyFleet
-      parameters:
-      - name: id
-        in: path
-        description: Fleet id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -1298,14 +1243,6 @@ paths:
       tags:
       - Fleets
       operationId: fleet
-      parameters:
-      - name: id
-        in: path
-        description: Fleet id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -1336,14 +1273,6 @@ paths:
       tags:
       - Fleets
       operationId: updateFleet
-      parameters:
-      - name: id
-        in: path
-        description: Fleet id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -1448,19 +1377,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/images/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Image destroy
       tags:
       - Images
       operationId: destroyImage
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -1487,14 +1416,6 @@ paths:
       tags:
       - Images
       operationId: updateImage
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         content:
           application/json:
@@ -1590,19 +1511,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/imports/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     get:
       summary: Import Detail
       tags:
       - Imports
       operationId: import
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -1707,19 +1628,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/item-prices/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Item price destroy
       tags:
       - ItemPrices
       operationId: destroyItemPrice
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -1746,14 +1667,6 @@ paths:
       tags:
       - ItemPrices
       operationId: itemPrice
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -1784,14 +1697,6 @@ paths:
       tags:
       - ItemPrices
       operationId: updateItemPrice
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
@@ -1907,19 +1812,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/manufacturers/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Manufacturer id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Manufacturer
       tags:
       - Manufacturers
       operationId: destroyManufacturer
-      parameters:
-      - name: id
-        in: path
-        description: Manufacturer id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -1950,14 +1855,6 @@ paths:
       tags:
       - Manufacturers
       operationId: manufacturer
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: Manufacturer id
-        required: true
       responses:
         '200':
           description: successful
@@ -1988,14 +1885,6 @@ paths:
       tags:
       - Manufacturers
       operationId: updateManufacturer
-      parameters:
-      - name: id
-        in: path
-        description: Manufacturer id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -2105,19 +1994,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/model-hardpoint-loadouts/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Destroy Model Hardpoint Loadout
       tags:
       - ModelHardpointLoadouts
       operationId: destroyModelHardpointLoadout
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -2144,14 +2033,6 @@ paths:
       tags:
       - ModelHardpointLoadouts
       operationId: modelHardpointLoadout
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -2182,14 +2063,6 @@ paths:
       tags:
       - ModelHardpointLoadouts
       operationId: updateModelHardpointLoadout
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
@@ -2299,19 +2172,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/model-hardpoints/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Destroy Model Hardpoint
       tags:
       - ModelHardpoints
       operationId: destroyModelHardpoint
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -2338,14 +2211,6 @@ paths:
       tags:
       - ModelHardpoints
       operationId: modelHardpoint
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -2376,14 +2241,6 @@ paths:
       tags:
       - ModelHardpoints
       operationId: updateModelHardpoint
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
@@ -2493,19 +2350,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/model-loaners/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Destroy Model Loaner
       tags:
       - ModelLoaners
       operationId: destroyModelLoaner
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -2532,14 +2389,6 @@ paths:
       tags:
       - ModelLoaners
       operationId: modelLoaner
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -2570,14 +2419,6 @@ paths:
       tags:
       - ModelLoaners
       operationId: updateModelLoaner
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
@@ -2682,19 +2523,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/model-module-packages/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model Module Package id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Model Module Package
       tags:
       - ModelModulePackages
       operationId: destroyModelModulePackage
-      parameters:
-      - name: id
-        in: path
-        description: Model Module Package id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '204':
           description: successful
@@ -2721,14 +2562,6 @@ paths:
       tags:
       - ModelModulePackages
       operationId: modelModulePackage
-      parameters:
-      - name: id
-        in: path
-        description: Model Module Package id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -2759,14 +2592,6 @@ paths:
       tags:
       - ModelModulePackages
       operationId: updateModelModulePackage
-      parameters:
-      - name: id
-        in: path
-        description: Model Module Package id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -2923,19 +2748,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/model-modules/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Model Module destroy
       tags:
       - ModelModules
       operationId: destroyModelModule
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -2962,14 +2787,6 @@ paths:
       tags:
       - ModelModules
       operationId: modelModule
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -3000,14 +2817,6 @@ paths:
       tags:
       - ModelModules
       operationId: updateModelModule
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
@@ -3200,19 +3009,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/model-paints/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model Paint id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Model Paint
       tags:
       - ModelPaints
       operationId: destroyModelPaint
-      parameters:
-      - name: id
-        in: path
-        description: Model Paint id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -3243,14 +3052,6 @@ paths:
       tags:
       - ModelPaints
       operationId: modelPaint
-      parameters:
-      - name: id
-        in: path
-        description: Model Paint id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -3281,14 +3082,6 @@ paths:
       tags:
       - ModelPaints
       operationId: updateModelPaint
-      parameters:
-      - name: id
-        in: path
-        description: Model Paint id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -3393,19 +3186,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/model-upgrades/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model Upgrade id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Model Upgrade
       tags:
       - ModelUpgrades
       operationId: destroyModelUpgrade
-      parameters:
-      - name: id
-        in: path
-        description: Model Upgrade id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '204':
           description: successful
@@ -3432,14 +3225,6 @@ paths:
       tags:
       - ModelUpgrades
       operationId: modelUpgrade
-      parameters:
-      - name: id
-        in: path
-        description: Model Upgrade id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -3470,14 +3255,6 @@ paths:
       tags:
       - ModelUpgrades
       operationId: updateModelUpgrade
-      parameters:
-      - name: id
-        in: path
-        description: Model Upgrade id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -3670,19 +3447,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Model
       tags:
       - Models
       operationId: destroyModel
-      parameters:
-      - name: id
-        in: path
-        description: Model id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -3713,14 +3490,6 @@ paths:
       tags:
       - Models
       operationId: model
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: Model id
-        required: true
       responses:
         '200':
           description: successful
@@ -3751,14 +3520,6 @@ paths:
       tags:
       - Models
       operationId: updateModel
-      parameters:
-      - name: id
-        in: path
-        description: Model id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -3848,19 +3609,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{id}/reload-one-matrix":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
     put:
       summary: Reload Single Model Matrix
       tags:
       - Models
       operationId: reloadOneModelMatrix
-      parameters:
-      - name: id
-        in: path
-        description: Model id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -3892,19 +3653,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{id}/reload-one-scdata":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
     put:
       summary: Reload Single Model SC Data
       tags:
       - Models
       operationId: reloadOneModelScData
-      parameters:
-      - name: id
-        in: path
-        description: Model id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -3936,19 +3697,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{id}/reload-one":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
     put:
       summary: Reload Single Model
       tags:
       - Models
       operationId: reloadOneModel
-      parameters:
-      - name: id
-        in: path
-        description: Model id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4010,19 +3771,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/models/{id}/use-rsi-image":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
     put:
       summary: Use RSI Image
       tags:
       - Models
       operationId: useRsiImage
-      parameters:
-      - name: id
-        in: path
-        description: Model id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4112,19 +3873,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/oauth-applications/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: OAuth Application id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy OAuth Application
       tags:
       - OauthApplications
       operationId: destroyOauthApplication
-      parameters:
-      - name: id
-        in: path
-        description: OAuth Application id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4155,14 +3916,6 @@ paths:
       tags:
       - OauthApplications
       operationId: oauthApplication
-      parameters:
-      - name: id
-        in: path
-        description: OAuth Application id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4193,14 +3946,6 @@ paths:
       tags:
       - OauthApplications
       operationId: updateOauthApplication
-      parameters:
-      - name: id
-        in: path
-        description: OAuth Application id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -4272,19 +4017,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/rsi-request-logs/{id}/resolve":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: RSI Request Log id
+      required: true
     put:
       summary: Resolve RSI Request Log
       tags:
       - RsiRequestLogs
       operationId: resolveRsiRequestLog
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: RSI Request Log id
-        required: true
       responses:
         '200':
           description: successful
@@ -4447,19 +4192,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/users/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy User
       tags:
       - Users
       operationId: destroyUser
-      parameters:
-      - name: id
-        in: path
-        description: User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4496,14 +4241,6 @@ paths:
       tags:
       - Users
       operationId: user
-      parameters:
-      - name: id
-        in: path
-        description: User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4534,14 +4271,6 @@ paths:
       tags:
       - Users
       operationId: updateUser
-      parameters:
-      - name: id
-        in: path
-        description: User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -4621,19 +4350,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/users/{id}/login-as":
+    parameters:
+    - name: id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
     get:
       summary: Login as User
       tags:
       - Users
       operationId: loginAsUser
-      parameters:
-      - name: id
-        in: path
-        description: User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '204':
           description: no content
@@ -4656,19 +4385,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/users/{id}/resend-confirmation":
+    parameters:
+    - name: id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
     post:
       summary: Resend Confirmation
       tags:
       - Users
       operationId: resendUserConfirmation
-      parameters:
-      - name: id
-        in: path
-        description: User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '204':
           description: no content
@@ -4691,19 +4420,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/users/{id}/send-password-reset":
+    parameters:
+    - name: id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
     post:
       summary: Send Password Reset
       tags:
       - Users
       operationId: sendUserPasswordReset
-      parameters:
-      - name: id
-        in: path
-        description: User id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '204':
           description: no content
@@ -4726,19 +4455,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/vehicles/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Vehicle id
+      schema:
+        type: string
+        format: uuid
+      required: true
     delete:
       summary: Destroy Vehicle
       tags:
       - Vehicles
       operationId: destroyVehicle
-      parameters:
-      - name: id
-        in: path
-        description: Vehicle id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4769,14 +4498,6 @@ paths:
       tags:
       - Vehicles
       operationId: vehicle
-      parameters:
-      - name: id
-        in: path
-        description: Vehicle id
-        schema:
-          type: string
-          format: uuid
-        required: true
       responses:
         '200':
           description: successful
@@ -4807,14 +4528,6 @@ paths:
       tags:
       - Vehicles
       operationId: updateVehicle
-      parameters:
-      - name: id
-        in: path
-        description: Vehicle id
-        schema:
-          type: string
-          format: uuid
-        required: true
       requestBody:
         required: true
         content:
@@ -4966,19 +4679,19 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
   "/videos/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
     delete:
       summary: Video destroy
       tags:
       - Videos
       operationId: destroyVideo
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '204':
           description: successful
@@ -5005,14 +4718,6 @@ paths:
       tags:
       - Videos
       operationId: video
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       responses:
         '200':
           description: successful
@@ -5043,14 +4748,6 @@ paths:
       tags:
       - Videos
       operationId: updateVideo
-      parameters:
-      - name: id
-        in: path
-        schema:
-          type: string
-          format: uuid
-        description: id
-        required: true
       requestBody:
         required: true
         content:
