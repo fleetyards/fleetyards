@@ -5,11 +5,8 @@
     margin-right: 0;
   }
 
-  .oauth-icon {
-    width: 1em;
-    height: 1em;
-    vertical-align: middle;
-    border-radius: 50%;
+  .fa-brands {
+    font-size: 32px;
   }
 
   .oauth-icon--citizenid {
@@ -18,5 +15,4 @@
     vertical-align: middle;
     border-radius: 50%;
   }
-
 }
