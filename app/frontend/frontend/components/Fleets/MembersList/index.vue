@@ -97,10 +97,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
         <Avatar :avatar="record.avatar?.smallUrl" size="small" />
         <div class="member-username-inner">
           {{ record.username }}
-          <div
-            v-if="mobile && record.rsiHandle"
-            class="rsi-handle-inline"
-          >
+          <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
             (<RsiProfileLink
               :handle="record.rsiHandle"
               :citizenid-profile-url="record.citizenidProfileUrl"

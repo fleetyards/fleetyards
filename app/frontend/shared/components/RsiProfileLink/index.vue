@@ -21,8 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 
 const rsiProfileUrl = computed(
-  () =>
-    `https://robertsspaceindustries.com/citizens/${props.handle}`,
+  () => `https://robertsspaceindustries.com/citizens/${props.handle}`,
 );
 </script>
 
@@ -45,6 +44,7 @@ const rsiProfileUrl = computed(
     <a
       v-if="citizenidProfileUrl"
       v-tooltip="t('labels.user.rsiHandleVerified')"
+      :aria-label="t('labels.user.rsiHandleVerified')"
       :href="citizenidProfileUrl"
       target="_blank"
       rel="noopener"

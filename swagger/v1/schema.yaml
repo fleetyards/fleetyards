@@ -10,7 +10,7 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 servers:
-- url: http://localhost:8738/api/v1
+- url: http://api.fleetyards.test/v1
   description: Dev Server
 - url: https://api.fleetyards.net/v1
   description: Production Server

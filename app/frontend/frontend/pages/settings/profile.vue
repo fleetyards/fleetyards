@@ -190,6 +190,7 @@ const onSubmit = handleSubmit(async (values) => {
           <template v-if="rsiHandleVerified" #suffix>
             <a
               :href="sessionStore.currentUser?.citizenidProfileUrl"
+              :aria-label="t('labels.user.rsiHandleVerified')"
               target="_blank"
               rel="noopener"
             >
