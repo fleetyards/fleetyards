@@ -44,7 +44,16 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   private def handle_connect(kind)
-    if current_user.omniauth_connections.exists?(provider: auth.provider, uid: auth.uid)
+    existing_connection = current_user.omniauth_connections.find_by(provider: auth.provider, uid: auth.uid)
+    if existing_connection.present?
+      existing_connection.update!(auth_payload: auth.to_h)
+
+      if auth.provider == "citizenid"
+        extract_citizenid_claims(current_user)
+        current_user.save!
+        verify_fleet_memberships(current_user)
+      end
+
       redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.already_connected", kind: kind), allow_other_host: true
       return
     end
@@ -123,6 +132,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
             provider: auth.provider,
             auth_payload: auth.to_h
           )
+        else
+          connection.update!(auth_payload: auth.to_h)
         end
 
         verify_fleet_memberships(user) if auth.provider == "citizenid"
