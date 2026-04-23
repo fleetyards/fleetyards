@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_21_211439) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_23_120001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -275,6 +275,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_211439) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "used_invite_token"
     t.uuid "user_id"
+    t.boolean "verified", default: false, null: false
     t.index ["fleet_role_id"], name: "index_fleet_memberships_on_fleet_role_id"
     t.index ["user_id", "fleet_id"], name: "index_fleet_memberships_on_user_id_and_fleet_id", unique: true
   end
@@ -891,6 +892,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_21_211439) do
     t.datetime "reset_password_sent_at", precision: nil
     t.string "reset_password_token", limit: 255
     t.string "rsi_handle"
+    t.boolean "rsi_handle_verified", default: false, null: false
     t.boolean "sale_notify", default: false
     t.integer "sign_in_count", default: 0, null: false
     t.boolean "tester", default: false

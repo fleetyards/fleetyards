@@ -18,6 +18,9 @@ import { useForm } from "vee-validate";
 import { useComlink } from "@/shared/composables/useComlink";
 import { type UserUpdateInput } from "@/services/fyApi";
 import { useUpdateProfile as useUpdateProfileMutation } from "@/services/fyApi";
+import OauthBtn from "@/shared/components/OauthBtn/index.vue";
+import { OauthBtnProvidersEnum } from "@/shared/components/OauthBtn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
 
@@ -52,6 +55,14 @@ const [twitch, twitchProps] = defineField("twitch");
 const [guilded, guildedProps] = defineField("guilded");
 
 const submitting = ref(false);
+
+const rsiHandleVerified = computed(
+  () => sessionStore.currentUser?.rsiHandleVerified ?? false,
+);
+
+const citizenIdConnected = computed(() =>
+  sessionStore.currentUser?.authConnections?.includes("citizenid"),
+);
 
 watch(
   () => sessionStore.currentUser,
@@ -174,7 +185,30 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="rsiHandleProps"
           icon="icon icon-rsi icon-label"
           translation-key="user.rsiHandle"
-        />
+          :disabled="rsiHandleVerified"
+        >
+          <template v-if="rsiHandleVerified" #suffix>
+            <a
+              :href="sessionStore.currentUser?.citizenidProfileUrl"
+              target="_blank"
+              rel="noopener"
+            >
+              <i
+                v-tooltip="t('labels.user.rsiHandleVerified')"
+                class="fa-duotone fa-badge-check text-success"
+              />
+            </a>
+          </template>
+        </FormInput>
+        <OauthBtn
+          v-if="!citizenIdConnected"
+          :provider="OauthBtnProvidersEnum.CITIZENID"
+          :size="BtnSizesEnum.SMALL"
+          inline
+          class="rsi-handle-verify-btn"
+        >
+          {{ t("actions.verifyWithCitizenId") }}
+        </OauthBtn>
       </div>
       <div class="col-12 col-md-6">
         <FormInput
@@ -255,3 +289,10 @@ const onSubmit = handleSubmit(async (values) => {
     />
   </form>
 </template>
+
+<style lang="scss" scoped>
+.rsi-handle-verify-btn {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+</style>

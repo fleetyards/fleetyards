@@ -8,6 +8,7 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
+import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { FleetMember } from "@/services/fyApi";
 
@@ -75,13 +76,10 @@ const roleDisplay = computed(() => {
       <template v-if="props.member.rsiHandle">
         <dt>{{ t("labels.user.rsiHandle") }}</dt>
         <dd>
-          <a
-            :href="`https://robertsspaceindustries.com/citizens/${props.member.rsiHandle}`"
-            target="_blank"
-            rel="noopener"
-          >
-            {{ props.member.rsiHandle }}
-          </a>
+          <RsiProfileLink
+            :handle="props.member.rsiHandle"
+            :citizenid-profile-url="props.member.citizenidProfileUrl"
+          />
         </dd>
       </template>
 

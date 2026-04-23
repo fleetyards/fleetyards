@@ -10,6 +10,7 @@ import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";

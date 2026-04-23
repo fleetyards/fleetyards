@@ -45,6 +45,7 @@
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
 #  rsi_handle                :string
+#  rsi_handle_verified       :boolean          default(FALSE), not null
 #  sale_notify               :boolean          default(FALSE)
 #  sign_in_count             :integer          default(0), not null
 #  tester                    :boolean          default(FALSE)

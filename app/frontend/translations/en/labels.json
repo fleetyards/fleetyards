@@ -701,6 +701,7 @@
       },
       "user": {
         "rsiHandle": "Handle",
+        "rsiHandleVerified": "Verified via Citizen iD",
         "location": "Location",
         "currentSystem": "Current Star System",
         "tester": "Tester?",

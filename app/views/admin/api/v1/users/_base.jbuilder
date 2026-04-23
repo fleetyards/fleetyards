@@ -12,6 +12,8 @@ json.avatar do
 end
 
 json.rsi_handle user.rsi_handle if user.rsi_handle.present?
+json.rsi_handle_verified user.rsi_handle_verified
+json.citizenid_profile_url user.citizenid_profile_url if user.rsi_handle_verified?
 
 json.discord user.discord if user.discord.present?
 json.youtube user.youtube if user.youtube.present?

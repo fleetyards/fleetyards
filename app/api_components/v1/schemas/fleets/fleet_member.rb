@@ -26,6 +26,8 @@ module V1
             fleetName: {type: :string},
             fleet: {"$ref": "#/components/schemas/Fleet"},
             primary: {type: :boolean},
+            verified: {type: :boolean},
+            citizenidProfileUrl: {type: :string},
             latitude: {type: :number, format: :double, nullable: true},
             longitude: {type: :number, format: :double, nullable: true},
             currentSystemCode: {type: :string, nullable: true},

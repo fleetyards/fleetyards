@@ -10,7 +10,7 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 servers:
-- url: http://api.fleetyards.test/v1
+- url: http://localhost:8738/api/v1
   description: Dev Server
 - url: https://api.fleetyards.net/v1
   description: Production Server
@@ -7466,6 +7466,10 @@ components:
           "$ref": "#/components/schemas/Fleet"
         primary:
           type: boolean
+        verified:
+          type: boolean
+        citizenidProfileUrl:
+          type: string
         latitude:
           type: number
           format: double
@@ -10168,6 +10172,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
           type: string
+        rsiHandleVerified:
+          type: boolean
+        citizenidProfileUrl:
+          type: string
         discord:
           type: string
         youtube:
@@ -10286,6 +10294,10 @@ components:
         avatar:
           "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
+          type: string
+        rsiHandleVerified:
+          type: boolean
+        citizenidProfileUrl:
           type: string
         discord:
           type: string

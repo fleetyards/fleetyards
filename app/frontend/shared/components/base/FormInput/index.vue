@@ -210,8 +210,8 @@ defineExpose({
     <div
       class="base-input__wrapper"
       :class="{
-        'base-input__wrapper--with-prefix': !!prefix,
-        'base-input__wrapper--with-suffix': !!suffix,
+        'base-input__wrapper--with-prefix': !!prefix || !!slots.prefix,
+        'base-input__wrapper--with-suffix': !!suffix || !!slots.suffix,
       }"
     >
       <slot name="prefix">
@@ -241,11 +241,11 @@ defineExpose({
         @input="onChange"
         @blur="handleBlur"
       />
-      <slot name="suffix">
-        <div v-if="suffix" class="base-input__suffix">
+      <div v-if="suffix || slots.suffix" class="base-input__suffix">
+        <slot name="suffix">
           {{ suffix }}
-        </div>
-      </slot>
+        </slot>
+      </div>
       <div
         v-if="inputValue && clearable"
         class="base-input__clear"

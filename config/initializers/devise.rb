@@ -261,7 +261,7 @@ Devise.setup do |config|
 
   config.omniauth :openid_connect, {
     name: :citizenid,
-    scope: [:openid, :profile, :email, "rsi.profile"],
+    scope: [:openid, :profile, :email, "rsi.profile", "rsi.orgs.primary", "rsi.orgs.public"],
     response_type: :code,
     pkce: true,
     send_scope_to_token_endpoint: false,

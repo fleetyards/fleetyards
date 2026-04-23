@@ -47,6 +47,7 @@
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
 #  rsi_handle                :string
+#  rsi_handle_verified       :boolean          default(FALSE), not null
 #  sale_notify               :boolean          default(FALSE)
 #  sign_in_count             :integer          default(0), not null
 #  tester                    :boolean          default(FALSE)
@@ -241,6 +242,15 @@ class User < ApplicationRecord
     return short_public_hangar_url(username:) if Rails.configuration.app.short_domain.present?
 
     frontend_public_hangar_url(username:)
+  end
+
+  def citizenid_profile_url
+    return unless rsi_handle_verified?
+
+    connection = omniauth_connections.find_by(provider: "citizenid")
+    return if connection.blank?
+
+    "#{Rails.configuration.app.citizenid[:issuer]}profile/#{connection.uid}"
   end
 
   def public_wishlist_url

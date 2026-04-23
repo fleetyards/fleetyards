@@ -105,6 +105,7 @@
         "authorize": "Authorize",
         "deny": "Deny"
       },
+      "verifyWithCitizenId": "Verify with Citizen iD",
       "oauth": {
         "signInWith": "Sign in with",
         "google": "Google",

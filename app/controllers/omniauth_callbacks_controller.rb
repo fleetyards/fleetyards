@@ -57,6 +57,12 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
 
     if connection.save
+      if auth.provider == "citizenid"
+        extract_citizenid_claims(current_user)
+        current_user.save!
+        verify_fleet_memberships(current_user)
+      end
+
       redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.success", kind: kind), allow_other_host: true
     else
       alert = t("devise.omniauth.connect.failure", kind: kind)
@@ -119,6 +125,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
           )
         end
 
+        verify_fleet_memberships(user) if auth.provider == "citizenid"
+
         user.remember_me = true
 
         sign_in(:user, user)
@@ -159,7 +167,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return if raw_info.blank?
 
     rsi_handle = raw_info["urn:user:rsi:username"]
-    user.rsi_handle = rsi_handle if rsi_handle.present? && user.rsi_handle.blank?
+    if rsi_handle.present?
+      user.rsi_handle = rsi_handle
+      user.rsi_handle_verified = true
+    end
 
     return if user.avatar.attached?
 
@@ -173,6 +184,28 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       filename: filename,
       content_type: Marcel::MimeType.for(name: filename)
     )
+  end
+
+  private def verify_fleet_memberships(user)
+    raw_info = auth.extra&.raw_info
+    return if raw_info.blank?
+
+    public_sids = Array(raw_info["urn:user:rsi:orgs:public"]).map(&:upcase)
+
+    # rubocop:disable Rails/SkipsModelValidations
+    user.fleet_memberships.where(verified: true).update_all(verified: false)
+    # rubocop:enable Rails/SkipsModelValidations
+
+    return if public_sids.blank?
+
+    matching_fleets = Fleet.where("UPPER(rsi_sid) IN (?)", public_sids)
+
+    matching_fleets.each do |fleet|
+      membership = user.fleet_memberships.find_by(fleet_id: fleet.id)
+      next if membership.blank?
+
+      membership.update!(verified: true)
+    end
   end
 
   private def sanitize_username(name)

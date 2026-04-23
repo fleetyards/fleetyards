@@ -15,6 +15,8 @@ module Admin
             unconfirmedEmail: {type: :string},
             avatar: {"$ref": "#/components/schemas/MediaFile"},
             rsiHandle: {type: :string},
+            rsiHandleVerified: {type: :boolean},
+            citizenidProfileUrl: {type: :string},
             discord: {type: :string},
             youtube: {type: :string},
             twitch: {type: :string},
