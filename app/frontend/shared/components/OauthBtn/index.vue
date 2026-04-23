@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { OauthBtnProvidersEnum } from "./types";
-import citizenIdIcon from "@/images/icons/citizenid.jpg";
+import citizenIdIconProd from "@/images/icons/citizenid.jpg";
+import citizenIdIconDev from "@/images/icons/citizenid-dev.jpg";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -103,6 +104,10 @@ const providerActive = computed(() => {
 
 const isCitizenId = computed(
   () => props.provider === OauthBtnProvidersEnum.CITIZENID,
+);
+
+const citizenIdIcon = computed(() =>
+  window.NODE_ENV === "production" ? citizenIdIconProd : citizenIdIconDev,
 );
 </script>
 
