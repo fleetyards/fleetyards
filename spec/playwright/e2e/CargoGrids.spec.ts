@@ -84,15 +84,15 @@ test.describe("Cargo Grids", () => {
   });
 
   test("Resets filters", async ({ page }) => {
+    // Select a ship first (reset button only visible with a ship selected)
+    await page.goto("/tools/cargo-grids/?ship=drak-caterpillar");
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+
     // Set some container counts
     await page.locator('input[name="container-8"]').fill("3");
 
     // Click reset
-    const resetBtn = page
-      .getByTestId("filters-actions")
-      .getByText("Reset")
-      .first();
-    await resetBtn.click();
+    await page.getByTestId("reset-filters").click();
 
     // Confirm the reset dialog
     await page.getByTestId("confirm-dialog").waitFor({ state: "visible" });

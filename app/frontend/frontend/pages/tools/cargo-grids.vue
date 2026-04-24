@@ -344,6 +344,7 @@ const resetFilters = () => {
             <Btn
               v-if="selectedSlugs.length > 1"
               :size="BtnSizesEnum.SMALL"
+              v-tooltip="t('actions.remove')"
               :data-test="`remove-ship-${idx}`"
               inline
               @click="removeShip(idx)"
@@ -354,14 +355,13 @@ const resetFilters = () => {
           <Btn
             v-if="selectedSlugs.length < MAX_SHIPS"
             :size="BtnSizesEnum.SMALL"
+            v-tooltip="t('labels.cargoGridViewer.addShip')"
             data-test="add-ship"
             inline
             @click="addShip"
           >
             <i class="fa-light fa-plus" />
           </Btn>
-        </div>
-        <div class="filters__actions" data-test="filters-actions">
           <Btn
             v-if="sessionStore.isAuthenticated"
             :size="BtnSizesEnum.SMALL"
@@ -371,8 +371,15 @@ const resetFilters = () => {
           >
             {{ t("labels.cargoGridViewer.myHangar") }}
           </Btn>
-          <Btn :size="BtnSizesEnum.SMALL" inline @click="resetFilters">
-            {{ t("actions.reset") }}
+          <Btn
+            v-if="activeSlugs.length > 0"
+            :size="BtnSizesEnum.SMALL"
+            v-tooltip="t('actions.reset')"
+            data-test="reset-filters"
+            inline
+            @click="resetFilters"
+          >
+            <i class="fa-light fa-undo" />
           </Btn>
         </div>
         <div class="container-fields">
