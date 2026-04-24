@@ -1,16 +1,12 @@
 .cargo-grids-page {
   display: flex;
   flex-direction: column;
-  height: calc(100dvh - var(--header-height, 60px));
+  min-height: calc(100dvh - var(--header-height, 60px));
 
   &__viewer {
     flex: 1;
-    min-height: 0;
-    overflow: auto;
-
-    > .col-12 {
-      height: 100%;
-    }
+    height: auto;
+    min-height: 100%;
 
     .cargo-grid-viewer {
       min-height: 100%;
@@ -58,6 +54,9 @@
   gap: 1rem;
   justify-content: flex-end;
   flex-wrap: wrap;
+  top: 0;
+  right: 1rem;
+  position: absolute;
 }
 
 .ship-info {
@@ -80,5 +79,11 @@
 
   &:hover &__name {
     opacity: 0.8;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .ship-infos {
+    display: none;
   }
 }

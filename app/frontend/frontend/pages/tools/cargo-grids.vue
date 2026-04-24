@@ -38,6 +38,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 import { useCargoGridShip } from "@/frontend/composables/useCargoGridShip";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
 
@@ -46,6 +47,8 @@ const router = useRouter();
 
 const sessionStore = useSessionStore();
 const { displayConfirm } = useAppNotifications();
+
+const mobile = useMobile();
 
 const hangarOnly = ref(false);
 
@@ -404,7 +407,7 @@ const resetFilters = () => {
             </div>
           </div>
         </div>
-        <div v-if="selectedSlugs.length" class="col-12 col-lg-4">
+        <div v-if="selectedSlugs.length && !mobile" class="col-12 col-lg-4">
           <div class="ship-infos">
             <router-link
               v-for="(slug, idx) in selectedSlugs"
