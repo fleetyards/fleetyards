@@ -2,8 +2,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 90vh;
-  min-height: 500px;
 
   &__stats {
     display: flex;
@@ -45,7 +43,8 @@
 
   &__canvas {
     position: relative;
-    flex: 1;
+    height: 90vh;
+    min-height: 500px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
   }
@@ -57,7 +56,7 @@
     z-index: 10;
   }
 
-  &--compact {
+  &--compact &__canvas {
     height: 45vh;
     min-height: 300px;
   }
