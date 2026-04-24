@@ -114,12 +114,12 @@ test.describe("Cargo Grids", () => {
     await expect(filterBtn).toBeVisible();
   });
 
-  test("Shows Add Ship button", async ({ page }) => {
-    await expect(page.getByText("Add Ship")).toBeVisible();
+  test("Shows add ship button", async ({ page }) => {
+    await expect(page.getByTestId("add-ship")).toBeVisible();
   });
 
   test("Adds a second ship selector", async ({ page }) => {
-    await page.getByText("Add Ship").click();
+    await page.getByTestId("add-ship").click();
 
     // Should now have two filter groups
     await expect(
@@ -154,7 +154,7 @@ test.describe("Cargo Grids", () => {
 
   test("Removes a ship from comparison", async ({ page }) => {
     // Add second ship
-    await page.getByText("Add Ship").click();
+    await page.getByTestId("add-ship").click();
     await expect(
       page.getByTestId("filter-group-cargo-grid-model-1"),
     ).toBeVisible();

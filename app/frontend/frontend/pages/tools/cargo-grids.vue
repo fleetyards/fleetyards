@@ -354,10 +354,11 @@ const resetFilters = () => {
           <Btn
             v-if="selectedSlugs.length < MAX_SHIPS"
             :size="BtnSizesEnum.SMALL"
+            data-test="add-ship"
             inline
             @click="addShip"
           >
-            {{ t("labels.cargoGridViewer.addShip") }}
+            <i class="fa-light fa-plus" />
           </Btn>
         </div>
         <div class="filters__actions" data-test="filters-actions">
