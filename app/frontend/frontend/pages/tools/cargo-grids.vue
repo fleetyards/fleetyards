@@ -106,6 +106,12 @@ const applyInitialModules = () => {
 };
 applyInitialModules();
 
+const hasModules = computed(() =>
+  selectedSlugs.value.some(
+    (_, idx) => shipSlots[idx].modulesWithCargo.value.length > 0,
+  ),
+);
+
 // Build ships array for the unified viewer
 const ships = computed(() => {
   const result: ShipEntry[] = [];
@@ -324,39 +330,6 @@ const resetFilters = () => {
               inline
               @update:model-value="handleShipSelect"
             />
-            <template v-for="(slug, idx) in selectedSlugs" :key="slug">
-              <template v-if="shipSlots[idx].modulesWithCargo.value.length">
-                <span
-                  class="ship-entry__name"
-                  :style="{
-                    color: SHIP_COLORS[idx % SHIP_COLORS.length],
-                  }"
-                >
-                  {{ shipSlots[idx].model.value?.name }}
-                </span>
-                <Btn
-                  v-for="mod in shipSlots[idx].modulesWithCargo.value"
-                  :key="mod.id"
-                  :size="BtnSizesEnum.SMALL"
-                  :active="
-                    shipSlots[idx].selectedModuleSlugs.value.has(mod.slug)
-                  "
-                  inline
-                  @click="handleToggleModule(idx, mod.slug)"
-                >
-                  {{ mod.name }}
-                </Btn>
-              </template>
-            </template>
-            <Btn
-              v-if="sessionStore.isAuthenticated"
-              :size="BtnSizesEnum.SMALL"
-              :active="hangarOnly"
-              inline
-              @click="toggleHangarOnly"
-            >
-              {{ t("labels.cargoGridViewer.myHangar") }}
-            </Btn>
             <Btn
               v-if="selectedSlugs.length > 0"
               v-tooltip="t('actions.reset')"
@@ -366,6 +339,15 @@ const resetFilters = () => {
               @click="resetFilters"
             >
               <i class="fa-light fa-undo" />
+            </Btn>
+            <Btn
+              v-if="sessionStore.isAuthenticated"
+              :size="BtnSizesEnum.SMALL"
+              :active="hangarOnly"
+              inline
+              @click="toggleHangarOnly"
+            >
+              {{ t("labels.cargoGridViewer.myHangar") }}
             </Btn>
           </div>
 
@@ -406,6 +388,33 @@ const resetFilters = () => {
               </Btn>
             </div>
           </div>
+
+          <div v-if="hasModules" class="ship-modules">
+            <template v-for="(slug, idx) in selectedSlugs" :key="slug">
+              <template v-if="shipSlots[idx].modulesWithCargo.value.length">
+                <span
+                  class="ship-entry__name"
+                  :style="{
+                    color: SHIP_COLORS[idx % SHIP_COLORS.length],
+                  }"
+                >
+                  {{ shipSlots[idx].model.value?.name }}
+                </span>
+                <Btn
+                  v-for="mod in shipSlots[idx].modulesWithCargo.value"
+                  :key="mod.id"
+                  :size="BtnSizesEnum.SMALL"
+                  :active="
+                    shipSlots[idx].selectedModuleSlugs.value.has(mod.slug)
+                  "
+                  inline
+                  @click="handleToggleModule(idx, mod.slug)"
+                >
+                  {{ mod.name }}
+                </Btn>
+              </template>
+            </template>
+          </div>
         </div>
         <div v-if="selectedSlugs.length && !mobile" class="col-12 col-lg-4">
           <div class="ship-infos">
@@ -443,7 +452,7 @@ const resetFilters = () => {
         <div class="col-12">
           <CargoGridViewer
             :cargo-holds="singleShipCargoHolds"
-            :ships="ships.length > 1 ? ships : []"
+            :ships="ships"
             :container-requests="requestedContainers"
             @auto-fill="handleFillGreedy"
             @remove-ship="removeShip"

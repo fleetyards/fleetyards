@@ -1168,91 +1168,6 @@ const onDragEnd = (_shipIndex: number) => {
     :class="{ 'cargo-grid-viewer--compact': compact }"
     data-test="cargo-grid-viewer"
   >
-    <div
-      v-if="!isMultiShipMode"
-      class="cargo-grid-viewer__stats"
-      data-test="cargo-grid-viewer-stats"
-    >
-      <template v-if="isPreviewMode">
-        <div class="cargo-grid-viewer__stat">
-          <span class="cargo-grid-viewer__stat-label">{{
-            t("labels.cargoGridViewer.totalCargo")
-          }}</span>
-          <span class="cargo-grid-viewer__stat-value"
-            >{{ previewTotalSCU }} SCU</span
-          >
-        </div>
-        <div
-          v-for="req in containerRequests"
-          :key="`preview-stat-${req.size}`"
-          class="cargo-grid-viewer__stat"
-        >
-          <span
-            class="cargo-grid-viewer__stat-color"
-            :style="{ backgroundColor: CONTAINER_COLORS[req.size] }"
-          />
-          <span class="cargo-grid-viewer__stat-label">{{ req.size }} SCU</span>
-          <span class="cargo-grid-viewer__stat-value"
-            >&times;{{ req.quantity }}</span
-          >
-        </div>
-      </template>
-      <template v-else>
-        <div class="cargo-grid-viewer__stat">
-          <span class="cargo-grid-viewer__stat-label">{{
-            t("labels.cargoGridViewer.capacity")
-          }}</span>
-          <span class="cargo-grid-viewer__stat-value">{{ totalSCU }} SCU</span>
-        </div>
-        <div class="cargo-grid-viewer__stat">
-          <span class="cargo-grid-viewer__stat-label">{{
-            t("labels.cargoGridViewer.maxContainerSize")
-          }}</span>
-          <span class="cargo-grid-viewer__stat-value"
-            >{{ maxContainerSize }} SCU</span
-          >
-        </div>
-        <div class="cargo-grid-viewer__stat">
-          <span class="cargo-grid-viewer__stat-label">{{
-            t("labels.cargoGridViewer.packed")
-          }}</span>
-          <span class="cargo-grid-viewer__stat-value">{{ packedSCU }} SCU</span>
-        </div>
-        <div
-          v-for="(count, size) in containerCounts"
-          :key="size"
-          class="cargo-grid-viewer__stat"
-        >
-          <span
-            class="cargo-grid-viewer__stat-color"
-            :style="{ backgroundColor: CONTAINER_COLORS[Number(size)] }"
-          />
-          <span class="cargo-grid-viewer__stat-label">{{ size }} SCU</span>
-          <span class="cargo-grid-viewer__stat-value">&times;{{ count }}</span>
-        </div>
-        <template v-if="hasNotPlaced">
-          <div class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning">
-            <span class="cargo-grid-viewer__stat-label">{{
-              t("labels.cargoGridViewer.didNotFit")
-            }}</span>
-            <span class="cargo-grid-viewer__stat-value"
-              >{{ notPlacedSCU }} SCU</span
-            >
-          </div>
-          <div
-            v-for="(count, size) in notPlacedCounts"
-            :key="`np-${size}`"
-            class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning"
-          >
-            <span class="cargo-grid-viewer__stat-label">{{ size }} SCU</span>
-            <span class="cargo-grid-viewer__stat-value"
-              >&times;{{ count }}</span
-            >
-          </div>
-        </template>
-      </template>
-    </div>
-
     <div class="cargo-grid-viewer__canvas">
       <Btn
         class="cargo-grid-viewer__reset"
@@ -1445,6 +1360,145 @@ const onDragEnd = (_shipIndex: number) => {
           </TresGroup>
         </template>
       </TresCanvas>
+    </div>
+
+    <!-- Single-ship stats -->
+    <div
+      v-if="!isMultiShipMode && (cargoHolds.length || isPreviewMode)"
+      class="cargo-grid-viewer__multi-stats"
+      data-test="cargo-grid-viewer-stats"
+    >
+      <div class="cargo-grid-viewer__ship-stats">
+        <div v-if="isPreviewMode" class="cargo-grid-viewer__stats">
+          <div class="cargo-grid-viewer__stat">
+            <span class="cargo-grid-viewer__stat-label">{{
+              t("labels.cargoGridViewer.totalCargo")
+            }}</span>
+            <span class="cargo-grid-viewer__stat-value"
+              >{{ previewTotalSCU }} SCU</span
+            >
+          </div>
+          <div
+            v-for="req in containerRequests"
+            :key="`preview-stat-${req.size}`"
+            class="cargo-grid-viewer__stat"
+          >
+            <span
+              class="cargo-grid-viewer__stat-color"
+              :style="{ backgroundColor: CONTAINER_COLORS[req.size] }"
+            />
+            <span class="cargo-grid-viewer__stat-label"
+              >{{ req.size }} SCU</span
+            >
+            <span class="cargo-grid-viewer__stat-value"
+              >&times;{{ req.quantity }}</span
+            >
+          </div>
+        </div>
+        <template v-else>
+          <div
+            v-if="ships.length === 1"
+            class="cargo-grid-viewer__ship-stats-header"
+          >
+            <span
+              class="cargo-grid-viewer__stat-color"
+              :style="{ backgroundColor: ships[0].color }"
+            />
+            <router-link
+              v-if="ships[0].route"
+              :to="ships[0].route"
+              class="cargo-grid-viewer__ship-stats-name"
+            >
+              {{ ships[0].name }}
+            </router-link>
+            <span v-else class="cargo-grid-viewer__ship-stats-name">
+              {{ ships[0].name }}
+            </span>
+            <Btn
+              :size="BtnSizesEnum.SMALL"
+              inline
+              @click="emit('autoFill', 0)"
+            >
+              {{ t("labels.cargoGridViewer.autoFillShip") }}
+            </Btn>
+            <Btn
+              v-tooltip="t('actions.remove')"
+              :size="BtnSizesEnum.SMALL"
+              data-test="remove-ship-0"
+              inline
+              @click="emit('removeShip', 0)"
+            >
+              <i class="fa-light fa-times" />
+            </Btn>
+          </div>
+          <div class="cargo-grid-viewer__stats">
+            <div class="cargo-grid-viewer__stat">
+              <span class="cargo-grid-viewer__stat-label">{{
+                t("labels.cargoGridViewer.capacity")
+              }}</span>
+              <span class="cargo-grid-viewer__stat-value"
+                >{{ totalSCU }} SCU</span
+              >
+            </div>
+            <div class="cargo-grid-viewer__stat">
+              <span class="cargo-grid-viewer__stat-label">{{
+                t("labels.cargoGridViewer.maxContainerSize")
+              }}</span>
+              <span class="cargo-grid-viewer__stat-value"
+                >{{ maxContainerSize }} SCU</span
+              >
+            </div>
+            <div class="cargo-grid-viewer__stat">
+              <span class="cargo-grid-viewer__stat-label">{{
+                t("labels.cargoGridViewer.packed")
+              }}</span>
+              <span class="cargo-grid-viewer__stat-value"
+                >{{ packedSCU }} SCU</span
+              >
+            </div>
+            <div
+              v-for="(count, size) in containerCounts"
+              :key="size"
+              class="cargo-grid-viewer__stat"
+            >
+              <span
+                class="cargo-grid-viewer__stat-color"
+                :style="{ backgroundColor: CONTAINER_COLORS[Number(size)] }"
+              />
+              <span class="cargo-grid-viewer__stat-label"
+                >{{ size }} SCU</span
+              >
+              <span class="cargo-grid-viewer__stat-value"
+                >&times;{{ count }}</span
+              >
+            </div>
+            <template v-if="hasNotPlaced">
+              <div
+                class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning"
+              >
+                <span class="cargo-grid-viewer__stat-label">{{
+                  t("labels.cargoGridViewer.didNotFit")
+                }}</span>
+                <span class="cargo-grid-viewer__stat-value"
+                  >{{ notPlacedSCU }} SCU</span
+                >
+              </div>
+              <div
+                v-for="(count, size) in notPlacedCounts"
+                :key="`np-${size}`"
+                class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning"
+              >
+                <span class="cargo-grid-viewer__stat-label"
+                  >{{ size }} SCU</span
+                >
+                <span class="cargo-grid-viewer__stat-value"
+                  >&times;{{ count }}</span
+                >
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
     </div>
 
     <!-- Multi-ship per-ship stats -->

@@ -21,13 +21,24 @@
 
 .toolbar {
   align-items: flex-start;
+  position: relative;
+}
+
+.ship-modules {
+  position: absolute;
+  top: 100%;
+  left: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
 }
 
 .ship-selector-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  align-items: flex-end;
+  align-items: center;
   margin-bottom: 0.5rem;
 }
 
@@ -40,6 +51,7 @@
     font-weight: 600;
   }
 }
+
 
 .ship-infos {
   display: flex;
