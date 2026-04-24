@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.16.0](https://github.com/fleetyards/fleetyards/compare/v6.15.0...v6.16.0) (2026-04-24)
+
+
+### Features
+
+* **tools:** improve cargo grids UI layout ([b473d46](https://github.com/fleetyards/fleetyards/commit/b473d46506c2ddffb04798290ffaa47e3a0d7010))
+
 ## [6.15.0](https://github.com/fleetyards/fleetyards/compare/v6.14.0...v6.15.0) (2026-04-24)
 
 
