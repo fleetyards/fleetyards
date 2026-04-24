@@ -63,6 +63,15 @@ export const routes: RouteRecordRaw[] = [
     children: oauthApplicationRoutes,
   },
   {
+    path: "connections/",
+    name: "settings-connections",
+    component: () => import("@/frontend/pages/settings/connections.vue"),
+    meta: {
+      title: "settings.connections",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "security/",
     component: () => import("@/frontend/pages/settings/security.vue"),
     meta: {

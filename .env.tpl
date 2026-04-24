@@ -11,3 +11,4 @@ TWITCH__OAUTH_CLIENT_ID=op://Fleetyards/TWITCH_OAUTH/client_id
 TWITCH__OAUTH_SECRET=op://Fleetyards/TWITCH_OAUTH/credential
 GOOGLE__OAUTH_CLIENT_ID=op://Fleetyards/GOOGLE_OAUTH/client_id
 GOOGLE__OAUTH_SECRET=op://Fleetyards/GOOGLE_OAUTH/credential
+CITIZENID__OAUTH_CLIENT_ID=op://Fleetyards/CITIZENID_OAUTH/client_id

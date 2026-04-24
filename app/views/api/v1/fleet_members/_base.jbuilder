@@ -38,6 +38,8 @@ json.last_active_at member.user.last_active_at&.utc&.iso8601
 json.fleet_slug member.fleet.slug
 json.fleet_name member.fleet.name
 json.primary member.primary
+json.verified member.verified
+json.citizenid_profile_url member.user.citizenid_profile_url if member.verified?
 json.latitude member.user.latitude&.to_f
 json.longitude member.user.longitude&.to_f
 json.current_system_code member.user.current_system_code

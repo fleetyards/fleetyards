@@ -7466,6 +7466,10 @@ components:
           "$ref": "#/components/schemas/Fleet"
         primary:
           type: boolean
+        verified:
+          type: boolean
+        citizenidProfileUrl:
+          type: string
         latitude:
           type: number
           format: double
@@ -10168,6 +10172,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
           type: string
+        rsiHandleVerified:
+          type: boolean
+        citizenidProfileUrl:
+          type: string
         discord:
           type: string
         youtube:
@@ -10221,6 +10229,8 @@ components:
           type: boolean
         oauthOnly:
           type: boolean
+        placeholderEmail:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -10242,6 +10252,7 @@ components:
       - authConnections
       - passwordSetManually
       - oauthOnly
+      - placeholderEmail
       - createdAt
       - updatedAt
       title: User
@@ -10283,6 +10294,10 @@ components:
         avatar:
           "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
+          type: string
+        rsiHandleVerified:
+          type: boolean
+        citizenidProfileUrl:
           type: string
         discord:
           type: string

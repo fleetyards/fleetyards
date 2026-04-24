@@ -72,6 +72,7 @@
         "notifications": "通知",
         "hangar": "机库",
         "features": "功能",
+        "connections": "连接",
         "oauthApplications": "OAuth 应用",
         "verify": "RSI 账户验证"
       },

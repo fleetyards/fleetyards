@@ -377,6 +377,10 @@
       "confirmAccess": {
         "failure": "无法确认访问。请检查密码并重试。"
       },
+      "setEmail": {
+        "success": "确认邮件已发送到您的新邮箱地址，请检查收件箱。",
+        "failure": "无法更新电子邮件地址，请重试。"
+      },
       "confirmAccessEmail": {
         "sent": "确认码已发送到您的电子邮件。",
         "failure": "无法发送确认邮件。请重试。"

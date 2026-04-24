@@ -8,6 +8,7 @@ export default {
 import { useField } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 
 type Props = {
@@ -80,35 +81,33 @@ const onChange = () => {
       :key="`alternative-name-${index}`"
       class="col-12"
     >
-      <div class="form-group">
-        <div class="input-group-flex">
-          <FormInput
-            v-model="innerValue[index]"
-            :name="`vehicle-alternativeNames-${index}`"
-            translation-key="name"
-            :no-label="true"
-            @input="onChange"
-          />
-          <Btn
-            v-tooltip="t('actions.hangar.useName')"
-            data-test="vehicle-switch-name"
-            :inline="true"
-            variant="link"
-            @click="useName(index)"
-          >
-            <i class="fa-duotone fa-repeat" />
-          </Btn>
-          <Btn
-            v-tooltip="t('actions.remove')"
-            data-test="vehicle-add-name"
-            :inline="true"
-            variant="link"
-            @click="removeName(index)"
-          >
-            <i class="fa-light fa-times" />
-          </Btn>
-        </div>
-      </div>
+      <FormInputGroup>
+        <FormInput
+          v-model="innerValue[index]"
+          :name="`vehicle-alternativeNames-${index}`"
+          translation-key="name"
+          :no-label="true"
+          @input="onChange"
+        />
+        <Btn
+          v-tooltip="t('actions.hangar.useName')"
+          data-test="vehicle-switch-name"
+          inline
+          size="small"
+          @click="useName(index)"
+        >
+          <i class="fa-duotone fa-repeat" />
+        </Btn>
+        <Btn
+          v-tooltip="t('actions.remove')"
+          data-test="vehicle-add-name"
+          inline
+          size="small"
+          @click="removeName(index)"
+        >
+          <i class="fa-light fa-times" />
+        </Btn>
+      </FormInputGroup>
     </div>
   </div>
 </template>

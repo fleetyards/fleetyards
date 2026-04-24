@@ -68,6 +68,7 @@
         "account": "Cuenta",
         "hangar": "Configuración del hangar",
         "features": "Indicadores de características",
+        "connections": "Conexiones",
         "oauthApplications": "Aplicaciones OAuth",
         "notifications": "Configuración de notificaciones",
         "security": "Seguridad de la cuenta",

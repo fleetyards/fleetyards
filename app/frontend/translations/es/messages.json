@@ -378,6 +378,10 @@
       "confirmAccess": {
         "failure": "No se pudo confirmar el acceso. Verifique su contraseña e intente nuevamente."
       },
+      "setEmail": {
+        "success": "Se ha enviado un correo de confirmación a tu nueva dirección. Por favor, revisa tu bandeja de entrada.",
+        "failure": "No se pudo actualizar la dirección de correo. Por favor, inténtalo de nuevo."
+      },
       "confirmAccessEmail": {
         "sent": "Se ha enviado un código de confirmación a su correo electrónico.",
         "failure": "No se pudo enviar el correo de confirmación. Inténtelo de nuevo."

@@ -105,24 +105,28 @@
         "deny": "Refuser"
       },
       "oauth": {
+        "signInWith": "Se connecter avec",
         "google": "Google",
         "discord": "Discord",
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
+        "citizenid": "Citizen iD",
         "connected": {
           "google": "Connecté à Google",
           "discord": "Connecté à Discord",
           "bluesky": "Connecté à BlueSky",
           "github": "Connecté à GitHub",
-          "twitch": "Connecté à Twitch"
+          "twitch": "Connecté à Twitch",
+          "citizenid": "Connecté à Citizen iD"
         },
         "disconnect": {
           "google": "Déconnecter Google",
           "discord": "Déconnecter Discord",
           "bluesky": "Déconnecter BlueSky",
           "github": "Déconnecter GitHub",
-          "twitch": "Déconnecter Twitch"
+          "twitch": "Déconnecter Twitch",
+          "citizenid": "Déconnecter Citizen iD"
         }
       },
       "compare": {

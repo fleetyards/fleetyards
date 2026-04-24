@@ -259,6 +259,20 @@ Devise.setup do |config|
     }
   end
 
+  config.omniauth :openid_connect, {
+    name: :citizenid,
+    scope: [:openid, :profile, :email, "rsi.profile", "rsi.orgs.primary", "rsi.orgs.public"],
+    response_type: :code,
+    pkce: true,
+    send_scope_to_token_endpoint: false,
+    issuer: Rails.configuration.app.citizenid[:issuer],
+    discovery: true,
+    client_options: {
+      redirect_uri: "#{FRONTEND_ENDPOINT}/users/auth/citizenid/callback",
+      identifier: Rails.configuration.app.citizenid[:oauth_client_id]
+    }
+  }
+
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

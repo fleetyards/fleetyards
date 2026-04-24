@@ -15,7 +15,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       )
     end
 
-    redirect_to frontend_sign_up_url, alert: alert, allow_other_host: true
+    url = current_user.present? ? frontend_connections_settings_url : frontend_sign_up_url
+    redirect_to url, alert: alert, allow_other_host: true
   end
 
   def google
@@ -38,27 +39,46 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     handle_auth(t("devise.omniauth.provider.bluesky"))
   end
 
+  def citizenid
+    handle_auth(t("devise.omniauth.provider.citizenid"))
+  end
+
   private def handle_connect(kind)
-    if current_user.omniauth_connections.exists?(provider: auth.provider, uid: auth.uid)
-      redirect_to frontend_security_settings_url, notice: t("devise.omniauth.connect.already_connected", kind: kind), allow_other_host: true
+    existing_connection = current_user.omniauth_connections.find_by(provider: auth.provider.to_s, uid: auth.uid)
+    if existing_connection.present?
+      existing_connection.update!(auth_payload: auth.to_h)
+
+      if citizenid_provider?
+        extract_citizenid_claims(current_user)
+        current_user.save!
+        verify_fleet_memberships(current_user)
+      end
+
+      redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.already_connected", kind: kind), allow_other_host: true
       return
     end
 
     connection = current_user.omniauth_connections.find_or_initialize_by(
       uid: auth.uid,
-      provider: auth.provider
+      provider: auth.provider.to_s
     ) do |connection|
       connection.auth_payload = auth.to_h
     end
 
     if connection.save
-      redirect_to frontend_security_settings_url, notice: t("devise.omniauth.connect.success", kind: kind), allow_other_host: true
+      if citizenid_provider?
+        extract_citizenid_claims(current_user)
+        current_user.save!
+        verify_fleet_memberships(current_user)
+      end
+
+      redirect_to frontend_connections_settings_url, notice: t("devise.omniauth.connect.success", kind: kind), allow_other_host: true
     else
       alert = t("devise.omniauth.connect.failure", kind: kind)
       if Rails.env.development?
         alert = t("devise.omniauth.connect.failure_with_reason", kind: kind)
       end
-      redirect_to frontend_security_settings_url, alert: alert, allow_other_host: true
+      redirect_to frontend_connections_settings_url, alert: alert, allow_other_host: true
     end
   end
 
@@ -66,18 +86,19 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if current_user.present?
       handle_connect(kind)
     else
-      connection = OmniauthConnection.find_by(uid: auth.uid, provider: auth.provider)
+      connection = OmniauthConnection.find_by(uid: auth.uid, provider: auth.provider.to_s)
 
       user = if connection.present?
         User.find_by(id: connection.user_id)
-      elsif auth.info.email.present?
+      elsif auth.info.email.present? && email_verified_by_provider?
         User.find_by(normalized_email: auth.info.email.downcase)
       end
 
       if user.nil?
         password = Devise.friendly_token[0, 60]
+        email = auth.info.email.presence || "#{auth.uid}@users.noreply.fleetyards.net"
         user = User.new(
-          email: auth.info.email,
+          email: email,
           username: sanitize_username(auth.info.nickname || auth.info.name),
           password: password,
           password_confirmation: password
@@ -94,16 +115,28 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         )
       end
 
-      user.skip_reconfirmation!
+      extract_citizenid_claims(user) if citizenid_provider?
+
+      if user.new_record?
+        if auth.info.email.blank? || email_verified_by_provider?
+          user.skip_confirmation!
+        end
+      else
+        user.skip_reconfirmation!
+      end
 
       if user.save
         if connection.blank?
           user.omniauth_connections.create!(
             uid: auth.uid,
-            provider: auth.provider,
+            provider: auth.provider.to_s,
             auth_payload: auth.to_h
           )
+        else
+          connection.update!(auth_payload: auth.to_h)
         end
+
+        verify_fleet_memberships(user) if citizenid_provider?
 
         user.remember_me = true
 
@@ -121,6 +154,73 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private def auth
     request.env["omniauth.auth"]
+  end
+
+  private def citizenid_provider?
+    auth.provider.to_s == "citizenid"
+  end
+
+  private def email_verified_by_provider?
+    case auth.provider.to_s
+    when "google", "citizenid", "twitch"
+      auth.info.email_verified == true
+    when "discord"
+      auth.extra&.raw_info&.[]("verified") == true
+    when "github"
+      emails = auth.extra&.[]("all_emails")
+      return false if emails.blank?
+
+      primary_email = emails.find { |e| e["primary"] }
+      primary_email&.[]("verified") == true
+    else
+      false
+    end
+  end
+
+  private def extract_citizenid_claims(user)
+    raw_info = auth.extra&.raw_info
+    return if raw_info.blank?
+
+    rsi_handle = raw_info["urn:user:rsi:username"]
+    if rsi_handle.present?
+      user.rsi_handle = rsi_handle
+      user.rsi_handle_verified = true
+    end
+
+    return if user.avatar.attached?
+
+    rsi_avatar_url = raw_info["urn:user:rsi:avatar:url"]
+    return if rsi_avatar_url.blank?
+
+    avatar_uri = URI.parse(rsi_avatar_url)
+    filename = "avatar#{File.extname(avatar_uri.path)}"
+    user.avatar.attach(
+      io: avatar_uri.open,
+      filename: filename,
+      content_type: Marcel::MimeType.for(name: filename)
+    )
+  end
+
+  private def verify_fleet_memberships(user)
+    raw_info = auth.extra&.raw_info
+    return if raw_info.blank?
+
+    public_sids = Array(raw_info["urn:user:rsi:orgs:public"]).reject(&:blank?).map(&:upcase)
+
+    # rubocop:disable Rails/SkipsModelValidations
+    user.fleet_memberships.where(verified: true).update_all(verified: false)
+    # rubocop:enable Rails/SkipsModelValidations
+
+    return if public_sids.blank?
+
+    matching_fleets = Fleet.where("UPPER(rsi_sid) IN (?)", public_sids)
+
+    matching_fleets.each do |fleet|
+      membership = user.fleet_memberships.find_by(fleet_id: fleet.id)
+      next if membership.blank?
+
+      membership.update!(verified: true)
+    end
   end
 
   private def sanitize_username(name)

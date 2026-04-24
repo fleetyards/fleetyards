@@ -47,6 +47,7 @@
 #  reset_password_sent_at    :datetime
 #  reset_password_token      :string(255)
 #  rsi_handle                :string
+#  rsi_handle_verified       :boolean          default(FALSE), not null
 #  sale_notify               :boolean          default(FALSE)
 #  sign_in_count             :integer          default(0), not null
 #  tester                    :boolean          default(FALSE)
@@ -81,7 +82,7 @@ class User < ApplicationRecord
 
   devise :two_factor_authenticatable, :two_factor_backupable, :recoverable, :trackable,
     :validatable, :confirmable, :rememberable, :timeoutable, :omniauthable,
-    omniauth_providers: [:discord, :twitch, :google, :github, :bluesky],
+    omniauth_providers: [:discord, :twitch, :google, :github, :bluesky, :citizenid],
     authentication_keys: [:login], otp_secret_encryption_key: Rails.application.credentials.devise_otp_secret!,
     otp_backup_code_length: 10, otp_number_of_backup_codes: 10
 
@@ -243,6 +244,15 @@ class User < ApplicationRecord
     frontend_public_hangar_url(username:)
   end
 
+  def citizenid_profile_url
+    return unless rsi_handle_verified?
+
+    connection = omniauth_connections.find_by(provider: "citizenid")
+    return if connection.blank?
+
+    "#{Rails.configuration.app.citizenid[:issuer]}profile/#{connection.uid}"
+  end
+
   def public_wishlist_url
     return short_public_wishlist_url(username:) if Rails.configuration.app.short_domain.present?
 
@@ -265,6 +275,10 @@ class User < ApplicationRecord
 
   def oauth_only?
     !password_set_manually && omniauth_connections.any?
+  end
+
+  def placeholder_email?
+    email.ends_with?("@users.noreply.fleetyards.net")
   end
 
   def reset_password(new_password, new_password_confirmation)

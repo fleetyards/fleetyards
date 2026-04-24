@@ -117,7 +117,8 @@
         "wishlist": {
           "info": "You can add Ships to your Wishlist by clicking on the bookmark icon in the top right corner of a Ship."
         }
-      }
+      },
+      "setEmail": "要設定密碼、啟用雙重認證或接收郵件通知，您需要為帳戶添加電子郵件地址。您將收到一封確認郵件來驗證該地址。"
     }
   }
 }

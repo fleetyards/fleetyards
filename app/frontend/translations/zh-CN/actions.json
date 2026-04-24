@@ -105,24 +105,28 @@
         "deny": "拒绝"
       },
       "oauth": {
+        "signInWith": "通过以下方式登录",
         "google": "Google",
         "discord": "Discord",
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
+        "citizenid": "Citizen iD",
         "connected": {
           "google": "已连接到 Google",
           "discord": "已连接到 Discord",
           "bluesky": "已连接到 BlueSky",
           "github": "已连接到 GitHub",
-          "twitch": "已连接到 Twitch"
+          "twitch": "已连接到 Twitch",
+          "citizenid": "已连接到 Citizen iD"
         },
         "disconnect": {
           "google": "断开 Google 连接",
           "discord": "断开 Discord 连接",
           "bluesky": "断开 BlueSky 连接",
           "github": "断开 GitHub 连接",
-          "twitch": "断开 Twitch 连接"
+          "twitch": "断开 Twitch 连接",
+          "citizenid": "断开 Citizen iD 连接"
         }
       },
       "compare": {

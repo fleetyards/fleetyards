@@ -11,7 +11,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import ChangePasswordForm from "@/frontend/components/Security/ChangePasswordForm/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
-import SocialLogins from "@/shared/components/SocialLogins/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -32,8 +31,6 @@ const generateBackupCodes = () => {
     },
   });
 };
-
-const socialLogins = ref<InstanceType<typeof SocialLogins> | undefined>();
 </script>
 
 <template>
@@ -51,10 +48,6 @@ const socialLogins = ref<InstanceType<typeof SocialLogins> | undefined>();
           <ChangePasswordForm />
         </div>
       </div>
-
-      <hr v-if="socialLogins?.activeProviders.length" />
-
-      <SocialLogins :block="false" ref="socialLogins" disconnectable />
 
       <hr />
 

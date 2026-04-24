@@ -68,6 +68,7 @@
         "account": "帳戶",
         "hangar": "機庫設定",
         "features": "功能標誌",
+        "connections": "連線",
         "oauthApplications": "OAuth 應用程式",
         "notifications": "通知設定",
         "security": "帳戶安全",

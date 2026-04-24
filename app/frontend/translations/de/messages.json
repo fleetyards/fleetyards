@@ -378,6 +378,10 @@
       "confirmAccess": {
         "failure": "Zugriff konnte nicht bestätigt werden. Bitte überprüfen Sie Ihr Passwort und versuchen Sie es erneut."
       },
+      "setEmail": {
+        "success": "Eine Bestätigungs-E-Mail wurde an deine neue E-Mail-Adresse gesendet. Bitte überprüfe deinen Posteingang.",
+        "failure": "E-Mail-Adresse konnte nicht aktualisiert werden. Bitte versuche es erneut."
+      },
       "confirmAccessEmail": {
         "sent": "Ein Bestätigungscode wurde an Ihre E-Mail gesendet.",
         "failure": "Bestätigungs-E-Mail konnte nicht gesendet werden. Bitte versuchen Sie es erneut."

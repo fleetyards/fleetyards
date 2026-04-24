@@ -189,7 +189,7 @@ const onSubmit = handleSubmit(async (values) => {
 
         <hr />
 
-        <SocialLogins only-icons />
+        <SocialLogins only-icons :primary-providers="['citizenid']" />
 
         <hr />
 

@@ -14,6 +14,8 @@ module V1
           unconfirmedEmail: {type: :string},
           avatar: {"$ref": "#/components/schemas/MediaFile"},
           rsiHandle: {type: :string},
+          rsiHandleVerified: {type: :boolean},
+          citizenidProfileUrl: {type: :string},
           discord: {type: :string},
           youtube: {type: :string},
           twitch: {type: :string},
@@ -38,13 +40,14 @@ module V1
           authConnections: {type: :array, items: {type: :string}},
           passwordSetManually: {type: :boolean},
           oauthOnly: {type: :boolean},
+          placeholderEmail: {type: :boolean},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },
         additionalProperties: false,
         required: %w[
           username email saleNotify publicHangar publicHangarLoaners publicHangarStats publicWishlist hideOwner
-          twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly createdAt updatedAt
+          twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })
     end

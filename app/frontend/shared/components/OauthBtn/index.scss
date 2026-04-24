@@ -1,7 +1,19 @@
 .oauth-btn {
   min-width: 70px;
 
-  &.inline {
+  &.inline,
+  &.panel-btn-block {
     margin-right: 0;
+  }
+
+  .fa-brands {
+    font-size: 24px;
+  }
+
+  .oauth-icon--citizenid {
+    width: 32px !important;
+    height: 32px;
+    vertical-align: middle;
+    border-radius: 50%;
   }
 }

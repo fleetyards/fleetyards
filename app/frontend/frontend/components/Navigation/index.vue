@@ -5,11 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type LocationQueryRaw } from "vue-router";
+import { type LocationQueryRaw, useRouter } from "vue-router";
 import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+
 import FleetNav from "./FleetNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
@@ -83,8 +84,11 @@ const filterFor = (routeName: string) => {
   } as unknown as LocationQueryRaw;
 };
 
-const logout = async () => {
-  await sessionStore.logout();
+const router = useRouter();
+
+const logout = () => {
+  void sessionStore.logout();
+  void router.replace({ name: "login" });
 };
 
 const settingsActive = computed(() => {
@@ -99,6 +103,7 @@ const settingsActive = computed(() => {
     "settings-two-factor-disable",
     "settings-two-factor-backup-codes",
     "settings-change-password",
+    "settings-connections",
     "settings-oauth-applications",
     "settings-oauth-application",
     "settings-oauth-application-create",

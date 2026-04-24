@@ -378,6 +378,10 @@
       "confirmAccess": {
         "failure": "Access could not be confirmed. Please check your password and try again."
       },
+      "setEmail": {
+        "success": "A confirmation email has been sent to your new email address. Please check your inbox.",
+        "failure": "Could not update your email address. Please try again."
+      },
       "confirmAccessEmail": {
         "sent": "A confirmation code has been sent to your email.",
         "failure": "Could not send confirmation email. Please try again."

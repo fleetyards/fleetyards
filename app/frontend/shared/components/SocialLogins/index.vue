@@ -17,12 +17,14 @@ type Props = {
   block?: boolean;
   onlyIcons?: boolean;
   disconnectable?: boolean;
+  primaryProviders?: `${OauthBtnProvidersEnum}`[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   block: true,
   onlyIcons: false,
   disconnectable: false,
+  primaryProviders: () => [],
 });
 
 const { t } = useI18n();
@@ -45,13 +47,18 @@ const connections = computed(() => {
 const activeProviders = computed(() => {
   const providers = Object.values(OauthBtnProvidersEnum).filter(providerActive);
 
-  if (!props.disconnectable) return providers;
-
   return providers.sort((a, b) => {
-    const aConnected = connections.value.includes(a);
-    const bConnected = connections.value.includes(b);
-    if (aConnected === bConnected) return 0;
-    return aConnected ? -1 : 1;
+    const aPrimary = props.primaryProviders.includes(a);
+    const bPrimary = props.primaryProviders.includes(b);
+    if (aPrimary !== bPrimary) return aPrimary ? -1 : 1;
+
+    if (props.disconnectable) {
+      const aConnected = connections.value.includes(a);
+      const bConnected = connections.value.includes(b);
+      if (aConnected !== bConnected) return aConnected ? -1 : 1;
+    }
+
+    return 0;
   });
 });
 
@@ -97,11 +104,12 @@ defineExpose({
       v-for="provider in activeProviders"
       :key="provider"
       :provider="provider"
+      :block="primaryProviders.includes(provider)"
+      :inline="!primaryProviders.includes(provider)"
       :connected="connections.includes(provider)"
       :disconnectable="disconnectable && connections.includes(provider)"
       :disconnecting="disconnectingProvider === provider"
       :only-icon="onlyIcons"
-      inline
       @disconnect="handleDisconnect"
     />
   </div>

@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { OauthBtnProvidersEnum } from "./types";
+import citizenIdIconProd from "@/images/icons/citizenid.jpg";
+import citizenIdIconDev from "@/images/icons/citizenid-dev.jpg";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -99,6 +101,14 @@ const { isFeatureEnabled } = useFeatures();
 const providerActive = computed(() => {
   return isFeatureEnabled(`oauth-${props.provider}`);
 });
+
+const isCitizenId = computed(
+  () => props.provider === OauthBtnProvidersEnum.CITIZENID,
+);
+
+const citizenIdIcon = computed(() =>
+  window.NODE_ENV === "production" ? citizenIdIconProd : citizenIdIconDev,
+);
 </script>
 
 <template>
@@ -118,8 +128,21 @@ const providerActive = computed(() => {
       @click="handleClick"
     >
       <slot>
-        <i :class="`fa-brands fa-${provider}`" />
-        <span v-if="!onlyIcon">{{ label }}</span>
+        <template v-if="isCitizenId">
+          <img
+            :src="citizenIdIcon"
+            alt="Citizen iD"
+            class="oauth-icon--citizenid"
+          />
+          <span v-if="onlyIcon">
+            {{ t("actions.oauth.signInWith") }} {{ label }}
+          </span>
+          <span v-else>{{ label }}</span>
+        </template>
+        <template v-else>
+          <i :class="`fa-brands fa-${provider}`" />
+          <span v-if="!onlyIcon">{{ label }}</span>
+        </template>
         <i
           v-if="connected && !disconnectable"
           class="fa-light fa-check text-success"

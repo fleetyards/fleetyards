@@ -18,6 +18,7 @@ import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { HangarGroup, type UserPublic } from "@/services/fyApi";
+import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePagination } from "@/shared/composables/usePagination";
@@ -152,16 +153,12 @@ useSubscription({
       >
         <i class="fa-light fa-globe globe-rotate" />
       </a>
-      <a
+      <RsiProfileLink
         v-if="user.rsiHandle"
-        v-tooltip="t('nav.rsiProfile')"
-        :aria-label="t('nav.rsiProfile')"
-        :href="`https://robertsspaceindustries.com/citizens/${user.rsiHandle}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="icon icon-rsi" />
-      </a>
+        :handle="user.rsiHandle"
+        :citizenid-profile-url="user.citizenidProfileUrl"
+        icon-only
+      />
       <a
         v-if="user.guilded"
         v-tooltip="t('labels.guilded')"

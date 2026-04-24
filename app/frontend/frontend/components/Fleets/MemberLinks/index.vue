@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import type { FleetMember } from "@/services/fyApi";
 
 type Props = {
@@ -38,16 +39,12 @@ const { t } = useI18n();
     >
       <i class="fa-light fa-globe globe-rotate" />
     </a>
-    <a
+    <RsiProfileLink
       v-if="props.member.rsiHandle"
-      v-tooltip="t('nav.rsiProfile')"
-      :aria-label="t('nav.rsiProfile')"
-      :href="`https://robertsspaceindustries.com/citizens/${props.member.rsiHandle}`"
-      target="_blank"
-      rel="noopener"
-    >
-      <i class="icon icon-rsi icon-small" />
-    </a>
+      :handle="props.member.rsiHandle"
+      :citizenid-profile-url="props.member.citizenidProfileUrl"
+      icon-only
+    />
     <a
       v-if="props.member.youtube"
       v-tooltip="t('labels.youtube')"

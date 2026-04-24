@@ -105,24 +105,28 @@
         "deny": "Ablehnen"
       },
       "oauth": {
+        "signInWith": "Anmelden mit",
         "google": "Google",
         "discord": "Discord",
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
+        "citizenid": "Citizen iD",
         "connected": {
           "google": "Mit Google verbunden",
           "discord": "Mit Discord verbunden",
           "bluesky": "Mit BlueSky verbunden",
           "github": "Mit GitHub verbunden",
-          "twitch": "Mit Twitch verbunden"
+          "twitch": "Mit Twitch verbunden",
+          "citizenid": "Mit Citizen iD verbunden"
         },
         "disconnect": {
           "google": "Google trennen",
           "discord": "Discord trennen",
           "bluesky": "BlueSky trennen",
           "github": "GitHub trennen",
-          "twitch": "Twitch trennen"
+          "twitch": "Twitch trennen",
+          "citizenid": "Citizen iD trennen"
         }
       },
       "compare": {

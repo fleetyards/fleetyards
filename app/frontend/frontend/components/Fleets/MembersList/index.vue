@@ -10,6 +10,7 @@ import Empty from "@/shared/components/Empty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
+import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -96,32 +97,22 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
         <Avatar :avatar="record.avatar?.smallUrl" size="small" />
         <div class="member-username-inner">
           {{ record.username }}
-          <div
-            v-if="mobile && record.rsiHandle"
-            v-tooltip="t('nav.rsiProfile')"
-            class="rsi-handle-inline"
-          >
-            (<a
-              :href="`https://robertsspaceindustries.com/citizens/${record.rsiHandle}`"
-              target="_blank"
-              rel="noopener"
-              >{{ record.rsiHandle }}</a
-            >)
+          <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
+            (<RsiProfileLink
+              :handle="record.rsiHandle"
+              :citizenid-profile-url="record.citizenidProfileUrl"
+            />)
           </div>
         </div>
       </div>
     </template>
 
     <template #col-rsiHandle="{ record }">
-      <a
+      <RsiProfileLink
         v-if="record.rsiHandle"
-        v-tooltip="t('nav.rsiProfile')"
-        :href="`https://robertsspaceindustries.com/citizens/${record.rsiHandle}`"
-        target="_blank"
-        rel="noopener"
-      >
-        {{ record.rsiHandle }}
-      </a>
+        :handle="record.rsiHandle"
+        :citizenid-profile-url="record.citizenidProfileUrl"
+      />
     </template>
 
     <template #col-role="{ record }">

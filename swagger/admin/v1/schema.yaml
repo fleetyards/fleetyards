@@ -9566,6 +9566,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         rsiHandle:
           type: string
+        rsiHandleVerified:
+          type: boolean
+        citizenidProfileUrl:
+          type: string
         discord:
           type: string
         youtube:

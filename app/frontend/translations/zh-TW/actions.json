@@ -105,24 +105,28 @@
         "deny": "拒絕"
       },
       "oauth": {
+        "signInWith": "透過以下方式登入",
         "google": "Google",
         "discord": "Discord",
         "bluesky": "BlueSky",
         "github": "GitHub",
         "twitch": "Twitch",
+        "citizenid": "Citizen iD",
         "connected": {
           "google": "已連接到 Google",
           "discord": "已連接到 Discord",
           "bluesky": "已連接到 BlueSky",
           "github": "已連接到 GitHub",
-          "twitch": "已連接到 Twitch"
+          "twitch": "已連接到 Twitch",
+          "citizenid": "已連接到 Citizen iD"
         },
         "disconnect": {
           "google": "中斷 Google 連線",
           "discord": "中斷 Discord 連線",
           "bluesky": "中斷 BlueSky 連線",
           "github": "中斷 GitHub 連線",
-          "twitch": "中斷 Twitch 連線"
+          "twitch": "中斷 Twitch 連線",
+          "citizenid": "中斷 Citizen iD 連線"
         }
       },
       "compare": {

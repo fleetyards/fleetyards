@@ -68,6 +68,7 @@
         "account": "Account",
         "hangar": "Hangar Settings",
         "features": "Feature Flags",
+        "connections": "Connections",
         "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
         "security": "Account Security",

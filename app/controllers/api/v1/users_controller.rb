@@ -124,6 +124,9 @@ module Api
           if permitted.delete(:remove_avatar).present?
             @user.avatar.purge if @user.avatar.attached?
           end
+
+          permitted.delete(:rsi_handle) if @user.rsi_handle_verified?
+
           permitted
         end
       end

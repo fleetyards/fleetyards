@@ -59,6 +59,7 @@ es:
         github: GitHub
         bluesky: Bluesky
         twitch: Twitch
+        citizenid: Citizen iD
       failure: No se pudo autenticar con %{kind}.
       failure_with_reason: No se pudo autenticar con %{kind} porque "%{reason}".
       failure_username_taken: |-
