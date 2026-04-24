@@ -14,7 +14,9 @@
         "cargoGridViewer": "3D货物网格查看器，显示所有飞船的货舱尺寸和集装箱适配情况",
         "scmdb": "浏览星际公民的任务、奖励、声望路径、采矿资源等",
         "regolith": "星际公民采矿工具，提供岩石扫描、精炼计算和采矿头比较",
-        "spviewer": "Ship performance analysis tool with detailed flight characteristics, speed comparisons, and maneuverability data"
+        "spviewer": "Ship performance analysis tool with detailed flight characteristics, speed comparisons, and maneuverability data",
+        "citizenId": "星际公民身份验证和OAuth认证服务，为社区工具提供身份认证",
+        "hauler": "星际公民货运路线规划和利润计算工具"
       },
       "categories": {
         "trading": "贸易与经济",

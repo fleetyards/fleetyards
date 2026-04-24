@@ -14,7 +14,9 @@
         "cargoGridViewer": "3D-Frachtraster-Viewer mit Frachtraumdimensionen und Container-Passungen für alle Schiffe",
         "scmdb": "Durchsuche Missionen, Belohnungen, Reputationspfade, Bergbauressourcen und mehr für Star Citizen",
         "regolith": "Star Citizen Mining-Tool mit Gesteinsscanning, Raffinierungsberechnungen und Abbaukopf-Vergleichen",
-        "spviewer": "Schiffsleistungsanalyse-Tool mit detaillierten Flugeigenschaften, Geschwindigkeitsvergleichen und Manövrierfähigkeitsdaten"
+        "spviewer": "Schiffsleistungsanalyse-Tool mit detaillierten Flugeigenschaften, Geschwindigkeitsvergleichen und Manövrierfähigkeitsdaten",
+        "citizenId": "Star Citizen Identitätsverifizierung und OAuth-Authentifizierungsdienst für Community-Tools",
+        "hauler": "Frachttransport-Routenplaner und Gewinnrechner für Star Citizen Händler"
       },
       "categories": {
         "trading": "Handel & Wirtschaft",

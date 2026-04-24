@@ -25,6 +25,8 @@ import cargoGridViewerImage from "@/images/tools/cargo-grid-viewer.webp";
 import scmdbImage from "@/images/tools/scmdb.webp";
 import regolithImage from "@/images/tools/regolith.webp";
 import spviewerImage from "@/images/tools/spviewer.webp";
+import citizenIdImage from "@/images/tools/citizen-id.webp";
+import haulerImage from "@/images/tools/hauler.webp";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -43,6 +45,8 @@ const toolImages: Record<string, string> = {
   scmdb: scmdbImage,
   regolith: regolithImage,
   spviewer: spviewerImage,
+  citizenId: citizenIdImage,
+  hauler: haulerImage,
 };
 
 type ToolEntry = Tool & { key: string; category?: string };
@@ -125,6 +129,18 @@ const tools: Array<ToolEntry> = [
     url: "https://star-hangar.com/",
     name: "Star Hangar",
     description: t("tools.descriptions.starHangar"),
+  },
+  {
+    key: "citizenId",
+    url: "https://citizenid.space/",
+    name: "CitizenID",
+    description: t("tools.descriptions.citizenId"),
+  },
+  {
+    key: "hauler",
+    url: "https://hauler.thespacecoder.space/",
+    name: "Hauler",
+    description: t("tools.descriptions.hauler"),
   },
 ];
 

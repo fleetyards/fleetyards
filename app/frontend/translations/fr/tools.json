@@ -14,7 +14,9 @@
         "cargoGridViewer": "Visualiseur 3D de grille de cargaison montrant les dimensions de soute et l'ajustement des conteneurs pour tous les vaisseaux",
         "scmdb": "Parcourez les missions, récompenses, chemins de réputation, ressources minières et plus pour Star Citizen",
         "regolith": "Outil minier Star Citizen avec scan de roches, calculs de raffinage et comparaisons de têtes de minage",
-        "spviewer": "Ship performance analysis tool with detailed flight characteristics, speed comparisons, and maneuverability data"
+        "spviewer": "Ship performance analysis tool with detailed flight characteristics, speed comparisons, and maneuverability data",
+        "citizenId": "Service de vérification d'identité et d'authentification OAuth Star Citizen pour les outils communautaires",
+        "hauler": "Planificateur de routes de transport de fret et calculateur de profits pour les commerçants Star Citizen"
       },
       "categories": {
         "trading": "Commerce et Économie",
