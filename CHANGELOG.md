@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.14.0](https://github.com/fleetyards/fleetyards/compare/v6.13.0...v6.14.0) (2026-04-24)
+
+
+### Features
+
+* **tools:** add CitizenID and Hauler to tools page ([3b0700d](https://github.com/fleetyards/fleetyards/commit/3b0700d7835fde2708143d536c419837a514c3ce))
+
+
+### Bug Fixes
+
+* **ui:** replace margin-based spacing with gap on flex containers ([17de6e6](https://github.com/fleetyards/fleetyards/commit/17de6e690588ab943d5439eac2aab937cf6ec39f))
+
 ## [6.13.0](https://github.com/fleetyards/fleetyards/compare/v6.12.0...v6.13.0) (2026-04-24)
 
 
