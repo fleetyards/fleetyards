@@ -11,7 +11,12 @@ module Admin
             type: :object,
             properties: {
               nameCont: {type: :string},
-              fidCont: {type: :string}
+              fidCont: {type: :string},
+              sorts: {anyOf: [{
+                type: :array, items: {"$ref": "#/components/schemas/FleetSortEnum"}
+              }, {
+                "$ref": "#/components/schemas/FleetSortEnum"
+              }]}
             },
             additionalProperties: false,
             example: {}

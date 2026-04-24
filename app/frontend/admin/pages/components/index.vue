@@ -15,6 +15,7 @@ import {
   useComponents,
   getComponentsQueryKey,
   type Component,
+  type ComponentSortEnum,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -24,8 +25,8 @@ import ComponentActions from "@/admin/components/Components/Actions/index.vue";
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): ComponentSortEnum[] => {
+  return route.query.s ? [route.query.s as ComponentSortEnum] : [];
 });
 
 watch(
@@ -49,8 +50,10 @@ const componentsQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
-    s: sorts.value,
+    q: {
+      ...filters.value,
+      sorts: sorts.value,
+    },
   };
 });
 

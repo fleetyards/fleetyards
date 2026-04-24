@@ -17,7 +17,12 @@ module Admin
               nameIn: {type: :array, items: {type: :string}},
               slugEq: {type: :string},
               slugCont: {type: :string},
-              slugIn: {type: :array, items: {type: :string}}
+              slugIn: {type: :array, items: {type: :string}},
+              sorts: {anyOf: [{
+                type: :array, items: {"$ref": "#/components/schemas/ManufacturerSortEnum"}
+              }, {
+                "$ref": "#/components/schemas/ManufacturerSortEnum"
+              }]}
             },
             additionalProperties: false,
             example: {}

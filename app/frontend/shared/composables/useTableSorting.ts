@@ -10,7 +10,7 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
   const route = useRoute();
 
   const currentDirection = computed((): "asc" | "desc" | undefined => {
-    const sorts = (route.query.sorts as string) || "";
+    const sorts = (route.query.s as string) || "";
     const [sortCol, sortDirection] = sorts.split(" ");
 
     if (!sorts && fallback && fallback.includes(String(field))) {
@@ -43,7 +43,7 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
       return {
         query: {
           ...route.query,
-          sorts: undefined,
+          s: undefined,
         },
         hash: id ? `#${id}` : undefined,
       } as RouteLocationRaw;
@@ -52,7 +52,7 @@ export const useTableSorting = ({ field, fallback, id }: Props) => {
     return {
       query: {
         ...route.query,
-        sorts: `${String(field)} ${direction}`,
+        s: `${String(field)} ${direction}`,
       },
       hash: id ? `#${id}` : undefined,
     } as RouteLocationRaw;

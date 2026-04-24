@@ -17,7 +17,12 @@ module Admin
               nameIn: {type: :array, items: {type: :string}},
               itemTypeIn: {type: :array, items: {type: :string}},
               componentClassIn: {type: :array, items: {type: :string}},
-              manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}}
+              manufacturerIdIn: {type: :array, items: {type: :string, format: :uuid}},
+              sorts: {anyOf: [{
+                type: :array, items: {"$ref": "#/components/schemas/ComponentSortEnum"}
+              }, {
+                "$ref": "#/components/schemas/ComponentSortEnum"
+              }]}
             },
             additionalProperties: false,
             example: {}

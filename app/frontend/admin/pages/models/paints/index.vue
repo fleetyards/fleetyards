@@ -23,12 +23,13 @@ import {
   getListModelPaintsQueryKey,
   useListModelPaints as usePaintsQuery,
   type ModelPaint,
+  type ModelPaintSortEnum,
 } from "@/services/fyAdminApi";
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): ModelPaintSortEnum[] => {
+  return route.query.s ? [route.query.s as ModelPaintSortEnum] : [];
 });
 
 watch(
@@ -42,8 +43,10 @@ const paintsQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
-    s: sorts.value,
+    q: {
+      ...filters.value,
+      sorts: sorts.value,
+    },
   };
 });
 

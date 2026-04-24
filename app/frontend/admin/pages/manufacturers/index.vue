@@ -18,6 +18,7 @@ import {
   useManufacturers,
   getManufacturersQueryKey,
   type Manufacturer,
+  type ManufacturerSortEnum,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -26,8 +27,8 @@ import { useManufacturerFilters } from "@/admin/composables/useManufacturerFilte
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): ManufacturerSortEnum[] => {
+  return route.query.s ? [route.query.s as ManufacturerSortEnum] : [];
 });
 
 watch(
@@ -51,8 +52,10 @@ const manufacturersQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
-    s: sorts.value,
+    q: {
+      ...filters.value,
+      sorts: sorts.value,
+    },
   };
 });
 

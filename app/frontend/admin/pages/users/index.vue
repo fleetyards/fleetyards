@@ -20,6 +20,7 @@ import {
   useUsers as useUsersQuery,
   getUsersQueryKey,
   type User,
+  type UserSortEnum,
 } from "@/services/fyAdminApi";
 import { useUserFilters } from "@/admin/composables/useUserFilters";
 
@@ -27,8 +28,8 @@ const { t, lUtc: l, timeDistance } = useI18n();
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): UserSortEnum[] => {
+  return route.query.s ? [route.query.s as UserSortEnum] : [];
 });
 
 watch(
@@ -42,8 +43,10 @@ const usersQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
-    s: sorts.value,
+    q: {
+      ...filters.value,
+      sorts: sorts.value,
+    },
   };
 });
 

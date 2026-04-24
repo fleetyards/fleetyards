@@ -22,13 +22,13 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
-import type { FleetQuery } from "@/services/fyAdminApi";
+import type { FleetQuery, FleetSortEnum } from "@/services/fyAdminApi";
 import FleetActions from "@/admin/components/Fleets/Actions/index.vue";
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): FleetSortEnum[] => {
+  return route.query.s ? [route.query.s as FleetSortEnum] : [];
 });
 
 watch(
@@ -53,8 +53,10 @@ const { filters, isFilterSelected } = useFilters<FleetQuery>({
 const fleetsQueryParams = computed(() => {
   return {
     page: page.value,
-    q: filters.value,
-    s: sorts.value,
+    q: {
+      ...filters.value,
+      sorts: sorts.value,
+    },
   };
 });
 

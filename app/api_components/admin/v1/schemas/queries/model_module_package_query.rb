@@ -13,7 +13,12 @@ module Admin
               idEq: {type: :string, format: :uuid},
               nameCont: {type: :string},
               nameEq: {type: :string},
-              modelIdEq: {type: :string, format: :uuid}
+              modelIdEq: {type: :string, format: :uuid},
+              sorts: {anyOf: [{
+                type: :array, items: {"$ref": "#/components/schemas/ModelModulePackageSortEnum"}
+              }, {
+                "$ref": "#/components/schemas/ModelModulePackageSortEnum"
+              }]}
             },
             additionalProperties: false,
             example: {}

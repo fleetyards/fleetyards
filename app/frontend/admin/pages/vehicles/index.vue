@@ -21,6 +21,7 @@ import {
   type Vehicle,
   useVehicles as useVehiclesQuery,
   getVehiclesQueryKey,
+  type VehicleSortEnum,
 } from "@/services/fyAdminApi";
 import VehicleActions from "@/admin/components/Vehicles/Actions/index.vue";
 
@@ -28,8 +29,8 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): VehicleSortEnum[] => {
+  return route.query.s ? [route.query.s as VehicleSortEnum] : [];
 });
 
 watch(
@@ -47,8 +48,10 @@ const vehiclesQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: getQuery(),
-    s: sorts.value,
+    q: {
+      ...getQuery(),
+      sorts: sorts.value,
+    },
   };
 });
 

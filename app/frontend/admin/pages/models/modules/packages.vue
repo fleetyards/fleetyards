@@ -22,12 +22,13 @@ import {
   getModelsQueryKey,
   useModels as useModelsQuery,
   type Model,
+  type ModelSortEnum,
 } from "@/services/fyAdminApi";
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): ModelSortEnum[] => {
+  return route.query.s ? [route.query.s as ModelSortEnum] : [];
 });
 
 watch(
@@ -41,8 +42,10 @@ const modelsQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: filters.value,
-    s: sorts.value,
+    q: {
+      ...filters.value,
+      sorts: sorts.value,
+    },
   };
 });
 

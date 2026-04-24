@@ -24,6 +24,7 @@ import {
   useModels as useModelsQuery,
   getModelsQueryKey,
   type Model,
+  type ModelSortEnum,
 } from "@/services/fyAdminApi";
 import {
   useModelsStore,
@@ -48,8 +49,8 @@ const { isImporting: isImportingScData } = useImportLoading(
 
 const route = useRoute();
 
-const sorts = computed(() => {
-  return route.query.s ? [route.query.s as string] : [];
+const sorts = computed((): ModelSortEnum[] => {
+  return route.query.s ? [route.query.s as ModelSortEnum] : [];
 });
 
 watch(
@@ -63,8 +64,10 @@ const modelsQueryParams = computed(() => {
   return {
     page: page.value,
     perPage: perPage.value,
-    q: getQuery(),
-    s: sorts.value,
+    q: {
+      ...getQuery(),
+      sorts: sorts.value,
+    },
   };
 });
 

@@ -5846,6 +5846,19 @@ components:
       - spoolUpTime
       - cooldown
       title: ComponentQuantumDriveJump
+    ComponentSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ComponentSortEnum
     ComponentThruster:
       type: object
       properties:
@@ -6301,6 +6314,19 @@ components:
       - ACCEPTED
       - DECLINED
       title: FleetMembershipStatusEnum
+    FleetSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FleetSortEnum
     FleetVehicleSortEnum:
       type: string
       enum:
@@ -6588,6 +6614,19 @@ components:
       - SELL
       - RENTAL
       title: ItemPriceTypeEnum
+    ManufacturerSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ManufacturerSortEnum
     MediaFile:
       type: object
       properties:
@@ -6781,6 +6820,23 @@ components:
       - EMP
       - UTILITY_ITEMS
       title: ModelHardpointTypeEnum
+    ModelModulePackageSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: ModelModulePackageSortEnum
     ModelPaintSortEnum:
       type: string
       enum:
@@ -7060,6 +7116,8 @@ components:
       - email desc
       - createdAt asc
       - createdAt desc
+      - confirmedAt asc
+      - confirmedAt desc
       - lastActiveAt asc
       - lastActiveAt desc
       - lastSignInAt asc
@@ -7071,6 +7129,8 @@ components:
       - EMAIL_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - CONFIRMED_AT_ASC
+      - CONFIRMED_AT_DESC
       - LAST_ACTIVE_AT_ASC
       - LAST_ACTIVE_AT_DESC
       - LAST_SIGN_IN_AT_ASC
