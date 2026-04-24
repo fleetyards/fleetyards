@@ -299,7 +299,7 @@ const resetFilters = () => {
 
     <div class="row toolbar">
       <div class="col-12">
-        <div class="ship-selector-row">
+        <div class="ship-selector-row" data-test="ship-entries">
           <FilterGroup
             ref="modelFilterGroup"
             :key="filterKey"
@@ -316,32 +316,6 @@ const resetFilters = () => {
             inline
             @update:model-value="handleShipSelect"
           />
-          <Btn
-            v-if="sessionStore.isAuthenticated"
-            :size="BtnSizesEnum.SMALL"
-            :active="hangarOnly"
-            inline
-            @click="toggleHangarOnly"
-          >
-            {{ t("labels.cargoGridViewer.myHangar") }}
-          </Btn>
-          <Btn
-            v-if="selectedSlugs.length > 0"
-            v-tooltip="t('actions.reset')"
-            :size="BtnSizesEnum.SMALL"
-            data-test="reset-filters"
-            inline
-            @click="resetFilters"
-          >
-            <i class="fa-light fa-undo" />
-          </Btn>
-        </div>
-
-        <div
-          v-if="selectedSlugs.length"
-          class="ship-entries"
-          data-test="ship-entries"
-        >
           <div
             v-for="(slug, idx) in selectedSlugs"
             :key="slug"
@@ -386,6 +360,25 @@ const resetFilters = () => {
               <i class="fa-light fa-times" />
             </Btn>
           </div>
+          <Btn
+            v-if="sessionStore.isAuthenticated"
+            :size="BtnSizesEnum.SMALL"
+            :active="hangarOnly"
+            inline
+            @click="toggleHangarOnly"
+          >
+            {{ t("labels.cargoGridViewer.myHangar") }}
+          </Btn>
+          <Btn
+            v-if="selectedSlugs.length > 0"
+            v-tooltip="t('actions.reset')"
+            :size="BtnSizesEnum.SMALL"
+            data-test="reset-filters"
+            inline
+            @click="resetFilters"
+          >
+            <i class="fa-light fa-undo" />
+          </Btn>
         </div>
 
         <div class="container-fields">

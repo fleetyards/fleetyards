@@ -23,21 +23,12 @@
   margin-bottom: 0.5rem;
 }
 
-.ship-entries {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
 .ship-entry {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 0.25rem;
-  flex-wrap: wrap;
 
   &__name {
     font-weight: 600;
-    margin-right: 0.25rem;
   }
 }
