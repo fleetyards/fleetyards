@@ -14,6 +14,8 @@ import {
 } from "@/frontend/components/CargoGridViewer/constants";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FilterGroup, {
   type FilterGroupParams,
   type ValueType,
@@ -301,7 +303,7 @@ const resetFilters = () => {
       <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
       <div class="row toolbar">
-        <div class="col-12">
+        <div class="col-12 col-lg-8">
           <div class="ship-selector-row" data-test="ship-entries">
             <FilterGroup
               ref="modelFilterGroup"
@@ -400,6 +402,35 @@ const resetFilters = () => {
                 {{ t("actions.clear") }}
               </Btn>
             </div>
+          </div>
+        </div>
+        <div v-if="selectedSlugs.length" class="col-12 col-lg-4">
+          <div class="ship-infos">
+            <router-link
+              v-for="(slug, idx) in selectedSlugs"
+              :key="slug"
+              :to="shipSlots[idx].shipRoute.value || {}"
+              class="ship-info"
+            >
+              <ViewImage
+                v-if="shipSlots[idx].angledImage.value"
+                :image="shipSlots[idx].angledImage.value"
+                size="medium"
+                :alt="shipSlots[idx].model.value?.name || slug"
+                :variant="LazyImageVariantsEnum.WIDE"
+                transparent
+                without-fallback
+                class="ship-info__image"
+              />
+              <span
+                class="ship-info__name"
+                :style="{
+                  color: SHIP_COLORS[idx % SHIP_COLORS.length],
+                }"
+              >
+                {{ shipSlots[idx].model.value?.name || slug }}
+              </span>
+            </router-link>
           </div>
         </div>
       </div>

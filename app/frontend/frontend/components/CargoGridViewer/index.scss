@@ -76,25 +76,11 @@
   }
 
   &__ship-stats {
-    position: relative;
     flex: 1;
     min-width: 250px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: 0.75rem;
-  }
-
-  &__ship-thumb {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 80px;
-
-    img {
-      width: 100%;
-      height: auto;
-      border-radius: var(--border-radius);
-    }
   }
 
   &__ship-stats-header {
@@ -103,7 +89,6 @@
     gap: 0.5rem;
     margin-bottom: 0.5rem;
     flex-wrap: wrap;
-    padding-right: 90px;
   }
 
   &__ship-stats-name {
