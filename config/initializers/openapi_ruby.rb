@@ -85,6 +85,4 @@ OpenapiRuby.configure do |config|
   config.request_validation = :enabled
   config.response_validation = :disabled
   config.strict_reference_validation = true
-
-  config.auto_validation_error_response = false
 end

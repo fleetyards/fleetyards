@@ -41,6 +41,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Admin Users list
       tags:
@@ -67,6 +69,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/admin_users/{id}":
     parameters:
     - name: id
@@ -106,6 +110,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Admin User Detail
       tags:
@@ -136,6 +142,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Admin User
       tags:
@@ -172,6 +180,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/admin_users/me":
     get:
       summary: My Data
@@ -232,6 +242,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/cargo-holds/{id}":
     parameters:
     - name: id
@@ -277,6 +289,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/components":
     post:
       summary: Create Component
@@ -308,6 +322,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Components list
       tags:
@@ -354,6 +370,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/components/{id}":
     parameters:
     - name: id
@@ -393,6 +411,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Component Detail
       tags:
@@ -423,6 +443,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Component
       tags:
@@ -459,6 +481,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/docks":
     post:
       summary: Create new Dock
@@ -536,6 +560,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/docks/{id}":
     parameters:
     - name: id
@@ -571,6 +597,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Get Dock
       tags:
@@ -601,6 +629,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Dock
       tags:
@@ -637,6 +667,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     post:
       summary: Create Feature
@@ -673,6 +705,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Features list
       tags:
@@ -733,6 +767,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Feature Detail
       tags:
@@ -763,6 +799,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/disable-actor":
     parameters:
     - name: id
@@ -806,6 +844,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/disable-group":
     parameters:
     - name: id
@@ -849,6 +889,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/disable":
     parameters:
     - name: id
@@ -887,6 +929,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/enable-actor":
     parameters:
     - name: id
@@ -930,6 +974,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/enable-group":
     parameters:
     - name: id
@@ -973,6 +1019,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/enable-percentage-of-actors":
     parameters:
     - name: id
@@ -1016,6 +1064,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/enable-percentage-of-time":
     parameters:
     - name: id
@@ -1059,6 +1109,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/enable":
     parameters:
     - name: id
@@ -1097,6 +1149,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/toggle-self-service":
     parameters:
     - name: id
@@ -1135,6 +1189,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets":
     post:
       summary: Create Fleet
@@ -1166,6 +1222,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Fleets list
       tags:
@@ -1199,6 +1257,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{id}":
     parameters:
     - name: id
@@ -1238,6 +1298,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Fleet Detail
       tags:
@@ -1268,6 +1330,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Fleet
       tags:
@@ -1304,6 +1368,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     post:
       summary: Image create
@@ -1334,6 +1400,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Images list
       tags:
@@ -1376,6 +1444,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images/{id}":
     parameters:
     - name: id
@@ -1411,6 +1481,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Image update
       tags:
@@ -1446,6 +1518,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images/bulk":
     put:
       summary: Bulk update images
@@ -1473,6 +1547,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/imports":
     get:
       summary: Imports list
@@ -1510,6 +1586,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/imports/{id}":
     parameters:
     - name: id
@@ -1549,6 +1627,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/item-prices":
     post:
       summary: Create new Item Price
@@ -1627,6 +1707,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/item-prices/{id}":
     parameters:
     - name: id
@@ -1662,6 +1744,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Get Item Price
       tags:
@@ -1692,6 +1776,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Item Price
       tags:
@@ -1765,6 +1851,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Manufacturers list
       tags:
@@ -1811,6 +1899,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers/{id}":
     parameters:
     - name: id
@@ -1850,6 +1940,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Manufacturer Detail
       tags:
@@ -1880,6 +1972,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Manufacturer
       tags:
@@ -1916,6 +2010,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-hardpoint-loadouts":
     post:
       summary: Create Model Hardpoint Loadout
@@ -1993,6 +2089,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-hardpoint-loadouts/{id}":
     parameters:
     - name: id
@@ -2028,6 +2126,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Get Model Hardpoint Loadout
       tags:
@@ -2058,6 +2158,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model Hardpoint Loadout
       tags:
@@ -2094,6 +2196,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-hardpoints":
     post:
       summary: Create Model Hardpoint
@@ -2171,6 +2275,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-hardpoints/{id}":
     parameters:
     - name: id
@@ -2206,6 +2312,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Get Model Hardpoint
       tags:
@@ -2236,6 +2344,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model Hardpoint
       tags:
@@ -2272,6 +2382,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-loaners":
     post:
       summary: Create Model Loaner
@@ -2349,6 +2461,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-loaners/{id}":
     parameters:
     - name: id
@@ -2384,6 +2498,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Get Model Loaner
       tags:
@@ -2414,6 +2530,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model Loaner
       tags:
@@ -2450,6 +2568,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-module-packages":
     post:
       summary: Create Model Module Package
@@ -2481,6 +2601,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Model Module Packages list
       tags:
@@ -2522,6 +2644,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-module-packages/{id}":
     parameters:
     - name: id
@@ -2557,6 +2681,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Model Module Package Detail
       tags:
@@ -2587,6 +2713,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model Module Package
       tags:
@@ -2623,6 +2751,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-modules":
     post:
       summary: Create new Model Module
@@ -2654,6 +2784,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Model Modules list
       tags:
@@ -2694,6 +2826,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-modules/bulk":
     delete:
       summary: Bulk destroy model modules
@@ -2721,6 +2855,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Bulk update model modules
       tags:
@@ -2747,6 +2883,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-modules/{id}":
     parameters:
     - name: id
@@ -2782,6 +2920,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Get Model Module
       tags:
@@ -2812,6 +2952,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model Module
       tags:
@@ -2848,6 +2990,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-modules/{id}/link":
     put:
       summary: Link Model Module to Model
@@ -2892,6 +3036,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-modules/{id}/unlink":
     put:
       summary: Unlink Model Module from Model
@@ -2936,6 +3082,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-paints":
     post:
       summary: Create Model Paint
@@ -2967,6 +3115,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Paints list
       tags:
@@ -3008,6 +3158,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-paints/{id}":
     parameters:
     - name: id
@@ -3047,6 +3199,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Model Paint Detail
       tags:
@@ -3077,6 +3231,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model Paint
       tags:
@@ -3113,6 +3269,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-upgrades":
     post:
       summary: Create Model Upgrade
@@ -3144,6 +3302,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Model Upgrades list
       tags:
@@ -3185,6 +3345,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-upgrades/{id}":
     parameters:
     - name: id
@@ -3220,6 +3382,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Model Upgrade Detail
       tags:
@@ -3250,6 +3414,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model Upgrade
       tags:
@@ -3286,6 +3452,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-upgrades/{id}/link":
     put:
       summary: Link Model Upgrade to Model
@@ -3330,6 +3498,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-upgrades/{id}/unlink":
     put:
       summary: Unlink Model Upgrade from Model
@@ -3374,6 +3544,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models":
     post:
       summary: Create Model
@@ -3405,6 +3577,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Models list
       tags:
@@ -3446,6 +3620,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{id}":
     parameters:
     - name: id
@@ -3485,6 +3661,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Model Detail
       tags:
@@ -3515,6 +3693,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Model
       tags:
@@ -3551,6 +3731,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/production-states":
     get:
       summary: Model Production states
@@ -3652,6 +3834,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{id}/reload-one-scdata":
     parameters:
     - name: id
@@ -3696,6 +3880,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{id}/reload-one":
     parameters:
     - name: id
@@ -3740,6 +3926,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/reload-scdata":
     put:
       summary: Reload Models SC Data
@@ -3809,6 +3997,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/oauth-applications":
     post:
       summary: Create OAuth Application
@@ -3840,6 +4030,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: OAuth Applications list
       tags:
@@ -3872,6 +4064,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/oauth-applications/{id}":
     parameters:
     - name: id
@@ -3911,6 +4105,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: OAuth Application detail
       tags:
@@ -3941,6 +4137,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update OAuth Application
       tags:
@@ -3977,6 +4175,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/rsi-request-logs":
     get:
       summary: RSI Request Logs list
@@ -4016,6 +4216,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/rsi-request-logs/{id}/resolve":
     parameters:
     - name: id
@@ -4049,6 +4251,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/sessions":
     post:
       summary: create session
@@ -4266,6 +4470,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update User
       tags:
@@ -4302,6 +4508,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users":
     get:
       summary: Users list
@@ -4349,6 +4557,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users/{id}/login-as":
     parameters:
     - name: id
@@ -4384,6 +4594,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users/{id}/resend-confirmation":
     parameters:
     - name: id
@@ -4419,6 +4631,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users/{id}/send-password-reset":
     parameters:
     - name: id
@@ -4454,6 +4668,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/{id}":
     parameters:
     - name: id
@@ -4493,6 +4709,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Vehicle Detail
       tags:
@@ -4523,6 +4741,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Vehicle
       tags:
@@ -4559,6 +4779,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles":
     get:
       summary: Vehicles list
@@ -4601,6 +4823,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/videos":
     post:
       summary: Create new Video
@@ -4678,6 +4902,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/videos/{id}":
     parameters:
     - name: id
@@ -4713,6 +4939,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Get Video
       tags:
@@ -4743,6 +4971,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     put:
       summary: Update Video
       tags:
@@ -4779,6 +5009,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
 servers:
 - url: http://admin.fleetyards.test/api/v1
   description: Dev Server
@@ -10120,4 +10352,21 @@ components:
           type: string
       description: Sorting
       required: false
+  responses:
+    SchemaValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              details:
+                type: array
+                items:
+                  type: string
+            required:
+            - error
+            - details
 security: []
