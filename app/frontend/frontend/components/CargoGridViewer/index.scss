@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: calc(100dvh - 100px);
+  min-height: 500px;
 
   &__stats {
     display: flex;
