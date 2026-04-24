@@ -1,15 +1,7 @@
 .cargo-grids-page {
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100dvh - var(--header-height, 60px));
-
   &__viewer {
-    flex: 1;
-    height: auto;
-    min-height: 100%;
-
     .cargo-grid-viewer {
-      min-height: 100%;
+      height: calc(100dvh - 200px);
     }
   }
 }
