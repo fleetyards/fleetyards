@@ -43,7 +43,7 @@
 
   &__canvas {
     position: relative;
-    height: 90vh;
+    flex: 1;
     min-height: 500px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
@@ -57,7 +57,6 @@
   }
 
   &--compact &__canvas {
-    height: 60vh;
     min-height: 400px;
   }
 
