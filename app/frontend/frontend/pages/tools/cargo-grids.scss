@@ -1,3 +1,11 @@
+.cargo-grids-page {
+  &__viewer {
+    .cargo-grid-viewer {
+      height: calc(100dvh - 200px);
+    }
+  }
+}
+
 .container-fields {
   display: flex;
   flex-wrap: wrap;
@@ -11,29 +19,36 @@
   }
 }
 
-.module-toggles {
-  margin-bottom: 1rem;
-
-  &__label {
-    color: color.scale($text-color, $lightness: -20%);
-    margin-right: 0.5rem;
-  }
-}
-
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  &__actions {
-    display: flex;
-    align-items: flex-end;
-    margin-bottom: 1rem;
-  }
-}
-
 .toolbar {
   align-items: flex-start;
+}
+
+.ship-selector-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-end;
+  margin-bottom: 0.5rem;
+}
+
+.ship-entry {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.25rem;
+
+  &__name {
+    font-weight: 600;
+  }
+}
+
+.ship-infos {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  top: 0;
+  right: 1rem;
+  position: absolute;
 }
 
 .ship-info {
@@ -42,20 +57,25 @@
   align-items: flex-end;
   text-decoration: none;
   text-align: right;
-  float: right;
 
   &__image {
-    max-width: 300px;
+    max-width: 200px;
   }
 
   &__name {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: $text-color;
     margin-top: 0.25rem;
+    transition: opacity 0.15s ease;
   }
 
   &:hover &__name {
-    color: $primary;
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: $desktop-breakpoint) {
+  .ship-infos {
+    display: none;
   }
 }

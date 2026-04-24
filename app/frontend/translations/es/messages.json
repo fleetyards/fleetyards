@@ -260,7 +260,8 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "Esta nave no tiene bodegas de carga."
+        "noCargoHolds": "Esta nave no tiene bodegas de carga.",
+        "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
         "vehicle": {

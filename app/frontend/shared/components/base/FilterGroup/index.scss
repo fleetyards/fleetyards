@@ -123,6 +123,10 @@
       color: darken($input-color, 15%);
     }
   }
+
+  &.inline {
+    margin-bottom: 0;
+  }
 }
 
 .has-error .filter-group-title {

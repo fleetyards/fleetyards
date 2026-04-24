@@ -260,7 +260,8 @@
         "webglNotSupported": "3D viewer is not available on this device."
       },
       "cargoGridViewer": {
-        "noCargoHolds": "This ship has no cargo holds."
+        "noCargoHolds": "This ship has no cargo holds.",
+        "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
         "vehicle": {

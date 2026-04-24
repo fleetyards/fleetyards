@@ -1056,7 +1056,10 @@
         "didNotFit": "Ne rentre pas",
         "openInTool": "Ouvrir dans l'outil de grille de cargaison",
         "myHangar": "Afficher uniquement mes vaisseaux",
-        "filterShips": "Filtrer les vaisseaux par taille de conteneur"
+        "filterShips": "Filtrer les vaisseaux par taille de conteneur",
+        "addShip": "Add Ship",
+        "removeShip": "Remove",
+        "autoFillShip": "Auto-fill"
       },
       "admin": {
         "dashboard": {

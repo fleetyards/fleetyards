@@ -15,7 +15,7 @@ import type { Model, CargoHold } from "@/services/fyApi";
 import {
   CONTAINER_DEFS,
   SCU_UNIT,
-} from "@/frontend/components/CargoGridViewer/index.vue";
+} from "@/frontend/components/CargoGridViewer/constants";
 
 type Props = {
   models: Model[];

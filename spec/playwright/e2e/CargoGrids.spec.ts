@@ -56,35 +56,6 @@ test.describe("Cargo Grids", () => {
     await expect(page.getByTestId("cargo-grid-viewer-stats")).toBeVisible();
   });
 
-  test("Auto-fills container counts when selecting a model with cargo holds", async ({
-    page,
-  }) => {
-    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
-    await filterGroup.getByTestId("filter-group-title").click();
-    await filterGroup.locator("input").first().fill("Caterpillar");
-
-    const option = page.getByText("Caterpillar").first();
-    await option.click();
-
-    // Wait for model to load and cargo grid viewer to appear
-    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
-
-    // At least one container input should have a value > 0 after greedy fill
-    await expect(async () => {
-      const containerFields = page.locator("[data-test^='container-field-'] input");
-      const count = await containerFields.count();
-      let hasNonZero = false;
-      for (let i = 0; i < count; i++) {
-        const value = await containerFields.nth(i).inputValue();
-        if (Number(value) > 0) {
-          hasNonZero = true;
-          break;
-        }
-      }
-      expect(hasNonZero).toBe(true);
-    }).toPass();
-  });
-
   test("Clears container counts", async ({ page }) => {
     // Set a container count
     const input = page.locator('input[name="container-8"]');
@@ -113,18 +84,25 @@ test.describe("Cargo Grids", () => {
   });
 
   test("Resets filters", async ({ page }) => {
+    // Select a ship first (reset button only visible with a ship selected)
+    await page.goto("/tools/cargo-grids/?ship=drak-caterpillar");
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+
     // Set some container counts
     await page.locator('input[name="container-8"]').fill("3");
 
     // Click reset
-    const resetBtn = page
-      .getByTestId("filters-actions")
-      .getByText("Reset")
-      .first();
-    await resetBtn.click();
+    await page.getByTestId("reset-filters").click();
+
+    // Confirm the reset dialog
+    await page.getByTestId("confirm-dialog").waitFor({ state: "visible" });
+    await page.getByTestId("confirm-ok").click();
 
     // Container inputs should be cleared
     await expect(page.locator('input[name="container-8"]')).toHaveValue("0");
+
+    // Ship should be removed — viewer gone
+    await expect(page.getByTestId("cargo-grid-viewer")).not.toBeVisible();
   });
 
   test("Shows container preview when containers set but no model selected", async ({
@@ -137,5 +115,78 @@ test.describe("Cargo Grids", () => {
     // Click the filter ships button to apply
     const filterBtn = page.getByText("Filter Ships by Container Size");
     await expect(filterBtn).toBeVisible();
+  });
+
+  test("Adds multiple ships by selecting from the same filter", async ({
+    page,
+  }) => {
+    // Select first ship
+    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
+    await filterGroup.getByTestId("filter-group-title").click();
+    await filterGroup.locator("input").first().fill("Caterpillar");
+    await page.getByText("Caterpillar").first().click();
+
+    // First ship should appear in viewer
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+
+    // Select second ship
+    await filterGroup.getByTestId("filter-group-title").click();
+    await filterGroup.locator("input").first().fill("Freelancer");
+    await page.getByText("Freelancer MAX").first().click();
+
+    // Multi-ship stats should appear
+    await expect(
+      page.getByTestId("cargo-grid-viewer-multi-stats"),
+    ).toBeVisible();
+  });
+
+  test("Loads multiple ships via URL and shows unified viewer with multi-ship stats", async ({
+    page,
+  }) => {
+    await page.goto(
+      "/tools/cargo-grids/?ships=drak-caterpillar,misc-freelancer-max",
+    );
+
+    // Wait for the viewer to render (models load async)
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+
+    // Should show ONE cargo grid viewer (unified)
+    await expect(page.getByTestId("cargo-grid-viewer")).toHaveCount(1);
+
+    // Should show multi-ship stats (not single-ship stats)
+    await expect(
+      page.getByTestId("cargo-grid-viewer-multi-stats"),
+    ).toBeVisible();
+  });
+
+  test("Removes a ship from comparison", async ({ page }) => {
+    // Load two ships via URL
+    await page.goto(
+      "/tools/cargo-grids/?ships=drak-caterpillar,misc-freelancer-max",
+    );
+
+    // Multi-ship stats with remove buttons
+    await expect(
+      page.getByTestId("cargo-grid-viewer-multi-stats"),
+    ).toBeVisible();
+
+    // Remove the second ship
+    await page.getByTestId("remove-ship-1").click();
+
+    // Multi-ship stats should disappear
+    await expect(
+      page.getByTestId("cargo-grid-viewer-multi-stats"),
+    ).not.toBeVisible();
+
+    // Should be back to single-ship view
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+  });
+
+  test("Backward compat: single ship URL still works", async ({ page }) => {
+    await page.goto("/tools/cargo-grids/?ship=drak-caterpillar");
+    await page.waitForLoadState("networkidle");
+
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer-stats")).toBeVisible();
   });
 });

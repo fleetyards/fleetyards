@@ -260,7 +260,8 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "Dieses Schiff hat keine Frachträume."
+        "noCargoHolds": "Dieses Schiff hat keine Frachträume.",
+        "confirmReset": "Möchtest du wirklich alle Schiffe und Container-Einstellungen zurücksetzen?"
       },
       "confirm": {
         "vehicle": {

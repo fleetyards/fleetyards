@@ -1056,7 +1056,10 @@
         "didNotFit": "Passte nicht",
         "openInTool": "Im Frachtraster-Tool öffnen",
         "myHangar": "Nur meine Schiffe anzeigen",
-        "filterShips": "Schiffe nach Containergröße filtern"
+        "filterShips": "Schiffe nach Containergröße filtern",
+        "addShip": "Schiff hinzufügen",
+        "removeShip": "Entfernen",
+        "autoFillShip": "Auto-Fill"
       },
       "admin": {
         "dashboard": {

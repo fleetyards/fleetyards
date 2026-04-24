@@ -5,24 +5,26 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { ComponentExposed } from "vue-component-type-helpers";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import CargoGridViewer, {
-  computeGreedyFill,
-} from "@/frontend/components/CargoGridViewer/index.vue";
+import CargoGridViewer from "@/frontend/components/CargoGridViewer/index.vue";
+import {
+  SHIP_COLORS,
+  type ShipEntry,
+} from "@/frontend/components/CargoGridViewer/constants";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import FilterGroup, {
   type FilterGroupParams,
   type ValueType,
 } from "@/shared/components/base/FilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  useModel as useModelQuery,
-  useModelModules as useModelModulesQuery,
   models as fetchModels,
   ModelProductionStatusEnum,
   type Model,
-  type ModelModule,
   type ModelQuery,
   type Models,
 } from "@/services/fyApi";
@@ -31,11 +33,12 @@ import {
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/index.vue";
+import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/constants";
 import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
-import ViewImage from "@/shared/components/ViewImage/index.vue";
-import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
+import { useCargoGridShip } from "@/frontend/composables/useCargoGridShip";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
 
@@ -43,6 +46,9 @@ const route = useRoute();
 const router = useRouter();
 
 const sessionStore = useSessionStore();
+const { displayConfirm } = useAppNotifications();
+
+const mobile = useMobile();
 
 const hangarOnly = ref(false);
 
@@ -50,10 +56,81 @@ const containerFilterActive = ref(false);
 
 const CONTAINER_SIZES = [1, 2, 4, 8, 16, 24, 32] as const;
 
-const selectedSlug = ref<string | undefined>(
-  (route.query.ship as string) || undefined,
-);
-const selectedModel = ref<Model>();
+const MAX_SHIPS = 4;
+
+const modelFilterGroup = ref<ComponentExposed<typeof FilterGroup>>();
+
+// Parse initial slugs from URL (backward compat: ?ship= or new ?ships=)
+const parseInitialSlugs = (): string[] => {
+  if (route.query.ships) {
+    return (route.query.ships as string).split(",").filter(Boolean);
+  }
+  if (route.query.ship) {
+    return [route.query.ship as string];
+  }
+  return [];
+};
+
+const selectedSlugs = ref<string[]>(parseInitialSlugs());
+
+// Pre-allocate composable slots for each possible ship
+const shipSlots = Array.from({ length: MAX_SHIPS }, (_, i) => {
+  const slug = computed(() => selectedSlugs.value[i]);
+  return useCargoGridShip(slug);
+});
+
+// Parse and apply initial modules from URL
+const applyInitialModules = () => {
+  for (const key of Object.keys(route.query)) {
+    if (key.startsWith("modules.")) {
+      const slug = key.slice("modules.".length);
+      const val = route.query[key] as string;
+      if (val) {
+        const mods = val.split(",").filter(Boolean);
+        const idx = selectedSlugs.value.indexOf(slug);
+        if (idx >= 0) {
+          shipSlots[idx].setModuleSlugs(mods);
+        }
+      }
+    }
+  }
+  // Backward compat: ?modules= applies to single ship
+  if (
+    route.query.modules &&
+    selectedSlugs.value.length === 1 &&
+    selectedSlugs.value[0]
+  ) {
+    const mods = (route.query.modules as string).split(",").filter(Boolean);
+    shipSlots[0].setModuleSlugs(mods);
+  }
+};
+applyInitialModules();
+
+// Build ships array for the unified viewer
+const ships = computed(() => {
+  const result: ShipEntry[] = [];
+  for (let idx = 0; idx < selectedSlugs.value.length; idx++) {
+    const slot = shipSlots[idx];
+    const model = slot.model.value;
+    if (!model) continue;
+    const holds = slot.combinedCargoHolds.value;
+    if (!holds.length) continue;
+    result.push({
+      name: model.name,
+      cargoHolds: holds,
+      color: SHIP_COLORS[idx % SHIP_COLORS.length],
+      image: slot.angledImage.value,
+      route: slot.shipRoute.value,
+    });
+  }
+  return result;
+});
+
+// Single-ship mode: use first slot's cargo holds directly
+const singleShipCargoHolds = computed(() => {
+  if (selectedSlugs.value.length !== 1) return [];
+  return shipSlots[0].combinedCargoHolds.value;
+});
 
 // Container requests: how many of each size the user wants to load
 const containerRequests = ref<Record<number, number>>(
@@ -72,14 +149,6 @@ const requestedContainers = computed<ContainerRequest[]>(() => {
     quantity: Number(containerRequests.value[s]),
   }));
 });
-
-const fillGreedy = () => {
-  if (!combinedCargoHolds.value.length) return;
-  const counts = computeGreedyFill(combinedCargoHolds.value);
-  for (const size of CONTAINER_SIZES) {
-    containerRequests.value[size] = counts[size] || 0;
-  }
-};
 
 const clearContainers = () => {
   containerFilterActive.value = false;
@@ -132,191 +201,153 @@ const formatModels = (response: Models) => {
   }));
 };
 
-const { data: modelData } = useModelQuery(
-  computed(() => selectedSlug.value || ""),
-  {
-    query: {
-      enabled: computed(() => !!selectedSlug.value),
-    },
-  },
-);
-
-const { data: modulesData } = useModelModulesQuery(
-  computed(() => selectedSlug.value || ""),
-  undefined,
-  {
-    query: {
-      enabled: computed(() => !!selectedSlug.value),
-    },
-  },
-);
-
-const availableModules = computed<ModelModule[]>(
-  () => modulesData.value?.items || [],
-);
-
-const modulesWithCargo = computed(() =>
-  availableModules.value.filter((m) => m.cargoHolds?.length),
-);
-
-const initialModuleSlugs = route.query.modules
-  ? (route.query.modules as string).split(",")
-  : [];
-const selectedModuleSlugs = ref<Set<string>>(new Set(initialModuleSlugs));
-
-const syncModulesToUrl = () => {
-  const query = { ...route.query };
-  if (selectedModuleSlugs.value.size > 0) {
-    query.modules = [...selectedModuleSlugs.value].join(",");
-  } else {
-    delete query.modules;
-  }
-  void router.replace({ query });
-};
-
-const toggleModule = (moduleSlug: string) => {
-  const next = new Set(selectedModuleSlugs.value);
-  if (next.has(moduleSlug)) {
-    next.delete(moduleSlug);
-  } else {
-    next.add(moduleSlug);
-  }
-  selectedModuleSlugs.value = next;
-  syncModulesToUrl();
-  fillGreedy();
-};
-
-const combinedCargoHolds = computed(() => {
-  const base = selectedModel.value?.cargoHolds || [];
-  const moduleCargo = availableModules.value
-    .filter((m) => selectedModuleSlugs.value.has(m.slug))
-    .flatMap((m) => m.cargoHolds || []);
-  return [...base, ...moduleCargo];
-});
-
-watch(
-  modelData,
-  (data) => {
-    if (data) {
-      selectedModel.value = data;
-      if (data.cargoHolds?.length && !hasContainerRequests.value) {
-        fillGreedy();
-      }
-    }
-  },
-  { immediate: true },
-);
-
-watch(selectedModel, (model) => {
-  if (model?.cargoHolds?.length && !hasContainerRequests.value) {
-    fillGreedy();
-  }
-});
-
-watch(modulesData, () => {
-  if (selectedModuleSlugs.value.size > 0) {
-    fillGreedy();
-  }
-});
-
 const containerFilterVersion = ref(0);
 
 const filterKey = computed(
   () => `cargo-grid-model-${hangarOnly.value}-${containerFilterVersion.value}`,
 );
 
+const selectDisabled = computed(() => selectedSlugs.value.length >= MAX_SHIPS);
+
+// URL sync
+const syncUrl = () => {
+  const query: Record<string, string> = {};
+  const slugs = selectedSlugs.value;
+
+  if (slugs.length === 1) {
+    query.ship = slugs[0];
+  } else if (slugs.length > 1) {
+    query.ships = slugs.join(",");
+  }
+
+  // Per-ship modules
+  for (let i = 0; i < slugs.length; i++) {
+    const slug = slugs[i];
+    const mods = [...shipSlots[i].selectedModuleSlugs.value];
+    if (mods.length) {
+      query[`modules.${slug}`] = mods.join(",");
+    }
+  }
+
+  void router.replace({ query });
+};
+
+// Ship management
+const handleShipSelect = (value: ValueType<Model> | undefined) => {
+  const slug = value as string;
+  if (!slug) return;
+
+  // Prevent duplicates and enforce max
+  if (
+    selectedSlugs.value.includes(slug) ||
+    selectedSlugs.value.length >= MAX_SHIPS
+  ) {
+    modelFilterGroup.value?.clear();
+    return;
+  }
+
+  selectedSlugs.value = [...selectedSlugs.value, slug];
+  modelFilterGroup.value?.clear();
+  syncUrl();
+};
+
+const removeShip = (index: number) => {
+  const next = [...selectedSlugs.value];
+  next.splice(index, 1);
+  selectedSlugs.value = next;
+  syncUrl();
+};
+
+const handleToggleModule = (slotIndex: number, moduleSlug: string) => {
+  shipSlots[slotIndex].toggleModule(moduleSlug);
+  syncUrl();
+};
+
+const handleFillGreedy = (slotIndex: number) => {
+  const counts = shipSlots[slotIndex].getGreedyFillCounts();
+  for (const size of CONTAINER_SIZES) {
+    containerRequests.value[size] = counts[size] || 0;
+  }
+};
+
 const applyContainerFilter = () => {
   containerFilterActive.value = true;
   containerFilterVersion.value++;
-  selectedSlug.value = undefined;
-  selectedModel.value = undefined;
-  selectedModuleSlugs.value = new Set();
-
-  const query = { ...route.query };
-  delete query.ship;
-  delete query.modules;
-  void router.replace({ query });
+  selectedSlugs.value = [];
+  syncUrl();
 };
 
 const toggleHangarOnly = () => {
   hangarOnly.value = !hangarOnly.value;
-  selectedSlug.value = undefined;
-  selectedModel.value = undefined;
-  selectedModuleSlugs.value = new Set();
-
-  const query = { ...route.query };
-  delete query.ship;
-  delete query.modules;
-  void router.replace({ query });
+  containerFilterVersion.value++;
+  selectedSlugs.value = [];
+  syncUrl();
 };
 
-const resetFilters = () => {
+const doResetFilters = () => {
   hangarOnly.value = false;
   containerFilterActive.value = false;
   clearContainers();
-  selectedSlug.value = undefined;
-  selectedModel.value = undefined;
-  selectedModuleSlugs.value = new Set();
-
-  const query = { ...route.query };
-  delete query.ship;
-  delete query.modules;
-  void router.replace({ query });
+  selectedSlugs.value = [];
+  syncUrl();
 };
 
-const angledImage = computed(() => {
-  if (!selectedModel.value) return undefined;
-  return (
-    selectedModel.value.media.angledViewColored ||
-    selectedModel.value.media.angledView
-  );
-});
-
-const shipRoute = computed(() => {
-  if (!selectedModel.value) return undefined;
-  return { name: "ship", params: { slug: selectedModel.value.slug } };
-});
-
-const onModelSelect = (value: ValueType<Model> | undefined) => {
-  selectedSlug.value = (value as string) || undefined;
-  selectedModuleSlugs.value = new Set();
-  if (!value) {
-    selectedModel.value = undefined;
-  }
-
-  const query = { ...route.query };
-  if (value) {
-    query.ship = value as string;
-  } else {
-    delete query.ship;
-  }
-  delete query.modules;
-  void router.replace({ query });
+const resetFilters = () => {
+  displayConfirm({
+    text: t("messages.cargoGridViewer.confirmReset"),
+    onConfirm: doResetFilters,
+  });
 };
 </script>
 
 <template>
   <FeatureGuard feature="tools_cargo_grids">
-    <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+    <div class="cargo-grids-page">
+      <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
-    <div class="row toolbar">
-      <div class="col-12 col-lg-8">
-        <div class="filters">
-          <FilterGroup
-            :key="filterKey"
-            :model-value="selectedSlug"
-            :label="t('labels.selectModel')"
-            :search-label="t('labels.findModel')"
-            :query-fn="fetchCargoModels"
-            :query-response-formatter="formatModels"
-            name="cargo-grid-model"
-            :paginated="true"
-            :searchable="true"
-            :multiple="false"
-            no-label
-            @update:model-value="onModelSelect"
-          />
-          <div class="filters__actions" data-test="filters-actions">
+      <div class="row toolbar">
+        <div class="col-12 col-lg-8">
+          <div class="ship-selector-row" data-test="ship-entries">
+            <FilterGroup
+              ref="modelFilterGroup"
+              :key="filterKey"
+              :label="t('labels.selectModel')"
+              :search-label="t('labels.findModel')"
+              :query-fn="fetchCargoModels"
+              :query-response-formatter="formatModels"
+              name="cargo-grid-model"
+              :paginated="true"
+              :searchable="true"
+              :multiple="false"
+              :disabled="selectDisabled"
+              no-label
+              inline
+              @update:model-value="handleShipSelect"
+            />
+            <template v-for="(slug, idx) in selectedSlugs" :key="slug">
+              <template v-if="shipSlots[idx].modulesWithCargo.value.length">
+                <span
+                  class="ship-entry__name"
+                  :style="{
+                    color: SHIP_COLORS[idx % SHIP_COLORS.length],
+                  }"
+                >
+                  {{ shipSlots[idx].model.value?.name }}
+                </span>
+                <Btn
+                  v-for="mod in shipSlots[idx].modulesWithCargo.value"
+                  :key="mod.id"
+                  :size="BtnSizesEnum.SMALL"
+                  :active="
+                    shipSlots[idx].selectedModuleSlugs.value.has(mod.slug)
+                  "
+                  inline
+                  @click="handleToggleModule(idx, mod.slug)"
+                >
+                  {{ mod.name }}
+                </Btn>
+              </template>
+            </template>
             <Btn
               v-if="sessionStore.isAuthenticated"
               :size="BtnSizesEnum.SMALL"
@@ -326,110 +357,105 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
             >
               {{ t("labels.cargoGridViewer.myHangar") }}
             </Btn>
-            <Btn :size="BtnSizesEnum.SMALL" inline @click="resetFilters">
-              {{ t("actions.reset") }}
+            <Btn
+              v-if="selectedSlugs.length > 0"
+              v-tooltip="t('actions.reset')"
+              :size="BtnSizesEnum.SMALL"
+              data-test="reset-filters"
+              inline
+              @click="resetFilters"
+            >
+              <i class="fa-light fa-undo" />
             </Btn>
           </div>
-        </div>
-        <div class="container-fields">
-          <div
-            v-for="size in CONTAINER_SIZES"
-            :key="size"
-            style="width: 5rem; flex-shrink: 0"
-            class="container-field"
-            :data-test="`container-field-${size}`"
-          >
-            <FormInput
-              v-model.number="containerRequests[size]"
-              :name="`container-${size}`"
-              :label="`${size} SCU`"
-              :type="InputTypesEnum.NUMBER"
-              :min="0"
-              :step="1"
-              :alignment="InputAlignmentsEnum.RIGHT"
-            />
-          </div>
-          <div class="container-fields__actions">
-            <Btn
-              v-if="hasContainerRequests"
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="applyContainerFilter"
-            >
-              {{ t("labels.cargoGridViewer.filterShips") }}
-            </Btn>
-            <Btn
-              v-if="hasContainerRequests"
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="clearContainers"
-            >
-              {{ t("actions.clear") }}
-            </Btn>
-            <Btn
-              v-if="selectedModel?.cargoHolds?.length"
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="fillGreedy"
-            >
-              {{ t("actions.reset") }}
-            </Btn>
-          </div>
-        </div>
-      </div>
-      <div v-if="selectedModel" class="col-12 col-lg-4">
-        <router-link v-if="shipRoute" :to="shipRoute" class="ship-info">
-          <ViewImage
-            v-if="angledImage"
-            :image="angledImage"
-            size="medium"
-            :alt="selectedModel.name"
-            :variant="LazyImageVariantsEnum.WIDE"
-            transparent
-            without-fallback
-            class="ship-info__image"
-          />
-          <span class="ship-info__name">{{ selectedModel.name }}</span>
-        </router-link>
-      </div>
-    </div>
 
-    <template v-if="selectedModel">
-      <div v-if="modulesWithCargo.length" class="row module-toggles">
-        <div class="col-12">
-          <span class="module-toggles__label">
-            {{ t("labels.model.modules") }}:
-          </span>
-          <Btn
-            v-for="mod in modulesWithCargo"
-            :key="mod.id"
-            :size="BtnSizesEnum.SMALL"
-            :active="selectedModuleSlugs.has(mod.slug)"
-            inline
-            @click="toggleModule(mod.slug)"
-          >
-            {{ mod.name }}
-          </Btn>
+          <div class="container-fields">
+            <div
+              v-for="size in CONTAINER_SIZES"
+              :key="size"
+              style="width: 5rem; flex-shrink: 0"
+              class="container-field"
+              :data-test="`container-field-${size}`"
+            >
+              <FormInput
+                v-model.number="containerRequests[size]"
+                :name="`container-${size}`"
+                :label="`${size} SCU`"
+                :type="InputTypesEnum.NUMBER"
+                :min="0"
+                :step="1"
+                :alignment="InputAlignmentsEnum.RIGHT"
+              />
+            </div>
+            <div class="container-fields__actions">
+              <Btn
+                v-if="hasContainerRequests"
+                :size="BtnSizesEnum.SMALL"
+                inline
+                @click="applyContainerFilter"
+              >
+                {{ t("labels.cargoGridViewer.filterShips") }}
+              </Btn>
+              <Btn
+                v-if="hasContainerRequests"
+                :size="BtnSizesEnum.SMALL"
+                inline
+                @click="clearContainers"
+              >
+                {{ t("actions.clear") }}
+              </Btn>
+            </div>
+          </div>
         </div>
-      </div>
-      <div v-if="combinedCargoHolds.length">
-        <div class="row">
-          <div class="col-12">
-            <CargoGridViewer
-              :cargo-holds="combinedCargoHolds"
-              :container-requests="requestedContainers"
-            />
+        <div v-if="selectedSlugs.length && !mobile" class="col-12 col-lg-4">
+          <div class="ship-infos">
+            <router-link
+              v-for="(slug, idx) in selectedSlugs"
+              :key="slug"
+              :to="shipSlots[idx].shipRoute.value || {}"
+              class="ship-info"
+            >
+              <ViewImage
+                v-if="shipSlots[idx].angledImage.value"
+                :image="shipSlots[idx].angledImage.value"
+                size="medium"
+                :alt="shipSlots[idx].model.value?.name || slug"
+                :variant="LazyImageVariantsEnum.WIDE"
+                transparent
+                without-fallback
+                class="ship-info__image"
+              />
+              <span
+                class="ship-info__name"
+                :style="{
+                  color: SHIP_COLORS[idx % SHIP_COLORS.length],
+                }"
+              >
+                {{ shipSlots[idx].model.value?.name || slug }}
+              </span>
+            </router-link>
           </div>
         </div>
       </div>
-      <div v-else class="row mt-3">
+
+      <!-- Unified cargo grid viewer -->
+      <div v-if="ships.length" class="row cargo-grids-page__viewer">
         <div class="col-12">
-          <p>{{ t("messages.cargoGridViewer.noCargoHolds") }}</p>
+          <CargoGridViewer
+            :cargo-holds="singleShipCargoHolds"
+            :ships="ships.length > 1 ? ships : []"
+            :container-requests="requestedContainers"
+            @auto-fill="handleFillGreedy"
+            @remove-ship="removeShip"
+          />
         </div>
       </div>
-    </template>
-    <template v-else-if="hasContainerRequests">
-      <div class="row">
+
+      <!-- Preview mode: containers without ship -->
+      <div
+        v-else-if="hasContainerRequests"
+        class="row cargo-grids-page__viewer"
+      >
         <div class="col-12">
           <CargoGridViewer
             :cargo-holds="[]"
@@ -437,7 +463,7 @@ const onModelSelect = (value: ValueType<Model> | undefined) => {
           />
         </div>
       </div>
-    </template>
+    </div>
   </FeatureGuard>
 </template>
 

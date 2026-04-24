@@ -67,6 +67,7 @@ type Props = {
   noLabel?: boolean;
   bigIcon?: boolean;
   hideSelected?: boolean;
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -89,6 +90,7 @@ const props = withDefaults(defineProps<Props>(), {
   noLabel: false,
   bigIcon: false,
   hideSelected: false,
+  inline: false,
 });
 
 type FilterOptionValue = FilterOption["value"];
@@ -276,6 +278,7 @@ const filteredOptions = computed(() => {
 
 const cssClasses = computed(() => ({
   "has-error has-feedback": props.error,
+  inline: props.inline,
 }));
 
 onMounted(() => {

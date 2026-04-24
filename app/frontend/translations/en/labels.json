@@ -1050,7 +1050,10 @@
         "didNotFit": "Did not fit",
         "openInTool": "Open in Cargo Grid Tool",
         "myHangar": "Show only my Ships",
-        "filterShips": "Filter Ships by Container Size"
+        "filterShips": "Filter Ships by Container Size",
+        "addShip": "Add Ship",
+        "removeShip": "Remove",
+        "autoFillShip": "Auto-fill"
       },
       "admin": {
         "dashboard": {
