@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { ComponentExposed } from "vue-component-type-helpers";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import CargoGridViewer from "@/frontend/components/CargoGridViewer/index.vue";
 import {
@@ -52,22 +53,20 @@ const CONTAINER_SIZES = [1, 2, 4, 8, 16, 24, 32] as const;
 
 const MAX_SHIPS = 4;
 
+const modelFilterGroup = ref<ComponentExposed<typeof FilterGroup>>();
+
 // Parse initial slugs from URL (backward compat: ?ship= or new ?ships=)
-const parseInitialSlugs = (): (string | undefined)[] => {
+const parseInitialSlugs = (): string[] => {
   if (route.query.ships) {
     return (route.query.ships as string).split(",").filter(Boolean);
   }
   if (route.query.ship) {
     return [route.query.ship as string];
   }
-  return [undefined];
+  return [];
 };
 
-const selectedSlugs = ref<(string | undefined)[]>(parseInitialSlugs());
-
-const activeSlugs = computed(() =>
-  selectedSlugs.value.filter((s): s is string => !!s),
-);
+const selectedSlugs = ref<string[]>(parseInitialSlugs());
 
 // Pre-allocate composable slots for each possible ship
 const shipSlots = Array.from({ length: MAX_SHIPS }, (_, i) => {
@@ -105,8 +104,7 @@ applyInitialModules();
 // Build ships array for the unified viewer
 const ships = computed<ShipEntry[]>(() => {
   return selectedSlugs.value
-    .map((slug, idx) => {
-      if (!slug) return null;
+    .map((_slug, idx) => {
       const slot = shipSlots[idx];
       const model = slot.model.value;
       if (!model) return null;
@@ -123,7 +121,7 @@ const ships = computed<ShipEntry[]>(() => {
 
 // Single-ship mode: use first slot's cargo holds directly
 const singleShipCargoHolds = computed(() => {
-  if (activeSlugs.value.length !== 1) return [];
+  if (selectedSlugs.value.length !== 1) return [];
   return shipSlots[0].combinedCargoHolds.value;
 });
 
@@ -202,21 +200,22 @@ const filterKey = computed(
   () => `cargo-grid-model-${hangarOnly.value}-${containerFilterVersion.value}`,
 );
 
+const selectDisabled = computed(() => selectedSlugs.value.length >= MAX_SHIPS);
+
 // URL sync
 const syncUrl = () => {
   const query: Record<string, string> = {};
-  const active = activeSlugs.value;
+  const slugs = selectedSlugs.value;
 
-  if (active.length === 1) {
-    query.ship = active[0];
-  } else if (active.length > 1) {
-    query.ships = active.join(",");
+  if (slugs.length === 1) {
+    query.ship = slugs[0];
+  } else if (slugs.length > 1) {
+    query.ships = slugs.join(",");
   }
 
   // Per-ship modules
-  for (let i = 0; i < selectedSlugs.value.length; i++) {
-    const slug = selectedSlugs.value[i];
-    if (!slug) continue;
+  for (let i = 0; i < slugs.length; i++) {
+    const slug = slugs[i];
     const mods = [...shipSlots[i].selectedModuleSlugs.value];
     if (mods.length) {
       query[`modules.${slug}`] = mods.join(",");
@@ -227,27 +226,27 @@ const syncUrl = () => {
 };
 
 // Ship management
-const addShip = () => {
-  if (selectedSlugs.value.length < MAX_SHIPS) {
-    selectedSlugs.value = [...selectedSlugs.value, undefined];
+const handleShipSelect = (value: ValueType<Model> | undefined) => {
+  const slug = value as string;
+  if (!slug) return;
+
+  // Prevent duplicates and enforce max
+  if (
+    selectedSlugs.value.includes(slug) ||
+    selectedSlugs.value.length >= MAX_SHIPS
+  ) {
+    modelFilterGroup.value?.clear();
+    return;
   }
+
+  selectedSlugs.value = [...selectedSlugs.value, slug];
+  modelFilterGroup.value?.clear();
+  syncUrl();
 };
 
 const removeShip = (index: number) => {
   const next = [...selectedSlugs.value];
   next.splice(index, 1);
-
-  if (next.length === 0) {
-    next.push(undefined);
-  }
-
-  selectedSlugs.value = next;
-  syncUrl();
-};
-
-const onShipSelect = (index: number, value: ValueType<Model> | undefined) => {
-  const next = [...selectedSlugs.value];
-  next[index] = (value as string) || undefined;
   selectedSlugs.value = next;
   syncUrl();
 };
@@ -267,14 +266,14 @@ const handleFillGreedy = (slotIndex: number) => {
 const applyContainerFilter = () => {
   containerFilterActive.value = true;
   containerFilterVersion.value++;
-  selectedSlugs.value = [undefined];
+  selectedSlugs.value = [];
   syncUrl();
 };
 
 const toggleHangarOnly = () => {
   hangarOnly.value = !hangarOnly.value;
   containerFilterVersion.value++;
-  selectedSlugs.value = [undefined];
+  selectedSlugs.value = [];
   syncUrl();
 };
 
@@ -282,7 +281,7 @@ const doResetFilters = () => {
   hangarOnly.value = false;
   containerFilterActive.value = false;
   clearContainers();
-  selectedSlugs.value = [undefined];
+  selectedSlugs.value = [];
   syncUrl();
 };
 
@@ -300,27 +299,63 @@ const resetFilters = () => {
 
     <div class="row toolbar">
       <div class="col-12">
-        <div class="ship-selectors">
-          <div
-            v-for="(_slug, idx) in selectedSlugs"
-            :key="idx"
-            class="ship-selector"
+        <div class="ship-selector-row">
+          <FilterGroup
+            ref="modelFilterGroup"
+            :key="filterKey"
+            :label="t('labels.selectModel')"
+            :search-label="t('labels.findModel')"
+            :query-fn="fetchCargoModels"
+            :query-response-formatter="formatModels"
+            name="cargo-grid-model"
+            :paginated="true"
+            :searchable="true"
+            :multiple="false"
+            :disabled="selectDisabled"
+            no-label
+            inline
+            @update:model-value="handleShipSelect"
+          />
+          <Btn
+            v-if="sessionStore.isAuthenticated"
+            :size="BtnSizesEnum.SMALL"
+            :active="hangarOnly"
+            inline
+            @click="toggleHangarOnly"
           >
-            <FilterGroup
-              :key="`${filterKey}-${idx}`"
-              :model-value="selectedSlugs[idx]"
-              :label="t('labels.selectModel')"
-              :search-label="t('labels.findModel')"
-              :query-fn="fetchCargoModels"
-              :query-response-formatter="formatModels"
-              :name="`cargo-grid-model-${idx}`"
-              :paginated="true"
-              :searchable="true"
-              :multiple="false"
-              no-label
-              inline
-              @update:model-value="onShipSelect(idx, $event)"
-            />
+            {{ t("labels.cargoGridViewer.myHangar") }}
+          </Btn>
+          <Btn
+            v-if="selectedSlugs.length > 0"
+            v-tooltip="t('actions.reset')"
+            :size="BtnSizesEnum.SMALL"
+            data-test="reset-filters"
+            inline
+            @click="resetFilters"
+          >
+            <i class="fa-light fa-undo" />
+          </Btn>
+        </div>
+
+        <div
+          v-if="selectedSlugs.length"
+          class="ship-entries"
+          data-test="ship-entries"
+        >
+          <div
+            v-for="(slug, idx) in selectedSlugs"
+            :key="slug"
+            class="ship-entry"
+            :data-test="`ship-entry-${idx}`"
+          >
+            <span
+              class="ship-entry__name"
+              :style="{
+                color: SHIP_COLORS[idx % SHIP_COLORS.length],
+              }"
+            >
+              {{ shipSlots[idx].model.value?.name || slug }}
+            </span>
             <template v-if="shipSlots[idx].modulesWithCargo.value.length">
               <Btn
                 v-for="mod in shipSlots[idx].modulesWithCargo.value"
@@ -342,9 +377,8 @@ const resetFilters = () => {
               {{ t("labels.cargoGridViewer.autoFillShip") }}
             </Btn>
             <Btn
-              v-if="selectedSlugs.length > 1"
-              :size="BtnSizesEnum.SMALL"
               v-tooltip="t('actions.remove')"
+              :size="BtnSizesEnum.SMALL"
               :data-test="`remove-ship-${idx}`"
               inline
               @click="removeShip(idx)"
@@ -352,36 +386,8 @@ const resetFilters = () => {
               <i class="fa-light fa-times" />
             </Btn>
           </div>
-          <Btn
-            v-if="selectedSlugs.length < MAX_SHIPS"
-            :size="BtnSizesEnum.SMALL"
-            v-tooltip="t('labels.cargoGridViewer.addShip')"
-            data-test="add-ship"
-            inline
-            @click="addShip"
-          >
-            <i class="fa-light fa-plus" />
-          </Btn>
-          <Btn
-            v-if="sessionStore.isAuthenticated"
-            :size="BtnSizesEnum.SMALL"
-            :active="hangarOnly"
-            inline
-            @click="toggleHangarOnly"
-          >
-            {{ t("labels.cargoGridViewer.myHangar") }}
-          </Btn>
-          <Btn
-            v-if="activeSlugs.length > 0"
-            :size="BtnSizesEnum.SMALL"
-            v-tooltip="t('actions.reset')"
-            data-test="reset-filters"
-            inline
-            @click="resetFilters"
-          >
-            <i class="fa-light fa-undo" />
-          </Btn>
         </div>
+
         <div class="container-fields">
           <div
             v-for="size in CONTAINER_SIZES"

@@ -9,7 +9,7 @@ test.describe("Cargo Grids", () => {
     await page.goto("/tools/cargo-grids/");
 
     // Wait for the filter component to be interactive
-    await page.getByTestId("filter-group-cargo-grid-model-0").waitFor();
+    await page.getByTestId("filter-group-cargo-grid-model").waitFor();
   });
 
   test("Loads the page", async ({ page }) => {
@@ -30,7 +30,7 @@ test.describe("Cargo Grids", () => {
     page,
   }) => {
     // Open the model filter dropdown and search for Caterpillar
-    const filterGroup = page.getByTestId("filter-group-cargo-grid-model-0");
+    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
     await filterGroup.getByTestId("filter-group-title").click();
     await filterGroup.locator("input").first().fill("Caterpillar");
 
@@ -39,6 +39,9 @@ test.describe("Cargo Grids", () => {
     await option.click();
 
     await expect(page).toHaveURL(/ship=drak-caterpillar/);
+
+    // The ship entry should appear
+    await expect(page.getByTestId("ship-entry-0")).toBeVisible();
 
     // The cargo grid viewer should appear with stats
     await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
@@ -100,6 +103,9 @@ test.describe("Cargo Grids", () => {
 
     // Container inputs should be cleared
     await expect(page.locator('input[name="container-8"]')).toHaveValue("0");
+
+    // Ship should be removed
+    await expect(page.getByTestId("ship-entries")).not.toBeVisible();
   });
 
   test("Shows container preview when containers set but no model selected", async ({
@@ -114,23 +120,26 @@ test.describe("Cargo Grids", () => {
     await expect(filterBtn).toBeVisible();
   });
 
-  test("Shows add ship button", async ({ page }) => {
-    await expect(page.getByTestId("add-ship")).toBeVisible();
-  });
+  test("Adds multiple ships by selecting from the same filter", async ({
+    page,
+  }) => {
+    // Select first ship
+    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
+    await filterGroup.getByTestId("filter-group-title").click();
+    await filterGroup.locator("input").first().fill("Caterpillar");
+    await page.getByText("Caterpillar").first().click();
 
-  test("Adds a second ship selector", async ({ page }) => {
-    await page.getByTestId("add-ship").click();
+    // First ship entry should appear
+    await expect(page.getByTestId("ship-entry-0")).toBeVisible();
 
-    // Should now have two filter groups
-    await expect(
-      page.getByTestId("filter-group-cargo-grid-model-0"),
-    ).toBeVisible();
-    await expect(
-      page.getByTestId("filter-group-cargo-grid-model-1"),
-    ).toBeVisible();
+    // Select second ship
+    await filterGroup.getByTestId("filter-group-title").click();
+    await filterGroup.locator("input").first().fill("Freelancer");
+    await page.getByText("Freelancer MAX").first().click();
 
-    // Remove buttons should appear
-    await expect(page.getByTestId("remove-ship-0")).toBeVisible();
+    // Both entries should be visible
+    await expect(page.getByTestId("ship-entry-0")).toBeVisible();
+    await expect(page.getByTestId("ship-entry-1")).toBeVisible();
   });
 
   test("Loads multiple ships via URL and shows unified viewer with multi-ship stats", async ({
@@ -153,22 +162,19 @@ test.describe("Cargo Grids", () => {
   });
 
   test("Removes a ship from comparison", async ({ page }) => {
-    // Add second ship
-    await page.getByTestId("add-ship").click();
-    await expect(
-      page.getByTestId("filter-group-cargo-grid-model-1"),
-    ).toBeVisible();
+    // Load two ships via URL
+    await page.goto(
+      "/tools/cargo-grids/?ships=drak-caterpillar,misc-freelancer-max",
+    );
+    await expect(page.getByTestId("ship-entry-0")).toBeVisible();
+    await expect(page.getByTestId("ship-entry-1")).toBeVisible();
 
-    // Remove the second ship selector
+    // Remove the second ship
     await page.getByTestId("remove-ship-1").click();
 
-    // Should be back to one filter group
-    await expect(
-      page.getByTestId("filter-group-cargo-grid-model-1"),
-    ).not.toBeVisible();
-    await expect(
-      page.getByTestId("filter-group-cargo-grid-model-0"),
-    ).toBeVisible();
+    // Should be back to one ship entry
+    await expect(page.getByTestId("ship-entry-1")).not.toBeVisible();
+    await expect(page.getByTestId("ship-entry-0")).toBeVisible();
   });
 
   test("Backward compat: single ship URL still works", async ({ page }) => {
