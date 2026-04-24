@@ -6083,6 +6083,19 @@ components:
       additionalProperties: false
       example: {}
       title: ComponentQuery
+    ComponentSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ComponentSortEnum
     ComponentThruster:
       type: object
       properties:
@@ -7038,6 +7051,19 @@ components:
       - createdAt
       - updatedAt
       title: FleetRoleExtended
+    FleetSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FleetSortEnum
     FleetUpdateInput:
       type: object
       properties:
@@ -8280,6 +8306,19 @@ components:
       additionalProperties: false
       example: {}
       title: ManufacturerQuery
+    ManufacturerSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ManufacturerSortEnum
     Manufacturers:
       type: object
       properties:
@@ -9294,6 +9333,23 @@ components:
       - createdAt
       - updatedAt
       title: ModelModulePackage
+    ModelModulePackageSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: ModelModulePackageSortEnum
     ModelModulePackages:
       type: object
       properties:
@@ -10412,6 +10468,8 @@ components:
       - email desc
       - createdAt asc
       - createdAt desc
+      - confirmedAt asc
+      - confirmedAt desc
       - lastActiveAt asc
       - lastActiveAt desc
       - lastSignInAt asc
@@ -10423,6 +10481,8 @@ components:
       - EMAIL_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - CONFIRMED_AT_ASC
+      - CONFIRMED_AT_DESC
       - LAST_ACTIVE_AT_ASC
       - LAST_ACTIVE_AT_DESC
       - LAST_SIGN_IN_AT_ASC

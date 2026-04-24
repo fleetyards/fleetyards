@@ -5647,9 +5647,28 @@ components:
           items:
             type: string
             format: uuid
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ComponentSortEnum"
+          - "$ref": "#/components/schemas/ComponentSortEnum"
       additionalProperties: false
       example: {}
       title: ComponentQuery
+    ComponentSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ComponentSortEnum
     ComponentThruster:
       type: object
       properties:
@@ -6380,9 +6399,28 @@ components:
           type: string
         fidCont:
           type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetSortEnum"
+          - "$ref": "#/components/schemas/FleetSortEnum"
       additionalProperties: false
       example: {}
       title: FleetQuery
+    FleetSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FleetSortEnum
     FleetVehicleSortEnum:
       type: string
       enum:
@@ -7113,9 +7151,28 @@ components:
           type: array
           items:
             type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ManufacturerSortEnum"
+          - "$ref": "#/components/schemas/ManufacturerSortEnum"
       additionalProperties: false
       example: {}
       title: ManufacturerQuery
+    ManufacturerSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: ManufacturerSortEnum
     Manufacturers:
       type: object
       properties:
@@ -8608,9 +8665,32 @@ components:
         modelIdEq:
           type: string
           format: uuid
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelModulePackageSortEnum"
+          - "$ref": "#/components/schemas/ModelModulePackageSortEnum"
       additionalProperties: false
       example: {}
       title: ModelModulePackageQuery
+    ModelModulePackageSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      title: ModelModulePackageSortEnum
     ModelModulePackages:
       type: object
       properties:
@@ -9899,6 +9979,8 @@ components:
       - email desc
       - createdAt asc
       - createdAt desc
+      - confirmedAt asc
+      - confirmedAt desc
       - lastActiveAt asc
       - lastActiveAt desc
       - lastSignInAt asc
@@ -9910,6 +9992,8 @@ components:
       - EMAIL_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
+      - CONFIRMED_AT_ASC
+      - CONFIRMED_AT_DESC
       - LAST_ACTIVE_AT_ASC
       - LAST_ACTIVE_AT_DESC
       - LAST_SIGN_IN_AT_ASC
