@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.13.0](https://github.com/fleetyards/fleetyards/compare/v6.12.0...v6.13.0) (2026-04-24)
+
+
+### Features
+
+* **auth:** integrate CitizenID OAuth provider ([#3762](https://github.com/fleetyards/fleetyards/issues/3762)) ([cf26680](https://github.com/fleetyards/fleetyards/commit/cf26680b531405be0243fccccd57e5e513700431))
+* generate superset ports.json in bin/setup for port-to-name mapping ([119bef5](https://github.com/fleetyards/fleetyards/commit/119bef55d01c1012d7cd14a5430ad910859ebd66))
+
+
+### Bug Fixes
+
+* remove overflow hidden from ListGroup content to prevent dropdown clipping ([c981c18](https://github.com/fleetyards/fleetyards/commit/c981c1884b37b4cb7c3c70dcd1626ea286b1f7d3))
+* **ui:** add hover highlight to ListGroup rows for better cursor visibility ([3178dfd](https://github.com/fleetyards/fleetyards/commit/3178dfdd9aae841eee17f7d1dec8ee8d70d9ee75))
+* use full CDN URLs for font assets in CSS to prevent broken icons ([7367293](https://github.com/fleetyards/fleetyards/commit/73672935b29c6b8e5d619f02737c090d3bbb056a))
+
 ## [6.12.0](https://github.com/fleetyards/fleetyards/compare/v6.11.1...v6.12.0) (2026-04-22)
 
 
