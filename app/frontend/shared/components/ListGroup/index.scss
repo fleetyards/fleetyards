@@ -8,6 +8,11 @@
     background: rgba(#fff, 0.05);
     border: 1px solid rgba(#fff, 0.1);
     border-radius: 6px;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(#fff, 0.1);
+    }
   }
 
   &__row {
