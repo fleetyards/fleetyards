@@ -29,6 +29,20 @@ model.update!(cargo_holds: [
   }
 ])
 
+misc = Manufacturer.find_or_create_by!(name: "Musashi Industrial & Starflight Concern") { |m| m.code = "MISC" }
+freelancer_max = Model.find_or_initialize_by(name: "Freelancer MAX")
+if freelancer_max.new_record?
+  freelancer_max = FactoryBot.create(:model, :with_legacy_images, name: "Freelancer MAX", production_status: "flight-ready", manufacturer: misc)
+end
+freelancer_max.update!(cargo_holds: [
+  {
+    "name" => "cargo",
+    "capacity" => 120,
+    "dimensions" => {"x" => 12.5, "y" => 5.0, "z" => 5.0},
+    "max_container_size" => {"size" => 32, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}}
+  }
+])
+
 unless Model.exists?(name: "Aurora MR")
   rsi = Manufacturer.find_or_create_by!(name: "Roberts Space Industries") { |m| m.code = "RSI" }
   FactoryBot.create(:model, :with_legacy_images, name: "Aurora MR", production_status: "flight-ready", manufacturer: rsi)

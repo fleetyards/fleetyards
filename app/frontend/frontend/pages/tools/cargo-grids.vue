@@ -344,6 +344,7 @@ const resetFilters = () => {
             <Btn
               v-if="selectedSlugs.length > 1"
               :size="BtnSizesEnum.SMALL"
+              :data-test="`remove-ship-${idx}`"
               inline
               @click="removeShip(idx)"
             >

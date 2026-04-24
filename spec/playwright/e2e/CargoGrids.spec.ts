@@ -94,6 +94,10 @@ test.describe("Cargo Grids", () => {
       .first();
     await resetBtn.click();
 
+    // Confirm the reset dialog
+    await page.getByTestId("confirm-dialog").waitFor({ state: "visible" });
+    await page.getByTestId("confirm-ok").click();
+
     // Container inputs should be cleared
     await expect(page.locator('input[name="container-8"]')).toHaveValue("0");
   });
@@ -126,7 +130,7 @@ test.describe("Cargo Grids", () => {
     ).toBeVisible();
 
     // Remove buttons should appear
-    await expect(page.getByText("Remove").first()).toBeVisible();
+    await expect(page.getByTestId("remove-ship-0")).toBeVisible();
   });
 
   test("Loads multiple ships via URL and shows unified viewer with multi-ship stats", async ({
@@ -135,7 +139,9 @@ test.describe("Cargo Grids", () => {
     await page.goto(
       "/tools/cargo-grids/?ships=drak-caterpillar,misc-freelancer-max",
     );
-    await page.waitForLoadState("networkidle");
+
+    // Wait for the viewer to render (models load async)
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
 
     // Should show ONE cargo grid viewer (unified)
     await expect(page.getByTestId("cargo-grid-viewer")).toHaveCount(1);
@@ -154,8 +160,7 @@ test.describe("Cargo Grids", () => {
     ).toBeVisible();
 
     // Remove the second ship selector
-    const removeButtons = page.getByText("Remove");
-    await removeButtons.last().click();
+    await page.getByTestId("remove-ship-1").click();
 
     // Should be back to one filter group
     await expect(
