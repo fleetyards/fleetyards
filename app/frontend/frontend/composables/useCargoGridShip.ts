@@ -46,9 +46,10 @@ export function useCargoGridShip(slug: Ref<string | undefined>) {
     }
   });
 
-  const availableModules = computed<ModelModule[]>(
-    () => modulesData.value?.items || [],
-  );
+  const availableModules = computed<ModelModule[]>(() => {
+    if (!slug.value) return [];
+    return modulesData.value?.items || [];
+  });
 
   const modulesWithCargo = computed(() =>
     availableModules.value.filter((m) => m.cargoHolds?.length),
