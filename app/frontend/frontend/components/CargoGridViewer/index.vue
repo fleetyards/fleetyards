@@ -20,6 +20,8 @@ import {
 import { BoxGeometry, EdgesGeometry, LineBasicMaterial, Color } from "three";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { humanizeHoldName } from "@/shared/utils/CargoHolds";
@@ -1458,12 +1460,34 @@ const onDragEnd = (_shipIndex: number) => {
         :key="`stats-${shipResult.shipIndex}`"
         class="cargo-grid-viewer__ship-stats"
       >
+        <router-link
+          v-if="
+            props.ships[shipResult.shipIndex]?.image &&
+            props.ships[shipResult.shipIndex]?.route
+          "
+          :to="props.ships[shipResult.shipIndex].route!"
+          class="cargo-grid-viewer__ship-thumb"
+        >
+          <ViewImage
+            :image="props.ships[shipResult.shipIndex].image"
+            size="small"
+            alt="image"
+            :variant="LazyImageVariantsEnum.WIDE_SMALL"
+          />
+        </router-link>
         <div class="cargo-grid-viewer__ship-stats-header">
           <span
             class="cargo-grid-viewer__stat-color"
             :style="{ backgroundColor: shipResult.color }"
           />
-          <span class="cargo-grid-viewer__ship-stats-name">
+          <router-link
+            v-if="props.ships[shipResult.shipIndex]?.route"
+            :to="props.ships[shipResult.shipIndex].route!"
+            class="cargo-grid-viewer__ship-stats-name"
+          >
+            {{ shipResult.name }}
+          </router-link>
+          <span v-else class="cargo-grid-viewer__ship-stats-name">
             {{ shipResult.name }}
           </span>
           <Btn

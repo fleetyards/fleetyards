@@ -114,6 +114,8 @@ const ships = computed(() => {
       name: model.name,
       cargoHolds: holds,
       color: SHIP_COLORS[idx % SHIP_COLORS.length],
+      image: slot.angledImage.value,
+      route: slot.shipRoute.value,
     });
   }
   return result;
