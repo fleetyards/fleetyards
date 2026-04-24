@@ -9,7 +9,7 @@ import type { Model, CargoHold } from "@/services/fyApi";
 import {
   CONTAINER_DEFS,
   SCU_UNIT,
-} from "@/frontend/components/CargoGridViewer/index.vue";
+} from "@/frontend/components/CargoGridViewer/constants";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, toNumber } = useI18n();

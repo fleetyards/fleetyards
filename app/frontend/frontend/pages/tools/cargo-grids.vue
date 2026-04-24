@@ -6,10 +6,11 @@ export default {
 
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
-import CargoGridViewer, {
+import CargoGridViewer from "@/frontend/components/CargoGridViewer/index.vue";
+import {
   SHIP_COLORS,
-} from "@/frontend/components/CargoGridViewer/index.vue";
-import type { ShipEntry } from "@/frontend/components/CargoGridViewer/index.vue";
+  type ShipEntry,
+} from "@/frontend/components/CargoGridViewer/constants";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FilterGroup, {
@@ -29,7 +30,7 @@ import {
   InputAlignmentsEnum,
 } from "@/shared/components/base/FormInput/types";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/index.vue";
+import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/constants";
 import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
 import { useCargoGridShip } from "@/frontend/composables/useCargoGridShip";

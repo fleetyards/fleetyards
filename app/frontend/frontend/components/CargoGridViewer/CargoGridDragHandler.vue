@@ -7,7 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useTres } from "@tresjs/core";
 import { Raycaster, Vector2, Vector3, Plane, type Group } from "three";
-import { SCU_UNIT } from "./index.vue";
+import { SCU_UNIT } from "./constants";
 
 type Props = {
   shipGroups: { ref: Group | null; shipIndex: number }[];
@@ -64,10 +64,7 @@ const onPointerDown = (event: PointerEvent) => {
   for (const shipGroup of props.shipGroups) {
     if (!shipGroup.ref) continue;
 
-    const intersects = raycaster.intersectObjects(
-      shipGroup.ref.children,
-      true,
-    );
+    const intersects = raycaster.intersectObjects(shipGroup.ref.children, true);
     if (intersects.length > 0) {
       isDragging.value = true;
       dragShipIndex.value = shipGroup.shipIndex;

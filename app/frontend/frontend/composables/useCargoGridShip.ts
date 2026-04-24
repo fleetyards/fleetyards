@@ -4,7 +4,7 @@ import {
   type Model,
   type ModelModule,
 } from "@/services/fyApi";
-import { computeGreedyFill } from "@/frontend/components/CargoGridViewer/index.vue";
+import { computeGreedyFill } from "@/frontend/components/CargoGridViewer/constants";
 import type { CargoHold } from "@/services/fyApi";
 
 export function useCargoGridShip(slug: Ref<string | undefined>) {
@@ -80,9 +80,7 @@ export function useCargoGridShip(slug: Ref<string | undefined>) {
 
   const angledImage = computed(() => {
     if (!model.value) return undefined;
-    return (
-      model.value.media.angledViewColored || model.value.media.angledView
-    );
+    return model.value.media.angledViewColored || model.value.media.angledView;
   });
 
   const shipRoute = computed(() => {
