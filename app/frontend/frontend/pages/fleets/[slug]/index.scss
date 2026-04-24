@@ -12,14 +12,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 
   > a {
-    margin-right: 20px;
     font-size: 3rem;
-
-    &:last-child {
-      margin-right: 0;
-    }
 
     .icon-rsi {
       opacity: 0.8;

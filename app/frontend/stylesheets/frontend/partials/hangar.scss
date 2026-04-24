@@ -70,13 +70,6 @@
     height: 100px;
     margin: 15px 0;
     font-size: 30px;
-
-    > a {
-      margin-right: 20px;
-
-      &:last-child {
-        margin-right: 0;
-      }
-    }
+    gap: 10px;
   }
 }
