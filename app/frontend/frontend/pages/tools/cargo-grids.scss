@@ -6,13 +6,14 @@
   &__viewer {
     flex: 1;
     min-height: 0;
+    overflow: auto;
 
     > .col-12 {
       height: 100%;
     }
 
     .cargo-grid-viewer {
-      height: 100%;
+      min-height: 100%;
     }
   }
 }

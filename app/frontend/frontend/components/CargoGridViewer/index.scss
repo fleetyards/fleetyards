@@ -44,6 +44,7 @@
     position: relative;
     flex: 1;
     min-height: 500px;
+    overflow: hidden;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
   }
