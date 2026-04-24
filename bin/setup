@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 require "fileutils"
+require "json"
 require "zlib"
 require "open3"
 
@@ -71,6 +72,20 @@ end
 
 def worktree_sidekiq_redis_db(name)
   2 + (Zlib.crc32(name) % 500)
+end
+
+def write_superset_ports(port, vite_port)
+  superset_dir = File.join(APP_ROOT, ".superset")
+  FileUtils.mkdir_p(superset_dir)
+
+  config = {
+    "ports" => [
+      {"port" => port, "label" => "App"},
+      {"port" => vite_port, "label" => "Vite"}
+    ]
+  }
+
+  File.write(File.join(superset_dir, "ports.json"), JSON.pretty_generate(config) + "\n")
 end
 
 def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db)
@@ -154,6 +169,8 @@ FileUtils.chdir APP_ROOT do
     puts "   Wrote .env.local" if VERBOSE
 
   end
+
+  write_superset_ports(port, vite_port)
 
   unless system("command -v pnpm > /dev/null 2>&1")
     abort "pnpm is not installed. Install it via: npm install -g pnpm"
