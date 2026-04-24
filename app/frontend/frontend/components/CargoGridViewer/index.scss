@@ -45,7 +45,7 @@
   &__canvas {
     position: relative;
     flex: 1;
-    min-height: 500px;
+    min-height: 300px;
     overflow: hidden;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
@@ -59,7 +59,7 @@
   }
 
   &--compact &__canvas {
-    min-height: 400px;
+    min-height: 250px;
   }
 
   &__ship-label {
