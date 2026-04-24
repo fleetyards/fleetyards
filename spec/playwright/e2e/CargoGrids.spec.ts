@@ -173,11 +173,13 @@ test.describe("Cargo Grids", () => {
     // Remove the second ship
     await page.getByTestId("remove-ship-1").click();
 
-    // Should be back to single-ship view
-    await expect(page.getByTestId("cargo-grid-viewer-stats")).toBeVisible();
+    // Multi-ship stats should disappear
     await expect(
       page.getByTestId("cargo-grid-viewer-multi-stats"),
     ).not.toBeVisible();
+
+    // Should be back to single-ship view
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
   });
 
   test("Backward compat: single ship URL still works", async ({ page }) => {
