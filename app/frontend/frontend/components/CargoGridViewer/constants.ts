@@ -1,5 +1,4 @@
-import type { CargoHold, MediaFile } from "@/services/fyApi";
-import type { RouteLocationRaw } from "vue-router";
+import type { CargoHold } from "@/services/fyApi";
 
 export type ContainerRequest = {
   size: number;
@@ -10,8 +9,6 @@ export type ShipEntry = {
   name: string;
   cargoHolds: CargoHold[];
   color: string;
-  image?: MediaFile;
-  route?: RouteLocationRaw;
 };
 
 export const SHIP_COLORS = ["#82dbc5", "#ff9e80", "#b39ddb", "#90caf9"];

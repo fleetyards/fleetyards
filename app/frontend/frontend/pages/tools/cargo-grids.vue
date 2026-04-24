@@ -114,8 +114,6 @@ const ships = computed(() => {
       name: model.name,
       cargoHolds: holds,
       color: SHIP_COLORS[idx % SHIP_COLORS.length],
-      image: slot.angledImage.value,
-      route: slot.shipRoute.value,
     });
   }
   return result;
@@ -297,126 +295,131 @@ const resetFilters = () => {
 
 <template>
   <FeatureGuard feature="tools_cargo_grids">
-    <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+    <div class="cargo-grids-page">
+      <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
-    <div class="row toolbar">
-      <div class="col-12">
-        <div class="ship-selector-row" data-test="ship-entries">
-          <FilterGroup
-            ref="modelFilterGroup"
-            :key="filterKey"
-            :label="t('labels.selectModel')"
-            :search-label="t('labels.findModel')"
-            :query-fn="fetchCargoModels"
-            :query-response-formatter="formatModels"
-            name="cargo-grid-model"
-            :paginated="true"
-            :searchable="true"
-            :multiple="false"
-            :disabled="selectDisabled"
-            no-label
-            inline
-            @update:model-value="handleShipSelect"
-          />
-          <template v-for="(slug, idx) in selectedSlugs" :key="slug">
-            <template v-if="shipSlots[idx].modulesWithCargo.value.length">
-              <span
-                class="ship-entry__name"
-                :style="{
-                  color: SHIP_COLORS[idx % SHIP_COLORS.length],
-                }"
-              >
-                {{ shipSlots[idx].model.value?.name }}
-              </span>
-              <Btn
-                v-for="mod in shipSlots[idx].modulesWithCargo.value"
-                :key="mod.id"
-                :size="BtnSizesEnum.SMALL"
-                :active="shipSlots[idx].selectedModuleSlugs.value.has(mod.slug)"
-                inline
-                @click="handleToggleModule(idx, mod.slug)"
-              >
-                {{ mod.name }}
-              </Btn>
-            </template>
-          </template>
-          <Btn
-            v-if="sessionStore.isAuthenticated"
-            :size="BtnSizesEnum.SMALL"
-            :active="hangarOnly"
-            inline
-            @click="toggleHangarOnly"
-          >
-            {{ t("labels.cargoGridViewer.myHangar") }}
-          </Btn>
-          <Btn
-            v-if="selectedSlugs.length > 0"
-            v-tooltip="t('actions.reset')"
-            :size="BtnSizesEnum.SMALL"
-            data-test="reset-filters"
-            inline
-            @click="resetFilters"
-          >
-            <i class="fa-light fa-undo" />
-          </Btn>
-        </div>
-
-        <div class="container-fields">
-          <div
-            v-for="size in CONTAINER_SIZES"
-            :key="size"
-            style="width: 5rem; flex-shrink: 0"
-            class="container-field"
-            :data-test="`container-field-${size}`"
-          >
-            <FormInput
-              v-model.number="containerRequests[size]"
-              :name="`container-${size}`"
-              :label="`${size} SCU`"
-              :type="InputTypesEnum.NUMBER"
-              :min="0"
-              :step="1"
-              :alignment="InputAlignmentsEnum.RIGHT"
+      <div class="row toolbar">
+        <div class="col-12">
+          <div class="ship-selector-row" data-test="ship-entries">
+            <FilterGroup
+              ref="modelFilterGroup"
+              :key="filterKey"
+              :label="t('labels.selectModel')"
+              :search-label="t('labels.findModel')"
+              :query-fn="fetchCargoModels"
+              :query-response-formatter="formatModels"
+              name="cargo-grid-model"
+              :paginated="true"
+              :searchable="true"
+              :multiple="false"
+              :disabled="selectDisabled"
+              no-label
+              inline
+              @update:model-value="handleShipSelect"
             />
+            <template v-for="(slug, idx) in selectedSlugs" :key="slug">
+              <template v-if="shipSlots[idx].modulesWithCargo.value.length">
+                <span
+                  class="ship-entry__name"
+                  :style="{
+                    color: SHIP_COLORS[idx % SHIP_COLORS.length],
+                  }"
+                >
+                  {{ shipSlots[idx].model.value?.name }}
+                </span>
+                <Btn
+                  v-for="mod in shipSlots[idx].modulesWithCargo.value"
+                  :key="mod.id"
+                  :size="BtnSizesEnum.SMALL"
+                  :active="
+                    shipSlots[idx].selectedModuleSlugs.value.has(mod.slug)
+                  "
+                  inline
+                  @click="handleToggleModule(idx, mod.slug)"
+                >
+                  {{ mod.name }}
+                </Btn>
+              </template>
+            </template>
+            <Btn
+              v-if="sessionStore.isAuthenticated"
+              :size="BtnSizesEnum.SMALL"
+              :active="hangarOnly"
+              inline
+              @click="toggleHangarOnly"
+            >
+              {{ t("labels.cargoGridViewer.myHangar") }}
+            </Btn>
+            <Btn
+              v-if="selectedSlugs.length > 0"
+              v-tooltip="t('actions.reset')"
+              :size="BtnSizesEnum.SMALL"
+              data-test="reset-filters"
+              inline
+              @click="resetFilters"
+            >
+              <i class="fa-light fa-undo" />
+            </Btn>
           </div>
-          <div class="container-fields__actions">
-            <Btn
-              v-if="hasContainerRequests"
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="applyContainerFilter"
+
+          <div class="container-fields">
+            <div
+              v-for="size in CONTAINER_SIZES"
+              :key="size"
+              style="width: 5rem; flex-shrink: 0"
+              class="container-field"
+              :data-test="`container-field-${size}`"
             >
-              {{ t("labels.cargoGridViewer.filterShips") }}
-            </Btn>
-            <Btn
-              v-if="hasContainerRequests"
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="clearContainers"
-            >
-              {{ t("actions.clear") }}
-            </Btn>
+              <FormInput
+                v-model.number="containerRequests[size]"
+                :name="`container-${size}`"
+                :label="`${size} SCU`"
+                :type="InputTypesEnum.NUMBER"
+                :min="0"
+                :step="1"
+                :alignment="InputAlignmentsEnum.RIGHT"
+              />
+            </div>
+            <div class="container-fields__actions">
+              <Btn
+                v-if="hasContainerRequests"
+                :size="BtnSizesEnum.SMALL"
+                inline
+                @click="applyContainerFilter"
+              >
+                {{ t("labels.cargoGridViewer.filterShips") }}
+              </Btn>
+              <Btn
+                v-if="hasContainerRequests"
+                :size="BtnSizesEnum.SMALL"
+                inline
+                @click="clearContainers"
+              >
+                {{ t("actions.clear") }}
+              </Btn>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Unified cargo grid viewer -->
-    <div v-if="ships.length" class="row">
-      <div class="col-12">
-        <CargoGridViewer
-          :cargo-holds="singleShipCargoHolds"
-          :ships="ships.length > 1 ? ships : []"
-          :container-requests="requestedContainers"
-          @auto-fill="handleFillGreedy"
-          @remove-ship="removeShip"
-        />
+      <!-- Unified cargo grid viewer -->
+      <div v-if="ships.length" class="row cargo-grids-page__viewer">
+        <div class="col-12">
+          <CargoGridViewer
+            :cargo-holds="singleShipCargoHolds"
+            :ships="ships.length > 1 ? ships : []"
+            :container-requests="requestedContainers"
+            @auto-fill="handleFillGreedy"
+            @remove-ship="removeShip"
+          />
+        </div>
       </div>
-    </div>
 
-    <!-- Preview mode: containers without ship -->
-    <template v-else-if="hasContainerRequests">
-      <div class="row">
+      <!-- Preview mode: containers without ship -->
+      <div
+        v-else-if="hasContainerRequests"
+        class="row cargo-grids-page__viewer"
+      >
         <div class="col-12">
           <CargoGridViewer
             :cargo-holds="[]"
@@ -424,7 +427,7 @@ const resetFilters = () => {
           />
         </div>
       </div>
-    </template>
+    </div>
   </FeatureGuard>
 </template>
 

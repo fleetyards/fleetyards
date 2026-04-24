@@ -1,3 +1,22 @@
+.cargo-grids-page {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - var(--header-height, 60px));
+
+  &__viewer {
+    flex: 1;
+    min-height: 0;
+
+    > .col-12 {
+      height: 100%;
+    }
+
+    .cargo-grid-viewer {
+      height: 100%;
+    }
+  }
+}
+
 .container-fields {
   display: flex;
   flex-wrap: wrap;
