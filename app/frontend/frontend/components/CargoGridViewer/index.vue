@@ -20,6 +20,8 @@ import {
 import { BoxGeometry, EdgesGeometry, LineBasicMaterial, Color } from "three";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import ViewImage from "@/shared/components/ViewImage/index.vue";
+import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { humanizeHoldName } from "@/shared/utils/CargoHolds";
@@ -50,6 +52,11 @@ const props = withDefaults(defineProps<Props>(), {
   containerRequests: () => [],
   compact: false,
 });
+
+const emit = defineEmits<{
+  autoFill: [shipIndex: number];
+  removeShip: [shipIndex: number];
+}>();
 
 const isMultiShipMode = computed(() => props.ships.length > 1);
 
@@ -1461,6 +1468,22 @@ const onDragEnd = (_shipIndex: number) => {
           <span class="cargo-grid-viewer__ship-stats-name">
             {{ shipResult.name }}
           </span>
+          <Btn
+            :size="BtnSizesEnum.SMALL"
+            inline
+            @click="emit('autoFill', shipResult.shipIndex)"
+          >
+            {{ t("labels.cargoGridViewer.autoFillShip") }}
+          </Btn>
+          <Btn
+            v-tooltip="t('actions.remove')"
+            :size="BtnSizesEnum.SMALL"
+            :data-test="`remove-ship-${shipResult.shipIndex}`"
+            inline
+            @click="emit('removeShip', shipResult.shipIndex)"
+          >
+            <i class="fa-light fa-times" />
+          </Btn>
         </div>
         <div class="cargo-grid-viewer__stats">
           <div class="cargo-grid-viewer__stat">
@@ -1528,6 +1551,18 @@ const onDragEnd = (_shipIndex: number) => {
             </div>
           </template>
         </div>
+        <router-link
+          v-if="props.ships[shipResult.shipIndex]?.route"
+          :to="props.ships[shipResult.shipIndex].route!"
+          class="cargo-grid-viewer__ship-image"
+        >
+          <ViewImage
+            v-if="props.ships[shipResult.shipIndex]?.image"
+            :image="props.ships[shipResult.shipIndex].image"
+            alt="image"
+            :variant="LazyImageVariantsEnum.WIDE"
+          />
+        </router-link>
       </div>
     </div>
   </div>

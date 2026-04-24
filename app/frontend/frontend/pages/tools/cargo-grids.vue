@@ -102,21 +102,23 @@ const applyInitialModules = () => {
 applyInitialModules();
 
 // Build ships array for the unified viewer
-const ships = computed<ShipEntry[]>(() => {
-  return selectedSlugs.value
-    .map((_slug, idx) => {
-      const slot = shipSlots[idx];
-      const model = slot.model.value;
-      if (!model) return null;
-      const holds = slot.combinedCargoHolds.value;
-      if (!holds.length) return null;
-      return {
-        name: model.name,
-        cargoHolds: holds,
-        color: SHIP_COLORS[idx % SHIP_COLORS.length],
-      };
-    })
-    .filter((s): s is ShipEntry => s !== null);
+const ships = computed(() => {
+  const result: ShipEntry[] = [];
+  for (let idx = 0; idx < selectedSlugs.value.length; idx++) {
+    const slot = shipSlots[idx];
+    const model = slot.model.value;
+    if (!model) continue;
+    const holds = slot.combinedCargoHolds.value;
+    if (!holds.length) continue;
+    result.push({
+      name: model.name,
+      cargoHolds: holds,
+      color: SHIP_COLORS[idx % SHIP_COLORS.length],
+      image: slot.angledImage.value,
+      route: slot.shipRoute.value,
+    });
+  }
+  return result;
 });
 
 // Single-ship mode: use first slot's cargo holds directly
@@ -316,21 +318,16 @@ const resetFilters = () => {
             inline
             @update:model-value="handleShipSelect"
           />
-          <div
-            v-for="(slug, idx) in selectedSlugs"
-            :key="slug"
-            class="ship-entry"
-            :data-test="`ship-entry-${idx}`"
-          >
-            <span
-              class="ship-entry__name"
-              :style="{
-                color: SHIP_COLORS[idx % SHIP_COLORS.length],
-              }"
-            >
-              {{ shipSlots[idx].model.value?.name || slug }}
-            </span>
+          <template v-for="(slug, idx) in selectedSlugs" :key="slug">
             <template v-if="shipSlots[idx].modulesWithCargo.value.length">
+              <span
+                class="ship-entry__name"
+                :style="{
+                  color: SHIP_COLORS[idx % SHIP_COLORS.length],
+                }"
+              >
+                {{ shipSlots[idx].model.value?.name }}
+              </span>
               <Btn
                 v-for="mod in shipSlots[idx].modulesWithCargo.value"
                 :key="mod.id"
@@ -342,24 +339,7 @@ const resetFilters = () => {
                 {{ mod.name }}
               </Btn>
             </template>
-            <Btn
-              v-if="shipSlots[idx].model.value?.cargoHolds?.length"
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="handleFillGreedy(idx)"
-            >
-              {{ t("labels.cargoGridViewer.autoFillShip") }}
-            </Btn>
-            <Btn
-              v-tooltip="t('actions.remove')"
-              :size="BtnSizesEnum.SMALL"
-              :data-test="`remove-ship-${idx}`"
-              inline
-              @click="removeShip(idx)"
-            >
-              <i class="fa-light fa-times" />
-            </Btn>
-          </div>
+          </template>
           <Btn
             v-if="sessionStore.isAuthenticated"
             :size="BtnSizesEnum.SMALL"
@@ -428,6 +408,8 @@ const resetFilters = () => {
           :cargo-holds="singleShipCargoHolds"
           :ships="ships.length > 1 ? ships : []"
           :container-requests="requestedContainers"
+          @auto-fill="handleFillGreedy"
+          @remove-ship="removeShip"
         />
       </div>
     </div>
