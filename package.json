@@ -35,7 +35,7 @@
     "@number-flow/vue": "^0.5.0",
     "@rails/actioncable": "8.1.300",
     "@rails/activestorage": "^8.1.300",
-    "@tanstack/vue-query": "^5.99.2",
+    "@tanstack/vue-query": "^5.100.1",
     "@tresjs/cientos": "^5.7.0",
     "@tresjs/core": "^5.8.0",
     "@vee-validate/rules": "^4.15.1",
