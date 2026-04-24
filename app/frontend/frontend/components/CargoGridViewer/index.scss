@@ -112,9 +112,10 @@
     flex: 1;
     color: inherit;
     text-decoration: none;
+    transition: color 0.15s ease;
 
     &:hover {
-      text-decoration: underline;
+      color: var(--link-color);
     }
   }
 }
