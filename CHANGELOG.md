@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.15.0](https://github.com/fleetyards/fleetyards/compare/v6.14.0...v6.15.0) (2026-04-24)
+
+
+### Features
+
+* **tools:** cargo grids ship comparison ([#3784](https://github.com/fleetyards/fleetyards/issues/3784)) ([143213c](https://github.com/fleetyards/fleetyards/commit/143213ca4bc83bc70d20d3f6cd68ef75bceaba98))
+
+
+### Bug Fixes
+
+* **admin:** fix table sorting by sending sorts inside q param ([4ce320f](https://github.com/fleetyards/fleetyards/commit/4ce320feed00a62895244c037c6de72ec3c0c8bc))
+
 ## [6.14.0](https://github.com/fleetyards/fleetyards/compare/v6.13.0...v6.14.0) (2026-04-24)
 
 
