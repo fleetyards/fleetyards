@@ -259,7 +259,8 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "Questa nave non ha stive di carico."
+        "noCargoHolds": "Questa nave non ha stive di carico.",
+        "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
         "vehicle": {

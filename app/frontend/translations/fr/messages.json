@@ -260,7 +260,8 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "Ce vaisseau n'a pas de soutes à cargaison."
+        "noCargoHolds": "Ce vaisseau n'a pas de soutes à cargaison.",
+        "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
         "vehicle": {

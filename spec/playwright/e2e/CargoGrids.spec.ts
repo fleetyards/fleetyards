@@ -9,7 +9,7 @@ test.describe("Cargo Grids", () => {
     await page.goto("/tools/cargo-grids/");
 
     // Wait for the filter component to be interactive
-    await page.getByTestId("filter-group-cargo-grid-model").waitFor();
+    await page.getByTestId("filter-group-cargo-grid-model-0").waitFor();
   });
 
   test("Loads the page", async ({ page }) => {
@@ -30,7 +30,7 @@ test.describe("Cargo Grids", () => {
     page,
   }) => {
     // Open the model filter dropdown and search for Caterpillar
-    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
+    const filterGroup = page.getByTestId("filter-group-cargo-grid-model-0");
     await filterGroup.getByTestId("filter-group-title").click();
     await filterGroup.locator("input").first().fill("Caterpillar");
 
@@ -54,35 +54,6 @@ test.describe("Cargo Grids", () => {
     // The cargo grid viewer should appear
     await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
     await expect(page.getByTestId("cargo-grid-viewer-stats")).toBeVisible();
-  });
-
-  test("Auto-fills container counts when selecting a model with cargo holds", async ({
-    page,
-  }) => {
-    const filterGroup = page.getByTestId("filter-group-cargo-grid-model");
-    await filterGroup.getByTestId("filter-group-title").click();
-    await filterGroup.locator("input").first().fill("Caterpillar");
-
-    const option = page.getByText("Caterpillar").first();
-    await option.click();
-
-    // Wait for model to load and cargo grid viewer to appear
-    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
-
-    // At least one container input should have a value > 0 after greedy fill
-    await expect(async () => {
-      const containerFields = page.locator("[data-test^='container-field-'] input");
-      const count = await containerFields.count();
-      let hasNonZero = false;
-      for (let i = 0; i < count; i++) {
-        const value = await containerFields.nth(i).inputValue();
-        if (Number(value) > 0) {
-          hasNonZero = true;
-          break;
-        }
-      }
-      expect(hasNonZero).toBe(true);
-    }).toPass();
   });
 
   test("Clears container counts", async ({ page }) => {
@@ -137,5 +108,69 @@ test.describe("Cargo Grids", () => {
     // Click the filter ships button to apply
     const filterBtn = page.getByText("Filter Ships by Container Size");
     await expect(filterBtn).toBeVisible();
+  });
+
+  test("Shows Add Ship button", async ({ page }) => {
+    await expect(page.getByText("Add Ship")).toBeVisible();
+  });
+
+  test("Adds a second ship selector", async ({ page }) => {
+    await page.getByText("Add Ship").click();
+
+    // Should now have two filter groups
+    await expect(
+      page.getByTestId("filter-group-cargo-grid-model-0"),
+    ).toBeVisible();
+    await expect(
+      page.getByTestId("filter-group-cargo-grid-model-1"),
+    ).toBeVisible();
+
+    // Remove buttons should appear
+    await expect(page.getByText("Remove").first()).toBeVisible();
+  });
+
+  test("Loads multiple ships via URL and shows unified viewer with multi-ship stats", async ({
+    page,
+  }) => {
+    await page.goto(
+      "/tools/cargo-grids/?ships=drak-caterpillar,misc-freelancer-max",
+    );
+    await page.waitForLoadState("networkidle");
+
+    // Should show ONE cargo grid viewer (unified)
+    await expect(page.getByTestId("cargo-grid-viewer")).toHaveCount(1);
+
+    // Should show multi-ship stats (not single-ship stats)
+    await expect(
+      page.getByTestId("cargo-grid-viewer-multi-stats"),
+    ).toBeVisible();
+  });
+
+  test("Removes a ship from comparison", async ({ page }) => {
+    // Add second ship
+    await page.getByText("Add Ship").click();
+    await expect(
+      page.getByTestId("filter-group-cargo-grid-model-1"),
+    ).toBeVisible();
+
+    // Remove the second ship selector
+    const removeButtons = page.getByText("Remove");
+    await removeButtons.last().click();
+
+    // Should be back to one filter group
+    await expect(
+      page.getByTestId("filter-group-cargo-grid-model-1"),
+    ).not.toBeVisible();
+    await expect(
+      page.getByTestId("filter-group-cargo-grid-model-0"),
+    ).toBeVisible();
+  });
+
+  test("Backward compat: single ship URL still works", async ({ page }) => {
+    await page.goto("/tools/cargo-grids/?ship=drak-caterpillar");
+    await page.waitForLoadState("networkidle");
+
+    await expect(page.getByTestId("cargo-grid-viewer")).toBeVisible();
+    await expect(page.getByTestId("cargo-grid-viewer-stats")).toBeVisible();
   });
 });

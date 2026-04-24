@@ -259,7 +259,8 @@
         }
       },
       "cargoGridViewer": {
-        "noCargoHolds": "此飞船没有货舱。"
+        "noCargoHolds": "此飞船没有货舱。",
+        "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
         "vehicle": {

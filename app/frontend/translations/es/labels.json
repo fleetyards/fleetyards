@@ -1056,7 +1056,10 @@
         "didNotFit": "No cabe",
         "openInTool": "Abrir en la herramienta de grilla de carga",
         "myHangar": "Mostrar solo mis naves",
-        "filterShips": "Filtrar naves por tamaño de contenedor"
+        "filterShips": "Filtrar naves por tamaño de contenedor",
+        "addShip": "Add Ship",
+        "removeShip": "Remove",
+        "autoFillShip": "Auto-fill"
       },
       "admin": {
         "dashboard": {

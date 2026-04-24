@@ -11,6 +11,19 @@ export type ContainerRequest = {
   quantity: number;
 };
 
+export type ShipEntry = {
+  name: string;
+  cargoHolds: CargoHold[];
+  color: string;
+};
+
+export const SHIP_COLORS = [
+  "#82dbc5",
+  "#ff9e80",
+  "#b39ddb",
+  "#90caf9",
+];
+
 export const SCU_UNIT = 1.25;
 
 export const CONTAINER_DEFS = [
@@ -105,7 +118,9 @@ export function computeGreedyFill(
 
 <script lang="ts" setup>
 import { TresCanvas } from "@tresjs/core";
-import { OrbitControls, Grid } from "@tresjs/cientos";
+import { OrbitControls, Grid, Html } from "@tresjs/cientos";
+import type { Group } from "three";
+import CargoGridDragHandler from "./CargoGridDragHandler.vue";
 import { BoxGeometry, EdgesGeometry, LineBasicMaterial, Color } from "three";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -129,12 +144,18 @@ const powerPreference = computed<WebGLPowerPreference>(() =>
 
 type Props = {
   cargoHolds: CargoHold[];
+  ships?: ShipEntry[];
   containerRequests?: ContainerRequest[];
+  compact?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  ships: () => [],
   containerRequests: () => [],
+  compact: false,
 });
+
+const isMultiShipMode = computed(() => props.ships.length > 1);
 
 type PlacedContainer = {
   size: number;
@@ -508,7 +529,10 @@ function findBestHoldArrangement(
 }
 
 const isPreviewMode = computed(
-  () => !props.cargoHolds?.length && props.containerRequests.length > 0,
+  () =>
+    !isMultiShipMode.value &&
+    !props.cargoHolds?.length &&
+    props.containerRequests.length > 0,
 );
 
 // Preview layout: render containers in a row without cargo holds
@@ -827,8 +851,269 @@ const packVersion = computed(() =>
   ),
 );
 
+// Multi-ship: pack each ship independently, position side by side
+type ShipPackResult = {
+  shipIndex: number;
+  name: string;
+  color: string;
+  groups: HoldGroupLayout[];
+  placed: Record<number, number>;
+  notPlaced: Record<number, number>;
+  totalSCU: number;
+  maxContainerSize: number;
+  packedSCU: number;
+  notPlacedSCU: number;
+  sceneOffset: [number, number, number];
+  // Bounding dimensions for this ship's holds (in world units)
+  boundingWidth: number;
+  boundingDepth: number;
+  boundingHeight: number;
+};
+
+function packSingleShip(
+  cargoHolds: CargoHold[],
+  containerRequests: ContainerRequest[],
+): PackResult {
+  if (!cargoHolds.length) {
+    return { groups: [], placed: {}, notPlaced: {} };
+  }
+
+  const containersToPlace: number[] = [];
+  for (const req of containerRequests) {
+    for (let i = 0; i < req.quantity; i++) {
+      containersToPlace.push(req.size);
+    }
+  }
+  containersToPlace.sort((a, b) => b - a);
+
+  const holdGroups = groupCargoHolds(cargoHolds);
+  const groupGapSCU = 2;
+  let groupOffsetX = 0;
+
+  const groups: HoldGroupLayout[] = [];
+  const holdGridsByIndex: (HoldGrid | null)[] = new Array(cargoHolds.length).fill(null);
+  const layoutsByIndex: (HoldLayout | null)[] = new Array(cargoHolds.length).fill(null);
+  const placed: Record<number, number> = {};
+  const notPlaced: Record<number, number> = {};
+
+  const groupInfos: {
+    arrangement: ArrangeResult;
+    group: (typeof holdGroups)[number];
+  }[] = [];
+
+  for (const group of holdGroups) {
+    const arrangement = findBestHoldArrangement(cargoHolds, group.holdIndices);
+    groupInfos.push({ arrangement, group });
+  }
+
+  // Position hold groups starting at x=0 (left-aligned), centered on Z
+  for (const { arrangement, group } of groupInfos) {
+    const zOffsetSCU = -Math.floor(arrangement.groupDepthSCU / 2);
+    const groupPos: [number, number, number] = [
+      groupOffsetX * SCU_UNIT,
+      0,
+      zOffsetSCU * SCU_UNIT,
+    ];
+    groupOffsetX += arrangement.groupWidthSCU + groupGapSCU;
+
+    const holdLayouts: HoldLayout[] = [];
+
+    for (const p of arrangement.positions) {
+      const { hi, pos: holdPos, dims: dims3d, gridX, gridY, gridZ } = p;
+      const hg: HoldGrid = {
+        hold: cargoHolds[hi],
+        holdPosition: holdPos,
+        gridX,
+        gridY,
+        gridZ,
+        occupied: new Uint8Array(gridX * gridY * gridZ),
+      };
+      holdGridsByIndex[hi] = hg;
+
+      const layout: HoldLayout = {
+        holdIndex: hi,
+        dimensions: dims3d,
+        position: holdPos,
+        containers: [],
+      };
+      layoutsByIndex[hi] = layout;
+      holdLayouts.push(layout);
+    }
+
+    groups.push({
+      key: group.key,
+      label: group.label,
+      position: groupPos,
+      holds: holdLayouts,
+    });
+  }
+
+  const holdIndicesByVolume = holdGridsByIndex
+    .map((hg, hi) => ({ hi, volume: hg ? hg.hold.capacity : 0 }))
+    .filter((h) => holdGridsByIndex[h.hi] !== null)
+    .sort((a, b) => a.volume - b.volume)
+    .map((h) => h.hi);
+
+  for (const containerSize of containersToPlace) {
+    const def = CONTAINER_DEFS.find((d) => d.size === containerSize);
+    if (!def) {
+      notPlaced[containerSize] = (notPlaced[containerSize] || 0) + 1;
+      continue;
+    }
+
+    let wasPlaced = false;
+    for (const hi of holdIndicesByVolume) {
+      const hg = holdGridsByIndex[hi];
+      const layout = layoutsByIndex[hi];
+      if (!hg || !layout) continue;
+
+      const maxSize = hg.hold.maxContainerSize?.size || 32;
+      if (def.size > maxSize) continue;
+
+      const result = tryPlaceOne(def, hg, layout);
+      if (result) {
+        wasPlaced = true;
+        placed[containerSize] = (placed[containerSize] || 0) + 1;
+        break;
+      }
+    }
+
+    if (!wasPlaced) {
+      notPlaced[containerSize] = (notPlaced[containerSize] || 0) + 1;
+    }
+  }
+
+  return { groups, placed, notPlaced };
+}
+
+// Per-ship drag offsets (user-dragged positions)
+const shipDragOffsets = ref<Map<number, [number, number, number]>>(new Map());
+
+const multiShipPackResults = computed<ShipPackResult[]>(() => {
+  if (!isMultiShipMode.value) return [];
+
+  const results: ShipPackResult[] = [];
+  const shipGapSCU = 4;
+  let shipOffsetX = 0;
+
+  // First pass: compute each ship's pack result and bounding box
+  const shipInfos: {
+    result: PackResult;
+    widthSCU: number;
+    depthSCU: number;
+    heightSCU: number;
+  }[] = [];
+
+  let totalWidthSCU = 0;
+  for (const ship of props.ships) {
+    const result = packSingleShip(ship.cargoHolds, props.containerRequests);
+
+    const holdGroups = groupCargoHolds(ship.cargoHolds);
+    const groupGapSCU = 2;
+    let widthSCU = 0;
+    let maxHeightSCU = 0;
+    let maxDepthSCU = 0;
+
+    for (const group of holdGroups) {
+      const arr = findBestHoldArrangement(ship.cargoHolds, group.holdIndices);
+      widthSCU += arr.groupWidthSCU;
+      maxHeightSCU = Math.max(maxHeightSCU, arr.groupHeightSCU);
+      maxDepthSCU = Math.max(maxDepthSCU, arr.groupDepthSCU);
+    }
+    widthSCU += Math.max(0, holdGroups.length - 1) * groupGapSCU;
+
+    shipInfos.push({
+      result,
+      widthSCU: widthSCU || 2,
+      depthSCU: maxDepthSCU || 2,
+      heightSCU: maxHeightSCU || 2,
+    });
+    totalWidthSCU += (widthSCU || 2) + shipGapSCU;
+  }
+  totalWidthSCU -= shipGapSCU;
+
+  const startX = -Math.floor(totalWidthSCU / 2);
+
+  for (let i = 0; i < props.ships.length; i++) {
+    const ship = props.ships[i];
+    const info = shipInfos[i];
+
+    const sceneOffset: [number, number, number] = [
+      (startX + shipOffsetX) * SCU_UNIT,
+      0,
+      0,
+    ];
+
+    let packedSCU = 0;
+    for (const [size, count] of Object.entries(info.result.placed)) {
+      packedSCU += Number(size) * count;
+    }
+    let notPlacedSCU = 0;
+    for (const [size, count] of Object.entries(info.result.notPlaced)) {
+      notPlacedSCU += Number(size) * count;
+    }
+
+    results.push({
+      shipIndex: i,
+      name: ship.name,
+      color: ship.color,
+      groups: info.result.groups,
+      placed: info.result.placed,
+      notPlaced: info.result.notPlaced,
+      totalSCU: ship.cargoHolds.reduce((sum, h) => sum + h.capacity, 0),
+      maxContainerSize: Math.max(
+        ...ship.cargoHolds.map((h) => h.maxContainerSize?.size || 0),
+      ),
+      packedSCU,
+      notPlacedSCU,
+      sceneOffset,
+      boundingWidth: info.widthSCU * SCU_UNIT,
+      boundingDepth: info.depthSCU * SCU_UNIT,
+      boundingHeight: info.heightSCU * SCU_UNIT,
+    });
+
+    shipOffsetX += info.widthSCU + shipGapSCU;
+  }
+
+  return results;
+});
+
+const multiShipPackVersion = computed(() =>
+  multiShipPackResults.value.reduce(
+    (acc, s) =>
+      acc +
+      s.groups.reduce(
+        (ga, g) => ga + g.holds.reduce((a, l) => a + l.containers.length, 0),
+        0,
+      ),
+    0,
+  ),
+);
+
+const shipEdgeMaterials = computed(() =>
+  props.ships.map(
+    (ship) =>
+      new LineBasicMaterial({ color: new Color(ship.color), linewidth: 1 }),
+  ),
+);
+
 // Camera based on hold geometry only (not affected by container changes)
 const holdGeometry = computed(() => {
+  if (isMultiShipMode.value) {
+    if (!multiShipPackResults.value.length) return null;
+    let totalWidth = 0;
+    let maxY = 0;
+    let maxZ = 0;
+    for (const s of multiShipPackResults.value) {
+      totalWidth += s.boundingWidth;
+      maxY = Math.max(maxY, s.boundingHeight);
+      maxZ = Math.max(maxZ, s.boundingDepth);
+    }
+    const shipGapSCU = 4;
+    totalWidth += (multiShipPackResults.value.length - 1) * shipGapSCU * SCU_UNIT;
+    return { totalWidth, maxY: maxY * SCU_UNIT, maxZ: maxZ * SCU_UNIT };
+  }
+
   if (!props.cargoHolds?.length) return null;
 
   const holdGroups = groupCargoHolds(props.cargoHolds);
@@ -926,11 +1211,60 @@ const canvasKey = ref(0);
 const resetCamera = () => {
   canvasKey.value++;
 };
+
+// Drag support for multi-ship mode
+const isDragging = ref(false);
+const shipGroupRefs = ref<Map<number, Group>>(new Map());
+const setShipGroupRef = (el: unknown, shipIndex: number) => {
+  if (el) {
+    shipGroupRefs.value.set(shipIndex, el as Group);
+  } else {
+    shipGroupRefs.value.delete(shipIndex);
+  }
+};
+
+const shipGroupsForDrag = computed(() =>
+  multiShipPackResults.value.map((s) => ({
+    ref: shipGroupRefs.value.get(s.shipIndex) || null,
+    shipIndex: s.shipIndex,
+  })),
+);
+
+const getShipPosition = (shipResult: ShipPackResult): [number, number, number] => {
+  const drag = shipDragOffsets.value.get(shipResult.shipIndex);
+  if (!drag) return shipResult.sceneOffset;
+  return [
+    shipResult.sceneOffset[0] + drag[0],
+    shipResult.sceneOffset[1] + drag[1],
+    shipResult.sceneOffset[2] + drag[2],
+  ];
+};
+
+const onDragStart = (_shipIndex: number) => {
+  isDragging.value = true;
+};
+
+const onDragMove = (shipIndex: number, offset: [number, number, number]) => {
+  shipDragOffsets.value = new Map(shipDragOffsets.value);
+  shipDragOffsets.value.set(shipIndex, offset);
+};
+
+const onDragEnd = (_shipIndex: number) => {
+  isDragging.value = false;
+};
 </script>
 
 <template>
-  <div class="cargo-grid-viewer" data-test="cargo-grid-viewer">
-    <div class="cargo-grid-viewer__stats" data-test="cargo-grid-viewer-stats">
+  <div
+    class="cargo-grid-viewer"
+    :class="{ 'cargo-grid-viewer--compact': compact }"
+    data-test="cargo-grid-viewer"
+  >
+    <div
+      v-if="!isMultiShipMode"
+      class="cargo-grid-viewer__stats"
+      data-test="cargo-grid-viewer-stats"
+    >
       <template v-if="isPreviewMode">
         <div class="cargo-grid-viewer__stat">
           <span class="cargo-grid-viewer__stat-label">{{
@@ -1038,10 +1372,10 @@ const resetCamera = () => {
         <OrbitControls
           :target="sceneCenter"
           :auto-rotate="false"
-          :enable-rotate="true"
-          :enable-zoom="true"
+          :enable-rotate="!isDragging"
+          :enable-zoom="!isDragging"
           :zoom-speed="0.5"
-          :enable-pan="true"
+          :enable-pan="!isDragging"
           enable-damping
           :damping-factor="0.25"
           make-default
@@ -1092,8 +1426,80 @@ const resetCamera = () => {
           </TresGroup>
         </template>
 
-        <!-- Cargo Hold Groups -->
-        <template v-else>
+        <!-- Drag handler for multi-ship mode -->
+        <CargoGridDragHandler
+          v-if="isMultiShipMode"
+          :ship-groups="shipGroupsForDrag"
+          :enabled="isMultiShipMode"
+          @drag-start="onDragStart"
+          @drag-move="onDragMove"
+          @drag-end="onDragEnd"
+        />
+
+        <!-- Multi-ship mode -->
+        <template v-if="isMultiShipMode">
+          <TresGroup
+            v-for="shipResult in multiShipPackResults"
+            :ref="(el: unknown) => setShipGroupRef(el, shipResult.shipIndex)"
+            :key="`ship-${shipResult.shipIndex}-${multiShipPackVersion}`"
+            :position="getShipPosition(shipResult)"
+          >
+            <!-- Ship label (Html from cientos) -->
+            <Html
+              :position="[0, shipResult.boundingHeight + 1, 0]"
+              center
+            >
+              <span
+                class="cargo-grid-viewer__ship-label"
+                :style="{ color: shipResult.color }"
+              >
+                {{ shipResult.name }}
+              </span>
+            </Html>
+
+            <!-- Hold groups for this ship -->
+            <TresGroup
+              v-for="group in shipResult.groups"
+              :key="`group-${shipResult.shipIndex}-${group.key}`"
+              :position="group.position"
+            >
+              <TresGroup
+                v-for="layout in group.holds"
+                :key="`hold-${shipResult.shipIndex}-${layout.holdIndex}`"
+                :position="layout.position"
+              >
+                <!-- Hold wireframe in ship color -->
+                <TresLineSegments
+                  :geometry="createEdgesGeometry(layout.dimensions)"
+                  :material="shipEdgeMaterials[shipResult.shipIndex]"
+                />
+
+                <!-- Containers inside hold -->
+                <TresGroup
+                  v-for="(container, cIdx) in layout.containers"
+                  :key="`c-${shipResult.shipIndex}-${layout.holdIndex}-${cIdx}`"
+                >
+                  <TresMesh :position="container.position">
+                    <TresBoxGeometry :args="container.dimensions" />
+                    <TresMeshStandardMaterial
+                      :color="container.color"
+                      :transparent="true"
+                      :opacity="0.6"
+                    />
+                  </TresMesh>
+                  <TresLineSegments
+                    :position="container.position"
+                    :geometry="createEdgesGeometry(container.dimensions)"
+                    :material="containerEdgeMaterial(container.color)"
+                  />
+                </TresGroup>
+              </TresGroup>
+            </TresGroup>
+          </TresGroup>
+        </template>
+
+        <!-- Single-ship Cargo Hold Groups -->
+        <template v-else-if="!isPreviewMode">
           <TresGroup
             v-for="group in groupLayouts"
             :key="`group-${group.key}-${packVersion}`"
@@ -1134,6 +1540,97 @@ const resetCamera = () => {
           </TresGroup>
         </template>
       </TresCanvas>
+    </div>
+
+    <!-- Multi-ship per-ship stats -->
+    <div
+      v-if="isMultiShipMode"
+      class="cargo-grid-viewer__multi-stats"
+      data-test="cargo-grid-viewer-multi-stats"
+    >
+      <div
+        v-for="shipResult in multiShipPackResults"
+        :key="`stats-${shipResult.shipIndex}`"
+        class="cargo-grid-viewer__ship-stats"
+      >
+        <div class="cargo-grid-viewer__ship-stats-header">
+          <span
+            class="cargo-grid-viewer__stat-color"
+            :style="{ backgroundColor: shipResult.color }"
+          />
+          <span class="cargo-grid-viewer__ship-stats-name">
+            {{ shipResult.name }}
+          </span>
+        </div>
+        <div class="cargo-grid-viewer__stats">
+          <div class="cargo-grid-viewer__stat">
+            <span class="cargo-grid-viewer__stat-label">{{
+              t("labels.cargoGridViewer.capacity")
+            }}</span>
+            <span class="cargo-grid-viewer__stat-value"
+              >{{ shipResult.totalSCU }} SCU</span
+            >
+          </div>
+          <div class="cargo-grid-viewer__stat">
+            <span class="cargo-grid-viewer__stat-label">{{
+              t("labels.cargoGridViewer.maxContainerSize")
+            }}</span>
+            <span class="cargo-grid-viewer__stat-value"
+              >{{ shipResult.maxContainerSize }} SCU</span
+            >
+          </div>
+          <div class="cargo-grid-viewer__stat">
+            <span class="cargo-grid-viewer__stat-label">{{
+              t("labels.cargoGridViewer.packed")
+            }}</span>
+            <span class="cargo-grid-viewer__stat-value"
+              >{{ shipResult.packedSCU }} SCU</span
+            >
+          </div>
+          <div
+            v-for="(count, size) in shipResult.placed"
+            :key="`ship-${shipResult.shipIndex}-placed-${size}`"
+            class="cargo-grid-viewer__stat"
+          >
+            <span
+              class="cargo-grid-viewer__stat-color"
+              :style="{ backgroundColor: CONTAINER_COLORS[Number(size)] }"
+            />
+            <span class="cargo-grid-viewer__stat-label">{{ size }} SCU</span>
+            <span class="cargo-grid-viewer__stat-value"
+              >&times;{{ count }}</span
+            >
+          </div>
+          <template
+            v-if="
+              Object.values(shipResult.notPlaced).some((v: number) => v > 0)
+            "
+          >
+            <div
+              class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning"
+            >
+              <span class="cargo-grid-viewer__stat-label">{{
+                t("labels.cargoGridViewer.didNotFit")
+              }}</span>
+              <span class="cargo-grid-viewer__stat-value"
+                >{{ shipResult.notPlacedSCU }} SCU</span
+              >
+            </div>
+            <div
+              v-for="(count, size) in shipResult.notPlaced"
+              :key="`ship-${shipResult.shipIndex}-np-${size}`"
+              class="cargo-grid-viewer__stat cargo-grid-viewer__stat--warning"
+            >
+              <span class="cargo-grid-viewer__stat-label"
+                >{{ size }} SCU</span
+              >
+              <span class="cargo-grid-viewer__stat-value"
+                >&times;{{ count }}</span
+              >
+            </div>
+          </template>
+        </div>
+      </div>
     </div>
   </div>
 </template>

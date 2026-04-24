@@ -56,4 +56,45 @@
     bottom: 10px;
     z-index: 10;
   }
+
+  &--compact {
+    height: 45vh;
+    min-height: 300px;
+  }
+
+  &__ship-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-shadow: 0 1px 3px rgb(0 0 0 / 80%);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  &__multi-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 10px 0;
+  }
+
+  &__ship-stats {
+    flex: 1;
+    min-width: 250px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.75rem;
+  }
+
+  &__ship-stats-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__ship-stats-name {
+    font-weight: 600;
+    font-size: 1rem;
+  }
 }
