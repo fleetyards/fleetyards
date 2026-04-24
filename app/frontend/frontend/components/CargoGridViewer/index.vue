@@ -1414,11 +1414,7 @@ const onDragEnd = (_shipIndex: number) => {
             <span v-else class="cargo-grid-viewer__ship-stats-name">
               {{ ships[0].name }}
             </span>
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              inline
-              @click="emit('autoFill', 0)"
-            >
+            <Btn :size="BtnSizesEnum.SMALL" inline @click="emit('autoFill', 0)">
               {{ t("labels.cargoGridViewer.autoFillShip") }}
             </Btn>
             <Btn
@@ -1465,9 +1461,7 @@ const onDragEnd = (_shipIndex: number) => {
                 class="cargo-grid-viewer__stat-color"
                 :style="{ backgroundColor: CONTAINER_COLORS[Number(size)] }"
               />
-              <span class="cargo-grid-viewer__stat-label"
-                >{{ size }} SCU</span
-              >
+              <span class="cargo-grid-viewer__stat-label">{{ size }} SCU</span>
               <span class="cargo-grid-viewer__stat-value"
                 >&times;{{ count }}</span
               >
