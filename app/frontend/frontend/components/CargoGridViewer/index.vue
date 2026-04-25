@@ -745,13 +745,6 @@ function tryPlaceOne(
 
 const groupLayouts = computed(() => packResult.value.groups);
 
-const packVersion = computed(() =>
-  groupLayouts.value.reduce(
-    (acc, g) => acc + g.holds.reduce((a, l) => a + l.containers.length, 0),
-    0,
-  ),
-);
-
 // Multi-ship: pack each ship independently, position side by side
 type ShipPackResult = {
   shipIndex: number;
@@ -982,18 +975,6 @@ const multiShipPackResults = computed<ShipPackResult[]>(() => {
 
   return results;
 });
-
-const multiShipPackVersion = computed(() =>
-  multiShipPackResults.value.reduce(
-    (acc, s) =>
-      acc +
-      s.groups.reduce(
-        (ga, g) => ga + g.holds.reduce((a, l) => a + l.containers.length, 0),
-        0,
-      ),
-    0,
-  ),
-);
 
 const shipEdgeMaterials = computed(() =>
   props.ships.map(
