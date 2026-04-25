@@ -147,9 +147,7 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
           }
         end
 
-        # TODO: request validation middleware is disabled in test env;
-        # this test relied on committee middleware rejecting invalid params
-        run_test! unless Rails.env.test?
+        run_test!
       end
     end
   end
