@@ -14,6 +14,7 @@ module Api
 
           scope = scope.where(loaner: loaner_included?)
 
+          normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
 
           @q = scope.ransack(vehicle_query_params)
@@ -24,7 +25,7 @@ module Api
             result = @fleet.models
               .where(id: model_ids)
               .distinct
-              .order(name: :asc)
+              .order(@q.result.order_values.presence || "name ASC")
 
             @models = result_with_pagination(result, per_page(Model))
 
@@ -50,6 +51,7 @@ module Api
 
           scope = scope.where(loaner: loaner_included?)
 
+          normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] = sorting_params(FleetVehicle, vehicle_query_params["sorts"])
 
           @q = scope.ransack(vehicle_query_params)

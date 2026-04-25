@@ -3,7 +3,10 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
-  let!(:models) { create_list(:model, 6) }
+  let!(:model_alpha) { create(:model, name: "Alpha") }
+  let!(:model_bravo) { create(:model, name: "Bravo") }
+  let!(:model_charlie) { create(:model, name: "Charlie") }
+  let!(:models) { [model_alpha, model_bravo, model_charlie] + create_list(:model, 3) }
 
   path "/models" do
     get("Models List") do
@@ -68,6 +71,43 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
           items = data["items"]
 
           expect(items.count).to eq(2)
+        end
+      end
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/Models"
+
+        context "sorted by name asc" do
+          let(:q) { {"sorts" => "name asc"} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m["name"] }
+
+            expect(names).to eq(names.sort)
+          end
+        end
+
+        context "sorted by name desc" do
+          let(:q) { {"sorts" => "name desc"} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m["name"] }
+
+            expect(names).to eq(names.sort.reverse)
+          end
+        end
+
+        context "sorted by name asc via s param" do
+          let(:q) { {"s" => "name asc"} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m["name"] }
+
+            expect(names).to eq(names.sort)
+          end
         end
       end
     end

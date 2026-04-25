@@ -82,7 +82,8 @@ module Api
 
         scope = scope.includes(:model).where(models: {pledge_price: pledge_price_range}) if pledge_price_range.present?
 
-        @q = scope.ransack(vehicle_query_params)
+        count_params = vehicle_query_params.except("sorts", "s")
+        @q = scope.ransack(count_params)
 
         @model_counts = @q.result.includes(:model).joins(:model).group("models.slug").count
       end

@@ -3,8 +3,11 @@
 require "swagger_helper"
 
 RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
-  let(:admin) { create(:user, vehicle_count: 2) }
-  let(:member) { create(:user, vehicle_count: 1) }
+  let(:model_alpha) { create(:model, name: "Alpha") }
+  let(:model_bravo) { create(:model, name: "Bravo") }
+  let(:model_charlie) { create(:model, name: "Charlie") }
+  let(:admin) { create(:user, vehicle_count: 0) }
+  let(:member) { create(:user, vehicle_count: 0) }
   let(:user) { admin }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:fleetSlug) { fleet.slug }
@@ -27,6 +30,10 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
   before do
     Sidekiq::Testing.inline!
+
+    create(:vehicle, user: admin, model: model_alpha)
+    create(:vehicle, user: admin, model: model_charlie)
+    create(:vehicle, user: member, model: model_bravo)
 
     sign_in(user) if user.present?
   end
@@ -120,6 +127,63 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
             expect(items.count).to be > 0
             expect(items.count).to eq(3)
+          end
+        end
+
+        context "sorted by modelName asc" do
+          let(:q) { {"sorts" => "modelName asc"} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m.dig("model", "name") }
+
+            expect(names).to eq(%w[Alpha Bravo Charlie])
+          end
+        end
+
+        context "sorted by modelName desc" do
+          let(:q) { {"sorts" => "modelName desc"} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m.dig("model", "name") }
+
+            expect(names).to eq(%w[Charlie Bravo Alpha])
+          end
+        end
+
+        context "sorted by modelName asc via s param" do
+          let(:q) { {"s" => "modelName asc"} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m.dig("model", "name") }
+
+            expect(names).to eq(%w[Alpha Bravo Charlie])
+          end
+        end
+
+        context "sorted by modelName asc grouped" do
+          let(:q) { {"sorts" => "modelName asc"} }
+          let(:grouped) { true }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m["name"] }
+
+            expect(names).to eq(%w[Alpha Bravo Charlie])
+          end
+        end
+
+        context "sorted by modelName desc grouped" do
+          let(:q) { {"sorts" => "modelName desc"} }
+          let(:grouped) { true }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+            names = data["items"].map { |m| m["name"] }
+
+            expect(names).to eq(%w[Charlie Bravo Alpha])
           end
         end
       end

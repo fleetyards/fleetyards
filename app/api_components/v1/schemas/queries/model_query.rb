@@ -41,6 +41,11 @@ module V1
             withCargo: {type: :boolean},
             withCargoGrids: {type: :boolean},
             inHangar: {type: :boolean},
+            s: {anyOf: [{
+              type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
+            }, {
+              "$ref": "#/components/schemas/ModelSortEnum"
+            }]},
             sorts: {anyOf: [{
               type: :array, items: {"$ref": "#/components/schemas/ModelSortEnum"}
             }, {

@@ -13,7 +13,8 @@ module Api
         def model_counts
           scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
-          @q = scope.ransack(vehicle_query_params)
+          count_params = vehicle_query_params.except("sorts", "s")
+          @q = scope.ransack(count_params)
 
           @model_counts = @q.result.includes(:model).joins(:model).group("models.slug").count
         end

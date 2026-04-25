@@ -80,6 +80,7 @@ module Api
       end
 
       def cargo_options
+        normalize_sort_params(model_query_params)
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = Model.visible
@@ -174,6 +175,7 @@ module Api
           scope = scope.where(price: price_range)
         end
 
+        normalize_sort_params(model_query_params)
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = scope.ransack(model_query_params)
@@ -201,6 +203,7 @@ module Api
           scope = scope.where(price: price_range)
         end
 
+        normalize_sort_params(model_query_params)
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         @q = scope.ransack(model_query_params)
@@ -354,6 +357,7 @@ module Api
         scope = container_fit(scope) if container_fit_params.present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
+        normalize_sort_params(model_query_params)
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
 
         scope.ransack(model_query_params)
@@ -459,7 +463,7 @@ module Api
         @model_query_params ||= params.permit(
           q: [
             :name_cont, :name_eq, :slug_eq, :description_cont, :name_or_description_cont, :on_sale_eq,
-            :sorts, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
+            :s, :sorts, :length_gteq, :length_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
             :price_gteq, :price_lteq, :pledge_price_gteq, :pledge_price_lteq, :search_cont,
             :with_dock, :with_cargo, :with_cargo_grids, :in_hangar,
             will_it_fit: [], name_in: [], slug_in: [], manufacturer_in: [], classification_in: [],

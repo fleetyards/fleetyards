@@ -7969,6 +7969,12 @@ components:
           type: array
           items:
             type: string
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetVehicleSortEnum"
+          - "$ref": "#/components/schemas/FleetVehicleSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -8385,6 +8391,12 @@ components:
           format: uuid
         withCargo:
           type: boolean
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/VehicleSortEnum"
+          - "$ref": "#/components/schemas/VehicleSortEnum"
         sorts:
           anyOf:
           - type: array
@@ -9864,6 +9876,12 @@ components:
           type: boolean
         inHangar:
           type: boolean
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ModelSortEnum"
+          - "$ref": "#/components/schemas/ModelSortEnum"
         sorts:
           anyOf:
           - type: array

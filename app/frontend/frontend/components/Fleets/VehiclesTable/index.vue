@@ -92,6 +92,7 @@ const tableColumns = computed<BaseTableCol<FleetVehicle>[]>(() => {
     ...extraImageColumns.value,
     {
       name: "name",
+      attributeKey: "modelName",
       label: t("labels.vehicle.name"),
       width: "auto",
       sortable: true,
