@@ -88,7 +88,7 @@ def write_superset_ports(port, vite_port)
   File.write(File.join(superset_dir, "ports.json"), JSON.pretty_generate(config) + "\n")
 end
 
-def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db)
+def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db, cookie_prefix: nil)
   env_local = File.join(APP_ROOT, ".env.local")
 
   # Preserve user content above the marker
@@ -111,6 +111,7 @@ def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_red
     SIDEKIQ_REDIS_DB=#{sidekiq_redis_db}
     DOMAIN=localhost:#{port}
     ON_SUBDOMAIN=false
+    #{"COOKIE_PREFIX=#{cookie_prefix}" if cookie_prefix}
   ENV
 
   File.write(env_local, user_content + managed)
@@ -165,7 +166,8 @@ FileUtils.chdir APP_ROOT do
       puts "  Worktree: #{effective_name} (port #{port})"
     end
 
-    write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db)
+    cookie_prefix = "FLTYRD_WT_#{sanitize_worktree_name(effective_name)}"
+    write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db, cookie_prefix:)
     puts "   Wrote .env.local" if VERBOSE
 
   end
