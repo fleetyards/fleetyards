@@ -1113,8 +1113,41 @@ const notPlacedSCU = computed(() => {
   return total;
 });
 
+// Snapshot camera position/target so they only update when the geometry
+// actually changes, not on every container re-pack (which would reset
+// the user's orbit).
+const snappedCameraPosition = ref<[number, number, number]>([10, 10, 10]);
+const snappedSceneCenter = ref<[number, number, number]>([0, 0, 0]);
+
+const arraysEqual = (
+  a: [number, number, number],
+  b: [number, number, number],
+) => a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
+
+watch(
+  cameraPosition,
+  (pos) => {
+    if (!arraysEqual(pos, snappedCameraPosition.value)) {
+      snappedCameraPosition.value = pos;
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  sceneCenter,
+  (center) => {
+    if (!arraysEqual(center, snappedSceneCenter.value)) {
+      snappedSceneCenter.value = center;
+    }
+  },
+  { immediate: true },
+);
+
 const canvasKey = ref(0);
 const resetCamera = () => {
+  snappedCameraPosition.value = cameraPosition.value;
+  snappedSceneCenter.value = sceneCenter.value;
   canvasKey.value++;
 };
 
@@ -1189,11 +1222,11 @@ const onDragEnd = (_shipIndex: number) => {
         "
       >
         <TresPerspectiveCamera
-          :position="cameraPosition"
+          :position="snappedCameraPosition"
           :args="[45, 1, 0.1, 1000]"
         />
         <OrbitControls
-          :target="sceneCenter"
+          :target="snappedSceneCenter"
           :auto-rotate="false"
           :enable-rotate="!isDragging"
           :enable-zoom="!isDragging"
@@ -1264,7 +1297,7 @@ const onDragEnd = (_shipIndex: number) => {
           <TresGroup
             v-for="shipResult in multiShipPackResults"
             :ref="(el: unknown) => setShipGroupRef(el, shipResult.shipIndex)"
-            :key="`ship-${shipResult.shipIndex}-${multiShipPackVersion}`"
+            :key="`ship-${shipResult.shipIndex}`"
             :position="getShipPosition(shipResult)"
           >
             <!-- Ship label (Html from cientos) -->
@@ -1322,7 +1355,7 @@ const onDragEnd = (_shipIndex: number) => {
         <template v-else-if="!isPreviewMode">
           <TresGroup
             v-for="group in groupLayouts"
-            :key="`group-${group.key}-${packVersion}`"
+            :key="`group-${group.key}`"
             :position="group.position"
           >
             <!-- Individual holds within group -->
