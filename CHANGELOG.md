@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.16.1](https://github.com/fleetyards/fleetyards/compare/v6.16.0...v6.16.1) (2026-04-25)
+
+
+### Bug Fixes
+
+* **api:** support s param for sorting across all endpoints ([410fc19](https://github.com/fleetyards/fleetyards/commit/410fc19714ea4a2b47f56f5bad88abd55debe214))
+* **tools:** prevent camera reset on container changes in cargo grid ([3b57b28](https://github.com/fleetyards/fleetyards/commit/3b57b2829f22f176588be3e18b1184273d3fb0b7))
+* **ui:** allow string attributeKey on BaseTableCol for sort fields ([be37358](https://github.com/fleetyards/fleetyards/commit/be37358816a9cd7c5597b3530fd9ff2008902851))
+
 ## [6.16.0](https://github.com/fleetyards/fleetyards/compare/v6.15.0...v6.16.0) (2026-04-24)
 
 
