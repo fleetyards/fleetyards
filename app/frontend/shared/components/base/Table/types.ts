@@ -22,5 +22,5 @@ export type BaseTableCol<T> = {
   mobile?: boolean;
   alignment?: `${BaseTableColAlignmentEnum}`;
   sortable?: boolean;
-  attributeKey?: keyof T;
+  attributeKey?: keyof T | string;
 };
