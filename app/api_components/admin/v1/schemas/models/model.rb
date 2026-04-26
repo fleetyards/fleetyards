@@ -12,6 +12,7 @@ module Admin
               hidden: {type: :boolean},
               active: {type: :boolean},
               scKey: {type: :string},
+              positionsNeedCuration: {type: :boolean},
               scLength: {type: :number},
               scBeam: {type: :number},
               scHeight: {type: :number},

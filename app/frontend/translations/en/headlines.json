@@ -24,6 +24,7 @@
           "edit": {
             "index": "Edit Model",
             "fleetchart": "Fleetchart Images",
+            "positions": "Crew Positions",
             "hardpoints": "Hardpoints",
             "cargoAndFuel": "Fuel",
             "cargoHolds": "Cargo Holds",

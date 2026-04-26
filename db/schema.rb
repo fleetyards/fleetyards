@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_23_120001) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_26_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -579,6 +579,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_120001) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "model_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "hardpoint_id"
+    t.uuid "model_id", null: false
+    t.string "name", null: false
+    t.integer "position", default: 0, null: false
+    t.integer "position_type", null: false
+    t.integer "source", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["model_id", "hardpoint_id"], name: "index_model_positions_on_model_id_and_hardpoint_id", unique: true, where: "(hardpoint_id IS NOT NULL)"
+    t.index ["model_id"], name: "index_model_positions_on_model_id"
+  end
+
   create_table "model_snub_crafts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "model_id", null: false
@@ -644,6 +657,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_120001) do
     t.decimal "pitch", precision: 15, scale: 2
     t.decimal "pitch_boosted", precision: 15, scale: 2
     t.decimal "pledge_price", precision: 15, scale: 2
+    t.boolean "positions_need_curation", default: false
     t.decimal "price", precision: 15, scale: 2
     t.string "production_note", limit: 255
     t.string "production_status", limit: 255
@@ -996,6 +1010,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_23_120001) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
+  add_foreign_key "model_positions", "hardpoints"
+  add_foreign_key "model_positions", "models"
   add_foreign_key "notification_preferences", "users"
   add_foreign_key "notifications", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"

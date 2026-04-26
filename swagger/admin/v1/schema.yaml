@@ -3063,6 +3063,206 @@ paths:
             schema:
               "$ref": "#/components/schemas/ModelPaintInput"
         required: true
+  "/model-positions":
+    post:
+      summary: Create new Model Position
+      operationId: createModelPosition
+      tags:
+      - ModelPositions
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelPositionInput"
+        required: true
+    get:
+      summary: Model Positions list
+      operationId: listModelPositions
+      tags:
+      - ModelPositions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelPositionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPositions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/model-positions/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Model Position destroy
+      operationId: destroyModelPosition
+      tags:
+      - ModelPositions
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+        '403':
+          description: forbidden
+        '401':
+          description: unauthorized
+    get:
+      summary: Get Model Position
+      operationId: modelPosition
+      tags:
+      - ModelPositions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPosition"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Model Position
+      operationId: updateModelPosition
+      tags:
+      - ModelPositions
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPosition"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelPositionInput"
+        required: true
+  "/model-positions/regenerate":
+    put:
+      summary: Regenerate Model Positions
+      operationId: regenerateModelPositions
+      tags:
+      - ModelPositions
+      parameters:
+      - name: model_id
+        in: query
+        schema:
+          type: string
+          format: uuid
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPositions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/model-upgrades":
     post:
       summary: Create Model Upgrade
@@ -7713,6 +7913,8 @@ components:
           type: boolean
         scKey:
           type: string
+        positionsNeedCuration:
+          type: boolean
         scLength:
           type: number
         scBeam:
@@ -8084,6 +8286,8 @@ components:
           type: boolean
         scKey:
           type: string
+        positionsNeedCuration:
+          type: boolean
         scLength:
           type: number
         scBeam:
@@ -9122,6 +9326,93 @@ components:
       - meta
       - items
       title: ModelPaints
+    ModelPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        positionType:
+          type: string
+        source:
+          type: string
+        position:
+          type: integer
+        hardpointId:
+          type: string
+          format: uuid
+          nullable: true
+        modelId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - positionType
+      - source
+      - position
+      - modelId
+      - createdAt
+      - updatedAt
+      title: ModelPosition
+    ModelPositionInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        positionType:
+          type: string
+        source:
+          type: string
+        position:
+          type: integer
+        hardpointId:
+          type: string
+          format: uuid
+          nullable: true
+      additionalProperties: false
+      title: ModelPositionInput
+    ModelPositionQuery:
+      type: object
+      properties:
+        modelIdEq:
+          type: string
+          format: uuid
+        positionTypeEq:
+          type: string
+        sourceEq:
+          type: string
+        nameCont:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: ModelPositionQuery
+    ModelPositions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelPosition"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ModelPositions
     ModelQuery:
       type: object
       properties:
@@ -9160,6 +9451,8 @@ components:
         topViewColoredBlank:
           type: boolean
         frontViewBlank:
+          type: boolean
+        positionsNeedCurationEq:
           type: boolean
         sorts:
           anyOf:

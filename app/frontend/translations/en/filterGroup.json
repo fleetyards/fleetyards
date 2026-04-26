@@ -20,6 +20,16 @@
           "label": "Loaner Model"
         }
       },
+      "modelPosition": {
+        "positionType": {
+          "label": "Position Type",
+          "prompt": "Select Position Type"
+        },
+        "source": {
+          "label": "Source",
+          "prompt": "Select Source"
+        }
+      },
       "modelHardpoint": {
         "source": {
           "label": "Source",

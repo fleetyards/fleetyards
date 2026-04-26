@@ -140,6 +140,13 @@ module Api
         end
       end
 
+      def positions
+        model = find_model_by_slug!
+        return if performed?
+
+        @positions = model.model_positions.order(position: :asc)
+      end
+
       def images
         model = find_model_by_slug!
         return if performed?

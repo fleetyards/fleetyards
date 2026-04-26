@@ -26,6 +26,8 @@ module ScData
 
         model.reload
 
+        ModelPosition.generate_for_model!(model)
+
         model.set_fuel_consumption_from_hardpoints
 
         update_params = {}

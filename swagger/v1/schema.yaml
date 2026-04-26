@@ -2872,6 +2872,34 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/models/{slug}/positions":
+    parameters:
+    - name: slug
+      in: path
+      description: Model slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Model Positions
+      operationId: modelPositions
+      tags:
+      - Models
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelPosition"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/{slug}":
     parameters:
     - name: slug
@@ -9786,6 +9814,49 @@ components:
       additionalProperties: false
       example: {}
       title: ModelPaintQuery
+    ModelPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        positionType:
+          type: string
+          enum:
+          - pilot
+          - copilot
+          - turret_gunner
+          - engineer
+          - gunner
+          - loadmaster
+          - passenger
+          - operator
+          - custom
+        source:
+          type: string
+          enum:
+          - sc_data
+          - curated
+        position:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - positionType
+      - source
+      - position
+      - createdAt
+      - updatedAt
+      title: ModelPosition
     ModelQuery:
       type: object
       properties:

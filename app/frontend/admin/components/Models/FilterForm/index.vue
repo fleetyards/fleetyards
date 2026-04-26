@@ -33,6 +33,7 @@ const prefillFormValues = () => {
     holoBlank: filters.value.holoBlank,
     topViewColoredBlank: filters.value.topViewColoredBlank,
     frontViewBlank: filters.value.frontViewBlank,
+    positionsNeedCurationEq: filters.value.positionsNeedCurationEq,
   };
 };
 
@@ -120,6 +121,14 @@ watch(
       :reset-label="t('labels.all')"
       :options="booleanOptions"
       name="scKeyBlank"
+    />
+
+    <RadioList
+      v-model="form.positionsNeedCurationEq"
+      :label="t('labels.filters.models.positionsNeedCuration')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="positionsNeedCurationEq"
     />
 
     <br />

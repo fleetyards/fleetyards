@@ -322,6 +322,9 @@
         "modelHardpoint": {
           "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."
         },
+        "modelPosition": {
+          "destroy": "Are you sure you want to delete this position? This action can't be reverted."
+        },
         "modelHardpointLoadout": {
           "destroy": "Are you sure you want to delete this loadout? This action can't be reverted."
         },

@@ -54,6 +54,11 @@ v1_admin_api_routes = lambda do
     end
   end
   resources :model_module_packages, path: "model-module-packages", only: %i[index show create update destroy]
+  resources :model_positions, path: "model-positions", only: %i[index show create update destroy] do
+    collection do
+      put :regenerate
+    end
+  end
   resources :docks, only: %i[index show create update destroy]
   resources :model_hardpoints, path: "model-hardpoints", only: %i[index show create update destroy]
   resources :model_hardpoint_loadouts, path: "model-hardpoint-loadouts", only: %i[index show create update destroy]

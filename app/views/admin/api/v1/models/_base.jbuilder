@@ -8,6 +8,7 @@ json.name model.name
 json.slug model.slug
 json.hidden model.hidden
 json.active model.active
+json.positions_need_curation model.positions_need_curation
 
 json.base_model_id model.base_model_id
 

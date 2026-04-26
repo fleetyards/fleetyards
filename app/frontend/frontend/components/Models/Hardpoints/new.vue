@@ -158,12 +158,6 @@ const {
             :group="group"
             :hardpoints="hardpointsForGroup(group)"
           />
-          <HardpointGroup
-            v-for="group in [HardpointGroupEnum.SEAT]"
-            :key="group"
-            :group="group"
-            :hardpoints="hardpointsForGroup(group)"
-          />
         </div>
       </div>
       <div v-else-if="!isLoading && !isFetching" class="row">

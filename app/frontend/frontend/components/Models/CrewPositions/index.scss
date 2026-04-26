@@ -1,0 +1,40 @@
+.crew-positions {
+  margin-top: 20px;
+
+  &__label {
+    font-size: 20px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+  }
+
+  &__count {
+    font-weight: 600;
+    opacity: 0.7;
+  }
+
+  &__name {
+    font-weight: 500;
+  }
+
+  &__source {
+    opacity: 0.5;
+    font-size: 0.8em;
+  }
+}
