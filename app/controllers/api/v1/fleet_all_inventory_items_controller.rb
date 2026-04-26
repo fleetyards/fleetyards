@@ -5,11 +5,11 @@ module Api
     class FleetAllInventoryItemsController < ::Api::BaseController
       after_action -> { pagination_header(:fleet_inventory_items) }, only: %i[index]
 
-      before_action :check_fleet_logistics_feature
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?
 
+      before_action :check_fleet_logistics_feature
       before_action :set_fleet
 
       def index

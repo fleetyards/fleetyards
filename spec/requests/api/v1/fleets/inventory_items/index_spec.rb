@@ -28,6 +28,7 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
   end
 
   before do
+    Flipper.enable("fleet_logistics")
     sign_in(user) if user.present?
 
     create_list(:fleet_inventory_item, 3, fleet_inventory: fleet_inventory)

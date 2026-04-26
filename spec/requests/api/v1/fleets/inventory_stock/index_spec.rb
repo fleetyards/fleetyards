@@ -20,6 +20,7 @@ RSpec.describe "api/v1/fleets/inventory_stock", type: :request, swagger_doc: "v1
   end
 
   before do
+    Flipper.enable("fleet_logistics")
     sign_in(user) if user.present?
 
     create(:fleet_inventory_item, fleet_inventory: fleet_inventory, name: "Quantanium", category: :commodity, quantity: 100, unit: :scu, entry_type: :deposit)

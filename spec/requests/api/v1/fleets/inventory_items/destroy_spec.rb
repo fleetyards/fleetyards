@@ -30,6 +30,7 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
   end
 
   before do
+    Flipper.enable("fleet_logistics")
     sign_in(user) if user.present?
 
     fleet_inventory_item

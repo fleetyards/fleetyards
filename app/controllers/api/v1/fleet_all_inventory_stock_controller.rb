@@ -3,11 +3,11 @@
 module Api
   module V1
     class FleetAllInventoryStockController < ::Api::BaseController
-      before_action :check_fleet_logistics_feature
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?
 
+      before_action :check_fleet_logistics_feature
       before_action :set_fleet
 
       def index

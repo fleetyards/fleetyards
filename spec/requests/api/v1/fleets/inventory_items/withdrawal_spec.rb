@@ -8,6 +8,7 @@ RSpec.describe "api/v1/fleets/inventory_items withdrawal", type: :request do
   let(:fleet_inventory) { create(:fleet_inventory, fleet: fleet) }
 
   before do
+    Flipper.enable("fleet_logistics")
     sign_in(admin)
 
     create(:fleet_inventory_item, fleet_inventory: fleet_inventory, name: "Quantanium", category: :commodity, quantity: 100, unit: :scu, entry_type: :deposit)

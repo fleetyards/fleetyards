@@ -5,7 +5,6 @@ module Api
     class FleetInventoryItemsController < ::Api::BaseController
       after_action -> { pagination_header(:fleet_inventory_items) }, only: %i[index]
 
-      before_action :check_fleet_logistics_feature
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
@@ -14,6 +13,7 @@ module Api
         unless: :user_signed_in?,
         only: %i[create update destroy]
 
+      before_action :check_fleet_logistics_feature
       before_action :set_fleet
       before_action :set_fleet_inventory
       before_action :set_fleet_inventory_item, only: %i[update destroy]
