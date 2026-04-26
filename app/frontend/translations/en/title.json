@@ -105,6 +105,7 @@
             "metrics": "Edit %{manufacturer} %{model} Metrics",
             "prices": "Edit %{manufacturer} %{model} Prices",
             "fleetchart": "Edit %{manufacturer} %{model} Fleetchart Images",
+            "positions": "Edit %{manufacturer} %{model} Positions",
             "hardpoints": "Edit %{manufacturer} %{model} Hardpoints",
             "cargoAndFuel": "Edit %{manufacturer} %{model} Fuel",
             "cargoHolds": "Edit %{manufacturer} %{model} Cargo Holds",
