@@ -30,7 +30,8 @@ class VehicleLoadout < ApplicationRecord
 
   before_validation :set_default_name, if: -> { name.blank? }
 
-  validates :name, presence: true, uniqueness: {scope: :vehicle_id}
+  validates :url, presence: true
+  validates :name, uniqueness: {scope: :vehicle_id}, allow_nil: true
 
   scope :active, -> { where(active: true) }
 

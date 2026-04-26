@@ -232,11 +232,20 @@ const shouldHighlight = computed(() => {
         v-tooltip="activeLoadout.name"
         :aria-label="activeLoadout.name"
         class="vehicle-panel-loadouts"
+        :class="{
+          'erkul-link': activeLoadout.urlSource === 'erkul',
+          'spviewer-link': activeLoadout.urlSource === 'spviewer',
+        }"
         :href="activeLoadout.url"
         target="_blank"
         rel="noopener"
       >
-        <i class="fa-duotone fa-crosshairs" />
+        <template v-if="activeLoadout.urlSource">
+          <i />
+        </template>
+        <template v-else>
+          <i class="fa-duotone fa-crosshairs" />
+        </template>
       </a>
       <div
         v-if="upgradable && vehicle"

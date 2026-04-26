@@ -11,7 +11,8 @@ RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schem
   let(:id) { vehicle_loadout.id }
   let(:input) do
     {
-      name: "Updated Loadout"
+      name: "Updated Loadout",
+      url: "https://erkul.games/loadout/updated123"
     }
   end
 

@@ -24,14 +24,11 @@
 FactoryBot.define do
   factory :vehicle_loadout do
     name { Faker::Lorem.word }
+    url { "https://erkul.games/loadout/#{SecureRandom.hex(8)}" }
     vehicle
 
     trait :active do
       active { true }
-    end
-
-    trait :with_url do
-      url { "https://erkul.games/loadout/#{SecureRandom.hex(8)}" }
     end
   end
 end

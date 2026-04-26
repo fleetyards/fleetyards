@@ -9,8 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            name: {type: :string},
-            url: {type: :string, nullable: true},
+            name: {type: :string, nullable: true},
+            url: {type: :string},
             fromDefaults: {type: :boolean},
             vehicleLoadoutHardpointsAttributes: {
               type: :array,

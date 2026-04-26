@@ -12,8 +12,8 @@ module V1
             id: {type: :string, format: :uuid},
             name: {type: :string},
             active: {type: :boolean},
-            url: {type: :string, nullable: true},
-            urlSource: {type: :string, nullable: true},
+            url: {type: :string},
+            urlSource: {type: :string},
             hardpoints: {
               type: :array,
               items: {
@@ -30,7 +30,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name active hardpoints createdAt updatedAt]
+          required: %w[id active url hardpoints createdAt updatedAt]
         })
       end
     end

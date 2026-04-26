@@ -11130,10 +11130,8 @@ components:
           type: boolean
         url:
           type: string
-          nullable: true
         urlSource:
           type: string
-          nullable: true
         hardpoints:
           type: array
           items:
@@ -11158,8 +11156,8 @@ components:
       additionalProperties: false
       required:
       - id
-      - name
       - active
+      - url
       - hardpoints
       - createdAt
       - updatedAt
@@ -11169,9 +11167,9 @@ components:
       properties:
         name:
           type: string
+          nullable: true
         url:
           type: string
-          nullable: true
         fromDefaults:
           type: boolean
         vehicleLoadoutHardpointsAttributes:
@@ -11203,11 +11201,13 @@ components:
           type: string
         url:
           type: string
-          nullable: true
+        urlSource:
+          type: string
       additionalProperties: false
       required:
       - id
       - name
+      - url
       title: VehicleLoadoutMinimal
     VehiclePublic:
       type: object

@@ -47,6 +47,7 @@ json.active_loadout do
     json.id active_loadout.id
     json.name active_loadout.name
     json.url active_loadout.url
+    json.url_source active_loadout.url_source
   end
 end
 json.active_loadout nil if active_loadout.blank?

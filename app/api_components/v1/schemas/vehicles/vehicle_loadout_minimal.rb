@@ -11,10 +11,11 @@ module V1
           properties: {
             id: {type: :string, format: :uuid},
             name: {type: :string},
-            url: {type: :string, nullable: true}
+            url: {type: :string},
+            urlSource: {type: :string}
           },
           additionalProperties: false,
-          required: %w[id name]
+          required: %w[id name url]
         })
       end
     end

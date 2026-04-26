@@ -9,7 +9,7 @@ RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schem
   let(:vehicle_id) { vehicle.id }
   let(:input) do
     {
-      name: "PvE Setup"
+      url: "https://erkul.games/loadout/abc123"
     }
   end
 
@@ -55,7 +55,8 @@ RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schem
 
         run_test! do |response|
           data = JSON.parse(response.body)
-          expect(data["name"]).to eq("PvE Setup")
+          expect(data["url"]).to eq("https://erkul.games/loadout/abc123")
+          expect(data["name"]).to eq("Erkul Loadout")
         end
       end
 
@@ -64,7 +65,7 @@ RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schem
 
         let(:input) do
           {
-            name: "Default Loadout",
+            url: "https://erkul.games/loadout/def456",
             fromDefaults: true
           }
         end
