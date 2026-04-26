@@ -27,10 +27,7 @@ module V1
                   username: {type: :string}
                 }
               },
-              image: {
-                nullable: true,
-                allOf: [{"$ref": "#/components/schemas/MediaFile"}]
-              },
+              image: {"$ref": "#/components/schemas/MediaFile"},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
