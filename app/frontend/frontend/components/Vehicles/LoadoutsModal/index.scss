@@ -1,6 +1,18 @@
 .loadouts-modal {
   min-height: 100px;
 
+  &__ship-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    > span {
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+  }
+
   &__create-form {
     display: flex;
     gap: 10px;

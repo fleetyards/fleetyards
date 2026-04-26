@@ -393,7 +393,8 @@
         "active": "Active",
         "activate": "Set Active",
         "erkulUrl": "Erkul loadout URL",
-        "spviewerUrl": "SPViewer URL"
+        "spviewerUrl": "SPViewer URL",
+        "planOn": "Plan your loadout on"
       },
       "model": {
         "hidden": "Hidden?",

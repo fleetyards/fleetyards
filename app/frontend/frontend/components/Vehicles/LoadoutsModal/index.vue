@@ -11,6 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import {
   type Vehicle,
   type VehicleLoadout,
@@ -30,6 +31,19 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+const erkulShipUrl = computed(() => {
+  const identifier =
+    props.vehicle.model?.erkulIdentifier || props.vehicle.model?.scIdentifier;
+  if (!identifier) return undefined;
+  return `https://www.erkul.games/ship/${identifier}`;
+});
+
+const spviewerShipUrl = computed(() => {
+  const identifier = props.vehicle.model?.scIdentifier;
+  if (!identifier) return undefined;
+  return `https://www.spviewer.eu/performance?ship=${identifier}`;
+});
 const comlink = useComlink();
 const queryClient = useQueryClient();
 const { displayConfirm, displayAlert } = useAppNotifications();
@@ -160,6 +174,27 @@ const remove = (loadout: VehicleLoadout) => {
     "
   >
     <div class="loadouts-modal">
+      <div
+        v-if="erkulShipUrl || spviewerShipUrl"
+        class="loadouts-modal__ship-links"
+      >
+        <span>{{ t("labels.loadout.planOn") }}</span>
+        <BtnGroup>
+          <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
+            <i />
+            {{ t("labels.hardpoints.erkul") }}
+          </Btn>
+          <Btn
+            v-if="spviewerShipUrl"
+            :href="spviewerShipUrl"
+            class="spviewer-link"
+          >
+            <i />
+            {{ t("labels.hardpoints.spviewer") }}
+          </Btn>
+        </BtnGroup>
+      </div>
+
       <div class="loadouts-modal__create">
         <form
           class="loadouts-modal__create-form"
