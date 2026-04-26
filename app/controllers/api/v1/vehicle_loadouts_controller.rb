@@ -58,7 +58,12 @@ module Api
       end
 
       private def set_vehicle
-        @vehicle = current_resource_owner.vehicles.find(params[:vehicle_id])
+        vehicle_id = params[:vehicle_id]
+        @vehicle = if vehicle_id.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-/i)
+          current_resource_owner.vehicles.find(vehicle_id)
+        else
+          current_resource_owner.vehicles.find_by!(serial: vehicle_id.upcase)
+        end
       end
 
       private def set_vehicle_loadout

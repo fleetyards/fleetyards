@@ -202,7 +202,7 @@ const openAddonsModal = () => {
 
 const loadoutsRoute = computed(() => ({
   name: "hangar-vehicle-loadouts",
-  params: { id: props.vehicle.id },
+  params: { id: props.vehicle.serial || props.vehicle.id },
 }));
 </script>
 
