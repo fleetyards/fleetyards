@@ -18,6 +18,7 @@ module Api
         authorize! with: VehicleLoadoutPolicy
 
         @vehicle_loadouts = @vehicle.vehicle_loadouts
+          .order(active: :desc, name: :asc)
           .includes(vehicle_loadout_hardpoints: [:model_hardpoint, :component])
       end
 
