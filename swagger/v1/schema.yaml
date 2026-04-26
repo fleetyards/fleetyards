@@ -8374,6 +8374,10 @@ components:
           nullable: true
         itemCount:
           type: integer
+        totalScu:
+          type: number
+        totalUnits:
+          type: number
         manager:
           type: object
           nullable: true
@@ -8383,6 +8387,10 @@ components:
               format: uuid
             username:
               type: string
+        image:
+          nullable: true
+          allOf:
+          - "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time
@@ -8396,6 +8404,8 @@ components:
       - slug
       - visibility
       - itemCount
+      - totalScu
+      - totalUnits
       - createdAt
       - updatedAt
       title: FleetInventory
@@ -8591,9 +8601,21 @@ components:
     FleetInventoryItemUpdateInput:
       type: object
       properties:
+        name:
+          type: string
         notes:
           type: string
           nullable: true
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
       additionalProperties: false
       title: FleetInventoryItemUpdateInput
     FleetInventoryItemsList:

@@ -9,7 +9,9 @@ module V1
         schema({
           type: :object,
           properties: {
-            notes: {type: :string, nullable: true}
+            name: {type: :string},
+            notes: {type: :string, nullable: true},
+            category: {type: :string, enum: %w[commodity component weapon equipment ammunition consumable other]}
           },
           additionalProperties: false
         })

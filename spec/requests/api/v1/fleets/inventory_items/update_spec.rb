@@ -14,7 +14,6 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
   let(:id) { fleet_inventory_item.id }
   let(:input) do
     {
-      quantity: 500.0,
       notes: "Updated after mining run"
     }
   end
@@ -64,7 +63,6 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
         run_test! do |response|
           data = JSON.parse(response.body)
 
-          expect(data["quantity"]).to eq(500.0)
           expect(data["notes"]).to eq("Updated after mining run")
         end
       end

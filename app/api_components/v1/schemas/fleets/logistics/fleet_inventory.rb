@@ -17,6 +17,8 @@ module V1
               visibility: {type: :string, enum: %w[members_only officers_only]},
               location: {type: :string, nullable: true},
               itemCount: {type: :integer},
+              totalScu: {type: :number},
+              totalUnits: {type: :number},
               manager: {
                 type: :object,
                 nullable: true,
@@ -25,11 +27,15 @@ module V1
                   username: {type: :string}
                 }
               },
+              image: {
+                nullable: true,
+                allOf: [{"$ref": "#/components/schemas/MediaFile"}]
+              },
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name slug visibility itemCount createdAt updatedAt]
+            required: %w[id name slug visibility itemCount totalScu totalUnits createdAt updatedAt]
           })
         end
       end

@@ -127,7 +127,7 @@ const itemsList = computed<FleetInventoryItem[]>(
   () => items.value?.items ?? [],
 );
 
-const activeRecords = computed(() =>
+const activeRecords = computed<(FleetInventoryItem | StockItemWithId)[]>(() =>
   activeTab.value === "stock" ? stockList.value : itemsList.value,
 );
 

@@ -1,17 +1,13 @@
 import { useFilters } from "@/shared/composables/useFilters";
+import { type FleetInventoryItemQuery } from "@/services/fyApi";
 
-export type InventoryItemQuery = {
-  nameCont?: string;
-  categoryEq?: string;
-  qualityGteq?: string;
-  qualityLteq?: string;
-};
+export type InventoryItemQuery = FleetInventoryItemQuery;
 
 export const useInventoryItemFilters = (
   updateCallback?: () => Promise<void>,
 ) => {
   const { filter, resetFilter, isFilterSelected, filters, getQuery } =
-    useFilters<InventoryItemQuery>({
+    useFilters<FleetInventoryItemQuery>({
       updateCallback: async () => {
         if (updateCallback) {
           await updateCallback();
