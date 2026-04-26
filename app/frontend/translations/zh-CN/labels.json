@@ -313,7 +313,10 @@
             "admin": "管理员",
             "officer": "军官",
             "member": "成员"
-          }
+          },
+          "contact": "Contact",
+          "spectrumDm": "Message on Spectrum",
+          "discordContact": "Discord"
         },
         "roles": {
           "permanent": "永久",

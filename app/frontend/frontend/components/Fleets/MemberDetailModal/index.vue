@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
+import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -68,7 +69,7 @@ const roleDisplay = computed(() => {
     <template #title>
       <div class="member-detail-header">
         <Avatar :avatar="props.member.avatar?.smallUrl" size="small" />
-        {{ props.member.username }}
+        <MemberName :member="props.member" />
       </div>
     </template>
 

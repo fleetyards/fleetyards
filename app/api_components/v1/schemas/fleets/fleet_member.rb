@@ -28,6 +28,7 @@ module V1
             primary: {type: :boolean},
             verified: {type: :boolean},
             citizenidProfileUrl: {type: :string},
+            discordProfileUrl: {type: :string},
             latitude: {type: :number, format: :double, nullable: true},
             longitude: {type: :number, format: :double, nullable: true},
             currentSystemCode: {type: :string, nullable: true},

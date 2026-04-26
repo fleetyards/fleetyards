@@ -313,7 +313,10 @@
             "admin": "Admin",
             "officer": "Ufficiale",
             "member": "Membro"
-          }
+          },
+          "contact": "Contact",
+          "spectrumDm": "Message on Spectrum",
+          "discordContact": "Discord"
         },
         "roles": {
           "permanent": "Permanente",

@@ -8,6 +8,7 @@ export default {
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
+import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import MemberActions from "@/frontend/components/Fleets/MemberActions/index.vue";
 import MemberLinks from "@/frontend/components/Fleets/MemberLinks/index.vue";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
@@ -88,7 +89,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
       <div class="member-username">
         <Avatar :avatar="record.avatar?.smallUrl" size="small" />
         <div class="member-username-inner">
-          {{ record.username }}
+          <MemberName :member="record" />
           <div v-if="mobile && record.rsiHandle" class="rsi-handle-inline">
             (<RsiProfileLink
               :handle="record.rsiHandle"

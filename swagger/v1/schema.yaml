@@ -7558,6 +7558,8 @@ components:
           type: boolean
         citizenidProfileUrl:
           type: string
+        discordProfileUrl:
+          type: string
         latitude:
           type: number
           format: double

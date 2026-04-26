@@ -311,7 +311,10 @@
             "admin": "Admin",
             "officer": "Officer",
             "member": "Member"
-          }
+          },
+          "contact": "Contact",
+          "spectrumDm": "Message on Spectrum",
+          "discordContact": "Discord"
         },
         "roles": {
           "permanent": "Permanent",

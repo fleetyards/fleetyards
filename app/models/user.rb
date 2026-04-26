@@ -254,6 +254,13 @@ class User < ApplicationRecord
     "#{Rails.configuration.app.citizenid[:issuer]}profile/#{connection.uid}"
   end
 
+  def discord_profile_url
+    connection = omniauth_connections.find_by(provider: "discord")
+    return if connection.blank?
+
+    "https://discord.com/users/#{connection.uid}"
+  end
+
   def public_wishlist_url
     return short_public_wishlist_url(username:) if Rails.configuration.app.short_domain.present?
 
