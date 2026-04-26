@@ -1,17 +1,15 @@
 <script lang="ts">
 export default {
-  name: "VehicleLoadoutsModal",
+  name: "HangarVehicleLoadoutsPage",
 };
 </script>
 
 <script lang="ts" setup>
-import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import {
   type Vehicle,
   type VehicleLoadout,
@@ -31,6 +29,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const queryClient = useQueryClient();
+const { displayConfirm, displayAlert } = useAppNotifications();
 
 const erkulShipUrl = computed(() => {
   const identifier =
@@ -44,9 +44,6 @@ const spviewerShipUrl = computed(() => {
   if (!identifier) return undefined;
   return `https://www.spviewer.eu/performance?ship=${identifier}`;
 });
-const comlink = useComlink();
-const queryClient = useQueryClient();
-const { displayConfirm, displayAlert } = useAppNotifications();
 
 const { data: loadouts, isLoading } = useVehicleLoadouts(props.vehicle.id);
 
@@ -166,38 +163,47 @@ const remove = (loadout: VehicleLoadout) => {
 </script>
 
 <template>
-  <Modal
-    :title="
-      t('headlines.myVehicleLoadouts', {
-        vehicle: vehicle.model?.name,
-      })
-    "
-  >
-    <div class="loadouts-modal">
-      <div
-        v-if="erkulShipUrl || spviewerShipUrl"
-        class="loadouts-modal__ship-links"
-      >
-        <span>{{ t("labels.loadout.planOn") }}</span>
-        <BtnGroup>
-          <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
-            <i />
-            {{ t("labels.hardpoints.erkul") }}
+  <div class="row">
+    <div class="col-12">
+      <div class="loadouts-page__header">
+        <div class="loadouts-page__back">
+          <Btn :to="{ name: 'hangar' }" :inline="true" size="small">
+            <i class="fa fa-chevron-left" />
+            {{ t("actions.hangar.backToHangar") }}
           </Btn>
-          <Btn
-            v-if="spviewerShipUrl"
-            :href="spviewerShipUrl"
-            class="spviewer-link"
-          >
-            <i />
-            {{ t("labels.hardpoints.spviewer") }}
-          </Btn>
-        </BtnGroup>
+        </div>
+        <h1>
+          {{
+            t("headlines.myVehicleLoadouts", {
+              vehicle: vehicle.model?.name,
+            })
+          }}
+        </h1>
+        <div
+          v-if="erkulShipUrl || spviewerShipUrl"
+          class="loadouts-page__ship-links"
+        >
+          <span>{{ t("labels.loadout.planOn") }}</span>
+          <BtnGroup>
+            <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
+              <i />
+              {{ t("labels.hardpoints.erkul") }}
+            </Btn>
+            <Btn
+              v-if="spviewerShipUrl"
+              :href="spviewerShipUrl"
+              class="spviewer-link"
+            >
+              <i />
+              {{ t("labels.hardpoints.spviewer") }}
+            </Btn>
+          </BtnGroup>
+        </div>
       </div>
 
-      <div class="loadouts-modal__create">
+      <div class="loadouts-page__create">
         <form
-          class="loadouts-modal__create-form"
+          class="loadouts-page__create-form"
           @submit.prevent="createLoadout"
         >
           <FormInput
@@ -217,23 +223,23 @@ const remove = (loadout: VehicleLoadout) => {
         </form>
       </div>
 
-      <div v-if="isLoading" class="loadouts-modal__loading">
+      <div v-if="isLoading" class="loadouts-page__loading">
         <i class="fa fa-spinner fa-spin" />
       </div>
 
-      <div v-else-if="!loadouts?.length" class="loadouts-modal__empty">
+      <div v-else-if="!loadouts?.length" class="loadouts-page__empty">
         {{ t("labels.loadout.empty") }}
       </div>
 
-      <div v-else class="loadouts-modal__list">
+      <div v-else class="loadouts-page__list">
         <div
           v-for="loadout in loadouts"
           :key="loadout.id"
-          class="loadouts-modal__item"
-          :class="{ 'loadouts-modal__item--active': loadout.active }"
+          class="loadouts-page__item"
+          :class="{ 'loadouts-page__item--active': loadout.active }"
         >
           <template v-if="editingLoadout?.id === loadout.id">
-            <div class="loadouts-modal__item-edit">
+            <div class="loadouts-page__item-edit">
               <FormInput v-model="editName" name="editName" :no-label="true" />
               <FormInput
                 v-model="editErkulUrl"
@@ -247,7 +253,7 @@ const remove = (loadout: VehicleLoadout) => {
                 :placeholder="t('labels.loadout.spviewerUrl')"
                 :no-label="true"
               />
-              <div class="loadouts-modal__item-actions">
+              <div class="loadouts-page__item-actions">
                 <Btn :loading="submitting" :inline="true" @click="saveEdit">
                   {{ t("actions.save") }}
                 </Btn>
@@ -258,16 +264,16 @@ const remove = (loadout: VehicleLoadout) => {
             </div>
           </template>
           <template v-else>
-            <div class="loadouts-modal__item-info">
-              <span class="loadouts-modal__item-name">
+            <div class="loadouts-page__item-info">
+              <span class="loadouts-page__item-name">
                 {{ loadout.name }}
               </span>
-              <span v-if="loadout.active" class="loadouts-modal__item-badge">
+              <span v-if="loadout.active" class="loadouts-page__item-badge">
                 {{ t("labels.loadout.active") }}
               </span>
               <div
                 v-if="loadout.erkulUrl || loadout.spviewerUrl"
-                class="loadouts-modal__item-links"
+                class="loadouts-page__item-links"
               >
                 <a
                   v-if="loadout.erkulUrl"
@@ -287,7 +293,7 @@ const remove = (loadout: VehicleLoadout) => {
                 </a>
               </div>
             </div>
-            <div class="loadouts-modal__item-actions">
+            <div class="loadouts-page__item-actions">
               <Btn
                 v-if="!loadout.active"
                 :inline="true"
@@ -307,17 +313,9 @@ const remove = (loadout: VehicleLoadout) => {
         </div>
       </div>
     </div>
-
-    <template #footer>
-      <div class="float-sm-right">
-        <Btn :inline="true" size="large" @click="comlink.emit('close-modal')">
-          {{ t("actions.close") }}
-        </Btn>
-      </div>
-    </template>
-  </Modal>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-@import "index";
+@import "loadouts";
 </style>

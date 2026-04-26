@@ -1,4 +1,4 @@
-resources :vehicles, only: %i[create update destroy] do
+resources :vehicles, only: %i[show create update destroy] do
   collection do
     post "bulk", to: "vehicles#create_bulk"
     put "bulk", to: "vehicles#update_bulk"

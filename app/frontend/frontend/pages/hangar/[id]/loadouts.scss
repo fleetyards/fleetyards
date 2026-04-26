@@ -1,11 +1,17 @@
-.loadouts-modal {
-  min-height: 100px;
+.loadouts-page {
+  &__header {
+    margin-bottom: 20px;
+  }
+
+  &__back {
+    margin-bottom: 10px;
+  }
 
   &__ship-links {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-top: 10px;
 
     > span {
       opacity: 0.6;
@@ -26,12 +32,12 @@
 
   &__loading {
     text-align: center;
-    padding: 20px;
+    padding: 40px;
   }
 
   &__empty {
     text-align: center;
-    padding: 20px;
+    padding: 40px;
     opacity: 0.6;
   }
 
@@ -45,7 +51,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 15px;
+    padding: 15px 20px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
 

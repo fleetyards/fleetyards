@@ -200,16 +200,10 @@ const openAddonsModal = () => {
   });
 };
 
-const openLoadoutsModal = () => {
-  comlink.emit("open-modal", {
-    wide: true,
-    component: () =>
-      import("@/frontend/components/Vehicles/LoadoutsModal/index.vue"),
-    props: {
-      vehicle: props.vehicle,
-    },
-  });
-};
+const loadoutsRoute = computed(() => ({
+  name: "hangar-vehicle-loadouts",
+  params: { id: props.vehicle.id },
+}));
 </script>
 
 <template>
@@ -300,7 +294,7 @@ const openLoadoutsModal = () => {
       v-if="editable && vehicle.model?.inGame"
       :aria-label="t('actions.hangar.manageLoadouts')"
       :size="BtnSizesEnum.SMALL"
-      @click="openLoadoutsModal"
+      :to="loadoutsRoute"
     >
       <i class="fa-duotone fa-crosshairs" />
       <span>{{ t("actions.hangar.manageLoadouts") }}</span>
