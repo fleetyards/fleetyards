@@ -7,6 +7,10 @@ zh-TW:
       create: 飛船無法新增。
       destroy: 飛船無法移除。
       update: 飛船無法更新。
+    vehicle_loadout:
+      create: Loadout could not be created.
+      destroy: Loadout could not be removed.
+      update: Loadout could not be updated.
     fleet:
       create: 無法建立艦隊。
       destroy: 無法刪除艦隊。

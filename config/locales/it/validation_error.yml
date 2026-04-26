@@ -7,6 +7,10 @@ it:
       create: La nave non è stata aggiunta.
       destroy: La nave non è stata rimossa.
       update: La nave non è stata aggiornata.
+    vehicle_loadout:
+      create: Loadout could not be created.
+      destroy: Loadout could not be removed.
+      update: Loadout could not be updated.
     fleet:
       create: Impossibile creare la flotta.
       destroy: Impossibile eliminare la flotta.
