@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as membersRoutes } from "@/frontend/pages/fleets/[slug]/members/routes";
+import { routes as logisticsRoutes } from "@/frontend/pages/fleets/[slug]/logistics/routes";
 import { routes as settingsRoutes } from "@/frontend/pages/fleets/[slug]/settings/routes";
 
 export const routes: RouteRecordRaw[] = [
@@ -42,6 +43,20 @@ export const routes: RouteRecordRaw[] = [
       name: membersRoutes[0].name,
     },
     children: membersRoutes,
+  },
+  {
+    path: "logistics/",
+    name: "fleet-logistics-root",
+    component: () => import("@/frontend/pages/fleets/[slug]/logistics.vue"),
+    meta: {
+      needsAuthentication: true,
+      backgroundImage: "bg-8",
+      customTitle: true,
+    },
+    redirect: {
+      name: logisticsRoutes[0].name,
+    },
+    children: logisticsRoutes,
   },
   {
     path: "settings/",

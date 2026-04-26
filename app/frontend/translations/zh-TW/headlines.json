@@ -170,6 +170,17 @@
           "starmap": "成員星圖"
         },
         "stats": "統計",
+        "logistics": {
+          "index": "Logistics",
+          "inventories": "Inventories",
+          "requests": "Requests",
+          "newRequest": "New Request",
+          "requestItems": "Items",
+          "comments": "Comments",
+          "createInventory": "Create Inventory",
+          "createItem": "Add Item",
+          "importCsv": "Import from CSV"
+        },
         "preview": {
           "h1": "艦隊預覽",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",

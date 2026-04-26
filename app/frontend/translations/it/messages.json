@@ -247,6 +247,38 @@
           }
         }
       },
+      "fleets": {
+        "logistics": {
+          "request": {
+            "create": {
+              "success": "Logistics request created.",
+              "failure": "Could not create logistics request."
+            }
+          },
+          "inventory": {
+            "create": {
+              "success": "Inventory created.",
+              "failure": "Could not create inventory."
+            }
+          },
+          "inventoryItem": {
+            "create": {
+              "success": "Item added to inventory.",
+              "failure": "Could not add item to inventory."
+            }
+          },
+          "comment": {
+            "create": {
+              "success": "Comment added.",
+              "failure": "Could not add comment."
+            }
+          },
+          "csvImport": {
+            "success": "%{count} items imported successfully.",
+            "failure": "Could not import CSV file."
+          }
+        }
+      },
       "fleetInvite": {
         "used": "<b>Richiesta di partecipazione a %{fleet} inviata!</b><br>Una volta che la tua iscrizione sarà accettata, sarai avvisato via email",
         "failure": "L'invito non può essere usato.",

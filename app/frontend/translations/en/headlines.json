@@ -174,6 +174,21 @@
           "starmap": "Member Starmap"
         },
         "stats": "Stats",
+        "logistics": {
+          "index": "Logistics",
+          "inventories": "Inventories",
+          "requests": "Requests",
+          "newRequest": "New Request",
+          "requestItems": "Items",
+          "comments": "Comments",
+          "inventoryItems": "Inventory Items",
+          "createInventory": "Create Inventory",
+          "editInventory": "Edit Inventory",
+          "createItem": "Add Item",
+          "deposit": "Deposit",
+          "withdrawal": "Withdrawal",
+          "importCsv": "Import from CSV"
+        },
         "preview": {
           "h1": "Fleet Preview",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",

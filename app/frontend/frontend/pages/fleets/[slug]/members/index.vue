@@ -144,15 +144,15 @@ const crumbs = computed(() => {
 
 <template>
   <BreadCrumbs :crumbs="crumbs" />
-  <Heading>
+  <Heading hero size="hero">
     {{ t("headlines.fleets.members.index") }}
-    <small v-if="stats" class="text-muted">
+    <template v-if="stats" #subHeading>
       {{
         t("labels.fleet.members.total", {
           count: stats.total,
         })
       }}
-    </small>
+    </template>
   </Heading>
 
   <Teleport v-if="!mobile" to="#header-right">

@@ -50,6 +50,10 @@
           "starmap": "Mappa stellare dei membri di %{fleet}"
         },
         "stats": "Statistiche di %{fleet}",
+        "logistics": {
+          "index": "%{fleet} Logistics",
+          "inventories": "%{fleet} Inventories"
+        },
         "settings": {
           "index": "Impostazioni di %{fleet}",
           "fleet": "Impostazioni di %{fleet}",

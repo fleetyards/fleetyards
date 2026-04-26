@@ -246,6 +246,40 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_195601) do
     t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
   end
 
+  create_table "fleet_inventories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.uuid "fleet_id", null: false
+    t.string "location"
+    t.uuid "managed_by"
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.integer "visibility", default: 0, null: false
+    t.index "fleet_id, lower((name)::text)", name: "index_fleet_inventories_on_fleet_id_and_lower_name", unique: true
+    t.index ["fleet_id", "managed_by"], name: "index_fleet_inventories_on_fleet_id_and_managed_by"
+    t.index ["fleet_id", "slug"], name: "index_fleet_inventories_on_fleet_id_and_slug", unique: true
+  end
+
+  create_table "fleet_inventory_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "added_by"
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.integer "entry_type", default: 0, null: false
+    t.uuid "fleet_inventory_id", null: false
+    t.uuid "item_id"
+    t.string "item_type"
+    t.uuid "member_id"
+    t.string "name", null: false
+    t.text "notes"
+    t.integer "quality", default: 0
+    t.decimal "quantity", precision: 15, scale: 2, default: "0.0", null: false
+    t.integer "unit", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_inventory_id"], name: "index_fleet_inventory_items_on_fleet_inventory_id"
+    t.index ["member_id"], name: "index_fleet_inventory_items_on_member_id"
+  end
+
   create_table "fleet_invite_urls", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "expires_after", precision: nil
@@ -1028,6 +1062,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_195601) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "fleet_inventories", "fleets"
+  add_foreign_key "fleet_inventories", "users", column: "managed_by"
+  add_foreign_key "fleet_inventory_items", "fleet_inventories"
+  add_foreign_key "fleet_inventory_items", "users", column: "added_by"
+  add_foreign_key "fleet_inventory_items", "users", column: "member_id"
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"

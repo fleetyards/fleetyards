@@ -45,7 +45,8 @@ class FleetRole < ApplicationRecord
       FleetMembership::AVAILABLE_PRIVILEGES,
       FleetInviteUrl::AVAILABLE_PRIVILEGES,
       FleetVehicle::AVAILABLE_PRIVILEGES,
-      FleetRole::AVAILABLE_PRIVILEGES
+      FleetRole::AVAILABLE_PRIVILEGES,
+      FleetInventory::AVAILABLE_PRIVILEGES
     ].flatten.uniq
   end
 
@@ -69,21 +70,24 @@ class FleetRole < ApplicationRecord
         FleetMembership::DEFAULT_PRIVILEGES[:admin],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:admin],
         FleetVehicle::DEFAULT_PRIVILEGES[:admin],
-        FleetRole::DEFAULT_PRIVILEGES[:admin]
+        FleetRole::DEFAULT_PRIVILEGES[:admin],
+        FleetInventory::DEFAULT_PRIVILEGES[:admin]
       ].flatten.uniq,
       officer: [
         Fleet::DEFAULT_PRIVILEGES[:officer],
         FleetMembership::DEFAULT_PRIVILEGES[:officer],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:officer],
         FleetVehicle::DEFAULT_PRIVILEGES[:officer],
-        FleetRole::DEFAULT_PRIVILEGES[:officer]
+        FleetRole::DEFAULT_PRIVILEGES[:officer],
+        FleetInventory::DEFAULT_PRIVILEGES[:officer]
       ].flatten.uniq,
       member: [
         Fleet::DEFAULT_PRIVILEGES[:member],
         FleetMembership::DEFAULT_PRIVILEGES[:member],
         FleetInviteUrl::DEFAULT_PRIVILEGES[:member],
         FleetVehicle::DEFAULT_PRIVILEGES[:member],
-        FleetRole::DEFAULT_PRIVILEGES[:member]
+        FleetRole::DEFAULT_PRIVILEGES[:member],
+        FleetInventory::DEFAULT_PRIVILEGES[:member]
       ].flatten.uniq
     }
   end

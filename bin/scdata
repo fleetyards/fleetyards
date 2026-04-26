@@ -88,7 +88,10 @@ when "sync"
   end
 
 when "parse"
-  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
 
   sc_environment = ARGV.shift || Rails.configuration.sc_data[:environment]
   sc_version = latest_version(EXPORT_FOLDER, sc_environment)
@@ -108,7 +111,10 @@ when "parse"
   puts "  Updated config/app/sc_data.yml to version: #{sc_version}"
 
 when "load"
-  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
 
   CliHelpers.run_step("Loading all SC Data #{config_info}") do
     ScData::Loader::BaseLoader.all
@@ -116,7 +122,10 @@ when "load"
   end
 
 when "load:manufacturers"
-  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
 
   CliHelpers.run_step("Loading manufacturers #{config_info}") do
     ScData::Loader::ManufacturersLoader.new.all
@@ -124,7 +133,10 @@ when "load:manufacturers"
   end
 
 when "load:items"
-  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
 
   CliHelpers.run_step("Loading items #{config_info}") do
     ScData::Loader::ItemsLoader.new.all
@@ -132,7 +144,10 @@ when "load:items"
   end
 
 when "load:models"
-  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
 
   CliHelpers.run_step("Loading models #{config_info}") do
     ScData::Loader::ModelsLoader.new.all
@@ -140,7 +155,10 @@ when "load:models"
   end
 
 when "load:modules"
-  CliHelpers.run_step("Booting Rails") { boot_rails; [true, ""] }
+  CliHelpers.run_step("Booting Rails") {
+    boot_rails
+    [true, ""]
+  }
 
   CliHelpers.run_step("Loading model modules #{config_info}") do
     ScData::Loader::ModelModulesLoader.new.all

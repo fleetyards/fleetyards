@@ -29,6 +29,9 @@ type Events = {
   "hangar-sync-finished": () => void | Promise<unknown>;
   "hangar-group-save": () => void | Promise<unknown>;
   "hangar-group-delete": (group: HangarGroup) => void | Promise<unknown>;
+  "fleet-inventory-item-created": () => void | Promise<unknown>;
+  "fleet-inventory-created": () => void | Promise<unknown>;
+  "fleet-inventory-updated": () => void | Promise<unknown>;
 };
 
 const AppComlink = createNanoEvents<Events>();

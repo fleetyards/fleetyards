@@ -46,7 +46,8 @@ class Notification < ApplicationRecord
     fleet_invite: "fleet_invite",
     fleet_member_requested: "fleet_member_requested",
     fleet_member_accepted: "fleet_member_accepted",
-    fleet_request_accepted: "fleet_request_accepted"
+    fleet_request_accepted: "fleet_request_accepted",
+    fleet_inventory_item_added: "fleet_inventory_item_added"
   }
 
   TYPES = {
@@ -120,6 +121,11 @@ class Notification < ApplicationRecord
         FleetMembershipMailer.fleet_accepted(notification.user.email, notification.user.username, membership.fleet).deliver_later
       },
       preference_defaults: {app: true, mail: true, push: false}
+    },
+    fleet_inventory_item_added: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
     }
   }.freeze
 

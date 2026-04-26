@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1f2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0d1117;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="crate" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#3d4555;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a2f3d;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"/>
+  <!-- Grid lines -->
+  <line x1="0" y1="380" x2="600" y2="380" stroke="#252a36" stroke-width="1"/>
+  <line x1="0" y1="360" x2="600" y2="360" stroke="#1e2330" stroke-width="0.5"/>
+  <!-- Crate 1 -->
+  <rect x="180" y="180" width="100" height="90" rx="4" fill="url(#crate)" stroke="#4a5168" stroke-width="1"/>
+  <line x1="180" y1="200" x2="280" y2="200" stroke="#4a5168" stroke-width="0.5"/>
+  <line x1="230" y1="180" x2="230" y2="270" stroke="#4a5168" stroke-width="0.5"/>
+  <!-- Crate 2 -->
+  <rect x="300" y="200" width="80" height="70" rx="4" fill="url(#crate)" stroke="#4a5168" stroke-width="1"/>
+  <line x1="300" y1="218" x2="380" y2="218" stroke="#4a5168" stroke-width="0.5"/>
+  <line x1="340" y1="200" x2="340" y2="270" stroke="#4a5168" stroke-width="0.5"/>
+  <!-- Crate 3 (stacked) -->
+  <rect x="200" y="110" width="70" height="60" rx="4" fill="url(#crate)" stroke="#4a5168" stroke-width="1"/>
+  <line x1="200" y1="126" x2="270" y2="126" stroke="#4a5168" stroke-width="0.5"/>
+  <line x1="235" y1="110" x2="235" y2="170" stroke="#4a5168" stroke-width="0.5"/>
+  <!-- Inventory icon -->
+  <g transform="translate(270, 300)" opacity="0.15">
+    <rect x="0" y="0" width="60" height="50" rx="3" fill="none" stroke="#8b949e" stroke-width="2"/>
+    <line x1="0" y1="12" x2="60" y2="12" stroke="#8b949e" stroke-width="2"/>
+    <line x1="15" y1="25" x2="45" y2="25" stroke="#8b949e" stroke-width="1.5"/>
+    <line x1="15" y1="35" x2="35" y2="35" stroke="#8b949e" stroke-width="1.5"/>
+  </g>
+</svg>

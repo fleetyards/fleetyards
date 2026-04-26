@@ -1,2 +1,6 @@
 PUT /password removed the request property 'currentPassword'
 PUT /password/{token} removed the request property 'currentPassword'
+GET /notification-preferences added the new 'fleet_inventory_item_added' enum value to the '/items/notificationType' response property for the response status '200'
+PUT /notification-preferences/{id} added the new 'fleet_inventory_item_added' enum value to the 'notificationType' response property for the response status '200'
+GET /notifications added the new 'fleet_inventory_item_added' enum value to the 'items/items/notificationType' response property for the response status '200'
+PUT /notifications/{id}/read added the new 'fleet_inventory_item_added' enum value to the 'notificationType' response property for the response status '200'

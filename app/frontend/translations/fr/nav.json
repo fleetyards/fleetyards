@@ -42,6 +42,9 @@
           "starmap": "Carte stellaire"
         },
         "stats": "Statistiques",
+        "logistics": {
+          "index": "Logistics"
+        },
         "settings": {
           "index": "Paramètres",
           "fleet": "Paramètres de Flotte",

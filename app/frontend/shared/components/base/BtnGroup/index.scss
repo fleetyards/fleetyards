@@ -40,6 +40,7 @@
 
   &.panel-btn-group-inline {
     margin-bottom: 0;
+    display: inline-flex;
   }
 
   > :deep(span) {

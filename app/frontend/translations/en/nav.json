@@ -42,6 +42,9 @@
           "starmap": "Starmap"
         },
         "stats": "Stats",
+        "logistics": {
+          "index": "Logistics"
+        },
         "settings": {
           "index": "Settings",
           "fleet": "Fleet Settings",

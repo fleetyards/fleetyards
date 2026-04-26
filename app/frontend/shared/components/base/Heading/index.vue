@@ -22,6 +22,7 @@ type Props = {
   truncate?: boolean;
   mb?: boolean;
   mt?: boolean;
+  inlineSubHeading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
   shadow: false,
   mb: false,
   mt: false,
+  inlineSubHeading: false,
 });
 
 const cssClasses = computed(() => {
@@ -44,9 +46,21 @@ const cssClasses = computed(() => {
     "text-shadow": props.shadow,
     "mb-4": props.mb,
     "mt-4": props.mt,
-    "items-start": props.alignment === HeadingAlignmentEnum.LEFT,
-    "items-center": props.alignment === HeadingAlignmentEnum.CENTER,
-    "items-end": props.alignment === HeadingAlignmentEnum.RIGHT,
+    "items-start":
+      props.alignment === HeadingAlignmentEnum.LEFT && !props.inlineSubHeading,
+    "items-center":
+      props.alignment === HeadingAlignmentEnum.CENTER &&
+      !props.inlineSubHeading,
+    "items-end":
+      props.alignment === HeadingAlignmentEnum.RIGHT && !props.inlineSubHeading,
+    "justify-start":
+      props.alignment === HeadingAlignmentEnum.LEFT && props.inlineSubHeading,
+    "justify-center":
+      props.alignment === HeadingAlignmentEnum.CENTER && props.inlineSubHeading,
+    "justify-end":
+      props.alignment === HeadingAlignmentEnum.RIGHT && props.inlineSubHeading,
+    "flex-row items-baseline": props.inlineSubHeading,
+    "flex-col": !props.inlineSubHeading,
   };
 });
 
@@ -57,7 +71,7 @@ const slots = defineSlots<{
 </script>
 
 <template>
-  <component :is="level" :class="cssClasses" class="font-normal flex flex-col">
+  <component :is="level" :class="cssClasses" class="font-normal flex gap-2">
     <slot name="default" />
     <HeadingSmall v-if="slots.subHeading">
       <slot name="subHeading" />

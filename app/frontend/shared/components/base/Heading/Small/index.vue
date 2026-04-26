@@ -5,9 +5,7 @@ export default {
 </script>
 
 <template>
-  <small
-    class="flex text-[70%] text-brand-textdark font-normal font-opensans gap-2"
-  >
+  <small class="flex text-muted font-normal font-opensans gap-2">
     <slot name="default" />
   </small>
 </template>
