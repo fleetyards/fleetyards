@@ -48,6 +48,7 @@
 #  pitch                    :decimal(15, 2)
 #  pitch_boosted            :decimal(15, 2)
 #  pledge_price             :decimal(15, 2)
+#  positions_need_curation  :boolean          default(FALSE)
 #  price                    :decimal(15, 2)
 #  production_note          :string(255)
 #  production_status        :string(255)
@@ -191,6 +192,8 @@ class Model < ApplicationRecord
     source: :snub_craft
 
   has_many :item_prices, as: :item, dependent: :destroy
+
+  has_many :model_positions, dependent: :destroy
 
   has_many :docks, dependent: :destroy
 

@@ -163,6 +163,10 @@
       "dock": {
         "name": "Dock Name"
       },
+      "modelPosition": {
+        "name": "Position Name",
+        "position": "0"
+      },
       "modelHardpoint": {
         "name": "Hardpoint Name",
         "key": "hardpoint_key",

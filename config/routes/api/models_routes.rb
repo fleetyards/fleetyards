@@ -9,6 +9,7 @@ resources :models, param: :slug, only: %i[index show] do
   end
   member do
     get :hardpoints
+    get :positions
     get :images
     get :videos
     get :variants

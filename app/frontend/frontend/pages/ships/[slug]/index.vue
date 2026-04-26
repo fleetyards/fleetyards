@@ -10,6 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
+import CrewPositions from "@/frontend/components/Models/CrewPositions/index.vue";
 import PaintsList from "@/frontend/components/Models/PaintsList/index.vue";
 import LoanersList from "@/frontend/components/Models/LoanersList/index.vue";
 import VariantsList from "@/frontend/components/Models/VariantsList/index.vue";
@@ -458,6 +459,7 @@ const adiMap = computed(() => {
       />
       <hr />
       <Hardpoints :model="model" />
+      <CrewPositions :model="model" />
     </div>
   </div>
 

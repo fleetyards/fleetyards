@@ -440,6 +440,9 @@
         "addons": "Modules & Upgrade-Kits",
         "storeImage": "Store Image",
         "wiki": "Star Citizen Wiki",
+        "crewPositions": "Crew Positions",
+        "needsCuration": "Needs Curation",
+        "curatedPosition": "Manually curated position",
         "baseModel": "Base Model",
         "fleetchartOffsetLength": "Fleetchart Offset Length",
         "fleetchartOffsetBeam": "Fleetchart Offset Beam",
@@ -527,6 +530,12 @@
         "name": "Name",
         "dockType": "Dock Type",
         "shipSize": "Ship Size"
+      },
+      "modelPosition": {
+        "name": "Name",
+        "positionType": "Position Type",
+        "source": "Source",
+        "position": "Sort Order"
       },
       "modelHardpoint": {
         "name": "Name",
@@ -895,6 +904,7 @@
           "willItFit": "Will it Fit?",
           "withCargo": "With Cargo?",
           "scKeyBlank": "Without SC Key?",
+          "positionsNeedCuration": "Positions Need Curation?",
           "fleetchartImageBlank": "Without Fleetchart Image?",
           "holoBlank": "Without Holo?",
           "frontViewBlank": "Without Front View Image?",
