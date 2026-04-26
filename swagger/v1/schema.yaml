@@ -11173,6 +11173,9 @@ components:
       properties:
         name:
           type: string
+        url:
+          type: string
+          description: Auto-detected as erkul or spviewer URL
         erkulUrl:
           type: string
           nullable: true
@@ -11199,8 +11202,6 @@ components:
               _destroy:
                 type: boolean
       additionalProperties: false
-      required:
-      - name
       title: VehicleLoadoutInput
     VehicleLoadoutMinimal:
       type: object

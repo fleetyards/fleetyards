@@ -10,6 +10,7 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
+            url: {type: :string, description: "Auto-detected as erkul or spviewer URL"},
             erkulUrl: {type: :string, nullable: true},
             spviewerUrl: {type: :string, nullable: true},
             fromDefaults: {type: :boolean},
@@ -26,8 +27,7 @@ module V1
               }
             }
           },
-          additionalProperties: false,
-          required: %w[name]
+          additionalProperties: false
         })
       end
     end

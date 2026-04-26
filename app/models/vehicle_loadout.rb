@@ -29,6 +29,11 @@ class VehicleLoadout < ApplicationRecord
 
   accepts_nested_attributes_for :vehicle_loadout_hardpoints, allow_destroy: true
 
+  attribute :url, :string
+
+  before_validation :detect_url_source, if: -> { url.present? }
+  before_validation :set_default_name, if: -> { name.blank? }
+
   validates :name, presence: true, uniqueness: {scope: :vehicle_id}
 
   scope :active, -> { where(active: true) }
@@ -45,6 +50,33 @@ class VehicleLoadout < ApplicationRecord
     transaction do
       vehicle.vehicle_loadouts.where.not(id: id).update_all(active: false)
       update!(active: true)
+    end
+  end
+
+  private def detect_url_source
+    uri = begin
+      URI.parse(url)
+    rescue
+      nil
+    end
+    return if uri.blank? || uri.host.blank?
+
+    host = uri.host.downcase.delete_prefix("www.")
+
+    if host.include?("erkul.games")
+      self.erkul_url = url
+    elsif host.include?("spviewer.eu")
+      self.spviewer_url = url
+    end
+  end
+
+  private def set_default_name
+    self.name = if erkul_url.present?
+      "Erkul Loadout"
+    elsif spviewer_url.present?
+      "SPViewer Loadout"
+    else
+      "Loadout #{vehicle.vehicle_loadouts.count + 1}"
     end
   end
 end

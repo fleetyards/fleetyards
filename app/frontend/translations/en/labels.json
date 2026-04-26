@@ -388,7 +388,8 @@
       },
       "source": "Source",
       "loadout": {
-        "namePlaceholder": "New loadout name...",
+        "namePlaceholder": "Loadout name...",
+        "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
         "empty": "No loadouts yet. Create one to get started.",
         "active": "Active",
         "activate": "Set Active",

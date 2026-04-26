@@ -8,11 +8,13 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   type Vehicle,
   type VehicleLoadout,
+  type VehicleLoadoutInput,
   useVehicleLoadouts,
   useCreateVehicleLoadout,
   useUpdateVehicleLoadout,
@@ -30,7 +32,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const queryClient = useQueryClient();
-const { displayConfirm, displayAlert } = useAppNotifications();
 
 const erkulShipUrl = computed(() => {
   const identifier =
@@ -47,17 +48,15 @@ const spviewerShipUrl = computed(() => {
 
 const { data: loadouts, isLoading } = useVehicleLoadouts(props.vehicle.id);
 
-const createMutation = useCreateVehicleLoadout();
-const updateMutation = useUpdateVehicleLoadout();
-const destroyMutation = useDestroyVehicleLoadout();
-const activateMutation = useActivateVehicleLoadout();
+const loadoutItems = computed(() => (loadouts.value as VehicleLoadout[]) || []);
 
-const newLoadoutName = ref("");
-const editingLoadout = ref<VehicleLoadout | null>(null);
-const editName = ref("");
-const editErkulUrl = ref("");
-const editSpviewerUrl = ref("");
-const submitting = ref(false);
+const editableList = ref<{
+  editingId: string | null;
+  creating: boolean;
+  startCreate: () => void;
+  finishEdit: () => void;
+  finishCreate: () => void;
+} | null>(null);
 
 const invalidateLoadouts = () => {
   void queryClient.invalidateQueries({
@@ -65,99 +64,75 @@ const invalidateLoadouts = () => {
   });
 };
 
-const createLoadout = async () => {
-  if (!newLoadoutName.value.trim()) return;
+// Create
+const createForm = ref<VehicleLoadoutInput>({});
 
-  submitting.value = true;
-
-  await createMutation
-    .mutateAsync({
-      vehicleId: props.vehicle.id,
-      data: {
-        name: newLoadoutName.value.trim(),
-        fromDefaults: true,
-      },
-    })
-    .then(() => {
-      newLoadoutName.value = "";
-      invalidateLoadouts();
-    })
-    .catch((error) => {
-      displayAlert({ text: error.response?.data?.message || "Error" });
-    })
-    .finally(() => {
-      submitting.value = false;
-    });
+const onStartCreate = () => {
+  createForm.value = {};
 };
 
-const startEdit = (loadout: VehicleLoadout) => {
-  editingLoadout.value = loadout;
-  editName.value = loadout.name;
-  editErkulUrl.value = loadout.erkulUrl || "";
-  editSpviewerUrl.value = loadout.spviewerUrl || "";
+const createMutation = useCreateVehicleLoadout({
+  mutation: { onSettled: invalidateLoadouts },
+});
+
+const onSaveCreate = async () => {
+  await createMutation.mutateAsync({
+    vehicleId: props.vehicle.id,
+    data: createForm.value,
+  });
+
+  editableList.value?.finishCreate();
 };
 
-const cancelEdit = () => {
-  editingLoadout.value = null;
+// Edit
+const editForm = ref<VehicleLoadoutInput>({});
+
+const onStartEdit = (record: VehicleLoadout) => {
+  editForm.value = {
+    name: record.name,
+    erkulUrl: record.erkulUrl,
+    spviewerUrl: record.spviewerUrl,
+  };
 };
 
-const saveEdit = async () => {
-  if (!editingLoadout.value || !editName.value.trim()) return;
+const updateMutation = useUpdateVehicleLoadout({
+  mutation: { onSettled: invalidateLoadouts },
+});
 
-  submitting.value = true;
+const onSaveEdit = async () => {
+  const id = editableList.value?.editingId;
+  if (!id) return;
 
-  await updateMutation
-    .mutateAsync({
-      vehicleId: props.vehicle.id,
-      id: editingLoadout.value.id,
-      data: {
-        name: editName.value.trim(),
-        erkulUrl: editErkulUrl.value || null,
-        spviewerUrl: editSpviewerUrl.value || null,
-      },
-    })
-    .then(() => {
-      editingLoadout.value = null;
-      invalidateLoadouts();
-    })
-    .catch((error) => {
-      displayAlert({ text: error.response?.data?.message || "Error" });
-    })
-    .finally(() => {
-      submitting.value = false;
-    });
+  await updateMutation.mutateAsync({
+    vehicleId: props.vehicle.id,
+    id,
+    data: editForm.value,
+  });
+
+  editableList.value?.finishEdit();
 };
 
-const activate = async (loadout: VehicleLoadout) => {
-  await activateMutation
-    .mutateAsync({
-      vehicleId: props.vehicle.id,
-      id: loadout.id,
-    })
-    .then(() => {
-      invalidateLoadouts();
-    })
-    .catch((error) => {
-      displayAlert({ text: error.response?.data?.message || "Error" });
-    });
+// Delete
+const destroyMutation = useDestroyVehicleLoadout({
+  mutation: { onSettled: invalidateLoadouts },
+});
+
+const onDestroy = async (record: VehicleLoadout) => {
+  await destroyMutation.mutateAsync({
+    vehicleId: props.vehicle.id,
+    id: record.id,
+  });
 };
 
-const remove = (loadout: VehicleLoadout) => {
-  displayConfirm({
-    text: t("messages.confirm.vehicle.destroy"),
-    onConfirm: async () => {
-      await destroyMutation
-        .mutateAsync({
-          vehicleId: props.vehicle.id,
-          id: loadout.id,
-        })
-        .then(() => {
-          invalidateLoadouts();
-        })
-        .catch((error) => {
-          displayAlert({ text: error.response?.data?.message || "Error" });
-        });
-    },
+// Activate
+const activateMutation = useActivateVehicleLoadout({
+  mutation: { onSettled: invalidateLoadouts },
+});
+
+const onActivate = async (record: VehicleLoadout) => {
+  await activateMutation.mutateAsync({
+    vehicleId: props.vehicle.id,
+    id: record.id,
   });
 };
 </script>
@@ -185,88 +160,53 @@ const remove = (loadout: VehicleLoadout) => {
       </BtnGroup>
     </div>
 
-    <div class="loadouts-page__create">
-      <form class="loadouts-page__create-form" @submit.prevent="createLoadout">
-        <FormInput
-          v-model="newLoadoutName"
-          name="newLoadoutName"
-          :placeholder="t('labels.loadout.namePlaceholder')"
-          :no-label="true"
-        />
-        <Btn
-          :loading="submitting"
-          :disabled="!newLoadoutName.trim()"
-          :inline="true"
-          @click="createLoadout"
-        >
-          {{ t("actions.add") }}
-        </Btn>
-      </form>
-    </div>
-
-    <div v-if="isLoading" class="loadouts-page__loading">
-      <i class="fa fa-spinner fa-spin" />
-    </div>
-
-    <div v-else-if="!loadouts?.length" class="loadouts-page__empty">
-      {{ t("labels.loadout.empty") }}
-    </div>
-
-    <div v-else class="loadouts-page__list">
-      <div
-        v-for="loadout in loadouts"
-        :key="loadout.id"
-        class="loadouts-page__item"
-        :class="{ 'loadouts-page__item--active': loadout.active }"
+    <div class="flex items-center justify-between loadouts-page__toolbar">
+      <Btn
+        :size="BtnSizesEnum.SMALL"
+        :disabled="editableList?.creating"
+        @click="editableList?.startCreate()"
       >
-        <template v-if="editingLoadout?.id === loadout.id">
-          <div class="loadouts-page__item-edit">
-            <FormInput v-model="editName" name="editName" :no-label="true" />
-            <FormInput
-              v-model="editErkulUrl"
-              name="editErkulUrl"
-              :placeholder="t('labels.loadout.erkulUrl')"
-              :no-label="true"
-            />
-            <FormInput
-              v-model="editSpviewerUrl"
-              name="editSpviewerUrl"
-              :placeholder="t('labels.loadout.spviewerUrl')"
-              :no-label="true"
-            />
-            <div class="loadouts-page__item-actions">
-              <Btn :loading="submitting" :inline="true" @click="saveEdit">
-                {{ t("actions.save") }}
-              </Btn>
-              <Btn :inline="true" @click="cancelEdit">
-                {{ t("actions.cancel") }}
-              </Btn>
-            </div>
-          </div>
-        </template>
-        <template v-else>
+        <i class="fa-duotone fa-plus" />
+        {{ t("actions.add") }}
+      </Btn>
+    </div>
+
+    <InlineEditableList
+      ref="editableList"
+      empty-name="loadouts"
+      :items="loadoutItems"
+      :loading="isLoading"
+      confirm-destroy-text="Are you sure you want to delete this loadout?"
+      @start-edit="onStartEdit"
+      @save-edit="onSaveEdit"
+      @start-create="onStartCreate"
+      @save-create="onSaveCreate"
+      @destroy="onDestroy"
+    >
+      <template #display="{ item }">
+        <div class="loadouts-page__item-display">
           <div class="loadouts-page__item-info">
             <span class="loadouts-page__item-name">
-              {{ loadout.name }}
-            </span>
-            <span v-if="loadout.active" class="loadouts-page__item-badge">
-              {{ t("labels.loadout.active") }}
+              {{ item.name }}
+              <span v-if="item.active" class="loadouts-page__item-badge">
+                {{ t("labels.loadout.active") }}
+              </span>
             </span>
             <div
-              v-if="loadout.erkulUrl || loadout.spviewerUrl"
+              v-if="item.erkulUrl || item.spviewerUrl"
               class="loadouts-page__item-links"
             >
               <a
-                v-if="loadout.erkulUrl"
-                :href="loadout.erkulUrl"
+                v-if="item.erkulUrl"
+                :href="item.erkulUrl"
                 target="_blank"
                 rel="noopener"
               >
                 Erkul
               </a>
               <a
-                v-if="loadout.spviewerUrl"
-                :href="loadout.spviewerUrl"
+                v-if="item.spviewerUrl"
+                :href="item.spviewerUrl"
                 target="_blank"
                 rel="noopener"
               >
@@ -274,25 +214,50 @@ const remove = (loadout: VehicleLoadout) => {
               </a>
             </div>
           </div>
-          <div class="loadouts-page__item-actions">
-            <Btn
-              v-if="!loadout.active"
-              :inline="true"
-              size="small"
-              @click="activate(loadout)"
-            >
-              {{ t("labels.loadout.activate") }}
-            </Btn>
-            <Btn :inline="true" size="small" @click="startEdit(loadout)">
-              <i class="fa fa-pencil" />
-            </Btn>
-            <Btn :inline="true" size="small" @click="remove(loadout)">
-              <i class="fa-light fa-trash" />
-            </Btn>
-          </div>
-        </template>
-      </div>
-    </div>
+        </div>
+      </template>
+
+      <template #actions="{ item }">
+        <Btn
+          v-if="!item.active"
+          v-tooltip="t('labels.loadout.activate')"
+          :size="BtnSizesEnum.SMALL"
+          @click="onActivate(item)"
+        >
+          <i class="fa-duotone fa-circle-check" />
+        </Btn>
+      </template>
+
+      <template #create>
+        <FormInput
+          v-model="createForm.url"
+          name="create-loadout-url"
+          :placeholder="t('labels.loadout.urlPlaceholder')"
+          :no-label="true"
+        />
+      </template>
+
+      <template #edit>
+        <FormInput
+          v-model="editForm.name"
+          name="edit-loadout-name"
+          :placeholder="t('labels.loadout.namePlaceholder')"
+          :no-label="true"
+        />
+        <FormInput
+          v-model="editForm.erkulUrl"
+          name="edit-erkul-url"
+          :placeholder="t('labels.loadout.erkulUrl')"
+          :no-label="true"
+        />
+        <FormInput
+          v-model="editForm.spviewerUrl"
+          name="edit-spviewer-url"
+          :placeholder="t('labels.loadout.spviewerUrl')"
+          :no-label="true"
+        />
+      </template>
+    </InlineEditableList>
   </div>
 </template>
 

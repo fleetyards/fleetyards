@@ -11,51 +11,21 @@
     }
   }
 
-  &__create-form {
+  &__toolbar {
+    margin-bottom: 10px;
+  }
+
+  &__item-display {
     display: flex;
-    gap: 10px;
-    align-items: flex-start;
-    margin-bottom: 20px;
-
-    .form-input {
-      flex: 1;
-    }
-  }
-
-  &__loading {
-    text-align: center;
-    padding: 40px;
-  }
-
-  &__empty {
-    text-align: center;
-    padding: 40px;
-    opacity: 0.6;
-  }
-
-  &__list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  &__item {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-
-    &--active {
-      border-color: var(--primary);
-    }
+    gap: 10px;
+    flex: 1;
   }
 
   &__item-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
   }
 
   &__item-name {
@@ -66,24 +36,12 @@
     font-size: 0.75rem;
     color: var(--primary);
     text-transform: uppercase;
+    margin-left: 8px;
   }
 
   &__item-links {
     display: flex;
     gap: 10px;
     font-size: 0.85rem;
-  }
-
-  &__item-actions {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-  }
-
-  &__item-edit {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
   }
 }
