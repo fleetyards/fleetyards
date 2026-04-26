@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/vehicle_loadouts", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let(:vehicle) { create(:vehicle, user: author) }
@@ -54,7 +54,7 @@ RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schem
         end
       end
 
-      response(200, "deactivates other loadouts") do
+      response(200, "deactivates other loadouts", hidden: true) do
         schema "$ref": "#/components/schemas/VehicleLoadout"
 
         let!(:other_loadout) { create(:vehicle_loadout, :active, vehicle: vehicle, name: "Other") }

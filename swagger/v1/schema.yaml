@@ -201,6 +201,101 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+  "/fleets/{fleetSlug}/inventory-items":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet All Inventory Items
+      tags:
+      - FleetInventoryItems
+      operationId: fleetAllInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetInventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventory-stock":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet All Inventory Stock
+      tags:
+      - FleetInventoryStock
+      operationId: fleetAllInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetInventoryStockItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/check":
     post:
       summary: Check Fleet FID Availability
@@ -431,6 +526,460 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    post:
+      summary: Create Fleet Inventory
+      tags:
+      - FleetInventories
+      operationId: createFleetInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request - duplicate name
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden - member cannot create
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Fleet Inventories List
+      tags:
+      - FleetInventories
+      operationId: fleetInventories
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoriesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    delete:
+      summary: Delete Fleet Inventory
+      tags:
+      - FleetInventories
+      operationId: destroyFleetInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot delete
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Fleet Inventory Detail
+      tags:
+      - FleetInventories
+      operationId: fleetInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleet Inventory
+      tags:
+      - FleetInventories
+      operationId: updateFleetInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot update
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    post:
+      summary: Create Fleet Inventory Item
+      tags:
+      - FleetInventoryItems
+      operationId: createFleetInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryItemCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot add items
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Fleet Inventory Items List
+      tags:
+      - FleetInventoryItems
+      operationId: fleetInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetInventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Inventory item ID
+      required: true
+    delete:
+      summary: Delete Fleet Inventory Item
+      tags:
+      - FleetInventoryItems
+      operationId: destroyFleetInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot delete items
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleet Inventory Item
+      tags:
+      - FleetInventoryItems
+      operationId: updateFleetInventoryItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryItemUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot update items
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    get:
+      summary: Fleet Inventory Stock
+      tags:
+      - FleetInventoryStock
+      operationId: fleetInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetInventoryStockItem"
         '401':
           description: unauthorized
           content:
@@ -2940,6 +3489,36 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/positions":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Positions
+      tags:
+      - Models
+      operationId: modelPositions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/ModelPosition"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}":
     parameters:
     - name: slug
@@ -5248,6 +5827,262 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/vehicles/{vehicle_id}/loadouts/{id}/activate":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      description: Loadout id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Activate Vehicle Loadout
+      tags:
+      - VehicleLoadouts
+      operationId: activateVehicleLoadout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/loadouts":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Vehicle Loadout
+      tags:
+      - VehicleLoadouts
+      operationId: createVehicleLoadout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleLoadoutInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: List Vehicle Loadouts
+      tags:
+      - VehicleLoadouts
+      operationId: vehicleLoadouts
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{vehicle_id}/loadouts/{id}":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      description: Loadout id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Delete Vehicle Loadout
+      tags:
+      - VehicleLoadouts
+      operationId: destroyVehicleLoadout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show Vehicle Loadout
+      tags:
+      - VehicleLoadouts
+      operationId: vehicleLoadout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Vehicle Loadout
+      tags:
+      - VehicleLoadouts
+      operationId: updateVehicleLoadout
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleLoadoutInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/vehicles/check-serial":
     post:
       summary: Check Vehicle Serial
@@ -5437,10 +6272,9 @@ paths:
     parameters:
     - name: id
       in: path
-      description: id
+      description: Vehicle id or serial
       schema:
         type: string
-        format: uuid
       required: true
     delete:
       summary: Delete Vehicle
@@ -5455,6 +6289,40 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicle"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show Vehicle
+      tags:
+      - Vehicles
+      operationId: showVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
       responses:
         '200':
           description: successful
@@ -5918,6 +6786,10 @@ components:
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
+          - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentShield"
+          - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentPowerPlant"
         hardpoints:
           type: array
           items:
@@ -5954,6 +6826,15 @@ components:
       - RSI_PROPULSION
       - RSI_THRUSTER
       title: ComponentClassEnum
+    ComponentCooler:
+      type: object
+      properties:
+        coolingRate:
+          type: number
+      additionalProperties: false
+      required:
+      - coolingRate
+      title: ComponentCooler
     ComponentItemClassEnum:
       type: string
       enum:
@@ -5969,6 +6850,15 @@ components:
       - MILITARY
       - COMPETITION
       title: ComponentItemClassEnum
+    ComponentPowerPlant:
+      type: object
+      properties:
+        powerBase:
+          type: number
+        powerDraw:
+          type: number
+      additionalProperties: false
+      title: ComponentPowerPlant
     ComponentQuantumDrive:
       type: object
       properties:
@@ -6083,6 +6973,24 @@ components:
       additionalProperties: false
       example: {}
       title: ComponentQuery
+    ComponentShield:
+      type: object
+      properties:
+        maxHealth:
+          type: number
+        maxRegen:
+          type: number
+        decayRatio:
+          type: number
+        downedRegenDelay:
+          type: number
+        damagedRegenDelay:
+          type: number
+      additionalProperties: false
+      required:
+      - maxHealth
+      - maxRegen
+      title: ComponentShield
     ComponentSortEnum:
       type: string
       enum:
@@ -6264,6 +7172,41 @@ components:
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
       title: ComponentTypeEnum
+    ComponentWeapon:
+      type: object
+      properties:
+        weaponClass:
+          type: string
+        fireRate:
+          type: number
+        heatPerShot:
+          type: number
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        pelletsPerShot:
+          type: integer
+        speed:
+          type: number
+        range:
+          type: number
+        ammoCost:
+          type: integer
+      additionalProperties: false
+      title: ComponentWeapon
     Components:
       type: object
       properties:
@@ -6656,6 +7599,356 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetInventoriesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventory"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: FleetInventoriesList
+    FleetInventory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        visibility:
+          type: string
+          enum:
+          - members_only
+          - officers_only
+        location:
+          type: string
+          nullable: true
+        itemCount:
+          type: integer
+        totalScu:
+          type: number
+        totalUnits:
+          type: number
+        manager:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - visibility
+      - itemCount
+      - totalScu
+      - totalUnits
+      - createdAt
+      - updatedAt
+      title: FleetInventory
+    FleetInventoryCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        managedBy:
+          type: string
+          format: uuid
+          nullable: true
+        visibility:
+          type: string
+          enum:
+          - members_only
+          - officers_only
+        location:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+      required:
+      - name
+      additionalProperties: false
+      title: FleetInventoryCreateInput
+    FleetInventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: number
+        unit:
+          type: string
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+          nullable: true
+        item:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              type: string
+            name:
+              type: string
+        inventory:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+        member:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+        addedBy:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - category
+      - quantity
+      - unit
+      - entryType
+      - createdAt
+      - updatedAt
+      title: FleetInventoryItem
+    FleetInventoryItemCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        quantity:
+          type: number
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          nullable: true
+        memberId:
+          type: string
+          format: uuid
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        itemType:
+          type: string
+          nullable: true
+        itemId:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - name
+      - quantity
+      additionalProperties: false
+      title: FleetInventoryItemCreateInput
+    FleetInventoryItemQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        categoryEq:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        qualityGteq:
+          type: integer
+        qualityLteq:
+          type: integer
+        sorts:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: FleetInventoryItemQuery
+    FleetInventoryItemUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        notes:
+          type: string
+          nullable: true
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+      additionalProperties: false
+      title: FleetInventoryItemUpdateInput
+    FleetInventoryItemsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventoryItem"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: FleetInventoryItemsList
+    FleetInventoryStockItem:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        unit:
+          type: string
+        quality:
+          type: integer
+          nullable: true
+        qualityMin:
+          type: integer
+          nullable: true
+        qualityMax:
+          type: integer
+          nullable: true
+        netQuantity:
+          type: number
+        inventory:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+      required:
+      - name
+      - category
+      - unit
+      - netQuantity
+      title: FleetInventoryStockItem
+    FleetInventoryUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        managedBy:
+          type: string
+          format: uuid
+          nullable: true
+        visibility:
+          type: string
+          enum:
+          - members_only
+          - officers_only
+        location:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: FleetInventoryUpdateInput
     FleetInviteUrl:
       type: object
       properties:
@@ -6708,6 +8001,9 @@ components:
         id:
           type: string
           format: uuid
+        userId:
+          type: string
+          format: uuid
         username:
           type: string
         fleetRole:
@@ -6744,6 +8040,8 @@ components:
         verified:
           type: boolean
         citizenidProfileUrl:
+          type: string
+        discordProfileUrl:
           type: string
         latitude:
           type: number
@@ -9596,6 +10894,49 @@ components:
       - MODEL_SLUG_ASC
       - MODEL_SLUG_DESC
       title: ModelPaintSortEnum
+    ModelPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        positionType:
+          type: string
+          enum:
+          - pilot
+          - copilot
+          - turret_gunner
+          - engineer
+          - gunner
+          - loadmaster
+          - passenger
+          - operator
+          - custom
+        source:
+          type: string
+          enum:
+          - sc_data
+          - curated
+        position:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - positionType
+      - source
+      - position
+      - createdAt
+      - updatedAt
+      title: ModelPosition
     ModelProductionStatusEnum:
       type: string
       enum:
@@ -9923,6 +11264,7 @@ components:
       - fleet_member_requested
       - fleet_member_accepted
       - fleet_request_accepted
+      - fleet_inventory_item_added
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -9936,6 +11278,7 @@ components:
       - FLEET_MEMBER_REQUESTED
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
+      - FLEET_INVENTORY_ITEM_ADDED
       title: NotificationTypeEnum
     Notifications:
       type: object
@@ -10609,6 +11952,8 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
           type: boolean
+        activeLoadout:
+          "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         createdAt:
           type: string
           format: date-time
@@ -10795,6 +12140,97 @@ components:
       - modules
       - upgrades
       title: VehicleExport
+    VehicleLoadout:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        active:
+          type: boolean
+        url:
+          type: string
+        urlSource:
+          type: string
+        hardpoints:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              modelHardpointId:
+                type: string
+                format: uuid
+              hardpoint:
+                "$ref": "#/components/schemas/ModelHardpoint"
+              component:
+                "$ref": "#/components/schemas/Component"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - active
+      - url
+      - hardpoints
+      - createdAt
+      - updatedAt
+      title: VehicleLoadout
+    VehicleLoadoutInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        url:
+          type: string
+        fromDefaults:
+          type: boolean
+        vehicleLoadoutHardpointsAttributes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              modelHardpointId:
+                type: string
+                format: uuid
+              componentId:
+                type: string
+                format: uuid
+                nullable: true
+              _destroy:
+                type: boolean
+      additionalProperties: false
+      title: VehicleLoadoutInput
+    VehicleLoadoutMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        url:
+          type: string
+        urlSource:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - url
+      title: VehicleLoadoutMinimal
     VehiclePublic:
       type: object
       properties:
@@ -10843,6 +12279,8 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         paint:
           "$ref": "#/components/schemas/ModelPaint"
+        activeLoadout:
+          "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         createdAt:
           type: string
           format: date-time

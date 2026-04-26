@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/inventory_items", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
@@ -37,9 +37,9 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
   end
 
   path "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id}" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
-    parameter name: "fleetInventorySlug", in: :path, type: :string, description: "Inventory slug"
-    parameter name: "id", in: :path, type: :string, description: "Inventory item ID"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "fleetInventorySlug", in: :path, schema: {type: :string}, description: "Inventory slug"
+    parameter name: "id", in: :path, schema: {type: :string}, description: "Inventory item ID"
 
     delete("Delete Fleet Inventory Item") do
       operationId "destroyFleetInventoryItem"

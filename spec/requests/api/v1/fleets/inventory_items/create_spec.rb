@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/inventory_items", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:officer) { create(:user) }
   let(:member) { create(:user) }
@@ -11,7 +11,7 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
   let(:fleetSlug) { fleet.slug }
   let(:fleet_inventory) { create(:fleet_inventory, fleet: fleet) }
   let(:fleetInventorySlug) { fleet_inventory.slug }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Quantanium",
       category: "commodity",
@@ -42,8 +42,8 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
   end
 
   path "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
-    parameter name: "fleetInventorySlug", in: :path, type: :string, description: "Inventory slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "fleetInventorySlug", in: :path, schema: {type: :string}, description: "Inventory slug"
 
     post("Create Fleet Inventory Item") do
       operationId "createFleetInventoryItem"
@@ -51,7 +51,7 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetInventoryItemCreateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetInventoryItemCreateInput"}
 
       security [
         {SessionCookie: []},
@@ -72,7 +72,7 @@ RSpec.describe "api/v1/fleets/inventory_items", type: :request, swagger_doc: "v1
 
       include_examples "oauth_auth", success_status: 201
 
-      response(201, "successful as officer") do
+      response(201, "successful as officer", hidden: true) do
         schema "$ref": "#/components/schemas/FleetInventoryItem"
 
         let(:user) { officer }
