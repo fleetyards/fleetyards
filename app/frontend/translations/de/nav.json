@@ -42,6 +42,9 @@
           "starmap": "Sternenkarte"
         },
         "stats": "Statistiken",
+        "logistics": {
+          "index": "Logistics"
+        },
         "settings": {
           "index": "Einstellungen",
           "fleet": "Flotteneinstellungen",

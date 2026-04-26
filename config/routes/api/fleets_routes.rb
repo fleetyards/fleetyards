@@ -29,6 +29,16 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_roles, path: "roles", only: %i[index]
 
+  get "inventory-items", to: "fleet_all_inventory_items#index"
+  get "inventory-stock", to: "fleet_all_inventory_stock#index"
+
+  resources :fleet_inventories, path: "inventories", param: :slug, only: %i[index show create update destroy] do
+    resources :fleet_inventory_items, path: "items", only: %i[index create update destroy] do
+      post :import, on: :collection
+    end
+    get "stock", to: "fleet_inventory_stock#index"
+  end
+
   resource :fleet_stats, path: "stats", only: %i[] do
     get "model-counts", to: "fleet_stats#model_counts"
     get "vehicles", to: "fleet_stats#vehicles"

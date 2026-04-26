@@ -50,6 +50,10 @@
           "starmap": "%{fleet} Mitglieder-Sternenkarte"
         },
         "stats": "%{fleet} Statistiken",
+        "logistics": {
+          "index": "%{fleet} Logistics",
+          "inventories": "%{fleet} Inventories"
+        },
         "settings": {
           "index": "%{fleet} Einstellungen",
           "fleet": "%{fleet} Einstellungen",

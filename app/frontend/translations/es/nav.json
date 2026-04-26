@@ -42,6 +42,9 @@
           "starmap": "Mapa estelar"
         },
         "stats": "Estadísticas",
+        "logistics": {
+          "index": "Logistics"
+        },
         "settings": {
           "index": "Configuración",
           "fleet": "Configuración de flota",

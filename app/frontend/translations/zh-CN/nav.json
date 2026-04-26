@@ -42,6 +42,9 @@
           "starmap": "星图"
         },
         "stats": "统计",
+        "logistics": {
+          "index": "Logistics"
+        },
         "settings": {
           "index": "设置",
           "fleet": "舰队设置",

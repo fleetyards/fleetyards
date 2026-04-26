@@ -10,6 +10,7 @@ module V1
           type: :object,
           properties: {
             id: {type: :string, format: :uuid},
+            userId: {type: :string, format: :uuid},
             username: {type: :string},
             fleetRole: {"$ref": "#/components/schemas/FleetRole"},
             status: {"$ref": "#/components/schemas/FleetMembershipStatusEnum"},

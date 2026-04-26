@@ -29,3 +29,5 @@ en:
       title: "%{username} joined %{fleet}"
     fleet_request_accepted:
       title: "You've been accepted into %{fleet}"
+    fleet_inventory_item_added:
+      title: "New inventory item in %{fleet}: %{item_name}"

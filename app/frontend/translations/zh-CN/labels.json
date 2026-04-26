@@ -794,6 +794,81 @@
       "account": {
         "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
       },
+      "fleets": {
+        "logistics": {
+          "inventoryCount": "inventories",
+          "pending": "pending",
+          "inProgress": "in progress",
+          "drafts": "drafts",
+          "noInventories": "No inventories yet.",
+          "noRequests": "No requests found.",
+          "noItems": "No items in this inventory.",
+          "items": "items",
+          "comments": "comments",
+          "managedBy": "Managed by",
+          "itemName": "Name",
+          "category": "Category",
+          "quantity": "Quantity",
+          "unit": "Unit",
+          "notes": "Notes",
+          "status": "Status",
+          "requested": "Requested",
+          "fulfilled": "Fulfilled",
+          "itemFulfilled": "Fulfilled",
+          "itemPending": "Pending",
+          "requestTitle": "Title",
+          "description": "Description",
+          "requestType": "Type",
+          "priority": "Priority",
+          "requestedBy": "Requested by",
+          "approvedBy": "Approved by",
+          "fulfilledBy": "Fulfilled by",
+          "addComment": "Write a comment...",
+          "states": {
+            "draft": "Draft",
+            "submitted": "Submitted",
+            "approved": "Approved",
+            "in_progress": "In Progress",
+            "fulfilled": "Fulfilled",
+            "rejected": "Rejected",
+            "cancelled": "Cancelled"
+          },
+          "requestTypes": {
+            "supply": "Supply",
+            "outfitting": "Outfitting",
+            "general": "General"
+          },
+          "priorities": {
+            "routine": "Routine",
+            "standard": "Standard",
+            "urgent": "Urgent",
+            "critical": "Critical"
+          },
+          "searchInventories": "Search inventories...",
+          "inventoryName": "Inventory Name",
+          "visibility": "Visibility",
+          "visibilities": {
+            "members_only": "All Members",
+            "officers_only": "Officers Only"
+          },
+          "categories": {
+            "commodity": "Commodity",
+            "component": "Component",
+            "module_item": "Module",
+            "ship": "Ship",
+            "ammunition": "Ammunition",
+            "consumable": "Consumable",
+            "other": "Other"
+          },
+          "units": {
+            "scu": "SCU",
+            "units": "Units"
+          },
+          "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
+          "imported": "items imported",
+          "importErrors": "errors"
+        }
+      },
       "filters": {
         "components": {
           "name": "名称",

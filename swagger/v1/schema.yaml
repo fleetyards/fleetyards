@@ -207,6 +207,97 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+  "/fleets/{fleetSlug}/inventory-items":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet All Inventory Items
+      operationId: fleetAllInventoryItems
+      tags:
+      - FleetInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetInventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful as member
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventory-stock":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet All Inventory Stock
+      operationId: fleetAllInventoryStock
+      tags:
+      - FleetInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetInventoryStockItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/check":
     post:
       summary: Check Fleet FID Availability
@@ -432,6 +523,430 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventories":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Create Fleet Inventory
+      operationId: createFleetInventory
+      tags:
+      - FleetInventories
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request - duplicate name
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden - member cannot create
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryCreateInput"
+        required: true
+    get:
+      summary: Fleet Inventories List
+      operationId: fleetInventories
+      tags:
+      - FleetInventories
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful as member
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoriesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventories/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      description: Inventory slug
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Delete Fleet Inventory
+      operationId: destroyFleetInventory
+      tags:
+      - FleetInventories
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden - member cannot delete
+    get:
+      summary: Fleet Inventory Detail
+      operationId: fleetInventory
+      tags:
+      - FleetInventories
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Fleet Inventory
+      operationId: updateFleetInventory
+      tags:
+      - FleetInventories
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot update
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryUpdateInput"
+        required: true
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: fleetInventorySlug
+      in: path
+      description: Inventory slug
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Create Fleet Inventory Item
+      operationId: createFleetInventoryItem
+      tags:
+      - FleetInventoryItems
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful as officer
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot add items
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryItemCreateInput"
+        required: true
+    get:
+      summary: Fleet Inventory Items List
+      operationId: fleetInventoryItems
+      tags:
+      - FleetInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetInventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: fleetInventorySlug
+      in: path
+      description: Inventory slug
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      description: Inventory item ID
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Delete Fleet Inventory Item
+      operationId: destroyFleetInventoryItem
+      tags:
+      - FleetInventoryItems
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+        '403':
+          description: forbidden - member cannot delete items
+    put:
+      summary: Update Fleet Inventory Item
+      operationId: updateFleetInventoryItem
+      tags:
+      - FleetInventoryItems
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot update items
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryItemUpdateInput"
+        required: true
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock":
+    parameters:
+    - name: fleetSlug
+      in: path
+      description: Fleet slug
+      required: true
+      schema:
+        type: string
+    - name: fleetInventorySlug
+      in: path
+      description: Inventory slug
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Fleet Inventory Stock
+      operationId: fleetInventoryStock
+      tags:
+      - FleetInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetInventoryStockItem"
         '401':
           description: unauthorized
           content:
@@ -7333,6 +7848,7 @@ components:
       - fleet_member_requested
       - fleet_member_accepted
       - fleet_request_accepted
+      - fleet_inventory_item_added
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -7346,6 +7862,7 @@ components:
       - FLEET_MEMBER_REQUESTED
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
+      - FLEET_INVENTORY_ITEM_ADDED
       title: NotificationTypeEnum
     OrderDirectionEnum:
       type: string
@@ -7821,6 +8338,336 @@ components:
       - fid
       - name
       title: FleetCreateInput
+    FleetInventoriesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventory"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: FleetInventoriesList
+    FleetInventory:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        visibility:
+          type: string
+          enum:
+          - members_only
+          - officers_only
+        location:
+          type: string
+          nullable: true
+        itemCount:
+          type: integer
+        manager:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - visibility
+      - itemCount
+      - createdAt
+      - updatedAt
+      title: FleetInventory
+    FleetInventoryCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        managedBy:
+          type: string
+          format: uuid
+          nullable: true
+        visibility:
+          type: string
+          enum:
+          - members_only
+          - officers_only
+        location:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+      required:
+      - name
+      additionalProperties: false
+      title: FleetInventoryCreateInput
+    FleetInventoryItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        category:
+          type: string
+        quantity:
+          type: number
+        unit:
+          type: string
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+          nullable: true
+        item:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              type: string
+            name:
+              type: string
+        inventory:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+        member:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+        addedBy:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - category
+      - quantity
+      - unit
+      - entryType
+      - createdAt
+      - updatedAt
+      title: FleetInventoryItem
+    FleetInventoryItemCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        quantity:
+          type: number
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+        entryType:
+          type: string
+          enum:
+          - deposit
+          - withdrawal
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          nullable: true
+        memberId:
+          type: string
+          format: uuid
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+        itemType:
+          type: string
+          nullable: true
+        itemId:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - name
+      - quantity
+      additionalProperties: false
+      title: FleetInventoryItemCreateInput
+    FleetInventoryItemQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        categoryEq:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        qualityGteq:
+          type: integer
+        qualityLteq:
+          type: integer
+        sorts:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: FleetInventoryItemQuery
+    FleetInventoryItemUpdateInput:
+      type: object
+      properties:
+        notes:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: FleetInventoryItemUpdateInput
+    FleetInventoryItemsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetInventoryItem"
+        meta:
+          "$ref": "#/components/schemas/Meta"
+      required:
+      - items
+      - meta
+      title: FleetInventoryItemsList
+    FleetInventoryStockItem:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+        unit:
+          type: string
+        quality:
+          type: integer
+          nullable: true
+        qualityMin:
+          type: integer
+          nullable: true
+        qualityMax:
+          type: integer
+          nullable: true
+        netQuantity:
+          type: number
+        inventory:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+      required:
+      - name
+      - category
+      - unit
+      - netQuantity
+      title: FleetInventoryStockItem
+    FleetInventoryUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        managedBy:
+          type: string
+          format: uuid
+          nullable: true
+        visibility:
+          type: string
+          enum:
+          - members_only
+          - officers_only
+        location:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: FleetInventoryUpdateInput
     FleetInviteUrl:
       type: object
       properties:
@@ -7871,6 +8718,9 @@ components:
       type: object
       properties:
         id:
+          type: string
+          format: uuid
+        userId:
           type: string
           format: uuid
         username:

@@ -50,6 +50,10 @@
           "starmap": "%{fleet} 成員星圖"
         },
         "stats": "%{fleet} 統計",
+        "logistics": {
+          "index": "%{fleet} Logistics",
+          "inventories": "%{fleet} Inventories"
+        },
         "settings": {
           "index": "%{fleet} 設定",
           "fleet": "%{fleet} 設定",

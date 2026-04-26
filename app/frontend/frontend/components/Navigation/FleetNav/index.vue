@@ -58,6 +58,18 @@ const shipsNavActive = computed(() => {
   return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
 });
 
+const hasLogisticsAccess = computed(() => {
+  const access = membership.value?.fleetRole?.resourceAccess;
+  if (!access) return false;
+  return access.some((a: string) =>
+    [
+      "fleet:manage",
+      "fleet:inventories:manage",
+      "fleet:inventories:read",
+    ].includes(a),
+  );
+});
+
 const comlink = useComlink();
 
 onMounted(() => {
@@ -105,11 +117,22 @@ onMounted(() => {
           prefix="03"
         />
         <NavItem
+          v-if="hasLogisticsAccess"
+          :to="{
+            name: 'fleet-logistics',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.logistics.index')"
+          :active="String(route.name).startsWith('fleet-logistics')"
+          icon="fa-duotone fa-boxes-stacked"
+          prefix="04"
+        />
+        <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
           icon="fa-duotone fa-cogs"
-          prefix="04"
+          prefix="05"
         />
       </template>
     </template>

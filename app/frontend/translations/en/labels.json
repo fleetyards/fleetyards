@@ -323,7 +323,8 @@
             "memberships": "Members",
             "invites": "Invites",
             "vehicles": "Vehicles",
-            "roles": "Roles"
+            "roles": "Roles",
+            "inventories": "Inventories"
           },
           "privileges": {
             "fleet:update": "Update Fleet",
@@ -349,7 +350,12 @@
             "fleet:roles:create": "Create Roles",
             "fleet:roles:update": "Update Roles",
             "fleet:roles:delete": "Delete Roles",
-            "fleet:roles:manage": "Manage Roles"
+            "fleet:roles:manage": "Manage Roles",
+            "fleet:inventories:read": "View Inventories",
+            "fleet:inventories:create": "Create Inventories",
+            "fleet:inventories:update": "Update Inventories",
+            "fleet:inventories:delete": "Delete Inventories",
+            "fleet:inventories:manage": "Manage Inventories"
           }
         },
         "inviteUrls": {
@@ -829,6 +835,102 @@
       "account": {
         "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
       },
+      "fleets": {
+        "logistics": {
+          "inventoryCount": "inventories",
+          "pending": "pending",
+          "inProgress": "in progress",
+          "drafts": "drafts",
+          "noInventories": "No inventories yet.",
+          "noRequests": "No requests found.",
+          "noItems": "No items in this inventory.",
+          "items": "items",
+          "comments": "comments",
+          "managedBy": "Managed by",
+          "itemName": "Name",
+          "category": "Category",
+          "quantity": "Quantity",
+          "unit": "Unit",
+          "notes": "Notes",
+          "status": "Status",
+          "requested": "Requested",
+          "fulfilled": "Fulfilled",
+          "itemFulfilled": "Fulfilled",
+          "itemPending": "Pending",
+          "requestTitle": "Title",
+          "description": "Description",
+          "requestType": "Type",
+          "priority": "Priority",
+          "requestedBy": "Requested by",
+          "approvedBy": "Approved by",
+          "fulfilledBy": "Fulfilled by",
+          "addComment": "Write a comment...",
+          "states": {
+            "draft": "Draft",
+            "submitted": "Submitted",
+            "approved": "Approved",
+            "in_progress": "In Progress",
+            "fulfilled": "Fulfilled",
+            "rejected": "Rejected",
+            "cancelled": "Cancelled"
+          },
+          "requestTypes": {
+            "supply": "Supply",
+            "outfitting": "Outfitting",
+            "general": "General"
+          },
+          "priorities": {
+            "routine": "Routine",
+            "standard": "Standard",
+            "urgent": "Urgent",
+            "critical": "Critical"
+          },
+          "searchInventories": "Search inventories...",
+          "searchItems": "Search items...",
+          "quality": "Quality (0-1000)",
+          "qualityShort": "Quality",
+          "qualityMin": "Quality >=",
+          "qualityMax": "Quality <=",
+          "existingItem": "Select existing item",
+          "inventoryName": "Inventory Name",
+          "visibility": "Visibility",
+          "visibilities": {
+            "members_only": "All Members",
+            "officers_only": "Officers Only"
+          },
+          "inventory": "Inventory",
+          "notesPlaceholder": "Add notes...",
+          "entryType": "Type",
+          "entryTypes": {
+            "deposit": "Deposit",
+            "withdrawal": "Withdrawal"
+          },
+          "stockView": "Current Stock",
+          "logView": "Transaction Log",
+          "addedBy": "Logged by",
+          "member": "Member",
+          "selectItem": "Select item",
+          "currentStock": "Available",
+          "location": "Location",
+          "image": "Image",
+          "categories": {
+            "commodity": "Commodity",
+            "component": "Component",
+            "weapon": "Weapon",
+            "equipment": "Equipment",
+            "ammunition": "Ammunition",
+            "consumable": "Consumable",
+            "other": "Other"
+          },
+          "units": {
+            "scu": "SCU",
+            "units": "Units"
+          },
+          "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
+          "imported": "items imported",
+          "importErrors": "errors"
+        }
+      },
       "filters": {
         "components": {
           "name": "Name",
@@ -978,6 +1080,9 @@
           "inviteUrls": {
             "expiresAfter": "Expire after",
             "limit": "Max number of uses"
+          },
+          "logistics": {
+            "search": "Search items..."
           }
         },
         "manufacturer": "Manufacturer"

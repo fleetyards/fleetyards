@@ -135,7 +135,7 @@ const leave = () => {
     </template>
     <template #content>
       <BreadCrumbs :crumbs="crumbs" />
-      <Heading>{{ t(`headlines.${route.meta.title}`) }}</Heading>
+      <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
       <router-view :fleet="fleet" :membership="membership" />
     </template>
   </TabNavView>

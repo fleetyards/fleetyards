@@ -170,6 +170,17 @@
           "starmap": "Carte stellaire des membres"
         },
         "stats": "Statistiques",
+        "logistics": {
+          "index": "Logistics",
+          "inventories": "Inventories",
+          "requests": "Requests",
+          "newRequest": "New Request",
+          "requestItems": "Items",
+          "comments": "Comments",
+          "createInventory": "Create Inventory",
+          "createItem": "Add Item",
+          "importCsv": "Import from CSV"
+        },
         "preview": {
           "h1": "Aperçu de la Flotte",
           "h2": "Pour créer une Flotte, vous devez avoir un compte FleetYards.net",

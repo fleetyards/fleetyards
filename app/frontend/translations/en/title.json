@@ -51,6 +51,10 @@
           "starmap": "%{fleet} Member Starmap"
         },
         "stats": "%{fleet} Stats",
+        "logistics": {
+          "index": "%{fleet} Logistics",
+          "inventories": "%{fleet} Inventories"
+        },
         "settings": {
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",

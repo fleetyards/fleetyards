@@ -72,6 +72,10 @@ h4 {
   flex-direction: column;
 }
 
+.flex-row {
+  flex-direction: row;
+}
+
 .items-start {
   align-items: flex-start;
 }
@@ -84,6 +88,22 @@ h4 {
   align-items: center;
 }
 
+.items-baseline {
+  align-items: baseline;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
 .gap-1 {
   gap: 0.25rem;
 }
@@ -92,16 +112,4 @@ h4 {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
-
-.items-center {
-  align-items: center;
-}
-
-.items-start {
-  align-items: flex-start;
-}
-
-.items-baseline {
-  align-items: baseline;
 }

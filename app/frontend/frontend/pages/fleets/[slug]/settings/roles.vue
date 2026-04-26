@@ -67,6 +67,13 @@ const privilegeGroups: Record<string, string[]> = {
     "fleet:roles:delete",
     "fleet:roles:manage",
   ],
+  inventories: [
+    "fleet:inventories:read",
+    "fleet:inventories:create",
+    "fleet:inventories:update",
+    "fleet:inventories:delete",
+    "fleet:inventories:manage",
+  ],
 };
 
 const hasPrivilege = (role: FleetRoleExtended, privilege: string) => {
