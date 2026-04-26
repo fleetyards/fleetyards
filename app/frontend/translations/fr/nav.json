@@ -14,7 +14,10 @@
       "manufacturers": "Fabricants",
       "images": "Images",
       "videos": "Vidéos",
-      "hangar": "Mon Hangar",
+      "hangar": {
+        "index": "Mon Hangar",
+        "vehicleLoadouts": "Loadouts"
+      },
       "login": "Connexion",
       "logout": "Déconnexion",
       "apiV1": "API v1",

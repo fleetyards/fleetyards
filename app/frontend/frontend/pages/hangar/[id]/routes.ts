@@ -9,6 +9,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.vehicleLoadouts",
       backgroundImage: "bg-5",
+      customTitle: true,
     },
   },
 ];

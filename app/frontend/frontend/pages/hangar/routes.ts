@@ -57,6 +57,7 @@ export const routes: RouteRecordRaw[] = [
     path: ":id/",
     component: () => import("@/frontend/pages/hangar/[id].vue"),
     children: vehicleRoutes,
+    redirect: { name: vehicleRoutes[0].name },
     meta: {
       needsAuthentication: true,
     },

@@ -225,7 +225,9 @@ const openDisplayOptionsModal = () => {
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar') }]" />
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar.index') }]"
+  />
   <Heading size="hero" hero>{{ t("headlines.hangar.wishlist") }}</Heading>
 
   <Teleport v-if="!mobile" to="#header-right">

@@ -14,7 +14,10 @@
       "manufacturers": "制造商",
       "images": "图片",
       "videos": "视频",
-      "hangar": "我的机库",
+      "hangar": {
+        "index": "我的机库",
+        "vehicleLoadouts": "Loadouts"
+      },
       "login": "登录",
       "logout": "登出",
       "apiV1": "API v1",

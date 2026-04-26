@@ -1,17 +1,9 @@
 .loadouts-page {
-  &__header {
-    margin-bottom: 20px;
-  }
-
-  &__back {
-    margin-bottom: 10px;
-  }
-
   &__ship-links {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 10px;
+    margin-bottom: 20px;
 
     > span {
       opacity: 0.6;
