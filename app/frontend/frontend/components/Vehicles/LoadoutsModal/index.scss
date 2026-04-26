@@ -1,0 +1,79 @@
+.loadouts-modal {
+  min-height: 100px;
+
+  &__create-form {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+
+    .form-input {
+      flex: 1;
+    }
+  }
+
+  &__loading {
+    text-align: center;
+    padding: 20px;
+  }
+
+  &__empty {
+    text-align: center;
+    padding: 20px;
+    opacity: 0.6;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+
+    &--active {
+      border-color: var(--primary);
+    }
+  }
+
+  &__item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__item-name {
+    font-weight: 600;
+  }
+
+  &__item-badge {
+    font-size: 0.75rem;
+    color: var(--primary);
+    text-transform: uppercase;
+  }
+
+  &__item-links {
+    display: flex;
+    gap: 10px;
+    font-size: 0.85rem;
+  }
+
+  &__item-actions {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  &__item-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+}

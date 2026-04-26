@@ -5173,6 +5173,10 @@ components:
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
+          - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentShield"
+          - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentPowerPlant"
         hardpoints:
           type: array
           items:
@@ -5209,6 +5213,15 @@ components:
       - RSI_PROPULSION
       - RSI_THRUSTER
       title: ComponentClassEnum
+    ComponentCooler:
+      type: object
+      properties:
+        coolingRate:
+          type: number
+      additionalProperties: false
+      required:
+      - coolingRate
+      title: ComponentCooler
     ComponentItemClassEnum:
       type: string
       enum:
@@ -5224,6 +5237,15 @@ components:
       - MILITARY
       - COMPETITION
       title: ComponentItemClassEnum
+    ComponentPowerPlant:
+      type: object
+      properties:
+        powerBase:
+          type: number
+        powerDraw:
+          type: number
+      additionalProperties: false
+      title: ComponentPowerPlant
     ComponentQuantumDrive:
       type: object
       properties:
@@ -5263,6 +5285,24 @@ components:
       - spoolUpTime
       - cooldown
       title: ComponentQuantumDriveJump
+    ComponentShield:
+      type: object
+      properties:
+        maxHealth:
+          type: number
+        maxRegen:
+          type: number
+        decayRatio:
+          type: number
+        downedRegenDelay:
+          type: number
+        damagedRegenDelay:
+          type: number
+      additionalProperties: false
+      required:
+      - maxHealth
+      - maxRegen
+      title: ComponentShield
     ComponentSortEnum:
       type: string
       enum:
@@ -5444,6 +5484,41 @@ components:
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
       title: ComponentTypeEnum
+    ComponentWeapon:
+      type: object
+      properties:
+        weaponClass:
+          type: string
+        fireRate:
+          type: number
+        heatPerShot:
+          type: number
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        pelletsPerShot:
+          type: integer
+        speed:
+          type: number
+        range:
+          type: number
+        ammoCost:
+          type: integer
+      additionalProperties: false
+      title: ComponentWeapon
     Components:
       type: object
       properties:

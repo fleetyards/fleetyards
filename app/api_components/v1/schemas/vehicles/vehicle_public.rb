@@ -25,6 +25,7 @@ module V1
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             paint: {"$ref": "#/components/schemas/ModelPaint"},
+            activeLoadout: {"$ref": "#/components/schemas/VehicleLoadoutMinimal"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

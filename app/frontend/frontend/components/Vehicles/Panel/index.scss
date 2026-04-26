@@ -63,6 +63,22 @@
     right: 5px;
     bottom: 0;
   }
+
+  &-loadout {
+    position: absolute;
+    bottom: 0;
+    left: 45px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    opacity: 0.8;
+
+    a {
+      text-decoration: underline;
+    }
+  }
 }
 
 // Tailwind CSS Placeholder Classes

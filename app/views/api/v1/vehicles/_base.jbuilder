@@ -41,4 +41,15 @@ json.module_package do
 end
 json.module_package nil if vehicle.module_package.blank?
 
+active_loadout = vehicle.vehicle_loadouts.active.first
+json.active_loadout do
+  if active_loadout.present?
+    json.id active_loadout.id
+    json.name active_loadout.name
+    json.erkul_url active_loadout.erkul_url
+    json.spviewer_url active_loadout.spviewer_url
+  end
+end
+json.active_loadout nil if active_loadout.blank?
+
 json.partial! "api/shared/dates", record: vehicle

@@ -199,6 +199,17 @@ const openAddonsModal = () => {
     },
   });
 };
+
+const openLoadoutsModal = () => {
+  comlink.emit("open-modal", {
+    wide: true,
+    component: () =>
+      import("@/frontend/components/Vehicles/LoadoutsModal/index.vue"),
+    props: {
+      vehicle: props.vehicle,
+    },
+  });
+};
 </script>
 
 <template>
@@ -284,6 +295,15 @@ const openAddonsModal = () => {
     >
       <i class="fa fa-plus-octagon" />
       <span>{{ t("labels.model.addons") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable"
+      :aria-label="t('actions.hangar.manageLoadouts')"
+      :size="BtnSizesEnum.SMALL"
+      @click="openLoadoutsModal"
+    >
+      <i class="fa-duotone fa-crosshairs" />
+      <span>{{ t("actions.hangar.manageLoadouts") }}</span>
     </Btn>
     <Btn
       v-if="editable"

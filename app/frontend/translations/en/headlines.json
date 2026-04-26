@@ -151,6 +151,7 @@
       "editGroups": "Edit Groups",
       "newVehicles": "Add Ships",
       "myVehicleAddons": "Add Modules / Upgrades for %{vehicle}",
+      "myVehicleLoadouts": "Loadouts for %{vehicle}",
       "addToHangar": "Add \"%{model}\" to your Hangar",
       "impressum": "Impressum",
       "privacy": "Privacy policy",

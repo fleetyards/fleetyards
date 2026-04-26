@@ -138,6 +138,7 @@
       "hangar": {
         "editGroups": "Add or remove Groups",
         "editName": "Name your Ship",
+        "manageLoadouts": "Manage Loadouts",
         "useName": "Use Name",
         "destroyAll": "Remove all Ships",
         "showOnPublicHangar": "Make Public",

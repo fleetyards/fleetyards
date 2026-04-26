@@ -123,6 +123,8 @@ const openAddonsModal = () => {
   });
 };
 
+const activeLoadout = computed(() => props.vehicle.activeLoadout);
+
 const shouldHighlight = computed(() => {
   return props.highlight || (props.vehicle as Vehicle).flagship;
 });
@@ -225,6 +227,28 @@ const shouldHighlight = computed(() => {
         :groups="vehicle.hangarGroups"
         class="vehicle-panel-hangar-groups"
       />
+      <div v-if="activeLoadout" class="vehicle-panel-loadout">
+        <i class="fa-duotone fa-crosshairs" />
+        <span>{{ activeLoadout.name }}</span>
+        <a
+          v-if="activeLoadout.erkulUrl"
+          :href="activeLoadout.erkulUrl"
+          target="_blank"
+          rel="noopener"
+          @click.stop
+        >
+          Erkul
+        </a>
+        <a
+          v-if="activeLoadout.spviewerUrl"
+          :href="activeLoadout.spviewerUrl"
+          target="_blank"
+          rel="noopener"
+          @click.stop
+        >
+          SPViewer
+        </a>
+      </div>
       <div
         v-if="upgradable && vehicle"
         v-tooltip="t('labels.model.addons')"
