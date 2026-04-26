@@ -141,12 +141,12 @@ const onActivate = async (record: VehicleLoadout) => {
 </script>
 
 <template>
-  <div>
+  <div class="loadouts-page">
     <div
       v-if="erkulShipUrl || spviewerShipUrl"
       class="loadouts-page__ship-links"
     >
-      <span v-if="!mobile">{{ t("labels.loadout.planOn") }}</span>
+      <span>{{ t("labels.loadout.planOn") }}</span>
       <BtnGroup inline>
         <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
           <i />
@@ -246,5 +246,67 @@ const onActivate = async (record: VehicleLoadout) => {
 </template>
 
 <style lang="scss" scoped>
-@import "loadouts";
+.loadouts-page {
+  &__ship-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    > span {
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+
+    @media (max-width: $desktop-breakpoint) {
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+
+      > * {
+        flex: 1;
+        width: 100%;
+      }
+
+      > span {
+        width: auto;
+      }
+    }
+  }
+
+  &__toolbar {
+    margin-bottom: 10px;
+  }
+
+  &__item-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+  }
+
+  &__item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__item-name {
+    font-weight: 600;
+  }
+
+  &__edit-name {
+    flex: 1 !important;
+  }
+
+  &__edit-url {
+    flex: 2 !important;
+  }
+
+  &__item-links {
+    display: flex;
+    gap: 10px;
+    font-size: 0.85rem;
+  }
+}
 </style>
