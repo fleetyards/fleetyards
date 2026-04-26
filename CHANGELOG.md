@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.17.0](https://github.com/fleetyards/fleetyards/compare/v6.16.1...v6.17.0) (2026-04-26)
+
+
+### Features
+
+* **api:** add ship crew positions system ([#3793](https://github.com/fleetyards/fleetyards/issues/3793)) ([3fc9937](https://github.com/fleetyards/fleetyards/commit/3fc9937e9f2b46a7998fa4c663c904669b2d7edb))
+* **fleet:** add MemberName component with contact dropdown ([fbddd72](https://github.com/fleetyards/fleetyards/commit/fbddd7296e3ac7db74e160b053ccf22d1893d203))
+* **loadouts:** vehicle loadout system with weapon stats ([#3796](https://github.com/fleetyards/fleetyards/issues/3796)) ([e830444](https://github.com/fleetyards/fleetyards/commit/e830444f0bbef6b04ec25e5c28c1a33436ad1241))
+
+
+### Bug Fixes
+
+* **tools:** scope worktree cookies with unique COOKIE_PREFIX ([2a73569](https://github.com/fleetyards/fleetyards/commit/2a73569bb9377f0c9613a5f2b8bb5826ebcbf0bf))
+
 ## [6.16.1](https://github.com/fleetyards/fleetyards/compare/v6.16.0...v6.16.1) (2026-04-25)
 
 
