@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -90,8 +91,7 @@ const editForm = ref<VehicleLoadoutInput>({});
 const onStartEdit = (record: VehicleLoadout) => {
   editForm.value = {
     name: record.name,
-    erkulUrl: record.erkulUrl,
-    spviewerUrl: record.spviewerUrl,
+    url: record.erkulUrl || record.spviewerUrl || "",
   };
 };
 
@@ -144,7 +144,7 @@ const onActivate = async (record: VehicleLoadout) => {
       class="loadouts-page__ship-links"
     >
       <span>{{ t("labels.loadout.planOn") }}</span>
-      <BtnGroup>
+      <BtnGroup inline>
         <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
           <i />
           {{ t("labels.hardpoints.erkul") }}
@@ -185,12 +185,12 @@ const onActivate = async (record: VehicleLoadout) => {
     >
       <template #display="{ item }">
         <div class="loadouts-page__item-display">
+          <Pill v-if="item.active" variant="success" uppercase>
+            {{ t("labels.loadout.active") }}
+          </Pill>
           <div class="loadouts-page__item-info">
             <span class="loadouts-page__item-name">
               {{ item.name }}
-              <span v-if="item.active" class="loadouts-page__item-badge">
-                {{ t("labels.loadout.active") }}
-              </span>
             </span>
             <div
               v-if="item.erkulUrl || item.spviewerUrl"
@@ -234,6 +234,7 @@ const onActivate = async (record: VehicleLoadout) => {
           name="create-loadout-url"
           :placeholder="t('labels.loadout.urlPlaceholder')"
           :no-label="true"
+          inline
         />
       </template>
 
@@ -243,17 +244,12 @@ const onActivate = async (record: VehicleLoadout) => {
           name="edit-loadout-name"
           :placeholder="t('labels.loadout.namePlaceholder')"
           :no-label="true"
+          class="loadouts-page__edit-name"
         />
         <FormInput
-          v-model="editForm.erkulUrl"
-          name="edit-erkul-url"
-          :placeholder="t('labels.loadout.erkulUrl')"
-          :no-label="true"
-        />
-        <FormInput
-          v-model="editForm.spviewerUrl"
-          name="edit-spviewer-url"
-          :placeholder="t('labels.loadout.spviewerUrl')"
+          v-model="editForm.url"
+          name="edit-loadout-url"
+          :placeholder="t('labels.loadout.urlPlaceholder')"
           :no-label="true"
         />
       </template>

@@ -32,11 +32,9 @@
     font-weight: 600;
   }
 
-  &__item-badge {
-    font-size: 0.75rem;
-    color: var(--primary);
-    text-transform: uppercase;
-    margin-left: 8px;
+  &__edit-name {
+    max-width: 100px;
+    flex: 0 0 100px !important;
   }
 
   &__item-links {
