@@ -33,8 +33,11 @@
   }
 
   &__edit-name {
-    max-width: 200px;
-    flex: 0 0 200px !important;
+    flex: 1 !important;
+  }
+
+  &__edit-url {
+    flex: 2 !important;
   }
 
   &__item-links {

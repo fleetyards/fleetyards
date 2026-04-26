@@ -251,6 +251,7 @@ const onActivate = async (record: VehicleLoadout) => {
           name="edit-loadout-url"
           :placeholder="t('labels.loadout.urlPlaceholder')"
           :no-label="true"
+          class="loadouts-page__edit-url"
         />
       </template>
     </InlineEditableList>
