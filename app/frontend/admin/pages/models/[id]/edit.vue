@@ -16,6 +16,7 @@ import { useModelsStore } from "@/admin/stores/models";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useImportLoading } from "@/admin/composables/useImportLoading";
+import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   model: ModelExtended;
@@ -26,6 +27,8 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { displayConfirm, displaySuccess } = useAppNotifications();
 const queryClient = useQueryClient();
+
+const mobile = useMobile();
 
 const crumbs = [
   {
@@ -124,7 +127,7 @@ const syncScData = () => {
     :stepper-list-meta="modelsStore.listMeta"
     :current-id="model.id"
   >
-    <template #actions>
+    <template #actions v-if="!mobile">
       <Btn
         v-tooltip="t('actions.models.syncMatrix')"
         :size="BtnSizesEnum.SMALL"

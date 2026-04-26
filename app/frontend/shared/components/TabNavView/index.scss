@@ -118,7 +118,6 @@ $nav-transition-speed: 0.3s;
         border-left: none;
 
         &::before {
-          left: 0;
           border-top-right-radius: 2px;
           border-bottom-right-radius: 2px;
         }
@@ -165,7 +164,6 @@ $nav-transition-speed: 0.3s;
 
         &::before {
           right: 0;
-          left: auto;
           border-top-left-radius: 2px;
           border-bottom-left-radius: 2px;
         }
@@ -205,6 +203,7 @@ $nav-transition-speed: 0.3s;
   .tabs-wrapper {
     position: relative;
     margin-bottom: 15px;
+    order: -1;
 
     &::after {
       position: absolute;

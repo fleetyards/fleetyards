@@ -4,6 +4,46 @@ export default {
 };
 </script>
 
+<script lang="ts" setup>
+import { useMobile } from "@/shared/composables/useMobile";
+
+const mobile = useMobile();
+const tabsEl = ref<HTMLElement | null>(null);
+const route = useRoute();
+
+const scrollToActive = (smooth = true) => {
+  if (!mobile.value) return;
+
+  const container = tabsEl.value;
+  if (!container) return;
+
+  const activeEl = container.querySelector<HTMLElement>("li.active");
+  if (!activeEl) return;
+
+  const containerRect = container.getBoundingClientRect();
+  const elRect = activeEl.getBoundingClientRect();
+
+  const scrollLeft =
+    activeEl.offsetLeft - containerRect.width / 2 + elRect.width / 2;
+
+  container.scrollTo({
+    left: scrollLeft,
+    behavior: smooth ? "smooth" : "instant",
+  });
+};
+
+onMounted(() => {
+  nextTick(() => scrollToActive(false));
+});
+
+watch(
+  () => route.name,
+  () => {
+    nextTick(() => scrollToActive(true));
+  },
+);
+</script>
+
 <template>
   <div class="row">
     <div class="col-12 col-md-9">
@@ -11,8 +51,8 @@ export default {
         <router-view />
       </slot>
     </div>
-    <div class="col-12 col-md-3">
-      <ul class="tabs">
+    <div class="col-12 col-md-3 tabs-wrapper">
+      <ul ref="tabsEl" class="tabs">
         <slot name="nav"></slot>
       </ul>
     </div>

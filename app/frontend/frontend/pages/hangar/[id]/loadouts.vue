@@ -12,6 +12,7 @@ import Pill from "@/shared/components/base/Pill/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import {
   type Vehicle,
   type VehicleLoadout,
@@ -33,6 +34,8 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const queryClient = useQueryClient();
+
+const mobile = useMobile();
 
 const erkulShipUrl = computed(() => {
   const identifier =
@@ -143,7 +146,7 @@ const onActivate = async (record: VehicleLoadout) => {
       v-if="erkulShipUrl || spviewerShipUrl"
       class="loadouts-page__ship-links"
     >
-      <span>{{ t("labels.loadout.planOn") }}</span>
+      <span v-if="!mobile">{{ t("labels.loadout.planOn") }}</span>
       <BtnGroup inline>
         <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
           <i />
