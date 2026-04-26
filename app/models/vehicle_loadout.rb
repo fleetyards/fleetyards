@@ -71,12 +71,22 @@ class VehicleLoadout < ApplicationRecord
   end
 
   private def set_default_name
-    self.name = if erkul_url.present?
+    base = if erkul_url.present?
       "Erkul Loadout"
     elsif spviewer_url.present?
       "SPViewer Loadout"
     else
-      "Loadout #{vehicle.vehicle_loadouts.count + 1}"
+      "Loadout"
+    end
+
+    existing = vehicle.vehicle_loadouts.where("name LIKE ?", "#{base}%").pluck(:name)
+
+    self.name = if existing.exclude?(base)
+      base
+    else
+      counter = 2
+      counter += 1 while existing.include?("#{base} #{counter}")
+      "#{base} #{counter}"
     end
   end
 end
