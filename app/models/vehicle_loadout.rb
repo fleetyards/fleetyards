@@ -76,7 +76,7 @@ class VehicleLoadout < ApplicationRecord
     elsif spviewer_url.present?
       "SPViewer Loadout"
     else
-      "Loadout"
+      "Custom Loadout"
     end
 
     existing = vehicle.vehicle_loadouts.where("name LIKE ?", "#{base}%").pluck(:name)
