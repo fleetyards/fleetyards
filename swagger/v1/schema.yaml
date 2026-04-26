@@ -5130,10 +5130,9 @@ paths:
     parameters:
     - name: vehicle_id
       in: path
-      description: Vehicle id
+      description: Vehicle id or serial
       schema:
         type: string
-        format: uuid
       required: true
     - name: id
       in: path
@@ -5178,10 +5177,9 @@ paths:
     parameters:
     - name: vehicle_id
       in: path
-      description: Vehicle id
+      description: Vehicle id or serial
       schema:
         type: string
-        format: uuid
       required: true
     post:
       summary: Create Vehicle Loadout
@@ -5260,10 +5258,9 @@ paths:
     parameters:
     - name: vehicle_id
       in: path
-      description: Vehicle id
+      description: Vehicle id or serial
       schema:
         type: string
-        format: uuid
       required: true
     - name: id
       in: path
@@ -5559,10 +5556,9 @@ paths:
     parameters:
     - name: id
       in: path
-      description: id
+      description: Vehicle id or serial
       schema:
         type: string
-        format: uuid
       required: true
     delete:
       summary: Delete Vehicle

@@ -31,7 +31,7 @@ RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schem
   end
 
   path "/vehicles/{vehicle_id}/loadouts/{id}/activate" do
-    parameter name: "vehicle_id", in: :path, description: "Vehicle id", schema: {type: :string, format: :uuid}
+    parameter name: "vehicle_id", in: :path, description: "Vehicle id or serial", schema: {type: :string}
     parameter name: "id", in: :path, description: "Loadout id", schema: {type: :string, format: :uuid}
 
     put("Activate Vehicle Loadout") do
