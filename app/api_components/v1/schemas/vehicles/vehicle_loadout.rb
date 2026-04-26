@@ -12,8 +12,8 @@ module V1
             id: {type: :string, format: :uuid},
             name: {type: :string},
             active: {type: :boolean},
-            erkulUrl: {type: :string, nullable: true},
-            spviewerUrl: {type: :string, nullable: true},
+            url: {type: :string, nullable: true},
+            urlSource: {type: :string, nullable: true},
             hardpoints: {
               type: :array,
               items: {

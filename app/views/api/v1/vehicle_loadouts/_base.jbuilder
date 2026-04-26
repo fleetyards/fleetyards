@@ -3,8 +3,8 @@
 json.id vehicle_loadout.id
 json.name vehicle_loadout.name
 json.active vehicle_loadout.active
-json.erkul_url vehicle_loadout.erkul_url
-json.spviewer_url vehicle_loadout.spviewer_url
+json.url vehicle_loadout.url
+json.url_source vehicle_loadout.url_source
 
 json.hardpoints do
   json.array! vehicle_loadout.vehicle_loadout_hardpoints do |vlh|

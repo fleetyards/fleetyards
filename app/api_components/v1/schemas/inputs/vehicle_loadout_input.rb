@@ -10,9 +10,7 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            url: {type: :string, description: "Auto-detected as erkul or spviewer URL"},
-            erkulUrl: {type: :string, nullable: true},
-            spviewerUrl: {type: :string, nullable: true},
+            url: {type: :string, nullable: true},
             fromDefaults: {type: :boolean},
             vehicleLoadoutHardpointsAttributes: {
               type: :array,

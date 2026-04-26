@@ -227,28 +227,17 @@ const shouldHighlight = computed(() => {
         :groups="vehicle.hangarGroups"
         class="vehicle-panel-hangar-groups"
       />
-      <div v-if="activeLoadout" class="vehicle-panel-loadout">
+      <a
+        v-if="activeLoadout"
+        v-tooltip="activeLoadout.name"
+        :aria-label="activeLoadout.name"
+        class="vehicle-panel-loadouts"
+        :href="activeLoadout.url"
+        target="_blank"
+        rel="noopener"
+      >
         <i class="fa-duotone fa-crosshairs" />
-        <span>{{ activeLoadout.name }}</span>
-        <a
-          v-if="activeLoadout.erkulUrl"
-          :href="activeLoadout.erkulUrl"
-          target="_blank"
-          rel="noopener"
-          @click.stop
-        >
-          Erkul
-        </a>
-        <a
-          v-if="activeLoadout.spviewerUrl"
-          :href="activeLoadout.spviewerUrl"
-          target="_blank"
-          rel="noopener"
-          @click.stop
-        >
-          SPViewer
-        </a>
-      </div>
+      </a>
       <div
         v-if="upgradable && vehicle"
         v-tooltip="t('labels.model.addons')"

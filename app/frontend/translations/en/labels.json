@@ -393,8 +393,6 @@
         "empty": "No loadouts yet. Create one to get started.",
         "active": "Active",
         "activate": "Set Active",
-        "erkulUrl": "Erkul loadout URL",
-        "spviewerUrl": "SPViewer URL",
         "planOn": "Plan your loadout on"
       },
       "model": {

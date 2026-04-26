@@ -46,8 +46,7 @@ json.active_loadout do
   if active_loadout.present?
     json.id active_loadout.id
     json.name active_loadout.name
-    json.erkul_url active_loadout.erkul_url
-    json.spviewer_url active_loadout.spviewer_url
+    json.url active_loadout.url
   end
 end
 json.active_loadout nil if active_loadout.blank?

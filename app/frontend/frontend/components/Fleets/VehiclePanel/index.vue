@@ -176,25 +176,16 @@ const route = useRoute();
       />
       <div v-if="activeLoadout" class="fleet-vehicle-panel-loadout">
         <i class="fa-duotone fa-crosshairs" />
-        <span>{{ activeLoadout.name }}</span>
         <a
-          v-if="activeLoadout.erkulUrl"
-          :href="activeLoadout.erkulUrl"
+          v-if="activeLoadout.url"
+          :href="activeLoadout.url"
           target="_blank"
           rel="noopener"
           @click.stop
         >
-          Erkul
+          {{ activeLoadout.name }}
         </a>
-        <a
-          v-if="activeLoadout.spviewerUrl"
-          :href="activeLoadout.spviewerUrl"
-          target="_blank"
-          rel="noopener"
-          @click.stop
-        >
-          SPViewer
-        </a>
+        <span v-else>{{ activeLoadout.name }}</span>
       </div>
     </template>
   </ModelPanel>

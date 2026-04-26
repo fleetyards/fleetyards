@@ -75,7 +75,7 @@ module Api
       private def vehicle_loadout_params
         @vehicle_loadout_params ||= params.transform_keys(&:underscore)
           .permit(
-            :name, :url, :erkul_url, :spviewer_url,
+            :name, :url,
             vehicle_loadout_hardpoints_attributes: [:id, :model_hardpoint_id, :component_id, :_destroy]
           )
       end

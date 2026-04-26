@@ -11128,10 +11128,10 @@ components:
           type: string
         active:
           type: boolean
-        erkulUrl:
+        url:
           type: string
           nullable: true
-        spviewerUrl:
+        urlSource:
           type: string
           nullable: true
         hardpoints:
@@ -11171,12 +11171,6 @@ components:
           type: string
         url:
           type: string
-          description: Auto-detected as erkul or spviewer URL
-        erkulUrl:
-          type: string
-          nullable: true
-        spviewerUrl:
-          type: string
           nullable: true
         fromDefaults:
           type: boolean
@@ -11207,10 +11201,7 @@ components:
           format: uuid
         name:
           type: string
-        erkulUrl:
-          type: string
-          nullable: true
-        spviewerUrl:
+        url:
           type: string
           nullable: true
       additionalProperties: false

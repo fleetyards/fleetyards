@@ -4,14 +4,13 @@
 #
 # Table name: vehicle_loadouts
 #
-#  id           :uuid             not null, primary key
-#  active       :boolean          default(FALSE), not null
-#  erkul_url    :string
-#  name         :string           not null
-#  spviewer_url :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  vehicle_id   :uuid             not null
+#  id         :uuid             not null, primary key
+#  active     :boolean          default(FALSE), not null
+#  name       :string           not null
+#  url        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  vehicle_id :uuid             not null
 #
 # Indexes
 #
@@ -29,9 +28,6 @@ class VehicleLoadout < ApplicationRecord
 
   accepts_nested_attributes_for :vehicle_loadout_hardpoints, allow_destroy: true
 
-  attribute :url, :string
-
-  before_validation :detect_url_source, if: -> { url.present? }
   before_validation :set_default_name, if: -> { name.blank? }
 
   validates :name, presence: true, uniqueness: {scope: :vehicle_id}
@@ -53,30 +49,28 @@ class VehicleLoadout < ApplicationRecord
     end
   end
 
-  private def detect_url_source
-    uri = begin
-      URI.parse(url)
+  def url_source
+    return if url.blank?
+
+    host = begin
+      URI.parse(url).host&.downcase&.delete_prefix("www.")
     rescue
       nil
     end
-    return if uri.blank? || uri.host.blank?
-
-    host = uri.host.downcase.delete_prefix("www.")
+    return if host.blank?
 
     if host.include?("erkul.games")
-      self.erkul_url = url
+      "erkul"
     elsif host.include?("spviewer.eu")
-      self.spviewer_url = url
+      "spviewer"
     end
   end
 
   private def set_default_name
-    base = if erkul_url.present?
-      "Erkul Loadout"
-    elsif spviewer_url.present?
-      "SPViewer Loadout"
-    else
-      "Custom Loadout"
+    base = case url_source
+    when "erkul" then "Erkul Loadout"
+    when "spviewer" then "SPViewer Loadout"
+    else "Custom Loadout"
     end
 
     existing = vehicle.vehicle_loadouts.where("name LIKE ?", "#{base}%").pluck(:name)

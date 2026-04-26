@@ -11,8 +11,7 @@ module V1
           properties: {
             id: {type: :string, format: :uuid},
             name: {type: :string},
-            erkulUrl: {type: :string, nullable: true},
-            spviewerUrl: {type: :string, nullable: true}
+            url: {type: :string, nullable: true}
           },
           additionalProperties: false,
           required: %w[id name]

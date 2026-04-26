@@ -4,14 +4,13 @@
 #
 # Table name: vehicle_loadouts
 #
-#  id           :uuid             not null, primary key
-#  active       :boolean          default(FALSE), not null
-#  erkul_url    :string
-#  name         :string           not null
-#  spviewer_url :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  vehicle_id   :uuid             not null
+#  id         :uuid             not null, primary key
+#  active     :boolean          default(FALSE), not null
+#  name       :string           not null
+#  url        :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  vehicle_id :uuid             not null
 #
 # Indexes
 #
@@ -31,12 +30,8 @@ FactoryBot.define do
       active { true }
     end
 
-    trait :with_erkul_url do
-      erkul_url { "https://erkul.games/loadout/#{SecureRandom.hex(8)}" }
-    end
-
-    trait :with_spviewer_url do
-      spviewer_url { "https://spviewer.eu/loadout/#{SecureRandom.hex(8)}" }
+    trait :with_url do
+      url { "https://erkul.games/loadout/#{SecureRandom.hex(8)}" }
     end
   end
 end

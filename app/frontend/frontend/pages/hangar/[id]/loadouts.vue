@@ -91,7 +91,7 @@ const editForm = ref<VehicleLoadoutInput>({});
 const onStartEdit = (record: VehicleLoadout) => {
   editForm.value = {
     name: record.name,
-    url: record.erkulUrl || record.spviewerUrl || "",
+    url: record.url || "",
   };
 };
 
@@ -192,25 +192,9 @@ const onActivate = async (record: VehicleLoadout) => {
             <span class="loadouts-page__item-name">
               {{ item.name }}
             </span>
-            <div
-              v-if="item.erkulUrl || item.spviewerUrl"
-              class="loadouts-page__item-links"
-            >
-              <a
-                v-if="item.erkulUrl"
-                :href="item.erkulUrl"
-                target="_blank"
-                rel="noopener"
-              >
-                Erkul
-              </a>
-              <a
-                v-if="item.spviewerUrl"
-                :href="item.spviewerUrl"
-                target="_blank"
-                rel="noopener"
-              >
-                SPViewer
+            <div v-if="item.url" class="loadouts-page__item-links">
+              <a :href="item.url" target="_blank" rel="noopener">
+                {{ item.urlSource || item.url }}
               </a>
             </div>
           </div>
