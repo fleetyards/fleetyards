@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/inventories", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/inventories", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
@@ -10,7 +10,7 @@ RSpec.describe "api/v1/fleets/inventories", type: :request, swagger_doc: "v1/sch
   let(:fleetSlug) { fleet.slug }
   let(:fleet_inventory) { create(:fleet_inventory, fleet: fleet) }
   let(:slug) { fleet_inventory.slug }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Stockpile Name",
       description: "Updated description"
@@ -39,8 +39,8 @@ RSpec.describe "api/v1/fleets/inventories", type: :request, swagger_doc: "v1/sch
   end
 
   path "/fleets/{fleetSlug}/inventories/{slug}" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
-    parameter name: "slug", in: :path, type: :string, description: "Inventory slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "slug", in: :path, schema: {type: :string}, description: "Inventory slug"
 
     put("Update Fleet Inventory") do
       operationId "updateFleetInventory"
@@ -48,7 +48,7 @@ RSpec.describe "api/v1/fleets/inventories", type: :request, swagger_doc: "v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetInventoryUpdateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetInventoryUpdateInput"}
 
       security [
         {SessionCookie: []},

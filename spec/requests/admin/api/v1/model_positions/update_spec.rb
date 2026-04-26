@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/model_positions", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/model_positions", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_positions]) }
   let(:model_position) { create(:model_position) }
   let(:id) { model_position.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Position"
     }
@@ -26,7 +26,7 @@ RSpec.describe "admin/api/v1/model_positions", type: :request, swagger_doc: "adm
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelPositionInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelPositionInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelPosition"

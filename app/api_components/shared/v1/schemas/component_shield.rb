@@ -4,7 +4,7 @@ module Shared
   module V1
     module Schemas
       class ComponentShield
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         DAMAGE_TYPE_RANGE = {
           type: :object,

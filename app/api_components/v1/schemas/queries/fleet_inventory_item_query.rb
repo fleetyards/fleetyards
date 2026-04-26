@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Queries
       class FleetInventoryItemQuery
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           type: :object,

@@ -3271,6 +3271,226 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/model-positions":
+    post:
+      summary: Create new Model Position
+      tags:
+      - ModelPositions
+      operationId: createModelPosition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelPositionInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Model Positions list
+      tags:
+      - ModelPositions
+      operationId: listModelPositions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelPositionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPositions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/model-positions/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Model Position destroy
+      tags:
+      - ModelPositions
+      operationId: destroyModelPosition
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Get Model Position
+      tags:
+      - ModelPositions
+      operationId: modelPosition
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPosition"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Model Position
+      tags:
+      - ModelPositions
+      operationId: updateModelPosition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelPositionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPosition"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/model-positions/regenerate":
+    put:
+      summary: Regenerate Model Positions
+      tags:
+      - ModelPositions
+      operationId: regenerateModelPositions
+      parameters:
+      - name: model_id
+        in: query
+        schema:
+          type: string
+          format: uuid
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPositions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-upgrades":
     post:
       summary: Create Model Upgrade
@@ -5440,6 +5660,10 @@ components:
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
+          - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentShield"
+          - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentPowerPlant"
         hardpoints:
           type: array
           items:
@@ -5476,6 +5700,15 @@ components:
       - RSI_PROPULSION
       - RSI_THRUSTER
       title: ComponentClassEnum
+    ComponentCooler:
+      type: object
+      properties:
+        coolingRate:
+          type: number
+      additionalProperties: false
+      required:
+      - coolingRate
+      title: ComponentCooler
     ComponentInput:
       type: object
       properties:
@@ -5527,6 +5760,15 @@ components:
       - MILITARY
       - COMPETITION
       title: ComponentItemClassEnum
+    ComponentPowerPlant:
+      type: object
+      properties:
+        powerBase:
+          type: number
+        powerDraw:
+          type: number
+      additionalProperties: false
+      title: ComponentPowerPlant
     ComponentQuantumDrive:
       type: object
       properties:
@@ -5656,6 +5898,24 @@ components:
       additionalProperties: false
       example: {}
       title: ComponentQuery
+    ComponentShield:
+      type: object
+      properties:
+        maxHealth:
+          type: number
+        maxRegen:
+          type: number
+        decayRatio:
+          type: number
+        downedRegenDelay:
+          type: number
+        damagedRegenDelay:
+          type: number
+      additionalProperties: false
+      required:
+      - maxHealth
+      - maxRegen
+      title: ComponentShield
     ComponentSortEnum:
       type: string
       enum:
@@ -5837,6 +6097,41 @@ components:
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
       title: ComponentTypeEnum
+    ComponentWeapon:
+      type: object
+      properties:
+        weaponClass:
+          type: string
+        fireRate:
+          type: number
+        heatPerShot:
+          type: number
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        pelletsPerShot:
+          type: integer
+        speed:
+          type: number
+        range:
+          type: number
+        ammoCost:
+          type: integer
+      additionalProperties: false
+      title: ComponentWeapon
     Components:
       type: object
       properties:
@@ -7477,6 +7772,8 @@ components:
           type: boolean
         scKey:
           type: string
+        positionsNeedCuration:
+          type: boolean
         scLength:
           type: number
         scBeam:
@@ -7848,6 +8145,8 @@ components:
           type: boolean
         scKey:
           type: string
+        positionsNeedCuration:
+          type: boolean
         scLength:
           type: number
         scBeam:
@@ -9067,6 +9366,93 @@ components:
       - meta
       - items
       title: ModelPaints
+    ModelPosition:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        positionType:
+          type: string
+        source:
+          type: string
+        position:
+          type: integer
+        hardpointId:
+          type: string
+          format: uuid
+          nullable: true
+        modelId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - positionType
+      - source
+      - position
+      - modelId
+      - createdAt
+      - updatedAt
+      title: ModelPosition
+    ModelPositionInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        positionType:
+          type: string
+        source:
+          type: string
+        position:
+          type: integer
+        hardpointId:
+          type: string
+          format: uuid
+          nullable: true
+      additionalProperties: false
+      title: ModelPositionInput
+    ModelPositionQuery:
+      type: object
+      properties:
+        modelIdEq:
+          type: string
+          format: uuid
+        positionTypeEq:
+          type: string
+        sourceEq:
+          type: string
+        nameCont:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: ModelPositionQuery
+    ModelPositions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelPosition"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ModelPositions
     ModelProductionStatusEnum:
       type: string
       enum:
@@ -9116,6 +9502,8 @@ components:
         topViewColoredBlank:
           type: boolean
         frontViewBlank:
+          type: boolean
+        positionsNeedCurationEq:
           type: boolean
         sorts:
           anyOf:
@@ -9498,6 +9886,7 @@ components:
       - fleet_member_requested
       - fleet_member_accepted
       - fleet_request_accepted
+      - fleet_inventory_item_added
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -9511,6 +9900,7 @@ components:
       - FLEET_MEMBER_REQUESTED
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
+      - FLEET_INVENTORY_ITEM_ADDED
       title: NotificationTypeEnum
     OauthApplication:
       type: object

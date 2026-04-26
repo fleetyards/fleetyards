@@ -101,7 +101,7 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Hangar"
 
         context "sorted by modelName asc" do
