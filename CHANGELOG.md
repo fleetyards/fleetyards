@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.17.1](https://github.com/fleetyards/fleetyards/compare/v6.17.0...v6.17.1) (2026-04-26)
+
+
+### Bug Fixes
+
+* **loadouts:** inline styles and add mobile responsive layout ([f01a26c](https://github.com/fleetyards/fleetyards/commit/f01a26c578327ce77dd20126a969ea55107743c6))
+* resolve lint errors in loadouts and TabNavView ([57f30c2](https://github.com/fleetyards/fleetyards/commit/57f30c2922d3cb5790e70607e5f7d6ef6a691f8c))
+* restore TabNavView mobile tab navigation lost during Bootstrap removal ([b014876](https://github.com/fleetyards/fleetyards/commit/b014876c1c3bde04aad9b3f6e19ec5040b6f09db))
+
 ## [6.17.0](https://github.com/fleetyards/fleetyards/compare/v6.16.1...v6.17.0) (2026-04-26)
 
 
