@@ -130,7 +130,7 @@ const settingsActive = computed(() => {
             name: 'hangar',
             query: filterFor('hangar'),
           }"
-          :label="t('nav.hangar')"
+          :label="t('nav.hangar.index')"
           :active="isHangarRoute"
           icon="fa-duotone fa-warehouse"
           prefix="02"
@@ -138,7 +138,7 @@ const settingsActive = computed(() => {
         <NavItem
           v-else
           :to="{ name: 'hangar-preview' }"
-          :label="t('nav.hangar')"
+          :label="t('nav.hangar.index')"
           icon="fa-light fa-warehouse"
           prefix="02"
         />

@@ -199,6 +199,11 @@ const openAddonsModal = () => {
     },
   });
 };
+
+const loadoutsRoute = computed(() => ({
+  name: "hangar-vehicle-loadouts",
+  params: { id: props.vehicle.serial || props.vehicle.id },
+}));
 </script>
 
 <template>
@@ -284,6 +289,15 @@ const openAddonsModal = () => {
     >
       <i class="fa fa-plus-octagon" />
       <span>{{ t("labels.model.addons") }}</span>
+    </Btn>
+    <Btn
+      v-if="editable && vehicle.model?.inGame"
+      :aria-label="t('actions.hangar.manageLoadouts')"
+      :size="BtnSizesEnum.SMALL"
+      :to="loadoutsRoute"
+    >
+      <i class="fa-duotone fa-crosshairs" />
+      <span>{{ t("actions.hangar.manageLoadouts") }}</span>
     </Btn>
     <Btn
       v-if="editable"

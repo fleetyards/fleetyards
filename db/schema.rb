@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_26_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_26_195601) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -926,6 +926,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_120000) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "vehicle_loadout_hardpoints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "component_id"
+    t.datetime "created_at", null: false
+    t.uuid "model_hardpoint_id", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "vehicle_loadout_id", null: false
+    t.index ["vehicle_loadout_id", "model_hardpoint_id"], name: "idx_vehicle_loadout_hardpoints_unique", unique: true
+    t.index ["vehicle_loadout_id"], name: "index_vehicle_loadout_hardpoints_on_vehicle_loadout_id"
+  end
+
+  create_table "vehicle_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.string "url"
+    t.uuid "vehicle_id", null: false
+    t.index ["vehicle_id", "name"], name: "index_vehicle_loadouts_on_vehicle_id_and_name", unique: true
+    t.index ["vehicle_id"], name: "index_vehicle_loadouts_on_vehicle_id"
+  end
+
   create_table "vehicle_modules", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", precision: nil, null: false
     t.uuid "model_module_id"
@@ -1020,4 +1041,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_120000) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
   add_foreign_key "omniauth_connections", "users"
+  add_foreign_key "vehicle_loadout_hardpoints", "components"
+  add_foreign_key "vehicle_loadout_hardpoints", "model_hardpoints"
+  add_foreign_key "vehicle_loadout_hardpoints", "vehicle_loadouts"
+  add_foreign_key "vehicle_loadouts", "vehicles"
 end

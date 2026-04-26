@@ -369,25 +369,60 @@ module ScData
           }
         end
 
-        # if values.dig("Components", "SCItemToolArmParams")
-        #   item[:type_data] = values.dig("Components", "SCItemToolArmParams")
-        # end
+        if values.dig("Components", "SCItemWeaponComponentParams")
+          weapon_data = values.dig("Components", "SCItemWeaponComponentParams")
+          fire_actions = weapon_data.dig("fireActions", "SWeaponActionFireSingleParams") ||
+            weapon_data.dig("fireActions", "SWeaponActionSequenceParams")
+          fire_actions = fire_actions.is_a?(Array) ? fire_actions.first : fire_actions
 
-        # if values.dig("Components", "SCItemMissileRackParams")
-        #   item[:type_data] = values.dig("Components", "SCItemMissileRackParams")
-        # end
+          item[:type_data] = {
+            weapon_class: weapon_data["weaponClass"],
+            fire_rate: fire_actions&.dig("fireRate")&.to_f,
+            heat_per_shot: fire_actions&.dig("heatPerShot")&.to_f,
+            damage_per_shot: extract_weapon_damage(fire_actions),
+            pellets_per_shot: fire_actions&.dig("launchParams", "SProjectileLauncher", "pelletCount")&.to_i,
+            speed: fire_actions&.dig("launchParams", "SProjectileLauncher", "speed")&.to_f,
+            range: fire_actions&.dig("launchParams", "SProjectileLauncher", "lifetime")&.to_f,
+            ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i
+          }.compact
+        end
 
-        # if values.dig("Components", "SCItemWeaponComponentParams")
-        #   item[:type_data] = values.dig("Components", "SCItemWeaponComponentParams")
-        # end
+        if values.dig("Components", "SCItemMissileParams")
+          missile_data = values.dig("Components", "SCItemMissileParams")
+          item[:type_data] = {
+            damage: missile_data.dig("explosionParams", "damage")&.to_f,
+            radius: missile_data.dig("explosionParams", "radius")&.to_f,
+            lock_time: missile_data.dig("targetingParams", "lockTime")&.to_f,
+            lock_range: missile_data.dig("targetingParams", "lockRange")&.to_f,
+            tracking_signal: missile_data.dig("targetingParams", "trackingSignalType"),
+            speed: missile_data.dig("GCSParams", "linearSpeed")&.to_f
+          }.compact
+        end
 
-        # if values.dig("Components", "SCItemVehicleArmorParams")
-        #   item[:type_data] = values.dig("Components", "SCItemVehicleArmorParams")
-        # end
+        if values.dig("Components", "SCItemVehicleArmorParams")
+          armor_data = values.dig("Components", "SCItemVehicleArmorParams")
+          item[:type_data] = {
+            damage_physical: armor_data.dig("damageMultiplier", "DamageInfo", "DamagePhysical")&.to_f,
+            damage_energy: armor_data.dig("damageMultiplier", "DamageInfo", "DamageEnergy")&.to_f,
+            damage_distortion: armor_data.dig("damageMultiplier", "DamageInfo", "DamageDistortion")&.to_f,
+            damage_thermal: armor_data.dig("damageMultiplier", "DamageInfo", "DamageThermal")&.to_f,
+            damage_biochemical: armor_data.dig("damageMultiplier", "DamageInfo", "DamageBiochemical")&.to_f,
+            damage_stun: armor_data.dig("damageMultiplier", "DamageInfo", "DamageStun")&.to_f,
+            signal_infrared: armor_data.dig("signalCrossSection", "SItemSignalEmission", "Infrared")&.to_f,
+            signal_electromagnetic: armor_data.dig("signalCrossSection", "SItemSignalEmission", "Electromagnetic")&.to_f,
+            signal_cross_section: armor_data.dig("signalCrossSection", "SItemSignalEmission", "CrossSection")&.to_f
+          }.compact
+        end
 
-        # if values.dig("Components", "SCItemTurretParams")
-        #   item[:type_data] = values.dig("Components", "SCItemTurretParams")
-        # end
+        if values.dig("Components", "SCItemTurretParams")
+          turret_data = values.dig("Components", "SCItemTurretParams")
+          item[:type_data] = {
+            min_yaw: turret_data.dig("movementParams", "SItemTurretMovementParams", "yawLimits", "min")&.to_f,
+            max_yaw: turret_data.dig("movementParams", "SItemTurretMovementParams", "yawLimits", "max")&.to_f,
+            min_pitch: turret_data.dig("movementParams", "SItemTurretMovementParams", "pitchLimits", "min")&.to_f,
+            max_pitch: turret_data.dig("movementParams", "SItemTurretMovementParams", "pitchLimits", "max")&.to_f
+          }.compact
+        end
 
         item
       end
@@ -467,6 +502,29 @@ module ScData
             "itemPortName" => item.dig("portName"),
             "entityClassName" => item.dig("itemName")
           }
+        end
+      end
+
+      private def extract_weapon_damage(fire_actions)
+        return if fire_actions.blank?
+
+        ammo_ref = fire_actions.dig("launchParams", "SProjectileLauncher", "ammoRef")
+        return if ammo_ref.blank?
+
+        ammo_data = load_scripts_data(ammo_ref) if ammo_ref.is_a?(String) && ammo_ref.end_with?(".xml")
+
+        if ammo_data.present?
+          damage_info = ammo_data.dig(:values, "Components", "SCItemProjectileParams", "BulletImpactParams", "damage", "DamageInfo")
+          return if damage_info.blank?
+
+          {
+            physical: damage_info["DamagePhysical"]&.to_f,
+            energy: damage_info["DamageEnergy"]&.to_f,
+            distortion: damage_info["DamageDistortion"]&.to_f,
+            thermal: damage_info["DamageThermal"]&.to_f,
+            biochemical: damage_info["DamageBiochemical"]&.to_f,
+            stun: damage_info["DamageStun"]&.to_f
+          }.compact.presence
         end
       end
 

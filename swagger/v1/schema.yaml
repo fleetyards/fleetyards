@@ -5126,6 +5126,252 @@ paths:
             schema:
               "$ref": "#/components/schemas/AccountUpdateInput"
         required: true
+  "/vehicles/{vehicle_id}/loadouts/{id}/activate":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      description: Loadout id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Activate Vehicle Loadout
+      operationId: activateVehicleLoadout
+      tags:
+      - VehicleLoadouts
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles/{vehicle_id}/loadouts":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    post:
+      summary: Create Vehicle Loadout
+      operationId: createVehicleLoadout
+      tags:
+      - VehicleLoadouts
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '201':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleLoadoutInput"
+        required: true
+    get:
+      summary: List Vehicle Loadouts
+      operationId: vehicleLoadouts
+      tags:
+      - VehicleLoadouts
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles/{vehicle_id}/loadouts/{id}":
+    parameters:
+    - name: vehicle_id
+      in: path
+      description: Vehicle id or serial
+      schema:
+        type: string
+      required: true
+    - name: id
+      in: path
+      description: Loadout id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Delete Vehicle Loadout
+      operationId: destroyVehicleLoadout
+      tags:
+      - VehicleLoadouts
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Show Vehicle Loadout
+      operationId: vehicleLoadout
+      tags:
+      - VehicleLoadouts
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update Vehicle Loadout
+      operationId: updateVehicleLoadout
+      tags:
+      - VehicleLoadouts
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleLoadoutInput"
+        required: true
   "/vehicles/check-serial":
     post:
       summary: Check Vehicle Serial
@@ -5310,10 +5556,9 @@ paths:
     parameters:
     - name: id
       in: path
-      description: id
+      description: Vehicle id or serial
       schema:
         type: string
-        format: uuid
       required: true
     delete:
       summary: Delete Vehicle
@@ -5343,6 +5588,38 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Show Vehicle
+      operationId: showVehicle
+      tags:
+      - Vehicles
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicle"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found for other user
           content:
             application/json:
               schema:
@@ -5784,6 +6061,10 @@ components:
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
+          - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentShield"
+          - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentPowerPlant"
         hardpoints:
           type: array
           items:
@@ -5820,6 +6101,15 @@ components:
       - RSI_PROPULSION
       - RSI_THRUSTER
       title: ComponentClassEnum
+    ComponentCooler:
+      type: object
+      properties:
+        coolingRate:
+          type: number
+      additionalProperties: false
+      required:
+      - coolingRate
+      title: ComponentCooler
     ComponentItemClassEnum:
       type: string
       enum:
@@ -5835,6 +6125,15 @@ components:
       - MILITARY
       - COMPETITION
       title: ComponentItemClassEnum
+    ComponentPowerPlant:
+      type: object
+      properties:
+        powerBase:
+          type: number
+        powerDraw:
+          type: number
+      additionalProperties: false
+      title: ComponentPowerPlant
     ComponentQuantumDrive:
       type: object
       properties:
@@ -5874,6 +6173,24 @@ components:
       - spoolUpTime
       - cooldown
       title: ComponentQuantumDriveJump
+    ComponentShield:
+      type: object
+      properties:
+        maxHealth:
+          type: number
+        maxRegen:
+          type: number
+        decayRatio:
+          type: number
+        downedRegenDelay:
+          type: number
+        damagedRegenDelay:
+          type: number
+      additionalProperties: false
+      required:
+      - maxHealth
+      - maxRegen
+      title: ComponentShield
     ComponentSortEnum:
       type: string
       enum:
@@ -6055,6 +6372,41 @@ components:
       - SALVAGE_FIELD_SUPPORTER
       - SALVAGE_INTERNAL_STORAGE
       title: ComponentTypeEnum
+    ComponentWeapon:
+      type: object
+      properties:
+        weaponClass:
+          type: string
+        fireRate:
+          type: number
+        heatPerShot:
+          type: number
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        pelletsPerShot:
+          type: integer
+        speed:
+          type: number
+        range:
+          type: number
+        ammoCost:
+          type: integer
+      additionalProperties: false
+      title: ComponentWeapon
     Components:
       type: object
       properties:
@@ -10578,6 +10930,8 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         wanted:
           type: boolean
+        activeLoadout:
+          "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         createdAt:
           type: string
           format: date-time
@@ -10764,6 +11118,97 @@ components:
       - modules
       - upgrades
       title: VehicleExport
+    VehicleLoadout:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        active:
+          type: boolean
+        url:
+          type: string
+        urlSource:
+          type: string
+        hardpoints:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              modelHardpointId:
+                type: string
+                format: uuid
+              hardpoint:
+                "$ref": "#/components/schemas/ModelHardpoint"
+              component:
+                "$ref": "#/components/schemas/Component"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - active
+      - url
+      - hardpoints
+      - createdAt
+      - updatedAt
+      title: VehicleLoadout
+    VehicleLoadoutInput:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        url:
+          type: string
+        fromDefaults:
+          type: boolean
+        vehicleLoadoutHardpointsAttributes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              modelHardpointId:
+                type: string
+                format: uuid
+              componentId:
+                type: string
+                format: uuid
+                nullable: true
+              _destroy:
+                type: boolean
+      additionalProperties: false
+      title: VehicleLoadoutInput
+    VehicleLoadoutMinimal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        url:
+          type: string
+        urlSource:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - url
+      title: VehicleLoadoutMinimal
     VehiclePublic:
       type: object
       properties:
@@ -10812,6 +11257,8 @@ components:
           "$ref": "#/components/schemas/ModelUpgrade"
         paint:
           "$ref": "#/components/schemas/ModelPaint"
+        activeLoadout:
+          "$ref": "#/components/schemas/VehicleLoadoutMinimal"
         createdAt:
           type: string
           format: date-time

@@ -104,6 +104,10 @@ const filterManufacturerQuery = (manufacturer: string) => {
   return { manufacturerIn: [manufacturer] };
 };
 
+const activeLoadout = computed(
+  () => (props.fleetVehicle as VehiclePublic).activeLoadout,
+);
+
 const route = useRoute();
 </script>
 
@@ -170,6 +174,19 @@ const route = useRoute();
         :model-slug="fleetVehicle.slug"
         :fleet-slug="fleetSlug"
       />
+      <div v-if="activeLoadout" class="fleet-vehicle-panel-loadout">
+        <i class="fa-duotone fa-crosshairs" />
+        <a
+          v-if="activeLoadout.url"
+          :href="activeLoadout.url"
+          target="_blank"
+          rel="noopener"
+          @click.stop
+        >
+          {{ activeLoadout.name }}
+        </a>
+        <span v-else>{{ activeLoadout.name }}</span>
+      </div>
     </template>
   </ModelPanel>
 </template>
@@ -188,5 +205,21 @@ const route = useRoute();
 .serial {
   font-size: 0.85em;
   opacity: 0.8;
+}
+
+.fleet-vehicle-panel-loadout {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  opacity: 0.8;
+
+  a {
+    text-decoration: underline;
+  }
 }
 </style>

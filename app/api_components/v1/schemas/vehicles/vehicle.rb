@@ -30,6 +30,7 @@ module V1
             saleNotify: {type: :boolean},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
             wanted: {type: :boolean},
+            activeLoadout: {"$ref": "#/components/schemas/VehicleLoadoutMinimal"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

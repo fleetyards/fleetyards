@@ -7,6 +7,10 @@ zh-CN:
       create: 飞船无法添加。
       destroy: 飞船无法移除。
       update: 飞船无法更新。
+    vehicle_loadout:
+      create: Loadout could not be created.
+      destroy: Loadout could not be removed.
+      update: Loadout could not be updated.
     fleet:
       create: 无法创建舰队。
       destroy: 无法删除舰队。

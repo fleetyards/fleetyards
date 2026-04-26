@@ -14,7 +14,10 @@
       "manufacturers": "Produttori",
       "images": "Immagini",
       "videos": "Video",
-      "hangar": "Il Mio Hangar",
+      "hangar": {
+        "index": "Il Mio Hangar",
+        "vehicleLoadouts": "Loadouts"
+      },
       "login": "Accedi",
       "logout": "Esci",
       "apiV1": "API v1",

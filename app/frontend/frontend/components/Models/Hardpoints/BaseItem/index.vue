@@ -16,6 +16,11 @@ import {
   HardpointSourceEnum,
   HardpointCategoryEnum,
   type Hardpoint,
+  type ComponentWeapon,
+  type ComponentShield,
+  type ComponentCooler,
+  type ComponentPowerPlant,
+  type ComponentQuantumDrive,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -28,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   intended: false,
 });
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 
 const hardpoint = computed(() => {
   return props.hardpoints[0];
@@ -68,6 +73,25 @@ const hardpointNames = computed(() => {
     })
     .join(", ");
 });
+
+const typeData = computed(() => {
+  return hardpoint.value.component?.typeData;
+});
+
+const weaponDps = computed(() => {
+  if (!typeData.value || !("fireRate" in typeData.value)) return null;
+
+  const weapon = typeData.value as ComponentWeapon;
+  if (!weapon.fireRate || !weapon.damagePerShot) return null;
+
+  const totalDamage = Object.values(weapon.damagePerShot).reduce(
+    (sum: number, val) => sum + (typeof val === "number" ? val : 0),
+    0,
+  );
+  const pellets = weapon.pelletsPerShot || 1;
+
+  return Math.round(totalDamage * pellets * weapon.fireRate * 100) / 100;
+});
 </script>
 
 <template>
@@ -82,6 +106,63 @@ const hardpointNames = computed(() => {
               {{ hardpoint.component.itemClassLabel }}
               {{ t("labels.component.grade") }}
               {{ hardpoint.component.gradeLabel }}
+            </span>
+            <span
+              v-if="
+                hardpoint.category === HardpointCategoryEnum.WEAPONS &&
+                weaponDps
+              "
+            >
+              {{ toNumber(weaponDps) }}
+              {{ t("labels.hardpoint.weapons.dps") }}
+            </span>
+            <span
+              v-else-if="
+                hardpoint.category === HardpointCategoryEnum.SHIELDGENERATOR &&
+                typeData &&
+                'maxHealth' in typeData
+              "
+            >
+              {{ toNumber((typeData as ComponentShield).maxHealth) }}
+              {{ t("labels.hardpoint.shields.hp") }}
+              /
+              {{ toNumber((typeData as ComponentShield).maxRegen) }}
+              {{ t("labels.hardpoint.shields.regen") }}
+            </span>
+            <span
+              v-else-if="
+                hardpoint.category === HardpointCategoryEnum.COOLER &&
+                typeData &&
+                'coolingRate' in typeData
+              "
+            >
+              {{ toNumber((typeData as ComponentCooler).coolingRate) }}
+              {{ t("labels.hardpoint.coolers.coolingRate") }}
+            </span>
+            <span
+              v-else-if="
+                hardpoint.category === HardpointCategoryEnum.POWERPLANT &&
+                typeData &&
+                'powerBase' in typeData
+              "
+            >
+              {{ toNumber((typeData as ComponentPowerPlant).powerBase) }}
+              {{ t("labels.hardpoint.powerPlants.output") }}
+            </span>
+            <span
+              v-else-if="
+                hardpoint.category === HardpointCategoryEnum.QUANTUMDRIVE &&
+                typeData &&
+                'fuelRate' in typeData
+              "
+            >
+              {{
+                toNumber(
+                  (typeData as ComponentQuantumDrive).standardJump?.speed,
+                  "speed",
+                )
+              }}
+              {{ t("labels.hardpoint.quantumDrives.speed") }}
             </span>
           </template>
           <template v-else>

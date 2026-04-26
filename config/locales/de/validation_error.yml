@@ -7,6 +7,10 @@ de:
       create: Schiff konnte nicht hinzugefügt werden.
       destroy: Schiff konnte nicht entfernt werden.
       update: Schiff konnte nicht aktualisiert werden.
+    vehicle_loadout:
+      create: Loadout konnte nicht erstellt werden.
+      destroy: Loadout konnte nicht entfernt werden.
+      update: Loadout konnte nicht aktualisiert werden.
     fleet:
       create: Flotte konnte nicht erstellt werden.
       destroy: Flotte konnte nicht gelöscht werden.

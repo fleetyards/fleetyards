@@ -34,6 +34,28 @@
     }
   }
 
+  &-loadouts {
+    position: absolute;
+    bottom: 50%;
+    left: 0;
+
+    transform: translateY(50%);
+
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $gray;
+    border-radius: 0 10px 10px 0;
+    cursor: pointer;
+
+    i,
+    svg {
+      color: #fff;
+    }
+  }
+
   &-addons {
     position: absolute;
     bottom: 0;
@@ -62,6 +84,22 @@
     position: absolute;
     right: 5px;
     bottom: 0;
+  }
+
+  &-loadout {
+    position: absolute;
+    bottom: 0;
+    left: 45px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px 10px;
+    font-size: 0.75rem;
+    opacity: 0.8;
+
+    a {
+      text-decoration: underline;
+    }
   }
 }
 

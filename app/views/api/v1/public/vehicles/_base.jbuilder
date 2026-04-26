@@ -37,4 +37,14 @@ if vehicle.module_package.present?
     json.partial! "api/v1/model_module_packages/base", module_package: vehicle.module_package if vehicle.module_package.present?
   end
 end
+active_loadout = vehicle.vehicle_loadouts.active.first
+json.active_loadout do
+  if active_loadout.present?
+    json.id active_loadout.id
+    json.name active_loadout.name
+    json.url active_loadout.url
+  end
+end
+json.active_loadout nil if active_loadout.blank?
+
 json.partial! "api/shared/dates", record: vehicle

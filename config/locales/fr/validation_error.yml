@@ -7,6 +7,10 @@ fr:
       create: Le vaisseau n'a pas pu être ajouté.
       destroy: Le vaisseau n'a pas pu être retiré.
       update: Le vaisseau n'a pas pu être mis à jour.
+    vehicle_loadout:
+      create: Loadout could not be created.
+      destroy: Loadout could not be removed.
+      update: Loadout could not be updated.
     fleet:
       create: La flotte n’a pas pu être créée.
       destroy: La flotte n’a pas pu être détruite.

@@ -387,6 +387,14 @@
         "public": "Show on Public Hangar?"
       },
       "source": "Source",
+      "loadout": {
+        "namePlaceholder": "Loadout name...",
+        "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
+        "empty": "No loadouts yet. Create one to get started.",
+        "active": "Active",
+        "activate": "Set Active",
+        "planOn": "Plan your loadout on"
+      },
       "model": {
         "hidden": "Hidden?",
         "active": "Active?",
@@ -619,6 +627,26 @@
             "FlexThruster": "Flex",
             "Retro": "Fix"
           }
+        },
+        "weapons": {
+          "dps": "DPS",
+          "fireRate": "Fire Rate",
+          "speed": "Speed",
+          "range": "Range"
+        },
+        "shields": {
+          "hp": "HP",
+          "regen": "Regen"
+        },
+        "coolers": {
+          "coolingRate": "Cooling Rate"
+        },
+        "powerPlants": {
+          "output": "Output"
+        },
+        "quantumDrives": {
+          "speed": "Speed",
+          "range": "Range"
         },
         "sources": {
           "game_files": "Game Files",

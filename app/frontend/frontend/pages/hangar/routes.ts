@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
 import { routes as publicHangarRoutes } from "@/frontend/pages/hangar/[username]/routes";
 
 export const routes: RouteRecordRaw[] = [
@@ -50,6 +51,15 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.stats",
       backgroundImage: "bg-5",
+    },
+  },
+  {
+    path: ":id/",
+    component: () => import("@/frontend/pages/hangar/[id].vue"),
+    children: vehicleRoutes,
+    redirect: { name: vehicleRoutes[0].name },
+    meta: {
+      needsAuthentication: true,
     },
   },
   {
