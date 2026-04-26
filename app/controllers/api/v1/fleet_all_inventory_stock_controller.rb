@@ -3,6 +3,7 @@
 module Api
   module V1
     class FleetAllInventoryStockController < ::Api::BaseController
+      before_action :check_fleet_logistics_feature
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?
@@ -44,6 +45,12 @@ module Api
         @fleet = authorized_scope(Fleet.all).find_by!(slug: params[:fleet_slug])
 
         authorize! @fleet, to: :show?
+      end
+
+      private def check_fleet_logistics_feature
+        return if feature_enabled?("fleet_logistics")
+
+        render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
     end
   end

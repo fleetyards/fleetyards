@@ -5,6 +5,7 @@ module Api
     class FleetInventoriesController < ::Api::BaseController
       after_action -> { pagination_header(:fleet_inventories) }, only: %i[index]
 
+      before_action :check_fleet_logistics_feature
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
@@ -77,6 +78,12 @@ module Api
 
       private def set_fleet_inventory
         @fleet_inventory = @fleet.fleet_inventories.find_by!(slug: params[:slug])
+      end
+
+      private def check_fleet_logistics_feature
+        return if feature_enabled?("fleet_logistics")
+
+        render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
     end
   end
