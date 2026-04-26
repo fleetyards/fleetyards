@@ -297,7 +297,7 @@ const openLoadoutsModal = () => {
       <span>{{ t("labels.model.addons") }}</span>
     </Btn>
     <Btn
-      v-if="editable && vehicle.boughtVia === 'ingame'"
+      v-if="editable && vehicle.model?.inGame"
       :aria-label="t('actions.hangar.manageLoadouts')"
       :size="BtnSizesEnum.SMALL"
       @click="openLoadoutsModal"
