@@ -61,6 +61,8 @@ class Vehicle < ApplicationRecord
 
   has_many :fleet_vehicles, dependent: :destroy
 
+  has_many :vehicle_loadouts, dependent: :destroy
+
   has_many :vehicle_modules, dependent: :destroy
   has_many :model_modules, through: :vehicle_modules
 
