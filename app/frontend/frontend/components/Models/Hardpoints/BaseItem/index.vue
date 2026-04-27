@@ -102,7 +102,7 @@ const weaponDps = computed(() => {
   );
   const pellets = weapon.pelletsPerShot || 1;
 
-  return Math.round(totalDamage * pellets * weapon.fireRate * 100) / 100;
+  return Math.round((totalDamage * pellets * weapon.fireRate) / 60 * 100) / 100;
 });
 </script>
 
