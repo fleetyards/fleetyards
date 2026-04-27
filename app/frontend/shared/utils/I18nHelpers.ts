@@ -52,6 +52,10 @@ export const i18nHelpers = (i18n: I18n) => {
       return i18n.t("labels.notAvailable");
     }
 
+    if (!units) {
+      return count;
+    }
+
     return i18n.t(`number.${units}`, { count } as { count: number });
   };
 
