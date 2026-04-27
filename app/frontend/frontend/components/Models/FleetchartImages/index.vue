@@ -135,9 +135,19 @@ const modelBeam = computed(() => {
   return props.model.metrics.fleetchartOffsetBeam;
 });
 
+const sideViewImg = ref<HTMLImageElement | null>(null);
+const sideViewHeight = ref(0);
+
+const updateSideViewHeight = () => {
+  if (sideViewImg.value) {
+    sideViewHeight.value = sideViewImg.value.clientHeight;
+  }
+};
+
 onMounted(() => {
   window.addEventListener("resize", () => {
     windowWidth.value = window.innerWidth / 2;
+    updateSideViewHeight();
   });
 });
 </script>
@@ -159,13 +169,19 @@ onMounted(() => {
       />
     </div>
     <div :class="{ small: mobile }">
-      <img v-if="fleetchartImageFront" :src="fleetchartImageFront" />
+      <img
+        v-if="fleetchartImageFront"
+        :src="fleetchartImageFront"
+        :style="sideViewHeight ? { maxHeight: sideViewHeight + 'px' } : {}"
+      />
     </div>
     <div>
       <img
         v-if="fleetchartImageSide"
+        ref="sideViewImg"
         :src="fleetchartImageSide"
         :width="length"
+        @load="updateSideViewHeight"
       />
     </div>
   </div>
