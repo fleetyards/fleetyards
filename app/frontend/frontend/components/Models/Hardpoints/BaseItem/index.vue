@@ -84,13 +84,11 @@ const weaponDps = computed(() => {
   const weapon = typeData.value as ComponentWeapon;
 
   if (weapon.beam && weapon.damagePerSecond) {
-    return (
-      Math.round(
-        Object.values(weapon.damagePerSecond).reduce(
-          (sum: number, val) => sum + (typeof val === "number" ? val : 0),
-          0,
-        ) * 100,
-      ) / 100
+    return Math.round(
+      Object.values(weapon.damagePerSecond).reduce(
+        (sum: number, val) => sum + (typeof val === "number" ? val : 0),
+        0,
+      ),
     );
   }
 
@@ -102,7 +100,7 @@ const weaponDps = computed(() => {
   );
   const pellets = weapon.pelletsPerShot || 1;
 
-  return Math.round((totalDamage * pellets * weapon.fireRate) / 60 * 100) / 100;
+  return Math.round((totalDamage * pellets * weapon.fireRate) / 60);
 });
 </script>
 
