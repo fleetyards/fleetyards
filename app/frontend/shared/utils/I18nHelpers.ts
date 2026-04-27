@@ -6,7 +6,7 @@ const formatInt = (i18n: I18n, value: number): string => {
   const formatted = i18n.l("number", Math.round(value));
   const separator = i18n.t("number.format.separator") || ",";
   const delimiter = i18n.t("number.format.delimiter") || ".";
-  return formatted.split(separator)[0].replaceAll(delimiter, "\u2009");
+  return formatted.split(separator)[0].replaceAll(delimiter, "\u200A");
 };
 
 export const i18nHelpers = (i18n: I18n) => {
