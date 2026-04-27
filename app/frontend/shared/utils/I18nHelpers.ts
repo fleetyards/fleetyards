@@ -46,7 +46,7 @@ export const i18nHelpers = (i18n: I18n) => {
       count = formatInt(i18n, value as number);
     }
 
-    if (units === "driveSpeed") {
+    if (units === "driveSpeed" || units === "thrust") {
       count = formatInt(i18n, (value as number) / 1000);
     }
 

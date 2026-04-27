@@ -27,6 +27,7 @@
       "percent": "%{count} %",
       "distance": "%{count} m",
       "newton": "%{count} KN",
+      "thrust": "%{count} KN",
       "weight": "%{count} t",
       "speed": "%{count} m/s",
       "seconds": "%{count} s",

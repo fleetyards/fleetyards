@@ -50,8 +50,7 @@ const count = computed(() => {
               )
             }}
             <span>
-              {{ toNumber(typeData.thrustCapacity, "newton") }}
-              {{ t("labels.hardpoint.thrusters.thrust") }}
+              {{ toNumber(typeData.thrustCapacity, "thrust") }}
             </span>
           </template>
           <template v-else>
