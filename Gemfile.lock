@@ -145,7 +145,7 @@ GEM
       json (>= 2.0)
       xrpc (>= 0.0.4)
     builder (3.3.0)
-    bullet (8.1.0)
+    bullet (8.1.1)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.9.3)
@@ -346,7 +346,7 @@ GEM
       activejob (>= 6.1)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.19.3)
+    json (2.19.4)
     json-jwt (1.17.0)
       activesupport (>= 4.2)
       aes_key_wrap
@@ -436,7 +436,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.4)
+    minitest (6.0.5)
       drb (~> 2.0)
       prism (~> 1.5)
     mocha (3.1.0)
