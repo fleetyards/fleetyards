@@ -126,8 +126,7 @@ const weaponDps = computed(() => {
                   weaponDps
                 "
               >
-                {{ toNumber(weaponDps, "integer") }}
-                {{ t("labels.hardpoint.weapons.dps") }}
+                {{ toNumber(weaponDps, "dps") }}
               </span>
               <span
                 v-else-if="
@@ -138,14 +137,15 @@ const weaponDps = computed(() => {
                 "
               >
                 {{
-                  toNumber((typeData as ComponentShield).maxHealth, "integer")
+                  toNumber((typeData as ComponentShield).maxHealth, "shieldHp")
                 }}
-                {{ t("labels.hardpoint.shields.hp") }}
                 /
                 {{
-                  toNumber((typeData as ComponentShield).maxRegen, "integer")
+                  toNumber(
+                    (typeData as ComponentShield).maxRegen,
+                    "shieldRegen",
+                  )
                 }}
-                {{ t("labels.hardpoint.shields.regen") }}
               </span>
               <span
                 v-else-if="
@@ -155,9 +155,11 @@ const weaponDps = computed(() => {
                 "
               >
                 {{
-                  toNumber((typeData as ComponentCooler).coolingRate, "integer")
+                  toNumber(
+                    (typeData as ComponentCooler).coolingRate,
+                    "coolingRate",
+                  )
                 }}
-                {{ t("labels.hardpoint.coolers.coolingRate") }}
               </span>
               <span
                 v-else-if="
@@ -169,10 +171,9 @@ const weaponDps = computed(() => {
                 {{
                   toNumber(
                     (typeData as ComponentPowerPlant).powerBase,
-                    "integer",
+                    "powerOutput",
                   )
                 }}
-                {{ t("labels.hardpoint.powerPlants.output") }}
               </span>
               <span
                 v-else-if="
@@ -184,10 +185,9 @@ const weaponDps = computed(() => {
                 {{
                   toNumber(
                     (typeData as ComponentQuantumDrive).driveSpeed,
-                    "integer",
+                    "driveSpeed",
                   )
                 }}
-                {{ t("labels.hardpoint.quantumDrives.speed") }}
               </span>
             </div>
           </template>

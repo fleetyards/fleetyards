@@ -33,6 +33,12 @@
       "rateOfFire": "%{count} shots/min",
       "rotation": "%{count} deg/s",
       "cargo": "%{count} SCU",
+      "dps": "%{count} DPS",
+      "shieldHp": "%{count} HP",
+      "shieldRegen": "%{count} Regen",
+      "coolingRate": "%{count} Cooling Rate",
+      "powerOutput": "%{count} Output",
+      "driveSpeed": "%{count} km/s",
       "fuel": "%{count}",
       "ships": {
         "one": "%{count} ship",

@@ -26,8 +26,21 @@ export const i18nHelpers = (i18n: I18n) => {
       count = i18n.numberToRounded((value as number) / 1000, { precision: 0 });
     }
 
-    if (units === "integer") {
-      count = i18n.numberToRounded(value as number, { precision: 0 });
+    if (
+      [
+        "integer",
+        "dps",
+        "shieldHp",
+        "shieldRegen",
+        "coolingRate",
+        "powerOutput",
+      ].includes(units)
+    ) {
+      count = i18n.l("number", Math.round(value as number));
+    }
+
+    if (units === "driveSpeed") {
+      count = i18n.l("number", Math.round((value as number) / 1000));
     }
 
     if (units === "cargo" && value) {
