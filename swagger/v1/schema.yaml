@@ -6862,41 +6862,20 @@ components:
     ComponentQuantumDrive:
       type: object
       properties:
-        quantumFuelRequirement:
+        fuelRate:
           type: number
         jumpRange:
           type: number
-        disconnectRange:
-          type: number
-        driveSpeed:
-          type: number
-        cooldownTime:
-          type: number
-        stageOneAccelRate:
-          type: number
-        stageTwoAccelRate:
-          type: number
-        engageSpeed:
-          type: number
-        calibrationRate:
-          type: number
-        minCalibrationRequirement:
-          type: number
-        maxCalibrationRequirement:
-          type: number
-        calibrationProcessAngleLimit:
-          type: number
-        calibrationWarningAngleLimit:
-          type: number
-        calibrationDelayInSeconds:
-          type: number
-        spoolUpTime:
-          type: number
-        splineJumpParams:
+        standardJump:
           "$ref": "#/components/schemas/ComponentQuantumDriveJump"
-        quantumBoostParams:
-          "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
+        splineJump:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
       additionalProperties: false
+      required:
+      - fuelRate
+      - jumpRange
+      - standardJump
+      - splineJump
       title: ComponentQuantumDrive
     ComponentQuantumDriveBoost:
       type: object
@@ -6922,31 +6901,23 @@ components:
     ComponentQuantumDriveJump:
       type: object
       properties:
-        driveSpeed:
+        speed:
           type: number
-        cooldownTime:
+        stage1AccelerationRate:
           type: number
-        stageOneAccelRate:
-          type: number
-        stageTwoAccelRate:
-          type: number
-        engageSpeed:
-          type: number
-        calibrationRate:
-          type: number
-        minCalibrationRequirement:
-          type: number
-        maxCalibrationRequirement:
-          type: number
-        calibrationProcessAngleLimit:
-          type: number
-        calibrationWarningAngleLimit:
-          type: number
-        calibrationDelayInSeconds:
+        stage2AccelerationRate:
           type: number
         spoolUpTime:
           type: number
+        cooldown:
+          type: number
       additionalProperties: false
+      required:
+      - speed
+      - stage1AccelerationRate
+      - stage2AccelerationRate
+      - spoolUpTime
+      - cooldown
       title: ComponentQuantumDriveJump
     ComponentQuery:
       type: object
