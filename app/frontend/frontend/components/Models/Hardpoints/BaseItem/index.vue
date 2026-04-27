@@ -137,10 +137,14 @@ const weaponDps = computed(() => {
                   'maxHealth' in typeData
                 "
               >
-                {{ toNumber((typeData as ComponentShield).maxHealth) }}
+                {{
+                  toNumber(Math.round((typeData as ComponentShield).maxHealth))
+                }}
                 {{ t("labels.hardpoint.shields.hp") }}
                 /
-                {{ toNumber((typeData as ComponentShield).maxRegen) }}
+                {{
+                  toNumber(Math.round((typeData as ComponentShield).maxRegen))
+                }}
                 {{ t("labels.hardpoint.shields.regen") }}
               </span>
               <span
@@ -150,7 +154,11 @@ const weaponDps = computed(() => {
                   'coolingRate' in typeData
                 "
               >
-                {{ toNumber((typeData as ComponentCooler).coolingRate) }}
+                {{
+                  toNumber(
+                    Math.round((typeData as ComponentCooler).coolingRate),
+                  )
+                }}
                 {{ t("labels.hardpoint.coolers.coolingRate") }}
               </span>
               <span
@@ -160,7 +168,11 @@ const weaponDps = computed(() => {
                   'powerBase' in typeData
                 "
               >
-                {{ toNumber((typeData as ComponentPowerPlant).powerBase) }}
+                {{
+                  toNumber(
+                    Math.round((typeData as ComponentPowerPlant).powerBase),
+                  )
+                }}
                 {{ t("labels.hardpoint.powerPlants.output") }}
               </span>
               <span
@@ -172,7 +184,7 @@ const weaponDps = computed(() => {
               >
                 {{
                   toNumber(
-                    (typeData as ComponentQuantumDrive).driveSpeed,
+                    Math.round((typeData as ComponentQuantumDrive).driveSpeed),
                     "speed",
                   )
                 }}
