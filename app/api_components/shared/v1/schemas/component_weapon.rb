@@ -9,7 +9,6 @@ module Shared
         schema({
           type: :object,
           properties: {
-            weaponClass: {type: :string},
             beam: {type: :boolean},
             fireRate: {type: :number},
             heatPerShot: {type: :number},

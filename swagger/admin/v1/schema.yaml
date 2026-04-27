@@ -5641,8 +5641,6 @@ components:
     ComponentWeapon:
       type: object
       properties:
-        weaponClass:
-          type: string
         beam:
           type: boolean
         fireRate:
