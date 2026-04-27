@@ -126,7 +126,7 @@ const weaponDps = computed(() => {
                   weaponDps
                 "
               >
-                {{ toNumber(weaponDps) }}
+                {{ toNumber(weaponDps, "integer") }}
                 {{ t("labels.hardpoint.weapons.dps") }}
               </span>
               <span
@@ -138,12 +138,12 @@ const weaponDps = computed(() => {
                 "
               >
                 {{
-                  toNumber(Math.round((typeData as ComponentShield).maxHealth))
+                  toNumber((typeData as ComponentShield).maxHealth, "integer")
                 }}
                 {{ t("labels.hardpoint.shields.hp") }}
                 /
                 {{
-                  toNumber(Math.round((typeData as ComponentShield).maxRegen))
+                  toNumber((typeData as ComponentShield).maxRegen, "integer")
                 }}
                 {{ t("labels.hardpoint.shields.regen") }}
               </span>
@@ -155,9 +155,7 @@ const weaponDps = computed(() => {
                 "
               >
                 {{
-                  toNumber(
-                    Math.round((typeData as ComponentCooler).coolingRate),
-                  )
+                  toNumber((typeData as ComponentCooler).coolingRate, "integer")
                 }}
                 {{ t("labels.hardpoint.coolers.coolingRate") }}
               </span>
@@ -170,7 +168,8 @@ const weaponDps = computed(() => {
               >
                 {{
                   toNumber(
-                    Math.round((typeData as ComponentPowerPlant).powerBase),
+                    (typeData as ComponentPowerPlant).powerBase,
+                    "integer",
                   )
                 }}
                 {{ t("labels.hardpoint.powerPlants.output") }}
@@ -184,8 +183,8 @@ const weaponDps = computed(() => {
               >
                 {{
                   toNumber(
-                    Math.round((typeData as ComponentQuantumDrive).driveSpeed),
-                    "speed",
+                    (typeData as ComponentQuantumDrive).driveSpeed,
+                    "integer",
                   )
                 }}
                 {{ t("labels.hardpoint.quantumDrives.speed") }}

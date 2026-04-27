@@ -26,6 +26,10 @@ export const i18nHelpers = (i18n: I18n) => {
       count = i18n.numberToRounded((value as number) / 1000, { precision: 0 });
     }
 
+    if (units === "integer") {
+      count = i18n.numberToRounded(value as number, { precision: 0 });
+    }
+
     if (units === "cargo" && value) {
       count = value;
     }
