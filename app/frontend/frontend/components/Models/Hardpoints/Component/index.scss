@@ -1,13 +1,14 @@
 .hardpoint-item__component {
   flex-grow: 1;
   margin-right: 5px;
-  gap: 5px;
+  gap: 0 5px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: baseline;
 
   :deep(span) {
     color: $gray-light;
     font-size: 90%;
+    white-space: nowrap;
   }
 }
