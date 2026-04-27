@@ -38,57 +38,57 @@
       "min_stun_time": 0.0,
       "max_stun_time": 12.0
     },
-    "resistance": [
-      {
-        "max": 0.25,
-        "min": 0.0
+    "resistance": {
+      "physical": {
+        "min": 0.0,
+        "max": 0.25
       },
-      {
-        "max": -0.25,
-        "min": -0.74
+      "energy": {
+        "min": -0.74,
+        "max": -0.25
       },
-      {
-        "max": 0.95,
-        "min": 0.75
+      "distortion": {
+        "min": 0.75,
+        "max": 0.95
       },
-      {
-        "max": 0.0,
-        "min": 0.0
+      "thermal": {
+        "min": 0.0,
+        "max": 0.0
       },
-      {
-        "max": 0.0,
-        "min": 0.0
+      "biochemical": {
+        "min": 0.0,
+        "max": 0.0
       },
-      {
-        "max": 0.0,
-        "min": 0.0
+      "stun": {
+        "min": 0.0,
+        "max": 0.0
       }
-    ],
-    "absorption": [
-      {
-        "max": 0.45,
-        "min": 0.0
+    },
+    "absorption": {
+      "physical": {
+        "min": 0.0,
+        "max": 0.45
       },
-      {
-        "max": 1.0,
-        "min": 1.0
+      "energy": {
+        "min": 1.0,
+        "max": 1.0
       },
-      {
-        "max": 1.0,
-        "min": 1.0
+      "distortion": {
+        "min": 1.0,
+        "max": 1.0
       },
-      {
-        "max": 1.0,
-        "min": 1.0
+      "thermal": {
+        "min": 1.0,
+        "max": 1.0
       },
-      {
-        "max": 1.0,
-        "min": 1.0
+      "biochemical": {
+        "min": 1.0,
+        "max": 1.0
       },
-      {
-        "max": 1.0,
-        "min": 1.0
+      "stun": {
+        "min": 1.0,
+        "max": 1.0
       }
-    ]
+    }
   }
 }

@@ -20,5 +20,10 @@
   },
   "durability": {
     "health": 200.0
+  },
+  "type_data": {
+    "lock_time": 2.0,
+    "tracking_signal": "Infrared",
+    "speed": 514.0
   }
 }

@@ -48,5 +48,6 @@
   ],
   "durability": {
     "health": 1500.0
-  }
+  },
+  "type_data": {}
 }

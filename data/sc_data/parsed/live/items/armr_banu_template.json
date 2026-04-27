@@ -20,5 +20,13 @@
   },
   "durability": {
     "health": 1856.0
+  },
+  "type_data": {
+    "damage_physical": 0.75,
+    "damage_energy": 0.6,
+    "damage_distortion": 1.0,
+    "damage_thermal": 1.0,
+    "damage_biochemical": 1.0,
+    "damage_stun": 1.0
   }
 }

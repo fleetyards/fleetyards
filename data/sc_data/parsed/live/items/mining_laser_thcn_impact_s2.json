@@ -54,5 +54,19 @@
   ],
   "durability": {
     "health": 8000.0
+  },
+  "type_data": {
+    "beam": true,
+    "damage_per_second": {
+      "physical": 0.0,
+      "energy": 3360.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "heat_per_second": 0.0,
+    "full_damage_range": 60.0,
+    "zero_damage_range": 180.0
   }
 }

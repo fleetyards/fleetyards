@@ -2,6 +2,7 @@ module ScData
   module Parser
     class ItemsParser < ScData::Parser::BaseParser
       def all
+        load_ammo_params
         load_cargogrids
         load_items
       end
@@ -152,10 +153,18 @@ module ScData
           }
         end
 
-        if values.dig("Components", "SCItemCoolerParams")
-          item[:type_data] = {
-            cooling_rate: values.dig("Components", "SCItemCoolerParams", "CoolingRate").to_f
-          }
+        if category == "cooler"
+          cooling_rate = extract_resource_generation(values, "Coolant")
+          if cooling_rate
+            item[:type_data] = {cooling_rate: cooling_rate}
+          end
+        end
+
+        if category == "powerplant"
+          power_base = extract_resource_generation(values, "Power")
+          if power_base
+            item[:type_data] = {power_base: power_base}
+          end
         end
 
         if type == "FuelTank" || type == "QuantumFuelTank"
@@ -264,18 +273,12 @@ module ScData
               min_stun_time: values.dig("Components", "SCItemShieldGeneratorParams", "stunParams", "minStunTime").to_f,
               max_stun_time: values.dig("Components", "SCItemShieldGeneratorParams", "stunParams", "maxStunTime").to_f
             },
-            resistance: values.dig("Components", "SCItemShieldGeneratorParams", "ShieldResistance", "SShieldResistance").map do |resistance|
-              {
-                max: resistance.dig("Max").to_f,
-                min: resistance.dig("Min").to_f
-              }
-            end,
-            absorption: values.dig("Components", "SCItemShieldGeneratorParams", "ShieldAbsorption", "SShieldAbsorption").map do |absorption|
-              {
-                max: absorption.dig("Max").to_f,
-                min: absorption.dig("Min").to_f
-              }
-            end
+            resistance: extract_shield_damage_map(
+              values.dig("Components", "SCItemShieldGeneratorParams", "ShieldResistance", "SShieldResistance")
+            ),
+            absorption: extract_shield_damage_map(
+              values.dig("Components", "SCItemShieldGeneratorParams", "ShieldAbsorption", "SShieldAbsorption")
+            )
           }
 
         end
@@ -371,46 +374,73 @@ module ScData
 
         if values.dig("Components", "SCItemWeaponComponentParams")
           weapon_data = values.dig("Components", "SCItemWeaponComponentParams")
-          fire_actions = weapon_data.dig("fireActions", "SWeaponActionFireSingleParams") ||
-            weapon_data.dig("fireActions", "SWeaponActionSequenceParams")
+          fire_actions = extract_fire_actions(weapon_data)
           fire_actions = fire_actions.is_a?(Array) ? fire_actions.first : fire_actions
 
-          item[:type_data] = {
-            weapon_class: weapon_data["weaponClass"],
-            fire_rate: fire_actions&.dig("fireRate")&.to_f,
-            heat_per_shot: fire_actions&.dig("heatPerShot")&.to_f,
-            damage_per_shot: extract_weapon_damage(fire_actions),
-            pellets_per_shot: fire_actions&.dig("launchParams", "SProjectileLauncher", "pelletCount")&.to_i,
-            speed: fire_actions&.dig("launchParams", "SProjectileLauncher", "speed")&.to_f,
-            range: fire_actions&.dig("launchParams", "SProjectileLauncher", "lifetime")&.to_f,
-            ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i
-          }.compact
+          ammo_ref = values.dig("Components", "SAmmoContainerComponentParams", "ammoParamsRecord")
+          ammo = @ammo_params[ammo_ref] if ammo_ref.present?
+
+          beam = weapon_data.dig("fireActions", "SWeaponActionFireBeamParams")
+          beam = beam.is_a?(Array) ? beam.first : beam
+
+          if beam.present?
+            item[:type_data] = extract_beam_weapon_data(beam)
+          else
+            charged = weapon_data.dig("fireActions", "SWeaponActionFireChargedParams")
+            charged = charged.is_a?(Array) ? charged.first : charged
+
+            projectile_speed = ammo&.dig("speed")&.to_f
+            projectile_lifetime = ammo&.dig("lifetime")&.to_f
+
+            type_data = {
+              fire_rate: fire_actions&.dig("fireRate")&.to_f,
+              heat_per_shot: fire_actions&.dig("heatPerShot")&.to_f,
+              damage_per_shot: extract_ammo_damage(ammo),
+              pellets_per_shot: fire_actions&.dig("launchParams", "SProjectileLauncher", "pelletCount")&.to_i,
+              speed: projectile_speed,
+              range: (projectile_speed && projectile_lifetime) ? (projectile_speed * projectile_lifetime).round(1) : nil,
+              ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i
+            }
+
+            if charged.present?
+              type_data[:charge_time] = charged["chargeTime"]&.to_f
+              type_data[:overcharge_time] = charged["overchargeTime"]&.to_f
+            end
+
+            item[:type_data] = type_data.compact
+          end
         end
 
         if values.dig("Components", "SCItemMissileParams")
           missile_data = values.dig("Components", "SCItemMissileParams")
+          explosion = missile_data.dig("explosionParams") if missile_data.dig("explosionParams").is_a?(Hash)
+          targeting = missile_data.dig("targetingParams") if missile_data.dig("targetingParams").is_a?(Hash)
+          damage_raw = explosion&.dig("damage")
+          damage_value = (damage_raw.is_a?(Numeric) || damage_raw.is_a?(String)) ? damage_raw.to_f : nil
           item[:type_data] = {
-            damage: missile_data.dig("explosionParams", "damage")&.to_f,
-            radius: missile_data.dig("explosionParams", "radius")&.to_f,
-            lock_time: missile_data.dig("targetingParams", "lockTime")&.to_f,
-            lock_range: missile_data.dig("targetingParams", "lockRange")&.to_f,
-            tracking_signal: missile_data.dig("targetingParams", "trackingSignalType"),
+            damage: damage_value,
+            radius: explosion&.dig("radius")&.to_f,
+            lock_time: targeting&.dig("lockTime")&.to_f,
+            lock_range: targeting&.dig("lockRange")&.to_f,
+            tracking_signal: targeting&.dig("trackingSignalType"),
             speed: missile_data.dig("GCSParams", "linearSpeed")&.to_f
           }.compact
         end
 
         if values.dig("Components", "SCItemVehicleArmorParams")
           armor_data = values.dig("Components", "SCItemVehicleArmorParams")
+          damage_info = armor_data.dig("damageMultiplier", "DamageInfo") if armor_data.dig("damageMultiplier").is_a?(Hash)
+          signal_data = armor_data.dig("signalCrossSection", "SItemSignalEmission") if armor_data.dig("signalCrossSection").is_a?(Hash)
           item[:type_data] = {
-            damage_physical: armor_data.dig("damageMultiplier", "DamageInfo", "DamagePhysical")&.to_f,
-            damage_energy: armor_data.dig("damageMultiplier", "DamageInfo", "DamageEnergy")&.to_f,
-            damage_distortion: armor_data.dig("damageMultiplier", "DamageInfo", "DamageDistortion")&.to_f,
-            damage_thermal: armor_data.dig("damageMultiplier", "DamageInfo", "DamageThermal")&.to_f,
-            damage_biochemical: armor_data.dig("damageMultiplier", "DamageInfo", "DamageBiochemical")&.to_f,
-            damage_stun: armor_data.dig("damageMultiplier", "DamageInfo", "DamageStun")&.to_f,
-            signal_infrared: armor_data.dig("signalCrossSection", "SItemSignalEmission", "Infrared")&.to_f,
-            signal_electromagnetic: armor_data.dig("signalCrossSection", "SItemSignalEmission", "Electromagnetic")&.to_f,
-            signal_cross_section: armor_data.dig("signalCrossSection", "SItemSignalEmission", "CrossSection")&.to_f
+            damage_physical: damage_info&.dig("DamagePhysical")&.to_f,
+            damage_energy: damage_info&.dig("DamageEnergy")&.to_f,
+            damage_distortion: damage_info&.dig("DamageDistortion")&.to_f,
+            damage_thermal: damage_info&.dig("DamageThermal")&.to_f,
+            damage_biochemical: damage_info&.dig("DamageBiochemical")&.to_f,
+            damage_stun: damage_info&.dig("DamageStun")&.to_f,
+            signal_infrared: signal_data&.dig("Infrared")&.to_f,
+            signal_electromagnetic: signal_data&.dig("Electromagnetic")&.to_f,
+            signal_cross_section: signal_data&.dig("CrossSection")&.to_f
           }.compact
         end
 
@@ -505,18 +535,35 @@ module ScData
         end
       end
 
-      private def extract_weapon_damage(fire_actions)
-        return if fire_actions.blank?
+      private def load_ammo_params
+        @ammo_params = {}
+        Dir.glob("#{base_path}/#{FOUNDRY_PATH}/ammoparams/**/*.xml").each do |file|
+          data = Hash.from_xml(File.read(file))
+          values = data.values.first
+          ref = values.dig("__ref")
+          @ammo_params[ref] = values if ref.present?
+        end
+      end
 
-        ammo_ref = fire_actions.dig("launchParams", "SProjectileLauncher", "ammoRef")
-        return if ammo_ref.blank?
+      private def extract_ammo_damage(ammo)
+        return if ammo.blank?
 
-        ammo_data = load_scripts_data(ammo_ref) if ammo_ref.is_a?(String) && ammo_ref.end_with?(".xml")
+        damage_info = ammo.dig("projectileParams", "BulletProjectileParams", "damage", "DamageInfo")
+        return if damage_info.blank?
 
-        if ammo_data.present?
-          damage_info = ammo_data.dig(:values, "Components", "SCItemProjectileParams", "BulletImpactParams", "damage", "DamageInfo")
-          return if damage_info.blank?
+        {
+          physical: damage_info["DamagePhysical"]&.to_f,
+          energy: damage_info["DamageEnergy"]&.to_f,
+          distortion: damage_info["DamageDistortion"]&.to_f,
+          thermal: damage_info["DamageThermal"]&.to_f,
+          biochemical: damage_info["DamageBiochemical"]&.to_f,
+          stun: damage_info["DamageStun"]&.to_f
+        }.compact.presence
+      end
 
+      private def extract_beam_weapon_data(beam)
+        damage_info = beam.dig("damagePerSecond", "DamageInfo")
+        damage_per_second = if damage_info.present?
           {
             physical: damage_info["DamagePhysical"]&.to_f,
             energy: damage_info["DamageEnergy"]&.to_f,
@@ -525,6 +572,25 @@ module ScData
             biochemical: damage_info["DamageBiochemical"]&.to_f,
             stun: damage_info["DamageStun"]&.to_f
           }.compact.presence
+        end
+
+        {
+          beam: true,
+          damage_per_second:,
+          heat_per_second: beam["heatPerSecond"]&.to_f,
+          full_damage_range: beam["fullDamageRange"]&.to_f,
+          zero_damage_range: beam["zeroDamageRange"]&.to_f
+        }.compact
+      end
+
+      SHIELD_DAMAGE_TYPES = %i[physical energy distortion thermal biochemical stun].freeze
+
+      private def extract_shield_damage_map(entries)
+        return if entries.blank?
+
+        entries.each_with_index.to_h do |entry, i|
+          type = SHIELD_DAMAGE_TYPES[i] || :"type_#{i}"
+          [type, {min: entry.dig("Min").to_f, max: entry.dig("Max").to_f}]
         end
       end
 
@@ -626,6 +692,86 @@ module ScData
           (container_x <= x && container_y <= y && container_z <= z) ||
             (container_x <= y && container_y <= x && container_z <= z)
         end
+      end
+
+      FIRE_ACTION_TYPES = %w[
+        SWeaponActionFireSingleParams
+        SWeaponActionSequenceParams
+        SWeaponActionFireRapidParams
+        SWeaponActionFireChargedParams
+        SWeaponActionFireBeamParams
+      ].freeze
+
+      private def extract_fire_actions(weapon_data)
+        fire_actions_data = weapon_data.dig("fireActions")
+        return if fire_actions_data.blank?
+
+        # Sequence weapons wrap a nested fire action inside sequenceEntries
+        seq = fire_actions_data.dig("SWeaponActionSequenceParams")
+        if seq.present?
+          seq = seq.is_a?(Array) ? seq.first : seq
+          entry = seq.dig("sequenceEntries", "SWeaponSequenceEntryParams")
+          entry = entry.is_a?(Array) ? entry.first : entry
+          nested = entry&.dig("weaponAction")
+          if nested.is_a?(Hash)
+            nested.each_value do |v|
+              return v if v.is_a?(Hash) && v.key?("fireRate")
+            end
+          end
+        end
+
+        # Charged weapons wrap a nested fire action
+        charged = fire_actions_data.dig("SWeaponActionFireChargedParams")
+        if charged.present?
+          charged = charged.is_a?(Array) ? charged.first : charged
+          nested = charged.dig("weaponAction")
+          if nested.is_a?(Hash)
+            nested.each_value do |v|
+              return v if v.is_a?(Hash) && v.key?("fireRate")
+            end
+          end
+        end
+
+        FIRE_ACTION_TYPES.each do |type|
+          result = fire_actions_data.dig(type)
+          return result if result.present?
+        end
+
+        nil
+      end
+
+      private def extract_resource_generation(values, resource_name)
+        irc = values.dig("Components", "ItemResourceComponentParams")
+        return if irc.blank?
+
+        states = irc.dig("states", "ItemResourceState")
+        states = [states] if states.is_a?(Hash)
+        return if states.blank?
+
+        states.each do |state|
+          deltas = state.dig("deltas")
+          next if deltas.blank?
+
+          %w[ItemResourceDeltaConversion ItemResourceDeltaGeneration].each do |delta_type|
+            delta = deltas.dig(delta_type)
+            next if delta.blank?
+
+            delta = [delta] if delta.is_a?(Hash)
+            delta.each do |d|
+              gen = d.dig("generation")
+              next if gen.blank? || gen.dig("resource") != resource_name
+
+              amount = gen.dig("resourceAmountPerSecond")
+              next if amount.blank?
+
+              units = amount.dig("SStandardResourceUnit", "standardResourceUnits") ||
+                amount.dig("SPowerSegmentResourceUnit", "units")
+              return units.to_f if units.present?
+            end
+          end
+        end
+
+        nil
       end
     end
   end

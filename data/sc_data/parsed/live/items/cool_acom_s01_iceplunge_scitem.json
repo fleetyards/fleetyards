@@ -20,5 +20,8 @@
   },
   "durability": {
     "health": 69.0
+  },
+  "type_data": {
+    "cooling_rate": 34.0
   }
 }

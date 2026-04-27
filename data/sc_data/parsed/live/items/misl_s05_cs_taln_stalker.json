@@ -20,5 +20,10 @@
   },
   "durability": {
     "health": 50.0
+  },
+  "type_data": {
+    "lock_time": 1.0,
+    "tracking_signal": "CrossSection",
+    "speed": 560.0
   }
 }

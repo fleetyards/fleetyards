@@ -25,5 +25,9 @@
     "max_ammo_count": 25.0,
     "initial_ammo_count": 25.0,
     "max_restock_count": 3.0
+  },
+  "type_data": {
+    "speed": 90.0,
+    "range": 1080.0
   }
 }

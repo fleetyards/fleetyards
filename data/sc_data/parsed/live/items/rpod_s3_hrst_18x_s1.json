@@ -25,5 +25,21 @@
     "max_ammo_count": 36.0,
     "initial_ammo_count": 36.0,
     "max_restock_count": 3.0
+  },
+  "type_data": {
+    "fire_rate": 60.0,
+    "heat_per_shot": 11.0,
+    "damage_per_shot": {
+      "physical": 0.0,
+      "energy": 0.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "pellets_per_shot": 1,
+    "speed": 700.0,
+    "range": 2100.0,
+    "ammo_cost": 1
   }
 }

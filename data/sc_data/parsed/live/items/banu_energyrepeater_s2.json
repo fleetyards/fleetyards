@@ -85,5 +85,11 @@
     "max_ammo_count": 0.0,
     "initial_ammo_count": 0.0,
     "max_restock_count": 3.0
+  },
+  "type_data": {
+    "fire_rate": 600.0,
+    "heat_per_shot": 0.0,
+    "pellets_per_shot": 1,
+    "ammo_cost": 1
   }
 }

@@ -20,5 +20,10 @@
   },
   "durability": {
     "health": 50.0
+  },
+  "type_data": {
+    "lock_time": 2.3,
+    "tracking_signal": "Electromagnetic",
+    "speed": 560.0
   }
 }

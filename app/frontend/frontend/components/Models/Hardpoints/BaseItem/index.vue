@@ -79,9 +79,21 @@ const typeData = computed(() => {
 });
 
 const weaponDps = computed(() => {
-  if (!typeData.value || !("fireRate" in typeData.value)) return null;
+  if (!typeData.value) return null;
 
   const weapon = typeData.value as ComponentWeapon;
+
+  if (weapon.beam && weapon.damagePerSecond) {
+    return (
+      Math.round(
+        Object.values(weapon.damagePerSecond).reduce(
+          (sum: number, val) => sum + (typeof val === "number" ? val : 0),
+          0,
+        ) * 100,
+      ) / 100
+    );
+  }
+
   if (!weapon.fireRate || !weapon.damagePerShot) return null;
 
   const totalDamage = Object.values(weapon.damagePerShot).reduce(

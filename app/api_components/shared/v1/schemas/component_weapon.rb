@@ -9,7 +9,7 @@ module Shared
         schema({
           type: :object,
           properties: {
-            weaponClass: {type: :string},
+            beam: {type: :boolean},
             fireRate: {type: :number},
             heatPerShot: {type: :number},
             damagePerShot: {
@@ -24,10 +24,27 @@ module Shared
               },
               additionalProperties: false
             },
+            damagePerSecond: {
+              type: :object,
+              properties: {
+                physical: {type: :number},
+                energy: {type: :number},
+                distortion: {type: :number},
+                thermal: {type: :number},
+                biochemical: {type: :number},
+                stun: {type: :number}
+              },
+              additionalProperties: false
+            },
+            heatPerSecond: {type: :number},
             pelletsPerShot: {type: :integer},
             speed: {type: :number},
             range: {type: :number},
-            ammoCost: {type: :integer}
+            fullDamageRange: {type: :number},
+            zeroDamageRange: {type: :number},
+            ammoCost: {type: :integer},
+            chargeTime: {type: :number},
+            overchargeTime: {type: :number}
           },
           additionalProperties: false
         })

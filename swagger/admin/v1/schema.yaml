@@ -5348,6 +5348,110 @@ components:
           type: number
         damagedRegenDelay:
           type: number
+        resistance:
+          type: object
+          properties:
+            physical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            energy:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            distortion:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            thermal:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            biochemical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            stun:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        absorption:
+          type: object
+          properties:
+            physical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            energy:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            distortion:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            thermal:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            biochemical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            stun:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
       additionalProperties: false
       required:
       - maxHealth
@@ -5537,8 +5641,8 @@ components:
     ComponentWeapon:
       type: object
       properties:
-        weaponClass:
-          type: string
+        beam:
+          type: boolean
         fireRate:
           type: number
         heatPerShot:
@@ -5559,14 +5663,40 @@ components:
             stun:
               type: number
           additionalProperties: false
+        damagePerSecond:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        heatPerSecond:
+          type: number
         pelletsPerShot:
           type: integer
         speed:
           type: number
         range:
           type: number
+        fullDamageRange:
+          type: number
+        zeroDamageRange:
+          type: number
         ammoCost:
           type: integer
+        chargeTime:
+          type: number
+        overchargeTime:
+          type: number
       additionalProperties: false
       title: ComponentWeapon
     Components:

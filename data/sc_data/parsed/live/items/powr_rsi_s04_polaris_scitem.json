@@ -20,5 +20,8 @@
   },
   "durability": {
     "health": 14000.0
+  },
+  "type_data": {
+    "power_base": 27.0
   }
 }

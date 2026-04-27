@@ -35,5 +35,17 @@
     "max_ammo_count": 2147483647.0,
     "initial_ammo_count": 0.0,
     "max_restock_count": 3.0
+  },
+  "type_data": {
+    "damage_per_shot": {
+      "physical": 0.0,
+      "energy": 21.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "speed": 1200.0,
+    "range": 4800.0
   }
 }
