@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.17.2](https://github.com/fleetyards/fleetyards/compare/v6.17.1...v6.17.2) (2026-04-27)
+
+
+### Bug Fixes
+
+* constrain front view image height to match side view on ship detail page ([29963e2](https://github.com/fleetyards/fleetyards/commit/29963e2f32a87017fbdb12ba5e0c93f61fe0138a))
+* improve hardpoint component layout with stacked name and stats ([15da912](https://github.com/fleetyards/fleetyards/commit/15da9129d0b9ba228cf8c738c7079ec6344b029f))
+* return formatted count directly when toNumber has no units ([1762a2d](https://github.com/fleetyards/fleetyards/commit/1762a2d08c5265414d3406665bfac39bf3a2ff85))
+
 ## [6.17.1](https://github.com/fleetyards/fleetyards/compare/v6.17.0...v6.17.1) (2026-04-26)
 
 
