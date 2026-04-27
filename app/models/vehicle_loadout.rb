@@ -22,7 +22,7 @@
 #  fk_rails_...  (vehicle_id => vehicles.id)
 #
 class VehicleLoadout < ApplicationRecord
-  belongs_to :vehicle
+  belongs_to :vehicle, touch: true
 
   has_many :vehicle_loadout_hardpoints, dependent: :destroy
 
