@@ -9,17 +9,29 @@ module Shared
         schema({
           type: :object,
           properties: {
-            fuelRate: {type: :number},
+            quantumFuelRequirement: {type: :number},
             jumpRange: {type: :number},
-            standardJump: {
+            disconnectRange: {type: :number},
+            driveSpeed: {type: :number},
+            cooldownTime: {type: :number},
+            stageOneAccelRate: {type: :number},
+            stageTwoAccelRate: {type: :number},
+            engageSpeed: {type: :number},
+            calibrationRate: {type: :number},
+            minCalibrationRequirement: {type: :number},
+            maxCalibrationRequirement: {type: :number},
+            calibrationProcessAngleLimit: {type: :number},
+            calibrationWarningAngleLimit: {type: :number},
+            calibrationDelayInSeconds: {type: :number},
+            spoolUpTime: {type: :number},
+            splineJumpParams: {
               "$ref": "#/components/schemas/ComponentQuantumDriveJump"
             },
-            splineJump: {
-              "$ref": "#/components/schemas/ComponentQuantumDriveJump"
+            quantumBoostParams: {
+              "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
             }
           },
-          additionalProperties: false,
-          required: %w[fuelRate jumpRange standardJump splineJump]
+          additionalProperties: false
         })
       end
     end

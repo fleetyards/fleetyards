@@ -44,7 +44,7 @@ module Api
         )
           .order(@q.result.order_values)
           .includes(:vehicle_upgrades, :model_upgrades, :module_package,
-            :task_forces, :hangar_groups, :vehicle_modules,
+            :task_forces, :hangar_groups, :vehicle_modules, :vehicle_loadouts,
             model_paint: :item_prices,
             model: [:manufacturer, :item_prices, {model_loaners: :loaner_model}])
           .joins(model: [:manufacturer])

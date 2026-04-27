@@ -26,7 +26,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(:model)
+            .includes(:model, :vehicle_loadouts)
             .joins(:model)
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
@@ -50,7 +50,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(:model)
+            .includes(:model, :vehicle_loadouts)
             .joins(:model)
         end
 

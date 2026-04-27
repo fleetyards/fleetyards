@@ -9,14 +9,20 @@ module Shared
         schema({
           type: :object,
           properties: {
-            speed: {type: :number},
-            stage1AccelerationRate: {type: :number},
-            stage2AccelerationRate: {type: :number},
-            spoolUpTime: {type: :number},
-            cooldown: {type: :number}
+            driveSpeed: {type: :number},
+            cooldownTime: {type: :number},
+            stageOneAccelRate: {type: :number},
+            stageTwoAccelRate: {type: :number},
+            engageSpeed: {type: :number},
+            calibrationRate: {type: :number},
+            minCalibrationRequirement: {type: :number},
+            maxCalibrationRequirement: {type: :number},
+            calibrationProcessAngleLimit: {type: :number},
+            calibrationWarningAngleLimit: {type: :number},
+            calibrationDelayInSeconds: {type: :number},
+            spoolUpTime: {type: :number}
           },
-          additionalProperties: false,
-          required: %w[speed stage1AccelerationRate stage2AccelerationRate spoolUpTime cooldown]
+          additionalProperties: false
         })
       end
     end

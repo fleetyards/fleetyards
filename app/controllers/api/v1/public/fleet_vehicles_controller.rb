@@ -10,7 +10,7 @@ module Api
         after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
         def index
-          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -35,7 +35,7 @@ module Api
               Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
             )
               .order(@q.result.order_values)
-              .includes(:model)
+              .includes(:model, :vehicle_loadouts)
               .joins(:model)
 
             @vehicles = result_with_pagination(result, per_page(Vehicle))
@@ -47,7 +47,7 @@ module Api
             ahoy.track "fleet_embedding", request.path_parameters
           end
 
-          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -59,13 +59,13 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(:model)
+            .includes(:model, :vehicle_loadouts)
             .joins(:model)
             .all
         end
 
         def fleetchart
-          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -73,7 +73,7 @@ module Api
           @vehicles = Vehicle.where(
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
-            .includes(:model)
+            .includes(:model, :vehicle_loadouts)
             .joins(:model)
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
         end

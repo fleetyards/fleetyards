@@ -21,15 +21,15 @@ const typeData = computed(
 );
 
 const stage1Acceleration = computed(() => {
-  return (typeData.value?.standardJump.stage1AccelerationRate || 0) / 1000;
+  return (typeData.value?.stageOneAccelRate || 0) / 1000;
 });
 
 const stage2Acceleration = computed(() => {
-  return (typeData.value?.standardJump.stage2AccelerationRate || 0) / 1000;
+  return (typeData.value?.stageTwoAccelRate || 0) / 1000;
 });
 
 const speed = computed(() => {
-  return (typeData.value?.standardJump.speed || 0) / 1000;
+  return (typeData.value?.driveSpeed || 0) / 1000;
 });
 
 const travelTime = computed(() => {

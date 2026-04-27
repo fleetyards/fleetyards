@@ -74,12 +74,12 @@ const storeImage = (component: Component) => {
 const isQuantumDrive = (
   typeData?: Component["typeData"],
 ): typeData is ComponentQuantumDrive => {
-  return !!typeData && "fuelRate" in typeData;
+  return !!typeData && "quantumFuelRequirement" in typeData;
 };
 
 const getFuelRate = (component: Component): number | undefined => {
   if (isQuantumDrive(component.typeData)) {
-    return component.typeData.fuelRate;
+    return component.typeData.quantumFuelRequirement;
   }
   return undefined;
 };
@@ -91,9 +91,9 @@ const travelTime = (quantumDrive: Component) => {
 
   const typeData = quantumDrive.typeData as ComponentQuantumDrive;
 
-  const a1 = (typeData.standardJump.stage1AccelerationRate || 0) / 1000;
-  const a2 = (typeData.standardJump.stage2AccelerationRate || 0) / 1000;
-  const speed = (typeData.standardJump.speed || 0) / 1000;
+  const a1 = (typeData.stageOneAccelRate || 0) / 1000;
+  const a2 = (typeData.stageTwoAccelRate || 0) / 1000;
+  const speed = (typeData.driveSpeed || 0) / 1000;
 
   return calculateTravelTime(a1, a2, speed, distance.value);
 };

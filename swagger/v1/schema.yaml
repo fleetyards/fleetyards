@@ -6652,41 +6652,91 @@ components:
     ComponentQuantumDrive:
       type: object
       properties:
-        fuelRate:
+        quantumFuelRequirement:
           type: number
         jumpRange:
           type: number
-        standardJump:
-          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
-        splineJump:
-          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
-      additionalProperties: false
-      required:
-      - fuelRate
-      - jumpRange
-      - standardJump
-      - splineJump
-      title: ComponentQuantumDrive
-    ComponentQuantumDriveJump:
-      type: object
-      properties:
-        speed:
+        disconnectRange:
           type: number
-        stage1AccelerationRate:
+        driveSpeed:
           type: number
-        stage2AccelerationRate:
+        cooldownTime:
+          type: number
+        stageOneAccelRate:
+          type: number
+        stageTwoAccelRate:
+          type: number
+        engageSpeed:
+          type: number
+        calibrationRate:
+          type: number
+        minCalibrationRequirement:
+          type: number
+        maxCalibrationRequirement:
+          type: number
+        calibrationProcessAngleLimit:
+          type: number
+        calibrationWarningAngleLimit:
+          type: number
+        calibrationDelayInSeconds:
           type: number
         spoolUpTime:
           type: number
-        cooldown:
+        splineJumpParams:
+          "$ref": "#/components/schemas/ComponentQuantumDriveJump"
+        quantumBoostParams:
+          "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
+      additionalProperties: false
+      title: ComponentQuantumDrive
+    ComponentQuantumDriveBoost:
+      type: object
+      properties:
+        maxBoostSpeed:
+          type: number
+        timeToMaxBoostSpeed:
+          type: number
+        boostUseTime:
+          type: number
+        boostRechargeTime:
+          type: number
+        stopTime:
+          type: number
+        minJumpDistance:
+          type: number
+        ifcsHandoverDownTime:
+          type: number
+        ifcsHandoverRespoolTime:
           type: number
       additionalProperties: false
-      required:
-      - speed
-      - stage1AccelerationRate
-      - stage2AccelerationRate
-      - spoolUpTime
-      - cooldown
+      title: ComponentQuantumDriveBoost
+    ComponentQuantumDriveJump:
+      type: object
+      properties:
+        driveSpeed:
+          type: number
+        cooldownTime:
+          type: number
+        stageOneAccelRate:
+          type: number
+        stageTwoAccelRate:
+          type: number
+        engageSpeed:
+          type: number
+        calibrationRate:
+          type: number
+        minCalibrationRequirement:
+          type: number
+        maxCalibrationRequirement:
+          type: number
+        calibrationProcessAngleLimit:
+          type: number
+        calibrationWarningAngleLimit:
+          type: number
+        calibrationDelayInSeconds:
+          type: number
+        spoolUpTime:
+          type: number
+      additionalProperties: false
       title: ComponentQuantumDriveJump
     ComponentShield:
       type: object

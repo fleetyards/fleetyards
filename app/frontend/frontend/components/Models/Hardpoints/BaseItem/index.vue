@@ -157,12 +157,12 @@ const weaponDps = computed(() => {
                 v-else-if="
                   hardpoint.category === HardpointCategoryEnum.QUANTUMDRIVE &&
                   typeData &&
-                  'fuelRate' in typeData
+                  'driveSpeed' in typeData
                 "
               >
                 {{
                   toNumber(
-                    (typeData as ComponentQuantumDrive).standardJump?.speed,
+                    (typeData as ComponentQuantumDrive).driveSpeed,
                     "speed",
                   )
                 }}

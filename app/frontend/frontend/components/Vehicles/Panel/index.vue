@@ -10,6 +10,7 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
+import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
 import {
   type Vehicle,
   type VehiclePublic,
@@ -227,26 +228,7 @@ const shouldHighlight = computed(() => {
         :groups="vehicle.hangarGroups"
         class="vehicle-panel-hangar-groups"
       />
-      <a
-        v-if="activeLoadout"
-        v-tooltip="activeLoadout.name"
-        :aria-label="activeLoadout.name"
-        class="vehicle-panel-loadouts"
-        :class="{
-          'erkul-link': activeLoadout.urlSource === 'erkul',
-          'spviewer-link': activeLoadout.urlSource === 'spviewer',
-        }"
-        :href="activeLoadout.url"
-        target="_blank"
-        rel="noopener"
-      >
-        <template v-if="activeLoadout.urlSource">
-          <i />
-        </template>
-        <template v-else>
-          <i class="fa-duotone fa-crosshairs" />
-        </template>
-      </a>
+      <LoadoutMarker v-if="activeLoadout" :loadout="activeLoadout" />
       <div
         v-if="upgradable && vehicle"
         v-tooltip="t('labels.model.addons')"

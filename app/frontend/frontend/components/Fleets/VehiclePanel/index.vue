@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehicleOwner from "@/frontend/components/Vehicles/OwnerLabel/index.vue";
+import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
 import type {
   VehiclePublic,
   Model,
@@ -174,19 +175,7 @@ const route = useRoute();
         :model-slug="fleetVehicle.slug"
         :fleet-slug="fleetSlug"
       />
-      <div v-if="activeLoadout" class="fleet-vehicle-panel-loadout">
-        <i class="fa-duotone fa-crosshairs" />
-        <a
-          v-if="activeLoadout.url"
-          :href="activeLoadout.url"
-          target="_blank"
-          rel="noopener"
-          @click.stop
-        >
-          {{ activeLoadout.name }}
-        </a>
-        <span v-else>{{ activeLoadout.name }}</span>
-      </div>
+      <LoadoutMarker v-if="activeLoadout" :loadout="activeLoadout" />
     </template>
   </ModelPanel>
 </template>
@@ -205,21 +194,5 @@ const route = useRoute();
 .serial {
   font-size: 0.85em;
   opacity: 0.8;
-}
-
-.fleet-vehicle-panel-loadout {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  padding: 5px 10px;
-  font-size: 0.75rem;
-  opacity: 0.8;
-
-  a {
-    text-decoration: underline;
-  }
 }
 </style>
