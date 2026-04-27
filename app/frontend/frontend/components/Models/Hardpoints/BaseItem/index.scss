@@ -1,3 +1,14 @@
+.hardpoint-item__stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 5px;
+
+  .nowrap {
+    white-space: nowrap;
+  }
+}
+
 .hardpoint-item__loadout {
   display: flex;
   flex-direction: column;

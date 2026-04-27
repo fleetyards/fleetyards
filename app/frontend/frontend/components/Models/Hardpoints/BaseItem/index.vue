@@ -111,20 +111,19 @@ const weaponDps = computed(() => {
       <HardpointComponent>
         <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
           <template v-if="hardpoint.component && hardpoint.component.name">
-            <div>
+            <div class="hardpoint-item__stats">
               {{ hardpoint.component.name }}
               <span v-if="hardpoint.component.itemClass">
                 {{ hardpoint.component.itemClassLabel }}
                 {{ t("labels.component.grade") }}
                 {{ hardpoint.component.gradeLabel }}
               </span>
-            </div>
-            <div>
               <span
                 v-if="
                   hardpoint.category === HardpointCategoryEnum.WEAPONS &&
                   weaponDps
                 "
+                class="nowrap"
               >
                 {{ toNumber(weaponDps, "dps") }}
               </span>
@@ -135,6 +134,7 @@ const weaponDps = computed(() => {
                   typeData &&
                   'maxHealth' in typeData
                 "
+                class="nowrap"
               >
                 {{
                   toNumber((typeData as ComponentShield).maxHealth, "shieldHp")
@@ -153,6 +153,7 @@ const weaponDps = computed(() => {
                   typeData &&
                   'coolingRate' in typeData
                 "
+                class="nowrap"
               >
                 {{
                   toNumber(
@@ -167,6 +168,7 @@ const weaponDps = computed(() => {
                   typeData &&
                   'powerBase' in typeData
                 "
+                class="nowrap"
               >
                 {{
                   toNumber(
@@ -181,6 +183,7 @@ const weaponDps = computed(() => {
                   typeData &&
                   'driveSpeed' in typeData
                 "
+                class="nowrap"
               >
                 {{
                   toNumber(
