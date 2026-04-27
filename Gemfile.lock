@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/openapi-ruby/openapi-ruby.git
-  revision: 5e9f12a8436d66259f70a688b99e8020b3a1c44d
+  revision: 817166161aaa7e28706c975ca790d4491a82dba6
   branch: main
   specs:
     openapi-ruby (3.1.0)
