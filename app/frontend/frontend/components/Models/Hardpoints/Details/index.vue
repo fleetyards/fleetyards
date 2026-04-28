@@ -76,6 +76,24 @@ const stats = computed<Stat[]>(() => {
       if (weapon.range) {
         result.push(stat("missiles.range", weapon.range, "missileRange"));
       }
+      if ((typeData as Record<string, unknown>).lockRangeMin) {
+        result.push(
+          stat(
+            "missiles.lockRangeMin",
+            (typeData as Record<string, unknown>).lockRangeMin as number,
+            "missileRange",
+          ),
+        );
+      }
+      if ((typeData as Record<string, unknown>).lockRangeMax) {
+        result.push(
+          stat(
+            "missiles.lockRangeMax",
+            (typeData as Record<string, unknown>).lockRangeMax as number,
+            "missileRange",
+          ),
+        );
+      }
       if ((typeData as Record<string, unknown>).lockTime) {
         result.push(
           stat(
@@ -218,16 +236,16 @@ const stats = computed<Stat[]>(() => {
       | Record<string, { sensitivity?: number }>
       | undefined;
     if (sigs) {
-      if (sigs.ir?.sensitivity) {
+      if (sigs.ir?.sensitivity != null) {
         result.push(resistanceStat("radar.ir", sigs.ir.sensitivity));
       }
-      if (sigs.em?.sensitivity) {
+      if (sigs.em?.sensitivity != null) {
         result.push(resistanceStat("radar.em", sigs.em.sensitivity));
       }
-      if (sigs.cs?.sensitivity) {
+      if (sigs.cs?.sensitivity != null) {
         result.push(resistanceStat("radar.cs", sigs.cs.sensitivity));
       }
-      if (sigs.rs?.sensitivity) {
+      if (sigs.rs?.sensitivity != null) {
         result.push(resistanceStat("radar.rs", sigs.rs.sensitivity));
       }
     }

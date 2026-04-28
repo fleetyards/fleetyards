@@ -31,6 +31,8 @@
       "stun": 0.0
     },
     "lock_time": 1.0,
+    "lock_range_min": 1900.0,
+    "lock_range_max": 25000.0,
     "tracking_signal": "Electromagnetic",
     "speed": 857.5,
     "range": 30012.5

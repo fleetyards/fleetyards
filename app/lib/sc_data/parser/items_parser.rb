@@ -436,6 +436,8 @@ module ScData
           item[:type_data] = {
             damage_per_shot:,
             lock_time: targeting&.dig("lockTime")&.to_f,
+            lock_range_min: targeting&.dig("lockRangeMin")&.to_f,
+            lock_range_max: targeting&.dig("lockRangeMax")&.to_f,
             tracking_signal: targeting&.dig("trackingSignalType"),
             speed: missile_speed,
             range: (missile_speed && max_lifetime) ? (missile_speed * max_lifetime).round(1) : nil

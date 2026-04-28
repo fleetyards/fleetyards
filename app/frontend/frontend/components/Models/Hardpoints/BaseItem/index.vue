@@ -39,8 +39,25 @@ const { t, toNumber } = useI18n();
 
 const expanded = ref(false);
 
+const detailCategories: string[] = [
+  HardpointCategoryEnum.WEAPONS,
+  HardpointCategoryEnum.SHIELDGENERATOR,
+  HardpointCategoryEnum.COOLER,
+  HardpointCategoryEnum.POWERPLANT,
+  HardpointCategoryEnum.QUANTUMDRIVE,
+  HardpointCategoryEnum.MAIN_THRUSTERS,
+  HardpointCategoryEnum.MANEUVERING_THRUSTERS,
+  HardpointCategoryEnum.RETRO_THRUSTERS,
+  HardpointCategoryEnum.VTOL_THRUSTERS,
+  HardpointCategoryEnum.RADAR,
+];
+
 const hasDetails = computed(() => {
-  return !!hardpoint.value.component?.typeData;
+  return (
+    !!hardpoint.value.component?.typeData &&
+    !!hardpoint.value.category &&
+    detailCategories.includes(hardpoint.value.category)
+  );
 });
 
 const toggleExpanded = () => {

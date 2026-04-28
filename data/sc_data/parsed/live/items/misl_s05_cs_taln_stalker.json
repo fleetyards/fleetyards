@@ -31,6 +31,8 @@
       "stun": 0.0
     },
     "lock_time": 1.0,
+    "lock_range_min": 2000.0,
+    "lock_range_max": 30000.0,
     "tracking_signal": "CrossSection",
     "speed": 560.0,
     "range": 33600.0

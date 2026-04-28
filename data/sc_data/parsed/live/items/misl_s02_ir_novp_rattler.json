@@ -133,6 +133,8 @@
       "stun": 0.0
     },
     "lock_time": 0.8,
+    "lock_range_min": 1800.0,
+    "lock_range_max": 5000.0,
     "tracking_signal": "Infrared",
     "speed": 1029.0,
     "range": 10290.0
