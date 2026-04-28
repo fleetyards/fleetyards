@@ -32,6 +32,7 @@
     "pellets_per_shot": 1,
     "speed": 180.0,
     "range": 144.0,
-    "ammo_cost": 1
+    "ammo_cost": 1,
+    "max_ammo": 4
   }
 }

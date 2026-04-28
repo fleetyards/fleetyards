@@ -96,6 +96,7 @@
   },
   "type_data": {
     "fire_rate": 90.0,
-    "heat_per_shot": 17500.0
+    "heat_per_shot": 17500.0,
+    "max_ammo": 276
   }
 }

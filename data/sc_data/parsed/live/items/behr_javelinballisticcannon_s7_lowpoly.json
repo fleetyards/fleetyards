@@ -98,6 +98,7 @@
     "fire_rate": 60.0,
     "heat_per_shot": 50000.0,
     "pellets_per_shot": 1,
-    "ammo_cost": 1
+    "ammo_cost": 1,
+    "max_ammo": 276
   }
 }

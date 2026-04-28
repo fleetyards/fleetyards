@@ -226,22 +226,19 @@ module ScData
         end
 
         if values.dig("Components", "SCItemRadarComponentParams")
+          radar = values.dig("Components", "SCItemRadarComponentParams")
+          detections = radar.dig("signatureDetection", "SCItemRadarSignatureDetection")
+          detections = [detections] if detections.is_a?(Hash)
+
+          aim_assist = radar.dig("aimAssist")
+
           item[:type_data] = {
-            signature_detection: values.dig("Components", "SCItemRadarComponentParams", "signatureDetection", "SCItemRadarSignatureDetection").map do |signature|
-              {
-                sensitivity: signature.dig("sensitivity").to_f,
-                piercing: signature.dig("piercing").to_f,
-                permit_active_detection: signature.dig("permitActiveDetection").to_f,
-                permit_passive_detection: signature.dig("permitPassiveDetection").to_f
-              }
-            end,
+            signature_detection: extract_radar_signatures(detections),
+            aim_assist_range: aim_assist&.dig("distanceMaxAssignment")&.to_f,
             ping_properties: {
-              cooldown_time: values.dig("Components", "SCItemRadarComponentParams", "pingProperties", "cooldownTime").to_f
-            },
-            sensitivityModifiers: {
-              sensitivityAddition: values.dig("Components", "SCItemRadarComponentParams", "sensitivityModifiers", "SCItemRadarSensitivityModifier", "sensitivityAddition").to_f
+              cooldown_time: radar.dig("pingProperties", "cooldownTime")&.to_f
             }
-          }
+          }.compact
         end
 
         if values.dig("Components", "SSCItemSelfDestructComponentParams")
@@ -393,6 +390,8 @@ module ScData
             projectile_speed = ammo&.dig("speed")&.to_f
             projectile_lifetime = ammo&.dig("lifetime")&.to_f
 
+            max_ammo = values.dig("Components", "SAmmoContainerComponentParams", "maxAmmoCount")&.to_i
+
             type_data = {
               fire_rate: fire_actions&.dig("fireRate")&.to_f,
               heat_per_shot: fire_actions&.dig("heatPerShot")&.to_f,
@@ -400,7 +399,8 @@ module ScData
               pellets_per_shot: fire_actions&.dig("launchParams", "SProjectileLauncher", "pelletCount")&.to_i,
               speed: projectile_speed,
               range: (projectile_speed && projectile_lifetime) ? (projectile_speed * projectile_lifetime).round(1) : nil,
-              ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i
+              ammo_cost: fire_actions&.dig("launchParams", "SProjectileLauncher", "ammoCost")&.to_i,
+              max_ammo: max_ammo
             }
 
             if charged.present?
@@ -416,15 +416,29 @@ module ScData
           missile_data = values.dig("Components", "SCItemMissileParams")
           explosion = missile_data.dig("explosionParams") if missile_data.dig("explosionParams").is_a?(Hash)
           targeting = missile_data.dig("targetingParams") if missile_data.dig("targetingParams").is_a?(Hash)
-          damage_raw = explosion&.dig("damage")
-          damage_value = (damage_raw.is_a?(Numeric) || damage_raw.is_a?(String)) ? damage_raw.to_f : nil
+          gcs = missile_data.dig("GCSParams") if missile_data.dig("GCSParams").is_a?(Hash)
+
+          damage_info = explosion&.dig("damage", "DamageInfo") || explosion&.dig("damage")
+          damage_per_shot = if damage_info.is_a?(Hash)
+            {
+              physical: damage_info["DamagePhysical"]&.to_f,
+              energy: damage_info["DamageEnergy"]&.to_f,
+              distortion: damage_info["DamageDistortion"]&.to_f,
+              thermal: damage_info["DamageThermal"]&.to_f,
+              biochemical: damage_info["DamageBiochemical"]&.to_f,
+              stun: damage_info["DamageStun"]&.to_f
+            }.compact.presence
+          end
+
+          missile_speed = gcs&.dig("linearSpeed")&.to_f
+          max_lifetime = missile_data["maxLifetime"]&.to_f
+
           item[:type_data] = {
-            damage: damage_value,
-            radius: explosion&.dig("radius")&.to_f,
+            damage_per_shot:,
             lock_time: targeting&.dig("lockTime")&.to_f,
-            lock_range: targeting&.dig("lockRange")&.to_f,
             tracking_signal: targeting&.dig("trackingSignalType"),
-            speed: missile_data.dig("GCSParams", "linearSpeed")&.to_f
+            speed: missile_speed,
+            range: (missile_speed && max_lifetime) ? (missile_speed * max_lifetime).round(1) : nil
           }.compact
         end
 
@@ -582,6 +596,25 @@ module ScData
           full_damage_range: beam["fullDamageRange"]&.to_f,
           zero_damage_range: beam["zeroDamageRange"]&.to_f
         }.compact
+      end
+
+      RADAR_SIGNAL_TYPES = %i[ir em cs rs].freeze
+
+      private def extract_radar_signatures(detections)
+        return if detections.blank?
+
+        # First 4 entries are passive detection, next 4 are active
+        # Types: IR, EM, CS, RS
+        result = {}
+        RADAR_SIGNAL_TYPES.each_with_index do |type, i|
+          passive = detections[i]
+          detections[i + 4]
+          result[type] = {
+            sensitivity: passive&.dig("sensitivity")&.to_f,
+            piercing: passive&.dig("piercing")&.to_f
+          }.compact
+        end
+        result.presence
       end
 
       SHIELD_DAMAGE_TYPES = %i[physical energy distortion thermal biochemical stun].freeze

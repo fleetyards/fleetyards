@@ -28,6 +28,7 @@
   },
   "type_data": {
     "speed": 90.0,
-    "range": 1080.0
+    "range": 1080.0,
+    "max_ammo": 600
   }
 }

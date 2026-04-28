@@ -22,8 +22,17 @@
     "health": 1000.0
   },
   "type_data": {
+    "damage_per_shot": {
+      "physical": 100.0,
+      "energy": 200.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
     "lock_time": 0.0,
     "tracking_signal": "Infrared",
-    "speed": 1500.0
+    "speed": 1500.0,
+    "range": 45000.0
   }
 }

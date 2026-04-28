@@ -32,61 +32,27 @@
     "health": 840.0
   },
   "type_data": {
-    "signature_detection": [
-      {
+    "signature_detection": {
+      "ir": {
         "sensitivity": 0.9,
-        "piercing": 0.25,
-        "permit_active_detection": 1.0,
-        "permit_passive_detection": 1.0
+        "piercing": 0.25
       },
-      {
+      "em": {
         "sensitivity": 0.9,
-        "piercing": 0.25,
-        "permit_active_detection": 1.0,
-        "permit_passive_detection": 1.0
+        "piercing": 0.25
       },
-      {
+      "cs": {
         "sensitivity": 0.9,
-        "piercing": 0.25,
-        "permit_active_detection": 1.0,
-        "permit_passive_detection": 0.0
+        "piercing": 0.25
       },
-      {
+      "rs": {
         "sensitivity": 0.0,
-        "piercing": 0.25,
-        "permit_active_detection": 0.0,
-        "permit_passive_detection": 0.0
-      },
-      {
-        "sensitivity": 1.0,
-        "piercing": 1.0,
-        "permit_active_detection": 1.0,
-        "permit_passive_detection": 1.0
-      },
-      {
-        "sensitivity": 1.0,
-        "piercing": 0.25,
-        "permit_active_detection": 1.0,
-        "permit_passive_detection": 1.0
-      },
-      {
-        "sensitivity": 1.0,
-        "piercing": 0.25,
-        "permit_active_detection": 1.0,
-        "permit_passive_detection": 1.0
-      },
-      {
-        "sensitivity": 0.0,
-        "piercing": 0.25,
-        "permit_active_detection": 0.0,
-        "permit_passive_detection": 0.0
+        "piercing": 0.25
       }
-    ],
+    },
+    "aim_assist_range": 1694.0,
     "ping_properties": {
       "cooldown_time": 2.5
-    },
-    "sensitivityModifiers": {
-      "sensitivityAddition": -0.65
     }
   }
 }

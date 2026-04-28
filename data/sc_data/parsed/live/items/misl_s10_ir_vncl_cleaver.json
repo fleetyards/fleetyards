@@ -22,8 +22,17 @@
     "health": 667.0
   },
   "type_data": {
+    "damage_per_shot": {
+      "physical": 61000.0,
+      "energy": 549000.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
     "lock_time": 5.0,
     "tracking_signal": "CrossSection",
-    "speed": 527.0
+    "speed": 527.0,
+    "range": 31620.0
   }
 }

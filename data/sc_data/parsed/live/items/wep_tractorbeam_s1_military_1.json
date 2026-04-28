@@ -70,6 +70,7 @@
       "stun": 0.0
     },
     "speed": 0.0,
-    "range": 0.0
+    "range": 0.0,
+    "max_ammo": 0
   }
 }

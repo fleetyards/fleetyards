@@ -101,6 +101,7 @@
     "speed": 3000.0,
     "range": 1500.0,
     "ammo_cost": 1,
+    "max_ammo": 0,
     "charge_time": 2.5,
     "overcharge_time": 0.0
   }
