@@ -13,7 +13,6 @@ import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vu
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manufacturer/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
-import HardpointDetails from "@/frontend/components/Models/Hardpoints/Details/index.vue";
 import {
   HardpointSourceEnum,
   HardpointCategoryEnum,
@@ -39,29 +38,12 @@ const { t, toNumber } = useI18n();
 
 const expanded = ref(false);
 
-const detailCategories: string[] = [
-  HardpointCategoryEnum.WEAPONS,
-  HardpointCategoryEnum.SHIELDGENERATOR,
-  HardpointCategoryEnum.COOLER,
-  HardpointCategoryEnum.POWERPLANT,
-  HardpointCategoryEnum.QUANTUMDRIVE,
-  HardpointCategoryEnum.MAIN_THRUSTERS,
-  HardpointCategoryEnum.MANEUVERING_THRUSTERS,
-  HardpointCategoryEnum.RETRO_THRUSTERS,
-  HardpointCategoryEnum.VTOL_THRUSTERS,
-  HardpointCategoryEnum.RADAR,
-];
-
-const hasDetails = computed(() => {
-  return (
-    !!hardpoint.value.component?.typeData &&
-    !!hardpoint.value.category &&
-    detailCategories.includes(hardpoint.value.category)
-  );
+const isGroup = computed(() => {
+  return props.hardpoints.length > 1;
 });
 
 const toggleExpanded = () => {
-  if (hasDetails.value) {
+  if (isGroup.value) {
     expanded.value = !expanded.value;
   }
 };
@@ -109,17 +91,23 @@ const typeData = computed(() => {
   return hardpoint.value.component?.typeData;
 });
 
+const multiplier = computed(() => {
+  return expanded.value ? 1 : count.value;
+});
+
 const weaponDps = computed(() => {
   if (!typeData.value) return null;
 
   const weapon = typeData.value as ComponentWeapon;
 
   if (weapon.beam && weapon.damagePerSecond) {
-    return Math.round(
-      Object.values(weapon.damagePerSecond).reduce(
-        (sum: number, val) => sum + (typeof val === "number" ? val : 0),
-        0,
-      ),
+    return (
+      Math.round(
+        Object.values(weapon.damagePerSecond).reduce(
+          (sum: number, val) => sum + (typeof val === "number" ? val : 0),
+          0,
+        ),
+      ) * multiplier.value
     );
   }
 
@@ -131,7 +119,10 @@ const weaponDps = computed(() => {
   );
   const pellets = weapon.pelletsPerShot || 1;
 
-  return Math.round((totalDamage * pellets * weapon.fireRate) / 60);
+  return (
+    Math.round((totalDamage * pellets * weapon.fireRate) / 60) *
+    multiplier.value
+  );
 });
 
 const missileDamage = computed(() => {
@@ -140,17 +131,27 @@ const missileDamage = computed(() => {
   const weapon = typeData.value as ComponentWeapon;
   if (!weapon.damagePerShot) return null;
 
-  return Math.round(
-    Object.values(weapon.damagePerShot).reduce(
-      (sum: number, val) => sum + (typeof val === "number" ? val : 0),
-      0,
-    ),
+  return (
+    Math.round(
+      Object.values(weapon.damagePerShot).reduce(
+        (sum: number, val) => sum + (typeof val === "number" ? val : 0),
+        0,
+      ),
+    ) * multiplier.value
   );
 });
 </script>
 
 <template>
-  <HardpointItem :count="count" :intended="intended">
+  <div v-if="isGroup" class="hardpoint-group-toggle">
+    <button class="hardpoint-group-toggle__btn" @click="toggleExpanded">
+      <i
+        class="fa-solid fa-chevron-up"
+        :class="{ 'fa-rotate-180': expanded }"
+      />
+    </button>
+  </div>
+  <HardpointItem v-show="!expanded" :count="count" :intended="intended">
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
       <HardpointComponent>
@@ -263,21 +264,8 @@ const missileDamage = computed(() => {
       <HardpointManufacturer
         :manufacturer="hardpoint.component?.manufacturer"
       />
-      <button
-        v-if="hasDetails"
-        class="hardpoint-item__expand"
-        @click="toggleExpanded"
-      >
-        <i
-          class="fa-solid fa-chevron-down"
-          :class="{ 'fa-rotate-180': expanded }"
-        />
-      </button>
     </template>
     <template #loadout>
-      <Collapsed :visible="expanded" :duration="200">
-        <HardpointDetails :hardpoint="hardpoint" />
-      </Collapsed>
       <div v-if="loadout.length" class="hardpoint-item__loadout">
         <HardpointBaseItem
           v-for="(items, key) in groupedLoadout"
@@ -288,6 +276,16 @@ const missileDamage = computed(() => {
       </div>
     </template>
   </HardpointItem>
+
+  <!-- Expanded: show each item individually -->
+  <Collapsed v-if="isGroup" :visible="expanded" :duration="200">
+    <HardpointBaseItem
+      v-for="hp in hardpoints"
+      :key="hp.id"
+      :hardpoints="[hp]"
+      :intended="intended"
+    />
+  </Collapsed>
 </template>
 
 <style lang="scss" scoped>

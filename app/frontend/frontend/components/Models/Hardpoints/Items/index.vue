@@ -23,8 +23,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const individualHardpoints = computed(() => {
-  return props.hardpoints.map((hp) => [hp.id, [hp]] as [string, Hardpoint[]]);
+const groupedHardpoints = computed(() => {
+  return groupBy<Hardpoint>(props.hardpoints, "groupKey");
 });
 
 type HoldGroupEntry = {
@@ -97,7 +97,7 @@ const itemComponent = computed(() => {
     <template v-else>
       <Component
         :is="itemComponent"
-        v-for="[key, items] in individualHardpoints"
+        v-for="(items, key) in groupedHardpoints"
         :key="key"
         :hardpoints="items"
       />
