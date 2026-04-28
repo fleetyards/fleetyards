@@ -256,6 +256,48 @@ const stats = computed<Stat[]>(() => {
         result.push(resistanceStat("radar.rs", sigs.rs.sensitivity));
       }
     }
+  } else if (category === HardpointCategoryEnum.COUNTERMEASURES) {
+    const cm = typeData as Record<string, unknown>;
+    if (cm.fireRate) {
+      result.push(
+        stat("weapons.fireRate", cm.fireRate as number, "rateOfFire"),
+      );
+    }
+    if (cm.maxAmmo) {
+      result.push(stat("weapons.ammo", cm.maxAmmo as number, "integer"));
+    }
+    if (cm.speed) {
+      result.push(stat("weapons.speed", cm.speed as number, "weaponSpeed"));
+    }
+    if (cm.range) {
+      result.push(stat("weapons.range", cm.range as number, "weaponRange"));
+    }
+  } else if (category === HardpointCategoryEnum.ARMOR) {
+    const armor = typeData as Record<string, unknown>;
+    const armorTypes: [string, string][] = [
+      ["damagePhysical", "armor.physical"],
+      ["damageEnergy", "armor.energy"],
+      ["damageDistortion", "armor.distortion"],
+      ["damageThermal", "armor.thermal"],
+    ];
+    for (const [key, labelKey] of armorTypes) {
+      const val = armor[key];
+      if (typeof val === "number" && val > 0) {
+        result.push(resistanceStat(labelKey, val));
+      }
+    }
+  } else if (category === HardpointCategoryEnum.FUEL_INTAKES) {
+    const fi = typeData as Record<string, unknown>;
+    if (fi.fuelPushRate) {
+      result.push(
+        stat("fuelIntakes.pushRate", fi.fuelPushRate as number, "fuelRate"),
+      );
+    }
+    if (fi.minimumRate) {
+      result.push(
+        stat("fuelIntakes.minRate", fi.minimumRate as number, "fuelRate"),
+      );
+    }
   }
 
   return result;

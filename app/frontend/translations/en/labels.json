@@ -689,6 +689,16 @@
           "cs": "CS",
           "rs": "RS"
         },
+        "armor": {
+          "physical": "Physical",
+          "energy": "Energy",
+          "distortion": "Distortion",
+          "thermal": "Thermal"
+        },
+        "fuelIntakes": {
+          "pushRate": "Push Rate",
+          "minRate": "Min Rate"
+        },
         "sources": {
           "game_files": "Game Files",
           "ship_matrix": "Ship Matrix"
