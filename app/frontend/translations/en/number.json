@@ -34,6 +34,7 @@
       "rateOfFire": "%{count} shots/min",
       "rotation": "%{count} deg/s",
       "cargo": "%{count} SCU",
+      "integer": "%{count}",
       "dps": "%{count} DPS",
       "damage": "%{count} DMG",
       "shieldHp": "%{count} HP",
