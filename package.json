@@ -111,7 +111,7 @@
     "@vue/compiler-sfc": "^3.5.33",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
-    "@vue/test-utils": "2.4.8",
+    "@vue/test-utils": "2.4.9",
     "c8": "11.0.0",
     "concurrently": "^9.2.1",
     "eslint": "10.2.1",
