@@ -10,6 +10,8 @@ import {
   type Hardpoint,
   type ComponentWeapon,
   type ComponentShield,
+  type ComponentCooler,
+  type ComponentPowerPlant,
   type ComponentQuantumDrive,
   type ComponentThruster,
 } from "@/services/fyApi";
@@ -170,6 +172,18 @@ const stats = computed<Stat[]>(() => {
           resistanceStat("shields.resistanceDistortion", res.distortion.max),
         );
       }
+    }
+  } else if (category === HardpointCategoryEnum.COOLER) {
+    const cooler = typeData as ComponentCooler;
+    if (cooler.coolingRate) {
+      result.push(
+        stat("coolers.coolingRate", cooler.coolingRate, "coolingRate"),
+      );
+    }
+  } else if (category === HardpointCategoryEnum.POWERPLANT) {
+    const pp = typeData as ComponentPowerPlant;
+    if (pp.powerBase) {
+      result.push(stat("powerPlants.output", pp.powerBase, "powerOutput"));
     }
   } else if (category === HardpointCategoryEnum.QUANTUMDRIVE) {
     const qd = typeData as ComponentQuantumDrive;
