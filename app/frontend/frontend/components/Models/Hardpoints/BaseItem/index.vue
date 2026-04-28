@@ -151,14 +151,12 @@ const missileDamage = computed(() => {
 </script>
 
 <template>
-  <div v-if="isGroup" class="hardpoint-group-toggle">
-    <button class="hardpoint-group-toggle__btn" @click="toggleExpanded">
-      <i
-        class="fa-solid fa-chevron-up"
-        :class="{ 'fa-rotate-180': expanded }"
-      />
-    </button>
-  </div>
+  <button v-if="isGroup" class="hardpoint-group-toggle" @click="toggleExpanded">
+    <i
+      class="fa-solid fa-chevron-right"
+      :class="{ 'fa-rotate-90': expanded }"
+    />
+  </button>
   <HardpointItem v-show="!expanded" :count="count" :intended="intended">
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
@@ -284,11 +282,7 @@ const missileDamage = computed(() => {
       </button>
     </template>
     <template #loadout>
-      <Collapsed
-        v-if="hasDetails"
-        :visible="detailsExpanded"
-        :duration="200"
-      >
+      <Collapsed v-if="hasDetails" :visible="detailsExpanded" :duration="200">
         <HardpointDetails :hardpoint="hardpoint" />
       </Collapsed>
       <div v-if="loadout.length" class="hardpoint-item__loadout">

@@ -1,27 +1,20 @@
 .hardpoint-group-toggle {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-  margin-bottom: 4px;
+  background: none;
+  border: none;
+  color: $gray-light;
+  cursor: pointer;
+  padding: 0;
+  font-size: 9px;
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  align-self: center;
 
-  &__btn {
-    background: rgba($gray-darker, 0.5);
-    border: 1px solid $panel-inner-border;
-    border-radius: 6px;
-    color: $gray-light;
-    cursor: pointer;
-    padding: 2px 16px;
-    font-size: 10px;
-    opacity: 0.6;
-    transition: opacity 0.2s;
+  &:hover {
+    opacity: 1;
+  }
 
-    &:hover {
-      opacity: 1;
-    }
-
-    i {
-      transition: transform 0.2s;
-    }
+  i {
+    transition: transform 0.2s;
   }
 }
 
