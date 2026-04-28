@@ -76,23 +76,16 @@ const stats = computed<Stat[]>(() => {
       if (weapon.range) {
         result.push(stat("missiles.range", weapon.range, "missileRange"));
       }
-      if ((typeData as Record<string, unknown>).lockRangeMin) {
-        result.push(
-          stat(
-            "missiles.lockRangeMin",
-            (typeData as Record<string, unknown>).lockRangeMin as number,
-            "missileRange",
-          ),
-        );
-      }
-      if ((typeData as Record<string, unknown>).lockRangeMax) {
-        result.push(
-          stat(
-            "missiles.lockRangeMax",
-            (typeData as Record<string, unknown>).lockRangeMax as number,
-            "missileRange",
-          ),
-        );
+      {
+        const td = typeData as Record<string, unknown>;
+        const min = td.lockRangeMin as number | undefined;
+        const max = td.lockRangeMax as number | undefined;
+        if (min || max) {
+          result.push({
+            label: t("labels.hardpoint.missiles.lockRange"),
+            value: `${String(toNumber(min || 0, "missileRange"))} - ${String(toNumber(max || 0, "missileRange"))}`,
+          });
+        }
       }
       if ((typeData as Record<string, unknown>).lockTime) {
         result.push(
@@ -244,9 +237,6 @@ const stats = computed<Stat[]>(() => {
       }
       if (sigs.cs?.sensitivity != null) {
         result.push(resistanceStat("radar.cs", sigs.cs.sensitivity));
-      }
-      if (sigs.rs?.sensitivity != null) {
-        result.push(resistanceStat("radar.rs", sigs.rs.sensitivity));
       }
     }
   }

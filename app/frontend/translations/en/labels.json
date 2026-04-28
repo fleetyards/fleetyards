@@ -655,8 +655,7 @@
           "damage": "Damage",
           "speed": "Speed",
           "range": "Range",
-          "lockRangeMin": "Min Lock Range",
-          "lockRangeMax": "Max Lock Range",
+          "lockRange": "Lock Range",
           "lockTime": "Lock Time",
           "trackingSignal": "Tracking"
         },
