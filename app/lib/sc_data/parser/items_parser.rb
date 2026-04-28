@@ -278,7 +278,8 @@ module ScData
             ),
             absorption: extract_shield_damage_map(
               values.dig("Components", "SCItemShieldGeneratorParams", "ShieldAbsorption", "SShieldAbsorption")
-            )
+            ),
+            power_ranges: extract_power_ranges(values)
           }
 
         end
@@ -592,6 +593,23 @@ module ScData
           type = SHIELD_DAMAGE_TYPES[i] || :"type_#{i}"
           [type, {min: entry.dig("Min").to_f, max: entry.dig("Max").to_f}]
         end
+      end
+
+      private def extract_power_ranges(values)
+        pr = values.dig("Components", "ItemResourceComponentParams", "states", "ItemResourceState")
+        pr = pr.is_a?(Array) ? pr.first : pr
+        pr = pr&.dig("powerRanges")
+        return if pr.blank?
+
+        %w[low medium high].each_with_object({}) do |level, hash|
+          range = pr.dig(level)
+          next unless range.is_a?(Hash)
+
+          hash[level.to_sym] = {
+            start: range["start"]&.to_f,
+            modifier: range["modifier"]&.to_f
+          }
+        end.presence
       end
 
       private def parse_inventory(key, values)

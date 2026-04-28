@@ -89,6 +89,20 @@
         "min": 1.0,
         "max": 1.0
       }
+    },
+    "power_ranges": {
+      "low": {
+        "start": 1.0,
+        "modifier": 0.7
+      },
+      "medium": {
+        "start": 3.0,
+        "modifier": 0.85
+      },
+      "high": {
+        "start": 5.0,
+        "modifier": 1.0
+      }
     }
   }
 }
