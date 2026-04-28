@@ -35,6 +35,7 @@
       "rotation": "%{count} deg/s",
       "cargo": "%{count} SCU",
       "dps": "%{count} DPS",
+      "damage": "%{count} DMG",
       "shieldHp": "%{count} HP",
       "shieldRegen": "%{count}s Regen",
       "coolingRate": "%{count} Cooling Rate",

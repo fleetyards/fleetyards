@@ -42,6 +42,7 @@ export const i18nHelpers = (i18n: I18n) => {
       [
         "integer",
         "dps",
+        "damage",
         "shieldHp",
         "shieldRegen",
         "coolingRate",

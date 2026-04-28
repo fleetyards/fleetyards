@@ -102,6 +102,20 @@ const weaponDps = computed(() => {
 
   return Math.round((totalDamage * pellets * weapon.fireRate) / 60);
 });
+
+const missileDamage = computed(() => {
+  if (!typeData.value || !("trackingSignal" in typeData.value)) return null;
+
+  const weapon = typeData.value as ComponentWeapon;
+  if (!weapon.damagePerShot) return null;
+
+  return Math.round(
+    Object.values(weapon.damagePerShot).reduce(
+      (sum: number, val) => sum + (typeof val === "number" ? val : 0),
+      0,
+    ),
+  );
+});
 </script>
 
 <template>
@@ -124,6 +138,14 @@ const weaponDps = computed(() => {
               "
             >
               {{ toNumber(weaponDps, "dps") }}
+            </span>
+            <span
+              v-else-if="
+                hardpoint.category === HardpointCategoryEnum.WEAPONS &&
+                missileDamage
+              "
+            >
+              {{ toNumber(missileDamage, "damage") }}
             </span>
             <span
               v-else-if="
