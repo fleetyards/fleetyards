@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.18.0](https://github.com/fleetyards/fleetyards/compare/v6.17.3...v6.18.0) (2026-04-28)
+
+
+### Features
+
+* add expandable detail panels to hardpoint components ([80ba0b4](https://github.com/fleetyards/fleetyards/commit/80ba0b42e7de5cfaaa1cd5a1e5df5f8da31e81bd))
+* add missing hardpoint stats to parser ([49d2524](https://github.com/fleetyards/fleetyards/commit/49d2524d60a549f01065ec2ec4d97ead2efc1504))
+* collapsible group toggle for identical hardpoints ([09e4c1a](https://github.com/fleetyards/fleetyards/commit/09e4c1a32e669a2ea0d5c1fd452f58b98e8926dd))
+* complete weapon/shield/cooler/powerplant data extraction from SC game files ([4b44e2d](https://github.com/fleetyards/fleetyards/commit/4b44e2de2cef359d295f2eb762de96f487841ab3))
+* display missile damage on hardpoint view ([42ede9a](https://github.com/fleetyards/fleetyards/commit/42ede9ad1010e6850249b6d2974dab3a59bcd8cb))
+* extract shield power_ranges (low/medium/high modifiers) ([5f69c29](https://github.com/fleetyards/fleetyards/commit/5f69c2957096958b4bee94ecb76bfa78d4119dd7))
+* show shield regen as seconds-to-full instead of raw rate ([0b214cd](https://github.com/fleetyards/fleetyards/commit/0b214cd40aea788402adf9ba25033ea4374b9ced))
+
+
+### Bug Fixes
+
+* add cooler and power plant stats to detail panel ([88e4208](https://github.com/fleetyards/fleetyards/commit/88e4208bf4ad467e468c6f204223de3f07249458))
+* add detail stats for countermeasures, armor, and fuel intakes ([20da011](https://github.com/fleetyards/fleetyards/commit/20da011351666b878bd4d1302e1d67cbfaae9333))
+* add missing integer number translation ([7fa7022](https://github.com/fleetyards/fleetyards/commit/7fa70227884070059fd1c7c1a1be64359efad5d7))
+* adjust group toggle padding ([7920899](https://github.com/fleetyards/fleetyards/commit/79208991fc8b9b376d2d89f96fbebab126612876))
+* bigger group toggle, top-aligned instead of centered ([3550856](https://github.com/fleetyards/fleetyards/commit/355085672f76f240bf20ee235404817bc485761e))
+* combine missile lock range as min-max, remove RS from radar ([f4096de](https://github.com/fleetyards/fleetyards/commit/f4096de2a6fa6b0b3220cc9ffb6e2c2e25d0bf6f))
+* correct radar signal index mapping and restore RS display ([67c4fcc](https://github.com/fleetyards/fleetyards/commit/67c4fccb36bab519e98b17dbb78e8d0d23f45eb2))
+* divide weapon DPS by 60 to convert fire rate from RPM to RPS ([3fdeb91](https://github.com/fleetyards/fleetyards/commit/3fdeb91346d7705a4ce1ceecdf8b0d7cc454e039))
+* increase group toggle icon size ([9af8e46](https://github.com/fleetyards/fleetyards/commit/9af8e461fa50b6bf5596f2b176964dbcad935637))
+* inline layout for all hardpoint stats via HardpointComponent ([d067381](https://github.com/fleetyards/fleetyards/commit/d067381ec6ef9c79242e1f306cfc162aba25ecfd))
+* radar RS display, missile lock ranges, hide empty detail arrows ([719b92c](https://github.com/fleetyards/fleetyards/commit/719b92c00116cff83ffa0c98a836396c3b9df01c))
+* remove dead weaponClass field and add oasdiff ignore ([67d8ebe](https://github.com/fleetyards/fleetyards/commit/67d8ebe387bd9960e945cda044a024cb69ef9fde))
+* restore per-item detail toggle, left-align group toggle ([f5a6c9a](https://github.com/fleetyards/fleetyards/commit/f5a6c9a5f99b4b08050f356f837b2b24a5041578))
+* restore weaponClass property in ComponentWeapon schema ([ba017dd](https://github.com/fleetyards/fleetyards/commit/ba017dd6ead8446721d7873688f12e3ad2d09568))
+* round all hardpoint stat values to whole numbers ([b946fa1](https://github.com/fleetyards/fleetyards/commit/b946fa184c4ba2945232acb06ff58385b9b09e44))
+* round weapon DPS to whole numbers ([089ddab](https://github.com/fleetyards/fleetyards/commit/089ddab5c1c4ba11f81346d7a8a278f914b2c587))
+* show decimals only when meaningful, strip trailing zeros ([8895abc](https://github.com/fleetyards/fleetyards/commit/8895abc42289b6a5934fae24827d6cfe801e007a))
+* show detail toggle for all hardpoints including groups ([dc9bdd1](https://github.com/fleetyards/fleetyards/commit/dc9bdd1457e853ddff215d52db59387e7a955dfd))
+* show hardpoint stats inline with name, nowrap on value+label ([acef783](https://github.com/fleetyards/fleetyards/commit/acef783de0314edfac3420a7bab8ebf67767f4d9))
+* simplify group toggle to minimal chevron ([1b75c38](https://github.com/fleetyards/fleetyards/commit/1b75c3846640d97d47d3a9224a0978ffd76d79d7))
+* use formatInt with hair space for thruster values ([0af4217](https://github.com/fleetyards/fleetyards/commit/0af4217763825a20694eeb788ab65bafebba3919))
+* use hair space (U+200A) as thousands separator ([0852ed3](https://github.com/fleetyards/fleetyards/commit/0852ed3c3b6258541283f68effd1ab16439fd707))
+* use locale-aware integer formatting with thousand separators ([4e987c0](https://github.com/fleetyards/fleetyards/commit/4e987c0446049de0a17b657ad3bb85556d5e387d))
+* use plus/minus icon for group toggle ([733b2b6](https://github.com/fleetyards/fleetyards/commit/733b2b684b33333e7885b88797a4ef9623f11281))
+* use thin space as thousands separator for integer stats ([460879a](https://github.com/fleetyards/fleetyards/commit/460879a4a16644da6791cb6a82cdf6e2ec7c6061))
+* use toNumber with integer precision for hardpoint stats ([9acaec4](https://github.com/fleetyards/fleetyards/commit/9acaec4a49f18a6b4e50f67089bb349762eb682d))
+
+
+### Refactorings
+
+* add typed number formats for hardpoint stats ([221df77](https://github.com/fleetyards/fleetyards/commit/221df771b01dc48bca4b74db1267cc006ab7cd5c))
+* extract loadout marker into shared component and fix N+1 query ([1e263b4](https://github.com/fleetyards/fleetyards/commit/1e263b491841752b71227a6e3d7ca276dd46b1cd))
+* make vehicle_loadout hardpoints conditional with extended flag ([cc4a28e](https://github.com/fleetyards/fleetyards/commit/cc4a28ed5af55a9208e38d04f10891d931639703))
+* show hardpoints individually instead of grouped ([362c0d7](https://github.com/fleetyards/fleetyards/commit/362c0d7aaadfc7a08c99a15ecd37d0ec15c5f100))
+* use shared partial for active_loadout in vehicle jbuilder views ([1f088db](https://github.com/fleetyards/fleetyards/commit/1f088dbdd1c22b70f67b35d373d6a41ea0beef65))
+
 ## [6.17.3](https://github.com/fleetyards/fleetyards/compare/v6.17.2...v6.17.3) (2026-04-27)
 
 
