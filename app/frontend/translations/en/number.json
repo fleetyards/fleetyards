@@ -36,7 +36,7 @@
       "cargo": "%{count} SCU",
       "dps": "%{count} DPS",
       "shieldHp": "%{count} HP",
-      "shieldRegen": "%{count} Regen",
+      "shieldRegen": "%{count}s Regen",
       "coolingRate": "%{count} Cooling Rate",
       "powerOutput": "%{count} Output",
       "driveSpeed": "%{count} km/s",

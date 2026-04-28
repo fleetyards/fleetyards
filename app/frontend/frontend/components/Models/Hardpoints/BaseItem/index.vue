@@ -137,7 +137,11 @@ const weaponDps = computed(() => {
               }}
               /
               {{
-                toNumber((typeData as ComponentShield).maxRegen, "shieldRegen")
+                toNumber(
+                  (typeData as ComponentShield).maxHealth /
+                    (typeData as ComponentShield).maxRegen,
+                  "shieldRegen",
+                )
               }}
             </span>
             <span
