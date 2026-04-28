@@ -13,6 +13,7 @@ import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vu
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manufacturer/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
+import HardpointDetails from "@/frontend/components/Models/Hardpoints/Details/index.vue";
 import {
   HardpointSourceEnum,
   HardpointCategoryEnum,
@@ -37,15 +38,22 @@ const props = withDefaults(defineProps<Props>(), {
 const { t, toNumber } = useI18n();
 
 const expanded = ref(false);
+const detailsExpanded = ref(false);
 
 const isGroup = computed(() => {
   return props.hardpoints.length > 1;
 });
 
+const hasDetails = computed(() => {
+  return !!hardpoint.value.component?.typeData;
+});
+
 const toggleExpanded = () => {
-  if (isGroup.value) {
-    expanded.value = !expanded.value;
-  }
+  expanded.value = !expanded.value;
+};
+
+const toggleDetails = () => {
+  detailsExpanded.value = !detailsExpanded.value;
 };
 
 const hardpoint = computed(() => {
@@ -264,8 +272,25 @@ const missileDamage = computed(() => {
       <HardpointManufacturer
         :manufacturer="hardpoint.component?.manufacturer"
       />
+      <button
+        v-if="hasDetails && !isGroup"
+        class="hardpoint-item__detail-toggle"
+        @click="toggleDetails"
+      >
+        <i
+          class="fa-solid fa-chevron-down"
+          :class="{ 'fa-rotate-180': detailsExpanded }"
+        />
+      </button>
     </template>
     <template #loadout>
+      <Collapsed
+        v-if="hasDetails && !isGroup"
+        :visible="detailsExpanded"
+        :duration="200"
+      >
+        <HardpointDetails :hardpoint="hardpoint" />
+      </Collapsed>
       <div v-if="loadout.length" class="hardpoint-item__loadout">
         <HardpointBaseItem
           v-for="(items, key) in groupedLoadout"

@@ -1,6 +1,6 @@
 .hardpoint-group-toggle {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
   margin-bottom: 4px;
 
@@ -22,6 +22,25 @@
     i {
       transition: transform 0.2s;
     }
+  }
+}
+
+.hardpoint-item__detail-toggle {
+  background: none;
+  border: none;
+  color: $gray-light;
+  cursor: pointer;
+  padding: 0 4px;
+  font-size: 10px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  i {
+    transition: transform 0.2s;
   }
 }
 
