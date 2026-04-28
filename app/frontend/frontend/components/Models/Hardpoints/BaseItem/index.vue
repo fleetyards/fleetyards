@@ -273,7 +273,7 @@ const missileDamage = computed(() => {
         :manufacturer="hardpoint.component?.manufacturer"
       />
       <button
-        v-if="hasDetails && !isGroup"
+        v-if="hasDetails"
         class="hardpoint-item__detail-toggle"
         @click="toggleDetails"
       >
@@ -285,7 +285,7 @@ const missileDamage = computed(() => {
     </template>
     <template #loadout>
       <Collapsed
-        v-if="hasDetails && !isGroup"
+        v-if="hasDetails"
         :visible="detailsExpanded"
         :duration="200"
       >
