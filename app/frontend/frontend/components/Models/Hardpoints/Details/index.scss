@@ -1,0 +1,26 @@
+.hardpoint-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px 16px;
+  padding: 8px 10px;
+  font-size: 85%;
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+
+  &__stat {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  &__label {
+    color: $gray-light;
+  }
+
+  &__value {
+    color: $text-color;
+    white-space: nowrap;
+  }
+}

@@ -638,11 +638,35 @@
           "dps": "DPS",
           "fireRate": "Fire Rate",
           "speed": "Speed",
-          "range": "Range"
+          "range": "Range",
+          "ammo": "Ammo",
+          "ammoCost": "Ammo Cost",
+          "heatPerShot": "Heat/Shot",
+          "heatPerSecond": "Heat/s",
+          "chargeTime": "Charge Time",
+          "fullDamageRange": "Full DMG Range",
+          "zeroDamageRange": "Zero DMG Range",
+          "damagePhysical": "Physical",
+          "damageEnergy": "Energy",
+          "damageDistortion": "Distortion",
+          "damageThermal": "Thermal"
+        },
+        "missiles": {
+          "damage": "Damage",
+          "speed": "Speed",
+          "range": "Range",
+          "lockTime": "Lock Time",
+          "trackingSignal": "Tracking"
         },
         "shields": {
           "hp": "HP",
-          "regen": "Regen"
+          "regen": "Regen",
+          "regenTime": "Regen Time",
+          "downedRegenDelay": "Downed Delay",
+          "damagedRegenDelay": "Damaged Delay",
+          "resistancePhysical": "Phys. Resist.",
+          "resistanceEnergy": "Energy Resist.",
+          "resistanceDistortion": "Dist. Resist."
         },
         "coolers": {
           "coolingRate": "Cooling Rate"
@@ -652,7 +676,17 @@
         },
         "quantumDrives": {
           "speed": "Speed",
-          "range": "Range"
+          "range": "Range",
+          "fuelConsumption": "Fuel Rate",
+          "spoolUpTime": "Spool Up",
+          "cooldownTime": "Cooldown"
+        },
+        "radar": {
+          "aimAssistRange": "Assist Range",
+          "ir": "IR",
+          "em": "EM",
+          "cs": "CS",
+          "rs": "RS"
         },
         "sources": {
           "game_files": "Game Files",

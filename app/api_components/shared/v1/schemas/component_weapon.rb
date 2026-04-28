@@ -43,6 +43,7 @@ module Shared
             fullDamageRange: {type: :number},
             zeroDamageRange: {type: :number},
             ammoCost: {type: :integer},
+            maxAmmo: {type: :integer},
             chargeTime: {type: :number},
             overchargeTime: {type: :number}
           },

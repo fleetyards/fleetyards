@@ -7096,6 +7096,8 @@ components:
           type: number
         ammoCost:
           type: integer
+        maxAmmo:
+          type: integer
         chargeTime:
           type: number
         overchargeTime:

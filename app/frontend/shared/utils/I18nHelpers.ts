@@ -48,6 +48,17 @@ export const i18nHelpers = (i18n: I18n) => {
         "coolingRate",
         "powerOutput",
         "powerPips",
+        "weaponRange",
+        "weaponSpeed",
+        "missileRange",
+        "missileSpeed",
+        "lockTime",
+        "regenTime",
+        "delayTime",
+        "spoolTime",
+        "cooldownTime",
+        "fuelRate",
+        "aimAssistRange",
       ].includes(units)
     ) {
       count = formatStat(i18n, value as number);
