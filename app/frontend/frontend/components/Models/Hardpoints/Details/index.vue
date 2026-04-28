@@ -238,6 +238,9 @@ const stats = computed<Stat[]>(() => {
       if (sigs.cs?.sensitivity != null) {
         result.push(resistanceStat("radar.cs", sigs.cs.sensitivity));
       }
+      if (sigs.rs?.sensitivity != null) {
+        result.push(resistanceStat("radar.rs", sigs.rs.sensitivity));
+      }
     }
   }
 

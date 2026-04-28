@@ -600,20 +600,20 @@ module ScData
         }.compact
       end
 
-      RADAR_SIGNAL_TYPES = %i[ir em cs rs].freeze
+      # Index mapping from ScDataDumper: IR=0, EM=1, CS=2, dB=3 (disabled), RS=4
+      RADAR_SIGNAL_INDEX = {ir: 0, em: 1, cs: 2, rs: 4}.freeze
 
       private def extract_radar_signatures(detections)
         return if detections.blank?
 
-        # First 4 entries are passive detection, next 4 are active
-        # Types: IR, EM, CS, RS
         result = {}
-        RADAR_SIGNAL_TYPES.each_with_index do |type, i|
-          passive = detections[i]
-          detections[i + 4]
+        RADAR_SIGNAL_INDEX.each do |type, i|
+          entry = detections[i]
+          next unless entry
+
           result[type] = {
-            sensitivity: passive&.dig("sensitivity")&.to_f,
-            piercing: passive&.dig("piercing")&.to_f
+            sensitivity: entry.dig("sensitivity")&.to_f,
+            piercing: entry.dig("piercing")&.to_f
           }.compact
         end
         result.presence

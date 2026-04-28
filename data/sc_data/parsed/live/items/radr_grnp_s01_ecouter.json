@@ -46,8 +46,8 @@
         "piercing": 0.25
       },
       "rs": {
-        "sensitivity": 0.0,
-        "piercing": 0.25
+        "sensitivity": 1.0,
+        "piercing": 1.0
       }
     },
     "aim_assist_range": 1105.0,
