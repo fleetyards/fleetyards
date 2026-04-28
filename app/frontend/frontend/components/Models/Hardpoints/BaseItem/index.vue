@@ -152,10 +152,7 @@ const missileDamage = computed(() => {
 
 <template>
   <button v-if="isGroup" class="hardpoint-group-toggle" @click="toggleExpanded">
-    <i
-      class="fa-solid fa-chevron-right"
-      :class="{ 'fa-rotate-90': expanded }"
-    />
+    <i class="fa-solid" :class="expanded ? 'fa-minus' : 'fa-plus'" />
   </button>
   <HardpointItem v-show="!expanded" :count="count" :intended="intended">
     <template #default>
