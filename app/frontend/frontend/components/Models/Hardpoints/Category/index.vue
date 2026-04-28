@@ -32,14 +32,36 @@ import missilesIconUrl from "@/images/hardpoints/missiles.svg";
 import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
+import type { ComponentPowerPlant } from "@/services/fyApi";
+
 type Props = {
   hardpoints: Hardpoint[];
   category: HardpointCategoryEnum;
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
+
+const powerPips = computed(() => {
+  if (props.category !== HardpointCategoryEnum.POWERPLANT) return null;
+
+  const plants = props.hardpoints
+    .map((hp) => hp.component)
+    .filter((c) => c?.typeData && "powerBase" in c.typeData && c.size);
+
+  const n = plants.length;
+  if (n === 0) return null;
+
+  const baseSegments = plants.reduce(
+    (sum, c) =>
+      sum + Math.round((c!.typeData as ComponentPowerPlant).powerBase! / n),
+    0,
+  );
+  const sizeSum = plants.reduce((sum, c) => sum + Number(c!.size), 0);
+
+  return baseSegments + (n - 1) * sizeSum;
+});
 
 const modelSlug = inject<ComputedRef<string> | undefined>(
   "modelSlug",
@@ -137,6 +159,9 @@ const icons = {
         :alt="`icon-${category}`"
       />
       {{ t(`labels.hardpoint.categories.${category}`) }}
+      <span v-if="powerPips" class="hardpoint-category__stat">
+        {{ toNumber(powerPips, "powerPips") }}
+      </span>
       <Btn
         v-if="category === HardpointCategoryEnum.CARGOGRID && modelSlug"
         :to="cargoGridsRoute"

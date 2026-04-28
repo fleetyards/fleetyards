@@ -46,6 +46,7 @@ export const i18nHelpers = (i18n: I18n) => {
         "shieldRegen",
         "coolingRate",
         "powerOutput",
+        "powerPips",
       ].includes(units)
     ) {
       count = formatStat(i18n, value as number);

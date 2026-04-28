@@ -39,6 +39,7 @@
       "shieldRegen": "%{count}s Regen",
       "coolingRate": "%{count} Cooling Rate",
       "powerOutput": "%{count} Output",
+      "powerPips": "%{count} Pips",
       "driveSpeed": "%{count} km/s",
       "fuel": "%{count}",
       "ships": {

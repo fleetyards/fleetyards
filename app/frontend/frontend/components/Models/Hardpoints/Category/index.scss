@@ -29,6 +29,13 @@
     }
   }
 
+  &__stat {
+    margin-left: auto;
+    color: $gray-light;
+    font-size: 90%;
+    white-space: nowrap;
+  }
+
   &__icon {
     width: 30px;
     height: 30px;
