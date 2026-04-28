@@ -2,11 +2,16 @@ import type { I18n } from "i18n-js";
 import { parseISO, formatDistance } from "date-fns";
 import { format } from "date-fns-tz";
 
-const formatInt = (i18n: I18n, value: number): string => {
-  const formatted = i18n.l("number", Math.round(value));
+const formatStat = (i18n: I18n, value: number): string => {
+  const formatted = i18n.l("number", value);
   const separator = i18n.t("number.format.separator") || ",";
   const delimiter = i18n.t("number.format.delimiter") || ".";
-  return formatted.split(separator)[0].replaceAll(delimiter, "\u200A");
+
+  const [integer, decimal] = formatted.split(separator);
+  const stripped = decimal?.replace(/0+$/, "");
+  const result = stripped ? `${integer}${separator}${stripped}` : integer;
+
+  return result.replaceAll(delimiter, "\u200A");
 };
 
 export const i18nHelpers = (i18n: I18n) => {
@@ -43,11 +48,11 @@ export const i18nHelpers = (i18n: I18n) => {
         "powerOutput",
       ].includes(units)
     ) {
-      count = formatInt(i18n, value as number);
+      count = formatStat(i18n, value as number);
     }
 
     if (units === "driveSpeed" || units === "thrust") {
-      count = formatInt(i18n, (value as number) / 1000);
+      count = formatStat(i18n, (value as number) / 1000);
     }
 
     if (units === "cargo" && value) {
