@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.19.0](https://github.com/fleetyards/fleetyards/compare/v6.18.2...v6.19.0) (2026-04-29)
+
+
+### Features
+
+* add admin fleet detail page with members list and login-as ([def6652](https://github.com/fleetyards/fleetyards/commit/def6652826bdc4c20c0f3e19c6675a769898eda2))
+
+
+### Bug Fixes
+
+* invalidate fleet cache when fleet roles change ([234ccd2](https://github.com/fleetyards/fleetyards/commit/234ccd2052cd5911d416821b0a1d9482ceb49266))
+* invalidate hangar cache when vehicle groups change ([79174e5](https://github.com/fleetyards/fleetyards/commit/79174e5c0e6dd6edc024316aa1f8e2974cf8e8f1))
+* keep hangar group counts stable when filtering by groups ([3713005](https://github.com/fleetyards/fleetyards/commit/371300504fe35c120d8a5c79e94faa6a5f57bb68))
+* remove fleet_role double-serialization hacks ([c284aad](https://github.com/fleetyards/fleetyards/commit/c284aad8e849f72989b892e96801c520a83c6a68))
+
 ## [6.18.2](https://github.com/fleetyards/fleetyards/compare/v6.18.1...v6.18.2) (2026-04-29)
 
 
