@@ -84,7 +84,8 @@
         },
         "fleets": {
           "index": "Fleets",
-          "edit": "Edit Fleet"
+          "edit": "Edit Fleet",
+          "members": "Members"
         },
         "admins": {
           "index": "Admins",

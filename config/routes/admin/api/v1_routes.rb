@@ -72,7 +72,13 @@ v1_admin_api_routes = lambda do
     get :item_type_filters, on: :collection
   end
 
-  resources :fleets, only: %i[index show create update destroy]
+  resources :fleets, only: %i[index show create update destroy] do
+    resources :fleet_members, path: "members", only: %i[index] do
+      member do
+        get "login-as", to: "fleet_members#login_as"
+      end
+    end
+  end
 
   resources :vehicles, only: %i[index show update destroy]
 

@@ -150,7 +150,9 @@
           "index": "Users"
         },
         "fleets": {
-          "index": "Fleets"
+          "index": "Fleets",
+          "edit": "Edit",
+          "members": "Members"
         },
         "vehicles": {
           "index": "Vehicles"
