@@ -8,7 +8,10 @@ module ResourceAccessConcern
   end
 
   def has_access?(privileges)
-    resource_access&.any? do |access|
+    access_list = resource_access
+    access_list = YAML.safe_load(access_list, permitted_classes: [Array]) if access_list.is_a?(String)
+
+    Array(access_list).any? do |access|
       privileges.include?(access)
     end
   end
