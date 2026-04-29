@@ -9,7 +9,9 @@ module V1
         schema({
           type: :object,
           properties: {
-            active: {type: :boolean}
+            active: {type: :boolean},
+            status: {type: :string, nullable: true, enum: %w[created started finished failed]},
+            result: {"$ref": "#/components/schemas/HangarSyncResult", nullable: true}
           },
           additionalProperties: false,
           required: %w[active]

@@ -20,7 +20,10 @@ import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
-import { useSyncRsiHangar as useSyncRsiHangarMutation } from "@/services/fyApi";
+import {
+  useSyncRsiHangar as useSyncRsiHangarMutation,
+  useSyncRsiHangarStatus,
+} from "@/services/fyApi";
 import {
   useSubscription,
   ChannelsEnum,
@@ -137,6 +140,10 @@ onMounted(() => {
 onBeforeUnmount(() => {
   hangarStore.syncModalOpen = false;
   window.removeEventListener("message", onExtensionMessage as EventListener);
+
+  if (pollingDelayTimer) {
+    clearTimeout(pollingDelayTimer);
+  }
 });
 
 const handleExtensionMessage = async (event: FleetyardsSyncEvent) => {
@@ -281,6 +288,43 @@ const fetchRSIHangar = async (htmlPage: string) => {
 
 const mutation = useSyncRsiHangarMutation();
 
+const pollingActive = ref(false);
+
+let pollingDelayTimer: ReturnType<typeof setTimeout> | null = null;
+
+const pollingEnabled = computed(() => {
+  const submitStep = processSteps.value.find(
+    (step) => step.name === "submitData",
+  );
+
+  return pollingActive.value && submitStep?.status === "processing";
+});
+
+const { data: syncStatusData } = useSyncRsiHangarStatus({
+  query: {
+    enabled: pollingEnabled,
+    refetchInterval: 5000,
+  },
+});
+
+watch(syncStatusData, (statusData) => {
+  if (!statusData || !pollingEnabled.value) {
+    return;
+  }
+
+  if (statusData.status === "finished" && statusData.result) {
+    result.value = statusData.result as HangarSyncResult;
+    hangarStore.syncRunning = false;
+
+    displaySuccess({ text: t("messages.syncExtension.success") });
+    updateStep("submitData", "success");
+    comlink.emit("hangar-sync-finished");
+  } else if (statusData.status === "failed") {
+    hangarStore.syncRunning = false;
+    updateStep("submitData", "backendFailure");
+  }
+});
+
 const onSyncResult = (data: string) => {
   const message = JSON.parse(data) as {
     status: string;
@@ -303,15 +347,7 @@ const onSyncResult = (data: string) => {
 };
 
 const onSyncDisconnected = () => {
-  const submitStep = processSteps.value.find(
-    (step) => step.name === "submitData",
-  );
-
-  if (submitStep?.status === "processing") {
-    hangarStore.syncRunning = false;
-    updateStep("submitData", "backendFailure");
-    displayAlert({ text: t("messages.syncExtension.failure") });
-  }
+  // Don't immediately mark as failure — polling will pick up the result
 };
 
 useSubscription({
@@ -323,6 +359,14 @@ useSubscription({
 const finishSync = async () => {
   updateStep("submitData", "processing");
   hangarStore.syncRunning = true;
+
+  pollingActive.value = false;
+  if (pollingDelayTimer) {
+    clearTimeout(pollingDelayTimer);
+  }
+  pollingDelayTimer = setTimeout(() => {
+    pollingActive.value = true;
+  }, 10000);
 
   await mutation
     .mutateAsync({

@@ -135,9 +135,21 @@ module Api
       def sync_rsi_hangar_status
         authorize! to: :update?, with: ::HangarPolicy
 
-        active = Imports::HangarSync.where(user_id: current_resource_owner.id, aasm_state: %w[created started]).exists?
+        latest_import = Imports::HangarSync.where(user_id: current_resource_owner.id)
+          .order(created_at: :desc)
+          .first
 
-        render json: {active:}
+        active = latest_import&.aasm_state&.in?(%w[created started]) || false
+        status = latest_import&.aasm_state
+        result = nil
+
+        if latest_import&.finished? && latest_import.output.present?
+          output = latest_import.output
+          output = JSON.parse(output) if output.is_a?(String)
+          result = output.deep_symbolize_keys.transform_keys { |key| key.to_s.camelize(:lower) }
+        end
+
+        render json: {active:, status:, result:}
       end
 
       def items
