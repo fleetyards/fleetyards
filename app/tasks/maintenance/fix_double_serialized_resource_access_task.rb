@@ -11,13 +11,21 @@ module Maintenance
     end
 
     def process(role)
-      access = role.resource_access
-      return unless access.is_a?(String)
+      raw = role.read_attribute_before_type_cast(:resource_access)
+      return if raw.blank?
 
-      parsed = YAML.safe_load(access, permitted_classes: [Array])
-      return unless parsed.is_a?(Array)
+      # Peel YAML layers until we reach an Array
+      value = YAML.safe_load(raw, permitted_classes: [Array])
+      return if value.is_a?(Array)
 
-      role.update_column(:resource_access, parsed.to_yaml)
+      while value.is_a?(String)
+        value = YAML.safe_load(value, permitted_classes: [Array])
+      end
+
+      return unless value.is_a?(Array)
+
+      # update_column applies the serialize coder, so pass the array directly
+      role.update_column(:resource_access, value)
     end
   end
 end

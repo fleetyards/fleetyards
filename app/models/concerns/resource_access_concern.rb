@@ -7,11 +7,19 @@ module ResourceAccessConcern
     serialize :resource_access, coder: YAML
   end
 
-  def has_access?(privileges)
-    access_list = resource_access
-    access_list = YAML.safe_load(access_list, permitted_classes: [Array]) if access_list.is_a?(String)
+  def resource_access
+    value = super
 
-    Array(access_list).any? do |access|
+    # Peel nested YAML layers from double/triple-serialized data
+    while value.is_a?(String)
+      value = YAML.safe_load(value, permitted_classes: [Array])
+    end
+
+    value || []
+  end
+
+  def has_access?(privileges)
+    resource_access.any? do |access|
       privileges.include?(access)
     end
   end
