@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.18.1](https://github.com/fleetyards/fleetyards/compare/v6.18.0...v6.18.1) (2026-04-29)
+
+
+### Bug Fixes
+
+* add polling fallback for sync modal when websocket disconnects ([fa0f149](https://github.com/fleetyards/fleetyards/commit/fa0f149a9c3db421dcbb907e0442100e48d364fc))
+* handle double-serialized resource_access on fleet roles ([5a6e981](https://github.com/fleetyards/fleetyards/commit/5a6e98110528972cebedf3ee2edc7b5c44a5ab1c))
+* return 404 instead of 403 for private fleets on public endpoints ([c87ccdf](https://github.com/fleetyards/fleetyards/commit/c87ccdf7dc696bd1d089159d3008f94fa00f9fc3))
+
 ## [6.18.0](https://github.com/fleetyards/fleetyards/compare/v6.17.3...v6.18.0) (2026-04-28)
 
 
