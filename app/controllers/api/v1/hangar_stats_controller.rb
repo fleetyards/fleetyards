@@ -38,6 +38,8 @@ module Api
         modules = vehicles.map(&:model_modules)
         modules.flatten!
 
+        group_count_vehicle_ids = scope.ransack(vehicle_query_params.except("hangar_groups_in", "hangar_groups_not_in")).result.ids
+
         wishlist_scope = authorized_scope(Vehicle.all).visible.wanted.where(loaner: false)
         wishlist_vehicles = wishlist_scope.includes(:model).map(&:model)
 
@@ -54,7 +56,7 @@ module Api
           end,
           groups: HangarGroup.where(user: current_user).order([{sort: :asc, name: :asc}]).map do |group|
             HangarGroupCount.new(
-              group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
+              group_count: group.vehicles.where(id: group_count_vehicle_ids).size,
               id: group.id,
               slug: group.slug
             )

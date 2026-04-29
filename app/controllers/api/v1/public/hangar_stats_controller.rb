@@ -27,6 +27,8 @@ module Api
           models = vehicles.map(&:model)
           non_loaner_models = vehicles.reject(&:loaner?).map(&:model)
 
+          group_count_vehicle_ids = scope.ransack(vehicle_query_params.except("hangar_groups_in", "hangar_groups_not_in")).result.ids
+
           @quick_stats = QuickStats.new(
             total: vehicles.count,
             wishlist_total: @user.public_wishlist ? @user.vehicles.wanted.public.where(loaner: false).count : nil,
@@ -40,7 +42,7 @@ module Api
             end,
             groups: HangarGroup.where(user: @user, public: true).order([{sort: :asc, name: :asc}]).map do |group|
               HangarGroupCount.new(
-                group_count: group.vehicles.where(id: vehicles.map(&:id)).size,
+                group_count: group.vehicles.where(id: group_count_vehicle_ids).size,
                 id: group.id,
                 slug: group.slug
               )
