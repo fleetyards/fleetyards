@@ -60,7 +60,6 @@ const resolvedFleet = computed(() => fleet.value || publicFleet.value);
 const resolvedAsyncFleetStatus = computed(() => {
   if (fleet.value) return asyncFleetStatus;
   if (publicFleet.value) return asyncPublicFleetStatus;
-  if (sessionStore.isAuthenticated) return asyncFleetStatus;
   return asyncPublicFleetStatus;
 });
 

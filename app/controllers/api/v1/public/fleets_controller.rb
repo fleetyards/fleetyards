@@ -6,7 +6,7 @@ module Api
       class FleetsController < ::Api::PublicBaseController
         before_action :set_fleet
 
-        rescue_from ActiveRecord::RecordNotFound do |_exception|
+        rescue_from ActiveRecord::RecordNotFound, ActionPolicy::Unauthorized do |_exception|
           not_found(I18n.t("messages.record_not_found.fleet", slug: params[:slug]))
         end
 

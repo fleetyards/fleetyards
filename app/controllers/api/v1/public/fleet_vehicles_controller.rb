@@ -9,6 +9,10 @@ module Api
         before_action :set_fleet
         after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
+        rescue_from ActiveRecord::RecordNotFound, ActionPolicy::Unauthorized do |_exception|
+          not_found(I18n.t("messages.record_not_found.fleet", slug: params[:fleet_slug]))
+        end
+
         def index
           scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
 

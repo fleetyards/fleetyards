@@ -10,6 +10,10 @@ module Api
 
         before_action :set_fleet
 
+        rescue_from ActiveRecord::RecordNotFound, ActionPolicy::Unauthorized do |_exception|
+          not_found(I18n.t("messages.record_not_found.fleet", slug: params[:fleet_slug]))
+        end
+
         def model_counts
           scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, model: [:manufacturer])
 
