@@ -47,7 +47,8 @@ export const useVehicleMutations = () => {
           const needsInvalidation =
             ("wanted" in data && data.wanted !== vehicleForMutation.wanted) ||
             ("flagship" in data &&
-              data.flagship !== vehicleForMutation.flagship);
+              data.flagship !== vehicleForMutation.flagship) ||
+            "hangarGroupIds" in data;
 
           const updatedVehicle = {
             ...vehicleForMutation,
