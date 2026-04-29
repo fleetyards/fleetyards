@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.18.2](https://github.com/fleetyards/fleetyards/compare/v6.18.1...v6.18.2) (2026-04-29)
+
+
+### Bug Fixes
+
+* resolve resource_access still returning YAML strings in API ([8315d94](https://github.com/fleetyards/fleetyards/commit/8315d94568a6f5122080186d85a378802d7153aa))
+
 ## [6.18.1](https://github.com/fleetyards/fleetyards/compare/v6.18.0...v6.18.1) (2026-04-29)
 
 
