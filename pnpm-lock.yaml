@@ -293,10 +293,10 @@ importers:
         version: 10.9.0(@typescript-eslint/parser@8.59.1(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.3))(eslint@10.2.1(jiti@2.6.1))(vue-eslint-parser@10.4.0(eslint@10.2.1(jiti@2.6.1)))
       eslint-plugin-vuejs-accessibility:
         specifier: ^2.5.0
-        version: 2.5.0(eslint@10.2.1(jiti@2.6.1))(globals@17.5.0)
+        version: 2.5.0(eslint@10.2.1(jiti@2.6.1))(globals@17.6.0)
       globals:
-        specifier: ^17.5.0
-        version: 17.5.0
+        specifier: ^17.6.0
+        version: 17.6.0
       jsdom:
         specifier: 29.1.0
         version: 29.1.0
@@ -329,7 +329,7 @@ importers:
         version: 1.0.0(stylelint@17.9.1(typescript@6.0.3))
       stylelint-config-standard-scss:
         specifier: ^17.0.0
-        version: 17.0.0(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3))
+        version: 17.0.0(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3))
       stylelint-scss:
         specifier: ^7.0.0
         version: 7.0.0(stylelint@17.9.1(typescript@6.0.3))
@@ -3449,8 +3449,8 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globals@17.5.0:
-    resolution: {integrity: sha512-qoV+HK2yFl/366t2/Cb3+xxPUo5BuMynomoDmiaZBIdbs+0pYbjfZU+twLhGKp4uCZ/+NbtpVepH5bGCxRyy2g==}
+  globals@17.6.0:
+    resolution: {integrity: sha512-sepffkT8stwnIYbsMBpoCHJuJM5l98FUF2AnE07hfvE0m/qp3R586hw4jF4uadbhvg1ooIdzuu7CsfD2jzCaNA==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -8620,11 +8620,11 @@ snapshots:
     optionalDependencies:
       '@typescript-eslint/parser': 8.59.1(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.3)
 
-  eslint-plugin-vuejs-accessibility@2.5.0(eslint@10.2.1(jiti@2.6.1))(globals@17.5.0):
+  eslint-plugin-vuejs-accessibility@2.5.0(eslint@10.2.1(jiti@2.6.1))(globals@17.6.0):
     dependencies:
       aria-query: 5.3.2
       eslint: 10.2.1(jiti@2.6.1)
-      globals: 17.5.0
+      globals: 17.6.0
       vue-eslint-parser: 10.4.0(eslint@10.2.1(jiti@2.6.1))
     transitivePeerDependencies:
       - supports-color
@@ -8969,7 +8969,7 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globals@17.5.0: {}
+  globals@17.6.0: {}
 
   globalthis@1.0.4:
     dependencies:
@@ -9964,9 +9964,9 @@ snapshots:
     dependencies:
       postcss: 8.5.12
 
-  postcss-scss@4.0.9(postcss@8.5.12):
+  postcss-scss@4.0.9(postcss@8.5.8):
     dependencies:
-      postcss: 8.5.12
+      postcss: 8.5.8
 
   postcss-selector-parser@7.1.1:
     dependencies:
@@ -10401,26 +10401,26 @@ snapshots:
     dependencies:
       stylelint: 17.9.1(typescript@6.0.3)
 
-  stylelint-config-recommended-scss@17.0.1(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3)):
+  stylelint-config-recommended-scss@17.0.1(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@8.5.12)
+      postcss-scss: 4.0.9(postcss@8.5.8)
       stylelint: 17.9.1(typescript@6.0.3)
       stylelint-config-recommended: 18.0.0(stylelint@17.9.1(typescript@6.0.3))
       stylelint-scss: 7.0.0(stylelint@17.9.1(typescript@6.0.3))
     optionalDependencies:
-      postcss: 8.5.12
+      postcss: 8.5.8
 
   stylelint-config-recommended@18.0.0(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
       stylelint: 17.9.1(typescript@6.0.3)
 
-  stylelint-config-standard-scss@17.0.0(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3)):
+  stylelint-config-standard-scss@17.0.0(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
       stylelint: 17.9.1(typescript@6.0.3)
-      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3))
+      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3))
       stylelint-config-standard: 40.0.0(stylelint@17.9.1(typescript@6.0.3))
     optionalDependencies:
-      postcss: 8.5.12
+      postcss: 8.5.8
 
   stylelint-config-standard@40.0.0(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
