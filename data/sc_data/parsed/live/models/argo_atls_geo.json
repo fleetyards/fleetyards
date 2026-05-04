@@ -1,0 +1,137 @@
+{
+  "key": "ARGO_ATLS_GEO",
+  "ground": true,
+  "movement_class": null,
+  "gravlev": null,
+  "min_crew": "1",
+  "name": "Argo ATLS GEO",
+  "description": null,
+  "career": "Ground",
+  "role": "Mining",
+  "insurance": {
+    "base_wait_time_minutes": "3",
+    "mandatory_wait_time_minutes": "1",
+    "base_expediting_fee": "1020"
+  },
+  "mass": 2100.0,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+    {
+      "name": "Seat_ItemPort",
+      "ref": "e069e960-816f-42a1-8711-7e46b94dea4e",
+      "key": null
+    },
+    {
+      "name": "LeftHandWeapon_ItemPort",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "RightHandWeapon_ItemPort",
+      "ref": "40bd6a85-5695-409c-9d6c-ae1babde416a",
+      "key": null
+    },
+    {
+      "name": "mining_controller",
+      "ref": "976ec585-d102-4ba0-8fca-19f457167b2c",
+      "key": null,
+      "loadout": []
+    },
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_storage",
+      "ref": "6e4d388b-d3bf-40ec-9686-aa9cec5cda47",
+      "key": null
+    },
+    {
+      "name": "hardpoint_headlight",
+      "ref": "a116f5c9-f391-4281-8fac-c4515ba3db5a",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_leg_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_leg_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_01_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_02_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_01_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_02_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_backpack",
+      "ref": "3f53c75f-524e-4a33-bcc4-dfd2719800ad",
+      "key": null,
+      "loadout": [
+        {
+          "name": "$IP_hardpoint_container",
+          "ref": "d867b41f-23ad-44dc-b0ea-686d287b1f9a",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_multitool_storage",
+      "ref": "053ec62a-2472-447d-9737-263fac538d37",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_a_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_a_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_b_left",
+      "ref": "291d8082-98ad-426e-b159-5dce406dacba",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_b_right",
+      "ref": "291d8082-98ad-426e-b159-5dce406dacba",
+      "key": null
+    },
+    {
+      "name": "hardpoint_Radar",
+      "ref": "e5bccaed-85de-483b-b4b8-dfb62f085b43",
+      "key": null
+    },
+    {
+      "name": "hardpoint_mining_tool",
+      "ref": "7c718ef7-251f-4ccf-aec5-02c44253e011",
+      "key": null
+    }
+  ]
+}

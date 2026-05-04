@@ -1,0 +1,151 @@
+{
+  "key": "ARGO_ATLS_IKTI_ARGOS",
+  "ground": true,
+  "movement_class": null,
+  "gravlev": null,
+  "min_crew": "1",
+  "name": "ATLS IKTI Rad",
+  "description": null,
+  "career": "Ground",
+  "role": "Combat",
+  "insurance": {
+    "base_wait_time_minutes": "7.5",
+    "mandatory_wait_time_minutes": "2.5",
+    "base_expediting_fee": "1520"
+  },
+  "mass": 2300.0,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+    {
+      "name": "Seat_ItemPort",
+      "ref": "6921c36d-68dd-453b-ad41-dd3bc3b2ca07",
+      "key": null
+    },
+    {
+      "name": "LeftHandWeapon_ItemPort",
+      "ref": "ba8c9920-9fd0-4253-a349-de32079edce2",
+      "key": null
+    },
+    {
+      "name": "RightHandWeapon_ItemPort",
+      "ref": "ba8c9920-9fd0-4253-a349-de32079edce2",
+      "key": null
+    },
+    {
+      "name": "weapon_controller",
+      "ref": "9316c060-265a-44c1-acd0-bdeca41f3548",
+      "key": null
+    },
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_storage",
+      "ref": "6e4d388b-d3bf-40ec-9686-aa9cec5cda47",
+      "key": null
+    },
+    {
+      "name": "hardpoint_headlight",
+      "ref": "a116f5c9-f391-4281-8fac-c4515ba3db5a",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_leg_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_leg_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_01_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_02_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_01_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_02_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_backpack",
+      "ref": "41ca0b46-321d-47e3-a93c-e00b8c19c282",
+      "key": null,
+      "loadout": [
+        {
+          "name": "$IP_hardpoint_container",
+          "ref": "d867b41f-23ad-44dc-b0ea-686d287b1f9a",
+          "key": null
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_multitool_storage",
+      "ref": "30f37405-de4b-41b2-8743-58564f256163",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_a_left",
+      "ref": "f5a2e579-3521-42b3-be80-4fc3025fb84a",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_a_right",
+      "ref": "f5a2e579-3521-42b3-be80-4fc3025fb84a",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_b_left",
+      "ref": "7cb43dc5-2993-4796-ad9f-dbbfd068a301",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_backpack_b_right",
+      "ref": "7cb43dc5-2993-4796-ad9f-dbbfd068a301",
+      "key": null
+    },
+    {
+      "name": "hardpoint_Radar",
+      "ref": "e5bccaed-85de-483b-b4b8-dfb62f085b43",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_left",
+      "ref": "a7ca3a05-5a19-41a8-82fb-b4223b223e2f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_right",
+      "ref": "30423c72-12c4-4ce7-b9c1-dabc2ce1161b",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shoulder_shield_left",
+      "ref": "b4e901ff-d2a0-4d34-b96d-1860449dd1b1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shoulder_shield_right",
+      "ref": "e78389c9-14ab-4dab-84a0-68e3a58b94b4",
+      "key": null
+    }
+  ]
+}
