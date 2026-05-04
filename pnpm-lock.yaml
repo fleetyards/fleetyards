@@ -196,8 +196,8 @@ importers:
         specifier: ^5.100.8
         version: 5.100.8(eslint@10.2.1(jiti@2.6.1))(typescript@6.0.3)
       '@tanstack/vue-query-devtools':
-        specifier: ^6.1.25
-        version: 6.1.25(@tanstack/vue-query@5.100.8(vue@3.5.33(typescript@6.0.3)))(vue@3.5.33(typescript@6.0.3))
+        specifier: ^6.1.27
+        version: 6.1.27(@tanstack/vue-query@5.100.8(vue@3.5.33(typescript@6.0.3)))(vue@3.5.33(typescript@6.0.3))
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^6.0.2
         version: 6.0.2(@vue/compiler-sfc@3.5.33)(prettier@3.8.3)
@@ -329,7 +329,7 @@ importers:
         version: 1.0.0(stylelint@17.9.1(typescript@6.0.3))
       stylelint-config-standard-scss:
         specifier: ^17.0.0
-        version: 17.0.0(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3))
+        version: 17.0.0(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3))
       stylelint-scss:
         specifier: ^7.0.0
         version: 7.0.0(stylelint@17.9.1(typescript@6.0.3))
@@ -2024,13 +2024,13 @@ packages:
   '@tanstack/query-core@5.100.8':
     resolution: {integrity: sha512-ceYwSFOqjPwET5TA6IOYxzxlGc0ekyH/gfOtWkP0PX43rzX9bxW48Iuw8KAduKCToi4rJAQ6nRy2kAe8gszdmg==}
 
-  '@tanstack/query-devtools@5.100.6':
-    resolution: {integrity: sha512-2SiNwlOiAdTbqktCSmwlXZH8x8mckSbES2O0bdr3qZNhdQl5DCtImZx0S3HGeNHWTIkzTaHx2Isg+bD4M3WRIg==}
+  '@tanstack/query-devtools@5.100.8':
+    resolution: {integrity: sha512-29D6k564h7eudwNdfRcq6Je2VFUWGxHwADPg1xC2yHxrovYBwZiqzIv/DkPRsK/EMoOIPIvPq+IU0uCxiQXYPA==}
 
-  '@tanstack/vue-query-devtools@6.1.25':
-    resolution: {integrity: sha512-xWLHdj9U5xwjW70rfYcPc4IqOe8P8eWEMpq3LhB0iBTpHJRHW/5hJi1QNQiluyaLJ3zfcXk0wF1Rhz+l1dKEUQ==}
+  '@tanstack/vue-query-devtools@6.1.27':
+    resolution: {integrity: sha512-/dXBCV4Zna1M9pDkZkAcqbR5rva05fEIuZin2LTjsxfuYKWUe3YN8RydrgJKWtKJAtjIfPix+I7nZIZpwyXJtg==}
     peerDependencies:
-      '@tanstack/vue-query': ^5.100.6
+      '@tanstack/vue-query': ^5.100.8
       vue: ^3.3.0
 
   '@tanstack/vue-query@5.100.8':
@@ -7293,11 +7293,11 @@ snapshots:
 
   '@tanstack/query-core@5.100.8': {}
 
-  '@tanstack/query-devtools@5.100.6': {}
+  '@tanstack/query-devtools@5.100.8': {}
 
-  '@tanstack/vue-query-devtools@6.1.25(@tanstack/vue-query@5.100.8(vue@3.5.33(typescript@6.0.3)))(vue@3.5.33(typescript@6.0.3))':
+  '@tanstack/vue-query-devtools@6.1.27(@tanstack/vue-query@5.100.8(vue@3.5.33(typescript@6.0.3)))(vue@3.5.33(typescript@6.0.3))':
     dependencies:
-      '@tanstack/query-devtools': 5.100.6
+      '@tanstack/query-devtools': 5.100.8
       '@tanstack/vue-query': 5.100.8(vue@3.5.33(typescript@6.0.3))
       vue: 3.5.33(typescript@6.0.3)
 
@@ -9964,9 +9964,9 @@ snapshots:
     dependencies:
       postcss: 8.5.12
 
-  postcss-scss@4.0.9(postcss@8.5.8):
+  postcss-scss@4.0.9(postcss@8.5.12):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.12
 
   postcss-selector-parser@7.1.1:
     dependencies:
@@ -10401,26 +10401,26 @@ snapshots:
     dependencies:
       stylelint: 17.9.1(typescript@6.0.3)
 
-  stylelint-config-recommended-scss@17.0.1(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3)):
+  stylelint-config-recommended-scss@17.0.1(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@8.5.8)
+      postcss-scss: 4.0.9(postcss@8.5.12)
       stylelint: 17.9.1(typescript@6.0.3)
       stylelint-config-recommended: 18.0.0(stylelint@17.9.1(typescript@6.0.3))
       stylelint-scss: 7.0.0(stylelint@17.9.1(typescript@6.0.3))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.12
 
   stylelint-config-recommended@18.0.0(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
       stylelint: 17.9.1(typescript@6.0.3)
 
-  stylelint-config-standard-scss@17.0.0(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3)):
+  stylelint-config-standard-scss@17.0.0(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
       stylelint: 17.9.1(typescript@6.0.3)
-      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.8)(stylelint@17.9.1(typescript@6.0.3))
+      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.12)(stylelint@17.9.1(typescript@6.0.3))
       stylelint-config-standard: 40.0.0(stylelint@17.9.1(typescript@6.0.3))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.12
 
   stylelint-config-standard@40.0.0(stylelint@17.9.1(typescript@6.0.3)):
     dependencies:
