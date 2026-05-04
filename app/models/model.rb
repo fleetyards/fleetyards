@@ -47,6 +47,7 @@
 #  on_sale                  :boolean          default(FALSE)
 #  pitch                    :decimal(15, 2)
 #  pitch_boosted            :decimal(15, 2)
+#  player_ownable           :boolean          default(TRUE), not null
 #  pledge_price             :decimal(15, 2)
 #  positions_need_curation  :boolean          default(FALSE)
 #  price                    :decimal(15, 2)
@@ -271,7 +272,7 @@ class Model < ApplicationRecord
       "images_count", "last_updated_at", "length", "loaners_count",
       "manufacturer", "manufacturer_id", "mass", "max_crew", "max_speed", "max_speed_acceleration",
       "max_speed_decceleration", "min_crew", "model_paints_count", "module_hardpoints_count",
-      "name", "notified", "on_sale", "pitch", "pledge_price", "price", "production_note",
+      "name", "notified", "on_sale", "pitch", "player_ownable", "pledge_price", "price", "production_note",
       "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
       "rsi_cargo", "rsi_chassis_id", "rsi_classification", "rsi_description", "rsi_focus",
       "rsi_height", "rsi_id", "rsi_length", "rsi_mass", "rsi_max_crew", "rsi_max_speed",

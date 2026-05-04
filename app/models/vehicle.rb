@@ -70,6 +70,7 @@ class Vehicle < ApplicationRecord
   has_many :model_upgrades, through: :vehicle_upgrades
 
   validates :serial, uniqueness: {scope: :user_id}, allow_nil: true
+  validate :model_must_be_player_ownable
 
   NULL_ATTRS = %w[name serial].freeze
 
@@ -342,5 +343,12 @@ class Vehicle < ApplicationRecord
 
   protected def nil_if_blank
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
+  end
+
+  private def model_must_be_player_ownable
+    return if model.blank?
+    return if model.player_ownable?
+
+    errors.add(:model, :not_player_ownable)
   end
 end
