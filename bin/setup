@@ -74,6 +74,27 @@ def worktree_sidekiq_redis_db(name)
   2 + (Zlib.crc32(name) % 500)
 end
 
+def link_main_storage(main_root)
+  return unless main_root && main_root != APP_ROOT
+
+  main_storage = File.join(main_root, "storage")
+  wt_storage = File.join(APP_ROOT, "storage")
+
+  if File.symlink?(wt_storage)
+    return if File.readlink(wt_storage) == main_storage
+    File.delete(wt_storage)
+  elsif File.directory?(wt_storage)
+    return unless Dir.empty?(wt_storage)
+    Dir.rmdir(wt_storage)
+  elsif File.exist?(wt_storage)
+    return
+  end
+
+  FileUtils.mkdir_p(main_storage)
+  File.symlink(main_storage, wt_storage)
+  puts "   Linked storage/ → #{main_storage}" if VERBOSE
+end
+
 def write_superset_ports(port, vite_port)
   superset_dir = File.join(APP_ROOT, ".superset")
   FileUtils.mkdir_p(superset_dir)
@@ -170,6 +191,7 @@ FileUtils.chdir APP_ROOT do
     write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db, cookie_prefix:)
     puts "   Wrote .env.local" if VERBOSE
 
+    link_main_storage(main_worktree_root)
   end
 
   write_superset_ports(port, vite_port)
