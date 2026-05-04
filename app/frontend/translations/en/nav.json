@@ -45,6 +45,9 @@
         "logistics": {
           "index": "Logistics"
         },
+        "missions": {
+          "index": "Missions"
+        },
         "settings": {
           "index": "Settings",
           "fleet": "Fleet Settings",

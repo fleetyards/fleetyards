@@ -72,6 +72,16 @@ const hasLogisticsAccess = computed(() => {
   );
 });
 
+const hasMissionsAccess = computed(() => {
+  const access = membership.value?.fleetRole?.resourceAccess;
+  if (!access) return false;
+  return access.some((a: string) =>
+    ["fleet:manage", "fleet:missions:manage", "fleet:missions:read"].includes(
+      a,
+    ),
+  );
+});
+
 const comlink = useComlink();
 
 onMounted(() => {
@@ -130,11 +140,22 @@ onMounted(() => {
           prefix="04"
         />
         <NavItem
+          v-if="hasMissionsAccess && isFeatureEnabled('mission_builder')"
+          :to="{
+            name: 'fleet-missions',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.missions.index')"
+          :active="String(route.name).startsWith('fleet-mission')"
+          icon="fa-duotone fa-flag-checkered"
+          prefix="05"
+        />
+        <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
           icon="fa-duotone fa-cogs"
-          prefix="05"
+          prefix="06"
         />
       </template>
     </template>
