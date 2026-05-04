@@ -43,6 +43,7 @@ module Admin
               beam: {type: :number},
               height: {type: :number},
               onSale: {type: :boolean},
+              playerOwnable: {type: :boolean},
               storeUrl: {type: :string},
               salesPageUrl: {type: :string},
               price: {type: :number},

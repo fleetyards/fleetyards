@@ -8443,6 +8443,8 @@ components:
           type: number
         onSale:
           type: boolean
+        playerOwnable:
+          type: boolean
         storeUrl:
           type: string
         salesPageUrl:
@@ -9991,6 +9993,8 @@ components:
           type: number
           nullable: true
         onSale:
+          type: boolean
+        playerOwnable:
           type: boolean
         storeUrl:
           type: string

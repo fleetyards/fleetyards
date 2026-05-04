@@ -45,6 +45,7 @@ module Admin
               fleetchartOffsetLength: {type: :number, nullable: true},
               fleetchartOffsetBeam: {type: :number, nullable: true},
               onSale: {type: :boolean},
+              playerOwnable: {type: :boolean},
               storeUrl: {type: :string, nullable: true},
               salesPageUrl: {type: :string, nullable: true},
               price: {type: :number, nullable: true},

@@ -160,7 +160,7 @@ module Admin
             :scm_speed, :scm_speed_boosted, :max_speed, :reverse_speed_boosted, :yaw, :yaw_boosted,
             :pitch, :pitch_boosted, :roll, :roll_boosted, :erkul_identifier, :sc_key,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
-            :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale,
+            :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale, :player_ownable,
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
             :fleetchart_offset_beam,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
