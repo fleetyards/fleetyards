@@ -4,6 +4,7 @@ module ScData
       def all
         parse_ships
         parse_vehicles
+        parse_powersuits
       end
 
       private def parse_ships
@@ -102,6 +103,57 @@ module ScData
         end
 
         save_items(vehicles, folder: "models")
+      end
+
+      private def parse_powersuits
+        powersuits = load_data("actor/actors").filter_map do |item|
+          key = item[:key]
+          values = item[:values]
+
+          actor_params = values.dig("Components", "SActorComponentParams")
+          next unless actor_params&.dig("actorType") == "Transport"
+
+          display_params = values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "displayParams")
+          name_key = display_params&.dig("name")
+          next if name_key.blank? || name_key == "@LOC_UNINITIALIZED"
+
+          loadout = (values.dig(
+            "Components",
+            "SEntityComponentDefaultLoadoutParams",
+            "loadout",
+            "SItemPortLoadoutManualParams",
+            "entries",
+            "SItemPortLoadoutEntryParams"
+          ) || []).filter_map do |entry|
+            extract_loadout(entry)
+          end
+
+          loadout = merge_module_ports(values, loadout)
+
+          insurance_params = values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "shipInsuranceParams")
+
+          {
+            key:,
+            ground: true,
+            movement_class: nil,
+            gravlev: nil,
+            min_crew: display_params&.dig("crewSize"),
+            name: translate(name_key),
+            description: nil,
+            career: translate(display_params&.dig("career")),
+            role: translate(display_params&.dig("role")),
+            insurance: {
+              base_wait_time_minutes: insurance_params&.dig("baseWaitTimeMinutes"),
+              mandatory_wait_time_minutes: insurance_params&.dig("mandatoryWaitTimeMinutes"),
+              base_expediting_fee: insurance_params&.dig("baseExpeditingFee")
+            },
+            mass: values.dig("Components", "SSCActorPhysicsControllerComponentParams", "physType", "SEntityActorPhysicsControllerParams", "Mass")&.to_f,
+            metrics: {x: 0.0, y: 0.0, z: 0.0},
+            loadout:
+          }
+        end
+
+        save_items(powersuits, folder: "models")
       end
 
       private def merge_module_ports(values, loadout)
