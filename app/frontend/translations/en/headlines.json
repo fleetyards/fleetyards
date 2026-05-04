@@ -190,6 +190,18 @@
           "withdrawal": "Withdrawal",
           "importCsv": "Import from CSV"
         },
+        "missions": {
+          "index": "Missions",
+          "create": "Create Mission",
+          "edit": "Edit Mission",
+          "teams": "Teams",
+          "ships": "Ships",
+          "slots": "Slots",
+          "addTeam": "Add Team",
+          "editTeam": "Edit Team",
+          "addShip": "Add Ship",
+          "editShip": "Edit Ship"
+        },
         "preview": {
           "h1": "Fleet Preview",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",

@@ -289,6 +289,71 @@
             "success": "%{count} items imported successfully.",
             "failure": "Could not import CSV file."
           }
+        },
+        "mission": {
+          "create": {
+            "success": "Mission created.",
+            "failure": "Could not create mission."
+          },
+          "update": {
+            "success": "Mission updated.",
+            "failure": "Could not update mission."
+          },
+          "archive": {
+            "success": "Mission archived.",
+            "failure": "Could not archive mission."
+          },
+          "unarchive": {
+            "success": "Mission restored.",
+            "failure": "Could not restore mission."
+          },
+          "destroy": {
+            "success": "Mission deleted.",
+            "failure": "Could not delete mission.",
+            "confirm": "This will permanently delete the mission and all its teams, ships, and slots. This action cannot be undone."
+          }
+        },
+        "missionTeam": {
+          "create": {
+            "success": "Team added.",
+            "failure": "Could not add team."
+          },
+          "update": {
+            "success": "Team updated.",
+            "failure": "Could not update team."
+          },
+          "destroy": {
+            "success": "Team removed.",
+            "failure": "Could not remove team."
+          }
+        },
+        "missionShip": {
+          "create": {
+            "success": "Ship added.",
+            "failure": "Could not add ship."
+          },
+          "update": {
+            "success": "Ship updated.",
+            "failure": "Could not update ship."
+          },
+          "destroy": {
+            "success": "Ship removed.",
+            "failure": "Could not remove ship."
+          }
+        },
+        "missionSlot": {
+          "create": {
+            "success": "Slot added.",
+            "failure": "Could not add slot."
+          },
+          "update": {
+            "success": "Slot updated.",
+            "failure": "Could not update slot."
+          },
+          "destroy": {
+            "success": "Slot removed.",
+            "failure": "Could not remove slot."
+          }
         }
       },
       "fleetInvite": {

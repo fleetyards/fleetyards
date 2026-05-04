@@ -208,6 +208,17 @@
           "createItem": "Add Item",
           "importCsv": "Import CSV",
           "downloadTemplate": "Download Template"
+        },
+        "missions": {
+          "create": "Create Mission",
+          "edit": "Edit Mission",
+          "archive": "Archive Mission",
+          "unarchive": "Unarchive",
+          "destroy": "Delete Permanently",
+          "addTeam": "Add Team",
+          "addShip": "Add Ship",
+          "addSlot": "Add Slot",
+          "viewMissions": "View Missions"
         }
       },
       "model": {

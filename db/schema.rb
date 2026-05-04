@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_04_130001) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_04_210000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -513,6 +513,67 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_04_130001) do
     t.text "to"
     t.datetime "updated_at", null: false
     t.uuid "user_id"
+  end
+
+  create_table "mission_ships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "classification"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "focus"
+    t.string "max_size"
+    t.decimal "min_cargo"
+    t.integer "min_crew"
+    t.string "min_size"
+    t.uuid "mission_team_id", null: false
+    t.uuid "model_id"
+    t.integer "position", default: 0, null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["mission_team_id", "position"], name: "index_mission_ships_on_mission_team_id_and_position"
+    t.index ["mission_team_id"], name: "index_mission_ships_on_mission_team_id"
+    t.index ["model_id"], name: "index_mission_ships_on_model_id"
+  end
+
+  create_table "mission_slots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.uuid "model_position_id"
+    t.integer "position", default: 0, null: false
+    t.uuid "slottable_id", null: false
+    t.string "slottable_type", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["model_position_id"], name: "index_mission_slots_on_model_position_id"
+    t.index ["slottable_type", "slottable_id", "position"], name: "index_mission_slots_on_slottable_and_position"
+    t.index ["slottable_type", "slottable_id"], name: "index_mission_slots_on_slottable_type_and_slottable_id"
+  end
+
+  create_table "mission_teams", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.uuid "mission_id", null: false
+    t.integer "position", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mission_id", "position"], name: "index_mission_teams_on_mission_id_and_position"
+    t.index ["mission_id"], name: "index_mission_teams_on_mission_id"
+  end
+
+  create_table "missions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "archived_at"
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.uuid "created_by_id", null: false
+    t.text "description"
+    t.uuid "fleet_id", null: false
+    t.string "scenario"
+    t.string "slug", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_id", "archived_at"], name: "index_missions_on_fleet_id_and_archived_at"
+    t.index ["fleet_id", "category"], name: "index_missions_on_fleet_id_and_category"
+    t.index ["fleet_id", "scenario"], name: "index_missions_on_fleet_id_and_scenario"
+    t.index ["fleet_id", "slug"], name: "index_missions_on_fleet_id_and_slug", unique: true
   end
 
   create_table "model_hardpoint_loadouts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1071,6 +1132,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_04_130001) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
+  add_foreign_key "mission_ships", "mission_teams"
+  add_foreign_key "mission_ships", "models"
+  add_foreign_key "mission_slots", "model_positions"
+  add_foreign_key "mission_teams", "missions"
+  add_foreign_key "missions", "fleets"
+  add_foreign_key "missions", "users", column: "created_by_id"
   add_foreign_key "model_positions", "hardpoints"
   add_foreign_key "model_positions", "models"
   add_foreign_key "notification_preferences", "users"

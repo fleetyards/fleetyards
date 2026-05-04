@@ -55,6 +55,10 @@
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories"
         },
+        "missions": {
+          "index": "%{fleet} Missions",
+          "edit": "%{fleet} Mission"
+        },
         "settings": {
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",
