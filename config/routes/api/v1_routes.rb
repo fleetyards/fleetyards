@@ -55,6 +55,10 @@ v1_api_routes = lambda do
     get :random, on: :collection
   end
 
+  resources :mission_slots, path: "mission-slots", only: %i[create update destroy] do
+    put :sort, on: :collection
+  end
+
   namespace :stats do
     get "quick-stats", to: "base#quick_stats"
     get "models-per-month", to: "base#models_per_month"
