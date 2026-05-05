@@ -54,6 +54,12 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: ":username/",
+    component: () => import("@/frontend/pages/hangar/[username].vue"),
+    children: publicHangarRoutes,
+    redirect: { name: publicHangarRoutes[0].name },
+  },
+  {
     path: ":id/",
     component: () => import("@/frontend/pages/hangar/[id].vue"),
     children: vehicleRoutes,
@@ -61,11 +67,5 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
     },
-  },
-  {
-    path: ":username/",
-    component: () => import("@/frontend/pages/hangar/[username].vue"),
-    children: publicHangarRoutes,
-    redirect: { name: publicHangarRoutes[0].name },
   },
 ];
