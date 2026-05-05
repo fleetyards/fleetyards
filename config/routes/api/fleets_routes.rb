@@ -46,6 +46,21 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
         put :sort, on: :collection
       end
     end
+    resources :fleet_events, path: "events", only: %i[create]
+  end
+
+  get "calendar", to: "fleet_calendars#show"
+  get "events.ics", to: "fleet_calendars#ics", defaults: {format: "ics"}, constraints: {format: "ics"}
+
+  resources :fleet_events, path: "events", param: :slug, only: %i[index show create update destroy], constraints: {slug: %r{[^/.]+}} do
+    member do
+      put :publish
+      put "lock-signups", action: :lock_signups
+      put "unlock-signups", action: :unlock_signups
+      put :start
+      put :complete
+      put :cancel
+    end
   end
 
   resource :fleet_stats, path: "stats", only: %i[] do

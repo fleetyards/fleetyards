@@ -59,6 +59,16 @@ v1_api_routes = lambda do
     put :sort, on: :collection
   end
 
+  resources :fleet_event_slots, path: "fleet-event-slots", only: [] do
+    member do
+      post :signup, to: "fleet_event_signups#create"
+      patch :signup, to: "fleet_event_signups#update"
+      delete :signup, to: "fleet_event_signups#destroy_self"
+    end
+  end
+
+  resources :fleet_event_signups, path: "fleet-event-signups", only: %i[destroy]
+
   namespace :stats do
     get "quick-stats", to: "base#quick_stats"
     get "models-per-month", to: "base#models_per_month"

@@ -1,0 +1,66 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    module Fleets
+      module Events
+        class FleetEvent
+          include Rswag::SchemaComponents::Component
+
+          STATUSES = %w[draft open locked active completed cancelled].freeze
+          VISIBILITIES = %w[members officers fleet].freeze
+
+          schema({
+            type: :object,
+            properties: {
+              id: {type: :string, format: :uuid},
+              fleetId: {type: :string, format: :uuid},
+              missionId: {type: :string, format: :uuid, nullable: true},
+              title: {type: :string},
+              slug: {type: :string},
+              description: {type: :string, nullable: true},
+              briefing: {type: :string, nullable: true},
+              status: {type: :string, enum: STATUSES},
+              startsAt: {type: :string, format: "date-time"},
+              endsAt: {type: :string, format: "date-time", nullable: true},
+              timezone: {type: :string},
+              location: {type: :string, nullable: true},
+              meetupLocation: {type: :string, nullable: true},
+              visibility: {type: :string, enum: VISIBILITIES},
+              category: {
+                type: :string,
+                enum: V1::Schemas::Fleets::Missions::Mission::CATEGORIES
+              },
+              scenario: {type: :string, nullable: true},
+              coverImagePreset: {type: :string, nullable: true},
+              coverImage: {"$ref": "#/components/schemas/MediaFile", nullable: true},
+              maxAttendees: {type: :integer, nullable: true},
+              autoLockEnabled: {type: :boolean},
+              autoLockMinutesBefore: {type: :integer, nullable: true},
+              cancelledReason: {type: :string, nullable: true},
+              archived: {type: :boolean},
+              archivedAt: {type: :string, format: "date-time", nullable: true},
+              externalUid: {type: :string, format: :uuid},
+              createdBy: {
+                type: :object,
+                nullable: true,
+                properties: {
+                  id: {type: :string, format: :uuid},
+                  username: {type: :string}
+                }
+              },
+              signupsCount: {type: :integer},
+              teamCount: {type: :integer},
+              createdAt: {type: :string, format: "date-time"},
+              updatedAt: {type: :string, format: "date-time"}
+            },
+            required: %w[
+              id fleetId title slug status startsAt timezone visibility category
+              autoLockEnabled archived externalUid signupsCount teamCount createdAt updatedAt
+            ]
+          })
+        end
+      end
+    end
+  end
+end
