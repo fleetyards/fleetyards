@@ -11,6 +11,7 @@
 #  current_sign_in_ip        :string(255)
 #  current_system            :string
 #  current_system_code       :string
+#  date_format               :string           default("dmy_dots"), not null
 #  discord                   :string
 #  email                     :string(255)      default(""), not null
 #  encrypted_otp_secret      :string

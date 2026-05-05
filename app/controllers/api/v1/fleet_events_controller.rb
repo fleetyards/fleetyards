@@ -36,6 +36,8 @@ module Api
 
       def show
         authorize! @fleet_event
+
+        @viewer_event_role = compute_viewer_event_role(@fleet_event)
       end
 
       def create
@@ -133,6 +135,14 @@ module Api
         return if params[:mission_slug].blank?
 
         @mission = @fleet.missions.find_by!(slug: params[:mission_slug])
+      end
+
+      private def compute_viewer_event_role(event)
+        viewer = current_resource_owner
+        return nil unless viewer
+
+        return "creator" if event.created_by_id == viewer.id
+        event.event_admin_role_for(viewer)
       end
 
       private def check_mission_builder_feature

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 json.id fleet_event_signup.id
+json.fleet_event_id fleet_event_signup.fleet_event_id
 json.fleet_event_slot_id fleet_event_signup.fleet_event_slot_id
 json.status fleet_event_signup.status
 json.notes fleet_event_signup.notes

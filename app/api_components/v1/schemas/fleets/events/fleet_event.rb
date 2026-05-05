@@ -9,6 +9,8 @@ module V1
 
           STATUSES = %w[draft open locked active completed cancelled].freeze
           VISIBILITIES = %w[members officers fleet].freeze
+          SIGNUP_APPROVALS = %w[direct confirmation_required].freeze
+          VIEWER_EVENT_ROLES = %w[creator admin moderator].freeze
 
           schema({
             type: :object,
@@ -38,6 +40,12 @@ module V1
               autoLockEnabled: {type: :boolean},
               autoLockMinutesBefore: {type: :integer, nullable: true},
               cancelledReason: {type: :string, nullable: true},
+              signupApproval: {type: :string, enum: SIGNUP_APPROVALS},
+              viewerEventRole: {
+                type: :string,
+                nullable: true,
+                enum: VIEWER_EVENT_ROLES + [nil]
+              },
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time", nullable: true},
               externalUid: {type: :string, format: :uuid},
@@ -56,7 +64,7 @@ module V1
             },
             required: %w[
               id fleetId title slug status startsAt timezone visibility category
-              autoLockEnabled archived externalUid signupsCount teamCount createdAt updatedAt
+              autoLockEnabled archived externalUid signupApproval signupsCount teamCount createdAt updatedAt
             ]
           })
         end

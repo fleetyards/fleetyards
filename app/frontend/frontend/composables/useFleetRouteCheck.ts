@@ -1,27 +1,21 @@
+// Routes that start with "fleet" but don't represent an existing fleet
+// (e.g. the new-fleet form, the public invite landing pages). These should
+// NOT trigger FleetNav since there's no fleet context.
+const NON_FLEET_NAV_ROUTES = new Set([
+  "fleet-add",
+  "fleet-preview",
+  "fleet-invites",
+  "fleet-invite",
+]);
+
 export const useFleetRouteCheck = () => {
   const route = useRoute();
 
   const isFleetRoute = computed(() => {
-    return [
-      "fleet",
-      "fleet-ships",
-      "fleet-members",
-      "fleet-members-index",
-      "fleet-members-invites",
-      "fleet-stats",
-      "fleet-fleetchart",
-      "fleet-logistics",
-      "fleet-logistics-root",
-      "fleet-logistics-inventories",
-      "fleet-logistics-inventory",
-      "fleet-missions-root",
-      "fleet-missions",
-      "fleet-mission",
-      "fleet-settings",
-      "fleet-settings-fleet",
-      "fleet-settings-membership",
-      "fleet-settings-roles",
-    ].includes(route.name as string);
+    const name = String(route.name ?? "");
+    if (!name.startsWith("fleet")) return false;
+    if (NON_FLEET_NAV_ROUTES.has(name)) return false;
+    return !!route.params.slug;
   });
 
   return {

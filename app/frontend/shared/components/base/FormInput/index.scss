@@ -37,6 +37,7 @@
   &__subline {
     display: block;
     margin-top: 5px;
+    color: darken($text-color, 20%) !important;
   }
 
   &__clear {

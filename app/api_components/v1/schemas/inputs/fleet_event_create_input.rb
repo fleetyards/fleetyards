@@ -31,7 +31,11 @@ module V1
             coverImage: {type: :string, nullable: true},
             maxAttendees: {type: :integer, nullable: true},
             autoLockEnabled: {type: :boolean},
-            autoLockMinutesBefore: {type: :integer, nullable: true}
+            autoLockMinutesBefore: {type: :integer, nullable: true},
+            signupApproval: {
+              type: :string,
+              enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
+            }
           },
           required: %w[title startsAt timezone visibility],
           additionalProperties: false
