@@ -4,29 +4,32 @@
 #
 # Table name: fleets
 #
-#  id                 :uuid             not null, primary key
-#  created_by         :uuid
-#  description        :text
-#  discord            :string
-#  fid                :string
-#  guilded            :string
-#  homepage           :string
-#  name               :string
-#  normalized_fid     :string
-#  public_fleet       :boolean          default(FALSE)
-#  public_fleet_stats :boolean          default(FALSE)
-#  rsi_sid            :string
-#  sid                :string
-#  slug               :string
-#  ts                 :string
-#  twitch             :string
-#  youtube            :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  id                  :uuid             not null, primary key
+#  calendar_feed_token :string
+#  created_by          :uuid
+#  default_timezone    :string           default("UTC"), not null
+#  description         :text
+#  discord             :string
+#  fid                 :string
+#  guilded             :string
+#  homepage            :string
+#  name                :string
+#  normalized_fid      :string
+#  public_fleet        :boolean          default(FALSE)
+#  public_fleet_stats  :boolean          default(FALSE)
+#  rsi_sid             :string
+#  sid                 :string
+#  slug                :string
+#  ts                  :string
+#  twitch              :string
+#  youtube             :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 # Indexes
 #
-#  index_fleets_on_fid  (fid) UNIQUE
+#  index_fleets_on_calendar_feed_token  (calendar_feed_token) UNIQUE
+#  index_fleets_on_fid                  (fid) UNIQUE
 #
 require "rails_helper"
 
