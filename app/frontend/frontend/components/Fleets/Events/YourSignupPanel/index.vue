@@ -9,13 +9,16 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
 import {
-  type FleetEventSignup,
   type FilterOption,
+  type FleetEventShip,
+  type FleetEventSignup,
   FleetEventSignupStatus,
   useUpdateFleetEventSignup,
   useWithdrawFleetEventSignup,
   useDestroyFleetEventSignup,
+  signupFleetEvent,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -25,9 +28,15 @@ type Props = {
   signup: FleetEventSignup;
   slotTitle: string;
   contextLabel?: string;
+  ship?: FleetEventShip | null;
+  fleetSlug: string;
+  eventSlug: string;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  contextLabel: undefined,
+  ship: null,
+});
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
@@ -38,30 +47,42 @@ const withdrawMutation = useWithdrawFleetEventSignup();
 const destroyMutation = useDestroyFleetEventSignup();
 
 const slotId = computed(() => props.signup.fleetEventSlotId ?? null);
-const canEdit = computed(() => !!slotId.value);
+const canEdit = computed(() => true);
+const isEventLevel = computed(() => !slotId.value);
+// Picker is relevant for event-level signups (no slot) and slots on
+// filter-mode ships. Specific-model ships and team-level slots fix the
+// vehicle implicitly.
+const showVehiclePicker = computed(
+  () => isEventLevel.value || (!!props.ship && !props.ship.model?.id),
+);
 
 const editing = ref(false);
+const saving = ref(false);
 
+const notes = ref(props.signup.notes ?? "");
+const vehicleId = ref<string | null>(props.signup.vehicle?.id ?? null);
 const status = ref<FleetEventSignupStatus>(
   (props.signup.status as FleetEventSignupStatus) ??
-    FleetEventSignupStatus.confirmed,
+    FleetEventSignupStatus.interested,
 );
-const notes = ref(props.signup.notes ?? "");
 
-const statusOptions = computed<FilterOption[]>(() =>
-  [FleetEventSignupStatus.confirmed, FleetEventSignupStatus.tentative].map(
-    (value) => ({
-      value,
-      label: t(`labels.fleets.events.signupStatuses.${value}`),
-    }),
-  ),
+const eventLevelStatusOptions = computed<FilterOption[]>(() =>
+  [
+    FleetEventSignupStatus.confirmed,
+    FleetEventSignupStatus.tentative,
+    FleetEventSignupStatus.interested,
+  ].map((value) => ({
+    value,
+    label: t(`labels.fleets.events.signupStatuses.${value}`),
+  })),
 );
 
 const startEdit = () => {
+  notes.value = props.signup.notes ?? "";
+  vehicleId.value = props.signup.vehicle?.id ?? null;
   status.value =
     (props.signup.status as FleetEventSignupStatus) ??
-    FleetEventSignupStatus.confirmed;
-  notes.value = props.signup.notes ?? "";
+    FleetEventSignupStatus.interested;
   editing.value = true;
 };
 
@@ -70,17 +91,31 @@ const cancelEdit = () => {
 };
 
 const save = async () => {
-  if (!slotId.value) return;
+  saving.value = true;
   try {
-    await updateMutation.mutateAsync({
-      id: slotId.value,
-      data: { status: status.value, notes: notes.value || undefined },
-    });
+    if (slotId.value) {
+      await updateMutation.mutateAsync({
+        id: slotId.value,
+        data: {
+          status: FleetEventSignupStatus.confirmed,
+          notes: notes.value || undefined,
+          vehicleId: vehicleId.value ?? undefined,
+        },
+      });
+    } else {
+      await signupFleetEvent(props.fleetSlug, props.eventSlug, {
+        status: status.value,
+        notes: notes.value || undefined,
+        vehicleId: vehicleId.value ?? undefined,
+      });
+    }
     displaySuccess({ text: t("messages.fleets.eventSignup.update.success") });
     editing.value = false;
     comlink.emit("fleet-event-signup-changed");
   } catch {
     displayAlert({ text: t("messages.fleets.eventSignup.update.failure") });
+  } finally {
+    saving.value = false;
   }
 };
 
@@ -120,7 +155,10 @@ const statusLabel = computed(() =>
         <i class="fa-light fa-user-check" />
         <span>{{ t("headlines.fleets.events.yourSignup") }}</span>
       </div>
-      <span class="your-signup__status" :class="`your-signup__status--${signup.status}`">
+      <span
+        class="your-signup__status"
+        :class="`your-signup__status--${signup.status}`"
+      >
         {{ statusLabel }}
       </span>
     </header>
@@ -138,11 +176,17 @@ const statusLabel = computed(() =>
 
     <template v-if="editing">
       <FilterGroup
+        v-if="isEventLevel"
         v-model="status"
-        :options="statusOptions"
+        :options="eventLevelStatusOptions"
         :label="t('labels.fleets.events.attendance')"
         name="signup-status"
         :searchable="false"
+      />
+      <VehiclePicker
+        v-if="showVehiclePicker"
+        v-model="vehicleId"
+        :required-ship="ship"
       />
       <FormTextarea
         v-model="notes"
@@ -153,12 +197,7 @@ const statusLabel = computed(() =>
 
     <div class="your-signup__actions">
       <template v-if="editing">
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          inline
-          :loading="updateMutation.isPending.value"
-          @click="save"
-        >
+        <Btn :size="BtnSizesEnum.SMALL" inline :loading="saving" @click="save">
           <i class="fa-light fa-floppy-disk" />
           {{ t("actions.save") }}
         </Btn>

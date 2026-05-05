@@ -10,52 +10,85 @@ import type { FleetEventStatus } from "@/services/fyApi";
 
 type Props = {
   status: FleetEventStatus;
+  past?: boolean;
+  variant?: "inline" | "corner";
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  past: false,
+  variant: "inline",
+});
 const { t } = useI18n();
 
-const variantClass = computed(() => `event-status--${props.status}`);
+// Past events that are still in a pre-finished status read as "past" to the
+// viewer instead of misleadingly advertising open signups.
+const effectiveStatus = computed(() => {
+  if (props.past && ["draft", "open", "locked"].includes(props.status)) {
+    return "past";
+  }
+  return props.status;
+});
+
+const variantClass = computed(() => [
+  `event-status-badge--${effectiveStatus.value}`,
+  `event-status-badge--${props.variant}`,
+]);
 </script>
 
 <template>
-  <span class="event-status" :class="variantClass">
-    {{ t(`labels.fleets.events.statuses.${props.status}`) }}
+  <span class="event-status-badge" :class="variantClass">
+    {{ t(`labels.fleets.events.statuses.${effectiveStatus}`) }}
   </span>
 </template>
 
 <style lang="scss" scoped>
-.event-status {
-  display: inline-block;
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+@import "@/stylesheets/variables.scss";
+
+.event-status-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
   font-weight: 600;
-  border: 1px solid currentColor;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
+  color: #fff;
+  background-color: $primary;
+  line-height: 1;
 }
 
-.event-status--draft {
-  color: var(--text-muted);
+.event-status-badge--inline {
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
 }
-.event-status--open {
-  color: var(--success, #4caf50);
+
+.event-status-badge--corner {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  height: 32px;
+  padding: 0 0.85rem;
+  border-radius: 0 10px 10px 0;
+  z-index: 2;
 }
-.event-status--locked {
-  color: var(--warning, #ff9800);
+
+.event-status-badge--draft {
+  background-color: #6c757d;
 }
-.event-status--active {
-  color: var(--accent, #4aa);
-  background: color-mix(in srgb, var(--accent, #4aa) 12%, transparent);
+.event-status-badge--open {
+  background-color: $success;
 }
-.event-status--completed {
-  color: var(--text-muted);
-  border-style: dashed;
+.event-status-badge--locked {
+  background-color: $warning;
 }
-.event-status--cancelled {
-  color: var(--danger, #c62828);
-  border-style: dashed;
+.event-status-badge--active {
+  background-color: $primary;
+}
+.event-status-badge--completed,
+.event-status-badge--past {
+  background-color: #495057;
+}
+.event-status-badge--cancelled {
+  background-color: $danger;
 }
 </style>

@@ -19,7 +19,11 @@ import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   signups: FleetEventSignup[];
-  availableSlots: { slot: FleetEventSlot; teamTitle: string; shipTitle?: string }[];
+  availableSlots: {
+    slot: FleetEventSlot;
+    teamTitle: string;
+    shipTitle?: string;
+  }[];
 };
 
 const props = defineProps<Props>();
@@ -33,9 +37,11 @@ const destroyMutation = useDestroyFleetEventSignup();
 
 const assigningId = ref<string | null>(null);
 
-const slotLabel = (
-  ctx: { slot: FleetEventSlot; teamTitle: string; shipTitle?: string },
-) => {
+const slotLabel = (ctx: {
+  slot: FleetEventSlot;
+  teamTitle: string;
+  shipTitle?: string;
+}) => {
   const parts = [ctx.teamTitle];
   if (ctx.shipTitle) parts.push(ctx.shipTitle);
   parts.push(ctx.slot.title);
