@@ -405,6 +405,7 @@
       "model": {
         "hidden": "Hidden?",
         "active": "Active?",
+        "inGame": "In Game?",
         "ground": "Ground Vehicle?",
         "productionNote": "Production Note",
         "rsiId": "RSI ID",

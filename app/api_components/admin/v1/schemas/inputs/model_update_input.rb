@@ -14,6 +14,7 @@ module Admin
               description: {type: :string, nullable: true},
               hidden: {type: :boolean},
               active: {type: :boolean},
+              inGame: {type: :boolean},
               ground: {type: :boolean},
               mass: {type: :number, nullable: true},
               minCrew: {type: :integer, nullable: true},

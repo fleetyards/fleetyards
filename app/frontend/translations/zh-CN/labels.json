@@ -392,6 +392,7 @@
       "model": {
         "hidden": "隐藏?",
         "active": "活跃?",
+        "inGame": "已实装?",
         "ground": "地面载具?",
         "productionNote": "生产备注",
         "rsiId": "RSI ID",

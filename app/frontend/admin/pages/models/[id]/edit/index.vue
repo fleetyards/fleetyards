@@ -37,6 +37,7 @@ const initialValues = ref<ModelUpdateInput>({
   description: props.model.description,
   hidden: props.model.hidden,
   active: props.model.active,
+  inGame: props.model.inGame,
   playerOwnable: props.model.playerOwnable,
   ground: props.model.metrics.isGroundVehicle,
   rsiId: props.model.rsiId,
@@ -66,6 +67,7 @@ const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
 const [hidden, hiddenProps] = defineField("hidden");
 const [active, activeProps] = defineField("active");
+const [inGame, inGameProps] = defineField("inGame");
 const [playerOwnable, playerOwnableProps] = defineField("playerOwnable");
 const [ground, groundProps] = defineField("ground");
 const [rsiId, rsiIdProps] = defineField("rsiId");
@@ -148,6 +150,14 @@ const [holo, holoProps] = defineField("holo");
               translation-key="model.playerOwnable"
               v-bind="playerOwnableProps"
               name="playerOwnable"
+            />
+          </div>
+          <div class="col-12 col-md-4">
+            <FormToggle
+              v-model="inGame"
+              translation-key="model.inGame"
+              v-bind="inGameProps"
+              name="inGame"
             />
           </div>
         </div>

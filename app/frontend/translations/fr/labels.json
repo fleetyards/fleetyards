@@ -392,6 +392,7 @@
       "model": {
         "hidden": "Masqué ?",
         "active": "Actif ?",
+        "inGame": "Dans le jeu ?",
         "ground": "Véhicule terrestre ?",
         "productionNote": "Note de production",
         "rsiId": "RSI ID",

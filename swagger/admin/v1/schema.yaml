@@ -9908,6 +9908,8 @@ components:
           type: boolean
         active:
           type: boolean
+        inGame:
+          type: boolean
         ground:
           type: boolean
         mass:

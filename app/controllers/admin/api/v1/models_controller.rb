@@ -156,7 +156,7 @@ module Admin
 
         private def model_params
           @model_params ||= params.permit(
-            :name, :description, :hidden, :active, :ground, :mass, :min_crew, :max_crew,
+            :name, :description, :hidden, :active, :in_game, :ground, :mass, :min_crew, :max_crew,
             :scm_speed, :scm_speed_boosted, :max_speed, :reverse_speed_boosted, :yaw, :yaw_boosted,
             :pitch, :pitch_boosted, :roll, :roll_boosted, :erkul_identifier, :sc_key,
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
