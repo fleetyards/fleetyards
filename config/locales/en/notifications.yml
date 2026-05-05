@@ -31,3 +31,22 @@ en:
       title: "You've been accepted into %{fleet}"
     fleet_inventory_item_added:
       title: "New inventory item in %{fleet}: %{item_name}"
+    fleet_event:
+      published:
+        title: "New event in %{fleet}: %{title}"
+        body: "%{fleet} just published a new event."
+      locked:
+        title: "Sign-ups locked for %{title}"
+      starting_soon:
+        title: "%{title} starts soon"
+      started:
+        title: "%{title} has started"
+      completed:
+        title: "%{title} has been completed"
+      cancelled:
+        title: "%{title} was cancelled"
+    fleet_event_signup:
+      added:
+        title: "%{user} signed up for %{title}"
+      withdrawn:
+        title: "%{user} withdrew from %{title}"
