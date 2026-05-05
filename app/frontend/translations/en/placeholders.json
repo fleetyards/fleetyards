@@ -26,6 +26,7 @@
       "minCrew": "Min. Crew",
       "minCargo": "SCU",
       "modelId": "Search for a ship",
+      "scenario": "Xenothreat, Pirate Swarm, Bounty…",
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",

@@ -4,17 +4,18 @@
 #
 # Table name: missions
 #
-#  id            :uuid             not null, primary key
-#  archived_at   :datetime
-#  category      :integer          default("other"), not null
-#  description   :text
-#  scenario      :string
-#  slug          :string           not null
-#  title         :string           not null
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  created_by_id :uuid             not null
-#  fleet_id      :uuid             not null
+#  id                 :uuid             not null, primary key
+#  archived_at        :datetime
+#  category           :integer          default("other"), not null
+#  cover_image_preset :string
+#  description        :text
+#  scenario           :string
+#  slug               :string           not null
+#  title              :string           not null
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  created_by_id      :uuid             not null
+#  fleet_id           :uuid             not null
 #
 # Indexes
 #

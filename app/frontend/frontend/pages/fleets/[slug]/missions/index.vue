@@ -20,7 +20,6 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useMobile } from "@/shared/composables/useMobile";
 import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
@@ -33,7 +32,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
-const mobile = useMobile();
 const route = useRoute();
 
 const fleetSlug = computed(() => props.fleet.slug);
@@ -84,16 +82,10 @@ const crumbs = computed(() => [
 
 <template>
   <BreadCrumbs :crumbs="crumbs" />
+
   <Heading size="hero" hero>
     {{ t("headlines.fleets.missions.index") }}
   </Heading>
-
-  <Teleport v-if="!mobile && canCreate" to="#header-right">
-    <Btn :inline="true" @click="openCreateModal">
-      <i class="fa-light fa-plus" />
-      <span>{{ t("actions.fleets.missions.create") }}</span>
-    </Btn>
-  </Teleport>
 
   <FilteredList
     key="fleet-missions-index"
@@ -102,8 +94,8 @@ const crumbs = computed(() => [
     :async-status="asyncStatus"
     hide-empty
   >
-    <template v-if="mobile && canCreate" #actions-right>
-      <Btn :inline="true" @click="openCreateModal">
+    <template v-if="canCreate" #actions-right>
+      <Btn size="small" @click="openCreateModal">
         <i class="fa-light fa-plus" />
         <span>{{ t("actions.fleets.missions.create") }}</span>
       </Btn>

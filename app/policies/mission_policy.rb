@@ -20,6 +20,6 @@ class MissionPolicy < FleetBasePolicy
   end
 
   params_filter do |params|
-    params.permit(:title, :description, :archived_at, :category, :scenario, :cover_image)
+    params.permit(:title, :description, :archived_at, :category, :scenario, :cover_image, :cover_image_preset)
   end
 end
