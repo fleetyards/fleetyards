@@ -306,10 +306,33 @@ Hooks already in place after Phase B that Phase C uses without refactor:
 - `Notifications::Discord::FleetEventSubscriber` slots into the existing event bus
 - `external_uid` on events doubles as Discord scheduled-event correlation key
 
-## Open questions
+## Resolved decisions (locked-in answers to prior open questions)
 
-1. Do we want **fleet_calendar visibility to non-members** (public) for fleets that publish recruitment events? Plan says optional via `visibility=fleet`.
-2. **iCal subscription URL token rotation** — automatic on token compromise, or manual admin action?
-3. **Time zone handling** — store UTC server-side, render in user's local browser TZ; do we need a per-fleet "default display TZ" setting (some fleets coordinate around a specific game timezone)?
-4. **Member cap** — should events expose a `max_attendees` separate from slot count, for casual events with no fixed roster?
+| Topic | Decision |
+|---|---|
+| Public visibility for non-members | **Yes**, `visibility=fleet` enables public read + public signup (subject to slot privileges) |
+| iCal token | **Rotatable** — fleet settings page exposes "Regenerate calendar feed URL"; old token immediately invalidated |
+| Fleet default timezone | **Yes** — `fleets.default_timezone` (string, default `UTC`). Caveat: global fleets won't have a single right answer; users still see their browser-local time, fleet default is the canonical reference for the event card subtitle ("Fleet time: 21:00 UTC") |
+| `max_attendees` | **Yes**, optional on events. Null = open-ended (no cap). Slot signups still tracked separately |
+| Auto-lock | **Per-event opt-out** — boolean column `auto_lock_enabled` (default true), with `auto_lock_minutes_before` (default 60) |
+| Reminder cadence | **`starting_soon` only (1h before)** for v1. User-configurable reminder schedules deferred to later |
+| Spawning UX | **Dedicated new-event page** (`/fleets/:slug/events/new?from=:mission_slug`) — full form with markdown briefing field. Modal would cramp it |
+| Event title default on spawn | **`{Mission title} — {readable date}`** (e.g. "Mining Operation — May 12, 2026") |
+| Cancellation semantics | Signups **stay `confirmed`** (history preserved), no new signups allowed, **notification fired to all signed-up members** |
+| Privilege model | No extra gating beyond `fleet:events:create` for spawn. (A separate "planner" role considered for later) |
+| Test data | **Separate `events:seed_examples` rake task** — creates upcoming events for each category in the target fleet |
+| Public visibility access control | Members get full slot detail; non-members on `visibility=fleet` events see title/time/location/category but NOT signup details — keeps recruiting public without exposing roster |
+| Public signup | If a non-member tries to sign up to a `visibility=fleet` event, prompt to join the fleet first; or accept as a tentative interest and surface to officers as a recruiting lead (deferred to later) |
+
+### Schema additions from the resolved decisions
+
+`fleets`:
+- `default_timezone` (string, default `UTC`)
+- `calendar_feed_token` (string, indexed unique, generated on first calendar request, rotatable)
+
+`fleet_events` (additions to base table above):
+- `max_attendees` (integer, nullable — null = open-ended)
+- `auto_lock_enabled` (boolean, NOT NULL, default `true`)
+- `auto_lock_minutes_before` (integer, NOT NULL, default `60`)
+- `cancelled_reason` (text, nullable — surfaced in cancellation notification)
 5. **Reminders** — only `starting_soon` (1h before), or also a 24h-before reminder? Phase B does just 1h; can extend.
