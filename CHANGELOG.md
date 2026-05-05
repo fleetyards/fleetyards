@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.19.1](https://github.com/fleetyards/fleetyards/compare/v6.19.0...v6.19.1) (2026-05-05)
+
+
+### Bug Fixes
+
+* **hangar:** stop public hangar URLs redirecting to loadouts ([69ca74b](https://github.com/fleetyards/fleetyards/commit/69ca74baadccb717e1b88ce0214711616c9e3f26))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#3846](https://github.com/fleetyards/fleetyards/issues/3846)) ([553afc8](https://github.com/fleetyards/fleetyards/commit/553afc8aec84678968c8c814007a8e38a140230b))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.24 to 6.1.25 ([#3827](https://github.com/fleetyards/fleetyards/issues/3827)) ([4a53730](https://github.com/fleetyards/fleetyards/commit/4a5373038ce59658be0bc855d74ba01411dfe962))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.25 to 6.1.27 ([#3843](https://github.com/fleetyards/fleetyards/issues/3843)) ([fc7c755](https://github.com/fleetyards/fleetyards/commit/fc7c755897228a9333860084ab2c2599961a9399))
+* **deps-dev:** bump @typescript-eslint/parser from 8.59.1 to 8.59.2 ([#3855](https://github.com/fleetyards/fleetyards/issues/3855)) ([f4a68fc](https://github.com/fleetyards/fleetyards/commit/f4a68fc037eb2bf3d692c02a2b8965030d6b2170))
+* **deps-dev:** bump @vue/test-utils from 2.4.9 to 2.4.10 ([#3836](https://github.com/fleetyards/fleetyards/issues/3836)) ([c2aa10b](https://github.com/fleetyards/fleetyards/commit/c2aa10b77e6a49c5785407f66cfead7f7a358409))
+* **deps-dev:** bump eslint from 10.2.1 to 10.3.0 ([#3845](https://github.com/fleetyards/fleetyards/issues/3845)) ([ecf9cf6](https://github.com/fleetyards/fleetyards/commit/ecf9cf6623adb2a2b77beb5d3ff7dceb62bce665))
+* **deps-dev:** bump eslint-plugin-compat from 7.0.1 to 7.0.2 ([#3829](https://github.com/fleetyards/fleetyards/issues/3829)) ([dbdbd2d](https://github.com/fleetyards/fleetyards/commit/dbdbd2dcf8d88fceb42e656fed668b554c0cfb9c))
+* **deps-dev:** bump jsdom from 29.1.0 to 29.1.1 ([#3834](https://github.com/fleetyards/fleetyards/issues/3834)) ([7006153](https://github.com/fleetyards/fleetyards/commit/700615390aa5a6e23c0b6f1b0aa420b9af656da3))
+* **deps-dev:** bump knip from 6.7.0 to 6.9.0 ([#3828](https://github.com/fleetyards/fleetyards/issues/3828)) ([2110c5e](https://github.com/fleetyards/fleetyards/commit/2110c5e159f877c72d00e004e515afc0d7db9436))
+* **deps-dev:** bump msw from 2.13.6 to 2.14.2 ([#3830](https://github.com/fleetyards/fleetyards/issues/3830)) ([8e62430](https://github.com/fleetyards/fleetyards/commit/8e624303a0cec9d46aa7d99d909b623e685c9098))
+* **deps-dev:** bump orval from 8.9.0 to 8.9.1 ([#3844](https://github.com/fleetyards/fleetyards/issues/3844)) ([9c7b77d](https://github.com/fleetyards/fleetyards/commit/9c7b77d7ad650e75e8499e88498942ca8fcf5904))
+* **deps-dev:** bump stylelint from 17.9.1 to 17.10.0 ([#3842](https://github.com/fleetyards/fleetyards/issues/3842)) ([ed15a81](https://github.com/fleetyards/fleetyards/commit/ed15a81c86bf5c62dd532514b7916bdd80d8cb3e))
+* **deps-dev:** bump workbox-build from 7.4.0 to 7.4.1 ([#3853](https://github.com/fleetyards/fleetyards/issues/3853)) ([bda7d9d](https://github.com/fleetyards/fleetyards/commit/bda7d9d5451ab7cd339f9a6e4098e98a89bafec2))
+* **deps-dev:** bump workbox-window from 7.4.0 to 7.4.1 ([#3856](https://github.com/fleetyards/fleetyards/issues/3856)) ([a0f74d1](https://github.com/fleetyards/fleetyards/commit/a0f74d134bd644e6f2ebba96a5f393405f1c71f6))
+* **deps:** bump @tanstack/vue-query from 5.100.8 to 5.100.9 ([#3847](https://github.com/fleetyards/fleetyards/issues/3847)) ([1e1f9d2](https://github.com/fleetyards/fleetyards/commit/1e1f9d23587af97be9845f911c32eee20ee0977d))
+* **deps:** bump @vueuse/core from 14.2.1 to 14.3.0 ([#3835](https://github.com/fleetyards/fleetyards/issues/3835)) ([e35ee84](https://github.com/fleetyards/fleetyards/commit/e35ee84a5a5b1a552dc111080ad37502211ba4fd))
+* **deps:** bump axios from 1.15.2 to 1.16.0 ([#3841](https://github.com/fleetyards/fleetyards/issues/3841)) ([67270f4](https://github.com/fleetyards/fleetyards/commit/67270f4c7de2c77c36d62049c702bd2807352028))
+* **deps:** bump bootsnap from 1.24.1 to 1.24.2 ([#3854](https://github.com/fleetyards/fleetyards/issues/3854)) ([b5a34b7](https://github.com/fleetyards/fleetyards/commit/b5a34b7e008c8bd16b3b8322f63acbdb07fac99c))
+* readd chore section to release-please changelog ([#3858](https://github.com/fleetyards/fleetyards/issues/3858)) ([5f3c07c](https://github.com/fleetyards/fleetyards/commit/5f3c07c6737ffdb6a5ca91a126bed5b56d8e7a91))
+
 ## [6.19.0](https://github.com/fleetyards/fleetyards/compare/v6.18.2...v6.19.0) (2026-04-29)
 
 
