@@ -60,6 +60,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :start
       put :complete
       put :cancel
+      put :unarchive
       post :signup, to: "fleet_event_signups#event_signup"
     end
 
@@ -69,6 +70,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :sort, on: :collection
       resources :fleet_event_ships, path: "ships", only: %i[create update destroy] do
         put :sort, on: :collection
+        post "expand-from-model", action: :expand_from_model, on: :member
       end
     end
   end

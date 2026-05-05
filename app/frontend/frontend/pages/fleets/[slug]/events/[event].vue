@@ -13,6 +13,8 @@ import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBad
 import EventActions from "@/frontend/components/Fleets/Events/EventActions/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipMeta from "@/frontend/components/Fleets/Events/EventShipMeta/index.vue";
+import EventShipMatchWarning from "@/frontend/components/Fleets/Events/EventShipMatchWarning/index.vue";
+import EventShipExpandHint from "@/frontend/components/Fleets/Events/EventShipExpandHint/index.vue";
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
 import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import UnassignedSignups from "@/frontend/components/Fleets/Events/UnassignedSignups/index.vue";
@@ -35,6 +37,7 @@ import { checkAccess } from "@/shared/utils/Access";
 import { format, parseISO } from "date-fns";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRouter } from "vue-router";
+import { PanelBgRoundedEnum } from "@/shared/components/base/Panel/types";
 
 type Props = {
   fleet: Fleet;
@@ -124,6 +127,7 @@ type SlotContext = {
   slot: FleetEventSlot;
   teamTitle: string;
   shipTitle?: string;
+  ship?: FleetEventShip | null;
 };
 
 const allSlotsWithContext = computed<SlotContext[]>(() => {
@@ -131,7 +135,7 @@ const allSlotsWithContext = computed<SlotContext[]>(() => {
   const out: SlotContext[] = [];
   for (const team of event.value.teams as FleetEventTeam[]) {
     for (const slot of (team.slots ?? []) as FleetEventSlot[]) {
-      out.push({ slot, teamTitle: team.title });
+      out.push({ slot, teamTitle: team.title, ship: null });
     }
     for (const ship of (team.ships ?? []) as FleetEventShip[]) {
       const shipTitle = ship.displayTitle || ship.title || undefined;
@@ -140,6 +144,7 @@ const allSlotsWithContext = computed<SlotContext[]>(() => {
           slot,
           teamTitle: team.title,
           shipTitle: shipTitle ?? undefined,
+          ship,
         });
       }
     }
@@ -154,9 +159,7 @@ const ownSignupContext = computed<{
   const userId = currentUserId.value;
   if (!userId) return null;
   for (const ctx of allSlotsWithContext.value) {
-    const signup = (ctx.slot.signups ?? []).find(
-      (s) => s.user?.id === userId,
-    );
+    const signup = (ctx.slot.signups ?? []).find((s) => s.user?.id === userId);
     if (signup) return { signup, context: ctx };
   }
   const eventLevel = (
@@ -170,7 +173,7 @@ const ownSignupContext = computed<{
 const canSignupToEvent = computed(() => {
   return (
     !!event.value &&
-    event.value.status === "open" &&
+    event.value.signupsOpen &&
     !!checkAccess(props.resourceAccess, [
       "fleet:manage",
       "fleet:events:manage",
@@ -217,11 +220,14 @@ const endDate = computed(() => {
 
 const signupsLocked = computed(() => {
   return (
-    !event.value || ["draft", "locked", "active", "completed", "cancelled"].includes(
+    !event.value ||
+    ["draft", "locked", "active", "completed", "cancelled"].includes(
       event.value.status,
     )
   );
 });
+
+const signupsOpenForEvent = computed(() => !!event.value?.signupsOpen);
 
 const goToEdit = () => {
   if (!event.value) return;
@@ -235,9 +241,7 @@ const openAdminsModal = () => {
   if (!event.value) return;
   comlink.emit("open-modal", {
     component: () =>
-      import(
-        "@/frontend/components/Fleets/Events/EventAdminsModal/index.vue"
-      ),
+      import("@/frontend/components/Fleets/Events/EventAdminsModal/index.vue"),
     props: {
       fleet: props.fleet,
       event: event.value,
@@ -314,12 +318,12 @@ const crumbs = computed(() => [
     <Panel
       class="event-hero"
       :bg-image="cover"
-      :bg-rounded="'top' as never"
+      :bg-rounded="PanelBgRoundedEnum.ALL"
     >
       <div class="event-hero__inner">
         <Heading size="hero" hero>
           {{ event.title }}
-          <EventStatusBadge :status="event.status" />
+          <EventStatusBadge :status="event.status" :past="event.past" />
         </Heading>
         <div class="event-hero__meta text-muted">
           <p>
@@ -358,11 +362,7 @@ const crumbs = computed(() => [
             : t("actions.fleets.events.archive")
         }}
       </Btn>
-      <EventActions
-        :fleet="fleet"
-        :event="event"
-        :can-manage="canManage"
-      />
+      <EventActions :fleet="fleet" :event="event" :can-manage="canManage" />
     </div>
 
     <p v-if="event.description" class="event-description">
@@ -379,6 +379,9 @@ const crumbs = computed(() => [
       :signup="ownSignupContext.signup"
       :slot-title="yourSignupSlotTitle"
       :context-label="yourSignupContextLabel"
+      :ship="ownSignupContext.context?.ship"
+      :fleet-slug="fleet.slug"
+      :event-slug="event.slug"
     />
     <EventSignupCta
       v-else-if="canSignupToEvent"
@@ -411,12 +414,7 @@ const crumbs = computed(() => [
                 : t("actions.fleets.events.editSchedule")
             }}
           </Btn>
-          <Btn
-            v-if="editMode"
-            size="small"
-            inline
-            @click="openAddTeamModal"
-          >
+          <Btn v-if="editMode" size="small" inline @click="openAddTeamModal">
             <i class="fa-light fa-plus" />
             {{ t("actions.fleets.events.addTeam") }}
           </Btn>
@@ -430,7 +428,7 @@ const crumbs = computed(() => [
 
       <template v-if="editMode">
         <EventTeamCard
-          v-for="team in (event.teams as FleetEventTeam[])"
+          v-for="team in event.teams as FleetEventTeam[]"
           :key="team.id"
           :team="team"
           :event="event"
@@ -438,7 +436,10 @@ const crumbs = computed(() => [
           editable
           :current-user-id="currentUserId"
           :signups-locked="signupsLocked"
+          :signups-open="signupsOpenForEvent"
           :own-active-slot-id="ownActiveSlotId"
+          :is-manager="isEventManager"
+          :available-slots="allSlotsWithContext"
         />
         <p v-if="!event.teams?.length" class="text-muted">
           {{ t("labels.fleets.missions.noTeams") }}
@@ -447,27 +448,32 @@ const crumbs = computed(() => [
 
       <template v-else>
         <div
-          v-for="team in (event.teams as FleetEventTeam[])"
+          v-for="team in event.teams as FleetEventTeam[]"
           :key="team.id"
           class="event-team"
         >
           <h3 class="event-team__title">{{ team.title }}</h3>
-          <p v-if="team.description" class="text-muted">{{ team.description }}</p>
+          <p v-if="team.description" class="text-muted">
+            {{ team.description }}
+          </p>
 
           <div v-if="team.slots?.length" class="event-slots">
             <EventSlotRow
-              v-for="slot in (team.slots as FleetEventSlot[])"
+              v-for="slot in team.slots as FleetEventSlot[]"
               :key="slot.id"
               :slot-data="slot"
               :current-user-id="currentUserId"
               :signups-locked="signupsLocked"
+              :signups-open="signupsOpenForEvent"
               :own-active-slot-id="ownActiveSlotId"
+              :is-manager="isEventManager"
+              :available-slots="allSlotsWithContext"
             />
           </div>
 
           <div v-if="team.ships?.length" class="event-ships">
             <div
-              v-for="ship in (team.ships as FleetEventShip[])"
+              v-for="ship in team.ships as FleetEventShip[]"
               :key="ship.id"
               class="event-ship"
             >
@@ -478,14 +484,26 @@ const crumbs = computed(() => [
                 {{ ship.description }}
               </p>
               <EventShipMeta :ship="ship" />
+              <EventShipMatchWarning :ship="ship" />
+              <EventShipExpandHint
+                v-if="isEventManager"
+                :fleet="fleet"
+                :event="event"
+                :team="team"
+                :ship="ship"
+              />
               <div class="event-slots">
                 <EventSlotRow
-                  v-for="slot in (ship.slots as FleetEventSlot[])"
+                  v-for="slot in ship.slots as FleetEventSlot[]"
                   :key="slot.id"
                   :slot-data="slot"
+                  :ship="ship"
                   :current-user-id="currentUserId"
                   :signups-locked="signupsLocked"
+                  :signups-open="signupsOpenForEvent"
                   :own-active-slot-id="ownActiveSlotId"
+                  :is-manager="isEventManager"
+                  :available-slots="allSlotsWithContext"
                 />
               </div>
             </div>

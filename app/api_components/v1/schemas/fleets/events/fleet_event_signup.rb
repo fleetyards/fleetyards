@@ -39,7 +39,14 @@ module V1
                     properties: {
                       id: {type: :string, format: :uuid},
                       name: {type: :string},
-                      slug: {type: :string}
+                      slug: {type: :string},
+                      classification: {type: :string, nullable: true},
+                      focus: {type: :string, nullable: true},
+                      size: {type: :string, nullable: true},
+                      minCrew: {type: :integer, nullable: true},
+                      maxCrew: {type: :integer, nullable: true},
+                      cargo: {type: :integer, nullable: true},
+                      positionCount: {type: :integer, nullable: true}
                     }
                   }
                 }

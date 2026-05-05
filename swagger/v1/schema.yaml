@@ -1033,6 +1033,11 @@ paths:
         required: false
         schema:
           type: boolean
+      - name: archived
+        in: query
+        required: false
+        schema:
+          type: boolean
       security:
       - SessionCookie: []
       - Oauth2:
@@ -1298,6 +1303,74 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/FleetEventShipCreateInput"
+        required: true
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventTeamId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Expand ship slots from model positions
+      operationId: expandFleetEventShipFromModel
+      tags:
+      - Fleet Event Ships
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventShip"
+        '422':
+          description: no new positions to add
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                modelId:
+                  type: string
+                  format: uuid
+                positionIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+              - modelId
         required: true
   "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/sort":
     parameters:
@@ -1737,6 +1810,46 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetEventExtended"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/events/{slug}/unarchive":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Unarchive Fleet Event
+      operationId: unarchiveFleetEvent
+      tags:
+      - Fleet Events
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventExtended"
+        '400':
+          description: not archived
         '401':
           description: unauthorized
           content:
@@ -10632,6 +10745,10 @@ components:
           type: integer
         teamCount:
           type: integer
+        past:
+          type: boolean
+        signupsOpen:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -10654,6 +10771,8 @@ components:
       - signupApproval
       - signupsCount
       - teamCount
+      - past
+      - signupsOpen
       - createdAt
       - updatedAt
       title: FleetEvent
@@ -11026,6 +11145,27 @@ components:
                   type: string
                 slug:
                   type: string
+                classification:
+                  type: string
+                  nullable: true
+                focus:
+                  type: string
+                  nullable: true
+                size:
+                  type: string
+                  nullable: true
+                minCrew:
+                  type: integer
+                  nullable: true
+                maxCrew:
+                  type: integer
+                  nullable: true
+                cargo:
+                  type: integer
+                  nullable: true
+                positionCount:
+                  type: integer
+                  nullable: true
       required:
       - id
       - fleetEventId
@@ -11121,6 +11261,10 @@ components:
           type: boolean
         positionType:
           type: string
+          nullable: true
+        modelPositionId:
+          type: string
+          format: uuid
           nullable: true
         signupApproval:
           type: string

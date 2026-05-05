@@ -59,12 +59,14 @@ module V1
               },
               signupsCount: {type: :integer},
               teamCount: {type: :integer},
+              past: {type: :boolean},
+              signupsOpen: {type: :boolean},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
             required: %w[
               id fleetId title slug status startsAt timezone visibility category
-              autoLockEnabled archived externalUid signupApproval signupsCount teamCount createdAt updatedAt
+              autoLockEnabled archived externalUid signupApproval signupsCount teamCount past signupsOpen createdAt updatedAt
             ]
           })
         end

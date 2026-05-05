@@ -4,8 +4,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "",
     name: "fleet-events",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/events/index.vue"),
+    component: () => import("@/frontend/pages/fleets/[slug]/events/index.vue"),
     meta: {
       backgroundImage: "bg-8",
       title: "fleets.events.index",

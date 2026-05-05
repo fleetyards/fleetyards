@@ -11,7 +11,7 @@ module Api
       before_action :set_fleet
       before_action :set_event
       before_action :set_team
-      before_action :set_ship, only: %i[update destroy]
+      before_action :set_ship, only: %i[update destroy expand_from_model]
 
       def create
         @ship = @team.fleet_event_ships.new(ship_params)
@@ -45,6 +45,45 @@ module Api
         unless @ship.destroy
           render json: ValidationError.new("fleet_event_ships.destroy", errors: @ship.errors), status: :bad_request
         end
+      end
+
+      # Adds extra slots to this ship for any model_positions of the given
+      # model that aren't already represented as slots — useful when a member
+      # signs up with a specific vehicle and we want to materialize the
+      # remaining seats (gunner, copilot, …) so other members can join.
+      def expand_from_model
+        authorize! @ship, with: FleetEventShipPolicy, context: {fleet_event: @event}, to: :update?
+
+        model = Model.find(params[:model_id])
+
+        existing_position_ids = @ship.fleet_event_slots.where.not(model_position_id: nil).pluck(:model_position_id)
+        positions = model.model_positions.where.not(id: existing_position_ids)
+
+        if (requested = position_ids_param).present?
+          positions = positions.where(id: requested)
+        end
+
+        positions = positions.order(:position)
+
+        if positions.empty?
+          render json: {code: "no_new_positions", message: "No additional positions to add"}, status: :unprocessable_entity
+          return
+        end
+
+        next_slot_position = @ship.fleet_event_slots.maximum(:position) || -1
+
+        ActiveRecord::Base.transaction do
+          positions.each do |mp|
+            next_slot_position += 1
+            @ship.fleet_event_slots.create!(
+              title: mp.name,
+              model_position_id: mp.id,
+              position: next_slot_position
+            )
+          end
+        end
+
+        render :show
       end
 
       def sort

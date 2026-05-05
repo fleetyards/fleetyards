@@ -28,9 +28,7 @@ const { resolve } = useMissionCover();
 const fleetSlug = computed(() => props.fleet.slug);
 const { data: missions, isLoading } = useFleetMissions(fleetSlug, ref({}));
 
-const missionList = computed<Mission[]>(
-  () => missions.value?.items ?? [],
-);
+const missionList = computed<Mission[]>(() => missions.value?.items ?? []);
 
 const pick = (mission: Mission | null) => {
   props.onPick(mission);
@@ -80,9 +78,7 @@ const pick = (mission: Mission | null) => {
           <strong class="template-card__title">{{ mission.title }}</strong>
           <div class="template-card__meta">
             <span class="template-card__badge">
-              {{
-                t(`labels.fleets.missions.categories.${mission.category}`)
-              }}
+              {{ t(`labels.fleets.missions.categories.${mission.category}`) }}
             </span>
             <span
               v-if="(mission as { scenario?: string | null }).scenario"
@@ -144,7 +140,9 @@ const pick = (mission: Mission | null) => {
   border-radius: 6px;
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.15s, transform 0.1s;
+  transition:
+    border-color 0.15s,
+    transform 0.1s;
 
   &:hover {
     border-color: rgba(255, 255, 255, 0.25);

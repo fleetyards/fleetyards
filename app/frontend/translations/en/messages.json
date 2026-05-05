@@ -369,6 +369,10 @@
             "failure": "Could not archive event.",
             "confirm": "Archive this event? Members will no longer see it in the upcoming list."
           },
+          "unarchive": {
+            "success": "Event restored from archive.",
+            "failure": "Could not restore event."
+          },
           "destroy": {
             "success": "Event deleted.",
             "failure": "Could not delete event.",
@@ -459,6 +463,10 @@
             "success": "Ship removed.",
             "failure": "Could not remove ship.",
             "confirm": "Remove this ship and its slots?"
+          },
+          "expand": {
+            "success": "Slots added.",
+            "failure": "Could not add slots."
           }
         },
         "eventSlot": {

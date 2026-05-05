@@ -31,6 +31,7 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
 
       parameter name: :upcoming, in: :query, type: :boolean, required: false
       parameter name: :past, in: :query, type: :boolean, required: false
+      parameter name: :archived, in: :query, type: :boolean, required: false
 
       security [
         {SessionCookie: []},

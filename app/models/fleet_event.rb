@@ -180,10 +180,16 @@ class FleetEvent < ApplicationRecord
   end
 
   def signups_count
-    FleetEventSignup
-      .where(fleet_event_slot_id: slots.pluck(:id))
-      .where.not(status: "withdrawn")
-      .count
+    fleet_event_signups.where.not(status: "withdrawn").count
+  end
+
+  def past?
+    reference = ends_at.presence || starts_at
+    reference.present? && reference < Time.current
+  end
+
+  def signups_open?
+    status == "open" && !past?
   end
 
   def self.ransackable_attributes(_auth_object = nil)

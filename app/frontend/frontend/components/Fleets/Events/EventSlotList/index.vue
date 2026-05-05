@@ -149,6 +149,7 @@ const initSortable = () => {
             sorting: order,
           },
         })
+        .then(() => comlink.emit("fleet-event-children-changed"))
         .catch(() =>
           displayAlert({
             text: t("messages.fleets.eventSlot.update.failure"),

@@ -33,6 +33,13 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 
+type SlotContext = {
+  slot: FleetEventSlot;
+  teamTitle: string;
+  shipTitle?: string;
+  ship?: FleetEventShip | null;
+};
+
 type Props = {
   fleet: Fleet;
   event: FleetEvent;
@@ -41,14 +48,20 @@ type Props = {
   editable?: boolean;
   currentUserId?: string;
   signupsLocked?: boolean;
+  signupsOpen?: boolean;
   ownActiveSlotId?: string | null;
+  isManager?: boolean;
+  availableSlots?: SlotContext[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   editable: false,
   currentUserId: undefined,
   signupsLocked: false,
+  signupsOpen: undefined,
   ownActiveSlotId: null,
+  isManager: false,
+  availableSlots: () => [],
 });
 
 const { t } = useI18n();
@@ -266,12 +279,16 @@ const subtitle = computed(() => {
         />
         <div v-else class="event-ship-slots-list">
           <EventSlotRow
-            v-for="slot in (ship.slots as FleetEventSlot[])"
+            v-for="slot in ship.slots as FleetEventSlot[]"
             :key="slot.id"
             :slot-data="slot"
+            :ship="ship"
             :current-user-id="currentUserId"
             :signups-locked="signupsLocked"
+            :signups-open="signupsOpen"
             :own-active-slot-id="ownActiveSlotId"
+            :is-manager="isManager"
+            :available-slots="availableSlots"
           />
         </div>
       </div>

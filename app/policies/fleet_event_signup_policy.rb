@@ -4,6 +4,7 @@ class FleetEventSignupPolicy < FleetBasePolicy
   authorize :fleet_event, optional: true
 
   def create?
+    return false unless signups_open_for_event?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage", "fleet:events:read"])
   end
 
@@ -36,6 +37,11 @@ class FleetEventSignupPolicy < FleetBasePolicy
   private def event_admin_or_moderator?
     target_event = record.try(:fleet_event) || fleet_event
     target_event&.event_moderator_or_admin?(user)
+  end
+
+  private def signups_open_for_event?
+    target_event = record.try(:fleet_event) || fleet_event
+    target_event.nil? || target_event.signups_open?
   end
 
   private def fleet_membership

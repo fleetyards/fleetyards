@@ -79,7 +79,6 @@ const fromLocal = (value: string | null | undefined): Date | null => {
   return isNaN(parsed.getTime()) ? null : parsed;
 };
 
-
 const browserTz = (() => {
   try {
     return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -101,9 +100,7 @@ const addHours = (value: string, hours: number) => {
   return format(parsed, LOCAL_FORMAT);
 };
 
-const sourceMission = ref<Mission | MissionExtended | undefined>(
-  props.mission,
-);
+const sourceMission = ref<Mission | MissionExtended | undefined>(props.mission);
 const selectedMissionSlug = ref<string | null>(props.mission?.slug ?? null);
 const selectedMissionTitle = ref<string | null>(props.mission?.title ?? null);
 const selectedMissionCategory = ref<string | null>(
@@ -115,7 +112,9 @@ const { defineField, handleSubmit, setValues, meta } = useForm({
     title: props.event?.title ?? props.mission?.title ?? "",
     description: props.event?.description ?? props.mission?.description ?? "",
     briefing: props.event?.briefing ?? "",
-    startsAt: props.event?.startsAt ? toLocal(props.event.startsAt) : defaultStart,
+    startsAt: props.event?.startsAt
+      ? toLocal(props.event.startsAt)
+      : defaultStart,
     endsAt: props.event?.endsAt
       ? toLocal(props.event.endsAt)
       : addHours(defaultStart, 2),
@@ -124,9 +123,7 @@ const { defineField, handleSubmit, setValues, meta } = useForm({
     meetupLocation: props.event?.meetupLocation ?? "",
     visibility: props.event?.visibility ?? FleetEventVisibility.members,
     category:
-      props.event?.category ??
-      props.mission?.category ??
-      MissionCategory.other,
+      props.event?.category ?? props.mission?.category ?? MissionCategory.other,
     scenario:
       props.event?.scenario ??
       (props.mission as { scenario?: string | null } | undefined)?.scenario ??
@@ -179,7 +176,6 @@ watch(startsAt, (newStart, oldStart) => {
   void oldStart;
 });
 
-
 const { suggestions: scenarioSuggestions } = useMissionScenarios();
 const { presetsFor } = useMissionCover();
 
@@ -203,7 +199,10 @@ const visibilityOptions = computed<FilterOption[]>(() =>
 );
 
 const timezoneOptions = computed<FilterOption[]>(() => {
-  const base = TIMEZONE_OPTIONS.map((tz) => ({ value: tz.value, label: tz.label }));
+  const base = TIMEZONE_OPTIONS.map((tz) => ({
+    value: tz.value,
+    label: tz.label,
+  }));
   // Make sure a preserved value (e.g. an event saved with an unusual zone)
   // remains selectable.
   const current = (timezone.value as string) || "";
@@ -240,9 +239,7 @@ const applyMissionPrefill = (mission: Mission | MissionExtended | null) => {
 const openTemplatePicker = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import(
-        "@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"
-      ),
+      import("@/frontend/components/Fleets/Events/MissionTemplatePicker/index.vue"),
     props: {
       fleet: props.fleet,
       selectedSlug: selectedMissionSlug.value,

@@ -49,15 +49,19 @@ const setView = (next: "list" | "calendar") => {
   void router.replace({
     name: "fleet-events",
     params: { slug: props.fleet.slug },
-    query: { ...route.query, view: next === "calendar" ? "calendar" : undefined },
+    query: {
+      ...route.query,
+      view: next === "calendar" ? "calendar" : undefined,
+    },
   });
 };
 
-const tab = ref<"upcoming" | "past">("upcoming");
+const tab = ref<"upcoming" | "past" | "archived">("upcoming");
 
 const queryParams = computed(() => ({
   upcoming: tab.value === "upcoming" ? true : undefined,
   past: tab.value === "past" ? true : undefined,
+  archived: tab.value === "archived" ? true : undefined,
 }));
 
 const {
@@ -94,6 +98,14 @@ const canCreate = computed(() =>
     "fleet:manage",
     "fleet:events:manage",
     "fleet:events:create",
+  ]),
+);
+
+const canManage = computed(() =>
+  checkAccess(props.resourceAccess, [
+    "fleet:manage",
+    "fleet:events:manage",
+    "fleet:events:delete",
   ]),
 );
 
@@ -214,13 +226,16 @@ const crumbs = computed(() => [
         >
           {{ t("labels.fleets.events.upcomingTab") }}
         </Btn>
+        <Btn :active="tab === 'past'" size="small" inline @click="tab = 'past'">
+          {{ t("labels.fleets.events.pastTab") }}
+        </Btn>
         <Btn
-          :active="tab === 'past'"
+          :active="tab === 'archived'"
           size="small"
           inline
-          @click="tab = 'past'"
+          @click="tab = 'archived'"
         >
-          {{ t("labels.fleets.events.pastTab") }}
+          {{ t("labels.fleets.events.archivedTab") }}
         </Btn>
       </BtnGroup>
     </template>
@@ -228,7 +243,7 @@ const crumbs = computed(() => [
     <template #default="{ records }">
       <Grid :records="records as FleetEvent[]" primary-key="id">
         <template #default="{ record }">
-          <EventPanel :event="record" :fleet="fleet" />
+          <EventPanel :event="record" :fleet="fleet" :can-manage="canManage" />
         </template>
       </Grid>
     </template>

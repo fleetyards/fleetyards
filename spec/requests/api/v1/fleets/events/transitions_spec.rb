@@ -178,6 +178,46 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
     end
   end
 
+  path "/fleets/{fleetSlug}/events/{slug}/unarchive" do
+    parameter name: "fleetSlug", in: :path, type: :string
+    parameter name: "slug", in: :path, type: :string
+
+    put("Unarchive Fleet Event") do
+      operationId "unarchiveFleetEvent"
+      tags "Fleet Events"
+      produces "application/json"
+
+      let(:fleet_event) do
+        event = create(:fleet_event, fleet: fleet, created_by: admin)
+        event.archive!
+        event
+      end
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
+      ]
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/FleetEventExtended"
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data["archived"]).to eq(false)
+        end
+      end
+
+      response(400, "not archived") do
+        let(:fleet_event) { create(:fleet_event, fleet: fleet, created_by: admin) }
+
+        run_test!
+      end
+
+      include_examples "oauth_auth"
+    end
+  end
+
   path "/fleets/{fleetSlug}/events/{slug}/cancel" do
     parameter name: "fleetSlug", in: :path, type: :string
     parameter name: "slug", in: :path, type: :string
