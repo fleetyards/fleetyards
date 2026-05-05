@@ -6,7 +6,8 @@
       "changelog-sections": [
         {"type": "feat", "section": "Features"},
         {"type": "fix", "section": "Bug Fixes"},
-        {"type": "refactor", "section": "Refactorings"}
+        {"type": "refactor", "section": "Refactorings"},
+        {"type": "chore", "section": "Chores"}
       ],
       "extra-files": [
         {
