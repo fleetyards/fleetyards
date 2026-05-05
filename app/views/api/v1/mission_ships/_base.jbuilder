@@ -13,6 +13,8 @@ if mission_ship.model.present?
     json.id mission_ship.model.id
     json.name mission_ship.model.name
     json.slug mission_ship.model.slug
+    json.min_crew mission_ship.model.min_crew
+    json.max_crew mission_ship.model.max_crew
 
     image_attr = if mission_ship.model.store_image.attached?
       :store_image

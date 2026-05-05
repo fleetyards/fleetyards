@@ -18,12 +18,21 @@ module V1
               position: {type: :integer},
               derived: {type: :boolean},
               positionType: {type: :string, nullable: true},
+              signupApproval: {
+                type: :string,
+                nullable: true,
+                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS + [nil]
+              },
+              effectiveSignupApproval: {
+                type: :string,
+                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
+              },
               signups: {
                 type: :array,
                 items: {"$ref": "#/components/schemas/FleetEventSignup"}
               }
             },
-            required: %w[id slottableType slottableId title position derived signups],
+            required: %w[id slottableType slottableId title position derived effectiveSignupApproval signups],
             additionalProperties: false
           })
         end

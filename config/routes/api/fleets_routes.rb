@@ -60,6 +60,16 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :start
       put :complete
       put :cancel
+      post :signup, to: "fleet_event_signups#event_signup"
+    end
+
+    resources :fleet_event_admins, path: "admins", only: %i[index create destroy]
+
+    resources :fleet_event_teams, path: "teams", only: %i[create update destroy] do
+      put :sort, on: :collection
+      resources :fleet_event_ships, path: "ships", only: %i[create update destroy] do
+        put :sort, on: :collection
+      end
     end
   end
 

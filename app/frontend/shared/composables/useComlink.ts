@@ -35,6 +35,10 @@ type Events = {
   "fleet-mission-created": () => void | Promise<unknown>;
   "fleet-mission-updated": () => void | Promise<unknown>;
   "mission-children-changed": () => void | Promise<unknown>;
+  "fleet-event-created": () => void | Promise<unknown>;
+  "fleet-event-updated": () => void | Promise<unknown>;
+  "fleet-event-signup-changed": () => void | Promise<unknown>;
+  "fleet-event-children-changed": () => void | Promise<unknown>;
 };
 
 const AppComlink = createNanoEvents<Events>();

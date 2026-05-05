@@ -12,6 +12,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import TeamCard from "@/frontend/components/Fleets/Missions/TeamCard/index.vue";
 import {
   type Fleet,
+  type FleetEvent,
   type FleetMember,
   type MissionExtended,
   type MissionTeam,
@@ -19,7 +20,9 @@ import {
   useDestroyFleetMission,
   useUpdateFleetMission,
   useSortMissionTeams,
+  useFleetEvents,
 } from "@/services/fyApi";
+import EventPanel from "@/frontend/components/Fleets/Events/EventPanel/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -92,6 +95,45 @@ const openEditModal = () => {
     },
   });
 };
+
+const canCreateEvents = computed(() =>
+  checkAccess(props.resourceAccess, [
+    "fleet:manage",
+    "fleet:events:manage",
+    "fleet:events:create",
+  ]),
+);
+
+const goToSpawnEvent = () => {
+  if (!mission.value) return;
+  void router.push({
+    name: "fleet-event-new",
+    params: { slug: props.fleet.slug },
+    query: { mission: mission.value.slug },
+  });
+};
+
+const { data: spawnedEvents, refetch: refetchSpawnedEvents } = useFleetEvents(
+  fleetSlug,
+  ref({}),
+  {
+    query: {
+      enabled: computed(() => !!mission.value?.id),
+    },
+  },
+);
+
+const spawnedEventList = computed<FleetEvent[]>(() => {
+  const all = spawnedEvents.value?.items ?? [];
+  return mission.value?.id
+    ? all.filter((event) => event.missionId === mission.value!.id)
+    : [];
+});
+
+onMounted(() => {
+  comlink.on("fleet-event-created", () => void refetchSpawnedEvents());
+  comlink.on("fleet-event-updated", () => void refetchSpawnedEvents());
+});
 
 const openAddTeamModal = () => {
   if (!mission.value) return;
@@ -223,6 +265,10 @@ const crumbs = computed(() => [
     label: props.fleet.name,
   },
   {
+    to: { name: "fleet-events", params: { slug: props.fleet.slug } },
+    label: t("headlines.fleets.events.index"),
+  },
+  {
     to: { name: "fleet-missions", params: { slug: props.fleet.slug } },
     label: t("nav.fleets.missions.index"),
   },
@@ -248,6 +294,15 @@ const coverImage = computed(() => resolveCover(mission.value));
     </p>
 
     <Teleport v-if="canEdit" to="#header-right">
+      <Btn
+        v-if="canCreateEvents && !mission.archived"
+        size="small"
+        inline
+        @click="goToSpawnEvent"
+      >
+        <i class="fa-light fa-calendar-plus" />
+        <span>{{ t("actions.fleets.events.spawn") }}</span>
+      </Btn>
       <Btn size="small" @click="openEditModal">
         <i class="fa-light fa-pen" />
         <span>{{ t("actions.fleets.missions.edit") }}</span>
@@ -304,6 +359,20 @@ const coverImage = computed(() => resolveCover(mission.value));
         {{ t("labels.fleets.missions.noTeams") }}
       </p>
     </section>
+
+    <section v-if="spawnedEventList.length" class="mission-section">
+      <div class="section-header">
+        <Heading>{{ t("headlines.fleets.events.spawnedFrom") }}</Heading>
+      </div>
+      <div class="spawned-events">
+        <EventPanel
+          v-for="event in spawnedEventList"
+          :key="event.id"
+          :event="event"
+          :fleet="fleet"
+        />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -326,6 +395,11 @@ const coverImage = computed(() => resolveCover(mission.value));
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 0.75rem;
+}
+.spawned-events {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
 }
 .mission-teams {
   display: flex;

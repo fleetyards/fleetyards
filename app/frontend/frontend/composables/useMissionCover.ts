@@ -76,7 +76,14 @@ type CoverImageHolder = {
   url?: string;
 };
 
-type MissionLike = Mission | MissionExtended;
+type MissionLike =
+  | Mission
+  | MissionExtended
+  | {
+      category?: string;
+      coverImage?: CoverImageHolder | null;
+      coverImagePreset?: string | null;
+    };
 
 export type MissionPresetOption = {
   key: string;
@@ -99,7 +106,10 @@ export const useMissionCover = () => {
       .coverImagePreset;
     if (preset && coverByPreset[preset]) return coverByPreset[preset];
 
-    return coverByPreset[mission.category] || fallback;
+    return (
+      (mission.category && coverByPreset[mission.category as string]) ||
+      fallback
+    );
   };
 
   const presetsFor = (category: string): MissionPresetOption[] => {

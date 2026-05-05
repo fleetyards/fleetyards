@@ -48,6 +48,10 @@
         "missions": {
           "index": "Missions"
         },
+        "events": {
+          "index": "Events",
+          "calendar": "Calendar"
+        },
         "settings": {
           "index": "Settings",
           "fleet": "Fleet Settings",

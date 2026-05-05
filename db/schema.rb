@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_05_200006) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_05_220001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -246,6 +246,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_200006) do
     t.index ["feature_name"], name: "index_feature_settings_on_feature_name", unique: true
   end
 
+  create_table "fleet_event_admins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.uuid "fleet_event_id", null: false
+    t.uuid "granted_by_id"
+    t.string "role", default: "admin", null: false
+    t.datetime "updated_at", null: false
+    t.uuid "user_id", null: false
+    t.index ["fleet_event_id", "user_id"], name: "index_fleet_event_admins_on_fleet_event_id_and_user_id", unique: true
+    t.index ["fleet_event_id"], name: "index_fleet_event_admins_on_fleet_event_id"
+    t.index ["user_id"], name: "index_fleet_event_admins_on_user_id"
+  end
+
   create_table "fleet_event_ships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "classification"
     t.datetime "created_at", null: false
@@ -269,14 +281,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_200006) do
   create_table "fleet_event_signups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "confirmed_at"
     t.datetime "created_at", null: false
-    t.uuid "fleet_event_slot_id", null: false
+    t.uuid "fleet_event_id", null: false
+    t.uuid "fleet_event_slot_id"
     t.uuid "fleet_membership_id", null: false
     t.text "notes"
     t.string "status", default: "confirmed", null: false
     t.datetime "updated_at", null: false
     t.uuid "vehicle_id"
     t.datetime "withdrawn_at"
-    t.index ["fleet_event_slot_id", "fleet_membership_id"], name: "index_fleet_event_signups_unique_active", unique: true, where: "((status)::text <> 'withdrawn'::text)"
+    t.index ["fleet_event_id", "fleet_membership_id"], name: "index_fleet_event_signups_unique_active_per_event", unique: true, where: "((status)::text <> 'withdrawn'::text)"
+    t.index ["fleet_event_id"], name: "index_fleet_event_signups_on_fleet_event_id"
     t.index ["fleet_event_slot_id"], name: "index_fleet_event_signups_on_fleet_event_slot_id"
     t.index ["fleet_membership_id"], name: "index_fleet_event_signups_on_fleet_membership_id"
   end
@@ -286,6 +300,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_200006) do
     t.text "description"
     t.uuid "model_position_id"
     t.integer "position", default: 0, null: false
+    t.string "signup_approval"
     t.uuid "slottable_id", null: false
     t.string "slottable_type", null: false
     t.uuid "source_slot_id"
@@ -330,6 +345,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_200006) do
     t.string "meetup_location"
     t.uuid "mission_id"
     t.string "scenario"
+    t.string "signup_approval", default: "direct", null: false
     t.string "slug", null: false
     t.datetime "starting_soon_notified_at"
     t.datetime "starts_at", null: false
@@ -1083,6 +1099,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_200006) do
     t.string "current_sign_in_ip", limit: 255
     t.string "current_system"
     t.string "current_system_code"
+    t.string "date_format", default: "dmy_dots", null: false
     t.string "discord"
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_otp_secret"
@@ -1239,10 +1256,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_200006) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "fleet_event_admins", "fleet_events"
+  add_foreign_key "fleet_event_admins", "users"
   add_foreign_key "fleet_event_ships", "fleet_event_teams"
   add_foreign_key "fleet_event_ships", "mission_ships", column: "source_ship_id", on_delete: :nullify
   add_foreign_key "fleet_event_ships", "models"
   add_foreign_key "fleet_event_signups", "fleet_event_slots"
+  add_foreign_key "fleet_event_signups", "fleet_events"
   add_foreign_key "fleet_event_signups", "fleet_memberships"
   add_foreign_key "fleet_event_signups", "vehicles", on_delete: :nullify
   add_foreign_key "fleet_event_slots", "mission_slots", column: "source_slot_id", on_delete: :nullify

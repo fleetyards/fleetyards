@@ -138,9 +138,16 @@ paths:
       operationId: modelFocusFilters
       tags:
       - ModelsFilters
+      parameters:
+      - name: classification
+        in: query
+        required: false
+        description: Restrict the result to focuses of models with this classification
+        schema:
+          type: string
       responses:
         '200':
-          description: successful
+          description: successful with classification filter
           content:
             application/json:
               schema:
@@ -207,6 +214,46 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+  "/fleet-event-signups/{id}/assign":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: 'Admin: assign or update a signup'
+      operationId: assignFleetEventSignup
+      tags:
+      - Fleet Event Signups
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventSignup"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventSignupAssignInput"
+        required: true
   "/fleet-event-slots/{id}/signup":
     parameters:
     - name: id
@@ -314,6 +361,150 @@ paths:
       operationId: destroyFleetEventSignup
       tags:
       - Fleet Event Signups
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleet-event-slots":
+    post:
+      summary: Create event slot
+      operationId: createFleetEventSlot
+      tags:
+      - Fleet Event Slots
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventSlot"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventSlotCreateInput"
+        required: true
+  "/fleet-event-slots/sort":
+    put:
+      summary: Sort event slots
+      operationId: sortFleetEventSlots
+      tags:
+      - Fleet Event Slots
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                slottableType:
+                  type: string
+                  enum:
+                  - FleetEventTeam
+                  - FleetEventShip
+                slottableId:
+                  type: string
+                  format: uuid
+                sorting:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+              - slottableType
+              - slottableId
+              - sorting
+        required: true
+  "/fleet-event-slots/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Update event slot
+      operationId: updateFleetEventSlot
+      tags:
+      - Fleet Event Slots
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventSlot"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventSlotUpdateInput"
+        required: true
+    delete:
+      summary: Destroy event slot
+      operationId: destroyFleetEventSlot
+      tags:
+      - Fleet Event Slots
       security:
       - SessionCookie: []
       - Oauth2:
@@ -670,6 +861,116 @@ paths:
             schema:
               "$ref": "#/components/schemas/FleetUpdateInput"
         required: true
+  "/fleets/{fleetSlug}/events/{slug}/admins":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Grant per-event admin/moderator role
+      operationId: createFleetEventAdmin
+      tags:
+      - Fleet Event Admins
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventAdmin"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventAdminCreateInput"
+        required: true
+    get:
+      summary: List event admins
+      operationId: fleetEventAdmins
+      tags:
+      - Fleet Event Admins
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventAdminsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/events/{slug}/admins/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    delete:
+      summary: Revoke per-event admin/moderator role
+      operationId: destroyFleetEventAdmin
+      tags:
+      - Fleet Event Admins
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/events":
     parameters:
     - name: fleetSlug
@@ -858,6 +1159,398 @@ paths:
             schema:
               "$ref": "#/components/schemas/FleetEventUpdateInput"
         required: true
+  "/fleets/{fleetSlug}/events/{slug}/signup":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Sign up to event without picking a slot
+      operationId: signupFleetEvent
+      tags:
+      - Fleet Event Signups
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventSignup"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventSignupCreateInput"
+        required: true
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Create event team
+      operationId: createFleetEventTeam
+      tags:
+      - Fleet Event Teams
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventTeam"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventTeamCreateInput"
+        required: true
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventTeamId
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Create event ship
+      operationId: createFleetEventShip
+      tags:
+      - Fleet Event Ships
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '201':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventShip"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventShipCreateInput"
+        required: true
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/sort":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventTeamId
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Sort event ships
+      operationId: sortFleetEventShips
+      tags:
+      - Fleet Event Ships
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sorting:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+              - sorting
+        required: true
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventTeamId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Update event ship
+      operationId: updateFleetEventShip
+      tags:
+      - Fleet Event Ships
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventShip"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventShipUpdateInput"
+        required: true
+    delete:
+      summary: Destroy event ship
+      operationId: destroyFleetEventShip
+      tags:
+      - Fleet Event Ships
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/sort":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Sort event teams
+      operationId: sortFleetEventTeams
+      tags:
+      - Fleet Event Teams
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sorting:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+              - sorting
+        required: true
+  "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: fleetEventSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    put:
+      summary: Update event team
+      operationId: updateFleetEventTeam
+      tags:
+      - Fleet Event Teams
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventTeam"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetEventTeamUpdateInput"
+        required: true
+    delete:
+      summary: Destroy event team
+      operationId: destroyFleetEventTeam
+      tags:
+      - Fleet Event Teams
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/events/{slug}/publish":
     parameters:
     - name: fleetSlug
@@ -9752,6 +10445,12 @@ components:
           type: boolean
         publicFleetStats:
           type: boolean
+        defaultTimezone:
+          type: string
+          nullable: true
+        calendarFeedToken:
+          type: string
+          nullable: true
         logo:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
@@ -9898,6 +10597,19 @@ components:
         cancelledReason:
           type: string
           nullable: true
+        signupApproval:
+          type: string
+          enum:
+          - direct
+          - confirmation_required
+        viewerEventRole:
+          type: string
+          nullable: true
+          enum:
+          - creator
+          - admin
+          - moderator
+          -
         archived:
           type: boolean
         archivedAt:
@@ -9939,11 +10651,77 @@ components:
       - autoLockEnabled
       - archived
       - externalUid
+      - signupApproval
       - signupsCount
       - teamCount
       - createdAt
       - updatedAt
       title: FleetEvent
+    FleetEventAdmin:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetEventId:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum:
+          - admin
+          - moderator
+        createdAt:
+          type: string
+          format: date-time
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+          required:
+          - id
+          - username
+        grantedBy:
+          type: object
+          nullable: true
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+      required:
+      - id
+      - fleetEventId
+      - role
+      - user
+      - createdAt
+      additionalProperties: false
+      title: FleetEventAdmin
+    FleetEventAdminCreateInput:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum:
+          - admin
+          - moderator
+      required:
+      - userId
+      additionalProperties: false
+      title: FleetEventAdminCreateInput
+    FleetEventAdminsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetEventAdmin"
+      title: FleetEventAdminsList
     FleetEventCreateInput:
       type: object
       properties:
@@ -10007,6 +10785,11 @@ components:
         autoLockMinutesBefore:
           type: integer
           nullable: true
+        signupApproval:
+          type: string
+          enum:
+          - direct
+          - confirmation_required
       required:
       - title
       - startsAt
@@ -10023,8 +10806,13 @@ components:
             type: array
             items:
               "$ref": "#/components/schemas/FleetEventTeam"
+          unassignedSignups:
+            type: array
+            items:
+              "$ref": "#/components/schemas/FleetEventSignup"
         required:
         - teams
+        - unassignedSignups
       title: FleetEventExtended
     FleetEventShip:
       type: object
@@ -10059,6 +10847,12 @@ components:
               type: string
             slug:
               type: string
+            minCrew:
+              type: integer
+              nullable: true
+            maxCrew:
+              type: integer
+              nullable: true
             image:
               "$ref": "#/components/schemas/MediaFile"
               nullable: true
@@ -10099,20 +10893,97 @@ components:
       - slots
       additionalProperties: false
       title: FleetEventShip
+    FleetEventShipCreateInput:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        modelId:
+          type: string
+          format: uuid
+          nullable: true
+        classification:
+          type: string
+          nullable: true
+        focus:
+          type: string
+          nullable: true
+        minSize:
+          type: string
+          nullable: true
+        maxSize:
+          type: string
+          nullable: true
+        minCrew:
+          type: integer
+          nullable: true
+        minCargo:
+          type: number
+          nullable: true
+        positionIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      title: FleetEventShipCreateInput
+    FleetEventShipUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        modelId:
+          type: string
+          format: uuid
+          nullable: true
+        classification:
+          type: string
+          nullable: true
+        focus:
+          type: string
+          nullable: true
+        minSize:
+          type: string
+          nullable: true
+        maxSize:
+          type: string
+          nullable: true
+        minCrew:
+          type: integer
+          nullable: true
+        minCargo:
+          type: number
+          nullable: true
+      additionalProperties: false
+      title: FleetEventShipUpdateInput
     FleetEventSignup:
       type: object
       properties:
         id:
           type: string
           format: uuid
+        fleetEventId:
+          type: string
+          format: uuid
         fleetEventSlotId:
           type: string
           format: uuid
+          nullable: true
         status:
           type: string
           enum:
           - confirmed
           - tentative
+          - interested
+          - pending
           - withdrawn
         notes:
           type: string
@@ -10157,10 +11028,34 @@ components:
                   type: string
       required:
       - id
-      - fleetEventSlotId
+      - fleetEventId
       - status
       additionalProperties: false
       title: FleetEventSignup
+    FleetEventSignupAssignInput:
+      type: object
+      properties:
+        fleetEventSlotId:
+          type: string
+          format: uuid
+          nullable: true
+        status:
+          type: string
+          enum:
+          - confirmed
+          - tentative
+          - interested
+          - pending
+          - withdrawn
+        vehicleId:
+          type: string
+          format: uuid
+          nullable: true
+        notes:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: FleetEventSignupAssignInput
     FleetEventSignupCreateInput:
       type: object
       properties:
@@ -10169,6 +11064,8 @@ components:
           enum:
           - confirmed
           - tentative
+          - interested
+          - pending
           - withdrawn
         vehicleId:
           type: string
@@ -10187,6 +11084,8 @@ components:
           enum:
           - confirmed
           - tentative
+          - interested
+          - pending
           - withdrawn
         vehicleId:
           type: string
@@ -10223,6 +11122,18 @@ components:
         positionType:
           type: string
           nullable: true
+        signupApproval:
+          type: string
+          nullable: true
+          enum:
+          - direct
+          - confirmation_required
+          -
+        effectiveSignupApproval:
+          type: string
+          enum:
+          - direct
+          - confirmation_required
         signups:
           type: array
           items:
@@ -10234,9 +11145,56 @@ components:
       - title
       - position
       - derived
+      - effectiveSignupApproval
       - signups
       additionalProperties: false
       title: FleetEventSlot
+    FleetEventSlotCreateInput:
+      type: object
+      properties:
+        slottableType:
+          type: string
+          enum:
+          - FleetEventTeam
+          - FleetEventShip
+        slottableId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        signupApproval:
+          type: string
+          nullable: true
+          enum:
+          - direct
+          - confirmation_required
+          -
+      required:
+      - slottableType
+      - slottableId
+      - title
+      additionalProperties: false
+      title: FleetEventSlotCreateInput
+    FleetEventSlotUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        signupApproval:
+          type: string
+          nullable: true
+          enum:
+          - direct
+          - confirmation_required
+          -
+      additionalProperties: false
+      title: FleetEventSlotUpdateInput
     FleetEventTeam:
       type: object
       properties:
@@ -10270,6 +11228,28 @@ components:
       - ships
       additionalProperties: false
       title: FleetEventTeam
+    FleetEventTeamCreateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+      required:
+      - title
+      additionalProperties: false
+      title: FleetEventTeamCreateInput
+    FleetEventTeamUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: FleetEventTeamUpdateInput
     FleetEventUpdateInput:
       type: object
       properties:
@@ -10333,6 +11313,11 @@ components:
         cancelledReason:
           type: string
           nullable: true
+        signupApproval:
+          type: string
+          enum:
+          - direct
+          - confirmation_required
       additionalProperties: false
       title: FleetEventUpdateInput
     FleetEventsList:
@@ -12173,6 +13158,12 @@ components:
               type: string
             slug:
               type: string
+            minCrew:
+              type: integer
+              nullable: true
+            maxCrew:
+              type: integer
+              nullable: true
             image:
               "$ref": "#/components/schemas/MediaFile"
               nullable: true
@@ -14062,6 +15053,13 @@ components:
           type: string
         saleNotify:
           type: boolean
+        dateFormat:
+          type: string
+          enum:
+          - dmy_dots
+          - dmy_slash
+          - mdy_slash
+          - ymd_dash
         publicHangar:
           type: boolean
         publicHangarUrl:
@@ -14110,6 +15108,7 @@ components:
       - username
       - email
       - saleNotify
+      - dateFormat
       - publicHangar
       - publicHangarLoaners
       - publicHangarStats
@@ -14218,6 +15217,13 @@ components:
           nullable: true
         saleNotify:
           type: boolean
+        dateFormat:
+          type: string
+          enum:
+          - dmy_dots
+          - dmy_slash
+          - mdy_slash
+          - ymd_dash
         publicHangar:
           type: boolean
         publicHangarLoaners:

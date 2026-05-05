@@ -1,5 +1,37 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: fleet_event_ships
+#
+#  id                  :uuid             not null, primary key
+#  classification      :string
+#  description         :text
+#  focus               :string
+#  max_size            :string
+#  min_cargo           :decimal(, )
+#  min_crew            :integer
+#  min_size            :string
+#  position            :integer          default(0), not null
+#  title               :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  fleet_event_team_id :uuid             not null
+#  model_id            :uuid
+#  source_ship_id      :uuid
+#
+# Indexes
+#
+#  index_fleet_event_ships_on_fleet_event_team_id               (fleet_event_team_id)
+#  index_fleet_event_ships_on_fleet_event_team_id_and_position  (fleet_event_team_id,position)
+#  index_fleet_event_ships_on_model_id                          (model_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (fleet_event_team_id => fleet_event_teams.id)
+#  fk_rails_...  (model_id => models.id)
+#  fk_rails_...  (source_ship_id => mission_ships.id) ON DELETE => nullify
+#
 class FleetEventShip < ApplicationRecord
   belongs_to :fleet_event_team, touch: true
   belongs_to :model, optional: true

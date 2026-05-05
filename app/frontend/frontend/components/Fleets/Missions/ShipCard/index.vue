@@ -88,20 +88,54 @@ const shipImage = computed<string | undefined>(() => {
 
 const hasShipImage = computed(() => !!shipImage.value);
 
-const filterSummary = computed(() => {
+const effectiveMinCrew = computed<number | null>(() => {
+  const override = props.ship.filters?.minCrew;
+  if (override != null) return override;
+  const model = props.ship.model as
+    | { minCrew?: number | null }
+    | null
+    | undefined;
+  return model?.minCrew ?? null;
+});
+
+const minCrewIsOverride = computed(
+  () => props.ship.filters?.minCrew != null && !!props.ship.model,
+);
+
+type StatItem = { icon: string; label?: string; value: string };
+
+const filterStrip = computed<StatItem[]>(() => {
+  if (props.ship.model) return [];
   const f = props.ship.filters;
-  if (!f) return null;
-  const parts: string[] = [];
-  if (f.classification) parts.push(f.classification);
-  if (f.focus) parts.push(f.focus);
+  if (!f) return [];
+  const items: StatItem[] = [];
+  if (f.classification)
+    items.push({ icon: "fa-light fa-tag", value: f.classification });
+  if (f.focus) items.push({ icon: "fa-light fa-bullseye", value: f.focus });
   if (f.minSize)
-    parts.push(`${t("labels.fleets.missions.minSize")}: ${f.minSize}`);
+    items.push({
+      icon: "fa-light fa-down-left-and-up-right-to-center",
+      label: t("labels.fleets.missions.minSize"),
+      value: f.minSize,
+    });
   if (f.maxSize)
-    parts.push(`${t("labels.fleets.missions.maxSize")}: ${f.maxSize}`);
+    items.push({
+      icon: "fa-light fa-up-right-and-down-left-from-center",
+      label: t("labels.fleets.missions.maxSize"),
+      value: f.maxSize,
+    });
   if (f.minCrew != null)
-    parts.push(`${t("labels.fleets.missions.minCrew")}: ${f.minCrew}`);
-  if (f.minCargo != null) parts.push(`${f.minCargo} SCU`);
-  return parts.length ? parts.join(" · ") : null;
+    items.push({
+      icon: "fa-light fa-user-group",
+      label: t("labels.fleets.missions.minCrew"),
+      value: String(f.minCrew),
+    });
+  if (f.minCargo != null)
+    items.push({
+      icon: "fa-light fa-box",
+      value: `${f.minCargo} SCU`,
+    });
+  return items;
 });
 
 const headerTitle = computed(
@@ -112,7 +146,7 @@ const subtitle = computed(() => {
   if (props.ship.model?.name && headerTitle.value !== props.ship.model.name) {
     return props.ship.model.name;
   }
-  return filterSummary.value;
+  return null;
 });
 </script>
 
@@ -170,10 +204,37 @@ const subtitle = computed(() => {
           </BtnDropdown>
         </template>
       </PanelHeading>
+      <div
+        v-if="effectiveMinCrew != null || filterStrip.length"
+        class="mission-ship-stats"
+      >
+        <span v-if="effectiveMinCrew != null" class="mission-ship-stat">
+          <i class="fa-light fa-user-group" />
+          <span class="mission-ship-stat__label">
+            {{ t("labels.fleets.missions.minCrew") }}
+          </span>
+          <span class="mission-ship-stat__value">
+            {{ effectiveMinCrew }}
+          </span>
+          <span v-if="minCrewIsOverride" class="mission-ship-stat__badge">
+            {{ t("labels.fleets.missions.minCrewOverride") }}
+          </span>
+        </span>
+        <span
+          v-for="(item, idx) in filterStrip"
+          :key="idx"
+          class="mission-ship-stat"
+        >
+          <i :class="item.icon" />
+          <span v-if="item.label" class="mission-ship-stat__label">
+            {{ item.label }}
+          </span>
+          <span class="mission-ship-stat__value">{{ item.value }}</span>
+        </span>
+      </div>
+
       <PanelBody v-if="ship.description" class="mission-ship-body">
-        <p class="ship-desc">
-          {{ ship.description }}
-        </p>
+        <p class="ship-desc">{{ ship.description }}</p>
       </PanelBody>
     </template>
 
@@ -199,12 +260,27 @@ const subtitle = computed(() => {
   min-width: 350px;
   flex-shrink: 0;
 }
+$shipImageHeight: 160px;
+
 .mission-ship-panel :deep(.panel-bg) {
-  height: 160px;
+  height: $shipImageHeight;
   bottom: auto;
 }
 .mission-ship-panel :deep(.panel-inner) {
-  min-height: 160px;
+  padding-top: $shipImageHeight;
+  position: relative;
+  min-height: $shipImageHeight;
+}
+.mission-ship-panel :deep(.panel-heading) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  z-index: 1;
+}
+.mission-ship-panel :deep(.panel-body) {
+  padding: 0;
 }
 .ship-placeholder {
   position: absolute;
@@ -261,6 +337,44 @@ const subtitle = computed(() => {
   font-size: 0.85rem;
   color: var(--text-muted);
   margin: 0;
+}
+.mission-ship-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.85rem;
+  padding: 0.45rem 0.85rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.mission-ship-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--text);
+
+  i {
+    color: var(--text-muted);
+  }
+}
+.mission-ship-stat__label {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.mission-ship-stat__value {
+  font-weight: 600;
+}
+.mission-ship-stat__badge {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: rgba(74, 170, 170, 0.2);
+  color: var(--accent, #4aa);
 }
 .mission-ship-slots {
   padding: 0.75rem 0.85rem;

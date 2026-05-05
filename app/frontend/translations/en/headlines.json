@@ -202,6 +202,28 @@
           "addShip": "Add Ship",
           "editShip": "Edit Ship"
         },
+        "events": {
+          "index": "Events",
+          "calendar": "Calendar",
+          "create": "Create Event",
+          "edit": "Edit Event",
+          "spawn": "Spawn Event",
+          "details": "Event Details",
+          "schedule": "Schedule",
+          "settings": "Settings",
+          "lifecycle": "Lifecycle",
+          "signupTitle": "Sign me up",
+          "yourSignup": "Your signup",
+          "spawnedFrom": "Spawned from this mission",
+          "pickTemplate": "Pick a Mission Template",
+          "unassignedSignups": "Unassigned signups",
+          "eventTeam": "Event team",
+          "grantRole": "Grant a role",
+          "editTeam": "Edit team",
+          "addTeam": "Add team",
+          "editShip": "Edit ship",
+          "addShip": "Add ship"
+        },
         "preview": {
           "h1": "Fleet Preview",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",

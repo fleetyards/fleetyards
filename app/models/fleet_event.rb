@@ -1,5 +1,55 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: fleet_events
+#
+#  id                        :uuid             not null, primary key
+#  archived_at               :datetime
+#  auto_lock_enabled         :boolean          default(TRUE), not null
+#  auto_lock_minutes_before  :integer          default(60), not null
+#  briefing                  :text
+#  cancelled_reason          :text
+#  category                  :integer          default("other"), not null
+#  cover_image_preset        :string
+#  description               :text
+#  discord_synced_at         :datetime
+#  ends_at                   :datetime
+#  external_uid              :uuid             not null
+#  location                  :string
+#  max_attendees             :integer
+#  meetup_location           :string
+#  scenario                  :string
+#  signup_approval           :string           default("direct"), not null
+#  slug                      :string           not null
+#  starting_soon_notified_at :datetime
+#  starts_at                 :datetime         not null
+#  status                    :string           default("draft"), not null
+#  timezone                  :string           default("UTC"), not null
+#  title                     :string           not null
+#  visibility                :string           default("members"), not null
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  created_by_id             :uuid             not null
+#  discord_event_id          :string
+#  discord_message_id        :string
+#  fleet_id                  :uuid             not null
+#  mission_id                :uuid
+#
+# Indexes
+#
+#  index_fleet_events_on_external_uid            (external_uid) UNIQUE
+#  index_fleet_events_on_fleet_id_and_slug       (fleet_id,slug) UNIQUE
+#  index_fleet_events_on_fleet_id_and_starts_at  (fleet_id,starts_at)
+#  index_fleet_events_on_fleet_id_and_status     (fleet_id,status)
+#  index_fleet_events_on_mission_id              (mission_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (created_by_id => users.id)
+#  fk_rails_...  (fleet_id => fleets.id)
+#  fk_rails_...  (mission_id => missions.id)
+#
 class FleetEvent < ApplicationRecord
   include AASM
   include ActiveStorageVariants
@@ -12,6 +62,9 @@ class FleetEvent < ApplicationRecord
 
   has_many :fleet_event_teams, dependent: :destroy
   has_many :fleet_event_ships, through: :fleet_event_teams
+  has_many :fleet_event_signups, dependent: :destroy
+  has_many :fleet_event_admins, dependent: :destroy
+  has_many :event_admin_users, through: :fleet_event_admins, source: :user
 
   has_one_attached :cover_image
 
@@ -27,13 +80,16 @@ class FleetEvent < ApplicationRecord
   }
 
   VISIBILITIES = %w[members officers fleet].freeze
+  SIGNUP_APPROVALS = %w[direct confirmation_required].freeze
 
   validates :title, presence: true
   validates :starts_at, presence: true
   validates :timezone, presence: true
   validates :visibility, inclusion: {in: VISIBILITIES}
+  validates :signup_approval, inclusion: {in: SIGNUP_APPROVALS}
 
   before_validation :set_external_uid, on: :create
+  before_validation :ensure_id, on: :create
   before_save :update_slug
 
   scope :upcoming, -> { where("starts_at >= ?", Time.current).order(:starts_at) }
@@ -90,6 +146,20 @@ class FleetEvent < ApplicationRecord
 
   def archived?
     archived_at.present?
+  end
+
+  def event_admin_role_for(user)
+    return nil unless user
+    fleet_event_admins.find_by(user_id: user.id)&.role
+  end
+
+  def event_admin?(user)
+    event_admin_role_for(user) == "admin" || created_by_id == user&.id
+  end
+
+  def event_moderator_or_admin?(user)
+    %w[admin moderator].include?(event_admin_role_for(user)) ||
+      created_by_id == user&.id
   end
 
   def archive!
@@ -199,16 +269,19 @@ class FleetEvent < ApplicationRecord
     self.external_uid ||= SecureRandom.uuid
   end
 
+  private def ensure_id
+    self.id ||= SecureRandom.uuid
+  end
+
+  # Slugs are prefixed with the first segment of the event id. The prefix
+  # alone guarantees uniqueness within a fleet, so any title-based collisions
+  # disappear and URLs read as `<short-id>-<title>` (similar to GitHub issues).
   private def update_slug
     base = generate_slug(title)
-    return if slug == base
+    prefix = id.to_s.split("-").first
+    candidate = prefix.present? ? "#{prefix}-#{base}" : base
+    return if slug == candidate
 
-    candidate = base
-    suffix = 2
-    while fleet.fleet_events.where.not(id: id).exists?(slug: candidate)
-      candidate = "#{base}-#{suffix}"
-      suffix += 1
-    end
     self.slug = candidate
   end
 end

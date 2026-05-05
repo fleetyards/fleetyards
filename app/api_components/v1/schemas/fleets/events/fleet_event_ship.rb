@@ -24,6 +24,8 @@ module V1
                   id: {type: :string, format: :uuid},
                   name: {type: :string},
                   slug: {type: :string},
+                  minCrew: {type: :integer, nullable: true},
+                  maxCrew: {type: :integer, nullable: true},
                   image: {"$ref": "#/components/schemas/MediaFile", nullable: true}
                 },
                 required: %w[id name slug]

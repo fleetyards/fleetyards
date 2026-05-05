@@ -21,6 +21,7 @@ json.max_attendees fleet_event.max_attendees
 json.auto_lock_enabled fleet_event.auto_lock_enabled
 json.auto_lock_minutes_before fleet_event.auto_lock_minutes_before
 json.cancelled_reason fleet_event.cancelled_reason
+json.signup_approval fleet_event.signup_approval
 json.archived fleet_event.archived?
 json.archived_at fleet_event.archived_at
 json.external_uid fleet_event.external_uid
@@ -44,5 +45,7 @@ end
 
 json.signups_count fleet_event.signups_count
 json.team_count fleet_event.fleet_event_teams.size
+
+json.viewer_event_role local_assigns[:viewer_event_role]
 
 json.partial! "api/shared/dates", record: fleet_event

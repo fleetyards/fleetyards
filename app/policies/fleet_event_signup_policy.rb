@@ -9,8 +9,17 @@ class FleetEventSignupPolicy < FleetBasePolicy
 
   alias_rule :update?, to: :create?
 
+  # Admin-side management: reassigning slots, approving pending signups,
+  # kicking members. Allowed for fleet event-managers, the event creator,
+  # or per-event admins/moderators.
+  def manage?
+    return true if event_admin_or_moderator?
+    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage"])
+  end
+
   def destroy?
     return true if creator?
+    return true if event_admin_or_moderator?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage"])
   end
 
@@ -22,6 +31,11 @@ class FleetEventSignupPolicy < FleetBasePolicy
     record.respond_to?(:fleet_membership_id) &&
       accepted_fleet_membership &&
       record.fleet_membership_id == accepted_fleet_membership.id
+  end
+
+  private def event_admin_or_moderator?
+    target_event = record.try(:fleet_event) || fleet_event
+    target_event&.event_moderator_or_admin?(user)
   end
 
   private def fleet_membership

@@ -16,9 +16,13 @@ module V1
                   teams: {
                     type: :array,
                     items: {"$ref": "#/components/schemas/FleetEventTeam"}
+                  },
+                  unassignedSignups: {
+                    type: :array,
+                    items: {"$ref": "#/components/schemas/FleetEventSignup"}
                   }
                 },
-                required: %w[teams]
+                required: %w[teams unassignedSignups]
               }
             ]
           })

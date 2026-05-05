@@ -338,8 +338,10 @@ class Model < ApplicationRecord
     Model.visible.active.order(classification: :asc).all.map(&:classification).compact_blank.compact.uniq
   end
 
-  def self.focus_filters
-    Model.visible.active.all.map(&:focus).compact_blank.compact.uniq.map do |item|
+  def self.focus_filters(classification: nil)
+    scope = Model.visible.active
+    scope = scope.where(classification: classification) if classification.present?
+    scope.map(&:focus).compact_blank.compact.uniq.map do |item|
       Filter.new(
         category: "focus",
         label: item.humanize,

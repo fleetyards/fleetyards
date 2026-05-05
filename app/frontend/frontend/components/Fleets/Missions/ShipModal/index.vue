@@ -80,7 +80,11 @@ const [classification] = defineField("classification");
 const [focus] = defineField("focus");
 
 const { data: classificationFilters } = useModelClassificationsFilters();
-const { data: focusFilters } = useModelFocusFilters();
+
+const focusFilterParams = computed(() => ({
+  classification: (classification.value as string) || undefined,
+}));
+const { data: focusFilters } = useModelFocusFilters(focusFilterParams);
 
 const classificationOptions = computed<FilterOption[]>(
   () => (classificationFilters.value as FilterOption[] | undefined) ?? [],
@@ -88,6 +92,12 @@ const classificationOptions = computed<FilterOption[]>(
 const focusOptions = computed<FilterOption[]>(
   () => (focusFilters.value as FilterOption[] | undefined) ?? [],
 );
+
+watch(classification, (newValue, oldValue) => {
+  if (newValue !== oldValue && focus.value) {
+    focus.value = "";
+  }
+});
 const [minSize] = defineField("minSize");
 const [maxSize] = defineField("maxSize");
 const [minCrew, minCrewProps] = defineField("minCrew");
@@ -186,6 +196,7 @@ const onSubmit = handleSubmit(async (values) => {
     if (!isEdit.value) {
       data.positionIds = Array.from(selectedPositionIds.value);
     }
+    data.minCrew = values.minCrew == null ? null : Number(values.minCrew);
   } else {
     data.modelId = null;
     data.classification = values.classification || undefined;
@@ -243,24 +254,26 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="ship-form" @submit.prevent="onSubmit">
-      <BtnGroup inline>
-        <Btn
-          :active="mode === 'specific'"
-          inline
-          size="small"
-          @click="mode = 'specific'"
-        >
-          {{ t("labels.fleets.missions.modelSpecific") }}
-        </Btn>
-        <Btn
-          :active="mode === 'filter'"
-          size="small"
-          inline
-          @click="mode = 'filter'"
-        >
-          {{ t("labels.fleets.missions.filterRange") }}
-        </Btn>
-      </BtnGroup>
+      <div class="flex">
+        <BtnGroup>
+          <Btn
+            :active="mode === 'specific'"
+            inline
+            size="small"
+            @click="mode = 'specific'"
+          >
+            {{ t("labels.fleets.missions.modelSpecific") }}
+          </Btn>
+          <Btn
+            :active="mode === 'filter'"
+            size="small"
+            inline
+            @click="mode = 'filter'"
+          >
+            {{ t("labels.fleets.missions.filterRange") }}
+          </Btn>
+        </BtnGroup>
+      </div>
 
       <template v-if="mode === 'specific'">
         <FilterGroup
@@ -295,6 +308,20 @@ const onSubmit = handleSubmit(async (values) => {
         <p v-else-if="!isEdit && positionsLoading" class="text-muted">
           {{ t("messages.loading") }}
         </p>
+
+        <div class="min-crew-override">
+          <FormInput
+            v-model="minCrew"
+            v-bind="minCrewProps"
+            name="minCrew"
+            type="number"
+            :label="t('labels.fleets.missions.minCrewOverrideLabel')"
+          >
+            <template #subline>
+              {{ t("labels.fleets.missions.minCrewOverrideHint") }}
+            </template>
+          </FormInput>
+        </div>
       </template>
 
       <template v-else>
@@ -314,36 +341,40 @@ const onSubmit = handleSubmit(async (values) => {
           :searchable="true"
           :nullable="true"
         />
-        <FilterGroup
-          v-model="minSize"
-          :options="sizeOptions"
-          :label="t('labels.fleets.missions.minSize')"
-          name="minSize"
-          :searchable="false"
-          :nullable="true"
-        />
-        <FilterGroup
-          v-model="maxSize"
-          :options="sizeOptions"
-          :label="t('labels.fleets.missions.maxSize')"
-          name="maxSize"
-          :searchable="false"
-          :nullable="true"
-        />
-        <FormInput
-          v-model="minCrew"
-          v-bind="minCrewProps"
-          name="minCrew"
-          type="number"
-          :label="t('labels.fleets.missions.minCrew')"
-        />
-        <FormInput
-          v-model="minCargo"
-          v-bind="minCargoProps"
-          name="minCargo"
-          type="number"
-          :label="t('labels.fleets.missions.minCargo')"
-        />
+        <div class="form-row">
+          <FilterGroup
+            v-model="minSize"
+            :options="sizeOptions"
+            :label="t('labels.fleets.missions.minSize')"
+            name="minSize"
+            :searchable="false"
+            :nullable="true"
+          />
+          <FilterGroup
+            v-model="maxSize"
+            :options="sizeOptions"
+            :label="t('labels.fleets.missions.maxSize')"
+            name="maxSize"
+            :searchable="false"
+            :nullable="true"
+          />
+        </div>
+        <div class="form-row">
+          <FormInput
+            v-model="minCrew"
+            v-bind="minCrewProps"
+            name="minCrew"
+            type="number"
+            :label="t('labels.fleets.missions.minCrew')"
+          />
+          <FormInput
+            v-model="minCargo"
+            v-bind="minCargoProps"
+            name="minCargo"
+            type="number"
+            :label="t('labels.fleets.missions.minCargo')"
+          />
+        </div>
       </template>
 
       <FormInput
@@ -405,5 +436,22 @@ const onSubmit = handleSubmit(async (values) => {
   font-size: 0.75rem;
   color: var(--text-muted);
   text-transform: uppercase;
+}
+.min-crew-override {
+  margin-top: 0.5rem;
+}
+.min-crew-override .small {
+  font-size: 0.78rem;
+  margin: 0.2rem 0 0;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

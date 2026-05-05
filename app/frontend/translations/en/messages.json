@@ -354,6 +354,126 @@
             "success": "Slot removed.",
             "failure": "Could not remove slot."
           }
+        },
+        "event": {
+          "create": {
+            "success": "Event created.",
+            "failure": "Could not create event."
+          },
+          "update": {
+            "success": "Event updated.",
+            "failure": "Could not update event."
+          },
+          "archive": {
+            "success": "Event archived.",
+            "failure": "Could not archive event.",
+            "confirm": "Archive this event? Members will no longer see it in the upcoming list."
+          },
+          "destroy": {
+            "success": "Event deleted.",
+            "failure": "Could not delete event.",
+            "confirm": "This will permanently delete the event. This action cannot be undone."
+          },
+          "publish": {
+            "success": "Event published — sign-ups are now open.",
+            "failure": "Could not publish event."
+          },
+          "lockSignups": {
+            "success": "Sign-ups locked.",
+            "failure": "Could not lock sign-ups."
+          },
+          "unlockSignups": {
+            "success": "Sign-ups reopened.",
+            "failure": "Could not reopen sign-ups."
+          },
+          "start": {
+            "success": "Event started.",
+            "failure": "Could not start event."
+          },
+          "complete": {
+            "success": "Event marked as completed.",
+            "failure": "Could not complete event."
+          },
+          "cancel": {
+            "success": "Event cancelled.",
+            "failure": "Could not cancel event.",
+            "confirm": "Cancel this event? Participants will be notified."
+          }
+        },
+        "eventSignup": {
+          "create": {
+            "success": "You're signed up.",
+            "failure": "Could not sign up."
+          },
+          "update": {
+            "success": "Signup updated.",
+            "failure": "Could not update signup."
+          },
+          "withdraw": {
+            "success": "You withdrew from the event.",
+            "failure": "Could not withdraw.",
+            "confirm": "Withdraw from this event?"
+          },
+          "kick": {
+            "success": "Signup removed.",
+            "failure": "Could not remove signup.",
+            "confirm": "Remove this member's signup?"
+          }
+        },
+        "eventAdmin": {
+          "create": {
+            "success": "Role granted.",
+            "failure": "Could not grant role."
+          },
+          "destroy": {
+            "success": "Role revoked.",
+            "failure": "Could not revoke role.",
+            "confirm": "Revoke %{username}'s role for this event?"
+          }
+        },
+        "eventTeam": {
+          "create": {
+            "success": "Team added.",
+            "failure": "Could not add team."
+          },
+          "update": {
+            "success": "Team updated.",
+            "failure": "Could not update team."
+          },
+          "destroy": {
+            "success": "Team removed.",
+            "failure": "Could not remove team.",
+            "confirm": "Remove this team and all its ships and slots?"
+          }
+        },
+        "eventShip": {
+          "create": {
+            "success": "Ship added.",
+            "failure": "Could not add ship."
+          },
+          "update": {
+            "success": "Ship updated.",
+            "failure": "Could not update ship."
+          },
+          "destroy": {
+            "success": "Ship removed.",
+            "failure": "Could not remove ship.",
+            "confirm": "Remove this ship and its slots?"
+          }
+        },
+        "eventSlot": {
+          "create": {
+            "success": "Slot added.",
+            "failure": "Could not add slot."
+          },
+          "update": {
+            "success": "Slot updated.",
+            "failure": "Could not update slot."
+          },
+          "destroy": {
+            "success": "Slot removed.",
+            "failure": "Could not remove slot."
+          }
         }
       },
       "fleetInvite": {
