@@ -59,6 +59,13 @@
           "index": "%{fleet} Missions",
           "edit": "%{fleet} Mission"
         },
+        "events": {
+          "index": "%{fleet} Events",
+          "calendar": "%{fleet} Calendar",
+          "create": "Create Event - %{fleet}",
+          "edit": "Edit Event - %{fleet}",
+          "show": "%{fleet} Event"
+        },
         "settings": {
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",

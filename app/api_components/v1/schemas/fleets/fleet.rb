@@ -23,6 +23,8 @@ module V1
             description: {type: :string},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
+            defaultTimezone: {type: :string, nullable: true},
+            calendarFeedToken: {type: :string, nullable: true},
             logo: {"$ref": "#/components/schemas/MediaFile"},
             backgroundImage: {"$ref": "#/components/schemas/MediaFile"},
             myFleet: {type: :boolean},

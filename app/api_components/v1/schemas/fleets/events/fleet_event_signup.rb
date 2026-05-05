@@ -7,13 +7,14 @@ module V1
         class FleetEventSignup
           include Rswag::SchemaComponents::Component
 
-          STATUSES = %w[confirmed tentative withdrawn].freeze
+          STATUSES = %w[confirmed tentative interested pending withdrawn].freeze
 
           schema({
             type: :object,
             properties: {
               id: {type: :string, format: :uuid},
-              fleetEventSlotId: {type: :string, format: :uuid},
+              fleetEventId: {type: :string, format: :uuid},
+              fleetEventSlotId: {type: :string, format: :uuid, nullable: true},
               status: {type: :string, enum: STATUSES},
               notes: {type: :string, nullable: true},
               confirmedAt: {type: :string, format: "date-time", nullable: true},
@@ -44,7 +45,7 @@ module V1
                 }
               }
             },
-            required: %w[id fleetEventSlotId status],
+            required: %w[id fleetEventId status],
             additionalProperties: false
           })
         end

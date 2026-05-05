@@ -31,7 +31,11 @@ module V1
             maxAttendees: {type: :integer, nullable: true},
             autoLockEnabled: {type: :boolean},
             autoLockMinutesBefore: {type: :integer, nullable: true},
-            cancelledReason: {type: :string, nullable: true}
+            cancelledReason: {type: :string, nullable: true},
+            signupApproval: {
+              type: :string,
+              enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
+            }
           },
           additionalProperties: false
         })
