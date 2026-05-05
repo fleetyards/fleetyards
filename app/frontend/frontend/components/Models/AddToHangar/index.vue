@@ -89,6 +89,7 @@ const add = async () => {
 
 <template>
   <Btn
+    v-if="model.playerOwnable"
     :key="`add-to-hangar-${model.slug}`"
     v-tooltip.bottom="t('actions.addToHangar')"
     :variant="btnVariant"
