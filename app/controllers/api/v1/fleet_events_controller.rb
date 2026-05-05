@@ -15,13 +15,17 @@ module Api
 
       before_action :check_mission_builder_feature
       before_action :set_fleet
-      before_action :set_event, only: %i[show update destroy publish lock_signups unlock_signups start complete cancel]
+      before_action :set_event, only: %i[show update destroy unarchive publish lock_signups unlock_signups start complete cancel]
       before_action :set_mission, only: %i[create]
 
       def index
         authorize! with: FleetEventPolicy, context: {fleet: @fleet}
 
-        scope = @fleet.fleet_events.where(archived_at: nil)
+        scope = if params[:archived] == "true"
+          @fleet.fleet_events.where.not(archived_at: nil)
+        else
+          @fleet.fleet_events.where(archived_at: nil)
+        end
         scope = (params[:upcoming] == "true") ? scope.upcoming : scope
         scope = scope.past if params[:past] == "true"
 
@@ -80,6 +84,19 @@ module Api
         else
           render json: ValidationError.new("fleet_events.destroy", errors: @fleet_event.errors), status: :bad_request
         end
+      end
+
+      def unarchive
+        authorize! @fleet_event, to: :unarchive?
+
+        unless @fleet_event.archived?
+          render json: {code: "invalid_state", message: "Event is not archived"}, status: :bad_request
+          return
+        end
+
+        @fleet_event.unarchive!
+        ActiveSupport::Notifications.instrument("fleet_event.unarchived", event: @fleet_event)
+        render :show
       end
 
       %i[publish lock_signups unlock_signups start complete].each do |action|

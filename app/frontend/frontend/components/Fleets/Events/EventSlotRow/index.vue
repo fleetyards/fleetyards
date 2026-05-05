@@ -8,39 +8,114 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
-import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
 import {
+  type FleetEventShip,
   type FleetEventSignup,
   type FleetEventSlot,
-  type FilterOption,
   FleetEventSignupStatus,
   useSignupFleetEventSlot,
+  useAssignFleetEventSignup,
 } from "@/services/fyApi";
+import { vehicleMatchesShip } from "@/frontend/composables/useShipMatch";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 
-type Props = {
-  slotData: FleetEventSlot;
-  currentUserId?: string;
-  signupsLocked: boolean;
-  // Slot id where the current user is already signed up (anywhere in the event)
-  ownActiveSlotId?: string | null;
+type SlotContext = {
+  slot: FleetEventSlot;
+  teamTitle: string;
+  shipTitle?: string;
+  ship?: FleetEventShip | null;
 };
 
-const props = defineProps<Props>();
+type Props = {
+  slotData: FleetEventSlot;
+  ship?: FleetEventShip | null;
+  currentUserId?: string;
+  signupsLocked: boolean;
+  // True when the event is in a state that accepts new signups (not draft,
+  // not locked, not started, not past). Falls back to signupsLocked when
+  // omitted for backwards compatibility.
+  signupsOpen?: boolean;
+  // Slot id where the current user is already signed up (anywhere in the event)
+  ownActiveSlotId?: string | null;
+  // Manager-only: list of all event slots for reassign action.
+  isManager?: boolean;
+  availableSlots?: SlotContext[];
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  ship: null,
+  currentUserId: undefined,
+  signupsOpen: undefined,
+  ownActiveSlotId: null,
+  isManager: false,
+  availableSlots: () => [],
+});
+
+const signupsAllowed = computed(() =>
+  props.signupsOpen === undefined ? !props.signupsLocked : props.signupsOpen,
+);
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
 const signupMutation = useSignupFleetEventSlot();
+const assignMutation = useAssignFleetEventSignup();
+const reassigningId = ref<string | null>(null);
+
+const slotIsTaken = (slot: FleetEventSlot, signup: FleetEventSignup) =>
+  (slot.signups ?? []).some(
+    (s) => s.status !== "withdrawn" && s.id !== signup.id,
+  );
+
+// Vehicle selection is only relevant when the slot is on a filter-mode ship
+// (any ship matching the filter is acceptable). Specific-model ships and
+// team-level slots have no vehicle choice to make.
+const showVehiclePicker = computed(() => !!props.ship && !props.ship.model?.id);
+
+const slotLabel = (ctx: SlotContext) => {
+  const parts = [ctx.teamTitle];
+  if (ctx.shipTitle) parts.push(ctx.shipTitle);
+  parts.push(ctx.slot.title);
+  return parts.join(" · ");
+};
+
+const signupVehicleFitsHere = (signup: FleetEventSignup) =>
+  vehicleMatchesShip(signup.vehicle, props.ship);
+
+const reassign = async (signup: FleetEventSignup, slotId: string) => {
+  if (slotId === props.slotData.id) return;
+  reassigningId.value = signup.id;
+  try {
+    await assignMutation.mutateAsync({
+      id: signup.id,
+      data: { fleetEventSlotId: slotId, status: "confirmed" },
+    });
+    displaySuccess({ text: t("messages.fleets.eventSignup.update.success") });
+    comlink.emit("fleet-event-signup-changed");
+  } catch {
+    displayAlert({ text: t("messages.fleets.eventSignup.update.failure") });
+  } finally {
+    reassigningId.value = null;
+  }
+};
 
 const otherSignups = computed<FleetEventSignup[]>(() => {
   return (props.slotData.signups ?? []).filter(
     (signup) => signup.user?.id !== props.currentUserId,
   );
 });
+
+// Managers see their own signup in the signup list too so they can use the
+// reassign affordance on themselves. Regular members only see other members.
+const visibleSignups = computed<FleetEventSignup[]>(() =>
+  props.isManager
+    ? (props.slotData.signups ?? []).filter((s) => s.status !== "withdrawn")
+    : otherSignups.value,
+);
 
 const ownSignupHere = computed<FleetEventSignup | null>(() => {
   return (
@@ -58,14 +133,14 @@ const slotTaken = computed(() => otherSignups.value.length > 0);
 
 const canSignup = computed(
   () =>
-    !props.signupsLocked &&
+    signupsAllowed.value &&
     !ownSignupHere.value &&
     !ownSignupElsewhere.value &&
     !slotTaken.value,
 );
 
 const blockedReason = computed(() => {
-  if (props.signupsLocked) return t("labels.fleets.events.signupsLockedHint");
+  if (!signupsAllowed.value) return t("labels.fleets.events.signupsLockedHint");
   if (ownSignupElsewhere.value)
     return t("labels.fleets.events.alreadySignedUpHint");
   if (slotTaken.value) return t("labels.fleets.events.slotTakenHint");
@@ -73,21 +148,12 @@ const blockedReason = computed(() => {
 });
 
 const expanded = ref(false);
-const status = ref<FleetEventSignupStatus>(FleetEventSignupStatus.confirmed);
 const notes = ref("");
-
-const statusOptions = computed<FilterOption[]>(() =>
-  [FleetEventSignupStatus.confirmed, FleetEventSignupStatus.tentative].map(
-    (value) => ({
-      value,
-      label: t(`labels.fleets.events.signupStatuses.${value}`),
-    }),
-  ),
-);
+const vehicleId = ref<string | null>(null);
 
 const startSignup = () => {
-  status.value = FleetEventSignupStatus.confirmed;
   notes.value = "";
+  vehicleId.value = null;
   expanded.value = true;
 };
 
@@ -100,8 +166,9 @@ const submitSignup = async () => {
     await signupMutation.mutateAsync({
       id: props.slotData.id,
       data: {
-        status: status.value,
+        status: FleetEventSignupStatus.confirmed,
         notes: notes.value.trim() || undefined,
+        vehicleId: vehicleId.value ?? undefined,
       },
     });
     displaySuccess({ text: t("messages.fleets.eventSignup.create.success") });
@@ -155,9 +222,9 @@ const submitSignup = async () => {
       <span>{{ slotData.description }}</span>
     </p>
 
-    <ul v-if="otherSignups.length" class="event-slot-row__signups">
+    <ul v-if="visibleSignups.length" class="event-slot-row__signups">
       <li
-        v-for="signup in otherSignups"
+        v-for="signup in visibleSignups"
         :key="signup.id"
         class="event-slot-row__signup"
       >
@@ -176,24 +243,88 @@ const submitSignup = async () => {
           <span class="event-slot-row__signup-status text-muted">
             {{ t(`labels.fleets.events.signupStatuses.${signup.status}`) }}
           </span>
+          <span
+            v-if="showVehiclePicker && signup.vehicle?.model?.name"
+            class="event-slot-row__signup-vehicle text-muted"
+          >
+            · {{ signup.vehicle.model.name }}
+          </span>
+          <span
+            v-if="showVehiclePicker && signupVehicleFitsHere(signup)"
+            v-tooltip="t('labels.fleets.events.vehicleFitsHint')"
+            class="event-slot-row__signup-fit"
+          >
+            <i class="fa-light fa-circle-check" />
+          </span>
+          <span
+            v-else-if="showVehiclePicker && !signupVehicleFitsHere(signup)"
+            v-tooltip="t('labels.fleets.events.vehicleMismatchHint')"
+            class="event-slot-row__signup-warn"
+          >
+            <i class="fa-light fa-triangle-exclamation" />
+          </span>
         </div>
-        <p
-          v-if="signup.notes"
-          class="event-slot-row__signup-notes text-muted"
-        >
+        <p v-if="signup.notes" class="event-slot-row__signup-notes text-muted">
           <i class="fa-light fa-note-sticky" />
           <span>{{ signup.notes }}</span>
         </p>
+        <details
+          v-if="isManager && availableSlots.length"
+          class="event-slot-row__reassign"
+        >
+          <summary class="event-slot-row__reassign-toggle">
+            <i class="fa-light fa-arrow-right-arrow-left" />
+            {{ t("actions.fleets.events.reassignSlot") }}
+          </summary>
+          <ul class="event-slot-row__reassign-slots">
+            <li
+              v-for="ctx in availableSlots"
+              :key="ctx.slot.id"
+              class="event-slot-row__reassign-slot"
+            >
+              <Btn
+                :size="BtnSizesEnum.SMALL"
+                inline
+                variant="link"
+                :disabled="
+                  ctx.slot.id === slotData.id ||
+                  slotIsTaken(ctx.slot, signup) ||
+                  reassigningId === signup.id
+                "
+                :title="
+                  slotIsTaken(ctx.slot, signup)
+                    ? t('labels.fleets.events.slotTakenHint')
+                    : ''
+                "
+                @click="reassign(signup, ctx.slot.id)"
+              >
+                <span class="event-slot-row__reassign-label">
+                  {{ slotLabel(ctx) }}
+                </span>
+                <span
+                  v-if="vehicleMatchesShip(signup.vehicle, ctx.ship)"
+                  class="event-slot-row__reassign-fit"
+                >
+                  <i class="fa-light fa-circle-check" />
+                </span>
+                <span
+                  v-if="slotIsTaken(ctx.slot, signup)"
+                  class="event-slot-row__reassign-taken"
+                >
+                  {{ t("labels.fleets.events.taken") }}
+                </span>
+              </Btn>
+            </li>
+          </ul>
+        </details>
       </li>
     </ul>
 
     <div v-if="expanded" class="event-slot-row__form">
-      <FilterGroup
-        v-model="status"
-        :options="statusOptions"
-        :label="t('labels.fleets.events.attendance')"
-        name="signup-status"
-        :searchable="false"
+      <VehiclePicker
+        v-if="showVehiclePicker"
+        v-model="vehicleId"
+        :required-ship="ship"
       />
       <FormTextarea
         v-model="notes"
@@ -210,7 +341,12 @@ const submitSignup = async () => {
           <i class="fa-light fa-check" />
           {{ t("actions.fleets.events.signup") }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" inline variant="link" @click="cancelSignup">
+        <Btn
+          :size="BtnSizesEnum.SMALL"
+          inline
+          variant="link"
+          @click="cancelSignup"
+        >
           {{ t("actions.cancel") }}
         </Btn>
       </div>
@@ -303,6 +439,9 @@ const submitSignup = async () => {
 .event-slot-row__signup-status {
   font-size: 0.72rem;
 }
+.event-slot-row__signup-vehicle {
+  font-size: 0.78rem;
+}
 .event-slot-row__signup-notes {
   display: flex;
   gap: 0.4rem;
@@ -324,5 +463,59 @@ const submitSignup = async () => {
 .event-slot-row__form-actions {
   display: flex;
   gap: 0.4rem;
+}
+.event-slot-row__signup-warn {
+  color: var(--warning, #ff9800);
+}
+.event-slot-row__signup-fit {
+  color: var(--success, #4caf50);
+}
+.event-slot-row__reassign {
+  margin-top: 0.25rem;
+}
+.event-slot-row__reassign-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+.event-slot-row__reassign-slots {
+  list-style: none;
+  margin: 0.3rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+.event-slot-row__reassign-slot {
+  display: flex;
+}
+.event-slot-row__reassign-label {
+  text-align: left;
+  font-size: 0.82rem;
+}
+.event-slot-row__reassign-fit {
+  margin-left: 0.4rem;
+  color: var(--success, #4caf50);
+}
+.event-slot-row__reassign-taken {
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
 }
 </style>

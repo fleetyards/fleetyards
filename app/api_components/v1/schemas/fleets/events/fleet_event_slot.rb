@@ -18,6 +18,7 @@ module V1
               position: {type: :integer},
               derived: {type: :boolean},
               positionType: {type: :string, nullable: true},
+              modelPositionId: {type: :string, format: :uuid, nullable: true},
               signupApproval: {
                 type: :string,
                 nullable: true,

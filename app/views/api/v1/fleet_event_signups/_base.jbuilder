@@ -26,6 +26,13 @@ if fleet_event_signup.vehicle.present?
         json.id fleet_event_signup.vehicle.model.id
         json.name fleet_event_signup.vehicle.model.name
         json.slug fleet_event_signup.vehicle.model.slug
+        json.classification fleet_event_signup.vehicle.model.classification
+        json.focus fleet_event_signup.vehicle.model.focus
+        json.size fleet_event_signup.vehicle.model.size
+        json.min_crew fleet_event_signup.vehicle.model.min_crew
+        json.max_crew fleet_event_signup.vehicle.model.max_crew
+        json.cargo fleet_event_signup.vehicle.model.cargo
+        json.position_count fleet_event_signup.vehicle.model.model_positions.size
       end
     else
       json.model nil

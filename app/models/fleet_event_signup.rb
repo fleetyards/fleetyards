@@ -33,6 +33,9 @@
 class FleetEventSignup < ApplicationRecord
   STATUSES = %w[confirmed tentative interested pending withdrawn].freeze
   MEMBER_REQUESTABLE_STATUSES = %w[confirmed tentative interested].freeze
+  # Slot-bound signups must commit to the slot — only fully confirmed
+  # signups (or those still awaiting admin approval) are allowed there.
+  SLOT_BOUND_STATUSES = %w[confirmed pending withdrawn].freeze
 
   belongs_to :fleet_event, touch: true
   belongs_to :fleet_event_slot, touch: true, optional: true
@@ -43,6 +46,7 @@ class FleetEventSignup < ApplicationRecord
   validate :unique_active_signup_per_member, on: :create
   validate :slot_not_already_taken, on: :create
   validate :slot_belongs_to_event
+  validate :slot_bound_status_allowed
 
   before_validation :assign_event_from_slot
   before_save :stamp_status_timestamps
@@ -92,6 +96,13 @@ class FleetEventSignup < ApplicationRecord
     return if fleet_event_slot.fleet_event&.id == fleet_event_id
 
     errors.add(:fleet_event_slot_id, :wrong_event)
+  end
+
+  private def slot_bound_status_allowed
+    return if fleet_event_slot_id.blank?
+    return if SLOT_BOUND_STATUSES.include?(status)
+
+    errors.add(:status, :invalid_for_slot)
   end
 
   private def unique_active_signup_per_member

@@ -8,25 +8,38 @@ export default {
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   PanelShadowsEnum,
   PanelBgRoundedEnum,
 } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
-import { type Fleet, type FleetEvent } from "@/services/fyApi";
+import {
+  type Fleet,
+  type FleetEvent,
+  useUnarchiveFleetEvent,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { format, parseISO } from "date-fns";
 
 type Props = {
   fleet: Fleet;
   event: FleetEvent;
+  canManage?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  canManage: false,
+});
 
 const { t } = useI18n();
+const { displaySuccess, displayAlert } = useAppNotifications();
+const comlink = useComlink();
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(props.event));
 
@@ -37,6 +50,21 @@ const startDate = computed(() => {
     return props.event.startsAt;
   }
 });
+
+const unarchiveMutation = useUnarchiveFleetEvent();
+
+const unarchive = async () => {
+  try {
+    await unarchiveMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: props.event.slug,
+    });
+    displaySuccess({ text: t("messages.fleets.event.unarchive.success") });
+    comlink.emit("fleet-event-updated");
+  } catch {
+    displayAlert({ text: t("messages.fleets.event.unarchive.failure") });
+  }
+};
 </script>
 
 <template>
@@ -57,10 +85,12 @@ const startDate = computed(() => {
           {{ event.title }}
         </router-link>
       </template>
-      <template #subtitle>
-        <EventStatusBadge :status="event.status" />
-      </template>
     </PanelHeading>
+    <EventStatusBadge
+      :status="event.status"
+      :past="event.past"
+      variant="corner"
+    />
     <PanelBody>
       <p v-if="event.description" class="event-desc text-muted">
         {{ event.description }}
@@ -87,6 +117,17 @@ const startDate = computed(() => {
           }}</span>
         </li>
       </ul>
+      <div v-if="canManage && event.archived" class="event-panel__actions">
+        <Btn
+          :size="BtnSizesEnum.SMALL"
+          inline
+          :loading="unarchiveMutation.isPending.value"
+          @click="unarchive"
+        >
+          <i class="fa-light fa-box-open" />
+          {{ t("actions.fleets.events.unarchive") }}
+        </Btn>
+      </div>
     </PanelBody>
   </Panel>
 </template>
@@ -137,5 +178,11 @@ $eventImageHeight: 200px;
     width: 1rem;
     text-align: center;
   }
+}
+.event-panel__actions {
+  margin-top: 0.6rem;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
 }
 </style>

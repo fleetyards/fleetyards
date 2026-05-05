@@ -8,11 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import EventForm from "@/frontend/components/Fleets/Events/EventForm/index.vue";
-import {
-  type Fleet,
-  type FleetMember,
-  useFleetEvent,
-} from "@/services/fyApi";
+import { type Fleet, type FleetMember, useFleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useRouter } from "vue-router";
 

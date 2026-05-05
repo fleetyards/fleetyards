@@ -45,6 +45,8 @@ end
 
 json.signups_count fleet_event.signups_count
 json.team_count fleet_event.fleet_event_teams.size
+json.past fleet_event.past?
+json.signups_open fleet_event.signups_open?
 
 json.viewer_event_role local_assigns[:viewer_event_role]
 

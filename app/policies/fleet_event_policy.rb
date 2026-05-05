@@ -29,6 +29,7 @@ class FleetEventPolicy < FleetBasePolicy
   end
 
   alias_rule :publish?, :lock_signups?, :unlock_signups?, :start?, :complete?, :cancel?, to: :update?
+  alias_rule :unarchive?, to: :destroy?
 
   params_filter do |params|
     params.permit(

@@ -16,6 +16,7 @@ import {
   useStartFleetEvent,
   useCompleteFleetEvent,
   useCancelFleetEvent,
+  useUnarchiveFleetEvent,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -39,10 +40,16 @@ const unlockMutation = useUnlockFleetEventSignups();
 const startMutation = useStartFleetEvent();
 const completeMutation = useCompleteFleetEvent();
 const cancelMutation = useCancelFleetEvent();
+const unarchiveMutation = useUnarchiveFleetEvent();
 
 const transition = async (
   action: string,
-  mutation: { mutateAsync: (args: { fleetSlug: string; slug: string }) => Promise<unknown> },
+  mutation: {
+    mutateAsync: (args: {
+      fleetSlug: string;
+      slug: string;
+    }) => Promise<unknown>;
+  },
 ) => {
   try {
     await mutation.mutateAsync({
@@ -69,12 +76,23 @@ const handleCancel = () => {
 };
 
 const status = computed(() => props.event.status);
+const archived = computed(() => props.event.archived);
 </script>
 
 <template>
   <div v-if="canManage" class="event-actions">
     <Btn
-      v-if="status === 'draft'"
+      v-if="archived"
+      :size="BtnSizesEnum.SMALL"
+      inline
+      :loading="unarchiveMutation.isPending.value"
+      @click="transition('unarchive', unarchiveMutation as never)"
+    >
+      <i class="fa-light fa-box-open" />
+      {{ t("actions.fleets.events.unarchive") }}
+    </Btn>
+    <Btn
+      v-if="!archived && status === 'draft'"
       :size="BtnSizesEnum.SMALL"
       inline
       :loading="publishMutation.isPending.value"
@@ -85,7 +103,7 @@ const status = computed(() => props.event.status);
     </Btn>
 
     <Btn
-      v-if="status === 'open'"
+      v-if="!archived && status === 'open'"
       :size="BtnSizesEnum.SMALL"
       inline
       :loading="lockMutation.isPending.value"
@@ -95,7 +113,7 @@ const status = computed(() => props.event.status);
       {{ t("actions.fleets.events.lockSignups") }}
     </Btn>
     <Btn
-      v-if="status === 'locked'"
+      v-if="!archived && status === 'locked'"
       :size="BtnSizesEnum.SMALL"
       inline
       :loading="unlockMutation.isPending.value"
@@ -106,7 +124,7 @@ const status = computed(() => props.event.status);
     </Btn>
 
     <Btn
-      v-if="status === 'open' || status === 'locked'"
+      v-if="!archived && (status === 'open' || status === 'locked')"
       :size="BtnSizesEnum.SMALL"
       inline
       :loading="startMutation.isPending.value"
@@ -117,7 +135,7 @@ const status = computed(() => props.event.status);
     </Btn>
 
     <Btn
-      v-if="status === 'active'"
+      v-if="!archived && status === 'active'"
       :size="BtnSizesEnum.SMALL"
       inline
       :loading="completeMutation.isPending.value"
@@ -128,7 +146,7 @@ const status = computed(() => props.event.status);
     </Btn>
 
     <Btn
-      v-if="['draft', 'open', 'locked', 'active'].includes(status)"
+      v-if="!archived && ['draft', 'open', 'locked', 'active'].includes(status)"
       :size="BtnSizesEnum.SMALL"
       inline
       variant="danger"

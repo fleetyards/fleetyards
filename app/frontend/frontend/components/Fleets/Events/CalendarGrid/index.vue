@@ -133,7 +133,7 @@ const todayDate = new Date();
               <span class="calendar-grid__event-title" :title="event.title">
                 {{ event.title }}
               </span>
-              <EventStatusBadge :status="event.status" />
+              <EventStatusBadge :status="event.status" :past="event.past" />
             </router-link>
           </li>
         </ul>

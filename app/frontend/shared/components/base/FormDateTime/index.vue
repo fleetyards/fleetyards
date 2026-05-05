@@ -126,7 +126,6 @@ const formatsConfig = computed(() => ({
 const timeConfig = computed(() => ({
   timePickerInline: props.enableTimePicker,
 }));
-
 </script>
 
 <template>

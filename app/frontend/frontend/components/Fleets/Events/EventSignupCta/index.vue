@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import VehiclePicker from "@/frontend/components/Fleets/Events/VehiclePicker/index.vue";
 import {
   type FleetEvent,
   FleetEventSignupCreateInputStatus,
@@ -29,11 +30,15 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
 
 const submitting = ref(false);
+const vehicleId = ref<string | null>(null);
 
 const signup = async (status: FleetEventSignupCreateInputStatus) => {
   submitting.value = true;
   try {
-    await signupFleetEvent(props.fleetSlug, props.event.slug, { status });
+    await signupFleetEvent(props.fleetSlug, props.event.slug, {
+      status,
+      vehicleId: vehicleId.value ?? undefined,
+    });
     displaySuccess({ text: t("messages.fleets.eventSignup.create.success") });
     comlink.emit("fleet-event-signup-changed");
   } catch {
@@ -55,13 +60,16 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
         {{ t("labels.fleets.events.signupCtaHint") }}
       </p>
     </header>
+    <VehiclePicker v-model="vehicleId" />
     <div class="event-signup-cta__actions">
       <Btn
         :size="BtnSizesEnum.SMALL"
         inline
         :disabled="signupsLocked"
         :loading="submitting"
-        :title="signupsLocked ? t('labels.fleets.events.signupsLockedHint') : ''"
+        :title="
+          signupsLocked ? t('labels.fleets.events.signupsLockedHint') : ''
+        "
         @click="signup(FleetEventSignupCreateInputStatus.confirmed)"
       >
         <i class="fa-light fa-check" />
