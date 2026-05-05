@@ -6767,6 +6767,14 @@ components:
       - fleet_member_accepted
       - fleet_request_accepted
       - fleet_inventory_item_added
+      - fleet_event_published
+      - fleet_event_locked
+      - fleet_event_starting_soon
+      - fleet_event_started
+      - fleet_event_completed
+      - fleet_event_cancelled
+      - fleet_event_signup_added
+      - fleet_event_signup_withdrawn
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -6781,6 +6789,14 @@ components:
       - FLEET_MEMBER_ACCEPTED
       - FLEET_REQUEST_ACCEPTED
       - FLEET_INVENTORY_ITEM_ADDED
+      - FLEET_EVENT_PUBLISHED
+      - FLEET_EVENT_LOCKED
+      - FLEET_EVENT_STARTING_SOON
+      - FLEET_EVENT_STARTED
+      - FLEET_EVENT_COMPLETED
+      - FLEET_EVENT_CANCELLED
+      - FLEET_EVENT_SIGNUP_ADDED
+      - FLEET_EVENT_SIGNUP_WITHDRAWN
       title: NotificationTypeEnum
     OrderDirectionEnum:
       type: string

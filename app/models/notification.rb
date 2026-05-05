@@ -47,7 +47,15 @@ class Notification < ApplicationRecord
     fleet_member_requested: "fleet_member_requested",
     fleet_member_accepted: "fleet_member_accepted",
     fleet_request_accepted: "fleet_request_accepted",
-    fleet_inventory_item_added: "fleet_inventory_item_added"
+    fleet_inventory_item_added: "fleet_inventory_item_added",
+    fleet_event_published: "fleet_event_published",
+    fleet_event_locked: "fleet_event_locked",
+    fleet_event_starting_soon: "fleet_event_starting_soon",
+    fleet_event_started: "fleet_event_started",
+    fleet_event_completed: "fleet_event_completed",
+    fleet_event_cancelled: "fleet_event_cancelled",
+    fleet_event_signup_added: "fleet_event_signup_added",
+    fleet_event_signup_withdrawn: "fleet_event_signup_withdrawn"
   }
 
   TYPES = {
@@ -123,6 +131,46 @@ class Notification < ApplicationRecord
       preference_defaults: {app: true, mail: true, push: false}
     },
     fleet_inventory_item_added: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_published: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_locked: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_starting_soon: {
+      retention: 7.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_started: {
+      retention: 7.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_completed: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: false, mail: false, push: false}
+    },
+    fleet_event_cancelled: {
+      retention: 30.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_signup_added: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_signup_withdrawn: {
       retention: 14.days,
       channels: %i[app],
       preference_defaults: {app: true, mail: false, push: false}
