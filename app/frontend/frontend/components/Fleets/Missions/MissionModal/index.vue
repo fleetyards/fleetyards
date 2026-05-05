@@ -27,6 +27,7 @@ import {
   useUpdateFleetMission,
 } from "@/services/fyApi";
 import { useMissionScenarios } from "@/frontend/composables/useMissionScenarios";
+import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useRouter } from "vue-router";
 
 type Props = {
@@ -57,6 +58,9 @@ const { defineField, handleSubmit } = useForm({
       (props.mission as { scenario?: string | null } | undefined)?.scenario ??
       "",
     coverImage: undefined as string | undefined,
+    coverImagePreset:
+      (props.mission as { coverImagePreset?: string | null } | undefined)
+        ?.coverImagePreset ?? null,
   },
 });
 
@@ -65,8 +69,16 @@ const [description, descriptionProps] = defineField("description");
 const [category, categoryProps] = defineField("category");
 const [scenario, scenarioProps] = defineField("scenario");
 const [coverImage, coverImageProps] = defineField("coverImage");
+const [coverImagePreset] = defineField("coverImagePreset");
 
 const { suggestions: scenarioSuggestions } = useMissionScenarios();
+const { presetsFor } = useMissionCover();
+
+const presetOptions = computed(() => presetsFor(category.value as string));
+
+const selectPreset = (key: string) => {
+  coverImagePreset.value = coverImagePreset.value === key ? null : key;
+};
 
 const categoryOptions = computed<FilterOption[]>(() =>
   Object.values(MissionCategory).map((value) => ({
@@ -94,6 +106,7 @@ const onSubmit = handleSubmit(async (values) => {
     description: values.description || undefined,
     category: values.category as never,
     scenario: values.scenario || null,
+    coverImagePreset: values.coverImage ? null : values.coverImagePreset,
     coverImage: values.coverImage || undefined,
   };
 
@@ -149,15 +162,6 @@ const onSubmit = handleSubmit(async (values) => {
     "
   >
     <form id="mission-form" @submit.prevent="onSubmit">
-      <FormFileInput
-        v-model="coverImage"
-        v-bind="coverImageProps"
-        :file="existingCoverImage as never"
-        name="coverImage"
-        :label="t('labels.fleets.missions.coverImage')"
-        :allowed-types="AllowedFileTypes.IMAGE"
-        clearable
-      />
       <FormInput
         v-model="title"
         v-bind="titleProps"
@@ -194,6 +198,33 @@ const onSubmit = handleSubmit(async (values) => {
           :value="suggestion"
         />
       </datalist>
+
+      <div v-if="presetOptions.length" class="cover-presets">
+        <span class="cover-presets-label">
+          {{ t("labels.fleets.missions.coverPresets") }}
+        </span>
+        <div class="cover-presets-grid">
+          <button
+            v-for="preset in presetOptions"
+            :key="preset.key"
+            type="button"
+            class="cover-preset"
+            :class="{ 'cover-preset--active': coverImagePreset === preset.key }"
+            :style="{ backgroundImage: `url(${preset.url})` }"
+            @click="selectPreset(preset.key)"
+          />
+        </div>
+      </div>
+
+      <FormFileInput
+        v-model="coverImage"
+        v-bind="coverImageProps"
+        :file="existingCoverImage as never"
+        name="coverImage"
+        :label="t('labels.fleets.missions.coverImage')"
+        :allowed-types="AllowedFileTypes.IMAGE"
+        clearable
+      />
     </form>
 
     <template #footer>
@@ -210,3 +241,43 @@ const onSubmit = handleSubmit(async (values) => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.cover-presets {
+  margin: 0.75rem 0;
+}
+.cover-presets-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.cover-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+.cover-preset {
+  position: relative;
+  height: 70px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  transition:
+    border-color 0.15s,
+    transform 0.1s;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+  }
+}
+.cover-preset--active {
+  border-color: var(--accent, #4aa);
+  box-shadow: 0 0 0 1px var(--accent, #4aa);
+}
+</style>

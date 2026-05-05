@@ -10911,6 +10911,9 @@ components:
         scenario:
           type: string
           nullable: true
+        coverImagePreset:
+          type: string
+          nullable: true
         coverImage:
           "$ref": "#/components/schemas/MediaFile"
           nullable: true
@@ -10970,6 +10973,9 @@ components:
           - cargo_hauling
           - exploration
         scenario:
+          type: string
+          nullable: true
+        coverImagePreset:
           type: string
           nullable: true
         coverImage:
@@ -11301,6 +11307,9 @@ components:
           - cargo_hauling
           - exploration
         scenario:
+          type: string
+          nullable: true
+        coverImagePreset:
           type: string
           nullable: true
         coverImage:

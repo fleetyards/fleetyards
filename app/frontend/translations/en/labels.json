@@ -1007,6 +1007,8 @@
           "seats": "Seats",
           "category": "Category",
           "coverImage": "Cover Image",
+          "coverPresets": "Pick from examples",
+          "scenario": "Scenario",
           "categories": {
             "other": "Other",
             "ship_combat": "Ship Combat",

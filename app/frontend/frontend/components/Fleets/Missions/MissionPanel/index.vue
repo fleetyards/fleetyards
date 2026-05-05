@@ -90,9 +90,7 @@ $missionImageHeight: 200px;
   top: 0;
   left: 0;
   right: 0;
-  height: $missionImageHeight;
-  display: flex;
-  align-items: flex-end;
+  height: auto;
   z-index: 1;
 }
 .mission-panel :deep(.panel-body) {

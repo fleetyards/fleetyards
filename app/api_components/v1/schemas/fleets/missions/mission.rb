@@ -27,6 +27,7 @@ module V1
               description: {type: :string, nullable: true},
               category: {type: :string, enum: CATEGORIES},
               scenario: {type: :string, nullable: true},
+              coverImagePreset: {type: :string, nullable: true},
               coverImage: {"$ref": "#/components/schemas/MediaFile", nullable: true},
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time", nullable: true},

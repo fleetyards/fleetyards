@@ -248,17 +248,17 @@ const coverImage = computed(() => resolveCover(mission.value));
     </p>
 
     <Teleport v-if="canEdit" to="#header-right">
-      <Btn :inline="true" @click="openEditModal">
+      <Btn size="small" @click="openEditModal">
         <i class="fa-light fa-pen" />
         <span>{{ t("actions.fleets.missions.edit") }}</span>
       </Btn>
-      <Btn v-if="mission.archived" :inline="true" @click="unarchiveMission">
+      <Btn v-if="mission.archived" size="small" @click="unarchiveMission">
         <i class="fa-light fa-box-open" />
         <span>{{ t("actions.fleets.missions.unarchive") }}</span>
       </Btn>
       <Btn
         v-if="canDelete && !mission.archived"
-        :inline="true"
+        size="small"
         variant="danger"
         @click="archiveMission"
       >
@@ -267,7 +267,7 @@ const coverImage = computed(() => resolveCover(mission.value));
       </Btn>
       <Btn
         v-if="canDelete && mission.archived"
-        :inline="true"
+        size="small"
         variant="danger"
         @click="destroyMission"
       >
