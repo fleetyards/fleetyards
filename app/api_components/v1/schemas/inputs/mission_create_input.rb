@@ -16,6 +16,7 @@ module V1
               enum: V1::Schemas::Fleets::Missions::Mission::CATEGORIES
             },
             scenario: {type: :string, nullable: true},
+            coverImagePreset: {type: :string, nullable: true},
             coverImage: {type: :string, nullable: true}
           },
           required: %w[title],
