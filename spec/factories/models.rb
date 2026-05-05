@@ -45,6 +45,7 @@
 #  on_sale                  :boolean          default(FALSE)
 #  pitch                    :decimal(15, 2)
 #  pitch_boosted            :decimal(15, 2)
+#  player_ownable           :boolean          default(TRUE), not null
 #  pledge_price             :decimal(15, 2)
 #  positions_need_curation  :boolean          default(FALSE)
 #  price                    :decimal(15, 2)

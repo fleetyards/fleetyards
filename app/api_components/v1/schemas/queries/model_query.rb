@@ -28,6 +28,7 @@ module V1
             slugIn: {type: :array, items: {type: :string}},
             nameOrDescriptionCont: {type: :string},
             onSaleEq: {type: :boolean},
+            playerOwnableEq: {type: :boolean},
             pledgePriceGteq: {type: :number},
             pledgePriceLteq: {type: :number},
             pledgePriceIn: {type: :array, items: {type: :number}},

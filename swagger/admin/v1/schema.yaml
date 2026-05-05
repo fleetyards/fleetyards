@@ -8269,6 +8269,8 @@ components:
             "$ref": "#/components/schemas/FuelTank"
         onSale:
           type: boolean
+        playerOwnable:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -8362,6 +8364,7 @@ components:
       - media
       - metrics
       - onSale
+      - playerOwnable
       - speeds
       - adiMap
       - createdAt
@@ -8439,6 +8442,8 @@ components:
         height:
           type: number
         onSale:
+          type: boolean
+        playerOwnable:
           type: boolean
         storeUrl:
           type: string
@@ -8642,6 +8647,8 @@ components:
             "$ref": "#/components/schemas/FuelTank"
         onSale:
           type: boolean
+        playerOwnable:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -8742,6 +8749,7 @@ components:
       - media
       - metrics
       - onSale
+      - playerOwnable
       - speeds
       - adiMap
       - createdAt
@@ -9985,6 +9993,8 @@ components:
           type: number
           nullable: true
         onSale:
+          type: boolean
+        playerOwnable:
           type: boolean
         storeUrl:
           type: string

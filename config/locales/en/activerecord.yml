@@ -253,6 +253,10 @@ en:
               cannot_destroy_from_permanent_role: Cannot remove member of Fleet from permanent role
             user_id:
               taken: already present or has a pending invite
+        vehicle:
+          attributes:
+            model:
+              not_player_ownable: cannot be added to a hangar (not player ownable)
         user:
           attributes:
             base:

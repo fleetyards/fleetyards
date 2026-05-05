@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_26_195601) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_04_130001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -690,6 +690,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_26_195601) do
     t.boolean "on_sale", default: false
     t.decimal "pitch", precision: 15, scale: 2
     t.decimal "pitch_boosted", precision: 15, scale: 2
+    t.boolean "player_ownable", default: true, null: false
     t.decimal "pledge_price", precision: 15, scale: 2
     t.boolean "positions_need_curation", default: false
     t.decimal "price", precision: 15, scale: 2

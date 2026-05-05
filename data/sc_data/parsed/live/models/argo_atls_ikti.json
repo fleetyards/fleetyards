@@ -1,0 +1,104 @@
+{
+  "key": "ARGO_ATLS_IKTI",
+  "ground": true,
+  "movement_class": null,
+  "gravlev": null,
+  "min_crew": "1",
+  "name": "Argo ATLS IKTI",
+  "description": null,
+  "career": "Ground",
+  "role": "Combat",
+  "insurance": {
+    "base_wait_time_minutes": "3",
+    "mandatory_wait_time_minutes": "1",
+    "base_expediting_fee": "1020"
+  },
+  "mass": 1800.0,
+  "metrics": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "loadout": [
+    {
+      "name": "Seat_ItemPort",
+      "ref": "6921c36d-68dd-453b-ad41-dd3bc3b2ca07",
+      "key": null
+    },
+    {
+      "name": "LeftHandWeapon_ItemPort",
+      "ref": "ba8c9920-9fd0-4253-a349-de32079edce2",
+      "key": null
+    },
+    {
+      "name": "RightHandWeapon_ItemPort",
+      "ref": "ba8c9920-9fd0-4253-a349-de32079edce2",
+      "key": null
+    },
+    {
+      "name": "weapon_controller",
+      "ref": "9316c060-265a-44c1-acd0-bdeca41f3548",
+      "key": null
+    },
+    {
+      "name": "hardpoint_paint",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_battery_storage",
+      "ref": "6e4d388b-d3bf-40ec-9686-aa9cec5cda47",
+      "key": null
+    },
+    {
+      "name": "hardpoint_headlight",
+      "ref": "de9491ea-a5ef-463c-bf3f-252d74c54da1",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_leg_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_leg_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_01_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_02_right",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_01_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_arm_02_left",
+      "ref": "0d2f54bb-a5fd-42f5-8cd1-fbff2ddbb3af",
+      "key": null
+    },
+    {
+      "name": "hardpoint_Radar",
+      "ref": "e5bccaed-85de-483b-b4b8-dfb62f085b43",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_left",
+      "ref": "a7ca3a05-5a19-41a8-82fb-b4223b223e2f",
+      "key": null
+    },
+    {
+      "name": "hardpoint_shield_right",
+      "ref": "30423c72-12c4-4ce7-b9c1-dabc2ce1161b",
+      "key": null
+    }
+  ]
+}
