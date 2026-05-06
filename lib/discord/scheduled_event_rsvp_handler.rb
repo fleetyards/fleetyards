@@ -19,29 +19,26 @@ module Discord
     end
 
     def add!
-      with_resolved_records do |user, event, membership|
+      with_resolved_records do |_user, event, membership|
         existing = event.fleet_event_signups
           .where(fleet_membership_id: membership.id)
           .where.not(status: "withdrawn")
           .first
 
+        # Discord scheduled events expose only a single "Interested" RSVP —
+        # never a stronger commitment. We translate that 1:1 to FY's
+        # "interested" status when the member has no signup yet, and leave
+        # any existing signup alone so the Discord click can't downgrade
+        # or override choices already made on Fleetyards.
         if existing
-          # Already on the event (maybe in a slot already). Don't change a
-          # slot-bound signup; just bump status to confirmed if it was an
-          # interested / tentative event-level entry.
-          if existing.fleet_event_slot_id.nil? && existing.status != "confirmed"
-            existing.update!(status: "confirmed")
-            Result.new(status: :ok, detail: "promoted existing event-level signup to confirmed")
-          else
-            Result.new(status: :skipped, detail: "already signed up")
-          end
+          Result.new(status: :skipped, detail: "already signed up (#{existing.status})")
         else
           event.fleet_event_signups.create!(
             fleet_membership: membership,
             fleet_event_slot: nil,
-            status: "confirmed"
+            status: "interested"
           )
-          Result.new(status: :ok, detail: "created event-level signup")
+          Result.new(status: :ok, detail: "created event-level interested signup")
         end
       end
     end
