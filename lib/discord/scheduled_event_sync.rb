@@ -149,8 +149,22 @@ module Discord
       base = event.description.presence || event.briefing.presence || ""
       [
         base,
+        creator_line,
         event_short_url ? "\n\nView on Fleetyards: #{event_short_url}" : nil
       ].compact.join.first(1000)
+    end
+
+    private def creator_line
+      creator = event.created_by
+      return nil unless creator
+
+      handle = creator.username.presence || "Unknown"
+      discord_url = creator.discord_profile_url
+      if discord_url
+        "\n\nOrganised by #{handle} — DM on Discord: #{discord_url}"
+      else
+        "\n\nOrganised by #{handle}"
+      end
     end
 
     # Public on the model so the frontend's "Sync to Discord" button can
