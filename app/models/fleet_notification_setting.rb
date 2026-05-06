@@ -39,6 +39,16 @@ class FleetNotificationSetting < ApplicationRecord
     fleet_event_signup.withdrawn
   ].freeze
 
+  AVAILABLE_PRIVILEGES = [
+    "fleet:notifications:manage"
+  ].freeze
+
+  DEFAULT_PRIVILEGES = {
+    admin: [],
+    officer: ["fleet:notifications:manage"],
+    member: []
+  }.freeze
+
   def in_app_enabled?(event_name)
     Array(enabled_in_app_events).include?(event_name)
   end
