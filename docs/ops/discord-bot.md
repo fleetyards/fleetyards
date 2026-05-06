@@ -56,16 +56,20 @@ Gateway sessions fight each other).
 ## Local development
 
 Use the prod or stage bot here only if no real fleet has it installed —
-otherwise you'll fight with the live Gateway session. Cleanest path is a
-throwaway dev application + a personal test Discord server.
+otherwise you'll fight with the live Gateway session. Use the dedicated
+`Fleetyards Dev` application + a personal test Discord server.
+
+The dev bot's token lives in 1Password under `DISCORD_BOT_DEV/credential`
+and is referenced from `.env.tpl` as
+`DISCORD_BOT_TOKEN=op://Fleetyards/DISCORD_BOT_DEV/credential`. Render
+your `.env.local` with the usual `op inject` flow you already use for the
+other dev secrets, then:
 
 ```bash
-echo 'DISCORD_BOT_TOKEN=your-dev-token' >> .env.local
-
 # Terminal 1: web + sidekiq via your usual command
 bin/dev
 
-# Terminal 2: the bot
+# Terminal 2: the bot, with the rendered env loaded
 bundle exec ruby bin/discord-bot
 # expect: [discord-bot] starting Gateway listener
 #         (then a few discordrb log lines about connecting)
