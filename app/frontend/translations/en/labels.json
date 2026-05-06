@@ -288,17 +288,21 @@
             "request_failed": "Could not reach Fleetyards. Try again."
           },
           "events": {
-            "fleet_event.published": "Event published",
-            "fleet_event.locked": "Sign-ups locked",
-            "fleet_event.unlocked": "Sign-ups reopened",
-            "fleet_event.starting_soon": "Event starting soon",
-            "fleet_event.started": "Event started",
-            "fleet_event.completed": "Event completed",
-            "fleet_event.cancelled": "Event cancelled",
-            "fleet_event.archived": "Event archived",
-            "fleet_event.destroyed": "Event deleted",
-            "fleet_event_signup.created": "Signup added",
-            "fleet_event_signup.withdrawn": "Signup withdrawn"
+            "fleet_event": {
+              "published": "Event published",
+              "locked": "Sign-ups locked",
+              "unlocked": "Sign-ups reopened",
+              "starting_soon": "Event starting soon",
+              "started": "Event started",
+              "completed": "Event completed",
+              "cancelled": "Event cancelled",
+              "archived": "Event archived",
+              "destroyed": "Event deleted"
+            },
+            "fleet_event_signup": {
+              "created": "Signup added",
+              "withdrawn": "Signup withdrawn"
+            }
           }
         },
         "description": "Description",
