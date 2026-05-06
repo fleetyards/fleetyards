@@ -14,6 +14,7 @@ module Notifications
         fleet_event_signup.created
         fleet_event_signup.withdrawn
         fleet_event_signup.status_changed
+        fleet_event_signup.assigned
       ].freeze
 
       def self.register!
@@ -42,6 +43,8 @@ module Notifications
         when "fleet_event.cancelled" then handle_cancelled
         when "fleet_event_signup.created" then handle_signup_created
         when "fleet_event_signup.withdrawn" then handle_signup_withdrawn
+        when "fleet_event_signup.status_changed" then handle_signup_status_changed
+        when "fleet_event_signup.assigned" then handle_signup_assigned
         end
       end
 
@@ -135,12 +138,47 @@ module Notifications
       def handle_signup_withdrawn
         return unless signup
         target_event = signup.fleet_event
-        return unless target_event&.created_by
+        return unless target_event
+
+        # Member-side: notify the affected user when an admin kicked them.
+        if @payload[:kicked] && signup.user
+          notify(signup.user, :fleet_event_signup_kicked, target_event,
+            title: I18n.t("notifications.fleet_event_signup.kicked.title",
+              title: target_event.title))
+        end
+
+        # Creator-side: same notification regardless of who initiated.
+        return unless target_event.created_by
         return unless in_app_enabled?(target_event.fleet, "fleet_event_signup.withdrawn")
 
         notify(target_event.created_by, :fleet_event_signup_withdrawn, target_event,
           title: I18n.t("notifications.fleet_event_signup.withdrawn.title",
             user: signup.user&.username || "Member",
+            title: target_event.title))
+      end
+
+      def handle_signup_status_changed
+        return unless signup
+        target_event = signup.fleet_event
+        return unless target_event && signup.user
+
+        # Member-side: notify when an admin promotes pending → confirmed.
+        if @payload[:by_admin] && signup.status == "confirmed" && @payload[:previous_status] == "pending"
+          notify(signup.user, :fleet_event_signup_confirmed, target_event,
+            title: I18n.t("notifications.fleet_event_signup.confirmed.title",
+              title: target_event.title))
+        end
+      end
+
+      def handle_signup_assigned
+        return unless signup
+        target_event = signup.fleet_event
+        return unless target_event && signup.user
+
+        slot_title = signup.fleet_event_slot&.title || target_event.title
+        notify(signup.user, :fleet_event_signup_assigned, target_event,
+          title: I18n.t("notifications.fleet_event_signup.assigned.title",
+            slot: slot_title,
             title: target_event.title))
       end
 
@@ -153,9 +191,7 @@ module Notifications
       end
 
       def signup_users(target_event)
-        FleetEventSignup
-          .joins(:fleet_event_slot)
-          .where(fleet_event_slots: {id: target_event.slots.pluck(:id)})
+        target_event.fleet_event_signups
           .where.not(status: "withdrawn")
           .includes(:user)
           .map(&:user)
