@@ -22,8 +22,11 @@ shared:
   github_repo: <%= ENV["GITHUB_REPO"] || 'fleetyards/fleetyards' %>
 
   discord:
-    oauth_client_id: <%= Rails.app.creds.option(:discord, :oauth_client_id) %>
+    # client_id is the Discord application ID — used both for OAuth login
+    # and for building the bot install URL on the fleet settings page.
+    client_id: <%= Rails.app.creds.option(:discord, :client_id) %>
     oauth_secret: <%= Rails.app.creds.option(:discord, :oauth_secret) %>
+    bot_token: <%= Rails.app.creds.option(:discord, :bot_token) %>
 
   github:
     oauth_client_id: <%= Rails.app.creds.option(:github, :oauth_client_id) %>
