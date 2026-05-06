@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Heading from "@/shared/components/base/Heading/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -115,77 +114,84 @@ const reset = () => {
 </script>
 
 <template>
-  <Heading size="hero" hero>
-    {{ t("headlines.fleets.settings.notifications") }}
-  </Heading>
+  <form id="fleet-notifications-form" @submit.prevent="save">
+    <h3>{{ t("labels.fleet.notifications.inAppHeading") }}</h3>
+    <p class="text-muted">
+      {{ t("labels.fleet.notifications.inAppHint") }}
+    </p>
+    <div class="row">
+      <div
+        v-for="name in inAppEvents"
+        :key="`in-app-${name}`"
+        class="col-12 col-md-6"
+      >
+        <FormToggle
+          v-model="enabledInApp[name]"
+          :name="`in-app-${name}`"
+          :label="t(`labels.fleet.notifications.events.${name}`)"
+        />
+      </div>
+    </div>
 
-  <form
-    id="fleet-notifications-form"
-    class="notification-settings"
-    @submit.prevent="save"
-  >
-    <section class="notification-settings__section">
-      <Heading size="lg">
-        {{ t("headlines.fleets.settings.inAppNotifications") }}
-      </Heading>
-      <p class="text-muted">
-        {{ t("labels.fleets.notifications.inAppHint") }}
-      </p>
-      <ul class="notification-settings__events">
-        <li v-for="name in inAppEvents" :key="`in-app-${name}`">
-          <FormToggle
-            v-model="enabledInApp[name]"
-            :name="`in-app-${name}`"
-            :label="t(`labels.fleets.notifications.events.${name}`)"
-          />
-        </li>
-      </ul>
-    </section>
+    <hr />
 
-    <section class="notification-settings__section">
-      <Heading size="lg">
-        {{ t("headlines.fleets.settings.discord") }}
-      </Heading>
-      <p class="text-muted">
-        {{ t("labels.fleets.notifications.discordHint") }}
-      </p>
+    <h3>{{ t("labels.fleet.notifications.discordHeading") }}</h3>
+    <p class="text-muted">
+      {{ t("labels.fleet.notifications.discordHint") }}
+    </p>
 
-      <FormInput
-        v-model="discordGuildId"
-        name="discordGuildId"
-        :label="t('labels.fleets.notifications.discordGuildId')"
-        :placeholder="t('placeholders.fleets.notifications.discordGuildId')"
-      />
-      <FormInput
-        v-model="discordChannelId"
-        name="discordChannelId"
-        :label="t('labels.fleets.notifications.discordChannelId')"
-        :placeholder="t('placeholders.fleets.notifications.discordChannelId')"
-      />
-      <FormInput
-        v-model="discordWebhookUrl"
-        name="discordWebhookUrl"
-        :label="t('labels.fleets.notifications.discordWebhookUrl')"
-        :placeholder="
-          setting?.discordWebhookConfigured
-            ? t('placeholders.fleets.notifications.discordWebhookConfigured')
-            : t('placeholders.fleets.notifications.discordWebhookUrl')
-        "
-      />
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="discordGuildId"
+          name="discordGuildId"
+          icon="fa-brands fa-discord"
+          translation-key="fleet.notifications.discordGuildId"
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormInput
+          v-model="discordChannelId"
+          name="discordChannelId"
+          icon="fa-brands fa-discord"
+          translation-key="fleet.notifications.discordChannelId"
+        />
+      </div>
+    </div>
 
-      <p class="text-muted small">
-        {{ t("labels.fleets.notifications.discordEventsHint") }}
-      </p>
-      <ul class="notification-settings__events">
-        <li v-for="name in discordEvents" :key="`discord-${name}`">
-          <FormToggle
-            v-model="enabledDiscord[name]"
-            :name="`discord-${name}`"
-            :label="t(`labels.fleets.notifications.events.${name}`)"
-          />
-        </li>
-      </ul>
-    </section>
+    <div class="row">
+      <div class="col-12">
+        <FormInput
+          v-model="discordWebhookUrl"
+          name="discordWebhookUrl"
+          icon="fa-brands fa-discord"
+          translation-key="fleet.notifications.discordWebhookUrl"
+          :placeholder="
+            setting?.discordWebhookConfigured
+              ? t('placeholders.fleet.notifications.discordWebhookConfigured')
+              : t('placeholders.fleet.notifications.discordWebhookUrl')
+          "
+        />
+      </div>
+    </div>
+
+    <p class="text-muted">
+      {{ t("labels.fleet.notifications.discordEventsHint") }}
+    </p>
+
+    <div class="row">
+      <div
+        v-for="name in discordEvents"
+        :key="`discord-${name}`"
+        class="col-12 col-md-6"
+      >
+        <FormToggle
+          v-model="enabledDiscord[name]"
+          :name="`discord-${name}`"
+          :label="t(`labels.fleet.notifications.events.${name}`)"
+        />
+      </div>
+    </div>
 
     <FormActions
       form-id="fleet-notifications-form"
@@ -194,32 +200,3 @@ const reset = () => {
     />
   </form>
 </template>
-
-<style lang="scss" scoped>
-.notification-settings {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  max-width: 720px;
-}
-.notification-settings__section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.02);
-}
-.notification-settings__events {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-.small {
-  font-size: 0.85rem;
-}
-</style>

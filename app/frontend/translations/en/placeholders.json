@@ -135,7 +135,13 @@
         "guilded": "Guilded Server",
         "homepage": "Homepage",
         "twitch": "Twitch Channel",
-        "youtube": "Youtube Channel"
+        "youtube": "Youtube Channel",
+        "notifications": {
+          "discordGuildId": "e.g. 123456789012345678",
+          "discordChannelId": "Voice channel ID for the event",
+          "discordWebhookUrl": "https://discord.com/api/webhooks/…",
+          "discordWebhookConfigured": "Saved — leave empty to keep the existing one"
+        }
       },
       "adminUser": {
         "passwordConfirmation": "Password Confirmation"
@@ -233,12 +239,6 @@
           "fid": "FID",
           "members": {
             "username": "Username"
-          },
-          "notifications": {
-            "discordGuildId": "e.g. 123456789012345678",
-            "discordChannelId": "Voice channel ID for the event",
-            "discordWebhookUrl": "https://discord.com/api/webhooks/…",
-            "discordWebhookConfigured": "(saved — leave empty to keep)"
           }
         }
       }
