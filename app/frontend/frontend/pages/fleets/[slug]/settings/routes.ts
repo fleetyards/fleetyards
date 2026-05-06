@@ -36,4 +36,16 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: "notifications/",
+    name: "fleet-settings-notifications",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/notifications.vue"),
+    meta: {
+      title: "fleets.settings.notifications",
+      needsAuthentication: true,
+      access: ["fleet:notifications:manage", "fleet:manage"],
+      customTitle: true,
+    },
+  },
 ];

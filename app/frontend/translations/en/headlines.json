@@ -239,7 +239,10 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Fleet Roles"
+          "roles": "Fleet Roles",
+          "notifications": "Notification Settings",
+          "inAppNotifications": "In-app Notifications",
+          "discord": "Discord"
         },
         "inviteMember": "Invite new Member"
       },
