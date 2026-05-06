@@ -8,7 +8,9 @@ module Discord
   # Used for guild scheduled events; the existing Discord::Webhook stays
   # for one-shot announcement posts via webhook URLs.
   class ApiClient
-    BASE_URL = "https://discord.com/api/v10"
+    # Trailing slash is required so Faraday treats subsequent relative
+    # paths (e.g. "guilds/123") as joins, not absolute replacements.
+    BASE_URL = "https://discord.com/api/v10/"
 
     class Error < StandardError
       attr_reader :status, :body
@@ -52,19 +54,19 @@ module Discord
     end
 
     def get_guild(guild_id)
-      request(:get, "/guilds/#{guild_id}")
+      request(:get, "guilds/#{guild_id}")
     end
 
     def create_guild_scheduled_event(guild_id, payload)
-      post("/guilds/#{guild_id}/scheduled-events", payload)
+      post("guilds/#{guild_id}/scheduled-events", payload)
     end
 
     def update_guild_scheduled_event(guild_id, event_id, payload)
-      patch("/guilds/#{guild_id}/scheduled-events/#{event_id}", payload)
+      patch("guilds/#{guild_id}/scheduled-events/#{event_id}", payload)
     end
 
     def delete_guild_scheduled_event(guild_id, event_id)
-      request(:delete, "/guilds/#{guild_id}/scheduled-events/#{event_id}")
+      request(:delete, "guilds/#{guild_id}/scheduled-events/#{event_id}")
     end
 
     private def post(path, payload)
