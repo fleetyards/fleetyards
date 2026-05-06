@@ -17,6 +17,7 @@ gem "paper_trail"
 gem "data_migrate"
 
 gem "discordrb-webhooks"
+gem "discordrb", require: false
 
 gem "vite_rails"
 
