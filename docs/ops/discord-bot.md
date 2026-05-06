@@ -31,25 +31,23 @@ Gateway sessions fight each other).
 
 1. https://discord.com/developers/applications → **New Application**.
    Name it `Fleetyards` for prod, `Fleetyards Stage` for stage.
-2. Sidebar → **Bot** → **Reset Token** → copy. From the same page (or
-   the **General Information** sidebar entry), also copy the
-   **Application ID** — Fleetyards uses it to render the install URL
-   on the fleet settings page.
+2. Sidebar → **Bot** → **Reset Token** → copy. The same Discord
+   application also drives Fleetyards' Discord OAuth login, so its
+   `client_id` (the Application ID) and `oauth_secret` are already in
+   your credentials — you're only adding `bot_token`.
 
-   Both values live in Rails encrypted credentials, not env vars. Add
-   them under the `discord:` namespace in the appropriate file:
    ```bash
    bin/credentials --environment production --edit
    ```
    ```yaml
    discord:
+     client_id: "1234567890123456789"   # rename from oauth_client_id if upgrading
+     oauth_secret: ...
      bot_token: your-bot-token
-     bot_client_id: "1234567890123456789"
    ```
-   Repeat with `--environment staging` for the stage app and the
-   default `bin/credentials --edit` for development. The `RAILS_MASTER_KEY`
-   that Kamal already injects unlocks them — no separate env-var
-   plumbing is needed.
+   Repeat with `--environment staging` and the default
+   `bin/credentials --edit` for development. The `RAILS_MASTER_KEY`
+   Kamal already injects unlocks them — no extra env-var plumbing.
 3. **Privileged Gateway Intents** — leave them all off. The portal only
    exposes the privileged intents (Presence, Server Members, Message
    Content). The bot needs `GUILDS` and `GUILD_SCHEDULED_EVENTS`, both
@@ -73,15 +71,17 @@ Use the prod or stage bot here only if no real fleet has it installed —
 otherwise you'll fight with the live Gateway session. Use the dedicated
 `Fleetyards Dev` application + a personal test Discord server.
 
-Drop the dev bot's token + client_id into your local credentials:
+Add the dev bot's token to your local credentials (the `client_id` is
+already there from the OAuth login setup — just drop in `bot_token`):
 
 ```bash
 bin/credentials --edit          # uses config/master.key for development
 ```
 ```yaml
 discord:
+  client_id: "1234567890123456789"  # already present
+  oauth_secret: ...                 # already present
   bot_token: your-fleetyards-dev-bot-token
-  bot_client_id: "1234567890123456789"
 ```
 
 Then start it:
