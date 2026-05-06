@@ -76,10 +76,13 @@ module Api
         authorize! @fleet_event
 
         if @fleet_event.archived?
-          unless @fleet_event.destroy
+          if @fleet_event.destroy
+            ActiveSupport::Notifications.instrument("fleet_event.destroyed", event: @fleet_event)
+          else
             render json: ValidationError.new("fleet_events.destroy", errors: @fleet_event.errors), status: :bad_request
           end
         elsif @fleet_event.archive!
+          ActiveSupport::Notifications.instrument("fleet_event.archived", event: @fleet_event)
           render :show
         else
           render json: ValidationError.new("fleet_events.destroy", errors: @fleet_event.errors), status: :bad_request
