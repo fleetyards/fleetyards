@@ -120,22 +120,25 @@ module Discord
         return [event.cover_image.download, event.cover_image.content_type || "image/jpeg"]
       end
 
-      preset = event.cover_image_preset.presence
-      return nil if preset.blank?
+      # Mirror the frontend's useMissionCover fallback chain: explicit
+      # preset → category default. So the Discord payload picks up the
+      # same cover the user sees in the UI even when the column wasn't
+      # explicitly set (e.g., events created without picking a preset).
+      candidates = [event.cover_image_preset.presence, event.category.to_s.presence].compact
+      return nil if candidates.empty?
 
-      # Discord's image upload doesn't accept webp, so prefer jpg.
       preset_root = Rails.root.join("app/frontend/images/missions")
-      candidate = %w[jpg jpeg png].lazy
-        .map { |ext| preset_root.join("#{preset}.#{ext}") }
-        .find { |path| File.exist?(path) }
+      file = candidates.flat_map do |stem|
+        %w[jpg jpeg png].map { |ext| preset_root.join("#{stem}.#{ext}") }
+      end.find { |path| File.exist?(path) }
 
-      return nil unless candidate
+      return nil unless file
 
-      mime = case candidate.extname
+      mime = case file.extname
       when ".png" then "image/png"
       else "image/jpeg"
       end
-      [File.binread(candidate), mime]
+      [File.binread(file), mime]
     end
 
     private def cancelled?

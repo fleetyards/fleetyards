@@ -90,6 +90,7 @@ class FleetEvent < ApplicationRecord
 
   before_validation :set_external_uid, on: :create
   before_validation :ensure_id, on: :create
+  before_validation :default_cover_image_preset
   before_save :update_slug
 
   scope :upcoming, -> { where("starts_at >= ?", Time.current).order(:starts_at) }
@@ -289,5 +290,15 @@ class FleetEvent < ApplicationRecord
     return if slug == candidate
 
     self.slug = candidate
+  end
+
+  # When the form doesn't pick a preset, default to the category's base
+  # asset. Mirrors the frontend useMissionCover fallback so the same cover
+  # appears in the UI, the OG image, and the Discord push.
+  private def default_cover_image_preset
+    return if cover_image_preset.present?
+    return if category.blank?
+
+    self.cover_image_preset = category.to_s
   end
 end
