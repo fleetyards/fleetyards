@@ -61,16 +61,17 @@ otherwise you'll fight with the live Gateway session. Use the dedicated
 
 The dev bot's token lives in 1Password under `DISCORD_BOT_DEV/credential`
 and is referenced from `.env.tpl` as
-`DISCORD_BOT_TOKEN=op://Fleetyards/DISCORD_BOT_DEV/credential`. Render
-your `.env.local` with the usual `op inject` flow you already use for the
-other dev secrets, then:
+`DISCORD_BOT_TOKEN=op://Fleetyards/DISCORD_BOT_DEV/credential`. The
+wrapper `bin/discord-bot` self-resolves it via `bin/op` (1Password CLI)
+when the env isn't already populated, the same way `bin/dev` does.
 
 ```bash
 # Terminal 1: web + sidekiq via your usual command
 bin/dev
 
-# Terminal 2: the bot, with the rendered env loaded
-bundle exec ruby bin/discord-bot
+# Terminal 2: the bot. The wrapper detects the missing token and pulls
+# it from 1Password automatically — no `op inject` step needed.
+bin/discord-bot
 # expect: [discord-bot] starting Gateway listener
 #         (then a few discordrb log lines about connecting)
 ```
@@ -96,7 +97,9 @@ In Fleetyards:
 ## Deploying
 
 Already wired in `config/deploy.yml`. The `discord_bot` role:
-- Runs `bundle exec ruby bin/discord-bot` under Kamal.
+- Runs `bin/discord-bot` under Kamal. Containers don't have the 1Password
+  CLI, so the wrapper takes the env-already-set branch and execs Ruby
+  directly. `DISCORD_BOT_TOKEN` is supplied via `env.secret`.
 - 512 MB memory cap.
 - Pinned to a single host (default: the primary web host, override via
   `KAMAL_DISCORD_BOT_HOST`). **Do not scale this past 1** — Discord
@@ -191,6 +194,6 @@ bundle exec rails runner '
   Discord::ScheduledEventSync.new(event).upsert!
 '
 
-# Run the bot locally without Kamal
-bundle exec ruby bin/discord-bot
+# Run the bot locally without Kamal (auto-loads token from 1Password)
+bin/discord-bot
 ```
