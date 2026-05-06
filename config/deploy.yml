@@ -27,9 +27,9 @@ servers:
     cmd: bin/discord-bot
     options:
       memory: 512m
-    env:
-      secret:
-        - DISCORD_BOT_TOKEN
+    # Bot token + application_id come from Rails encrypted credentials
+    # via RAILS_MASTER_KEY (already in env.secret), no extra env vars
+    # needed.
 
 proxy:
   ssl: true
@@ -73,8 +73,6 @@ env:
     - DATABASE_URL
     # Redis
     - REDIS_URL
-    # Discord bot — only needed by the discord_bot role, but harmless on web/worker
-    - DISCORD_BOT_TOKEN
 accessories:
   db:
     image: postgres:16

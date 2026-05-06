@@ -76,4 +76,23 @@ RSpec.describe "Discord status probe", type: :request do
     body = JSON.parse(response.body)
     expect(body["code"]).to eq("invalid_token")
   end
+
+  it "includes installUrl when the bot client_id is configured" do
+    allow(Discord::ApiClient).to receive(:configured?).and_return(true)
+    allow(Discord::ApiClient).to receive(:application_id).and_return("123456789")
+
+    get url, as: :json
+    body = JSON.parse(response.body)
+    expect(body["installUrl"]).to start_with("https://discord.com/oauth2/authorize?client_id=123456789")
+    expect(body["installUrl"]).to include("scope=bot+applications.commands")
+  end
+
+  it "omits installUrl when the bot client_id is not configured" do
+    allow(Discord::ApiClient).to receive(:configured?).and_return(true)
+    allow(Discord::ApiClient).to receive(:application_id).and_return(nil)
+
+    get url, as: :json
+    body = JSON.parse(response.body)
+    expect(body["installUrl"]).to be_nil
+  end
 end

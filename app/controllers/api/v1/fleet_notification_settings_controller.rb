@@ -24,7 +24,7 @@ module Api
       def discord_status
         authorize! @setting, with: FleetNotificationSettingPolicy, to: :show?
 
-        render json: discord_status_payload
+        render json: discord_status_payload.merge(installUrl: ::Discord::ApiClient.install_url)
       end
 
       private def discord_status_payload

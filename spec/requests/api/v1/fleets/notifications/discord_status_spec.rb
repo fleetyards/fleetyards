@@ -42,7 +42,8 @@ RSpec.describe "api/v1/fleets/notifications", type: :request, swagger_doc: "v1/s
             message: {type: :string, nullable: true},
             guildId: {type: :string, nullable: true},
             guildName: {type: :string, nullable: true},
-            status: {type: :integer, nullable: true}
+            status: {type: :integer, nullable: true},
+            installUrl: {type: :string, nullable: true}
           }
 
         run_test!

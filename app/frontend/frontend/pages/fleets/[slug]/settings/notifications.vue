@@ -121,28 +121,40 @@ type DiscordStatus = {
   message?: string;
   guildId?: string;
   guildName?: string;
+  installUrl?: string | null;
 };
 
 const discordStatus = ref<DiscordStatus | null>(null);
 const probing = ref(false);
 
-const probeDiscord = async () => {
-  probing.value = true;
+const fetchStatus = async () => {
   try {
-    const result = (await fleetNotificationDiscordStatus(
+    discordStatus.value = (await fleetNotificationDiscordStatus(
       props.fleet.slug,
     )) as DiscordStatus;
-    discordStatus.value = result;
   } catch {
     discordStatus.value = {
       ok: false,
       code: "request_failed",
       message: "Could not reach Fleetyards backend",
     };
+  }
+};
+
+// Probe once on load so we can render the install link immediately;
+// the explicit "Test connection" button re-runs the same request.
+onMounted(fetchStatus);
+
+const probeDiscord = async () => {
+  probing.value = true;
+  try {
+    await fetchStatus();
   } finally {
     probing.value = false;
   }
 };
+
+const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
 </script>
 
 <template>
@@ -170,6 +182,16 @@ const probeDiscord = async () => {
     <h3>{{ t("labels.fleet.notifications.discordHeading") }}</h3>
     <p class="text-muted">
       {{ t("labels.fleet.notifications.discordHint") }}
+    </p>
+
+    <p v-if="installUrl" class="discord-install">
+      <i class="fa-brands fa-discord" />
+      <a :href="installUrl" target="_blank" rel="noopener">
+        {{ t("actions.fleet.notifications.installBot") }}
+      </a>
+      <span class="text-muted small">
+        {{ t("labels.fleet.notifications.installBotHint") }}
+      </span>
     </p>
 
     <div class="discord-status-row">
@@ -275,6 +297,22 @@ const probeDiscord = async () => {
 </template>
 
 <style lang="scss" scoped>
+.discord-install {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 0.4rem 0 0.8rem;
+  font-size: 0.95rem;
+
+  i {
+    color: var(--accent, #4aa);
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
 .discord-status-row {
   display: flex;
   align-items: center;
