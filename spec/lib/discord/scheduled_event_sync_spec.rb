@@ -96,6 +96,54 @@ RSpec.describe Discord::ScheduledEventSync do
     end
   end
 
+  describe "description payload" do
+    let(:creator) { create(:user, username: "TorlekMaru") }
+    let(:event) do
+      create(:fleet_event, :open,
+        fleet: fleet,
+        created_by: creator,
+        title: "Strike Op",
+        description: "Briefing body.",
+        starts_at: 2.days.from_now)
+    end
+
+    it "uses a Discord @-mention when the creator has linked Discord" do
+      create(:omniauth_connection, user: creator, provider: "discord", uid: "344036297326723073")
+
+      captured = nil
+      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
+        captured = payload
+        {"id" => "999"}
+      end
+
+      described_class.new(event).upsert!
+      expect(captured[:description]).to include("**Organised by:** <@344036297326723073>")
+    end
+
+    it "falls back to the plain handle when Discord isn't linked" do
+      captured = nil
+      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
+        captured = payload
+        {"id" => "999"}
+      end
+
+      described_class.new(event).upsert!
+      expect(captured[:description]).to include("**Organised by:** TorlekMaru")
+      expect(captured[:description]).not_to include("<@")
+    end
+
+    it "wraps the short URL in <> to suppress Discord's link preview" do
+      captured = nil
+      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
+        captured = payload
+        {"id" => "999"}
+      end
+
+      described_class.new(event).upsert!
+      expect(captured[:description]).to match(%r{\*\*Open in Fleetyards:\*\* <https?://[^>]+/fe/})
+    end
+  end
+
   describe "#delete!" do
     it "deletes the Discord event and clears local references" do
       event.update_column(:discord_event_id, "777")

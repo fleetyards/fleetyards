@@ -150,21 +150,20 @@ module Discord
       [
         base,
         creator_line,
-        event_short_url ? "\n\nView on Fleetyards: #{event_short_url}" : nil
+        event_short_url ? "\n\n**Open in Fleetyards:** <#{event_short_url}>" : nil
       ].compact.join.first(1000)
     end
 
+    # Prefer `<@discord_uid>` so Discord renders a real @-mention badge that
+    # members can tap to DM. Falls back to the plain handle when the creator
+    # hasn't connected Discord.
     private def creator_line
       creator = event.created_by
       return nil unless creator
 
-      handle = creator.username.presence || "Unknown"
-      discord_url = creator.discord_profile_url
-      if discord_url
-        "\n\nOrganised by #{handle} — DM on Discord: #{discord_url}"
-      else
-        "\n\nOrganised by #{handle}"
-      end
+      mention = creator.discord_uid.presence
+      who = mention ? "<@#{mention}>" : (creator.username.presence || "Unknown")
+      "\n\n**Organised by:** #{who}"
     end
 
     # Public on the model so the frontend's "Sync to Discord" button can
