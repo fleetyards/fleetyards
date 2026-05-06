@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -14,6 +16,7 @@ import {
   type FleetNotificationSetting,
   FleetNotificationSettingEnabledInAppEventsItem,
   FleetNotificationSettingEnabledDiscordEventsItem,
+  fleetNotificationDiscordStatus,
   useFleetNotificationSetting,
   useUpdateFleetNotificationSetting,
 } from "@/services/fyApi";
@@ -111,6 +114,35 @@ const save = async () => {
 const reset = () => {
   if (setting.value) hydrate(setting.value);
 };
+
+type DiscordStatus = {
+  ok: boolean;
+  code?: string;
+  message?: string;
+  guildId?: string;
+  guildName?: string;
+};
+
+const discordStatus = ref<DiscordStatus | null>(null);
+const probing = ref(false);
+
+const probeDiscord = async () => {
+  probing.value = true;
+  try {
+    const result = (await fleetNotificationDiscordStatus(
+      props.fleet.slug,
+    )) as DiscordStatus;
+    discordStatus.value = result;
+  } catch {
+    discordStatus.value = {
+      ok: false,
+      code: "request_failed",
+      message: "Could not reach Fleetyards backend",
+    };
+  } finally {
+    probing.value = false;
+  }
+};
 </script>
 
 <template>
@@ -139,6 +171,47 @@ const reset = () => {
     <p class="text-muted">
       {{ t("labels.fleet.notifications.discordHint") }}
     </p>
+
+    <div class="discord-status-row">
+      <Btn
+        :size="BtnSizesEnum.SMALL"
+        inline
+        variant="link"
+        :loading="probing"
+        @click="probeDiscord"
+      >
+        <i class="fa-light fa-plug" />
+        {{ t("actions.fleet.notifications.testDiscord") }}
+      </Btn>
+      <span
+        v-if="discordStatus"
+        class="discord-status"
+        :class="discordStatus.ok ? 'discord-status--ok' : 'discord-status--err'"
+      >
+        <i
+          class="fa-light"
+          :class="
+            discordStatus.ok ? 'fa-circle-check' : 'fa-triangle-exclamation'
+          "
+        />
+        <span v-if="discordStatus.ok">
+          {{
+            t("labels.fleet.notifications.discordStatusOk", {
+              name: discordStatus.guildName,
+            })
+          }}
+        </span>
+        <span v-else>
+          {{
+            discordStatus.code
+              ? t(
+                  `labels.fleet.notifications.discordStatusCodes.${discordStatus.code}`,
+                )
+              : discordStatus.message
+          }}
+        </span>
+      </span>
+    </div>
 
     <div class="row">
       <div class="col-12 col-md-6">
@@ -200,3 +273,25 @@ const reset = () => {
     />
   </form>
 </template>
+
+<style lang="scss" scoped>
+.discord-status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin: 0.5rem 0 1rem;
+}
+.discord-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+}
+.discord-status--ok {
+  color: var(--success, #4caf50);
+}
+.discord-status--err {
+  color: var(--warning, #ff9800);
+}
+</style>

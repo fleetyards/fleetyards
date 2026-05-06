@@ -29,7 +29,9 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
 
   resources :fleet_roles, path: "roles", only: %i[index]
 
-  resource :fleet_notification_setting, path: "notifications", only: %i[show update]
+  resource :fleet_notification_setting, path: "notifications", only: %i[show update] do
+    get "discord-status", action: :discord_status
+  end
 
   get "inventory-items", to: "fleet_all_inventory_items#index"
   get "inventory-stock", to: "fleet_all_inventory_stock#index"
