@@ -18,6 +18,18 @@ servers:
     cmd: bundle exec sidekiq -C config/sidekiq.yml
     options:
       memory: 3g
+  discord_bot:
+    # Long-running Gateway listener that turns Discord scheduled-event RSVPs
+    # into Fleetyards signups. Single instance per Discord application — do
+    # not scale this role above 1.
+    hosts:
+      - <%= ENV.fetch("KAMAL_DISCORD_BOT_HOST", "fleetyards-web-1") %>
+    cmd: bundle exec ruby bin/discord-bot
+    options:
+      memory: 512m
+    env:
+      secret:
+        - DISCORD_BOT_TOKEN
 
 proxy:
   ssl: true
@@ -61,6 +73,8 @@ env:
     - DATABASE_URL
     # Redis
     - REDIS_URL
+    # Discord bot — only needed by the discord_bot role, but harmless on web/worker
+    - DISCORD_BOT_TOKEN
 accessories:
   db:
     image: postgres:16
