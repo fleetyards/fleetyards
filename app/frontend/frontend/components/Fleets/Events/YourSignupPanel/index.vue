@@ -250,6 +250,7 @@ const statusLabel = computed(() =>
   justify-content: space-between;
   align-items: center;
   gap: 0.6rem;
+  flex-wrap: wrap;
 }
 .your-signup__title {
   display: inline-flex;
@@ -279,9 +280,10 @@ const statusLabel = computed(() =>
   color: var(--warning, #ff9800);
 }
 .your-signup__location {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex-wrap: wrap;
 
   i {
     color: var(--text-muted);

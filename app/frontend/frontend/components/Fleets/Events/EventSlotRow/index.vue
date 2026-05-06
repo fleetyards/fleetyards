@@ -374,6 +374,7 @@ const submitSignup = async () => {
   justify-content: space-between;
   align-items: center;
   gap: 0.6rem;
+  flex-wrap: wrap;
 }
 .event-slot-row__title {
   display: flex;
@@ -424,16 +425,19 @@ const submitSignup = async () => {
   gap: 0.15rem;
 }
 .event-slot-row__signup-line {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.4rem;
   font-size: 0.85rem;
+  flex-wrap: wrap;
 
   i {
     color: var(--text-muted);
   }
 }
 .event-slot-row__signup-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-weight: 500;
 }
 .event-slot-row__signup-status {
