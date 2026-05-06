@@ -277,6 +277,16 @@
           "discordChannelId": "Voice Channel ID (optional)",
           "discordWebhookUrl": "Announcement Webhook URL (optional)",
           "discordEventsHint": "Pick which event changes trigger a Discord update.",
+          "discordStatusOk": "Connected to %{name}",
+          "discordStatusCodes": {
+            "missing_token": "The Fleetyards bot is not configured on the server side. Contact an administrator.",
+            "missing_guild": "Enter a Discord server ID first.",
+            "invalid_token": "The bot token is invalid. Contact an administrator.",
+            "bot_not_in_guild": "The bot is not in this server. Use the install link to add it.",
+            "guild_not_found": "Discord doesn't recognize this server ID. Double-check the value.",
+            "discord_error": "Discord returned an unexpected error.",
+            "request_failed": "Could not reach Fleetyards. Try again."
+          },
           "events": {
             "fleet_event.published": "Event published",
             "fleet_event.locked": "Sign-ups locked",

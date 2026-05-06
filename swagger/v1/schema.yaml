@@ -3730,6 +3730,57 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/notifications/discord-status":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Probe the fleet's Discord guild binding
+      operationId: fleetNotificationDiscordStatus
+      tags:
+      - Fleet Notification Settings
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                  code:
+                    type: string
+                    nullable: true
+                  message:
+                    type: string
+                    nullable: true
+                  guildId:
+                    type: string
+                    nullable: true
+                  guildName:
+                    type: string
+                    nullable: true
+                  status:
+                    type: integer
+                    nullable: true
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/notifications":
     parameters:
     - name: fleetSlug

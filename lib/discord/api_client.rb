@@ -33,6 +33,10 @@ module Discord
       @token = token
     end
 
+    def get_guild(guild_id)
+      request(:get, "/guilds/#{guild_id}")
+    end
+
     def create_guild_scheduled_event(guild_id, payload)
       post("/guilds/#{guild_id}/scheduled-events", payload)
     end

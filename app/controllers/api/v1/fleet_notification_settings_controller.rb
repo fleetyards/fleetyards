@@ -6,7 +6,7 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
-        only: %i[show]
+        only: %i[show discord_status]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
         only: %i[update]
@@ -16,6 +16,38 @@ module Api
 
       def show
         authorize! @setting, with: FleetNotificationSettingPolicy
+      end
+
+      # Probes Discord to confirm the fleet's guild binding is reachable with
+      # the configured bot token. Returns a small status object the settings
+      # page renders as a green/red pill.
+      def discord_status
+        authorize! @setting, with: FleetNotificationSettingPolicy, to: :show?
+
+        render json: discord_status_payload
+      end
+
+      private def discord_status_payload
+        unless ::Discord::ApiClient.configured?
+          return {ok: false, code: "missing_token", message: "Discord bot token is not configured server-side"}
+        end
+
+        if @setting.discord_guild_id.blank?
+          return {ok: false, code: "missing_guild", message: "No Discord server linked to this fleet"}
+        end
+
+        begin
+          guild = ::Discord::ApiClient.new.get_guild(@setting.discord_guild_id)
+          {ok: true, guildId: guild["id"], guildName: guild["name"]}
+        rescue ::Discord::ApiClient::Error => e
+          code = case e.status
+          when 401 then "invalid_token"
+          when 403 then "bot_not_in_guild"
+          when 404 then "guild_not_found"
+          else "discord_error"
+          end
+          {ok: false, code: code, status: e.status, message: e.message}
+        end
       end
 
       def update

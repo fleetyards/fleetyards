@@ -167,6 +167,9 @@
       "fleet": {
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
+        "notifications": {
+          "testDiscord": "Test Discord connection"
+        },
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
         "manageInvites": "Invites",
