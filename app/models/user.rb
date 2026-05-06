@@ -271,6 +271,10 @@ class User < ApplicationRecord
     "https://discord.com/users/#{connection.uid}"
   end
 
+  def discord_uid
+    omniauth_connections.find_by(provider: "discord")&.uid
+  end
+
   def public_wishlist_url
     return short_public_wishlist_url(username:) if Rails.configuration.app.short_domain.present?
 
