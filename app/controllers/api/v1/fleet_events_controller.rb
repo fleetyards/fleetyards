@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "discord/scheduled_event_sync"
+
 module Api
   module V1
     class FleetEventsController < ::Api::BaseController
@@ -11,11 +13,11 @@ module Api
         only: %i[index show]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy publish lock_signups unlock_signups start complete cancel]
+        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel]
 
       before_action :check_mission_builder_feature
       before_action :set_fleet
-      before_action :set_event, only: %i[show update destroy unarchive publish lock_signups unlock_signups start complete cancel]
+      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -100,6 +102,24 @@ module Api
         @fleet_event.unarchive!
         ActiveSupport::Notifications.instrument("fleet_event.unarchived", event: @fleet_event)
         render :show
+      end
+
+      # Manually push the event to Discord. Useful for events that were
+      # already published before the fleet connected its Discord server,
+      # since publish-time notifications already fired and won't be replayed.
+      def sync_to_discord
+        authorize! @fleet_event, to: :update?
+
+        sync = ::Discord::ScheduledEventSync.new(@fleet_event)
+        unless sync.runnable?
+          render json: {code: "discord_not_configured", message: "Discord isn't configured for this fleet"}, status: :unprocessable_entity
+          return
+        end
+
+        sync.upsert!
+        render :show
+      rescue ::Discord::ApiClient::Error => e
+        render json: {code: "discord_error", message: e.message, status: e.status}, status: :bad_gateway
       end
 
       %i[publish lock_signups unlock_signups start complete].each do |action|

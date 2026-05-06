@@ -17,6 +17,7 @@ import {
   useCompleteFleetEvent,
   useCancelFleetEvent,
   useUnarchiveFleetEvent,
+  useSyncFleetEventToDiscord,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -41,6 +42,7 @@ const startMutation = useStartFleetEvent();
 const completeMutation = useCompleteFleetEvent();
 const cancelMutation = useCancelFleetEvent();
 const unarchiveMutation = useUnarchiveFleetEvent();
+const syncDiscordMutation = useSyncFleetEventToDiscord();
 
 const transition = async (
   action: string,
@@ -77,6 +79,24 @@ const handleCancel = () => {
 
 const status = computed(() => props.event.status);
 const archived = computed(() => props.event.archived);
+const discordConfigured = computed(() => !!props.event.discordConfigured);
+
+const syncToDiscord = async () => {
+  try {
+    await syncDiscordMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: props.event.slug,
+    });
+    displaySuccess({
+      text: t("messages.fleets.event.syncToDiscord.success"),
+    });
+    comlink.emit("fleet-event-updated");
+  } catch {
+    displayAlert({
+      text: t("messages.fleets.event.syncToDiscord.failure"),
+    });
+  }
+};
 </script>
 
 <template>
@@ -155,6 +175,18 @@ const archived = computed(() => props.event.archived);
     >
       <i class="fa-light fa-ban" />
       {{ t("actions.fleets.events.cancel") }}
+    </Btn>
+
+    <Btn
+      v-if="!archived && discordConfigured"
+      :size="BtnSizesEnum.SMALL"
+      inline
+      variant="link"
+      :loading="syncDiscordMutation.isPending.value"
+      @click="syncToDiscord"
+    >
+      <i class="fa-brands fa-discord" />
+      {{ t("actions.fleets.events.syncToDiscord") }}
     </Btn>
   </div>
 </template>

@@ -48,6 +48,14 @@ json.team_count fleet_event.fleet_event_teams.size
 json.past fleet_event.past?
 json.signups_open fleet_event.signups_open?
 
+# Discord-related state for the frontend's "Sync to Discord" button.
+json.discord_event_id fleet_event.discord_event_id
+json.discord_synced_at fleet_event.discord_synced_at
+json.discord_configured(
+  ::Discord::ApiClient.configured? &&
+    fleet_event.fleet&.fleet_notification_setting&.discord_guild_id.present?
+)
+
 json.viewer_event_role local_assigns[:viewer_event_role]
 
 json.partial! "api/shared/dates", record: fleet_event
