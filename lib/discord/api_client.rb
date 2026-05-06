@@ -21,15 +21,13 @@ module Discord
     end
 
     def self.bot_token
-      Rails.application.credentials.discord&.dig(:bot_token) ||
-        ENV["DISCORD_BOT_TOKEN"]
+      Rails.application.config.app.discord[:bot_token].presence
     end
 
-    # The bot application's client ID — public, used to build the OAuth
-    # install URL surfaced on the fleet settings page.
+    # The Discord application's ID — same value as the OAuth login client_id,
+    # used here to build the bot install URL on the fleet settings page.
     def self.application_id
-      Rails.application.credentials.discord&.dig(:bot_client_id) ||
-        ENV["DISCORD_BOT_CLIENT_ID"]
+      Rails.application.config.app.discord[:client_id].presence
     end
 
     # Manage Events permission bit (1 << 33).
