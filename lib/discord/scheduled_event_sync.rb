@@ -84,11 +84,7 @@ module Discord
       else
         payload[:entity_type] = ENTITY_TYPE_EXTERNAL
         payload[:channel_id] = nil
-        payload[:entity_metadata] = {
-          location: event.meetup_location.presence ||
-            event.location.presence ||
-            "Star Citizen"
-        }
+        payload[:entity_metadata] = {location: location_chip}
       end
 
       if (image = cover_image_data_uri)
@@ -147,11 +143,15 @@ module Discord
 
     private def description_for(event)
       base = event.description.presence || event.briefing.presence || ""
+      meetup = event.meetup_location.presence || event.location.presence
       [
-        base,
-        creator_line,
-        event_short_url ? "\n\n**Open in Fleetyards:** <#{event_short_url}>" : nil
-      ].compact.join.first(1000)
+        # URL first so it survives Discord's ~80-char preview truncation on the
+        # event card. `<...>` suppresses the link-preview embed inside the modal.
+        event_short_url ? "**Open in Fleetyards:** <#{event_short_url}>" : nil,
+        meetup ? "**Location:** #{meetup}" : nil,
+        base.presence,
+        creator_line
+      ].compact.join("\n\n").first(1000)
     end
 
     # Prefer `<@discord_uid>` so Discord renders a real @-mention badge that
@@ -163,7 +163,18 @@ module Discord
 
       mention = creator.discord_uid.presence
       who = mention ? "<@#{mention}>" : (creator.username.presence || "Unknown")
-      "\n\n**Organised by:** #{who}"
+      "**Organised by:** #{who}"
+    end
+
+    # The location chip is always visible on the event card. We use it to
+    # surface the creator as a `<@id>` mention so the chip shows the actual
+    # host (rather than the bot, since `creator_id` is read-only). The in-game
+    # meetup location lives in the description block instead.
+    private def location_chip
+      mention_uid = event.created_by&.discord_uid
+      return "<@#{mention_uid}>" if mention_uid.present?
+
+      event.created_by&.username.presence || "Star Citizen"
     end
 
     # Public on the model so the frontend's "Sync to Discord" button can
