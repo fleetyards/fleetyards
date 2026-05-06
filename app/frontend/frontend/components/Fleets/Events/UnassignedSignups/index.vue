@@ -223,10 +223,11 @@ const remove = (signup: FleetEventSignup) => {
   border-radius: 4px;
 }
 .unassigned-signups__person {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 0.45rem;
   font-size: 0.92rem;
+  flex-wrap: wrap;
 
   i {
     color: var(--text-muted);
