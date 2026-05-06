@@ -142,6 +142,57 @@ RSpec.describe Discord::ScheduledEventSync do
       described_class.new(event).upsert!
       expect(captured[:description]).to match(%r{\*\*Open in Fleetyards:\*\* <https?://[^>]+/fe/})
     end
+
+    it "puts the Fleetyards URL on the first line so it survives the card preview truncation" do
+      captured = nil
+      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
+        captured = payload
+        {"id" => "999"}
+      end
+
+      described_class.new(event).upsert!
+      expect(captured[:description]).to start_with("**Open in Fleetyards:**")
+    end
+  end
+
+  describe "external location chip" do
+    let(:creator) { create(:user, username: "TorlekMaru") }
+    let(:event) { create(:fleet_event, :open, fleet: fleet, created_by: creator, meetup_location: "Lorville Outpost") }
+
+    it "always uses the creator's @-mention so the chip shows the host instead of the bot" do
+      create(:omniauth_connection, user: creator, provider: "discord", uid: "344036297326723073")
+
+      captured = nil
+      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
+        captured = payload
+        {"id" => "999"}
+      end
+
+      described_class.new(event).upsert!
+      expect(captured[:entity_metadata][:location]).to eq("<@344036297326723073>")
+    end
+
+    it "falls back to the creator's username when Discord isn't linked" do
+      captured = nil
+      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
+        captured = payload
+        {"id" => "999"}
+      end
+
+      described_class.new(event).upsert!
+      expect(captured[:entity_metadata][:location]).to eq("TorlekMaru")
+    end
+
+    it "moves the in-game meetup location into the description block" do
+      captured = nil
+      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
+        captured = payload
+        {"id" => "999"}
+      end
+
+      described_class.new(event).upsert!
+      expect(captured[:description]).to include("**Location:** Lorville Outpost")
+    end
   end
 
   describe "#delete!" do
