@@ -146,8 +146,20 @@ module Discord
       base = event.description.presence || event.briefing.presence || ""
       [
         base,
-        event.fleet ? "\n\nView on Fleetyards: https://fleetyards.net/fleets/#{event.fleet.slug}/events/#{event.slug}" : nil
+        event_short_url ? "\n\nView on Fleetyards: #{event_short_url}" : nil
       ].compact.join.first(1000)
+    end
+
+    # Public on the model so the frontend's "Sync to Discord" button can
+    # render the same canonical short URL (and so we can verify the route
+    # in tests without spinning up the request stack).
+    private def event_short_url
+      return nil if event.fleet&.fid.blank? || event.slug.blank?
+
+      domain = Rails.application.config.app.short_domain.presence ||
+        Rails.application.config.app.domain
+      scheme = Rails.env.production? ? "https" : "http"
+      "#{scheme}://#{domain}/fe/#{event.fleet.fid}/#{event.slug}"
     end
 
     private def api

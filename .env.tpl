@@ -3,11 +3,7 @@ DOMAIN=fleetyards.test
 SHORT_DOMAIN=fltyrd.test
 ON_SUBDOMAIN=true
 MAILER_DEFAULT_FROM=info@fleetyards.test
-DISCORD__CLIENT_ID=op://Fleetyards/DISCORD_OAUTH/client_id
-DISCORD__OAUTH_SECRET=op://Fleetyards/DISCORD_OAUTH/credential
-# Discord bot token lives alongside it in Rails credentials under
-# discord.bot_token; client_id is shared with OAuth login since it's
-# the same Discord application.
+# DISCORD__OAUTH_SECRET=op://Fleetyards/DISCORD_OAUTH/credential
 GITHUB__OAUTH_CLIENT_ID=op://Fleetyards/GITHUB_OAUTH/client_id
 GITHUB__OAUTH_SECRET=op://Fleetyards/GITHUB_OAUTH/credential
 TWITCH__OAUTH_CLIENT_ID=op://Fleetyards/TWITCH_OAUTH/client_id

@@ -218,6 +218,52 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
     end
   end
 
+  path "/fleets/{fleetSlug}/events/{slug}/sync-to-discord" do
+    parameter name: "fleetSlug", in: :path, type: :string
+    parameter name: "slug", in: :path, type: :string
+
+    post("Sync event to Discord") do
+      operationId "syncFleetEventToDiscord"
+      tags "Fleet Events"
+      produces "application/json"
+
+      let(:fleet_event) do
+        event = create(:fleet_event, :open, fleet: fleet, created_by: admin)
+        fleet.create_fleet_notification_setting!(discord_guild_id: "guild-1")
+        event
+      end
+
+      before do
+        allow(::Discord::ApiClient).to receive(:configured?).and_return(true)
+        sync = instance_double(::Discord::ScheduledEventSync, runnable?: true, upsert!: {"id" => "discord-1"})
+        allow(::Discord::ScheduledEventSync).to receive(:new).and_return(sync)
+      end
+
+      security [
+        {SessionCookie: []},
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
+      ]
+
+      response(200, "successful") do
+        schema "$ref": "#/components/schemas/FleetEventExtended"
+        run_test!
+      end
+
+      response(422, "discord not configured") do
+        before do
+          allow(::Discord::ApiClient).to receive(:configured?).and_return(false)
+          sync = instance_double(::Discord::ScheduledEventSync, runnable?: false)
+          allow(::Discord::ScheduledEventSync).to receive(:new).and_return(sync)
+        end
+
+        run_test!
+      end
+
+      include_examples "oauth_auth"
+    end
+  end
+
   path "/fleets/{fleetSlug}/events/{slug}/cancel" do
     parameter name: "fleetSlug", in: :path, type: :string
     parameter name: "slug", in: :path, type: :string

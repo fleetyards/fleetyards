@@ -231,6 +231,7 @@
           "spawn": "Spawn from this Mission",
           "archive": "Archive Event",
           "unarchive": "Restore from archive",
+          "syncToDiscord": "Sync to Discord",
           "destroy": "Delete Permanently",
           "publish": "Publish",
           "lockSignups": "Lock signups",

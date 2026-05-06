@@ -61,12 +61,15 @@ module V1
               teamCount: {type: :integer},
               past: {type: :boolean},
               signupsOpen: {type: :boolean},
+              discordEventId: {type: :string, nullable: true},
+              discordSyncedAt: {type: :string, format: "date-time", nullable: true},
+              discordConfigured: {type: :boolean},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
             required: %w[
               id fleetId title slug status startsAt timezone visibility category
-              autoLockEnabled archived externalUid signupApproval signupsCount teamCount past signupsOpen createdAt updatedAt
+              autoLockEnabled archived externalUid signupApproval signupsCount teamCount past signupsOpen discordConfigured createdAt updatedAt
             ]
           })
         end

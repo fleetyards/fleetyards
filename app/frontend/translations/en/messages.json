@@ -379,6 +379,10 @@
             "success": "Event restored from archive.",
             "failure": "Could not restore event."
           },
+          "syncToDiscord": {
+            "success": "Event pushed to Discord.",
+            "failure": "Could not push event to Discord."
+          },
           "destroy": {
             "success": "Event deleted.",
             "failure": "Could not delete event.",

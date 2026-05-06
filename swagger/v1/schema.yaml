@@ -1856,6 +1856,46 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/events/{slug}/sync-to-discord":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Sync event to Discord
+      operationId: syncFleetEventToDiscord
+      tags:
+      - Fleet Events
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventExtended"
+        '422':
+          description: discord not configured
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/events/{slug}/cancel":
     parameters:
     - name: fleetSlug
@@ -10893,6 +10933,15 @@ components:
           type: boolean
         signupsOpen:
           type: boolean
+        discordEventId:
+          type: string
+          nullable: true
+        discordSyncedAt:
+          type: string
+          format: date-time
+          nullable: true
+        discordConfigured:
+          type: boolean
         createdAt:
           type: string
           format: date-time
@@ -10917,6 +10966,7 @@ components:
       - teamCount
       - past
       - signupsOpen
+      - discordConfigured
       - createdAt
       - updatedAt
       title: FleetEvent
