@@ -22,7 +22,7 @@ RSpec.describe Discord::ScheduledEventRsvpHandler do
   end
 
   describe "#add!" do
-    it "creates an event-level confirmed signup" do
+    it "creates an event-level interested signup" do
       handler = described_class.new(
         guild_id: "guild-1",
         scheduled_event_id: "scheduled-1",
@@ -32,15 +32,15 @@ RSpec.describe Discord::ScheduledEventRsvpHandler do
       result = handler.add!
       expect(result.ok?).to be(true), "expected ok, got #{result.status}: #{result.detail}"
       signup = event.fleet_event_signups.find_by(fleet_membership: membership)
-      expect(signup.status).to eq("confirmed")
+      expect(signup.status).to eq("interested")
       expect(signup.fleet_event_slot_id).to be_nil
     end
 
-    it "promotes an existing interested signup to confirmed" do
+    it "leaves an existing event-level signup untouched" do
       event.fleet_event_signups.create!(
         fleet_membership: membership,
         fleet_event_slot: nil,
-        status: "interested"
+        status: "tentative"
       )
 
       handler = described_class.new(
@@ -50,8 +50,28 @@ RSpec.describe Discord::ScheduledEventRsvpHandler do
       )
       result = handler.add!
 
-      expect(result.ok?).to be true
+      expect(result).to have_attributes(status: :skipped)
       expect(event.fleet_event_signups.where(fleet_membership: membership).where.not(status: "withdrawn").count).to eq(1)
+      expect(event.fleet_event_signups.find_by(fleet_membership: membership).status).to eq("tentative")
+    end
+
+    it "leaves an existing slot-bound signup untouched" do
+      team = create(:fleet_event_team, fleet_event: event)
+      slot = create(:fleet_event_slot, slottable: team)
+      event.fleet_event_signups.create!(
+        fleet_membership: membership,
+        fleet_event_slot: slot,
+        status: "confirmed"
+      )
+
+      handler = described_class.new(
+        guild_id: "guild-1",
+        scheduled_event_id: "scheduled-1",
+        discord_user_id: "discord-uid-1"
+      )
+      result = handler.add!
+
+      expect(result).to have_attributes(status: :skipped)
       expect(event.fleet_event_signups.find_by(fleet_membership: membership).status).to eq("confirmed")
     end
 
