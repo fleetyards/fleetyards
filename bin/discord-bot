@@ -20,12 +20,27 @@ SCHEDULED_EVENTS_INTENT = 1 << 16
 token = Discord::ApiClient.bot_token
 abort("DISCORD_BOT_TOKEN missing") if token.blank?
 
-Rails.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout)) if Rails.logger.nil?
+# Run as its own service: Rails by default routes Rails.logger to
+# log/<env>.log, which makes the bot terminal misleadingly silent. Pipe
+# Rails.logger to stdout so the operator can see what's happening.
+stdout_logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout))
+Rails.logger = stdout_logger
+ActiveSupport::LogSubscriber.logger = stdout_logger if defined?(ActiveSupport::LogSubscriber)
+
+# Crank discordrb's logger so we can see IDENTIFY → READY in stdout.
+# Drop back to :normal once everything's stable.
+Discordrb::LOGGER.mode = (ENV["DISCORD_BOT_DEBUG"] == "true") ? :debug : :normal
 
 bot = Discordrb::Bot.new(
   token: token,
   intents: [:servers, SCHEDULED_EVENTS_INTENT]
 )
+
+# Catch-all dispatch logger — temporary, lets us see whether the
+# Gateway is actually delivering scheduled-event RSVPs to the bot.
+bot.raw do |event|
+  Rails.logger.info("[discord-bot] dispatch: #{event.type}")
+end
 
 bot.raw(type: :GUILD_SCHEDULED_EVENT_USER_ADD) do |event|
   data = event.data

@@ -91,11 +91,51 @@ module Discord
         }
       end
 
+      if (image = cover_image_data_uri)
+        payload[:image] = image
+      end
+
       if cancelled?
         payload[:status] = 4 # COMPLETED — closes the event without deletion
       end
 
       payload
+    end
+
+    # Discord accepts cover images as base64 data URIs in the payload.
+    # We try the attached cover_image first, then fall back to the bundled
+    # preset asset that matches event.cover_image_preset.
+    private def cover_image_data_uri
+      bytes, mime = cover_image_bytes
+      return nil unless bytes
+
+      "data:#{mime};base64,#{Base64.strict_encode64(bytes)}"
+    rescue => e
+      Rails.logger.warn("[discord-sync] failed to read cover image for event #{event.id}: #{e.class}: #{e.message}")
+      nil
+    end
+
+    private def cover_image_bytes
+      if event.cover_image.attached?
+        return [event.cover_image.download, event.cover_image.content_type || "image/jpeg"]
+      end
+
+      preset = event.cover_image_preset.presence
+      return nil if preset.blank?
+
+      # Discord's image upload doesn't accept webp, so prefer jpg.
+      preset_root = Rails.root.join("app/frontend/images/missions")
+      candidate = %w[jpg jpeg png].lazy
+        .map { |ext| preset_root.join("#{preset}.#{ext}") }
+        .find { |path| File.exist?(path) }
+
+      return nil unless candidate
+
+      mime = case candidate.extname
+      when ".png" then "image/png"
+      else "image/jpeg"
+      end
+      [File.binread(candidate), mime]
     end
 
     private def cancelled?
