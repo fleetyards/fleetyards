@@ -1097,6 +1097,7 @@
           "myVehicle": "My vehicle",
           "selectVehicle": "Select a vehicle (optional)",
           "vehicleMismatchHint": "The selected vehicle doesn't match this slot's requirements.",
+          "noFittingInHangar": "Nothing in your hangar fits this slot. You can still sign up by leaving the vehicle empty.",
           "vehicleFitsHint": "Bringing a vehicle that fits this ship.",
           "noMatchingVehicle": "No signup brings a fitting vehicle.",
           "shipNotCrewedYet": "No fitting signup yet.",

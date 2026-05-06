@@ -111,6 +111,12 @@ const selectedMatches = computed(() => {
   return matches(selected.value);
 });
 
+// When the slot has filters but the member's hangar has nothing matching,
+// surface that explicitly so the dropdown isn't just mysteriously empty.
+const noMatchingInHangar = computed(
+  () => !!props.requiredShip && !isLoading.value && matching.value.length === 0,
+);
+
 watch(selectedMatches, (value) => emit("match", value), { immediate: true });
 </script>
 
@@ -128,7 +134,14 @@ watch(selectedMatches, (value) => emit("match", value), { immediate: true });
       @update:model-value="(v) => emit('update:modelValue', v as string | null)"
     />
     <p
-      v-if="selected && !selectedMatches"
+      v-if="noMatchingInHangar"
+      class="vehicle-picker__warning text-muted small"
+    >
+      <i class="fa-light fa-circle-info" />
+      {{ t("labels.fleets.events.noFittingInHangar") }}
+    </p>
+    <p
+      v-else-if="selected && !selectedMatches"
       class="vehicle-picker__warning text-muted small"
     >
       <i class="fa-light fa-triangle-exclamation" />
