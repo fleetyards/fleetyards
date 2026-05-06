@@ -55,7 +55,10 @@ class Notification < ApplicationRecord
     fleet_event_completed: "fleet_event_completed",
     fleet_event_cancelled: "fleet_event_cancelled",
     fleet_event_signup_added: "fleet_event_signup_added",
-    fleet_event_signup_withdrawn: "fleet_event_signup_withdrawn"
+    fleet_event_signup_withdrawn: "fleet_event_signup_withdrawn",
+    fleet_event_signup_confirmed: "fleet_event_signup_confirmed",
+    fleet_event_signup_assigned: "fleet_event_signup_assigned",
+    fleet_event_signup_kicked: "fleet_event_signup_kicked"
   }
 
   TYPES = {
@@ -171,6 +174,21 @@ class Notification < ApplicationRecord
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_withdrawn: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_signup_confirmed: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_signup_assigned: {
+      retention: 14.days,
+      channels: %i[app],
+      preference_defaults: {app: true, mail: false, push: false}
+    },
+    fleet_event_signup_kicked: {
       retention: 14.days,
       channels: %i[app],
       preference_defaults: {app: true, mail: false, push: false}

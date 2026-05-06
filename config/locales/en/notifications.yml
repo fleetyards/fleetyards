@@ -50,3 +50,9 @@ en:
         title: "%{user} signed up for %{title}"
       withdrawn:
         title: "%{user} withdrew from %{title}"
+      confirmed:
+        title: "Your sign-up for %{title} was approved"
+      assigned:
+        title: "You were assigned to %{slot} for %{title}"
+      kicked:
+        title: "You were removed from %{title}"

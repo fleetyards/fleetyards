@@ -165,12 +165,21 @@ module Api
           context: {fleet_event: @signup.fleet_event}, to: :manage?
 
         previous_status = @signup.status
+        previous_slot_id = @signup.fleet_event_slot_id
         if @signup.update(admin_signup_attrs)
+          if previous_slot_id != @signup.fleet_event_slot_id
+            ActiveSupport::Notifications.instrument(
+              "fleet_event_signup.assigned",
+              signup: @signup,
+              previous_slot_id: previous_slot_id
+            )
+          end
           if previous_status != @signup.status
             ActiveSupport::Notifications.instrument(
               "fleet_event_signup.status_changed",
               signup: @signup,
-              previous_status: previous_status
+              previous_status: previous_status,
+              by_admin: true
             )
           end
           render :show
@@ -191,7 +200,7 @@ module Api
         authorize! @signup, with: FleetEventSignupPolicy, context: {fleet_event: @signup.fleet_event}, to: :destroy?
 
         @signup.withdraw!
-        ActiveSupport::Notifications.instrument("fleet_event_signup.withdrawn", signup: @signup)
+        ActiveSupport::Notifications.instrument("fleet_event_signup.withdrawn", signup: @signup, kicked: true)
         head :no_content
       end
 
