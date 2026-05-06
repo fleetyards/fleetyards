@@ -37,8 +37,13 @@ Gateway sessions fight each other).
    - stage: item `DISCORD_BOT_STAGE`, key `credential`
    The Kamal secrets file pulls these via `op read` automatically — see
    `.kamal/secrets.live` and `.kamal/secrets.stage`.
-3. **Privileged Gateway Intents** — leave them all off. The bot only needs
-   `GUILDS` and `GUILD_SCHEDULED_EVENTS`, both non-privileged.
+3. **Privileged Gateway Intents** — leave them all off. The portal only
+   exposes the privileged intents (Presence, Server Members, Message
+   Content). The bot needs `GUILDS` and `GUILD_SCHEDULED_EVENTS`, both
+   non-privileged — those don't appear in the portal at all and are
+   requested from `bin/discord-bot` via
+   `intents: %i[servers server_scheduled_events]`. No portal action
+   needed for them.
 4. Toggle **Public Bot** off so it can't be added to random servers.
 5. Sidebar → **Installation** → **Install Link** → **Discord Provided
    Link**. Default Install Settings:

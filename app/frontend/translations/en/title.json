@@ -70,7 +70,8 @@
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",
           "membership": "%{fleet} Membership",
-          "roles": "%{fleet} Roles"
+          "roles": "%{fleet} Roles",
+          "notifications": "%{fleet} Notification Settings"
         }
       },
       "roadmap": {
