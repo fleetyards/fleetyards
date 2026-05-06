@@ -4,10 +4,18 @@
 # Long-running Discord Gateway listener that turns scheduled-event RSVPs
 # into Fleetyards signups. Run as its own service alongside the web/sidekiq
 # tier (single instance per Discord application).
+#
+# discordrb 3.7.2 doesn't yet ship typed handlers for scheduled events, so
+# we listen at the raw dispatch level and decode the payload ourselves.
+# Same wire data, just no convenience wrappers.
 
 require_relative "../config/environment"
 require "discordrb"
 require "discord/scheduled_event_rsvp_handler"
+
+# Intent bit for GUILD_SCHEDULED_EVENTS — not yet defined as a symbol in
+# discordrb 3.7.2's INTENTS hash, but the integer is accepted directly.
+SCHEDULED_EVENTS_INTENT = 1 << 16
 
 token = Discord::ApiClient.bot_token
 abort("DISCORD_BOT_TOKEN missing") if token.blank?
@@ -16,27 +24,29 @@ Rails.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout)) if Rails.lo
 
 bot = Discordrb::Bot.new(
   token: token,
-  intents: %i[servers server_scheduled_events]
+  intents: [:servers, SCHEDULED_EVENTS_INTENT]
 )
 
-bot.scheduled_event_user_register do |event|
+bot.raw(type: :GUILD_SCHEDULED_EVENT_USER_ADD) do |event|
+  data = event.data
   result = Discord::ScheduledEventRsvpHandler.new(
-    guild_id: event.server.id,
-    scheduled_event_id: event.scheduled_event.id,
-    discord_user_id: event.user.id
+    guild_id: data["guild_id"],
+    scheduled_event_id: data["guild_scheduled_event_id"],
+    discord_user_id: data["user_id"]
   ).add!
-  Rails.logger.info("[discord-bot] add #{event.scheduled_event.id} ← #{event.user.id}: #{result.status} (#{result.detail})")
+  Rails.logger.info("[discord-bot] add #{data["guild_scheduled_event_id"]} ← #{data["user_id"]}: #{result.status} (#{result.detail})")
 rescue => e
   Rails.logger.error("[discord-bot] add failed: #{e.class}: #{e.message}")
 end
 
-bot.scheduled_event_user_unregister do |event|
+bot.raw(type: :GUILD_SCHEDULED_EVENT_USER_REMOVE) do |event|
+  data = event.data
   result = Discord::ScheduledEventRsvpHandler.new(
-    guild_id: event.server.id,
-    scheduled_event_id: event.scheduled_event.id,
-    discord_user_id: event.user.id
+    guild_id: data["guild_id"],
+    scheduled_event_id: data["guild_scheduled_event_id"],
+    discord_user_id: data["user_id"]
   ).remove!
-  Rails.logger.info("[discord-bot] remove #{event.scheduled_event.id} ← #{event.user.id}: #{result.status} (#{result.detail})")
+  Rails.logger.info("[discord-bot] remove #{data["guild_scheduled_event_id"]} ← #{data["user_id"]}: #{result.status} (#{result.detail})")
 rescue => e
   Rails.logger.error("[discord-bot] remove failed: #{e.class}: #{e.message}")
 end
