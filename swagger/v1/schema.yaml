@@ -3730,6 +3730,90 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/notifications":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      summary: Show fleet notification settings
+      operationId: fleetNotificationSetting
+      tags:
+      - Fleet Notification Settings
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetNotificationSetting"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    patch:
+      summary: Update fleet notification settings
+      operationId: updateFleetNotificationSetting
+      tags:
+      - Fleet Notification Settings
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetNotificationSetting"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                discordGuildId:
+                  type: string
+                  nullable: true
+                discordChannelId:
+                  type: string
+                  nullable: true
+                discordWebhookUrl:
+                  type: string
+                  nullable: true
+                enabledInAppEvents:
+                  type: array
+                  items:
+                    type: string
+                enabledDiscordEvents:
+                  type: array
+                  items:
+                    type: string
+        required: true
   "/fleets/{fleetSlug}/roles":
     parameters:
     - name: fleetSlug
@@ -10123,6 +10207,9 @@ components:
       - fleet_event_cancelled
       - fleet_event_signup_added
       - fleet_event_signup_withdrawn
+      - fleet_event_signup_confirmed
+      - fleet_event_signup_assigned
+      - fleet_event_signup_kicked
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -10145,6 +10232,9 @@ components:
       - FLEET_EVENT_CANCELLED
       - FLEET_EVENT_SIGNUP_ADDED
       - FLEET_EVENT_SIGNUP_WITHDRAWN
+      - FLEET_EVENT_SIGNUP_CONFIRMED
+      - FLEET_EVENT_SIGNUP_ASSIGNED
+      - FLEET_EVENT_SIGNUP_KICKED
       title: NotificationTypeEnum
     OrderDirectionEnum:
       type: string
@@ -12107,6 +12197,54 @@ components:
       required:
       - modelCounts
       title: FleetModelCountsStats
+    FleetNotificationSetting:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetId:
+          type: string
+          format: uuid
+        enabledInAppEvents:
+          type: array
+          items:
+            type: string
+            enum:
+            - fleet_event.published
+            - fleet_event.locked
+            - fleet_event.starting_soon
+            - fleet_event.cancelled
+            - fleet_event_signup.created
+            - fleet_event_signup.withdrawn
+        enabledDiscordEvents:
+          type: array
+          items:
+            type: string
+            enum:
+            - fleet_event.published
+            - fleet_event.locked
+            - fleet_event.unlocked
+            - fleet_event.started
+            - fleet_event.completed
+            - fleet_event.cancelled
+            - fleet_event.archived
+            - fleet_event.destroyed
+        discordGuildId:
+          type: string
+          nullable: true
+        discordChannelId:
+          type: string
+          nullable: true
+        discordWebhookConfigured:
+          type: boolean
+      required:
+      - id
+      - fleetId
+      - enabledInAppEvents
+      - enabledDiscordEvents
+      - discordWebhookConfigured
+      title: FleetNotificationSetting
     FleetPublicVehicles:
       type: object
       properties:

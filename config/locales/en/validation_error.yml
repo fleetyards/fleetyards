@@ -49,6 +49,8 @@ en:
     fleet_event_admins:
       create: Event admin could not be granted.
       destroy: Event admin could not be revoked.
+    fleet_notification_settings:
+      update: Notification settings could not be updated.
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed

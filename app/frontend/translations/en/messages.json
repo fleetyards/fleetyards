@@ -248,6 +248,12 @@
         }
       },
       "fleets": {
+        "notifications": {
+          "update": {
+            "success": "Notification settings saved.",
+            "failure": "Could not save notification settings."
+          }
+        },
         "logistics": {
           "request": {
             "create": {

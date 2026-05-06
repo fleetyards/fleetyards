@@ -6775,6 +6775,9 @@ components:
       - fleet_event_cancelled
       - fleet_event_signup_added
       - fleet_event_signup_withdrawn
+      - fleet_event_signup_confirmed
+      - fleet_event_signup_assigned
+      - fleet_event_signup_kicked
       x-enumNames:
       - HANGAR_CREATE
       - HANGAR_DESTROY
@@ -6797,6 +6800,9 @@ components:
       - FLEET_EVENT_CANCELLED
       - FLEET_EVENT_SIGNUP_ADDED
       - FLEET_EVENT_SIGNUP_WITHDRAWN
+      - FLEET_EVENT_SIGNUP_CONFIRMED
+      - FLEET_EVENT_SIGNUP_ASSIGNED
+      - FLEET_EVENT_SIGNUP_KICKED
       title: NotificationTypeEnum
     OrderDirectionEnum:
       type: string

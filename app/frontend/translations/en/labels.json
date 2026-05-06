@@ -318,6 +318,27 @@
           "spectrumDm": "Message on Spectrum",
           "discordContact": "Discord"
         },
+        "notifications": {
+          "inAppHint": "Pick which event lifecycle changes show up as in-app notifications for fleet members.",
+          "discordHint": "Connect a Discord server to mirror events as native scheduled events. Members can RSVP from Discord and the sign-up will sync back to Fleetyards.",
+          "discordGuildId": "Discord server ID",
+          "discordChannelId": "Voice channel ID (optional)",
+          "discordWebhookUrl": "Announcement webhook URL (optional)",
+          "discordEventsHint": "Pick which event changes trigger a Discord update.",
+          "events": {
+            "fleet_event.published": "Event published",
+            "fleet_event.locked": "Sign-ups locked",
+            "fleet_event.unlocked": "Sign-ups reopened",
+            "fleet_event.starting_soon": "Event starting soon",
+            "fleet_event.started": "Event started",
+            "fleet_event.completed": "Event completed",
+            "fleet_event.cancelled": "Event cancelled",
+            "fleet_event.archived": "Event archived",
+            "fleet_event.destroyed": "Event deleted",
+            "fleet_event_signup.created": "Signup added",
+            "fleet_event_signup.withdrawn": "Signup withdrawn"
+          }
+        },
         "roles": {
           "permanent": "Permanent",
           "privilegeGroups": {
@@ -326,7 +347,10 @@
             "invites": "Invites",
             "vehicles": "Vehicles",
             "roles": "Roles",
-            "inventories": "Inventories"
+            "inventories": "Inventories",
+            "missions": "Missions",
+            "events": "Events",
+            "notifications": "Notifications"
           },
           "privileges": {
             "fleet:update": "Update Fleet",
@@ -357,7 +381,18 @@
             "fleet:inventories:create": "Create Inventories",
             "fleet:inventories:update": "Update Inventories",
             "fleet:inventories:delete": "Delete Inventories",
-            "fleet:inventories:manage": "Manage Inventories"
+            "fleet:inventories:manage": "Manage Inventories",
+            "fleet:missions:read": "View Missions",
+            "fleet:missions:create": "Create Missions",
+            "fleet:missions:update": "Update Missions",
+            "fleet:missions:delete": "Delete Missions",
+            "fleet:missions:manage": "Manage Missions",
+            "fleet:events:read": "View Events",
+            "fleet:events:create": "Create Events",
+            "fleet:events:update": "Update Events",
+            "fleet:events:delete": "Delete Events",
+            "fleet:events:manage": "Manage Events",
+            "fleet:notifications:manage": "Manage Notification Settings"
           }
         },
         "inviteUrls": {
