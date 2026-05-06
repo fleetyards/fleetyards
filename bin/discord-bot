@@ -1,20 +1,58 @@
-#!/usr/bin/env bash
-# Discord Gateway listener entry point.
-#
-# Locally: pulls DISCORD_BOT_TOKEN (and any other op:// references in
-# .env.tpl / .env / .env.local) via the 1Password CLI, then runs the
-# bot. Mirrors the bin/dev → bin/op pattern so contributors don't need
-# to hand-edit .env.local with a token.
-#
-# In production / Kamal: the role's env.secret already injected
-# DISCORD_BOT_TOKEN, and the container has no `op` CLI installed, so the
-# wrapper skips bin/op and runs the script directly.
-set -euo pipefail
+#!/usr/bin/env ruby
+# frozen_string_literal: true
 
-cd "$(dirname "$0")/.."
+# Long-running Discord Gateway listener that turns scheduled-event RSVPs
+# into Fleetyards signups. Run as its own service alongside the web/sidekiq
+# tier (single instance per Discord application).
+#
+# discordrb 3.7.2 doesn't yet ship typed handlers for scheduled events, so
+# we listen at the raw dispatch level and decode the payload ourselves.
+# Same wire data, just no convenience wrappers.
 
-if [ -z "${DISCORD_BOT_TOKEN:-}" ] && command -v op >/dev/null 2>&1; then
-  exec bin/op ruby bin/discord-bot.rb "$@"
-else
-  exec ruby bin/discord-bot.rb "$@"
-fi
+require_relative "../config/environment"
+require "discordrb"
+require "discord/scheduled_event_rsvp_handler"
+
+# Intent bit for GUILD_SCHEDULED_EVENTS — not yet defined as a symbol in
+# discordrb 3.7.2's INTENTS hash, but the integer is accepted directly.
+SCHEDULED_EVENTS_INTENT = 1 << 16
+
+token = Discord::ApiClient.bot_token
+abort("DISCORD_BOT_TOKEN missing") if token.blank?
+
+Rails.logger = ActiveSupport::TaggedLogging.new(Logger.new($stdout)) if Rails.logger.nil?
+
+bot = Discordrb::Bot.new(
+  token: token,
+  intents: [:servers, SCHEDULED_EVENTS_INTENT]
+)
+
+bot.raw(type: :GUILD_SCHEDULED_EVENT_USER_ADD) do |event|
+  data = event.data
+  result = Discord::ScheduledEventRsvpHandler.new(
+    guild_id: data["guild_id"],
+    scheduled_event_id: data["guild_scheduled_event_id"],
+    discord_user_id: data["user_id"]
+  ).add!
+  Rails.logger.info("[discord-bot] add #{data["guild_scheduled_event_id"]} ← #{data["user_id"]}: #{result.status} (#{result.detail})")
+rescue => e
+  Rails.logger.error("[discord-bot] add failed: #{e.class}: #{e.message}")
+end
+
+bot.raw(type: :GUILD_SCHEDULED_EVENT_USER_REMOVE) do |event|
+  data = event.data
+  result = Discord::ScheduledEventRsvpHandler.new(
+    guild_id: data["guild_id"],
+    scheduled_event_id: data["guild_scheduled_event_id"],
+    discord_user_id: data["user_id"]
+  ).remove!
+  Rails.logger.info("[discord-bot] remove #{data["guild_scheduled_event_id"]} ← #{data["user_id"]}: #{result.status} (#{result.detail})")
+rescue => e
+  Rails.logger.error("[discord-bot] remove failed: #{e.class}: #{e.message}")
+end
+
+Signal.trap("INT") { bot.stop }
+Signal.trap("TERM") { bot.stop }
+
+Rails.logger.info("[discord-bot] starting Gateway listener")
+bot.run

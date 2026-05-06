@@ -31,12 +31,25 @@ Gateway sessions fight each other).
 
 1. https://discord.com/developers/applications → **New Application**.
    Name it `Fleetyards` for prod, `Fleetyards Stage` for stage.
-2. Sidebar → **Bot** → **Reset Token** → copy.
-   Store under 1Password vault `Fleetyards`:
-   - prod: item `DISCORD_BOT_LIVE`, key `credential`
-   - stage: item `DISCORD_BOT_STAGE`, key `credential`
-   The Kamal secrets file pulls these via `op read` automatically — see
-   `.kamal/secrets.live` and `.kamal/secrets.stage`.
+2. Sidebar → **Bot** → **Reset Token** → copy. From the same page (or
+   the **General Information** sidebar entry), also copy the
+   **Application ID** — Fleetyards uses it to render the install URL
+   on the fleet settings page.
+
+   Both values live in Rails encrypted credentials, not env vars. Add
+   them under the `discord:` namespace in the appropriate file:
+   ```bash
+   bin/credentials --environment production --edit
+   ```
+   ```yaml
+   discord:
+     bot_token: your-bot-token
+     bot_client_id: "1234567890123456789"
+   ```
+   Repeat with `--environment staging` for the stage app and the
+   default `bin/credentials --edit` for development. The `RAILS_MASTER_KEY`
+   that Kamal already injects unlocks them — no separate env-var
+   plumbing is needed.
 3. **Privileged Gateway Intents** — leave them all off. The portal only
    exposes the privileged intents (Presence, Server Members, Message
    Content). The bot needs `GUILDS` and `GUILD_SCHEDULED_EVENTS`, both
@@ -50,8 +63,9 @@ Gateway sessions fight each other).
    - Scopes: `bot`, `applications.commands`
    - Bot Permissions: `Manage Events` (only)
 
-   Copy the install URL. This is what fleet admins click to add the bot
-   to their server.
+   Save. Fleetyards renders this URL on the fleet's notification
+   settings page (read from `DISCORD_BOT_CLIENT_ID`), so fleet admins
+   click it directly from the UI — no manual copying.
 
 ## Local development
 
@@ -59,18 +73,25 @@ Use the prod or stage bot here only if no real fleet has it installed —
 otherwise you'll fight with the live Gateway session. Use the dedicated
 `Fleetyards Dev` application + a personal test Discord server.
 
-The dev bot's token lives in 1Password under `DISCORD_BOT_DEV/credential`
-and is referenced from `.env.tpl` as
-`DISCORD_BOT_TOKEN=op://Fleetyards/DISCORD_BOT_DEV/credential`. The
-wrapper `bin/discord-bot` self-resolves it via `bin/op` (1Password CLI)
-when the env isn't already populated, the same way `bin/dev` does.
+Drop the dev bot's token + client_id into your local credentials:
+
+```bash
+bin/credentials --edit          # uses config/master.key for development
+```
+```yaml
+discord:
+  bot_token: your-fleetyards-dev-bot-token
+  bot_client_id: "1234567890123456789"
+```
+
+Then start it:
 
 ```bash
 # Terminal 1: web + sidekiq via your usual command
 bin/dev
 
-# Terminal 2: the bot. The wrapper detects the missing token and pulls
-# it from 1Password automatically — no `op inject` step needed.
+# Terminal 2: the bot. config/environment activates Rails (and
+# credentials), so no env wrapper is needed.
 bin/discord-bot
 # expect: [discord-bot] starting Gateway listener
 #         (then a few discordrb log lines about connecting)
@@ -97,9 +118,9 @@ In Fleetyards:
 ## Deploying
 
 Already wired in `config/deploy.yml`. The `discord_bot` role:
-- Runs `bin/discord-bot` under Kamal. Containers don't have the 1Password
-  CLI, so the wrapper takes the env-already-set branch and execs Ruby
-  directly. `DISCORD_BOT_TOKEN` is supplied via `env.secret`.
+- Runs `bin/discord-bot` under Kamal. The script boots Rails, which
+  decrypts credentials with the existing `RAILS_MASTER_KEY` env, so
+  the role doesn't need any extra `env.secret` entries.
 - 512 MB memory cap.
 - Pinned to a single host (default: the primary web host, override via
   `KAMAL_DISCORD_BOT_HOST`). **Do not scale this past 1** — Discord

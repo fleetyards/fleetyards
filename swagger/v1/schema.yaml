@@ -3775,6 +3775,9 @@ paths:
                   status:
                     type: integer
                     nullable: true
+                  installUrl:
+                    type: string
+                    nullable: true
         '401':
           description: unauthorized
           content:

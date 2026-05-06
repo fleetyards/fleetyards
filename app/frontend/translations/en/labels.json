@@ -277,6 +277,7 @@
           "discordChannelId": "Voice Channel ID (optional)",
           "discordWebhookUrl": "Announcement Webhook URL (optional)",
           "discordEventsHint": "Pick which event changes trigger a Discord update.",
+          "installBotHint": "Opens the Discord install page in a new tab — pick the server you want events mirrored to.",
           "discordStatusOk": "Connected to %{name}",
           "discordStatusCodes": {
             "missing_token": "The Fleetyards bot is not configured on the server side. Contact an administrator.",

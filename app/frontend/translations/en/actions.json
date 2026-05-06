@@ -168,7 +168,8 @@
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
         "notifications": {
-          "testDiscord": "Test Discord connection"
+          "testDiscord": "Test Discord connection",
+          "installBot": "Install the Fleetyards bot in your Discord server"
         },
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",

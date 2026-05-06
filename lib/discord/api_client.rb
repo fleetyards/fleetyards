@@ -25,6 +25,26 @@ module Discord
         ENV["DISCORD_BOT_TOKEN"]
     end
 
+    # The bot application's client ID — public, used to build the OAuth
+    # install URL surfaced on the fleet settings page.
+    def self.application_id
+      Rails.application.credentials.discord&.dig(:bot_client_id) ||
+        ENV["DISCORD_BOT_CLIENT_ID"]
+    end
+
+    # Manage Events permission bit (1 << 33).
+    INSTALL_PERMISSIONS = 8_589_934_592
+
+    def self.install_url
+      return nil if application_id.blank?
+
+      "https://discord.com/oauth2/authorize" \
+        "?client_id=#{application_id}" \
+        "&permissions=#{INSTALL_PERMISSIONS}" \
+        "&integration_type=0" \
+        "&scope=bot+applications.commands"
+    end
+
     def self.configured?
       bot_token.present?
     end
