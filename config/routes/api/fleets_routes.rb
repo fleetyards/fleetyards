@@ -65,6 +65,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :complete
       put :cancel
       put :unarchive
+      post "sync-to-discord", action: :sync_to_discord
       post :signup, to: "fleet_event_signups#event_signup"
     end
 
