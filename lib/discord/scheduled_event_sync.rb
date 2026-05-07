@@ -142,28 +142,38 @@ module Discord
     end
 
     private def description_for(event)
-      base = event.description.presence || event.briefing.presence || ""
       meetup = event.meetup_location.presence || event.location.presence
+      base = event.description.presence || event.briefing.presence
       [
-        # URL first so it survives Discord's ~80-char preview truncation on the
-        # event card. `<...>` suppresses the link-preview embed inside the modal.
+        # Sesh-style "chip" line built from emoji + mentions + Discord's
+        # `<t:UNIX:R>` relative-time tag. Lives inside the description because
+        # Discord's real chips (creator/attendees/time) reflect bot-side data
+        # we can't override.
+        chip_line,
         event_short_url ? "**Open in Fleetyards:** <#{event_short_url}>" : nil,
         meetup ? "**Location:** #{meetup}" : nil,
-        base.presence,
-        creator_line
+        base
       ].compact.join("\n\n").first(1000)
     end
 
-    # Prefer `<@discord_uid>` so Discord renders a real @-mention badge that
-    # members can tap to DM. Falls back to the plain handle when the creator
-    # hasn't connected Discord.
-    private def creator_line
-      creator = event.created_by
-      return nil unless creator
+    private def chip_line
+      parts = ["🚩 #{host_chip}", "👥 #{confirmed_count} (+#{interested_count})"]
+      parts << "⏳ <t:#{event.starts_at.to_i}:R>" if event.starts_at
+      parts.join("  ·  ")
+    end
 
-      mention = creator.discord_uid.presence
-      who = mention ? "<@#{mention}>" : (creator.username.presence || "Unknown")
-      "**Organised by:** #{who}"
+    private def host_chip
+      uid = event.created_by&.discord_uid
+      return "<@#{uid}>" if uid.present?
+      event.created_by&.username.presence || "Star Citizen"
+    end
+
+    private def confirmed_count
+      event.fleet_event_signups.where(status: "confirmed").count
+    end
+
+    private def interested_count
+      event.fleet_event_signups.where(status: "interested").count
     end
 
     # The location chip is always visible on the event card. We use it to
