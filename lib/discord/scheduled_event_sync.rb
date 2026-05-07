@@ -84,7 +84,11 @@ module Discord
       else
         payload[:entity_type] = ENTITY_TYPE_EXTERNAL
         payload[:channel_id] = nil
-        payload[:entity_metadata] = {location: location_chip}
+        payload[:entity_metadata] = {
+          location: event.meetup_location.presence ||
+            event.location.presence ||
+            "Star Citizen"
+        }
       end
 
       if (image = cover_image_data_uri)
@@ -142,7 +146,6 @@ module Discord
     end
 
     private def description_for(event)
-      meetup = event.meetup_location.presence || event.location.presence
       base = event.description.presence || event.briefing.presence
       [
         # Sesh-style "chip" line built from emoji + mentions + Discord's
@@ -151,7 +154,6 @@ module Discord
         # we can't override.
         chip_line,
         event_short_url ? "**Open in Fleetyards:** <#{event_short_url}>" : nil,
-        meetup ? "**Location:** #{meetup}" : nil,
         base
       ].compact.join("\n\n").first(1000)
     end
@@ -174,17 +176,6 @@ module Discord
 
     private def interested_count
       event.fleet_event_signups.where(status: "interested").count
-    end
-
-    # The location chip is always visible on the event card. We use it to
-    # surface the creator as a `<@id>` mention so the chip shows the actual
-    # host (rather than the bot, since `creator_id` is read-only). The in-game
-    # meetup location lives in the description block instead.
-    private def location_chip
-      mention_uid = event.created_by&.discord_uid
-      return "<@#{mention_uid}>" if mention_uid.present?
-
-      event.created_by&.username.presence || "Star Citizen"
     end
 
     # Public on the model so the frontend's "Sync to Discord" button can
