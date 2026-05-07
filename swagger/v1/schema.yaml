@@ -7622,6 +7622,23 @@ components:
       - SHIP_MATRIX
       - GAME_FILES
       title: HardpointSourceEnum
+    ImageSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - enabled asc
+      - enabled desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - ENABLED_ASC
+      - ENABLED_DESC
+      title: ImageSortEnum
     ImportStatusEnum:
       type: string
       enum:

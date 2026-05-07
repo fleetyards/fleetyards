@@ -197,13 +197,7 @@ const handleUploadDone = async (files: FileUpload[]) => {
 <template>
   <Heading hero>{{ t("headlines.admin.models.images") }}</Heading>
 
-  <DirectUpload
-    direct-upload
-    multiple
-    inline
-    hide-finished
-    @upload:done="handleUploadDone"
-  />
+  <DirectUpload multiple inline hide-finished @upload:done="handleUploadDone" />
 
   <InlineEditableList
     empty-name="Images"

@@ -11,7 +11,12 @@ module Admin
             type: :object,
             properties: {
               galleryIdEq: {type: :string, format: :uuid},
-              galleryTypeEq: {type: :string}
+              galleryTypeEq: {type: :string},
+              sorts: {anyOf: [{
+                type: :array, items: {"$ref": "#/components/schemas/ImageSortEnum"}
+              }, {
+                "$ref": "#/components/schemas/ImageSortEnum"
+              }]}
             },
             additionalProperties: false,
             example: {}

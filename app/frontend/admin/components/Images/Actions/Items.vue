@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import {
   type Image,
+  useUpdateImage,
   useDestroyImage,
   getImagesQueryKey,
 } from "@/services/fyAdminApi";
@@ -36,6 +37,21 @@ const invalidateImages = () =>
     queryKey: getImagesQueryKey(),
   });
 
+const updateMutation = useUpdateImage({
+  mutation: {
+    onSettled: invalidateImages,
+  },
+});
+
+const toggleField = async (field: "enabled" | "global" | "background") => {
+  if (!props.image.id) return;
+
+  await updateMutation.mutateAsync({
+    id: props.image.id,
+    data: { [field]: !props.image[field] },
+  });
+};
+
 const destroyMutation = useDestroyImage({
   mutation: {
     onSettled: invalidateImages,
@@ -55,6 +71,42 @@ const destroy = () => {
 </script>
 
 <template>
+  <Btn
+    v-tooltip="!withLabels && t('labels.image.active')"
+    :size="BtnSizesEnum.SMALL"
+    :variant="BtnVariantsEnum.TRANSPARENT"
+    @click="toggleField('enabled')"
+  >
+    <i
+      class="fa-duotone fa-circle-check"
+      :class="image.enabled ? 'text-success' : 'text-muted'"
+    />
+    <span v-if="withLabels">{{ t("labels.image.active") }}</span>
+  </Btn>
+  <Btn
+    v-tooltip="!withLabels && t('labels.image.global')"
+    :size="BtnSizesEnum.SMALL"
+    :variant="BtnVariantsEnum.TRANSPARENT"
+    @click="toggleField('global')"
+  >
+    <i
+      class="fa-duotone fa-globe"
+      :class="!image.global ? 'text-warning' : 'text-muted'"
+    />
+    <span v-if="withLabels">{{ t("labels.image.global") }}</span>
+  </Btn>
+  <Btn
+    v-tooltip="!withLabels && t('labels.image.background')"
+    :size="BtnSizesEnum.SMALL"
+    :variant="BtnVariantsEnum.TRANSPARENT"
+    @click="toggleField('background')"
+  >
+    <i
+      class="fa-duotone fa-image"
+      :class="image.background ? 'text-info' : 'text-muted'"
+    />
+    <span v-if="withLabels">{{ t("labels.image.background") }}</span>
+  </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.delete')"
     :size="BtnSizesEnum.SMALL"

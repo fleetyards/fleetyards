@@ -26,6 +26,7 @@ import {
   type GalleryTypeEnum,
   type ImageQuery,
   type Image,
+  type ImageSortEnum,
   useCreateImage as useCreateImageMutation,
   useUpdateBulkImage as useUpdateBulkImageMutation,
 } from "@/services/fyAdminApi";
@@ -54,15 +55,23 @@ const { l, t } = useI18n();
 
 const route = useRoute();
 
-const routeQuery = computed(() => {
+const sorts = computed((): ImageSortEnum[] => {
+  return route.query.s ? [route.query.s as ImageSortEnum] : [];
+});
+
+const routeQuery = computed((): ImageQuery => {
   if (props.galleryId && props.galleryType) {
     return {
       galleryIdEq: props.galleryId,
       galleryTypeEq: props.galleryType,
-    } as ImageQuery;
+      sorts: sorts.value,
+    };
   }
 
-  return (route.query.q || {}) as ImageQuery;
+  return {
+    ...((route.query.q || {}) as ImageQuery),
+    sorts: sorts.value,
+  };
 });
 
 const imagesQueryParams = computed(() => ({
@@ -160,18 +169,24 @@ const columns: BaseTableCol<Image>[] = [
   },
   {
     name: "name",
-    label: "Name",
+    label: t("labels.image.name"),
+  },
+  {
+    name: "enabled",
+    label: t("labels.image.active"),
+    alignment: "center",
+    mobile: false,
     sortable: true,
   },
   {
     name: "createdAt",
-    label: "created at?",
+    label: t("labels.createdAt"),
     mobile: false,
     sortable: true,
   },
   {
     name: "updatedAt",
-    label: "updated at?",
+    label: t("labels.updatedAt"),
     mobile: false,
     sortable: true,
   },
@@ -208,7 +223,7 @@ const columns: BaseTableCol<Image>[] = [
         :columns="columns"
         :loading="loading || refetching"
         :empty-visible="emptyVisible"
-        default-sort="name asc"
+        default-sort="createdAt desc"
         selectable
         :selected="selected"
         @selected-change="onSelectedChange"
@@ -247,6 +262,13 @@ const columns: BaseTableCol<Image>[] = [
         </template>
         <template #col-name="{ record }">
           {{ record.name }}
+        </template>
+        <template #col-enabled="{ record }">
+          <i
+            v-if="record.enabled"
+            class="fa-duotone fa-circle-check text-success"
+          />
+          <i v-else class="fa-duotone fa-circle-xmark text-muted" />
         </template>
         <template #col-createdAt="{ record }">
           {{ l(record.createdAt, "datetime.formats.short") }}

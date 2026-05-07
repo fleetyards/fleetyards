@@ -39,6 +39,12 @@ class Image < ApplicationRecord
 
   before_validation :set_gallery_fields
 
+  DEFAULT_SORTING_PARAMS = "created_at desc"
+  ALLOWED_SORTING_PARAMS = [
+    "createdAt asc", "createdAt desc", "updatedAt asc", "updatedAt desc",
+    "enabled asc", "enabled desc"
+  ].freeze
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "background", "caption", "created_at", "enabled", "gallery_id", "gallery_type", "global",
