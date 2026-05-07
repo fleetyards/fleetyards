@@ -31,9 +31,12 @@ import {
   useUpdateBulkImage as useUpdateBulkImageMutation,
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ImageActions from "@/admin/components/Images/Actions/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { type AxiosError } from "axios";
+import { type ValidationError } from "@/services/fyAdminApi";
 
 type Props = {
   name?: string;
@@ -52,6 +55,13 @@ const props = withDefaults(defineProps<Props>(), {
 const { isFilterSelected } = useImageFilters();
 
 const { l, t } = useI18n();
+const { displayAlert } = useAppNotifications();
+
+const displayUploadError = (error: AxiosError<ValidationError>) => {
+  displayAlert({
+    text: error.response?.data?.message || t("errors.upload.generic"),
+  });
+};
 
 const route = useRoute();
 
@@ -93,7 +103,11 @@ const queryClient = useQueryClient();
 const invalidateImages = () =>
   queryClient.invalidateQueries({ queryKey: getImagesQueryKey() });
 
-const attachMutation = useCreateImageMutation();
+const attachMutation = useCreateImageMutation({
+  mutation: {
+    onError: displayUploadError,
+  },
+});
 
 const handleUploadDone = async (files: FileUpload[]) => {
   const blobIds = files
@@ -101,13 +115,17 @@ const handleUploadDone = async (files: FileUpload[]) => {
     .filter((id): id is string => !!id);
 
   for (const blobId of blobIds) {
-    await attachMutation.mutateAsync({
-      data: {
-        galleryId: props.galleryId,
-        galleryType: props.galleryType,
-        file: blobId,
-      },
-    });
+    try {
+      await attachMutation.mutateAsync({
+        data: {
+          galleryId: props.galleryId,
+          galleryType: props.galleryType,
+          file: blobId,
+        },
+      });
+    } catch {
+      // error surfaced via mutation onError
+    }
 
     await invalidateImages();
   }

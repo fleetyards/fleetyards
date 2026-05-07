@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import {
@@ -16,6 +17,7 @@ import {
   type ModelExtended,
   type Image,
   type ImageInput,
+  type ValidationError,
   GalleryTypeEnum,
   useImages as useImagesQuery,
   useCreateImage as useCreateImageMutation,
@@ -24,6 +26,7 @@ import {
   useDestroyImage as useDestroyImageMutation,
   getImagesQueryKey,
 } from "@/services/fyAdminApi";
+import { type AxiosError } from "axios";
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -40,6 +43,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const { displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 
 const editableList = ref<{
@@ -171,6 +175,11 @@ const disableSelected = async () => {
 // Direct Upload
 const uploadMutation = useCreateImageMutation({
   mutation: {
+    onError: (error: AxiosError<ValidationError>) => {
+      displayAlert({
+        text: error.response?.data?.message || t("errors.upload.generic"),
+      });
+    },
     onSettled: invalidateImages,
   },
 });
@@ -181,13 +190,17 @@ const handleUploadDone = async (files: FileUpload[]) => {
     .filter((id): id is string => !!id);
 
   for (const blobId of blobIds) {
-    await uploadMutation.mutateAsync({
-      data: {
-        galleryId: props.model.id,
-        galleryType: GalleryTypeEnum.MODEL,
-        file: blobId,
-      },
-    });
+    try {
+      await uploadMutation.mutateAsync({
+        data: {
+          galleryId: props.model.id,
+          galleryType: GalleryTypeEnum.MODEL,
+          file: blobId,
+        },
+      });
+    } catch {
+      // error surfaced via mutation onError
+    }
   }
 
   void invalidateImages();

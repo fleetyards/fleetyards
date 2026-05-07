@@ -25,7 +25,7 @@ class Image < ApplicationRecord
 
   paginates_per 30
 
-  belongs_to :gallery, polymorphic: true, touch: true, counter_cache: true
+  belongs_to :gallery, polymorphic: true, touch: true, counter_cache: true, optional: true
 
   belongs_to :model,
     -> { includes(:images).where(images: {gallery_type: "Model"}) },
