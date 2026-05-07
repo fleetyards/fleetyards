@@ -155,42 +155,26 @@ RSpec.describe Discord::ScheduledEventSync do
   end
 
   describe "external location chip" do
-    let(:creator) { create(:user, username: "TorlekMaru") }
-    let(:event) { create(:fleet_event, :open, fleet: fleet, created_by: creator, meetup_location: "Lorville Outpost") }
+    let(:event) { create(:fleet_event, :open, fleet: fleet, meetup_location: "Lorville Outpost") }
 
-    it "always uses the creator's @-mention so the chip shows the host instead of the bot" do
-      create(:omniauth_connection, user: creator, provider: "discord", uid: "344036297326723073")
-
-      captured = nil
+    let(:captured) { {} }
+    before do
       allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
-        captured = payload
+        captured.merge!(payload)
         {"id" => "999"}
       end
-
-      described_class.new(event).upsert!
-      expect(captured[:entity_metadata][:location]).to eq("<@344036297326723073>")
     end
 
-    it "falls back to the creator's username when Discord isn't linked" do
-      captured = nil
-      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
-        captured = payload
-        {"id" => "999"}
-      end
-
+    it "uses the in-game meetup location when set" do
       described_class.new(event).upsert!
-      expect(captured[:entity_metadata][:location]).to eq("TorlekMaru")
+      expect(captured[:entity_metadata][:location]).to eq("Lorville Outpost")
     end
 
-    it "moves the in-game meetup location into the description block" do
-      captured = nil
-      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
-        captured = payload
-        {"id" => "999"}
-      end
+    it "falls back to 'Star Citizen' when neither meetup_location nor location is set" do
+      event.update!(meetup_location: nil, location: nil)
 
       described_class.new(event).upsert!
-      expect(captured[:description]).to include("**Location:** Lorville Outpost")
+      expect(captured[:entity_metadata][:location]).to eq("Star Citizen")
     end
   end
 
