@@ -1191,6 +1191,100 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_id}/members":
+    parameters:
+    - name: fleet_id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Fleet Members list
+      tags:
+      - FleetMembers
+      operationId: fleetMembers
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/AdminFleetMemberQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminFleetMembers"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_id}/members/{id}/login-as":
+    parameters:
+    - name: fleet_id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      description: Fleet Member id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Login as Fleet Member
+      tags:
+      - FleetMembers
+      operationId: loginAsFleetMember
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets":
     post:
       summary: Create Fleet
@@ -5323,6 +5417,81 @@ components:
       - meta
       - items
       title: AdminCargoHolds
+    AdminFleetMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        username:
+          type: string
+        email:
+          type: string
+        avatar:
+          "$ref": "#/components/schemas/MediaFile"
+        rsiHandle:
+          type: string
+        role:
+          type: string
+        status:
+          type: string
+        acceptedAt:
+          type: string
+          format: date-time
+        lastActiveAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - userId
+      - username
+      - email
+      - status
+      - createdAt
+      - updatedAt
+      title: AdminFleetMember
+    AdminFleetMemberQuery:
+      type: object
+      properties:
+        usernameCont:
+          type: string
+        stateEq:
+          type: string
+        roleCont:
+          type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FleetMembershipSortEnum"
+          - "$ref": "#/components/schemas/FleetMembershipSortEnum"
+      additionalProperties: false
+      example: {}
+      title: AdminFleetMemberQuery
+    AdminFleetMembers:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminFleetMember"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AdminFleetMembers
     AdminUser:
       type: object
       properties:
@@ -5911,6 +6080,110 @@ components:
           type: number
         damagedRegenDelay:
           type: number
+        resistance:
+          type: object
+          properties:
+            physical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            energy:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            distortion:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            thermal:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            biochemical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            stun:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        absorption:
+          type: object
+          properties:
+            physical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            energy:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            distortion:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            thermal:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            biochemical:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+            stun:
+              type: object
+              properties:
+                min:
+                  type: number
+                max:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
       additionalProperties: false
       required:
       - maxHealth
@@ -6100,8 +6373,8 @@ components:
     ComponentWeapon:
       type: object
       properties:
-        weaponClass:
-          type: string
+        beam:
+          type: boolean
         fireRate:
           type: number
         heatPerShot:
@@ -6122,14 +6395,42 @@ components:
             stun:
               type: number
           additionalProperties: false
+        damagePerSecond:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+            biochemical:
+              type: number
+            stun:
+              type: number
+          additionalProperties: false
+        heatPerSecond:
+          type: number
         pelletsPerShot:
           type: integer
         speed:
           type: number
         range:
           type: number
+        fullDamageRange:
+          type: number
+        zeroDamageRange:
+          type: number
         ammoCost:
           type: integer
+        maxAmmo:
+          type: integer
+        chargeTime:
+          type: number
+        overchargeTime:
+          type: number
       additionalProperties: false
       title: ComponentWeapon
     Components:
@@ -7704,6 +8005,8 @@ components:
             "$ref": "#/components/schemas/FuelTank"
         onSale:
           type: boolean
+        playerOwnable:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -7797,6 +8100,7 @@ components:
       - media
       - metrics
       - onSale
+      - playerOwnable
       - speeds
       - adiMap
       - createdAt
@@ -7874,6 +8178,8 @@ components:
         height:
           type: number
         onSale:
+          type: boolean
+        playerOwnable:
           type: boolean
         storeUrl:
           type: string
@@ -8077,6 +8383,8 @@ components:
             "$ref": "#/components/schemas/FuelTank"
         onSale:
           type: boolean
+        playerOwnable:
+          type: boolean
         pledgePrice:
           type: number
         pledgePriceLabel:
@@ -8177,6 +8485,7 @@ components:
       - media
       - metrics
       - onSale
+      - playerOwnable
       - speeds
       - adiMap
       - createdAt
@@ -9596,6 +9905,8 @@ components:
           type: boolean
         active:
           type: boolean
+        inGame:
+          type: boolean
         ground:
           type: boolean
         mass:
@@ -9681,6 +9992,8 @@ components:
           type: number
           nullable: true
         onSale:
+          type: boolean
+        playerOwnable:
           type: boolean
         storeUrl:
           type: string
