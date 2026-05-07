@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/hangars/stats", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/hangars/stats", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, public_hangar_stats: true, vehicle_count: 3) }
   let(:username) { user.username }
 
   path "/public/hangars/{username}/stats/models-by-classification" do
-    parameter name: "username", in: :path, type: :string, description: "username"
+    parameter name: "username", in: :path, schema: {type: :string}, description: "username"
 
     get("Public Hangar Models by Classification") do
       operationId "publicHangarModelsByClassification"

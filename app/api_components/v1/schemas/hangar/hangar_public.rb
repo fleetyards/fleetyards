@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Hangar
       class HangarPublic < Shared::V1::Schemas::BaseList
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           properties: {

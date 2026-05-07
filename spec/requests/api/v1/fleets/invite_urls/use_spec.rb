@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:member) { create(:user) }
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, members: [member], admins: [admin]) }
   let(:author) { create(:user) }
   let(:user) { author }
   let(:invite_url) { create(:fleet_invite_url, fleet: fleet, user: admin) }
-  let(:input) do
+  let(:request_body) do
     {
       token: invite_url.token
     }
@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMembershipCreateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetMembershipCreateInput"}
 
       security [
         {SessionCookie: []},
@@ -58,7 +58,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
         end
       end
 
-      response(201, "successful with OAuth token") do
+      response(201, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
@@ -68,7 +68,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) do
+        let(:request_body) do
           {
             token: "unknown"
           }

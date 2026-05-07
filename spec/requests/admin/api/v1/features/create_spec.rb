@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/features", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/features", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:features]) }
 
   before do
@@ -15,31 +15,31 @@ RSpec.describe "admin/api/v1/features", type: :request, swagger_doc: "admin/v1/s
       tags "Features"
       consumes "application/json"
       produces "application/json"
-      parameter name: :body, in: :body, schema: {"$ref": "#/components/schemas/FeatureInput"}
+      request_body schema: {"$ref": "#/components/schemas/FeatureInput"}
 
       response(201, "created") do
         schema "$ref": "#/components/schemas/Feature"
-        let(:body) { {name: "new-feature"} }
+        let(:request_body) { {name: "new-feature"} }
         run_test!
       end
 
       response(422, "invalid") do
         schema "$ref": "#/components/schemas/StandardError"
-        let(:body) { {name: ""} }
+        let(:request_body) { {name: ""} }
         run_test!
       end
 
       response(403, "forbidden") do
         schema "$ref": "#/components/schemas/StandardError"
         let(:user) { create(:admin_user, resource_access: []) }
-        let(:body) { {name: "new-feature"} }
+        let(:request_body) { {name: "new-feature"} }
         run_test!
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
         let(:user) { nil }
-        let(:body) { {name: "new-feature"} }
+        let(:request_body) { {name: "new-feature"} }
         run_test!
       end
     end

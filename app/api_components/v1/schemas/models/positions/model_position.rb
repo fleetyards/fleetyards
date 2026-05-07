@@ -5,7 +5,7 @@ module V1
     module Models
       module Positions
         class ModelPosition
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

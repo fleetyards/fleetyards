@@ -1,0 +1,3 @@
+GET /images the 'items/items/size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
+POST /images the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'
+PUT /images/{id} the 'size' response's property type/format changed from 'integer'/'' to 'number'/'' for status '200'

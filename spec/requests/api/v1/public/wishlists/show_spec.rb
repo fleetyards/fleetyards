@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/wishlists", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, public_wishlist: true, wanted_vehicle_count: 2) }
   let(:user_without_public_wishlist) { create(:user, public_wishlist: false, wanted_vehicle_count: 2) }
 
   path "/public/wishlists/{username}" do
-    parameter name: "username", in: :path, type: :string, required: true
+    parameter name: "username", in: :path, schema: {type: :string}, required: true
 
     get("Your Wishlist") do
       operationId "publicWishlist"
@@ -38,7 +38,7 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:username) { user.username }
@@ -57,7 +57,7 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:username) { user.username }
@@ -79,7 +79,7 @@ RSpec.describe "api/v1/public/wishlists", type: :request, swagger_doc: "v1/schem
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:username) { user_without_public_wishlist.username }

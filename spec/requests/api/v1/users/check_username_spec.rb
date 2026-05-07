@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, username: "data") }
-  let(:input) do
+  let(:request_body) do
     {
       value: "data"
     }
@@ -21,7 +21,7 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/CheckInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Check"
@@ -33,10 +33,10 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Check"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: "Picard"
           }

@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class ComponentTypeEnum
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           TYPES = [
             "Seat", "Door", "MainThruster", "Armor", "WeaponDefensive", "ManneuverThruster",

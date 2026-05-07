@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/videos", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/videos", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:videos]) }
   let(:model) { create(:model) }
   let(:videos) { create_list(:video, 3, model:) }
@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/videos", type: :request, swagger_doc: "admin/v1/sch
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Videos"
 
         let(:q) do

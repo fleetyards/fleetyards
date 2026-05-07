@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let(:serial) { "DO-5920-FL" }
@@ -40,7 +40,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CheckInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/CheckInput"}
 
       security [
         {SessionCookie: []},
@@ -51,7 +51,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Check"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: serial
           }
@@ -64,10 +64,10 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
-        let(:input) { {value: serial} }
+        let(:request_body) { {value: serial} }
 
         run_test!
       end
@@ -77,15 +77,15 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
 
         let(:user) { nil }
         let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
-        let(:input) { {value: serial} }
+        let(:request_body) { {value: serial} }
 
         run_test!
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Check"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: "00-0000-00"
           }
@@ -98,10 +98,10 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Check"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: serial_other
           }
@@ -114,10 +114,10 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         end
       end
 
-      response(401, "unauthorized") do
+      response(401, "unauthorized", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) do
+        let(:request_body) do
           {
             value: "foo"
           }

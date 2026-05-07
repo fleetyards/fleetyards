@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/users", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:admin) { create(:admin_user, resource_access: [:users]) }
   let(:user) { create(:user) }
   let(:id) { user.id }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
         run_test!
       end
 
-      response(200, "successful when sole fleet admin") do
+      response(200, "successful when sole fleet admin", hidden: true) do
         schema "$ref": "#/components/schemas/User"
 
         before do

@@ -114,11 +114,8 @@ gem "flipper"
 gem "flipper-active_record"
 
 # openapi
-gem "rswag-api"
+gem "openapi-ruby", github: "openapi-ruby/openapi-ruby", branch: "main"
 gem "rspec-rails", require: false
-gem "rswag-specs", require: false
-gem "rswag-schema_components"
-gem "committee"
 
 group :development do
   gem "annotaterb"

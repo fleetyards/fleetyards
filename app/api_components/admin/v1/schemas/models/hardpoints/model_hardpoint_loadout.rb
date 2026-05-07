@@ -6,7 +6,7 @@ module Admin
       module Models
         module Hardpoints
           class ModelHardpointLoadout < ::V1::Schemas::Models::Hardpoints::ModelHardpointLoadout
-            include Rswag::SchemaComponents::Component
+            include OpenapiRuby::Components::Base
 
             schema({
               type: :object,

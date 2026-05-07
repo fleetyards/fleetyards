@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user, wanted_vehicle_count: 2) }
   let(:user) { author }
   let(:vehicles) { create_list(:vehicle, 3, user: author) }

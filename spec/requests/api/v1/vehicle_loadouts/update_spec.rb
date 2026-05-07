@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/vehicle_loadouts", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let(:vehicle) { create(:vehicle, user: author) }
   let(:vehicle_id) { vehicle.id }
   let(:vehicle_loadout) { create(:vehicle_loadout, vehicle: vehicle) }
   let(:id) { vehicle_loadout.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Loadout",
       url: "https://erkul.games/loadout/updated123"
@@ -46,7 +46,7 @@ RSpec.describe "api/v1/vehicle_loadouts", type: :request, swagger_doc: "v1/schem
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleLoadoutInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleLoadoutInput"}
 
       security [
         {SessionCookie: []},

@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:new_member) { create(:user) }
   let(:user) { admin }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:fleetSlug) { fleet.slug }
-  let(:input) do
+  let(:request_body) do
     {
       username: new_member.username
     }
@@ -36,7 +36,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
   end
 
   path "/fleets/{fleetSlug}/members" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     post("Create Member") do
       operationId "createFleetMember"
@@ -44,7 +44,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMemberCreateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetMemberCreateInput"}
 
       security [
         {SessionCookie: []},
@@ -72,7 +72,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) do
+        let(:request_body) do
           {
             username: "unknown"
           }

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/sessions", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:password) { "enterprise" }
   let(:author) { create(:user, password:) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       password: password
     }
@@ -32,7 +32,7 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ConfirmAccessInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/ConfirmAccessInput"}
 
       security [
         {SessionCookie: []},
@@ -46,7 +46,7 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
         run_test!
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/sessions", type: :request, swagger_doc: "v1/schema.yaml" 
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

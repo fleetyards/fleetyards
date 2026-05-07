@@ -9,14 +9,14 @@
 #   include_examples "oauth_auth", success_status: 204
 
 RSpec.shared_examples "oauth_auth" do |success_status: 200|
-  response(success_status, "successful with OAuth token") do
+  response(success_status, "successful with OAuth token", hidden: true) do
     let(:user) { nil }
     let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
     run_test!
   end
 
-  response(401, "unauthorized with wrong scope token") do
+  response(401, "unauthorized with wrong scope token", hidden: true) do
     schema "$ref": "#/components/schemas/StandardError"
 
     let(:user) { nil }

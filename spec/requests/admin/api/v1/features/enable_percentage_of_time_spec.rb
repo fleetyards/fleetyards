@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/features", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/features", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:features]) }
   let(:id) { "TestFeature" }
 
@@ -20,9 +20,9 @@ RSpec.describe "admin/api/v1/features", type: :request, swagger_doc: "admin/v1/s
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :body, in: :body, schema: {"$ref": "#/components/schemas/FeaturePercentageInput"}
+      request_body schema: {"$ref": "#/components/schemas/FeaturePercentageInput"}
 
-      let(:body) { {percentage: 50} }
+      let(:request_body) { {percentage: 50} }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Feature"

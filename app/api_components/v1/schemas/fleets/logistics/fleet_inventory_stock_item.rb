@@ -5,7 +5,7 @@ module V1
     module Fleets
       module Logistics
         class FleetInventoryStockItem
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

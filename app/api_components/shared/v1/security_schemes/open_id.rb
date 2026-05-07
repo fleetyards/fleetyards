@@ -4,7 +4,9 @@ module Shared
   module V1
     module SecuritySchemes
       class OpenId
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
+
+        component_type :securitySchemes
 
         schema({
           type: :openIdConnect,

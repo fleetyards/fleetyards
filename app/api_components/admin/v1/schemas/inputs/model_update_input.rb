@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Inputs
         class ModelUpdateInput
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

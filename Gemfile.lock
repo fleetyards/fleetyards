@@ -1,4 +1,15 @@
 GIT
+  remote: https://github.com/openapi-ruby/openapi-ruby.git
+  revision: 817166161aaa7e28706c975ca790d4491a82dba6
+  branch: main
+  specs:
+    openapi-ruby (3.1.0)
+      activesupport (>= 7.0)
+      json_schemer (~> 2.4)
+      rack (>= 2.0)
+      railties (>= 7.0)
+
+GIT
   remote: https://github.com/r38y/griddler-postmark.git
   revision: 55904355a44066d94c24b49613a22e1face387a5
   specs:
@@ -157,10 +168,6 @@ GEM
     choice (0.2.0)
     chunky_png (1.4.0)
     coderay (1.1.3)
-    committee (5.6.3)
-      json_schema (~> 0.14, >= 0.14.3)
-      openapi_parser (~> 2.0)
-      rack (>= 1.5)
     concurrent-ruby (1.3.6)
     connection_pool (3.0.2)
     crack (1.0.1)
@@ -299,6 +306,7 @@ GEM
       rails (>= 3.2.0)
     groupdate (6.8.0)
       activesupport (>= 7.2)
+    hana (1.3.7)
     hashdiff (1.2.1)
     hashie (5.1.0)
       logger
@@ -354,9 +362,11 @@ GEM
       bindata
       faraday (~> 2.0)
       faraday-follow_redirects
-    json-schema (4.3.1)
-      addressable (>= 2.8)
-    json_schema (0.21.0)
+    json_schemer (2.5.0)
+      bigdecimal
+      hana (~> 1.3)
+      regexp_parser (~> 2.0)
+      simpleidn (~> 0.2)
     jwt (3.1.2)
       base64
     kamal (2.11.0)
@@ -513,7 +523,6 @@ GEM
     omniauth_openid_connect (0.8.0)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
-    openapi_parser (2.3.1)
     openid_connect (2.3.1)
       activemodel
       attr_required (>= 1.0.0)
@@ -676,7 +685,7 @@ GEM
       redis-store (>= 1.2, < 2)
     redis-store (1.11.0)
       redis (>= 4, < 6)
-    regexp_parser (2.11.3)
+    regexp_parser (2.12.0)
     reline (0.6.3)
       io-console (~> 0.5)
     request_store (1.7.0)
@@ -719,16 +728,6 @@ GEM
       rspec-mocks (>= 3.13.0, < 5.0.0)
       rspec-support (>= 3.13.0, < 5.0.0)
     rspec-support (3.13.7)
-    rswag-api (2.17.0)
-      activesupport (>= 5.2, < 8.2)
-      railties (>= 5.2, < 8.2)
-    rswag-schema_components (0.6.0)
-      rails (>= 3.0.0, < 8.2.0)
-    rswag-specs (2.17.0)
-      activesupport (>= 5.2, < 8.2)
-      json-schema (>= 2.2, < 7.0)
-      railties (>= 5.2, < 8.2)
-      rspec-core (>= 2.14)
     rubocop (1.84.2)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -785,6 +784,7 @@ GEM
       terminal-table
     simplecov-html (0.13.2)
     simplecov_json_formatter (0.1.4)
+    simpleidn (0.2.3)
     snaky_hash (2.0.3)
       hashie (>= 0.1.0, < 6)
       version_gem (>= 1.1.8, < 3)
@@ -891,7 +891,6 @@ DEPENDENCIES
   bskyrb (~> 0.5.3)
   bullet
   bundler-audit
-  committee
   csv
   cypress-on-rails
   data_migrate
@@ -950,6 +949,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   omniauth-twitch
   omniauth_openid_connect
+  openapi-ruby!
   ostruct
   paper_trail
   pg (~> 1.0)
@@ -979,9 +979,6 @@ DEPENDENCIES
   rollups
   rqrcode
   rspec-rails
-  rswag-api
-  rswag-schema_components
-  rswag-specs
   shoulda-matchers
   sidekiq (~> 8.1)
   sidekiq-failures

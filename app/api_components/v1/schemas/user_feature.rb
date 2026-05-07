@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class UserFeature
-      include Rswag::SchemaComponents::Component
+      include OpenapiRuby::Components::Base
 
       schema({
         type: :object,

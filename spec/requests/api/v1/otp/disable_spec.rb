@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/otp", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:password) { "testtest" }
   let(:author) { create :user, password: password, otp_secret: User.generate_otp_secret, otp_required_for_login: true }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       otpCode: author.current_otp
     }
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/SetupOtpInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/SetupOtpInput"}
       parameter name: "X-Access-Confirmation", in: :header, schema: {type: :string},
         description: "Access confirmation token obtained from confirm-access endpoint. Required when using OAuth/OpenID authentication.",
         required: false
@@ -54,7 +54,7 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test!
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
         let(:"X-Access-Confirmation") do
@@ -65,7 +65,7 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test!
       end
 
-      response(400, "requires access confirmation with OAuth token") do
+      response(400, "requires access confirmation with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
@@ -75,12 +75,12 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end
 
-      response(400, "bad request") do
+      response(400, "bad request", hidden: true) do
         schema "$ref": "#/components/schemas/ValidationError"
 
         let(:user) { create :user, password: password, otp_required_for_login: false }
@@ -88,7 +88,7 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test!
       end
 
-      response(400, "bad request") do
+      response(400, "bad request", hidden: true) do
         schema "$ref": "#/components/schemas/ValidationError"
 
         let(:user) { create :user, password: "otherpassword" }
@@ -100,7 +100,7 @@ RSpec.describe "api/v1/otp", type: :request, swagger_doc: "v1/schema.yaml" do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { nil }
-        let(:input) { {otpCode: "000000"} }
+        let(:request_body) { {otpCode: "000000"} }
 
         run_test!
       end

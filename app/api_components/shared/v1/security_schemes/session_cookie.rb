@@ -4,7 +4,9 @@ module Shared
   module V1
     module SecuritySchemes
       class SessionCookie
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
+
+        component_type :securitySchemes
 
         schema({
           type: :apiKey,

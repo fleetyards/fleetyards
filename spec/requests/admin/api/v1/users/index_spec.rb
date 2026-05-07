@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/users", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:users]) }
   let(:users) { create_list(:user, 7) }
 
@@ -29,7 +29,7 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
         style: :deepObject,
         explode: true,
         required: false
-      parameter name: "cacheId", in: :query, type: :string, required: false
+      parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Users"
@@ -43,7 +43,7 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Users"
 
         let(:q) do
@@ -60,7 +60,7 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Users"
 
         let(:perPage) { 2 }

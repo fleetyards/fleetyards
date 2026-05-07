@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/notification_preferences", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/notification_preferences", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
 
@@ -27,7 +27,7 @@ RSpec.describe "api/v1/notification_preferences", type: :request, swagger_doc: "
   end
 
   path "/notification-preferences/{id}" do
-    parameter name: "id", in: :path, type: :string, required: true
+    parameter name: "id", in: :path, schema: {type: :string}, required: true
 
     put("Update a notification preference") do
       operationId "updateNotificationPreference"
@@ -41,7 +41,7 @@ RSpec.describe "api/v1/notification_preferences", type: :request, swagger_doc: "
         {OpenId: ["notifications", "notifications:write"]}
       ]
 
-      parameter name: :input, in: :body, schema: {
+      request_body schema: {
         type: :object,
         properties: {
           app: {type: :boolean},
@@ -51,7 +51,7 @@ RSpec.describe "api/v1/notification_preferences", type: :request, swagger_doc: "
       }
 
       let(:id) { "hangar_create" }
-      let(:input) { {app: false} }
+      let(:request_body) { {app: false} }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/NotificationPreference"
@@ -64,7 +64,7 @@ RSpec.describe "api/v1/notification_preferences", type: :request, swagger_doc: "
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
@@ -86,7 +86,7 @@ RSpec.describe "api/v1/notification_preferences", type: :request, swagger_doc: "
         run_test!
       end
 
-      response(401, "unauthorized") do
+      response(401, "unauthorized", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:user) { nil }

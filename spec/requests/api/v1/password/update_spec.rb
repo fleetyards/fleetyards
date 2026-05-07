@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/password", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, password: "enterprise") }
-  let(:input) do
+  let(:request_body) do
     {
       password: "73b8680678a4a2725bba6a88b84b550828b27ca606",
       passwordConfirmation: "73b8680678a4a2725bba6a88b84b550828b27ca606"
@@ -22,7 +22,7 @@ RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/PasswordInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/PasswordInput"}
 
       security [{
         SessionCookie: []
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/password", type: :request, swagger_doc: "v1/schema.yaml" 
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

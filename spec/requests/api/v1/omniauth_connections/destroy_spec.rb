@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/omniauth_connections", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/omniauth_connections", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) do
     u = create(:user, password: "enterprise", password_set_manually: true)
     create(:omniauth_connection, user: u, provider: :discord)
@@ -15,7 +15,7 @@ RSpec.describe "api/v1/omniauth_connections", type: :request, swagger_doc: "v1/s
   end
 
   path "/omniauth-connections/{provider}" do
-    parameter name: :provider, in: :path, type: :string, required: true
+    parameter name: :provider, in: :path, schema: {type: :string}, required: true
 
     delete("Disconnect OAuth provider") do
       operationId "disconnectOauthProvider"

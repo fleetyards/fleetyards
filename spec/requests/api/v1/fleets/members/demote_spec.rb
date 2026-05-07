@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:officer) { create(:user) }
@@ -33,8 +33,8 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
   end
 
   path "/fleets/{fleetSlug}/members/{username}/demote" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
-    parameter name: "username", in: :path, type: :string, description: "Username"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "username", in: :path, schema: {type: :string}, description: "Username"
 
     put("Demote Member") do
       operationId "demoteFleetMember"
@@ -64,7 +64,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         description "No Member found"
         schema "$ref": "#/components/schemas/StandardError"
 

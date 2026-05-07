@@ -5,7 +5,7 @@ module V1
     module Models
       module Modules
         class ModelModules < Shared::V1::Schemas::BaseList
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             properties: {

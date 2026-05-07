@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:member) { create(:user) }
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, members: [member], admins: [admin]) }
   let(:user) { admin }
   let(:fleetSlug) { fleet.slug }
-  let(:input) do
+  let(:request_body) do
     {
       expiresAfterMinutes: 60
     }
@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
   end
 
   path "/fleets/{fleetSlug}/invite-urls" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     post("Create Fleet Invite Url") do
       operationId "createFleetInviteUrl"
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetInviteUrlCreateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetInviteUrlCreateInput"}
 
       security [
         {SessionCookie: []},
@@ -70,7 +70,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) do
+        let(:request_body) do
           {
             limit: -100
           }

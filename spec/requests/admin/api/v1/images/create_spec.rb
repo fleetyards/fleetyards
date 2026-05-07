@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:images]) }
   let(:gallery) { create(:model) }
   let(:blob) do
@@ -11,7 +11,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       filename: "test.png"
     )
   end
-  let(:input) do
+  let(:request_body) do
     {
       file: blob.signed_id,
       galleryId: gallery.id,
@@ -31,7 +31,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ImageInputCreate"}
+      request_body schema: {"$ref": "#/components/schemas/ImageInputCreate"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Image"

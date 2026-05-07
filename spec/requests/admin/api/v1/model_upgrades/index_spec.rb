@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/model_upgrades", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/model_upgrades", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_upgrades]) }
   let(:model_upgrades) { create_list(:model_upgrade, 3) }
 
@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/model_upgrades", type: :request, swagger_doc: "admi
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ModelUpgrades"
 
         let(:q) do

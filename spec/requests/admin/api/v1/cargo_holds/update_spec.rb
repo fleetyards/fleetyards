@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/cargo_holds", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/cargo_holds", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:cargo_holds]) }
   let(:cargo_hold) { create(:cargo_hold) }
   let(:id) { cargo_hold.id }
-  let(:input) do
+  let(:request_body) do
     {
       offsetX: 2.5,
       offsetY: 1.0,
@@ -28,7 +28,7 @@ RSpec.describe "admin/api/v1/cargo_holds", type: :request, swagger_doc: "admin/v
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/CargoHoldInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/CargoHoldInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/AdminCargoHold"

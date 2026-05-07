@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/membership", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:member) { create(:user) }
   let(:user) { member }
   let(:fleet) { create(:fleet) }
@@ -24,7 +24,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
   end
 
   path "/fleets/{fleetSlug}/membership" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     put("Update Membership") do
       operationId "updateFleetMembership"
@@ -32,9 +32,9 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetMembershipUpdateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetMembershipUpdateInput"}
 
-      let(:input) do
+      let(:request_body) do
         {
           primary: true
         }
@@ -56,7 +56,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 
@@ -71,7 +71,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         description "Fleet for this slug and user does not exist"
         schema "$ref": "#/components/schemas/StandardError"
 
@@ -83,7 +83,7 @@ RSpec.describe "api/v1/fleets/membership", type: :request, swagger_doc: "v1/sche
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) do
+        let(:request_body) do
           {
             shipsFilter: "unknown"
           }
