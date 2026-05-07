@@ -98,60 +98,59 @@ RSpec.describe Discord::ScheduledEventSync do
 
   describe "description payload" do
     let(:creator) { create(:user, username: "TorlekMaru") }
+    let(:starts_at) { 2.days.from_now }
     let(:event) do
       create(:fleet_event, :open,
         fleet: fleet,
         created_by: creator,
         title: "Strike Op",
         description: "Briefing body.",
-        starts_at: 2.days.from_now)
+        starts_at: starts_at)
     end
 
-    it "uses a Discord @-mention when the creator has linked Discord" do
-      create(:omniauth_connection, user: creator, provider: "discord", uid: "344036297326723073")
-
-      captured = nil
+    let(:captured) { {} }
+    before do
       allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
-        captured = payload
+        captured.merge!(payload)
         {"id" => "999"}
       end
+    end
+
+    it "puts the Sesh-style chip line first so it survives the card preview truncation" do
+      described_class.new(event).upsert!
+      expect(captured[:description].lines.first).to start_with("🚩 ")
+    end
+
+    it "renders the host as a Discord @-mention when the creator linked Discord" do
+      create(:omniauth_connection, user: creator, provider: "discord", uid: "344036297326723073")
 
       described_class.new(event).upsert!
-      expect(captured[:description]).to include("**Organised by:** <@344036297326723073>")
+      expect(captured[:description]).to include("🚩 <@344036297326723073>")
     end
 
     it "falls back to the plain handle when Discord isn't linked" do
-      captured = nil
-      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
-        captured = payload
-        {"id" => "999"}
-      end
-
       described_class.new(event).upsert!
-      expect(captured[:description]).to include("**Organised by:** TorlekMaru")
+      expect(captured[:description]).to include("🚩 TorlekMaru")
       expect(captured[:description]).not_to include("<@")
     end
 
-    it "wraps the short URL in <> to suppress Discord's link preview" do
-      captured = nil
-      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
-        captured = payload
-        {"id" => "999"}
-      end
+    it "shows confirmed and interested counts in Sesh's `N (+M)` format" do
+      create_list(:fleet_event_signup, 2, fleet_event: event, fleet_event_slot: nil, status: "confirmed")
+      create_list(:fleet_event_signup, 3, fleet_event: event, fleet_event_slot: nil, status: "interested")
+      create(:fleet_event_signup, fleet_event: event, fleet_event_slot: nil, status: "withdrawn")
 
       described_class.new(event).upsert!
-      expect(captured[:description]).to match(%r{\*\*Open in Fleetyards:\*\* <https?://[^>]+/fe/})
+      expect(captured[:description]).to include("👥 2 (+3)")
     end
 
-    it "puts the Fleetyards URL on the first line so it survives the card preview truncation" do
-      captured = nil
-      allow(api).to receive(:create_guild_scheduled_event) do |_guild, payload|
-        captured = payload
-        {"id" => "999"}
-      end
-
+    it "uses Discord's `<t:UNIX:R>` tag for the relative-time chip" do
       described_class.new(event).upsert!
-      expect(captured[:description]).to start_with("**Open in Fleetyards:**")
+      expect(captured[:description]).to include("⏳ <t:#{starts_at.to_i}:R>")
+    end
+
+    it "wraps the short URL in <> to suppress Discord's link preview" do
+      described_class.new(event).upsert!
+      expect(captured[:description]).to match(%r{\*\*Open in Fleetyards:\*\* <https?://[^>]+/fe/})
     end
   end
 
