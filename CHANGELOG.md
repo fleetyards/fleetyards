@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.20.0](https://github.com/fleetyards/fleetyards/compare/v6.19.1...v6.20.0) (2026-05-07)
+
+
+### Features
+
+* **admin:** add inGame toggle to model edit form ([e992905](https://github.com/fleetyards/fleetyards/commit/e992905867753fb6270532d2364140e5a8f5654d))
+* **admin:** improve image management ux ([9987c80](https://github.com/fleetyards/fleetyards/commit/9987c80a537d92a967e64d99a4ca24b0c8a6de63))
+
+
+### Bug Fixes
+
+* **hangar:** hide add to hangar button for non-player-ownable models ([f2293d9](https://github.com/fleetyards/fleetyards/commit/f2293d969c5b46c7cc5cc239ad4cdeaa18fc2c88))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.27 to 6.1.28 ([#3870](https://github.com/fleetyards/fleetyards/issues/3870)) ([b650d92](https://github.com/fleetyards/fleetyards/commit/b650d92a49d33bc95a5b7d8f6cb84ffda05ced28))
+* **deps-dev:** bump @types/three from 0.184.0 to 0.184.1 ([#3875](https://github.com/fleetyards/fleetyards/issues/3875)) ([95ee43f](https://github.com/fleetyards/fleetyards/commit/95ee43f5066fbce4926e4cddc181d8a47a0baeb1))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#3868](https://github.com/fleetyards/fleetyards/issues/3868)) ([105e04f](https://github.com/fleetyards/fleetyards/commit/105e04f6a7ece41bdc00dce8f100e44a38789b49))
+* **deps-dev:** bump @vue/compiler-sfc from 3.5.33 to 3.5.34 ([#3878](https://github.com/fleetyards/fleetyards/issues/3878)) ([2cf5ab5](https://github.com/fleetyards/fleetyards/commit/2cf5ab54d364fb67170aa00fc1aca08dcc508123))
+* **deps-dev:** bump eslint-plugin-vue from 10.9.0 to 10.9.1 ([#3869](https://github.com/fleetyards/fleetyards/issues/3869)) ([d393724](https://github.com/fleetyards/fleetyards/commit/d3937246c18e0c6243af0d9ce2fb33c0aa680b15))
+* **deps-dev:** bump knip from 6.11.0 to 6.12.0 ([#3879](https://github.com/fleetyards/fleetyards/issues/3879)) ([93e534a](https://github.com/fleetyards/fleetyards/commit/93e534ab5d34db88ad32bd94563daf8b80b85338))
+* **deps-dev:** bump stylelint from 17.10.0 to 17.11.0 ([#3864](https://github.com/fleetyards/fleetyards/issues/3864)) ([79594c7](https://github.com/fleetyards/fleetyards/commit/79594c7e1ae0db72adb709fec902eb1abe8f5ae9))
+* **deps-dev:** bump vite-plugin-pwa from 1.2.0 to 1.3.0 ([#3866](https://github.com/fleetyards/fleetyards/issues/3866)) ([022b910](https://github.com/fleetyards/fleetyards/commit/022b91038eb01737ffd7712fc5b400c26e66c878))
+* **deps-dev:** bump vue-tsc from 3.2.7 to 3.2.8 ([#3867](https://github.com/fleetyards/fleetyards/issues/3867)) ([32bb752](https://github.com/fleetyards/fleetyards/commit/32bb752af982f0c24e9c3bc30dca11f341dcf9bf))
+* **deps:** bump aws-sdk-s3 from 1.220.0 to 1.221.0 ([#3876](https://github.com/fleetyards/fleetyards/issues/3876)) ([a71a01b](https://github.com/fleetyards/fleetyards/commit/a71a01b5d63e5e3d9727d4971c9d50087ee79b14))
+* **deps:** bump bootsnap from 1.24.2 to 1.24.3 ([#3863](https://github.com/fleetyards/fleetyards/issues/3863)) ([26f927c](https://github.com/fleetyards/fleetyards/commit/26f927cb58af4e565d693348073d2df10acb92fa))
+* **deps:** bump vite_rails from 3.10.0 to 3.11.0 ([#3865](https://github.com/fleetyards/fleetyards/issues/3865)) ([17f2acb](https://github.com/fleetyards/fleetyards/commit/17f2acbc6cb44fe3165d76bea1500cd6e41afc3c))
+* **deps:** bump vue from 3.5.33 to 3.5.34 ([#3877](https://github.com/fleetyards/fleetyards/issues/3877)) ([49b180c](https://github.com/fleetyards/fleetyards/commit/49b180cda96f10279c196c2f4c44ce6caf822c5b))
+
 ## [6.19.1](https://github.com/fleetyards/fleetyards/compare/v6.19.0...v6.19.1) (2026-05-05)
 
 
