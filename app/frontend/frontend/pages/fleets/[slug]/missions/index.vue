@@ -21,6 +21,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
+import { useRouter } from "vue-router";
 
 type Props = {
   fleet: Fleet;
@@ -33,6 +34,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const route = useRoute();
+const router = useRouter();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const showArchived = ref(false);
@@ -57,13 +59,10 @@ const canCreate = computed(() =>
   ]),
 );
 
-const openCreateModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Missions/MissionModal/index.vue"),
-    props: {
-      fleet: props.fleet,
-    },
+const goToCreate = () => {
+  void router.push({
+    name: "fleet-mission-new",
+    params: { slug: props.fleet.slug },
   });
 };
 
@@ -99,7 +98,7 @@ const crumbs = computed(() => [
     hide-empty
   >
     <template v-if="canCreate" #actions-right>
-      <Btn size="small" @click="openCreateModal">
+      <Btn size="small" @click="goToCreate">
         <i class="fa-light fa-plus" />
         <span>{{ t("actions.fleets.missions.create") }}</span>
       </Btn>

@@ -7,6 +7,12 @@ export default {
 <script lang="ts" setup>
 import { useMobile } from "@/shared/composables/useMobile";
 
+type Props = {
+  activeKey?: string;
+};
+
+const props = defineProps<Props>();
+
 const mobile = useMobile();
 const tabsEl = ref<HTMLElement | null>(null);
 const route = useRoute();
@@ -37,7 +43,7 @@ onMounted(() => {
 });
 
 watch(
-  () => route.name,
+  () => (props.activeKey !== undefined ? props.activeKey : route.name),
   () => {
     void nextTick(() => scrollToActive(true));
   },
