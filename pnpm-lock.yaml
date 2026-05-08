@@ -223,8 +223,8 @@ importers:
         specifier: ^25.6.0
         version: 25.6.0
       '@types/qs':
-        specifier: ^6.15.0
-        version: 6.15.0
+        specifier: ^6.15.1
+        version: 6.15.1
       '@types/rails__actioncable':
         specifier: ^8.0.3
         version: 8.0.3
@@ -329,7 +329,7 @@ importers:
         version: 1.0.0(stylelint@17.11.0(typescript@6.0.3))
       stylelint-config-standard-scss:
         specifier: ^17.0.0
-        version: 17.0.0(postcss@8.5.8)(stylelint@17.11.0(typescript@6.0.3))
+        version: 17.0.0(postcss@8.5.14)(stylelint@17.11.0(typescript@6.0.3))
       stylelint-scss:
         specifier: ^7.0.0
         version: 7.0.0(stylelint@17.11.0(typescript@6.0.3))
@@ -2289,8 +2289,8 @@ packages:
   '@types/offscreencanvas@2019.7.3':
     resolution: {integrity: sha512-ieXiYmgSRXUDeOntE1InxjWyvEelZGP63M+cGuquuRLuIKKT1osnkXjxev9B7d1nXSug5vpunx+gNlbVxMlC9A==}
 
-  '@types/qs@6.15.0':
-    resolution: {integrity: sha512-JawvT8iBVWpzTrz3EGw9BTQFg3BQNmwERdKE22vlTxawwtbyUSlMppvZYKLZzB5zgACXdXxbD3m1bXaMqP/9ow==}
+  '@types/qs@6.15.1':
+    resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
 
   '@types/rails__actioncable@8.0.3':
     resolution: {integrity: sha512-y46MOTYorVQVwlHUyaZYbrh3nIkXsRYNuPna32lb3RngLVBlndNbIPvAUywFfhivftNhYg+vW5sZKWYCVIX2lA==}
@@ -7680,7 +7680,7 @@ snapshots:
 
   '@types/offscreencanvas@2019.7.3': {}
 
-  '@types/qs@6.15.0': {}
+  '@types/qs@6.15.1': {}
 
   '@types/rails__actioncable@8.0.3': {}
 
@@ -10264,9 +10264,9 @@ snapshots:
     dependencies:
       postcss: 8.5.14
 
-  postcss-scss@4.0.9(postcss@8.5.8):
+  postcss-scss@4.0.9(postcss@8.5.14):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.14
 
   postcss-selector-parser@7.1.1:
     dependencies:
@@ -10741,26 +10741,26 @@ snapshots:
     dependencies:
       stylelint: 17.11.0(typescript@6.0.3)
 
-  stylelint-config-recommended-scss@17.0.1(postcss@8.5.8)(stylelint@17.11.0(typescript@6.0.3)):
+  stylelint-config-recommended-scss@17.0.1(postcss@8.5.14)(stylelint@17.11.0(typescript@6.0.3)):
     dependencies:
-      postcss-scss: 4.0.9(postcss@8.5.8)
+      postcss-scss: 4.0.9(postcss@8.5.14)
       stylelint: 17.11.0(typescript@6.0.3)
       stylelint-config-recommended: 18.0.0(stylelint@17.11.0(typescript@6.0.3))
       stylelint-scss: 7.0.0(stylelint@17.11.0(typescript@6.0.3))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.14
 
   stylelint-config-recommended@18.0.0(stylelint@17.11.0(typescript@6.0.3)):
     dependencies:
       stylelint: 17.11.0(typescript@6.0.3)
 
-  stylelint-config-standard-scss@17.0.0(postcss@8.5.8)(stylelint@17.11.0(typescript@6.0.3)):
+  stylelint-config-standard-scss@17.0.0(postcss@8.5.14)(stylelint@17.11.0(typescript@6.0.3)):
     dependencies:
       stylelint: 17.11.0(typescript@6.0.3)
-      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.8)(stylelint@17.11.0(typescript@6.0.3))
+      stylelint-config-recommended-scss: 17.0.1(postcss@8.5.14)(stylelint@17.11.0(typescript@6.0.3))
       stylelint-config-standard: 40.0.0(stylelint@17.11.0(typescript@6.0.3))
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.14
 
   stylelint-config-standard@40.0.0(stylelint@17.11.0(typescript@6.0.3)):
     dependencies:
