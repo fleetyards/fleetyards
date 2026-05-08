@@ -325,15 +325,39 @@ const crumbs = computed(() => [
           {{ event.title }}
           <EventStatusBadge :status="event.status" :past="event.past" />
         </Heading>
-        <div class="event-hero__meta text-muted">
+        <div class="event-hero__meta">
           <p>
             <i class="fa-light fa-calendar" />
             {{ startDate }}
             <span v-if="endDate"> — {{ endDate }}</span>
+            <span v-if="event.timezone" class="event-hero__tz">
+              ({{ event.timezone }})
+            </span>
           </p>
           <p v-if="event.location">
             <i class="fa-light fa-location-dot" />
             {{ event.location }}
+          </p>
+          <p v-if="event.meetupLocation">
+            <i class="fa-light fa-flag" />
+            {{ event.meetupLocation }}
+          </p>
+          <p v-if="event.category">
+            <i class="fa-light fa-tag" />
+            {{ t(`labels.fleets.missions.categories.${event.category}`) }}
+            <span v-if="event.scenario"> · {{ event.scenario }}</span>
+          </p>
+          <p v-if="event.visibility">
+            <i class="fa-light fa-eye" />
+            {{ t(`labels.fleets.events.visibilities.${event.visibility}`) }}
+          </p>
+          <p v-if="event.maxAttendees">
+            <i class="fa-light fa-users" />
+            {{
+              t("labels.fleets.events.maxAttendeesValue", {
+                count: event.maxAttendees,
+              })
+            }}
           </p>
         </div>
       </div>
@@ -521,16 +545,40 @@ const crumbs = computed(() => [
   gap: 1rem;
 }
 .event-hero__inner {
-  padding: 1rem 1.25rem;
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.85) 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  border-radius: $panelContentBorderRadius;
+}
+.event-hero__tz {
+  font-size: 0.85em;
+  opacity: 0.75;
 }
 .event-hero__meta {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
   margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
 
   p {
     margin: 0;
+  }
+
+  i {
+    margin-right: 0.35rem;
+    opacity: 0.9;
   }
 }
 .event-actions-row {

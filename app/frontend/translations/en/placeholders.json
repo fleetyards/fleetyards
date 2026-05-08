@@ -136,11 +136,11 @@
         "homepage": "Homepage",
         "twitch": "Twitch Channel",
         "youtube": "Youtube Channel",
-        "notifications": {
-          "discordGuildId": "e.g. 123456789012345678",
-          "discordChannelId": "Voice channel ID for the event",
-          "discordWebhookUrl": "https://discord.com/api/webhooks/…",
-          "discordWebhookConfigured": "Saved — leave empty to keep the existing one"
+        "discord": {
+          "guildId": "e.g. 123456789012345678",
+          "channelId": "Voice channel ID for the event",
+          "webhookUrl": "https://discord.com/api/webhooks/…",
+          "webhookConfigured": "Saved — leave empty to keep the existing one"
         }
       },
       "adminUser": {

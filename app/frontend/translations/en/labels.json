@@ -8,6 +8,42 @@
       "optional": "optional",
       "hide": "Hide",
       "show": "Show",
+      "notificationTypes": {
+        "channels": {
+          "app": "App",
+          "mail": "Mail",
+          "push": "Push"
+        },
+        "groups": {
+          "account": "Account & hangar",
+          "fleetMembership": "Fleet membership",
+          "fleetEvents": "Fleet events"
+        },
+        "hangar_create": "Hangar created",
+        "hangar_destroy": "Hangar removed",
+        "hangar_sync_finished": "Hangar sync finished",
+        "hangar_sync_failed": "Hangar sync failed",
+        "wishlist_create": "Added to wishlist",
+        "wishlist_destroy": "Removed from wishlist",
+        "model_on_sale": "Model on sale",
+        "new_model": "New model released",
+        "fleet_invite": "Fleet invite received",
+        "fleet_member_requested": "Membership requested",
+        "fleet_member_accepted": "Membership accepted",
+        "fleet_request_accepted": "Join request accepted",
+        "fleet_inventory_item_added": "Fleet inventory item added",
+        "fleet_event_published": "Event published",
+        "fleet_event_locked": "Event sign-ups locked",
+        "fleet_event_starting_soon": "Event starting soon",
+        "fleet_event_started": "Event started",
+        "fleet_event_completed": "Event completed",
+        "fleet_event_cancelled": "Event cancelled",
+        "fleet_event_signup_added": "New signup",
+        "fleet_event_signup_withdrawn": "Signup withdrawn",
+        "fleet_event_signup_confirmed": "Signup confirmed",
+        "fleet_event_signup_assigned": "Assigned to a slot",
+        "fleet_event_signup_kicked": "Removed from a slot"
+      },
       "only": "Only",
       "description": "Description",
       "unavailable": "unavailable",
@@ -271,23 +307,6 @@
         "notifications": {
           "inAppHeading": "In-app Notifications",
           "inAppHint": "Pick which event lifecycle changes show up as in-app notifications for fleet members.",
-          "discordHeading": "Discord",
-          "discordHint": "Connect a Discord server to mirror events as native scheduled events. Members can RSVP from Discord and the sign-up will sync back to Fleetyards.",
-          "discordGuildId": "Discord Server ID",
-          "discordChannelId": "Voice Channel ID (optional)",
-          "discordWebhookUrl": "Announcement Webhook URL (optional)",
-          "discordEventsHint": "Pick which event changes trigger a Discord update.",
-          "installBotHint": "Opens the Discord install page in a new tab — pick the server you want events mirrored to.",
-          "discordStatusOk": "Connected to %{name}",
-          "discordStatusCodes": {
-            "missing_token": "The Fleetyards bot is not configured on the server side. Contact an administrator.",
-            "missing_guild": "Enter a Discord server ID first.",
-            "invalid_token": "The bot token is invalid. Contact an administrator.",
-            "bot_not_in_guild": "The bot is not in this server. Use the install link to add it.",
-            "guild_not_found": "Discord doesn't recognize this server ID. Double-check the value.",
-            "discord_error": "Discord returned an unexpected error.",
-            "request_failed": "Could not reach Fleetyards. Try again."
-          },
           "events": {
             "fleet_event": {
               "published": "Event published",
@@ -306,12 +325,29 @@
             }
           }
         },
+        "discord": {
+          "url": "Discord Server",
+          "hint": "Connect a Discord server to mirror events as native scheduled events. Members can RSVP from Discord and the sign-up will sync back to Fleetyards.",
+          "guildId": "Discord Server ID",
+          "channelId": "Voice Channel ID (optional)",
+          "webhookUrl": "Announcement Webhook URL (optional)",
+          "installBotHint": "Opens the Discord install page in a new tab — pick the server you want events mirrored to.",
+          "statusOk": "Connected to %{name}",
+          "statusCodes": {
+            "missing_token": "The Fleetyards bot is not configured on the server side. Contact an administrator.",
+            "missing_guild": "Enter a Discord server ID first.",
+            "invalid_token": "The bot token is invalid. Contact an administrator.",
+            "bot_not_in_guild": "The bot is not in this server. Use the install link to add it.",
+            "guild_not_found": "Discord doesn't recognize this server ID. Double-check the value.",
+            "discord_error": "Discord returned an unexpected error.",
+            "request_failed": "Could not reach Fleetyards. Try again."
+          }
+        },
         "description": "Description",
         "public": "Public Fleetview",
         "publicFleet": "Public Fleet",
         "publicStats": "Public Stats",
         "publicFleetStats": "Public Fleet Stats",
-        "discord": "Discord Server",
         "guilded": "Guilded Server",
         "homepage": "Homepage",
         "twitch": "Twitch Channel",
@@ -1094,6 +1130,7 @@
           "meetupLocation": "Meetup location",
           "visibility": "Visibility",
           "maxAttendees": "Max attendees",
+          "maxAttendeesValue": "Max %{count} attendees",
           "autoLockEnabled": "Auto-lock signups",
           "autoLockMinutesBefore": "Lock minutes before start",
           "cancelledReason": "Cancellation reason",
@@ -1176,6 +1213,15 @@
             "completed": "Completed",
             "cancelled": "Cancelled",
             "past": "Past"
+          },
+          "tabs": {
+            "basic": "Basic info",
+            "description": "Description & cover",
+            "teams": "Teams & ships"
+          },
+          "calendar": {
+            "month": "Month",
+            "week": "Week"
           }
         }
       },

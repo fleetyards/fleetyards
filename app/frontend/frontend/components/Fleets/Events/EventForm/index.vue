@@ -15,6 +15,8 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormTabs from "@/shared/components/base/FormTabs/index.vue";
+import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -24,6 +26,7 @@ import {
   type Fleet,
   type FilterOption,
   type FleetEvent,
+  type FleetEventTeam,
   type Mission,
   type MissionExtended,
   FleetEventVisibility,
@@ -31,6 +34,7 @@ import {
   useCreateFleetEvent,
   useUpdateFleetEvent,
 } from "@/services/fyApi";
+import EventTeamCard from "@/frontend/components/Fleets/Events/EventTeamCard/index.vue";
 import { useMissionScenarios } from "@/frontend/composables/useMissionScenarios";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { TIMEZONE_OPTIONS } from "@/shared/utils/Timezones";
@@ -41,6 +45,7 @@ type Props = {
   fleet: Fleet;
   event?: FleetEvent;
   mission?: Mission | MissionExtended;
+  startsAtPrefill?: string;
 };
 
 const props = defineProps<Props>();
@@ -114,10 +119,14 @@ const { defineField, handleSubmit, setValues, meta } = useForm({
     briefing: props.event?.briefing ?? "",
     startsAt: props.event?.startsAt
       ? toLocal(props.event.startsAt)
-      : defaultStart,
+      : props.startsAtPrefill
+        ? toLocal(props.startsAtPrefill)
+        : defaultStart,
     endsAt: props.event?.endsAt
       ? toLocal(props.event.endsAt)
-      : addHours(defaultStart, 2),
+      : props.startsAtPrefill
+        ? addHours(toLocal(props.startsAtPrefill), 2)
+        : addHours(defaultStart, 2),
     timezone: props.event?.timezone ?? browserTz,
     location: props.event?.location ?? "",
     meetupLocation: props.event?.meetupLocation ?? "",
@@ -260,6 +269,24 @@ const existingCoverImage = computed(() => {
   )?.coverImage;
 });
 
+const eventTeams = computed<FleetEventTeam[]>(() => {
+  const teamsField = (props.event as { teams?: FleetEventTeam[] } | undefined)
+    ?.teams;
+  return Array.isArray(teamsField) ? teamsField : [];
+});
+
+const openAddEventTeamModal = () => {
+  if (!props.event) return;
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Events/EventTeamModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      event: props.event,
+    },
+  });
+};
+
 const createMutation = useCreateFleetEvent();
 const updateMutation = useUpdateFleetEvent();
 
@@ -390,214 +417,245 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-12">
-        <FormInput
-          v-model="title"
-          v-bind="titleProps"
-          name="title"
-          :rules="validationSchema.title"
-          :label="t('labels.fleets.events.title')"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <FormTextarea
-          v-model="description"
-          v-bind="descriptionProps"
-          name="description"
-          :label="t('labels.fleets.events.description')"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <FormTextarea
-          v-model="briefing"
-          v-bind="briefingProps"
-          name="briefing"
-          :label="t('labels.fleets.events.briefing')"
-        />
-      </div>
-    </div>
+    <FormTabs>
+      <FormTab
+        id="basic"
+        :label="t('labels.fleets.events.tabs.basic')"
+        :fields="['title', 'startsAt', 'timezone']"
+      >
+        <div class="row">
+          <div class="col-12">
+            <FormInput
+              v-model="title"
+              v-bind="titleProps"
+              name="title"
+              :rules="validationSchema.title"
+              :label="t('labels.fleets.events.title')"
+            />
+          </div>
+        </div>
 
-    <hr />
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FormDateTime
+              v-model="startsAt"
+              name="startsAt"
+              :rules="validationSchema.startsAt"
+              :minutes-increment="15"
+              :label="t('labels.fleets.events.startsAt')"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FormDateTime
+              v-model="endsAt"
+              name="endsAt"
+              :minutes-increment="15"
+              :label="t('labels.fleets.events.endsAt')"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FilterGroup
+              v-model="timezone"
+              v-bind="timezoneProps"
+              :options="timezoneOptions"
+              :label="t('labels.fleets.events.timezone')"
+              name="timezone"
+              :searchable="true"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="maxAttendees"
+              v-bind="maxAttendeesProps"
+              name="maxAttendees"
+              :type="InputTypesEnum.NUMBER"
+              :label="t('labels.fleets.events.maxAttendees')"
+            />
+          </div>
+        </div>
 
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FormDateTime
-          v-model="startsAt"
-          name="startsAt"
-          :rules="validationSchema.startsAt"
-          :minutes-increment="15"
-          :label="t('labels.fleets.events.startsAt')"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormDateTime
-          v-model="endsAt"
-          name="endsAt"
-          :minutes-increment="15"
-          :label="t('labels.fleets.events.endsAt')"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FilterGroup
-          v-model="timezone"
-          v-bind="timezoneProps"
-          :options="timezoneOptions"
-          :label="t('labels.fleets.events.timezone')"
-          name="timezone"
-          :searchable="true"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="maxAttendees"
-          v-bind="maxAttendeesProps"
-          name="maxAttendees"
-          :type="InputTypesEnum.NUMBER"
-          :label="t('labels.fleets.events.maxAttendees')"
-        />
-      </div>
-    </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="location"
+              v-bind="locationProps"
+              name="location"
+              :label="t('labels.fleets.events.location')"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="meetupLocation"
+              v-bind="meetupLocationProps"
+              name="meetupLocation"
+              :label="t('labels.fleets.events.meetupLocation')"
+            />
+          </div>
+        </div>
 
-    <hr />
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FilterGroup
+              v-model="visibility"
+              v-bind="visibilityProps"
+              :options="visibilityOptions"
+              :label="t('labels.fleets.events.visibility')"
+              name="visibility"
+              :searchable="false"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FilterGroup
+              v-model="category"
+              v-bind="categoryProps"
+              :options="categoryOptions"
+              :label="t('labels.fleets.missions.category')"
+              name="category"
+              :searchable="false"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <FormInput
+              v-model="scenario"
+              v-bind="scenarioProps"
+              name="scenario"
+              :label="t('labels.fleets.missions.scenario')"
+              list="event-scenario-suggestions"
+              autocomplete="off"
+            />
+            <datalist id="event-scenario-suggestions">
+              <option
+                v-for="suggestion in scenarioSuggestions"
+                :key="suggestion"
+                :value="suggestion"
+              />
+            </datalist>
+          </div>
+        </div>
 
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="location"
-          v-bind="locationProps"
-          name="location"
-          :label="t('labels.fleets.events.location')"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="meetupLocation"
-          v-bind="meetupLocationProps"
-          name="meetupLocation"
-          :label="t('labels.fleets.events.meetupLocation')"
-        />
-      </div>
-    </div>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FormCheckbox
+              v-model="autoLockEnabled"
+              name="autoLockEnabled"
+              :label="t('labels.fleets.events.autoLockEnabled')"
+            />
+          </div>
+          <div v-if="autoLockEnabled" class="col-12 col-md-6">
+            <FormInput
+              v-model="autoLockMinutesBefore"
+              v-bind="autoLockMinutesBeforeProps"
+              name="autoLockMinutesBefore"
+              :type="InputTypesEnum.NUMBER"
+              :label="t('labels.fleets.events.autoLockMinutesBefore')"
+            />
+          </div>
+        </div>
+      </FormTab>
 
-    <hr />
+      <FormTab
+        id="description"
+        :label="t('labels.fleets.events.tabs.description')"
+      >
+        <div class="row">
+          <div class="col-12">
+            <FormTextarea
+              v-model="description"
+              v-bind="descriptionProps"
+              name="description"
+              :label="t('labels.fleets.events.description')"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <FormTextarea
+              v-model="briefing"
+              v-bind="briefingProps"
+              name="briefing"
+              :label="t('labels.fleets.events.briefing')"
+            />
+          </div>
+        </div>
 
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FilterGroup
-          v-model="visibility"
-          v-bind="visibilityProps"
-          :options="visibilityOptions"
-          :label="t('labels.fleets.events.visibility')"
-          name="visibility"
-          :searchable="false"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FilterGroup
-          v-model="category"
-          v-bind="categoryProps"
-          :options="categoryOptions"
-          :label="t('labels.fleets.missions.category')"
-          name="category"
-          :searchable="false"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <FormInput
-          v-model="scenario"
-          v-bind="scenarioProps"
-          name="scenario"
-          :label="t('labels.fleets.missions.scenario')"
-          list="event-scenario-suggestions"
-          autocomplete="off"
-        />
-        <datalist id="event-scenario-suggestions">
-          <option
-            v-for="suggestion in scenarioSuggestions"
-            :key="suggestion"
-            :value="suggestion"
-          />
-        </datalist>
-      </div>
-    </div>
+        <div v-if="presetOptions.length" class="row">
+          <div class="col-12">
+            <span class="cover-presets-label">
+              {{ t("labels.fleets.missions.coverPresets") }}
+            </span>
+            <div class="cover-presets-grid">
+              <button
+                v-for="preset in presetOptions"
+                :key="preset.key"
+                type="button"
+                class="cover-preset"
+                :class="{
+                  'cover-preset--active': coverImagePreset === preset.key,
+                }"
+                :style="{ backgroundImage: `url(${preset.url})` }"
+                @click="selectPreset(preset.key)"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <FormFileInput
+              v-model="coverImage"
+              v-bind="coverImageProps"
+              :file="existingCoverImage as never"
+              name="coverImage"
+              :label="t('labels.fleets.missions.coverImage')"
+              :allowed-types="AllowedFileTypes.IMAGE"
+              clearable
+            />
+          </div>
+        </div>
+      </FormTab>
 
-    <hr />
-
-    <div class="row">
-      <div class="col-12 col-md-6">
-        <FormCheckbox
-          v-model="autoLockEnabled"
-          name="autoLockEnabled"
-          :label="t('labels.fleets.events.autoLockEnabled')"
-        />
-      </div>
-      <div v-if="autoLockEnabled" class="col-12 col-md-6">
-        <FormInput
-          v-model="autoLockMinutesBefore"
-          v-bind="autoLockMinutesBeforeProps"
-          name="autoLockMinutesBefore"
-          :type="InputTypesEnum.NUMBER"
-          :label="t('labels.fleets.events.autoLockMinutesBefore')"
-        />
-      </div>
-    </div>
-
-    <hr />
-
-    <div v-if="presetOptions.length" class="row">
-      <div class="col-12">
-        <span class="cover-presets-label">
-          {{ t("labels.fleets.missions.coverPresets") }}
-        </span>
-        <div class="cover-presets-grid">
-          <button
-            v-for="preset in presetOptions"
-            :key="preset.key"
-            type="button"
-            class="cover-preset"
-            :class="{ 'cover-preset--active': coverImagePreset === preset.key }"
-            :style="{ backgroundImage: `url(${preset.url})` }"
-            @click="selectPreset(preset.key)"
+      <FormTab
+        id="teams"
+        :label="t('labels.fleets.events.tabs.teams')"
+        :hidden="!isEdit"
+      >
+        <div class="event-teams-section__header">
+          <Btn :inline="true" size="small" @click="openAddEventTeamModal">
+            <i class="fa-light fa-plus" />
+            <span>{{ t("actions.fleets.events.addTeam") }}</span>
+          </Btn>
+        </div>
+        <div class="event-teams">
+          <EventTeamCard
+            v-for="team in eventTeams"
+            :key="team.id"
+            :team="team"
+            :event="props.event!"
+            :fleet="fleet"
+            editable
+            is-manager
           />
         </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <FormFileInput
-          v-model="coverImage"
-          v-bind="coverImageProps"
-          :file="existingCoverImage as never"
-          name="coverImage"
-          :label="t('labels.fleets.missions.coverImage')"
-          :allowed-types="AllowedFileTypes.IMAGE"
-          clearable
-        />
-      </div>
-    </div>
+        <p v-if="!eventTeams.length" class="text-muted">
+          {{ t("labels.fleets.missions.noTeams") }}
+        </p>
+      </FormTab>
 
-    <FormActions
-      :submitting="submitting"
-      form-id="event-form"
-      :dirty="meta.dirty || meta.touched"
-      @cancel="emit('cancel')"
-    />
+      <FormActions
+        :submitting="submitting"
+        form-id="event-form"
+        :dirty="meta.dirty || meta.touched"
+        @cancel="emit('cancel')"
+      />
+    </FormTabs>
   </form>
 </template>
 
 <style lang="scss" scoped>
 .event-form {
-  max-width: 960px;
-  margin: 0 auto;
   width: 100%;
 }
 .event-form__mission-prefill {
@@ -680,5 +738,15 @@ const onSubmit = handleSubmit(async (values) => {
 .cover-preset--active {
   border-color: var(--accent, #4aa);
   box-shadow: 0 0 0 1px var(--accent, #4aa);
+}
+.event-teams-section__header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+.event-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 </style>

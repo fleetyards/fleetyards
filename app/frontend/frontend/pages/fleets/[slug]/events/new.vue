@@ -33,6 +33,9 @@ const fleetSlug = computed(() => props.fleet.slug);
 const missionSlugQuery = computed(
   () => (route.query.mission as string | undefined) ?? null,
 );
+const startsAtQuery = computed(
+  () => (route.query.startsAt as string | undefined) ?? undefined,
+);
 
 const { data: prefillMission } = useFleetMission(
   fleetSlug,
@@ -73,6 +76,7 @@ const crumbs = computed(() => [
   <EventForm
     :fleet="fleet"
     :mission="prefillMission as Mission | undefined"
+    :starts-at-prefill="startsAtQuery"
     @cancel="cancel"
   />
 </template>

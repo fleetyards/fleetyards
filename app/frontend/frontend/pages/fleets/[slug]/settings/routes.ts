@@ -48,4 +48,16 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: "discord/",
+    name: "fleet-settings-discord",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/discord.vue"),
+    meta: {
+      title: "fleets.settings.discord",
+      needsAuthentication: true,
+      access: ["fleet:notifications:manage", "fleet:manage"],
+      customTitle: true,
+    },
+  },
 ];

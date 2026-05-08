@@ -57,7 +57,8 @@
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
           "roles": "Roles",
-          "notifications": "Notifications"
+          "notifications": "Notifications",
+          "discord": "Discord"
         }
       },
       "rsiProfile": "RSI Profile",
