@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.20.1](https://github.com/fleetyards/fleetyards/compare/v6.20.0...v6.20.1) (2026-05-08)
+
+
+### Bug Fixes
+
+* **admin:** make image gallery optional and surface upload errors ([43a3f7f](https://github.com/fleetyards/fleetyards/commit/43a3f7fc1006d56327dbdac3aa94fe1ab2b64cc5))
+
+
+### Chores
+
+* **deps-dev:** bump @types/node from 25.6.0 to 25.6.2 ([#3890](https://github.com/fleetyards/fleetyards/issues/3890)) ([814b45a](https://github.com/fleetyards/fleetyards/commit/814b45adbde78af909ecf7ab7587c71a2c2dab37))
+* **deps-dev:** bump knip from 6.12.0 to 6.12.1 ([#3886](https://github.com/fleetyards/fleetyards/issues/3886)) ([25730f4](https://github.com/fleetyards/fleetyards/commit/25730f4b9b92649af60cc8241ea047ac7e4e8e5d))
+* **deps-dev:** bump msw from 2.14.3 to 2.14.5 ([#3889](https://github.com/fleetyards/fleetyards/issues/3889)) ([0ef57b9](https://github.com/fleetyards/fleetyards/commit/0ef57b928c9dbc196f9e3a47c17445396faeab01))
+* **deps-dev:** bump vite from 8.0.10 to 8.0.11 ([#3887](https://github.com/fleetyards/fleetyards/issues/3887)) ([997d195](https://github.com/fleetyards/fleetyards/commit/997d19529b3186f6b7749504f00a6748ce324dd4))
+* **deps:** bump sidekiq from 8.1.3 to 8.1.4 ([#3885](https://github.com/fleetyards/fleetyards/issues/3885)) ([0e9af83](https://github.com/fleetyards/fleetyards/commit/0e9af83ef98f36220bfe441f7257379089bf3d06))
+
 ## [6.20.0](https://github.com/fleetyards/fleetyards/compare/v6.19.1...v6.20.0) (2026-05-07)
 
 
