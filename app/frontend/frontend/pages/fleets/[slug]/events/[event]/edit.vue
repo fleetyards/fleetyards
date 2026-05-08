@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import EventForm from "@/frontend/components/Fleets/Events/EventForm/index.vue";
 import { type Fleet, type FleetMember, useFleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useRouter } from "vue-router";
 
 type Props = {
@@ -27,7 +28,14 @@ const router = useRouter();
 const fleetSlug = computed(() => props.fleet.slug);
 const eventSlug = computed(() => route.params.event as string);
 
-const { data: event } = useFleetEvent(fleetSlug, eventSlug);
+const { data: event, refetch } = useFleetEvent(fleetSlug, eventSlug);
+
+const comlink = useComlink();
+
+onMounted(() => {
+  comlink.on("fleet-event-updated", () => void refetch());
+  comlink.on("fleet-event-children-changed", () => void refetch());
+});
 
 const cancel = () => {
   if (!event.value) {

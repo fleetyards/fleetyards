@@ -71,7 +71,8 @@
           "fleet": "%{fleet} Settings",
           "membership": "%{fleet} Membership",
           "roles": "%{fleet} Roles",
-          "notifications": "%{fleet} Notification Settings"
+          "notifications": "%{fleet} Notification Settings",
+          "discord": "%{fleet} Discord Settings"
         }
       },
       "roadmap": {

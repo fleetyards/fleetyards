@@ -84,15 +84,11 @@ const archiveMutation = useDestroyFleetMission();
 const updateMutation = useUpdateFleetMission();
 const sortTeamsMutation = useSortMissionTeams();
 
-const openEditModal = () => {
+const goToEdit = () => {
   if (!mission.value) return;
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Missions/MissionModal/index.vue"),
-    props: {
-      fleet: props.fleet,
-      mission: mission.value,
-    },
+  void router.push({
+    name: "fleet-mission-edit",
+    params: { slug: props.fleet.slug, mission: mission.value.slug },
   });
 };
 
@@ -303,7 +299,7 @@ const coverImage = computed(() => resolveCover(mission.value));
         <i class="fa-light fa-calendar-plus" />
         <span>{{ t("actions.fleets.events.spawn") }}</span>
       </Btn>
-      <Btn size="small" @click="openEditModal">
+      <Btn size="small" @click="goToEdit">
         <i class="fa-light fa-pen" />
         <span>{{ t("actions.fleets.missions.edit") }}</span>
       </Btn>

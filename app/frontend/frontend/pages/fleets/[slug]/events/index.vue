@@ -40,20 +40,38 @@ const router = useRouter();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
-const view = computed<"list" | "calendar">(() =>
-  route.query.view === "calendar" ? "calendar" : "list",
+type ViewKind = "list" | "month" | "week";
+
+const view = computed<ViewKind>(() => {
+  const q = route.query.view;
+  return q === "month" || q === "week" ? q : "list";
+});
+
+const isCalendar = computed(
+  () => view.value === "month" || view.value === "week",
 );
 
-const setView = (next: "list" | "calendar") => {
+const calendarView = computed<"month" | "week">(() =>
+  view.value === "week" ? "week" : "month",
+);
+
+const setView = (next: ViewKind) => {
   if (view.value === next) return;
   void router.replace({
     name: "fleet-events",
     params: { slug: props.fleet.slug },
     query: {
       ...route.query,
-      view: next === "calendar" ? "calendar" : undefined,
+      view: next === "list" ? undefined : next,
+      // Drop the legacy calendarView param if it lingers from an older link.
+      calendarView: undefined,
     },
   });
+};
+
+const toggleListCalendar = (next: "list" | "calendar") => {
+  if (next === "list") setView("list");
+  else setView(view.value === "week" ? "week" : "month");
 };
 
 const tab = ref<"upcoming" | "past" | "archived">("upcoming");
@@ -72,11 +90,23 @@ const {
 
 const eventList = computed<FleetEvent[]>(() => events.value?.items ?? []);
 
-const month = ref(new Date());
+const visibleRange = ref<{ start: Date; end: Date }>({
+  start: subDays(startOfMonth(new Date()), 7),
+  end: addDays(endOfMonth(new Date()), 7),
+});
+
+const goToCreate = (date: Date) => {
+  if (!canCreate.value) return;
+  void router.push({
+    name: "fleet-event-new",
+    params: { slug: props.fleet.slug },
+    query: { startsAt: date.toISOString() },
+  });
+};
 
 const calendarParams = computed(() => ({
-  from: subDays(startOfMonth(month.value), 7).toISOString(),
-  to: addDays(endOfMonth(month.value), 7).toISOString(),
+  from: visibleRange.value.start.toISOString(),
+  to: visibleRange.value.end.toISOString(),
 }));
 
 const { data: calendarData, refetch: refetchCalendar } = useFleetCalendar(
@@ -84,7 +114,7 @@ const { data: calendarData, refetch: refetchCalendar } = useFleetCalendar(
   calendarParams,
   {
     query: {
-      enabled: computed(() => view.value === "calendar"),
+      enabled: computed(() => isCalendar.value),
     },
   },
 );
@@ -187,16 +217,16 @@ const crumbs = computed(() => [
         :active="view === 'list'"
         size="small"
         inline
-        @click="setView('list')"
+        @click="toggleListCalendar('list')"
       >
         <i class="fa-light fa-list" />
         {{ t("labels.fleets.events.listTab") }}
       </Btn>
       <Btn
-        :active="view === 'calendar'"
+        :active="isCalendar"
         size="small"
         inline
-        @click="setView('calendar')"
+        @click="toggleListCalendar('calendar')"
       >
         <i class="fa-light fa-calendar" />
         {{ t("labels.fleets.events.calendarTab") }}
@@ -253,8 +283,10 @@ const crumbs = computed(() => [
     v-else
     :fleet="fleet"
     :events="calendarEvents"
-    :month="month"
-    @update:month="month = $event"
+    :view="calendarView"
+    @update:range="visibleRange = $event"
+    @update:view="setView"
+    @create-event="goToCreate"
   />
 </template>
 
