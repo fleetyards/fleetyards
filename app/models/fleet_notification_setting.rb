@@ -4,15 +4,14 @@
 #
 # Table name: fleet_notification_settings
 #
-#  id                     :uuid             not null, primary key
-#  discord_webhook_url    :text
-#  enabled_discord_events :text             default([])
-#  enabled_in_app_events  :text             default(["fleet_event.published", "fleet_event.locked", "fleet_event.starting_soon", "fleet_event.cancelled", "fleet_event_signup.created", "fleet_event_signup.withdrawn"])
-#  created_at             :datetime         not null
-#  updated_at             :datetime         not null
-#  discord_channel_id     :string
-#  discord_guild_id       :string
-#  fleet_id               :uuid             not null
+#  id                    :uuid             not null, primary key
+#  discord_webhook_url   :text
+#  enabled_in_app_events :text             default(["fleet_event.published", "fleet_event.locked", "fleet_event.starting_soon", "fleet_event.cancelled", "fleet_event_signup.created", "fleet_event_signup.withdrawn"])
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
+#  discord_channel_id    :string
+#  discord_guild_id      :string
+#  fleet_id              :uuid             not null
 #
 # Indexes
 #
@@ -26,7 +25,6 @@ class FleetNotificationSetting < ApplicationRecord
   belongs_to :fleet, touch: true
 
   serialize :enabled_in_app_events, coder: YAML
-  serialize :enabled_discord_events, coder: YAML
 
   encrypts :discord_webhook_url
 
@@ -51,11 +49,5 @@ class FleetNotificationSetting < ApplicationRecord
 
   def in_app_enabled?(event_name)
     Array(enabled_in_app_events).include?(event_name)
-  end
-
-  def discord_enabled?(event_name)
-    return false if discord_webhook_url.blank?
-
-    Array(enabled_discord_events).include?(event_name)
   end
 end
