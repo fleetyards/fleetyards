@@ -26,7 +26,7 @@ type Props = {
   }[];
 };
 
-const props = defineProps<Props>();
+defineProps<Props>();
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
