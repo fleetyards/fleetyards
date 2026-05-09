@@ -11,8 +11,7 @@ RSpec.describe "api/v1/fleets/notifications", type: :request, swagger_doc: "v1/s
     {
       discordGuildId: "123456789012345678",
       discordChannelId: "234567890123456789",
-      enabledInAppEvents: ["fleet_event.published"],
-      enabledDiscordEvents: ["fleet_event.published", "fleet_event.cancelled"]
+      enabledInAppEvents: ["fleet_event.published"]
     }
   end
 
@@ -43,8 +42,7 @@ RSpec.describe "api/v1/fleets/notifications", type: :request, swagger_doc: "v1/s
           discordGuildId: {type: :string, nullable: true},
           discordChannelId: {type: :string, nullable: true},
           discordWebhookUrl: {type: :string, nullable: true},
-          enabledInAppEvents: {type: :array, items: {type: :string}},
-          enabledDiscordEvents: {type: :array, items: {type: :string}}
+          enabledInAppEvents: {type: :array, items: {type: :string}}
         }
       }, required: true
 
@@ -60,7 +58,7 @@ RSpec.describe "api/v1/fleets/notifications", type: :request, swagger_doc: "v1/s
         run_test! do |response|
           data = JSON.parse(response.body)
           expect(data["discordGuildId"]).to eq("123456789012345678")
-          expect(data["enabledDiscordEvents"]).to include("fleet_event.cancelled")
+          expect(data["enabledInAppEvents"]).to include("fleet_event.published")
         end
       end
 

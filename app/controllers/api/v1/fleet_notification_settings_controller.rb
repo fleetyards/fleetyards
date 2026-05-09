@@ -65,8 +65,7 @@ module Api
           :discord_guild_id,
           :discord_channel_id,
           :discord_webhook_url,
-          enabled_in_app_events: [],
-          enabled_discord_events: []
+          enabled_in_app_events: []
         ).to_h.symbolize_keys
 
         # Front-end sends an empty string when the admin clears the webhook;
