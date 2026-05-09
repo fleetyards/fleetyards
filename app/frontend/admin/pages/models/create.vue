@@ -9,6 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type ModelCreateInput,
+  type ValidationError,
   useCreateModel,
   getModelsQueryKey,
 } from "@/services/fyAdminApi";
@@ -24,20 +25,25 @@ import ModelClassificationFilterGroup from "@/frontend/components/base/ModelClas
 import ModelFocusFilterGroup from "@/frontend/components/base/ModelFocusFilterGroup/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { transformErrors } from "@/frontend/utils/transformErrors";
 import { useQueryClient } from "@tanstack/vue-query";
+import { type AxiosError } from "axios";
 
 const { t } = useI18n();
 const router = useRouter();
 const { extend } = useBreadCrumbs();
+const { displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 
 const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<ModelCreateInput>({
-  validationSchema,
-});
+const { defineField, handleSubmit, meta, setErrors } =
+  useForm<ModelCreateInput>({
+    validationSchema,
+  });
 
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
@@ -76,14 +82,21 @@ const onSubmit = handleSubmit(async (values) => {
     .then(async (createdModel) => {
       await router.push(
         extend({
-          name: "admin-models-id-edit",
+          name: "admin-model-edit",
           params: { id: createdModel.id },
         }),
       );
     })
     .catch((error) => {
-      console.error("Error creating model:", error);
-      alert(error);
+      const response = (error as AxiosError<ValidationError>).response;
+
+      if (response?.data?.errors) {
+        setErrors(transformErrors(response.data.errors));
+      }
+
+      displayAlert({
+        text: response?.data?.message || t("errors.generic"),
+      });
     })
     .finally(() => {
       submitting.value = false;

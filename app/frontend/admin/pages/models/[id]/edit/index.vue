@@ -58,10 +58,11 @@ const validationSchema = {
   name: "required",
 };
 
-const { defineField, handleSubmit, meta } = useForm<ModelUpdateInput>({
-  initialValues: initialValues.value,
-  validationSchema,
-});
+const { defineField, handleSubmit, meta, setErrors } =
+  useForm<ModelUpdateInput>({
+    initialValues: initialValues.value,
+    validationSchema,
+  });
 
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
@@ -87,7 +88,12 @@ const [holo, holoProps] = defineField("holo");
 
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.index") }}</Heading>
-  <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
+  <ModelForm
+    :model="model"
+    :handle-submit="handleSubmit"
+    :meta="meta"
+    :set-errors="setErrors"
+  >
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="name" v-bind="nameProps" name="name" />

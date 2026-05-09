@@ -10,14 +10,23 @@ import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutati
 import {
   type ModelExtended,
   type ModelUpdateInput,
+  type ValidationError,
 } from "@/services/fyAdminApi";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { useI18n } from "@/shared/composables/useI18n";
+import { transformErrors } from "@/frontend/utils/transformErrors";
+import { type AxiosError } from "axios";
 
 type FormMeta = {
   dirty: boolean;
   touched: boolean;
 };
+
+type SetErrors = (
+  fields: Record<string, string | string[] | undefined>,
+) => void;
 
 type Props = {
   model: ModelExtended;
@@ -25,9 +34,13 @@ type Props = {
     cb: SubmissionHandler<ModelUpdateInput>,
   ) => (event?: Event) => Promise<unknown>;
   meta: FormMeta;
+  setErrors?: SetErrors;
 };
 
 const props = defineProps<Props>();
+
+const { t } = useI18n();
+const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
@@ -42,8 +55,15 @@ const onSubmit = props.handleSubmit(async (values) => {
       data: values,
     })
     .catch((error) => {
-      console.error("Error updating model:", error);
-      alert(error);
+      const response = (error as AxiosError<ValidationError>).response;
+
+      if (response?.data?.errors && props.setErrors) {
+        props.setErrors(transformErrors(response.data.errors));
+      }
+
+      displayAlert({
+        text: response?.data?.message || t("errors.generic"),
+      });
     })
     .finally(() => {
       submitting.value = false;
