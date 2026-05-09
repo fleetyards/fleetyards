@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.20.2](https://github.com/fleetyards/fleetyards/compare/v6.20.1...v6.20.2) (2026-05-09)
+
+
+### Bug Fixes
+
+* **admin:** persist FilterGroup fields on model edit forms ([b5420d4](https://github.com/fleetyards/fleetyards/commit/b5420d46411310d031a237d0aff1f225eef5228e))
+* **holoviewer:** scale zoom and far plane to model size ([76b1b56](https://github.com/fleetyards/fleetyards/commit/76b1b5689e8a7019301b6675b3999b6691a4a48f))
+
+
+### Chores
+
+* apply prettier formatting ([910a38c](https://github.com/fleetyards/fleetyards/commit/910a38c876bf323468e5497a71351e58488da437))
+
 ## [6.20.1](https://github.com/fleetyards/fleetyards/compare/v6.20.0...v6.20.1) (2026-05-08)
 
 
