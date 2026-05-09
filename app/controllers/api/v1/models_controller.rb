@@ -18,9 +18,7 @@ module Api
       def index
         @q = index_scope
 
-        @models = @q.result
-          .page(params[:page])
-          .per(per_page(Model))
+        @models = result_with_pagination(@q.result, per_page(Model))
       end
 
       def with_docks
@@ -28,9 +26,7 @@ module Api
 
         @q = index_scope
 
-        @models = @q.result
-          .page(params[:page])
-          .per(per_page(Model))
+        @models = result_with_pagination(@q.result, per_page(Model))
 
         render "api/v1/models/index"
       end
