@@ -163,9 +163,21 @@ const innerHeight = computed(() => {
 
 const cameraPosition = ref<[x: number, y: number, z: number]>([100, 100, 100]);
 
+const fitDistance = ref(100);
+const modelMaxDimension = ref(100);
+
 const cameraArgs = computed<
   [fov: number, aspect: number, near: number, far: number]
->(() => [35, innerWidth.value / innerHeight.value, 0.1, 1000]);
+>(() => [
+  35,
+  innerWidth.value / innerHeight.value,
+  0.1,
+  Math.max(1000, fitDistance.value * 4 + modelMaxDimension.value),
+]);
+
+const maxZoomDistance = computed(() =>
+  Math.max(250, fitDistance.value * 3),
+);
 
 const cameraAngle = computed(() => {
   return props.inline ? 15 : 30;
@@ -201,6 +213,9 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
 
   const distance =
     dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect));
+
+  fitDistance.value = distance;
+  modelMaxDimension.value = Math.max(size.x, size.y, size.z);
 
   cameraPosition.value = [0, cameraAngle.value, distance];
 };
@@ -331,7 +346,7 @@ defineExpose({
         :enable-zoom="zoom"
         :zoom-speed="0.5"
         :min-distance="-50"
-        :max-distance="250"
+        :max-distance="maxZoomDistance"
         enable-damping
         :damping-factor="0.25"
         :enable-pan="panable"
