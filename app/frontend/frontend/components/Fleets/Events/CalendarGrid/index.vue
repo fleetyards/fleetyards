@@ -22,6 +22,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { type Fleet, type FleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useI18nStore } from "@/shared/stores/i18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useRouter } from "vue-router";
 import { format, parseISO } from "date-fns";
@@ -44,6 +45,7 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+const i18nStore = useI18nStore();
 const router = useRouter();
 const { resolve: resolveCover } = useMissionCover();
 
@@ -144,10 +146,22 @@ const updateTitle = () => {
   const date = ec?.getOption("date") as Date | string | undefined;
   if (!date) return;
   const d = date instanceof Date ? date : new Date(date);
-  titleLabel.value =
-    props.view === "week"
-      ? format(d, "'Week of' MMM d, yyyy")
-      : format(d, "MMMM yyyy");
+  const locale = i18nStore.locale;
+  if (props.view === "week") {
+    const formatted = new Intl.DateTimeFormat(locale, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(d);
+    titleLabel.value = t("labels.fleets.events.calendar.weekTitle", {
+      date: formatted,
+    });
+  } else {
+    titleLabel.value = new Intl.DateTimeFormat(locale, {
+      month: "long",
+      year: "numeric",
+    }).format(d);
+  }
 };
 
 // One-way: calendar drives the `date` query param. We never watch it back
@@ -184,6 +198,7 @@ onMounted(() => {
     view: toLibView(props.view),
     date: initialDate,
     events: calendarEvents.value,
+    locale: i18nStore.locale,
     firstDay: 1,
     headerToolbar: false,
     height: "auto",
@@ -227,6 +242,14 @@ watch(
   () => props.view,
   (next) => {
     ec?.setOption("view", toLibView(next));
+    updateTitle();
+  },
+);
+
+watch(
+  () => i18nStore.locale,
+  (locale) => {
+    ec?.setOption("locale", locale);
     updateTitle();
   },
 );

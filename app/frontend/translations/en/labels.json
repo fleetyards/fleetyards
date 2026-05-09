@@ -1221,7 +1221,8 @@
           },
           "calendar": {
             "month": "Month",
-            "week": "Week"
+            "week": "Week",
+            "weekTitle": "Week of %{date}"
           }
         }
       },
