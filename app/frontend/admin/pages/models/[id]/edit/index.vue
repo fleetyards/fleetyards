@@ -87,11 +87,7 @@ const [holo, holoProps] = defineField("holo");
 
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.index") }}</Heading>
-  <ModelForm
-    :model="model"
-    :handle-submit="handleSubmit"
-    :meta="meta"
-  >
+  <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput v-model="name" v-bind="nameProps" name="name" />

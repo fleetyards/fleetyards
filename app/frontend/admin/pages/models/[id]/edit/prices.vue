@@ -58,11 +58,7 @@ const itemPricesList = ref<{
 
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.prices") }}</Heading>
-  <ModelForm
-    :model="model"
-    :handle-submit="handleSubmit"
-    :meta="meta"
-  >
+  <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <div class="row">
       <div class="col-12 col-md-4">
         <FormInput

@@ -48,11 +48,7 @@ const [quantumFuelTankSize, quantumFuelTankSizeProps] = defineField(
 
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.cargoAndFuel") }}</Heading>
-  <ModelForm
-    :model="model"
-    :handle-submit="handleSubmit"
-    :meta="meta"
-  >
+  <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput

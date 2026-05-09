@@ -155,11 +155,7 @@ const formatOffset = (hold: AdminCargoHold) => {
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.cargoHolds") }}</Heading>
 
-  <ModelForm
-    :model="model"
-    :handle-submit="handleSubmit"
-    :meta="meta"
-  >
+  <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <div class="row">
       <div class="col-12 col-md-6">
         <FormInput

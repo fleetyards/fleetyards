@@ -21,7 +21,9 @@ type FormMeta = {
 
 type Props = {
   model: ModelExtended;
-  handleSubmit: (cb: SubmissionHandler<ModelUpdateInput>) => (event?: Event) => Promise<unknown>;
+  handleSubmit: (
+    cb: SubmissionHandler<ModelUpdateInput>,
+  ) => (event?: Event) => Promise<unknown>;
   meta: FormMeta;
 };
 

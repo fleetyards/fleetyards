@@ -175,9 +175,7 @@ const cameraArgs = computed<
   Math.max(1000, fitDistance.value * 4 + modelMaxDimension.value),
 ]);
 
-const maxZoomDistance = computed(() =>
-  Math.max(250, fitDistance.value * 3),
-);
+const maxZoomDistance = computed(() => Math.max(250, fitDistance.value * 3));
 
 const cameraAngle = computed(() => {
   return props.inline ? 15 : 30;

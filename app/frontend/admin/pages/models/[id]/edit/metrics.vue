@@ -84,11 +84,7 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
 
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.metrics") }}</Heading>
-  <ModelForm
-    :model="model"
-    :handle-submit="handleSubmit"
-    :meta="meta"
-  >
+  <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <div class="row">
       <div class="col-12 col-md-4">
         <ModelSizeFilterGroup
