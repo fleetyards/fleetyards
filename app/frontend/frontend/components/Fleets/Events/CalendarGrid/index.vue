@@ -14,6 +14,7 @@ import {
   type EventCalendarInstance,
 } from "@event-calendar/core";
 import "@event-calendar/core/index.css";
+import { MissionCategory } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -67,6 +68,26 @@ const initialDate = (() => {
 
 const titleLabel = ref("");
 
+type CategoryStyle = { icon: string; color: string };
+
+const categoryStyles: Record<string, CategoryStyle> = {
+  [MissionCategory.other]: { icon: "fa-circle-question", color: "#7a8288" },
+  [MissionCategory.ship_combat]: { icon: "fa-rocket", color: "#dc3545" },
+  [MissionCategory.ground_combat]: { icon: "fa-burst", color: "#fa6800" },
+  [MissionCategory.combined_combat]: {
+    icon: "fa-crosshairs",
+    color: "#c0392b",
+  },
+  [MissionCategory.mining]: { icon: "fa-gem", color: "#d4af37" },
+  [MissionCategory.salvage]: { icon: "fa-recycle", color: "#16a085" },
+  [MissionCategory.cargo_hauling]: { icon: "fa-box", color: "#428bca" },
+  [MissionCategory.exploration]: { icon: "fa-compass", color: "#9b59b6" },
+};
+
+const styleFor = (category?: string | null): CategoryStyle =>
+  (category && categoryStyles[category]) ||
+  categoryStyles[MissionCategory.other];
+
 const buildCalendarEvent = (event: FleetEvent) => ({
   id: event.slug,
   start: event.startsAt,
@@ -80,15 +101,28 @@ const calendarEvents = computed(() => props.events.map(buildCalendarEvent));
 const renderEventChip = (info: {
   event: { extendedProps?: { fleetEvent?: FleetEvent }; title: string };
   timeText: string;
+  view: { type: string };
 }) => {
   const event = info.event.extendedProps?.fleetEvent;
-  const cover = event ? resolveCover(event) : null;
+  const isMonth = info.view.type === "dayGridMonth";
 
   const chip = document.createElement("div");
   chip.className = "fy-event-chip";
-  if (cover) {
-    chip.style.backgroundImage = `url(${cover})`;
-    chip.classList.add("fy-event-chip--with-cover");
+
+  if (isMonth) {
+    chip.classList.add("fy-event-chip--compact");
+    const { icon, color } = styleFor(event?.category as string | undefined);
+    chip.style.setProperty("--chip-color", color);
+
+    const iconEl = document.createElement("i");
+    iconEl.className = `fa-light ${icon} fy-event-chip__icon`;
+    chip.appendChild(iconEl);
+  } else {
+    const cover = event ? resolveCover(event) : null;
+    if (cover) {
+      chip.style.backgroundImage = `url(${cover})`;
+      chip.classList.add("fy-event-chip--with-cover");
+    }
   }
 
   if (info.timeText) {
@@ -315,16 +349,30 @@ onUnmounted(() => {
     }
   }
 
-  // Today highlight. Forced via !important because:
-  // 1. My .ec-day rules set --ec-day-bg-color and would beat the library's
-  //    .ec-today variable assignment due to source order.
-  // 2. The week-view gradient overlay otherwise eats the bg-color visually.
-  // Covers both the body cell (.ec-day) AND the week-view day-name cell
-  // (.ec-col-head).
-  :deep(.ec-day.ec-today),
+  // Today highlight: just the day-number gets a primary-color pill in
+  // month view; in week view, the column header (Mon 08/05) keeps a
+  // subtle full-cell tint since the date there isn't a separate element.
+  :deep(.ec-day-grid .ec-day.ec-today) {
+    background-color: transparent !important;
+    box-shadow: none;
+  }
+
+  :deep(.ec-day-grid .ec-day.ec-today .ec-day-head time) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 1.6em;
+    block-size: 1.6em;
+    padding: 0 0.45em;
+    border-radius: 999px;
+    background-color: $primary;
+    color: white;
+    font-weight: 600;
+  }
+
   :deep(.ec-col-head.ec-today) {
-    background-color: rgba($primary, 0.32) !important;
-    box-shadow: inset 3px 0 0 0 $primary;
+    background-color: rgba($primary, 0.18) !important;
+    box-shadow: inset 0 -2px 0 0 $primary;
   }
 
   // Week view: a) vertical day separators, b) horizontal hour lines.
@@ -349,9 +397,9 @@ onUnmounted(() => {
   }
 
   :deep(.ec-day-grid.ec-month-view .ec-day-head) {
-    padding: 0.35rem 0.55rem;
-    flex-direction: row-reverse;
-    justify-content: space-between;
+    padding: 0.15rem 0.4rem 0.85rem;
+    flex-direction: row;
+    justify-content: center;
   }
 
   :deep(.ec-days .ec-day-head) {
@@ -394,13 +442,33 @@ onUnmounted(() => {
     cursor: pointer;
     box-sizing: border-box;
     gap: 0.3rem;
+  }
+
+  // Month view: compact one-liner with category icon + tint, no cover image.
+  :deep(.ec-day-grid .fy-event-chip) {
+    flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
   }
 
-  // Month view: compact one-liner, height grows with content.
-  :deep(.ec-day-grid .fy-event-chip) {
-    flex-direction: row;
-    height: auto;
+  :deep(.fy-event-chip--compact) {
+    background-image: none !important;
+    background-color: color-mix(
+      in srgb,
+      var(--chip-color, #{$primary}) 18%,
+      transparent
+    );
+    border-inline-start: 3px solid var(--chip-color, #{$primary});
+    color: $text-color;
+    text-shadow: none;
+    box-shadow: none;
+    padding-inline-start: 0.45rem;
+  }
+
+  :deep(.fy-event-chip__icon) {
+    color: var(--chip-color, #{$primary});
+    flex-shrink: 0;
+    font-size: 0.85em;
   }
 
   // Week view: card-style, fills the time slot.
@@ -423,6 +491,14 @@ onUnmounted(() => {
     color: rgba(255, 255, 255, 0.92);
     font-size: 0.7rem;
     flex-shrink: 0;
+  }
+
+  // In compact (month) chips the time/title use the page text color, not white.
+  :deep(.fy-event-chip--compact .fy-event-chip__time) {
+    color: color.adjust($text-color, $lightness: -10%);
+  }
+  :deep(.fy-event-chip--compact .fy-event-chip__title) {
+    color: $text-color;
   }
 
   :deep(.fy-event-chip__title) {
