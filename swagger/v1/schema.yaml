@@ -15165,6 +15165,8 @@ components:
           type: boolean
         mailAvailable:
           type: boolean
+        pushAvailable:
+          type: boolean
       additionalProperties: false
       required:
       - notificationType
@@ -15172,6 +15174,7 @@ components:
       - mail
       - push
       - mailAvailable
+      - pushAvailable
       title: NotificationPreference
     Notifications:
       type: object

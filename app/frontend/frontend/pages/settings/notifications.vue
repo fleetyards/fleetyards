@@ -77,6 +77,15 @@ const prefByType = computed<Record<string, NotificationPreference>>(() => {
   return map;
 });
 
+const isChannelDisabled = (
+  preference: NotificationPreference,
+  channel: Channel,
+) => {
+  if (channel === "mail") return !preference.mailAvailable;
+  if (channel === "push") return !preference.pushAvailable;
+  return false;
+};
+
 const togglePref = async (
   type: NotificationTypeEnum,
   channel: Channel,
@@ -140,7 +149,7 @@ const togglePref = async (
             <FormToggle
               v-if="prefByType[type]"
               :model-value="prefByType[type][channel]"
-              :disabled="channel === 'mail' && !prefByType[type].mailAvailable"
+              :disabled="isChannelDisabled(prefByType[type], channel)"
               :name="`pref-${type}-${channel}`"
               no-label
               @update:model-value="(value) => togglePref(type, channel, value)"
