@@ -86,7 +86,9 @@ const setup = (scene: Group) => {
   const size = box.getSize(new Vector3());
 
   if (props.onGrid && props.model.length) {
-    scene.scale.setScalar(props.model.length / size.x);
+    const scale = props.model.length / size.x;
+    scene.scale.setScalar(scale);
+    size.multiplyScalar(scale);
   }
 
   if (props.offsetModel?.length) {
