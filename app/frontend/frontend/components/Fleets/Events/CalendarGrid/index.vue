@@ -436,7 +436,7 @@ onUnmounted(() => {
     background-position: center;
     background-repeat: no-repeat;
     color: white;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     line-height: 1.3;
     overflow: hidden;
     cursor: pointer;
@@ -489,7 +489,7 @@ onUnmounted(() => {
   :deep(.fy-event-chip__time) {
     font-variant-numeric: tabular-nums;
     color: rgba(255, 255, 255, 0.92);
-    font-size: 0.7rem;
+    font-size: 0.78rem;
     flex-shrink: 0;
   }
 
