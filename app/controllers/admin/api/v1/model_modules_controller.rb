@@ -62,7 +62,7 @@ module Admin
 
           return head :ok if errors.blank?
 
-          render json: ValidationError.new("model_module.bulk_update", errors: errors.first), status: :bad_request
+          render json: ValidationError.new("model_module.bulk_update", errors:), status: :bad_request
         end
 
         def destroy

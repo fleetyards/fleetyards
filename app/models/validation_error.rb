@@ -10,16 +10,13 @@ class ValidationError
   end
 
   private def transform_errors(errors)
-    errors.attribute_names.map do |key|
-      {
-        attribute: key,
-        messages: errors.where(key).map do |error|
-          {
-            code: error.type,
-            message: error.full_message
-          }
-        end
-      }
-    end
+    Array(errors).flat_map(&:to_a)
+      .group_by(&:attribute)
+      .map do |attribute, attribute_errors|
+        {
+          attribute: attribute,
+          messages: attribute_errors.map { |error| {code: error.type, message: error.full_message} }.uniq
+        }
+      end
   end
 end
