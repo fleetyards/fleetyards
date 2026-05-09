@@ -3903,10 +3903,6 @@ paths:
                   type: array
                   items:
                     type: string
-                enabledDiscordEvents:
-                  type: array
-                  items:
-                    type: string
         required: true
   "/fleets/{fleetSlug}/roles":
     parameters:
@@ -12321,19 +12317,6 @@ components:
             - fleet_event.cancelled
             - fleet_event_signup.created
             - fleet_event_signup.withdrawn
-        enabledDiscordEvents:
-          type: array
-          items:
-            type: string
-            enum:
-            - fleet_event.published
-            - fleet_event.locked
-            - fleet_event.unlocked
-            - fleet_event.started
-            - fleet_event.completed
-            - fleet_event.cancelled
-            - fleet_event.archived
-            - fleet_event.destroyed
         discordGuildId:
           type: string
           nullable: true
@@ -12346,7 +12329,6 @@ components:
       - id
       - fleetId
       - enabledInAppEvents
-      - enabledDiscordEvents
       - discordWebhookConfigured
       title: FleetNotificationSetting
     FleetPublicVehicles:

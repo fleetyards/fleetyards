@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_05_220001) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_09_214209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -434,7 +434,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_05_220001) do
     t.string "discord_channel_id"
     t.string "discord_guild_id"
     t.text "discord_webhook_url"
-    t.text "enabled_discord_events", default: "--- []\n"
     t.text "enabled_in_app_events", default: "---\n- fleet_event.published\n- fleet_event.locked\n- fleet_event.starting_soon\n- fleet_event.cancelled\n- fleet_event_signup.created\n- fleet_event_signup.withdrawn"
     t.uuid "fleet_id", null: false
     t.datetime "updated_at", null: false
