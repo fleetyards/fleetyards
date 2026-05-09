@@ -19,6 +19,41 @@ en:
         ships: New Ships
         subject: FleetYards.net Command Weekly
         vehicles: New Vehicles
+    fleet_event:
+      action: View event
+      published:
+        subject: 'New event: %{title}'
+        body: A new event has been published in %{fleet}.
+      locked:
+        subject: "Signups locked for %{title}"
+        body: Signups for this event in %{fleet} are now locked.
+      starting_soon:
+        subject: "Starting soon: %{title}"
+        body: Your event in %{fleet} is about to start.
+      started:
+        subject: "Now live: %{title}"
+        body: Your event in %{fleet} has started.
+      completed:
+        subject: "Wrapped: %{title}"
+        body: Your event in %{fleet} is complete. Thanks for joining.
+      cancelled:
+        subject: "Cancelled: %{title}"
+        body: This event in %{fleet} has been cancelled.
+      signup_added:
+        subject: "New signup for %{title}"
+        body: A member just signed up for your event in %{fleet}.
+      signup_withdrawn:
+        subject: "Signup withdrawn: %{title}"
+        body: A signup for your event in %{fleet} has been withdrawn.
+      signup_confirmed:
+        subject: "Spot confirmed: %{title}"
+        body: Your signup for this event in %{fleet} has been confirmed.
+      signup_assigned:
+        subject: "Slot assigned: %{title}"
+        body: You have been assigned a slot for this event in %{fleet}.
+      signup_kicked:
+        subject: "Removed from %{title}"
+        body: You have been removed from this event in %{fleet}.
     fleet_membership:
       fleet_accepted:
         action: "%{fleet} Homepage"

@@ -39,4 +39,8 @@ class NotificationPreference < ApplicationRecord
   def self.mail_available?(type)
     Notification.channels_for(type).include?(:mail)
   end
+
+  def self.push_available?(type)
+    Notification.channels_for(type).include?(:push)
+  end
 end

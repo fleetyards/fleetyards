@@ -140,57 +140,68 @@ class Notification < ApplicationRecord
     },
     fleet_event_published: {
       retention: 30.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.published(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_locked: {
       retention: 14.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.locked(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_starting_soon: {
       retention: 7.days,
-      channels: %i[app],
-      preference_defaults: {app: true, mail: false, push: false}
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.starting_soon(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false}
     },
     fleet_event_started: {
       retention: 7.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.started(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_completed: {
       retention: 14.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.completed(notification).deliver_later },
       preference_defaults: {app: false, mail: false, push: false}
     },
     fleet_event_cancelled: {
       retention: 30.days,
-      channels: %i[app],
-      preference_defaults: {app: true, mail: false, push: false}
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.cancelled(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false}
     },
     fleet_event_signup_added: {
       retention: 14.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.signup_added(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_withdrawn: {
       retention: 14.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.signup_withdrawn(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_confirmed: {
       retention: 14.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.signup_confirmed(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_assigned: {
       retention: 14.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.signup_assigned(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     },
     fleet_event_signup_kicked: {
       retention: 14.days,
-      channels: %i[app],
+      channels: %i[app mail],
+      mailer: ->(notification) { FleetEventMailer.signup_kicked(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false}
     }
   }.freeze
