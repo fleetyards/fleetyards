@@ -138,7 +138,7 @@ class Model < ApplicationRecord
   max_paginates_per 240
   per_page_steps [15, 30, 60, 120, 240, :all]
 
-  belongs_to :manufacturer, optional: true
+  belongs_to :manufacturer
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :components, through: :hardpoints

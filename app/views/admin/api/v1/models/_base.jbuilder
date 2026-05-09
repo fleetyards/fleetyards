@@ -59,8 +59,7 @@ json.loaners do
 end
 
 json.manufacturer do
-  json.null! if model.manufacturer.blank?
-  json.partial! "admin/api/v1/manufacturers/base", manufacturer: model.manufacturer if model.manufacturer.present?
+  json.partial! "admin/api/v1/manufacturers/base", manufacturer: model.manufacturer
 end
 
 json.media({})

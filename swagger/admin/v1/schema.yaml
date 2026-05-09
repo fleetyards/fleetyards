@@ -8384,6 +8384,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale
@@ -8491,6 +8492,9 @@ components:
         storeImageNew:
           type: string
       additionalProperties: false
+      required:
+      - name
+      - manufacturerId
       title: ModelCreateInput
     ModelExtended:
       type: object
@@ -8769,6 +8773,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale

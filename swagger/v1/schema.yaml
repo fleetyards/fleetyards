@@ -10464,6 +10464,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale
@@ -10731,6 +10732,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale

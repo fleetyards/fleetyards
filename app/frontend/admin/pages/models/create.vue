@@ -38,6 +38,7 @@ const queryClient = useQueryClient();
 
 const validationSchema = {
   name: "required",
+  manufacturerId: "required",
 };
 
 const { defineField, handleSubmit, meta, setErrors } =

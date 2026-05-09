@@ -56,7 +56,8 @@ module Admin
               quantumFuelTanks: {type: :string},
               storeImageNew: {type: :string}
             },
-            additionalProperties: false
+            additionalProperties: false,
+            required: %w[name manufacturerId]
           })
         end
       end

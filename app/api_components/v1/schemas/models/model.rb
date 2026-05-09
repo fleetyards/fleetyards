@@ -168,7 +168,8 @@ module V1
           additionalProperties: false,
           required: %w[
             id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos
-            inGame loaners media metrics onSale playerOwnable speeds adiMap createdAt updatedAt
+            inGame loaners manufacturer media metrics onSale playerOwnable speeds adiMap createdAt
+            updatedAt
           ]
         })
       end
