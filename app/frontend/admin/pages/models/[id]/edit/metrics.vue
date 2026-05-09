@@ -49,7 +49,7 @@ const initialValues = ref<ModelUpdateInput>({
 
 const validationSchema = {};
 
-const { defineField } = useForm({
+const { defineField, handleSubmit, meta } = useForm<ModelUpdateInput>({
   initialValues: initialValues.value,
   validationSchema,
 });
@@ -86,8 +86,8 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
   <Heading hero>{{ t("headlines.admin.models.edit.metrics") }}</Heading>
   <ModelForm
     :model="model"
-    :validation-schema="validationSchema"
-    :initial-values="initialValues"
+    :handle-submit="handleSubmit"
+    :meta="meta"
   >
     <div class="row">
       <div class="col-12 col-md-4">

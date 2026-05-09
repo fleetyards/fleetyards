@@ -5,34 +5,33 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useForm } from "vee-validate";
+import { type SubmissionHandler } from "vee-validate";
 import { useModelUpdateMutation } from "@/admin/composables/useModelUpdateMutation";
 import {
-  type ModelCreateInput,
   type ModelExtended,
   type ModelUpdateInput,
 } from "@/services/fyAdminApi";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 
+type FormMeta = {
+  dirty: boolean;
+  touched: boolean;
+};
+
 type Props = {
   model: ModelExtended;
-  validationSchema?: Record<string, unknown>;
-  initialValues?: MaybeRef<ModelUpdateInput | ModelCreateInput>;
+  handleSubmit: (cb: SubmissionHandler<ModelUpdateInput>) => (event?: Event) => Promise<unknown>;
+  meta: FormMeta;
 };
 
 const props = defineProps<Props>();
-
-const { handleSubmit: handleFormSubmit, meta } = useForm<ModelUpdateInput>({
-  initialValues: unref(props.initialValues),
-  validationSchema: props.validationSchema,
-});
 
 const submitting = ref(false);
 
 const { updateMutation: mutation } = useModelUpdateMutation(props.model);
 
-const onSubmit = handleFormSubmit(async (values) => {
+const onSubmit = props.handleSubmit(async (values) => {
   submitting.value = true;
 
   await mutation
@@ -41,7 +40,6 @@ const onSubmit = handleFormSubmit(async (values) => {
       data: values,
     })
     .catch((error) => {
-      // Handle error (e.g., display notification)
       console.error("Error updating model:", error);
       alert(error);
     })

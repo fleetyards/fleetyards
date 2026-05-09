@@ -35,7 +35,7 @@ const initialValues = ref<ModelUpdateInput>({
   angledViewColored: undefined,
 });
 
-const { defineField } = useForm<ModelUpdateInput>({
+const { defineField, handleSubmit, meta } = useForm<ModelUpdateInput>({
   initialValues: initialValues.value,
 });
 
@@ -53,7 +53,7 @@ const [angledViewColored, angledViewColoredProps] =
 
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
-  <ModelForm :model="model" :initial-values="initialValues">
+  <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
