@@ -1,0 +1,2 @@
+POST /models the request property `manufacturerId` became required
+POST /models the request property `name` became required

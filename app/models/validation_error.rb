@@ -10,7 +10,8 @@ class ValidationError
   end
 
   private def transform_errors(errors)
-    Array(errors).flat_map(&:to_a)
+    errors_list = errors.is_a?(Array) ? errors : [errors]
+    errors_list.flat_map(&:errors)
       .group_by(&:attribute)
       .map do |attribute, attribute_errors|
         {
