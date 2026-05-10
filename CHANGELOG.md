@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.21.0](https://github.com/fleetyards/fleetyards/compare/v6.20.2...v6.21.0) (2026-05-10)
+
+
+### Features
+
+* **models:** require manufacturer for every model ([cd2430b](https://github.com/fleetyards/fleetyards/commit/cd2430b2045a956629b7ed239a6bceb84cfec732))
+
+
+### Bug Fixes
+
+* **admin:** use displayAlert and field highlighting on model forms ([9fe1200](https://github.com/fleetyards/fleetyards/commit/9fe12008173c917b4f462e283a3cf244e9080891))
+* **api:** handle array of errors in ValidationError for bulk actions ([8097718](https://github.com/fleetyards/fleetyards/commit/80977183da0da9d8af3b6cec7c580dcc2070de85))
+* **api:** unwrap ActiveModel::Errors correctly in ValidationError ([b4c9194](https://github.com/fleetyards/fleetyards/commit/b4c91949005109d07b70ef9ba01c87dde4ba77d4))
+* **frontend:** include failing request URL when reporting AxiosError to AppSignal ([4568c30](https://github.com/fleetyards/fleetyards/commit/4568c30967da2c816d5d3ba81a3e4b388ce8fb0c))
+* **frontend:** mark AppSignal sendError promise as ignored ([b2e357f](https://github.com/fleetyards/fleetyards/commit/b2e357f65159ee97d4a5047b9d2dd02e0a5a2446))
+* **holoviewer:** emit post-scale size so camera fits scaled models ([0d4ef79](https://github.com/fleetyards/fleetyards/commit/0d4ef79c6ff315d3a86a058b59e966f96bca7660))
+* **rsi-loader:** assign manufacturer when creating new models ([d937b95](https://github.com/fleetyards/fleetyards/commit/d937b951ba61909302552e059949ead3a57ec467))
+* **ships:** apply "All" perPage selection on ships index ([a7a7a8e](https://github.com/fleetyards/fleetyards/commit/a7a7a8ed6f6aa859a444abf9839f5ef957624352))
+
+
+### Chores
+
+* **ci:** ignore admin model create required-field breaks in oasdiff ([e7607ae](https://github.com/fleetyards/fleetyards/commit/e7607ae80387e767539c8ec1914ced8a2ee12a26))
+* **frontend:** drop user-environment noise from AppSignal reports ([decf834](https://github.com/fleetyards/fleetyards/commit/decf834ad55e11141651b6df226fdc0124b9fa2d))
+
 ## [6.20.2](https://github.com/fleetyards/fleetyards/compare/v6.20.1...v6.20.2) (2026-05-09)
 
 
