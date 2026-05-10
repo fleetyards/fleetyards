@@ -9,6 +9,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
@@ -387,21 +388,25 @@ const crumbs = computed(() => [
 
     <FormTabs default-tab="overview">
       <FormTab id="overview" :label="t('labels.fleets.events.tabs.overview')">
-        <p v-if="event.description" class="event-description">
-          {{ event.description }}
-        </p>
+        <Panel slim>
+          <PanelBody>
+            <p v-if="event.description" class="event-description">
+              {{ event.description }}
+            </p>
 
-        <details v-if="event.briefing" class="event-briefing">
-          <summary>{{ t("labels.fleets.events.briefing") }}</summary>
-          <p>{{ event.briefing }}</p>
-        </details>
+            <details v-if="event.briefing" class="event-briefing">
+              <summary>{{ t("labels.fleets.events.briefing") }}</summary>
+              <p>{{ event.briefing }}</p>
+            </details>
 
-        <p
-          v-if="!event.description && !event.briefing"
-          class="text-muted small"
-        >
-          {{ t("labels.fleets.events.noOverview") }}
-        </p>
+            <p
+              v-if="!event.description && !event.briefing"
+              class="text-muted small"
+            >
+              {{ t("labels.fleets.events.noOverview") }}
+            </p>
+          </PanelBody>
+        </Panel>
       </FormTab>
 
       <FormTab id="teams" :label="t('labels.fleets.events.tabs.teams')">
@@ -544,35 +549,39 @@ const crumbs = computed(() => [
         :label="t('labels.fleets.events.tabs.settings')"
         :hidden="!isEventManager"
       >
-        <div class="event-settings">
-          <Btn v-if="canManage" size="small" inline @click="goToEdit">
-            <i class="fa-light fa-pen" />
-            {{ t("actions.fleets.events.edit") }}
-          </Btn>
-          <Btn
-            v-if="isEventCreator"
-            size="small"
-            inline
-            @click="openAdminsModal"
-          >
-            <i class="fa-light fa-user-shield" />
-            {{ t("actions.fleets.events.manageEventTeam") }}
-          </Btn>
-          <Btn
-            v-if="canDelete"
-            size="small"
-            inline
-            variant="danger"
-            @click="handleDestroy"
-          >
-            <i class="fa-light fa-trash" />
-            {{
-              event.archived
-                ? t("actions.fleets.events.destroy")
-                : t("actions.fleets.events.archive")
-            }}
-          </Btn>
-        </div>
+        <Panel slim>
+          <PanelBody>
+            <div class="event-settings">
+              <Btn v-if="canManage" size="small" inline @click="goToEdit">
+                <i class="fa-light fa-pen" />
+                {{ t("actions.fleets.events.edit") }}
+              </Btn>
+              <Btn
+                v-if="isEventCreator"
+                size="small"
+                inline
+                @click="openAdminsModal"
+              >
+                <i class="fa-light fa-user-shield" />
+                {{ t("actions.fleets.events.manageEventTeam") }}
+              </Btn>
+              <Btn
+                v-if="canDelete"
+                size="small"
+                inline
+                variant="danger"
+                @click="handleDestroy"
+              >
+                <i class="fa-light fa-trash" />
+                {{
+                  event.archived
+                    ? t("actions.fleets.events.destroy")
+                    : t("actions.fleets.events.archive")
+                }}
+              </Btn>
+            </div>
+          </PanelBody>
+        </Panel>
       </FormTab>
     </FormTabs>
   </div>

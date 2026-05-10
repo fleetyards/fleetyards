@@ -14,6 +14,8 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import TeamCard from "@/frontend/components/Fleets/Missions/TeamCard/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -240,97 +242,105 @@ const onSubmit = handleSubmit(async (values) => {
         :label="t('labels.fleets.events.tabs.basic')"
         :fields="['title']"
       >
-        <div class="row">
-          <div class="col-12">
-            <FormInput
-              v-model="title"
-              v-bind="titleProps"
-              name="title"
-              :rules="validationSchema.title"
-              :label="t('labels.fleets.missions.title')"
-            />
-          </div>
-        </div>
+        <Panel slim>
+          <PanelBody>
+            <div class="row">
+              <div class="col-12">
+                <FormInput
+                  v-model="title"
+                  v-bind="titleProps"
+                  name="title"
+                  :rules="validationSchema.title"
+                  :label="t('labels.fleets.missions.title')"
+                />
+              </div>
+            </div>
 
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <FilterGroup
-              v-model="category"
-              v-bind="categoryProps"
-              :options="categoryOptions"
-              :label="t('labels.fleets.missions.category')"
-              name="category"
-              :searchable="false"
-            />
-          </div>
-          <div class="col-12 col-md-6">
-            <FormInput
-              v-model="scenario"
-              v-bind="scenarioProps"
-              name="scenario"
-              :label="t('labels.fleets.missions.scenario')"
-              list="mission-scenario-suggestions"
-              autocomplete="off"
-            />
-            <datalist id="mission-scenario-suggestions">
-              <option
-                v-for="suggestion in scenarioSuggestions"
-                :key="suggestion"
-                :value="suggestion"
-              />
-            </datalist>
-          </div>
-        </div>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <FilterGroup
+                  v-model="category"
+                  v-bind="categoryProps"
+                  :options="categoryOptions"
+                  :label="t('labels.fleets.missions.category')"
+                  name="category"
+                  :searchable="false"
+                />
+              </div>
+              <div class="col-12 col-md-6">
+                <FormInput
+                  v-model="scenario"
+                  v-bind="scenarioProps"
+                  name="scenario"
+                  :label="t('labels.fleets.missions.scenario')"
+                  list="mission-scenario-suggestions"
+                  autocomplete="off"
+                />
+                <datalist id="mission-scenario-suggestions">
+                  <option
+                    v-for="suggestion in scenarioSuggestions"
+                    :key="suggestion"
+                    :value="suggestion"
+                  />
+                </datalist>
+              </div>
+            </div>
+          </PanelBody>
+        </Panel>
       </FormTab>
 
       <FormTab
         id="description"
         :label="t('labels.fleets.events.tabs.description')"
       >
-        <div class="row">
-          <div class="col-12">
-            <FormTextarea
-              v-model="description"
-              v-bind="descriptionProps"
-              name="description"
-              :label="t('labels.fleets.missions.description')"
-            />
-          </div>
-        </div>
-
-        <div v-if="presetOptions.length" class="row">
-          <div class="col-12">
-            <span class="cover-presets-label">
-              {{ t("labels.fleets.missions.coverPresets") }}
-            </span>
-            <div class="cover-presets-grid">
-              <button
-                v-for="preset in presetOptions"
-                :key="preset.key"
-                type="button"
-                class="cover-preset"
-                :class="{
-                  'cover-preset--active': coverImagePreset === preset.key,
-                }"
-                :style="{ backgroundImage: `url(${preset.url})` }"
-                @click="selectPreset(preset.key)"
-              />
+        <Panel slim>
+          <PanelBody>
+            <div class="row">
+              <div class="col-12">
+                <FormTextarea
+                  v-model="description"
+                  v-bind="descriptionProps"
+                  name="description"
+                  :label="t('labels.fleets.missions.description')"
+                />
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <FormFileInput
-              v-model="coverImage"
-              v-bind="coverImageProps"
-              :file="existingCoverImage as never"
-              name="coverImage"
-              :label="t('labels.fleets.missions.coverImage')"
-              :allowed-types="AllowedFileTypes.IMAGE"
-              clearable
-            />
-          </div>
-        </div>
+
+            <div v-if="presetOptions.length" class="row">
+              <div class="col-12">
+                <span class="cover-presets-label">
+                  {{ t("labels.fleets.missions.coverPresets") }}
+                </span>
+                <div class="cover-presets-grid">
+                  <button
+                    v-for="preset in presetOptions"
+                    :key="preset.key"
+                    type="button"
+                    class="cover-preset"
+                    :class="{
+                      'cover-preset--active': coverImagePreset === preset.key,
+                    }"
+                    :style="{ backgroundImage: `url(${preset.url})` }"
+                    @click="selectPreset(preset.key)"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <FormFileInput
+                  v-model="coverImage"
+                  v-bind="coverImageProps"
+                  :file="existingCoverImage as never"
+                  name="coverImage"
+                  :label="t('labels.fleets.missions.coverImage')"
+                  :allowed-types="AllowedFileTypes.IMAGE"
+                  clearable
+                />
+              </div>
+            </div>
+          </PanelBody>
+        </Panel>
       </FormTab>
 
       <FormTab
@@ -338,26 +348,30 @@ const onSubmit = handleSubmit(async (values) => {
         :label="t('labels.fleets.events.tabs.teams')"
         :hidden="!isEdit"
       >
-        <div class="teams-section__header">
-          <Btn :inline="true" size="small" @click="openAddTeamModal">
-            <i class="fa-light fa-plus" />
-            <span>{{ t("actions.fleets.missions.addTeam") }}</span>
-          </Btn>
-        </div>
-        <div ref="teamsContainer" class="mission-teams">
-          <TeamCard
-            v-for="team in teams"
-            :key="team.id"
-            :data-team-id="team.id"
-            :team="team"
-            :fleet="fleet"
-            :mission="mission!"
-            editable
-          />
-        </div>
-        <p v-if="!teams.length" class="text-muted">
-          {{ t("labels.fleets.missions.noTeams") }}
-        </p>
+        <Panel slim>
+          <PanelBody>
+            <div class="teams-section__header">
+              <Btn :inline="true" size="small" @click="openAddTeamModal">
+                <i class="fa-light fa-plus" />
+                <span>{{ t("actions.fleets.missions.addTeam") }}</span>
+              </Btn>
+            </div>
+            <div ref="teamsContainer" class="mission-teams">
+              <TeamCard
+                v-for="team in teams"
+                :key="team.id"
+                :data-team-id="team.id"
+                :team="team"
+                :fleet="fleet"
+                :mission="mission!"
+                editable
+              />
+            </div>
+            <p v-if="!teams.length" class="text-muted">
+              {{ t("labels.fleets.missions.noTeams") }}
+            </p>
+          </PanelBody>
+        </Panel>
       </FormTab>
 
       <FormActions
