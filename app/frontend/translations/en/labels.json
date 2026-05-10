@@ -1144,6 +1144,7 @@
           "youAreHere": "You're here",
           "attendance": "Attendance",
           "signupsLockedHint": "Sign-ups are locked for this event.",
+          "noOverview": "No description or briefing yet.",
           "alreadySignedUpHint": "You're already signed up to a different slot. Withdraw first to switch.",
           "slotTakenHint": "This slot is already taken.",
           "signupCtaHint": "Sign up to the event — you can pick a specific slot now or let an admin assign you later.",
@@ -1217,7 +1218,9 @@
           "tabs": {
             "basic": "Basic info",
             "description": "Description & cover",
-            "teams": "Teams & ships"
+            "teams": "Teams & ships",
+            "overview": "Overview",
+            "settings": "Settings"
           },
           "calendar": {
             "month": "Month",

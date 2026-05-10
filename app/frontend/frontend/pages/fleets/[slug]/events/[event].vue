@@ -9,6 +9,8 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import FormTabs from "@/shared/components/base/FormTabs/index.vue";
+import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
 import EventActions from "@/frontend/components/Fleets/Events/EventActions/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
@@ -364,39 +366,8 @@ const crumbs = computed(() => [
     </Panel>
 
     <div class="event-actions-row">
-      <Btn v-if="canManage" size="small" inline @click="goToEdit">
-        <i class="fa-light fa-pen" />
-        {{ t("actions.fleets.events.edit") }}
-      </Btn>
-      <Btn v-if="isEventCreator" size="small" inline @click="openAdminsModal">
-        <i class="fa-light fa-user-shield" />
-        {{ t("actions.fleets.events.manageEventTeam") }}
-      </Btn>
-      <Btn
-        v-if="canDelete"
-        size="small"
-        inline
-        variant="danger"
-        @click="handleDestroy"
-      >
-        <i class="fa-light fa-trash" />
-        {{
-          event.archived
-            ? t("actions.fleets.events.destroy")
-            : t("actions.fleets.events.archive")
-        }}
-      </Btn>
       <EventActions :fleet="fleet" :event="event" :can-manage="canManage" />
     </div>
-
-    <p v-if="event.description" class="event-description">
-      {{ event.description }}
-    </p>
-
-    <details v-if="event.briefing" class="event-briefing">
-      <summary>{{ t("labels.fleets.events.briefing") }}</summary>
-      <p>{{ event.briefing }}</p>
-    </details>
 
     <YourSignupPanel
       v-if="ownSignupContext"
@@ -414,78 +385,77 @@ const crumbs = computed(() => [
       :signups-locked="signupsLocked"
     />
 
-    <UnassignedSignups
-      v-if="isEventManager && unassignedSignups.length"
-      :signups="unassignedSignups"
-      :available-slots="allSlotsWithContext"
-    />
+    <FormTabs default-tab="overview">
+      <FormTab id="overview" :label="t('labels.fleets.events.tabs.overview')">
+        <p v-if="event.description" class="event-description">
+          {{ event.description }}
+        </p>
 
-    <section v-if="event.teams?.length || editMode" class="event-teams">
-      <div class="event-teams__header">
-        <Heading size="lg">{{ t("headlines.fleets.events.schedule") }}</Heading>
-        <div class="event-teams__header-actions">
-          <Btn
-            v-if="isEventManager"
-            size="small"
-            inline
-            :variant="editMode ? 'default' : 'link'"
-            @click="toggleEditMode"
-          >
-            <i class="fa-light" :class="editMode ? 'fa-eye' : 'fa-pen'" />
-            {{
-              editMode
-                ? t("actions.fleets.events.doneEditing")
-                : t("actions.fleets.events.editSchedule")
-            }}
-          </Btn>
-          <Btn v-if="editMode" size="small" inline @click="openAddTeamModal">
-            <i class="fa-light fa-plus" />
-            {{ t("actions.fleets.events.addTeam") }}
-          </Btn>
-        </div>
-      </div>
+        <details v-if="event.briefing" class="event-briefing">
+          <summary>{{ t("labels.fleets.events.briefing") }}</summary>
+          <p>{{ event.briefing }}</p>
+        </details>
 
-      <p v-if="signupsLocked && !editMode" class="text-muted small">
-        <i class="fa-light fa-lock" />
-        {{ t("labels.fleets.events.signupsLockedHint") }}
-      </p>
+        <p
+          v-if="!event.description && !event.briefing"
+          class="text-muted small"
+        >
+          {{ t("labels.fleets.events.noOverview") }}
+        </p>
+      </FormTab>
 
-      <template v-if="editMode">
-        <EventTeamCard
-          v-for="team in event.teams as FleetEventTeam[]"
-          :key="team.id"
-          :team="team"
-          :event="event"
-          :fleet="fleet"
-          editable
-          :current-user-id="currentUserId"
-          :signups-locked="signupsLocked"
-          :signups-open="signupsOpenForEvent"
-          :own-active-slot-id="ownActiveSlotId"
-          :is-manager="isEventManager"
+      <FormTab id="teams" :label="t('labels.fleets.events.tabs.teams')">
+        <UnassignedSignups
+          v-if="isEventManager && unassignedSignups.length"
+          :signups="unassignedSignups"
           :available-slots="allSlotsWithContext"
         />
-        <p v-if="!event.teams?.length" class="text-muted">
-          {{ t("labels.fleets.missions.noTeams") }}
-        </p>
-      </template>
 
-      <template v-else>
-        <div
-          v-for="team in event.teams as FleetEventTeam[]"
-          :key="team.id"
-          class="event-team"
-        >
-          <h3 class="event-team__title">{{ team.title }}</h3>
-          <p v-if="team.description" class="text-muted">
-            {{ team.description }}
+        <section v-if="event.teams?.length || editMode" class="event-teams">
+          <div class="event-teams__header">
+            <Heading size="lg">
+              {{ t("headlines.fleets.events.schedule") }}
+            </Heading>
+            <div class="event-teams__header-actions">
+              <Btn
+                v-if="isEventManager"
+                size="small"
+                inline
+                :variant="editMode ? 'default' : 'link'"
+                @click="toggleEditMode"
+              >
+                <i class="fa-light" :class="editMode ? 'fa-eye' : 'fa-pen'" />
+                {{
+                  editMode
+                    ? t("actions.fleets.events.doneEditing")
+                    : t("actions.fleets.events.editSchedule")
+                }}
+              </Btn>
+              <Btn
+                v-if="editMode"
+                size="small"
+                inline
+                @click="openAddTeamModal"
+              >
+                <i class="fa-light fa-plus" />
+                {{ t("actions.fleets.events.addTeam") }}
+              </Btn>
+            </div>
+          </div>
+
+          <p v-if="signupsLocked && !editMode" class="text-muted small">
+            <i class="fa-light fa-lock" />
+            {{ t("labels.fleets.events.signupsLockedHint") }}
           </p>
 
-          <div v-if="team.slots?.length" class="event-slots">
-            <EventSlotRow
-              v-for="slot in team.slots as FleetEventSlot[]"
-              :key="slot.id"
-              :slot-data="slot"
+          <template v-if="editMode">
+            <EventTeamCard
+              v-for="team in event.teams as FleetEventTeam[]"
+              :key="team.id"
+              :team="team"
+              :event="event"
+              :fleet="fleet"
+              editable
               :current-user-id="currentUserId"
               :signups-locked="signupsLocked"
               :signups-open="signupsOpenForEvent"
@@ -493,35 +463,27 @@ const crumbs = computed(() => [
               :is-manager="isEventManager"
               :available-slots="allSlotsWithContext"
             />
-          </div>
+            <p v-if="!event.teams?.length" class="text-muted">
+              {{ t("labels.fleets.missions.noTeams") }}
+            </p>
+          </template>
 
-          <div v-if="team.ships?.length" class="event-ships">
+          <template v-else>
             <div
-              v-for="ship in team.ships as FleetEventShip[]"
-              :key="ship.id"
-              class="event-ship"
+              v-for="team in event.teams as FleetEventTeam[]"
+              :key="team.id"
+              class="event-team"
             >
-              <h4 class="event-ship__title">
-                {{ ship.displayTitle || ship.title || "Ship" }}
-              </h4>
-              <p v-if="ship.description" class="text-muted small">
-                {{ ship.description }}
+              <h3 class="event-team__title">{{ team.title }}</h3>
+              <p v-if="team.description" class="text-muted">
+                {{ team.description }}
               </p>
-              <EventShipMeta :ship="ship" />
-              <EventShipMatchWarning :ship="ship" />
-              <EventShipExpandHint
-                v-if="isEventManager"
-                :fleet="fleet"
-                :event="event"
-                :team="team"
-                :ship="ship"
-              />
-              <div class="event-slots">
+
+              <div v-if="team.slots?.length" class="event-slots">
                 <EventSlotRow
-                  v-for="slot in ship.slots as FleetEventSlot[]"
+                  v-for="slot in team.slots as FleetEventSlot[]"
                   :key="slot.id"
                   :slot-data="slot"
-                  :ship="ship"
                   :current-user-id="currentUserId"
                   :signups-locked="signupsLocked"
                   :signups-open="signupsOpenForEvent"
@@ -530,11 +492,89 @@ const crumbs = computed(() => [
                   :available-slots="allSlotsWithContext"
                 />
               </div>
+
+              <div v-if="team.ships?.length" class="event-ships">
+                <div
+                  v-for="ship in team.ships as FleetEventShip[]"
+                  :key="ship.id"
+                  class="event-ship"
+                >
+                  <h4 class="event-ship__title">
+                    {{ ship.displayTitle || ship.title || "Ship" }}
+                  </h4>
+                  <p v-if="ship.description" class="text-muted small">
+                    {{ ship.description }}
+                  </p>
+                  <EventShipMeta :ship="ship" />
+                  <EventShipMatchWarning :ship="ship" />
+                  <EventShipExpandHint
+                    v-if="isEventManager"
+                    :fleet="fleet"
+                    :event="event"
+                    :team="team"
+                    :ship="ship"
+                  />
+                  <div class="event-slots">
+                    <EventSlotRow
+                      v-for="slot in ship.slots as FleetEventSlot[]"
+                      :key="slot.id"
+                      :slot-data="slot"
+                      :ship="ship"
+                      :current-user-id="currentUserId"
+                      :signups-locked="signupsLocked"
+                      :signups-open="signupsOpenForEvent"
+                      :own-active-slot-id="ownActiveSlotId"
+                      :is-manager="isEventManager"
+                      :available-slots="allSlotsWithContext"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          </template>
+        </section>
+
+        <p v-else class="text-muted small">
+          {{ t("labels.fleets.missions.noTeams") }}
+        </p>
+      </FormTab>
+
+      <FormTab
+        id="settings"
+        :label="t('labels.fleets.events.tabs.settings')"
+        :hidden="!isEventManager"
+      >
+        <div class="event-settings">
+          <Btn v-if="canManage" size="small" inline @click="goToEdit">
+            <i class="fa-light fa-pen" />
+            {{ t("actions.fleets.events.edit") }}
+          </Btn>
+          <Btn
+            v-if="isEventCreator"
+            size="small"
+            inline
+            @click="openAdminsModal"
+          >
+            <i class="fa-light fa-user-shield" />
+            {{ t("actions.fleets.events.manageEventTeam") }}
+          </Btn>
+          <Btn
+            v-if="canDelete"
+            size="small"
+            inline
+            variant="danger"
+            @click="handleDestroy"
+          >
+            <i class="fa-light fa-trash" />
+            {{
+              event.archived
+                ? t("actions.fleets.events.destroy")
+                : t("actions.fleets.events.archive")
+            }}
+          </Btn>
         </div>
-      </template>
-    </section>
+      </FormTab>
+    </FormTabs>
   </div>
 </template>
 
@@ -582,6 +622,11 @@ const crumbs = computed(() => [
   }
 }
 .event-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.event-settings {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
