@@ -38,7 +38,7 @@ export function setupAppsignal(app: App<Element>) {
       if (appsignal && axios.isAxiosError(error)) {
         const method = error.config?.method?.toUpperCase() ?? "?";
         const url = error.config?.url ?? "unknown";
-        appsignal.sendError(error, (span) => {
+        void appsignal.sendError(error, (span) => {
           span.setAction(`${method} ${url}`);
           span.setTags({
             request_method: method,
