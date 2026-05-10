@@ -66,7 +66,7 @@ module Api
       def export
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles.includes(:vehicle_upgrades, :vehicle_modules, model: [:manufacturer])
+        scope = @fleet.vehicles
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -79,7 +79,15 @@ module Api
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
           .order(@q.result.order_values)
-          .includes(:model).joins(:model)
+          .includes(
+            :model_paint,
+            :model_modules,
+            :model_upgrades,
+            :hangar_groups,
+            {model: :manufacturer},
+            {user: {avatar_attachment: :blob}}
+          )
+          .joins(:model)
       end
 
       def fleetchart
