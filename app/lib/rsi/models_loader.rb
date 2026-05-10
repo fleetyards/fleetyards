@@ -60,7 +60,13 @@ module Rsi
     private def create_or_update_model(data)
       model = Model.find_by(rsi_id: data["id"])
       model = Model.find_by(rsi_id: nil, name: strip_name(data["name"])) if model.blank?
-      model = Model.create!(rsi_id: data["id"], name: strip_name(data["name"])) if model.blank?
+      if model.blank?
+        model = Model.create!(
+          rsi_id: data["id"],
+          name: strip_name(data["name"]),
+          manufacturer: manufacturers_loader.one(data["manufacturer"])
+        )
+      end
 
       updates = {
         rsi_id: data["id"],
