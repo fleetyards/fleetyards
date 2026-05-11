@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.21.1](https://github.com/fleetyards/fleetyards/compare/v6.21.0...v6.21.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* **holoviewer:** center the scaled scene at origin ([7a779fc](https://github.com/fleetyards/fleetyards/commit/7a779fc4470ddc7292ba9d7e6fc5a59085c3cb7c))
+* **holoviewer:** lift lights out of camera so the scene is lit again ([0b50207](https://github.com/fleetyards/fleetyards/commit/0b50207cdd6d91b045b2496bd20e6cfc7afb0d48))
+
+
+### Chores
+
+* **deps-dev:** bump stylelint-scss from 7.0.0 to 7.1.0 ([#3898](https://github.com/fleetyards/fleetyards/issues/3898)) ([c6fe8e6](https://github.com/fleetyards/fleetyards/commit/c6fe8e62075f5fd3efb4ad69054f17f76b36b24e))
+
 ## [6.21.0](https://github.com/fleetyards/fleetyards/compare/v6.20.2...v6.21.0) (2026-05-10)
 
 
