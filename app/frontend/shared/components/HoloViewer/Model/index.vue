@@ -91,9 +91,13 @@ const setup = (scene: Group) => {
     size.multiplyScalar(scale);
   }
 
+  scene.updateMatrixWorld(true);
+  const scaledBox = new Box3().setFromObject(scene);
+  const center = scaledBox.getCenter(new Vector3());
+  scene.position.sub(center);
+
   if (props.offsetModel?.length) {
-    const offset = props.offsetModel.length;
-    scene.position.setY(offset);
+    scene.position.y += props.offsetModel.length;
   }
 
   emit("loaded", size, scene);
