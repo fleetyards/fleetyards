@@ -181,6 +181,19 @@ const cameraAngle = computed(() => {
   return props.inline ? 15 : 30;
 });
 
+const gridCellSize = computed(() =>
+  Math.max(0.6, modelMaxDimension.value / 100),
+);
+const gridSectionSize = computed(() => gridCellSize.value * 4);
+const gridPosition = computed<[number, number, number]>(() => [
+  0,
+  -modelMaxDimension.value * 0.55,
+  0,
+]);
+const gridFadeDistance = computed(() =>
+  Math.max(100, modelMaxDimension.value * 2),
+);
+
 const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   // if (props.grid) {
   //   currentModel.value = scene;
@@ -333,10 +346,13 @@ defineExpose({
       alpha
       :on-error="handleRenderError"
     >
-      <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs">
-        <TresDirectionalLight :intensity="2" :cast-shadow="!mobile" />
-        <TresAmbientLight :intensity="mobile ? 0.8 : 0.5" />
-      </TresPerspectiveCamera>
+      <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs" />
+      <TresDirectionalLight
+        :position="cameraPosition"
+        :intensity="2"
+        :cast-shadow="!mobile"
+      />
+      <TresAmbientLight :intensity="mobile ? 0.8 : 0.5" />
       <OrbitControls
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"
@@ -354,16 +370,16 @@ defineExpose({
       <Grid
         v-if="grid"
         :args="[10, 10]"
-        :position="[0, -20, 0]"
+        :position="gridPosition"
         cell-color="#82dbc5"
-        :cell-size="0.6"
+        :cell-size="gridCellSize"
         :cell-thickness="0.5"
         section-color="#fbb03b"
-        :section-size="2"
+        :section-size="gridSectionSize"
         :section-thickness="1.3"
         :infinite-grid="true"
         :fade-from="0"
-        :fade-distance="100"
+        :fade-distance="gridFadeDistance"
         :fade-strength="1"
       />
       <Suspense>
