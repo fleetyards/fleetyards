@@ -171,6 +171,11 @@
           "test": "Test Discord connection",
           "installBot": "Install the Fleetyards bot in your Discord server"
         },
+        "calendarSubscription": {
+          "enable": "Generate subscription link",
+          "rotate": "Rotate link",
+          "disable": "Disable subscription"
+        },
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
         "manageInvites": "Invites",
@@ -245,6 +250,8 @@
           "viewEvents": "View Events",
           "viewCalendar": "View Calendar",
           "exportIcs": "Export iCal",
+          "addToCalendar": "Add to calendar",
+          "subscribe": "Subscribe",
           "assignSlot": "Assign to slot",
           "reassignSlot": "Move to another slot",
           "addSeats": "Add seats",

@@ -203,6 +203,26 @@
           "success": "Your Fleet has been destroyed.",
           "failure": "We could not destroy your Fleet."
         },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Calendar subscription enabled.",
+            "failure": "Could not enable calendar subscription."
+          },
+          "rotate": {
+            "success": "Subscription link rotated. Existing subscribers will stop receiving updates until they re-subscribe.",
+            "failure": "Could not rotate subscription link.",
+            "confirm": "Rotating the link will silently invalidate any calendar app subscribed to the current URL. They'll need to re-subscribe with the new link."
+          },
+          "disable": {
+            "success": "Calendar subscription disabled.",
+            "failure": "Could not disable calendar subscription.",
+            "confirm": "Disabling the subscription will kill the feed for any calendar app currently subscribed."
+          },
+          "copy": {
+            "success": "Calendar link copied. Paste it into your calendar app under \"Subscribe to calendar\" or \"Add by URL\".",
+            "failure": "Could not copy calendar link."
+          }
+        },
         "leave": {
           "success": "You have left the Fleet.",
           "failure": "Could not leave the Fleet."

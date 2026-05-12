@@ -192,6 +192,11 @@ const hasOverviewContent = computed(
   () => !!(event.value?.description || event.value?.briefing),
 );
 
+const icsDownloadUrl = computed(() => {
+  if (!event.value) return undefined;
+  return `${window.API_ENDPOINT}/fleets/${props.fleet.slug}/events/${event.value.slug}/event.ics`;
+});
+
 const unassignedSignups = computed(
   () =>
     (event.value as { unassignedSignups?: FleetEventSignup[] } | undefined)
@@ -278,6 +283,17 @@ const crumbs = computed(() => [
                 count: event.maxAttendees,
               })
             }}
+          </p>
+          <p>
+            <a
+              v-if="icsDownloadUrl"
+              :href="icsDownloadUrl"
+              class="event-hero__ics"
+              download
+            >
+              <i class="fa-light fa-calendar-arrow-down" />
+              {{ t("actions.fleets.events.addToCalendar") }}
+            </a>
           </p>
         </div>
       </template>
@@ -393,6 +409,15 @@ const crumbs = computed(() => [
 .event-hero__tz {
   font-size: 0.85em;
   opacity: 0.75;
+}
+.event-hero__ics {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 .event-hero__meta {
   display: flex;

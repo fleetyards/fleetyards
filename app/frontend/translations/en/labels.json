@@ -304,6 +304,10 @@
         "name": "Name",
         "logo": "Logo",
         "rsiSid": "SID",
+        "calendarSubscription": {
+          "intro": "Generate a private link that members can use to subscribe to this fleet's events from their calendar app (Apple Calendar, Google Calendar, Outlook).",
+          "howTo": "Share the link above with your members. They paste it into their calendar app (\"Subscribe to calendar\" or \"Add by URL\"). The link is private — anyone with it can see this fleet's events."
+        },
         "notifications": {
           "inAppHeading": "In-app Notifications",
           "inAppHint": "Pick which event lifecycle changes show up as in-app notifications for fleet members.",
@@ -1205,6 +1209,7 @@
           "openInCalendar": "Subscribe (.ics)",
           "openInCalendarHint": "Add this URL to your calendar app to keep events in sync.",
           "rotateFeedToken": "Rotate feed link",
+          "subscribeHint": "Copies the calendar feed URL to your clipboard so you can paste it into your calendar app.",
           "visibilities": {
             "members": "Members",
             "officers": "Officers",

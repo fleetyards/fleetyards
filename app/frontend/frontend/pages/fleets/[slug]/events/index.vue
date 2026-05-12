@@ -19,9 +19,11 @@ import {
   type FleetEvent,
   useFleetEvents,
   useFleetCalendar,
+  useFleetCalendarSubscription,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 import { checkAccess } from "@/shared/utils/Access";
 import { startOfMonth, endOfMonth, addDays, subDays } from "date-fns";
@@ -36,6 +38,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
+const { displaySuccess, displayAlert } = useAppNotifications();
 const route = useRoute();
 const router = useRouter();
 
@@ -170,19 +173,22 @@ const canManageMissions = computed(() =>
   ]),
 );
 
-const icsUrl = computed(() => {
-  const token = (props.fleet as { calendarFeedToken?: string | null })
-    .calendarFeedToken;
-  if (!token) return null;
-  return `${window.location.origin}/api/v1/fleets/${props.fleet.slug}/events.ics?token=${token}`;
-});
+const { data: subscription } = useFleetCalendarSubscription(fleetSlug);
 
-const copyIcs = async () => {
-  if (!icsUrl.value) return;
+const canSubscribe = computed(() => subscription.value?.enabled === true);
+
+const subscribe = async () => {
+  const url = subscription.value?.feedUrl;
+  if (!url) return;
   try {
-    await navigator.clipboard.writeText(icsUrl.value);
+    await navigator.clipboard.writeText(url);
+    displaySuccess({
+      text: t("messages.fleet.calendarSubscription.copy.success"),
+    });
   } catch {
-    // ignore
+    displayAlert({
+      text: t("messages.fleet.calendarSubscription.copy.failure"),
+    });
   }
 };
 
@@ -235,7 +241,7 @@ const crumbs = computed(() => [
   </Teleport>
 
   <div class="events-toolbar">
-    <BtnGroup>
+    <BtnGroup inline>
       <Btn
         :active="view === 'list'"
         size="small"
@@ -255,9 +261,16 @@ const crumbs = computed(() => [
         {{ t("labels.fleets.events.calendarTab") }}
       </Btn>
     </BtnGroup>
-    <Btn v-if="icsUrl" size="small" inline variant="link" @click="copyIcs">
-      <i class="fa-light fa-link" />
-      {{ t("labels.fleets.events.openInCalendar") }}
+    <Btn
+      v-if="canSubscribe"
+      v-tooltip="t('labels.fleets.events.subscribeHint')"
+      size="small"
+      inline
+      variant="link"
+      @click="subscribe"
+    >
+      <i class="fa-light fa-calendar-arrow-down" />
+      {{ t("actions.fleets.events.subscribe") }}
     </Btn>
   </div>
 

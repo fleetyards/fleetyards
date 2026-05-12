@@ -60,4 +60,16 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: "calendar/",
+    name: "fleet-settings-calendar",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/calendar.vue"),
+    meta: {
+      title: "fleets.settings.calendar",
+      needsAuthentication: true,
+      access: ["fleet:events:manage", "fleet:manage"],
+      customTitle: true,
+    },
+  },
 ];

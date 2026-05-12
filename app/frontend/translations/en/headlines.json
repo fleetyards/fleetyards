@@ -167,6 +167,7 @@
       "fleets": {
         "owners": "Owners",
         "add": "Create a new Fleet",
+        "calendarSubscription": "Calendar Subscription",
         "invites": "Fleet Invites",
         "inviteUrls": "Invite Urls",
         "members": {
@@ -243,7 +244,8 @@
           "roles": "Fleet Roles",
           "notifications": "Notification Settings",
           "inAppNotifications": "In-app Notifications",
-          "discord": "Discord"
+          "discord": "Discord",
+          "calendar": "Calendar"
         },
         "inviteMember": "Invite new Member"
       },

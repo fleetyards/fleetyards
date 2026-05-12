@@ -664,6 +664,120 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/calendar/subscription":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Generate calendar subscription token
+      operationId: createFleetCalendarSubscription
+      tags:
+      - Fleet Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Disable calendar subscription
+      operationId: destroyFleetCalendarSubscription
+      tags:
+      - Fleet Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Show calendar subscription
+      operationId: fleetCalendarSubscription
+      tags:
+      - Fleet Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/calendar/subscription/rotate":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Rotate calendar subscription token
+      operationId: rotateFleetCalendarSubscription
+      tags:
+      - Fleet Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/check":
     post:
       summary: Check Fleet FID Availability
@@ -10619,6 +10733,20 @@ components:
           nullable: true
       additionalProperties: false
       title: AccountUpdateInput
+    CalendarSubscription:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        feedUrl:
+          type: string
+          format: uri
+          nullable: true
+      required:
+      - enabled
+      - feedUrl
+      additionalProperties: false
+      title: CalendarSubscription
     ComponentQuery:
       type: object
       properties:

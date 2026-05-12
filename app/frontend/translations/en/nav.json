@@ -68,7 +68,8 @@
           "membership": "Membership Settings",
           "roles": "Roles",
           "notifications": "Notifications",
-          "discord": "Discord"
+          "discord": "Discord",
+          "calendar": "Calendar"
         }
       },
       "rsiProfile": "RSI Profile",

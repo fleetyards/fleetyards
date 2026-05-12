@@ -21,14 +21,15 @@ RSpec.describe "api/v1/fleets/events.ics", type: :request do
       expect(response.body).to include("END:VCALENDAR")
     end
 
-    it "skips cancelled events" do
+    it "includes cancelled events with STATUS:CANCELLED" do
       create(:fleet_event, :cancelled, fleet: fleet, created_by: admin, title: "Scrubbed Op")
       create(:fleet_event, :open, fleet: fleet, created_by: admin, title: "Live Op")
 
       get "/api/v1/fleets/#{fleet.slug}/events.ics", params: {token: fleet.calendar_feed_token}
 
       expect(response.body).to include("Live Op")
-      expect(response.body).not_to include("Scrubbed Op")
+      expect(response.body).to include("Scrubbed Op")
+      expect(response.body).to include("STATUS:CANCELLED")
     end
   end
 

@@ -82,7 +82,8 @@
           "membership": "%{fleet} Membership",
           "roles": "%{fleet} Roles",
           "notifications": "%{fleet} Notification Settings",
-          "discord": "%{fleet} Discord Settings"
+          "discord": "%{fleet} Discord Settings",
+          "calendar": "%{fleet} Calendar Settings"
         }
       },
       "roadmap": {
