@@ -14,7 +14,7 @@ RSpec.describe "api/v1/fleets/events/teams/ships/expand-from-model", type: :requ
   let(:model) { create(:model) }
   let(:ship) { create(:fleet_event_ship, fleet_event_team: team) }
   let(:id) { ship.id }
-  let(:input) { {model_id: model.id} }
+  let(:input) { {modelId: model.id} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -71,7 +71,34 @@ RSpec.describe "api/v1/fleets/events/teams/ships/expand-from-model", type: :requ
         run_test!
       end
 
-      include_examples "oauth_auth"
+      response(200, "successful with OAuth token") do
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{oauth_access_token.token}" }
+        let(:position) { create(:model_position, model: model) }
+
+        before do
+          position
+        end
+
+        run_test!
+      end
+
+      response(401, "unauthorized with wrong scope token") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+        let(:Authorization) { "Bearer #{wrong_scope_access_token.token}" }
+
+        run_test!
+      end
+
+      response(401, "unauthorized") do
+        schema "$ref": "#/components/schemas/StandardError"
+
+        let(:user) { nil }
+
+        run_test!
+      end
     end
   end
 end
