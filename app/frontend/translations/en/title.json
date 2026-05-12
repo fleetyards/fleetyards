@@ -63,7 +63,11 @@
           "index": "%{fleet} Events",
           "calendar": "%{fleet} Calendar",
           "create": "Create Event - %{fleet}",
-          "edit": "Edit Event - %{fleet}",
+          "edit": {
+            "basic": "Edit Event - %{fleet}",
+            "description": "Edit Description - %{fleet}",
+            "teams": "Edit Teams - %{fleet}"
+          },
           "show": "%{fleet} Event"
         },
         "settings": {
