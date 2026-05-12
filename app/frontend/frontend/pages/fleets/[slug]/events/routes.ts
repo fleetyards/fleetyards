@@ -39,24 +39,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: ":event/manage/",
-    name: "fleet-event-manage",
-    component: () =>
-      import("@/frontend/pages/fleets/[slug]/events/[event]/manage.vue"),
-    meta: {
-      backgroundImage: "bg-8",
-      title: "fleets.events.manage",
-      needsAuthentication: true,
-      access: [
-        "fleet:events:update",
-        "fleet:events:manage",
-        "fleet:manage",
-        "fleet:events:read",
-      ],
-      customTitle: true,
-    },
-  },
-  {
     path: ":event/",
     name: "fleet-event",
     component: () =>

@@ -207,7 +207,6 @@
           "calendar": "Calendar",
           "create": "Create Event",
           "edit": "Edit Event",
-          "manage": "Manage Event",
           "spawn": "Spawn Event",
           "details": "Event Details",
           "schedule": "Schedule",
@@ -223,7 +222,9 @@
           "editTeam": "Edit team",
           "addTeam": "Add team",
           "editShip": "Edit ship",
-          "addShip": "Add ship"
+          "addShip": "Add ship",
+          "assignSlotFor": "Assign slot for %{username}",
+          "reassignSlotFor": "Reassign slot for %{username}"
         },
         "preview": {
           "h1": "Fleet Preview",
