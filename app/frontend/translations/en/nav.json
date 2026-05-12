@@ -50,7 +50,12 @@
         },
         "events": {
           "index": "Events",
-          "calendar": "Calendar"
+          "calendar": "Calendar",
+          "edit": {
+            "basic": "Basic",
+            "description": "Description",
+            "teams": "Teams"
+          }
         },
         "settings": {
           "index": "Settings",
