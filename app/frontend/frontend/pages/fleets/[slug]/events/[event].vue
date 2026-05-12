@@ -8,6 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import { PanelBgOverlayDirectionEnum } from "@/shared/components/base/Panel/types";
 import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipMeta from "@/frontend/components/Fleets/Events/EventShipMeta/index.vue";
@@ -234,11 +235,12 @@ const crumbs = computed(() => [
   </BreadCrumbs>
 
   <div v-if="event" class="event-detail">
-    <Panel class="event-hero">
-      <div
-        class="event-hero__inner"
-        :style="cover ? { backgroundImage: `url(${cover})` } : undefined"
-      >
+    <Panel
+      :bg-image="cover"
+      bg-overlay
+      :bg-overlay-direction="PanelBgOverlayDirectionEnum.RIGHT"
+    >
+      <template #hero>
         <Heading size="hero" hero>
           {{ event.title }}
           <EventStatusBadge :status="event.status" :past="event.past" />
@@ -278,8 +280,8 @@ const crumbs = computed(() => [
             }}
           </p>
         </div>
-      </div>
-      <div v-if="hasOverviewContent" class="event-hero__overview">
+      </template>
+      <div v-if="hasOverviewContent" class="event-overview">
         <p v-if="event.description" class="event-description">
           {{ event.description }}
         </p>
@@ -388,38 +390,6 @@ const crumbs = computed(() => [
   flex-direction: column;
   gap: 1rem;
 }
-.event-hero__inner {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  min-height: 220px;
-  padding: 1.25rem 1.5rem;
-  background-color: rgba(0, 0, 0, 0.4);
-  background-size: cover;
-  background-position: center;
-  border-top-left-radius: $panelContentBorderRadius;
-  border-top-right-radius: $panelContentBorderRadius;
-
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: linear-gradient(
-      to right,
-      rgba(0, 0, 0, 0.85) 0%,
-      rgba(0, 0, 0, 0.55) 40%,
-      rgba(0, 0, 0, 0) 100%
-    );
-    pointer-events: none;
-  }
-
-  > * {
-    position: relative;
-    z-index: 1;
-  }
-}
 .event-hero__tz {
   font-size: 0.85em;
   opacity: 0.75;
@@ -429,8 +399,6 @@ const crumbs = computed(() => [
   flex-direction: column;
   gap: 0.2rem;
   margin-top: 0.5rem;
-  color: rgba(255, 255, 255, 0.92);
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
 
   p {
     margin: 0;
@@ -441,7 +409,7 @@ const crumbs = computed(() => [
     opacity: 0.9;
   }
 }
-.event-hero__overview {
+.event-overview {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;

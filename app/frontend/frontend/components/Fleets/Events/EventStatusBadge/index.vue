@@ -64,7 +64,7 @@ const variantClass = computed(() => [
 
 .event-status-badge--corner {
   position: absolute;
-  top: 80px;
+  top: 120px;
   left: 0;
   height: 32px;
   padding: 0 0.85rem;

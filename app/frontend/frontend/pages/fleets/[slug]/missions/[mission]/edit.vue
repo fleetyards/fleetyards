@@ -1,14 +1,14 @@
 <script lang="ts">
 export default {
-  name: "FleetMissionEditPage",
+  name: "FleetMissionEditLayout",
 };
 </script>
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
-import MissionForm from "@/frontend/components/Fleets/Missions/MissionForm/index.vue";
+import TabNavView from "@/shared/components/TabNavView/index.vue";
+import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
+import { routes as editRoutes } from "@/frontend/pages/fleets/[slug]/missions/[mission]/edit/routes";
 import {
   type Fleet,
   type FleetMember,
@@ -16,7 +16,6 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useRouter } from "vue-router";
 
 type Props = {
   fleet: Fleet;
@@ -28,38 +27,17 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const route = useRoute();
-const router = useRouter();
+const comlink = useComlink();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const missionSlug = computed(() => route.params.mission as string);
 
-const {
-  data: mission,
-  isLoading,
-  refetch,
-} = useFleetMission(fleetSlug, missionSlug);
-
-const comlink = useComlink();
+const { data: mission, refetch } = useFleetMission(fleetSlug, missionSlug);
 
 onMounted(() => {
   comlink.on("fleet-mission-updated", () => void refetch());
   comlink.on("mission-children-changed", () => void refetch());
 });
-
-const cancel = () => {
-  if (mission.value) {
-    void router.push({
-      name: "fleet-mission",
-      params: { slug: props.fleet.slug, mission: mission.value.slug },
-    });
-    return;
-  }
-
-  void router.push({
-    name: "fleet-missions",
-    params: { slug: props.fleet.slug },
-  });
-};
 
 const crumbs = computed(() => [
   {
@@ -75,10 +53,7 @@ const crumbs = computed(() => [
         {
           to: {
             name: "fleet-mission",
-            params: {
-              slug: props.fleet.slug,
-              mission: mission.value.slug,
-            },
+            params: { slug: props.fleet.slug, mission: mission.value.slug },
           },
           label: mission.value.title,
         },
@@ -90,13 +65,16 @@ const crumbs = computed(() => [
 <template>
   <BreadCrumbs :crumbs="crumbs" />
 
-  <Loader :loading="isLoading" />
-
-  <div v-if="mission">
-    <Heading size="hero" hero>
-      {{ t("headlines.fleets.missions.edit") }}
-    </Heading>
-
-    <MissionForm :fleet="fleet" :mission="mission" @cancel="cancel" />
-  </div>
+  <TabNavView v-if="mission">
+    <template #nav>
+      <TabNavViewItems
+        :routes="editRoutes"
+        :authenticated="true"
+        :resource-access="resourceAccess"
+      />
+    </template>
+    <template #content>
+      <router-view :fleet="fleet" :mission="mission" />
+    </template>
+  </TabNavView>
 </template>
