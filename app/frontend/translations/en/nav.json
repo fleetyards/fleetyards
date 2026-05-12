@@ -50,7 +50,7 @@
           "edit": {
             "basic": "Basic",
             "description": "Description",
-            "teams": "Teams"
+            "teams": "Teams & slots"
           }
         },
         "events": {
@@ -59,7 +59,7 @@
           "edit": {
             "basic": "Basic",
             "description": "Description",
-            "teams": "Teams"
+            "teams": "Teams & slots"
           }
         },
         "settings": {

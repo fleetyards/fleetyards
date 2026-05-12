@@ -61,7 +61,7 @@
           "edit": {
             "basic": "Edit Mission - %{fleet}",
             "description": "Edit Description - %{fleet}",
-            "teams": "Edit Teams - %{fleet}"
+            "teams": "Edit Teams & Slots - %{fleet}"
           },
           "show": "%{fleet} Mission"
         },
@@ -72,7 +72,7 @@
           "edit": {
             "basic": "Edit Event - %{fleet}",
             "description": "Edit Description - %{fleet}",
-            "teams": "Edit Teams - %{fleet}"
+            "teams": "Edit Teams & Slots - %{fleet}"
           },
           "show": "%{fleet} Event"
         },
