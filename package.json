@@ -37,7 +37,7 @@
     "@rails/activestorage": "^8.1.300",
     "@tanstack/vue-query": "^5.100.10",
     "@tresjs/cientos": "^5.7.0",
-    "@tresjs/core": "^5.8.0",
+    "@tresjs/core": "^5.8.1",
     "@vee-validate/rules": "^4.15.1",
     "@vueuse/core": "^14.3.0",
     "ahoy.js": "0.4.5",
