@@ -207,6 +207,7 @@
           "calendar": "Calendar",
           "create": "Create Event",
           "edit": "Edit Event",
+          "manage": "Manage Event",
           "spawn": "Spawn Event",
           "details": "Event Details",
           "schedule": "Schedule",

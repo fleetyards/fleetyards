@@ -253,7 +253,9 @@
           "revokeRole": "Revoke",
           "editSchedule": "Edit teams & ships",
           "doneEditing": "Done editing",
-          "addTeam": "Add team"
+          "addTeam": "Add team",
+          "manage": "Manage event",
+          "viewPublic": "View public page"
         }
       },
       "model": {
