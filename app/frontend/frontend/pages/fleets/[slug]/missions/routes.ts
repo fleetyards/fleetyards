@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as missionEditRoutes } from "@/frontend/pages/fleets/[slug]/missions/[mission]/edit/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -32,9 +33,10 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: ":mission/edit/",
-    name: "fleet-mission-edit",
     component: () =>
       import("@/frontend/pages/fleets/[slug]/missions/[mission]/edit.vue"),
+    children: missionEditRoutes,
+    redirect: { name: missionEditRoutes[0].name as string },
     meta: {
       backgroundImage: "bg-8",
       title: "fleets.missions.edit",
