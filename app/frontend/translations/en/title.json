@@ -64,6 +64,7 @@
           "calendar": "%{fleet} Calendar",
           "create": "Create Event - %{fleet}",
           "edit": "Edit Event - %{fleet}",
+          "manage": "Manage Event - %{fleet}",
           "show": "%{fleet} Event"
         },
         "settings": {
