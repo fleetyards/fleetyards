@@ -67,7 +67,7 @@ RSpec.describe "api/v1/fleet_event_signups", type: :request, swagger_doc: "v1/sc
       let(:input) { {status: "confirmed"} }
       before do
         membership = fleet.fleet_memberships.find_by(user: member)
-        create(:fleet_event_signup, fleet_event_slot: fleet_event_slot, fleet_membership: membership, status: "tentative")
+        create(:fleet_event_signup, fleet_event_slot: fleet_event_slot, fleet_membership: membership, status: "pending")
       end
 
       security [
