@@ -7,13 +7,14 @@ export default {
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
 import EventSlotRow from "@/frontend/components/Fleets/Events/EventSlotRow/index.vue";
 import EventShipMeta from "@/frontend/components/Fleets/Events/EventShipMeta/index.vue";
 import EventShipMatchWarning from "@/frontend/components/Fleets/Events/EventShipMatchWarning/index.vue";
 import EventSignupCta from "@/frontend/components/Fleets/Events/EventSignupCta/index.vue";
+import EventAdminActions from "@/frontend/components/Fleets/Events/EventAdminActions/index.vue";
+import UnassignedSignups from "@/frontend/components/Fleets/Events/UnassignedSignups/index.vue";
 import YourSignupPanel from "@/frontend/components/Fleets/Events/YourSignupPanel/index.vue";
 import {
   type Fleet,
@@ -30,8 +31,7 @@ import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { checkAccess } from "@/shared/utils/Access";
 import { format, parseISO } from "date-fns";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useRouter } from "vue-router";
-import { PanelBgRoundedEnum } from "@/shared/components/base/Panel/types";
+import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 
 type Props = {
   fleet: Fleet;
@@ -43,7 +43,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
-const router = useRouter();
 const route = useRoute();
 const session = useSessionStore();
 
@@ -51,6 +50,12 @@ const fleetSlug = computed(() => props.fleet.slug);
 const eventSlug = computed(() => route.params.event as string);
 
 const { data: event, refetch } = useFleetEvent(fleetSlug, eventSlug);
+
+const listContext = useFleetEventListContextStore();
+
+const stepperList = computed<string[]>(() =>
+  listContext.slugsFor(fleetSlug.value),
+);
 
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(event.value));
@@ -186,21 +191,11 @@ const hasOverviewContent = computed(
   () => !!(event.value?.description || event.value?.briefing),
 );
 
-const goToEdit = () => {
-  if (!event.value) return;
-  void router.push({
-    name: "fleet-event-edit",
-    params: { slug: props.fleet.slug, event: event.value.slug },
-  });
-};
-
-const goToManage = () => {
-  if (!event.value) return;
-  void router.push({
-    name: "fleet-event-manage",
-    params: { slug: props.fleet.slug, event: event.value.slug },
-  });
-};
+const unassignedSignups = computed(
+  () =>
+    (event.value as { unassignedSignups?: FleetEventSignup[] } | undefined)
+      ?.unassignedSignups ?? [],
+);
 
 onMounted(() => {
   comlink.on("fleet-event-updated", () => void refetch());
@@ -221,26 +216,29 @@ const crumbs = computed(() => [
 </script>
 
 <template>
-  <BreadCrumbs :crumbs="crumbs">
-    <template v-if="isEventManager" #actions>
-      <Btn v-if="canManage" size="small" inline @click="goToEdit">
-        <i class="fa-light fa-pen" />
-        {{ t("actions.fleets.events.edit") }}
-      </Btn>
-      <Btn size="small" inline @click="goToManage">
-        <i class="fa-light fa-sliders" />
-        {{ t("actions.fleets.events.manage") }}
-      </Btn>
+  <BreadCrumbs
+    :crumbs="crumbs"
+    :current-id="eventSlug"
+    :stepper-list="stepperList"
+    stepper-route="fleet-event"
+    stepper-param="event"
+    :stepper-extra-params="{ slug: fleet.slug }"
+  >
+    <template v-if="isEventManager && event" #actions>
+      <EventAdminActions
+        :fleet="fleet"
+        :event="event"
+        :resource-access="resourceAccess"
+      />
     </template>
   </BreadCrumbs>
 
   <div v-if="event" class="event-detail">
-    <Panel
-      class="event-hero"
-      :bg-image="cover"
-      :bg-rounded="PanelBgRoundedEnum.ALL"
-    >
-      <div class="event-hero__inner">
+    <Panel class="event-hero">
+      <div
+        class="event-hero__inner"
+        :style="cover ? { backgroundImage: `url(${cover})` } : undefined"
+      >
         <Heading size="hero" hero>
           {{ event.title }}
           <EventStatusBadge :status="event.status" :past="event.past" />
@@ -308,6 +306,13 @@ const crumbs = computed(() => [
       :signups-locked="signupsLocked"
     />
 
+    <UnassignedSignups
+      v-if="isEventManager && unassignedSignups.length"
+      :fleet="fleet"
+      :event="event"
+      :signups="unassignedSignups"
+    />
+
     <section v-if="event.teams?.length" class="event-teams">
       <Heading size="lg">
         {{ t("headlines.fleets.events.schedule") }}
@@ -331,12 +336,13 @@ const crumbs = computed(() => [
             v-for="slot in team.slots as FleetEventSlot[]"
             :key="slot.id"
             :slot-data="slot"
+            :fleet="fleet"
+            :event="event"
             :current-user-id="currentUserId"
             :signups-locked="signupsLocked"
             :signups-open="signupsOpenForEvent"
             :own-active-slot-id="ownActiveSlotId"
             :is-manager="isEventManager"
-            :available-slots="allSlotsWithContext"
           />
         </div>
 
@@ -360,12 +366,13 @@ const crumbs = computed(() => [
                 :key="slot.id"
                 :slot-data="slot"
                 :ship="ship"
+                :fleet="fleet"
+                :event="event"
                 :current-user-id="currentUserId"
                 :signups-locked="signupsLocked"
                 :signups-open="signupsOpenForEvent"
                 :own-active-slot-id="ownActiveSlotId"
                 :is-manager="isEventManager"
-                :available-slots="allSlotsWithContext"
               />
             </div>
           </div>
@@ -383,19 +390,35 @@ const crumbs = computed(() => [
 }
 .event-hero__inner {
   position: relative;
-  z-index: 1;
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  min-height: 220px;
   padding: 1.25rem 1.5rem;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85) 0%,
-    rgba(0, 0, 0, 0.55) 60%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  border-radius: $panelContentBorderRadius;
+  background-color: rgba(0, 0, 0, 0.4);
+  background-size: cover;
+  background-position: center;
+  border-top-left-radius: $panelContentBorderRadius;
+  border-top-right-radius: $panelContentBorderRadius;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.55) 40%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    pointer-events: none;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 .event-hero__tz {
   font-size: 0.85em;
@@ -419,15 +442,10 @@ const crumbs = computed(() => [
   }
 }
 .event-hero__overview {
-  position: relative;
-  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   padding: 1rem 1.5rem 1.25rem;
-  background: rgba(0, 0, 0, 0.85);
-  border-bottom-left-radius: $panelContentBorderRadius;
-  border-bottom-right-radius: $panelContentBorderRadius;
 }
 .event-description {
   margin: 0;

@@ -8,9 +8,9 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
+  type Fleet,
+  type FleetEventExtended,
   type FleetEventSignup,
-  type FleetEventSlot,
-  useAssignFleetEventSignup,
   useDestroyFleetEventSignup,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -18,53 +18,29 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
+  fleet: Fleet;
+  event: FleetEventExtended;
   signups: FleetEventSignup[];
-  availableSlots: {
-    slot: FleetEventSlot;
-    teamTitle: string;
-    shipTitle?: string;
-  }[];
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const comlink = useComlink();
 
-const assignMutation = useAssignFleetEventSignup();
 const destroyMutation = useDestroyFleetEventSignup();
 
-const assigningId = ref<string | null>(null);
-
-const slotLabel = (ctx: {
-  slot: FleetEventSlot;
-  teamTitle: string;
-  shipTitle?: string;
-}) => {
-  const parts = [ctx.teamTitle];
-  if (ctx.shipTitle) parts.push(ctx.shipTitle);
-  parts.push(ctx.slot.title);
-  return parts.join(" · ");
-};
-
-const slotIsTaken = (slot: FleetEventSlot) =>
-  (slot.signups ?? []).some((s) => s.status !== "withdrawn");
-
-const assign = async (signup: FleetEventSignup, slotId: string) => {
-  assigningId.value = signup.id;
-  try {
-    await assignMutation.mutateAsync({
-      id: signup.id,
-      data: { fleetEventSlotId: slotId, status: "confirmed" },
-    });
-    displaySuccess({ text: t("messages.fleets.eventSignup.update.success") });
-    comlink.emit("fleet-event-signup-changed");
-  } catch {
-    displayAlert({ text: t("messages.fleets.eventSignup.update.failure") });
-  } finally {
-    assigningId.value = null;
-  }
+const openAssign = (signup: FleetEventSignup) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Events/EventSlotPickerModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      event: props.event,
+      signup,
+    },
+  });
 };
 
 const remove = (signup: FleetEventSignup) => {
@@ -126,42 +102,10 @@ const remove = (signup: FleetEventSignup) => {
           {{ signup.notes }}
         </p>
         <div class="unassigned-signups__actions">
-          <details class="unassigned-signups__assign">
-            <summary class="unassigned-signups__assign-toggle">
-              <i class="fa-light fa-arrow-right-arrow-left" />
-              {{ t("actions.fleets.events.assignSlot") }}
-            </summary>
-            <ul class="unassigned-signups__slots">
-              <li
-                v-for="ctx in availableSlots"
-                :key="ctx.slot.id"
-                class="unassigned-signups__slot"
-              >
-                <Btn
-                  :size="BtnSizesEnum.SMALL"
-                  inline
-                  variant="link"
-                  :disabled="slotIsTaken(ctx.slot) || assigningId === signup.id"
-                  :title="
-                    slotIsTaken(ctx.slot)
-                      ? t('labels.fleets.events.slotTakenHint')
-                      : ''
-                  "
-                  @click="assign(signup, ctx.slot.id)"
-                >
-                  <span class="unassigned-signups__slot-label">
-                    {{ slotLabel(ctx) }}
-                  </span>
-                  <span
-                    v-if="slotIsTaken(ctx.slot)"
-                    class="unassigned-signups__slot-taken"
-                  >
-                    {{ t("labels.fleets.events.taken") }}
-                  </span>
-                </Btn>
-              </li>
-            </ul>
-          </details>
+          <Btn :size="BtnSizesEnum.SMALL" inline @click="openAssign(signup)">
+            <i class="fa-light fa-arrow-right-arrow-left" />
+            {{ t("actions.fleets.events.assignSlot") }}
+          </Btn>
           <Btn
             :size="BtnSizesEnum.SMALL"
             inline
@@ -249,42 +193,6 @@ const remove = (signup: FleetEventSignup) => {
   flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
-}
-.unassigned-signups__assign-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  cursor: pointer;
-  font-size: 0.85rem;
-  padding: 0.25rem 0.55rem;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-
-  &:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-  }
-}
-.unassigned-signups__slots {
-  list-style: none;
-  margin: 0.4rem 0 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  max-height: 240px;
-  overflow-y: auto;
-}
-.unassigned-signups__slot {
-  display: flex;
-}
-.unassigned-signups__slot-label {
-  text-align: left;
-  font-size: 0.85rem;
-}
-.unassigned-signups__slot-taken {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  margin-left: 0.4rem;
 }
 .small {
   font-size: 0.78rem;
