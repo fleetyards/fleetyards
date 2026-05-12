@@ -34,8 +34,11 @@ const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
-const { data: subscription, refetch, isPending } =
-  useFleetCalendarSubscription(fleetSlug);
+const {
+  data: subscription,
+  refetch,
+  isPending,
+} = useFleetCalendarSubscription(fleetSlug);
 
 const createMutation = useCreateFleetCalendarSubscription();
 const rotateMutation = useRotateFleetCalendarSubscription();
