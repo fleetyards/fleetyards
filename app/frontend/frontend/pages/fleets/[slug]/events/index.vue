@@ -177,6 +177,14 @@ const { data: subscription } = useFleetCalendarSubscription(fleetSlug);
 
 const canSubscribe = computed(() => subscription.value?.enabled === true);
 
+const canManageCalendar = computed(() =>
+  checkAccess(props.resourceAccess, ["fleet:manage", "fleet:events:manage"]),
+);
+
+const showCalendarSetupNudge = computed(
+  () => canManageCalendar.value && subscription.value?.enabled === false,
+);
+
 const subscribe = async () => {
   const url = subscription.value?.feedUrl;
   if (!url) return;
@@ -271,6 +279,16 @@ const crumbs = computed(() => [
     >
       <i class="fa-light fa-calendar-arrow-down" />
       {{ t("actions.fleets.events.subscribe") }}
+    </Btn>
+    <Btn
+      v-else-if="showCalendarSetupNudge"
+      :to="{ name: 'fleet-settings-calendar', params: { slug: fleet.slug } }"
+      size="small"
+      inline
+      variant="link"
+    >
+      <i class="fa-light fa-calendar-plus" />
+      {{ t("actions.fleets.events.setUpCalendar") }}
     </Btn>
   </div>
 
