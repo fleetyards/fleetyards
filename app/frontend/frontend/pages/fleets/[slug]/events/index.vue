@@ -22,6 +22,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 import { checkAccess } from "@/shared/utils/Access";
 import { startOfMonth, endOfMonth, addDays, subDays } from "date-fns";
 
@@ -121,6 +122,28 @@ const { data: calendarData, refetch: refetchCalendar } = useFleetCalendar(
 
 const calendarEvents = computed<FleetEvent[]>(
   () => calendarData.value?.items ?? [],
+);
+
+const listContext = useFleetEventListContextStore();
+
+watch(
+  [view, eventList, calendarEvents],
+  ([currentView, list, calendar]) => {
+    if (currentView === "list") {
+      listContext.setContext(
+        props.fleet.slug,
+        "list",
+        list.map((event) => event.slug),
+      );
+    } else {
+      listContext.setContext(
+        props.fleet.slug,
+        currentView === "week" ? "calendar-week" : "calendar-month",
+        calendar.map((event) => event.slug),
+      );
+    }
+  },
+  { immediate: true },
 );
 
 const canCreate = computed(() =>

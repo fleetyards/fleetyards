@@ -14,10 +14,21 @@ type Props = {
   currentId?: string;
   stepperList?: string[];
   stepperListMeta?: ListMeta;
+  stepperRoute?: string;
+  stepperParam?: string;
+  stepperExtraParams?: Record<string, string>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   crumbs: undefined,
+  stepperRoute: "admin-model-edit",
+  stepperParam: "id",
+  stepperExtraParams: () => ({}),
+});
+
+const stepperParamsFor = (id: string) => ({
+  ...props.stepperExtraParams,
+  [props.stepperParam]: id,
 });
 
 const { t } = useI18n();
@@ -60,7 +71,7 @@ const nextItem = computed(() => {
       <slot name="actions" />
       <router-link
         v-if="prevItem"
-        :to="{ name: 'admin-model-edit', params: { id: prevItem } }"
+        :to="{ name: stepperRoute, params: stepperParamsFor(prevItem) }"
         ><i class="fa fa-chevron-left"></i
       ></router-link>
       <a v-else class="disabled" :aria-label="t('pagination.previous')"
@@ -68,7 +79,7 @@ const nextItem = computed(() => {
       ></a>
       <router-link
         v-if="nextItem"
-        :to="{ name: 'admin-model-edit', params: { id: nextItem } }"
+        :to="{ name: stepperRoute, params: stepperParamsFor(nextItem) }"
         ><i class="fa fa-chevron-right"></i
       ></router-link>
       <a v-else class="disabled" :aria-label="t('pagination.next')"
