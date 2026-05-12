@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as eventEditRoutes } from "@/frontend/pages/fleets/[slug]/events/[event]/edit/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -27,9 +28,10 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: ":event/edit/",
-    name: "fleet-event-edit",
     component: () =>
       import("@/frontend/pages/fleets/[slug]/events/[event]/edit.vue"),
+    children: eventEditRoutes,
+    redirect: { name: eventEditRoutes[0].name as string },
     meta: {
       backgroundImage: "bg-8",
       title: "fleets.events.edit",

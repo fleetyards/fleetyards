@@ -1,17 +1,17 @@
 <script lang="ts">
 export default {
-  name: "FleetEventEditPage",
+  name: "FleetEventEditLayout",
 };
 </script>
 
 <script lang="ts" setup>
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
-import Heading from "@/shared/components/base/Heading/index.vue";
-import EventForm from "@/frontend/components/Fleets/Events/EventForm/index.vue";
+import TabNavView from "@/shared/components/TabNavView/index.vue";
+import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
+import { routes as editRoutes } from "@/frontend/pages/fleets/[slug]/events/[event]/edit/routes";
 import { type Fleet, type FleetMember, useFleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useRouter } from "vue-router";
 
 type Props = {
   fleet: Fleet;
@@ -23,33 +23,17 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const route = useRoute();
-const router = useRouter();
+const comlink = useComlink();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const eventSlug = computed(() => route.params.event as string);
 
 const { data: event, refetch } = useFleetEvent(fleetSlug, eventSlug);
 
-const comlink = useComlink();
-
 onMounted(() => {
   comlink.on("fleet-event-updated", () => void refetch());
   comlink.on("fleet-event-children-changed", () => void refetch());
 });
-
-const cancel = () => {
-  if (!event.value) {
-    void router.push({
-      name: "fleet-events",
-      params: { slug: props.fleet.slug },
-    });
-    return;
-  }
-  void router.push({
-    name: "fleet-event",
-    params: { slug: props.fleet.slug, event: event.value.slug },
-  });
-};
 
 const crumbs = computed(() => [
   {
@@ -77,9 +61,16 @@ const crumbs = computed(() => [
 <template>
   <BreadCrumbs :crumbs="crumbs" />
 
-  <Heading size="hero" hero>
-    {{ t("headlines.fleets.events.edit") }}
-  </Heading>
-
-  <EventForm v-if="event" :fleet="fleet" :event="event" @cancel="cancel" />
+  <TabNavView v-if="event">
+    <template #nav>
+      <TabNavViewItems
+        :routes="editRoutes"
+        :authenticated="true"
+        :resource-access="resourceAccess"
+      />
+    </template>
+    <template #content>
+      <router-view :fleet="fleet" :event="event" />
+    </template>
+  </TabNavView>
 </template>
