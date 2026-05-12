@@ -9,7 +9,7 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::Notification.notification_types.keys,
+            "x-extensible-enum": ::Notification.notification_types.keys,
             "x-enumNames": ::Notification.notification_types.keys.map { |v| transform_enum_key(v) }
           })
         end
