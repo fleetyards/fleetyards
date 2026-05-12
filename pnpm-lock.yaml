@@ -42,8 +42,8 @@ importers:
         specifier: ^5.100.10
         version: 5.100.10(vue@3.5.34(typescript@6.0.3))
       '@tresjs/cientos':
-        specifier: ^5.7.0
-        version: 5.7.0(@tresjs/core@5.8.1(three@0.184.0)(vue@3.5.34(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.184.0)(vue@3.5.34(typescript@6.0.3))
+        specifier: ^5.7.1
+        version: 5.7.1(@tresjs/core@5.8.1(three@0.184.0)(vue@3.5.34(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.184.0)(vue@3.5.34(typescript@6.0.3))
       '@tresjs/core':
         specifier: ^5.8.1
         version: 5.8.1(three@0.184.0)(vue@3.5.34(typescript@6.0.3))
@@ -2175,10 +2175,10 @@ packages:
       '@vue/composition-api':
         optional: true
 
-  '@tresjs/cientos@5.7.0':
-    resolution: {integrity: sha512-w57PfD4WNwa23YwDsiQa/j4j202sYW0eZre2jdsb3QT165baGaFn9LMIEJt1t4Y7p4Ecw4jlTiUCE6JdRYAbIg==}
+  '@tresjs/cientos@5.7.1':
+    resolution: {integrity: sha512-6XdOvL2VN2Dmaok2PIJYSheIVRrpDXlZD0/A7WXAvBLQ6oov70dDTVofphbrzgVRuqLfTLOs4tPjHkYJOmqQ2g==}
     peerDependencies:
-      '@tresjs/core': 5.8.0
+      '@tresjs/core': 5.8.1
       three: '>=0.133'
       vue: '>=3.5.17'
 
@@ -7582,7 +7582,7 @@ snapshots:
       vue: 3.5.34(typescript@6.0.3)
       vue-demi: 0.14.10(vue@3.5.34(typescript@6.0.3))
 
-  '@tresjs/cientos@5.7.0(@tresjs/core@5.8.1(three@0.184.0)(vue@3.5.34(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.184.0)(vue@3.5.34(typescript@6.0.3))':
+  '@tresjs/cientos@5.7.1(@tresjs/core@5.8.1(three@0.184.0)(vue@3.5.34(typescript@6.0.3)))(@types/three@0.184.1)(react@19.1.0)(three@0.184.0)(vue@3.5.34(typescript@6.0.3))':
     dependencies:
       '@tresjs/core': 5.8.1(three@0.184.0)(vue@3.5.34(typescript@6.0.3))
       '@vueuse/core': 13.9.0(vue@3.5.34(typescript@6.0.3))
