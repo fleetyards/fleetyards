@@ -54,7 +54,11 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   end
 
   get "calendar", to: "fleet_calendars#show"
-  get "events.ics", to: "fleet_calendars#ics", defaults: {format: "ics"}, constraints: {format: "ics"}
+  get "events.ics", to: "fleet_calendars#ics", as: :calendar_feed, defaults: {format: "ics"}, constraints: {format: "ics"}
+
+  resource :calendar_subscription, path: "calendar/subscription", only: %i[show create destroy] do
+    post :rotate
+  end
 
   resources :fleet_events, path: "events", param: :slug, only: %i[index show create update destroy], constraints: {slug: %r{[^/.]+}} do
     member do
@@ -67,6 +71,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :unarchive
       post "sync-to-discord", action: :sync_to_discord
       post :signup, to: "fleet_event_signups#event_signup"
+      get "event.ics", action: :ics, defaults: {format: "ics"}, constraints: {format: "ics"}
     end
 
     resources :fleet_event_admins, path: "admins", only: %i[index create destroy]
