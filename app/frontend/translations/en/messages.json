@@ -188,6 +188,22 @@
         "destroy": {
           "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
           "failure": "We could not destroy your Account! Please try again later."
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Personal calendar subscription enabled.",
+            "failure": "Could not enable calendar subscription."
+          },
+          "rotate": {
+            "success": "Personal calendar link rotated. Existing subscribers will stop receiving updates until they re-subscribe.",
+            "failure": "Could not rotate personal calendar link.",
+            "confirm": "Rotating the link will silently invalidate any calendar app subscribed to the current URL. You'll need to re-subscribe with the new link."
+          },
+          "disable": {
+            "success": "Personal calendar subscription disabled.",
+            "failure": "Could not disable personal calendar subscription.",
+            "confirm": "Disabling the subscription will kill the feed for any calendar app currently subscribed."
+          }
         }
       },
       "fleet": {

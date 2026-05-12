@@ -981,7 +981,11 @@
       "all": "All",
       "supportUs": "Support FleetYards.net",
       "account": {
-        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
+        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
+        "calendarSubscription": {
+          "intro": "Generate a private link to add the events you've signed up for to your personal calendar app (Apple Calendar, Google Calendar, Outlook).",
+          "howTo": "Paste the link into your calendar app under \"Subscribe to calendar\" or \"Add by URL\". Anyone with this link can see the events you're signed up for — keep it private."
+        }
       },
       "fleets": {
         "logistics": {

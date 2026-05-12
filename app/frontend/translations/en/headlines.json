@@ -264,6 +264,7 @@
         "connections": "Connections",
         "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
+        "calendar": "Calendar Subscription",
         "verify": "Verify your RSI Account",
         "security": {
           "index": "Account Security",

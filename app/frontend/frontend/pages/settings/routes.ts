@@ -32,6 +32,15 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "calendar/",
+    name: "settings-calendar",
+    component: () => import("@/frontend/pages/settings/calendar.vue"),
+    meta: {
+      title: "settings.calendar",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "hangar/",
     name: "settings-hangar",
     component: () => import("@/frontend/pages/settings/hangar.vue"),

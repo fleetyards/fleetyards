@@ -16,6 +16,13 @@
       "groupedByModel": "Grouped by Model",
       "ungrouped": "Ungrouped",
       "destroyAccount": "Destroy Account",
+      "account": {
+        "calendarSubscription": {
+          "enable": "Generate personal calendar link",
+          "rotate": "Rotate link",
+          "disable": "Disable subscription"
+        }
+      },
       "saveScreenshot": "Save as PNG",
       "resolve": "Resolve",
       "verify": "Verify",
@@ -252,6 +259,7 @@
           "exportIcs": "Export iCal",
           "addToCalendar": "Add to calendar",
           "subscribe": "Subscribe",
+          "setUpCalendar": "Set up calendar subscriptions",
           "assignSlot": "Assign to slot",
           "reassignSlot": "Move to another slot",
           "addSeats": "Add seats",

@@ -5225,6 +5225,108 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Manufacturers"
+  "/me/calendar/subscription":
+    post:
+      summary: Generate personal calendar subscription
+      operationId: createMyCalendarSubscription
+      tags:
+      - Me Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Disable personal calendar subscription
+      operationId: destroyMyCalendarSubscription
+      tags:
+      - Me Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '204':
+          description: successful with OAuth token
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Show personal calendar subscription
+      operationId: myCalendarSubscription
+      tags:
+      - Me Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/calendar/subscription/rotate":
+    post:
+      summary: Rotate personal calendar subscription
+      operationId: rotateMyCalendarSubscription
+      tags:
+      - Me Calendar
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:write
+      - OpenId:
+        - user
+        - user:write
+      responses:
+        '200':
+          description: successful with OAuth token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CalendarSubscription"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/mission-slots":
     post:
       summary: Create Mission Slot

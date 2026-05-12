@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_09_214209) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_12_210000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1089,6 +1089,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_214209) do
   end
 
   create_table "users", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
+    t.string "calendar_feed_token"
     t.datetime "confirmation_sent_at", precision: nil
     t.string "confirmation_token", limit: 255
     t.datetime "confirmed_at", precision: nil
@@ -1145,6 +1146,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_09_214209) do
     t.string "username", limit: 255, default: "", null: false
     t.integer "wanted_vehicles_count", default: 0, null: false
     t.string "youtube"
+    t.index ["calendar_feed_token"], name: "index_users_on_calendar_feed_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["normalized_username"], name: "index_users_on_normalized_username"
