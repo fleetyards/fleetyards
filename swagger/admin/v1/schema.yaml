@@ -6753,7 +6753,7 @@ components:
       title: ModelSortEnum
     NotificationTypeEnum:
       type: string
-      x-extensible-enum:
+      enum:
       - hangar_create
       - hangar_destroy
       - wishlist_create
