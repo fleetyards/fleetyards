@@ -46,7 +46,12 @@
           "index": "Logistics"
         },
         "missions": {
-          "index": "Missions"
+          "index": "Missions",
+          "edit": {
+            "basic": "Basic",
+            "description": "Description",
+            "teams": "Teams"
+          }
         },
         "events": {
           "index": "Events",

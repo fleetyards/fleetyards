@@ -57,7 +57,13 @@
         },
         "missions": {
           "index": "%{fleet} Missions",
-          "edit": "%{fleet} Mission"
+          "create": "Create Mission - %{fleet}",
+          "edit": {
+            "basic": "Edit Mission - %{fleet}",
+            "description": "Edit Description - %{fleet}",
+            "teams": "Edit Teams - %{fleet}"
+          },
+          "show": "%{fleet} Mission"
         },
         "events": {
           "index": "%{fleet} Events",

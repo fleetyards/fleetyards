@@ -41,3 +41,8 @@ export enum PanelBgColorsEnum {
   PRIMARY = "primary",
   ADMIN = "admin",
 }
+
+export enum PanelBgOverlayDirectionEnum {
+  TOP = "top",
+  RIGHT = "right",
+}

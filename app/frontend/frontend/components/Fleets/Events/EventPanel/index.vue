@@ -14,6 +14,7 @@ import {
   PanelShadowsEnum,
   PanelBgRoundedEnum,
 } from "@/shared/components/base/Panel/types";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import EventStatusBadge from "@/frontend/components/Fleets/Events/EventStatusBadge/index.vue";
 import {
@@ -74,7 +75,10 @@ const unarchive = async () => {
     :bg-rounded="PanelBgRoundedEnum.TOP"
     class="event-panel"
   >
-    <PanelHeading :level="HeadingLevelEnum.H2">
+    <PanelHeading
+      :level="HeadingLevelEnum.H2"
+      :shadow="PanelHeadingShadowEnum.TOP"
+    >
       <template #default>
         <router-link
           :to="{
@@ -142,14 +146,19 @@ $eventImageHeight: 200px;
 .event-panel :deep(.panel-inner) {
   padding-top: $eventImageHeight;
   position: relative;
+  min-height: 0;
 }
 .event-panel :deep(.panel-heading) {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: auto;
+  height: $eventImageHeight;
   z-index: 1;
+  pointer-events: none;
+}
+.event-panel :deep(.panel-heading__title) {
+  pointer-events: auto;
 }
 .event-panel :deep(.panel-body) {
   position: relative;
