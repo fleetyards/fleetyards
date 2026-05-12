@@ -23,13 +23,6 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import Sortable from "sortablejs";
 
-type SlotContext = {
-  slot: FleetEventSlot;
-  teamTitle: string;
-  shipTitle?: string;
-  ship?: FleetEventShip | null;
-};
-
 type Props = {
   fleet: Fleet;
   event: FleetEvent;
@@ -40,7 +33,6 @@ type Props = {
   signupsOpen?: boolean;
   ownActiveSlotId?: string | null;
   isManager?: boolean;
-  availableSlots?: SlotContext[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,7 +42,6 @@ const props = withDefaults(defineProps<Props>(), {
   signupsOpen: undefined,
   ownActiveSlotId: null,
   isManager: false,
-  availableSlots: () => [],
 });
 
 const { t } = useI18n();
@@ -216,12 +207,13 @@ onUnmounted(() => {
           v-for="slot in team.slots as FleetEventSlot[]"
           :key="slot.id"
           :slot-data="slot"
+          :fleet="fleet"
+          :event="event"
           :current-user-id="currentUserId"
           :signups-locked="signupsLocked"
           :signups-open="signupsOpen"
           :own-active-slot-id="ownActiveSlotId"
           :is-manager="isManager"
-          :available-slots="availableSlots"
         />
       </div>
     </div>
@@ -256,7 +248,6 @@ onUnmounted(() => {
           :signups-open="signupsOpen"
           :own-active-slot-id="ownActiveSlotId"
           :is-manager="isManager"
-          :available-slots="availableSlots"
         />
       </div>
       <p v-if="!ships.length" class="text-muted event-team-no-ships">
