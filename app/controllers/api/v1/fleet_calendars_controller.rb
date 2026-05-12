@@ -24,6 +24,15 @@ module Api
           .order(:starts_at)
       end
 
+      # Past horizon: 90 days. Calendar clients don't need the full history
+      # and a years-old feed bloats the payload for every poll.
+      FEED_PAST_HORIZON = 90.days
+
+      # Cancelled events linger with STATUS:CANCELLED for a week past their
+      # start time so subscribed clients see the strike-through, then drop
+      # entirely.
+      CANCELLED_RETENTION = 7.days
+
       def ics
         token = params[:token].presence || params[:t].presence
         @fleet = Fleet.find_by!(slug: params[:fleet_slug])
@@ -33,7 +42,15 @@ module Api
           return
         end
 
-        events = @fleet.fleet_events.where(archived_at: nil)
+        now = Time.current
+        events = @fleet.fleet_events
+          .where(archived_at: nil)
+          .where("starts_at >= ?", now - FEED_PAST_HORIZON)
+          .where(
+            "status != ? OR starts_at >= ?",
+            "cancelled",
+            now - CANCELLED_RETENTION
+          )
         ics = Calendars::IcsBuilder.new(events.to_a,
           calendar_name: "#{@fleet.name} — Events",
           organizer_name: @fleet.name).to_ics
