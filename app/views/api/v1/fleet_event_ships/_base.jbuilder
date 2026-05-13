@@ -48,5 +48,6 @@ end
 json.slots do
   json.array! fleet_event_ship.fleet_event_slots,
     partial: "api/v1/fleet_event_slots/fleet_event_slot",
-    as: :fleet_event_slot
+    as: :fleet_event_slot,
+    locals: {occurrence_date: local_assigns[:occurrence_date]}
 end

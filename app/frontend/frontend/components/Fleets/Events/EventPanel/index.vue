@@ -44,6 +44,12 @@ const comlink = useComlink();
 const { resolve } = useMissionCover();
 const cover = computed(() => resolve(props.event));
 
+const recurringLabel = computed(() => {
+  const interval = props.event.recurrenceInterval as string | undefined;
+  if (!interval) return t("labels.fleets.events.recurring");
+  return t(`labels.fleets.events.recurrence.${interval}`);
+});
+
 const startDate = computed(() => {
   try {
     return format(parseISO(props.event.startsAt), "MMM d, yyyy · HH:mm");
@@ -103,6 +109,10 @@ const unarchive = async () => {
         <li>
           <i class="fa-light fa-calendar" />
           <span>{{ startDate }}</span>
+        </li>
+        <li v-if="event.recurring">
+          <i class="fa-light fa-arrows-rotate" />
+          <span>{{ recurringLabel }}</span>
         </li>
         <li v-if="event.location">
           <i class="fa-light fa-location-dot" />
