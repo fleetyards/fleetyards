@@ -35,7 +35,15 @@ module V1
             signupApproval: {
               type: :string,
               enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
-            }
+            },
+            recurring: {type: :boolean},
+            recurrenceInterval: {
+              type: :string,
+              enum: ::FleetEvent::RECURRENCE_INTERVALS,
+              nullable: true
+            },
+            recurrenceUntil: {type: :string, format: :date, nullable: true},
+            recurrenceCount: {type: :integer, nullable: true}
           },
           required: %w[title startsAt timezone visibility],
           additionalProperties: false

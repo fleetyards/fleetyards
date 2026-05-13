@@ -18,10 +18,22 @@ module Api
         from = parse_date(params[:from]) || Time.current.beginning_of_month
         to = parse_date(params[:to]) || from + 35.days
 
-        @events = @fleet.fleet_events
-          .where(archived_at: nil)
+        one_off = @fleet.fleet_events
+          .where(archived_at: nil, recurring: false)
           .where("starts_at >= ? AND starts_at <= ?", from, to)
-          .order(:starts_at)
+
+        recurring = @fleet.fleet_events
+          .where(archived_at: nil, recurring: true)
+          .where("starts_at <= ?", to)
+
+        entries = one_off.map { |e| [e, nil] }
+        recurring.each do |event|
+          event.occurrences(from: from, to: to).each do |occurrence|
+            entries << [event, occurrence]
+          end
+        end
+
+        @calendar_entries = entries.sort_by { |(event, occurrence)| occurrence || event.starts_at }
       end
 
       # Past horizon: 90 days. Calendar clients don't need the full history

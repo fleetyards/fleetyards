@@ -52,7 +52,40 @@ module Calendars
       end
       lines << "URL:#{event_url(event)}"
       lines << "ORGANIZER;CN=#{escape(@organizer_name)}:mailto:noreply@fleetyards.net" if @organizer_name.present?
+      lines.concat(recurrence_lines(event, tz)) if event.recurring?
       lines << "END:VEVENT"
+      lines
+    end
+
+    private def recurrence_lines(event, tz)
+      lines = []
+      freq = case event.recurrence_interval
+      when "daily" then "FREQ=DAILY"
+      when "weekly" then "FREQ=WEEKLY"
+      when "biweekly" then "FREQ=WEEKLY;INTERVAL=2"
+      when "monthly" then "FREQ=MONTHLY"
+      end
+      return lines unless freq
+
+      rrule = freq.dup
+      if event.recurrence_until.present?
+        rrule << ";UNTIL=#{event.recurrence_until.strftime("%Y%m%d")}T235959Z"
+      elsif event.recurrence_count.present?
+        rrule << ";COUNT=#{event.recurrence_count}"
+      end
+      lines << "RRULE:#{rrule}"
+
+      Array(event.excluded_dates).each do |date|
+        d = date.is_a?(String) ? Date.parse(date) : date
+        time = event.starts_at.in_time_zone(tz || "UTC")
+        excluded_local = time.change(year: d.year, month: d.month, day: d.day)
+        lines << if tz && !UTC_IDENTIFIERS.include?(tz)
+          "EXDATE;TZID=#{tz}:#{format_local(excluded_local)}"
+        else
+          "EXDATE:#{format_utc(excluded_local)}"
+        end
+      end
+
       lines
     end
 
