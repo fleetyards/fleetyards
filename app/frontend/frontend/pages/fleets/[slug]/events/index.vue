@@ -351,5 +351,9 @@ const crumbs = computed(() => [
   gap: 0.4rem;
   align-items: center;
   margin-bottom: 0.75rem;
+
+  :deep(> *) {
+    margin-right: 0;
+  }
 }
 </style>
