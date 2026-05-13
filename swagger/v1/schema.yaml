@@ -1218,6 +1218,14 @@ paths:
       operationId: fleetEvent
       tags:
       - Fleet Events
+      parameters:
+      - name: occurrence
+        in: query
+        required: false
+        description: ISO-8601 date scoping the response to a single occurrence of
+          a recurring event
+        schema:
+          type: string
       security:
       - SessionCookie: []
       - Oauth2:

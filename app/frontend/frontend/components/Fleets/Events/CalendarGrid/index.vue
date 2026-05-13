@@ -215,9 +215,17 @@ onMounted(() => {
     }) => {
       const event = info.event.extendedProps?.fleetEvent;
       if (event?.slug) {
+        const occurrence = (event as { occurrenceDate?: string | null })
+          .occurrenceDate;
+        const parentSlug = (event as { parentEventSlug?: string | null })
+          .parentEventSlug;
         void router.push({
           name: "fleet-event",
-          params: { slug: props.fleet.slug, event: event.slug },
+          params: {
+            slug: props.fleet.slug,
+            event: parentSlug || event.slug,
+          },
+          query: occurrence ? { occurrence } : undefined,
         });
       }
     },

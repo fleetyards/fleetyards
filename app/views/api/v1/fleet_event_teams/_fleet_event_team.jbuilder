@@ -1,3 +1,5 @@
 # frozen_string_literal: true
 
-json.partial! "api/v1/fleet_event_teams/base", fleet_event_team: fleet_event_team
+json.partial! "api/v1/fleet_event_teams/base",
+  fleet_event_team: fleet_event_team,
+  occurrence_date: local_assigns[:occurrence_date]

@@ -1143,6 +1143,10 @@
           "autoLockMinutesBefore": "Lock minutes before start",
           "recurring": "Repeats",
           "recurringHint": "Generate this event automatically on a recurring schedule. Members sign up per occurrence.",
+          "recurringSummary": "Repeats %{interval}",
+          "recurringUntil": "Repeats %{interval} until %{date}",
+          "recurringForCount": "Repeats %{interval} (%{count} occurrences)",
+          "viewSeries": "View series",
           "recurrenceInterval": "Repeat every",
           "recurrenceEnd": "Ends",
           "recurrenceEndNever": "Never",
@@ -1150,10 +1154,10 @@
           "recurrenceEndAfter": "After",
           "recurrenceEndOccurrences": "occurrences",
           "recurrence": {
-            "daily": "Day",
-            "weekly": "Week",
-            "biweekly": "Other week",
-            "monthly": "Month"
+            "daily": "daily",
+            "weekly": "weekly",
+            "biweekly": "every two weeks",
+            "monthly": "monthly"
           },
           "occurrencesSection": "Upcoming occurrences",
           "skipOccurrence": "Skip this occurrence",

@@ -53,8 +53,19 @@ const session = useSessionStore();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const eventSlug = computed(() => route.params.event as string);
+const occurrenceParam = computed(
+  () => (route.query.occurrence as string | undefined) ?? undefined,
+);
 
-const { data: event, refetch } = useFleetEvent(fleetSlug, eventSlug);
+const fleetEventParams = computed(() =>
+  occurrenceParam.value ? { occurrence: occurrenceParam.value } : {},
+);
+
+const { data: event, refetch } = useFleetEvent(
+  fleetSlug,
+  eventSlug,
+  fleetEventParams as never,
+);
 
 const listContext = useFleetEventListContextStore();
 
@@ -208,6 +219,30 @@ const unassignedSignups = computed(
 );
 
 const isRecurring = computed(() => event.value?.recurring === true);
+
+const intervalLabel = computed(() => {
+  const interval = event.value?.recurrenceInterval as string | undefined;
+  if (!interval) return "";
+  return t(`labels.fleets.events.recurrence.${interval}`);
+});
+
+const recurringChip = computed(() => {
+  if (!isRecurring.value) return "";
+  const interval = intervalLabel.value || t("labels.fleets.events.recurring");
+  if (event.value?.recurrenceUntil) {
+    return t("labels.fleets.events.recurringUntil", {
+      interval,
+      date: event.value.recurrenceUntil,
+    });
+  }
+  if (event.value?.recurrenceCount) {
+    return t("labels.fleets.events.recurringForCount", {
+      interval,
+      count: event.value.recurrenceCount,
+    });
+  }
+  return t("labels.fleets.events.recurringSummary", { interval });
+});
 
 const excludedDateSet = computed(() => {
   const dates = (event.value?.excludedDates ?? []) as string[];
@@ -383,6 +418,20 @@ const crumbs = computed(() => [
             <span v-if="event.timezone" class="event-hero__tz">
               ({{ event.timezone }})
             </span>
+          </p>
+          <p v-if="recurringChip">
+            <i class="fa-light fa-arrows-rotate" />
+            {{ recurringChip }}
+            <router-link
+              v-if="occurrenceParam"
+              :to="{
+                name: 'fleet-event',
+                params: { slug: fleet.slug, event: eventSlug },
+              }"
+              class="event-hero__series-link"
+            >
+              {{ t("labels.fleets.events.viewSeries") }}
+            </router-link>
           </p>
           <p v-if="event.location">
             <i class="fa-light fa-location-dot" />

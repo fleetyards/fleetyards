@@ -32,11 +32,16 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
       tags "Fleet Events"
       produces "application/json"
 
+      parameter name: :occurrence, in: :query, type: :string, required: false,
+        description: "ISO-8601 date scoping the response to a single occurrence of a recurring event"
+
       security [
         {SessionCookie: []},
         {Oauth2: ["fleet", "fleet:read"]},
         {OpenId: ["fleet", "fleet:read"]}
       ]
+
+      let(:occurrence) { nil }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/FleetEventExtended"
@@ -45,6 +50,24 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
           data = JSON.parse(response.body)
           expect(data["title"]).to eq(fleet_event.title)
           expect(data["teams"]).to be_an(Array)
+        end
+      end
+
+      response(200, "successful for a single occurrence") do
+        let(:fleet_event) do
+          create(:fleet_event, :open,
+            fleet: fleet, created_by: admin,
+            starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),
+            timezone: "UTC",
+            recurring: true, recurrence_interval: "weekly")
+        end
+        let(:occurrence) { "2026-05-21" }
+        schema "$ref": "#/components/schemas/FleetEventExtended"
+
+        run_test! do |response|
+          data = JSON.parse(response.body)
+          expect(data["occurrenceDate"]).to eq("2026-05-21")
+          expect(data["startsAt"]).to include("2026-05-21")
         end
       end
 
