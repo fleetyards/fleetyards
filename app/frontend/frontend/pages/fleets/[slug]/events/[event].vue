@@ -293,6 +293,19 @@ const skipOccurrence = async (iso: string) => {
   }
 };
 
+const overrideOccurrence = (iso: string) => {
+  if (!event.value) return;
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Events/EventOccurrenceOverrideModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      event: event.value,
+      occurrenceDate: iso,
+    },
+  });
+};
+
 const endSeriesAt = (iso: string) => {
   if (!event.value) return;
   displayConfirm({
@@ -465,6 +478,15 @@ const crumbs = computed(() => [
             {{ t("labels.fleets.events.excludedBadge") }}
           </span>
           <div v-if="isEventManager" class="event-occurrences__actions">
+            <button
+              v-if="!entry.excluded"
+              type="button"
+              class="event-occurrences__btn"
+              @click="overrideOccurrence(entry.iso)"
+            >
+              <i class="fa-light fa-pen" />
+              {{ t("labels.fleets.events.overrideOccurrenceShort") }}
+            </button>
             <button
               v-if="!entry.excluded"
               type="button"

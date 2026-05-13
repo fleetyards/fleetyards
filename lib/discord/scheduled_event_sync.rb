@@ -16,11 +16,13 @@ module Discord
     # +2h when the fleet event doesn't carry one.
     DEFAULT_DURATION = 2.hours
 
-    attr_reader :event, :setting
+    attr_reader :event, :setting, :occurrence_date, :state
 
-    def initialize(event)
+    def initialize(event, occurrence_date: nil)
       @event = event
       @setting = event.fleet&.fleet_notification_setting
+      @occurrence_date = occurrence_date
+      @state = event.occurrence_state_for(occurrence_date, build: true) if occurrence_date
     end
 
     def runnable?
@@ -32,25 +34,22 @@ module Discord
 
       payload = build_payload
       response =
-        if event.discord_event_id.present?
-          api.update_guild_scheduled_event(setting.discord_guild_id, event.discord_event_id, payload)
+        if existing_discord_event_id.present?
+          api.update_guild_scheduled_event(setting.discord_guild_id, existing_discord_event_id, payload)
         else
           api.create_guild_scheduled_event(setting.discord_guild_id, payload)
         end
 
       if response && response["id"].present?
-        event.update_columns(
-          discord_event_id: response["id"],
-          discord_synced_at: Time.current
-        )
+        persist_discord_event_id!(response["id"])
       end
 
       response
     rescue ApiClient::Error => e
       # If Discord 404s the event id (was deleted there), reset and try once
       # more so we recover from out-of-band deletion.
-      if e.status == 404 && event.discord_event_id.present?
-        event.update_columns(discord_event_id: nil, discord_synced_at: nil)
+      if e.status == 404 && existing_discord_event_id.present?
+        clear_discord_event_id!
         retry
       end
       raise
@@ -58,22 +57,45 @@ module Discord
 
     def delete!
       return unless runnable?
-      return if event.discord_event_id.blank?
+      return if existing_discord_event_id.blank?
 
-      api.delete_guild_scheduled_event(setting.discord_guild_id, event.discord_event_id)
-      event.update_columns(discord_event_id: nil, discord_synced_at: Time.current)
+      api.delete_guild_scheduled_event(setting.discord_guild_id, existing_discord_event_id)
+      clear_discord_event_id!
     rescue ApiClient::Error => e
       # If it's already gone, just clear our reference.
       raise unless e.status == 404
-      event.update_columns(discord_event_id: nil, discord_synced_at: Time.current)
+      clear_discord_event_id!
+    end
+
+    private def existing_discord_event_id
+      state ? state.discord_event_id : event.discord_event_id
+    end
+
+    private def persist_discord_event_id!(id)
+      if state
+        state.update!(discord_event_id: id, discord_synced_at: Time.current)
+      else
+        event.update_columns(
+          discord_event_id: id,
+          discord_synced_at: Time.current
+        )
+      end
+    end
+
+    private def clear_discord_event_id!
+      if state
+        state.update!(discord_event_id: nil, discord_synced_at: Time.current)
+      else
+        event.update_columns(discord_event_id: nil, discord_synced_at: Time.current)
+      end
     end
 
     private def build_payload
       payload = {
-        name: event.title.to_s.first(100),
+        name: effective_title.to_s.first(100),
         description: description_for(event),
-        scheduled_start_time: event.starts_at&.iso8601,
-        scheduled_end_time: (event.ends_at || event.starts_at + DEFAULT_DURATION)&.iso8601,
+        scheduled_start_time: effective_starts_at&.iso8601,
+        scheduled_end_time: effective_ends_at&.iso8601,
         privacy_level: PRIVACY_LEVEL_GUILD_ONLY
       }
 
@@ -85,8 +107,8 @@ module Discord
         payload[:entity_type] = ENTITY_TYPE_EXTERNAL
         payload[:channel_id] = nil
         payload[:entity_metadata] = {
-          location: event.meetup_location.presence ||
-            event.location.presence ||
+          location: effective_meetup_location.presence ||
+            effective_location.presence ||
             "Star Citizen"
         }
       end
@@ -100,6 +122,30 @@ module Discord
       end
 
       payload
+    end
+
+    private def effective_title = state&.title.presence || event.title
+    private def effective_location = state&.location.presence || event.location
+    private def effective_meetup_location = state&.meetup_location.presence || event.meetup_location
+
+    private def effective_starts_at
+      return event.starts_at unless occurrence_date
+
+      tz = event.timezone.presence || "UTC"
+      base = event.starts_at.in_time_zone(tz)
+      base.change(
+        year: occurrence_date.year,
+        month: occurrence_date.month,
+        day: occurrence_date.day
+      )
+    end
+
+    private def effective_ends_at
+      base = effective_starts_at
+      return nil if base.nil?
+
+      duration = event.ends_at ? (event.ends_at - event.starts_at) : DEFAULT_DURATION
+      base + duration
     end
 
     # Discord accepts cover images as base64 data URIs in the payload.
@@ -142,6 +188,7 @@ module Discord
     end
 
     private def cancelled?
+      return true if state&.cancelled?
       event.status == "cancelled"
     end
 
@@ -160,7 +207,8 @@ module Discord
 
     private def chip_line
       parts = ["🚩 #{host_chip}", "👥 #{confirmed_count} (+#{interested_count})"]
-      parts << "⏳ <t:#{event.starts_at.to_i}:R>" if event.starts_at
+      starts = effective_starts_at
+      parts << "⏳ <t:#{starts.to_i}:R>" if starts
       parts.join("  ·  ")
     end
 

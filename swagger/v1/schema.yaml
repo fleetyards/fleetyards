@@ -2140,6 +2140,72 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/events/{slug}/update-occurrence":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: Override fields on a single occurrence
+      operationId: updateFleetEventOccurrence
+      tags:
+      - Fleet Events
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventOccurrenceState"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                title:
+                  type: string
+                  nullable: true
+                description:
+                  type: string
+                  nullable: true
+                briefing:
+                  type: string
+                  nullable: true
+                location:
+                  type: string
+                  nullable: true
+                meetupLocation:
+                  type: string
+                  nullable: true
+                scenario:
+                  type: string
+                  nullable: true
+                coverImagePreset:
+                  type: string
+                  nullable: true
+              required:
+              - date
+        required: true
   "/fleets/find-by-invite/{token}":
     parameters:
     - name: token
@@ -11491,6 +11557,69 @@ components:
         - teams
         - unassignedSignups
       title: FleetEventExtended
+    FleetEventOccurrenceState:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetEventId:
+          type: string
+          format: uuid
+        occurrenceDate:
+          type: string
+          format: date
+        status:
+          type: string
+          nullable: true
+        lockedAt:
+          type: string
+          format: date-time
+          nullable: true
+        startingSoonNotifiedAt:
+          type: string
+          format: date-time
+          nullable: true
+        cancelledAt:
+          type: string
+          format: date-time
+          nullable: true
+        cancelledReason:
+          type: string
+          nullable: true
+        discordEventId:
+          type: string
+          nullable: true
+        discordSyncedAt:
+          type: string
+          format: date-time
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        briefing:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        meetupLocation:
+          type: string
+          nullable: true
+        scenario:
+          type: string
+          nullable: true
+        coverImagePreset:
+          type: string
+          nullable: true
+      required:
+      - id
+      - fleetEventId
+      - occurrenceDate
+      title: FleetEventOccurrenceState
     FleetEventShip:
       type: object
       properties:

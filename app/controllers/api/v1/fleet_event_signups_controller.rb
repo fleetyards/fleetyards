@@ -23,11 +23,18 @@ module Api
 
         target_status = requested_status_for(@slot.fleet_event, @slot, params[:status])
 
+        occurrence_date = parsed_occurrence_date(params[:occurrence_date])
+        if @slot.fleet_event.recurring? && occurrence_date.blank?
+          authorize! @slot.fleet_event, with: FleetEventPolicy, to: :show?
+          render json: {code: "missing_occurrence_date", message: "occurrence_date is required for recurring events"}, status: :unprocessable_entity
+          return
+        end
+
         # If the member already has an unassigned (interested/tentative) signup
-        # for this event, promote it onto this slot rather than creating a new
-        # one (which would fail unique-active-signup validation).
+        # for this event/occurrence, promote it onto this slot rather than
+        # creating a new one (which would fail unique-active-signup validation).
         existing = @slot.fleet_event.fleet_event_signups
-          .where(fleet_membership_id: @membership.id)
+          .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date)
           .where.not(status: "withdrawn")
           .first
 
@@ -64,7 +71,8 @@ module Api
           fleet_membership_id: @membership.id,
           status: target_status,
           vehicle_id: params[:vehicle_id],
-          notes: params[:notes]
+          notes: params[:notes],
+          occurrence_date: occurrence_date
         )
 
         authorize! @signup, with: FleetEventSignupPolicy, context: {fleet_event: @slot.fleet_event}

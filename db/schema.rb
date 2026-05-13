@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_13_110002) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_13_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -256,6 +256,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_110002) do
     t.index ["fleet_event_id", "user_id"], name: "index_fleet_event_admins_on_fleet_event_id_and_user_id", unique: true
     t.index ["fleet_event_id"], name: "index_fleet_event_admins_on_fleet_event_id"
     t.index ["user_id"], name: "index_fleet_event_admins_on_user_id"
+  end
+
+  create_table "fleet_event_occurrence_states", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "briefing"
+    t.datetime "cancelled_at"
+    t.text "cancelled_reason"
+    t.string "cover_image_preset"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "discord_event_id"
+    t.datetime "discord_synced_at"
+    t.uuid "fleet_event_id", null: false
+    t.string "location"
+    t.datetime "locked_at"
+    t.string "meetup_location"
+    t.date "occurrence_date", null: false
+    t.string "scenario"
+    t.datetime "starting_soon_notified_at"
+    t.string "status"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["fleet_event_id", "occurrence_date"], name: "idx_fleet_event_occurrence_states_on_event_and_date", unique: true
   end
 
   create_table "fleet_event_ships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1267,6 +1289,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_13_110002) do
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
   add_foreign_key "fleet_event_admins", "fleet_events"
   add_foreign_key "fleet_event_admins", "users"
+  add_foreign_key "fleet_event_occurrence_states", "fleet_events"
   add_foreign_key "fleet_event_ships", "fleet_event_teams"
   add_foreign_key "fleet_event_ships", "mission_ships", column: "source_ship_id", on_delete: :nullify
   add_foreign_key "fleet_event_ships", "models"

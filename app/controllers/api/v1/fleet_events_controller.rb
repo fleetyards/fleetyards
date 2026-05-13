@@ -13,11 +13,11 @@ module Api
         only: %i[index show ics]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series]
+        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series update_occurrence]
 
       before_action :check_mission_builder_feature
       before_action :set_fleet
-      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series]
+      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series update_occurrence]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -105,8 +105,56 @@ module Api
           return
         end
 
-        @fleet_event.skip_occurrence!(date)
+        parsed = Date.parse(date.to_s)
+        @fleet_event.skip_occurrence!(parsed)
+
+        # If this occurrence was previously pushed to Discord, drop the
+        # scheduled event there so members don't see an orphan.
+        state = @fleet_event.occurrence_state_for(parsed)
+        if state&.discord_event_id.present?
+          begin
+            ::Discord::ScheduledEventSync.new(@fleet_event, occurrence_date: parsed).delete!
+          rescue ::Discord::ApiClient::Error => e
+            Rails.logger.warn("[discord-sync] could not clean up scheduled event after skip: #{e.message}")
+          end
+        end
+
         render :show
+      end
+
+      # Update an individual occurrence of a recurring event. Override
+      # columns on the per-occurrence state row (title, description,
+      # location, etc) leave the parent event unchanged. Pass nil to clear
+      # a previously-set override and fall back to the event's value.
+      def update_occurrence
+        authorize! @fleet_event, to: :update?
+
+        unless @fleet_event.recurring?
+          render json: {code: "not_recurring", message: "Event is not recurring"}, status: :unprocessable_entity
+          return
+        end
+
+        date = params[:date].presence
+        if date.blank?
+          render json: {code: "missing_date", message: "date is required"}, status: :bad_request
+          return
+        end
+
+        parsed = Date.parse(date.to_s)
+        state = @fleet_event.occurrence_state_for(parsed, build: true)
+
+        attrs = params.permit(
+          :title, :description, :briefing,
+          :location, :meetup_location, :scenario, :cover_image_preset
+        ).to_h
+        state.assign_attributes(attrs)
+
+        if state.save
+          @occurrence_state = state
+          render :occurrence_state
+        else
+          render json: ValidationError.new("fleet_events.update_occurrence", errors: state.errors), status: :bad_request
+        end
       end
 
       def end_series
@@ -154,6 +202,8 @@ module Api
       # Manually push the event to Discord. Useful for events that were
       # already published before the fleet connected its Discord server,
       # since publish-time notifications already fired and won't be replayed.
+      DISCORD_SYNC_OCCURRENCE_COUNT = 4
+
       def sync_to_discord
         authorize! @fleet_event, to: :update?
 
@@ -163,7 +213,21 @@ module Api
           return
         end
 
-        sync.upsert!
+        if @fleet_event.recurring?
+          occurrences = @fleet_event
+            .occurrences(from: Time.current, to: 16.weeks.from_now)
+            .first(DISCORD_SYNC_OCCURRENCE_COUNT)
+
+          occurrences.each do |occurrence|
+            ::Discord::ScheduledEventSync.new(
+              @fleet_event,
+              occurrence_date: occurrence.to_date
+            ).upsert!
+          end
+        else
+          sync.upsert!
+        end
+
         render :show
       rescue ::Discord::ApiClient::Error => e
         render json: {code: "discord_error", message: e.message, status: e.status}, status: :bad_gateway
