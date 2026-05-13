@@ -67,6 +67,10 @@ const { defineField, handleSubmit, meta, setErrors } =
       maxAttendees: props.event.maxAttendees ?? null,
       autoLockEnabled: props.event.autoLockEnabled ?? true,
       autoLockMinutesBefore: props.event.autoLockMinutesBefore ?? 60,
+      recurring: props.event.recurring ?? false,
+      recurrenceInterval: (props.event.recurrenceInterval ?? "weekly") as never,
+      recurrenceUntil: props.event.recurrenceUntil ?? null,
+      recurrenceCount: props.event.recurrenceCount ?? null,
     },
     validationSchema,
   });
@@ -85,6 +89,25 @@ const [autoLockEnabled] = defineField("autoLockEnabled");
 const [autoLockMinutesBefore, autoLockMinutesBeforeProps] = defineField(
   "autoLockMinutesBefore",
 );
+const [recurring] = defineField("recurring");
+const [recurrenceInterval, recurrenceIntervalProps] =
+  defineField("recurrenceInterval");
+const [recurrenceUntil] = defineField("recurrenceUntil");
+const [recurrenceCount, recurrenceCountProps] = defineField("recurrenceCount");
+const recurrenceEndKind = ref<"never" | "until" | "count">(
+  props.event.recurrenceUntil
+    ? "until"
+    : props.event.recurrenceCount
+      ? "count"
+      : "never",
+);
+
+const recurrenceIntervalOptions = computed<FilterOption[]>(() => [
+  { value: "daily", label: t("labels.fleets.events.recurrence.daily") },
+  { value: "weekly", label: t("labels.fleets.events.recurrence.weekly") },
+  { value: "biweekly", label: t("labels.fleets.events.recurrence.biweekly") },
+  { value: "monthly", label: t("labels.fleets.events.recurrence.monthly") },
+]);
 
 const { suggestions: scenarioSuggestions } = useMissionScenarios();
 
@@ -137,6 +160,7 @@ watch(startsAt, (newStart) => {
 // Wrap the submit handler so payload values are correctly typed.
 const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
   handleSubmit((values, ctx) => {
+    const endKind = recurrenceEndKind.value;
     return cb(
       {
         ...values,
@@ -153,7 +177,19 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
           : null,
         location: values.location || undefined,
         meetupLocation: values.meetupLocation || undefined,
-      },
+        recurring: !!values.recurring,
+        recurrenceInterval: values.recurring
+          ? (values.recurrenceInterval as never)
+          : null,
+        recurrenceUntil:
+          values.recurring && endKind === "until"
+            ? (values.recurrenceUntil as never)
+            : null,
+        recurrenceCount:
+          values.recurring && endKind === "count"
+            ? Number(values.recurrenceCount || 0) || null
+            : null,
+      } as never,
       ctx,
     );
   });
@@ -303,5 +339,123 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
         />
       </div>
     </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-12">
+        <FormCheckbox
+          v-model="recurring"
+          name="recurring"
+          :label="t('labels.fleets.events.recurring')"
+        />
+        <p class="text-muted small">
+          {{ t("labels.fleets.events.recurringHint") }}
+        </p>
+      </div>
+    </div>
+
+    <template v-if="recurring">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <FilterGroup
+            v-model="recurrenceInterval"
+            v-bind="recurrenceIntervalProps"
+            :options="recurrenceIntervalOptions"
+            :label="t('labels.fleets.events.recurrenceInterval')"
+            name="recurrenceInterval"
+            :searchable="false"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <span class="text-muted small">
+            {{ t("labels.fleets.events.recurrenceEnd") }}
+          </span>
+          <div class="series-end">
+            <label class="series-end__option">
+              <input
+                v-model="recurrenceEndKind"
+                type="radio"
+                name="recurrenceEndKind"
+                value="never"
+              />
+              <span>{{ t("labels.fleets.events.recurrenceEndNever") }}</span>
+            </label>
+            <label class="series-end__option">
+              <input
+                v-model="recurrenceEndKind"
+                type="radio"
+                name="recurrenceEndKind"
+                value="until"
+              />
+              <span>{{ t("labels.fleets.events.recurrenceEndOn") }}</span>
+              <input
+                v-model="recurrenceUntil"
+                type="date"
+                :disabled="recurrenceEndKind !== 'until'"
+                class="series-end__input"
+              />
+            </label>
+            <label class="series-end__option">
+              <input
+                v-model="recurrenceEndKind"
+                type="radio"
+                name="recurrenceEndKind"
+                value="count"
+              />
+              <span>{{ t("labels.fleets.events.recurrenceEndAfter") }}</span>
+              <input
+                v-model.number="recurrenceCount"
+                v-bind="recurrenceCountProps"
+                type="number"
+                min="1"
+                :disabled="recurrenceEndKind !== 'count'"
+                class="series-end__input series-end__input--narrow"
+              />
+              <span>{{
+                t("labels.fleets.events.recurrenceEndOccurrences")
+              }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </template>
   </EventEditFormShell>
 </template>
+
+<style lang="scss" scoped>
+.series-end {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.series-end__option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.series-end__input {
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.85rem;
+
+  &:disabled {
+    opacity: 0.4;
+  }
+}
+.series-end__input--narrow {
+  width: 5rem;
+}
+.small {
+  font-size: 0.8rem;
+}
+</style>
