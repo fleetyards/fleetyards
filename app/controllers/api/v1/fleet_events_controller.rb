@@ -44,6 +44,19 @@ module Api
         authorize! @fleet_event
 
         @viewer_event_role = compute_viewer_event_role(@fleet_event)
+        @occurrence_date = parsed_show_occurrence_date
+        @occurrence_state =
+          if @occurrence_date
+            @fleet_event.occurrence_state_for(@occurrence_date)
+          end
+      end
+
+      private def parsed_show_occurrence_date
+        raw = params[:occurrence_date].presence || params[:occurrence].presence
+        return nil if raw.blank?
+        Date.parse(raw.to_s)
+      rescue ArgumentError, TypeError
+        nil
       end
 
       def create
