@@ -225,6 +225,8 @@ function cleanup(el: HTMLElement) {
 
   el.removeEventListener("mouseenter", state.showHandler);
   el.removeEventListener("mouseleave", state.hideHandler);
+  el.removeEventListener("pointerleave", state.hideHandler);
+  el.removeEventListener("click", state.hideHandler);
   el.removeEventListener("focus", state.showHandler);
   el.removeEventListener("blur", state.hideHandler);
 
@@ -253,6 +255,8 @@ const vTooltip: Directive = {
 
     el.addEventListener("mouseenter", state.showHandler);
     el.addEventListener("mouseleave", state.hideHandler);
+    el.addEventListener("pointerleave", state.hideHandler);
+    el.addEventListener("click", state.hideHandler);
     el.addEventListener("focus", state.showHandler);
     el.addEventListener("blur", state.hideHandler);
   },
