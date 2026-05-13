@@ -15,6 +15,7 @@ module V1
               id: {type: :string, format: :uuid},
               fleetEventId: {type: :string, format: :uuid},
               fleetEventSlotId: {type: :string, format: :uuid, nullable: true},
+              occurrenceDate: {type: :string, format: :date, nullable: true},
               status: {type: :string, enum: STATUSES},
               notes: {type: :string, nullable: true},
               confirmedAt: {type: :string, format: "date-time", nullable: true},

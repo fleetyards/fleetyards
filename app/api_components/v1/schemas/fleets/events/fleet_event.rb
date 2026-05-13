@@ -64,6 +64,20 @@ module V1
               discordEventId: {type: :string, nullable: true},
               discordSyncedAt: {type: :string, format: "date-time", nullable: true},
               discordConfigured: {type: :boolean},
+              recurring: {type: :boolean},
+              recurrenceInterval: {
+                type: :string,
+                enum: ::FleetEvent::RECURRENCE_INTERVALS,
+                nullable: true
+              },
+              recurrenceUntil: {type: :string, format: :date, nullable: true},
+              recurrenceCount: {type: :integer, nullable: true},
+              excludedDates: {
+                type: :array,
+                items: {type: :string, format: :date}
+              },
+              occurrenceDate: {type: :string, format: :date, nullable: true},
+              parentEventSlug: {type: :string, nullable: true},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
