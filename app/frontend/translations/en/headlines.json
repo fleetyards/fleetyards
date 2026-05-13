@@ -167,6 +167,7 @@
       "fleets": {
         "owners": "Owners",
         "add": "Create a new Fleet",
+        "calendarSubscription": "Calendar Subscription",
         "invites": "Fleet Invites",
         "inviteUrls": "Invite Urls",
         "members": {
@@ -190,6 +191,48 @@
           "withdrawal": "Withdrawal",
           "importCsv": "Import from CSV"
         },
+        "missions": {
+          "index": "Missions",
+          "create": "Create Mission",
+          "edit": "Edit Mission",
+          "editBasic": "Basic details",
+          "editDescription": "Description & cover",
+          "editTeams": "Teams & slots",
+          "teams": "Teams",
+          "ships": "Ships",
+          "slots": "Slots",
+          "addTeam": "Add Team",
+          "editTeam": "Edit Team",
+          "addShip": "Add Ship",
+          "editShip": "Edit Ship"
+        },
+        "events": {
+          "index": "Events",
+          "calendar": "Calendar",
+          "create": "Create Event",
+          "edit": "Edit Event",
+          "editBasic": "Basic details",
+          "editDescription": "Description & cover",
+          "editTeams": "Teams & slots",
+          "spawn": "Spawn Event",
+          "details": "Event Details",
+          "schedule": "Schedule",
+          "settings": "Settings",
+          "lifecycle": "Lifecycle",
+          "signupTitle": "Sign me up",
+          "yourSignup": "Your signup",
+          "spawnedFrom": "Spawned from this mission",
+          "pickTemplate": "Pick a Mission Template",
+          "unassignedSignups": "Unassigned signups",
+          "eventTeam": "Event team",
+          "grantRole": "Grant a role",
+          "editTeam": "Edit team",
+          "addTeam": "Add team",
+          "editShip": "Edit ship",
+          "addShip": "Add ship",
+          "assignSlotFor": "Assign slot for %{username}",
+          "reassignSlotFor": "Reassign slot for %{username}"
+        },
         "preview": {
           "h1": "Fleet Preview",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",
@@ -198,7 +241,11 @@
         "settings": {
           "fleet": "Fleet Settings",
           "membership": "Membership Settings",
-          "roles": "Fleet Roles"
+          "roles": "Fleet Roles",
+          "notifications": "Notification Settings",
+          "inAppNotifications": "In-app Notifications",
+          "discord": "Discord",
+          "calendar": "Calendar"
         },
         "inviteMember": "Invite new Member"
       },
@@ -217,6 +264,7 @@
         "connections": "Connections",
         "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
+        "calendar": "Calendar Subscription",
         "verify": "Verify your RSI Account",
         "security": {
           "index": "Account Security",

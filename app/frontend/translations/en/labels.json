@@ -5,8 +5,45 @@
       "false": "No",
       "null": "-",
       "and": "and",
+      "optional": "optional",
       "hide": "Hide",
       "show": "Show",
+      "notificationTypes": {
+        "channels": {
+          "app": "App",
+          "mail": "Mail",
+          "push": "Push"
+        },
+        "groups": {
+          "account": "Account & hangar",
+          "fleetMembership": "Fleet membership",
+          "fleetEvents": "Fleet events"
+        },
+        "hangar_create": "Hangar created",
+        "hangar_destroy": "Hangar removed",
+        "hangar_sync_finished": "Hangar sync finished",
+        "hangar_sync_failed": "Hangar sync failed",
+        "wishlist_create": "Added to wishlist",
+        "wishlist_destroy": "Removed from wishlist",
+        "model_on_sale": "Model on sale",
+        "new_model": "New model released",
+        "fleet_invite": "Fleet invite received",
+        "fleet_member_requested": "Membership requested",
+        "fleet_member_accepted": "Membership accepted",
+        "fleet_request_accepted": "Join request accepted",
+        "fleet_inventory_item_added": "Fleet inventory item added",
+        "fleet_event_published": "Event published",
+        "fleet_event_locked": "Event sign-ups locked",
+        "fleet_event_starting_soon": "Event starting soon",
+        "fleet_event_started": "Event started",
+        "fleet_event_completed": "Event completed",
+        "fleet_event_cancelled": "Event cancelled",
+        "fleet_event_signup_added": "New signup",
+        "fleet_event_signup_withdrawn": "Signup withdrawn",
+        "fleet_event_signup_confirmed": "Signup confirmed",
+        "fleet_event_signup_assigned": "Assigned to a slot",
+        "fleet_event_signup_kicked": "Removed from a slot"
+      },
       "only": "Only",
       "description": "Description",
       "unavailable": "unavailable",
@@ -267,12 +304,54 @@
         "name": "Name",
         "logo": "Logo",
         "rsiSid": "SID",
+        "calendarSubscription": {
+          "intro": "Generate a private link that members can use to subscribe to this fleet's events from their calendar app (Apple Calendar, Google Calendar, Outlook).",
+          "howTo": "Share the link above with your members. They paste it into their calendar app (\"Subscribe to calendar\" or \"Add by URL\"). The link is private — anyone with it can see this fleet's events."
+        },
+        "notifications": {
+          "inAppHeading": "In-app Notifications",
+          "inAppHint": "Pick which event lifecycle changes show up as in-app notifications for fleet members.",
+          "events": {
+            "fleet_event": {
+              "published": "Event published",
+              "locked": "Sign-ups locked",
+              "unlocked": "Sign-ups reopened",
+              "starting_soon": "Event starting soon",
+              "started": "Event started",
+              "completed": "Event completed",
+              "cancelled": "Event cancelled",
+              "archived": "Event archived",
+              "destroyed": "Event deleted"
+            },
+            "fleet_event_signup": {
+              "created": "Signup added",
+              "withdrawn": "Signup withdrawn"
+            }
+          }
+        },
+        "discord": {
+          "url": "Discord Server",
+          "hint": "Connect a Discord server to mirror events as native scheduled events. Members can RSVP from Discord and the sign-up will sync back to Fleetyards.",
+          "guildId": "Discord Server ID",
+          "channelId": "Voice Channel ID (optional)",
+          "webhookUrl": "Announcement Webhook URL (optional)",
+          "installBotHint": "Opens the Discord install page in a new tab — pick the server you want events mirrored to.",
+          "statusOk": "Connected to %{name}",
+          "statusCodes": {
+            "missing_token": "The Fleetyards bot is not configured on the server side. Contact an administrator.",
+            "missing_guild": "Enter a Discord server ID first.",
+            "invalid_token": "The bot token is invalid. Contact an administrator.",
+            "bot_not_in_guild": "The bot is not in this server. Use the install link to add it.",
+            "guild_not_found": "Discord doesn't recognize this server ID. Double-check the value.",
+            "discord_error": "Discord returned an unexpected error.",
+            "request_failed": "Could not reach Fleetyards. Try again."
+          }
+        },
         "description": "Description",
         "public": "Public Fleetview",
         "publicFleet": "Public Fleet",
         "publicStats": "Public Stats",
         "publicFleetStats": "Public Fleet Stats",
-        "discord": "Discord Server",
         "guilded": "Guilded Server",
         "homepage": "Homepage",
         "twitch": "Twitch Channel",
@@ -325,7 +404,10 @@
             "invites": "Invites",
             "vehicles": "Vehicles",
             "roles": "Roles",
-            "inventories": "Inventories"
+            "inventories": "Inventories",
+            "missions": "Missions",
+            "events": "Events",
+            "notifications": "Notifications"
           },
           "privileges": {
             "fleet:update": "Update Fleet",
@@ -356,7 +438,18 @@
             "fleet:inventories:create": "Create Inventories",
             "fleet:inventories:update": "Update Inventories",
             "fleet:inventories:delete": "Delete Inventories",
-            "fleet:inventories:manage": "Manage Inventories"
+            "fleet:inventories:manage": "Manage Inventories",
+            "fleet:missions:read": "View Missions",
+            "fleet:missions:create": "Create Missions",
+            "fleet:missions:update": "Update Missions",
+            "fleet:missions:delete": "Delete Missions",
+            "fleet:missions:manage": "Manage Missions",
+            "fleet:events:read": "View Events",
+            "fleet:events:create": "Create Events",
+            "fleet:events:update": "Update Events",
+            "fleet:events:delete": "Delete Events",
+            "fleet:events:manage": "Manage Events",
+            "fleet:notifications:manage": "Manage Notification Settings"
           }
         },
         "inviteUrls": {
@@ -808,7 +901,14 @@
         "publicWishlist": "Public Wishlist enabled",
         "hideOwner": "Hide Ownership for Fleets",
         "lastActiveAt": "Last Active",
-        "confirmedAt": "Confirmed at"
+        "confirmedAt": "Confirmed at",
+        "dateFormat": "Date format",
+        "dateFormats": {
+          "dmy_dots": "31.12.2026",
+          "dmy_slash": "31/12/2026",
+          "mdy_slash": "12/31/2026",
+          "ymd_dash": "2026-12-31"
+        }
       },
       "adminUser": {
         "superAdmin": "Super Admin",
@@ -881,7 +981,11 @@
       "all": "All",
       "supportUs": "Support FleetYards.net",
       "account": {
-        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted."
+        "destroyInfo": "If you want to delete Your Account and remove all your Information from Fleetyards.net and its Services click the Button below. Be aware of that this is a permanent Action and can't be reverted.",
+        "calendarSubscription": {
+          "intro": "Generate a private link to add the events you've signed up for to your personal calendar app (Apple Calendar, Google Calendar, Outlook).",
+          "howTo": "Paste the link into your calendar app under \"Subscribe to calendar\" or \"Add by URL\". Anyone with this link can see the events you're signed up for — keep it private."
+        }
       },
       "fleets": {
         "logistics": {
@@ -977,6 +1081,194 @@
           "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
           "imported": "items imported",
           "importErrors": "errors"
+        },
+        "missions": {
+          "title": "Title",
+          "description": "Description",
+          "team": "Team",
+          "teams": "Teams",
+          "ship": "Ship",
+          "ships": "Ships",
+          "slot": "Slot",
+          "slots": "Slots",
+          "noMissions": "No missions yet.",
+          "noTeams": "No teams added yet.",
+          "noShips": "No ships added yet.",
+          "noSlots": "No slots added yet.",
+          "archivedTab": "Archived",
+          "activeTab": "Active",
+          "archived": "Archived",
+          "modelSpecific": "Specific Ship",
+          "filterRange": "Filter Range",
+          "classification": "Classification",
+          "focus": "Focus",
+          "minSize": "Min Size",
+          "maxSize": "Max Size",
+          "minCrew": "Min Crew",
+          "minCrewOverride": "Override",
+          "minCrewOverrideLabel": "Min Crew Override",
+          "minCrewOverrideHint": "Leave empty to use the ship's default min crew.",
+          "minCargo": "Min Cargo (SCU)",
+          "shipFilters": "Ship Filters",
+          "createdBy": "Created by",
+          "seats": "Seats",
+          "category": "Category",
+          "coverImage": "Cover Image",
+          "coverPresets": "Pick from examples",
+          "scenario": "Scenario",
+          "categories": {
+            "other": "Other",
+            "ship_combat": "Ship Combat",
+            "ground_combat": "Ground Combat",
+            "combined_combat": "Combined Combat",
+            "mining": "Mining",
+            "salvage": "Salvage",
+            "cargo_hauling": "Cargo Hauling",
+            "exploration": "Exploration"
+          }
+        },
+        "events": {
+          "title": "Title",
+          "description": "Description",
+          "briefing": "Briefing",
+          "startsAt": "Starts at",
+          "endsAt": "Ends at",
+          "timezone": "Timezone",
+          "location": "Event location",
+          "meetupLocation": "Meetup location",
+          "visibility": "Visibility",
+          "maxAttendees": "Max attendees",
+          "maxAttendeesValue": "Max %{count} attendees",
+          "autoLockEnabled": "Auto-lock signups",
+          "autoLockMinutesBefore": "Lock minutes before start",
+          "recurring": "Repeats",
+          "recurringHint": "Generate this event automatically on a recurring schedule. Members sign up per occurrence.",
+          "recurringSummary": "Repeats %{interval}",
+          "recurringUntil": "Repeats %{interval} until %{date}",
+          "recurringForCount": "Repeats %{interval} (%{count} occurrences)",
+          "viewSeries": "View series",
+          "recurrenceInterval": "Repeat every",
+          "recurrenceEnd": "Ends",
+          "recurrenceEndNever": "Never",
+          "recurrenceEndOn": "On date",
+          "recurrenceEndAfter": "After",
+          "recurrenceEndOccurrences": "occurrences",
+          "recurrence": {
+            "daily": "daily",
+            "weekly": "weekly",
+            "biweekly": "every two weeks",
+            "monthly": "monthly"
+          },
+          "occurrencesSection": "Upcoming occurrences",
+          "skipOccurrence": "Skip this occurrence",
+          "overrideOccurrence": "Override occurrence on %{date}",
+          "overrideOccurrenceShort": "Edit this one",
+          "overrideOccurrenceHint": "Override fields for this single occurrence. Leave blank to inherit from the recurring event.",
+          "endSeriesHere": "Stop here and going forward",
+          "excludedBadge": "Skipped",
+          "noUpcomingOccurrences": "No upcoming occurrences in the next 12 weeks.",
+          "endSeriesConfirm": "Stop the recurrence after this date? Future occurrences won't be generated.",
+          "skipOccurrenceSuccess": "Occurrence skipped.",
+          "endSeriesSuccess": "Series ended from this date forward.",
+          "cancelledReason": "Cancellation reason",
+          "noEvents": "No events yet.",
+          "noUpcoming": "No upcoming events.",
+          "noPast": "No past events.",
+          "createdBy": "Created by",
+          "signups": "Signups",
+          "signupsCount": "%{count} signups",
+          "signupYou": "You",
+          "youAreHere": "You're here",
+          "attendance": "Attendance",
+          "signupsLockedHint": "Sign-ups are locked for this event.",
+          "noOverview": "No description or briefing yet.",
+          "alreadySignedUpHint": "You're already signed up to a different slot. Withdraw first to switch.",
+          "slotTakenHint": "This slot is already taken.",
+          "currentSlot": "Current slot",
+          "currentSlotHint": "This is the slot the signup is currently in.",
+          "takenBy": "Taken by %{username}",
+          "slotPickerHint": "Pick a slot for this signup. Slots that are already taken or unavailable are disabled.",
+          "signupCtaHint": "Sign up to the event — you can pick a specific slot now or let an admin assign you later.",
+          "noSlotYet": "No slot yet",
+          "signupApproval": "Signup approval",
+          "signupApprovalInherit": "Inherit from event",
+          "signupStatuses": {
+            "confirmed": "Confirmed",
+            "tentative": "Tentative",
+            "interested": "Interested",
+            "pending": "Pending approval",
+            "withdrawn": "Withdrawn"
+          },
+          "signupApprovals": {
+            "direct": "Direct",
+            "confirmation_required": "Needs confirmation"
+          },
+          "unassignedSignupsHint": "These members signed up to the event but don't have a slot yet. Assign them below or remove the signup.",
+          "taken": "Taken",
+          "grantedRoles": "Granted roles",
+          "noEventAdminsYet": "No additional admins or moderators yet.",
+          "creator": "Event creator",
+          "eventTeamHint": "Grant other members admin or moderator rights for this event. Admins can edit it, moderators can manage signups.",
+          "eventRole": "Role",
+          "eventRoles": {
+            "admin": "Admin",
+            "moderator": "Moderator"
+          },
+          "memberPicker": "Member",
+          "spawnedFromMission": "Spawned from mission",
+          "spawnedEvents": "Spawned events",
+          "fromMission": "From mission",
+          "pickTemplate": "Pick a template",
+          "pickTemplateHint": "Optionally start from a mission template — fields will be pre-filled and the event will be linked back.",
+          "noTemplate": "No template",
+          "noTemplateHint": "Build the event from scratch.",
+          "changeTemplate": "Change template",
+          "clearTemplate": "Clear template",
+          "freeSlot": "Open slot",
+          "myVehicle": "My vehicle",
+          "selectVehicle": "Select a vehicle (optional)",
+          "vehicleMismatchHint": "The selected vehicle doesn't match this slot's requirements.",
+          "noFittingInHangar": "Nothing in your hangar fits this slot. You can still sign up by leaving the vehicle empty.",
+          "vehicleFitsHint": "Bringing a vehicle that fits this ship.",
+          "noMatchingVehicle": "No signup brings a fitting vehicle.",
+          "shipNotCrewedYet": "No fitting signup yet.",
+          "expandHint": "%{model} has %{count} more seat(s). Add slots so others can fill them?",
+          "notes": "Notes",
+          "upcomingTab": "Upcoming",
+          "pastTab": "Past",
+          "archivedTab": "Archived",
+          "listTab": "List",
+          "calendarTab": "Calendar",
+          "openInCalendar": "Subscribe (.ics)",
+          "openInCalendarHint": "Add this URL to your calendar app to keep events in sync.",
+          "rotateFeedToken": "Rotate feed link",
+          "subscribeHint": "Copies the calendar feed URL to your clipboard so you can paste it into your calendar app.",
+          "visibilities": {
+            "members": "Members",
+            "officers": "Officers",
+            "fleet": "Public"
+          },
+          "statuses": {
+            "draft": "Draft",
+            "open": "Open for sign-ups",
+            "locked": "Sign-ups locked",
+            "active": "Live",
+            "completed": "Completed",
+            "cancelled": "Cancelled",
+            "past": "Past"
+          },
+          "tabs": {
+            "basic": "Basic info",
+            "description": "Description & cover",
+            "teams": "Teams & ships",
+            "overview": "Overview",
+            "settings": "Settings"
+          },
+          "calendar": {
+            "month": "Month",
+            "week": "Week",
+            "weekTitle": "Week of %{date}"
+          }
         }
       },
       "filters": {

@@ -105,6 +105,18 @@ $nav-transition-speed: 0.3s;
         }
       }
     }
+
+    &.has-errors > a::after {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-left: 6px;
+      border-radius: 50%;
+      background-color: darken(red, 5%);
+      box-shadow: 0 0 4px rgba(red, 0.6);
+      vertical-align: middle;
+    }
   }
 
   div:last-child > & {

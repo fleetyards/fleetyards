@@ -188,6 +188,22 @@
         "destroy": {
           "success": "<b>Your Account has been destroyed.</b> <br>Sad to see you go :'(",
           "failure": "We could not destroy your Account! Please try again later."
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Personal calendar subscription enabled.",
+            "failure": "Could not enable calendar subscription."
+          },
+          "rotate": {
+            "success": "Personal calendar link rotated. Existing subscribers will stop receiving updates until they re-subscribe.",
+            "failure": "Could not rotate personal calendar link.",
+            "confirm": "Rotating the link will silently invalidate any calendar app subscribed to the current URL. You'll need to re-subscribe with the new link."
+          },
+          "disable": {
+            "success": "Personal calendar subscription disabled.",
+            "failure": "Could not disable personal calendar subscription.",
+            "confirm": "Disabling the subscription will kill the feed for any calendar app currently subscribed."
+          }
         }
       },
       "fleet": {
@@ -202,6 +218,26 @@
         "destroy": {
           "success": "Your Fleet has been destroyed.",
           "failure": "We could not destroy your Fleet."
+        },
+        "calendarSubscription": {
+          "enable": {
+            "success": "Calendar subscription enabled.",
+            "failure": "Could not enable calendar subscription."
+          },
+          "rotate": {
+            "success": "Subscription link rotated. Existing subscribers will stop receiving updates until they re-subscribe.",
+            "failure": "Could not rotate subscription link.",
+            "confirm": "Rotating the link will silently invalidate any calendar app subscribed to the current URL. They'll need to re-subscribe with the new link."
+          },
+          "disable": {
+            "success": "Calendar subscription disabled.",
+            "failure": "Could not disable calendar subscription.",
+            "confirm": "Disabling the subscription will kill the feed for any calendar app currently subscribed."
+          },
+          "copy": {
+            "success": "Calendar link copied. Paste it into your calendar app under \"Subscribe to calendar\" or \"Add by URL\".",
+            "failure": "Could not copy calendar link."
+          }
         },
         "leave": {
           "success": "You have left the Fleet.",
@@ -248,6 +284,12 @@
         }
       },
       "fleets": {
+        "notifications": {
+          "update": {
+            "success": "Notification settings saved.",
+            "failure": "Could not save notification settings."
+          }
+        },
         "logistics": {
           "request": {
             "create": {
@@ -288,6 +330,203 @@
           "csvImport": {
             "success": "%{count} items imported successfully.",
             "failure": "Could not import CSV file."
+          }
+        },
+        "mission": {
+          "create": {
+            "success": "Mission created.",
+            "failure": "Could not create mission."
+          },
+          "update": {
+            "success": "Mission updated.",
+            "failure": "Could not update mission."
+          },
+          "archive": {
+            "success": "Mission archived.",
+            "failure": "Could not archive mission."
+          },
+          "unarchive": {
+            "success": "Mission restored.",
+            "failure": "Could not restore mission."
+          },
+          "destroy": {
+            "success": "Mission deleted.",
+            "failure": "Could not delete mission.",
+            "confirm": "This will permanently delete the mission and all its teams, ships, and slots. This action cannot be undone."
+          }
+        },
+        "missionTeam": {
+          "create": {
+            "success": "Team added.",
+            "failure": "Could not add team."
+          },
+          "update": {
+            "success": "Team updated.",
+            "failure": "Could not update team."
+          },
+          "destroy": {
+            "success": "Team removed.",
+            "failure": "Could not remove team."
+          }
+        },
+        "missionShip": {
+          "create": {
+            "success": "Ship added.",
+            "failure": "Could not add ship."
+          },
+          "update": {
+            "success": "Ship updated.",
+            "failure": "Could not update ship."
+          },
+          "destroy": {
+            "success": "Ship removed.",
+            "failure": "Could not remove ship."
+          }
+        },
+        "missionSlot": {
+          "create": {
+            "success": "Slot added.",
+            "failure": "Could not add slot."
+          },
+          "update": {
+            "success": "Slot updated.",
+            "failure": "Could not update slot."
+          },
+          "destroy": {
+            "success": "Slot removed.",
+            "failure": "Could not remove slot."
+          }
+        },
+        "event": {
+          "create": {
+            "success": "Event created.",
+            "failure": "Could not create event."
+          },
+          "update": {
+            "success": "Event updated.",
+            "failure": "Could not update event."
+          },
+          "archive": {
+            "success": "Event archived.",
+            "failure": "Could not archive event.",
+            "confirm": "Archive this event? Members will no longer see it in the upcoming list."
+          },
+          "unarchive": {
+            "success": "Event restored from archive.",
+            "failure": "Could not restore event."
+          },
+          "syncToDiscord": {
+            "success": "Event pushed to Discord.",
+            "failure": "Could not push event to Discord."
+          },
+          "destroy": {
+            "success": "Event deleted.",
+            "failure": "Could not delete event.",
+            "confirm": "This will permanently delete the event. This action cannot be undone."
+          },
+          "publish": {
+            "success": "Event published — sign-ups are now open.",
+            "failure": "Could not publish event."
+          },
+          "lockSignups": {
+            "success": "Sign-ups locked.",
+            "failure": "Could not lock sign-ups."
+          },
+          "unlockSignups": {
+            "success": "Sign-ups reopened.",
+            "failure": "Could not reopen sign-ups."
+          },
+          "start": {
+            "success": "Event started.",
+            "failure": "Could not start event."
+          },
+          "complete": {
+            "success": "Event marked as completed.",
+            "failure": "Could not complete event."
+          },
+          "cancel": {
+            "success": "Event cancelled.",
+            "failure": "Could not cancel event.",
+            "confirm": "Cancel this event? Participants will be notified."
+          }
+        },
+        "eventSignup": {
+          "create": {
+            "success": "You're signed up.",
+            "failure": "Could not sign up."
+          },
+          "update": {
+            "success": "Signup updated.",
+            "failure": "Could not update signup."
+          },
+          "withdraw": {
+            "success": "You withdrew from the event.",
+            "failure": "Could not withdraw.",
+            "confirm": "Withdraw from this event?"
+          },
+          "kick": {
+            "success": "Signup removed.",
+            "failure": "Could not remove signup.",
+            "confirm": "Remove this member's signup?"
+          }
+        },
+        "eventAdmin": {
+          "create": {
+            "success": "Role granted.",
+            "failure": "Could not grant role."
+          },
+          "destroy": {
+            "success": "Role revoked.",
+            "failure": "Could not revoke role.",
+            "confirm": "Revoke %{username}'s role for this event?"
+          }
+        },
+        "eventTeam": {
+          "create": {
+            "success": "Team added.",
+            "failure": "Could not add team."
+          },
+          "update": {
+            "success": "Team updated.",
+            "failure": "Could not update team."
+          },
+          "destroy": {
+            "success": "Team removed.",
+            "failure": "Could not remove team.",
+            "confirm": "Remove this team and all its ships and slots?"
+          }
+        },
+        "eventShip": {
+          "create": {
+            "success": "Ship added.",
+            "failure": "Could not add ship."
+          },
+          "update": {
+            "success": "Ship updated.",
+            "failure": "Could not update ship."
+          },
+          "destroy": {
+            "success": "Ship removed.",
+            "failure": "Could not remove ship.",
+            "confirm": "Remove this ship and its slots?"
+          },
+          "expand": {
+            "success": "Slots added.",
+            "failure": "Could not add slots."
+          }
+        },
+        "eventSlot": {
+          "create": {
+            "success": "Slot added.",
+            "failure": "Could not add slot."
+          },
+          "update": {
+            "success": "Slot updated.",
+            "failure": "Could not update slot."
+          },
+          "destroy": {
+            "success": "Slot removed.",
+            "failure": "Could not remove slot."
           }
         }
       },

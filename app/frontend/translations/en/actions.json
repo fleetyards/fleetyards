@@ -16,6 +16,13 @@
       "groupedByModel": "Grouped by Model",
       "ungrouped": "Ungrouped",
       "destroyAccount": "Destroy Account",
+      "account": {
+        "calendarSubscription": {
+          "enable": "Generate personal calendar link",
+          "rotate": "Rotate link",
+          "disable": "Disable subscription"
+        }
+      },
       "saveScreenshot": "Save as PNG",
       "resolve": "Resolve",
       "verify": "Verify",
@@ -60,6 +67,7 @@
       "change": "Change",
       "upload": "Upload",
       "save": "Save",
+      "today": "Today",
       "enable": "Enable",
       "disable": "Disable",
       "manage": "Manage",
@@ -166,6 +174,15 @@
       "fleet": {
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",
+        "discord": {
+          "test": "Test Discord connection",
+          "installBot": "Install the Fleetyards bot in your Discord server"
+        },
+        "calendarSubscription": {
+          "enable": "Generate subscription link",
+          "rotate": "Rotate link",
+          "disable": "Disable subscription"
+        },
         "createInviteUrl": "Create Invite Urls",
         "inviteMember": "Invite new Member",
         "manageInvites": "Invites",
@@ -208,6 +225,50 @@
           "createItem": "Add Item",
           "importCsv": "Import CSV",
           "downloadTemplate": "Download Template"
+        },
+        "missions": {
+          "create": "Create Mission",
+          "edit": "Edit Mission",
+          "archive": "Archive Mission",
+          "unarchive": "Unarchive",
+          "destroy": "Delete Permanently",
+          "addTeam": "Add Team",
+          "addShip": "Add Ship",
+          "addSlot": "Add Slot",
+          "viewMissions": "View Missions"
+        },
+        "events": {
+          "create": "Create Event",
+          "edit": "Edit Event",
+          "spawn": "Spawn from this Mission",
+          "archive": "Archive Event",
+          "unarchive": "Restore from archive",
+          "syncToDiscord": "Sync to Discord",
+          "destroy": "Delete Permanently",
+          "publish": "Publish",
+          "lockSignups": "Lock signups",
+          "unlockSignups": "Unlock signups",
+          "start": "Start",
+          "complete": "Complete",
+          "cancel": "Cancel",
+          "signup": "Sign up",
+          "withdraw": "Withdraw",
+          "kick": "Remove signup",
+          "viewEvents": "View Events",
+          "viewCalendar": "View Calendar",
+          "exportIcs": "Export iCal",
+          "addToCalendar": "Add to calendar",
+          "subscribe": "Subscribe",
+          "setUpCalendar": "Set up calendar subscriptions",
+          "assignSlot": "Assign to slot",
+          "reassignSlot": "Move to another slot",
+          "addSeats": "Add seats",
+          "manageEventTeam": "Manage event team",
+          "grantRole": "Grant role",
+          "revokeRole": "Revoke",
+          "editSchedule": "Edit teams & ships",
+          "doneEditing": "Done editing",
+          "addTeam": "Add team"
         }
       },
       "model": {

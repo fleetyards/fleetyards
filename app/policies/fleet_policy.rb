@@ -33,6 +33,10 @@ class FleetPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:delete"])
   end
 
+  def manage_calendar?
+    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:events:manage"])
+  end
+
   relation_scope do |relation|
     relation.where(id: user.fleet_ids)
   end

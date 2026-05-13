@@ -5,6 +5,7 @@
 # Table name: users
 #
 #  id                        :uuid             not null, primary key
+#  calendar_feed_token       :string
 #  confirmation_sent_at      :datetime
 #  confirmation_token        :string(255)
 #  confirmed_at              :datetime
@@ -13,6 +14,7 @@
 #  current_sign_in_ip        :string(255)
 #  current_system            :string
 #  current_system_code       :string
+#  date_format               :string           default("dmy_dots"), not null
 #  discord                   :string
 #  email                     :string(255)      default(""), not null
 #  encrypted_otp_secret      :string
@@ -63,6 +65,7 @@
 #
 # Indexes
 #
+#  index_users_on_calendar_feed_token   (calendar_feed_token) UNIQUE
 #  index_users_on_confirmation_token    (confirmation_token) UNIQUE
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_normalized_username   (normalized_username)

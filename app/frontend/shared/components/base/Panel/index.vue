@@ -17,6 +17,7 @@ import {
   PanelBgAlignmentsEnum,
   PanelBgRoundedEnum,
   PanelBgColorsEnum,
+  PanelBgOverlayDirectionEnum,
 } from "@/shared/components/base/Panel/types";
 
 type Props = {
@@ -25,6 +26,7 @@ type Props = {
   bgImage?: string;
   bgColor?: PanelBgColorsEnum;
   bgOverlay?: boolean;
+  bgOverlayDirection?: PanelBgOverlayDirectionEnum;
   bgRounded?: PanelBgRoundedEnum;
   animated?: boolean;
   highlight?: boolean;
@@ -44,6 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
   bgImage: undefined,
   bgColor: PanelBgColorsEnum.DEFAULT,
   bgOverlay: false,
+  bgOverlayDirection: PanelBgOverlayDirectionEnum.TOP,
   bgRounded: PanelBgRoundedEnum.ALL,
   animated: false,
   highlight: false,
@@ -56,6 +59,13 @@ const props = withDefaults(defineProps<Props>(), {
   to: undefined,
   variant: PanelVariantsEnum.DEFAULT,
 });
+
+const slots = useSlots();
+const hasHero = computed(() => !!slots.hero);
+
+const overlayDirectionClass = computed(
+  () => `panel-bg-overlay--direction-${props.bgOverlayDirection}`,
+);
 
 const variantClass = computed(() => `panel-wrapper--${props.variant}`);
 
@@ -92,13 +102,35 @@ const transparencyClass = computed(
         }"
         class="panel-inner"
       >
-        <PanelBgImage
-          v-if="bgImage"
-          :image="bgImage"
-          :rounded="bgRounded"
-          :alignment="bgAlign"
-        />
-        <div v-if="bgImage && bgOverlay" class="panel-bg-overlay" />
+        <div v-if="hasHero" class="panel-hero">
+          <PanelBgImage
+            v-if="bgImage"
+            :image="bgImage"
+            :rounded="PanelBgRoundedEnum.TOP"
+            :alignment="bgAlign"
+          />
+          <div
+            v-if="bgImage && bgOverlay"
+            class="panel-bg-overlay panel-bg-overlay--hero"
+            :class="overlayDirectionClass"
+          />
+          <div class="panel-hero__content">
+            <slot name="hero" />
+          </div>
+        </div>
+        <template v-else>
+          <PanelBgImage
+            v-if="bgImage"
+            :image="bgImage"
+            :rounded="bgRounded"
+            :alignment="bgAlign"
+          />
+          <div
+            v-if="bgImage && bgOverlay"
+            class="panel-bg-overlay"
+            :class="overlayDirectionClass"
+          />
+        </template>
         <PanelShadow v-if="shadow" :alignment="shadow" />
         <PanelLink v-if="to && linkLabel" :to="to" :label="linkLabel" />
         <slot name="default" />

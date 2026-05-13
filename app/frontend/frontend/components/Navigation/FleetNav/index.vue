@@ -72,6 +72,35 @@ const hasLogisticsAccess = computed(() => {
   );
 });
 
+const hasMissionsAccess = computed(() => {
+  const access = membership.value?.fleetRole?.resourceAccess;
+  if (!access) return false;
+  return access.some((a: string) =>
+    ["fleet:manage", "fleet:missions:manage", "fleet:missions:read"].includes(
+      a,
+    ),
+  );
+});
+
+const hasEventsAccess = computed(() => {
+  const access = membership.value?.fleetRole?.resourceAccess;
+  if (!access) return false;
+  return access.some((a: string) =>
+    ["fleet:manage", "fleet:events:manage", "fleet:events:read"].includes(a),
+  );
+});
+
+const eventsNavActive = computed(() => {
+  const name = String(route.name ?? "");
+  if (name.startsWith("fleet-event") || name.startsWith("fleet-mission")) {
+    return true;
+  }
+  if (name === "fleet-calendar") return true;
+
+  const path = route.path || "";
+  return /\/fleets\/[^/]+\/(events|missions|calendar)/.test(path);
+});
+
 const comlink = useComlink();
 
 onMounted(() => {
@@ -130,11 +159,25 @@ onMounted(() => {
           prefix="04"
         />
         <NavItem
+          v-if="
+            (hasEventsAccess || hasMissionsAccess) &&
+            isFeatureEnabled('mission_builder')
+          "
+          :to="{
+            name: 'fleet-events',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.events.index')"
+          :active="eventsNavActive"
+          icon="fa-duotone fa-calendar-day"
+          prefix="05"
+        />
+        <NavItem
           :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
           :label="t('nav.fleets.settings.index')"
           :active="String(route.name).startsWith('fleet-settings')"
           icon="fa-duotone fa-cogs"
-          prefix="05"
+          prefix="06"
         />
       </template>
     </template>

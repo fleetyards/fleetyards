@@ -52,6 +52,18 @@ module Frontend
       render_frontend
     end
 
+    def event
+      fleet_for_event = Fleet.find_by(slug: (params[:fleet_slug] || "").downcase)
+      fleet_event = fleet_for_event&.fleet_events&.find_by(slug: params[:event_slug])
+      if fleet_event.present?
+        @title = fleet_event.title
+        @og_type = "article"
+        @og_image = fleet_event.cover_image.attached? ? rails_blob_url(fleet_event.cover_image) : nil
+      end
+
+      render_frontend
+    end
+
     private def render_frontend
       respond_to do |format|
         format.html do

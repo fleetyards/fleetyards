@@ -55,11 +55,35 @@
           "index": "%{fleet} Logistics",
           "inventories": "%{fleet} Inventories"
         },
+        "missions": {
+          "index": "%{fleet} Missions",
+          "create": "Create Mission - %{fleet}",
+          "edit": {
+            "basic": "Edit Mission - %{fleet}",
+            "description": "Edit Description - %{fleet}",
+            "teams": "Edit Teams & Slots - %{fleet}"
+          },
+          "show": "%{fleet} Mission"
+        },
+        "events": {
+          "index": "%{fleet} Events",
+          "calendar": "%{fleet} Calendar",
+          "create": "Create Event - %{fleet}",
+          "edit": {
+            "basic": "Edit Event - %{fleet}",
+            "description": "Edit Description - %{fleet}",
+            "teams": "Edit Teams & Slots - %{fleet}"
+          },
+          "show": "%{fleet} Event"
+        },
         "settings": {
           "index": "%{fleet} Settings",
           "fleet": "%{fleet} Settings",
           "membership": "%{fleet} Membership",
-          "roles": "%{fleet} Roles"
+          "roles": "%{fleet} Roles",
+          "notifications": "%{fleet} Notification Settings",
+          "discord": "%{fleet} Discord Settings",
+          "calendar": "%{fleet} Calendar Settings"
         }
       },
       "roadmap": {
@@ -76,6 +100,7 @@
         "connections": "Connections",
         "oauthApplications": "OAuth Applications",
         "notifications": "Notification Settings",
+        "calendar": "Calendar Subscription",
         "security": "Account Security",
         "twoFactor": {
           "enable": "Enable Two-factor Authentiation",

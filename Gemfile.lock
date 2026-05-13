@@ -198,6 +198,13 @@ GEM
       rotp (~> 6.0)
     didkit (0.3.3)
     diff-lcs (1.6.2)
+    discordrb (3.7.2)
+      base64 (~> 0.2)
+      discordrb-webhooks (~> 3.7.2)
+      ffi (>= 1.9.24)
+      opus-ruby
+      rest-client (>= 2.0.0)
+      websocket-client-simple (>= 0.9.0)
     discordrb-webhooks (3.7.2)
       rest-client (>= 2.0.0)
     docile (1.4.1)
@@ -229,6 +236,7 @@ GEM
     ethon (0.18.0)
       ffi (>= 1.15.0)
       logger
+    event_emitter (0.2.6)
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
@@ -529,6 +537,8 @@ GEM
       webfinger (~> 2.0)
     openssl (4.0.1)
     options (2.3.2)
+    opus-ruby (1.0.1)
+      ffi
     orm_adapter (0.5.0)
     ostruct (0.6.3)
     paper_trail (17.0.0)
@@ -859,6 +869,12 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
+    websocket (1.2.11)
+    websocket-client-simple (0.9.0)
+      base64
+      event_emitter
+      mutex_m
+      websocket
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
@@ -900,6 +916,7 @@ DEPENDENCIES
   deep_merge
   devise
   devise-two-factor
+  discordrb
   discordrb-webhooks
   doorkeeper (~> 5.6)
   doorkeeper-jwt

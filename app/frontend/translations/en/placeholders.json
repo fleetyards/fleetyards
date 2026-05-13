@@ -18,6 +18,25 @@
       "distance": "Distance",
       "guilded": "Guilded Server",
       "color": "Color",
+      "title": "Title",
+      "classification": "Combat, Industrial, Multi-Role...",
+      "focus": "Light Fighter, Mining, Cargo...",
+      "minSize": "snub, small, medium...",
+      "maxSize": "medium, large, capital...",
+      "minCrew": "Min. Crew",
+      "minCargo": "SCU",
+      "modelId": "Search for a ship",
+      "scenario": "Xenothreat, Pirate Swarm, Bounty…",
+      "briefing": "Detailed brief — comms, callsigns, rules of engagement…",
+      "location": "Stanton, Pyro, ARC-L1…",
+      "meetupLocation": "Daymar, Spaceport — Hangar 4…",
+      "maxAttendees": "Optional cap",
+      "autoLockMinutesBefore": "60",
+      "timezone": "UTC",
+      "startsAt": "Pick start date & time",
+      "endsAt": "Pick end date & time (optional)",
+      "notes": "Bringing extra ammo, can fly support, ETA in 10…",
+      "signup-status": "Confirmed or tentative?",
       "features": {
         "username": "Username or User ID",
         "fleetFid": "Fleet FID or Fleet ID",
@@ -116,7 +135,13 @@
         "guilded": "Guilded Server",
         "homepage": "Homepage",
         "twitch": "Twitch Channel",
-        "youtube": "Youtube Channel"
+        "youtube": "Youtube Channel",
+        "discord": {
+          "guildId": "e.g. 123456789012345678",
+          "channelId": "Voice channel ID for the event",
+          "webhookUrl": "https://discord.com/api/webhooks/…",
+          "webhookConfigured": "Saved — leave empty to keep the existing one"
+        }
       },
       "adminUser": {
         "passwordConfirmation": "Password Confirmation"

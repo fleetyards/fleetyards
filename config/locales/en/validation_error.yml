@@ -26,6 +26,31 @@ en:
       accept: Fleet Invitation could not be accepted.
       decline: Fleet Invitation could not be declined.
       demote_not_permitted: You can't demote the last Member of a permanent Fleet Role.
+    fleet_events:
+      create: Event could not be created.
+      update: Event could not be updated.
+      destroy: Event could not be deleted.
+    fleet_event_teams:
+      create: Event team could not be created.
+      update: Event team could not be updated.
+      destroy: Event team could not be removed.
+    fleet_event_ships:
+      create: Event ship could not be created.
+      update: Event ship could not be updated.
+      destroy: Event ship could not be removed.
+    fleet_event_slots:
+      create: Event slot could not be created.
+      update: Event slot could not be updated.
+      destroy: Event slot could not be removed.
+    fleet_event_signups:
+      create: Sign-up failed.
+      update: Sign-up could not be updated.
+      destroy: Sign-up could not be withdrawn.
+    fleet_event_admins:
+      create: Event admin could not be granted.
+      destroy: Event admin could not be revoked.
+    fleet_notification_settings:
+      update: Notification settings could not be updated.
     hangar_group:
       create: Group could not be created
       destroy: Group could not be destroyed

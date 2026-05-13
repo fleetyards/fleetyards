@@ -34,6 +34,7 @@ namespace :frontend, **frontend_options do
   get "fleets/:slug/settings", to: "fleets#settings"
   get "fleets/:slug/settings/fleet", to: "fleets#settings"
   get "fleets/:slug/settings/membership", to: "fleets#settings"
+  get "fleets/:fleet_slug/events/:event_slug", to: "fleets#event", as: :fleet_event
 
   get "password/update/:token", to: "base#password", as: :password_reset
   get "confirm/:token", to: "base#confirm", as: :confirm
