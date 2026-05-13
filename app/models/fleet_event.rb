@@ -71,6 +71,7 @@ class FleetEvent < ApplicationRecord
   has_many :fleet_event_signups, dependent: :destroy
   has_many :fleet_event_admins, dependent: :destroy
   has_many :event_admin_users, through: :fleet_event_admins, source: :user
+  has_many :fleet_event_occurrence_states, dependent: :destroy
 
   has_one_attached :cover_image
 
@@ -340,6 +341,15 @@ class FleetEvent < ApplicationRecord
     return if date.blank?
     parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
     update!(recurrence_until: parsed - 1.day)
+  end
+
+  # Find or build the per-occurrence state row for a given date. nil-safe.
+  def occurrence_state_for(date, build: false)
+    return nil if date.blank?
+    parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
+    state = fleet_event_occurrence_states.find_by(occurrence_date: parsed)
+    return state if state
+    build ? fleet_event_occurrence_states.build(occurrence_date: parsed) : nil
   end
 
   private def recurrence_step

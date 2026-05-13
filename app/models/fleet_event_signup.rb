@@ -129,8 +129,12 @@ class FleetEventSignup < ApplicationRecord
     return if status == "withdrawn"
     return if fleet_event_slot_id.blank?
 
+    # For recurring events a slot can host different members across
+    # different occurrences. A signup conflicts only if another active
+    # signup holds the same slot on the same occurrence (or, for one-off
+    # events, occurrence_date is nil on both sides).
     taken = FleetEventSignup
-      .where(fleet_event_slot_id: fleet_event_slot_id)
+      .where(fleet_event_slot_id: fleet_event_slot_id, occurrence_date: occurrence_date)
       .where.not(status: "withdrawn")
       .where.not(id: id)
       .where.not(fleet_membership_id: fleet_membership_id)
