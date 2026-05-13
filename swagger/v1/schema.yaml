@@ -1278,6 +1278,98 @@ paths:
             schema:
               "$ref": "#/components/schemas/FleetEventUpdateInput"
         required: true
+  "/fleets/{fleetSlug}/events/{slug}/skip-occurrence":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: Skip a specific occurrence of a recurring event
+      operationId: skipFleetEventOccurrence
+      tags:
+      - Fleet Events
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventExtended"
+        '422':
+          description: not recurring
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+              required:
+              - date
+        required: true
+  "/fleets/{fleetSlug}/events/{slug}/end-series":
+    parameters:
+    - name: fleetSlug
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+    post:
+      summary: End a recurring event series from a given date
+      operationId: endFleetEventSeries
+      tags:
+      - Fleet Events
+      parameters: []
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetEventExtended"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+              required:
+              - date
+        required: true
   "/fleets/{fleetSlug}/events/{slug}/signup":
     parameters:
     - name: fleetSlug
@@ -11168,6 +11260,35 @@ components:
           nullable: true
         discordConfigured:
           type: boolean
+        recurring:
+          type: boolean
+        recurrenceInterval:
+          type: string
+          enum:
+          - daily
+          - weekly
+          - biweekly
+          - monthly
+          nullable: true
+        recurrenceUntil:
+          type: string
+          format: date
+          nullable: true
+        recurrenceCount:
+          type: integer
+          nullable: true
+        excludedDates:
+          type: array
+          items:
+            type: string
+            format: date
+        occurrenceDate:
+          type: string
+          format: date
+          nullable: true
+        parentEventSlug:
+          type: string
+          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -11329,6 +11450,23 @@ components:
           enum:
           - direct
           - confirmation_required
+        recurring:
+          type: boolean
+        recurrenceInterval:
+          type: string
+          enum:
+          - daily
+          - weekly
+          - biweekly
+          - monthly
+          nullable: true
+        recurrenceUntil:
+          type: string
+          format: date
+          nullable: true
+        recurrenceCount:
+          type: integer
+          nullable: true
       required:
       - title
       - startsAt
@@ -11516,6 +11654,10 @@ components:
           type: string
           format: uuid
           nullable: true
+        occurrenceDate:
+          type: string
+          format: date
+          nullable: true
         status:
           type: string
           enum:
@@ -11633,6 +11775,10 @@ components:
           nullable: true
         notes:
           type: string
+          nullable: true
+        occurrenceDate:
+          type: string
+          format: date
           nullable: true
       additionalProperties: false
       title: FleetEventSignupCreateInput
@@ -11882,6 +12028,23 @@ components:
           enum:
           - direct
           - confirmation_required
+        recurring:
+          type: boolean
+        recurrenceInterval:
+          type: string
+          enum:
+          - daily
+          - weekly
+          - biweekly
+          - monthly
+          nullable: true
+        recurrenceUntil:
+          type: string
+          format: date
+          nullable: true
+        recurrenceCount:
+          type: integer
+          nullable: true
       additionalProperties: false
       title: FleetEventUpdateInput
     FleetEventsList:

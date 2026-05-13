@@ -25,8 +25,11 @@ import {
   type FleetEventSlot,
   type FleetEventSignup,
   useFleetEvent,
+  useSkipFleetEventOccurrence,
+  useEndFleetEventSeries,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { checkAccess } from "@/shared/utils/Access";
@@ -43,6 +46,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const comlink = useComlink();
 const route = useRoute();
 const session = useSessionStore();
@@ -203,6 +207,114 @@ const unassignedSignups = computed(
       ?.unassignedSignups ?? [],
 );
 
+const isRecurring = computed(() => event.value?.recurring === true);
+
+const excludedDateSet = computed(() => {
+  const dates = (event.value?.excludedDates ?? []) as string[];
+  return new Set(dates);
+});
+
+const advanceDate = (date: Date, interval: string): Date => {
+  const next = new Date(date);
+  switch (interval) {
+    case "daily":
+      next.setDate(next.getDate() + 1);
+      break;
+    case "weekly":
+      next.setDate(next.getDate() + 7);
+      break;
+    case "biweekly":
+      next.setDate(next.getDate() + 14);
+      break;
+    case "monthly":
+      next.setMonth(next.getMonth() + 1);
+      break;
+  }
+  return next;
+};
+
+const isoDate = (date: Date): string => date.toISOString().slice(0, 10);
+
+const upcomingOccurrences = computed(() => {
+  if (!isRecurring.value || !event.value?.startsAt) return [];
+  const interval = event.value.recurrenceInterval as string | undefined;
+  if (!interval) return [];
+
+  const start = new Date(event.value.startsAt);
+  const until = event.value.recurrenceUntil
+    ? new Date(`${event.value.recurrenceUntil}T23:59:59Z`)
+    : null;
+  const max = event.value.recurrenceCount ?? null;
+  const now = new Date();
+  const horizon = new Date(now.getTime() + 12 * 7 * 24 * 60 * 60 * 1000);
+
+  const result: { date: string; iso: string; excluded: boolean }[] = [];
+  let cursor = new Date(start);
+  let i = 0;
+  while (cursor <= horizon && (max === null || i < max)) {
+    if (until && cursor > until) break;
+    if (cursor >= now) {
+      const iso = isoDate(cursor);
+      result.push({
+        date: cursor.toLocaleDateString(undefined, {
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        }),
+        iso,
+        excluded: excludedDateSet.value.has(iso),
+      });
+    }
+    cursor = advanceDate(cursor, interval);
+    i += 1;
+    if (result.length >= 12) break;
+  }
+  return result;
+});
+
+const skipMutation = useSkipFleetEventOccurrence();
+const endMutation = useEndFleetEventSeries();
+
+const skipOccurrence = async (iso: string) => {
+  if (!event.value) return;
+  try {
+    await skipMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: event.value.slug,
+      data: { date: iso } as never,
+    });
+    await refetch();
+    displaySuccess({
+      text: t("labels.fleets.events.skipOccurrenceSuccess"),
+    });
+  } catch {
+    displayAlert({ text: t("messages.fleets.event.update.failure") });
+  }
+};
+
+const endSeriesAt = (iso: string) => {
+  if (!event.value) return;
+  displayConfirm({
+    text: t("labels.fleets.events.endSeriesConfirm"),
+    onConfirm: async () => {
+      try {
+        await endMutation.mutateAsync({
+          fleetSlug: props.fleet.slug,
+          slug: event.value!.slug,
+          data: { date: iso } as never,
+        });
+        await refetch();
+        displaySuccess({
+          text: t("labels.fleets.events.endSeriesSuccess"),
+        });
+      } catch {
+        displayAlert({ text: t("messages.fleets.event.update.failure") });
+      }
+    },
+  });
+};
+
 onMounted(() => {
   comlink.on("fleet-event-updated", () => void refetch());
   comlink.on("fleet-event-signup-changed", () => void refetch());
@@ -330,6 +442,50 @@ const crumbs = computed(() => [
       :event="event"
       :signups="unassignedSignups"
     />
+
+    <section v-if="isRecurring" class="event-occurrences">
+      <Heading size="lg">
+        {{ t("labels.fleets.events.occurrencesSection") }}
+      </Heading>
+      <p v-if="!upcomingOccurrences.length" class="text-muted small">
+        {{ t("labels.fleets.events.noUpcomingOccurrences") }}
+      </p>
+      <ul v-else class="event-occurrences__list">
+        <li
+          v-for="entry in upcomingOccurrences"
+          :key="entry.iso"
+          class="event-occurrences__item"
+          :class="{ 'event-occurrences__item--excluded': entry.excluded }"
+        >
+          <span class="event-occurrences__date">
+            <i class="fa-light fa-calendar" />
+            {{ entry.date }}
+          </span>
+          <span v-if="entry.excluded" class="event-occurrences__badge">
+            {{ t("labels.fleets.events.excludedBadge") }}
+          </span>
+          <div v-if="isEventManager" class="event-occurrences__actions">
+            <button
+              v-if="!entry.excluded"
+              type="button"
+              class="event-occurrences__btn"
+              @click="skipOccurrence(entry.iso)"
+            >
+              <i class="fa-light fa-ban" />
+              {{ t("labels.fleets.events.skipOccurrence") }}
+            </button>
+            <button
+              type="button"
+              class="event-occurrences__btn"
+              @click="endSeriesAt(entry.iso)"
+            >
+              <i class="fa-light fa-flag-checkered" />
+              {{ t("labels.fleets.events.endSeriesHere") }}
+            </button>
+          </div>
+        </li>
+      </ul>
+    </section>
 
     <section v-if="event.teams?.length" class="event-teams">
       <Heading size="lg">
@@ -487,6 +643,60 @@ const crumbs = computed(() => [
 .event-ship__title {
   margin: 0 0 0.5rem;
   font-size: 0.95rem;
+}
+.event-occurrences {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.event-occurrences__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.event-occurrences__item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  font-size: 0.9rem;
+
+  &--excluded {
+    opacity: 0.55;
+    text-decoration: line-through;
+  }
+}
+.event-occurrences__date {
+  flex: 1;
+}
+.event-occurrences__badge {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+.event-occurrences__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.event-occurrences__btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: inherit;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
 }
 .small {
   font-size: 0.8rem;

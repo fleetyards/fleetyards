@@ -15,10 +15,15 @@
 #  description               :text
 #  discord_synced_at         :datetime
 #  ends_at                   :datetime
+#  excluded_dates            :date             default([]), not null, is an Array
 #  external_uid              :uuid             not null
 #  location                  :string
 #  max_attendees             :integer
 #  meetup_location           :string
+#  recurrence_count          :integer
+#  recurrence_interval       :string
+#  recurrence_until          :date
+#  recurring                 :boolean          default(FALSE), not null
 #  scenario                  :string
 #  signup_approval           :string           default("direct"), not null
 #  slug                      :string           not null
@@ -39,6 +44,7 @@
 # Indexes
 #
 #  index_fleet_events_on_external_uid            (external_uid) UNIQUE
+#  index_fleet_events_on_fleet_id_and_recurring  (fleet_id,recurring)
 #  index_fleet_events_on_fleet_id_and_slug       (fleet_id,slug) UNIQUE
 #  index_fleet_events_on_fleet_id_and_starts_at  (fleet_id,starts_at)
 #  index_fleet_events_on_fleet_id_and_status     (fleet_id,status)
@@ -114,6 +120,150 @@ RSpec.describe FleetEvent, type: :model do
       expect(event.reload.archived?).to be true
       event.unarchive!
       expect(event.reload.archived?).to be false
+    end
+  end
+
+  describe "#occurrences" do
+    let(:fleet) { create(:fleet) }
+    let(:thursday) { Time.zone.parse("2026-05-14 20:00:00 UTC") }
+
+    it "returns just starts_at for a one-off event within the range" do
+      event = create(:fleet_event, fleet: fleet, starts_at: thursday)
+
+      expect(event.occurrences(from: thursday - 1.day, to: thursday + 1.day))
+        .to eq([thursday])
+    end
+
+    it "returns nothing for a one-off event outside the range" do
+      event = create(:fleet_event, fleet: fleet, starts_at: thursday)
+
+      expect(event.occurrences(from: thursday + 1.day, to: thursday + 7.days))
+        .to be_empty
+    end
+
+    it "expands a weekly recurring event into successive occurrences" do
+      event = create(:fleet_event,
+        fleet: fleet, starts_at: thursday,
+        recurring: true, recurrence_interval: "weekly")
+
+      result = event.occurrences(from: thursday, to: thursday + 4.weeks)
+
+      expect(result.size).to eq(5) # May 14, 21, 28, June 4, 11
+      expect(result.map { |t| t.wday }.uniq).to eq([4])
+    end
+
+    it "honours biweekly interval" do
+      event = create(:fleet_event,
+        fleet: fleet, starts_at: thursday,
+        recurring: true, recurrence_interval: "biweekly")
+
+      result = event.occurrences(from: thursday, to: thursday + 6.weeks)
+
+      expect(result.size).to eq(4) # 14, 28 May, 11, 25 June
+    end
+
+    it "honours daily interval" do
+      event = create(:fleet_event,
+        fleet: fleet, starts_at: thursday,
+        recurring: true, recurrence_interval: "daily")
+
+      result = event.occurrences(from: thursday, to: thursday + 3.days)
+
+      expect(result.size).to eq(4)
+    end
+
+    it "honours recurrence_until" do
+      event = create(:fleet_event,
+        fleet: fleet, starts_at: thursday,
+        recurring: true, recurrence_interval: "weekly",
+        recurrence_until: Date.parse("2026-05-28"))
+
+      result = event.occurrences(from: thursday, to: thursday + 8.weeks)
+
+      expect(result.size).to eq(3) # 14, 21, 28
+    end
+
+    it "honours recurrence_count" do
+      event = create(:fleet_event,
+        fleet: fleet, starts_at: thursday,
+        recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 4)
+
+      result = event.occurrences(from: thursday, to: thursday + 8.weeks)
+
+      expect(result.size).to eq(4)
+    end
+
+    it "honours excluded_dates" do
+      event = create(:fleet_event,
+        fleet: fleet, starts_at: thursday,
+        recurring: true, recurrence_interval: "weekly",
+        excluded_dates: [Date.parse("2026-05-21")])
+
+      result = event.occurrences(from: thursday, to: thursday + 4.weeks)
+
+      expect(result.map(&:to_date)).not_to include(Date.parse("2026-05-21"))
+      expect(result.size).to eq(4) # would be 5, minus the excluded one
+    end
+  end
+
+  describe "#skip_occurrence!" do
+    it "appends the date to excluded_dates" do
+      event = create(:fleet_event,
+        starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),
+        recurring: true, recurrence_interval: "weekly")
+
+      event.skip_occurrence!(Date.parse("2026-05-21"))
+
+      expect(event.reload.excluded_dates).to include(Date.parse("2026-05-21"))
+    end
+
+    it "is idempotent for already-excluded dates" do
+      event = create(:fleet_event,
+        starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),
+        recurring: true, recurrence_interval: "weekly",
+        excluded_dates: [Date.parse("2026-05-21")])
+
+      expect { event.skip_occurrence!(Date.parse("2026-05-21")) }
+        .not_to change { event.reload.excluded_dates.size }
+    end
+  end
+
+  describe "#end_series_at!" do
+    it "sets recurrence_until to the day before the given date" do
+      event = create(:fleet_event,
+        starts_at: Time.zone.parse("2026-05-14 20:00:00 UTC"),
+        recurring: true, recurrence_interval: "weekly")
+
+      event.end_series_at!(Date.parse("2026-06-04"))
+
+      expect(event.reload.recurrence_until).to eq(Date.parse("2026-06-03"))
+    end
+  end
+
+  describe "validations on recurring fields" do
+    it "requires recurrence_interval when recurring" do
+      event = build(:fleet_event,
+        recurring: true, recurrence_interval: nil)
+
+      expect(event).not_to be_valid
+      expect(event.errors[:recurrence_interval]).to be_present
+    end
+
+    it "rejects recurrence_interval on non-recurring events" do
+      event = build(:fleet_event,
+        recurring: false, recurrence_interval: "weekly")
+
+      expect(event).not_to be_valid
+      expect(event.errors[:recurrence_interval]).to be_present
+    end
+
+    it "rejects both recurrence_count and recurrence_until" do
+      event = build(:fleet_event,
+        recurring: true, recurrence_interval: "weekly",
+        recurrence_count: 4, recurrence_until: Date.tomorrow)
+
+      expect(event).not_to be_valid
     end
   end
 end

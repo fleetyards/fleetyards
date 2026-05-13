@@ -91,8 +91,15 @@ module Api
           params[:status].presence&.then { |s| FleetEventSignup::MEMBER_REQUESTABLE_STATUSES.include?(s) ? s : "interested" } ||
           "interested"
 
+        occurrence_date = parsed_occurrence_date(params[:occurrence_date])
+        if @event.recurring? && occurrence_date.blank?
+          authorize! @event, with: FleetEventPolicy, to: :show?
+          render json: {code: "missing_occurrence_date", message: "occurrence_date is required for recurring events"}, status: :unprocessable_entity
+          return
+        end
+
         existing = @event.fleet_event_signups
-          .where(fleet_membership_id: @membership.id)
+          .where(fleet_membership_id: @membership.id, occurrence_date: occurrence_date)
           .where.not(status: "withdrawn")
           .first
 
@@ -131,7 +138,8 @@ module Api
           fleet_event_slot_id: nil,
           status: requested_status,
           vehicle_id: params[:vehicle_id],
-          notes: params[:notes]
+          notes: params[:notes],
+          occurrence_date: occurrence_date
         )
 
         authorize! @signup, with: FleetEventSignupPolicy, context: {fleet_event: @event}, to: :create?
@@ -295,6 +303,13 @@ module Api
         return if feature_enabled?("mission_builder")
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
+      end
+
+      private def parsed_occurrence_date(value)
+        return nil if value.blank?
+        Date.parse(value.to_s)
+      rescue ArgumentError, TypeError
+        nil
       end
     end
   end

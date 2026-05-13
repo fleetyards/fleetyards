@@ -70,6 +70,8 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       put :cancel
       put :unarchive
       post "sync-to-discord", action: :sync_to_discord
+      post "skip-occurrence", action: :skip_occurrence
+      post "end-series", action: :end_series
       post :signup, to: "fleet_event_signups#event_signup"
       get "event.ics", action: :ics, defaults: {format: "ics"}, constraints: {format: "ics"}
     end

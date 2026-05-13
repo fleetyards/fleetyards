@@ -99,5 +99,64 @@ RSpec.describe Calendars::IcsBuilder do
       expect(ics).to include('SUMMARY:Cargo\\; runs\\, fun')
       expect(ics).to include('Levski\\; Nyx\\, Stanton')
     end
+
+    context "recurring events" do
+      let(:thursday) { Time.zone.parse("2026-05-14 20:00:00 UTC") }
+
+      it "emits RRULE for a weekly recurring event" do
+        event = create(:fleet_event, :open,
+          fleet: fleet, starts_at: thursday, timezone: "UTC",
+          recurring: true, recurrence_interval: "weekly")
+
+        ics = described_class.new([event]).to_ics
+
+        expect(ics).to include("RRULE:FREQ=WEEKLY")
+      end
+
+      it "emits FREQ=WEEKLY;INTERVAL=2 for biweekly" do
+        event = create(:fleet_event, :open,
+          fleet: fleet, starts_at: thursday, timezone: "UTC",
+          recurring: true, recurrence_interval: "biweekly")
+
+        expect(described_class.new([event]).to_ics).to include("RRULE:FREQ=WEEKLY;INTERVAL=2")
+      end
+
+      it "emits FREQ=DAILY for daily" do
+        event = create(:fleet_event, :open,
+          fleet: fleet, starts_at: thursday, timezone: "UTC",
+          recurring: true, recurrence_interval: "daily")
+
+        expect(described_class.new([event]).to_ics).to include("RRULE:FREQ=DAILY")
+      end
+
+      it "emits UNTIL when recurrence_until is set" do
+        event = create(:fleet_event, :open,
+          fleet: fleet, starts_at: thursday, timezone: "UTC",
+          recurring: true, recurrence_interval: "weekly",
+          recurrence_until: Date.parse("2026-06-04"))
+
+        expect(described_class.new([event]).to_ics)
+          .to include("UNTIL=20260604T235959Z")
+      end
+
+      it "emits COUNT when recurrence_count is set" do
+        event = create(:fleet_event, :open,
+          fleet: fleet, starts_at: thursday, timezone: "UTC",
+          recurring: true, recurrence_interval: "weekly",
+          recurrence_count: 4)
+
+        expect(described_class.new([event]).to_ics).to include("COUNT=4")
+      end
+
+      it "emits EXDATE lines for excluded dates" do
+        event = create(:fleet_event, :open,
+          fleet: fleet, starts_at: thursday, timezone: "UTC",
+          recurring: true, recurrence_interval: "weekly",
+          excluded_dates: [Date.parse("2026-05-21")])
+
+        expect(described_class.new([event]).to_ics)
+          .to include("EXDATE:20260521T200000Z")
+      end
+    end
   end
 end

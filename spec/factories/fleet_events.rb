@@ -15,10 +15,15 @@
 #  description               :text
 #  discord_synced_at         :datetime
 #  ends_at                   :datetime
+#  excluded_dates            :date             default([]), not null, is an Array
 #  external_uid              :uuid             not null
 #  location                  :string
 #  max_attendees             :integer
 #  meetup_location           :string
+#  recurrence_count          :integer
+#  recurrence_interval       :string
+#  recurrence_until          :date
+#  recurring                 :boolean          default(FALSE), not null
 #  scenario                  :string
 #  signup_approval           :string           default("direct"), not null
 #  slug                      :string           not null
@@ -39,6 +44,7 @@
 # Indexes
 #
 #  index_fleet_events_on_external_uid            (external_uid) UNIQUE
+#  index_fleet_events_on_fleet_id_and_recurring  (fleet_id,recurring)
 #  index_fleet_events_on_fleet_id_and_slug       (fleet_id,slug) UNIQUE
 #  index_fleet_events_on_fleet_id_and_starts_at  (fleet_id,starts_at)
 #  index_fleet_events_on_fleet_id_and_status     (fleet_id,status)

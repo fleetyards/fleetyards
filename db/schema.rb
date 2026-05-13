@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_12_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_13_110002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -285,11 +285,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_12_210000) do
     t.uuid "fleet_event_slot_id"
     t.uuid "fleet_membership_id", null: false
     t.text "notes"
+    t.date "occurrence_date"
     t.string "status", default: "confirmed", null: false
     t.datetime "updated_at", null: false
     t.uuid "vehicle_id"
     t.datetime "withdrawn_at"
-    t.index ["fleet_event_id", "fleet_membership_id"], name: "index_fleet_event_signups_unique_active_per_event", unique: true, where: "((status)::text <> 'withdrawn'::text)"
+    t.index ["fleet_event_id", "occurrence_date", "fleet_membership_id"], name: "idx_fleet_event_signups_on_event_and_occurrence_and_member"
+    t.index ["fleet_event_id", "occurrence_date", "fleet_membership_id"], name: "index_fleet_event_signups_unique_active_per_event", unique: true, where: "((status)::text <> 'withdrawn'::text)"
     t.index ["fleet_event_id"], name: "index_fleet_event_signups_on_fleet_event_id"
     t.index ["fleet_event_slot_id"], name: "index_fleet_event_signups_on_fleet_event_slot_id"
     t.index ["fleet_membership_id"], name: "index_fleet_event_signups_on_fleet_membership_id"
@@ -338,12 +340,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_12_210000) do
     t.string "discord_message_id"
     t.datetime "discord_synced_at"
     t.datetime "ends_at"
+    t.date "excluded_dates", default: [], null: false, array: true
     t.uuid "external_uid", null: false
     t.uuid "fleet_id", null: false
     t.string "location"
     t.integer "max_attendees"
     t.string "meetup_location"
     t.uuid "mission_id"
+    t.integer "recurrence_count"
+    t.string "recurrence_interval"
+    t.date "recurrence_until"
+    t.boolean "recurring", default: false, null: false
     t.string "scenario"
     t.string "signup_approval", default: "direct", null: false
     t.string "slug", null: false
@@ -355,6 +362,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_12_210000) do
     t.datetime "updated_at", null: false
     t.string "visibility", default: "members", null: false
     t.index ["external_uid"], name: "index_fleet_events_on_external_uid", unique: true
+    t.index ["fleet_id", "recurring"], name: "index_fleet_events_on_fleet_id_and_recurring"
     t.index ["fleet_id", "slug"], name: "index_fleet_events_on_fleet_id_and_slug", unique: true
     t.index ["fleet_id", "starts_at"], name: "index_fleet_events_on_fleet_id_and_starts_at"
     t.index ["fleet_id", "status"], name: "index_fleet_events_on_fleet_id_and_status"

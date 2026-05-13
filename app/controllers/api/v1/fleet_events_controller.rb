@@ -13,11 +13,11 @@ module Api
         only: %i[index show ics]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel]
+        only: %i[create update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel skip_occurrence end_series]
 
       before_action :check_mission_builder_feature
       before_action :set_fleet
-      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics]
+      before_action :set_event, only: %i[show update destroy unarchive sync_to_discord publish lock_signups unlock_signups start complete cancel ics skip_occurrence end_series]
       before_action :set_mission, only: %i[create]
 
       def index
@@ -89,6 +89,42 @@ module Api
         else
           render json: ValidationError.new("fleet_events.destroy", errors: @fleet_event.errors), status: :bad_request
         end
+      end
+
+      def skip_occurrence
+        authorize! @fleet_event, to: :update?
+
+        unless @fleet_event.recurring?
+          render json: {code: "not_recurring", message: "Event is not recurring"}, status: :unprocessable_entity
+          return
+        end
+
+        date = params[:date].presence || params.dig(:occurrence_date)
+        if date.blank?
+          render json: {code: "missing_date", message: "date is required"}, status: :bad_request
+          return
+        end
+
+        @fleet_event.skip_occurrence!(date)
+        render :show
+      end
+
+      def end_series
+        authorize! @fleet_event, to: :update?
+
+        unless @fleet_event.recurring?
+          render json: {code: "not_recurring", message: "Event is not recurring"}, status: :unprocessable_entity
+          return
+        end
+
+        date = params[:date].presence
+        if date.blank?
+          render json: {code: "missing_date", message: "date is required"}, status: :bad_request
+          return
+        end
+
+        @fleet_event.end_series_at!(date)
+        render :show
       end
 
       def unarchive

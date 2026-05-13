@@ -7,6 +7,7 @@
 #  id                  :uuid             not null, primary key
 #  confirmed_at        :datetime
 #  notes               :text
+#  occurrence_date     :date
 #  status              :string           default("confirmed"), not null
 #  withdrawn_at        :datetime
 #  created_at          :datetime         not null
@@ -18,10 +19,11 @@
 #
 # Indexes
 #
-#  index_fleet_event_signups_on_fleet_event_id        (fleet_event_id)
-#  index_fleet_event_signups_on_fleet_event_slot_id   (fleet_event_slot_id)
-#  index_fleet_event_signups_on_fleet_membership_id   (fleet_membership_id)
-#  index_fleet_event_signups_unique_active_per_event  (fleet_event_id,fleet_membership_id) UNIQUE WHERE ((status)::text <> 'withdrawn'::text)
+#  idx_fleet_event_signups_on_event_and_occurrence_and_member  (fleet_event_id,occurrence_date,fleet_membership_id)
+#  index_fleet_event_signups_on_fleet_event_id                 (fleet_event_id)
+#  index_fleet_event_signups_on_fleet_event_slot_id            (fleet_event_slot_id)
+#  index_fleet_event_signups_on_fleet_membership_id            (fleet_membership_id)
+#  index_fleet_event_signups_unique_active_per_event           (fleet_event_id,occurrence_date,fleet_membership_id) UNIQUE WHERE ((status)::text <> 'withdrawn'::text)
 #
 # Foreign Keys
 #
@@ -109,9 +111,13 @@ class FleetEventSignup < ApplicationRecord
     return if status == "withdrawn"
     return if fleet_event_id.blank?
 
+    # For recurring events signups are scoped to a specific occurrence date,
+    # so the same member can sign up for "next Thursday" and "the Thursday
+    # after". For one-off events occurrence_date is nil on both sides.
     existing = FleetEventSignup.where(
       fleet_event_id: fleet_event_id,
-      fleet_membership_id: fleet_membership_id
+      fleet_membership_id: fleet_membership_id,
+      occurrence_date: occurrence_date
     ).where.not(status: "withdrawn").where.not(id: id)
 
     if existing.exists?

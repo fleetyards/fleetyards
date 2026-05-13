@@ -56,6 +56,14 @@ json.discord_configured(
     fleet_event.fleet&.fleet_notification_setting&.discord_guild_id.present?
 )
 
+json.recurring fleet_event.recurring?
+json.recurrence_interval fleet_event.recurrence_interval
+json.recurrence_until fleet_event.recurrence_until
+json.recurrence_count fleet_event.recurrence_count
+json.excluded_dates(fleet_event.excluded_dates || [])
+json.occurrence_date local_assigns[:occurrence_date]
+json.parent_event_slug local_assigns[:parent_event_slug]
+
 json.viewer_event_role local_assigns[:viewer_event_role]
 
 json.partial! "api/shared/dates", record: fleet_event

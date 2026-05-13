@@ -38,7 +38,9 @@ class FleetEventPolicy < FleetBasePolicy
       :location, :meetup_location,
       :visibility, :category, :scenario,
       :max_attendees, :auto_lock_enabled, :auto_lock_minutes_before,
-      :cover_image, :cover_image_preset, :signup_approval
+      :cover_image, :cover_image_preset, :signup_approval,
+      :recurring, :recurrence_interval, :recurrence_until, :recurrence_count,
+      excluded_dates: []
     )
   end
 

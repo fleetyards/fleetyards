@@ -15,10 +15,15 @@
 #  description               :text
 #  discord_synced_at         :datetime
 #  ends_at                   :datetime
+#  excluded_dates            :date             default([]), not null, is an Array
 #  external_uid              :uuid             not null
 #  location                  :string
 #  max_attendees             :integer
 #  meetup_location           :string
+#  recurrence_count          :integer
+#  recurrence_interval       :string
+#  recurrence_until          :date
+#  recurring                 :boolean          default(FALSE), not null
 #  scenario                  :string
 #  signup_approval           :string           default("direct"), not null
 #  slug                      :string           not null
@@ -39,6 +44,7 @@
 # Indexes
 #
 #  index_fleet_events_on_external_uid            (external_uid) UNIQUE
+#  index_fleet_events_on_fleet_id_and_recurring  (fleet_id,recurring)
 #  index_fleet_events_on_fleet_id_and_slug       (fleet_id,slug) UNIQUE
 #  index_fleet_events_on_fleet_id_and_starts_at  (fleet_id,starts_at)
 #  index_fleet_events_on_fleet_id_and_status     (fleet_id,status)
@@ -81,12 +87,18 @@ class FleetEvent < ApplicationRecord
 
   VISIBILITIES = %w[members officers fleet].freeze
   SIGNUP_APPROVALS = %w[direct confirmation_required].freeze
+  RECURRENCE_INTERVALS = %w[daily weekly biweekly monthly].freeze
 
   validates :title, presence: true
   validates :starts_at, presence: true
   validates :timezone, presence: true
   validates :visibility, inclusion: {in: VISIBILITIES}
   validates :signup_approval, inclusion: {in: SIGNUP_APPROVALS}
+  validates :recurrence_interval,
+    inclusion: {in: RECURRENCE_INTERVALS},
+    if: :recurring?
+  validates :recurrence_interval, absence: true, unless: :recurring?
+  validate :recurrence_count_or_until
 
   before_validation :set_external_uid, on: :create
   before_validation :ensure_id, on: :create
@@ -270,6 +282,82 @@ class FleetEvent < ApplicationRecord
   def self.default_title(mission, starts_at)
     date_str = (starts_at.is_a?(Time) || starts_at.is_a?(DateTime)) ? starts_at.strftime("%b %-d, %Y") : "TBD"
     "#{mission.title} — #{date_str}"
+  end
+
+  # Returns occurrence start times falling within [from, to]. For
+  # one-off events this is `[starts_at]` if it lies in the range.
+  # Recurring events are expanded forward from `starts_at` honouring
+  # `recurrence_until`, `recurrence_count`, and `excluded_dates`.
+  def occurrences(from:, to:)
+    from = from.to_time
+    to = to.to_time
+    return [] if starts_at.blank?
+
+    unless recurring?
+      return starts_at.between?(from, to) ? [starts_at] : []
+    end
+
+    interval_step = recurrence_step
+    return [] if interval_step.nil?
+
+    result = []
+    cursor = starts_at
+    limit = recurrence_count.presence
+    iterations = 0
+    until_time = recurrence_until&.end_of_day&.in_time_zone(timezone || "UTC")
+
+    while cursor <= to && (limit.nil? || iterations < limit)
+      break if until_time && cursor > until_time
+
+      excluded = excluded_dates.any? do |d|
+        date = d.is_a?(String) ? Date.parse(d) : d
+        date == cursor.to_date
+      end
+
+      result << cursor if cursor >= from && !excluded
+      cursor = advance_cursor(cursor, interval_step)
+      iterations += 1
+    end
+
+    result
+  end
+
+  # Returns the soonest occurrence at or after `after`, or nil if the
+  # series has ended.
+  def next_occurrence(after: Time.current)
+    occurrences(from: after, to: 1.year.from_now).first
+  end
+
+  def skip_occurrence!(date)
+    return if date.blank?
+    parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
+    return if excluded_dates.include?(parsed)
+
+    update!(excluded_dates: excluded_dates + [parsed])
+  end
+
+  def end_series_at!(date)
+    return if date.blank?
+    parsed = date.is_a?(Date) ? date : Date.parse(date.to_s)
+    update!(recurrence_until: parsed - 1.day)
+  end
+
+  private def recurrence_step
+    case recurrence_interval
+    when "daily" then {value: 1, unit: :days}
+    when "weekly" then {value: 1, unit: :weeks}
+    when "biweekly" then {value: 2, unit: :weeks}
+    when "monthly" then {value: 1, unit: :months}
+    end
+  end
+
+  private def advance_cursor(cursor, step)
+    cursor + step[:value].public_send(step[:unit])
+  end
+
+  private def recurrence_count_or_until
+    return unless recurrence_count.present? && recurrence_until.present?
+    errors.add(:base, :recurrence_count_xor_until)
   end
 
   private def set_external_uid
