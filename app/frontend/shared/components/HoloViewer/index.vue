@@ -9,7 +9,7 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Mesh, type Object3D, type Vector3 } from "three";
+import { type Camera, type Mesh, type Object3D, type Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { TresCanvas } from "@tresjs/core";
@@ -162,6 +162,12 @@ const innerHeight = computed(() => {
 });
 
 const cameraPosition = ref<[x: number, y: number, z: number]>([100, 100, 100]);
+const lightPosition = ref<[x: number, y: number, z: number]>([100, 100, 100]);
+
+const handleControlsChange = (controls: { object: Camera }) => {
+  const { x, y, z } = controls.object.position;
+  lightPosition.value = [x, y, z];
+};
 
 const fitDistance = ref(100);
 const modelMaxDimension = ref(100);
@@ -229,6 +235,7 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
 
   cameraPosition.value = [0, cameraAngle.value, distance];
+  lightPosition.value = [0, cameraAngle.value, distance];
 };
 
 const handleRenderError = (error: Error) => {
@@ -348,7 +355,7 @@ defineExpose({
     >
       <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs" />
       <TresDirectionalLight
-        :position="cameraPosition"
+        :position="lightPosition"
         :intensity="2"
         :cast-shadow="!mobile"
       />
@@ -365,6 +372,7 @@ defineExpose({
         :damping-factor="0.25"
         :enable-pan="panable"
         make-default
+        @change="handleControlsChange"
       />
       <TransformControls v-if="currentModel" :object="currentModel" />
       <Grid
