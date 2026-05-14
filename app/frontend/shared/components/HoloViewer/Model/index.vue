@@ -77,7 +77,10 @@ DefaultLoadingManager.onError = (error) => {
   console.error("Error loading GLTF model", error);
 };
 
-const { state } = useGLTF(props.model.path, { draco: true });
+const { state } = useGLTF(props.model.path, {
+  draco: true,
+  decoderPath: "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+});
 
 const setup = (scene: Group) => {
   setMaterials(scene);
