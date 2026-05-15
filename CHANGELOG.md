@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.21.3](https://github.com/fleetyards/fleetyards/compare/v6.21.2...v6.21.3) (2026-05-15)
+
+
+### Bug Fixes
+
+* **paints-importer:** skip legacy non-array import inputs ([586d712](https://github.com/fleetyards/fleetyards/commit/586d7128c09daed8150da650e498803d2abb4c15))
+* **sc-data:** nullify model_positions when hardpoint is destroyed ([bb09ad6](https://github.com/fleetyards/fleetyards/commit/bb09ad647b2dae13590cbe9d7af099242142d287))
+* **sc-data:** tolerate nil sc_name when sorting hardpoints ([8c72590](https://github.com/fleetyards/fleetyards/commit/8c7259089cefd5d7a83dff9481bc887997805f2d))
+
 ## [6.21.2](https://github.com/fleetyards/fleetyards/compare/v6.21.1...v6.21.2) (2026-05-15)
 
 
