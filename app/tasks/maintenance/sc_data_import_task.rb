@@ -7,18 +7,9 @@ module Maintenance
     def process
       version = Rails.configuration.sc_data[:version]
 
-      import = Imports::ScData::AllImport.create(version:)
+      return if Imports::ScData::AllImport.finished.exists?(version:)
 
-      import.start!
-
-      ::ScData::Loader::BaseLoader.all
-
-      import.finish!
-    rescue => e
-      import.fail!
-      import.update!(info: e.message)
-
-      raise e
+      Loaders::ScData::AllJob.perform_async(version)
     end
   end
 end
