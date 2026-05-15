@@ -1,4 +1,3 @@
-require "json"
 require "open-uri"
 
 class PaintsImporter
@@ -92,11 +91,9 @@ class PaintsImporter
   end
 
   private def extract_paints(import)
-    return if import.input.blank? || import.input.is_a?(Hash)
+    return unless import.input.is_a?(Array)
 
-    imported_data = import.input
-
-    imported_data.filter_map do |item|
+    import.input.filter_map do |item|
       next if item["type"] != "skin" || item["image"].blank?
 
       name = item["name"].tr("–", "-")
@@ -109,10 +106,6 @@ class PaintsImporter
         image: item["image"]
       }
     end
-  rescue JSON::ParserError => e
-    Appsignal.report_error(e)
-    Rails.logger.error "Paints Data could not be parsed: #{import.input}"
-    nil
   end
 
   private def import_paint(paint)
