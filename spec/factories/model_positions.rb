@@ -21,7 +21,7 @@
 #
 # Foreign Keys
 #
-#  fk_rails_...  (hardpoint_id => hardpoints.id)
+#  fk_rails_...  (hardpoint_id => hardpoints.id) ON DELETE => nullify
 #  fk_rails_...  (model_id => models.id)
 #
 FactoryBot.define do

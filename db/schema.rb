@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_04_130001) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_15_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1071,7 +1071,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_04_130001) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
-  add_foreign_key "model_positions", "hardpoints"
+  add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"
   add_foreign_key "notification_preferences", "users"
   add_foreign_key "notifications", "users"

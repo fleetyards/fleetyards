@@ -38,6 +38,7 @@ class Hardpoint < ApplicationRecord
   belongs_to :parent, polymorphic: true, touch: true
   belongs_to :component, optional: true
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
+  has_many :model_positions, dependent: :nullify
 
   enum :source,
     {ship_matrix: 0, game_files: 1}
