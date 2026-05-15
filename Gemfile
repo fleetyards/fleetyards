@@ -184,7 +184,7 @@ gem "aws-sdk-s3", require: false
 gem "lexorank"
 gem "with_advisory_lock"
 
-gem "maintenance_tasks", "~> 2.15"
+gem "maintenance_tasks", "~> 2.16"
 
 gem "graphlient"
 
