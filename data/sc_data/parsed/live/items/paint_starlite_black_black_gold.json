@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Starlite_Black_Black_Gold",
+  "ref": "73694756-443d-444e-a474-fa2673fa7355",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2c4188ef-a52e-4d89-96ce-457fa7991030",
+  "name": "Starlite Dusk Livery",
+  "short_name": null,
+  "description": "For the Starlite captains who prefer to make a subtle statement, MISC offers the distinguished Dusk Livery. A complete grey hull highlights the ship's classic silhouette with tasteful gold trim.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

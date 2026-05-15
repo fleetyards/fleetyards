@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Eclipse_Black_Black_Red_Camo",
+  "ref": "49bf2806-e520-43af-99a2-7e570b23cfc4",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "582027b5-b5ed-4510-abf1-28149294bf08",
+  "name": "Eclipse Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Eclipse with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

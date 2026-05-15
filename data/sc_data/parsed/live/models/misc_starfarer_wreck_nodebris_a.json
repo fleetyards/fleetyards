@@ -439,8 +439,15 @@
     },
     {
       "name": "hardpoint_refuel_arm",
-      "ref": null,
-      "key": "Nozzle_FuelGiver_MISC_NozzleStandard"
+      "ref": "e0bbced3-e620-4eec-96f2-30806bc190e2",
+      "key": null,
+      "loadout": [
+        {
+          "name": "itemport_nozzle",
+          "ref": "d6d41d8f-f2b7-45f7-8167-13f366c55e3e",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_refuel_console",
@@ -519,8 +526,8 @@
     },
     {
       "name": "hardpoint_relay_refueling_catwalk",
-      "ref": null,
-      "key": "RELAY_1slot"
+      "ref": "72bc90bc-0fb7-4452-8901-c2b581e10744",
+      "key": null
     },
     {
       "name": "hardpoint_relay_refuelling_arm_walkway_left",

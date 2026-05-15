@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Origin 600i",
-  "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nThis multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs.",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Expedition\\n\\nThis multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs.",
   "career": "Exploration",
   "role": "Expedition",
   "insurance": {
@@ -545,13 +545,13 @@
     },
     {
       "name": "hardpoint_weapon_rack_1",
-      "ref": null,
-      "key": "Weapon_Rack_ORIG_600i_Armory"
+      "ref": "0fa32f29-e03c-478f-a1d1-ed64a601fabf",
+      "key": null
     },
     {
       "name": "hardpoint_weapon_rack_2",
-      "ref": null,
-      "key": "Weapon_Rack_ORIG_600i_Armory"
+      "ref": "0fa32f29-e03c-478f-a1d1-ed64a601fabf",
+      "key": null
     },
     {
       "name": "hardpoint_controller_missile",

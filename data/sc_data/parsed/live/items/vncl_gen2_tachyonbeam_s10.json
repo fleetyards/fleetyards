@@ -1,0 +1,77 @@
+{
+  "key": "VNCL_Gen2_TachyonBeam_S10",
+  "ref": "0d58aa05-4235-40a5-b6bf-9fa31c59f749",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Vanduul Mauler 'ANNIHILATOR' Cannon",
+  "short_name": "ANNIHILATOR",
+  "description": "Manufacturer: Vanduul\\nItem Type: Tachyon Cannon\\n\\nThis devestatingly powerful Tachyon cannon, typically found on large-scale Vanduul \\ncapital ships, is more commonly referred to by its UEE Navy designation of 'ANNIHILATOR'.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1670.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "beam": true,
+    "damage_per_second": {
+      "physical": 0.0,
+      "energy": 15000.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "heat_per_second": 50000.0,
+    "full_damage_range": 4000.0,
+    "zero_damage_range": 5000.0
+  }
+}

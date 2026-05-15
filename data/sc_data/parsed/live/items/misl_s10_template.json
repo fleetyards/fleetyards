@@ -1,0 +1,40 @@
+{
+  "key": "MISL_S10_Template",
+  "ref": "916b2c5f-ed4a-4f17-b6d9-2a4d1aa59dea",
+  "category": "weapons",
+  "type": "Missile",
+  "sub_type": "Torpedo",
+  "size": "9",
+  "grade": "1",
+  "manufacturer_ref": "587fcede-4fe9-4fb4-85ec-124abc8542b0",
+  "name": "Argos IX Torpedo",
+  "short_name": null,
+  "description": "Manufacturer: Talon\\nTracking Signal: Cross Section\\nSize: 9\\n\\nThe Talon Argos strike torpedo features a classic, straightforward design that relies on exacting manufacturing standards and a classic cross section targeting system.",
+  "inventory_consumption": {
+    "micro_scu": 1000000.0,
+    "dimensions": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "type_data": {
+    "damage_per_shot": {
+      "physical": 26065.49,
+      "energy": 395620.4,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "lock_time": 3.0,
+    "lock_range_min": -1.0,
+    "lock_range_max": -1.0,
+    "tracking_signal": "CrossSection",
+    "speed": 450.0,
+    "range": 13500.0
+  }
+}

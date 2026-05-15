@@ -1,0 +1,80 @@
+{
+  "key": "VNCL_Gen2_TachyonCannon_S7",
+  "ref": "fcec7a3c-6ae7-4c11-9710-145b7978e690",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "7",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Vanduul Mauler 'ERADICATOR' Cannon",
+  "short_name": "ERADICATOR",
+  "description": "Manufacturer: Vanduul\\nItem Type: Tachyon Cannon\\n\\nThis powerful Tachyon cannon, prized on Vanduul warships for it's long range, is more \\ncommonly referred to by it's designated UEE designation of 'ERADICATOR'.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 400.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "fire_rate": 60.0,
+    "heat_per_shot": 0.0,
+    "damage_per_shot": {
+      "physical": 0.0,
+      "energy": 125.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "pellets_per_shot": 1,
+    "speed": 917.0,
+    "range": 10921.5,
+    "ammo_cost": 1,
+    "max_ammo": 0
+  }
+}

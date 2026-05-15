@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_DRAK_Golem_Low_Fuel_TEMPORARY",
+  "ref": "e32d4300-25ed-45f2-86f0-b61239ea2f89",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 24.0
+  }
+}

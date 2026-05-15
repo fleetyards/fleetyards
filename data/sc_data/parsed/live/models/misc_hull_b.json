@@ -5,8 +5,8 @@
   "gravlev": "0",
   "min_crew": "2",
   "name": "MISC Hull B",
-  "description": "Manufacturer: MISC\\nFocus: Heavy Freight\\n\\nThe MISC Hull B is a rugged option for pilots seeking a dedicated cargo transport. While not as large as some of the other Hull-series models, the Hull B's smaller profile provides greater flexibility and more access options.",
-  "career": "Industrial",
+  "description": "Manufacturer: MISC\\nFocus: Medium Freight\\n\\nThe MISC Hull B is a rugged option for pilots seeking a dedicated cargo transport. While not as large as some of the other Hull-series models, the Hull B's smaller profile provides greater flexibility and more access options.",
+  "career": "Transporter",
   "role": "Medium Freight",
   "insurance": {
     "base_wait_time_minutes": "11.66",

@@ -1,0 +1,80 @@
+{
+  "key": "VNCL_Gen2_PlasmaCannon_S8",
+  "ref": "25c8f0c0-c9f4-48a2-a2f0-c224ddce3eeb",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "8",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Vanduul Mauler 'RAGE' Cannon",
+  "short_name": "RAGE",
+  "description": "Manufacturer: Vanduul\\nItem Type: Plasma Cannon\\n\\nThis hard-hitting plasma cannon, often seen on Vanduul battleships, is referred to as 'RAGE,' its UEE designation.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2780.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "fire_rate": 60.0,
+    "heat_per_shot": 0.0,
+    "damage_per_shot": {
+      "physical": 0.0,
+      "energy": 4671.27,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "pellets_per_shot": 1,
+    "speed": 965.2,
+    "range": 8725.4,
+    "ammo_cost": 1,
+    "max_ammo": 0
+  }
+}

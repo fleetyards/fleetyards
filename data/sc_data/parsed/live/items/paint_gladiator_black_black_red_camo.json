@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Gladiator_Black_Black_Red_Camo",
+  "ref": "9e0b3ef9-120d-47bb-b1bf-e20b1c6a5466",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ea2d2fe9-01ff-45b8-b257-e04c5e0ba857",
+  "name": "Gladiator Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Gladiator with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

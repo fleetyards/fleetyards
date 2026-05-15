@@ -91,15 +91,15 @@
     "heat_per_shot": 0.0,
     "damage_per_shot": {
       "physical": 0.0,
-      "energy": 336.78,
+      "energy": 150.0,
       "distortion": 0.0,
       "thermal": 0.0,
       "biochemical": 0.0,
       "stun": 0.0
     },
     "pellets_per_shot": 1,
-    "speed": 1000.0,
-    "range": 3300.0,
+    "speed": 1390.0,
+    "range": 3197.0,
     "ammo_cost": 1,
     "max_ammo": 0
   }

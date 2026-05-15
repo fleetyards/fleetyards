@@ -5,8 +5,8 @@
   "gravlev": "0",
   "min_crew": "2",
   "name": "Greycat STV",
-  "description": "Manufacturer: Greycat Industrial\\nFocus: Transport\\n\\nGet ready to have some serious fun on the job with the STV from Greycat. This Sport Terrain Vehicle was built by pros for pros and features blazing speed and convenient built-in storage.",
-  "career": "Ground",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Passenger\\n\\nGet ready to have some serious fun on the job with the STV from Greycat. This Sport Terrain Vehicle was built by pros for pros and features blazing speed and convenient built-in storage.",
+  "career": "Transporter",
   "role": "Passenger",
   "insurance": {
     "base_wait_time_minutes": "2.17",
@@ -153,7 +153,7 @@
     {
       "name": "hardpoint_computer",
       "ref": null,
-      "key": "COMP_WLOP_S00_Adze"
+      "key": null
     },
     {
       "name": "hardpoint_power_plant",

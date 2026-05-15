@@ -5,9 +5,9 @@
   "gravlev": "0",
   "min_crew": "2",
   "name": "Greycat UTV",
-  "description": "Manufacturer: Greycat Industrial\\nFocus: Cargo\\n\\nThe Greycat UTV is a durable, utility buggy designed to transport light cargo loads across rugged terrain. Whether you’re coordinating freight storage or making a supply run to a neighboring outpost, the straightforward design of the UTV allows operators to focus on tackling the job at hand.",
-  "career": "Ground",
-  "role": "Ground",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Passenger\\n\\nThe Greycat UTV is a durable, utility buggy designed to transport light cargo loads across rugged terrain. Whether you’re coordinating freight storage or making a supply run to a neighboring outpost, the straightforward design of the UTV allows operators to focus on tackling the job at hand.",
+  "career": "Transporter",
+  "role": "Passenger",
   "insurance": {
     "base_wait_time_minutes": "2.17",
     "mandatory_wait_time_minutes": "0.54",
@@ -112,7 +112,7 @@
     },
     {
       "name": "hardpoint_computer",
-      "ref": "a6b4604a-358b-4ee7-8c0f-f3f43427154d",
+      "ref": null,
       "key": null
     },
     {

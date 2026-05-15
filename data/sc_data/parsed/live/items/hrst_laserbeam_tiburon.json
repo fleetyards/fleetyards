@@ -1,0 +1,77 @@
+{
+  "key": "HRST_LaserBeam_Tiburon",
+  "ref": "35e1362f-a28d-4db5-b514-569c62f56a45",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "10",
+  "grade": "1",
+  "manufacturer_ref": "ee8b7bb3-d420-435c-924f-561e67e64588",
+  "name": "Supremacy-10T Laser Beam",
+  "short_name": "Supremacy-10T",
+  "description": "Manufacturer: Hurston Dynamics\\nType: Laser Beam\\nSize: 10\\n\\nDeveloped in concert with the weapons specialists of Aegis to form part of the dedicated anti-capital ship loadout of the Tiburon, the Supremacy-10T combines surgical precision with devastating destructive power.",
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 750000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 100.0,
+    "initial_ammo_count": 100.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "beam": true,
+    "damage_per_second": {
+      "physical": 0.0,
+      "energy": 18000.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "heat_per_second": 7.0,
+    "full_damage_range": 1000.0,
+    "zero_damage_range": 2500.0
+  }
+}

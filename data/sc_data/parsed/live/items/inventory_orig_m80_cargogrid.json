@@ -1,0 +1,40 @@
+{
+  "key": "Orig_m80_CargoGrid",
+  "ref": "0d4347b0-be98-4f3c-9f6d-cb45798320d0",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 1.25,
+      "y": 2.5,
+      "z": 1.25
+    },
+    "capacity": 2,
+    "max_container_size": {
+      "size": 2,
+      "dimensions": {
+        "x": 2.5,
+        "y": 1.25,
+        "z": 1.25
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 2.5,
+          "z": 1.25
+        },
+        "capacity": 2
+      }
+    }
+  }
+}

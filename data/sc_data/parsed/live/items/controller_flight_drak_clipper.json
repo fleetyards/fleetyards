@@ -7,9 +7,9 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": null,
-  "name": null,
-  "short_name": null,
-  "description": null,
+  "name": "Drake Clipper Standard Flight Blade",
+  "short_name": "Drake Clipper Standard Flight Blade",
+  "description": "Manufacturer: Drake Interplanetary\\nType: Flight Blade\\n\\nThis is the standard issue flight blade for the Drake Clipper.",
   "inventory_consumption": {
     "micro_scu": 970.0,
     "dimensions": {

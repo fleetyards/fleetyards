@@ -1,0 +1,21 @@
+{
+  "key": "Paint_M80_teal_black_green",
+  "ref": "95a06d62-4e4a-4bb3-ab76-c87c5b2a3865",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "57173151-0a92-445d-856c-2065d25f3282",
+  "name": "M80 Tetra Livery",
+  "short_name": null,
+  "description": "Turn heads with the Tetra livery, featuring a shimmering teal, light green accents, and a sharp black nose.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

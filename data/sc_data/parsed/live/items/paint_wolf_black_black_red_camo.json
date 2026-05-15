@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Wolf_Black_Black_Red_Camo",
+  "ref": "f45c120b-a5a1-437d-8ebc-804a9993aa7d",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d5500db8-d38b-4316-872b-eda22006de3a",
+  "name": "Wolf Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Wolf with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "key": "DRAK_Ironclad_Assault_Thruster_Mav_Fixed_VTOL",
+  "ref": "f35b7567-356b-428a-b34c-bfec6fccb34d",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": "FixedThruster",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 8000.0
+  },
+  "type_data": {
+    "thrust_capacity": 5687770.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "vtol"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "key": "ARMR_AEGS_Tiburon",
+  "ref": "e3d05eaf-b781-43b6-a571-b1c37a2f51a4",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Hammerhead Ship Armor",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 25740.0
+  },
+  "type_data": {
+    "damage_physical": 0.7,
+    "damage_energy": 0.5,
+    "damage_distortion": 1.0,
+    "damage_thermal": 1.0,
+    "damage_biochemical": 1.0,
+    "damage_stun": 1.0
+  }
+}

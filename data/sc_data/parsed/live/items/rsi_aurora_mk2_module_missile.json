@@ -21,66 +21,66 @@
   "loadout": [
     {
       "name": "missile_01_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {
       "name": "missile_02_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {
       "name": "missile_03_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {
       "name": "missile_04_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {
       "name": "missile_05_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {
       "name": "missile_06_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {
       "name": "missile_07_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {
       "name": "missile_08_rack",
-      "min_size": "1",
-      "max_size": "1",
+      "min_size": "2",
+      "max_size": "2",
       "types": [
-        "Missile"
+        "MissileLauncher"
       ]
     },
     {

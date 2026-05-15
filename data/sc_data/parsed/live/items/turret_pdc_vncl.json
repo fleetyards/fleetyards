@@ -1,0 +1,43 @@
+{
+  "key": "Turret_PDC_VNCL",
+  "ref": "5b384823-085f-4805-80e8-40453d8424ed",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "PDCTurret",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "M2C \"Swarm\"",
+  "short_name": "M2C",
+  "description": "Item Type: Laser Turret\\nManufacturer: Behring\\n\\nThe latest generation of point-defense technology, the M2C \"Swarm\" utilizes advanced search, detection, and tracking software to unleash a swift barrage of laserfire, protecting ships from incoming missiles, torpedoes, and other high-speed threats.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_turret_weapon",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponGun"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_turret_weapon",
+      "key": null,
+      "ref": "14654fe3-7093-4d6d-b033-9474709e5611",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  },
+  "type_data": {}
+}

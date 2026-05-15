@@ -11,11 +11,11 @@
   "short_name": null,
   "description": null,
   "inventory_consumption": {
-    "micro_scu": 340.0,
+    "micro_scu": 510.0,
     "dimensions": {
-      "x": 0.0549,
-      "y": 0.0424,
-      "z": 0.133
+      "x": 0.0650957,
+      "y": 0.1203115,
+      "z": 0.06518803
     }
   }
 }

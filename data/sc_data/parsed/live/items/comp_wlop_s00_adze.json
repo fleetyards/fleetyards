@@ -6,10 +6,10 @@
   "sub_type": null,
   "size": "0",
   "grade": "1",
-  "manufacturer_ref": null,
-  "name": null,
+  "manufacturer_ref": "967cd454-20d9-4cb8-8465-990ff1a1f769",
+  "name": "Adze",
   "short_name": null,
-  "description": null,
+  "description": "Item Type: Computer\\nManufacturer: WillsOp\\nSize: 0\\nGrade: C\\nClass: Civilian\\n\\nYou can now experience the robust data processing of WillsOp in a mobile form factor with the Adze computing system.",
   "inventory_consumption": {
     "micro_scu": 1.0,
     "dimensions": {

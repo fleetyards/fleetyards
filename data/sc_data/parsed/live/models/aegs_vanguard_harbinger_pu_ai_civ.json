@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Aegis Vanguard Harbinger",
-  "description": "Manufacturer: Aegis Dynamics\\nFocus: Bomber\\n\\nThe Vanguard Harbinger is Earth's standard fighter/bomber, converting the standard Warden's escape pod into a potent bomb bay. The extended range of the Vanguard and the relatively small profile mean that it can go where carrier-based ships or larger strategic bombers don't, strike hard, and then make it back to base.",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Fighter / Bomber\\n\\nThe Vanguard Harbinger is Earth's standard fighter/bomber, converting the standard Warden's escape pod into a potent bomb bay. The extended range of the Vanguard and the relatively small profile mean that it can go where carrier-based ships or larger strategic bombers don't, strike hard, and then make it back to base.",
   "career": "Combat",
   "role": "Heavy Fighter / Bomber",
   "insurance": {
@@ -246,23 +246,51 @@
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_001",
-      "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_002",
-      "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_003",
-      "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_004",
-      "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "8115a034-92bf-4766-b0ce-408398ddc7e7",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_turret",

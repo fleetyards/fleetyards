@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "2",
   "name": "Argo RAFT",
-  "description": "Manufacturer: Argo Astronautics\\nFocus: Cargo\\n\\nThe Argo RAFT features a hefty 192 SCU cargo hold, and is capable of carrying standardized 32 SCU cargo containers. Perfect for entry-level haulers and old pros alike, the RAFT is an ideal solution for reliable local freight transport.",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Medium Freight\\n\\nThe Argo RAFT features a hefty 192 SCU cargo hold, and is capable of carrying standardized 32 SCU cargo containers. Perfect for entry-level haulers and old pros alike, the RAFT is an ideal solution for reliable local freight transport.",
   "career": "Transporter",
   "role": "Medium Freight",
   "insurance": {

@@ -1,0 +1,9 @@
+{
+  "key": "Ship_TempItemCarryingCapacity_DRAK_Command_Module",
+  "ref": "58e3ce97-7788-4a6f-b944-bd861b896354",
+  "category": "inventory",
+  "type": "PersonalStorage",
+  "type_data": {
+    "storage": 1.0
+  }
+}

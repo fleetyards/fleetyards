@@ -1,0 +1,67 @@
+{
+  "key": "DRAK_Ironclad_Remote_Turret_Assault",
+  "ref": "d7f8e18f-19ef-40c8-acb8-af2f0d521c2b",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "BottomTurret",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "quad_turret_left_lower",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "quad_turret_right_lower",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "quad_turret_left_upper",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "quad_turret_right_upper",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_shroud",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5000.0
+  },
+  "type_data": {}
+}

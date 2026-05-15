@@ -299,57 +299,7 @@
     {
       "name": "hardpoint_remote_turret",
       "ref": "451d05f6-d3de-4c5c-96ed-a466634dba22",
-      "key": null,
-      "loadout": [
-        {
-          "name": "turret_top_right",
-          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
-          "key": null,
-          "loadout": [
-            {
-              "name": "hardpoint_class_2",
-              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-              "key": null
-            }
-          ]
-        },
-        {
-          "name": "turret_top_left",
-          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
-          "key": null,
-          "loadout": [
-            {
-              "name": "hardpoint_class_2",
-              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-              "key": null
-            }
-          ]
-        },
-        {
-          "name": "turret_bottom_right",
-          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
-          "key": null,
-          "loadout": [
-            {
-              "name": "hardpoint_class_2",
-              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-              "key": null
-            }
-          ]
-        },
-        {
-          "name": "turret_bottom_left",
-          "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
-          "key": null,
-          "loadout": [
-            {
-              "name": "hardpoint_class_2",
-              "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
-              "key": null
-            }
-          ]
-        }
-      ]
+      "key": null
     },
     {
       "name": "hardpoint_weapon_gun_left_bottom",

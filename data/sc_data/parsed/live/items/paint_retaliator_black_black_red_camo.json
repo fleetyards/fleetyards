@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Retaliator_Black_Black_Red_Camo",
+  "ref": "250239f6-e228-4b6e-a36d-552546273944",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "fc559ef1-ca9d-4349-8667-8a78e0272f12",
+  "name": "Retaliator Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Retaliator with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

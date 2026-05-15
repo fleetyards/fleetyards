@@ -2116,11 +2116,6 @@
       "name": "hardpoint_controller_capacitor_assignment",
       "ref": null,
       "key": "Controller_CapacitorAssignment"
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
     }
   ]
 }

@@ -5,9 +5,9 @@
   "gravlev": "0",
   "min_crew": "2",
   "name": "Crusader C2 Hercules Starlifter",
-  "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight\\n\\nUtilizing the patented Hercules military-grade spaceframe and expanding cargo capacity, while sacrificing barely any firepower, the C2 has taken the private sector by storm. It has become the industry standard for racing teams, ship dealers and manufacturers, construction orgs, mining corporations, and even large-scale touring entertainment outfits.",
+  "description": "Manufacturer: Crusader Industries\\nFocus: Heavy Freight\\n\\nUtilizing the patented Hercules military-grade spaceframe and expanding cargo capacity, while sacrificing barely any firepower, the C2 has taken the private sector by storm. It has become the industry standard for racing teams, ship dealers and manufacturers, construction orgs, mining corporations, and even large-scale touring entertainment outfits.",
   "career": "Transporter",
-  "role": "Heavy Freight",
+  "role": "Medium Freight",
   "insurance": {
     "base_wait_time_minutes": "32.7",
     "mandatory_wait_time_minutes": "10.9",

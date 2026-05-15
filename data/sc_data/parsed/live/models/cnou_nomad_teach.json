@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "C.O. Nomad Teach's Special",
-  "description": "Manufacturer: Consolidated Outland \\nFocus: Light Freight\\n\\nWith the versatility of a medium-sized multi-purpose freighter packed into a stylish, compact frame, the Consolidated Outland Nomad is the model of self-sufficiency, the spirit of the open sky, and the perfect solution for anyone yearning to start a brand-new adventure.\\n\\nCatering to the difficult work condition's of Nyx, Teach's Ship Shop has outfitted this special edition with a custom loadout featuring rugged components so you can better tackle the job at hand.",
+  "description": "Manufacturer: Consolidated Outland \\nFocus: Starter / Light Freight\\n\\nWith the versatility of a medium-sized multi-purpose freighter packed into a stylish, compact frame, the Consolidated Outland Nomad is the model of self-sufficiency, the spirit of the open sky, and the perfect solution for anyone yearning to start a brand-new adventure.\\n\\nCatering to the difficult work condition's of Nyx, Teach's Ship Shop has outfitted this special edition with a custom loadout featuring rugged components so you can better tackle the job at hand.",
   "career": "Transporter",
   "role": "Starter / Light Freight",
   "insurance": {
@@ -109,16 +109,6 @@
       "name": "hardpoint_radar",
       "ref": null,
       "key": "RADR_GRNP_S01_Ecouter"
-    },
-    {
-      "name": "hardpoint_scanner",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_ping",
-      "ref": null,
-      "key": null
     },
     {
       "name": "hardpoint_thruster_main_left",

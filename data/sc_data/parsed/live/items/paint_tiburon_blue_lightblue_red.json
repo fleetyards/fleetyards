@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Tiburon_blue_lightblue_red",
+  "ref": "6af44286-2198-4da6-8461-d6658a256bc8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c01c2807-a241-4a45-8b51-d5d754467473",
+  "name": "Tiburon Colmillos Livery",
+  "short_name": null,
+  "description": "Tear your enemies to pieces with the Colmillos livery, transforming the Tiburon with a steely blue and ferocious shark teeth.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

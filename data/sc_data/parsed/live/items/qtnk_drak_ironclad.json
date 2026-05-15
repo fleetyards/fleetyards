@@ -1,0 +1,24 @@
+{
+  "key": "QTNK_DRAK_Ironclad",
+  "ref": "a824c8f8-092c-4ad4-8d92-5659c5f8e041",
+  "category": "fueltanks",
+  "type": "QuantumFuelTank",
+  "sub_type": "QuantumFuel",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 11.0
+  }
+}

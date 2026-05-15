@@ -1,0 +1,35 @@
+{
+  "key": "DRAK_Ironclad_Remote_Nose_Turret_Tractor_Beam",
+  "ref": "367a7034-db71-4326-ac9e-79cde18a61c4",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "Utility",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Tractor Beam",
+  "short_name": null,
+  "description": "Tractor Beam",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_tractor",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "TractorBeam"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5000.0
+  },
+  "type_data": {}
+}

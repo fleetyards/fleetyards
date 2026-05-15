@@ -11,11 +11,11 @@
   "short_name": null,
   "description": "Manufacturer: Greycat Industrial\\nItem Type: Scraper Module\\nExtraction Speed: 0.5/1.5\\nRadius: 1.5m\\nExtraction Efficiency: 90%\\n\\nThe Cinch is a precision scraper module that produces a small, focused beam perfect for extracting resources from every nook and cranny on a hull. While the beam's relatively small size requires more time to remove Recycled Material Composite (RMC), its excellent extraction rate will make the added effort worth it.",
   "inventory_consumption": {
-    "micro_scu": 340.0,
+    "micro_scu": 510.0,
     "dimensions": {
-      "x": 0.0549,
-      "y": 0.0424,
-      "z": 0.133
+      "x": 0.0650957,
+      "y": 0.1203115,
+      "z": 0.06518803
     }
   }
 }

@@ -1,0 +1,42 @@
+{
+  "key": "BMBRCK_S05_ANVL_Gladiator",
+  "ref": "ed3435e9-8caf-44d6-a327-051e61c88d64",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

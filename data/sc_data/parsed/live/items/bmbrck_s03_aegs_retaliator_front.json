@@ -1,0 +1,538 @@
+{
+  "key": "BMBRCK_S03_AEGS_Retaliator_Front",
+  "ref": "3c4d48e6-49dd-4b1a-b9fe-b10c9ced8f65",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_09_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_10_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_11_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_12_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_13_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_14_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_15_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_16_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_17_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_18_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_19_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_20_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_21_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_22_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_23_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_24_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_25_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_26_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_27_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_28_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_29_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_30_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_31_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_32_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_33_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_34_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_35_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_36_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_37_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_38_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_39_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_40_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_41_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_42_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_43_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_44_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_45_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_46_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_47_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_48_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_49_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_50_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_51_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_52_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_53_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_54_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_55_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_56_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_57_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_58_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_59_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_60_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_61_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_62_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_63_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_64_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  }
+}

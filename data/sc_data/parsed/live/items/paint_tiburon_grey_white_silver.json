@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Tiburon_grey_white_silver",
+  "ref": "314d09da-1190-4d3c-a73a-657a4db36b32",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7a3d0395-d511-44bc-885e-00eb789024d8",
+  "name": "Tiburon Enforcer Livery",
+  "short_name": null,
+  "description": "Combining shades of gray, white and silver, the Enforcer livery emphasizes the sturdiness of the Tiburon with its layered appearance.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

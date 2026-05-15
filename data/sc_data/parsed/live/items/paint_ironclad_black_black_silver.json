@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Ironclad_Black_Black_Silver",
+  "ref": "8a51d82e-4f35-4183-9275-9534da96fd58",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "ed09dff2-7e12-4c5c-b317-e5571e28e874",
+  "name": "Ironclad Dauntless Livery",
+  "short_name": null,
+  "description": "Make the Ironclad even more imposing and impressive with the Dauntless livery, which is primarily black with striking silver highlight.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

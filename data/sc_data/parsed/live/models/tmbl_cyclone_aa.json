@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Tumbril Cyclone AA",
-  "description": "Manufacturer: Tumbril Land Systems \\nFocus: Combat\\n\\nA battlefield equalizer, the Cyclone AA comes equipped with a surface-to-air missile and countermeasure package to provide cover for ground troops against airborne targets.",
+  "description": "Manufacturer: Tumbril Land Systems \\nFocus: Anti-Air\\n\\nA battlefield equalizer, the Cyclone AA comes equipped with a surface-to-air missile and countermeasure package to provide cover for ground troops against airborne targets.",
   "career": "Combat",
   "role": "Anti-Air",
   "insurance": {

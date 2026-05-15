@@ -1,0 +1,32 @@
+{
+  "key": "ARMR_VNCL_Mauler",
+  "ref": "ea9fa6b2-dbe3-4bdf-b5e6-d73638aebd71",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "Void Ship Armor",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 72930.0
+  },
+  "type_data": {
+    "damage_physical": 0.75,
+    "damage_energy": 0.6,
+    "damage_distortion": 1.0,
+    "damage_thermal": 1.0,
+    "damage_biochemical": 1.0,
+    "damage_stun": 1.0
+  }
+}

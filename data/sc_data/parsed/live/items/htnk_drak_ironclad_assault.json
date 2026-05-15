@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_DRAK_Ironclad_Assault",
+  "ref": "901fc586-626f-4932-88fd-b4e3f195b52d",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Internal Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 280.0
+  }
+}

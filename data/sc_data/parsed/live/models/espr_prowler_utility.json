@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Esperia Prowler Utility",
-  "description": "Manufacturer: Esperia\\nFocus: Cargo\\n\\nWhile no known Tevarin-made examples of this historical ship exist, historians at Esperia studied contemporary UPE military field reports to reconstruct this modified Prowler. Used by the Tevarin military to deliver urgently needed supplies to the frontlines, the Prowler Utility pairs a tractor beam with a fully accessible hold, alongside the warship’s still significant armaments, to make the transfer of cargo in battlefield conditions a precision operation.",
+  "description": "Manufacturer: Esperia\\nFocus: Light Freight\\n\\nWhile no known Tevarin-made examples of this historical ship exist, historians at Esperia studied contemporary UPE military field reports to reconstruct this modified Prowler. Used by the Tevarin military to deliver urgently needed supplies to the frontlines, the Prowler Utility pairs a tractor beam with a fully accessible hold, alongside the warship’s still significant armaments, to make the transfer of cargo in battlefield conditions a precision operation.",
   "career": "Transporter",
   "role": "Light Freight",
   "insurance": {

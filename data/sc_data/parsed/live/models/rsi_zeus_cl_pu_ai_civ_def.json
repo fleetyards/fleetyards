@@ -571,8 +571,8 @@
           "loadout": [
             {
               "name": "hardpoint_tractor_beam_device",
-              "ref": null,
-              "key": "GRIN_TractorBeam_S2"
+              "ref": "8c16ee3d-78fb-4fef-a369-b3d42952ec33",
+              "key": null
             }
           ]
         }

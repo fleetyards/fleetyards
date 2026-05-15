@@ -22,8 +22,8 @@
     "health": 1800.0
   },
   "type_data": {
-    "max_health": 90000.0,
-    "max_regen": 9900.0,
+    "max_health": 72000.0,
+    "max_regen": 15840.0,
     "decay_ratio": 0.25,
     "reserve_pool_initial_health_ratio": 1.0,
     "reserve_pool_max_health_ratio": 1.0,
@@ -44,8 +44,8 @@
         "max": 0.25
       },
       "energy": {
-        "min": -0.6,
-        "max": -0.2
+        "min": 0.0,
+        "max": 0.0
       },
       "distortion": {
         "min": 0.75,

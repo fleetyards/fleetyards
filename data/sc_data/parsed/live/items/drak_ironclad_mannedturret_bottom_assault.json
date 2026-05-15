@@ -1,0 +1,75 @@
+{
+  "key": "DRAK_Ironclad_MannedTurret_Bottom_Assault",
+  "ref": "b4aeccf1-3e01-437f-b348-3db04cd32a12",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "quad_turret_left_lower",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "quad_turret_right_lower",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_shroud",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "hardpoint_turret_exterior",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "quad_turret_left_upper",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "quad_turret_right_upper",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  },
+  "type_data": {}
+}

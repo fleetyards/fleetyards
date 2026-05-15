@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Drake Golem",
-  "description": "Manufacturer: Drake Interplanetary\\nFocus: Starter / Mining\\n\\nWith the Golem, Drake designed the ideal ship for those interested in starting a mining career. The ship features a bespoke mining laser and the capacity to carry 32 SCU of valuable resources. In classic Drake fashion, the Golem is a purpose-built ship that prioritizes function over frills.",
+  "description": "Manufacturer: Drake Interplanetary\\nFocus: Starter / Light Mining\\n\\nWith the Golem, Drake designed the ideal ship for those interested in starting a mining career. The ship features a bespoke mining laser and the capacity to carry 32 SCU of valuable resources. In classic Drake fashion, the Golem is a purpose-built ship that prioritizes function over frills.",
   "career": "Starter",
   "role": "Mining",
   "insurance": {

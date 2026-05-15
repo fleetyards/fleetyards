@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Argo MPUV Tractor",
-  "description": "Manufacturer: Argo Astronautics\\nFocus: Cargo Handling\\n\\nThe Argo Astronautics MPUV-1T is outfitted with a tractor beam to allow it to handily move cargo containers on and off larger hauling vessels.  Its smaller size and maneuverability make it an ideal support vehicle at landing zones and space stations.",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Light Freight\\n\\nThe Argo Astronautics MPUV-1T is outfitted with a tractor beam to allow it to handily move cargo containers on and off larger hauling vessels.  Its smaller size and maneuverability make it an ideal support vehicle at landing zones and space stations.",
   "career": "Transporter",
   "role": "Light Freight",
   "insurance": {

@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "MISC Hull A",
-  "description": "Manufacturer: MISC\\nFocus: Medium Freight\\n\\nThe smallest, most affordable Hull. The Hull A is great for those just striking out in the galaxy on their own. The Hull A is most similar to the Aurora and Mustang, but lacks the ‘jack of all trades’ nature. Where the others trade cargo capacity for firepower or speed, the Hull A is 100% on-mission transport.",
+  "description": "Manufacturer: MISC\\nFocus: Light Freight\\n\\nThe smallest, most affordable Hull. The Hull A is great for those just striking out in the galaxy on their own. The Hull A is most similar to the Aurora and Mustang, but lacks the ‘jack of all trades’ nature. Where the others trade cargo capacity for firepower or speed, the Hull A is 100% on-mission transport.",
   "career": "Transporter",
   "role": "Light Freight",
   "insurance": {

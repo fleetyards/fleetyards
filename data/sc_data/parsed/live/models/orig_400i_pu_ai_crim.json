@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "3",
   "name": "Origin 400i",
-  "description": "Manufacturer: Origin Jumpworks\\nFocus: Pathfinder\\n\\nTo explore the stars is a most noble endeavor, and Origin Jumpworks has risen to the occasion in crafting the 400i high-performance pathfinder. With class-leading range, substantial defensive capabilities, and a factory-equipped scanning array, the 400i is ready to take on the harshest corners of the galaxy while maintaining the comfort and elegance Origin is known for.",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Expedition\\n\\nTo explore the stars is a most noble endeavor, and Origin Jumpworks has risen to the occasion in crafting the 400i high-performance pathfinder. With class-leading range, substantial defensive capabilities, and a factory-equipped scanning array, the 400i is ready to take on the harshest corners of the galaxy while maintaining the comfort and elegance Origin is known for.",
   "career": "Exploration",
   "role": "Expedition",
   "insurance": {
@@ -385,8 +385,8 @@
     },
     {
       "name": "hardpoint_gunrack",
-      "ref": null,
-      "key": "Weapon_Rack_400i_Armory"
+      "ref": "5b6c04a4-4a7d-424d-8a78-54b7c2db3040",
+      "key": null
     },
     {
       "name": "hardpoint_missile_right",

@@ -1,0 +1,77 @@
+{
+  "key": "VNCL_Gen2_LaserBeam_S9",
+  "ref": "2ba5d32b-f2cc-48cf-a853-2476a30b84c9",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "9",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Vanduul Mauler 'IGNITER' Beam",
+  "short_name": "IGNITER",
+  "description": "Manufacturer: Vanduul\\nItem Type: Laser Beam\\n\\nThis destructive laser beam typically found on Vanduul warships, is commonly known by its \\nUEE Navy designation, 'IGNITER'.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 466.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "beam": true,
+    "damage_per_second": {
+      "physical": 0.0,
+      "energy": 15000.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "heat_per_second": 50000.0,
+    "full_damage_range": 4000.0,
+    "zero_damage_range": 5000.0
+  }
+}

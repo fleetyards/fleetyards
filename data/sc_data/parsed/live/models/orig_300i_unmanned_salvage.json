@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Origin 300i",
-  "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nIf you're going to travel the stars... why not do it in style? The 300i is Origin Jumpworks' premiere luxury spacecraft. It is a sleek, silver killer that sends as much of a message with its silhouette as it does with its particle cannons.",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Luxury Touring\\n\\nIf you're going to travel the stars... why not do it in style? The 300i is Origin Jumpworks' premiere luxury spacecraft. It is a sleek, silver killer that sends as much of a message with its silhouette as it does with its particle cannons.",
   "career": "Exploration",
   "role": "Luxury Touring",
   "insurance": {
@@ -358,8 +358,8 @@
     },
     {
       "name": "hardpoint_weapon_rack",
-      "ref": null,
-      "key": "Weapon_Rack_ORIG_300i_2_Slots"
+      "ref": "a0d9d219-a054-44ca-be18-a167a7c1c56d",
+      "key": null
     },
     {
       "name": "hardpoint_controller_fuel",

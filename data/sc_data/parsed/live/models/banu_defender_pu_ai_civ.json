@@ -111,16 +111,6 @@
       "key": "RADR_GRNP_S01_Ecouter"
     },
     {
-      "name": "hardpoint_controller_scanner",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_ping",
-      "ref": null,
-      "key": null
-    },
-    {
       "name": "hardpoint_thruster_main_left",
       "ref": null,
       "key": "BANU_Defender_Thruster_Main"

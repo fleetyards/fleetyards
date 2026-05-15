@@ -579,6 +579,16 @@
       "name": "hardpoint_back",
       "ref": null,
       "key": null
+    },
+    {
+      "name": "hardpoint_rear_l",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_rear_r",
+      "ref": null,
+      "key": null
     }
   ]
 }

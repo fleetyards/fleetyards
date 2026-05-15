@@ -6,8 +6,8 @@
   "min_crew": "1",
   "name": "Mirai Pulse Wikelo Special",
   "description": "Manufacturer: Mirai\\nFocus: Combat\\n \\nThe engineers at Mirai set out to craft an open-canopy bike capable of more. A more intimate connection between pilot and performance with a form-fitting silhouette. A more intuitive way to tame formidable landscapes with a responsive grav-lev system. A more intelligent combat experience with a custom weapon fully integrated into the spirit of the vehicle. The end result? The Mirai Pulse.\\n\\nWikelo spent many beats on planet go fast. Make some changes so you go fast too. You will like.",
-  "career": "Ground",
-  "role": "Combat",
+  "career": "Combat",
+  "role": "Pathfinder",
   "insurance": {
     "base_wait_time_minutes": "0.15",
     "mandatory_wait_time_minutes": "0.05",

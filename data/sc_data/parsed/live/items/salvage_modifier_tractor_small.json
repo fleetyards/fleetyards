@@ -11,11 +11,11 @@
   "short_name": "ReadyGrip Tractor Module",
   "description": "Manufacturer: Greycat Industrial\\nItem Type: Tractor Beam\\nMax Angle: 60°\\nMax Range: 150 m\\nFull Strength Distance: 75 m\\n\\nThe Ready Grip Tractor Module compresses the dependability and power of Greycat’s signature tractor beam technology into a smaller sub-component that can be attached to a salvaging laser head.",
   "inventory_consumption": {
-    "micro_scu": 340.0,
+    "micro_scu": 510.0,
     "dimensions": {
-      "x": 0.0549,
-      "y": 0.0424,
-      "z": 0.133
+      "x": 0.0650957,
+      "y": 0.1203115,
+      "z": 0.06518803
     }
   }
 }

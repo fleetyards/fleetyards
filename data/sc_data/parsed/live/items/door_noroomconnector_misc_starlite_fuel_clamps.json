@@ -1,0 +1,56 @@
+{
+  "key": "Door_NoRoomConnector_MISC_Starlite_Fuel_Clamps",
+  "ref": "7ee1b404-bcd0-4a49-a336-9774ddcce870",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_lever_right",
+      "min_size": "1",
+      "max_size": "10",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
+      "name": "hardpoint_lever_left",
+      "min_size": "0",
+      "max_size": "10",
+      "types": [
+        "ControlPanel"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_lever_right",
+      "key": null,
+      "ref": "f7e179d0-0b23-4320-b3f0-266fd7afbfdc",
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_lever_left",
+      "key": null,
+      "ref": "f7e179d0-0b23-4320-b3f0-266fd7afbfdc",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1700.0
+  }
+}

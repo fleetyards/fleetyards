@@ -1,0 +1,27 @@
+{
+  "key": "FuelPod_AI_Template",
+  "ref": "dcb4c07b-6042-404e-a8cf-be717c7a90ff",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Fuel Tank",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 10000.0
+  },
+  "type_data": {
+    "capacity": 60.0
+  }
+}

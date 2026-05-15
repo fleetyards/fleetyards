@@ -1,0 +1,58 @@
+{
+  "key": "RADR_VNCL_S02_Mauler",
+  "ref": "cb302b31-5ba1-48c1-83e7-6f77f3b1476f",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": null,
+  "name": "Mauler Radar",
+  "short_name": null,
+  "description": "The Radar system for the Vanduul Mauler allowing it to detect objects large and small for navigational and combat data.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 7300.0
+  },
+  "type_data": {
+    "signature_detection": {
+      "ir": {
+        "sensitivity": 0.9,
+        "piercing": 0.25
+      },
+      "em": {
+        "sensitivity": 0.9,
+        "piercing": 0.25
+      },
+      "cs": {
+        "sensitivity": 0.9,
+        "piercing": 0.25
+      },
+      "rs": {
+        "sensitivity": 0.85,
+        "piercing": 1.0
+      }
+    },
+    "aim_assist_range": 2002.0,
+    "ping_properties": {
+      "cooldown_time": 2.5
+    }
+  }
+}

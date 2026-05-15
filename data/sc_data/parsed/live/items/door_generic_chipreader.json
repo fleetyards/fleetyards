@@ -1,0 +1,37 @@
+{
+  "key": "Door_Generic_ChipReader",
+  "ref": "1960880f-24d1-41aa-98a0-aee85ba17756",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "loadout": [
+    {
+      "name": "slot_cardreader_a",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "slot_cardreader_a",
+      "key": null,
+      "ref": "847c2621-00b4-46bc-882c-b4d57ce3d800",
+      "default_loadout": []
+    }
+  ]
+}

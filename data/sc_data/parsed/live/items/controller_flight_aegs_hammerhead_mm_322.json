@@ -7,7 +7,7 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
-  "name": null,
+  "name": "Hammerhead Standard Flight Blade",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
@@ -20,9 +20,9 @@
   },
   "type_data": {
     "scm_speed": 160.0,
-    "scm_speed_boosted": 320.0,
+    "scm_speed_boosted": 340.0,
     "reverse_speed_boosted": 170.0,
-    "max_speed": 950.0,
+    "max_speed": 1000.0,
     "angular_velocity": {
       "pitch": 20.0,
       "yaw": 20.0,

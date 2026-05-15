@@ -1,0 +1,27 @@
+{
+  "key": "FuelPod_STOR_Big_QuantumPrefilled",
+  "ref": "a9994d83-2685-4542-bf08-5b9b2005e85a",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "c4a97eae-00ee-4873-93c5-ee73209e3ec8",
+  "name": "GSX-RF",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 14280.0
+  },
+  "type_data": {
+    "capacity": 23.0
+  }
+}

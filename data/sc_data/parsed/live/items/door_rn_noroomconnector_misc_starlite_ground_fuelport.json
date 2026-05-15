@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_NoRoomConnector_MISC_Starlite_Ground_Fuelport",
+  "ref": "90daa3cf-abe9-49f9-be10-ecfa7fa56aaa",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 100.0
+  }
+}

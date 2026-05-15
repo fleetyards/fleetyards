@@ -5,8 +5,8 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Greycat PTV",
-  "description": "Manufacturer: Greycat Industrial\\nFocus: Personal Transport\\n\\nThe Greycat PTV is a simple and practical buggy frequently used to reduce travel times in large hangars or outposts.",
-  "career": "Ground",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Passenger\\n\\nThe Greycat PTV is a simple and practical buggy frequently used to reduce travel times in large hangars or outposts.",
+  "career": "Transporter",
   "role": "Passenger",
   "insurance": {
     "base_wait_time_minutes": "0.28",

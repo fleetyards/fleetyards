@@ -1,0 +1,24 @@
+{
+  "key": "HTNK_VNCL_Mauler",
+  "ref": "43641070-cf42-4be7-b91e-b29d9141c96d",
+  "category": "fueltanks",
+  "type": "FuelTank",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Hydrogen Fuel Tank",
+  "short_name": null,
+  "description": "The Vanduul Mauler's Hydrogen Fuel Tank stores fuel to power the Mauler conventional engines and thrusters.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 7300.0
+  }
+}

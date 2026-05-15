@@ -72,8 +72,8 @@
     },
     {
       "name": "hardpoint_controller_missile",
-      "ref": null,
-      "key": "Controller_Missile"
+      "ref": "4750556e-1afc-45be-86f7-f7adbc1fb7aa",
+      "key": null
     },
     {
       "name": "hardpoint_controller_door",
@@ -233,25 +233,8 @@
     },
     {
       "name": "hardpoint_torpedorack",
-      "ref": null,
-      "key": "MRCK_S09_AEGS_Eclipse",
-      "loadout": [
-        {
-          "name": "missile_01_attach",
-          "ref": null,
-          "key": "MISL_S09_CS_TALN_Argos"
-        },
-        {
-          "name": "missile_02_attach",
-          "ref": null,
-          "key": "MISL_S09_CS_TALN_Argos"
-        },
-        {
-          "name": "missile_03_attach",
-          "ref": null,
-          "key": "MISL_S09_CS_TALN_Argos"
-        }
-      ]
+      "ref": "ffaf4f8b-6712-4a72-aa54-003187447399",
+      "key": null
     },
     {
       "name": "hardpoint_countermeasure_launcher_left",

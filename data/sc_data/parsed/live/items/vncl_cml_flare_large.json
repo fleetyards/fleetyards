@@ -1,0 +1,34 @@
+{
+  "key": "VNCL_CML_Flare_Large",
+  "ref": "96048ad7-1377-4d1f-8c23-ec164bc0e40d",
+  "category": "countermeasures",
+  "type": "WeaponDefensive",
+  "sub_type": "CountermeasureLauncher",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "Vanduul Decoy Launcher",
+  "short_name": "Decoy",
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 80.0,
+    "initial_ammo_count": 80.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "speed": 90.0,
+    "range": 1080.0,
+    "max_ammo": 80
+  }
+}

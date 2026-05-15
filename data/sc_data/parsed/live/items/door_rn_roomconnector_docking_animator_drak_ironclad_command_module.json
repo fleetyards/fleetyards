@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Docking_Animator_DRAK_Ironclad_Command_Module",
+  "ref": "acaf116d-cd25-4d32-ab9b-97de032f25f9",
+  "category": "doors",
+  "type": "DockingAnimator",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 2000.0
+  }
+}

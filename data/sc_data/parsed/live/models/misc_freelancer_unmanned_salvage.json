@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "MISC Freelancer",
-  "description": "Manufacturer: MISC\\nFocus: Medium Freight\\n\\nFreelancers are used as long haul merchant ships by major corporations, but they are just as frequently repurposed as dedicated exploration vessels by independent captains who want to operate on the fringes of the galaxy.",
+  "description": "Manufacturer: MISC\\nFocus: Light Freight\\n\\nFreelancers are used as long haul merchant ships by major corporations, but they are just as frequently repurposed as dedicated exploration vessels by independent captains who want to operate on the fringes of the galaxy.",
   "career": "Transporter",
   "role": "Light Freight",
   "insurance": {

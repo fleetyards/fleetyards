@@ -1,0 +1,42 @@
+{
+  "key": "MRCK_S04_duel_S02_orig_m80",
+  "ref": "c11e9c95-6a72-4f5b-9dd6-11255cd6ca56",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "name": "MSD-481 Missile Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Behring\\nSize: 4\\nMissiles: 8xS1\\n\\nBehring’s MSD-481 \"Marsden\" is a complete ordnance storage and deployment system that can be mounted on any compatible size 4 hardpoint for the reliable and effective launch of eight S1 missiles.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

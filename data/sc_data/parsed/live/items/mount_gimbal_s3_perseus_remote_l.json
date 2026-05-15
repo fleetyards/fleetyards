@@ -21,7 +21,7 @@
   "loadout": [
     {
       "name": "hardpoint_weapon_left",
-      "min_size": "2",
+      "min_size": "3",
       "max_size": "3",
       "types": [
         "WeaponGun"

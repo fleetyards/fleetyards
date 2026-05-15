@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Origin 890 Jump",
-  "description": "Manufacturer: Origin Jumpworks\\nFocus: Touring\\n\\nWith an elegant, sleek exterior that belies its spacious interior, the 890 Jump is a true engineering marvel; crafted to impress from every angle by combining a unique, innovative design with the finest materials and the most advanced technology. The result is a vessel that is in a class all of its own, a masterpiece worthy of the name Origin.",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Luxury Touring\\n\\nWith an elegant, sleek exterior that belies its spacious interior, the 890 Jump is a true engineering marvel; crafted to impress from every angle by combining a unique, innovative design with the finest materials and the most advanced technology. The result is a vessel that is in a class all of its own, a masterpiece worthy of the name Origin.",
   "career": "Exploration",
   "role": "Luxury Touring",
   "insurance": {
@@ -809,23 +809,23 @@
     },
     {
       "name": "hardpoint_weapon_locker_01",
-      "ref": null,
-      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+      "ref": "0f9d89f2-6ea2-4192-86ab-e2b4bcd8e584",
+      "key": null
     },
     {
       "name": "hardpoint_weapon_locker_02",
-      "ref": null,
-      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+      "ref": "0f9d89f2-6ea2-4192-86ab-e2b4bcd8e584",
+      "key": null
     },
     {
       "name": "hardpoint_weapon_locker_03",
-      "ref": null,
-      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+      "ref": "0f9d89f2-6ea2-4192-86ab-e2b4bcd8e584",
+      "key": null
     },
     {
       "name": "hardpoint_weapon_locker_04",
-      "ref": null,
-      "key": "Weapon_Rack_ORIG_890Jump_Armory"
+      "ref": "0f9d89f2-6ea2-4192-86ab-e2b4bcd8e584",
+      "key": null
     },
     {
       "name": "hardpoint_air_traffic_controller",

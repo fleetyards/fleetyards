@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Syulen_Bronze_Grey_Red",
+  "ref": "383f323b-62ab-4322-9583-5f86c223daaf",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3105d15a-e4d0-4eff-a9a3-cb8c53757ca2",
+  "name": "Syulen Kenglath Livery",
+  "short_name": null,
+  "description": "Make your Syulen one worthy of admiration with the Kenglath livery that provides the ship a rich bronze marbled look in shades of gray and red undertones.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

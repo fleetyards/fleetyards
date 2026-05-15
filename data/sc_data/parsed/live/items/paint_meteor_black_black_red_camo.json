@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Meteor_Black_Black_Red_Camo",
+  "ref": "88749b9e-cd29-43e7-99c7-87465f6734a8",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d0bbf04c-bbea-4458-98be-7f3d976f63e5",
+  "name": "Meteor Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Meteor with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

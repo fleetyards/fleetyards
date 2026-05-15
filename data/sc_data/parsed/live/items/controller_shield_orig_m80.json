@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_ORIG_m80",
+  "ref": "30c2b1be-1e21-422a-9802-9b884d3aeb42",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "key": "BMBRCK_S03_ANVL_Gladiator",
+  "ref": "a59e4b9a-66d1-43f2-bbb1-4eb50c9bf489",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": "CST-313",
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 4200000.0,
+    "dimensions": {
+      "x": 1.116502,
+      "y": 8.84403,
+      "z": 2.004737
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_09_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_10_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_11_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_12_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

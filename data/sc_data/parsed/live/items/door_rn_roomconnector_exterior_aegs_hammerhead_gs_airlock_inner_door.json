@@ -1,0 +1,21 @@
+{
+  "key": "Door_RN_RoomConnector_Exterior_AEGS_Hammerhead_GS_Airlock_Inner_Door",
+  "ref": "74fc5132-3b22-4898-969b-fd5e943b16df",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

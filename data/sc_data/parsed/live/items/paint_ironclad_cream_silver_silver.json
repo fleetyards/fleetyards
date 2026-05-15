@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Ironclad_Cream_Silver_Silver",
+  "ref": "c096b55c-1a55-4698-bf6b-0d950cdc3908",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "29c8bc01-d9c9-4638-9e35-7778ef83e34f",
+  "name": "Ironclad Wind Chill Livery",
+  "short_name": null,
+  "description": "The Wind Chill livery for the Ironclad features crisp white paint with black highlights and silver accents.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

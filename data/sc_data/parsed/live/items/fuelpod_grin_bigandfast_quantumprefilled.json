@@ -1,0 +1,27 @@
+{
+  "key": "FuelPod_GRIN_BigAndFast_QuantumPrefilled",
+  "ref": "5faf6c38-2ae4-423c-afe1-e30698f851c1",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Gargant",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 11550.0
+  },
+  "type_data": {
+    "capacity": 24.0
+  }
+}

@@ -101,16 +101,6 @@
       "key": "RADR_WLOP_S01_Fleming"
     },
     {
-      "name": "hardpoint_scanner",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "hardpoint_ping",
-      "ref": null,
-      "key": null
-    },
-    {
       "name": "hardpoint_controller_comms",
       "ref": null,
       "key": "Controller_Comms"

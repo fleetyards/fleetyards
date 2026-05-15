@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Clipper_Black_Black_Red_Camo",
+  "ref": "f2b3c1b0-2877-48c2-be6d-3fda89f597bf",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9f69b415-6004-4cde-815b-3f06b01099aa",
+  "name": "Clipper Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Clipper with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

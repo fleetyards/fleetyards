@@ -1,0 +1,27 @@
+{
+  "key": "FuelPod_GRIN_FastAndSmall_QuantumPrefilled",
+  "ref": "2bdfa0a9-fe20-44ce-821c-16ce313641eb",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "name": "Bonito",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 21000.0
+  },
+  "type_data": {
+    "capacity": 12.0
+  }
+}

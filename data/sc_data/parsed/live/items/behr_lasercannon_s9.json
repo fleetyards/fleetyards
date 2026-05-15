@@ -72,8 +72,8 @@
       "stun": 0.0
     },
     "pellets_per_shot": 1,
-    "speed": 760.0,
-    "range": 3800.0,
+    "speed": 992.0,
+    "range": 7916.2,
     "ammo_cost": 0,
     "max_ammo": 0
   }

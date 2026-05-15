@@ -1,0 +1,186 @@
+{
+  "key": "BMBRCK_S03_AEGS_Eclipse",
+  "ref": "99835689-e405-4e03-9e1d-d460c1c377c7",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_09_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_10_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_11_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_12_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_13_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_14_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_15_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_16_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_17_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_18_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_19_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_20_attach",
+      "min_size": "3",
+      "max_size": "3",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

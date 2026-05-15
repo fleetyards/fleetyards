@@ -1,0 +1,32 @@
+{
+  "key": "ARMR_MISC_Starlite",
+  "ref": "3ad61f08-5caa-4cba-8d44-bc50ebe011fe",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 4114.0
+  },
+  "type_data": {
+    "damage_physical": 0.75,
+    "damage_energy": 0.6,
+    "damage_distortion": 1.0,
+    "damage_thermal": 1.0,
+    "damage_biochemical": 1.0,
+    "damage_stun": 1.0
+  }
+}

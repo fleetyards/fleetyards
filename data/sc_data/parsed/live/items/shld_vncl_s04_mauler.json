@@ -1,0 +1,108 @@
+{
+  "key": "SHLD_VNCL_S04_Mauler",
+  "ref": "7775ba87-03ef-4df0-84ca-7222848ceac3",
+  "category": "shieldgenerator",
+  "type": "Shield",
+  "sub_type": null,
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "57bfcf3d-13f6-4c2c-b7c7-6bf8eacb8a24",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 53000.0
+  },
+  "type_data": {
+    "max_health": 1056000.0,
+    "max_regen": 77440.0,
+    "decay_ratio": 0.25,
+    "reserve_pool_initial_health_ratio": 1.0,
+    "reserve_pool_max_health_ratio": 1.0,
+    "reserve_pool_regen_rate_ratio": 1.0,
+    "reserve_pool_drain_rate_ratio": 2.5,
+    "downed_regen_delay": 9.39,
+    "damaged_regen_delay": 4.7,
+    "electrical_charge_damage_resistance": 0.0,
+    "stun_params": {
+      "min_alpha_damage_ratio": 0.005,
+      "max_alpha_damage_ratio": 0.15,
+      "min_stun_time": 0.0,
+      "max_stun_time": 12.0
+    },
+    "resistance": {
+      "physical": {
+        "min": 0.0,
+        "max": 0.25
+      },
+      "energy": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "distortion": {
+        "min": 0.75,
+        "max": 0.95
+      },
+      "thermal": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "biochemical": {
+        "min": 0.0,
+        "max": 0.0
+      },
+      "stun": {
+        "min": 0.0,
+        "max": 0.0
+      }
+    },
+    "absorption": {
+      "physical": {
+        "min": 0.0,
+        "max": 0.45
+      },
+      "energy": {
+        "min": 1.0,
+        "max": 1.0
+      },
+      "distortion": {
+        "min": 1.0,
+        "max": 1.0
+      },
+      "thermal": {
+        "min": 1.0,
+        "max": 1.0
+      },
+      "biochemical": {
+        "min": 1.0,
+        "max": 1.0
+      },
+      "stun": {
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    "power_ranges": {
+      "low": {
+        "start": 1.0,
+        "modifier": 0.7
+      },
+      "medium": {
+        "start": 4.0,
+        "modifier": 0.85
+      },
+      "high": {
+        "start": 5.0,
+        "modifier": 1.0
+      }
+    }
+  }
+}

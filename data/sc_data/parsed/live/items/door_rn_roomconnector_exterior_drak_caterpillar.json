@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Exterior_DRAK_Caterpillar",
+  "ref": "070b6275-3f30-4a9f-ac69-fe90353e7635",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 4200.0
+  }
+}

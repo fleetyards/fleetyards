@@ -1,0 +1,25 @@
+{
+  "key": "INTK_VNCL_Mauler",
+  "ref": "a4991ad7-1415-4bad-9817-b6be28584c24",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Fuel Intake",
+  "short_name": null,
+  "description": "This Fuel Intake replenishes the hydrogen fuel stores for the Mauler to keep its tanks full during combat maneuvers.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 25.0,
+    "minimum_rate": 0.2
+  }
+}

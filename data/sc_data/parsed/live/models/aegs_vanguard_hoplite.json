@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Aegis Vanguard Hoplite",
-  "description": "Manufacturer: Aegis Dynamics\\nFocus: Dropship \\n\\nThe Vanguard Hoplite is a cross between the winning Vanguard deep space fighter and a dedicated boarding ship. Adapted from proven assault ship designs, the Hoplite is the perfect tool for inserting an armored strike team with enough firepower to get them out again.",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Drop Ship \\n\\nThe Vanguard Hoplite is a cross between the winning Vanguard deep space fighter and a dedicated boarding ship. Adapted from proven assault ship designs, the Hoplite is the perfect tool for inserting an armored strike team with enough firepower to get them out again.",
   "career": "Combat",
   "role": "Dropship",
   "insurance": {
@@ -246,23 +246,51 @@
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_001",
-      "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_002",
-      "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_003",
-      "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_004",
-      "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "a4f4afa6-aa15-46e4-9327-c27250c3ea83",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_turret",

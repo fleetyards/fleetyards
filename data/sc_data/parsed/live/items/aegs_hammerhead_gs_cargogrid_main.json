@@ -1,0 +1,22 @@
+{
+  "key": "AEGS_Hammerhead_GS_CargoGrid_Main",
+  "ref": "923d4520-0226-4808-bf1f-75a5ebdb5af8",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "fd2e5b2d-731c-44cb-8b59-94c89afddbf7"
+}

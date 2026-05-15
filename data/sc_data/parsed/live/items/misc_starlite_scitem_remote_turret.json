@@ -1,0 +1,43 @@
+{
+  "key": "MISC_Starlite_SCItem_Remote_Turret",
+  "ref": "07191b85-4789-4b1c-b682-f75b5c0b0df7",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "2",
+  "grade": "2",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "weapon_left",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "weapon_right",
+      "min_size": "2",
+      "max_size": "2",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 8500.0
+  },
+  "type_data": {}
+}

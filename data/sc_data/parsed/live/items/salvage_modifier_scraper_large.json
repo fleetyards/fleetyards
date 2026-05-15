@@ -11,11 +11,11 @@
   "short_name": null,
   "description": "Manufacturer: Greycat Industrial\\nItem Type: Scraper Module\\nExtraction Speed: 0.05/0.15\\nRadius: 6m\\nExtraction Efficiency: 65%\\n\\nScrape more of a hull in one pass with the Trawler scraper module. While the area of effect is larger than other modules, it is less efficient due to intense heat generating more burn off. Making the Trawler the ideal module to use when a job necessitates speed over efficiency.",
   "inventory_consumption": {
-    "micro_scu": 340.0,
+    "micro_scu": 510.0,
     "dimensions": {
-      "x": 0.0549,
-      "y": 0.0424,
-      "z": 0.133
+      "x": 0.0650957,
+      "y": 0.1203115,
+      "z": 0.06518803
     }
   }
 }

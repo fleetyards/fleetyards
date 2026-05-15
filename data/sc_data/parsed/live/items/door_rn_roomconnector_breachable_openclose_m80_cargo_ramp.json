@@ -1,0 +1,40 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenClose_m80_cargo_ramp",
+  "ref": "ff43bbc1-6b75-437c-82b4-3595244ef829",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargo",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargo",
+      "key": null,
+      "ref": "fc2a3ede-cc3e-40f3-8616-98d7fed953db",
+      "default_loadout": []
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

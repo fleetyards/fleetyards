@@ -5,8 +5,8 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Tumbril Nova",
-  "description": "Manufacturer: Tumbril Land Systems\\nFocus: Combat\\n\\nTumbril's new Nova is a classic battlefield warrior, reimagined for the modern age. This heavy tank offers a devastating combination of weaponry to eliminate threats on the ground and in the air.",
-  "career": "Ground Combat",
+  "description": "Manufacturer: Tumbril Land Systems\\nFocus: Heavy Tank\\n\\nTumbril's new Nova is a classic battlefield warrior, reimagined for the modern age. This heavy tank offers a devastating combination of weaponry to eliminate threats on the ground and in the air.",
+  "career": "Combat",
   "role": "Heavy Tank",
   "insurance": {
     "base_wait_time_minutes": "12.38",

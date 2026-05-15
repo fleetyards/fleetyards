@@ -1,0 +1,38 @@
+{
+  "key": "DRAK_Ironclad_CML_Noise",
+  "ref": "70ccb2c6-3b88-4f80-9b60-cacace2e225d",
+  "category": "countermeasures",
+  "type": "WeaponDefensive",
+  "sub_type": "CountermeasureLauncher",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Joker Defcon - Noise Launcher",
+  "short_name": "Noise",
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 15.0,
+    "initial_ammo_count": 15.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "fire_rate": 50.0,
+    "heat_per_shot": 0.0,
+    "pellets_per_shot": 1,
+    "speed": 180.0,
+    "range": 144.0,
+    "ammo_cost": 1,
+    "max_ammo": 15
+  }
+}

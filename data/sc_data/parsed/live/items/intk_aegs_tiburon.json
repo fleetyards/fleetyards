@@ -1,0 +1,25 @@
+{
+  "key": "INTK_AEGS_Tiburon",
+  "ref": "8be96e95-d952-42c8-8cb6-76b448d45346",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 0.0,
+    "minimum_rate": 0.1
+  }
+}

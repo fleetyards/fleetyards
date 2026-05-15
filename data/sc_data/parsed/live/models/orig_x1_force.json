@@ -5,7 +5,7 @@
   "gravlev": "1",
   "min_crew": "1",
   "name": "Origin X1 Force",
-  "description": "Manufacturer: Origin Jumpworks\\nFocus: Pathfinder\\n\\nBuilt to endure tougher environments and look good doing it, the X1 Force is a modified version of the base X1 model featuring additional defensive elements to toughen up this speedy and agile open-canopy bike, allowing it to serve in a variety of roles, from exploring worlds to potential security infiltration ops.",
+  "description": "Manufacturer: Origin Jumpworks\\nFocus: Passenger\\n\\nBuilt to endure tougher environments and look good doing it, the X1 Force is a modified version of the base X1 model featuring additional defensive elements to toughen up this speedy and agile open-canopy bike, allowing it to serve in a variety of roles, from exploring worlds to potential security infiltration ops.",
   "career": "Combat",
   "role": "Passenger",
   "insurance": {
@@ -57,8 +57,8 @@
     },
     {
       "name": "hardpoint_controller_flight",
-      "ref": null,
-      "key": "Controller_Flight_ORIG_X1"
+      "ref": "b204b115-8178-40ce-9959-cd5bddb06ffc",
+      "key": null
     },
     {
       "name": "hardpoint_controller_shield",

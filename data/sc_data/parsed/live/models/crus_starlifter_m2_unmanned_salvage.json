@@ -5,9 +5,9 @@
   "gravlev": "0",
   "min_crew": "3",
   "name": "Crusader M2 Hercules Starlifter",
-  "description": "Manufacturer: Crusader Industries\\nFocus: Medium Freight / Combat\\n\\nThe M2 Hercules is the UEE's premier tactical starlifter. The large-scale transport's potent combination of capacity, maneuverability, durability, and robust weapons package assures your cargo and crew get to where they’re going in one piece.",
+  "description": "Manufacturer: Crusader Industries\\nFocus: Heavy Freight\\n\\nThe M2 Hercules is the UEE's premier tactical starlifter. The large-scale transport's potent combination of capacity, maneuverability, durability, and robust weapons package assures your cargo and crew get to where they’re going in one piece.",
   "career": "Transporter",
-  "role": "Heavy Freight",
+  "role": "Medium Freight",
   "insurance": {
     "base_wait_time_minutes": "25",
     "mandatory_wait_time_minutes": "8",

@@ -7,7 +7,7 @@
   "size": "3",
   "grade": "3",
   "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
-  "name": "Retaliator Torpedo Front Module",
+  "name": "Retaliator Ordnance Front Module",
   "short_name": null,
   "description": "Standard equipment for most UEE military Retaliators, this front module can carry 4x S9 torpedoes.",
   "inventory_consumption": {
@@ -21,10 +21,12 @@
   "loadout": [
     {
       "name": "hardpoint_torpedo_launcher_fore",
-      "min_size": "9",
+      "min_size": "3",
       "max_size": "9",
       "types": [
-        "MissileLauncher"
+        "MissileLauncher",
+        "BombLauncher",
+        "WeaponGun"
       ]
     },
     {
@@ -39,39 +41,14 @@
   "default_loadout": [
     {
       "name": "hardpoint_torpedo_launcher_fore",
-      "key": "MRCK_S09_AEGS_Retaliator_Fore",
-      "ref": null,
-      "default_loadout": [
-        {
-          "name": "missile_01_attach",
-          "key": "MISL_S09_CS_TALN_Argos",
-          "ref": null,
-          "default_loadout": []
-        },
-        {
-          "name": "missile_02_attach",
-          "key": "MISL_S09_CS_TALN_Argos",
-          "ref": null,
-          "default_loadout": []
-        },
-        {
-          "name": "missile_03_attach",
-          "key": "MISL_S09_CS_TALN_Argos",
-          "ref": null,
-          "default_loadout": []
-        },
-        {
-          "name": "missile_04_attach",
-          "key": "MISL_S09_CS_TALN_Argos",
-          "ref": null,
-          "default_loadout": []
-        }
-      ]
+      "key": null,
+      "ref": "a1148caf-247d-4415-a402-0d4bee0bbc1e",
+      "default_loadout": []
     },
     {
       "name": "hardpoint_front_bay_door",
-      "key": "Door_RN_RoomConnector_Exterior_AEGS_Retaliator_Front_TorpedoBay",
-      "ref": null,
+      "key": null,
+      "ref": "c86d2aa5-e826-45b1-bc92-02a657fb791c",
       "default_loadout": []
     }
   ],

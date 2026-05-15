@@ -52,8 +52,8 @@
     },
     {
       "name": "hardpoint_radar",
-      "ref": null,
-      "key": "RADR_GRNP_S01_Ecouter"
+      "ref": "144a6f62-0f38-4146-9ad7-c70ca9a9dc47",
+      "key": null
     },
     {
       "name": "hardpoint_powerplant",
@@ -90,36 +90,6 @@
     {
       "name": "hardpoint_aimodule",
       "ref": "bddd7723-793f-4cee-860f-aa03ebefc5e8",
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
       "key": null
     }
   ]

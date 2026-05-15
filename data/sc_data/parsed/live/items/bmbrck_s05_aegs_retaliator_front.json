@@ -1,0 +1,90 @@
+{
+  "key": "BMBRCK_S05_AEGS_Retaliator_Front",
+  "ref": "f9538502-dd71-48f7-8ee7-fa7f4492c7bf",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_06_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_07_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_08_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 2500.0
+  }
+}

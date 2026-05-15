@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "2",
   "name": "Anvil Centurion",
-  "description": "Manufacturer: Anvil Aerospace\\nFocus: Combat\\n\\nBuilt on Anvil's popular Atlas Platform, the Centurion presents a tactical solution for short-range anti-aircraft operations. Thanks to the Centurion’s custom energy-based AA turret, your forces can establish ground superiority by assuring immediate threats from above are dealt with quickly and efficiently.",
+  "description": "Manufacturer: Anvil Aerospace\\nFocus: Anti-Air\\n\\nBuilt on Anvil's popular Atlas Platform, the Centurion presents a tactical solution for short-range anti-aircraft operations. Thanks to the Centurion’s custom energy-based AA turret, your forces can establish ground superiority by assuring immediate threats from above are dealt with quickly and efficiently.",
   "career": "Combat",
   "role": "Anti-Air",
   "insurance": {

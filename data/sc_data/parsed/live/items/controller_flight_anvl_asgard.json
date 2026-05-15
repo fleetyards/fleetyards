@@ -7,9 +7,9 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
-  "name": null,
+  "name": "Anvil Asgard Standard Flight Blade",
   "short_name": null,
-  "description": null,
+  "description": "Manufacturer: Anvil Aerospace\\nType: Flight Blade\\n\\nThis is the standard issue flight blade for the Anvil Asgard.",
   "inventory_consumption": {
     "micro_scu": 970.0,
     "dimensions": {

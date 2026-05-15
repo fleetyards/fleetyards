@@ -1,0 +1,21 @@
+{
+  "key": "Door_RN_NoRoomConnector_Exterior_DRAK_Ironclad_Blast_Door_Rear",
+  "ref": "0625ee45-301e-447c-ab4a-8d372d36b00d",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

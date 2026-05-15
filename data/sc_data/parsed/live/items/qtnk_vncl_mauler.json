@@ -1,0 +1,24 @@
+{
+  "key": "QTNK_VNCL_Mauler",
+  "ref": "947a94e5-0f15-4b00-91e2-4724210ee649",
+  "category": "fueltanks",
+  "type": "QuantumFuelTank",
+  "sub_type": "QuantumFuel",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Quantum Fuel Tank",
+  "short_name": null,
+  "description": "This Quantum Fuel Tank stores fuel to power the Mauler's quantum engine.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "capacity": 200.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Corsair_Black_Black_Red_Camo",
+  "ref": "63038a6a-2ba7-480f-9077-b452f09a7e12",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be84aedf-c7ae-4c6f-baea-44d9a646064c",
+  "name": "Corsair Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Corsair with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

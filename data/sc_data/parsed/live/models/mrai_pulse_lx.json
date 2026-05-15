@@ -6,7 +6,7 @@
   "min_crew": "1",
   "name": "Mirai Pulse LX",
   "description": "Manufacturer: Mirai\\nFocus: Racing\\n \\nSeamlessly pairing pilot and pure speed, the Mirai Pulse LX grav-lev bike soars over terrain like no open-canopy racer before. Feel your heartrate quicken as you experience first-hand the Pulse’s ground-breaking responsiveness and form-fitting silhouette.   \\n",
-  "career": "Ground",
+  "career": "Combat",
   "role": "Racing",
   "insurance": {
     "base_wait_time_minutes": "0.15",

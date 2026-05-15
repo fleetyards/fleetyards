@@ -7,9 +7,9 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
-  "name": null,
+  "name": "CSR-RP",
   "short_name": null,
-  "description": null,
+  "description": "Item Type: Computer\\nManufacturer: Behring\\nSize: 1\\nGrade: C\\nClass: Military\\n\\nThe CSR-RP from Behring provides trusted and consistent computing power in a streamlined package.",
   "inventory_consumption": {
     "micro_scu": 1.0,
     "dimensions": {

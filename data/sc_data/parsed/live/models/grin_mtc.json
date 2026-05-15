@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Greycat MTC",
-  "description": "Manufacturer: Greycat Industrial\\nFocus: Personnel Transport\\n\\nAs an expert in industrial operations, Greycat understands that jobsite security is a vital part of any successful business venture. Not only that, but to be fully effective, you need to be able to get your security personnel and their equipment to wherever they’re needed most. That’s why the MTC Mobile Tactical Center is such an important addition to your next venture. Nimble enough to access the difficult terrain encountered at remote operations and equipped with enough suit lockers, weapon racks, and storage to tackle a wide host of issues, the Greycat MTC could make all the difference when it comes to turning a potential problem into potential profit.",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Pathfinder\\n\\nAs an expert in industrial operations, Greycat understands that jobsite security is a vital part of any successful business venture. Not only that, but to be fully effective, you need to be able to get your security personnel and their equipment to wherever they’re needed most. That’s why the MTC Mobile Tactical Center is such an important addition to your next venture. Nimble enough to access the difficult terrain encountered at remote operations and equipped with enough suit lockers, weapon racks, and storage to tackle a wide host of issues, the Greycat MTC could make all the difference when it comes to turning a potential problem into potential profit.",
   "career": "Ground",
   "role": "Passenger",
   "insurance": {
@@ -123,7 +123,7 @@
     },
     {
       "name": "hardpoint_comp_computer",
-      "ref": "a6b4604a-358b-4ee7-8c0f-f3f43427154d",
+      "ref": null,
       "key": null
     },
     {

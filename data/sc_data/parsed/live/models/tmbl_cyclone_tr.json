@@ -5,9 +5,9 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Tumbril Cyclone TR",
-  "description": "Manufacturer: Tumbril Land Systems \\nFocus: Combat\\n\\nDesigned for militia and security use, the Cyclone TR module features upgraded armor and a single Human-operated turret capable of mounting a Size 1 weapon and a responsive 360° field of fire.",
+  "description": "Manufacturer: Tumbril Land Systems \\nFocus: Anti-Vehicle\\n\\nDesigned for militia and security use, the Cyclone TR module features upgraded armor and a single Human-operated turret capable of mounting a Size 1 weapon and a responsive 360° field of fire.",
   "career": "Combat",
-  "role": null,
+  "role": "Anti-Vehicle",
   "insurance": {
     "base_wait_time_minutes": "2.03",
     "mandatory_wait_time_minutes": "0.68",

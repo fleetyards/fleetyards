@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Asgard_Black_Black_Red_Camo",
+  "ref": "d79a5edf-48a7-434c-8dad-44b3358bfa10",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "643cc7d5-f186-45c0-930c-51cb2f713dc2",
+  "name": "Asgard Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Asgard with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

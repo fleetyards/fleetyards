@@ -803,18 +803,6 @@
       "key": null
     },
     {
-      "name": "hardpoint_docking_collar_merlin",
-      "ref": null,
-      "key": "RSI_Constellation_Rear_DockingTube",
-      "loadout": [
-        {
-          "name": "itemport_vehicle_attach",
-          "ref": null,
-          "key": "KRIG_P52_Merlin"
-        }
-      ]
-    },
-    {
       "name": "hardpoint_merlin_dock_door",
       "ref": "9463e0e4-7d09-4ea7-b27b-280cc56d4961",
       "key": null

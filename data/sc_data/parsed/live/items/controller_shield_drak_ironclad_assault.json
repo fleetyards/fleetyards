@@ -1,0 +1,21 @@
+{
+  "key": "Controller_Shield_DRAK_Ironclad_Assault",
+  "ref": "08a1c92a-713a-4f94-8bc9-e856eed73cca",
+  "category": "controller",
+  "type": "ShieldController",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "SHIELDS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

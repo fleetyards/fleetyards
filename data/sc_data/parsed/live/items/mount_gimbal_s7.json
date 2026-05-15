@@ -4,7 +4,7 @@
   "category": "weapon_mounts",
   "type": "Turret",
   "sub_type": "GunTurret",
-  "size": "6",
+  "size": "7",
   "grade": "1",
   "manufacturer_ref": "b9b97673-c585-4e0a-b229-a0a3c79668c3",
   "name": "VariPuck S6 Gimbal Mount",

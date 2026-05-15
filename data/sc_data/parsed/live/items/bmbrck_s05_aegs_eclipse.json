@@ -1,0 +1,58 @@
+{
+  "key": "BMBRCK_S05_AEGS_Eclipse",
+  "ref": "e14daa17-8663-4e8f-8a5b-983b2530b1c6",
+  "category": "bombcompartments",
+  "type": "BombLauncher",
+  "sub_type": "BombRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 120000000.0,
+    "dimensions": {
+      "x": 3.796108,
+      "y": 30.95411,
+      "z": 4.81137
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Bomb"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1500.0
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Ironclad_Metal_Metal_Yellow",
+  "ref": "71eeccc9-4388-4794-b4e2-11457f39f779",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "03784d47-5f0e-4bab-9609-2ab99e502e5c",
+  "name": "Ironclad Aquamarine Livery",
+  "short_name": null,
+  "description": "The Aquamarine livery for the Ironclad gives a metallic teal base with subtle yellow accents to make a statement, before you throw a punch.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "key": "VNCL_Mauler_Remote_Turret_S8",
+  "ref": "c5912b1c-b160-4ca5-9274-7079096828a1",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "8",
+      "max_size": "8",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 50000.0
+  },
+  "type_data": {}
+}

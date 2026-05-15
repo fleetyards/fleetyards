@@ -5,8 +5,8 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Tumbril Storm AA",
-  "description": "Manufacturer: Tumbril Land Systems\\nFocus: Combat\\n\\nOriginally introduced in 2606 during the Second Tevarin War, the Tumbril Storm single-operator mini-tank was built to blitz battlefields and take out enemy artillery. Reimagined from the ground up to be faster, stronger, and more impactful than ever, the Storm AA is a true force of nature, equipped with a barrage of missiles to provide cover against airborne and ground targets.",
-  "career": "Ground Combat",
+  "description": "Manufacturer: Tumbril Land Systems\\nFocus: Light Tank\\n\\nOriginally introduced in 2606 during the Second Tevarin War, the Tumbril Storm single-operator mini-tank was built to blitz battlefields and take out enemy artillery. Reimagined from the ground up to be faster, stronger, and more impactful than ever, the Storm AA is a true force of nature, equipped with a barrage of missiles to provide cover against airborne and ground targets.",
+  "career": "Combat",
   "role": "Light Tank",
   "insurance": {
     "base_wait_time_minutes": "5.33",

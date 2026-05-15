@@ -1,0 +1,30 @@
+{
+  "key": "DRAK_Pitbull_Thruster_Mav_Bottom",
+  "ref": "6e0183bf-8e99-418a-aa60-38d521f0d4b1",
+  "category": "thrusters",
+  "type": "ManneuverThruster",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Maneuver Thruster",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 300.0
+  },
+  "type_data": {
+    "thrust_capacity": 380797.2,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Maneuver",
+    "thruster_class": "mav"
+  }
+}

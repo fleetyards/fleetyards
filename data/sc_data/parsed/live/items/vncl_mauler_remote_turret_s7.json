@@ -1,0 +1,43 @@
+{
+  "key": "VNCL_Mauler_Remote_Turret_S7",
+  "ref": "ef0a56a4-6d0e-4d74-839d-2517bf382364",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 50000.0
+  },
+  "type_data": {}
+}

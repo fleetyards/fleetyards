@@ -1,0 +1,21 @@
+{
+  "key": "Paint_M80_red_black_blue",
+  "ref": "55c18c48-721a-403b-aaf3-01ffa316d024",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "05479d62-8e04-4b6a-9ea5-fced405dd394",
+  "name": "M80 Blaze Livery",
+  "short_name": null,
+  "description": "Featuring a brilliant red that produces a radiant shine, the Blaze livery transforms the M80's nose with an inky black, pale blue accents, and dark gray wings.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

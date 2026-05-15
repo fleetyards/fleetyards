@@ -1,0 +1,34 @@
+{
+  "key": "DRAK_Pitbull_CML_Flare",
+  "ref": "9e26315d-3616-4835-9041-7e5f41336031",
+  "category": "countermeasures",
+  "type": "WeaponDefensive",
+  "sub_type": "CountermeasureLauncher",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": "Decoy",
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "durability": {
+    "health": 1000.0
+  },
+  "ammunition": {
+    "max_ammo_count": 24.0,
+    "initial_ammo_count": 24.0,
+    "max_restock_count": 4.0
+  },
+  "type_data": {
+    "speed": 65.0,
+    "range": 520.0,
+    "max_ammo": 24
+  }
+}

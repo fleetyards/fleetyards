@@ -9,7 +9,7 @@
   "manufacturer_ref": "ad865899-f5ba-4818-ae8c-fe80a55108b7",
   "name": "Hammerhead TSB Flight Blade",
   "short_name": "Hammerhead TSB Flight Blade",
-  "description": "Manufacturer: Broad & Rabiee\\nType: Flight Blade\\n\\nUnlock the potential of your Aegis Hammerhead with the TSB Flight Blade from Broad & Rabiee. By re-allocating lateral thrust resources, you can expect your ship deliver increased top speeds in the straightaway.",
+  "description": "Manufacturer: Broad & Rabiee\\nType: Flight Blade\\n\\nUnlock the potential of your Aegis Hammerhead with the TSB Flight Blade from Broad & Rabiee. By re-allocating lateral thrust resources, you can expect your ship to deliver increased top speeds in the straightaway.",
   "inventory_consumption": {
     "micro_scu": 970.0,
     "dimensions": {
@@ -20,9 +20,9 @@
   },
   "type_data": {
     "scm_speed": 160.0,
-    "scm_speed_boosted": 320.0,
+    "scm_speed_boosted": 340.0,
     "reverse_speed_boosted": 170.0,
-    "max_speed": 950.0,
+    "max_speed": 1000.0,
     "angular_velocity": {
       "pitch": 20.0,
       "yaw": 20.0,

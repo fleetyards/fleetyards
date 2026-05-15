@@ -34,18 +34,7 @@
       "name": "hardpoint_seat_pilot",
       "ref": "aa89ec66-91a6-4fc7-b363-9788acf8a991",
       "key": null,
-      "loadout": [
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
-        }
-      ]
+      "loadout": []
     },
     {
       "name": "hardpoint_self_destruct_pilot",

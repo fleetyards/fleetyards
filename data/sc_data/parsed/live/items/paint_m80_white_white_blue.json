@@ -1,0 +1,21 @@
+{
+  "key": "Paint_M80_white_white_blue",
+  "ref": "1dd2f2de-2084-43bb-8d1a-516843d30eaf",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "89a792fe-8e67-4981-8153-ebaf9b111b39",
+  "name": "M80 Dynasty Livery",
+  "short_name": null,
+  "description": "Soar through the sky in style with the Dynasty livery, predominantly featuring a crisp white with soft accents of black and blue.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

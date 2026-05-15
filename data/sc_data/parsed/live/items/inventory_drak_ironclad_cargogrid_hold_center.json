@@ -1,0 +1,40 @@
+{
+  "key": "Drak_Ironclad_CargoGrid_Hold_Center",
+  "ref": "20ea9391-793a-4e8f-86db-ac11efe63db3",
+  "category": "inventory",
+  "type": "CargoGrid",
+  "type_data": {
+    "dimensions": {
+      "x": 7.5,
+      "y": 25.0,
+      "z": 7.5
+    },
+    "capacity": 720,
+    "max_container_size": {
+      "size": 32,
+      "dimensions": {
+        "x": 10.0,
+        "y": 2.5,
+        "z": 2.5
+      }
+    },
+    "limits": {
+      "min": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      },
+      "max": {
+        "dimensions": {
+          "x": 1.25,
+          "y": 1.25,
+          "z": 1.25
+        },
+        "capacity": 1
+      }
+    }
+  }
+}

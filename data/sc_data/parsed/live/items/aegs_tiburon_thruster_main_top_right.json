@@ -1,0 +1,30 @@
+{
+  "key": "AEGS_Tiburon_Thruster_Main_top_right",
+  "ref": "bfe3b848-922f-43c2-a92f-1bce4f84d8a0",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "6",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 25000.0
+  },
+  "type_data": {
+    "thrust_capacity": 66730000.0,
+    "fuel_burn_rate_per10_k_newton": 0.05102124,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

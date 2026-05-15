@@ -1,0 +1,58 @@
+{
+  "key": "RADR_Unmanned_AI_S05",
+  "ref": "144a6f62-0f38-4146-9ad7-c70ca9a9dc47",
+  "category": "radar",
+  "type": "Radar",
+  "sub_type": "MidRangeRadar",
+  "size": "0",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "BatteryPort",
+      "min_size": "1",
+      "max_size": "2",
+      "types": [
+        "Battery"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 220.0
+  },
+  "type_data": {
+    "signature_detection": {
+      "ir": {
+        "sensitivity": 1.0,
+        "piercing": 0.25
+      },
+      "em": {
+        "sensitivity": 1.0,
+        "piercing": 0.25
+      },
+      "cs": {
+        "sensitivity": 1.0,
+        "piercing": 0.25
+      },
+      "rs": {
+        "sensitivity": 1.0,
+        "piercing": 1.0
+      }
+    },
+    "aim_assist_range": 7500.0,
+    "ping_properties": {
+      "cooldown_time": 2.5
+    }
+  }
+}

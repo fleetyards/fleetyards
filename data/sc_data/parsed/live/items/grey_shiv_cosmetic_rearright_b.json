@@ -1,0 +1,24 @@
+{
+  "key": "GREY_Shiv_Cosmetic_RearRight_B",
+  "ref": "6179eb2a-b24a-49d0-807c-ad8862a3a0ff",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "768b4380-6486-4187-8c22-bc3deaf80770",
+  "name": "Shiv \"Barebones\" Bodykit Rear Right",
+  "short_name": null,
+  "description": "It's your ship, so shouldn't it match your style? With the Barebones bodykit you can give your Grey's Market Shiv a lean and mean aftermarket makeover.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 300.0
+  }
+}

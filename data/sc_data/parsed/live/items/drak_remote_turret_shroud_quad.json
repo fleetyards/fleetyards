@@ -1,0 +1,24 @@
+{
+  "key": "DRAK_Remote_Turret_Shroud_Quad",
+  "ref": "656d9de4-2d7f-48c7-a9b4-3cc2485227cc",
+  "category": "module",
+  "type": "Misc",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 200.0
+  }
+}

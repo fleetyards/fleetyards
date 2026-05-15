@@ -1,0 +1,59 @@
+{
+  "key": "DRAK_Ironclad_MannedTurret_Bottom",
+  "ref": "f7e63a2c-942c-4b1f-9dd4-8787aa5d3da0",
+  "category": "turret",
+  "type": "TurretBase",
+  "sub_type": "MannedTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Manned Turret",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "turret_left",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "turret_right",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Turret"
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_shroud",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    },
+    {
+      "name": "hardpoint_turret_exterior",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Misc"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 15000.0
+  },
+  "type_data": {}
+}

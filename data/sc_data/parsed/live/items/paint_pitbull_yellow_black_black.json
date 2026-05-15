@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pitbull_Yellow_Black_Black",
+  "ref": "e87f3bd2-b9fc-429b-9b6b-66cdfc4a8e41",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "aacf855e-1c0a-4532-91cc-9af8791c033a",
+  "name": "Pitbull Hardstrike Livery",
+  "short_name": null,
+  "description": "When you want them to see you coming, the Hardstrike livery is a bold explosion of yellow to make every fight even more vibrant.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

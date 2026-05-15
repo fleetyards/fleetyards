@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Aegis Retaliator",
-  "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Gunship\\n\\nThis civilian refit of the Retaliator updates the military ship's chassis with unladen space able to be fitted with various modules to suit your needs.",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Modular\\n\\nThis civilian refit of the Retaliator updates the military ship's chassis with unladen space able to be fitted with various modules to suit your needs.",
   "career": "Combat",
   "role": "Modular",
   "insurance": {
@@ -489,8 +489,8 @@
     },
     {
       "name": "hardpoint_controller_missile",
-      "ref": null,
-      "key": "Controller_Missile"
+      "ref": "250fa60b-a511-4619-9fe7-0d98ab96f8e3",
+      "key": null
     },
     {
       "name": "hardpoint_controller_capacitor_assignment",
@@ -519,13 +519,13 @@
     },
     {
       "name": "hardpoint_front_module",
-      "ref": null,
-      "key": "AEGS_Retaliator_Module_Front_Base"
+      "ref": "1d9f2186-2465-4b62-a5cb-f1bc8e3dd390",
+      "key": null
     },
     {
       "name": "hardpoint_rear_module",
-      "ref": null,
-      "key": "AEGS_Retaliator_Module_Rear_Base"
+      "ref": "2085bd4c-f2f3-4630-aee6-da2d455e92ac",
+      "key": null
     },
     {
       "name": "hardpoint_shieldgenerator_left_bottom",

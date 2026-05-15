@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "3",
   "name": "Argo MOTH",
-  "description": "Manufacturer: Argo Astronautics\\nFocus: Salvage\\n\\nExperience Argo's centuries of industrial expertise with the MOTH. Using a tried and tested chassis as its foundation, the MOTH features three dedicated salvage turrets and an external salvage autoloader, so a four person crew can strip, rip, and store salvage as fast as they can get to it.",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Medium Salvage\\n\\nExperience Argo's centuries of industrial expertise with the MOTH. Using a tried and tested chassis as its foundation, the MOTH features three dedicated salvage turrets and an external salvage autoloader, so a four person crew can strip, rip, and store salvage as fast as they can get to it.",
   "career": "Industrial",
   "role": "Medium Salvage",
   "insurance": {

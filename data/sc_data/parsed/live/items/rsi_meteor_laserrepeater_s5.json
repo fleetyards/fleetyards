@@ -1,0 +1,80 @@
+{
+  "key": "RSI_Meteor_LaserRepeater_S5",
+  "ref": "c22b9f48-3146-4b7f-ae57-4f0b40c2f944",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "name": "Echion Repeater",
+  "short_name": "Echion",
+  "description": "Manufacturer: Robert Space Industries\\nItem Type: Laser Repeater\\nSize: 5\\n\\nDesigned to overwhelm shields with a barrage of laserfire, this custom-made RSI Echion laser repeater will strip enemies of their defenses leaving them vulnerable to more devastating attacks.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1550.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "fire_rate": 800.0,
+    "heat_per_shot": 0.0,
+    "damage_per_shot": {
+      "physical": 0.0,
+      "energy": 95.0,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "pellets_per_shot": 1,
+    "speed": 1390.0,
+    "range": 3197.0,
+    "ammo_cost": 1,
+    "max_ammo": 0
+  }
+}

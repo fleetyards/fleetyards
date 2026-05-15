@@ -1,0 +1,22 @@
+{
+  "key": "DRAK_Ironclad_CargoGrid_Hold_Center",
+  "ref": "26f5ed41-380a-4896-9d62-c42b87bd429f",
+  "category": "cargogrid",
+  "type": "CargoGrid",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "inventory_ref": "20ea9391-793a-4e8f-86db-ac11efe63db3"
+}

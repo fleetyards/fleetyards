@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Caterpillar_Pirate",
+  "ref": "b9002533-f5a6-4bc6-b136-ace9cb8cce61",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f5f4b034-9018-40b5-8b8e-fb7356dede88",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

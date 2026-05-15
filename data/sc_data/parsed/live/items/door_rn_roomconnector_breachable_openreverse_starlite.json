@@ -1,0 +1,24 @@
+{
+  "key": "Door_RN_RoomConnector_Breachable_OpenReverse_Starlite",
+  "ref": "b9dc9328-2477-4d52-b00b-86310f401cfa",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 5400.0
+  }
+}

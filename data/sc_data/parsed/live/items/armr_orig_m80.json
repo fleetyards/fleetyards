@@ -1,0 +1,32 @@
+{
+  "key": "ARMR_ORIG_m80",
+  "ref": "3b71a92e-8206-4ef5-97dc-9b31bdadb3c4",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1e47a9ec-a3f0-431d-be0e-377712e1ed84",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 7200.0
+  },
+  "type_data": {
+    "damage_physical": 0.75,
+    "damage_energy": 0.6,
+    "damage_distortion": 1.0,
+    "damage_thermal": 1.0,
+    "damage_biochemical": 1.0,
+    "damage_stun": 1.0
+  }
+}

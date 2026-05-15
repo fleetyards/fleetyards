@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Argo MPUV Personnel",
-  "description": "Manufacturer: Argo Astronautics\\nFocus: Transport\\n\\nThe Argo Astronautics MPUV-1P (commonly ‘Argo Personnel’). This version of the Argo is geared towards a simple but incredibly important responsibility: moving grounds of people from place to place. The UEE Navy uses MPUV-1Ps extensively, and any new recruit can likely recall those terrifying moments in which such a ship carried them to their first space assignment. In civilian hands, Argo Personnel ships are adapted for everything from standard taxi services to use as makeshift combat dropships. The Argo MPUV-1P is capable of carrying up to eight humans and their equipment.",
+  "description": "Manufacturer: Argo Astronautics\\nFocus: Passenger\\n\\nThe Argo Astronautics MPUV-1P (commonly ‘Argo Personnel’). This version of the Argo is geared towards a simple but incredibly important responsibility: moving grounds of people from place to place. The UEE Navy uses MPUV-1Ps extensively, and any new recruit can likely recall those terrifying moments in which such a ship carried them to their first space assignment. In civilian hands, Argo Personnel ships are adapted for everything from standard taxi services to use as makeshift combat dropships. The Argo MPUV-1P is capable of carrying up to eight humans and their equipment.",
   "career": "Transporter",
   "role": "Passenger",
   "insurance": {

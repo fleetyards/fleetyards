@@ -72,8 +72,8 @@
     },
     {
       "name": "hardpoint_relay_refueling_catwalk",
-      "ref": null,
-      "key": "RELAY_1slot"
+      "ref": "72bc90bc-0fb7-4452-8901-c2b581e10744",
+      "key": null
     },
     {
       "name": "hardpoint_relay_refuelling_arm_walkway_left",

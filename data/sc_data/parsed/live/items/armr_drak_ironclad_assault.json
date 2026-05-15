@@ -1,0 +1,32 @@
+{
+  "key": "ARMR_DRAK_Ironclad_Assault",
+  "ref": "ee243480-78ee-43e4-be9c-0705ebfc189b",
+  "category": "armor",
+  "type": "Armor",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 20790.0
+  },
+  "type_data": {
+    "damage_physical": 0.75,
+    "damage_energy": 0.6,
+    "damage_distortion": 1.0,
+    "damage_thermal": 1.0,
+    "damage_biochemical": 1.0,
+    "damage_stun": 1.0
+  }
+}

@@ -92,8 +92,8 @@
     },
     {
       "name": "hardpoint_controller_flight",
-      "ref": null,
-      "key": "Controller_Flight_ORIG_m50"
+      "ref": "5265daad-9c37-4a34-bb66-7afd87ba3e38",
+      "key": null
     },
     {
       "name": "hardpoint_radar",

@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "2",
   "name": "Anvil Ballista",
-  "description": "Manufacturer: Anvil Aerospace\\nFocus: Anti-Aircraft\\n\\nKeep your airspace clear of danger with the Anvil Ballista. Originally designed to defend outposts from Vanduul attacks, this mobile missile defense system packs a powerful loadout, allowing the Ballista to stand firm against any threat, whether it arrives by air or land.",
+  "description": "Manufacturer: Anvil Aerospace\\nFocus: Anti-Air\\n\\nKeep your airspace clear of danger with the Anvil Ballista. Originally designed to defend outposts from Vanduul attacks, this mobile missile defense system packs a powerful loadout, allowing the Ballista to stand firm against any threat, whether it arrives by air or land.",
   "career": "Combat",
   "role": "Anti-Air",
   "insurance": {

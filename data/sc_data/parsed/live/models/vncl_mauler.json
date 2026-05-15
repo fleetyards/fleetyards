@@ -1,0 +1,1240 @@
+{
+  "key": "VNCL_Mauler",
+  "ground": false,
+  "movement_class": "Spaceship",
+  "gravlev": "0",
+  "min_crew": "19",
+  "name": "Vanduul Mauler Destroyer",
+  "description": "Manufacturer: Vanduul Clans\\nFocus: Destroyer\\n\\nThe Mauler is a massive escort craft essential to the Vanduul fleet. This tank of a ship gives its pilots a taste of power, with its multi-level angular design, vast array of weaponry and sharp points on the sides for both aerodynamics and fear-factor.",
+  "career": "Combat",
+  "role": "Destroyer",
+  "insurance": {
+    "base_wait_time_minutes": "33.33",
+    "mandatory_wait_time_minutes": "3.33",
+    "base_expediting_fee": "333"
+  },
+  "mass": 70275858.0,
+  "metrics": {
+    "x": 125.0,
+    "y": 425.0,
+    "z": 112.0
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_seat_pilot",
+      "ref": null,
+      "key": "VNCL_Mauler_Pilot_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_pilot",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_Pilot"
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "ref": null,
+      "key": "Controller_Door"
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "ref": null,
+      "key": "Controller_Energy"
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "ref": null,
+      "key": "Controller_Cooler"
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "ref": null,
+      "key": "Controller_Comms"
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "ref": null,
+      "key": "Controller_Shield_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "ref": null,
+      "key": "Controller_Flight_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "ref": null,
+      "key": "Controller_Missile_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "ref": null,
+      "key": "Controller_CapacitorAssignment"
+    },
+    {
+      "name": "hardpoint_armor",
+      "ref": null,
+      "key": "ARMR_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_quantum_fuel_tank",
+      "ref": null,
+      "key": "QTNK_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_fuel_tank_left",
+      "ref": null,
+      "key": "HTNK_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_fuel_intake_front_1",
+      "ref": null,
+      "key": "INTK_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_fuel_intake_front_2",
+      "ref": null,
+      "key": "INTK_VNCL_Mauler"
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "ref": "1eff95ff-da99-4233-8576-d055eaf8b454",
+      "key": null
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "ref": null,
+      "key": "QDRV_S04_VNCL_Mauler",
+      "loadout": [
+        {
+          "name": "hardpoint_Jump_Drive",
+          "ref": null,
+          "key": "JDRV_TARS_S02_Excelsior_SCItem"
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_cooler_02",
+      "ref": null,
+      "key": "COOL_VNCL_S04_Mauler"
+    },
+    {
+      "name": "hardpoint_radar",
+      "ref": null,
+      "key": "RADR_VNCL_S02_Mauler"
+    },
+    {
+      "name": "hardpoint_shield_generator_front",
+      "ref": null,
+      "key": "SHLD_VNCL_S04_Mauler"
+    },
+    {
+      "name": "hardpoint_countermeasures_left",
+      "ref": null,
+      "key": "VNCL_CML_Flare_Large"
+    },
+    {
+      "name": "hardpoint_countermeasures_right",
+      "ref": null,
+      "key": "VNCL_CML_Chaff_Large"
+    },
+    {
+      "name": "hardpoint_thruster_retro_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_retro_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Retro"
+    },
+    {
+      "name": "hardpoint_thruster_front_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBL"
+    },
+    {
+      "name": "hardpoint_thruster_front_side_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FSL"
+    },
+    {
+      "name": "hardpoint_thruster_front_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBR"
+    },
+    {
+      "name": "hardpoint_thruster_front_side_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FSR"
+    },
+    {
+      "name": "hardpoint_thruster_front_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FTR"
+    },
+    {
+      "name": "hardpoint_thruster_front_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FTL"
+    },
+    {
+      "name": "hardpoint_thruster_rear_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_RBR"
+    },
+    {
+      "name": "hardpoint_thruster_rear_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_RBL"
+    },
+    {
+      "name": "hardpoint_thruster_centre_lower",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_centre_mid",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_centre_upper",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Main"
+    },
+    {
+      "name": "hardpoint_thruster_rear_side_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_RS"
+    },
+    {
+      "name": "hardpoint_thruster_rear_side_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_RS"
+    },
+    {
+      "name": "hardpoint_thruster_rear_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBL"
+    },
+    {
+      "name": "hardpoint_thruster_rear_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBR"
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "ref": null,
+      "key": "Controller_Fuel"
+    },
+    {
+      "name": "hardpoint_shield_generator_centre",
+      "ref": null,
+      "key": "SHLD_VNCL_S04_Mauler"
+    },
+    {
+      "name": "hardpoint_cooler_01",
+      "ref": null,
+      "key": "COOL_VNCL_S04_Mauler"
+    },
+    {
+      "name": "hardpoint_fuel_tank_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "ref": null,
+      "key": "POWR_VNCL_S04_Mauler"
+    },
+    {
+      "name": "hardpoint_shield_generator_rear",
+      "ref": null,
+      "key": "SHLD_VNCL_S04_Mauler"
+    },
+    {
+      "name": "hardpoint_thruster_rear_bottom_centre",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mid_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_MBR_2"
+    },
+    {
+      "name": "hardpoint_thruster_mid_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_MBL_2"
+    },
+    {
+      "name": "hardpoint_thruster_front_arm_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBL"
+    },
+    {
+      "name": "hardpoint_thruster_front_arm_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_MBL_2"
+    },
+    {
+      "name": "hardpoint_thruster_front_arm_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBR"
+    },
+    {
+      "name": "hardpoint_thruster_front_arm_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_MBR_2"
+    },
+    {
+      "name": "hardpoint_thruster_mid_top_left",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_thruster_mid_top_right",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_weapon_nose",
+      "ref": "0d58aa05-4235-40a5-b6bf-9fa31c59f749",
+      "key": null
+    },
+    {
+      "name": "hardpoint_seat_turret_fore_lower_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_fore_lower_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretFrontLowerLeft"
+    },
+    {
+      "name": "hardpoint_turret_bottom_front_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_bottom_front_left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_fore_lower_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_fore_lower_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretFrontLowerRight"
+    },
+    {
+      "name": "hardpoint_turret_bottom_front_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_bottom_front_right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_front_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_front_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretFrontTopLeft"
+    },
+    {
+      "name": "hardpoint_turret_front_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_front_top_left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_front_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_front_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretFrontTopRight"
+    },
+    {
+      "name": "hardpoint_turret_front_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_front_top_right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_large_nose_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_large_nose_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretCentreBack"
+    },
+    {
+      "name": "hardpoint_turret_top_mid",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S9",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S9_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserBeam_S9"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_top_mid",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_large_nose_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_large_nose_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretCentreFront"
+    },
+    {
+      "name": "hardpoint_turret_top_front",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S7",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S7_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_TachyonCannon_S7"
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": null,
+          "key": "Mount_Gimbal_S7_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_TachyonCannon_S7"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_top_front",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_rear_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_rear_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretRearTopLeft"
+    },
+    {
+      "name": "hardpoint_turret_top_rear_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_top_rear_left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_rear_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_rear_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretRearTopRight"
+    },
+    {
+      "name": "hardpoint_turret_top_rear_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_top_rear_right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_side_left_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_side_left_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidLeft1"
+    },
+    {
+      "name": "hardpoint_turret_mid_side_left_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S8",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S8_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_PlasmaCannon_S8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_side_left_1",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_side_left_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_side_left_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidLeft2"
+    },
+    {
+      "name": "hardpoint_turret_mid_side_left_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S8",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S8_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_PlasmaCannon_S8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_side_left_2",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_side_left_3",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_side_left_3",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidLeft3"
+    },
+    {
+      "name": "hardpoint_turret_mid_side_left_3",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S8",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S8_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_PlasmaCannon_S8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_side_left_3",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_side_right_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_side_right_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidRight1"
+    },
+    {
+      "name": "hardpoint_turret_mid_side_right_1",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S8",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S8_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_PlasmaCannon_S8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_side_right_1",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_side_right_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_side_right_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidRight2"
+    },
+    {
+      "name": "hardpoint_turret_mid_side_right_2",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S8",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S8_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_PlasmaCannon_S8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_side_right_2",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_side_right_3",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_side_right_3",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidRight3"
+    },
+    {
+      "name": "hardpoint_turret_mid_side_right_3",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S8",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S8_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_PlasmaCannon_S8"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_side_right_3",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidTopLeft"
+    },
+    {
+      "name": "hardpoint_turret_mid_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_top_left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_mid_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_mid_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretMidTopRight"
+    },
+    {
+      "name": "hardpoint_turret_mid_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_mid_top_right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_rear_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_rear_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretRearBottomRight"
+    },
+    {
+      "name": "hardpoint_turret_bottom_rear_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_bottom_rear_right",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_seat_turret_rear_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Gunner_Seat"
+    },
+    {
+      "name": "hardpoint_seat_access_turret_rear_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Seat_Access_TurretRearBottomLeft"
+    },
+    {
+      "name": "hardpoint_turret_bottom_rear_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Remote_Turret_S6_Single",
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": null,
+          "key": "Mount_Gimbal_S6_Mauler",
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": null,
+              "key": "VNCL_Gen2_LaserRepeater_S6"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_turret_bottom_rear_left",
+      "ref": null,
+      "key": "Controller_Weapon"
+    },
+    {
+      "name": "hardpoint_pdc_top_001",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_002",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_003",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_004",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_005",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_006",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_007",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_008",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_009",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_010",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_010",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_012",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_013",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_014",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_015",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_016",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_top_017",
+      "ref": null,
+      "key": "Turret_PDC_VNCL"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_001",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_002",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_003",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_004",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_005",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_006",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_007",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_008",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_009",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_010",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_011",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_012",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_013",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_014",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_015",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_016",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_wcontroller_top_017",
+      "ref": null,
+      "key": "Controller_Weapon_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_001",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_002",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_003",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_004",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_005",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_006",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_007",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_008",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_009",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_010",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_011",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_012",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_013",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_014",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_015",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_016",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_pdc_aimodule_top_017",
+      "ref": null,
+      "key": "AIModule_Unmanned_PU_PDC"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Main_Aux"
+    },
+    {
+      "name": "hardpoint_thruster_side_bottom_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FSL_2"
+    },
+    {
+      "name": "hardpoint_thruster_side_bottom_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FSR_2"
+    },
+    {
+      "name": "hardpoint_thruster_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FTL"
+    },
+    {
+      "name": "hardpoint_thruster_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FTR"
+    },
+    {
+      "name": "hardpoint_thruster_side_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FSR_2"
+    },
+    {
+      "name": "hardpoint_thruster_side_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FSL_2"
+    },
+    {
+      "name": "hardpoint_thruster_side_top_left",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBL"
+    },
+    {
+      "name": "hardpoint_thruster_side_top_right",
+      "ref": null,
+      "key": "VNCL_Mauler_Thruster_Mav_FBR"
+    }
+  ]
+}

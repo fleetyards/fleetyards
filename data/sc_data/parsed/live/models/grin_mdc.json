@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Greycat MDC",
-  "description": "Manufacturer: Greycat Industrial\\nFocus: Combat\\n \\nBuilding upon a robust and sturdy industrial frame, Greycat has crafted the MDC Mobile Defense Center into an effective combat vehicle ready to protect your interests from remote mining sites to patrolling high-value processing centers thanks to its mounted PDS turret.",
+  "description": "Manufacturer: Greycat Industrial\\nFocus: Anti - Air\\n \\nBuilding upon a robust and sturdy industrial frame, Greycat has crafted the MDC Mobile Defense Center into an effective combat vehicle ready to protect your interests from remote mining sites to patrolling high-value processing centers thanks to its mounted PDS turret.",
   "career": "Ground",
   "role": "Anti-Air",
   "insurance": {
@@ -123,7 +123,7 @@
     },
     {
       "name": "hardpoint_comp_computer_mdc",
-      "ref": "a6b4604a-358b-4ee7-8c0f-f3f43427154d",
+      "ref": null,
       "key": null
     },
     {

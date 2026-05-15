@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Hermes_Black_Black_Red_Camo",
+  "ref": "c55894a3-f888-44d2-bdf0-b5cd11e618f3",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "10538192-0c4c-40c9-a8d7-e6b378849725",
+  "name": "Hermes Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Hermes with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

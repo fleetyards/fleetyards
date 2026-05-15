@@ -492,11 +492,6 @@
           "name": "monitor",
           "ref": null,
           "key": "Vehicle_Screen_MFD"
-        },
-        {
-          "name": "",
-          "ref": null,
-          "key": null
         }
       ]
     },
@@ -701,26 +696,6 @@
       "name": "hardpoint_shield_generator_6",
       "ref": null,
       "key": "SHLD_GODI_S02_FullStop_SCItem"
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
-    },
-    {
-      "name": "",
-      "ref": null,
-      "key": null
     }
   ]
 }

@@ -1,0 +1,25 @@
+{
+  "key": "INTK_DRAK_Pitbull",
+  "ref": "744ea6f3-1d27-4d81-95ed-ef4d3eb45f61",
+  "category": "fuel_intakes",
+  "type": "FuelIntake",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Fuel Intake ",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.1501,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "type_data": {
+    "fuel_push_rate": 0.0,
+    "minimum_rate": 0.2
+  }
+}

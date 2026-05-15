@@ -1,0 +1,39 @@
+{
+  "key": "Door_RN_RoomConnector_Exterior_AEGS_Hammerhead_GS_CargoLift",
+  "ref": "6d89ab63-16dc-4308-a2e8-e2784a466f69",
+  "category": "doors",
+  "type": "Door",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Door",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_cargogrid",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "Cargo"
+      ]
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "hardpoint_cargogrid",
+      "key": null,
+      "ref": "923d4520-0226-4808-bf1f-75a5ebdb5af8",
+      "default_loadout": []
+    }
+  ]
+}

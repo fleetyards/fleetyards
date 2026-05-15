@@ -57,8 +57,8 @@
     },
     {
       "name": "hardpoint_controller_flight",
-      "ref": null,
-      "key": "Controller_Flight_ORIG_X1_Velocity"
+      "ref": "fe4016c4-d716-4c52-9618-3755c5d7f1c6",
+      "key": null
     },
     {
       "name": "hardpoint_controller_shield",

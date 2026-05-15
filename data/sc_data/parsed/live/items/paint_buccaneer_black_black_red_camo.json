@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Buccaneer_Black_Black_Red_Camo",
+  "ref": "79adc158-219a-4f55-9a7c-0ba448920225",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "62ae5ae3-dd50-4ca7-b0db-8ae97e0c709e",
+  "name": "Buccaneer Nightbreak Livery",
+  "short_name": null,
+  "description": "Discreetly soar through the night sky in the Buccaneer with the Nightbreak livery, which is primarily black with red highlights.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

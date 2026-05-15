@@ -1,0 +1,66 @@
+{
+  "key": "MRCK_S05_DRAK_Ironclad_Torpedo_Silo_L",
+  "ref": "7a03e42b-d08a-4553-9fe2-20cab993d759",
+  "category": "missile_racks",
+  "type": "MissileLauncher",
+  "sub_type": "MissileRack",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": "Drake Ironclad Torpedo Rack",
+  "short_name": null,
+  "description": "Item Type: Missile Rack\\nManufacturer: Drake Interplanetary\\nSize: 5\\nMissiles: 5xS5\\n\\nThis bespoke rack for the Drake Ironclad can carry and deploy five S5 torpedoes.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "loadout": [
+    {
+      "name": "missile_01_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_02_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_03_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_04_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    },
+    {
+      "name": "missile_05_attach",
+      "min_size": "5",
+      "max_size": "5",
+      "types": [
+        "Missile"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  }
+}

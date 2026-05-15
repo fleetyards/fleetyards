@@ -56,6 +56,60 @@
       ]
     }
   ],
+  "default_loadout": [
+    {
+      "name": "turret_top_right",
+      "key": null,
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "turret_top_left",
+      "key": null,
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "turret_bottom_right",
+      "key": null,
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "default_loadout": []
+        }
+      ]
+    },
+    {
+      "name": "turret_bottom_left",
+      "key": null,
+      "ref": "8197c45b-eaf4-4836-a8f0-837d1875cd9c",
+      "default_loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "key": null,
+          "ref": "bd13235d-1261-4b71-b32f-aed1a8beb526",
+          "default_loadout": []
+        }
+      ]
+    }
+  ],
   "durability": {
     "health": 5000.0
   },

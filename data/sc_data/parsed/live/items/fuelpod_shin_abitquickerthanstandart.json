@@ -1,0 +1,27 @@
+{
+  "key": "FuelPod_SHIN_ABitQuickerThanStandart",
+  "ref": "da7b5a4d-582a-44d4-8afb-bf22d586780d",
+  "category": "utility",
+  "type": "ExternalFuelTank",
+  "sub_type": null,
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",
+  "name": "Nemec",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 50036534.0,
+    "dimensions": {
+      "x": 10.99875,
+      "y": 8.516968,
+      "z": 10.6829
+    }
+  },
+  "durability": {
+    "health": 23040.0
+  },
+  "type_data": {
+    "capacity": 30.0
+  }
+}

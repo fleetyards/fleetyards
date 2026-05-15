@@ -1,0 +1,27 @@
+{
+  "key": "POWR_VNCL_S04_Mauler",
+  "ref": "1eff95ff-da99-4233-8576-d055eaf8b454",
+  "category": "powerplant",
+  "type": "PowerPlant",
+  "sub_type": "Power",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "4668760a-d8a1-48d0-be4d-42304b702de0",
+  "name": "Mauler Power Plant",
+  "short_name": null,
+  "description": "The Vanduul Mauler's built-in Power Plant generates enough energy for the operation of essential systems, even in heavy combat.",
+  "inventory_consumption": {
+    "micro_scu": 2100000.0,
+    "dimensions": {
+      "x": 0.8932018,
+      "y": 6.633023,
+      "z": 1.60379
+    }
+  },
+  "durability": {
+    "health": 69000.0
+  },
+  "type_data": {
+    "power_base": 100.0
+  }
+}

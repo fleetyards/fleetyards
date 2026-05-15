@@ -1,0 +1,36 @@
+{
+  "key": "AEGS_tiburon_SCItem_Remote_Turret_front_left",
+  "ref": "bfed6e49-5330-4c51-becc-cf9d005ce79c",
+  "category": "turret",
+  "type": "Turret",
+  "sub_type": "GunTurret",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
+  "name": "Remote Turret",
+  "short_name": null,
+  "description": "Remote Turret",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_weapon_b",
+      "min_size": "7",
+      "max_size": "7",
+      "types": [
+        "WeaponGun",
+        "Turret"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5500.0
+  },
+  "type_data": {}
+}

@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Pitbull_Red_Black_Black",
+  "ref": "a1c29aed-648d-4ffd-9746-6e8797a78e89",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a20b298-f7fb-4915-8a5f-c2f4dea66077",
+  "name": "Pitbull Bloodlet Livery",
+  "short_name": null,
+  "description": "Dive into combat with this blood red livery for your Pitbull to show everyone on the battlefield exactly what you're out for.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

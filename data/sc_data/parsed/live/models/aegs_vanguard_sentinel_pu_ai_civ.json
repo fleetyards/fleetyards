@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "Aegis Vanguard Sentinel",
-  "description": "Manufacturer: Aegis Dynamics\\nFocus: Interdiction \\n\\nThe Vanguard Sentinel is a ship that's designed to fight smart instead of taking enemies head on. The conversion features an AR cockpit, an external e-War pod, decoy missiles and a set of EMP charges. Vanguard Sentinels often provide necessary combat support for combined operations. A lone Sentinel is frequently paired with Harbinger bombers and Warden escorts for large attack missions.",
+  "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Fighter \\n\\nThe Vanguard Sentinel is a ship that's designed to fight smart instead of taking enemies head on. The conversion features an AR cockpit, an external e-War pod, decoy missiles and a set of EMP charges. Vanguard Sentinels often provide necessary combat support for combined operations. A lone Sentinel is frequently paired with Harbinger bombers and Warden escorts for large attack missions.",
   "career": "Combat",
   "role": "Heavy Fighter / Bomber",
   "insurance": {
@@ -246,23 +246,51 @@
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_001",
-      "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_002",
-      "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_003",
-      "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_weapon_gun_nose_fixed_004",
-      "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
-      "key": null
+      "ref": "c5cb44d6-deba-450a-81c6-828edb59b10d",
+      "key": null,
+      "loadout": [
+        {
+          "name": "hardpoint_class_2",
+          "ref": "d60d2103-fdc4-446e-8a3b-0af114f2e23e",
+          "key": null
+        }
+      ]
     },
     {
       "name": "hardpoint_turret",
