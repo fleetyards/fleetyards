@@ -8,7 +8,7 @@ RSpec.describe ScData::Loader::ManufacturersLoader do
 
   describe "#all" do
     it "loads data from game files" do
-      expect { loader.all }.to change(Manufacturer, :count).by(112)
+      expect { loader.all }.to change(Manufacturer, :count).by(113)
 
       manufacturer_codes = Manufacturer.pluck(:code)
 
