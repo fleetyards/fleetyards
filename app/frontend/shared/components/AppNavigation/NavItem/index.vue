@@ -71,7 +71,6 @@ const tooltip = computed(() => {
 
   return {
     content: props.label,
-    popperClass: "nav-item-tooltip",
     placement: "right",
   };
 });
