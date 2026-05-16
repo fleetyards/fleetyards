@@ -12,7 +12,9 @@ module ScData
       end
 
       def one(model)
-        load_model(model)
+        update_in_game_flag(model)
+
+        load_model(model.reload)
 
         model.hardpoints.find_each(&:save) # hack to generate correct group_keys
       end
@@ -43,19 +45,21 @@ module ScData
       end
 
       private def update_in_game_flags
-        Model.find_each do |model|
-          identifier = model.sc_data_identifier
-          next if identifier.blank?
+        Model.find_each { |model| update_in_game_flag(model) }
+      end
 
-          file_exists = File.exist?(
-            Rails.root.join("data/sc_data/parsed/#{sc_environment}/models/#{identifier}.json")
-          )
+      private def update_in_game_flag(model)
+        identifier = model.sc_data_identifier
+        return if identifier.blank?
 
-          if file_exists && !model.in_game?
-            model.update_columns(in_game: true, production_status: "flight-ready")
-          elsif !file_exists && model.in_game?
-            model.update_columns(in_game: false)
-          end
+        file_exists = File.exist?(
+          Rails.root.join("data/sc_data/parsed/#{sc_environment}/models/#{identifier}.json")
+        )
+
+        if file_exists && !model.in_game?
+          model.update_columns(in_game: true, production_status: "flight-ready")
+        elsif !file_exists && model.in_game?
+          model.update_columns(in_game: false)
         end
       end
 
