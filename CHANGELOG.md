@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.21.4](https://github.com/fleetyards/fleetyards/compare/v6.21.3...v6.21.4) (2026-05-16)
+
+
+### Bug Fixes
+
+* **sc-data:** enqueue AllJob from maintenance task instead of running inline ([313eb47](https://github.com/fleetyards/fleetyards/commit/313eb47a8f0427f9eca93fb14177e783080a6c39))
+
+
+### Chores
+
+* **credentials:** rotate production github_token ([9345291](https://github.com/fleetyards/fleetyards/commit/9345291328d57e1a50ae5e30c3a384d4a617d4a2))
+
 ## [6.21.3](https://github.com/fleetyards/fleetyards/compare/v6.21.2...v6.21.3) (2026-05-15)
 
 
