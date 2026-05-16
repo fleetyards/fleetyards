@@ -523,6 +523,7 @@ class PaintsImporter
       "2950 Invictus Starfarer Light Grey" => starfarer,
       "2950 Invictus Starfarer Black" => starfarer,
       "MISC Reliant" => reliant,
+      "Reliant" => reliant,
       "Reliant Invictus Blue and Gold" => reliant,
       "Aurora" => aurora,
       "Aurora Mk I" => aurora,
