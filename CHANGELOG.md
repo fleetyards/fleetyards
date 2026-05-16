@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.21.5](https://github.com/fleetyards/fleetyards/compare/v6.21.4...v6.21.5) (2026-05-16)
+
+
+### Bug Fixes
+
+* **sc-data:** auto-flip in_game in single model loader ([8f0fee5](https://github.com/fleetyards/fleetyards/commit/8f0fee55cd5477f55afffdb3bc1e7b5e212a1c8e))
+
 ## [6.21.4](https://github.com/fleetyards/fleetyards/compare/v6.21.3...v6.21.4) (2026-05-16)
 
 
