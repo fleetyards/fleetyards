@@ -142,7 +142,12 @@ class Hardpoint < ApplicationRecord
       when "EMP"
         :emp
       else
-        component&.category || :unknown
+        derived = component&.category || :unknown
+        if derived.to_s == "module" && component&.component_type != "Module"
+          :unknown
+        else
+          derived
+        end
       end
     end
   end

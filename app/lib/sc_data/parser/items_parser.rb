@@ -46,6 +46,12 @@ module ScData
 
         type = value_or_nil(values.dig("Components", "SAttachableComponentParams", "AttachDef", "Type"))
 
+        # The module/ directory contains both real swap modules and cosmetic
+        # attached parts (elevators, skylights, emergency lights, nacelles).
+        # Only AttachDef Type == "Module" entries are user-swappable; drop the
+        # rest down to :unknown so they don't surface as module slots.
+        category = "unknown" if category == "module" && type != "Module"
+
         item = {
           key:,
           ref: value_or_nil(values.dig("__ref")),

@@ -1,7 +1,7 @@
 {
   "key": "MISC_Reliant_Missile_Cap_Right",
   "ref": "bcfed3ab-5f55-4690-8638-07e3b883d5e4",
-  "category": "module",
+  "category": "unknown",
   "type": "MissileLauncher",
   "sub_type": "MissileRack",
   "size": "5",

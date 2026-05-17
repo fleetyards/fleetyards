@@ -1,7 +1,7 @@
 {
   "key": "TMBL_Cyclone_Module_Turret",
   "ref": "9c8965da-dfc3-4af0-98aa-eb429cfa87f1",
-  "category": "module",
+  "category": "unknown",
   "type": "TurretBase",
   "sub_type": "MannedTurret",
   "size": "3",
