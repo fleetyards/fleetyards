@@ -393,6 +393,7 @@
         "hidden": "¿Oculto?",
         "active": "¿Activo?",
         "inGame": "¿En el juego?",
+        "adiMap": "¿Mapa ADI?",
         "ground": "¿Vehículo terrestre?",
         "productionNote": "Nota de producción",
         "rsiId": "RSI ID",

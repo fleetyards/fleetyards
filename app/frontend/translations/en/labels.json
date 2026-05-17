@@ -406,6 +406,7 @@
         "hidden": "Hidden?",
         "active": "Active?",
         "inGame": "In Game?",
+        "adiMap": "ADI Map?",
         "ground": "Ground Vehicle?",
         "productionNote": "Production Note",
         "rsiId": "RSI ID",

@@ -15,6 +15,7 @@ module Admin
               hidden: {type: :boolean},
               active: {type: :boolean},
               inGame: {type: :boolean},
+              adiMap: {type: :boolean},
               ground: {type: :boolean},
               mass: {type: :number, nullable: true},
               minCrew: {type: :integer, nullable: true},

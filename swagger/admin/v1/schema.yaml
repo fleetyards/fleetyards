@@ -9938,6 +9938,8 @@ components:
           type: boolean
         inGame:
           type: boolean
+        adiMap:
+          type: boolean
         ground:
           type: boolean
         mass:
