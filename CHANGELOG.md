@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.22.0](https://github.com/fleetyards/fleetyards/compare/v6.21.5...v6.22.0) (2026-05-17)
+
+
+### Features
+
+* **admin:** add ADI Map toggle to model edit form ([8345d65](https://github.com/fleetyards/fleetyards/commit/8345d653112a63061e797b5ad3b4b814422f368d))
+
+
+### Bug Fixes
+
+* **admin:** sort users by newest first on dashboard and index ([366dab0](https://github.com/fleetyards/fleetyards/commit/366dab06821d8c0d058d0bcc34c02b25bb389ed0))
+* **sc-data:** only show real swap modules as module hardpoint slots ([715e821](https://github.com/fleetyards/fleetyards/commit/715e8214ec696d180639d28e4e6909f8654e5e3f))
+
 ## [6.21.5](https://github.com/fleetyards/fleetyards/compare/v6.21.4...v6.21.5) (2026-05-16)
 
 
