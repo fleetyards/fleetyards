@@ -33,7 +33,7 @@ const { data: users, ...usersStatus } = useUsersQuery(
   {
     perPage: "6",
     page: "1",
-    s: ["last_active_at desc", "created_at desc", "name asc"],
+    s: ["createdAt desc"],
   },
   {
     query: {

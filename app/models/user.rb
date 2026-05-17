@@ -172,7 +172,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-  DEFAULT_SORTING_PARAMS = "username asc"
+  DEFAULT_SORTING_PARAMS = "created_at desc"
   ALLOWED_SORTING_PARAMS = [
     "username asc", "username desc", "email asc", "email desc", "createdAt asc", "createdAt desc",
     "confirmedAt asc", "confirmedAt desc", "lastActiveAt asc", "lastActiveAt desc",
