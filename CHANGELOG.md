@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.23.0](https://github.com/fleetyards/fleetyards/compare/v6.22.0...v6.23.0) (2026-05-18)
+
+
+### Features
+
+* **admin:** copy paint to another ship with bulk action ([7edfd57](https://github.com/fleetyards/fleetyards/commit/7edfd57bcac8ac60bf633b91127b2525acc3dcd2))
+
 ## [6.22.0](https://github.com/fleetyards/fleetyards/compare/v6.21.5...v6.22.0) (2026-05-17)
 
 
