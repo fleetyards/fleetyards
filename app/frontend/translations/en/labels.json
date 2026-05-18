@@ -606,7 +606,10 @@
         "onSale": "On Sale",
         "pledgePrice": "Pledge Price",
         "productionStatus": "Production Status",
-        "productionNote": "Production Note"
+        "productionNote": "Production Note",
+        "copyHint": "Select the target ship to copy this paint to. The paint data is not modified during the copy.",
+        "bulkCopyHint": "Select the target ship to copy these %{count} paints to. The paint data is not modified during the copy.",
+        "copySameModel": "Target ship must differ from the source ship."
       },
       "component": {
         "size": "Size: %{size}",

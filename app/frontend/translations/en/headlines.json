@@ -58,7 +58,9 @@
         "modelPaints": {
           "index": "Paints",
           "new": "New Paint",
-          "edit": "Edit Paint"
+          "edit": "Edit Paint",
+          "copy": "Copy Paint to Ship",
+          "bulkCopy": "Copy %{count} Paints to Ship"
         },
         "modelModules": {
           "index": "Modules",

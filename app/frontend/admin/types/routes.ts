@@ -16,9 +16,6 @@ type AdminSimpleRoutes =
   // Models
   | "admin-models"
   | "admin-model-create"
-  // Model Paints
-  | "admin-model-paints"
-  | "admin-model-paint-create"
   // Model Modules
   | "admin-model-modules"
   | "admin-model-modules-packages"
@@ -65,8 +62,6 @@ export type AdminRouteLocation =
   | ParamRoute<"admin-model-edit-modules", IdParams>
   | ParamRoute<"admin-model-edit-upgrades", IdParams>
   | ParamRoute<"admin-model-edit-packages", IdParams>
-  // Paints (id)
-  | ParamRoute<"admin-model-paint-edit", IdParams>
   // Manufacturers (id)
   | ParamRoute<"admin-manufacturer-edit", IdParams>
   // Components (id)

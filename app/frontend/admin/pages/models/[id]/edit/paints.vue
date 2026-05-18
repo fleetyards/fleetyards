@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import {
@@ -37,6 +38,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const comlink = useComlink();
 const queryClient = useQueryClient();
 
 const editableList = ref<{
@@ -45,6 +47,7 @@ const editableList = ref<{
   startCreate: () => void;
   finishEdit: () => void;
   finishCreate: () => void;
+  resetSelected: () => void;
 } | null>(null);
 
 const paintsQueryParams = computed(() => ({
@@ -113,7 +116,7 @@ const onDestroy = async (record: ModelPaint) => {
   await destroyMutation.mutateAsync({ id: record.id });
 };
 
-// Create / Copy
+// Create
 const createForm = ref<ModelPaintInput>({
   modelId: props.model.id,
 });
@@ -121,21 +124,6 @@ const createForm = ref<ModelPaintInput>({
 const onStartCreate = () => {
   createForm.value = {
     modelId: props.model.id,
-  };
-};
-
-const copyPaint = (item: ModelPaint) => {
-  editableList.value?.startCreate();
-  createForm.value = {
-    name: item.name,
-    modelId: props.model.id,
-    active: item.active,
-    hidden: item.hidden,
-    onSale: item.onSale,
-    pledgePrice: item.pledgePrice,
-    productionStatus: item.productionStatus,
-    productionNote: item.productionNote,
-    storeImage: item.media?.storeImage?.signedId,
   };
 };
 
@@ -151,6 +139,39 @@ const onSaveCreate = async () => {
   });
 
   editableList.value?.finishCreate();
+};
+
+// Copy
+const paintsById = computed(() => {
+  const map = new Map<string, ModelPaint>();
+  (data.value?.items || []).forEach((item) => map.set(item.id, item));
+  return map;
+});
+
+const openCopyModal = (paints: ModelPaint[]) => {
+  if (!paints.length) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/admin/components/ModelPaints/CopyModal/index.vue"),
+    props: {
+      paints,
+      sourceModelId: props.model.id,
+    },
+  });
+};
+
+const copyPaint = (item: ModelPaint) => {
+  openCopyModal([item]);
+};
+
+const bulkCopy = (selectedIds: string[]) => {
+  const paints = selectedIds
+    .map((id) => paintsById.value.get(id))
+    .filter((paint): paint is ModelPaint => !!paint);
+
+  openCopyModal(paints);
+  editableList.value?.resetSelected();
 };
 </script>
 
@@ -171,6 +192,7 @@ const onSaveCreate = async () => {
     empty-name="Paints"
     :loading="isLoading"
     ref="editableList"
+    selectable
     :items="(data?.items as ModelPaint[]) || []"
     :confirm-destroy-text="t('messages.confirm.modelPaint.destroy')"
     @start-edit="onStartEdit"
@@ -179,6 +201,12 @@ const onSaveCreate = async () => {
     @save-create="onSaveCreate"
     @destroy="onDestroy"
   >
+    <template #selected-actions="{ selected }">
+      <Btn :size="BtnSizesEnum.SMALL" @click="bulkCopy(selected)">
+        <i class="fa-duotone fa-copy" />
+        {{ t("actions.copy") }}
+      </Btn>
+    </template>
     <template #display="{ item }">
       <LazyImage
         v-if="item.media?.storeImage"
