@@ -361,8 +361,8 @@ importers:
         specifier: 4.1.6
         version: 4.1.6(@types/node@25.8.0)(jsdom@29.1.1)(msw@2.14.6(@types/node@25.8.0)(typescript@6.0.3))(vite@8.0.13(@types/node@25.8.0)(esbuild@0.27.7)(jiti@2.7.0)(sass@1.99.0)(terser@5.46.2)(yaml@2.9.0))
       vue-component-type-helpers:
-        specifier: ^3.2.9
-        version: 3.2.9
+        specifier: ^3.3.0
+        version: 3.3.0
       vue-tsc:
         specifier: 3.2.9
         version: 3.2.9(typescript@6.0.3)
@@ -5585,8 +5585,8 @@ packages:
   vue-collapsed@1.3.5:
     resolution: {integrity: sha512-U6wCa4mFpaX2Fr9BWtGNPte3SAgtpk1NjeS/NRLHDHu2fDs3/MQ3W13pvWXy5BGbtz14HxzSq6efC9WrHblozQ==}
 
-  vue-component-type-helpers@3.2.9:
-    resolution: {integrity: sha512-S3BiWYaLSzHxTpln665ELSrMR9UYmrIDUmhik7nVZxmJjTKL2/a+ew1hvGxksKelivm0ujjWfG1fYOiU/2e8rA==}
+  vue-component-type-helpers@3.3.0:
+    resolution: {integrity: sha512-vwR8DDsBysI9NWXa0okPFpCcW+BUC3sPTuLBNo1faMzw4QWMFd+3/lFYFu29ZN0q+8UReXWJHEYesC9dcXYCLg==}
 
   vue-demi@0.11.4:
     resolution: {integrity: sha512-/3xFwzSykLW2HiiLie43a+FFgNOcokbBJ+fzvFXd0r2T8MYohqvphUyDQ8lbAwzQ3Dlcrb1c9ykifGkhSIAk6A==}
@@ -8161,7 +8161,7 @@ snapshots:
       '@vue/compiler-dom': 3.5.34
       js-beautify: 1.15.4
       vue: 3.5.34(typescript@6.0.3)
-      vue-component-type-helpers: 3.2.9
+      vue-component-type-helpers: 3.3.0
     optionalDependencies:
       '@vue/server-renderer': 3.5.34(vue@3.5.34(typescript@6.0.3))
 
@@ -11372,7 +11372,7 @@ snapshots:
 
   vue-collapsed@1.3.5: {}
 
-  vue-component-type-helpers@3.2.9: {}
+  vue-component-type-helpers@3.3.0: {}
 
   vue-demi@0.11.4(vue@3.5.34(typescript@6.0.3)):
     dependencies:
