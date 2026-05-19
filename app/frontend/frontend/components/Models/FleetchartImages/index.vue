@@ -32,11 +32,11 @@ const mobile = useMobile();
 const hasExtendedState = computed(() => {
   return Boolean(
     props.model.metrics.extendedLength ||
-      props.model.media.extendedHolo ||
-      props.model.media.extendedTopView ||
-      props.model.media.extendedSideView ||
-      props.model.media.extendedAngledView ||
-      props.model.media.extendedFrontView,
+    props.model.media.extendedHolo ||
+    props.model.media.extendedTopView ||
+    props.model.media.extendedSideView ||
+    props.model.media.extendedAngledView ||
+    props.model.media.extendedFrontView,
   );
 });
 

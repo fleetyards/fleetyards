@@ -317,7 +317,6 @@ const adiMap = computed(() => {
               </Btn>
             </BtnGroup>
 
-
             <HoloViewer
               v-if="holoviewerVisible && holoModel"
               :models="[holoModel]"

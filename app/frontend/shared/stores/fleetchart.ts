@@ -66,8 +66,7 @@ export const useFleetchartStore = defineStore("fleetchart", {
       return (namespace: string) => state.color.includes(namespace);
     },
     extendedState: (state) => {
-      return (namespace: string) =>
-        (state.extended || []).includes(namespace);
+      return (namespace: string) => (state.extended || []).includes(namespace);
     },
     fleetchartMode: (state) => {
       return (namespace: string) => state.mode[namespace] || "panzoom";

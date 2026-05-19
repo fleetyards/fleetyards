@@ -78,11 +78,11 @@ const hasExtendedItems = computed(() => {
     const model = (item as Vehicle).model || (item as Model | VehiclePublic);
     return Boolean(
       model.metrics?.extendedLength ||
-        model.media?.extendedHolo ||
-        model.media?.extendedTopView ||
-        model.media?.extendedSideView ||
-        model.media?.extendedAngledView ||
-        model.media?.extendedFrontView,
+      model.media?.extendedHolo ||
+      model.media?.extendedTopView ||
+      model.media?.extendedSideView ||
+      model.media?.extendedAngledView ||
+      model.media?.extendedFrontView,
     );
   });
 });
