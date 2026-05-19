@@ -78,6 +78,11 @@
         "rollBoosted": "Rollen (Boosted)",
         "fleetchartOffsetLength": "Flottenkarten-Versatz Länge",
         "fleetchartOffsetBeam": "Flottenkarten-Versatz Breite",
+        "extendedLength": "Ausgefahrene Länge",
+        "extendedBeam": "Ausgefahrene Breite",
+        "extendedHeight": "Ausgefahrene Höhe",
+        "extendedFleetchartOffsetLength": "Ausgefahrener Flottenkarten-Versatz Länge",
+        "extendedFleetchartOffsetBeam": "Ausgefahrener Flottenkarten-Versatz Breite",
         "cargo": "Fracht",
         "baseModel": "Basismodell"
       },

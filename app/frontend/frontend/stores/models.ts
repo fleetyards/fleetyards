@@ -30,6 +30,7 @@ export enum ModelTableViewColsEnum {
 
 interface ModelsState extends ShipListState {
   holoviewerVisible: boolean;
+  extendedStateVisible: boolean;
   tableViewCols: ModelTableViewColsEnum[];
   tableViewImageCols: ModelTableViewImageColsEnum[];
 }
@@ -37,6 +38,7 @@ interface ModelsState extends ShipListState {
 export const useModelsStore = defineStore("models", {
   state: (): ModelsState => ({
     holoviewerVisible: false,
+    extendedStateVisible: false,
     detailsVisible: false,
     filterVisible: true,
     gridView: true,
@@ -76,6 +78,7 @@ export const useModelsStore = defineStore("models", {
   persist: {
     pick: [
       "holoviewerVisible",
+      "extendedStateVisible",
       "detailsVisible",
       "gridView",
       "tableViewCols",

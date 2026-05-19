@@ -110,7 +110,8 @@ const mobile = useMobile();
 
 const modelsStore = useModelsStore();
 
-const { holoviewerVisible } = storeToRefs(modelsStore);
+const { holoviewerVisible, extendedStateVisible: extendedState } =
+  storeToRefs(modelsStore);
 
 const { supported: webpSupported } = useWebpCheck();
 
@@ -225,13 +226,25 @@ const toggleHoloviewer = () => {
 };
 
 const holoModel = computed(() => {
-  if (!props.model.media.holo || !props.model.metrics.fleetchartOffsetLength) {
+  const useExtended = extendedState.value && props.model.media.extendedHolo;
+
+  const path = useExtended
+    ? props.model.media.extendedHolo?.url
+    : props.model.media.holo?.url;
+
+  const length = useExtended
+    ? props.model.metrics.extendedFleetchartOffsetLength ||
+      props.model.metrics.extendedLength ||
+      props.model.metrics.fleetchartOffsetLength
+    : props.model.metrics.fleetchartOffsetLength;
+
+  if (!path || !length) {
     return;
   }
 
   return {
-    path: props.model.media.holo?.url,
-    length: props.model.metrics.fleetchartOffsetLength,
+    path,
+    length,
   };
 });
 
@@ -304,6 +317,7 @@ const adiMap = computed(() => {
               </Btn>
             </BtnGroup>
 
+
             <HoloViewer
               v-if="holoviewerVisible && holoModel"
               :models="[holoModel]"
@@ -350,7 +364,7 @@ const adiMap = computed(() => {
             />
           </template>
           <Panel slim>
-            <ModelBaseMetrics :model="model" />
+            <ModelBaseMetrics :model="model" :extended="extendedState" />
           </Panel>
           <Panel slim>
             <ModelCrewMetrics :model="model" />
@@ -452,7 +466,7 @@ const adiMap = computed(() => {
           </div>
         </div>
       </div>
-      <FleetchartImages :model="model" />
+      <FleetchartImages v-model:extended="extendedState" :model="model" />
       <ModelCargoMetrics
         v-if="combinedCargoHolds.length"
         :model="model"

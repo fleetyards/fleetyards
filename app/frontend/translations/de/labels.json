@@ -450,6 +450,10 @@
         "baseModel": "Basismodell",
         "fleetchartOffsetLength": "Flottenübersicht Versatz Länge",
         "fleetchartOffsetBeam": "Flottenübersicht Versatz Breite",
+        "state": {
+          "retracted": "Eingefahren",
+          "extended": "Ausgefahren"
+        },
         "productionStatus": {
           "in-production": "In Produktion",
           "in-concept": "Im Konzept",

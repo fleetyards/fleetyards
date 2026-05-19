@@ -78,6 +78,11 @@
         "rollBoosted": "Roll Boosted",
         "fleetchartOffsetLength": "Fleetchart Offset Length",
         "fleetchartOffsetBeam": "Fleetchart Offset Beam",
+        "extendedLength": "Extended Length",
+        "extendedBeam": "Extended Beam",
+        "extendedHeight": "Extended Height",
+        "extendedFleetchartOffsetLength": "Extended Fleetchart Offset Length",
+        "extendedFleetchartOffsetBeam": "Extended Fleetchart Offset Beam",
         "cargo": "Cargo",
         "baseModel": "Base Model"
       },

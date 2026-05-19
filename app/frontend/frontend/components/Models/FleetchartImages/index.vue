@@ -6,15 +6,43 @@ export default {
 
 <script lang="ts" setup>
 import { useMobile } from "@/shared/composables/useMobile";
-import type { Model } from "@/services/fyApi";
+import { useI18n } from "@/shared/composables/useI18n";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import type { Model, MediaFile } from "@/services/fyApi";
 
 type Props = {
   model: Model;
+  extended?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  extended: false,
+});
+
+const emit = defineEmits<{
+  (e: "update:extended", value: boolean): void;
+}>();
+
+const { t } = useI18n();
 
 const mobile = useMobile();
+
+const hasExtendedState = computed(() => {
+  return Boolean(
+    props.model.metrics.extendedLength ||
+      props.model.media.extendedHolo ||
+      props.model.media.extendedTopView ||
+      props.model.media.extendedSideView ||
+      props.model.media.extendedAngledView ||
+      props.model.media.extendedFrontView,
+  );
+});
+
+const setExtended = (value: boolean) => {
+  emit("update:extended", value);
+};
 
 const hasImages = computed(() => {
   return (
@@ -25,68 +53,79 @@ const hasImages = computed(() => {
   );
 });
 
+const pickViewUrl = (
+  colored: MediaFile | undefined,
+  regular: MediaFile | undefined,
+) => {
+  if (colored) {
+    return mobile.value ? colored.mediumUrl : colored.largeUrl;
+  }
+
+  if (mobile.value && regular?.mediumUrl) {
+    return regular.mediumUrl;
+  }
+
+  return regular?.largeUrl;
+};
+
 const fleetchartImageAngled = computed(() => {
-  if (props.model.media.angledViewColored) {
-    if (mobile.value) {
-      return props.model.media.angledViewColored.mediumUrl;
-    }
-
-    return props.model.media.angledViewColored.largeUrl;
+  if (props.extended) {
+    const url = pickViewUrl(
+      props.model.media.extendedAngledViewColored,
+      props.model.media.extendedAngledView,
+    );
+    if (url) return url;
   }
 
-  if (mobile.value && props.model.media.angledView) {
-    return props.model.media.angledView.mediumUrl;
-  }
-
-  return props.model.media.angledView?.largeUrl;
+  return pickViewUrl(
+    props.model.media.angledViewColored,
+    props.model.media.angledView,
+  );
 });
 
 const fleetchartImageFront = computed(() => {
-  if (props.model.media.frontViewColored) {
-    if (mobile.value) {
-      return props.model.media.frontViewColored.mediumUrl;
-    }
-
-    return props.model.media.frontViewColored.largeUrl;
+  if (props.extended) {
+    const url = pickViewUrl(
+      props.model.media.extendedFrontViewColored,
+      props.model.media.extendedFrontView,
+    );
+    if (url) return url;
   }
 
-  if (mobile.value && props.model.media.frontView) {
-    return props.model.media.frontView.mediumUrl;
-  }
-
-  return props.model.media.frontView?.largeUrl;
+  return pickViewUrl(
+    props.model.media.frontViewColored,
+    props.model.media.frontView,
+  );
 });
 
 const fleetchartImageTop = computed(() => {
-  if (props.model.media.topViewColored) {
-    if (mobile.value) {
-      return props.model.media.topViewColored.mediumUrl;
-    }
-
-    return props.model.media.topViewColored.largeUrl;
+  if (props.extended) {
+    const url = pickViewUrl(
+      props.model.media.extendedTopViewColored,
+      props.model.media.extendedTopView,
+    );
+    if (url) return url;
   }
 
-  if (mobile.value && props.model.media.topView) {
-    return props.model.media.topView.mediumUrl;
-  }
-
-  return props.model.media.topView?.largeUrl;
+  return pickViewUrl(
+    props.model.media.topViewColored,
+    props.model.media.topView,
+  );
 });
 
 const fleetchartImageSide = computed(() => {
-  if (props.model.media.sideViewColored) {
-    if (mobile.value) {
-      return props.model.media.sideViewColored.mediumUrl;
-    }
-
-    return props.model.media.sideViewColored.largeUrl;
+  if (props.extended) {
+    const url = pickViewUrl(
+      props.model.media.extendedSideViewColored,
+      props.model.media.extendedSideView,
+    );
+    if (url) return url;
   }
 
-  if (mobile.value && props.model.media.sideView?.mediumUrl) {
-    return props.model.media.sideView.mediumUrl;
-  }
-
-  return props.model.media.sideView?.largeUrl;
+  return pickViewUrl(
+    props.model.media.sideViewColored,
+    props.model.media.sideView,
+  );
 });
 
 const windowWidth = ref(window.innerWidth / 2);
@@ -120,19 +159,33 @@ const beam = computed(() => {
 });
 
 const modelLength = computed(() => {
-  if (!props.model || !props.model.metrics.fleetchartOffsetLength) {
+  if (!props.model) {
     return 1;
   }
 
-  return props.model.metrics.fleetchartOffsetLength;
+  if (props.extended) {
+    const extended =
+      props.model.metrics.extendedFleetchartOffsetLength ||
+      props.model.metrics.extendedLength;
+    if (extended) return extended;
+  }
+
+  return props.model.metrics.fleetchartOffsetLength || 1;
 });
 
 const modelBeam = computed(() => {
-  if (!props.model || !props.model.metrics.fleetchartOffsetBeam) {
+  if (!props.model) {
     return 1;
   }
 
-  return props.model.metrics.fleetchartOffsetBeam;
+  if (props.extended) {
+    const extended =
+      props.model.metrics.extendedFleetchartOffsetBeam ||
+      props.model.metrics.extendedBeam;
+    if (extended) return extended;
+  }
+
+  return props.model.metrics.fleetchartOffsetBeam || 1;
 });
 
 const sideViewImg = ref<HTMLImageElement | null>(null);
@@ -153,36 +206,54 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="hasImages" class="fleetchart-views">
-    <div>
-      <img
-        v-if="fleetchartImageAngled"
-        :src="fleetchartImageAngled"
-        :width="(length > beam ? length : beam) * 1.2"
-      />
-    </div>
-    <div>
-      <img
-        v-if="fleetchartImageTop"
-        :src="fleetchartImageTop"
-        :width="length"
-      />
-    </div>
-    <div :class="{ small: mobile }">
-      <img
-        v-if="fleetchartImageFront"
-        :src="fleetchartImageFront"
-        :style="sideViewHeight ? { maxHeight: sideViewHeight + 'px' } : {}"
-      />
-    </div>
-    <div>
-      <img
-        v-if="fleetchartImageSide"
-        ref="sideViewImg"
-        :src="fleetchartImageSide"
-        :width="length"
-        @load="updateSideViewHeight"
-      />
+  <div v-if="hasImages" class="fleetchart-views-wrapper">
+    <BtnGroup v-if="hasExtendedState" class="fleetchart-views-toggle">
+      <Btn
+        :active="!extended"
+        :size="BtnSizesEnum.SMALL"
+        @click="setExtended(false)"
+      >
+        {{ t("labels.model.state.retracted") }}
+      </Btn>
+      <Btn
+        :active="extended"
+        :size="BtnSizesEnum.SMALL"
+        @click="setExtended(true)"
+      >
+        {{ t("labels.model.state.extended") }}
+      </Btn>
+    </BtnGroup>
+    <div class="fleetchart-views">
+      <div>
+        <img
+          v-if="fleetchartImageAngled"
+          :src="fleetchartImageAngled"
+          :width="(length > beam ? length : beam) * 1.2"
+        />
+      </div>
+      <div>
+        <img
+          v-if="fleetchartImageTop"
+          :src="fleetchartImageTop"
+          :width="length"
+        />
+      </div>
+      <div :class="{ small: mobile }">
+        <img
+          v-if="fleetchartImageFront"
+          :src="fleetchartImageFront"
+          :style="sideViewHeight ? { maxHeight: sideViewHeight + 'px' } : {}"
+        />
+      </div>
+      <div>
+        <img
+          v-if="fleetchartImageSide"
+          ref="sideViewImg"
+          :src="fleetchartImageSide"
+          :width="length"
+          @load="updateSideViewHeight"
+        />
+      </div>
     </div>
   </div>
 </template>

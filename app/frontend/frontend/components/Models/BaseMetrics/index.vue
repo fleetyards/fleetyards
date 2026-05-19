@@ -12,12 +12,39 @@ const { t, toNumber, toDollar, toUEC } = useI18n();
 
 type Props = {
   model: Model;
+  extended?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  extended: false,
+});
 
 const soldAt = computed(() => props.model.availability.soldAt);
 const rentalAt = computed(() => props.model.availability.rentalAt);
+
+const displayLength = computed(() => {
+  if (props.extended && props.model.metrics.extendedLength) {
+    return props.model.metrics.extendedLength;
+  }
+
+  return props.model.metrics.length;
+});
+
+const displayBeam = computed(() => {
+  if (props.extended && props.model.metrics.extendedBeam) {
+    return props.model.metrics.extendedBeam;
+  }
+
+  return props.model.metrics.beam;
+});
+
+const displayHeight = computed(() => {
+  if (props.extended && props.model.metrics.extendedHeight) {
+    return props.model.metrics.extendedHeight;
+  }
+
+  return props.model.metrics.height;
+});
 </script>
 
 <template>
@@ -32,17 +59,17 @@ const rentalAt = computed(() => props.model.availability.rentalAt);
         <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ t("model.length") }}:</div>
           <div class="metrics-value">
-            {{ toNumber(model.metrics.length || "", "distance") }}
+            {{ toNumber(displayLength || "", "distance") }}
           </div>
           <div class="metrics-label">{{ t("model.beam") }}:</div>
           <div class="metrics-value">
-            {{ toNumber(model.metrics.beam || "", "distance") }}
+            {{ toNumber(displayBeam || "", "distance") }}
           </div>
         </div>
         <div class="col-6 col-lg-4">
           <div class="metrics-label">{{ t("model.height") }}:</div>
           <div class="metrics-value">
-            {{ toNumber(model.metrics.height || "", "distance") }}
+            {{ toNumber(displayHeight || "", "distance") }}
           </div>
           <div class="metrics-label">{{ t("model.mass") }}:</div>
           <div class="metrics-value">

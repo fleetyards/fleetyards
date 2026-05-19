@@ -485,6 +485,10 @@
         "extendedFrontViewColored": "Extended Front View Colored",
         "extendedAngledView": "Extended Angled View",
         "extendedAngledViewColored": "Extended Angled View Colored",
+        "state": {
+          "retracted": "Retracted",
+          "extended": "Extended"
+        },
         "productionStatus": {
           "in-production": "In Production",
           "in-concept": "In Concept",
