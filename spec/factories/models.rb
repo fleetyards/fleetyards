@@ -17,6 +17,7 @@
 #  extended_fleetchart_offset_length :decimal(15, 2)
 #  extended_height                   :decimal(15, 2)
 #  extended_length                   :decimal(15, 2)
+#  external_fuel_tanks               :string
 #  fleetchart_offset_beam            :decimal(15, 2)
 #  fleetchart_offset_length          :decimal(15, 2)
 #  focus                             :string(255)
@@ -58,6 +59,7 @@
 #  production_status                 :string(255)
 #  quantum_fuel_tank_size            :decimal(15, 2)
 #  quantum_fuel_tanks                :string
+#  refuel_boom                       :string
 #  reverse_speed_boosted             :decimal(15, 2)
 #  roll                              :decimal(15, 2)
 #  roll_boosted                      :decimal(15, 2)

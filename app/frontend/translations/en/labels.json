@@ -432,6 +432,9 @@
         "hydrogenFuelTanks": "Hydrogen Fuel Tanks",
         "quantumFuelTankSize": "Quantum Fuel Tank Size",
         "quantumFuelTanks": "Quantum Fuel Tanks",
+        "externalFuelTanks": "External Fuel Tanks",
+        "externalFuelTanksTotal": "Total Capacity",
+        "externalFuelTanksCount": "Pods",
         "yaw": "Yaw",
         "pitch": "Pitch",
         "roll": "Roll",
@@ -656,6 +659,11 @@
             "Retro": "Fix"
           }
         },
+        "refuelBoom": {
+          "captureRadius": "Capture Radius",
+          "fuelFlowRate": "Fuel Flow Rate",
+          "quantumFuelFlowRate": "Quantum Fuel Flow Rate"
+        },
         "weapons": {
           "dps": "DPS",
           "fireRate": "Fire Rate",
@@ -739,7 +747,9 @@
           "weapon": "Weapons",
           "other": "Other",
           "auxiliary": "Auxiliary",
-          "seat": "Seats"
+          "seat": "Seats",
+          "external_fuel_tank": "External Fuel Tanks",
+          "refuel_boom": "Refuel Boom"
         },
         "types": {
           "radar": "Radar",
@@ -781,6 +791,8 @@
           "shieldgenerator": "Shield Generators",
           "fuel_intakes": "Fuel Intakes",
           "fueltanks": "Fuel Tanks",
+          "external_fuel_tanks": "External Fuel Tanks",
+          "refuel_boom": "Refuel Boom",
           "quantumdrive": "Quantum Drives & Jump Modules",
           "jump_modules": "Jump Modules",
           "jumpdrive": "Jump Modules",

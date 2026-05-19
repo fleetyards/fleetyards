@@ -81,6 +81,8 @@ const icons = {
   shieldgenerator: shieldGeneratorsIconUrl,
   fuel_intakes: fuelIntakesIconUrl,
   fueltanks: fuelTanksIconUrl,
+  external_fuel_tanks: fuelTanksIconUrl,
+  refuel_boom: fuelIntakesIconUrl,
   quantumdrive: quantumDrivesIconUrl,
   jump_modules: jumpModulesIconUrl,
   jumpdrive: jumpModulesIconUrl,

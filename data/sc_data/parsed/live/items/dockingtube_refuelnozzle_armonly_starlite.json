@@ -1,8 +1,8 @@
 {
-  "key": "Nozzle_FuelGiver_MISC_NozzleStandard",
-  "ref": "8b1915bf-22ce-473d-9c1d-727423d59c0e",
-  "category": "utility",
-  "type": "DockingCollar",
+  "key": "DockingTube_RefuelNozzle_ArmOnly_StarLite",
+  "ref": "0c328fbc-f07d-4551-857b-d3078ebe6994",
+  "category": "refuel_boom",
+  "type": "ToolArm",
   "sub_type": null,
   "size": "2",
   "grade": "1",
@@ -20,20 +20,15 @@
   },
   "loadout": [
     {
-      "name": "itemport_vehicle_attach",
-      "min_size": "0",
-      "max_size": "8",
+      "name": "itemport_nozzle",
+      "min_size": "1",
+      "max_size": "1",
       "types": [
-        "NOITEM_Vehicle"
+        "DockingCollar"
       ]
     }
   ],
   "durability": {
     "health": 9000.0
-  },
-  "type_data": {
-    "capture_radius": 3.0,
-    "fuel_flow_rate": 1.65,
-    "quantum_fuel_flow_rate": 0.91
   }
 }

@@ -19,6 +19,7 @@
 #  extended_fleetchart_offset_length :decimal(15, 2)
 #  extended_height                   :decimal(15, 2)
 #  extended_length                   :decimal(15, 2)
+#  external_fuel_tanks               :string
 #  fleetchart_offset_beam            :decimal(15, 2)
 #  fleetchart_offset_length          :decimal(15, 2)
 #  focus                             :string(255)
@@ -60,6 +61,7 @@
 #  production_status                 :string(255)
 #  quantum_fuel_tank_size            :decimal(15, 2)
 #  quantum_fuel_tanks                :string
+#  refuel_boom                       :string
 #  reverse_speed_boosted             :decimal(15, 2)
 #  roll                              :decimal(15, 2)
 #  roll_boosted                      :decimal(15, 2)
@@ -132,7 +134,7 @@ class Model < ApplicationRecord
     ground_acceleration ground_decceleration scm_speed_acceleration scm_speed_decceleration
     max_speed_acceleration max_speed_decceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
-    quantum_fuel_tanks sales_page_url
+    quantum_fuel_tanks external_fuel_tanks refuel_boom sales_page_url
   ], meta: {
     author_id: :author_id,
     reason: :update_reason,
@@ -212,6 +214,8 @@ class Model < ApplicationRecord
   serialize :cargo_holds, coder: YAML
   serialize :quantum_fuel_tanks, coder: YAML
   serialize :hydrogen_fuel_tanks, coder: YAML
+  serialize :external_fuel_tanks, coder: YAML
+  serialize :refuel_boom, coder: YAML
 
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :docks, allow_destroy: true

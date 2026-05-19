@@ -39,6 +39,8 @@ module ScData
         update_params = update_cargo_holds(hardpoints, update_params)
         update_params = update_quantum_fuel_tanks(hardpoints, update_params)
         update_params = update_hydrogen_fuel_tanks(hardpoints, update_params)
+        update_params = update_external_fuel_tanks(hardpoints, update_params)
+        update_params = update_refuel_boom(hardpoints, update_params)
         update_params = update_speeds(hardpoints, update_params)
 
         model.update!(update_params.merge(update_reason: :sc_data_loader))
@@ -95,6 +97,51 @@ module ScData
         update_params[:hydrogen_fuel_tanks] = fuel_tanks
 
         update_params
+      end
+
+      private def update_external_fuel_tanks(hardpoints, update_params)
+        fuel_tanks = extract_named_type_data(hardpoints, "ExternalFuelTank")
+
+        return update_params if fuel_tanks.blank?
+
+        update_params[:external_fuel_tanks] = fuel_tanks
+
+        update_params
+      end
+
+      private def update_refuel_boom(hardpoints, update_params)
+        boom = extract_refuel_boom(hardpoints)
+
+        return update_params if boom.blank?
+
+        update_params[:refuel_boom] = boom
+
+        update_params
+      end
+
+      private def extract_refuel_boom(hardpoints)
+        hardpoints.each do |hardpoint|
+          next if hardpoint.group != "refuel_boom"
+          next if hardpoint.component.blank?
+
+          nozzle = hardpoint.hardpoints.includes(:component).find do |sub|
+            sub.component&.component_type == "DockingCollar"
+          end
+
+          nozzle_data = nozzle&.component&.type_data || {}
+
+          return {
+            "arm_name" => hardpoint.component.name,
+            "arm_size" => hardpoint.component.size,
+            "nozzle_name" => nozzle&.component&.name,
+            "nozzle_size" => nozzle&.component&.size,
+            "capture_radius" => nozzle_data["capture_radius"],
+            "fuel_flow_rate" => nozzle_data["fuel_flow_rate"],
+            "quantum_fuel_flow_rate" => nozzle_data["quantum_fuel_flow_rate"]
+          }.compact
+        end
+
+        nil
       end
 
       private def update_speeds(hardpoints, update_params)

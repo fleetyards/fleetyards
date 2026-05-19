@@ -6304,6 +6304,7 @@ components:
       - quantumdrive
       - jumpdrive
       - external_fuel_tanks
+      - refuel_boom
       - main_thrusters
       - retro_thrusters
       - vtol_thrusters
@@ -6344,6 +6345,7 @@ components:
       - QUANTUMDRIVE
       - JUMPDRIVE
       - EXTERNAL_FUEL_TANKS
+      - REFUEL_BOOM
       - MAIN_THRUSTERS
       - RETRO_THRUSTERS
       - VTOL_THRUSTERS
@@ -6385,6 +6387,7 @@ components:
       - relay
       - other
       - external_fuel_tank
+      - refuel_boom
       - unknown
       x-enumNames:
       - AVIONIC
@@ -6398,6 +6401,7 @@ components:
       - RELAY
       - OTHER
       - EXTERNAL_FUEL_TANK
+      - REFUEL_BOOM
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:
@@ -6917,6 +6921,32 @@ components:
       - selected
       - sliced
       title: PieChartStats
+    RefuelBoom:
+      type: object
+      properties:
+        armName:
+          type: string
+          nullable: true
+        armSize:
+          type: string
+          nullable: true
+        nozzleName:
+          type: string
+          nullable: true
+        nozzleSize:
+          type: string
+          nullable: true
+        captureRadius:
+          type: number
+          nullable: true
+        fuelFlowRate:
+          type: number
+          nullable: true
+        quantumFuelFlowRate:
+          type: number
+          nullable: true
+      additionalProperties: false
+      title: RefuelBoom
     RsiHangarItemKindEnum:
       type: string
       enum:
@@ -8467,6 +8497,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ExternalFuelTank"
+        refuelBoom:
+          "$ref": "#/components/schemas/RefuelBoom"
         onSale:
           type: boolean
         playerOwnable:
@@ -8895,6 +8927,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ExternalFuelTank"
+        refuelBoom:
+          "$ref": "#/components/schemas/RefuelBoom"
         onSale:
           type: boolean
         playerOwnable:
@@ -10297,6 +10331,9 @@ components:
           type: string
           nullable: true
         externalFuelTanks:
+          type: string
+          nullable: true
+        refuelBoom:
           type: string
           nullable: true
         storeImage:

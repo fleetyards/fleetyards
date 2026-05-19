@@ -1,21 +1,21 @@
 {
-  "key": "Nozzle_FuelGiver_GRIN_NozzleFast",
-  "ref": "b46eae55-2ed3-4008-9635-8fe26a1a3a4c",
-  "category": "utility",
+  "key": "Fuel_Nozzle_GRIN_NozzleFast",
+  "ref": "d5456c35-a30b-4e13-bae2-b5609a43909a",
+  "category": "refuel_boom",
   "type": "DockingCollar",
   "sub_type": null,
-  "size": "2",
+  "size": "1",
   "grade": "1",
   "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
   "name": "Norfield",
   "short_name": null,
   "description": null,
   "inventory_consumption": {
-    "micro_scu": 41074432.0,
+    "micro_scu": 0.0,
     "dimensions": {
-      "x": 4.000076,
-      "y": 21.60153,
-      "z": 3.044145
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
     }
   },
   "loadout": [
@@ -24,6 +24,7 @@
       "min_size": "0",
       "max_size": "8",
       "types": [
+        "NOITEM_Vehicle",
         "NOITEM_Vehicle"
       ]
     }

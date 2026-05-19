@@ -131,6 +131,7 @@ const {
               HardpointGroupEnum.AVIONIC,
               HardpointGroupEnum.SYSTEM,
               HardpointGroupEnum.OTHER,
+              HardpointGroupEnum.EXTERNAL_FUEL_TANK,
             ]"
             :key="group"
             :group="group"

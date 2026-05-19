@@ -28,6 +28,7 @@ const { t, toNumber } = useI18n();
 type Stat = {
   label: string;
   value: string;
+  wide?: boolean;
 };
 
 const stats = computed<Stat[]>(() => {
@@ -300,6 +301,33 @@ const stats = computed<Stat[]>(() => {
     }
   }
 
+  const refuel = typeData as Record<string, unknown>;
+  if (
+    refuel.captureRadius != null ||
+    refuel.fuelFlowRate != null ||
+    refuel.quantumFuelFlowRate != null
+  ) {
+    if (refuel.captureRadius != null) {
+      result.push({
+        label: t("labels.hardpoint.refuelBoom.captureRadius"),
+        value: `${String(toNumber(refuel.captureRadius as number, "integer"))} m`,
+      });
+    }
+    if (refuel.fuelFlowRate != null) {
+      result.push({
+        label: t("labels.hardpoint.refuelBoom.fuelFlowRate"),
+        value: `${String(toNumber(refuel.fuelFlowRate as number, "cargo"))}/s`,
+      });
+    }
+    if (refuel.quantumFuelFlowRate != null) {
+      result.push({
+        label: t("labels.hardpoint.refuelBoom.quantumFuelFlowRate"),
+        value: `${String(toNumber(refuel.quantumFuelFlowRate as number, "cargo"))}/s`,
+        wide: true,
+      });
+    }
+  }
+
   return result;
 });
 
@@ -335,7 +363,12 @@ function addDamageBreakdown(result: Stat[], damage: Record<string, unknown>) {
 
 <template>
   <div v-if="stats.length" class="hardpoint-details">
-    <div v-for="(s, i) in stats" :key="i" class="hardpoint-details__stat">
+    <div
+      v-for="(s, i) in stats"
+      :key="i"
+      class="hardpoint-details__stat"
+      :class="{ 'hardpoint-details__stat--wide': s.wide }"
+    >
       <span class="hardpoint-details__label">{{ s.label }}</span>
       <span class="hardpoint-details__value">{{ s.value }}</span>
     </div>

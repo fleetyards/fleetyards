@@ -55,7 +55,10 @@ const itemComponent = computed(() => {
   if (props.category === HardpointCategoryEnum.MODULE) {
     return HardpointModuleItem;
   }
-  if (props.category === HardpointCategoryEnum.FUELTANKS) {
+  if (
+    props.category === HardpointCategoryEnum.FUELTANKS ||
+    props.category === HardpointCategoryEnum.EXTERNAL_FUEL_TANKS
+  ) {
     return HardpointFuelItem;
   }
   if (

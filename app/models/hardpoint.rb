@@ -48,6 +48,8 @@ class Hardpoint < ApplicationRecord
       avionic: 0, system: 1, propulsion: 2, thruster: 3, weapon: 4, defense: 5, auxiliary: 6,
       seat: 7, relay: 8,
       other: 9,
+      external_fuel_tank: 10,
+      refuel_boom: 11,
       unknown: 99
     },
     suffix: true
@@ -56,7 +58,8 @@ class Hardpoint < ApplicationRecord
     {
       radar: 1, computers: 2, scanners: 3,
       powerplant: 10, cooler: 11, shieldgenerator: 12, module: 13, salvagefillerstation: 14,
-      fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23,
+      fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23, external_fuel_tanks: 24,
+      refuel_boom: 25,
       main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
       weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
       quantumenforcementdevice: 45, emp: 46, salvagemunching: 47,
@@ -106,6 +109,14 @@ class Hardpoint < ApplicationRecord
       :unknown
     end
 
+    if component&.component_type == "ExternalFuelTank"
+      self.group = :external_fuel_tank
+    end
+
+    if component&.category == "refuel_boom" || %w[DockingCollar ToolArm].include?(component&.component_type) && sc_name&.include?("refuel")
+      self.group = :auxiliary
+    end
+
     if sc_name&.start_with?("hardpoint_engineering", "hardpoint_engineeringscreen")
       self.group = :seat
     end
@@ -141,6 +152,10 @@ class Hardpoint < ApplicationRecord
       case component&.component_type
       when "EMP"
         :emp
+      when "ExternalFuelTank"
+        :external_fuel_tanks
+      when "DockingCollar", "ToolArm"
+        (component&.category == "refuel_boom") ? :utility : (component&.category || :unknown)
       else
         derived = component&.category || :unknown
         if derived.to_s == "module" && component&.component_type != "Module"

@@ -165,7 +165,7 @@ module Admin
             :fleetchart_offset_beam, :extended_length, :extended_beam, :extended_height,
             :extended_fleetchart_offset_length, :extended_fleetchart_offset_beam,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
-            :quantum_fuel_tanks, :store_image, :rsi_store_image, :holo, :brochure,
+            :quantum_fuel_tanks, :external_fuel_tanks, :refuel_boom, :store_image, :rsi_store_image, :holo, :brochure,
             :fleetchart_image, :extended_holo,
             :top_view, :side_view, :front_view, :angled_view,
             :top_view_colored, :side_view_colored, :front_view_colored,

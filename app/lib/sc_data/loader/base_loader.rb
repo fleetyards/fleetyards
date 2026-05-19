@@ -64,6 +64,22 @@ module ScData
         end.flatten
       end
 
+      def extract_named_type_data(hardpoints, component_type)
+        hardpoints.sort_by { |h| h.sc_name.to_s }.filter_map do |hardpoint|
+          if hardpoint.hardpoints.present?
+            extract_named_type_data(hardpoint.hardpoints, component_type)
+          else
+            next if hardpoint.component.blank?
+            next if hardpoint.component.component_type != component_type
+
+            (hardpoint.component.type_data || {}).merge(
+              "name" => hardpoint.sc_name,
+              "component_name" => hardpoint.component.name
+            )
+          end
+        end.flatten
+      end
+
       def extract_cargo_holds(hardpoints)
         hardpoints.sort_by { |h| h.sc_name.to_s }.filter_map do |hardpoint|
           if hardpoint.hardpoints.present?
@@ -172,9 +188,19 @@ module ScData
           "rsi_constellation_base_baywall_right", "rsi_constellation_base_baywall_left" # Constellation Base bay walls
         ]
 
+        # Fuel pod consoles / refuel terminals: cosmetic Display items used to operate
+        # refueling in-cabin; not useful as loadout entries.
+        blacklist_patterns = [
+          /\Ahardpoint_fuelpod_\d+_console\z/,
+          /\Ahardpoint_console_catwalk\z/,
+          /\Ahardpoint_refuel_console\z/
+        ]
+
         if default_loadout.present?
           return blacklist.include?(default_loadout["key"]&.downcase) || blacklist.include?(default_loadout["ref"])
         end
+
+        return true if name && blacklist_patterns.any? { |pattern| pattern.match?(name.downcase) }
 
         blacklist.include?(name&.downcase)
       end

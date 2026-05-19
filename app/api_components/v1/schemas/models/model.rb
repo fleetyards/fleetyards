@@ -142,6 +142,8 @@ module V1
             cargoHolds: {type: :array, items: {"$ref": "#/components/schemas/CargoHold"}},
             hydrogenFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/FuelTank"}},
             quantumFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/FuelTank"}},
+            externalFuelTanks: {type: :array, items: {"$ref": "#/components/schemas/ExternalFuelTank"}},
+            refuelBoom: {"$ref": "#/components/schemas/RefuelBoom"},
 
             onSale: {type: :boolean},
             playerOwnable: {type: :boolean},

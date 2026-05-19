@@ -143,6 +143,7 @@ module ScData
           quantumdrive quantumenforcementdevice shieldgenerator turret utility weapon_mounts weapons
           lifesupport thrusters radar scanners fueltanks fuel_intakes countermeasures seat relay
           salvagemunching salvagefillerstation selfdestruct paints controller cargogrid jumpdrive
+          refuel_boom
         ]
       end
     end

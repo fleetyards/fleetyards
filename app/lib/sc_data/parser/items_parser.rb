@@ -29,6 +29,20 @@ module ScData
 
           save_items(items, folder: "items")
         end
+
+        # Refuel booms: nozzles live at entities/ root, arms under scitem/ships/dockingport.
+        # Both are referenced by ships' refuel hardpoint chains but aren't captured by the
+        # ships/<category> scan above.
+        refuel_files = Dir.glob([
+          "#{import_path}/entities/fuel_nozzle_*.xml",
+          "#{import_path}/entities/scitem/ships/dockingport/dockingtube_refuelnozzle*.xml"
+        ])
+        refuel_items = refuel_files.filter_map do |file|
+          data = Hash.from_xml(File.read(file))
+          key = data.keys.first.split(".").last
+          parse_item(key, data.values.first, "refuel_boom")
+        end
+        save_items(refuel_items, folder: "items")
       end
 
       private def categories
@@ -177,6 +191,16 @@ module ScData
           item[:type_data] = {
             capacity: values.dig("Components", "ResourceContainer", "capacity", "SStandardCargoUnit", "standardCargoUnits").to_f
           }
+        end
+
+        if values.dig("Components", "SCItemDockingTubeParams")
+          refuel_data = {
+            capture_radius: values.dig("Components", "SCItemDockingTubeParams", "CaptureRadius")&.to_f,
+            fuel_flow_rate: extract_resource_consumption(values, "Fuel"),
+            quantum_fuel_flow_rate: extract_resource_consumption(values, "QuantumFuel")
+          }.compact
+
+          item[:type_data] = (item[:type_data] || {}).merge(refuel_data) if refuel_data.present?
         end
 
         if values.dig("Components", "SCItemFuelIntakeParams")
@@ -827,6 +851,38 @@ module ScData
                 amount.dig("SPowerSegmentResourceUnit", "units")
               return units.to_f if units.present?
             end
+          end
+        end
+
+        nil
+      end
+
+      private def extract_resource_consumption(values, resource_name)
+        irc = values.dig("Components", "ItemResourceComponentParams")
+        return if irc.blank?
+
+        states = irc.dig("states", "ItemResourceState")
+        states = [states] if states.is_a?(Hash)
+        return if states.blank?
+
+        states.each do |state|
+          deltas = state.dig("deltas")
+          next if deltas.blank?
+
+          delta = deltas.dig("ItemResourceDeltaConsumption")
+          next if delta.blank?
+
+          delta = [delta] if delta.is_a?(Hash)
+          delta.each do |d|
+            consumption = d.dig("consumption")
+            next if consumption.blank? || consumption.dig("resource") != resource_name
+
+            amount = consumption.dig("resourceAmountPerSecond")
+            next if amount.blank?
+
+            units = amount.dig("SStandardResourceUnit", "standardResourceUnits") ||
+              amount.dig("SStandardCargoUnit", "standardCargoUnits")
+            return units.to_f if units.present?
           end
         end
 

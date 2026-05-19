@@ -88,6 +88,15 @@ const [quantumFuelTankSize, quantumFuelTankSizeProps] = defineField(
           disabled
         />
       </div>
+      <div v-if="model.externalFuelTanks" class="col-12">
+        <FormTextarea
+          :model-value="JSON.stringify(model.externalFuelTanks, undefined, 4)"
+          name="externalFuelTanks"
+          translation-key="model.externalFuelTanks"
+          class="base-data-output"
+          disabled
+        />
+      </div>
     </div>
   </ModelForm>
 </template>

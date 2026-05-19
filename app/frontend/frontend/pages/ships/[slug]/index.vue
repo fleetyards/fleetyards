@@ -25,6 +25,7 @@ import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
 import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
 import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
+import ModelExternalFuelTanks from "@/frontend/components/Models/ExternalFuelTanks/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -457,6 +458,7 @@ const adiMap = computed(() => {
         :model="model"
         :cargo-holds="combinedCargoHolds"
       />
+      <ModelExternalFuelTanks :model="model" />
       <hr />
       <Hardpoints :model="model" />
       <CrewPositions :model="model" />

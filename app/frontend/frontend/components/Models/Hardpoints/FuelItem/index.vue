@@ -42,6 +42,9 @@ const label = computed(() => {
   if (hardpoint.value.component?.subType === "QuantumFuel") {
     return t("labels.hardpoint.fuelTanks.quantum");
   }
+  if (hardpoint.value.component?.type === "ExternalFuelTank") {
+    return hardpoint.value.component?.name || t("labels.notAvailable");
+  }
 
   return "TBD";
 });

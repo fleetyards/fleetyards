@@ -30,5 +30,10 @@
   ],
   "durability": {
     "health": 12390.0
+  },
+  "type_data": {
+    "capture_radius": 3.0,
+    "fuel_flow_rate": 1.05,
+    "quantum_fuel_flow_rate": 0.58
   }
 }

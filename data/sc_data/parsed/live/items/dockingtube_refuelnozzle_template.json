@@ -1,17 +1,17 @@
 {
-  "key": "Fuel_Nozzle_MISC_Starlite",
-  "ref": "cb8b11c8-b300-4ddd-9280-6f9b7e2dff10",
-  "category": "unknown",
+  "key": "DockingTube_RefuelNozzle_Template",
+  "ref": "de98629f-7c10-485b-9156-3a156395b65a",
+  "category": "refuel_boom",
   "type": "DockingCollar",
   "sub_type": null,
   "size": "1",
   "grade": "1",
-  "manufacturer_ref": "b28a5c61-63a4-478b-8047-5fba545d5b8a",
-  "name": "RN-7s",
+  "manufacturer_ref": null,
+  "name": null,
   "short_name": null,
   "description": null,
   "inventory_consumption": {
-    "micro_scu": 0.0,
+    "micro_scu": 1.0,
     "dimensions": {
       "x": 0.15,
       "y": 0.15,
@@ -24,17 +24,14 @@
       "min_size": "0",
       "max_size": "8",
       "types": [
-        "NOITEM_Vehicle",
         "NOITEM_Vehicle"
       ]
     }
   ],
   "durability": {
-    "health": 9000.0
+    "health": 100.0
   },
   "type_data": {
-    "capture_radius": 3.0,
-    "fuel_flow_rate": 1.65,
-    "quantum_fuel_flow_rate": 0.91
+    "capture_radius": 3.0
   }
 }

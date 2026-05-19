@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_18_171001) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_19_151308) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -661,6 +661,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_18_171001) do
     t.decimal "extended_fleetchart_offset_length", precision: 15, scale: 2
     t.decimal "extended_height", precision: 15, scale: 2
     t.decimal "extended_length", precision: 15, scale: 2
+    t.string "external_fuel_tanks"
     t.decimal "fleetchart_offset_beam", precision: 15, scale: 2
     t.decimal "fleetchart_offset_length", precision: 15, scale: 2
     t.string "focus", limit: 255
@@ -703,6 +704,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_18_171001) do
     t.string "production_status", limit: 255
     t.decimal "quantum_fuel_tank_size", precision: 15, scale: 2
     t.string "quantum_fuel_tanks"
+    t.string "refuel_boom"
     t.decimal "reverse_speed_boosted", precision: 15, scale: 2
     t.decimal "roll", precision: 15, scale: 2
     t.decimal "roll_boosted", precision: 15, scale: 2

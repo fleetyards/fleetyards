@@ -63,6 +63,8 @@ module Admin
               hydrogenFuelTanks: {type: :string, nullable: true},
               quantumFuelTankSize: {type: :number, nullable: true},
               quantumFuelTanks: {type: :string, nullable: true},
+              externalFuelTanks: {type: :string, nullable: true},
+              refuelBoom: {type: :string, nullable: true},
               storeImage: {type: :string, nullable: true},
               fleetchartImage: {type: :string, nullable: true},
               extendedHolo: {type: :string, nullable: true},
