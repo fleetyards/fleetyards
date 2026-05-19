@@ -1005,7 +1005,7 @@ DEPENDENCIES
   with_advisory_lock
 
 RUBY VERSION
-   ruby 4.0.3
+   ruby 4.0.4
 
 BUNDLED WITH
    2.7.1
