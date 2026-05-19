@@ -4,105 +4,110 @@
 #
 # Table name: models
 #
-#  id                       :uuid             not null, primary key
-#  active                   :boolean          default(TRUE)
-#  adi_map                  :boolean          default(FALSE)
-#  beam                     :decimal(15, 2)   default(0.0), not null
-#  cargo                    :decimal(15, 2)
-#  cargo_holds              :string
-#  classification           :string(255)
-#  description              :text
-#  dock_size                :integer
-#  erkul_identifier         :string
-#  fleetchart_offset_beam   :decimal(15, 2)
-#  fleetchart_offset_length :decimal(15, 2)
-#  focus                    :string(255)
-#  fuel_consumption         :decimal(15, 2)
-#  ground                   :boolean          default(FALSE)
-#  ground_acceleration      :decimal(15, 2)
-#  ground_decceleration     :decimal(15, 2)
-#  ground_max_speed         :decimal(15, 2)
-#  ground_reverse_speed     :decimal(15, 2)
-#  height                   :decimal(15, 2)   default(0.0), not null
-#  hidden                   :boolean          default(TRUE)
-#  holo_colored             :boolean          default(FALSE)
-#  hydrogen_fuel_tank_size  :decimal(15, 2)
-#  hydrogen_fuel_tanks      :string
-#  images_count             :integer          default(0)
-#  in_game                  :boolean          default(FALSE), not null
-#  last_updated_at          :datetime
-#  legacy_slug              :string
-#  length                   :decimal(15, 2)   default(0.0), not null
-#  loaners_count            :integer          default(0), not null
-#  mass                     :decimal(15, 2)   default(0.0), not null
-#  max_crew                 :integer
-#  max_speed                :decimal(15, 2)
-#  max_speed_acceleration   :decimal(15, 2)
-#  max_speed_decceleration  :decimal(15, 2)
-#  min_crew                 :integer
-#  model_paints_count       :integer          default(0)
-#  module_hardpoints_count  :integer          default(0)
-#  name                     :string(255)
-#  notified                 :boolean          default(FALSE)
-#  on_sale                  :boolean          default(FALSE)
-#  pitch                    :decimal(15, 2)
-#  pitch_boosted            :decimal(15, 2)
-#  player_ownable           :boolean          default(TRUE), not null
-#  pledge_price             :decimal(15, 2)
-#  positions_need_curation  :boolean          default(FALSE)
-#  price                    :decimal(15, 2)
-#  production_note          :string(255)
-#  production_status        :string(255)
-#  quantum_fuel_tank_size   :decimal(15, 2)
-#  quantum_fuel_tanks       :string
-#  reverse_speed_boosted    :decimal(15, 2)
-#  roll                     :decimal(15, 2)
-#  roll_boosted             :decimal(15, 2)
-#  rsi_beam                 :decimal(15, 2)   default(0.0), not null
-#  rsi_cargo                :decimal(15, 2)
-#  rsi_classification       :string
-#  rsi_ctm_url              :string
-#  rsi_description          :text
-#  rsi_focus                :string
-#  rsi_height               :decimal(15, 2)   default(0.0), not null
-#  rsi_length               :decimal(15, 2)   default(0.0), not null
-#  rsi_mass                 :decimal(15, 2)   default(0.0), not null
-#  rsi_max_crew             :integer
-#  rsi_max_speed            :decimal(15, 2)
-#  rsi_min_crew             :integer
-#  rsi_name                 :string
-#  rsi_pitch                :decimal(15, 2)
-#  rsi_pledge_slug          :string
-#  rsi_pledge_value         :integer
-#  rsi_roll                 :decimal(15, 2)
-#  rsi_scm_speed            :decimal(15, 2)
-#  rsi_size                 :string
-#  rsi_slug                 :string
-#  rsi_store_url            :string
-#  rsi_yaw                  :decimal(15, 2)
-#  sales_page_url           :string
-#  sc_beam                  :decimal(15, 2)
-#  sc_height                :decimal(15, 2)
-#  sc_key                   :string
-#  sc_length                :decimal(15, 2)
-#  scm_speed                :decimal(15, 2)
-#  scm_speed_acceleration   :decimal(15, 2)
-#  scm_speed_boosted        :decimal(15, 2)
-#  scm_speed_decceleration  :decimal(15, 2)
-#  size                     :string
-#  slug                     :string(255)
-#  store_images_updated_at  :datetime
-#  store_url                :string(255)
-#  upgrade_kits_count       :integer          default(0)
-#  videos_count             :integer          default(0)
-#  yaw                      :decimal(15, 2)
-#  yaw_boosted              :decimal(15, 2)
-#  created_at               :datetime
-#  updated_at               :datetime
-#  base_model_id            :uuid
-#  manufacturer_id          :uuid
-#  rsi_chassis_id           :integer
-#  rsi_id                   :integer
+#  id                                :uuid             not null, primary key
+#  active                            :boolean          default(TRUE)
+#  adi_map                           :boolean          default(FALSE)
+#  beam                              :decimal(15, 2)   default(0.0), not null
+#  cargo                             :decimal(15, 2)
+#  cargo_holds                       :string
+#  classification                    :string(255)
+#  description                       :text
+#  dock_size                         :integer
+#  erkul_identifier                  :string
+#  extended_beam                     :decimal(15, 2)
+#  extended_fleetchart_offset_beam   :decimal(15, 2)
+#  extended_fleetchart_offset_length :decimal(15, 2)
+#  extended_height                   :decimal(15, 2)
+#  extended_length                   :decimal(15, 2)
+#  fleetchart_offset_beam            :decimal(15, 2)
+#  fleetchart_offset_length          :decimal(15, 2)
+#  focus                             :string(255)
+#  fuel_consumption                  :decimal(15, 2)
+#  ground                            :boolean          default(FALSE)
+#  ground_acceleration               :decimal(15, 2)
+#  ground_decceleration              :decimal(15, 2)
+#  ground_max_speed                  :decimal(15, 2)
+#  ground_reverse_speed              :decimal(15, 2)
+#  height                            :decimal(15, 2)   default(0.0), not null
+#  hidden                            :boolean          default(TRUE)
+#  holo_colored                      :boolean          default(FALSE)
+#  hydrogen_fuel_tank_size           :decimal(15, 2)
+#  hydrogen_fuel_tanks               :string
+#  images_count                      :integer          default(0)
+#  in_game                           :boolean          default(FALSE), not null
+#  last_updated_at                   :datetime
+#  legacy_slug                       :string
+#  length                            :decimal(15, 2)   default(0.0), not null
+#  loaners_count                     :integer          default(0), not null
+#  mass                              :decimal(15, 2)   default(0.0), not null
+#  max_crew                          :integer
+#  max_speed                         :decimal(15, 2)
+#  max_speed_acceleration            :decimal(15, 2)
+#  max_speed_decceleration           :decimal(15, 2)
+#  min_crew                          :integer
+#  model_paints_count                :integer          default(0)
+#  module_hardpoints_count           :integer          default(0)
+#  name                              :string(255)
+#  notified                          :boolean          default(FALSE)
+#  on_sale                           :boolean          default(FALSE)
+#  pitch                             :decimal(15, 2)
+#  pitch_boosted                     :decimal(15, 2)
+#  player_ownable                    :boolean          default(TRUE), not null
+#  pledge_price                      :decimal(15, 2)
+#  positions_need_curation           :boolean          default(FALSE)
+#  price                             :decimal(15, 2)
+#  production_note                   :string(255)
+#  production_status                 :string(255)
+#  quantum_fuel_tank_size            :decimal(15, 2)
+#  quantum_fuel_tanks                :string
+#  reverse_speed_boosted             :decimal(15, 2)
+#  roll                              :decimal(15, 2)
+#  roll_boosted                      :decimal(15, 2)
+#  rsi_beam                          :decimal(15, 2)   default(0.0), not null
+#  rsi_cargo                         :decimal(15, 2)
+#  rsi_classification                :string
+#  rsi_ctm_url                       :string
+#  rsi_description                   :text
+#  rsi_focus                         :string
+#  rsi_height                        :decimal(15, 2)   default(0.0), not null
+#  rsi_length                        :decimal(15, 2)   default(0.0), not null
+#  rsi_mass                          :decimal(15, 2)   default(0.0), not null
+#  rsi_max_crew                      :integer
+#  rsi_max_speed                     :decimal(15, 2)
+#  rsi_min_crew                      :integer
+#  rsi_name                          :string
+#  rsi_pitch                         :decimal(15, 2)
+#  rsi_pledge_slug                   :string
+#  rsi_pledge_value                  :integer
+#  rsi_roll                          :decimal(15, 2)
+#  rsi_scm_speed                     :decimal(15, 2)
+#  rsi_size                          :string
+#  rsi_slug                          :string
+#  rsi_store_url                     :string
+#  rsi_yaw                           :decimal(15, 2)
+#  sales_page_url                    :string
+#  sc_beam                           :decimal(15, 2)
+#  sc_height                         :decimal(15, 2)
+#  sc_key                            :string
+#  sc_length                         :decimal(15, 2)
+#  scm_speed                         :decimal(15, 2)
+#  scm_speed_acceleration            :decimal(15, 2)
+#  scm_speed_boosted                 :decimal(15, 2)
+#  scm_speed_decceleration           :decimal(15, 2)
+#  size                              :string
+#  slug                              :string(255)
+#  store_images_updated_at           :datetime
+#  store_url                         :string(255)
+#  upgrade_kits_count                :integer          default(0)
+#  videos_count                      :integer          default(0)
+#  yaw                               :decimal(15, 2)
+#  yaw_boosted                       :decimal(15, 2)
+#  created_at                        :datetime
+#  updated_at                        :datetime
+#  base_model_id                     :uuid
+#  manufacturer_id                   :uuid
+#  rsi_chassis_id                    :integer
+#  rsi_id                            :integer
 #
 # Indexes
 #
@@ -224,6 +229,15 @@ class Model < ApplicationRecord
   has_one_attached :angled_view_colored
   has_one_attached :brochure
   has_one_attached :holo
+  has_one_attached :extended_holo
+  has_one_attached :extended_top_view
+  has_one_attached :extended_side_view
+  has_one_attached :extended_front_view
+  has_one_attached :extended_angled_view
+  has_one_attached :extended_top_view_colored
+  has_one_attached :extended_side_view_colored
+  has_one_attached :extended_front_view_colored
+  has_one_attached :extended_angled_view_colored
 
   before_save :update_slugs
 
@@ -578,6 +592,42 @@ class Model < ApplicationRecord
 
     number = number_with_precision(
       height,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "m"].join(" ")
+  end
+
+  def extended_length_label
+    return if extended_length.blank? || extended_length.zero?
+
+    number = number_with_precision(
+      extended_length,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "m"].join(" ")
+  end
+
+  def extended_beam_label
+    return if extended_beam.blank? || extended_beam.zero?
+
+    number = number_with_precision(
+      extended_beam,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "m"].join(" ")
+  end
+
+  def extended_height_label
+    return if extended_height.blank? || extended_height.zero?
+
+    number = number_with_precision(
+      extended_height,
       precision: 2,
       strip_insignificant_zeros: true
     )

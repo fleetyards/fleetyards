@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_15_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_18_171001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -656,6 +656,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_15_120000) do
     t.text "description"
     t.integer "dock_size"
     t.string "erkul_identifier"
+    t.decimal "extended_beam", precision: 15, scale: 2
+    t.decimal "extended_fleetchart_offset_beam", precision: 15, scale: 2
+    t.decimal "extended_fleetchart_offset_length", precision: 15, scale: 2
+    t.decimal "extended_height", precision: 15, scale: 2
+    t.decimal "extended_length", precision: 15, scale: 2
     t.decimal "fleetchart_offset_beam", precision: 15, scale: 2
     t.decimal "fleetchart_offset_length", precision: 15, scale: 2
     t.string "focus", limit: 255

@@ -52,7 +52,6 @@ const initialValues = ref<ModelUpdateInput>({
   focus: props.model.focus,
   storeImage: undefined,
   brochure: undefined,
-  holo: undefined,
 });
 
 const validationSchema = {
@@ -85,7 +84,6 @@ const [classification, classificationProps] = defineField("classification");
 const [focus, focusProps] = defineField("focus");
 const [storeImage, storeImageProps] = defineField("storeImage");
 const [brochure, brochureProps] = defineField("brochure");
-const [holo, holoProps] = defineField("holo");
 </script>
 
 <template>
@@ -98,6 +96,15 @@ const [holo, holoProps] = defineField("holo");
   >
     <div class="row">
       <div class="col-12 col-md-6">
+        <FormFileInput
+          v-model="storeImage"
+          :file="model.media.storeImage"
+          translation-key="model.storeImage"
+          v-bind="storeImageProps"
+          name="storeImage"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
         <FormInput v-model="name" v-bind="nameProps" name="name" />
         <FormTextarea
           v-model="description"
@@ -243,33 +250,6 @@ const [holo, holoProps] = defineField("holo");
             />
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12 col-md-4">
-        <FormFileInput
-          v-model="storeImage"
-          :file="model.media.storeImage"
-          translation-key="model.storeImage"
-          v-bind="storeImageProps"
-          name="storeImage"
-          :allowed-types="AllowedFileTypes.IMAGE"
-          clearable
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <FormFileInput
-          v-model="holo"
-          :file="model.media.holo"
-          translation-key="model.holo"
-          v-bind="holoProps"
-          name="holo"
-          :allowed-types="AllowedFileTypes.HOLO"
-          clearable
-        />
-      </div>
-      <div class="col-12 col-md-4">
         <FormFileInput
           v-model="brochure"
           :file="model.media.brochure"

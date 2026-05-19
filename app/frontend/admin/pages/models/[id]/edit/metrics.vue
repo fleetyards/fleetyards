@@ -32,6 +32,15 @@ const initialValues = ref<ModelUpdateInput>({
   length: props.model.metrics.length,
   beam: props.model.metrics.beam,
   height: props.model.metrics.height,
+  fleetchartOffsetLength: props.model.metrics.fleetchartOffsetLength,
+  fleetchartOffsetBeam: props.model.metrics.fleetchartOffsetBeam,
+  extendedLength: props.model.metrics.extendedLength,
+  extendedBeam: props.model.metrics.extendedBeam,
+  extendedHeight: props.model.metrics.extendedHeight,
+  extendedFleetchartOffsetLength:
+    props.model.metrics.extendedFleetchartOffsetLength,
+  extendedFleetchartOffsetBeam:
+    props.model.metrics.extendedFleetchartOffsetBeam,
   mass: props.model.metrics.mass,
   minCrew: props.model.crew.min,
   maxCrew: props.model.crew.max,
@@ -63,6 +72,13 @@ const [fleetchartOffsetLength, fleetchartOffsetLengthProps] = defineField(
 const [fleetchartOffsetBeam, fleetchartOffsetBeamProps] = defineField(
   "fleetchartOffsetBeam",
 );
+const [extendedLength, extendedLengthProps] = defineField("extendedLength");
+const [extendedBeam, extendedBeamProps] = defineField("extendedBeam");
+const [extendedHeight, extendedHeightProps] = defineField("extendedHeight");
+const [extendedFleetchartOffsetLength, extendedFleetchartOffsetLengthProps] =
+  defineField("extendedFleetchartOffsetLength");
+const [extendedFleetchartOffsetBeam, extendedFleetchartOffsetBeamProps] =
+  defineField("extendedFleetchartOffsetBeam");
 const [beam, beamProps] = defineField("beam");
 const [height, heightProps] = defineField("height");
 const [mass, massProps] = defineField("mass");
@@ -167,6 +183,62 @@ const [rollBoosted, rollBoostedProps] = defineField("rollBoosted");
         />
       </div>
     </div>
+    <hr />
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="extendedLength"
+          v-bind="extendedLengthProps"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          name="extendedLength"
+          translation-key="model.extendedLength"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="extendedBeam"
+          v-bind="extendedBeamProps"
+          name="extendedBeam"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          translation-key="model.extendedBeam"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="extendedHeight"
+          v-bind="extendedHeightProps"
+          name="extendedHeight"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          translation-key="model.extendedHeight"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="extendedFleetchartOffsetLength"
+          v-bind="extendedFleetchartOffsetLengthProps"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          name="extendedFleetchartOffsetLength"
+          translation-key="model.extendedFleetchartOffsetLength"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormInput
+          v-model="extendedFleetchartOffsetBeam"
+          v-bind="extendedFleetchartOffsetBeamProps"
+          name="extendedFleetchartOffsetBeam"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          translation-key="model.extendedFleetchartOffsetBeam"
+          :suffix="t('number.units.distance')"
+        />
+      </div>
+    </div>
+    <hr />
     <div class="row">
       <div class="col-12 col-md-4">
         <FormInput

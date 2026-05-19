@@ -10313,6 +10313,24 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
+            extendedHolo:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
             frontView:
               "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
@@ -10347,6 +10365,30 @@ components:
               type: number
             fleetchartOffsetBeam:
               type: number
+            extendedLength:
+              type: number
+              nullable: true
+            extendedLengthLabel:
+              type: string
+              nullable: true
+            extendedBeam:
+              type: number
+              nullable: true
+            extendedBeamLabel:
+              type: string
+              nullable: true
+            extendedHeight:
+              type: number
+              nullable: true
+            extendedHeightLabel:
+              type: string
+              nullable: true
+            extendedFleetchartOffsetLength:
+              type: number
+              nullable: true
+            extendedFleetchartOffsetBeam:
+              type: number
+              nullable: true
             height:
               type: number
             heightLabel:
@@ -10577,6 +10619,24 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
+            extendedHolo:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
             frontView:
               "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
@@ -10611,6 +10671,30 @@ components:
               type: number
             fleetchartOffsetBeam:
               type: number
+            extendedLength:
+              type: number
+              nullable: true
+            extendedLengthLabel:
+              type: string
+              nullable: true
+            extendedBeam:
+              type: number
+              nullable: true
+            extendedBeamLabel:
+              type: string
+              nullable: true
+            extendedHeight:
+              type: number
+              nullable: true
+            extendedHeightLabel:
+              type: string
+              nullable: true
+            extendedFleetchartOffsetLength:
+              type: number
+              nullable: true
+            extendedFleetchartOffsetBeam:
+              type: number
+              nullable: true
             height:
               type: number
             heightLabel:

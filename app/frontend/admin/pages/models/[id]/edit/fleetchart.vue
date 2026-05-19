@@ -25,6 +25,8 @@ defineProps<Props>();
 const { t } = useI18n();
 
 const initialValues = ref<ModelUpdateInput>({
+  holo: undefined,
+  extendedHolo: undefined,
   topView: undefined,
   sideView: undefined,
   frontView: undefined,
@@ -33,12 +35,22 @@ const initialValues = ref<ModelUpdateInput>({
   sideViewColored: undefined,
   frontViewColored: undefined,
   angledViewColored: undefined,
+  extendedTopView: undefined,
+  extendedSideView: undefined,
+  extendedFrontView: undefined,
+  extendedAngledView: undefined,
+  extendedTopViewColored: undefined,
+  extendedSideViewColored: undefined,
+  extendedFrontViewColored: undefined,
+  extendedAngledViewColored: undefined,
 });
 
 const { defineField, handleSubmit, meta } = useForm<ModelUpdateInput>({
   initialValues: initialValues.value,
 });
 
+const [holo, holoProps] = defineField("holo");
+const [extendedHolo, extendedHoloProps] = defineField("extendedHolo");
 const [topView, topViewProps] = defineField("topView");
 const [sideView, sideViewProps] = defineField("sideView");
 const [frontView, frontViewProps] = defineField("frontView");
@@ -49,11 +61,57 @@ const [frontViewColored, frontViewColoredProps] =
   defineField("frontViewColored");
 const [angledViewColored, angledViewColoredProps] =
   defineField("angledViewColored");
+const [extendedTopView, extendedTopViewProps] = defineField("extendedTopView");
+const [extendedSideView, extendedSideViewProps] =
+  defineField("extendedSideView");
+const [extendedFrontView, extendedFrontViewProps] =
+  defineField("extendedFrontView");
+const [extendedAngledView, extendedAngledViewProps] =
+  defineField("extendedAngledView");
+const [extendedTopViewColored, extendedTopViewColoredProps] = defineField(
+  "extendedTopViewColored",
+);
+const [extendedSideViewColored, extendedSideViewColoredProps] = defineField(
+  "extendedSideViewColored",
+);
+const [extendedFrontViewColored, extendedFrontViewColoredProps] = defineField(
+  "extendedFrontViewColored",
+);
+const [extendedAngledViewColored, extendedAngledViewColoredProps] = defineField(
+  "extendedAngledViewColored",
+);
 </script>
 
 <template>
   <Heading hero>{{ t("headlines.admin.models.edit.fleetchart") }}</Heading>
   <ModelForm :model="model" :handle-submit="handleSubmit" :meta="meta">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <FormFileInput
+          v-model="holo"
+          :file="model.media.holo"
+          translation-key="model.defaultHolo"
+          v-bind="holoProps"
+          name="holo"
+          :allowed-types="AllowedFileTypes.HOLO"
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-6">
+        <FormFileInput
+          v-model="extendedHolo"
+          :file="model.media.extendedHolo"
+          translation-key="model.extendedHolo"
+          v-bind="extendedHoloProps"
+          name="extendedHolo"
+          :allowed-types="AllowedFileTypes.HOLO"
+          clearable
+        />
+      </div>
+    </div>
+
+    <hr />
+
     <div class="row">
       <div class="col-12 col-md-4">
         <FormFileInput
@@ -150,6 +208,110 @@ const [angledViewColored, angledViewColoredProps] =
           :allowed-types="AllowedFileTypes.IMAGE"
           v-bind="angledViewColoredProps"
           name="angledViewColored"
+          transparent
+          clearable
+        />
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedTopView"
+          :file="model.media.extendedTopView"
+          translation-key="model.extendedTopView"
+          v-bind="extendedTopViewProps"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          name="extendedTopView"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedSideView"
+          :file="model.media.extendedSideView"
+          translation-key="model.extendedSideView"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="extendedSideViewProps"
+          name="extendedSideView"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedFrontView"
+          :file="model.media.extendedFrontView"
+          translation-key="model.extendedFrontView"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="extendedFrontViewProps"
+          name="extendedFrontView"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedAngledView"
+          :file="model.media.extendedAngledView"
+          translation-key="model.extendedAngledView"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="extendedAngledViewProps"
+          name="extendedAngledView"
+          transparent
+          clearable
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedTopViewColored"
+          :file="model.media.extendedTopViewColored"
+          translation-key="model.extendedTopViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="extendedTopViewColoredProps"
+          name="extendedTopViewColored"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedSideViewColored"
+          :file="model.media.extendedSideViewColored"
+          translation-key="model.extendedSideViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="extendedSideViewColoredProps"
+          name="extendedSideViewColored"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedFrontViewColored"
+          :file="model.media.extendedFrontViewColored"
+          translation-key="model.extendedFrontViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="extendedFrontViewColoredProps"
+          name="extendedFrontViewColored"
+          transparent
+          clearable
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <FormFileInput
+          v-model="extendedAngledViewColored"
+          :file="model.media.extendedAngledViewColored"
+          translation-key="model.extendedAngledViewColored"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          v-bind="extendedAngledViewColoredProps"
+          name="extendedAngledViewColored"
           transparent
           clearable
         />

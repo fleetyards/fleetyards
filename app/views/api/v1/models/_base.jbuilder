@@ -65,6 +65,33 @@ json.media do
     json.partial! "api/v1/shared/file", record: model, attr: :angled_view_colored
   end
   json.fleetchart_image(model.fleetchart_image.attached? ? rails_blob_url(model.fleetchart_image) : nil)
+  json.extended_holo do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_holo
+  end
+  json.extended_top_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_top_view
+  end
+  json.extended_top_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_top_view_colored
+  end
+  json.extended_side_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_side_view
+  end
+  json.extended_side_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_side_view_colored
+  end
+  json.extended_front_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_front_view
+  end
+  json.extended_front_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_front_view_colored
+  end
+  json.extended_angled_view do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_angled_view
+  end
+  json.extended_angled_view_colored do
+    json.partial! "api/v1/shared/file", record: model, attr: :extended_angled_view_colored
+  end
   json.front_view do
     json.partial! "api/v1/shared/file", record: model, attr: :front_view
   end
@@ -102,6 +129,14 @@ json.metrics do
   json.cargo_label model.cargo_label
   json.fleetchart_offset_length (model.fleetchart_offset_length || model.length).to_f
   json.fleetchart_offset_beam (model.fleetchart_offset_beam || model.beam).to_f
+  json.extended_length model.extended_length&.to_f
+  json.extended_length_label model.extended_length_label
+  json.extended_beam model.extended_beam&.to_f
+  json.extended_beam_label model.extended_beam_label
+  json.extended_height model.extended_height&.to_f
+  json.extended_height_label model.extended_height_label
+  json.extended_fleetchart_offset_length model.extended_fleetchart_offset_length&.to_f
+  json.extended_fleetchart_offset_beam model.extended_fleetchart_offset_beam&.to_f
   json.height model.height.to_f
   json.height_label model.height_label
   json.hydrogen_fuel_tank_size model.hydrogen_fuel_tank_size&.to_f

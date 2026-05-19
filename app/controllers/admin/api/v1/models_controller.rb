@@ -162,12 +162,17 @@ module Admin
             :manufacturer_id, :rsi_id, :base_model_id, :production_status, :production_note,
             :classification, :focus, :size, :dock_size, :length, :beam, :height, :on_sale, :player_ownable,
             :store_url, :sales_page_url, :price, :pledge_price, :cargo, :fleetchart_offset_length,
-            :fleetchart_offset_beam,
+            :fleetchart_offset_beam, :extended_length, :extended_beam, :extended_height,
+            :extended_fleetchart_offset_length, :extended_fleetchart_offset_beam,
             :cargo_holds, :hydrogen_fuel_tank_size, :hydrogen_fuel_tanks, :quantum_fuel_tank_size,
             :quantum_fuel_tanks, :store_image, :rsi_store_image, :holo, :brochure,
-            :fleetchart_image, :top_view, :side_view, :front_view, :angled_view,
+            :fleetchart_image, :extended_holo,
+            :top_view, :side_view, :front_view, :angled_view,
             :top_view_colored, :side_view_colored, :front_view_colored,
-            :angled_view_colored
+            :angled_view_colored,
+            :extended_top_view, :extended_side_view, :extended_front_view, :extended_angled_view,
+            :extended_top_view_colored, :extended_side_view_colored,
+            :extended_front_view_colored, :extended_angled_view_colored
           )
         end
       end
