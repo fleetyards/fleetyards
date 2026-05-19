@@ -23,6 +23,7 @@ import {
   type UserSortEnum,
 } from "@/services/fyAdminApi";
 import { useUserFilters } from "@/admin/composables/useUserFilters";
+import { useMutationState } from "@tanstack/vue-query";
 
 const { t, lUtc: l, timeDistance } = useI18n();
 
@@ -65,6 +66,14 @@ const {
   refetch,
   ...asyncStatus
 } = useUsersQuery(usersQueryParams);
+
+const pendingDestroyUserIds = useMutationState({
+  filters: { mutationKey: ["destroyUser"], status: "pending" },
+  select: (mutation) => (mutation.state.variables as { id?: string })?.id,
+});
+
+const isUserPendingDestroy = (user: User) =>
+  !!user.id && pendingDestroyUserIds.value.includes(user.id);
 
 const columns: BaseTableCol<User>[] = [
   {
@@ -139,6 +148,7 @@ const columns: BaseTableCol<User>[] = [
         :columns="columns"
         :loading="loading || refetching"
         :empty-visible="emptyVisible"
+        :row-disabled="isUserPendingDestroy"
         selectable
       >
         <template #col-avatar="{ record }">

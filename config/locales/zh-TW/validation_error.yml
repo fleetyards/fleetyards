@@ -39,5 +39,9 @@ zh-TW:
       create: OAuth 應用程式無法建立。
       update: OAuth 應用程式無法更新。
       destroy: OAuth 應用程式無法刪除。
+    user:
+      destroy: 無法刪除使用者。
+    current_user:
+      destroy: 無法刪除帳戶。
     hangar:
       import: 匯入失敗

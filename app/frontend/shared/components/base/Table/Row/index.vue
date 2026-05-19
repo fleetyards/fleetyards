@@ -7,15 +7,21 @@ export default {
 <script lang="ts" setup>
 type Props = {
   clickable?: boolean;
+  disabled?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   clickable: false,
+  disabled: false,
 });
 </script>
 
 <template>
-  <tr class="base-table-row" :class="{ clickable }">
+  <tr
+    class="base-table-row"
+    :class="{ clickable, disabled }"
+    :aria-disabled="disabled || undefined"
+  >
     <slot />
   </tr>
 </template>

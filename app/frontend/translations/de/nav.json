@@ -143,7 +143,9 @@
           "index": "Bilder"
         },
         "users": {
-          "index": "Benutzer"
+          "index": "Benutzer",
+          "edit": "Bearbeiten",
+          "fleets": "Flotten"
         },
         "fleets": {
           "index": "Flotten"

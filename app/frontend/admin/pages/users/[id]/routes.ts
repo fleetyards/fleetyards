@@ -11,4 +11,14 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
     },
   },
+  {
+    path: "fleets",
+    name: "admin-user-fleets",
+    component: () => import("@/admin/pages/users/[id]/fleets.vue"),
+    meta: {
+      title: "admin.users.fleets",
+      activeRoute: "users",
+      needsAuthentication: true,
+    },
+  },
 ];

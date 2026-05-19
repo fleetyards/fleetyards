@@ -78,7 +78,8 @@
         },
         "users": {
           "index": "Users",
-          "edit": "Edit User"
+          "edit": "Edit User",
+          "fleets": "Fleets"
         },
         "vehicles": {
           "index": "Vehicles",

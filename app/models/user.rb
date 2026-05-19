@@ -396,30 +396,44 @@ class User < ApplicationRecord
     "YULIN" => "Yulin"
   }.freeze
 
+  attr_accessor :destroy_fleets
+
   private def check_fleet_memberships
     permanent_memberships = fleet_memberships.joins(:fleet_role).where(fleet_roles: {permanent: true})
     return unless permanent_memberships.exists?
 
     blocking_fleets = []
-    sole_member_fleets_cleaned = false
+    fleets_to_destroy = []
+    memberships_to_delete = []
 
     permanent_memberships.each do |membership|
       fleet = membership.fleet
-      if fleet.fleet_memberships.count == 1
-        membership.delete
-        fleet.destroy!
-        sole_member_fleets_cleaned = true
+      other_admin_exists = fleet.fleet_memberships
+        .joins(:fleet_role)
+        .where(fleet_roles: {permanent: true})
+        .where.not(id: membership.id)
+        .exists?
+
+      if other_admin_exists
+        memberships_to_delete << membership
+      elsif fleet.fleet_memberships.count == 1 || destroy_fleets
+        fleets_to_destroy << [membership, fleet]
       else
         blocking_fleets << fleet.name
       end
     end
 
-    fleet_memberships.reload if sole_member_fleets_cleaned
+    if blocking_fleets.any?
+      errors.add(:base, :has_permanent_fleet_memberships, fleets: blocking_fleets.join(", "))
+      throw(:abort)
+    end
 
-    return if blocking_fleets.empty?
-
-    errors.add(:base, I18n.t("activerecord.errors.models.user.attributes.base.has_permanent_fleet_memberships", fleets: blocking_fleets.join(", ")))
-    throw(:abort)
+    memberships_to_delete.each(&:delete)
+    fleets_to_destroy.each do |membership, fleet|
+      membership.delete
+      fleet.destroy!
+    end
+    fleet_memberships.reload if memberships_to_delete.any? || fleets_to_destroy.any?
   end
 
   private def match_current_system

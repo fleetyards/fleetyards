@@ -1,4 +1,6 @@
 .base-table-row {
+  position: relative;
+
   &.clickable {
     cursor: pointer;
   }
@@ -15,6 +17,25 @@
           opacity: 1;
         }
       }
+    }
+  }
+
+  &.disabled {
+    :deep(> td),
+    :deep(> div) {
+      pointer-events: none;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    :deep(> td:last-child::after) {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: rgba(#000, 0.05);
+      pointer-events: auto;
+      cursor: not-allowed;
+      z-index: 1;
     }
   }
 }

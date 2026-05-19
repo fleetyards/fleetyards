@@ -93,6 +93,8 @@ module Api
       end
 
       def destroy
+        @user.destroy_fleets = ActiveModel::Type::Boolean.new.cast(params[:destroy_fleets])
+
         if @user.destroy
           Cleanup::UserVisitsJob.perform_async(@user.id)
 

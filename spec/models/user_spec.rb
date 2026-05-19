@@ -107,6 +107,50 @@ RSpec.describe User, type: :model do
       expect(user.destroy).to be_truthy
       expect(User.exists?(user.id)).to be false
     end
+
+    it "destroys the user and multi-member fleet when destroy_fleets is set" do
+      other_user = create(:user)
+      fleet = create(:fleet, admins: [user], members: [other_user])
+
+      user.destroy_fleets = true
+
+      expect(user.destroy).to be_truthy
+      expect(User.exists?(user.id)).to be false
+      expect(Fleet.exists?(fleet.id)).to be false
+    end
+
+    it "returns a symbolic error code for has_permanent_fleet_memberships" do
+      other_user = create(:user)
+      create(:fleet, admins: [user], members: [other_user])
+
+      expect(user.destroy).to be false
+      error = user.errors.where(:base).first
+      expect(error.type).to eq(:has_permanent_fleet_memberships)
+    end
+
+    it "destroys a user who shares admin role with another admin" do
+      co_admin = create(:user)
+      fleet = create(:fleet, admins: [user, co_admin])
+
+      expect(user.destroy).to be_truthy
+      expect(User.exists?(user.id)).to be false
+      expect(Fleet.exists?(fleet.id)).to be true
+      expect(fleet.fleet_memberships.where(user: co_admin).exists?).to be true
+    end
+
+    it "blocks only on fleets where the user is the sole admin" do
+      co_admin = create(:user)
+      other_member = create(:user)
+      shared_admin_fleet = create(:fleet, name: "SharedAdmins", admins: [user, co_admin])
+      sole_admin_fleet = create(:fleet, name: "SoleAdmin", admins: [user], members: [other_member])
+
+      expect(user.destroy).to be false
+      error = user.errors.where(:base).first
+      expect(error.type).to eq(:has_permanent_fleet_memberships)
+      expect(error.options[:fleets]).to eq("SoleAdmin")
+      expect(Fleet.exists?(shared_admin_fleet.id)).to be true
+      expect(Fleet.exists?(sole_admin_fleet.id)).to be true
+    end
   end
 
   describe "url validation" do

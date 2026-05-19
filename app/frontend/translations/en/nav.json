@@ -147,7 +147,9 @@
           "index": "Images"
         },
         "users": {
-          "index": "Users"
+          "index": "Users",
+          "edit": "Edit",
+          "fleets": "Fleets"
         },
         "fleets": {
           "index": "Fleets",

@@ -19,6 +19,9 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
       tags "Users"
       produces "application/json"
 
+      parameter name: :destroy_fleets, in: :query, required: false, schema: {type: :boolean},
+        description: "Also destroy fleets where the user is the sole admin but other members exist"
+
       response(200, "successful") do
         schema "$ref": "#/components/schemas/User"
 
@@ -30,6 +33,19 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
 
         before do
           create(:fleet, admins: [user])
+        end
+
+        run_test!
+      end
+
+      response(200, "successful when destroy_fleets removes multi-member fleet") do
+        schema "$ref": "#/components/schemas/User"
+
+        let(:destroy_fleets) { true }
+
+        before do
+          other_user = create(:user)
+          create(:fleet, admins: [user], members: [other_user])
         end
 
         run_test!

@@ -40,5 +40,9 @@ es:
       create: La aplicación OAuth no pudo ser creada.
       update: La aplicación OAuth no pudo ser actualizada.
       destroy: La aplicación OAuth no pudo ser eliminada.
+    user:
+      destroy: El usuario no pudo ser eliminado.
+    current_user:
+      destroy: La cuenta no pudo ser eliminada.
     hangar:
       import: Importación fallida

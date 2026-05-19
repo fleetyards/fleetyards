@@ -4440,9 +4440,17 @@ paths:
       operationId: destroyUser
       tags:
       - Users
+      parameters:
+      - name: destroy_fleets
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Also destroy fleets where the user is the sole admin but other
+          members exist
       responses:
         '200':
-          description: successful when sole fleet admin
+          description: successful when destroy_fleets removes multi-member fleet
           content:
             application/json:
               schema:
@@ -4538,6 +4546,47 @@ paths:
             schema:
               "$ref": "#/components/schemas/UserInput"
         required: true
+  "/users/{user_id}/fleets":
+    parameters:
+    - name: user_id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: User Fleets list
+      operationId: userFleets
+      tags:
+      - Users
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      responses:
+        '200':
+          description: successful with no fleets
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminUserFleets"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/users":
     get:
       summary: Users list
@@ -6022,6 +6071,21 @@ components:
       - WEAPON_ATTACHMENT
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    ExternalFuelTank:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        componentName:
+          type: string
+          nullable: true
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      title: ExternalFuelTank
     FieldError:
       type: object
       properties:
@@ -6239,6 +6303,7 @@ components:
       - fuel_intakes
       - quantumdrive
       - jumpdrive
+      - external_fuel_tanks
       - main_thrusters
       - retro_thrusters
       - vtol_thrusters
@@ -6278,6 +6343,7 @@ components:
       - FUEL_INTAKES
       - QUANTUMDRIVE
       - JUMPDRIVE
+      - EXTERNAL_FUEL_TANKS
       - MAIN_THRUSTERS
       - RETRO_THRUSTERS
       - VTOL_THRUSTERS
@@ -6318,6 +6384,7 @@ components:
       - seat
       - relay
       - other
+      - external_fuel_tank
       - unknown
       x-enumNames:
       - AVIONIC
@@ -6330,6 +6397,7 @@ components:
       - SEAT
       - RELAY
       - OTHER
+      - EXTERNAL_FUEL_TANK
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:
@@ -7259,6 +7327,69 @@ components:
       - createdAt
       - updatedAt
       title: AdminUser
+    AdminUserFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        fid:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        role:
+          type: string
+        permanent:
+          type: boolean
+        primary:
+          type: boolean
+        status:
+          type: string
+        membersCount:
+          type: integer
+        acceptedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fleetId
+      - name
+      - slug
+      - permanent
+      - primary
+      - status
+      - membersCount
+      - createdAt
+      - updatedAt
+      title: AdminUserFleet
+    AdminUserFleets:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminUserFleet"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AdminUserFleets
     AdminUserInput:
       type: object
       properties:
@@ -8332,6 +8463,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
         onSale:
           type: boolean
         playerOwnable:
@@ -8756,6 +8891,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
         onSale:
           type: boolean
         playerOwnable:
@@ -10155,6 +10294,9 @@ components:
           type: number
           nullable: true
         quantumFuelTanks:
+          type: string
+          nullable: true
+        externalFuelTanks:
           type: string
           nullable: true
         storeImage:

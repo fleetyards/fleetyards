@@ -40,5 +40,9 @@ fr:
       create: L'application OAuth n'a pas pu être créée.
       update: L'application OAuth n'a pas pu être mise à jour.
       destroy: L'application OAuth n'a pas pu être supprimée.
+    user:
+      destroy: L'utilisateur n'a pas pu être supprimé.
+    current_user:
+      destroy: Le compte n'a pas pu être supprimé.
     hangar:
       import: Échec de l'import

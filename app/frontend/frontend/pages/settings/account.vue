@@ -26,7 +26,9 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import {
   useUpdateAccount as useUpdateAccountMutation,
   useDestroyAccount as useDestroyAccountMutation,
+  type ValidationError,
 } from "@/services/fyApi";
+import { type AxiosError } from "axios";
 
 const sessionStore = useSessionStore();
 
@@ -106,33 +108,71 @@ const router = useRouter();
 
 const destroyMutation = useDestroyAccountMutation();
 
+const runDestroy = async (destroyFleets: boolean) => {
+  await destroyMutation
+    .mutateAsync({
+      params: destroyFleets ? { destroy_fleets: true } : undefined,
+    })
+    .then(async () => {
+      displaySuccess({
+        text: t("messages.account.destroy.success"),
+      });
+
+      await sessionStore.logout();
+
+      await router.push({ name: "home" }).catch(() => {});
+    })
+    .catch((error) => {
+      const response = (error as AxiosError<ValidationError>).response;
+      const data = response?.data;
+      const baseError = data?.errors
+        ?.find((field) => field.attribute === "base")
+        ?.messages?.find(
+          (message) => message.code === "has_permanent_fleet_memberships",
+        );
+
+      if (baseError && !destroyFleets) {
+        const fleets =
+          baseError.message.match(
+            /admin of the following fleets?: ([^.]+)\./i,
+          )?.[1] ?? baseError.message;
+
+        deleting.value = true;
+        setTimeout(() => {
+          displayConfirm({
+            text: t("messages.confirm.account.destroyWithFleets", { fleets }),
+            onConfirm: () => {
+              void runDestroy(true);
+            },
+            onClose: () => {
+              deleting.value = false;
+            },
+          });
+        }, 0);
+        return;
+      }
+
+      const fallback =
+        data?.errors
+          ?.flatMap((field) => field.messages.map((m) => m.message))
+          ?.join(" ") ||
+        data?.message ||
+        t("messages.account.destroy.failure");
+
+      displayAlert({ text: fallback });
+    })
+    .finally(() => {
+      deleting.value = false;
+    });
+};
+
 const destroy = async () => {
   deleting.value = true;
 
   displayConfirm({
     text: t("messages.confirm.account.destroy"),
-    onConfirm: async () => {
-      await destroyMutation
-        .mutateAsync()
-        .then(async () => {
-          displaySuccess({
-            text: t("messages.account.destroy.success"),
-          });
-
-          await sessionStore.logout();
-
-          await router.push({ name: "home" }).catch(() => {});
-        })
-        .catch((error) => {
-          console.error(error);
-
-          displayAlert({
-            text: t("messages.account.destroy.failure"),
-          });
-        })
-        .finally(() => {
-          deleting.value = false;
-        });
+    onConfirm: () => {
+      void runDestroy(false);
     },
     onClose: () => {
       deleting.value = false;

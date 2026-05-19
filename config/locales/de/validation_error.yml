@@ -41,5 +41,9 @@ de:
       create: OAuth-Anwendung konnte nicht erstellt werden.
       update: OAuth-Anwendung konnte nicht aktualisiert werden.
       destroy: OAuth-Anwendung konnte nicht gelöscht werden.
+    user:
+      destroy: Benutzer konnte nicht gelöscht werden.
+    current_user:
+      destroy: Account konnte nicht gelöscht werden.
     hangar:
       import: Import fehlgeschlagen

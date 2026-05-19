@@ -32,6 +32,7 @@ module Admin
         end
 
         def destroy
+          @user.destroy_fleets = ActiveModel::Type::Boolean.new.cast(params[:destroy_fleets])
           return if @user.destroy
 
           render json: ValidationError.new("user.destroy", errors: @user.errors), status: :bad_request

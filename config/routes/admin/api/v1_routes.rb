@@ -15,6 +15,8 @@ v1_admin_api_routes = lambda do
       post "resend-confirmation", to: "users#resend_confirmation"
       post "send-password-reset", to: "users#send_password_reset"
     end
+
+    resources :fleets, only: %i[index], controller: "user_fleets"
   end
 
   resources :models, only: %i[index show create update destroy] do

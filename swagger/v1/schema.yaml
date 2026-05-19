@@ -5528,9 +5528,17 @@ paths:
       - SessionCookie: []
       - Oauth2: []
       - OpenId: []
+      parameters:
+      - name: destroy_fleets
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Also destroy fleets where the user is the sole admin but other
+          members exist
       responses:
         '200':
-          description: successful when sole fleet admin
+          description: successful when destroy_fleets removes multi-member fleet
           content:
             application/json:
               schema:
@@ -7303,6 +7311,21 @@ components:
       - WEAPON_ATTACHMENT
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    ExternalFuelTank:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        componentName:
+          type: string
+          nullable: true
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      title: ExternalFuelTank
     FieldError:
       type: object
       properties:
@@ -7520,6 +7543,7 @@ components:
       - fuel_intakes
       - quantumdrive
       - jumpdrive
+      - external_fuel_tanks
       - main_thrusters
       - retro_thrusters
       - vtol_thrusters
@@ -7559,6 +7583,7 @@ components:
       - FUEL_INTAKES
       - QUANTUMDRIVE
       - JUMPDRIVE
+      - EXTERNAL_FUEL_TANKS
       - MAIN_THRUSTERS
       - RETRO_THRUSTERS
       - VTOL_THRUSTERS
@@ -7599,6 +7624,7 @@ components:
       - seat
       - relay
       - other
+      - external_fuel_tank
       - unknown
       x-enumNames:
       - AVIONIC
@@ -7611,6 +7637,7 @@ components:
       - SEAT
       - RELAY
       - OTHER
+      - EXTERNAL_FUEL_TANK
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:
@@ -10426,6 +10453,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
         onSale:
           type: boolean
         playerOwnable:
@@ -10732,6 +10763,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
         onSale:
           type: boolean
         playerOwnable:

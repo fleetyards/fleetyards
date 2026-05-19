@@ -40,5 +40,9 @@ it:
       create: L'applicazione OAuth non è stata creata.
       update: L'applicazione OAuth non è stata aggiornata.
       destroy: L'applicazione OAuth non è stata eliminata.
+    user:
+      destroy: L'utente non è stato eliminato.
+    current_user:
+      destroy: Account non è stato eliminato.
     hangar:
       import: Importazione fallita

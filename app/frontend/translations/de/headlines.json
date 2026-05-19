@@ -73,7 +73,8 @@
         },
         "users": {
           "index": "Benutzer",
-          "edit": "Benutzer bearbeiten"
+          "edit": "Benutzer bearbeiten",
+          "fleets": "Flotten"
         },
         "vehicles": {
           "index": "Fahrzeuge",

@@ -39,5 +39,9 @@ zh-CN:
       create: OAuth 应用无法创建。
       update: OAuth 应用无法更新。
       destroy: OAuth 应用无法删除。
+    user:
+      destroy: 无法删除用户。
+    current_user:
+      destroy: 无法删除账户。
     hangar:
       import: 导入失败

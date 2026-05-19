@@ -37,6 +37,7 @@ type Props = {
   selectable?: boolean;
   selected?: string[];
   rowClickable?: boolean;
+  rowDisabled?: (record: T) => boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,6 +51,7 @@ const props = withDefaults(defineProps<Props>(), {
   selectable: false,
   selected: () => [],
   rowClickable: false,
+  rowDisabled: undefined,
 });
 
 const internalSelected = ref<string[]>([]);
@@ -198,6 +200,7 @@ const resetSelected = () => {
               :id="String(primaryValue(record))"
               :key="primaryValue(record)"
               :clickable="props.rowClickable"
+              :disabled="props.rowDisabled?.(record)"
               @click="props.rowClickable && emit('row-click', record)"
             >
               <TableCol v-if="props.selectable" variant="selection" @click.stop>

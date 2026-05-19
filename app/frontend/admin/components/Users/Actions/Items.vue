@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import {
   type User,
+  type ValidationError,
   loginAsUser,
   useResendUserConfirmation,
   useSendUserPasswordReset,
@@ -20,6 +21,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
+import { type AxiosError } from "axios";
 
 type Props = {
   user: User;
@@ -31,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-const { displayConfirm } = useAppNotifications();
+const { displayConfirm, displayAlert } = useAppNotifications();
 const queryClient = useQueryClient();
 
 const invalidateUsers = () =>
@@ -91,13 +93,56 @@ const sendPasswordReset = () => {
   });
 };
 
+const runDestroy = async (destroyFleets: boolean) => {
+  try {
+    await destroyMutation.mutateAsync({
+      id: props.user.id!,
+      params: destroyFleets ? { destroy_fleets: true } : undefined,
+    });
+  } catch (error) {
+    const response = (error as AxiosError<ValidationError>).response;
+    const data = response?.data;
+    const baseError = data?.errors
+      ?.find((field) => field.attribute === "base")
+      ?.messages?.find(
+        (message) => message.code === "has_permanent_fleet_memberships",
+      );
+
+    if (baseError && !destroyFleets) {
+      const fleets =
+        baseError.message.match(
+          /admin of the following fleets?: ([^.]+)\./i,
+        )?.[1] ?? baseError.message;
+
+      setTimeout(() => {
+        displayConfirm({
+          text: t("messages.confirm.user.destroyWithFleets", { fleets }),
+          onConfirm: () => {
+            void runDestroy(true);
+          },
+        });
+      }, 0);
+      return;
+    }
+
+    const fallback =
+      data?.errors
+        ?.flatMap((field) => field.messages.map((m) => m.message))
+        ?.join(" ") ||
+      data?.message ||
+      t("messages.user.destroy.failure");
+
+    displayAlert({ text: fallback });
+  }
+};
+
 const destroy = () => {
   if (!props.user.id) return;
 
   displayConfirm({
     text: t("messages.confirm.user.destroy"),
-    onConfirm: async () => {
-      await destroyMutation.mutateAsync({ id: props.user.id! });
+    onConfirm: () => {
+      void runDestroy(false);
     },
   });
 };
