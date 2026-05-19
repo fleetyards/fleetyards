@@ -20,6 +20,7 @@ type Props = {
   mobileBlock?: boolean;
   inline?: boolean;
   textInline?: boolean;
+  flush?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -31,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   mobileBlock: false,
   inline: false,
   textInline: false,
+  flush: false,
 });
 
 const visible = ref(false);
@@ -40,6 +42,7 @@ const listPosition = ref<Record<string, string>>({});
 const cssClasses = computed(() => {
   return {
     "panel-btn-dropdown--inline": props.inline,
+    "panel-btn-dropdown--flush": props.flush,
   };
 });
 

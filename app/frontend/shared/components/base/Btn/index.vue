@@ -30,6 +30,7 @@ export type Props = {
   mobileBlock?: boolean;
   inline?: boolean;
   textInline?: boolean;
+  flush?: boolean;
   active?: boolean;
   disabled?: boolean;
   routeActiveClass?: string;
@@ -51,6 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   mobileBlock: false,
   inline: false,
   textInline: false,
+  flush: false,
   active: false,
   disabled: false,
   routeActiveClass: undefined,
@@ -118,6 +120,7 @@ const cssClasses = computed(() => ({
   "panel-btn-align-start": props.alignStart,
   "panel-btn-inline": props.inline,
   "panel-btn-text-inline": props.textInline,
+  "panel-btn-flush": props.flush,
   "panel-btn-mobile-block": props.mobileBlock,
   active: props.active,
   disabled: internalDisabled.value,
