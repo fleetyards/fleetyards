@@ -23,6 +23,7 @@ type Props = {
   showStatus: boolean;
   sizeMultiplicator: number;
   scale: number;
+  extended?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -30,6 +31,7 @@ const props = withDefaults(defineProps<Props>(), {
   showStatus: false,
   sizeMultiplicator: 1,
   scale: 1,
+  extended: false,
 });
 
 const { t } = useI18n();
@@ -54,6 +56,36 @@ const model = computed(() => {
   }
 
   return props.item as Model;
+});
+
+const effectiveModel = computed<Model>(() => {
+  if (!props.extended) {
+    return model.value;
+  }
+
+  const m = model.value;
+
+  return {
+    ...m,
+    media: {
+      ...m.media,
+      topView: m.media.extendedTopView ?? m.media.topView,
+      sideView: m.media.extendedSideView ?? m.media.sideView,
+      angledView: m.media.extendedAngledView ?? m.media.angledView,
+      frontView: m.media.extendedFrontView ?? m.media.frontView,
+    },
+    metrics: {
+      ...m.metrics,
+      fleetchartOffsetLength:
+        m.metrics.extendedFleetchartOffsetLength ||
+        m.metrics.extendedLength ||
+        m.metrics.fleetchartOffsetLength,
+      fleetchartOffsetBeam:
+        m.metrics.extendedFleetchartOffsetBeam ||
+        m.metrics.extendedBeam ||
+        m.metrics.fleetchartOffsetBeam,
+    },
+  };
 });
 
 const vehicle = computed(() => {
@@ -105,7 +137,7 @@ const image = computed(() => {
     }
   }
 
-  return extractImageFromModel(model.value);
+  return extractImageFromModel(effectiveModel.value);
 });
 
 const viewpointTop = computed(() => {
@@ -142,7 +174,7 @@ const modelName = computed(() => {
 
 const length = computed(() => {
   return (
-    (model.value.metrics.fleetchartOffsetLength || 0) *
+    (effectiveModel.value.metrics.fleetchartOffsetLength || 0) *
     props.sizeMultiplicator *
     props.scale
   );
@@ -150,7 +182,7 @@ const length = computed(() => {
 
 const beam = computed(() => {
   return (
-    (model.value.metrics.fleetchartOffsetBeam || 0) *
+    (effectiveModel.value.metrics.fleetchartOffsetBeam || 0) *
     props.sizeMultiplicator *
     props.scale
   );
@@ -199,7 +231,7 @@ const sourceImageHeightMax = computed(() => {
     }
   }
 
-  return extractMaxHeightFromModel(model.value);
+  return extractMaxHeightFromModel(effectiveModel.value);
 });
 
 const sourceImageHeight = computed(() => {
@@ -227,7 +259,7 @@ const sourceImageHeight = computed(() => {
     }
   }
 
-  return extractImageHeightFromModel(model.value);
+  return extractImageHeightFromModel(effectiveModel.value);
 });
 
 const sourceImageWidth = computed(() => {
@@ -255,7 +287,7 @@ const sourceImageWidth = computed(() => {
     }
   }
 
-  return extractImageWidthFromModel(model.value);
+  return extractImageWidthFromModel(effectiveModel.value);
 });
 
 const sourceImageWidthMax = computed(() => {
@@ -283,7 +315,7 @@ const sourceImageWidthMax = computed(() => {
     }
   }
 
-  return extractMaxWidthFromModel(model.value);
+  return extractMaxWidthFromModel(effectiveModel.value);
 });
 
 const extractImageFromModel = (

@@ -44,6 +44,10 @@
       "hideGuide": "Guide verbergen",
       "showFleetchart": "Flottenübersicht",
       "hideFleetchart": "Standardansicht",
+      "fleetchartApp": {
+        "useExtendedState": "Schiffe ausgefahren anzeigen",
+        "useRetractedState": "Schiffe eingefahren anzeigen"
+      },
       "showLabels": "Labels anzeigen",
       "hideLabels": "Labels verbergen",
       "resetZoom": "Zoom zurücksetzen",

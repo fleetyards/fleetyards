@@ -40,6 +40,7 @@ type FleetchartState = {
     [key: string]: number;
   };
   color: string[];
+  extended: string[];
 };
 
 export const useFleetchartStore = defineStore("fleetchart", {
@@ -52,6 +53,7 @@ export const useFleetchartStore = defineStore("fleetchart", {
     mode: {},
     scale: {},
     color: [],
+    extended: [],
   }),
   getters: {
     isVisible: (state) => {
@@ -62,6 +64,10 @@ export const useFleetchartStore = defineStore("fleetchart", {
     },
     colored: (state) => {
       return (namespace: string) => state.color.includes(namespace);
+    },
+    extendedState: (state) => {
+      return (namespace: string) =>
+        (state.extended || []).includes(namespace);
     },
     fleetchartMode: (state) => {
       return (namespace: string) => state.mode[namespace] || "panzoom";
@@ -102,6 +108,14 @@ export const useFleetchartStore = defineStore("fleetchart", {
         this.color = this.color.filter((item) => item !== namespace);
       } else {
         this.color.push(namespace);
+      }
+    },
+    toggleExtended(namespace: string) {
+      const current = this.extended || [];
+      if (current.includes(namespace)) {
+        this.extended = current.filter((item) => item !== namespace);
+      } else {
+        this.extended = [...current, namespace];
       }
     },
     toggleLabels(namespace: string) {

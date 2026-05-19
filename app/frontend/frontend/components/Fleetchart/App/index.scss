@@ -23,11 +23,14 @@
     }
   }
 
-  .fleetchart-app-mode {
+  .fleetchart-app-controls {
     position: absolute;
     left: 20px;
     top: 20px;
     z-index: 1000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
   }
 
   &__filter {
@@ -79,7 +82,7 @@
 
 @media (max-width: $desktop-breakpoint) {
   .fleetchart-app {
-    .fleetchart-app-mode {
+    .fleetchart-app-controls {
       top: auto;
       bottom: 0;
     }

@@ -76,6 +76,10 @@ const showLabels = computed(() => {
   return fleetchartStore.showLabels(props.namespace);
 });
 
+const extended = computed(() => {
+  return fleetchartStore.extendedState(props.namespace);
+});
+
 watch(
   () => internalScale.value,
   () => {
@@ -282,6 +286,7 @@ const drawGridLines = async () => {
             :key="item.id"
             :item="item"
             :viewpoint="viewpoint"
+            :extended="extended"
             :show-label="showLabels"
             :show-status="showStatus"
             :size-multiplicator="sizeMultiplicator"

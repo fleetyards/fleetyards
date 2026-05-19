@@ -105,6 +105,10 @@ const coloredEnabled = computed(() => {
   return fleetchartStore.colored(props.namespace);
 });
 
+const extended = computed(() => {
+  return fleetchartStore.extendedState(props.namespace);
+});
+
 const selectedScreenHeight = computed(() => {
   return fleetchartStore.fleetchartScreenHeight(props.namespace);
 });
@@ -137,6 +141,13 @@ const scale = computed(() => {
 
 watch(
   () => props.items,
+  () => {
+    setupColumns();
+  },
+);
+
+watch(
+  () => extended.value,
   () => {
     setupColumns();
   },
@@ -263,8 +274,12 @@ const setupColumns = () => {
 
   props.items.forEach((item) => {
     const model = (item as Vehicle).model || item;
-    const length =
-      (model.metrics.fleetchartOffsetLength || 0) * sizeMultiplicator.value;
+    const fleetchartLength = extended.value
+      ? model.metrics.extendedFleetchartOffsetLength ||
+        model.metrics.extendedLength ||
+        model.metrics.fleetchartOffsetLength
+      : model.metrics.fleetchartOffsetLength;
+    const length = (fleetchartLength || 0) * sizeMultiplicator.value;
 
     const height = (length * imageMaxHeight(item)) / imageMaxWidth(item);
 
@@ -411,6 +426,22 @@ const extractMaxHeightFromModel = (
   );
 };
 
+const extractMaxHeightFromExtended = (model: Model) => {
+  return Math.max(
+    model.media.extendedTopView?.height || 0,
+    model.media.extendedSideView?.height || 0,
+    model.media.extendedAngledView?.height || 0,
+  );
+};
+
+const extractMaxWidthFromExtended = (model: Model) => {
+  return Math.max(
+    model.media.extendedTopView?.width || 0,
+    model.media.extendedSideView?.width || 0,
+    model.media.extendedAngledView?.width || 0,
+  );
+};
+
 const imageMaxHeight = (item: Vehicle | Model | VehiclePublic) => {
   const model = (item as Vehicle).model || item;
   const vehicle = item as Vehicle;
@@ -434,6 +465,13 @@ const imageMaxHeight = (item: Vehicle | Model | VehiclePublic) => {
       vehicle.paint.media.angledView)
   ) {
     const height = extractMaxHeightFromModel(vehicle.paint);
+    if (height) {
+      return height;
+    }
+  }
+
+  if (extended.value) {
+    const height = extractMaxHeightFromExtended(model);
     if (height) {
       return height;
     }
@@ -465,6 +503,13 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
       vehicle.paint.media.angledView)
   ) {
     const width = extractMaxWidthFromModel(vehicle.paint);
+    if (width) {
+      return width;
+    }
+  }
+
+  if (extended.value) {
+    const width = extractMaxWidthFromExtended(model);
     if (width) {
       return width;
     }
@@ -585,6 +630,7 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
               :size-multiplicator="sizeMultiplicator"
               :scale="scale"
               :colored="coloredEnabled"
+              :extended="extended"
             />
           </transition-group>
 

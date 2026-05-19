@@ -59,6 +59,34 @@ const mode = computed(() => {
   return fleetchartStore.fleetchartMode(props.namespace);
 });
 
+const extended = computed(() => {
+  return fleetchartStore.extendedState(props.namespace);
+});
+
+const toggleExtended = () => {
+  fleetchartStore.toggleExtended(props.namespace);
+};
+
+const extendedTooltip = computed(() => {
+  return extended.value
+    ? t("actions.fleetchartApp.useRetractedState")
+    : t("actions.fleetchartApp.useExtendedState");
+});
+
+const hasExtendedItems = computed(() => {
+  return props.items.some((item) => {
+    const model = (item as Vehicle).model || (item as Model | VehiclePublic);
+    return Boolean(
+      model.metrics?.extendedLength ||
+        model.media?.extendedHolo ||
+        model.media?.extendedTopView ||
+        model.media?.extendedSideView ||
+        model.media?.extendedAngledView ||
+        model.media?.extendedFrontView,
+    );
+  });
+});
+
 const { isFilterSelected } = useFilters();
 
 const slots = useSlots();
@@ -216,24 +244,37 @@ const closeFleetchart = async () => {
         'fleetchart-app__content--filter-visible': filterVisible && !mobile,
       }"
     >
-      <BtnDropdown size="small" class="fleetchart-app-mode">
-        <template #label>
-          <template v-if="!mobile">
-            {{ t("labels.fleetchartApp.mode") }}:
+      <div class="fleetchart-app-controls">
+        <BtnDropdown size="small" flush>
+          <template #label>
+            <template v-if="!mobile">
+              {{ t("labels.fleetchartApp.mode") }}:
+            </template>
+            {{ t(`labels.fleetchartApp.modeOptions.${mode}`) }}
           </template>
-          {{ t(`labels.fleetchartApp.modeOptions.${mode}`) }}
-        </template>
+          <Btn
+            v-for="(option, index) in FleetchartModes"
+            :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
+            size="small"
+            variant="link"
+            :active="mode === option"
+            @click="setMode(option)"
+          >
+            {{ t(`labels.fleetchartApp.modeOptions.${option}`) }}
+          </Btn>
+        </BtnDropdown>
+
         <Btn
-          v-for="(option, index) in FleetchartModes"
-          :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
+          v-if="hasExtendedItems"
+          v-tooltip="extendedTooltip"
+          :active="extended"
           size="small"
-          variant="link"
-          :active="mode === option"
-          @click="setMode(option)"
+          flush
+          @click="toggleExtended"
         >
-          {{ t(`labels.fleetchartApp.modeOptions.${option}`) }}
+          <i class="fa-duotone fa-arrows-from-line" />
         </Btn>
-      </BtnDropdown>
+      </div>
 
       <Btn
         size="large"

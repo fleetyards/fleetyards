@@ -25,6 +25,7 @@ type Props = {
   sizeMultiplicator?: number;
   scale?: number;
   colored?: boolean;
+  extended?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -34,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   sizeMultiplicator: 1,
   scale: 1,
   colored: false,
+  extended: false,
 });
 
 const { t } = useI18n();
@@ -99,6 +101,15 @@ const angledView = computed(() => {
     return modulePackage.value.media.angledView;
   }
 
+  if (props.extended) {
+    if (props.colored && model.value.media.extendedAngledViewColored) {
+      return model.value.media.extendedAngledViewColored;
+    }
+    if (model.value.media.extendedAngledView) {
+      return model.value.media.extendedAngledView;
+    }
+  }
+
   if (props.colored && model.value.media.angledViewColored) {
     return model.value.media.angledViewColored;
   }
@@ -118,6 +129,15 @@ const frontView = computed(() => {
 
   //   return modulePackage.value.media.frontView;
   // }
+
+  if (props.extended) {
+    if (props.colored && model.value.media.extendedFrontViewColored) {
+      return model.value.media.extendedFrontViewColored;
+    }
+    if (model.value.media.extendedFrontView) {
+      return model.value.media.extendedFrontView;
+    }
+  }
 
   if (props.colored && model.value.media.frontViewColored) {
     return model.value.media.frontViewColored;
@@ -139,6 +159,15 @@ const sideView = computed(() => {
     return modulePackage.value.media.sideView;
   }
 
+  if (props.extended) {
+    if (props.colored && model.value.media.extendedSideViewColored) {
+      return model.value.media.extendedSideViewColored;
+    }
+    if (model.value.media.extendedSideView) {
+      return model.value.media.extendedSideView;
+    }
+  }
+
   if (props.colored && model.value.media.sideViewColored) {
     return model.value.media.sideViewColored;
   }
@@ -157,6 +186,15 @@ const topView = computed(() => {
     // }
 
     return modulePackage.value.media.topView;
+  }
+
+  if (props.extended) {
+    if (props.colored && model.value.media.extendedTopViewColored?.url) {
+      return model.value.media.extendedTopViewColored;
+    }
+    if (model.value.media.extendedTopView) {
+      return model.value.media.extendedTopView;
+    }
   }
 
   if (props.colored && model.value.media.topViewColored?.url) {
@@ -196,15 +234,25 @@ const modelName = computed(() => {
   return `${model.value.manufacturer?.code} ${model.value.name}`;
 });
 
-const length = computed(
-  () =>
-    (model.value.metrics.fleetchartOffsetLength || 0) * props.sizeMultiplicator,
-);
+const length = computed(() => {
+  const offset = props.extended
+    ? model.value.metrics.extendedFleetchartOffsetLength ||
+      model.value.metrics.extendedLength ||
+      model.value.metrics.fleetchartOffsetLength
+    : model.value.metrics.fleetchartOffsetLength;
 
-const beam = computed(
-  () =>
-    (model.value.metrics.fleetchartOffsetBeam || 0) * props.sizeMultiplicator,
-);
+  return (offset || 0) * props.sizeMultiplicator;
+});
+
+const beam = computed(() => {
+  const offset = props.extended
+    ? model.value.metrics.extendedFleetchartOffsetBeam ||
+      model.value.metrics.extendedBeam ||
+      model.value.metrics.fleetchartOffsetBeam
+    : model.value.metrics.fleetchartOffsetBeam;
+
+  return (offset || 0) * props.sizeMultiplicator;
+});
 
 const height = computed(
   () =>
