@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.24.0](https://github.com/fleetyards/fleetyards/compare/v6.23.0...v6.24.0) (2026-05-19)
+
+
+### Features
+
+* **admin:** add extended-mode dimensions and media for ships ([e75e081](https://github.com/fleetyards/fleetyards/commit/e75e0814fb1609824838ba419619ab399540184e))
+* **fleetchart:** toggle extended state globally per namespace ([3f3f2b3](https://github.com/fleetyards/fleetyards/commit/3f3f2b3d849134e8854001705f26ba4fa87b79f4))
+* **sc-data:** extract external fuel tanks and refuel boom stats ([e99cd98](https://github.com/fleetyards/fleetyards/commit/e99cd9865c39efb4e6635928c38deb3d39378ff0))
+* **ships:** toggle extended state on detail page ([e4c204e](https://github.com/fleetyards/fleetyards/commit/e4c204eb0a5b94625b06e04633f52903b588eda4))
+* **ui:** add flush prop to Btn, BtnGroup, BtnDropdown ([d26c085](https://github.com/fleetyards/fleetyards/commit/d26c08567b60c2fbf965dd25a2f32b584c6fec3d))
+* **users:** explicit warnings and force-delete option for blocked destroys ([96f136c](https://github.com/fleetyards/fleetyards/commit/96f136c8378388abdc5890b94815be714e87e4df))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#3961](https://github.com/fleetyards/fleetyards/issues/3961)) ([986c763](https://github.com/fleetyards/fleetyards/commit/986c76379bc3ccad85723ad78c84f4993cf262da))
+* **deps-dev:** bump @types/node from 25.8.0 to 25.9.0 ([#3959](https://github.com/fleetyards/fleetyards/issues/3959)) ([c887278](https://github.com/fleetyards/fleetyards/commit/c8872784da755711574261343a5f076490e44b73))
+* **deps-dev:** bump @typescript-eslint/parser from 8.59.3 to 8.59.4 ([#3956](https://github.com/fleetyards/fleetyards/issues/3956)) ([40d07fc](https://github.com/fleetyards/fleetyards/commit/40d07fc886183b05fee5735c480262560fc4397d))
+* **deps-dev:** bump eslint from 10.3.0 to 10.4.0 ([#3952](https://github.com/fleetyards/fleetyards/issues/3952)) ([6d8cffb](https://github.com/fleetyards/fleetyards/commit/6d8cffbeaa5b319bf42a5d1d746660c804f747b7))
+* **deps-dev:** bump stylelint-selector-bem-pattern from 4.0.1 to 5.0.0 ([#3951](https://github.com/fleetyards/fleetyards/issues/3951)) ([2021e4b](https://github.com/fleetyards/fleetyards/commit/2021e4bdf4e955bfe25c70687d6b4e041a20fb26))
+* **deps-dev:** bump vue-component-type-helpers from 3.2.9 to 3.3.0 ([#3962](https://github.com/fleetyards/fleetyards/issues/3962)) ([1d12796](https://github.com/fleetyards/fleetyards/commit/1d12796fd42594716e02f5ced95b6fc2d2a1a371))
+* **deps-dev:** bump vue-tsc from 3.2.9 to 3.3.1 ([#3957](https://github.com/fleetyards/fleetyards/issues/3957)) ([8869cd1](https://github.com/fleetyards/fleetyards/commit/8869cd14be379bcd1431345bc90d674b960e9efa))
+* **deps:** bump @tanstack/vue-query from 5.100.10 to 5.100.11 ([#3958](https://github.com/fleetyards/fleetyards/issues/3958)) ([7b0922f](https://github.com/fleetyards/fleetyards/commit/7b0922f23965a82a3a7c4e48bb7fa65d0f03d73a))
+* **deps:** bump date-fns from 4.1.0 to 4.2.1 ([#3960](https://github.com/fleetyards/fleetyards/issues/3960)) ([b24a5ee](https://github.com/fleetyards/fleetyards/commit/b24a5ee2b0d4adfd51f31927ed75f97d45f0cbf9))
+* **deps:** bump qs from 6.15.1 to 6.15.2 ([#3950](https://github.com/fleetyards/fleetyards/issues/3950)) ([40249cc](https://github.com/fleetyards/fleetyards/commit/40249ccc8685b50ce90fb625e9c2b4a61d6e9fdf))
+* **format:** apply prettier formatting ([59a2d02](https://github.com/fleetyards/fleetyards/commit/59a2d02841ac22af8b0296f4efe850e96d561cdf))
+
 ## [6.23.0](https://github.com/fleetyards/fleetyards/compare/v6.22.0...v6.23.0) (2026-05-18)
 
 
