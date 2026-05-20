@@ -204,7 +204,7 @@ GEM
       rest-client (>= 2.0.0)
     docile (1.4.1)
     domain_name (0.6.20240107)
-    doorkeeper (5.9.0)
+    doorkeeper (5.9.1)
       railties (>= 5)
     doorkeeper-jwt (0.4.2)
       jwt (>= 2.1)
@@ -873,7 +873,7 @@ GEM
       date
       httparty
       json (>= 2.0)
-    zeitwerk (2.7.5)
+    zeitwerk (2.8.1)
 
 PLATFORMS
   arm64-darwin
