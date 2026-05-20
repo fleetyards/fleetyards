@@ -173,7 +173,7 @@ gem "enum_attributes_validation", "~> 0.1.7"
 
 gem "bskyrb", "~> 0.5.3"
 
-gem "doorkeeper", "~> 5.6"
+gem "doorkeeper", "~> 5.9"
 gem "doorkeeper-jwt"
 gem "doorkeeper-openid_connect"
 
