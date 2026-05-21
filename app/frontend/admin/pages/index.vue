@@ -11,6 +11,8 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
+import AsyncData from "@/shared/components/AsyncData.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import DashboardUsers from "@/admin/components/Dashboard/Users.vue";
 import DashboardModels from "@/admin/components/Dashboard/Models.vue";
@@ -132,59 +134,80 @@ watch(
           </div>
         </div>
       </div>
-      <div v-if="visitsPerDay" class="col-12 col-md-6 col-lg-7">
-        <Panel>
+      <div class="col-12 col-md-6 col-lg-7">
+        <Panel fill-height>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.visitsPerDay") }}
           </PanelHeading>
-          <PanelBody>
-            <Chart
-              name="visits-per-day"
-              type="area"
-              :options="visitsPerDay"
-              :async-status="visitsPerDayStatus"
-              tooltip-type="visit"
-              :height="292"
-              :reload="30"
-            />
+          <PanelBody class="dashboard-panel-body">
+            <AsyncData :async-status="visitsPerDayStatus" hide-error>
+              <template #loading>
+                <Loader :loading="true" relative admin />
+              </template>
+              <template #resolved>
+                <Chart
+                  name="visits-per-day"
+                  type="area"
+                  :options="visitsPerDay"
+                  :async-status="visitsPerDayStatus"
+                  tooltip-type="visit"
+                  :height="292"
+                  :reload="30"
+                />
+              </template>
+            </AsyncData>
           </PanelBody>
         </Panel>
       </div>
     </div>
     <div class="row">
-      <div v-if="mostViewedPages" class="col-12 col-md-5">
-        <Panel>
+      <div class="col-12 col-md-5">
+        <Panel fill-height>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.mostViewedPages") }}
           </PanelHeading>
-          <PanelBody>
-            <Chart
-              name="most-viewed-pages"
-              type="bar"
-              :options="mostViewedPages"
-              :async-status="mostViewedPagesStatus"
-              tooltip-type="view"
-              :height="344"
-              :reload="30"
-            />
+          <PanelBody class="dashboard-panel-body">
+            <AsyncData :async-status="mostViewedPagesStatus" hide-error>
+              <template #loading>
+                <Loader :loading="true" relative admin />
+              </template>
+              <template #resolved>
+                <Chart
+                  name="most-viewed-pages"
+                  type="bar"
+                  :options="mostViewedPages"
+                  :async-status="mostViewedPagesStatus"
+                  tooltip-type="view"
+                  :height="400"
+                  :reload="30"
+                />
+              </template>
+            </AsyncData>
           </PanelBody>
         </Panel>
       </div>
-      <div v-if="visitsPerMonth" class="col-12 col-md-7">
-        <Panel>
+      <div class="col-12 col-md-7">
+        <Panel fill-height>
           <PanelHeading>
             {{ t("headlines.admin.dashboard.visitsPerMonth") }}
           </PanelHeading>
-          <PanelBody>
-            <Chart
-              name="visits-per-month"
-              type="column"
-              :options="visitsPerMonth"
-              :async-status="visitsPerMonthStatus"
-              tooltip-type="visit"
-              :height="344"
-              :reload="30"
-            />
+          <PanelBody class="dashboard-panel-body">
+            <AsyncData :async-status="visitsPerMonthStatus" hide-error>
+              <template #loading>
+                <Loader :loading="true" relative admin />
+              </template>
+              <template #resolved>
+                <Chart
+                  name="visits-per-month"
+                  type="column"
+                  :options="visitsPerMonth"
+                  :async-status="visitsPerMonthStatus"
+                  tooltip-type="visit"
+                  :height="400"
+                  :reload="30"
+                />
+              </template>
+            </AsyncData>
           </PanelBody>
         </Panel>
       </div>
@@ -197,3 +220,10 @@ watch(
     </div>
   </section>
 </template>
+
+<style lang="scss" scoped>
+.dashboard-panel-body {
+  position: relative;
+  flex: 1;
+}
+</style>

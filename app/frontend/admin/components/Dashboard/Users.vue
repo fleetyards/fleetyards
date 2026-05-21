@@ -13,6 +13,8 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
+import AsyncData from "@/shared/components/AsyncData.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useRegistrationsPerMonth, type User } from "@/services/fyAdminApi";
 import { useUsers as useUsersQuery } from "@/services/fyAdminApi";
@@ -59,27 +61,36 @@ const columns: BaseTableCol<User>[] = [
 </script>
 
 <template>
-  <div v-if="registrationsPerMonth" class="col-12 col-md-7">
-    <Panel>
+  <div class="col-12 col-md-7">
+    <Panel fill-height>
       <PanelHeading>
         {{ t("headlines.admin.dashboard.registrationsPerMonth") }}
       </PanelHeading>
-      <PanelBody>
-        <Chart
-          name="models-by-manufacturer"
-          type="column"
-          :options="registrationsPerMonth"
-          :async-status="registrationsPerMonthStatus"
-          tooltip-type="user"
-        />
+      <PanelBody class="dashboard-panel-body">
+        <AsyncData :async-status="registrationsPerMonthStatus" hide-error>
+          <template #loading>
+            <Loader :loading="true" relative admin />
+          </template>
+          <template #resolved>
+            <Chart
+              name="models-by-manufacturer"
+              type="column"
+              :options="registrationsPerMonth"
+              :async-status="registrationsPerMonthStatus"
+              tooltip-type="user"
+            />
+          </template>
+        </AsyncData>
       </PanelBody>
     </Panel>
   </div>
-  <div v-if="users" class="col-12 col-md-5">
+  <div class="col-12 col-md-5">
     <BaseTable
-      :records="users?.items"
+      :records="users?.items || []"
       :columns="columns"
       :async-status="usersStatus"
+      :fill-height="true"
+      :admin="true"
       primary-key="id"
     >
       <template #title>
@@ -120,3 +131,10 @@ const columns: BaseTableCol<User>[] = [
     </BaseTable>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.dashboard-panel-body {
+  position: relative;
+  flex: 1;
+}
+</style>

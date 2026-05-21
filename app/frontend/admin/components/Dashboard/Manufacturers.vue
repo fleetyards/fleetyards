@@ -13,6 +13,8 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
+import AsyncData from "@/shared/components/AsyncData.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useManufacturers, type Manufacturer } from "@/services/fyAdminApi";
 import { useModelsByManufacturer } from "@/services/fyApi";
@@ -52,26 +54,35 @@ const columns: BaseTableCol<Manufacturer>[] = [
 
 <template>
   <div class="col-12 col-md-6">
-    <Panel>
+    <Panel fill-height>
       <PanelHeading>
         {{ t("headlines.admin.dashboard.modelsByManufacturer") }}
       </PanelHeading>
-      <PanelBody>
-        <Chart
-          name="models-by-manufacturer"
-          type="pie"
-          :options="modelsByManufacturer"
-          :async-status="modelsByManufacturerStatus"
-          tooltip-type="ship-pie"
-        />
+      <PanelBody class="dashboard-panel-body">
+        <AsyncData :async-status="modelsByManufacturerStatus" hide-error>
+          <template #loading>
+            <Loader :loading="true" relative admin />
+          </template>
+          <template #resolved>
+            <Chart
+              name="models-by-manufacturer"
+              type="pie"
+              :options="modelsByManufacturer"
+              :async-status="modelsByManufacturerStatus"
+              tooltip-type="ship-pie"
+            />
+          </template>
+        </AsyncData>
       </PanelBody>
     </Panel>
   </div>
-  <div v-if="manufacturers" class="col-12 col-md-6">
+  <div class="col-12 col-md-6">
     <BaseTable
-      :records="manufacturers?.items"
+      :records="manufacturers?.items || []"
       :columns="columns"
       :async-status="manufacturersStatus"
+      :fill-height="true"
+      :admin="true"
       primary-key="id"
     >
       <template #title>
@@ -107,3 +118,10 @@ const columns: BaseTableCol<Manufacturer>[] = [
     </BaseTable>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.dashboard-panel-body {
+  position: relative;
+  flex: 1;
+}
+</style>

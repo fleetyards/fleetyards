@@ -36,6 +36,7 @@ type Props = {
   transparency?: PanelTransparenciesEnum;
   to?: RouteLocationRaw;
   variant?: PanelVariantsEnum;
+  fillHeight?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -55,6 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   transparency: PanelTransparenciesEnum.DEFAULT,
   to: undefined,
   variant: PanelVariantsEnum.DEFAULT,
+  fillHeight: false,
 });
 
 const variantClass = computed(() => `panel-wrapper--${props.variant}`);
@@ -72,6 +74,7 @@ const transparencyClass = computed(
       'panel-wrapper--outer-spacing': outerSpacing,
       'panel-wrapper--highlight': highlight,
       'panel-wrapper--animated': animated,
+      'panel-wrapper--fill-height': fillHeight,
       [variantClass]: true,
       [bgColorClass]: true,
     }"

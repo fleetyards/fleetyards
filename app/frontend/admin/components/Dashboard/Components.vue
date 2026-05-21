@@ -13,6 +13,8 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
+import AsyncData from "@/shared/components/AsyncData.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComponents, type Component } from "@/services/fyAdminApi";
 import { useComponentsByClass } from "@/services/fyApi";
@@ -51,11 +53,13 @@ const columns: BaseTableCol<Component>[] = [
 </script>
 
 <template>
-  <div v-if="components" class="col-12 col-md-6">
+  <div class="col-12 col-md-6">
     <BaseTable
-      :records="components?.items"
+      :records="components?.items || []"
       :columns="columns"
       :async-status="componentsStatus"
+      :fill-height="true"
+      :admin="true"
       primary-key="id"
     >
       <template #title>
@@ -91,19 +95,33 @@ const columns: BaseTableCol<Component>[] = [
     </BaseTable>
   </div>
   <div class="col-12 col-md-6">
-    <Panel>
+    <Panel fill-height>
       <PanelHeading>
         {{ t("headlines.admin.dashboard.componentsByClass") }}
       </PanelHeading>
-      <PanelBody>
-        <Chart
-          name="components-by-class"
-          type="pie"
-          :options="componentsByClass"
-          :async-status="componentsByClassStatus"
-          tooltip-type="component-pie"
-        />
+      <PanelBody class="dashboard-panel-body">
+        <AsyncData :async-status="componentsByClassStatus" hide-error>
+          <template #loading>
+            <Loader :loading="true" relative admin />
+          </template>
+          <template #resolved>
+            <Chart
+              name="components-by-class"
+              type="pie"
+              :options="componentsByClass"
+              :async-status="componentsByClassStatus"
+              tooltip-type="component-pie"
+            />
+          </template>
+        </AsyncData>
       </PanelBody>
     </Panel>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.dashboard-panel-body {
+  position: relative;
+  flex: 1;
+}
+</style>

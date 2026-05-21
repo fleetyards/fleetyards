@@ -17,6 +17,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import Loader from "@/shared/components/Loader/index.vue";
+import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { useMobile } from "@/shared/composables/useMobile";
 import TableHeader from "./Header/index.vue";
 import TableRow from "./Row/index.vue";
@@ -32,12 +33,15 @@ type Props = {
   title?: string;
   titleLevel?: HeadingLevelEnum;
   loading?: boolean;
+  asyncStatus?: AsyncStatus;
   inlineLoader?: boolean;
   emptyVisible?: boolean;
   selectable?: boolean;
   selected?: string[];
   rowClickable?: boolean;
   rowDisabled?: (record: T) => boolean;
+  fillHeight?: boolean;
+  admin?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -46,12 +50,25 @@ const props = withDefaults(defineProps<Props>(), {
   defaultSort: undefined,
   titleLevel: HeadingLevelEnum.H2,
   loading: false,
+  asyncStatus: undefined,
   inlineLoader: false,
   emptyVisible: false,
   selectable: false,
   selected: () => [],
   rowClickable: false,
   rowDisabled: undefined,
+  fillHeight: false,
+  admin: false,
+});
+
+const isLoading = computed(() => {
+  if (props.asyncStatus) {
+    return (
+      props.asyncStatus.isLoading.value || props.asyncStatus.isFetching.value
+    );
+  }
+
+  return props.loading;
 });
 
 const internalSelected = ref<string[]>([]);
@@ -145,7 +162,12 @@ const resetSelected = () => {
 </script>
 
 <template>
-  <Panel :id="props.id" class="base-table w-full" :slim="true">
+  <Panel
+    :id="props.id"
+    class="base-table w-full"
+    :slim="true"
+    :fill-height="props.fillHeight"
+  >
     <PanelHeading v-if="props.title || slots.title" :level="props.titleLevel">
       <slot name="title">{{ props.title }}</slot>
     </PanelHeading>
@@ -156,10 +178,10 @@ const resetSelected = () => {
       <div class="base-table__wrapper w-full">
         <div
           class="base-table__loader"
-          v-if="props.loading && !props.records.length"
+          v-if="isLoading && !props.records.length"
         >
-          <slot name="loader" :loading="props.loading">
-            <Loader :loading="props.loading" />
+          <slot name="loader" :loading="isLoading">
+            <Loader :loading="isLoading" :admin="props.admin" />
           </slot>
         </div>
         <table class="base-table__inner">
@@ -168,7 +190,7 @@ const resetSelected = () => {
             :col-key="colKey"
             :selected="internalSelected"
             :selectable="props.selectable"
-            :loading="props.loading"
+            :loading="isLoading"
             :empty-visible="props.emptyVisible"
             :columns="filteredColumns"
             :has-actions="!!slots.actions"
@@ -179,13 +201,13 @@ const resetSelected = () => {
           <transition-group
             name="list"
             :class="{
-              'base-table__loading': props.loading,
+              'base-table__loading': isLoading,
             }"
             tag="tbody"
             :appear="true"
           >
             <TableRow
-              v-if="props.emptyVisible && !props.loading"
+              v-if="props.emptyVisible && !isLoading"
               key="empty-row"
             >
               <TableCol :colspan="columnCount" variant="empty">

@@ -84,6 +84,22 @@ $panelSuccessBorderColor: darken($success, 5%);
       margin-bottom: 21px;
     }
 
+    &--fill-height {
+      height: 100%;
+
+      > .panel {
+        height: 100%;
+
+        > .panel-inner {
+          height: 100%;
+        }
+      }
+
+      &.panel-wrapper--outer-spacing {
+        height: calc(100% - 21px);
+      }
+    }
+
     &--highlight {
       border-color: $panelHighlightBorderColor;
     }
