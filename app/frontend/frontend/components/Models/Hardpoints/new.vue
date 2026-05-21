@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import HardpointGroup from "./Group/index.vue";
+import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useModelHardpoints as useModelHardpointsQuery,
@@ -124,6 +125,7 @@ const {
           </Btn>
         </BtnGroup>
       </div>
+      <ModelRefuelBoom :model="model" />
       <div v-if="hardpoints?.length" class="row">
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup

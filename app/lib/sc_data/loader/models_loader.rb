@@ -121,8 +121,8 @@ module ScData
 
       private def extract_refuel_boom(hardpoints)
         hardpoints.each do |hardpoint|
-          next if hardpoint.group != "refuel_boom"
-          next if hardpoint.component.blank?
+          next if hardpoint.component&.category != "refuel_boom"
+          next if hardpoint.component&.component_type != "ToolArm"
 
           nozzle = hardpoint.hardpoints.includes(:component).find do |sub|
             sub.component&.component_type == "DockingCollar"
