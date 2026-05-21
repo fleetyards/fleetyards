@@ -206,10 +206,7 @@ const resetSelected = () => {
             tag="tbody"
             :appear="true"
           >
-            <TableRow
-              v-if="props.emptyVisible && !isLoading"
-              key="empty-row"
-            >
+            <TableRow v-if="props.emptyVisible && !isLoading" key="empty-row">
               <TableCol :colspan="columnCount" variant="empty">
                 <slot name="empty">
                   <Empty />
