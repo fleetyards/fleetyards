@@ -212,7 +212,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -334,7 +338,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 50
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -530,7 +538,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 25
         required: false
       - name: q
@@ -1507,7 +1519,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -1655,7 +1671,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 25
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -1770,7 +1790,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 25
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -1957,7 +1981,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -2153,7 +2181,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -2339,7 +2371,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -2525,7 +2561,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -2707,7 +2747,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -2890,7 +2934,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -3221,7 +3269,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -3412,7 +3464,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 25
         required: false
       - name: q
@@ -3628,7 +3684,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -3903,7 +3963,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -4502,7 +4566,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 25
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -4886,7 +4954,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 25
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -5157,7 +5229,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - "$ref": "#/components/parameters/SortingParameter"
@@ -5237,7 +5313,11 @@ paths:
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 8
         required: false
       - name: q
@@ -11464,8 +11544,8 @@ components:
       name: page
       in: query
       schema:
-        type: string
-        default: '1'
+        type: integer
+        default: 1
       required: false
     SortingParameter:
       name: s

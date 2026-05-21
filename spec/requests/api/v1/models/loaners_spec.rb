@@ -14,8 +14,8 @@ RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema
       tags "Models"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
-      parameter name: "perPage", in: :query, schema: {type: :string, default: Model.default_per_page}, required: false
+      parameter name: "page", in: :query, schema: {type: :integer, default: 1}, required: false
+      parameter name: "perPage", in: :query, schema: {oneOf: [{type: :integer}, {type: :string, enum: ["all"]}], default: Model.default_per_page}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Models"

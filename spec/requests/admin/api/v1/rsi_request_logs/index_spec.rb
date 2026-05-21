@@ -16,7 +16,7 @@ RSpec.describe "admin/api/v1/rsi_request_logs", type: :openapi, openapi_schema_n
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: RsiRequestLog.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {oneOf: [{type: :integer}, {type: :string, enum: ["all"]}], default: RsiRequestLog.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 

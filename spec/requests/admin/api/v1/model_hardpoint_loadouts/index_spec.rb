@@ -20,7 +20,7 @@ RSpec.describe "admin/api/v1/model_hardpoint_loadouts", type: :openapi, openapi_
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: 30}, required: false
+      parameter name: "perPage", in: :query, schema: {oneOf: [{type: :integer}, {type: :string, enum: ["all"]}], default: 30}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,

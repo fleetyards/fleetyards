@@ -20,13 +20,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 50
         required: false
       - name: q
@@ -218,13 +222,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -595,13 +603,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       security:
@@ -814,13 +826,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -1055,13 +1071,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       security:
@@ -1348,13 +1368,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -2283,13 +2307,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -2371,13 +2399,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -2972,13 +3004,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -3040,13 +3076,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -3093,13 +3133,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -3247,13 +3291,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       responses:
@@ -3281,13 +3329,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -3353,13 +3405,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       responses:
@@ -3394,13 +3450,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       responses:
@@ -3435,13 +3495,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       responses:
@@ -3660,13 +3724,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       responses:
@@ -3701,13 +3769,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 8
         required: false
       responses:
@@ -3735,13 +3807,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -3908,13 +3984,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 25
         required: false
       - name: q
@@ -4815,13 +4895,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -4923,13 +5007,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -5155,13 +5243,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -6437,13 +6529,17 @@ paths:
       - name: page
         in: query
         schema:
-          type: string
-          default: '1'
+          type: integer
+          default: 1
         required: false
       - name: perPage
         in: query
         schema:
-          type: string
+          oneOf:
+          - type: integer
+          - type: string
+            enum:
+            - all
           default: 30
         required: false
       - name: q
@@ -12864,8 +12960,8 @@ components:
       name: page
       in: query
       schema:
-        type: string
-        default: '1'
+        type: integer
+        default: 1
       required: false
     SortingParameter:
       name: s

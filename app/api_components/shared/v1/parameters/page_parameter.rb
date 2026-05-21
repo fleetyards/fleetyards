@@ -12,8 +12,8 @@ module Shared
           name: :page,
           in: :query,
           schema: {
-            type: :string,
-            default: "1"
+            type: :integer,
+            default: 1
           },
           required: false
         })
