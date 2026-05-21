@@ -209,11 +209,11 @@ Do the same in `app/controllers/api/v1/public/fleet_stats_controller.rb`.
 - `spec/models/fleet_wishlist_item_spec.rb` — Validations, fulfilled_count logic
 - `spec/policies/fleet_wishlist_item_policy_spec.rb` — Privilege checks
 
-Use rswag swagger_helper for API spec generation.
+Use openapi-ruby's `openapi_helper` for API spec generation.
 
 ### Phase 9: OpenAPI Schema + Orval
 
-1. Run `./bin/generate-schema` to generate OpenAPI spec from rswag tests
+1. Run `./bin/generate-schema` to generate the OpenAPI spec from the openapi-ruby tests
 2. Run Orval to generate frontend TypeScript client and types
 
 ### Phase 10: Frontend — Wishlist Page

@@ -2,7 +2,7 @@
 
 # Shared examples for the standard OAuth authentication response pattern.
 # Requires `oauth_access_token` and `wrong_scope_access_token` to be defined via let.
-# Use inside an rswag operation block (get/post/put/patch/delete):
+# Use inside an openapi-ruby operation block (get/post/put/patch/delete):
 #
 #   include_examples "oauth_auth"
 #   include_examples "oauth_auth", success_status: 201

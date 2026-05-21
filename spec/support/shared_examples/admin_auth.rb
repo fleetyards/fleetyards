@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Shared examples for the standard admin API 403/401 response pattern.
-# Use inside an rswag operation block (get/post/put/patch/delete):
+# Use inside an openapi-ruby operation block (get/post/put/patch/delete):
 #
 #   include_examples "admin_auth", forbidden_user: -> { create(:admin_user, resource_access: []) }
 #

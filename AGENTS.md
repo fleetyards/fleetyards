@@ -6,7 +6,7 @@ Best practices and conventions for AI agents working on the Fleetyards codebase.
 
 - **Backend**: Ruby on Rails 7.x with PostgreSQL, Redis, Sidekiq
 - **Frontend**: Vue.js 3 with Vite, TypeScript, Pinia, Tanstack Vue Query, Orval
-- **API docs**: OpenAPI/Swagger (rswag)
+- **API docs**: OpenAPI (openapi-ruby)
 - **Auth**: Devise (authentication), Action Policy (authorization)
 - **Package manager**: pnpm (never use npm)
 
@@ -109,7 +109,7 @@ pnpm format:fix                   # Prettier formatting
 - Use Sidekiq for background jobs
 
 ### Testing
-- Write RSpec tests for all new features (with rswag for API specs)
+- Write RSpec tests for all new features (with openapi-ruby for API specs)
 - Use FactoryBot for test data
 - Place request specs in `spec/requests/`
 

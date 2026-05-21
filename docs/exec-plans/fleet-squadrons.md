@@ -365,7 +365,7 @@ end
 
 ### Generate schema
 
-Run `./bin/generate-schema` after adding rswag specs.
+Run `./bin/generate-schema` after adding the openapi-ruby specs.
 
 ## Phase 5 — RSpec Request Specs
 
