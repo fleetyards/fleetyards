@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.25.0](https://github.com/fleetyards/fleetyards/compare/v6.24.0...v6.25.0) (2026-05-21)
+
+
+### Features
+
+* **admin:** load dashboard panels directly with centered loader ([0e86ca9](https://github.com/fleetyards/fleetyards/commit/0e86ca994dc66bb376dc05e4b5c1db5f8d74881f))
+
+
+### Bug Fixes
+
+* **ships:** surface refuel boom stats in hardpoints section ([0392c6f](https://github.com/fleetyards/fleetyards/commit/0392c6f3342923291979c1c45c5e5af355615172))
+
+
+### Chores
+
+* **format:** apply prettier formatting ([a7d2f36](https://github.com/fleetyards/fleetyards/commit/a7d2f36021e71256698e54d7b97f0db595abf1a2))
+
 ## [6.24.0](https://github.com/fleetyards/fleetyards/compare/v6.23.0...v6.24.0) (2026-05-19)
 
 
