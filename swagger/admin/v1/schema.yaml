@@ -4723,6 +4723,14 @@ paths:
       tags:
       - Users
       operationId: destroyUser
+      parameters:
+      - name: destroy_fleets
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Also destroy fleets where the user is the sole admin but other
+          members exist
       responses:
         '200':
           description: successful
@@ -4804,6 +4812,49 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/User"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/users/{user_id}/fleets":
+    parameters:
+    - name: user_id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: User Fleets list
+      tags:
+      - Users
+      operationId: userFleets
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminUserFleets"
         '404':
           description: not found
           content:
@@ -5530,6 +5581,69 @@ components:
       - createdAt
       - updatedAt
       title: AdminUser
+    AdminUserFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fleetId:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        fid:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        role:
+          type: string
+        permanent:
+          type: boolean
+        primary:
+          type: boolean
+        status:
+          type: string
+        membersCount:
+          type: integer
+        acceptedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - fleetId
+      - name
+      - slug
+      - permanent
+      - primary
+      - status
+      - membersCount
+      - createdAt
+      - updatedAt
+      title: AdminUserFleet
+    AdminUserFleets:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminUserFleet"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AdminUserFleets
     AdminUserInput:
       type: object
       properties:
@@ -6727,6 +6841,21 @@ components:
       - WEAPON_ATTACHMENT
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    ExternalFuelTank:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        componentName:
+          type: string
+          nullable: true
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      title: ExternalFuelTank
     Feature:
       type: object
       properties:
@@ -7181,6 +7310,8 @@ components:
       - fuel_intakes
       - quantumdrive
       - jumpdrive
+      - external_fuel_tanks
+      - refuel_boom
       - main_thrusters
       - retro_thrusters
       - vtol_thrusters
@@ -7220,6 +7351,8 @@ components:
       - FUEL_INTAKES
       - QUANTUMDRIVE
       - JUMPDRIVE
+      - EXTERNAL_FUEL_TANKS
+      - REFUEL_BOOM
       - MAIN_THRUSTERS
       - RETRO_THRUSTERS
       - VTOL_THRUSTERS
@@ -7260,6 +7393,8 @@ components:
       - seat
       - relay
       - other
+      - external_fuel_tank
+      - refuel_boom
       - unknown
       x-enumNames:
       - AVIONIC
@@ -7272,6 +7407,8 @@ components:
       - SEAT
       - RELAY
       - OTHER
+      - EXTERNAL_FUEL_TANK
+      - REFUEL_BOOM
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:
@@ -7397,9 +7534,32 @@ components:
           format: uuid
         galleryTypeEq:
           type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/ImageSortEnum"
+          - "$ref": "#/components/schemas/ImageSortEnum"
       additionalProperties: false
       example: {}
       title: ImageQuery
+    ImageSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - enabled asc
+      - enabled desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - ENABLED_ASC
+      - ENABLED_DESC
+      title: ImageSortEnum
     ImageUpdateBulkInput:
       type: object
       properties:
@@ -7930,6 +8090,24 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
+            extendedHolo:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
             frontView:
               "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
@@ -7966,6 +8144,30 @@ components:
               type: number
             fleetchartOffsetBeam:
               type: number
+            extendedLength:
+              type: number
+              nullable: true
+            extendedLengthLabel:
+              type: string
+              nullable: true
+            extendedBeam:
+              type: number
+              nullable: true
+            extendedBeamLabel:
+              type: string
+              nullable: true
+            extendedHeight:
+              type: number
+              nullable: true
+            extendedHeightLabel:
+              type: string
+              nullable: true
+            extendedFleetchartOffsetLength:
+              type: number
+              nullable: true
+            extendedFleetchartOffsetBeam:
+              type: number
+              nullable: true
             height:
               type: number
             heightLabel:
@@ -8003,6 +8205,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
+        refuelBoom:
+          "$ref": "#/components/schemas/RefuelBoom"
         onSale:
           type: boolean
         playerOwnable:
@@ -8097,6 +8305,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale
@@ -8204,6 +8413,9 @@ components:
         storeImageNew:
           type: string
       additionalProperties: false
+      required:
+      - name
+      - manufacturerId
       title: ModelCreateInput
     ModelExtended:
       type: object
@@ -8308,6 +8520,24 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
+            extendedHolo:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
             frontView:
               "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
@@ -8344,6 +8574,30 @@ components:
               type: number
             fleetchartOffsetBeam:
               type: number
+            extendedLength:
+              type: number
+              nullable: true
+            extendedLengthLabel:
+              type: string
+              nullable: true
+            extendedBeam:
+              type: number
+              nullable: true
+            extendedBeamLabel:
+              type: string
+              nullable: true
+            extendedHeight:
+              type: number
+              nullable: true
+            extendedHeightLabel:
+              type: string
+              nullable: true
+            extendedFleetchartOffsetLength:
+              type: number
+              nullable: true
+            extendedFleetchartOffsetBeam:
+              type: number
+              nullable: true
             height:
               type: number
             heightLabel:
@@ -8381,6 +8635,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
+        refuelBoom:
+          "$ref": "#/components/schemas/RefuelBoom"
         onSale:
           type: boolean
         playerOwnable:
@@ -8482,6 +8742,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale
@@ -9907,6 +10168,8 @@ components:
           type: boolean
         inGame:
           type: boolean
+        adiMap:
+          type: boolean
         ground:
           type: boolean
         mass:
@@ -9991,6 +10254,21 @@ components:
         fleetchartOffsetBeam:
           type: number
           nullable: true
+        extendedLength:
+          type: number
+          nullable: true
+        extendedBeam:
+          type: number
+          nullable: true
+        extendedHeight:
+          type: number
+          nullable: true
+        extendedFleetchartOffsetLength:
+          type: number
+          nullable: true
+        extendedFleetchartOffsetBeam:
+          type: number
+          nullable: true
         onSale:
           type: boolean
         playerOwnable:
@@ -10025,10 +10303,19 @@ components:
         quantumFuelTanks:
           type: string
           nullable: true
+        externalFuelTanks:
+          type: string
+          nullable: true
+        refuelBoom:
+          type: string
+          nullable: true
         storeImage:
           type: string
           nullable: true
         fleetchartImage:
+          type: string
+          nullable: true
+        extendedHolo:
           type: string
           nullable: true
         topView:
@@ -10053,6 +10340,30 @@ components:
           type: string
           nullable: true
         angledViewColored:
+          type: string
+          nullable: true
+        extendedTopView:
+          type: string
+          nullable: true
+        extendedSideView:
+          type: string
+          nullable: true
+        extendedFrontView:
+          type: string
+          nullable: true
+        extendedAngledView:
+          type: string
+          nullable: true
+        extendedTopViewColored:
+          type: string
+          nullable: true
+        extendedSideViewColored:
+          type: string
+          nullable: true
+        extendedFrontViewColored:
+          type: string
+          nullable: true
+        extendedAngledViewColored:
           type: string
           nullable: true
         brochure:
@@ -10386,6 +10697,32 @@ components:
       - selected
       - sliced
       title: PieChartStats
+    RefuelBoom:
+      type: object
+      properties:
+        armName:
+          type: string
+          nullable: true
+        armSize:
+          type: string
+          nullable: true
+        nozzleName:
+          type: string
+          nullable: true
+        nozzleSize:
+          type: string
+          nullable: true
+        captureRadius:
+          type: number
+          nullable: true
+        fuelFlowRate:
+          type: number
+          nullable: true
+        quantumFuelFlowRate:
+          type: number
+          nullable: true
+      additionalProperties: false
+      title: RefuelBoom
     RsiHangarItemKindEnum:
       type: string
       enum:

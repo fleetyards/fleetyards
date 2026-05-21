@@ -5709,6 +5709,14 @@ paths:
       tags:
       - Users
       operationId: destroyAccount
+      parameters:
+      - name: destroy_fleets
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Also destroy fleets where the user is the sole admin but other
+          members exist
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -7600,6 +7608,21 @@ components:
       - WEAPON_ATTACHMENT
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    ExternalFuelTank:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        componentName:
+          type: string
+          nullable: true
+        capacity:
+          type: number
+      additionalProperties: false
+      required:
+      - capacity
+      title: ExternalFuelTank
     FieldError:
       type: object
       properties:
@@ -9388,6 +9411,8 @@ components:
       - fuel_intakes
       - quantumdrive
       - jumpdrive
+      - external_fuel_tanks
+      - refuel_boom
       - main_thrusters
       - retro_thrusters
       - vtol_thrusters
@@ -9427,6 +9452,8 @@ components:
       - FUEL_INTAKES
       - QUANTUMDRIVE
       - JUMPDRIVE
+      - EXTERNAL_FUEL_TANKS
+      - REFUEL_BOOM
       - MAIN_THRUSTERS
       - RETRO_THRUSTERS
       - VTOL_THRUSTERS
@@ -9467,6 +9494,8 @@ components:
       - seat
       - relay
       - other
+      - external_fuel_tank
+      - refuel_boom
       - unknown
       x-enumNames:
       - AVIONIC
@@ -9479,6 +9508,8 @@ components:
       - SEAT
       - RELAY
       - OTHER
+      - EXTERNAL_FUEL_TANK
+      - REFUEL_BOOM
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:
@@ -9566,6 +9597,23 @@ components:
       additionalProperties: false
       example: {}
       title: ImageQuery
+    ImageSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      - updatedAt asc
+      - updatedAt desc
+      - enabled asc
+      - enabled desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - ENABLED_ASC
+      - ENABLED_DESC
+      title: ImageSortEnum
     Images:
       type: object
       properties:
@@ -9921,6 +9969,24 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
+            extendedHolo:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
             frontView:
               "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
@@ -9955,6 +10021,30 @@ components:
               type: number
             fleetchartOffsetBeam:
               type: number
+            extendedLength:
+              type: number
+              nullable: true
+            extendedLengthLabel:
+              type: string
+              nullable: true
+            extendedBeam:
+              type: number
+              nullable: true
+            extendedBeamLabel:
+              type: string
+              nullable: true
+            extendedHeight:
+              type: number
+              nullable: true
+            extendedHeightLabel:
+              type: string
+              nullable: true
+            extendedFleetchartOffsetLength:
+              type: number
+              nullable: true
+            extendedFleetchartOffsetBeam:
+              type: number
+              nullable: true
             height:
               type: number
             heightLabel:
@@ -9992,6 +10082,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
+        refuelBoom:
+          "$ref": "#/components/schemas/RefuelBoom"
         onSale:
           type: boolean
         playerOwnable:
@@ -10072,6 +10168,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale
@@ -10184,6 +10281,24 @@ components:
               "$ref": "#/components/schemas/MediaFile"
             fleetchartImage:
               type: string
+            extendedHolo:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedTopViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedSideViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedFrontViewColored:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledView:
+              "$ref": "#/components/schemas/MediaFile"
+            extendedAngledViewColored:
+              "$ref": "#/components/schemas/MediaFile"
             frontView:
               "$ref": "#/components/schemas/MediaFile"
             frontViewColored:
@@ -10218,6 +10333,30 @@ components:
               type: number
             fleetchartOffsetBeam:
               type: number
+            extendedLength:
+              type: number
+              nullable: true
+            extendedLengthLabel:
+              type: string
+              nullable: true
+            extendedBeam:
+              type: number
+              nullable: true
+            extendedBeamLabel:
+              type: string
+              nullable: true
+            extendedHeight:
+              type: number
+              nullable: true
+            extendedHeightLabel:
+              type: string
+              nullable: true
+            extendedFleetchartOffsetLength:
+              type: number
+              nullable: true
+            extendedFleetchartOffsetBeam:
+              type: number
+              nullable: true
             height:
               type: number
             heightLabel:
@@ -10255,6 +10394,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/FuelTank"
+        externalFuelTanks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ExternalFuelTank"
+        refuelBoom:
+          "$ref": "#/components/schemas/RefuelBoom"
         onSale:
           type: boolean
         playerOwnable:
@@ -10339,6 +10484,7 @@ components:
       - hasVideos
       - inGame
       - loaners
+      - manufacturer
       - media
       - metrics
       - onSale
@@ -11633,6 +11779,32 @@ components:
       - selected
       - sliced
       title: PieChartStats
+    RefuelBoom:
+      type: object
+      properties:
+        armName:
+          type: string
+          nullable: true
+        armSize:
+          type: string
+          nullable: true
+        nozzleName:
+          type: string
+          nullable: true
+        nozzleSize:
+          type: string
+          nullable: true
+        captureRadius:
+          type: number
+          nullable: true
+        fuelFlowRate:
+          type: number
+          nullable: true
+        quantumFuelFlowRate:
+          type: number
+          nullable: true
+      additionalProperties: false
+      title: RefuelBoom
     RsiHangarItemInput:
       type: object
       properties:
