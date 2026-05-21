@@ -13,7 +13,7 @@ RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema
       parameter name: :to, in: :query, schema: {type: :string, default: :now, format: :datetime}, required: false
 
       response(200, "successful") do
-        let(:from) { 1.day.ago.iso8601 }
+        let(:from) { 1.day.ago }
 
         run_test!
       end

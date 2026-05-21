@@ -20,7 +20,7 @@ RSpec.describe "admin/api/v1/model_module_packages", type: :openapi, openapi_sch
       produces "application/json"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {oneOf: [{type: :integer}, {type: :string, enum: ["all"]}], default: ModelModulePackage.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: ModelModulePackage.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {

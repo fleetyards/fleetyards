@@ -20,7 +20,7 @@ RSpec.describe "admin/api/v1/imports", type: :openapi, openapi_schema_name: :"ad
       tags "Imports"
 
       parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {oneOf: [{type: :integer}, {type: :string, enum: ["all"]}], default: Import.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Import.default_per_page}, required: false
       parameter "$ref": "#/components/parameters/SortingParameter"
       parameter name: "q", in: :query,
         schema: {

@@ -35,8 +35,8 @@ RSpec.describe "api/v1/wishlist", type: :openapi, openapi_schema_name: :"v1/sche
       tags "Wishlist"
       produces "application/json"
 
-      parameter name: "page", in: :query, schema: {type: :integer, default: 1}, required: false
-      parameter name: "perPage", in: :query, schema: {oneOf: [{type: :integer}, {type: :string, enum: ["all"]}], default: Vehicle.default_per_page}, required: false
+      parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Vehicle.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,
