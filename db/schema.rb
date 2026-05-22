@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_19_151308) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_22_203131) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -154,6 +154,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_19_151308) do
     t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
     t.index ["parent_type", "parent_id", "max_container_size_scu"], name: "index_cargo_holds_on_parent_and_max_container_size"
     t.index ["parent_type", "parent_id"], name: "index_cargo_holds_on_parent_type_and_parent_id"
+  end
+
+  create_table "compare_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "slug_set", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug_set"], name: "index_compare_images_on_slug_set", unique: true
   end
 
   create_table "components", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
