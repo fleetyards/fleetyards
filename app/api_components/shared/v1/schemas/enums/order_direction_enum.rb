@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class OrderDirectionEnum
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           DIRECTIONS = %w[asc desc].freeze
 

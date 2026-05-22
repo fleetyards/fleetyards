@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema" do
   let!(:models) { create_list(:model, 6, :with_docks) }
 
   path "/models/with-docks" do
@@ -21,7 +21,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
         style: :deepObject,
         explode: true,
         required: false
-      parameter name: "cacheId", in: :query, type: :string, required: false
+      parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Models"
@@ -34,7 +34,7 @@ RSpec.describe "api/v1/models", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Models"
 
         let(:perPage) { 1 }

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user, :with_rsi_handle, wanted_vehicle_count: 2) }
   let(:user) { author }
   let(:model_alpha) { create(:model, name: "Alpha") }
@@ -70,7 +70,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
 
       include_examples "oauth_auth"
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Hangar"
 
         let(:q) do
@@ -88,7 +88,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Hangar"
 
         let(:perPage) { 1 }
@@ -101,7 +101,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/Hangar"
 
         context "sorted by modelName asc" do

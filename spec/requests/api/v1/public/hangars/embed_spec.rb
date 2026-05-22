@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user) }
   let(:usernames) do
     [user.username]
@@ -39,7 +39,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         end
       end
 
-      response(200, "empty response") do
+      response(200, "empty response", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
@@ -52,7 +52,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         end
       end
 
-      response(200, "empty response") do
+      response(200, "empty response", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 

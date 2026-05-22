@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       items: [{
         id: "1",
@@ -42,10 +42,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input,
-        in: :body,
-        schema: {"$ref": "#/components/schemas/SyncRsiHangarInput"},
-        required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/SyncRsiHangarInput"}
 
       security [
         {SessionCookie: []},
@@ -64,7 +61,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/StandardError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

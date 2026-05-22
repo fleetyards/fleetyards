@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/stats", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:member) { create(:user, vehicle_count: 2) }
   let(:fleet) { create(:fleet, members: [member]) }
   let(:user) { member }
@@ -29,7 +29,7 @@ RSpec.describe "api/v1/fleets/stats", type: :request, swagger_doc: "v1/schema.ya
   end
 
   path "/fleets/{fleetSlug}/stats/models-by-classification" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     get("Fleet Stats - Models by Classification") do
       operationId "fleetModelsByClassification"

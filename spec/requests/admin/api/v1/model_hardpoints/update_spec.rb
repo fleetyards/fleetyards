@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/model_hardpoints", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/model_hardpoints", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_hardpoints]) }
   let(:model_hardpoint) { create(:model_hardpoint) }
   let(:id) { model_hardpoint.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Hardpoint"
     }
@@ -26,7 +26,7 @@ RSpec.describe "admin/api/v1/model_hardpoints", type: :request, swagger_doc: "ad
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelHardpointInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelHardpointInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelHardpoint"

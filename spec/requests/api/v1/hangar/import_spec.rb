@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let(:import_blob) do
@@ -11,7 +11,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       filename: "hangar_import.json"
     )
   end
-  let(:input) do
+  let(:request_body) do
     {
       import: import_blob.signed_id
     }
@@ -44,10 +44,7 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input,
-        in: :body,
-        schema: {"$ref": "#/components/schemas/ImportInput"},
-        required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/ImportInput"}
 
       security [
         {SessionCookie: []},
@@ -76,10 +73,10 @@ RSpec.describe "api/v1/hangar", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test!
       end
 
-      response(400, "bad request") do
+      response(400, "bad request", hidden: true) do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { nil }
+        let(:request_body) { nil }
 
         run_test!
       end

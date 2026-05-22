@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:another_member) { create(:user) }
@@ -32,8 +32,8 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
   end
 
   path "/fleets/{fleetSlug}/members/{username}" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
-    parameter name: "username", in: :path, type: :string, description: "username"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "username", in: :path, schema: {type: :string}, description: "username"
 
     delete("Remove Fleet Member") do
       operationId "destroyFleetMember"
@@ -52,7 +52,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
 
       include_examples "oauth_auth", success_status: 204
 
-      response(204, "successful") do
+      response(204, "successful", hidden: true) do
         description "Delete own membership if not admin"
         let(:user) { member }
 
@@ -68,7 +68,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         description "Member not found"
         schema "$ref": "#/components/schemas/StandardError"
 
@@ -86,7 +86,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         run_test!
       end
 
-      response(403, "forbidden") do
+      response(403, "forbidden", hidden: true) do
         description "You are not the owner of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 

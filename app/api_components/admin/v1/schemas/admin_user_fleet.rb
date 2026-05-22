@@ -4,7 +4,7 @@ module Admin
   module V1
     module Schemas
       class AdminUserFleet
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           type: :object,

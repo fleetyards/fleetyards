@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let(:vehicles) { create_list(:vehicle, 3, user: author) }
-  let(:input) do
+  let(:request_body) do
     {
       ids: vehicles.pluck(:id)
     }
@@ -39,7 +39,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleDestroyBulkInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleDestroyBulkInput"}
 
       security [
         {SessionCookie: []},

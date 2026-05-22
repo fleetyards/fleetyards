@@ -43,7 +43,7 @@ class ParamsHelper
   end
 
   private def load_schema(schema_path)
-    YAML.load_file(Rails.root.join(Rswag::Api.config.openapi_root, schema_path))
+    YAML.load_file(Rails.root.join(OpenapiRuby.configuration.schema_output_dir, schema_path))
   end
 
   private def extract_type(type)

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/users", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       discord: "DiscordServer"
     }
@@ -32,7 +32,7 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/UserUpdateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/UserUpdateInput"}
 
       security [
         {SessionCookie: []},
@@ -50,7 +50,7 @@ RSpec.describe "api/v1/users", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 

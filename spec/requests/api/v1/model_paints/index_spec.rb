@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/model_paints", type: :openapi, openapi_schema_name: :"v1/schema" do
   let!(:model_paints) { create_list(:model_paint, 3) }
 
   path "/model-paints" do
@@ -26,14 +26,6 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelPaint"}
 
-        after do |example|
-          example.metadata[:response][:content] = {
-            "application/json" => {
-              example: JSON.parse(response.body, symbolize_names: true)
-            }
-          }
-        end
-
         run_test! do |response|
           data = JSON.parse(response.body)
 
@@ -42,7 +34,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelPaint"}
 
@@ -60,7 +52,7 @@ RSpec.describe "api/v1/model_paints", type: :request, swagger_doc: "v1/schema.ya
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/ModelPaint"}
 

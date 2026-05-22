@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/features", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/features", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:features]) }
   let(:id) { "TestFeature" }
   let(:target_user) { create(:user) }
@@ -22,9 +22,9 @@ RSpec.describe "admin/api/v1/features", type: :request, swagger_doc: "admin/v1/s
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :body, in: :body, schema: {"$ref": "#/components/schemas/FeatureActorInput"}
+      request_body schema: {"$ref": "#/components/schemas/FeatureActorInput"}
 
-      let(:body) { {actor_type: "User", actor_id: target_user.id} }
+      let(:request_body) { {actor_type: "User", actor_id: target_user.id} }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Feature"

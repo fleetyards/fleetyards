@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/oauth_applications", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/oauth_applications", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let(:oauth_application) { create(:oauth_application, owner: author) }
   let(:id) { oauth_application.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated App"
     }
@@ -36,7 +36,7 @@ RSpec.describe "api/v1/oauth_applications", type: :request, swagger_doc: "v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/OauthApplicationUpdateInput"}
 
       security [
         {SessionCookie: []},
@@ -54,7 +54,7 @@ RSpec.describe "api/v1/oauth_applications", type: :request, swagger_doc: "v1/sch
         end
       end
 
-      response(200, "successful with OAuth token") do
+      response(200, "successful with OAuth token", hidden: true) do
         let(:user) { nil }
         let(:Authorization) { "Bearer #{oauth_access_token.token}" }
 

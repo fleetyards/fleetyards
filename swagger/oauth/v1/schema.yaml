@@ -6,57 +6,49 @@ info:
   license:
     name: GNU General Public License v3.0
     url: https://github.com/fleetyards/fleetyards/blob/main/LICENSE
-servers:
-- url: http://fleetyards.test/oauth
-  description: Dev Server
-- url: https://fleetyards.net/oauth
-  description: Production Server
-- url: https://fleetyards.dev/oauth
-  description: Staging Server
-security: []
 paths:
   "/authorize":
     get:
       summary: Pre-authorize OAuth application
-      operationId: oauthPreAuthorize
       tags:
       - OAuth
+      operationId: oauthPreAuthorize
       parameters:
       - name: client_id
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: redirect_uri
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: response_type
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: scope
         in: query
-        required: true
         schema:
           type: string
+        required: true
       - name: state
         in: query
-        required: false
         schema:
           type: string
+        required: false
       - name: code_challenge
         in: query
-        required: false
         schema:
           type: string
+        required: false
       - name: code_challenge_method
         in: query
-        required: false
         schema:
           type: string
+        required: false
       security:
       - SessionCookie: []
       responses:
@@ -72,14 +64,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
     post:
       summary: Authorize OAuth application
-      operationId: oauthAuthorize
       tags:
       - OAuth
-      parameters: []
+      operationId: oauthAuthorize
       security:
       - SessionCookie: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OauthAuthorizationInput"
       responses:
         '200':
           description: successful
@@ -93,20 +92,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Deny OAuth authorization
+      tags:
+      - OAuth
+      operationId: oauthDeny
+      security:
+      - SessionCookie: []
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               "$ref": "#/components/schemas/OauthAuthorizationInput"
-        required: true
-    delete:
-      summary: Deny OAuth authorization
-      operationId: oauthDeny
-      tags:
-      - OAuth
-      parameters: []
-      security:
-      - SessionCookie: []
       responses:
         '400':
           description: denied
@@ -120,12 +120,13 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/OauthAuthorizationInput"
-        required: true
+servers:
+- url: http://fleetyards.test/oauth
+  description: Dev Server
+- url: https://fleetyards.net/oauth
+  description: Production Server
+- url: https://fleetyards.dev/oauth
+  description: Staging Server
 components:
   schemas:
     OauthAuthorizationInput:
@@ -237,3 +238,21 @@ components:
       description: Session Cookie
       name: FLTYRD
       in: cookie
+  responses:
+    SchemaValidationError:
+      description: Request validation failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              details:
+                type: array
+                items:
+                  type: string
+            required:
+            - error
+            - details
+security: []

@@ -6,7 +6,7 @@ module Admin
       module Models
         module Hardpoints
           class ModelHardpoint
-            include Rswag::SchemaComponents::Component
+            include OpenapiRuby::Components::Base
 
             schema({
               type: :object,

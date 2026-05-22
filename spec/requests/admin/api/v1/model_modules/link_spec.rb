@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/model_modules", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/model_modules", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_modules]) }
   let(:model) { create(:model) }
   let(:model_module) { create(:model_module) }
@@ -21,15 +21,15 @@ RSpec.describe "admin/api/v1/model_modules", type: :request, swagger_doc: "admin
       produces "application/json"
 
       parameter name: :id, in: :path, required: true, schema: {type: :string, format: :uuid}
-      parameter name: :input, in: :body, schema: {
+      request_body required: true, schema: {
         type: :object,
         properties: {
           modelId: {type: :string, format: :uuid}
         },
         required: [:modelId]
-      }, required: true
+      }
 
-      let(:input) { {modelId: model.id} }
+      let(:request_body) { {modelId: model.id} }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelModule"
@@ -52,15 +52,15 @@ RSpec.describe "admin/api/v1/model_modules", type: :request, swagger_doc: "admin
       produces "application/json"
 
       parameter name: :id, in: :path, required: true, schema: {type: :string, format: :uuid}
-      parameter name: :input, in: :body, schema: {
+      request_body required: true, schema: {
         type: :object,
         properties: {
           modelId: {type: :string, format: :uuid}
         },
         required: [:modelId]
-      }, required: true
+      }
 
-      let(:input) { {modelId: model.id} }
+      let(:request_body) { {modelId: model.id} }
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelModule"

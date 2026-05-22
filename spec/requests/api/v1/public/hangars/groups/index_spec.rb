@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/hangars/groups", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangars/groups", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, public_hangar: true) }
   let(:username) { user.username }
 
@@ -11,7 +11,7 @@ RSpec.describe "api/v1/hangars/groups", type: :request, swagger_doc: "v1/schema.
   end
 
   path "/public/hangars/{username}/groups" do
-    parameter name: "username", in: :path, type: :string, description: "Username", required: true
+    parameter name: "username", in: :path, schema: {type: :string}, description: "Username", required: true
 
     get("HangarGroup list") do
       operationId "publicHangarGroups"

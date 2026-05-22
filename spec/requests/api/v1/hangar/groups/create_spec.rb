@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/hangar/groups", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Hangar Group One Test",
       color: "#000000"
@@ -39,7 +39,7 @@ RSpec.describe "api/v1/hangar/groups", type: :request, swagger_doc: "v1/schema.y
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/HangarGroupCreateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/HangarGroupCreateInput"}
 
       security [
         {SessionCookie: []},

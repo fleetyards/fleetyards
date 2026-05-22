@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user, :public_hangar) }
   let(:username) { user.username }
   let(:model_with_images) { create(:model, :with_store_image, :with_description) }
@@ -13,7 +13,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
   end
 
   path "/public/hangars/{username}" do
-    parameter name: "username", in: :path, type: :string, required: true
+    parameter name: "username", in: :path, schema: {type: :string}, required: true
 
     get("Public Hangar") do
       operationId "publicHangar"
@@ -42,7 +42,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:q) do
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/HangarPublic"
 
         let(:perPage) { 1 }
@@ -81,7 +81,7 @@ RSpec.describe "api/v1/public/hangars", type: :request, swagger_doc: "v1/schema.
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:username) { "not-a-user" }

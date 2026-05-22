@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:user) { admin }
   let(:slug) { fleet.slug }
-  let(:input) do
+  let(:request_body) do
     {
       discord: "https://discord.gg/1234567890"
     }
@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
   end
 
   path "/fleets/{slug}" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+    parameter name: "slug", in: :path, schema: {type: :string}, description: "slug"
 
     put("Update Fleet") do
       operationId "updateFleet"
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetUpdateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetUpdateInput"}
 
       security [
         {SessionCookie: []},
@@ -61,10 +61,10 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         end
       end
 
-      response(200, "successful with nullable fields") do
+      response(200, "successful with nullable fields", hidden: true) do
         schema "$ref": "#/components/schemas/Fleet"
 
-        let(:input) do
+        let(:request_body) do
           {
             fid: fleet.fid,
             name: fleet.name,
@@ -101,7 +101,7 @@ RSpec.describe "api/v1/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
         run_test!
       end
 
-      response(403, "forbidden") do
+      response(403, "forbidden", hidden: true) do
         description "You are not an Admin or Officer of this Fleet"
         schema "$ref": "#/components/schemas/StandardError"
 

@@ -5,7 +5,7 @@ module Shared
     module Schemas
       module Enums
         class ImportTypeEnum
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           TYPES = %w[
             Imports::ModelImport Imports::ModelsImport Imports::ScData::AllImport

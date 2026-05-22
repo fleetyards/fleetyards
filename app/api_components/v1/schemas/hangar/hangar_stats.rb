@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Hangar
       class HangarStats
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         schema({
           type: :object,

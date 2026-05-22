@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/fleets", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/fleets", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:user) { create(:user) }
   let(:fleet_admin) { create(:fleet, :with_description, :with_logo, :with_social_links, admins: [user]) }
   let(:fleet_member) { create(:fleet, :with_description, members: [user]) }
@@ -14,14 +14,14 @@ RSpec.describe "api/v1/public/fleets", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/public/fleets/{slug}" do
-    parameter name: "slug", in: :path, type: :string, description: "slug"
+    parameter name: "slug", in: :path, schema: {type: :string}, description: "slug"
 
     get("Fleet Detail") do
       operationId "publicFleet"
       tags "Fleets"
       produces "application/json"
 
-      response(200, "successful for admin of fleet") do
+      response(200, "successful") do
         schema "$ref": "#/components/schemas/Fleet"
 
         let(:slug) { fleet_admin.slug }
@@ -29,7 +29,7 @@ RSpec.describe "api/v1/public/fleets", type: :request, swagger_doc: "v1/schema.y
         run_test!
       end
 
-      response(200, "successful for member of fleet") do
+      response(200, "successful for member of fleet", hidden: true) do
         schema "$ref": "#/components/schemas/Fleet"
 
         let(:slug) { fleet_member.slug }
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/public/fleets", type: :request, swagger_doc: "v1/schema.y
         run_test!
       end
 
-      response(200, "successful for other fleet") do
+      response(200, "successful for other fleet", hidden: true) do
         schema "$ref": "#/components/schemas/Fleet"
 
         let(:slug) { fleet_other.slug }
@@ -45,7 +45,7 @@ RSpec.describe "api/v1/public/fleets", type: :request, swagger_doc: "v1/schema.y
         run_test!
       end
 
-      response(200, "successful without seesion") do
+      response(200, "successful without seesion", hidden: true) do
         schema "$ref": "#/components/schemas/Fleet"
 
         let(:slug) { fleet_other.slug }
@@ -62,7 +62,7 @@ RSpec.describe "api/v1/public/fleets", type: :request, swagger_doc: "v1/schema.y
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:slug) { "unknown-fleet" }

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/public/fleets/vehicles", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:member) { create(:user, vehicle_count: 3) }
   let(:fleet) { create(:fleet, public_fleet: true, members: [member]) }
   let(:fleetSlug) { fleet.slug }
@@ -16,7 +16,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
   end
 
   path "/public/fleets/{fleetSlug}/vehicles/embed" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     get("Public Fleet Vehicles Embed for the Fleetyards Widget") do
       operationId "publicFleetVehiclesEmbed"
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array,
           items: {"$ref": "#/components/schemas/VehiclePublic"}
 
@@ -69,7 +69,7 @@ RSpec.describe "api/v1/public/fleets/vehicles", type: :request, swagger_doc: "v1
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:fleetSlug) { "unknown-fleet" }

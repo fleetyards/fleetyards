@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/vehicles", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user, vehicle_count: 2) }
   let(:member) { create(:user, vehicle_count: 1) }
   let(:user) { admin }
@@ -36,7 +36,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
   end
 
   path "/fleets/{fleetSlug}/vehicles/export" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     get("Fleet Vehicles List") do
       operationId "fleetVehiclesExport"
@@ -71,7 +71,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
 
       include_examples "oauth_auth"
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
 
         let(:q) do
@@ -88,7 +88,7 @@ RSpec.describe "api/v1/fleets/vehicles", type: :request, swagger_doc: "v1/schema
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema type: :array, items: {"$ref": "#/components/schemas/FleetVehicleExport"}
 
         let(:user) { member }

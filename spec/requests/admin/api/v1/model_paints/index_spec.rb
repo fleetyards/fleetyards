@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/model_paints", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/model_paints", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_paints]) }
   let(:model_paints) { create_list(:model_paint, 3) }
 
@@ -41,7 +41,7 @@ RSpec.describe "admin/api/v1/model_paints", type: :request, swagger_doc: "admin/
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ModelPaints"
 
         let(:q) do
@@ -57,7 +57,7 @@ RSpec.describe "admin/api/v1/model_paints", type: :request, swagger_doc: "admin/
         end
       end
 
-      response(200, "successful") do
+      response(200, "successful", hidden: true) do
         schema "$ref": "#/components/schemas/ModelPaints"
 
         let(:perPage) { 2 }

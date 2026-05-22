@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/images", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:images]) }
   let(:images) { create_list(:image, 3) }
-  let(:input) do
+  let(:request_body) do
     {
       ids: images.pluck(:id),
       enabled: true
@@ -24,7 +24,7 @@ RSpec.describe "admin/api/v1/images", type: :request, swagger_doc: "admin/v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ImageUpdateBulkInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/ImageUpdateBulkInput"}
 
       response(200, "successful") do
         run_test!

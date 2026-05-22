@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/notifications", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/notifications", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { author }
   let!(:notification) { create(:notification, user: author) }
@@ -28,7 +28,7 @@ RSpec.describe "api/v1/notifications", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/notifications/{id}" do
-    parameter name: "id", in: :path, type: :string, required: true
+    parameter name: "id", in: :path, schema: {type: :string}, required: true
 
     delete("Delete a notification") do
       operationId "destroyNotification"

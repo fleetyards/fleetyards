@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/invite_urls", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:member) { create(:user) }
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, members: [member], admins: [admin]) }
@@ -32,8 +32,8 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
   end
 
   path "/fleets/{fleetSlug}/invite-urls/{token}" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
-    parameter name: "token", in: :path, type: :string, description: "Invite Url Token"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
+    parameter name: "token", in: :path, schema: {type: :string}, description: "Invite Url Token"
 
     delete("Remove Fleet Invite Url") do
       operationId "destroyFleetInviteUrl"
@@ -60,7 +60,7 @@ RSpec.describe "api/v1/fleets/invite_urls", type: :request, swagger_doc: "v1/sch
         run_test!
       end
 
-      response(404, "not found") do
+      response(404, "not found", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         let(:token) { "unknown-token" }

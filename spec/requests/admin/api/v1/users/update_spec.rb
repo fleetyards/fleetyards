@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/users", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:admin) { create(:admin_user, resource_access: [:users]) }
   let(:user) { create(:user) }
   let(:id) { user.id }
-  let(:input) do
+  let(:request_body) do
     {
       username: "updated_username"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/users", type: :request, swagger_doc: "admin/v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/UserInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/UserInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/User"

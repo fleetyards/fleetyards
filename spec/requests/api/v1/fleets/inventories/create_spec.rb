@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/inventories", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/inventories", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:user) { admin }
   let(:fleetSlug) { fleet.slug }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Mining Stockpile",
       description: "Resources from mining operations",
@@ -38,7 +38,7 @@ RSpec.describe "api/v1/fleets/inventories", type: :request, swagger_doc: "v1/sch
   end
 
   path "/fleets/{fleetSlug}/inventories" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     post("Create Fleet Inventory") do
       operationId "createFleetInventory"
@@ -46,7 +46,7 @@ RSpec.describe "api/v1/fleets/inventories", type: :request, swagger_doc: "v1/sch
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetInventoryCreateInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/FleetInventoryCreateInput"}
 
       security [
         {SessionCookie: []},

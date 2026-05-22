@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/vehicles", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:author) { create(:user) }
   let(:user) { nil }
   let(:Authorization) { nil }
@@ -21,7 +21,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
     )
   end
   let(:model) { create(:model) }
-  let(:input) do
+  let(:request_body) do
     {
       vehicles: [
         {
@@ -43,7 +43,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/VehicleCreateBulkInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/VehicleCreateBulkInput"}
 
       security [{
         SessionCookie: [],
@@ -57,7 +57,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         run_test!
       end
 
-      response(204, "successful") do
+      response(204, "successful", hidden: true) do
         let(:user) { author }
 
         run_test!
@@ -71,7 +71,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         run_test!
       end
 
-      response(401, "unauthorized") do
+      response(401, "unauthorized", hidden: true) do
         let(:Authorization) { "Bearer NOT_AUTHORIZED" }
 
         schema "$ref": "#/components/schemas/StandardError"
@@ -79,7 +79,7 @@ RSpec.describe "api/v1/vehicles", type: :request, swagger_doc: "v1/schema.yaml" 
         run_test!
       end
 
-      response(401, "unauthorized") do
+      response(401, "unauthorized", hidden: true) do
         schema "$ref": "#/components/schemas/StandardError"
 
         run_test!

@@ -5,7 +5,7 @@ module Admin
     module Schemas
       module Queries
         class ModelLoanerQuery
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             type: :object,

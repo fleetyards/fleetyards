@@ -6,7 +6,7 @@ module Admin
       module Models
         module Paints
           class ModelPaint < ::V1::Schemas::Models::Paints::ModelPaint
-            include Rswag::SchemaComponents::Component
+            include OpenapiRuby::Components::Base
 
             schema({
               properties: {

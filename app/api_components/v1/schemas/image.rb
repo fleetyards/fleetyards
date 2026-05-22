@@ -3,7 +3,7 @@
 module V1
   module Schemas
     class Image < ::Shared::V1::Schemas::MediaFile
-      include Rswag::SchemaComponents::Component
+      include OpenapiRuby::Components::Base
 
       schema({
         type: :object,

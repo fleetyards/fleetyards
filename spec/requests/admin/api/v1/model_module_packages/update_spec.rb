@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/model_module_packages", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/model_module_packages", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_module_packages]) }
   let(:model_module_package) { create(:model_module_package) }
   let(:id) { model_module_package.id }
-  let(:input) do
+  let(:request_body) do
     {
       name: "Updated Package"
     }
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/model_module_packages", type: :request, swagger_doc
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelModulePackageInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelModulePackageInput"}
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/ModelModulePackage"

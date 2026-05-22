@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/members", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:another_member) { create(:user) }
@@ -31,7 +31,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
   end
 
   path "/fleets/{fleetSlug}/members" do
-    parameter name: "fleetSlug", in: :path, type: :string, description: "Fleet slug"
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}, description: "Fleet slug"
 
     get("Fleet Member List") do
       operationId "fleetMembers"
@@ -48,7 +48,7 @@ RSpec.describe "api/v1/fleets/members", type: :request, swagger_doc: "v1/schema.
         style: :deepObject,
         explode: true,
         required: false
-      parameter name: "cacheId", in: :query, type: :string, required: false
+      parameter name: "cacheId", in: :query, schema: {type: :string}, required: false
 
       security [
         {SessionCookie: []},

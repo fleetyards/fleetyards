@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "admin/api/v1/model_loaners", type: :request, swagger_doc: "admin/v1/schema.yaml" do
+RSpec.describe "admin/api/v1/model_loaners", type: :openapi, openapi_schema_name: :"admin/v1/schema" do
   let(:user) { create(:admin_user, resource_access: [:model_loaners]) }
   let(:model) { create(:model) }
   let(:loaner_model) { create(:model) }
-  let(:input) do
+  let(:request_body) do
     {
       modelId: model.id,
       loanerModelId: loaner_model.id
@@ -25,7 +25,7 @@ RSpec.describe "admin/api/v1/model_loaners", type: :request, swagger_doc: "admin
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/ModelLoanerInput"}, required: true
+      request_body required: true, schema: {"$ref": "#/components/schemas/ModelLoanerInput"}
 
       response(201, "successful") do
         schema "$ref": "#/components/schemas/ModelLoaner"
@@ -36,7 +36,7 @@ RSpec.describe "admin/api/v1/model_loaners", type: :request, swagger_doc: "admin
       response(400, "bad request") do
         schema "$ref": "#/components/schemas/ValidationError"
 
-        let(:input) { {modelId: "00000000-0000-0000-0000-000000000000"} }
+        let(:request_body) { {modelId: "00000000-0000-0000-0000-000000000000"} }
 
         run_test!
       end
