@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "image_processing/mini_magick"
+require "image_processing/vips"
 
 module Frontend
   class BaseController < ApplicationController
@@ -190,19 +190,19 @@ module Frontend
         tempfile.binmode
         model.store_image.download { |chunk| tempfile.write(chunk) }
         tempfile.rewind
-        image = MiniMagick::Image.new(tempfile.path)
-        image.write(Rails.root.join("tmp", model.slug))
-        image.write(Rails.root.join("tmp", "#{filename_base}-base")) if index.zero?
+        image = Vips::Image.new_from_file(tempfile.path)
+        image.write_to_file(Rails.root.join("tmp", "#{model.slug}.jpg").to_s)
+        image.write_to_file(Rails.root.join("tmp", "#{filename_base}-base.jpg").to_s) if index.zero?
         tempfile.close!
       end
 
-      base_image = MiniMagick::Image.new(Rails.root.join("tmp", "#{filename_base}-base"))
-      base_image_pipeline = ImageProcessing::MiniMagick.source(Rails.root.join("tmp", "#{filename_base}-base"))
+      base_image = Vips::Image.new_from_file(Rails.root.join("tmp", "#{filename_base}-base.jpg").to_s)
+      base_image_pipeline = ImageProcessing::Vips.source(Rails.root.join("tmp", "#{filename_base}-base.jpg"))
 
       images = models.map do |model|
-        image = MiniMagick::Image.new(Rails.root.join("tmp", model.slug))
-        ImageProcessing::MiniMagick
-          .source(Rails.root.join("tmp", model.slug))
+        image = Vips::Image.new_from_file(Rails.root.join("tmp", "#{model.slug}.jpg").to_s)
+        ImageProcessing::Vips
+          .source(Rails.root.join("tmp", "#{model.slug}.jpg"))
           .resize_to_fill!(image.width / models.size, image.height)
       end
 
@@ -218,9 +218,9 @@ module Frontend
 
       File.chmod(0o644, path)
 
-      FileUtils.rm(Rails.root.join("tmp", "#{filename_base}-base"))
+      FileUtils.rm(Rails.root.join("tmp", "#{filename_base}-base.jpg"))
       models.each do |model|
-        FileUtils.rm(Rails.root.join("tmp", model.slug))
+        FileUtils.rm(Rails.root.join("tmp", "#{model.slug}.jpg"))
       end
 
       "https://fleetyards.net/compare/#{filename}"
