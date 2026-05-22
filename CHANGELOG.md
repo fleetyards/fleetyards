@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.25.1](https://github.com/fleetyards/fleetyards/compare/v6.25.0...v6.25.1) (2026-05-22)
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.29 to 6.1.30 ([#3967](https://github.com/fleetyards/fleetyards/issues/3967)) ([a066f0b](https://github.com/fleetyards/fleetyards/commit/a066f0be4c21a6c24e925985a8ea1da0e95bca01))
+* **deps-dev:** bump @types/node from 25.9.0 to 25.9.1 ([#3968](https://github.com/fleetyards/fleetyards/issues/3968)) ([b662643](https://github.com/fleetyards/fleetyards/commit/b6626439b49ccf79c50e8e737f2bf56cd289f817))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#3972](https://github.com/fleetyards/fleetyards/issues/3972)) ([c46f7c6](https://github.com/fleetyards/fleetyards/commit/c46f7c6694f3d465ec5b1f2ba15f2fc41f3c5d3e))
+* **deps-dev:** bump orval from 8.11.0 to 8.12.2 ([#3989](https://github.com/fleetyards/fleetyards/issues/3989)) ([cc7d4ea](https://github.com/fleetyards/fleetyards/commit/cc7d4ea0cd54a87807c3791f0bb6ee3ddc418e5c))
+* **deps-dev:** bump sass from 1.99.0 to 1.100.0 ([#3986](https://github.com/fleetyards/fleetyards/issues/3986)) ([5a75f7a](https://github.com/fleetyards/fleetyards/commit/5a75f7ae2a36b93ebb166e1efbdcf577b053272a))
+* **deps-dev:** bump vite from 8.0.13 to 8.0.14 ([#3988](https://github.com/fleetyards/fleetyards/issues/3988)) ([6c13476](https://github.com/fleetyards/fleetyards/commit/6c134768f9eb390c877c8fb2636b7746d4dc826c))
+* **deps-dev:** bump vitest from 4.1.6 to 4.1.7 ([#3978](https://github.com/fleetyards/fleetyards/issues/3978)) ([98925f6](https://github.com/fleetyards/fleetyards/commit/98925f6bfd5c31603dccfba7b2c90e88a17ef3dc))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.0 to 3.3.1 ([#3970](https://github.com/fleetyards/fleetyards/issues/3970)) ([d285201](https://github.com/fleetyards/fleetyards/commit/d28520165863d8431b8d8d16f695b256a9d678d4))
+* **deps:** bump aws-sdk-s3 from 1.223.0 to 1.224.0 ([#3987](https://github.com/fleetyards/fleetyards/issues/3987)) ([1456fe5](https://github.com/fleetyards/fleetyards/commit/1456fe58e3a8977542e1f8954f16b98203021bfd))
+* **deps:** bump image_processing from 1.14.0 to 2.0.1 ([#3977](https://github.com/fleetyards/fleetyards/issues/3977)) ([18dc167](https://github.com/fleetyards/fleetyards/commit/18dc167702e93f465a831ba7641db13586ab3079))
+
 ## [6.25.0](https://github.com/fleetyards/fleetyards/compare/v6.24.0...v6.25.0) (2026-05-21)
 
 
