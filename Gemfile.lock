@@ -976,6 +976,7 @@ DEPENDENCIES
   rollups
   rqrcode
   rspec-rails
+  ruby-vips
   shoulda-matchers
   sidekiq (~> 8.1)
   sidekiq-failures

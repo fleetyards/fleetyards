@@ -80,6 +80,7 @@ gem "after_commit_everywhere"
 
 gem "image_processing", "~> 1.0"
 gem "mini_magick"
+gem "ruby-vips", require: false
 
 gem "geocoder"
 
