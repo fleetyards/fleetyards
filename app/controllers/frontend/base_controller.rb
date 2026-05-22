@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "image_processing/mini_magick"
-
 module Frontend
   class BaseController < ApplicationController
     before_action :check_short_domain
@@ -87,8 +85,7 @@ module Frontend
           "meta.compare_ships.description.vs",
           models: @models.map(&:name).join(" vs. ")
         )
-        @og_image = @models.first.store_image.attached? ? rails_blob_url(@models.first.store_image) : nil
-        # compare_image(@models) TODO: needs to be updated for AWS images
+        @og_image = compare_image(@models)
       end
 
       render_frontend
@@ -173,59 +170,15 @@ module Frontend
       end
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity
     private def compare_image(models)
-      return (models.first.store_image.attached? ? rails_blob_url(models.first.store_image) : nil) if models.size == 1
       return if models.blank?
+      return rails_blob_url(models.first.store_image) if models.size == 1 && models.first.store_image.attached?
 
-      filename_base = models.map(&:slug).join("-")
-      filename = "#{filename_base}.jpg"
-      path = Rails.public_path.join("compare", filename)
-      return "https://fleetyards.net/compare/#{filename}" if File.exist?(path)
+      record = CompareImage.for(models)
+      return unless record&.image&.attached?
 
-      models.each_with_index do |model, index|
-        next unless model.store_image.attached?
-
-        tempfile = Tempfile.new([model.slug, ".jpg"])
-        tempfile.binmode
-        model.store_image.download { |chunk| tempfile.write(chunk) }
-        tempfile.rewind
-        image = MiniMagick::Image.new(tempfile.path)
-        image.write(Rails.root.join("tmp", model.slug))
-        image.write(Rails.root.join("tmp", "#{filename_base}-base")) if index.zero?
-        tempfile.close!
-      end
-
-      base_image = MiniMagick::Image.new(Rails.root.join("tmp", "#{filename_base}-base"))
-      base_image_pipeline = ImageProcessing::MiniMagick.source(Rails.root.join("tmp", "#{filename_base}-base"))
-
-      images = models.map do |model|
-        image = MiniMagick::Image.new(Rails.root.join("tmp", model.slug))
-        ImageProcessing::MiniMagick
-          .source(Rails.root.join("tmp", model.slug))
-          .resize_to_fill!(image.width / models.size, image.height)
-      end
-
-      composite = base_image_pipeline.composite(images.first)
-
-      images.each_with_index do |image, index|
-        next if index.zero?
-
-        composite = composite.composite(image, offset: [(base_image.width / models.size) * index, 0])
-      end
-
-      composite.call(destination: path)
-
-      File.chmod(0o644, path)
-
-      FileUtils.rm(Rails.root.join("tmp", "#{filename_base}-base"))
-      models.each do |model|
-        FileUtils.rm(Rails.root.join("tmp", model.slug))
-      end
-
-      "https://fleetyards.net/compare/#{filename}"
+      rails_blob_url(record.image)
     end
-    # rubocop:enable Metrics/CyclomaticComplexity
 
     private def compare_params
       @compare_params ||= params.permit(models: [])
