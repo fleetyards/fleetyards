@@ -244,8 +244,8 @@ GEM
       net-http (~> 0.5)
     faraday-retry (2.4.0)
       faraday (~> 2.0)
-    ffi (1.17.3-arm64-darwin)
-    ffi (1.17.3-x86_64-linux-gnu)
+    ffi (1.17.4-arm64-darwin)
+    ffi (1.17.4-x86_64-linux-gnu)
     fiber-storage (1.0.1)
     flatware (2.4.0)
       benchmark
@@ -325,9 +325,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.8, >= 1.8.1)
       terminal-table (>= 1.5.1)
-    image_processing (1.14.0)
-      mini_magick (>= 4.9.5, < 6)
-      ruby-vips (>= 2.0.17, < 3)
+    image_processing (2.0.1)
     inky-rb (1.4.2.1)
       foundation_emails (~> 2)
       nokogiri
@@ -918,7 +916,7 @@ DEPENDENCIES
   groupdate
   i18n
   i18n-tasks (~> 1.0)
-  image_processing (~> 1.0)
+  image_processing (~> 2.0)
   inky-rb
   irb
   jbuilder
