@@ -9,7 +9,9 @@ frontend_options = {
 namespace :frontend, **frontend_options do
   get "ships/mercury", to: redirect("/ships/CRUS-mercury-star-runner")
   get "ships/compare", to: redirect("/compare/")
-  get "compare/ships", to: redirect("/compare/")
+  get "compare/ships", to: redirect(status: 301) { |_params, req|
+    req.query_string.empty? ? "/compare/" : "/compare/?#{req.query_string}"
+  }
 
   get "ships/:slug", to: "base#model", as: :model
   get "ships/:slug/images", to: "base#model_images", as: :model_images
@@ -21,7 +23,7 @@ namespace :frontend, **frontend_options do
   get "hangar/:username/stats", to: "hangar#public"
   get "hangar/:username/wishlist", to: "hangar#wishlist", as: :public_wishlist
 
-  get "compare/ships", to: "base#compare_models"
+  get "compare", to: "base#compare_models"
 
   get "fleets/invites", to: "base#index", as: :fleets_invites
   get "fleets/invites/:token", to: "fleets#invite", as: :fleet_invite
