@@ -6,6 +6,7 @@ module Notifications
   class NewModelJob < Notifications::BaseJob
     def perform(model_id)
       model = Model.find(model_id)
+      return if model.notified?
 
       Discord::NewShip.new(model:).run
 

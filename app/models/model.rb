@@ -250,7 +250,7 @@ class Model < ApplicationRecord
 
   after_save :send_on_sale_notification, if: :saved_change_to_on_sale?
   after_save :broadcast_update
-  after_save :send_new_model_notification
+  after_save :send_new_model_notification, if: :saved_change_to_rsi_id?
 
   validates :name, presence: true, uniqueness: {scope: :manufacturer_id}
 
