@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.25.2](https://github.com/fleetyards/fleetyards/compare/v6.25.1...v6.25.2) (2026-05-24)
+
+
+### Bug Fixes
+
+* **notifications:** prevent duplicate new-model Discord posts ([eb067c4](https://github.com/fleetyards/fleetyards/commit/eb067c489e7082cc0d0d2be8a45c1fde50cc1af7))
+* route /compare to compare_models so OG metadata is set ([#3996](https://github.com/fleetyards/fleetyards/issues/3996)) ([6be0e32](https://github.com/fleetyards/fleetyards/commit/6be0e328f955e033753521fc44e1e5a02c2d5be4))
+
 ## [6.25.1](https://github.com/fleetyards/fleetyards/compare/v6.25.0...v6.25.1) (2026-05-22)
 
 
