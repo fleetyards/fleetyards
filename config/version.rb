@@ -2,5 +2,5 @@
 
 module Fleetyards
   CODENAME = "Aurora"
-  VERSION = "v6.25.2" # x-release-please-version
+  VERSION = "v6.26.0" # x-release-please-version
 end

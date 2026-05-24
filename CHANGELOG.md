@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.26.0](https://github.com/fleetyards/fleetyards/compare/v6.25.2...v6.26.0) (2026-05-24)
+
+
+### Features
+
+* **compare:** diagonal-split composite with antialiased edges ([cd18d2e](https://github.com/fleetyards/fleetyards/commit/cd18d2e9d0de16ea5385b76b470828a5bf3141b5))
+
+
+### Bug Fixes
+
+* **maintenance:** allow re-running sc-data import via force flag ([871a4e2](https://github.com/fleetyards/fleetyards/commit/871a4e2ad0208fa2976351da122012cfa564c34c))
+
 ## [6.25.2](https://github.com/fleetyards/fleetyards/compare/v6.25.1...v6.25.2) (2026-05-24)
 
 
