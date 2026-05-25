@@ -1,4 +1,5 @@
 import { computed, watch, type Ref } from "vue";
+import { useQueryClient } from "@tanstack/vue-query";
 import {
   useSubscription,
   ChannelsEnum,
@@ -25,6 +26,7 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
   const importsStore = useImportsStore();
   const { displayInfo, displaySuccess, displayAlert } = useAppNotifications();
   const { t } = useI18n();
+  const queryClient = useQueryClient();
 
   const handleImportUpdate = (data: string) => {
     const importData: Import = JSON.parse(data);
@@ -37,6 +39,8 @@ export const useImportUpdates = (enabled: Ref<boolean>) => {
     if (importData.status === previousStatus) {
       return;
     }
+
+    void queryClient.invalidateQueries({ queryKey: ["imports"] });
 
     const label = formatImportLabel(importData);
 
