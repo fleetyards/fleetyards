@@ -4,15 +4,26 @@ const prefix = window.ON_SUBDOMAIN ? "" : "/admin";
 
 export const routes: RouteRecordRaw[] = [
   {
-    path: "pghero/",
-    name: "pghero",
-    component: () => import("@/admin/pages/maintenance/pghero.vue"),
+    path: "imports/",
+    name: "imports",
+    component: () => import("@/admin/pages/maintenance/imports.vue"),
     meta: {
-      title: "admin.maintenance.pghero",
-      icon: "fa-duotone fa-database",
+      title: "admin.maintenance.imports",
+      icon: "fa-duotone fa-cloud-arrow-down",
       needsAuthentication: true,
-      access: ["pghero"],
-      href: `${prefix}/pghero`,
+      access: ["imports"],
+    },
+  },
+  {
+    path: "imports/:id",
+    name: "import",
+    component: () => import("@/admin/pages/maintenance/imports/[id].vue"),
+    meta: {
+      title: "admin.maintenance.importDetail",
+      needsAuthentication: true,
+      access: ["imports"],
+      nav: "hidden",
+      activeRoute: "imports",
     },
   },
   {
@@ -50,6 +61,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "pghero/",
+    name: "pghero",
+    component: () => import("@/admin/pages/maintenance/pghero.vue"),
+    meta: {
+      title: "admin.maintenance.pghero",
+      icon: "fa-duotone fa-database",
+      needsAuthentication: true,
+      access: ["pghero"],
+      href: `${prefix}/pghero`,
+    },
+  },
+  {
     path: "tasks/",
     name: "tasks",
     component: () => import("@/admin/pages/maintenance/tasks.vue"),
@@ -70,17 +93,6 @@ export const routes: RouteRecordRaw[] = [
       icon: "fa-duotone fa-chart-line",
       needsAuthentication: true,
       access: ["rsi-api-status"],
-    },
-  },
-  {
-    path: "imports/",
-    name: "imports",
-    component: () => import("@/admin/pages/maintenance/imports.vue"),
-    meta: {
-      title: "admin.maintenance.imports",
-      icon: "fa-duotone fa-cloud-arrow-down",
-      needsAuthentication: true,
-      access: ["imports"],
     },
   },
 ];

@@ -12,7 +12,9 @@ module Admin
             properties: {
               typeEq: {"$ref": "#/components/schemas/ImportTypeEnum"},
               typeIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}},
-              typeNotIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}}
+              typeNotIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}},
+              aasmStateEq: {"$ref": "#/components/schemas/ImportStatusEnum"},
+              aasmStateIn: {type: :array, items: {"$ref": "#/components/schemas/ImportStatusEnum"}}
             },
             additionalProperties: false,
             example: {}

@@ -7741,6 +7741,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ImportTypeEnum"
+        aasmStateEq:
+          "$ref": "#/components/schemas/ImportStatusEnum"
+        aasmStateIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ImportStatusEnum"
       additionalProperties: false
       example: {}
       title: ImportQuery

@@ -28,21 +28,26 @@ import {
 } from "@/services/fyAdminApi";
 import { useImportLoading } from "@/admin/composables/useImportLoading";
 import { useImportUpdates } from "@/admin/composables/useImportUpdates";
+import FilterForm from "@/admin/components/Imports/FilterForm/index.vue";
+import { useFilters } from "@/shared/composables/useFilters";
+import type { ImportQuery } from "@/services/fyAdminApi";
 
 const { t, l } = useI18n();
+const router = useRouter();
+
+const onRowClick = async (record: Import) => {
+  await router.push({ name: "import", params: { id: record.id } });
+};
 
 const queryKey = "admin-imports";
 const { perPage, page, updatePerPage } = usePagination(queryKey);
 
+const { getQuery, isFilterSelected } = useFilters<ImportQuery>();
+
 const queryParams = computed(() => ({
   page: page.value,
   perPage: perPage.value,
-  q: {
-    typeNotIn: [
-      ImportTypeEnum.IMPORTS_HANGAR_SYNC,
-      ImportTypeEnum.IMPORTS_HANGAR_IMPORT,
-    ],
-  },
+  q: getQuery() as ImportQuery,
 }));
 
 const { data: importsList, ...asyncStatus } = useImports(queryParams);
@@ -229,9 +234,13 @@ const columns: BaseTableCol<Import>[] = [
     name="admin-imports"
     :records="importsList?.items || []"
     :async-status="asyncStatus"
+    :is-filter-selected="isFilterSelected"
     hide-loading
     hide-empty
   >
+    <template #filter>
+      <FilterForm />
+    </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
         :records="importsList?.items || []"
@@ -240,6 +249,8 @@ const columns: BaseTableCol<Import>[] = [
         :loading="loading || refetching"
         :empty-visible="emptyVisible"
         default-sort="created_at desc"
+        row-clickable
+        @row-click="onRowClick"
       >
         <template #col-type="{ record }">
           {{ formatType(record.type) }}
@@ -250,7 +261,7 @@ const columns: BaseTableCol<Import>[] = [
           </BasePill>
         </template>
         <template #col-version="{ record }">
-          {{ record.version || "-" }}
+          <span class="no-break">{{ record.version || "-" }}</span>
         </template>
         <template #col-startedAt="{ record }">
           {{

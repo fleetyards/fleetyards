@@ -72,7 +72,12 @@
         "version": "Version",
         "startedAt": "Gestartet",
         "finishedAt": "Beendet",
+        "failedAt": "Fehlgeschlagen am",
         "info": "Info",
+        "input": "Eingabe",
+        "output": "Ausgabe",
+        "importData": "Importdaten",
+        "file": "Importierte Datei",
         "statuses": {
           "created": "Wartend",
           "started": "Läuft",

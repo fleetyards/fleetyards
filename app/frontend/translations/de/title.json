@@ -171,6 +171,7 @@
           "workers": "Workers",
           "tasks": "Aufgaben",
           "imports": "Importe",
+          "importDetail": "Import-Details",
           "rsiApiStatus": "RSI-API-Status"
         },
         "modelPaints": {
