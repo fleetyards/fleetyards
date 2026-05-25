@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.27.0](https://github.com/fleetyards/fleetyards/compare/v6.26.0...v6.27.0) (2026-05-25)
+
+
+### Features
+
+* **admin:** import detail page and type/status filtering ([6712b38](https://github.com/fleetyards/fleetyards/commit/6712b387189d776642ddc6b115ed29b10a6e3e68))
+* **admin:** imports page with tracking for modules and paints ([9d882a3](https://github.com/fleetyards/fleetyards/commit/9d882a3d28e64fa5f742e323eed95a2e99f5cadd))
+* **admin:** track admin user that triggered an import ([c77899a](https://github.com/fleetyards/fleetyards/commit/c77899a31340df81bc0add489f51617b93225fd3))
+
+
+### Bug Fixes
+
+* **admin:** refetch imports list on status transitions ([c83d9fc](https://github.com/fleetyards/fleetyards/commit/c83d9fcedabbc46d1bd98c86ed916a64ae188588))
+* **compare:** rescue RecordInvalid on concurrent compare-image save ([891ba1b](https://github.com/fleetyards/fleetyards/commit/891ba1b25014bbac394e8fb33384c6f3cc128a17))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.30 to 6.1.33 ([#4004](https://github.com/fleetyards/fleetyards/issues/4004)) ([55c34d7](https://github.com/fleetyards/fleetyards/commit/55c34d7ead37d36325cd010d590f99718d8cb213))
+* **deps-dev:** bump mocha from 11.7.5 to 11.7.6 ([#4003](https://github.com/fleetyards/fleetyards/issues/4003)) ([a55a222](https://github.com/fleetyards/fleetyards/commit/a55a222848581ae3b44adec996b21d6c024ead43))
+* **deps:** bump date-fns from 4.2.1 to 4.3.0 ([#4002](https://github.com/fleetyards/fleetyards/issues/4002)) ([82a3a12](https://github.com/fleetyards/fleetyards/commit/82a3a123e74b2fcec5debe691008db3f6aeeb2ed))
+* **deps:** bump openapi-ruby from 3.2.0 to 3.3.0 ([#4001](https://github.com/fleetyards/fleetyards/issues/4001)) ([82cb121](https://github.com/fleetyards/fleetyards/commit/82cb12110ecb6c62cb42742d3ae67c6952d64879))
+
 ## [6.26.0](https://github.com/fleetyards/fleetyards/compare/v6.25.2...v6.26.0) (2026-05-24)
 
 
