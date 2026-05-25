@@ -14,6 +14,7 @@ import {
   type Model,
   type Hardpoint,
   HardpointGroupEnum,
+  HardpointSourceEnum,
   modelHardpoints as fetchModelHardpoints,
 } from "@/services/fyApi";
 
@@ -76,7 +77,11 @@ const fetch = async () => {
 };
 
 const fetchHardpoints = async (model: Model) => {
-  const hardpoints = await fetchModelHardpoints(model.slug);
+  const hardpoints = await fetchModelHardpoints(model.slug, {
+    source: model.inGame
+      ? HardpointSourceEnum.GAME_FILES
+      : HardpointSourceEnum.SHIP_MATRIX,
+  });
 
   return {
     slug: model.slug,

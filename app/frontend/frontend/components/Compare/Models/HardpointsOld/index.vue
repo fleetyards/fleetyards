@@ -11,6 +11,7 @@ import CompareModelsRowTitle from "@/frontend/components/Compare/Models/Row/Titl
 import HardpointGroup from "@/frontend/components/Models/Hardpoints/old/Group/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
+  HardpointSourceEnum,
   modelHardpoints as fetchModelHardpoints,
   ModelHardpointGroupEnum,
   type Model,
@@ -70,7 +71,11 @@ const fetch = async () => {
 };
 
 const fetchHardpoints = async (model: Model) => {
-  const hardpoints = await fetchModelHardpoints(model.slug);
+  const hardpoints = await fetchModelHardpoints(model.slug, {
+    source: model.inGame
+      ? HardpointSourceEnum.GAME_FILES
+      : HardpointSourceEnum.SHIP_MATRIX,
+  });
 
   return {
     slug: model.slug,
