@@ -2,8 +2,8 @@
 
 module Loaders
   class PaintsImportJob < ::Loaders::BaseJob
-    def perform
-      import = Imports::PaintsImport.create
+    def perform(admin_user_id = nil)
+      import = Imports::PaintsImport.create(admin_user_id:)
 
       import.start!
 

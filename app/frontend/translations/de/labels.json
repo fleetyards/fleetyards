@@ -78,6 +78,8 @@
         "output": "Ausgabe",
         "importData": "Importdaten",
         "file": "Importierte Datei",
+        "requestedBy": "Angefordert von",
+        "systemRequester": "System",
         "statuses": {
           "created": "Wartend",
           "started": "Läuft",

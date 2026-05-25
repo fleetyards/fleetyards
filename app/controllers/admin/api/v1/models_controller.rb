@@ -85,7 +85,7 @@ module Admin
         def reload_matrix
           authorize! with: ::Admin::ModelPolicy
 
-          Loaders::ModelsJob.perform_async
+          Loaders::ModelsJob.perform_async(current_admin_user.id)
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
@@ -93,7 +93,7 @@ module Admin
         def reload_scdata
           authorize! with: ::Admin::ModelPolicy
 
-          Loaders::ScData::AllJob.perform_async
+          Loaders::ScData::AllJob.perform_async(nil, current_admin_user.id)
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
@@ -109,7 +109,7 @@ module Admin
         def reload_paints
           authorize! with: ::Admin::ModelPolicy
 
-          Loaders::PaintsImportJob.perform_async
+          Loaders::PaintsImportJob.perform_async(current_admin_user.id)
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
@@ -117,7 +117,7 @@ module Admin
         def reload_modules
           authorize! with: ::Admin::ModelPolicy
 
-          Loaders::ModulesImportJob.perform_async
+          Loaders::ModulesImportJob.perform_async(current_admin_user.id)
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end

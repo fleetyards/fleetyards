@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_22_203131) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_25_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -437,6 +437,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_203131) do
 
   create_table "imports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "aasm_state"
+    t.uuid "admin_user_id"
     t.datetime "created_at", null: false
     t.datetime "failed_at", precision: nil
     t.datetime "finished_at", precision: nil
@@ -450,6 +451,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_203131) do
     t.uuid "user_id"
     t.string "version"
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
+    t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
     t.index ["type"], name: "index_imports_on_type"
   end
 
@@ -1085,6 +1087,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_22_203131) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
+  add_foreign_key "imports", "admin_users"
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"
   add_foreign_key "notification_preferences", "users"

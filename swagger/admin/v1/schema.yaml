@@ -7706,6 +7706,28 @@ components:
           type: string
         importData:
           type: string
+        adminUser:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+          required:
+          - id
+          - username
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            username:
+              type: string
+          required:
+          - id
+          - username
         startedAt:
           type: string
           format: date-time

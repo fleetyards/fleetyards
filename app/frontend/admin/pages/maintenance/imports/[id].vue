@@ -74,6 +74,12 @@ const metaRows = computed(() => {
     rows.push({ label: t("labels.imports.version"), value: record.version });
   }
 
+  const requester = record.adminUser?.username || record.user?.username;
+  rows.push({
+    label: t("labels.imports.requestedBy"),
+    value: requester || t("labels.imports.systemRequester"),
+  });
+
   rows.push({
     label: t("labels.createdAt"),
     value: l(record.createdAt, "datetime.formats.short"),

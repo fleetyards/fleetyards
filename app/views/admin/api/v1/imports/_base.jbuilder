@@ -7,6 +7,20 @@ json.info import.info
 json.version import.version
 json.input import.input
 
+if import.respond_to?(:admin_user) && import.admin_user.present?
+  json.admin_user do
+    json.id import.admin_user.id
+    json.username import.admin_user.username
+  end
+end
+
+if import.respond_to?(:user) && import.user.present?
+  json.user do
+    json.id import.user.id
+    json.username import.user.username
+  end
+end
+
 if local_assigns.fetch(:extended, false)
   json.output import.output
   if import.is_a?(Imports::HangarImport) && import.import.attached?

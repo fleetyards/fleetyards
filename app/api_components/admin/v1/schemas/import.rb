@@ -21,6 +21,23 @@ module Admin
             import: {type: :string},
             importData: {type: :string},
 
+            adminUser: {
+              type: :object,
+              properties: {
+                id: {type: :string, format: :uuid},
+                username: {type: :string}
+              },
+              required: %w[id username]
+            },
+            user: {
+              type: :object,
+              properties: {
+                id: {type: :string, format: :uuid},
+                username: {type: :string}
+              },
+              required: %w[id username]
+            },
+
             startedAt: {type: :string, format: "date-time"},
             finishedAt: {type: :string, format: "date-time"},
             failedAt: {type: :string, format: "date-time"},

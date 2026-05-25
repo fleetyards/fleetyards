@@ -2,8 +2,8 @@
 
 module Loaders
   class ModelsJob < ::Loaders::BaseJob
-    def perform
-      import = Imports::ModelsImport.create
+    def perform(admin_user_id = nil)
+      import = Imports::ModelsImport.create(admin_user_id:)
 
       import.start!
 

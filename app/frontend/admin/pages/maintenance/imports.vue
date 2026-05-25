@@ -134,6 +134,12 @@ const columns: BaseTableCol<Import>[] = [
     mobile: false,
   },
   {
+    name: "requestedBy",
+    label: t("labels.imports.requestedBy"),
+    width: "160px",
+    mobile: false,
+  },
+  {
     name: "startedAt",
     label: t("labels.imports.startedAt"),
     width: "180px",
@@ -262,6 +268,13 @@ const columns: BaseTableCol<Import>[] = [
         </template>
         <template #col-version="{ record }">
           <span class="no-break">{{ record.version || "-" }}</span>
+        </template>
+        <template #col-requestedBy="{ record }">
+          <span class="no-break">
+            {{
+              record.adminUser?.username || record.user?.username || "system"
+            }}
+          </span>
         </template>
         <template #col-startedAt="{ record }">
           {{

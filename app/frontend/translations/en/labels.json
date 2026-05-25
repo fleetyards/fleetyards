@@ -79,6 +79,8 @@
         "output": "Output",
         "importData": "Import Data",
         "file": "Imported File",
+        "requestedBy": "Requested by",
+        "systemRequester": "system",
         "statuses": {
           "created": "Queued",
           "started": "Running",
