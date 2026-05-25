@@ -91,12 +91,18 @@ const openDisplayOptionsModal = () => {
       :to="{
         name: 'compare',
       }"
-      mobile-block
+      :aria-label="t('actions.compare.ships')"
+      mobile-icon-only
     >
       <i class="fa-duotone fa-code-compare" />
       {{ t("actions.compare.ships") }}
     </Btn>
-    <Btn data-test="fleetchart-link" mobile-block @click="toggleFleetchart">
+    <Btn
+      data-test="fleetchart-link"
+      :aria-label="t('labels.fleetchart')"
+      mobile-icon-only
+      @click="toggleFleetchart"
+    >
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>

@@ -4,7 +4,10 @@
       "admin": {
         "dashboard": {
           "reloadModels": "Modelle neu laden",
-          "reloadScData": "SC-Daten neu laden"
+          "reloadScData": "SC-Daten neu laden",
+          "reloadPaints": "Lackierungen neu laden",
+          "reloadModules": "Module neu laden",
+          "reloadLoaners": "Leihschiffe neu laden"
         }
       },
       "showReleased": "Alte Versionen anzeigen",

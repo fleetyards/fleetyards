@@ -93,7 +93,7 @@ module Admin
         def reload_scdata
           authorize! with: ::Admin::ModelPolicy
 
-          Loaders::ScData::ModelsJob.perform_async
+          Loaders::ScData::AllJob.perform_async
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end
@@ -110,6 +110,14 @@ module Admin
           authorize! with: ::Admin::ModelPolicy
 
           Loaders::PaintsImportJob.perform_async
+
+          render json: {message: "Jobs enqueued"}, status: :ok
+        end
+
+        def reload_modules
+          authorize! with: ::Admin::ModelPolicy
+
+          Loaders::ModulesImportJob.perform_async
 
           render json: {message: "Jobs enqueued"}, status: :ok
         end

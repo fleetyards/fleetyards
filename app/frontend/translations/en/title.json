@@ -173,6 +173,7 @@
           "flipper": "Flipper UI",
           "workers": "Workers",
           "tasks": "Tasks",
+          "imports": "Imports",
           "rsiApiStatus": "RSI API Status"
         },
         "modelPaints": {

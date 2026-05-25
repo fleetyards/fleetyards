@@ -66,6 +66,20 @@
         "resolved": "Gelöst",
         "unresolved": "Ungelöst"
       },
+      "imports": {
+        "type": "Typ",
+        "status": "Status",
+        "version": "Version",
+        "startedAt": "Gestartet",
+        "finishedAt": "Beendet",
+        "info": "Info",
+        "statuses": {
+          "created": "Wartend",
+          "started": "Läuft",
+          "finished": "Abgeschlossen",
+          "failed": "Fehlgeschlagen"
+        }
+      },
       "oauthApplications": {
         "settingsIntro": "Verwalten Sie Ihre OAuth-Anwendungen. Diese Anwendungen können im Namen von Benutzern auf die FleetYards-API zugreifen.",
         "name": "Anwendungsname",

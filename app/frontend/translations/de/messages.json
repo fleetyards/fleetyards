@@ -354,7 +354,10 @@
           "syncScData": "Bist du sicher, dass du die SC-Daten für dieses Modell synchronisieren möchtest?",
           "exchangeStoreImage": "Bist du sicher, dass du das Store-Bild durch das RSI-Bild ersetzen möchtest?",
           "reloadMatrix": "Bist du sicher, dass du die Modell-Matrix neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
-          "reloadScData": "Bist du sicher, dass du die SC-Daten neu laden möchtest? Dies wird Hintergrund-Jobs einreihen."
+          "reloadScData": "Bist du sicher, dass du die SC-Daten neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
+          "reloadPaints": "Bist du sicher, dass du die Lackierungen neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
+          "reloadModules": "Bist du sicher, dass du die Module neu laden möchtest? Dies wird Hintergrund-Jobs einreihen.",
+          "reloadLoaners": "Bist du sicher, dass du die Leihschiffe neu laden möchtest? Dies wird Hintergrund-Jobs einreihen."
         },
         "manufacturer": {
           "destroy": "Bist du sicher, dass du diesen Hersteller löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."

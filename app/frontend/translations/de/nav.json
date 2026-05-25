@@ -165,6 +165,7 @@
           "features": "Funktionen",
           "workers": "Worker",
           "tasks": "Aufgaben",
+          "imports": "Importe",
           "rsiApiStatus": "RSI-API-Status"
         }
       }

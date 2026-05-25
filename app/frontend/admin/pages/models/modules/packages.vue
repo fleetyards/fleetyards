@@ -125,7 +125,11 @@ const { t } = useI18n();
   </Heading>
 
   <Teleport to="#header-right">
-    <Btn :to="{ name: 'admin-model-create' }">
+    <Btn
+      :to="{ name: 'admin-model-create' }"
+      :aria-label="t('actions.create')"
+      mobile-icon-only
+    >
       <i class="fa fa-plus" />
       {{ t("actions.create") }}
     </Btn>

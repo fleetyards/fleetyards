@@ -10,7 +10,7 @@ module Shared
           TYPES = %w[
             Imports::ModelImport Imports::ModelsImport Imports::ScData::AllImport
             Imports::ScData::ModelsImport Imports::ScData::ModelImport Imports::HangarSync
-            Imports::HangarImport
+            Imports::HangarImport Imports::ModulesImport Imports::PaintsImport
           ].freeze
 
           schema({

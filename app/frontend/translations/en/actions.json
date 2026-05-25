@@ -4,7 +4,10 @@
       "admin": {
         "dashboard": {
           "reloadModels": "Reload Models",
-          "reloadScData": "Reload SC Data"
+          "reloadScData": "Reload SC Data",
+          "reloadPaints": "Reload Paints",
+          "reloadModules": "Reload Modules",
+          "reloadLoaners": "Reload Loaners"
         }
       },
       "showReleased": "Show old Releases",

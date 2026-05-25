@@ -28,6 +28,7 @@ export type Props = {
   block?: boolean;
   alignStart?: boolean;
   mobileBlock?: boolean;
+  mobileIconOnly?: boolean;
   inline?: boolean;
   textInline?: boolean;
   flush?: boolean;
@@ -50,6 +51,7 @@ const props = withDefaults(defineProps<Props>(), {
   block: false,
   alignStart: false,
   mobileBlock: false,
+  mobileIconOnly: false,
   inline: false,
   textInline: false,
   flush: false,
@@ -122,6 +124,7 @@ const cssClasses = computed(() => ({
   "panel-btn-text-inline": props.textInline,
   "panel-btn-flush": props.flush,
   "panel-btn-mobile-block": props.mobileBlock,
+  "panel-btn-mobile-icon-only": props.mobileIconOnly,
   active: props.active,
   disabled: internalDisabled.value,
 }));

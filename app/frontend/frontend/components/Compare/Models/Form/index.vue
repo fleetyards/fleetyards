@@ -99,14 +99,22 @@ const handleChange = (model: string) => {
       name="new-model"
       @update:model-value="handleChange"
     />
-    <Btn :href="erkulUrl" block class="erkul-link">
+    <Btn
+      :href="erkulUrl"
+      :aria-label="t('labels.hardpoints.erkul')"
+      block
+      mobile-icon-only
+      class="erkul-link"
+    >
       <i />
       {{ t("labels.hardpoints.erkul") }}
     </Btn>
     <Btn
       v-tooltip="t('labels.hardpoints.spviewerTitle')"
       :href="spviewerUrl"
+      :aria-label="t('labels.hardpoints.spviewer')"
       block
+      mobile-icon-only
       class="spviewer-link"
     >
       <i />

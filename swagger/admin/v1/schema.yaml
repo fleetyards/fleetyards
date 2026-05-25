@@ -4074,12 +4074,72 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/models/reload-loaners":
+    put:
+      summary: Reload Loaners
+      tags:
+      - Models
+      operationId: reloadLoaners
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/reload-matrix":
     put:
       summary: Reload Models Matrix
       tags:
       - Models
       operationId: reloadModelsMatrix
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/reload-modules":
+    put:
+      summary: Reload Modules
+      tags:
+      - Models
+      operationId: reloadModules
       responses:
         '200':
           description: successful
@@ -4242,6 +4302,36 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/reload-paints":
+    put:
+      summary: Reload Paints
+      tags:
+      - Models
+      operationId: reloadPaints
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/models/reload-scdata":
     put:
       summary: Reload Models SC Data
@@ -7647,6 +7737,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ImportTypeEnum"
+        typeNotIn:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ImportTypeEnum"
       additionalProperties: false
       example: {}
       title: ImportQuery
@@ -7673,6 +7767,8 @@ components:
       - Imports::ScData::ModelImport
       - Imports::HangarSync
       - Imports::HangarImport
+      - Imports::ModulesImport
+      - Imports::PaintsImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -7681,6 +7777,8 @@ components:
       - IMPORTS_SC_DATA_MODEL_IMPORT
       - IMPORTS_HANGAR_SYNC
       - IMPORTS_HANGAR_IMPORT
+      - IMPORTS_MODULES_IMPORT
+      - IMPORTS_PAINTS_IMPORT
       title: ImportTypeEnum
     Imports:
       type: object

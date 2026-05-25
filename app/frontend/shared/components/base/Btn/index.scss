@@ -233,5 +233,21 @@
     .panel-btn-inner {
       white-space: normal;
     }
+
+    &.panel-btn-mobile-icon-only {
+      width: auto;
+      min-width: 42px;
+
+      .panel-btn-inner {
+        gap: 0;
+        padding: 5px 10px;
+        font-size: 0;
+
+        :deep(i),
+        :deep(img) {
+          font-size: 1rem;
+        }
+      }
+    }
   }
 }

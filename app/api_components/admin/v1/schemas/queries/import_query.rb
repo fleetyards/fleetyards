@@ -11,7 +11,8 @@ module Admin
             type: :object,
             properties: {
               typeEq: {"$ref": "#/components/schemas/ImportTypeEnum"},
-              typeIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}}
+              typeIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}},
+              typeNotIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}}
             },
             additionalProperties: false,
             example: {}

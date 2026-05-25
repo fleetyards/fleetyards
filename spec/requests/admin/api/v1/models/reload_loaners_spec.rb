@@ -9,9 +9,9 @@ RSpec.describe "admin/api/v1/models", type: :openapi, openapi_schema_name: :"adm
     sign_in(user) if user.present?
   end
 
-  path "/models/reload-scdata" do
-    put("Reload Models SC Data") do
-      operationId "reloadModelsScData"
+  path "/models/reload-loaners" do
+    put("Reload Loaners") do
+      operationId "reloadLoaners"
       tags "Models"
       produces "application/json"
 
@@ -19,7 +19,7 @@ RSpec.describe "admin/api/v1/models", type: :openapi, openapi_schema_name: :"adm
         schema type: :object, properties: {message: {type: :string}}, required: [:message]
 
         before do
-          allow(Loaders::ScData::AllJob).to receive(:perform_async)
+          allow(Loaders::LoanerJob).to receive(:perform_async)
         end
 
         run_test!

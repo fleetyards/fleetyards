@@ -27,6 +27,7 @@ v1_admin_api_routes = lambda do
       put "reload-scdata" => "models#reload_scdata"
       put "reload-loaners" => "models#reload_loaners"
       put "reload-paints" => "models#reload_paints"
+      put "reload-modules" => "models#reload_modules"
     end
 
     member do

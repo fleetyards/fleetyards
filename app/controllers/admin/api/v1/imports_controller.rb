@@ -23,7 +23,7 @@ module Admin
 
         private def imports_query_params
           @imports_query_params ||= params.permit(q: [
-            :type_eq, type_in: []
+            :type_eq, type_in: [], type_not_in: []
           ]).fetch(:q, {})
         end
 

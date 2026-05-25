@@ -171,6 +171,7 @@
           "features": "Features",
           "workers": "Workers",
           "tasks": "Tasks",
+          "imports": "Imports",
           "rsiApiStatus": "RSI API Status"
         }
       }

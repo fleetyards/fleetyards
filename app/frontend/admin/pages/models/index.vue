@@ -43,9 +43,10 @@ const { isImporting: isImportingMatrix } = useImportLoading(
   ImportTypeEnum.IMPORTS_MODELS_IMPORT,
 );
 
-const { isImporting: isImportingScData } = useImportLoading(
+const { isImporting: isImportingScData } = useImportLoading([
+  ImportTypeEnum.IMPORTS_SC_DATA_ALL_IMPORT,
   ImportTypeEnum.IMPORTS_SC_DATA_MODELS_IMPORT,
-);
+]);
 
 const route = useRoute();
 
@@ -210,7 +211,12 @@ watch(
   </Heading>
 
   <Teleport to="#header-right">
-    <Btn :size="BtnSizesEnum.SMALL" :to="{ name: 'admin-model-modules' }">
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :to="{ name: 'admin-model-modules' }"
+      :aria-label="t('headlines.admin.modelModules.index')"
+      mobile-icon-only
+    >
       <i class="fa-duotone fa-puzzle" />
       {{ t("headlines.admin.modelModules.index") }}
     </Btn>
@@ -218,6 +224,8 @@ watch(
       :size="BtnSizesEnum.SMALL"
       :loading="isReloadingMatrix"
       :confirm="t('messages.confirm.model.reloadMatrix')"
+      :aria-label="t('actions.admin.dashboard.reloadModels')"
+      mobile-icon-only
       spinner
       @click="reloadModels"
     >
@@ -228,13 +236,20 @@ watch(
       :size="BtnSizesEnum.SMALL"
       :loading="isReloadingScData"
       :confirm="t('messages.confirm.model.reloadScData')"
+      :aria-label="t('actions.admin.dashboard.reloadScData')"
+      mobile-icon-only
       spinner
       @click="reloadScData"
     >
       <i class="fa fa-database" />
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
-    <Btn :size="BtnSizesEnum.SMALL" :to="{ name: 'admin-model-create' }">
+    <Btn
+      :size="BtnSizesEnum.SMALL"
+      :to="{ name: 'admin-model-create' }"
+      :aria-label="t('actions.create')"
+      mobile-icon-only
+    >
       <i class="fa fa-plus" />
       {{ t("actions.create") }}
     </Btn>

@@ -116,6 +116,9 @@
         },
         "images": {
           "index": "Images"
+        },
+        "imports": {
+          "index": "Imports"
         }
       },
       "welcome": "Welcome to",

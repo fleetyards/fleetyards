@@ -72,4 +72,15 @@ export const routes: RouteRecordRaw[] = [
       access: ["rsi-api-status"],
     },
   },
+  {
+    path: "imports/",
+    name: "imports",
+    component: () => import("@/admin/pages/maintenance/imports.vue"),
+    meta: {
+      title: "admin.maintenance.imports",
+      icon: "fa-duotone fa-cloud-arrow-down",
+      needsAuthentication: true,
+      access: ["imports"],
+    },
+  },
 ];

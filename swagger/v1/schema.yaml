@@ -9658,6 +9658,8 @@ components:
       - Imports::ScData::ModelImport
       - Imports::HangarSync
       - Imports::HangarImport
+      - Imports::ModulesImport
+      - Imports::PaintsImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -9666,6 +9668,8 @@ components:
       - IMPORTS_SC_DATA_MODEL_IMPORT
       - IMPORTS_HANGAR_SYNC
       - IMPORTS_HANGAR_IMPORT
+      - IMPORTS_MODULES_IMPORT
+      - IMPORTS_PAINTS_IMPORT
       title: ImportTypeEnum
     ItemPrice:
       type: object
