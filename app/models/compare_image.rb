@@ -40,7 +40,7 @@ class CompareImage < ApplicationRecord
       content_type: "image/jpeg"
     )
     save!
-  rescue ActiveRecord::RecordNotUnique
+  rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
     # Another worker created the row between find_or_initialize_by and save.
     # The next request will pick up their attachment from the cache.
   end
