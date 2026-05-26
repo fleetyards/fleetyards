@@ -135,6 +135,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "snub-crafts/",
+    name: "admin-model-edit-snub-crafts",
+    component: () => import("@/admin/pages/models/[id]/edit/snub-crafts.vue"),
+    meta: {
+      title: "admin.models.edit.snubCrafts",
+      customTitle: true,
+      activeRoute: "admin-models",
+      nav: "editTabs",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "docks/",
     name: "admin-model-edit-docks",
     component: () => import("@/admin/pages/models/[id]/edit/docks.vue"),

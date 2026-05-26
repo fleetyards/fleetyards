@@ -650,6 +650,9 @@
         "hidden": "Hidden?",
         "loanerModel": "Loaner Model"
       },
+      "modelSnubCraft": {
+        "snubCraft": "Snub Craft"
+      },
       "modelPaint": {
         "hidden": "Hidden?",
         "active": "Active?",

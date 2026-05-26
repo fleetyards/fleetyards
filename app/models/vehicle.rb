@@ -7,6 +7,7 @@
 #  id                   :uuid             not null, primary key
 #  alternative_names    :string
 #  bought_via           :integer          default("pledge_store")
+#  bundled              :boolean          default(FALSE), not null
 #  flagship             :boolean          default(FALSE)
 #  hidden               :boolean          default(FALSE)
 #  loaner               :boolean          default(FALSE)
@@ -30,10 +31,11 @@
 #
 # Indexes
 #
-#  index_vehicles_on_hidden_and_loaner   (hidden,loaner)
-#  index_vehicles_on_model_id_and_id     (model_id,id)
-#  index_vehicles_on_serial_and_user_id  (serial,user_id) UNIQUE
-#  index_vehicles_on_user_id             (user_id)
+#  index_vehicles_on_hidden_and_loaner       (hidden,loaner)
+#  index_vehicles_on_model_id_and_id         (model_id,id)
+#  index_vehicles_on_serial_and_user_id      (serial,user_id) UNIQUE
+#  index_vehicles_on_user_id                 (user_id)
+#  index_vehicles_on_vehicle_id_and_bundled  (vehicle_id,bundled)
 #
 require "csv"
 
@@ -85,8 +87,8 @@ class Vehicle < ApplicationRecord
   before_save :update_slugs
 
   after_create :broadcast_create
-  after_destroy :remove_loaners, :broadcast_destroy
-  after_save :set_flagship, :update_loaners, :reset_hangar_groups
+  after_destroy :remove_loaners, :remove_bundled_snub_crafts, :broadcast_destroy
+  after_save :set_flagship, :update_loaners, :update_bundled_snub_crafts, :reset_hangar_groups
   after_commit :broadcast_update, :schedule_fleet_vehicle_update
 
   DEFAULT_SORTING_PARAMS = ["flagship desc", "name asc", "model_name asc"]
@@ -122,7 +124,7 @@ class Vehicle < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "alternative_names", "beam", "bought_via", "classification", "created_at", "flagship",
+      "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
       "focus", "hangar_groups", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "model_paint_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rsi_pledge_id",
@@ -235,6 +237,46 @@ class Vehicle < ApplicationRecord
       public: false,
       wanted:,
       hidden: Vehicle.exists?(loaner: true, model_id: model_loaner.id, wanted:, user_id:)
+    )
+  end
+
+  def update_bundled_snub_crafts
+    return if loaner? || bundled?
+
+    add_bundled_snub_crafts
+  end
+
+  def add_bundled_snub_crafts
+    return if loaner? || bundled?
+
+    model.snub_crafts.each do |snub_craft_model|
+      create_bundled_snub_craft(snub_craft_model)
+    end
+  end
+
+  def remove_bundled_snub_crafts
+    return if loaner? || bundled?
+
+    Vehicle.where(bundled: true, vehicle_id: id, user_id:).destroy_all
+  end
+
+  def create_bundled_snub_craft(snub_craft_model)
+    return unless snub_craft_model.player_ownable?
+
+    existing = Vehicle.where(bundled: true, vehicle_id: id, model_id: snub_craft_model.id, user_id:).first
+
+    if existing.present?
+      existing.update(wanted:) if existing.wanted != wanted
+      return
+    end
+
+    Vehicle.create(
+      bundled: true,
+      model_id: snub_craft_model.id,
+      user_id:,
+      vehicle_id: id,
+      public: false,
+      wanted:
     )
   end
 

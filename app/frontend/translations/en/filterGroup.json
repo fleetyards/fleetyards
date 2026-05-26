@@ -20,6 +20,11 @@
           "label": "Loaner Model"
         }
       },
+      "modelSnubCraft": {
+        "snubCraft": {
+          "label": "Snub Craft"
+        }
+      },
       "modelPosition": {
         "positionType": {
           "label": "Position Type",

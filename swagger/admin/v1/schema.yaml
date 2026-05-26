@@ -3585,6 +3585,192 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/model-snub-crafts":
+    post:
+      summary: Create Model Snub Craft
+      tags:
+      - ModelSnubCrafts
+      operationId: createModelSnubCraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelSnubCraftInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelSnubCraft"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Model Snub Crafts list
+      tags:
+      - ModelSnubCrafts
+      operationId: listModelSnubCrafts
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelSnubCraftQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelSnubCrafts"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/model-snub-crafts/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: id
+      required: true
+    delete:
+      summary: Destroy Model Snub Craft
+      tags:
+      - ModelSnubCrafts
+      operationId: destroyModelSnubCraft
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not_found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Get Model Snub Craft
+      tags:
+      - ModelSnubCrafts
+      operationId: modelSnubCraft
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelSnubCraft"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Model Snub Craft
+      tags:
+      - ModelSnubCrafts
+      operationId: updateModelSnubCraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelSnubCraftInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelSnubCraft"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-upgrades":
     post:
       summary: Create Model Upgrade
@@ -10220,6 +10406,97 @@ components:
       additionalProperties: false
       example: {}
       title: ModelQuery
+    ModelSnubCraft:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        modelId:
+          type: string
+          format: uuid
+        snubCraftId:
+          type: string
+          format: uuid
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+          - id
+          - name
+          - slug
+        snubCraft:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+          required:
+          - id
+          - name
+          - slug
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - modelId
+      - snubCraftId
+      - createdAt
+      - updatedAt
+      title: ModelSnubCraft
+    ModelSnubCraftInput:
+      type: object
+      properties:
+        modelId:
+          type: string
+          format: uuid
+        snubCraftId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: ModelSnubCraftInput
+    ModelSnubCraftQuery:
+      type: object
+      properties:
+        modelIdEq:
+          type: string
+          format: uuid
+        snubCraftIdEq:
+          type: string
+          format: uuid
+      additionalProperties: false
+      example: {}
+      title: ModelSnubCraftQuery
+    ModelSnubCrafts:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelSnubCraft"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ModelSnubCrafts
     ModelSortEnum:
       type: string
       enum:
