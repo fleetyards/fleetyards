@@ -57,6 +57,64 @@ RSpec.describe "admin/api/v1/imports", type: :openapi, openapi_schema_name: :"ad
         end
       end
 
+      response(200, "filter by requester", hidden: true) do
+        schema "$ref": "#/components/schemas/Imports"
+
+        let(:admin_user) { create(:admin_user) }
+        let(:hangar_user) { create(:user) }
+        let(:admin_import) { create(:import, :model_import, admin_user: admin_user) }
+        let(:user_import) { create(:import, :hangar_sync, user: hangar_user) }
+        let(:system_import) { create(:import, :model_import) }
+        let(:imports) { [admin_import, user_import, system_import] }
+
+        context "with admin user filter" do
+          let(:q) { {"adminUserUsernameIn" => [admin_user.username]} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].pluck("id")).to contain_exactly(admin_import.id)
+          end
+        end
+
+        context "with user filter" do
+          let(:q) { {"userUsernameIn" => [hangar_user.username]} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].pluck("id")).to contain_exactly(user_import.id)
+          end
+        end
+
+        context "with include system" do
+          let(:q) { {"includeSystem" => "true"} }
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].pluck("id")).to contain_exactly(system_import.id)
+          end
+        end
+
+        context "with combined requester filters (OR semantics)" do
+          let(:q) do
+            {
+              "adminUserUsernameIn" => [admin_user.username],
+              "includeSystem" => "true"
+            }
+          end
+
+          run_test! do |response|
+            data = JSON.parse(response.body)
+
+            expect(data["items"].pluck("id")).to contain_exactly(
+              admin_import.id, system_import.id
+            )
+          end
+        end
+      end
+
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
 

@@ -80,6 +80,9 @@
         "importData": "Import Data",
         "file": "Imported File",
         "requestedBy": "Requested by",
+        "adminUser": "Admin User",
+        "user": "User",
+        "includeSystem": "Include system",
         "systemRequester": "system",
         "statuses": {
           "created": "Queued",
@@ -264,6 +267,7 @@
       "find": "Type to search",
       "selectUser": "Select a User",
       "findUser": "Type to find a User",
+      "selectAdminUser": "Select an Admin User",
       "selectFleet": "Select a Fleet",
       "findFleet": "Type to find a Fleet",
       "compare": {

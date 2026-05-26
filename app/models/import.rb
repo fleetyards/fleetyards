@@ -33,14 +33,21 @@
 class Import < ApplicationRecord
   include AASM
 
+  belongs_to :admin_user, optional: true
+  belongs_to :user, optional: true
+
   validates :type, presence: true
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "aasm_state", "created_at", "failed_at", "finished_at", "id", "id_value", "import",
-      "import_data", "info", "input", "output", "started_at", "type", "updated_at", "user_id",
-      "version"
+      "aasm_state", "admin_user_id", "created_at", "failed_at", "finished_at", "id", "id_value",
+      "import", "import_data", "info", "input", "output", "started_at", "type", "updated_at",
+      "user_id", "version"
     ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["admin_user", "user"]
   end
 
   aasm timestamps: true do

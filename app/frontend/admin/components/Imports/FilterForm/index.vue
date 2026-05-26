@@ -6,7 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import AdminUserFilterGroup from "@/admin/components/base/AdminUserFilterGroup/index.vue";
+import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type ImportQuery,
@@ -35,9 +38,16 @@ const statusOptions = Object.values(ImportStatusEnum).map((value) => ({
   value,
 }));
 
+const normalizeIncludeSystem = (value: unknown): boolean => {
+  return value === true || value === "true";
+};
+
 const prefillFormValues = (): ImportQuery => ({
   typeIn: filters.value.typeIn || [],
   aasmStateIn: filters.value.aasmStateIn || [],
+  adminUserUsernameIn: filters.value.adminUserUsernameIn || [],
+  userUsernameIn: filters.value.userUsernameIn || [],
+  includeSystem: normalizeIncludeSystem(filters.value.includeSystem),
 });
 
 const setupForm = () => {
@@ -75,6 +85,17 @@ watch(
       :options="statusOptions"
       :multiple="true"
       name="status"
+    />
+    <AdminUserFilterGroup
+      v-model="form.adminUserUsernameIn"
+      name="admin-user"
+      multiple
+    />
+    <UserFilterGroup v-model="form.userUsernameIn" name="user" multiple />
+    <FormCheckbox
+      v-model="form.includeSystem"
+      :label="t('labels.imports.includeSystem')"
+      name="include-system"
     />
     <br />
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">

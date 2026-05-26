@@ -79,6 +79,9 @@
         "importData": "Importdaten",
         "file": "Importierte Datei",
         "requestedBy": "Angefordert von",
+        "adminUser": "Admin Benutzer",
+        "user": "Benutzer",
+        "includeSystem": "System einschließen",
         "systemRequester": "System",
         "statuses": {
           "created": "Wartend",
@@ -265,6 +268,7 @@
       "find": "Suchbegriff eintippen",
       "selectUser": "Benutzer auswählen",
       "findUser": "Tippen, um einen Benutzer zu suchen",
+      "selectAdminUser": "Admin Benutzer auswählen",
       "selectFleet": "Flotte auswählen",
       "findFleet": "Tippen, um eine Flotte zu suchen",
       "compare": {

@@ -14,7 +14,10 @@ module Admin
               typeIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}},
               typeNotIn: {type: :array, items: {"$ref": "#/components/schemas/ImportTypeEnum"}},
               aasmStateEq: {"$ref": "#/components/schemas/ImportStatusEnum"},
-              aasmStateIn: {type: :array, items: {"$ref": "#/components/schemas/ImportStatusEnum"}}
+              aasmStateIn: {type: :array, items: {"$ref": "#/components/schemas/ImportStatusEnum"}},
+              adminUserUsernameIn: {type: :array, items: {type: :string}},
+              userUsernameIn: {type: :array, items: {type: :string}},
+              includeSystem: {type: :boolean}
             },
             additionalProperties: false,
             example: {}
