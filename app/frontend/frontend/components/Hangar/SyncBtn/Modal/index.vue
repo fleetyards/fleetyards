@@ -54,11 +54,11 @@ const fetchCount = ref(0);
 
 const maxMessagesPerMinute = 60;
 
-const maxPage = ref<number | undefined>();
-
 const hangarStore = useHangarStore();
 
 const pledges = ref<RsiHangarItemInput[]>([]);
+
+const seenPledgeIds = new Set<string>();
 
 const items = computed(() =>
   pledges.value.filter((pledge) =>
@@ -228,7 +228,7 @@ const start = async () => {
   started.value = true;
   pledges.value = [];
   currentPage.value = 1;
-  maxPage.value = undefined;
+  seenPledgeIds.clear();
   syncStartedAt.value = new Date();
   fetchCount.value = 0;
   fetchPage(currentPage.value);
@@ -261,29 +261,36 @@ const fetchRSIHangar = async (htmlPage: string) => {
   updateStep("fetchHangar", "processing");
 
   const parser = new RSIHangarParser();
+  const result = parser.extractPage(htmlPage);
 
-  if (maxPage.value === undefined) {
-    maxPage.value = parser.extractMaxPage(htmlPage);
-  }
-
-  const items = parser.extractPage(htmlPage);
-
-  if (items !== undefined && items.length > 0) {
-    pledges.value = [...pledges.value, ...items];
-  }
-
-  if (
-    items === undefined ||
-    (maxPage.value && currentPage.value >= maxPage.value)
-  ) {
+  if (result === undefined) {
     updateStep("fetchHangar", "success");
-
     await finishSync();
-  } else {
-    currentPage.value += 1;
-
-    setTimeout(() => fetchPage(currentPage.value), 500);
+    return;
   }
+
+  const newPledgeIds = result.pledgeIds.filter(
+    (id) => !seenPledgeIds.has(id),
+  );
+
+  if (newPledgeIds.length === 0) {
+    updateStep("fetchHangar", "success");
+    await finishSync();
+    return;
+  }
+
+  newPledgeIds.forEach((id) => seenPledgeIds.add(id));
+
+  const newPledges = result.pledges.filter((pledge) =>
+    newPledgeIds.includes(pledge.id),
+  );
+
+  if (newPledges.length > 0) {
+    pledges.value = [...pledges.value, ...newPledges];
+  }
+
+  currentPage.value += 1;
+  setTimeout(() => fetchPage(currentPage.value), 500);
 };
 
 const mutation = useSyncRsiHangarMutation();

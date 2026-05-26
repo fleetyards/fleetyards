@@ -10,7 +10,9 @@ const COMPONENT_FOR_UPGRADES = ["F7A Military Hornet Upgrade"];
 export class RSIHangarParser {
   parser = new DOMParser();
 
-  extractPage(html: string): RSIHangarItem[] | undefined {
+  extractPage(
+    html: string,
+  ): { pledges: RSIHangarItem[]; pledgeIds: string[] } | undefined {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
 
     if (this.checkForLastPage(htmlDoc)) {
@@ -26,11 +28,16 @@ export class RSIHangarParser {
     const entries = pledgeList.getElementsByTagName("li");
 
     const pledges: RSIHangarItem[] = [];
+    const pledgeIds: string[] = [];
 
     Array.from(entries).forEach((entry) => {
       const id = (
         entry.getElementsByClassName("js-pledge-id")[0] as HTMLInputElement
       )?.value;
+
+      if (id) {
+        pledgeIds.push(id);
+      }
 
       const items = entry.getElementsByClassName("item");
 
@@ -42,7 +49,7 @@ export class RSIHangarParser {
       });
     });
 
-    return pledges;
+    return { pledges, pledgeIds };
   }
 
   parseItem(id: string, item: Element): RSIHangarItem | undefined {
@@ -100,24 +107,6 @@ export class RSIHangarParser {
     }
 
     return imageUrl.replace("subscribers_vault_thumbnail", "source");
-  }
-
-  extractMaxPage(html: string): number | undefined {
-    const htmlDoc = this.parser.parseFromString(html, "text/html");
-    const links = htmlDoc.querySelectorAll('a[href*="page="]');
-    let maxPage: number | undefined;
-
-    links.forEach((link) => {
-      const match = link.getAttribute("href")?.match(/page=(\d+)/);
-      if (match) {
-        const page = parseInt(match[1], 10);
-        if (maxPage === undefined || page > maxPage) {
-          maxPage = page;
-        }
-      }
-    });
-
-    return maxPage;
   }
 
   checkForLastPage(htmlDoc: Document): boolean {
