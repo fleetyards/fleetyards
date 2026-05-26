@@ -41,7 +41,7 @@ json.module_package do
 end
 json.module_package nil if vehicle.module_package.blank?
 
-active_loadout = vehicle.vehicle_loadouts.active.first
+active_loadout = vehicle.vehicle_loadouts.find(&:active?)
 json.active_loadout do
   json.partial! "api/v1/vehicle_loadouts/base", vehicle_loadout: active_loadout if active_loadout.present?
 end
