@@ -269,9 +269,7 @@ const fetchRSIHangar = async (htmlPage: string) => {
     return;
   }
 
-  const newPledgeIds = result.pledgeIds.filter(
-    (id) => !seenPledgeIds.has(id),
-  );
+  const newPledgeIds = result.pledgeIds.filter((id) => !seenPledgeIds.has(id));
 
   if (newPledgeIds.length === 0) {
     updateStep("fetchHangar", "success");
