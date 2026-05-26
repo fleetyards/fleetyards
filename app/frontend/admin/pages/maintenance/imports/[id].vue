@@ -9,16 +9,28 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   useImport,
   type Import,
   ImportStatusEnum,
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import copyText from "@/shared/utils/CopyText";
 
 const route = useRoute();
 
 const { t, l } = useI18n();
+const { displayInfo, displayAlert } = useAppNotifications();
+
+const copyPayload = (value: string | null) => {
+  if (!value) return;
+  copyText(value).then(
+    () => displayInfo({ text: t("messages.copy.success") }),
+    () => displayAlert({ text: t("messages.copy.failure") }),
+  );
+};
 
 const { data: importRecord, ...asyncStatus } = useImport(
   route.params.id as string,
@@ -155,17 +167,50 @@ const headlineTitle = (record: Import) => formatType(record.type);
           </div>
 
           <div v-if="inputPayload" class="import-detail__payload">
-            <h3>{{ t("labels.imports.input") }}</h3>
+            <div class="import-detail__payload-header">
+              <h3>{{ t("labels.imports.input") }}</h3>
+              <Btn
+                :size="BtnSizesEnum.SMALL"
+                inline
+                :title="t('actions.copy')"
+                :aria-label="t('actions.copy')"
+                @click="copyPayload(inputPayload)"
+              >
+                <i class="fa-duotone fa-copy" />
+              </Btn>
+            </div>
             <pre>{{ inputPayload }}</pre>
           </div>
 
           <div v-if="outputPayload" class="import-detail__payload">
-            <h3>{{ t("labels.imports.output") }}</h3>
+            <div class="import-detail__payload-header">
+              <h3>{{ t("labels.imports.output") }}</h3>
+              <Btn
+                :size="BtnSizesEnum.SMALL"
+                inline
+                :title="t('actions.copy')"
+                :aria-label="t('actions.copy')"
+                @click="copyPayload(outputPayload)"
+              >
+                <i class="fa-duotone fa-copy" />
+              </Btn>
+            </div>
             <pre>{{ outputPayload }}</pre>
           </div>
 
           <div v-if="importDataPayload" class="import-detail__payload">
-            <h3>{{ t("labels.imports.importData") }}</h3>
+            <div class="import-detail__payload-header">
+              <h3>{{ t("labels.imports.importData") }}</h3>
+              <Btn
+                :size="BtnSizesEnum.SMALL"
+                inline
+                :title="t('actions.copy')"
+                :aria-label="t('actions.copy')"
+                @click="copyPayload(importDataPayload)"
+              >
+                <i class="fa-duotone fa-copy" />
+              </Btn>
+            </div>
             <pre>{{ importDataPayload }}</pre>
           </div>
         </div>
@@ -196,6 +241,18 @@ const headlineTitle = (record: Import) => formatType(record.type);
     }
 
     dd {
+      margin: 0;
+    }
+  }
+
+  &__payload-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    h3 {
       margin: 0;
     }
   }
