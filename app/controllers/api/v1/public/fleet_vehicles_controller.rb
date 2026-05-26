@@ -9,12 +9,23 @@ module Api
         before_action :set_fleet
         after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
+        VEHICLE_RENDER_INCLUDES = [
+          :model_paint,
+          :module_package,
+          :vehicle_loadouts,
+          :public_hangar_groups,
+          {model: [:manufacturer]},
+          {vehicle_modules: :model_module},
+          {vehicle_upgrades: :model_upgrade},
+          {user: {avatar_attachment: :blob}}
+        ].freeze
+
         rescue_from ActiveRecord::RecordNotFound, ActionPolicy::Unauthorized do |_exception|
           not_found(I18n.t("messages.record_not_found.fleet", slug: params[:fleet_slug]))
         end
 
         def index
-          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -39,7 +50,7 @@ module Api
               Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
             )
               .order(@q.result.order_values)
-              .includes(:model, :vehicle_loadouts)
+              .includes(VEHICLE_RENDER_INCLUDES)
               .joins(:model)
 
             @vehicles = result_with_pagination(result, per_page(Vehicle))
@@ -51,7 +62,7 @@ module Api
             ahoy.track "fleet_embedding", request.path_parameters
           end
 
-          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -63,13 +74,13 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(:model, :vehicle_loadouts)
+            .includes(VEHICLE_RENDER_INCLUDES)
             .joins(:model)
             .all
         end
 
         def fleetchart
-          scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
+          scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
 
           scope = scope.where(loaner: loaner_included?)
 
@@ -77,7 +88,7 @@ module Api
           @vehicles = Vehicle.where(
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
-            .includes(:model, :vehicle_loadouts)
+            .includes(VEHICLE_RENDER_INCLUDES)
             .joins(:model)
             .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
         end

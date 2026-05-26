@@ -14,13 +14,20 @@ module Api
 
       after_action -> { pagination_header(%i[vehicles models]) }, only: %i[index]
 
+      VEHICLE_RENDER_INCLUDES = [
+        :model_paint,
+        :module_package,
+        :vehicle_loadouts,
+        {model: [:manufacturer]},
+        {vehicle_modules: :model_module},
+        {vehicle_upgrades: :model_upgrade},
+        {task_forces: :hangar_group}
+      ].freeze
+
       def index
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles.includes(
-          :model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
-          :vehicle_loadouts, model: [:manufacturer]
-        )
+        scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -57,7 +64,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes(:model, :vehicle_loadouts).joins(:model)
+            .includes(VEHICLE_RENDER_INCLUDES).joins(:model)
 
           @vehicles = result_with_pagination(result, per_page(FleetVehicle))
         end
@@ -93,7 +100,7 @@ module Api
       def fleetchart
         authorize! with: FleetVehiclePolicy, context: {fleet: @fleet}
 
-        scope = @fleet.vehicles.includes(:model_paint, :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules, :vehicle_loadouts, model: [:manufacturer])
+        scope = @fleet.vehicles.includes(VEHICLE_RENDER_INCLUDES)
 
         scope = scope.where(loaner: loaner_included?)
 
@@ -101,7 +108,7 @@ module Api
         @vehicles = Vehicle.where(
           Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
         )
-          .includes(:model, :vehicle_loadouts)
+          .includes(VEHICLE_RENDER_INCLUDES)
           .joins(:model)
           .sort_by { |vehicle| [-vehicle.model.length, vehicle.model.name] }
       end
