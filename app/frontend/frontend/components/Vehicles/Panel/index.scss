@@ -16,7 +16,8 @@
     color: $gold;
   }
 
-  &-loaner-label {
+  &-loaner-label,
+  &-bundled-label {
     position: absolute;
     top: 0;
     right: 0;
@@ -32,6 +33,10 @@
     svg {
       color: #fff;
     }
+  }
+
+  &-bundled-label {
+    background-color: $primary;
   }
 
   &-addons {

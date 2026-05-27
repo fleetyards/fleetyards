@@ -31,6 +31,7 @@ module Api
         end
 
         scope = loaner_included?(scope)
+        scope = bundled_included?(scope)
         scope = scope.where(models: {cargo: 0.1..}) if vehicle_query_params.delete("with_cargo")
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
@@ -45,6 +46,7 @@ module Api
           .order(@q.result.order_values)
           .includes(:vehicle_upgrades, :model_upgrades, :module_package,
             :task_forces, :hangar_groups, :vehicle_modules, :vehicle_loadouts,
+            {parent_vehicle: :model},
             model_paint: :item_prices,
             model: [:manufacturer, :item_prices, {model_loaners: :loaner_model}])
           .joins(model: [:manufacturer])
@@ -94,6 +96,7 @@ module Api
         scope = authorized_scope(Vehicle.all).visible.purchased
 
         scope = loaner_included?(scope)
+        scope = bundled_included?(scope)
 
         vehicle_query_params["sorts"] = "model_name asc"
 

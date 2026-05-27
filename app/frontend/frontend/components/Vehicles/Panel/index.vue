@@ -107,6 +107,14 @@ const loanersTooltip = computed(() =>
 
 const hasLoaners = computed(() => model.value?.loaners?.length);
 
+const bundledTooltip = computed(() => {
+  const parent = (props.vehicle as Vehicle).bundledParent;
+  if (parent?.name) {
+    return t("labels.vehicle.bundledWith", { parent: parent.name });
+  }
+  return t("labels.vehicle.bundled");
+});
+
 const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
   manufacturerIn: [manufacturer.slug],
 });
@@ -216,6 +224,13 @@ const shouldHighlight = computed(() => {
         class="vehicle-panel-loaner-label"
       >
         <i class="fa-light fa-exchange" />
+      </div>
+      <div
+        v-else-if="(vehicle as Vehicle).bundled"
+        v-tooltip="bundledTooltip"
+        class="vehicle-panel-bundled-label"
+      >
+        <i class="fa-light fa-box" />
       </div>
       <div
         v-else-if="hasLoaners && loanersHintVisible"

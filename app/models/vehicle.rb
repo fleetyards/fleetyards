@@ -52,6 +52,16 @@ class Vehicle < ApplicationRecord
   belongs_to :module_package,
     class_name: "ModelModulePackage",
     optional: true
+  belongs_to :parent_vehicle,
+    class_name: "Vehicle",
+    foreign_key: :vehicle_id,
+    inverse_of: :child_vehicles,
+    optional: true
+  has_many :child_vehicles,
+    class_name: "Vehicle",
+    foreign_key: :vehicle_id,
+    inverse_of: :parent_vehicle,
+    dependent: nil
 
   has_many :task_forces, dependent: :destroy
   has_many :hangar_groups, through: :task_forces

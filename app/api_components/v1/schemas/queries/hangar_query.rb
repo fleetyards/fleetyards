@@ -37,6 +37,7 @@ module V1
             modelNameOrModelDescriptionCont: {type: :string},
             publicEq: {type: :boolean},
             loanerEq: {type: :boolean},
+            bundledEq: {type: :string},
             boughtViaEq: {"$ref": "#/components/schemas/BoughtViaEnum"},
             hangarGroupsIn: {type: :array, items: {type: :string}},
             hangarGroupsNotIn: {type: :array, items: {type: :string}},

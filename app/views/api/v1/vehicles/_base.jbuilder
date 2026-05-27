@@ -8,6 +8,17 @@ json.wanted vehicle.wanted
 json.bought_via vehicle.bought_via
 json.bought_via_label vehicle.bought_via_label
 json.loaner vehicle.loaner
+json.bundled vehicle.bundled
+
+bundled_parent_model = vehicle.parent_vehicle&.model if vehicle.bundled?
+json.bundled_parent do
+  if bundled_parent_model.present?
+    json.name bundled_parent_model.name
+    json.slug bundled_parent_model.slug
+  end
+end
+json.bundled_parent nil if bundled_parent_model.blank?
+
 json.flagship vehicle.flagship
 json.public vehicle.public
 json.name_visible vehicle.name_visible

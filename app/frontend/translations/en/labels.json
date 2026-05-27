@@ -888,6 +888,8 @@
         "flagship": "Flagship",
         "wanted": "Wanted",
         "loaner": "Loaner",
+        "bundled": "Bundled",
+        "bundledWith": "Bundled with {parent}",
         "public": "Public Visible",
         "fullPublic": "Public Visible including Name",
         "publicShort": "Public",
@@ -1109,6 +1111,7 @@
           "public": "Public",
           "group": "Group",
           "loaner": "Loaners",
+          "bundled": "Bundled Snub Crafts",
           "boughtVia": "Bought via?"
         },
         "tradeRoutes": {

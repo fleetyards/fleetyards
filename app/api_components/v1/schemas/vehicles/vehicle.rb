@@ -20,6 +20,15 @@ module V1
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             hangarGroups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroup"}},
             loaner: {type: :boolean},
+            bundled: {type: :boolean},
+            bundledParent: {
+              type: :object,
+              nullable: true,
+              properties: {
+                name: {type: :string},
+                slug: {type: :string}
+              }
+            },
             model: {"$ref": "#/components/schemas/Model"},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
@@ -36,7 +45,7 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id model wanted loaner flagship public nameVisible saleNotify alternativeNames
+            id model wanted loaner bundled flagship public nameVisible saleNotify alternativeNames
             modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt updatedAt
           ]
         })

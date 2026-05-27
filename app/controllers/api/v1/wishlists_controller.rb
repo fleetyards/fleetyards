@@ -31,6 +31,7 @@ module Api
         end
 
         scope = loaner_included?(scope)
+        scope = bundled_included?(scope)
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
         vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params["sorts"], ["name asc", "model_name asc"])
@@ -68,6 +69,7 @@ module Api
         scope = authorized_scope(Vehicle.all).visible.wanted
 
         scope = loaner_included?(scope)
+        scope = bundled_included?(scope)
 
         vehicle_query_params["sorts"] = "model_name asc"
 

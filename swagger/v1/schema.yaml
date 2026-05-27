@@ -9162,6 +9162,8 @@ components:
           type: boolean
         loanerEq:
           type: boolean
+        bundledEq:
+          type: string
         boughtViaEq:
           "$ref": "#/components/schemas/BoughtViaEnum"
         hangarGroupsIn:
@@ -12253,6 +12255,16 @@ components:
             "$ref": "#/components/schemas/HangarGroup"
         loaner:
           type: boolean
+        bundled:
+          type: boolean
+        bundledParent:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
         model:
           "$ref": "#/components/schemas/Model"
         modelModuleIds:
@@ -12293,6 +12305,7 @@ components:
       - model
       - wanted
       - loaner
+      - bundled
       - flagship
       - public
       - nameVisible
@@ -12581,6 +12594,16 @@ components:
             "$ref": "#/components/schemas/HangarGroupPublic"
         loaner:
           type: boolean
+        bundled:
+          type: boolean
+        bundledParent:
+          type: object
+          nullable: true
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
         model:
           "$ref": "#/components/schemas/Model"
         username:
@@ -12619,6 +12642,7 @@ components:
       - id
       - model
       - loaner
+      - bundled
       - modelUpgradeIds
       - hangarGroupIds
       - hangarGroups
