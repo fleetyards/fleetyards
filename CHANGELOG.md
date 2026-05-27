@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.28.0](https://github.com/fleetyards/fleetyards/compare/v6.27.0...v6.28.0) (2026-05-27)
+
+
+### Features
+
+* **admin:** copy buttons for import payload sections ([8291fbe](https://github.com/fleetyards/fleetyards/commit/8291fbe1c1c584671240e7e4f2118688fa4b2bf9))
+* **admin:** filter imports by requester ([1ce2d5c](https://github.com/fleetyards/fleetyards/commit/1ce2d5c604ae8d91888f68419d22919aa1b1c188))
+* **compare:** add share button to compare page ([0650ed5](https://github.com/fleetyards/fleetyards/commit/0650ed531c5216329e44acbb53dae7d7d59b39c7))
+* **hangar-sync:** auto-add bundled snub crafts to hangar ([#4012](https://github.com/fleetyards/fleetyards/issues/4012)) ([36823f4](https://github.com/fleetyards/fleetyards/commit/36823f4dbcebada936c2595870acbf21f3642f8f))
+
+
+### Bug Fixes
+
+* **compare:** filter hardpoints by source based on inGame status ([e6bee28](https://github.com/fleetyards/fleetyards/commit/e6bee281f0a920b549f0d3f4f8cbc0871acaf5bc))
+* **hangar-sync:** dedupe RSI pledges by id instead of page count ([84dbac6](https://github.com/fleetyards/fleetyards/commit/84dbac6a9a06a5b1d099f6156a601ea6808f7f03))
+* **stores:** reset all persisted stores on version bump ([e8d9740](https://github.com/fleetyards/fleetyards/commit/e8d97406fe3a3375e476600cacb136fe1d40830b))
+* **stores:** reset all persisted stores on version bump ([81696bd](https://github.com/fleetyards/fleetyards/commit/81696bd9498d1bbe1cdf9e0fd6abd0291f2b14f3))
+
+
+### Chores
+
+* apply prettier formatting to hangar sync modal ([35df029](https://github.com/fleetyards/fleetyards/commit/35df0290bcbc040eec1e8177723b568a835c0ced))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#4014](https://github.com/fleetyards/fleetyards/issues/4014)) ([43e36d6](https://github.com/fleetyards/fleetyards/commit/43e36d68f9baf03060949b528e112e43ab43aaa2))
+* **deps-dev:** bump @typescript-eslint/parser from 8.59.4 to 8.60.0 ([#4009](https://github.com/fleetyards/fleetyards/issues/4009)) ([b987681](https://github.com/fleetyards/fleetyards/commit/b9876814c7d2d38fccbc16245140196a1902ea48))
+* **deps-dev:** bump bullet from 8.1.1 to 8.1.2 ([#4008](https://github.com/fleetyards/fleetyards/issues/4008)) ([f07f79c](https://github.com/fleetyards/fleetyards/commit/f07f79cf03a30d514ef0224a3a6493319f0ea596))
+* **deps-dev:** bump orval from 8.12.3 to 8.13.0 ([#4016](https://github.com/fleetyards/fleetyards/issues/4016)) ([d992cb2](https://github.com/fleetyards/fleetyards/commit/d992cb2c04405a224576056ba37f82bbe417a74a))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.1 to 3.3.2 ([#4010](https://github.com/fleetyards/fleetyards/issues/4010)) ([aa1aa5f](https://github.com/fleetyards/fleetyards/commit/aa1aa5ffb020b2c76e2921a3978e9a5e286d8674))
+* **deps-dev:** bump vue-tsc from 3.3.1 to 3.3.2 ([#4007](https://github.com/fleetyards/fleetyards/issues/4007)) ([7f468b1](https://github.com/fleetyards/fleetyards/commit/7f468b1a5304a40431e711e8a76f4faad770e517))
+* **deps:** bump jbuilder from 2.15.0 to 2.15.1 ([#4015](https://github.com/fleetyards/fleetyards/issues/4015)) ([af2f77e](https://github.com/fleetyards/fleetyards/commit/af2f77eb028f6a644303f7574051297b67be055d))
+* **deps:** bump puma from 8.0.1 to 8.0.2 ([#4013](https://github.com/fleetyards/fleetyards/issues/4013)) ([f85f867](https://github.com/fleetyards/fleetyards/commit/f85f8679ac5df65acf1e9fdbd85f1e5b95868954))
+* untrack .claude/scheduled_tasks.lock ([58ab6c8](https://github.com/fleetyards/fleetyards/commit/58ab6c853ada145cb574b73c660249002ab2faed))
+
 ## [6.27.0](https://github.com/fleetyards/fleetyards/compare/v6.26.0...v6.27.0) (2026-05-25)
 
 
