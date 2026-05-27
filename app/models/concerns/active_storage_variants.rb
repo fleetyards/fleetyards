@@ -4,10 +4,10 @@ module ActiveStorageVariants
   extend ActiveSupport::Concern
 
   REPRESENTATION_SIZES = {
-    small: {resize_to_limit: [500, 500], saver: {quality: 80}},
-    medium: {resize_to_limit: [1000, 1000], saver: {quality: 90}},
-    large: {resize_to_limit: [2000, 2000], saver: {quality: 90}},
-    xlarge: {resize_to_limit: [3000, 3000]}
+    small: {format: :webp, resize_to_limit: [500, 500], saver: {quality: 80}},
+    medium: {format: :webp, resize_to_limit: [1000, 1000], saver: {quality: 82}},
+    large: {format: :webp, resize_to_limit: [2000, 2000], saver: {quality: 82}},
+    xlarge: {format: :webp, resize_to_limit: [3000, 3000], saver: {quality: 82}}
   }.freeze
 
   included do
