@@ -22,6 +22,7 @@ type Props = {
   translationKey?: string;
   hideSelected?: boolean;
   valueAttr?: "slug" | "id";
+  inline?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -32,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   returnObject: false,
   hideSelected: false,
   valueAttr: "slug",
+  inline: false,
 });
 
 const { t } = useI18n();
@@ -136,5 +138,6 @@ defineExpose({
     :no-label="noLabel"
     :return-object="returnObject"
     :hide-selected="hideSelected"
+    :inline="inline"
   />
 </template>

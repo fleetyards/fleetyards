@@ -88,6 +88,17 @@ module HangarFiltersConcern
     scope
   end
 
+  private def bundled_included?(scope)
+    case vehicle_query_params.delete("bundled_eq")
+    when "false"
+      scope.where(bundled: false)
+    when "only"
+      scope.where(bundled: true)
+    else
+      scope
+    end
+  end
+
   private def price_range
     @price_range ||= price_in.map do |prices|
       gt_price, lt_price = prices.split("-")

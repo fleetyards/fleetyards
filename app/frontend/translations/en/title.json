@@ -120,6 +120,7 @@
             "images": "Edit %{manufacturer} %{model} Images",
             "videos": "Edit %{manufacturer} %{model} Videos",
             "loaners": "Edit %{manufacturer} %{model} Loaners",
+            "snubCrafts": "Edit %{manufacturer} %{model} Snub Crafts",
             "upgrades": "Edit %{manufacturer} %{model} Upgrades",
             "packages": "Edit %{manufacturer} %{model} Packages"
           }

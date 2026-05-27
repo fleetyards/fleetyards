@@ -69,6 +69,37 @@ RSpec.describe HangarSync do
     end
   end
 
+  context "with bundled snub crafts" do
+    let(:andromeda_model) { Model.find_by!(slug: "rsi-constellation-andromeda") }
+    let(:snub_model) { Model.find_by!(slug: "drak-corsair") }
+
+    before do
+      andromeda_model.snub_crafts << snub_model
+    end
+
+    it "auto-creates bundled child vehicles for synced ships" do
+      result = ::HangarSync.new(input).run(user.id)
+
+      andromeda_vehicle = Vehicle.find(result[:imported_vehicles]).find { |v| v.model_id == andromeda_model.id }
+      expect(andromeda_vehicle).to be_present
+
+      bundled = Vehicle.where(bundled: true, vehicle_id: andromeda_vehicle.id, user_id: user.id)
+      expect(bundled.count).to eq(1)
+      expect(bundled.first.model_id).to eq(snub_model.id)
+    end
+
+    it "does not move bundled children to wanted during reconciliation" do
+      andromeda_vehicle = create(:vehicle, user: user, model: andromeda_model, wanted: false)
+      bundled = Vehicle.find_by(bundled: true, vehicle_id: andromeda_vehicle.id)
+      expect(bundled).to be_present
+
+      ::HangarSync.new(input).run(user.id)
+
+      expect(bundled.reload.bundled).to be(true)
+      expect(bundled.wanted).to be(false)
+    end
+  end
+
   context "when rsi_pledge_id changes" do
     let(:andromeda_model) { Model.find_by!(slug: "rsi-constellation-andromeda") }
 

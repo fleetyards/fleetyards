@@ -57,6 +57,7 @@ export type AdminRouteLocation =
   | ParamRoute<"admin-model-edit-positions", IdParams>
   | ParamRoute<"admin-model-edit-hardpoints", IdParams>
   | ParamRoute<"admin-model-edit-loaners", IdParams>
+  | ParamRoute<"admin-model-edit-snub-crafts", IdParams>
   | ParamRoute<"admin-model-edit-docks", IdParams>
   | ParamRoute<"admin-model-edit-paints", IdParams>
   | ParamRoute<"admin-model-edit-modules", IdParams>

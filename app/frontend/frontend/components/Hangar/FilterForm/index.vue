@@ -40,6 +40,7 @@ const prefillFormValues = () => {
     nameCont: filters.value.nameCont,
     onSaleEq: filters.value.onSaleEq,
     loanerEq: filters.value.loanerEq,
+    bundledEq: filters.value.bundledEq,
     publicEq: filters.value.publicEq,
     boughtViaEq: filters.value.boughtViaEq,
     priceLteq: filters.value.priceLteq,
@@ -231,6 +232,24 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
         },
       ]"
       name="loaner"
+    />
+
+    <RadioList
+      v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
+      v-model="form.bundledEq"
+      :label="t('labels.filters.vehicles.bundled')"
+      :reset-label="t('labels.all')"
+      :options="[
+        {
+          label: t('labels.hide'),
+          value: 'false',
+        },
+        {
+          label: t('labels.only'),
+          value: 'only',
+        },
+      ]"
+      name="bundled"
     />
 
     <RadioList

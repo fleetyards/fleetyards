@@ -764,6 +764,8 @@
         "flagship": "Flaggschiff",
         "wanted": "Gewünscht",
         "loaner": "Leihschiff",
+        "bundled": "Mitgeliefert",
+        "bundledWith": "Mitgeliefert mit %{parent}",
         "public": "Öffentlich sichtbar",
         "fullPublic": "Öffentlich sichtbar inkl. Name",
         "publicShort": "Öffentlich",
@@ -964,6 +966,7 @@
           "public": "Öffentlich",
           "group": "Gruppe",
           "loaner": "Leihschiffe",
+          "bundled": "Mitgelieferte Snub Crafts",
           "boughtVia": "Gekauft über?"
         },
         "tradeRoutes": {

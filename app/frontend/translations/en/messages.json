@@ -386,6 +386,9 @@
         "modelLoaner": {
           "destroy": "Are you sure you want to delete this loaner? This action can't be reverted."
         },
+        "modelSnubCraft": {
+          "destroy": "Are you sure you want to delete this snub craft? This action can't be reverted."
+        },
         "modelPaint": {
           "destroy": "Are you sure you want to delete this paint? This action can't be reverted."
         },

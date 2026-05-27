@@ -109,6 +109,7 @@
             "positions": "Positions",
             "hardpoints": "Hardpoints",
             "loaners": "Loaners",
+            "snubCrafts": "Snub Crafts",
             "upgrades": "Upgrades",
             "packages": "Packages"
           }

@@ -123,6 +123,7 @@ const vehicle = computed<Vehicle | undefined>(() => {
       },
     ],
     loaner: vehiclePanelLoaner.value,
+    bundled: false,
     modelModuleIds: [],
     modelUpgradeIds: [],
     nameVisible: false,

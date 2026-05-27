@@ -16,6 +16,17 @@ module V1
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             hangarGroups: {type: :array, items: {"$ref": "#/components/schemas/HangarGroupPublic"}},
             loaner: {type: :boolean},
+            bundled: {type: :boolean},
+            bundledParent: {
+              type: :object,
+              nullable: true,
+              properties: {
+                id: {type: :string, format: :uuid},
+                name: {type: :string},
+                slug: {type: :string},
+                customName: {type: :string, nullable: true}
+              }
+            },
             model: {"$ref": "#/components/schemas/Model"},
             username: {type: :string},
             userAvatar: {type: :string, format: :uri},
@@ -31,8 +42,8 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id model loaner modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds createdAt
-            updatedAt
+            id model loaner bundled modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds
+            createdAt updatedAt
           ]
         })
       end

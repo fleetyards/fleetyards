@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_25_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_05_26_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1019,6 +1019,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_120000) do
   create_table "vehicles", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.string "alternative_names"
     t.integer "bought_via", default: 0
+    t.boolean "bundled", default: false, null: false
     t.datetime "created_at", precision: nil
     t.boolean "flagship", default: false
     t.boolean "hidden", default: false
@@ -1043,6 +1044,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_25_120000) do
     t.index ["model_id", "id"], name: "index_vehicles_on_model_id_and_id"
     t.index ["serial", "user_id"], name: "index_vehicles_on_serial_and_user_id", unique: true
     t.index ["user_id"], name: "index_vehicles_on_user_id"
+    t.index ["vehicle_id", "bundled"], name: "index_vehicles_on_vehicle_id_and_bundled"
   end
 
   create_table "versions", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
