@@ -30,6 +30,7 @@ type Props = {
   exact?: boolean;
   block?: boolean;
   mobileBlock?: boolean;
+  mobileIconOnly?: boolean;
   inline?: boolean;
   textInline?: boolean;
   active?: boolean;
@@ -50,6 +51,7 @@ const props = withDefaults(defineProps<Props>(), {
   exact: false,
   block: false,
   mobileBlock: false,
+  mobileIconOnly: false,
   inline: false,
   textInline: false,
   active: false,
@@ -113,6 +115,9 @@ const copyShareUrl = () => {
     :variant="variant"
     :size="size"
     :inline="inline"
+    :block="block"
+    :mobile-block="mobileBlock"
+    :mobile-icon-only="mobileIconOnly"
     @click="share"
   >
     <i class="fa-duotone fa-share-square" />

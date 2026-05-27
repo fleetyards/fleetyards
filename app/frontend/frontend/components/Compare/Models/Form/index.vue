@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.vue";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
 import { type Model } from "@/services/fyApi";
@@ -20,6 +21,10 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+const shareUrl = computed(() => window.location.href);
+
+const shareTitle = computed(() => t("headlines.compare.ships"));
 
 const erkulUrl = computed(() => {
   return "https://www.erkul.games/calculator";
@@ -98,6 +103,13 @@ const handleChange = (model: string) => {
       :disabled="selectDisabled"
       name="new-model"
       @update:model-value="handleChange"
+    />
+    <ShareBtn
+      v-if="models.length"
+      :url="shareUrl"
+      :title="shareTitle"
+      block
+      mobile-icon-only
     />
     <Btn
       :href="erkulUrl"
