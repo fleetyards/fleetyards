@@ -109,8 +109,9 @@ const hasLoaners = computed(() => model.value?.loaners?.length);
 
 const bundledTooltip = computed(() => {
   const parent = (props.vehicle as Vehicle).bundledParent;
-  if (parent?.name) {
-    return t("labels.vehicle.bundledWith", { parent: parent.name });
+  const parentName = parent?.customName || parent?.name;
+  if (parentName) {
+    return t("labels.vehicle.bundledWith", { parent: parentName });
   }
   return t("labels.vehicle.bundled");
 });

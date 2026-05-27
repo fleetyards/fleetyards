@@ -21,8 +21,10 @@ module V1
               type: :object,
               nullable: true,
               properties: {
+                id: {type: :string, format: :uuid},
                 name: {type: :string},
-                slug: {type: :string}
+                slug: {type: :string},
+                customName: {type: :string, nullable: true}
               }
             },
             model: {"$ref": "#/components/schemas/Model"},

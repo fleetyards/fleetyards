@@ -182,9 +182,23 @@ export const useVehicleMutations = () => {
 
           queryClient.setQueryData(key, {
             ...data,
-            items: data.items.map((v) =>
-              v.id === updatedVehicle.id ? updatedVehicle : v,
-            ),
+            items: data.items.map((v) => {
+              if (v.id === updatedVehicle.id) {
+                return updatedVehicle;
+              }
+
+              if (v.bundled && v.bundledParent?.id === updatedVehicle.id) {
+                return {
+                  ...v,
+                  bundledParent: {
+                    ...v.bundledParent,
+                    customName: updatedVehicle.name,
+                  },
+                };
+              }
+
+              return v;
+            }),
           });
         });
     });
