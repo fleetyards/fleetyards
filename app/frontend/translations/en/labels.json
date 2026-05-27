@@ -889,7 +889,7 @@
         "wanted": "Wanted",
         "loaner": "Loaner",
         "bundled": "Bundled",
-        "bundledWith": "Bundled with {parent}",
+        "bundledWith": "Bundled with %{parent}",
         "public": "Public Visible",
         "fullPublic": "Public Visible including Name",
         "publicShort": "Public",

@@ -765,7 +765,7 @@
         "wanted": "Gewünscht",
         "loaner": "Leihschiff",
         "bundled": "Mitgeliefert",
-        "bundledWith": "Mitgeliefert mit {parent}",
+        "bundledWith": "Mitgeliefert mit %{parent}",
         "public": "Öffentlich sichtbar",
         "fullPublic": "Öffentlich sichtbar inkl. Name",
         "publicShort": "Öffentlich",
