@@ -4,7 +4,7 @@ shared:
 
   api_version: <%= ENV["API_VERSION"] || 'v1' %>
   admin_api_version: <%= ENV["ADMIN_API_VERSION"] || 'v1' %>
-  store_version: <%= ENV["APP_STORE_VERSION"] || 12.0 %>
+  store_version: <%= ENV["APP_STORE_VERSION"] || 11.0 %>
   embed_store_version: <%= ENV["APP_EMBED_STORE_VERSION"] || 2.0 %>
 
   domain: <%= ENV["DOMAIN"] || "localhost:#{ENV["PORT"] || 3000}" %>

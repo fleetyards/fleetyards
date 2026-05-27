@@ -20,11 +20,7 @@ export const useCheckStoreVersion = (store: FltYrdsStore) => {
     if (store.storeVersion !== window.STORE_VERSION) {
       console.info("Updating Store Version and resetting Store");
 
-      if (typeof store.resetAll === "function") {
-        store.resetAll(true);
-      } else {
-        store.$reset();
-      }
+      store.$reset();
       store.storeVersion = window.STORE_VERSION;
     }
   };
