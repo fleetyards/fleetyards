@@ -20,6 +20,12 @@
           "label": "Leihmodell"
         }
       },
+      "modelSnubCraft": {
+        "snubCraft": {
+          "label": "Snub Craft",
+          "prompt": "Snub Craft auswählen"
+        }
+      },
       "modelHardpoint": {
         "source": {
           "label": "Quelle",

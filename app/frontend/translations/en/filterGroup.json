@@ -22,7 +22,8 @@
       },
       "modelSnubCraft": {
         "snubCraft": {
-          "label": "Snub Craft"
+          "label": "Snub Craft",
+          "prompt": "Select a Snub Craft"
         }
       },
       "modelPosition": {

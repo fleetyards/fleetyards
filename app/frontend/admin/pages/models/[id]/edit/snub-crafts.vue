@@ -159,7 +159,8 @@ const onSaveCreate = async () => {
       <ModelFilterGroup
         v-model="editForm.snubCraftId"
         value-attr="id"
-        :no-label="false"
+        no-label
+        inline
         translation-key="modelSnubCraft.snubCraft"
         :multiple="false"
         name="edit-snub-craft-model"
@@ -170,7 +171,8 @@ const onSaveCreate = async () => {
       <ModelFilterGroup
         v-model="createForm.snubCraftId"
         value-attr="id"
-        :no-label="false"
+        no-label
+        inline
         translation-key="modelSnubCraft.snubCraft"
         :multiple="false"
         name="create-snub-craft-model"
