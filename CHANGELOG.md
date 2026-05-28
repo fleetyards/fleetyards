@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.29.0](https://github.com/fleetyards/fleetyards/compare/v6.28.1...v6.29.0) (2026-05-28)
+
+
+### Features
+
+* **compare:** add short share URLs via fltyrd.net/c/&lt;code&gt; ([091afc3](https://github.com/fleetyards/fleetyards/commit/091afc3a345bb6c373f3b0518957b6ce4a54d15a))
+
 ## [6.28.1](https://github.com/fleetyards/fleetyards/compare/v6.28.0...v6.28.1) (2026-05-28)
 
 
