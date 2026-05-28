@@ -22,7 +22,13 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const shareUrl = computed(() => window.location.href);
+const route = useRoute();
+
+const shareUrl = computed(() => {
+  const host = `${window.location.protocol}//${window.location.host}`;
+
+  return `${host}${route.fullPath}`;
+});
 
 const shareTitle = computed(() => t("headlines.compare.ships"));
 
