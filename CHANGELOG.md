@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.28.1](https://github.com/fleetyards/fleetyards/compare/v6.28.0...v6.28.1) (2026-05-28)
+
+
+### Bug Fixes
+
+* **compare:** build OG image alpha mask with native libvips ops ([fe053f3](https://github.com/fleetyards/fleetyards/commit/fe053f32ddad3c9c4116d4187add96debf750e55))
+* **compare:** make share URL reactive to selected models ([8d04cf8](https://github.com/fleetyards/fleetyards/commit/8d04cf8ffc35e083c5b53907fc56ed12c16cc506))
+
+
+### Chores
+
+* add empty Zed folder settings stub ([0b5bf71](https://github.com/fleetyards/fleetyards/commit/0b5bf71a2bb5c1f52e1c2ddabef73eabb38923c0))
+* **deps-dev:** bump @vue/compiler-sfc from 3.5.34 to 3.5.35 ([#4020](https://github.com/fleetyards/fleetyards/issues/4020)) ([d75ded9](https://github.com/fleetyards/fleetyards/commit/d75ded95e93a077a10f4c10e82029bc116c6a8d0))
+* **deps:** bump sidekiq from 8.1.5 to 8.1.6 ([#4019](https://github.com/fleetyards/fleetyards/issues/4019)) ([26ee35a](https://github.com/fleetyards/fleetyards/commit/26ee35af7668425932a69fb09e36073678419a2f))
+* **deps:** bump vue from 3.5.34 to 3.5.35 ([#4021](https://github.com/fleetyards/fleetyards/issues/4021)) ([467d8a6](https://github.com/fleetyards/fleetyards/commit/467d8a6a2c9e642299eb868a005370b7df509e03))
+
 ## [6.28.0](https://github.com/fleetyards/fleetyards/compare/v6.27.0...v6.28.0) (2026-05-27)
 
 
