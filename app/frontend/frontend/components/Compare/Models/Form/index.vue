@@ -5,12 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import ModelFilterGroup from "@/frontend/components/base/ModelFilterGroup/index.vue";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
-import { type Model } from "@/services/fyApi";
+import { compareShare, type Model } from "@/services/fyApi";
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import { ComponentExposed } from "vue-component-type-helpers";
 
@@ -24,11 +25,46 @@ const { t } = useI18n();
 
 const route = useRoute();
 
-const shareUrl = computed(() => {
+const longShareUrl = computed(() => {
   const host = `${window.location.protocol}//${window.location.host}`;
 
   return `${host}${route.fullPath}`;
 });
+
+// Pre-fetch the short share URL so the share button can hand it to
+// navigator.share synchronously — iOS Safari requires transient user
+// activation and rejects share() calls that await first.
+const shortShareUrl = ref<string | undefined>();
+const shareKey = computed(() =>
+  props.models
+    .map((model) => model.slug)
+    .sort()
+    .join(","),
+);
+const shareUrl = computed(() => shortShareUrl.value || longShareUrl.value);
+
+const fetchShortShareUrl = debounce(async (key: string) => {
+  try {
+    const result = await compareShare({ models: key.split(",") });
+    if (key !== shareKey.value) return;
+    shortShareUrl.value = result.shortUrl || result.longUrl || undefined;
+  } catch (error) {
+    if (key !== shareKey.value) return;
+    console.info("compareShare failed", error);
+    shortShareUrl.value = undefined;
+  }
+}, 300);
+
+watch(
+  shareKey,
+  (key) => {
+    fetchShortShareUrl.cancel();
+    shortShareUrl.value = undefined;
+    if (!key) return;
+    void fetchShortShareUrl(key);
+  },
+  { immediate: true },
+);
 
 const shareTitle = computed(() => t("headlines.compare.ships"));
 

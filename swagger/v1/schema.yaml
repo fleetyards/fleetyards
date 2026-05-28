@@ -10,6 +10,31 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 paths:
+  "/compare/share":
+    post:
+      summary: Create a short share URL for a comparison
+      tags:
+      - Compare
+      operationId: compareShare
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CompareShareInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CompareShare"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/components":
     get:
       summary: Components list
@@ -6729,6 +6754,35 @@ components:
       required:
       - value
       title: CheckInput
+    CompareShare:
+      type: object
+      required:
+      - shortUrl
+      - longUrl
+      properties:
+        shortUrl:
+          type: string
+          format: uri
+          description: Short shareable URL
+        longUrl:
+          type: string
+          format: uri
+          description: Canonical compare URL
+      title: CompareShare
+    CompareShareInput:
+      type: object
+      required:
+      - models
+      properties:
+        models:
+          type: array
+          minItems: 1
+          maxItems: 8
+          items:
+            type: string
+          description: Model slugs (canonical or legacy) to include in the share link
+      additionalProperties: false
+      title: CompareShareInput
     Component:
       type: object
       properties:

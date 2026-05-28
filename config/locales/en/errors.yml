@@ -21,3 +21,8 @@ en:
       hangar:
         import:
           no_data: "No data found in the import file"
+      compare:
+        share:
+          empty: "No models supplied for share link"
+          too_many: "A share link supports at most %{max} models"
+          unknown_models: "None of the supplied models could be found"

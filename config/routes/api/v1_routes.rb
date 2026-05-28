@@ -51,6 +51,8 @@ v1_api_routes = lambda do
     get "with-models", to: "manufacturers#with_models", on: :collection
   end
 
+  post "compare/share", to: "compare#share", as: :compare_share
+
   resources :images, only: %i[index] do
     get :random, on: :collection
   end

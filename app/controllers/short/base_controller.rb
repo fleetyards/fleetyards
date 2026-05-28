@@ -17,5 +17,29 @@ module Short
     def model_compare
       redirect_to frontend_compare_ships_url(params: request.query_parameters), allow_other_host: true
     end
+
+    def model_compare_share
+      record = CompareImage.find_by(short_code: params[:short_code])
+      if record.blank? || record.share_key.blank?
+        redirect_to frontend_compare_url, allow_other_host: true
+        return
+      end
+
+      slugs = canonical_share_slugs(record.share_key)
+      if slugs.empty?
+        redirect_to frontend_compare_url, allow_other_host: true
+        return
+      end
+
+      redirect_to frontend_compare_url(models: slugs), allow_other_host: true
+    end
+
+    private def canonical_share_slugs(share_key)
+      raw_slugs = share_key.split(CompareImage::SHARE_KEY_SEPARATOR)
+      return [] if raw_slugs.empty?
+
+      Model.where(slug: raw_slugs).or(Model.where(legacy_slug: raw_slugs))
+        .pluck(:slug).uniq.sort
+    end
   end
 end

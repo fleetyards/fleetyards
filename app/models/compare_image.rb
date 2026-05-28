@@ -5,20 +5,29 @@
 # Table name: compare_images
 #
 #  id         :uuid             not null, primary key
+#  share_key  :string
+#  short_code :string
 #  slug_set   :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 # Indexes
 #
-#  index_compare_images_on_slug_set  (slug_set) UNIQUE
+#  index_compare_images_on_share_key   (share_key) UNIQUE WHERE (share_key IS NOT NULL)
+#  index_compare_images_on_short_code  (short_code) UNIQUE WHERE (short_code IS NOT NULL)
+#  index_compare_images_on_slug_set    (slug_set) UNIQUE
 #
 class CompareImage < ApplicationRecord
   has_one_attached :image
 
   validates :slug_set, presence: true, uniqueness: true
+  validates :share_key, uniqueness: true, allow_nil: true
+  validates :short_code, uniqueness: true, allow_nil: true
 
   STYLE_VERSION = "v2"
+  SHORT_CODE_LENGTH = 8
+  MAX_SHARE_MODELS = 8
+  SHARE_KEY_SEPARATOR = ","
 
   def self.for(models)
     models_with_images = models.select { |m| m.store_image.attached? }
@@ -28,6 +37,58 @@ class CompareImage < ApplicationRecord
     record = find_or_initialize_by(slug_set: slug_set)
     record.generate!(models_with_images) unless record.image.attached?
     record
+  end
+
+  def self.find_or_create_for_share(slugs)
+    canonical = resolve_canonical_slugs(slugs)
+    return nil if canonical.empty?
+    return nil if canonical.size > MAX_SHARE_MODELS
+
+    share_key = canonical.join(SHARE_KEY_SEPARATOR)
+    og_slug_set = "#{STYLE_VERSION}-#{canonical.join("-")}"
+
+    if (record = find_for_share(share_key, og_slug_set))
+      return ensure_share_attrs!(record, share_key)
+    end
+
+    create!(slug_set: share_key, share_key: share_key, short_code: generate_short_code)
+  rescue ActiveRecord::RecordNotUnique
+    record = find_for_share(share_key, og_slug_set)
+    record && ensure_share_attrs!(record, share_key)
+  end
+
+  def self.resolve_canonical_slugs(slugs)
+    normalized = Array(slugs).compact.map { |s| s.to_s.downcase }.uniq
+    return [] if normalized.empty?
+
+    Model.where(slug: normalized).or(Model.where(legacy_slug: normalized))
+      .pluck(:slug).uniq.sort
+  end
+
+  def self.generate_short_code
+    loop do
+      candidate = SecureRandom.alphanumeric(SHORT_CODE_LENGTH)
+      break candidate unless exists?(short_code: candidate)
+    end
+  end
+
+  # Looks up an existing row that represents this comparison, whether it was
+  # created by the share flow (matches by share_key) or by the OG-image flow
+  # (matches by versioned slug_set, which uses hyphens between slugs).
+  def self.find_for_share(share_key, og_slug_set)
+    find_by(share_key: share_key) || find_by(slug_set: og_slug_set)
+  end
+
+  def self.ensure_share_attrs!(record, share_key)
+    return record if record.share_key.present? && record.short_code.present?
+
+    record.update!(
+      share_key: record.share_key.presence || share_key,
+      short_code: record.short_code.presence || generate_short_code
+    )
+    record
+  rescue ActiveRecord::RecordNotUnique
+    record.reload
   end
 
   def generate!(models)
