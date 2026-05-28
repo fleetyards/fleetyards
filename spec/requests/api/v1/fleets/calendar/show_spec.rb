@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/calendar", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/calendar", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -22,15 +22,15 @@ RSpec.describe "api/v1/fleets/calendar", type: :request, swagger_doc: "v1/schema
   end
 
   path "/fleets/{fleetSlug}/calendar" do
-    parameter name: "fleetSlug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
 
     get("Fleet Calendar") do
       operationId "fleetCalendar"
       tags "Fleet Events"
       produces "application/json"
 
-      parameter name: :from, in: :query, type: :string, required: false
-      parameter name: :to, in: :query, type: :string, required: false
+      parameter name: :from, in: :query, schema: {type: :string}, required: false
+      parameter name: :to, in: :query, schema: {type: :string}, required: false
 
       security [
         {SessionCookie: []},

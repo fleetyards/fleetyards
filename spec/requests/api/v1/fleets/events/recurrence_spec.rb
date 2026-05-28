@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events/{slug}", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events/{slug}", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -15,7 +15,7 @@ RSpec.describe "api/v1/fleets/events/{slug}", type: :request, swagger_doc: "v1/s
       recurring: true, recurrence_interval: "weekly")
   end
   let(:slug) { fleet_event.slug }
-  let(:input) { {date: "2026-05-21"} }
+  let(:request_body) { {date: "2026-05-21"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -31,8 +31,8 @@ RSpec.describe "api/v1/fleets/events/{slug}", type: :request, swagger_doc: "v1/s
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/skip-occurrence" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     post("Skip a specific occurrence of a recurring event") do
       operationId "skipFleetEventOccurrence"
@@ -40,7 +40,7 @@ RSpec.describe "api/v1/fleets/events/{slug}", type: :request, swagger_doc: "v1/s
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {
+      request_body schema: {
         type: :object,
         properties: {date: {type: :string, format: :date}},
         required: %w[date]
@@ -72,8 +72,8 @@ RSpec.describe "api/v1/fleets/events/{slug}", type: :request, swagger_doc: "v1/s
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/end-series" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     post("End a recurring event series from a given date") do
       operationId "endFleetEventSeries"
@@ -81,7 +81,7 @@ RSpec.describe "api/v1/fleets/events/{slug}", type: :request, swagger_doc: "v1/s
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {
+      request_body schema: {
         type: :object,
         properties: {date: {type: :string, format: :date}},
         required: %w[date]
@@ -94,7 +94,7 @@ RSpec.describe "api/v1/fleets/events/{slug}", type: :request, swagger_doc: "v1/s
       ]
 
       response(200, "successful") do
-        let(:input) { {date: "2026-06-04"} }
+        let(:request_body) { {date: "2026-06-04"} }
         schema "$ref": "#/components/schemas/FleetEventExtended"
 
         run_test! do

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events/admins", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events/admins", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:other) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [other]) }
@@ -29,9 +29,9 @@ RSpec.describe "api/v1/fleets/events/admins", type: :request, swagger_doc: "v1/s
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/admins/{id}" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
-    parameter name: "id", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
+    parameter name: "id", in: :path, schema: {type: :string}
 
     delete("Revoke per-event admin/moderator role") do
       operationId "destroyFleetEventAdmin"

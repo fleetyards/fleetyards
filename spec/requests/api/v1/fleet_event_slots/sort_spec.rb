@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleet_event_slots/sort", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleet_event_slots/sort", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
   let(:fleet_event) { create(:fleet_event, fleet: fleet, created_by: admin) }
   let(:team) { create(:fleet_event_team, fleet_event: fleet_event) }
   let(:slots) { create_list(:fleet_event_slot, 3, slottable: team) }
-  let(:input) do
+  let(:request_body) do
     {
       slottableType: "FleetEventTeam",
       slottableId: team.id,
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/fleet_event_slots/sort", type: :request, swagger_doc: "v1
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {
+      request_body schema: {
         type: :object,
         properties: {
           slottableType: {type: :string, enum: %w[FleetEventTeam FleetEventShip]},

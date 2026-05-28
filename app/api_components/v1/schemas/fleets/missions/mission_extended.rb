@@ -5,7 +5,7 @@ module V1
     module Fleets
       module Missions
         class MissionExtended
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           schema({
             allOf: [

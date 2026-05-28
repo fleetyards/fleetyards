@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events/teams/ships", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -13,7 +13,7 @@ RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: 
   let(:fleetEventTeamId) { team.id }
   let(:ship) { create(:fleet_event_ship, fleet_event_team: team) }
   let(:id) { ship.id }
-  let(:input) { {classification: "Industrial", description: "Hauling"} }
+  let(:request_body) { {classification: "Industrial", description: "Hauling"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -29,10 +29,10 @@ RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: 
   end
 
   path "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "fleetEventSlug", in: :path, type: :string
-    parameter name: "fleetEventTeamId", in: :path, type: :string
-    parameter name: "id", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "fleetEventSlug", in: :path, schema: {type: :string}
+    parameter name: "fleetEventTeamId", in: :path, schema: {type: :string}
+    parameter name: "id", in: :path, schema: {type: :string}
 
     put("Update event ship") do
       operationId "updateFleetEventShip"
@@ -40,7 +40,7 @@ RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetEventShipUpdateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/FleetEventShipUpdateInput"}, required: true
 
       security [
         {SessionCookie: []},

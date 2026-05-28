@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/missions", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/missions", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
   let(:user) { admin }
   let(:fleetSlug) { fleet.slug }
-  let(:input) { {title: "Operation Bluebird", description: "Cargo run"} }
+  let(:request_body) { {title: "Operation Bluebird", description: "Cargo run"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -24,7 +24,7 @@ RSpec.describe "api/v1/fleets/missions", type: :request, swagger_doc: "v1/schema
   end
 
   path "/fleets/{fleetSlug}/missions" do
-    parameter name: "fleetSlug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
 
     post("Create Mission") do
       operationId "createFleetMission"
@@ -32,7 +32,7 @@ RSpec.describe "api/v1/fleets/missions", type: :request, swagger_doc: "v1/schema
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/MissionCreateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/MissionCreateInput"}, required: true
 
       security [
         {SessionCookie: []},
