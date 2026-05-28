@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/mission_slots", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -10,7 +10,7 @@ RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.y
   let(:team) { create(:mission_team, mission: mission) }
   let(:slot) { create(:mission_slot, slottable: team) }
   let(:id) { slot.id }
-  let(:input) { {title: "Co-Pilot"} }
+  let(:request_body) { {title: "Co-Pilot"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -26,7 +26,7 @@ RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/mission-slots/{id}" do
-    parameter name: "id", in: :path, type: :string
+    parameter name: "id", in: :path, schema: {type: :string}
 
     put("Update Mission Slot") do
       operationId "updateMissionSlot"
@@ -34,7 +34,7 @@ RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.y
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/MissionSlotUpdateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/MissionSlotUpdateInput"}, required: true
 
       security [
         {SessionCookie: []},

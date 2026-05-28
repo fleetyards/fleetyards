@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events/admins", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events/admins", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:other) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [other]) }
@@ -10,7 +10,7 @@ RSpec.describe "api/v1/fleets/events/admins", type: :request, swagger_doc: "v1/s
   let(:fleetSlug) { fleet.slug }
   let(:fleet_event) { create(:fleet_event, fleet: fleet, created_by: admin) }
   let(:slug) { fleet_event.slug }
-  let(:input) { {userId: other.id, role: "admin"} }
+  let(:request_body) { {userId: other.id, role: "admin"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -26,8 +26,8 @@ RSpec.describe "api/v1/fleets/events/admins", type: :request, swagger_doc: "v1/s
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/admins" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     post("Grant per-event admin/moderator role") do
       operationId "createFleetEventAdmin"
@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleets/events/admins", type: :request, swagger_doc: "v1/s
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetEventAdminCreateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/FleetEventAdminCreateInput"}, required: true
 
       security [
         {SessionCookie: []},

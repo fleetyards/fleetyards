@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/mission_slots", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
   let(:mission) { create(:mission, fleet: fleet, created_by: admin) }
   let(:team) { create(:mission_team, mission: mission) }
-  let(:input) { {slottableType: "MissionTeam", slottableId: team.id, title: "Pilot"} }
+  let(:request_body) { {slottableType: "MissionTeam", slottableId: team.id, title: "Pilot"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -30,7 +30,7 @@ RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.y
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/MissionSlotCreateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/MissionSlotCreateInput"}, required: true
 
       security [
         {SessionCookie: []},

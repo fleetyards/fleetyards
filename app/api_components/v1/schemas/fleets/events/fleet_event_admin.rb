@@ -5,7 +5,7 @@ module V1
     module Fleets
       module Events
         class FleetEventAdmin
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           ROLES = %w[admin moderator].freeze
 

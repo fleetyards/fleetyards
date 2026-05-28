@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/mission_slots", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -25,7 +25,7 @@ RSpec.describe "api/v1/mission_slots", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/mission-slots/{id}" do
-    parameter name: "id", in: :path, type: :string
+    parameter name: "id", in: :path, schema: {type: :string}
 
     delete("Destroy Mission Slot") do
       operationId "destroyMissionSlot"

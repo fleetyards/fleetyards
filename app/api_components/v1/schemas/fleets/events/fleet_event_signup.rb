@@ -5,7 +5,7 @@ module V1
     module Fleets
       module Events
         class FleetEventSignup
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           STATUSES = %w[confirmed tentative interested pending withdrawn].freeze
 

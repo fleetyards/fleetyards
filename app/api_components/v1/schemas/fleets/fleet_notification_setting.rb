@@ -4,7 +4,7 @@ module V1
   module Schemas
     module Fleets
       class FleetNotificationSetting
-        include Rswag::SchemaComponents::Component
+        include OpenapiRuby::Components::Base
 
         IN_APP_EVENTS = %w[
           fleet_event.published

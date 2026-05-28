@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events/teams/ships/sort", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events/teams/ships/sort", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -12,7 +12,7 @@ RSpec.describe "api/v1/fleets/events/teams/ships/sort", type: :request, swagger_
   let(:team) { create(:fleet_event_team, fleet_event: fleet_event) }
   let(:fleetEventTeamId) { team.id }
   let(:ships) { create_list(:fleet_event_ship, 3, fleet_event_team: team) }
-  let(:input) { {sorting: ships.reverse.map(&:id)} }
+  let(:request_body) { {sorting: ships.reverse.map(&:id)} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -28,9 +28,9 @@ RSpec.describe "api/v1/fleets/events/teams/ships/sort", type: :request, swagger_
   end
 
   path "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/sort" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "fleetEventSlug", in: :path, type: :string
-    parameter name: "fleetEventTeamId", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "fleetEventSlug", in: :path, schema: {type: :string}
+    parameter name: "fleetEventTeamId", in: :path, schema: {type: :string}
 
     put("Sort event ships") do
       operationId "sortFleetEventShips"
@@ -38,7 +38,7 @@ RSpec.describe "api/v1/fleets/events/teams/ships/sort", type: :request, swagger_
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {
+      request_body schema: {
         type: :object,
         properties: {sorting: {type: :array, items: {type: :string, format: :uuid}}},
         required: %w[sorting]

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -24,8 +24,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/publish" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     put("Publish Fleet Event") do
       operationId "publishFleetEvent"
@@ -59,8 +59,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/lock-signups" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     put("Lock Signups") do
       operationId "lockFleetEventSignups"
@@ -89,8 +89,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/unlock-signups" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     put("Unlock Signups") do
       operationId "unlockFleetEventSignups"
@@ -119,8 +119,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/start" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     put("Start Fleet Event") do
       operationId "startFleetEvent"
@@ -149,8 +149,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/complete" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     put("Complete Fleet Event") do
       operationId "completeFleetEvent"
@@ -179,8 +179,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/unarchive" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     put("Unarchive Fleet Event") do
       operationId "unarchiveFleetEvent"
@@ -219,8 +219,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/sync-to-discord" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     post("Sync event to Discord") do
       operationId "syncFleetEventToDiscord"
@@ -265,8 +265,8 @@ RSpec.describe "api/v1/fleets/events", type: :request, swagger_doc: "v1/schema.y
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/cancel" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     put("Cancel Fleet Event") do
       operationId "cancelFleetEvent"

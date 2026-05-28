@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events/{slug}/update-occurrence", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events/{slug}/update-occurrence", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -15,7 +15,7 @@ RSpec.describe "api/v1/fleets/events/{slug}/update-occurrence", type: :request, 
       recurring: true, recurrence_interval: "weekly")
   end
   let(:slug) { fleet_event.slug }
-  let(:input) do
+  let(:request_body) do
     {date: "2026-05-21", location: "Levski", scenario: "Bunker raid"}
   end
 
@@ -33,8 +33,8 @@ RSpec.describe "api/v1/fleets/events/{slug}/update-occurrence", type: :request, 
   end
 
   path "/fleets/{fleetSlug}/events/{slug}/update-occurrence" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "slug", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "slug", in: :path, schema: {type: :string}
 
     patch("Override fields on a single occurrence") do
       operationId "updateFleetEventOccurrence"
@@ -42,7 +42,7 @@ RSpec.describe "api/v1/fleets/events/{slug}/update-occurrence", type: :request, 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {
+      request_body schema: {
         type: :object,
         properties: {
           date: {type: :string, format: :date},

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleet_event_slots", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleet_event_slots", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -10,7 +10,7 @@ RSpec.describe "api/v1/fleet_event_slots", type: :request, swagger_doc: "v1/sche
   let(:team) { create(:fleet_event_team, fleet_event: fleet_event) }
   let(:slot) { create(:fleet_event_slot, slottable: team) }
   let(:id) { slot.id }
-  let(:input) { {title: "Wing Lead", description: "Squadron lead"} }
+  let(:request_body) { {title: "Wing Lead", description: "Squadron lead"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -26,7 +26,7 @@ RSpec.describe "api/v1/fleet_event_slots", type: :request, swagger_doc: "v1/sche
   end
 
   path "/fleet-event-slots/{id}" do
-    parameter name: "id", in: :path, type: :string
+    parameter name: "id", in: :path, schema: {type: :string}
 
     put("Update event slot") do
       operationId "updateFleetEventSlot"
@@ -34,7 +34,7 @@ RSpec.describe "api/v1/fleet_event_slots", type: :request, swagger_doc: "v1/sche
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetEventSlotUpdateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/FleetEventSlotUpdateInput"}, required: true
 
       security [
         {SessionCookie: []},

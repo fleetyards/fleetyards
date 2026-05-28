@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/mission_teams/ships", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -11,7 +11,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
   let(:missionSlug) { mission.slug }
   let(:team) { create(:mission_team, mission: mission) }
   let(:missionTeamId) { team.id }
-  let(:input) { {classification: "Combat", minSize: "medium"} }
+  let(:request_body) { {classification: "Combat", minSize: "medium"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -27,9 +27,9 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
   end
 
   path "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "missionSlug", in: :path, type: :string
-    parameter name: "missionTeamId", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "missionSlug", in: :path, schema: {type: :string}
+    parameter name: "missionTeamId", in: :path, schema: {type: :string}
 
     post("Create Mission Ship") do
       operationId "createMissionShip"
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/MissionShipCreateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/MissionShipCreateInput"}, required: true
 
       security [
         {SessionCookie: []},
@@ -65,7 +65,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
             create(:model_position, model: model, name: "Co-Pilot", position_type: :copilot, position: 1)
           ]
         end
-        let(:input) do
+        let(:request_body) do
           {
             modelId: model.id,
             positionIds: positions.map(&:id)
@@ -86,7 +86,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
         schema "$ref": "#/components/schemas/ValidationError"
 
         let(:model) { create(:model, in_game: false) }
-        let(:input) { {modelId: model.id} }
+        let(:request_body) { {modelId: model.id} }
 
         run_test!
       end

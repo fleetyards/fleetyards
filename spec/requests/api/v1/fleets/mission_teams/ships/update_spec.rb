@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/mission_teams/ships", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -13,7 +13,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
   let(:missionTeamId) { team.id }
   let(:ship) { create(:mission_ship, :ranged, mission_team: team) }
   let(:id) { ship.id }
-  let(:input) { {description: "Updated description"} }
+  let(:request_body) { {description: "Updated description"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -29,10 +29,10 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
   end
 
   path "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "missionSlug", in: :path, type: :string
-    parameter name: "missionTeamId", in: :path, type: :string
-    parameter name: "id", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "missionSlug", in: :path, schema: {type: :string}
+    parameter name: "missionTeamId", in: :path, schema: {type: :string}
+    parameter name: "id", in: :path, schema: {type: :string}
 
     put("Update Mission Ship") do
       operationId "updateMissionShip"
@@ -40,7 +40,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/MissionShipUpdateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/MissionShipUpdateInput"}, required: true
 
       security [
         {SessionCookie: []},

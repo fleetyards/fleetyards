@@ -5,7 +5,7 @@ module V1
     module Fleets
       module Missions
         class Mission
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           CATEGORIES = %w[
             other

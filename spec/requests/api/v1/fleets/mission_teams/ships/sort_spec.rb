@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/mission_teams/ships", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -12,7 +12,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
   let(:team) { create(:mission_team, mission: mission) }
   let(:missionTeamId) { team.id }
   let!(:ships) { create_list(:mission_ship, 3, :ranged, mission_team: team) }
-  let(:input) { {sorting: ships.reverse.map(&:id)} }
+  let(:request_body) { {sorting: ships.reverse.map(&:id)} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -28,9 +28,9 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
   end
 
   path "/fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/sort" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "missionSlug", in: :path, type: :string
-    parameter name: "missionTeamId", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "missionSlug", in: :path, schema: {type: :string}
+    parameter name: "missionTeamId", in: :path, schema: {type: :string}
 
     put("Sort Mission Ships") do
       operationId "sortMissionShips"
@@ -38,7 +38,7 @@ RSpec.describe "api/v1/fleets/mission_teams/ships", type: :request, swagger_doc:
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/SortInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/SortInput"}, required: true
 
       security [
         {SessionCookie: []},

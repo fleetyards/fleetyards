@@ -5,7 +5,7 @@ module V1
     module Fleets
       module Events
         class FleetEvent
-          include Rswag::SchemaComponents::Component
+          include OpenapiRuby::Components::Base
 
           STATUSES = %w[draft open locked active completed cancelled].freeze
           VISIBILITIES = %w[members officers fleet].freeze

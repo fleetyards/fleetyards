@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleets/events/teams/ships", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin]) }
   let(:user) { admin }
@@ -11,7 +11,7 @@ RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: 
   let(:fleetEventSlug) { fleet_event.slug }
   let(:team) { create(:fleet_event_team, fleet_event: fleet_event) }
   let(:fleetEventTeamId) { team.id }
-  let(:input) { {classification: "Combat", minSize: "small"} }
+  let(:request_body) { {classification: "Combat", minSize: "small"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -27,9 +27,9 @@ RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: 
   end
 
   path "/fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships" do
-    parameter name: "fleetSlug", in: :path, type: :string
-    parameter name: "fleetEventSlug", in: :path, type: :string
-    parameter name: "fleetEventTeamId", in: :path, type: :string
+    parameter name: "fleetSlug", in: :path, schema: {type: :string}
+    parameter name: "fleetEventSlug", in: :path, schema: {type: :string}
+    parameter name: "fleetEventTeamId", in: :path, schema: {type: :string}
 
     post("Create event ship") do
       operationId "createFleetEventShip"
@@ -37,7 +37,7 @@ RSpec.describe "api/v1/fleets/events/teams/ships", type: :request, swagger_doc: 
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetEventShipCreateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/FleetEventShipCreateInput"}, required: true
 
       security [
         {SessionCookie: []},

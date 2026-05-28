@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "swagger_helper"
+require "openapi_helper"
 
-RSpec.describe "api/v1/fleet_event_signups", type: :request, swagger_doc: "v1/schema.yaml" do
+RSpec.describe "api/v1/fleet_event_signups", type: :openapi, openapi_schema_name: :"v1/schema" do
   let(:admin) { create(:user) }
   let(:member) { create(:user) }
   let(:fleet) { create(:fleet, admins: [admin], members: [member]) }
@@ -11,7 +11,7 @@ RSpec.describe "api/v1/fleet_event_signups", type: :request, swagger_doc: "v1/sc
   let(:fleet_event_slot) { create(:fleet_event_slot, slottable: fleet_event_team) }
   let(:user) { member }
   let(:id) { fleet_event_slot.id }
-  let(:input) { {status: "confirmed", notes: "Ready"} }
+  let(:request_body) { {status: "confirmed", notes: "Ready"} }
 
   let(:Authorization) { nil }
   let(:oauth_access_token) do
@@ -27,7 +27,7 @@ RSpec.describe "api/v1/fleet_event_signups", type: :request, swagger_doc: "v1/sc
   end
 
   path "/fleet-event-slots/{id}/signup" do
-    parameter name: "id", in: :path, type: :string
+    parameter name: "id", in: :path, schema: {type: :string}
 
     post("Sign up for slot") do
       operationId "signupFleetEventSlot"
@@ -35,7 +35,7 @@ RSpec.describe "api/v1/fleet_event_signups", type: :request, swagger_doc: "v1/sc
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetEventSignupCreateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/FleetEventSignupCreateInput"}, required: true
 
       security [
         {SessionCookie: []},
@@ -62,9 +62,9 @@ RSpec.describe "api/v1/fleet_event_signups", type: :request, swagger_doc: "v1/sc
       consumes "application/json"
       produces "application/json"
 
-      parameter name: :input, in: :body, schema: {"$ref": "#/components/schemas/FleetEventSignupUpdateInput"}, required: true
+      request_body schema: {"$ref": "#/components/schemas/FleetEventSignupUpdateInput"}, required: true
 
-      let(:input) { {status: "confirmed"} }
+      let(:request_body) { {status: "confirmed"} }
       before do
         membership = fleet.fleet_memberships.find_by(user: member)
         create(:fleet_event_signup, fleet_event_slot: fleet_event_slot, fleet_membership: membership, status: "pending")
@@ -113,7 +113,7 @@ RSpec.describe "api/v1/fleet_event_signups", type: :request, swagger_doc: "v1/sc
   end
 
   path "/fleet-event-signups/{id}" do
-    parameter name: "id", in: :path, type: :string
+    parameter name: "id", in: :path, schema: {type: :string}
 
     let(:user) { admin }
     let(:oauth_access_token) do

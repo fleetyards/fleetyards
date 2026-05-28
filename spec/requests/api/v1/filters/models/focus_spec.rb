@@ -11,7 +11,7 @@ RSpec.describe "api/v1/filters/models", type: :openapi, openapi_schema_name: :"v
       tags "ModelsFilters"
       produces "application/json"
 
-      parameter name: :classification, in: :query, type: :string, required: false,
+      parameter name: :classification, in: :query, schema: {type: :string}, required: false,
         description: "Restrict the result to focuses of models with this classification"
 
       response(200, "successful") do
