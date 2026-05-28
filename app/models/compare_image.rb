@@ -48,7 +48,6 @@ class CompareImage < ApplicationRecord
   CANVAS_WIDTH = 1200
   CANVAS_HEIGHT = 630
   DIAGONAL_SLANT = 80
-  MASK_SUPERSAMPLE = 2
 
   private def build_composite(models)
     require "vips"
@@ -80,24 +79,31 @@ class CompareImage < ApplicationRecord
 
       positioned = img.embed(slice_left, 0, width, height, extend: :black)
 
-      poly = [[x_tl, 0], [x_tr, 0], [x_br, height], [x_bl, height]]
-      alpha = diagonal_alpha(width, height, poly).cast(:float) / 255.0
+      alpha = diagonal_alpha(width, height, x_tl, x_tr, x_br, x_bl)
       canvas = (positioned.cast(:float) * alpha + canvas.cast(:float) * (alpha * -1 + 1)).cast(:uchar)
     end
 
     canvas.jpegsave_buffer(Q: 85)
   end
 
-  private def diagonal_alpha(width, height, polygon)
-    sw = width * MASK_SUPERSAMPLE
-    sh = height * MASK_SUPERSAMPLE
-    pts = polygon.map { |x, y| "#{x * MASK_SUPERSAMPLE},#{y * MASK_SUPERSAMPLE}" }.join(" ")
-    svg = <<~SVG
-      <svg xmlns="http://www.w3.org/2000/svg" width="#{sw}" height="#{sh}" viewBox="0 0 #{sw} #{sh}">
-        <polygon points="#{pts}" fill="white"/>
-      </svg>
-    SVG
-    hires = Vips::Image.svgload_buffer(svg)
-    hires[hires.bands - 1].resize(1.0 / MASK_SUPERSAMPLE, kernel: :lanczos3)
+  # Float [0, 1] alpha mask for the parallelogram bounded by the four corners.
+  # A 1-pixel transition centered on each slanted edge gives smooth antialiasing
+  # without relying on librsvg (which blocks svgload_buffer as untrusted input).
+  private def diagonal_alpha(width, height, x_tl, x_tr, x_br, x_bl)
+    xyz = Vips::Image.xyz(width, height)
+    x = xyz[0].cast(:float)
+    y = xyz[1].cast(:float)
+
+    # x_left(y)  = x_tl + (x_bl - x_tl) * (y / height)
+    # x_right(y) = x_tr + (x_br - x_tr) * (y / height)
+    x_left = y.linear((x_bl - x_tl).to_f / height, x_tl.to_f)
+    x_right = y.linear((x_br - x_tr).to_f / height, x_tr.to_f)
+
+    clamp01(x - x_left + 0.5) * clamp01(x_right - x + 0.5)
+  end
+
+  private def clamp01(img)
+    high_clamped = (img >= 1).ifthenelse(1.0, img)
+    (high_clamped <= 0).ifthenelse(0.0, high_clamped)
   end
 end
