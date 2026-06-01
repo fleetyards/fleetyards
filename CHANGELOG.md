@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.29.1](https://github.com/fleetyards/fleetyards/compare/v6.29.0...v6.29.1) (2026-06-01)
+
+
+### Bug Fixes
+
+* **flipper:** disable 100-actor limit for self-service features ([243e8d2](https://github.com/fleetyards/fleetyards/commit/243e8d23c483517235b103b881f6418e47faaaee))
+
+
+### Chores
+
+* **deps-dev:** bump concurrently from 9.2.1 to 10.0.1 ([#4033](https://github.com/fleetyards/fleetyards/issues/4033)) ([4db4203](https://github.com/fleetyards/fleetyards/commit/4db42030b53448aa59dd7e92b5d4c8cd938b3c00))
+* **deps-dev:** bump eslint from 10.4.0 to 10.4.1 ([#4036](https://github.com/fleetyards/fleetyards/issues/4036)) ([570b4d2](https://github.com/fleetyards/fleetyards/commit/570b4d28ce7f715da6257d0a678f525c8c9bf702))
+* **deps-dev:** bump eslint-plugin-prettier from 5.5.5 to 5.5.6 ([#4028](https://github.com/fleetyards/fleetyards/issues/4028)) ([79150b1](https://github.com/fleetyards/fleetyards/commit/79150b1d94d2abbb855e7af80da2a7e2c56d00f9))
+* **deps-dev:** bump knip from 6.14.2 to 6.15.0 ([#4035](https://github.com/fleetyards/fleetyards/issues/4035)) ([eef6e5a](https://github.com/fleetyards/fleetyards/commit/eef6e5a195417197640956f368abd3a5792894c5))
+* **deps-dev:** bump orval from 8.13.0 to 8.14.0 ([#4037](https://github.com/fleetyards/fleetyards/issues/4037)) ([0240524](https://github.com/fleetyards/fleetyards/commit/024052434d7ecadb006a39f8fe3516bcec460620))
+* **deps-dev:** bump vite from 8.0.14 to 8.0.15 ([#4034](https://github.com/fleetyards/fleetyards/issues/4034)) ([9cd3115](https://github.com/fleetyards/fleetyards/commit/9cd31152743eced9fd9463b92bbaaa2da602d069))
+* **deps-dev:** bump vue-tsc from 3.3.2 to 3.3.3 ([#4032](https://github.com/fleetyards/fleetyards/issues/4032)) ([e3e1caa](https://github.com/fleetyards/fleetyards/commit/e3e1caaa57e75ffbd5cadd13a4bd06ca6fde7645))
+* **deps:** bump @tresjs/cientos from 5.7.1 to 5.7.2 ([#4027](https://github.com/fleetyards/fleetyards/issues/4027)) ([22c8257](https://github.com/fleetyards/fleetyards/commit/22c82577f8cdc9c95e3e818612f202c81afd202b))
+* **deps:** bump date-fns from 4.3.0 to 4.4.0 ([#4038](https://github.com/fleetyards/fleetyards/issues/4038)) ([17d4d3d](https://github.com/fleetyards/fleetyards/commit/17d4d3d067460e8fbcfd8604dde1a7fd66f213ae))
+* **deps:** bump vue-router from 5.0.7 to 5.1.0 ([#4025](https://github.com/fleetyards/fleetyards/issues/4025)) ([879317d](https://github.com/fleetyards/fleetyards/commit/879317d64ae1748d3d64bff4fb2cd7275e1b2a1e))
+
 ## [6.29.0](https://github.com/fleetyards/fleetyards/compare/v6.28.1...v6.29.0) (2026-05-28)
 
 
