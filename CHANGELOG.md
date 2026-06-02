@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.29.2](https://github.com/fleetyards/fleetyards/compare/v6.29.1...v6.29.2) (2026-06-02)
+
+
+### Bug Fixes
+
+* **api:** correct loanerEq filter schema to string enum ([9673b3a](https://github.com/fleetyards/fleetyards/commit/9673b3a3eaf669f07fb38c6a1fc61fc245937df1))
+* **deps:** pin js-cookie to &gt;=3.0.7 to address CVE-2026-46625 ([f6fc44f](https://github.com/fleetyards/fleetyards/commit/f6fc44fa193e29d0baa0b8f344b3cfda93c5a6e7))
+* **types:** update OwnersModal loanerEq cast for new string enum ([da8e974](https://github.com/fleetyards/fleetyards/commit/da8e97487451c207eb72800dedf6c4a67848fa9b))
+
 ## [6.29.1](https://github.com/fleetyards/fleetyards/compare/v6.29.0...v6.29.1) (2026-06-01)
 
 
