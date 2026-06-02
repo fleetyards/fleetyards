@@ -11656,7 +11656,10 @@ components:
         modelSearchCont:
           type: string
         loanerEq:
-          type: boolean
+          type: string
+          enum:
+          - 'true'
+          - only
         wantedEq:
           type: boolean
         sorts:

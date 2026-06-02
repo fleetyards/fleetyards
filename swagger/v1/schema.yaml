@@ -8750,7 +8750,10 @@ components:
         modelNameOrModelDescriptionCont:
           type: string
         loanerEq:
-          type: boolean
+          type: string
+          enum:
+          - 'true'
+          - only
         memberIn:
           type: array
           items:
@@ -9215,7 +9218,10 @@ components:
         publicEq:
           type: boolean
         loanerEq:
-          type: boolean
+          type: string
+          enum:
+          - 'true'
+          - only
         bundledEq:
           type: string
         boughtViaEq:
