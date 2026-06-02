@@ -15,6 +15,7 @@ import { sortBy, uniqByField as uniqByFieldArray } from "@/shared/utils/Array";
 import {
   type VehiclePublic,
   type FleetVehiclesParams,
+  type FleetVehicleQueryLoanerEq,
   useFleetVehicles as useFleetVehiclesQuery,
 } from "@/services/fyApi";
 
@@ -32,7 +33,7 @@ const route = useRoute();
 const loanerEq = computed(
   () =>
     (route.query.q as unknown as Record<string, unknown> | undefined)
-      ?.loanerEq as boolean | undefined,
+      ?.loanerEq as FleetVehicleQueryLoanerEq | undefined,
 );
 
 const params = computed<FleetVehiclesParams>(() => ({
