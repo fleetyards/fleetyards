@@ -77,15 +77,14 @@ module HangarFiltersConcern
   end
 
   private def loaner_included?(scope)
-    if vehicle_query_params["loaner_eq"].blank?
-      scope = scope.where(loaner: false)
-    elsif vehicle_query_params["loaner_eq"] == "true"
-      vehicle_query_params.delete("loaner_eq")
+    case vehicle_query_params.delete("loaner_eq")
+    when "true"
+      scope
+    when "only"
+      scope.where(loaner: true)
     else
-      scope = scope.where(loaner: true)
+      scope.where(loaner: false)
     end
-
-    scope
   end
 
   private def bundled_included?(scope)
