@@ -6,8 +6,17 @@ export default {
 
 <script lang="ts" setup>
 import { ComponentExposed } from "vue-component-type-helpers";
-import { models as fetchModels } from "@/services/fyApi";
-import { type Models, type Model, type ModelQuery } from "@/services/fyApi";
+import {
+  models as fetchModels,
+  modelOptions as fetchModelOptions,
+} from "@/services/fyApi";
+import {
+  type Models,
+  type Model,
+  type ModelQuery,
+  type ModelOptions,
+  type ModelOption,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import FilterGroup, {
   type FilterGroupParams,
@@ -62,8 +71,8 @@ watch(
   },
 );
 
-const formatter = (response: Models) => {
-  return response.items.map((model) => {
+const formatter = (response: Models | ModelOptions) => {
+  return response.items.map((model: Model | ModelOption) => {
     return {
       label: model.name,
       value: model[props.valueAttr],
@@ -94,10 +103,13 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     }
   }
 
-  return fetchModels({
-    page: String(params.page || 1),
-    q,
-  });
+  const page = String(params.page || 1);
+
+  if (props.returnObject) {
+    return fetchModels({ page, q });
+  }
+
+  return fetchModelOptions({ page, q });
 };
 
 const clear = () => {

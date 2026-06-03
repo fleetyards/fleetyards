@@ -50,6 +50,24 @@ module Api
 
           render "api/v1/shared/filters"
         end
+
+        def options
+          normalize_sort_params(model_query_params)
+          model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
+
+          @q = Model.visible.active.ransack(model_query_params)
+
+          @models = result_with_pagination(@q.result, per_page(Model))
+        end
+
+        private def model_query_params
+          @model_query_params ||= params.permit(
+            q: [
+              :name_cont, :name_eq, :slug_eq, :s, :sorts,
+              name_in: [], slug_in: [], id_in: []
+            ]
+          )[:q].presence || {}
+        end
       end
     end
   end

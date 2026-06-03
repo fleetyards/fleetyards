@@ -29,6 +29,7 @@ resources :model_paints, path: "model-paints", only: %i[index]
 namespace :filters do
   resources :models, only: [:index] do
     collection do
+      get :options
       get :classifications
       get "production-states" => "models#production_states"
       get :focus

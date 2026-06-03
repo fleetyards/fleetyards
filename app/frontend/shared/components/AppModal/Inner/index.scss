@@ -1,3 +1,9 @@
+.modal-inner {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+}
+
 .modal-header {
   position: relative;
   padding: 0;
@@ -43,10 +49,13 @@
 
 .modal-body {
   padding: 0;
+  max-height: calc(100vh - 14rem);
+  overflow-y: auto;
 }
 
 .modal-footer {
   display: flex;
+  flex-shrink: 0;
   justify-content: flex-end;
   gap: 0.5rem;
   padding: 0.75rem 0;
@@ -59,5 +68,12 @@
     border-width: 1px 0 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+  }
+
+  .modal-body {
+    max-height: calc(
+      100vh - 14rem - #{$navigation-mobile-height} -
+        #{$navigation-mobile-bottom-offset}
+    );
   }
 }

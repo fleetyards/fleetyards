@@ -7,12 +7,21 @@ export default {
 <script lang="ts" setup>
 import { ComponentExposed } from "vue-component-type-helpers";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type ModelQuery, type Models, type Model } from "@/services/fyApi";
+import {
+  type ModelQuery,
+  type Models,
+  type Model,
+  type ModelOptions,
+  type ModelOption,
+} from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
   type ValueType,
 } from "@/shared/components/base/FilterGroup/index.vue";
-import { models as fetchModels } from "@/services/fyApi";
+import {
+  models as fetchModels,
+  modelOptions as fetchModelOptions,
+} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -53,8 +62,8 @@ watch(
   },
 );
 
-const formatter = (response: Models) => {
-  return response.items.map((model) => {
+const formatter = (response: Models | ModelOptions) => {
+  return response.items.map((model: Model | ModelOption) => {
     return {
       label: model.name,
       value: model.slug,
@@ -78,10 +87,13 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     }
   }
 
-  return fetchModels({
-    page: String(params.page || 1),
-    q,
-  });
+  const page = String(params.page || 1);
+
+  if (props.returnObject) {
+    return fetchModels({ page, q });
+  }
+
+  return fetchModelOptions({ page, q });
 };
 
 const filterGroup = ref<ComponentExposed<typeof FilterGroup>>();
