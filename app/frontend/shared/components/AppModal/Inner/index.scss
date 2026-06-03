@@ -50,7 +50,7 @@
 .modal-body {
   padding: 0;
   max-height: calc(100vh - 14rem);
-  overflow-y: auto;
+  overflow: hidden auto;
 }
 
 .modal-footer {
