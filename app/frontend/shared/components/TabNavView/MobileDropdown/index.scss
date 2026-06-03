@@ -1,0 +1,114 @@
+.tab-nav-dropdown {
+  position: relative;
+  width: 100%;
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    color: $text-color;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: left;
+    background: rgba($gray-darker, 0.6);
+    border: 1px solid $gray-darker;
+    border-radius: 4px;
+    cursor: pointer;
+    transition:
+      border-color $transition-base-speed ease,
+      box-shadow $transition-base-speed ease,
+      background $transition-base-speed ease;
+
+    &:hover,
+    &.open {
+      border-color: $primary;
+      box-shadow: 0 0 12px rgba($primary, 0.4);
+      background: rgba($gray-darker, 0.8);
+    }
+  }
+
+  &__label {
+    flex: 1 1 auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    margin-left: 12px;
+    color: $primary;
+    transition: transform $transition-base-speed ease;
+
+    .open & {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    margin: 0;
+    padding: 6px 0;
+    list-style: none;
+    background: $panel-bg;
+    border: 1px solid $gray-darker;
+    border-radius: 4px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  &__item {
+    position: relative;
+    padding: 10px 16px 10px 24px;
+    color: $text-color;
+    cursor: pointer;
+    transition: background $transition-base-speed ease;
+
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      width: 6px;
+      height: 6px;
+      background: $primary;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      opacity: 0;
+      transition: opacity $transition-base-speed ease;
+      content: "";
+    }
+
+    &:hover {
+      background: rgba($primary, 0.15);
+    }
+
+    &.active {
+      color: $text-color;
+
+      &::before {
+        opacity: 1;
+        box-shadow: 0 0 8px rgba($primary, 0.8);
+      }
+    }
+  }
+}
+
+.tab-nav-dropdown-panel-enter-active,
+.tab-nav-dropdown-panel-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.tab-nav-dropdown-panel-enter-from,
+.tab-nav-dropdown-panel-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}

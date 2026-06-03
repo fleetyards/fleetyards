@@ -3,7 +3,6 @@ import { useUser as useUserQuery } from "@/services/fyAdminApi";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as userChildRoutes } from "./[id]/routes";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -32,10 +31,7 @@ const crumbs = computed(() => [
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
 
-      <TabNavView>
-        <template #nav>
-          <TabNavViewItems :routes="userChildRoutes" :authenticated="true" />
-        </template>
+      <TabNavView :routes="userChildRoutes" authenticated>
         <template #content>
           <router-view :user="user" />
         </template>

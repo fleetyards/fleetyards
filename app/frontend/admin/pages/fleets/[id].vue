@@ -3,7 +3,6 @@ import { useFleet as useFleetQuery } from "@/services/fyAdminApi";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as fleetChildRoutes } from "./[id]/routes";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -34,10 +33,7 @@ const crumbs = computed(() => [
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
 
-      <TabNavView>
-        <template #nav>
-          <TabNavViewItems :routes="fleetChildRoutes" :authenticated="true" />
-        </template>
+      <TabNavView :routes="fleetChildRoutes" authenticated>
         <template #content>
           <router-view :fleet="fleet" />
         </template>

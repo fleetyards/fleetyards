@@ -3,7 +3,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type Component } from "@/services/fyAdminApi";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as editRoutes } from "./edit/routes";
 
 type Props = {
@@ -28,10 +27,7 @@ const crumbs = [
 
 <template>
   <BreadCrumbs :crumbs="crumbs" :current-id="component.id" />
-  <TabNavView>
-    <template #nav>
-      <TabNavViewItems :routes="editRoutes" :authenticated="true" />
-    </template>
+  <TabNavView :routes="editRoutes" authenticated>
     <template #content>
       <router-view :component="component" />
     </template>

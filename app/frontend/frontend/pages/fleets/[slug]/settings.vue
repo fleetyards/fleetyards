@@ -113,7 +113,12 @@ const leave = () => {
 </script>
 
 <template>
-  <TabNavView :routes="fleetRoutes">
+  <BreadCrumbs :crumbs="crumbs" />
+  <TabNavView
+    :routes="fleetRoutes"
+    :authenticated="sessionStore.isAuthenticated"
+    :resource-access="membership?.fleetRole.resourceAccess"
+  >
     <template #nav>
       <TabNavViewItems
         :routes="fleetRoutes"
@@ -134,7 +139,6 @@ const leave = () => {
       </li>
     </template>
     <template #content>
-      <BreadCrumbs :crumbs="crumbs" />
       <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
       <router-view :fleet="fleet" :membership="membership" />
     </template>

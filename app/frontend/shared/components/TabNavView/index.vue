@@ -5,43 +5,23 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { type RouteRecordRaw } from "vue-router";
 import { useMobile } from "@/shared/composables/useMobile";
+import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
+import TabNavViewMobileDropdown from "@/shared/components/TabNavView/MobileDropdown/index.vue";
 
-const mobile = useMobile();
-const tabsEl = ref<HTMLElement | null>(null);
-const route = useRoute();
-
-const scrollToActive = (smooth = true) => {
-  if (!mobile.value) return;
-
-  const container = tabsEl.value;
-  if (!container) return;
-
-  const activeEl = container.querySelector<HTMLElement>("li.active");
-  if (!activeEl) return;
-
-  const containerRect = container.getBoundingClientRect();
-  const elRect = activeEl.getBoundingClientRect();
-
-  const scrollLeft =
-    activeEl.offsetLeft - containerRect.width / 2 + elRect.width / 2;
-
-  container.scrollTo({
-    left: scrollLeft,
-    behavior: smooth ? "smooth" : "instant",
-  });
+type Props = {
+  routes: RouteRecordRaw[];
+  authenticated?: boolean;
+  resourceAccess?: string[];
 };
 
-onMounted(() => {
-  void nextTick(() => scrollToActive(false));
+const props = withDefaults(defineProps<Props>(), {
+  authenticated: false,
+  resourceAccess: undefined,
 });
 
-watch(
-  () => route.name,
-  () => {
-    void nextTick(() => scrollToActive(true));
-  },
-);
+const mobile = useMobile();
 </script>
 
 <template>
@@ -52,8 +32,20 @@ watch(
       </slot>
     </div>
     <div class="col-12 col-md-3 tabs-wrapper">
-      <ul ref="tabsEl" class="tabs">
-        <slot name="nav"></slot>
+      <TabNavViewMobileDropdown
+        v-if="mobile"
+        :routes="props.routes"
+        :authenticated="props.authenticated"
+        :resource-access="props.resourceAccess"
+      />
+      <ul v-else class="tabs">
+        <slot name="nav">
+          <TabNavViewItems
+            :routes="props.routes"
+            :authenticated="props.authenticated"
+            :resource-access="props.resourceAccess"
+          />
+        </slot>
       </ul>
     </div>
   </div>

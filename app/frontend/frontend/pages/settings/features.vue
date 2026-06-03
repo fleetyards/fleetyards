@@ -113,6 +113,7 @@ const toggleFeature = async (feature: FeatureItem) => {
         :size="BtnSizesEnum.SMALL"
         :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleFeature(item)"
+        inline
       >
         <i
           class="fa-duotone fa-power-off"

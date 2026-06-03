@@ -8,7 +8,6 @@ export default {
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { useShowVehicle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -52,13 +51,11 @@ const crumbs = computed(() => [
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
-      <TabNavView v-if="vehicle" :routes="vehicleRoutes">
-        <template #nav>
-          <TabNavViewItems
-            :routes="vehicleRoutes"
-            :authenticated="sessionStore.isAuthenticated"
-          />
-        </template>
+      <TabNavView
+        v-if="vehicle"
+        :routes="vehicleRoutes"
+        :authenticated="sessionStore.isAuthenticated"
+      >
         <template #content>
           <router-view :vehicle="vehicle" />
         </template>

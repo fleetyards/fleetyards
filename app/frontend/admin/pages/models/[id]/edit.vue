@@ -10,7 +10,6 @@ import {
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
-import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import { routes as editRoutes } from "./edit/routes";
 import { useModelsStore } from "@/admin/stores/models";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -153,10 +152,7 @@ const syncScData = () => {
     </template>
   </BreadCrumbs>
 
-  <TabNavView>
-    <template #nav>
-      <TabNavViewItems :routes="editRoutes" :authenticated="true" />
-    </template>
+  <TabNavView :routes="editRoutes" authenticated>
     <template #content>
       <router-view :model="model" />
     </template>
