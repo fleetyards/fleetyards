@@ -108,6 +108,7 @@
   &--avatar {
     .base-image-input__wrapper {
       width: 200px;
+      margin-inline: auto;
       border-radius: 50%;
 
       :deep(.lazy-image) {
