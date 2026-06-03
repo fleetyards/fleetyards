@@ -103,7 +103,7 @@ GEM
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
     ansi (1.5.0)
-    appsignal (4.8.4)
+    appsignal (4.8.5)
       logger
       rack (>= 2.0.0)
     ast (2.4.3)
