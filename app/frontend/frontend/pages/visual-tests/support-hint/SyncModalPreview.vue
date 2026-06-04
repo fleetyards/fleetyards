@@ -8,12 +8,34 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import SupportHint from "@/shared/components/SupportHint/index.vue";
+import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
+import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
+import type { HangarSyncResult } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 
 const comlink = useComlink();
 
 const hintDismissed = ref(false);
+
+const processSteps: SyncProcessStep[] = [
+  { name: "fetchHangar", status: "success" },
+  { name: "submitData", status: "success" },
+];
+
+const result = {
+  importedVehicles: ["vehicle-1", "vehicle-2", "vehicle-3"],
+  foundVehicles: ["vehicle-4", "vehicle-5"],
+  movedVehiclesToWanted: [],
+  missingModels: ["Mystery Ship"],
+  importedComponents: [],
+  foundComponents: [],
+  missingComponents: [],
+  missingComponentVehicles: [],
+  importedUpgrades: [],
+  foundUpgrades: [],
+  missingUpgrades: [],
+  missingUpgradeVehicles: [],
+} as unknown as HangarSyncResult;
 
 const close = () => {
   comlink.emit("close-modal", true);
@@ -22,27 +44,16 @@ const close = () => {
 
 <template>
   <Modal title="Hangar Sync">
-    <div class="sync-preview-body">
-      <ul class="list-unstyled">
-        <li><i class="fa-light fa-check text-success" /> Fetch Hangar</li>
-        <li><i class="fa-light fa-check text-success" /> Submit Data</li>
-      </ul>
-      <dl class="row">
-        <dt class="col-sm-7">Imported Vehicles:</dt>
-        <dd class="col-sm-5 text-right">12</dd>
-        <dt class="col-sm-7">Found Vehicles:</dt>
-        <dd class="col-sm-5 text-right">8</dd>
-      </dl>
-      <transition name="fade">
-        <SupportHint
-          v-if="!hintDismissed"
-          inline
-          context="hangarSync"
-          :meta="{ count: 12 }"
-          @dismiss="hintDismissed = true"
-        />
-      </transition>
-    </div>
+    <SyncResultPanel
+      :process-steps="processSteps"
+      :current-page="1"
+      :pledges="[]"
+      :result="result"
+      :finished="true"
+      :finished-with-errors="false"
+      :show-support-hint="!hintDismissed"
+      @support-hint-dismiss="hintDismissed = true"
+    />
     <div class="page-actions page-actions-block">
       <Btn
         v-if="hintDismissed"
@@ -59,9 +70,3 @@ const close = () => {
     </div>
   </Modal>
 </template>
-
-<style lang="scss" scoped>
-.sync-preview-body {
-  padding: 0 1rem;
-}
-</style>
