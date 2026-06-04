@@ -3,7 +3,7 @@
 require "openapi_helper"
 
 RSpec.describe "api/v1/filters/models", type: :openapi, openapi_schema_name: :"v1/schema" do
-  let!(:models) { create_list(:model, 6) }
+  let!(:models) { create_list(:model, 6, :with_store_image) }
 
   path "/filters/models/options" do
     get("Model Options") do
