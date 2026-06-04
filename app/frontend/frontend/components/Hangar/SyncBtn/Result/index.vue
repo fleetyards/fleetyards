@@ -88,7 +88,7 @@ const hasWarnings = computed(
 <template>
   <div class="hangar-sync-result flex flex-col gap-4">
     <p
-      class="flex justify-center text-uppercase mb-0"
+      class="flex justify-center text-uppercase"
       :class="{
         'text-warning': !finished && !finishedWithErrors,
         'text-success': finished,
@@ -341,6 +341,12 @@ const hasWarnings = computed(
 </template>
 
 <style lang="scss" scoped>
+.hangar-sync-result {
+  > p {
+    margin-bottom: 0;
+  }
+}
+
 .process-steps-list {
   .process-steps-item {
     margin-bottom: 10px;
