@@ -309,4 +309,42 @@ const visibleSteps = computed(() =>
 .hangar-sync-result {
   padding-bottom: 1.5rem;
 }
+
+.process-steps-list {
+  .process-steps-item {
+    margin-bottom: 10px;
+
+    .process-steps-item-title {
+      position: relative;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-right: 10px;
+      margin-bottom: 10px;
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+
+    .process-steps-item-info {
+      margin-left: 30px;
+      margin-right: 30px;
+
+      dl {
+        font-size: 90%;
+      }
+
+      dt {
+        font-weight: normal;
+      }
+
+      ul {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
 </style>
