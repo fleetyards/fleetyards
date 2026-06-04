@@ -77,7 +77,7 @@ const visibleSteps = computed(() =>
 </script>
 
 <template>
-  <div>
+  <div class="hangar-sync-result">
     <p
       class="flex justify-center text-uppercase"
       :class="{
@@ -304,3 +304,9 @@ const visibleSteps = computed(() =>
     </transition>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.hangar-sync-result {
+  padding-bottom: 1.5rem;
+}
+</style>

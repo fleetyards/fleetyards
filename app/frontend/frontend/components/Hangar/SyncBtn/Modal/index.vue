@@ -415,17 +415,18 @@ const refreshPage = async () => {
           {{ t("texts.syncExtension.alreadyRunning") }}
         </p>
       </div>
-      <SyncResultPanel
-        v-else
-        :process-steps="processSteps"
-        :current-page="currentPage"
-        :pledges="pledges"
-        :result="result"
-        :finished="finished"
-        :finished-with-errors="finishedWithErrors"
-        :show-support-hint="showSupportHint"
-        @support-hint-dismiss="supportHintDismissed = true"
-      />
+      <div v-else>
+        <SyncResultPanel
+          :process-steps="processSteps"
+          :current-page="currentPage"
+          :pledges="pledges"
+          :result="result"
+          :finished="finished"
+          :finished-with-errors="finishedWithErrors"
+          :show-support-hint="showSupportHint"
+          @support-hint-dismiss="supportHintDismissed = true"
+        />
+      </div>
     </transition>
     <div class="page-actions page-actions-block">
       <Btn
