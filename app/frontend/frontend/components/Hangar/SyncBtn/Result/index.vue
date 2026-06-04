@@ -179,11 +179,16 @@ const visibleSteps = computed(() =>
                 {{ t("labels.syncExtension.importedItems.missingModels") }}:
               </dt>
               <dd class="col-sm-4 text-right">{{ missingModels.length }}</dd>
-              <ul>
-                <li v-for="item in missingModels" :key="`missing-ship-${item}`">
-                  {{ item }}
-                </li>
-              </ul>
+              <dd class="col-12 missing-items">
+                <ul>
+                  <li
+                    v-for="item in missingModels"
+                    :key="`missing-ship-${item}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </dd>
             </template>
             <template v-if="importedComponents.length">
               <dt class="col-sm-8">
@@ -210,14 +215,16 @@ const visibleSteps = computed(() =>
               <dd class="col-sm-4 text-right">
                 {{ missingComponents.length }}
               </dd>
-              <ul>
-                <li
-                  v-for="item in missingComponents"
-                  :key="`missing-component-${item}`"
-                >
-                  {{ item }}
-                </li>
-              </ul>
+              <dd class="col-12 missing-items">
+                <ul>
+                  <li
+                    v-for="item in missingComponents"
+                    :key="`missing-component-${item}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </dd>
             </template>
             <template v-if="missingComponentVehicles.length">
               <dt class="col-sm-8">
@@ -230,14 +237,16 @@ const visibleSteps = computed(() =>
               <dd class="col-sm-4 text-right">
                 {{ missingComponentVehicles.length }}
               </dd>
-              <ul>
-                <li
-                  v-for="item in missingComponentVehicles"
-                  :key="`missing-component-vehicle-${item}`"
-                >
-                  {{ item }}
-                </li>
-              </ul>
+              <dd class="col-12 missing-items">
+                <ul>
+                  <li
+                    v-for="item in missingComponentVehicles"
+                    :key="`missing-component-vehicle-${item}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </dd>
             </template>
             <template v-if="importedUpgrades.length">
               <dt class="col-sm-8">
@@ -260,14 +269,16 @@ const visibleSteps = computed(() =>
               <dd class="col-sm-4 text-right">
                 {{ missingUpgrades.length }}
               </dd>
-              <ul>
-                <li
-                  v-for="item in missingUpgrades"
-                  :key="`missing-upgrade-${item}`"
-                >
-                  {{ item }}
-                </li>
-              </ul>
+              <dd class="col-12 missing-items">
+                <ul>
+                  <li
+                    v-for="item in missingUpgrades"
+                    :key="`missing-upgrade-${item}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </dd>
             </template>
             <template v-if="missingUpgradeVehicles.length">
               <dt class="col-sm-8">
@@ -280,14 +291,16 @@ const visibleSteps = computed(() =>
               <dd class="col-sm-4 text-right">
                 {{ missingUpgradeVehicles.length }}
               </dd>
-              <ul>
-                <li
-                  v-for="item in missingUpgradeVehicles"
-                  :key="`missing-upgrade-vehicle-${item}`"
-                >
-                  {{ item }}
-                </li>
-              </ul>
+              <dd class="col-12 missing-items">
+                <ul>
+                  <li
+                    v-for="item in missingUpgradeVehicles"
+                    :key="`missing-upgrade-vehicle-${item}`"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+              </dd>
             </template>
           </dl>
         </div>
@@ -306,10 +319,6 @@ const visibleSteps = computed(() =>
 </template>
 
 <style lang="scss" scoped>
-.hangar-sync-result {
-  padding-bottom: 1.5rem;
-}
-
 .process-steps-list {
   .process-steps-item {
     margin-bottom: 10px;
@@ -340,9 +349,14 @@ const visibleSteps = computed(() =>
         font-weight: normal;
       }
 
-      ul {
-        width: 100%;
-        margin-bottom: 10px;
+      .missing-items {
+        margin-bottom: 0.5rem;
+
+        ul {
+          margin: 0;
+          padding-left: 1rem;
+          list-style: disc;
+        }
       }
     }
   }
