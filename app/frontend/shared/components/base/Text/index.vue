@@ -4,12 +4,29 @@ export default {
 };
 </script>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+type Props = {
+  noSpacing?: boolean;
+  muted?: boolean;
+  as?: "p" | "span" | "div";
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  noSpacing: false,
+  muted: false,
+  as: "p",
+});
+
+const cssClasses = computed(() => ({
+  "base-text--no-spacing": props.noSpacing,
+  "base-text--muted": props.muted,
+}));
+</script>
 
 <template>
-  <p class="text-brand-text mb-4">
+  <component :is="as" class="base-text text-brand-text" :class="cssClasses">
     <slot />
-  </p>
+  </component>
 </template>
 
 <style lang="scss" scoped>

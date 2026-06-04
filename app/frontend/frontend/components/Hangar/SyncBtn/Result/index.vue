@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
+import BaseText from "@/shared/components/base/Text/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import type { SyncProcessStep } from "./types";
@@ -87,7 +88,8 @@ const hasWarnings = computed(
 
 <template>
   <div class="hangar-sync-result flex flex-col gap-4">
-    <p
+    <BaseText
+      no-spacing
       class="flex justify-center text-uppercase"
       :class="{
         'text-warning': !finished && !finishedWithErrors,
@@ -100,7 +102,7 @@ const hasWarnings = computed(
         {{ t("labels.syncExtension.status.failed") }}
       </b>
       <b v-else>{{ t("labels.syncExtension.status.started") }}</b>
-    </p>
+    </BaseText>
     <ul v-if="processSteps.length" class="list-unstyled process-steps-list">
       <li
         v-for="step in visibleSteps"
@@ -217,7 +219,10 @@ const hasWarnings = computed(
             </template>
           </dl>
         </div>
-        <div v-if="step.name === 'submitData' && hasWarnings" class="sync-warnings">
+        <div
+          v-if="step.name === 'submitData' && hasWarnings"
+          class="sync-warnings"
+        >
           <h6 class="sync-warnings__title">
             {{ t("labels.syncExtension.warnings") }}
           </h6>
@@ -341,12 +346,6 @@ const hasWarnings = computed(
 </template>
 
 <style lang="scss" scoped>
-.hangar-sync-result {
-  > p {
-    margin-bottom: 0;
-  }
-}
-
 .process-steps-list {
   .process-steps-item {
     margin-bottom: 10px;
