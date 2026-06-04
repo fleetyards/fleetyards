@@ -204,7 +204,7 @@ GEM
       railties (>= 5)
     doorkeeper-jwt (0.4.2)
       jwt (>= 2.1)
-    doorkeeper-openid_connect (1.10.0)
+    doorkeeper-openid_connect (1.10.1)
       doorkeeper (>= 5.5, < 6.0)
       jwt (>= 2.5)
       ostruct (>= 0.5)
