@@ -707,13 +707,15 @@ const refreshPage = async () => {
         </ul>
       </div>
     </transition>
-    <SupportHint
-      v-if="showSupportHint"
-      inline
-      context="hangarSync"
-      :meta="{ count: importedVehicles.length }"
-      @dismiss="supportHintDismissed = true"
-    />
+    <transition name="fade">
+      <SupportHint
+        v-if="showSupportHint"
+        inline
+        context="hangarSync"
+        :meta="{ count: importedVehicles.length }"
+        @dismiss="supportHintDismissed = true"
+      />
+    </transition>
     <div class="page-actions page-actions-block">
       <Btn
         v-if="finished"

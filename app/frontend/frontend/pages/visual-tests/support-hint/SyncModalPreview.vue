@@ -33,13 +33,15 @@ const close = () => {
         <dt class="col-sm-7">Found Vehicles:</dt>
         <dd class="col-sm-5 text-right">8</dd>
       </dl>
-      <SupportHint
-        v-if="!hintDismissed"
-        inline
-        context="hangarSync"
-        :meta="{ count: 12 }"
-        @dismiss="hintDismissed = true"
-      />
+      <transition name="fade">
+        <SupportHint
+          v-if="!hintDismissed"
+          inline
+          context="hangarSync"
+          :meta="{ count: 12 }"
+          @dismiss="hintDismissed = true"
+        />
+      </transition>
     </div>
     <div class="page-actions page-actions-block">
       <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="close">
