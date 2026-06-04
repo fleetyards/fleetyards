@@ -74,6 +74,15 @@ const missingUpgradeVehicles = computed(
 const visibleSteps = computed(() =>
   props.processSteps.filter((step) => step.status !== "pending"),
 );
+
+const hasWarnings = computed(
+  () =>
+    missingModels.value.length > 0 ||
+    missingComponents.value.length > 0 ||
+    missingComponentVehicles.value.length > 0 ||
+    missingUpgrades.value.length > 0 ||
+    missingUpgradeVehicles.value.length > 0,
+);
 </script>
 
 <template>
@@ -174,22 +183,6 @@ const visibleSteps = computed(() =>
                 {{ movedVehiclesToWanted.length }}
               </dd>
             </template>
-            <template v-if="missingModels.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.missingModels") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">{{ missingModels.length }}</dd>
-              <dd class="col-12 missing-items">
-                <ul>
-                  <li
-                    v-for="item in missingModels"
-                    :key="`missing-ship-${item}`"
-                  >
-                    {{ item }}
-                  </li>
-                </ul>
-              </dd>
-            </template>
             <template v-if="importedComponents.length">
               <dt class="col-sm-8">
                 {{
@@ -208,46 +201,6 @@ const visibleSteps = computed(() =>
                 {{ foundComponents.length }}
               </dd>
             </template>
-            <template v-if="missingComponents.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.missingComponents") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ missingComponents.length }}
-              </dd>
-              <dd class="col-12 missing-items">
-                <ul>
-                  <li
-                    v-for="item in missingComponents"
-                    :key="`missing-component-${item}`"
-                  >
-                    {{ item }}
-                  </li>
-                </ul>
-              </dd>
-            </template>
-            <template v-if="missingComponentVehicles.length">
-              <dt class="col-sm-8">
-                {{
-                  t(
-                    "labels.syncExtension.importedItems.missingComponentVehicles",
-                  )
-                }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ missingComponentVehicles.length }}
-              </dd>
-              <dd class="col-12 missing-items">
-                <ul>
-                  <li
-                    v-for="item in missingComponentVehicles"
-                    :key="`missing-component-vehicle-${item}`"
-                  >
-                    {{ item }}
-                  </li>
-                </ul>
-              </dd>
-            </template>
             <template v-if="importedUpgrades.length">
               <dt class="col-sm-8">
                 {{ t("labels.syncExtension.importedItems.importedUpgrades") }}:
@@ -262,47 +215,116 @@ const visibleSteps = computed(() =>
               </dt>
               <dd class="col-sm-4 text-right">{{ foundUpgrades.length }}</dd>
             </template>
-            <template v-if="missingUpgrades.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.missingUpgrades") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ missingUpgrades.length }}
-              </dd>
-              <dd class="col-12 missing-items">
-                <ul>
-                  <li
-                    v-for="item in missingUpgrades"
-                    :key="`missing-upgrade-${item}`"
-                  >
-                    {{ item }}
-                  </li>
-                </ul>
-              </dd>
-            </template>
-            <template v-if="missingUpgradeVehicles.length">
-              <dt class="col-sm-8">
-                {{
-                  t(
-                    "labels.syncExtension.importedItems.missingUpgradeVehicles",
-                  )
-                }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ missingUpgradeVehicles.length }}
-              </dd>
-              <dd class="col-12 missing-items">
-                <ul>
-                  <li
-                    v-for="item in missingUpgradeVehicles"
-                    :key="`missing-upgrade-vehicle-${item}`"
-                  >
-                    {{ item }}
-                  </li>
-                </ul>
-              </dd>
-            </template>
           </dl>
+        </div>
+        <div v-if="step.name === 'submitData' && hasWarnings" class="sync-warnings">
+          <h6 class="sync-warnings__title">
+            {{ t("labels.syncExtension.warnings") }}
+          </h6>
+          <div class="sync-warnings__body">
+            <dl class="row">
+              <template v-if="missingModels.length">
+                <dt class="col-sm-8">
+                  {{ t("labels.syncExtension.importedItems.missingModels") }}:
+                </dt>
+                <dd class="col-sm-4 text-right">
+                  {{ missingModels.length }}
+                </dd>
+                <dd class="col-12 missing-items">
+                  <ul>
+                    <li
+                      v-for="item in missingModels"
+                      :key="`missing-ship-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </dd>
+              </template>
+              <template v-if="missingComponents.length">
+                <dt class="col-sm-8">
+                  {{
+                    t("labels.syncExtension.importedItems.missingComponents")
+                  }}:
+                </dt>
+                <dd class="col-sm-4 text-right">
+                  {{ missingComponents.length }}
+                </dd>
+                <dd class="col-12 missing-items">
+                  <ul>
+                    <li
+                      v-for="item in missingComponents"
+                      :key="`missing-component-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </dd>
+              </template>
+              <template v-if="missingComponentVehicles.length">
+                <dt class="col-sm-8">
+                  {{
+                    t(
+                      "labels.syncExtension.importedItems.missingComponentVehicles",
+                    )
+                  }}:
+                </dt>
+                <dd class="col-sm-4 text-right">
+                  {{ missingComponentVehicles.length }}
+                </dd>
+                <dd class="col-12 missing-items">
+                  <ul>
+                    <li
+                      v-for="item in missingComponentVehicles"
+                      :key="`missing-component-vehicle-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </dd>
+              </template>
+              <template v-if="missingUpgrades.length">
+                <dt class="col-sm-8">
+                  {{ t("labels.syncExtension.importedItems.missingUpgrades") }}:
+                </dt>
+                <dd class="col-sm-4 text-right">
+                  {{ missingUpgrades.length }}
+                </dd>
+                <dd class="col-12 missing-items">
+                  <ul>
+                    <li
+                      v-for="item in missingUpgrades"
+                      :key="`missing-upgrade-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </dd>
+              </template>
+              <template v-if="missingUpgradeVehicles.length">
+                <dt class="col-sm-8">
+                  {{
+                    t(
+                      "labels.syncExtension.importedItems.missingUpgradeVehicles",
+                    )
+                  }}:
+                </dt>
+                <dd class="col-sm-4 text-right">
+                  {{ missingUpgradeVehicles.length }}
+                </dd>
+                <dd class="col-12 missing-items">
+                  <ul>
+                    <li
+                      v-for="item in missingUpgradeVehicles"
+                      :key="`missing-upgrade-vehicle-${item}`"
+                    >
+                      {{ item }}
+                    </li>
+                  </ul>
+                </dd>
+              </template>
+            </dl>
+          </div>
         </div>
       </li>
     </ul>
@@ -348,14 +370,40 @@ const visibleSteps = computed(() =>
       dt {
         font-weight: normal;
       }
+    }
 
-      .missing-items {
+    .sync-warnings {
+      margin-top: 1rem;
+      margin-right: 10px;
+
+      &__title {
+        color: $warning;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
         margin-bottom: 0.5rem;
+      }
 
-        ul {
-          margin: 0;
-          padding-left: 1rem;
-          list-style: disc;
+      &__body {
+        margin-left: 30px;
+
+        dl {
+          font-size: 90%;
+        }
+
+        dt {
+          font-weight: normal;
+        }
+
+        .missing-items {
+          margin-bottom: 0.5rem;
+
+          ul {
+            margin: 0;
+            padding-left: 1rem;
+            list-style: disc;
+          }
         }
       }
     }

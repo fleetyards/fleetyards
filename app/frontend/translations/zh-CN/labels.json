@@ -1078,6 +1078,7 @@
         "submittedBy": "提交者"
       },
       "syncExtension": {
+        "warnings": "警告",
         "status": {
           "started": "导入已开始...",
           "finished": "导入完成",

@@ -1078,6 +1078,7 @@
         "submittedBy": "Soumis par"
       },
       "syncExtension": {
+        "warnings": "Avertissements",
         "status": {
           "started": "Import démarré...",
           "finished": "Import terminé",
