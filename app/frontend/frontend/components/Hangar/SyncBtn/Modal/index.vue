@@ -19,6 +19,8 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import SupportHint from "@/shared/components/SupportHint/index.vue";
+import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
@@ -217,6 +219,16 @@ const retryable = computed(() => {
 
   return submitDataStatus === "backendFailure" && pledges.value.length > 0;
 });
+
+const supportPrompt = useSupportPrompt();
+const supportHintDismissed = ref(false);
+const showSupportHint = computed(
+  () =>
+    finished.value &&
+    !finishedWithErrors.value &&
+    !supportHintDismissed.value &&
+    supportPrompt.canShow(),
+);
 
 const comlink = useComlink();
 
@@ -695,6 +707,13 @@ const refreshPage = async () => {
         </ul>
       </div>
     </transition>
+    <SupportHint
+      v-if="showSupportHint"
+      inline
+      context="hangarSync"
+      :meta="{ count: importedVehicles.length }"
+      @dismiss="supportHintDismissed = true"
+    />
     <div class="page-actions page-actions-block">
       <Btn
         v-if="finished"

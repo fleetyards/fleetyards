@@ -9,6 +9,13 @@
         "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code when you buy Star Citizen:",
         "subline": "或者您可以直接透過以下方式支持我們："
       },
+      "supportHint": {
+        "hangarSync": "背景同步是我們託管帳單中最大的一項支出。FleetYards 仰賴捐款運作 — 任何支持都很重要。",
+        "vehicleAdded": "FleetYards 免費、無廣告,完全靠捐款運作。如果它對你有幫助,一份小小的捐助就能維持它的運轉。",
+        "fleetCreated": "艦隊是我們最耗資源的功能之一。FleetYards 因為捐款而保持免費和無廣告 — 歡迎你一起支持。",
+        "loginMilestone": "你已經陪伴我們一段時間了 — 謝謝。FleetYards 仰賴捐款運作;如果你願意一起分攤費用,這裡有更多資訊。",
+        "visitMilestone": "FleetYards 由社群資助 — 沒有廣告,沒有付費牆。如果你覺得它有用,一份小小的捐款就能發揮很大作用。"
+      },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "featureNotReady": "此功能尚未完成，即將推出。敬請期待！",
       "accessDenied": "您無權檢視此頁面。",

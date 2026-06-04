@@ -48,6 +48,10 @@
       "hideLabels": "隱藏標籤",
       "resetZoom": "重置縮放",
       "supportUs": "支援FleetYards.net",
+      "supportHint": {
+        "cta": "支援 FleetYards",
+        "later": "稍後再說"
+      },
       "login": "登入",
       "signUp": "註冊",
       "confirmAccess": "確認密碼",

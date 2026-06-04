@@ -9,6 +9,13 @@
         "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code <a href=\"https://robertsspaceindustries.com/enlist?referral=%{code}\" target=\"_blank\" rel=\"noopener\"><b>\"%{code}\"</b></a> when you buy Star Citizen or you can:",
         "subline": "oder Sie können uns direkt unterstützen über:"
       },
+      "supportHint": {
+        "hangarSync": "Background-Syncs sind der größte Posten unserer Hosting-Rechnung. FleetYards läuft auf Spendenbasis — jeder Beitrag hilft.",
+        "vehicleAdded": "FleetYards ist kostenlos und werbefrei und finanziert sich ausschließlich über Spenden. Wenn dir die Seite hilft, freuen wir uns über deine Unterstützung.",
+        "fleetCreated": "Flotten sind eine unserer aufwendigsten Funktionen. FleetYards bleibt dank Spenden kostenlos und werbefrei — ein kleiner Beitrag hilft enorm.",
+        "loginMilestone": "Schön, dass du regelmäßig vorbeischaust — danke dir. FleetYards finanziert sich über Spenden; falls du helfen möchtest, hier entlang.",
+        "visitMilestone": "FleetYards ist community-finanziert — keine Werbung, keine Paywalls. Wenn dir die Seite gefällt, hilft schon eine kleine Spende."
+      },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "featureNotReady": "Diese Funktion ist noch nicht fertig und wird bald verfügbar sein. Bleiben Sie dran!",
       "accessDenied": "Sie sind nicht berechtigt, diese Seite anzuzeigen.",

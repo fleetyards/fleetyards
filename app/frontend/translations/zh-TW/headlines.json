@@ -240,6 +240,13 @@
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
+      "supportHint": {
+        "hangarSync": "很高興能幫你完成同步",
+        "vehicleAdded": "你的機庫在不斷成長",
+        "fleetCreated": "新艦隊 — 恭喜!",
+        "loginMilestone": "感謝你一直以來的支持",
+        "visitMilestone": "喜歡 FleetYards 嗎?"
+      },
       "vehicle": {
         "bulkGroupEdit": "新增/移除群組"
       },

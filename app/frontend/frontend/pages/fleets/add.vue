@@ -15,6 +15,7 @@ import { type FleetCreateInput, type ValidationError } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { transformErrors } from "@/frontend/utils/transformErrors";
 import { useCreateFleet as useCreateFleetMutation } from "@/services/fyApi";
+import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { AxiosError } from "axios";
 
 const { t } = useI18n();
@@ -43,6 +44,8 @@ const comlink = useComlink();
 
 const mutation = useCreateFleetMutation();
 
+const supportPrompt = useSupportPrompt();
+
 const submit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -56,6 +59,8 @@ const submit = handleSubmit(async (values) => {
       displaySuccess({
         text: t("messages.fleet.create.success"),
       });
+
+      supportPrompt.notifyOnce("fleetCreated", "fleetCreated");
 
       router
         .push({

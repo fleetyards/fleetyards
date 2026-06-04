@@ -14,6 +14,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 
 type Props = {
   model: Model;
@@ -32,6 +33,8 @@ const comlink = useComlink();
 
 const { useCreateMutation } = useVehicleMutations();
 const { mutateAsync } = useCreateMutation();
+
+const supportPrompt = useSupportPrompt();
 
 const addToWishlist = async () => {
   await mutateAsync({
@@ -84,6 +87,12 @@ const addToHangar = async () => {
       });
 
       comlink.emit("close-modal");
+
+      supportPrompt.notifyIfMilestone(
+        "vehiclesAdded",
+        [10, 25, 50, 100],
+        "vehicleAdded",
+      );
     })
     .catch((error) => {
       console.error(error);

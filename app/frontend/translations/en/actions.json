@@ -55,6 +55,10 @@
       "hideLabels": "Hide Labels",
       "resetZoom": "Reset Zoom",
       "supportUs": "Support FleetYards.net",
+      "supportHint": {
+        "cta": "Support FleetYards",
+        "later": "Maybe later"
+      },
       "login": "Login",
       "signUp": "Sign Up",
       "confirmAccess": "Confirm password",
