@@ -325,7 +325,7 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.8, >= 1.8.1)
       terminal-table (>= 1.5.1)
-    image_processing (2.0.1)
+    image_processing (2.0.2)
     inky-rb (1.4.2.1)
       foundation_emails (~> 2)
       nokogiri
