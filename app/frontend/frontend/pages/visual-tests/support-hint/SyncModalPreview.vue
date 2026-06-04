@@ -21,7 +21,7 @@ const close = () => {
 </script>
 
 <template>
-  <Modal title="Hangar Sync" :fixed="true">
+  <Modal title="Hangar Sync">
     <div class="sync-preview-body">
       <ul class="list-unstyled">
         <li><i class="fa-light fa-check text-success" /> Fetch Hangar</li>
@@ -44,6 +44,15 @@ const close = () => {
       </transition>
     </div>
     <div class="page-actions page-actions-block">
+      <Btn
+        v-if="hintDismissed"
+        :size="BtnSizesEnum.SMALL"
+        :inline="true"
+        data-test="sync-modal-preview-reset"
+        @click="hintDismissed = false"
+      >
+        Reset hint
+      </Btn>
       <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="close">
         Close
       </Btn>
