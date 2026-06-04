@@ -87,7 +87,8 @@
         "index": "Pruebas Visuales",
         "panels": "Paneles",
         "buttons": "Botones",
-        "tables": "Tablas"
+        "tables": "Tablas",
+        "supportHint": "Aviso de apoyo"
       },
       "admin": {
         "index": "Admin",

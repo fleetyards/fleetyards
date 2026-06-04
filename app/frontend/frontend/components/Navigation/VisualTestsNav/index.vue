@@ -36,5 +36,11 @@ const { t } = useI18n();
       icon="fadt fa-table"
       prefix="02"
     />
+    <NavItem
+      :to="{ name: 'visual-tests-support-hint' }"
+      :label="t('nav.visualTests.supportHint')"
+      icon="fadt fa-heart"
+      prefix="02"
+    />
   </div>
 </template>

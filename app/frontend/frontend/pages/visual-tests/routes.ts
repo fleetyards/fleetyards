@@ -26,4 +26,13 @@ export const routes = [
       backgroundImage: "bg-7",
     },
   },
+  {
+    path: "support-hint/",
+    name: "visual-tests-support-hint",
+    component: () => import("@/frontend/pages/visual-tests/support-hint.vue"),
+    meta: {
+      title: "visualTests.supportHint",
+      backgroundImage: "bg-7",
+    },
+  },
 ];

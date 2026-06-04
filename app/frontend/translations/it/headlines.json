@@ -275,7 +275,8 @@
         "overview": "Panoramica",
         "panels": "Pannelli",
         "buttons": "Pulsanti",
-        "tables": "Tabelle"
+        "tables": "Tabelle",
+        "supportHint": "Suggerimento supporto"
       },
       "filterCargoRoutes": "Filtra rotte di carico",
       "filterCommodities": "Filtra Merci",

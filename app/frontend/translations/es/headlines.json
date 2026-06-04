@@ -275,7 +275,8 @@
         "overview": "Resumen",
         "panels": "Paneles",
         "buttons": "Botones",
-        "tables": "Tablas"
+        "tables": "Tablas",
+        "supportHint": "Aviso de apoyo"
       },
       "filterCargoRoutes": "Filter Cargo routes",
       "filterCommodities": "Filter Commodities",

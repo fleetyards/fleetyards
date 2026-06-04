@@ -275,7 +275,8 @@
         "overview": "概覽",
         "panels": "面板",
         "buttons": "按鈕",
-        "tables": "表格"
+        "tables": "表格",
+        "supportHint": "支援提示"
       },
       "filterCargoRoutes": "Filter Cargo routes",
       "filterCommodities": "Filter Commodities",

@@ -87,7 +87,8 @@
         "index": "Test Visivi",
         "panels": "Pannelli",
         "buttons": "Pulsanti",
-        "tables": "Tabelle"
+        "tables": "Tabelle",
+        "supportHint": "Suggerimento supporto"
       },
       "admin": {
         "index": "Admin",

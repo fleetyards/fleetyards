@@ -73,14 +73,10 @@ export const useSupportPrompt = () => {
     return next;
   };
 
-  const notify = (
+  const dispatchNotification = (
     context: SupportPromptContext,
     meta?: Record<string, unknown>,
   ) => {
-    if (!canShow()) return false;
-
-    recordShown();
-
     const notificationId = uuidv4();
 
     notificationsStore.addMessage({
@@ -96,8 +92,25 @@ export const useSupportPrompt = () => {
         notificationId,
       },
     });
+  };
+
+  const notify = (
+    context: SupportPromptContext,
+    meta?: Record<string, unknown>,
+  ) => {
+    if (!canShow()) return false;
+
+    recordShown();
+    dispatchNotification(context, meta);
 
     return true;
+  };
+
+  const forceNotify = (
+    context: SupportPromptContext,
+    meta?: Record<string, unknown>,
+  ) => {
+    dispatchNotification(context, meta);
   };
 
   const notifyIfMilestone = (
@@ -148,6 +161,7 @@ export const useSupportPrompt = () => {
     counterValue,
     incrementCounter,
     notify,
+    forceNotify,
     notifyIfMilestone,
     notifyOnce,
     sessionAlreadyCountedLogin,

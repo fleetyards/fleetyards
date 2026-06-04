@@ -10,6 +10,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
@@ -49,7 +50,6 @@ const closeNotification = () => {
 };
 
 const headlineKey = computed(() => `headlines.supportHint.${props.context}`);
-
 const bodyKey = computed(() => `texts.supportHint.${props.context}`);
 
 const openSupportModal = (event: MouseEvent) => {
@@ -62,19 +62,14 @@ const openSupportModal = (event: MouseEvent) => {
   emit("dismiss");
 };
 
-const dismiss = (event: MouseEvent) => {
+const dismissInline = (event: MouseEvent) => {
   event.stopPropagation();
-  closeNotification();
   emit("dismiss");
 };
 </script>
 
 <template>
-  <div
-    class="support-hint"
-    :class="{ 'support-hint--inline': inline }"
-    data-test="support-hint"
-  >
+  <div v-if="inline" class="support-hint support-hint--inline">
     <div class="support-hint__heading">
       <i class="fa-light fa-heart support-hint__icon" />
       <h5>{{ t(headlineKey) }}</h5>
@@ -94,12 +89,29 @@ const dismiss = (event: MouseEvent) => {
         :variant="BtnVariantsEnum.LINK"
         :inline="true"
         data-test="support-hint-dismiss"
-        @click="dismiss"
+        @click="dismissInline"
       >
         {{ t("actions.supportHint.later") }}
       </Btn>
     </div>
   </div>
+  <MessageBody v-else>
+    <div class="support-hint support-hint--notification">
+      <div class="support-hint__heading">
+        <i class="fa-light fa-heart support-hint__icon" />
+        <strong>{{ t(headlineKey) }}</strong>
+      </div>
+      <p class="support-hint__body" v-html="t(bodyKey, meta)" />
+      <Btn
+        :size="BtnSizesEnum.X_SMALL"
+        :inline="true"
+        data-test="support-hint-cta"
+        @click="openSupportModal"
+      >
+        {{ t("actions.supportHint.cta") }}
+      </Btn>
+    </div>
+  </MessageBody>
 </template>
 
 <style lang="scss" scoped>

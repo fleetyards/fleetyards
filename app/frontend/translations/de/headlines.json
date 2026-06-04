@@ -279,7 +279,8 @@
         "overview": "Übersicht",
         "panels": "Bereiche",
         "buttons": "Schaltflächen",
-        "tables": "Tabellen"
+        "tables": "Tabellen",
+        "supportHint": "Support-Hinweis"
       },
       "filterCargoRoutes": "Filter Cargo routes",
       "filterCommodities": "Filter Commodities",
