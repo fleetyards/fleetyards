@@ -6,9 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import {
-  manufacturers as fetchManufacturers,
-  type Manufacturer,
-  type Manufacturers,
+  manufacturerOptions as fetchManufacturerOptions,
+  type ManufacturerOption,
+  type ManufacturerOptions,
   type ManufacturerQuery,
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -55,7 +55,7 @@ watch(
   },
 );
 
-const formatter = (response: Manufacturers) => {
+const formatter = (response: ManufacturerOptions) => {
   return response.items.map((manufacturer) => {
     return {
       icon: manufacturer.logo?.smallUrl,
@@ -65,10 +65,8 @@ const formatter = (response: Manufacturers) => {
   });
 };
 
-const fetch = async (params: FilterGroupParams<Manufacturer>) => {
-  const q: ManufacturerQuery = {
-    withModels: true,
-  };
+const fetch = async (params: FilterGroupParams<ManufacturerOption>) => {
+  const q: ManufacturerQuery = {};
 
   if (params.search) {
     q.nameCont = params.search;
@@ -82,7 +80,7 @@ const fetch = async (params: FilterGroupParams<Manufacturer>) => {
     }
   }
 
-  return fetchManufacturers({
+  return fetchManufacturerOptions({
     page: String(params.page || 1),
     q,
   });

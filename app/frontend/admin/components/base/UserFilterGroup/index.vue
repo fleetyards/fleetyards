@@ -7,10 +7,10 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  users as fetchUsers,
+  userOptions as fetchUserOptions,
   type UserQuery,
-  type Users,
-  type User,
+  type UserOptions,
+  type UserOption,
 } from "@/services/fyAdminApi";
 import FilterGroup, {
   type FilterGroupParams,
@@ -53,7 +53,7 @@ watch(
   },
 );
 
-const formatter = (response: Users) => {
+const formatter = (response: UserOptions) => {
   return response.items.map((user) => {
     return {
       label: user.username,
@@ -62,7 +62,7 @@ const formatter = (response: Users) => {
   });
 };
 
-const fetch = async (params: FilterGroupParams<User>) => {
+const fetch = async (params: FilterGroupParams<UserOption>) => {
   const q: UserQuery = {};
 
   if (params.search) {
@@ -77,7 +77,7 @@ const fetch = async (params: FilterGroupParams<User>) => {
     }
   }
 
-  return fetchUsers({
+  return fetchUserOptions({
     page: String(params.page || 1),
     q,
   });

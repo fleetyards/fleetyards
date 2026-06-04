@@ -1464,6 +1464,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/options":
+    get:
+      summary: Fleet Options
+      tags:
+      - Fleets
+      operationId: fleetOptions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetOptions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     post:
       summary: Image create
@@ -2092,6 +2127,41 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/manufacturers/options":
+    get:
+      summary: Manufacturer Options
+      tags:
+      - Manufacturers
+      operationId: manufacturerOptions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ManufacturerQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ManufacturerOptions"
         '403':
           description: forbidden
           content:
@@ -5237,6 +5307,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/users/options":
+    get:
+      summary: User Options
+      tags:
+      - Users
+      operationId: userOptions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/UserQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserOptions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users/{id}/resend-confirmation":
     parameters:
     - name: id
@@ -7393,6 +7498,39 @@ components:
       - ACCEPTED
       - DECLINED
       title: FleetMembershipStatusEnum
+    FleetOption:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
+      title: FleetOption
+    FleetOptions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetOption"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetOptions
     FleetQuery:
       type: object
       properties:
@@ -8206,6 +8344,39 @@ components:
           type: string
       additionalProperties: false
       title: ManufacturerInput
+    ManufacturerOption:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - logo
+      title: ManufacturerOption
+    ManufacturerOptions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ManufacturerOption"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ManufacturerOptions
     ManufacturerQuery:
       type: object
       properties:
@@ -11384,6 +11555,33 @@ components:
           type: string
       additionalProperties: false
       title: UserInput
+    UserOption:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - username
+      title: UserOption
+    UserOptions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/UserOption"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: UserOptions
     UserQuery:
       type: object
       properties:

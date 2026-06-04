@@ -10,6 +10,10 @@ v1_admin_api_routes = lambda do
   end
 
   resources :users, only: %i[index show update destroy] do
+    collection do
+      get :options
+    end
+
     member do
       get "login-as", to: "users#login_as"
       post "resend-confirmation", to: "users#resend_confirmation"
@@ -69,7 +73,11 @@ v1_admin_api_routes = lambda do
   resources :model_snub_crafts, path: "model-snub-crafts", only: %i[index show create update destroy]
   resources :cargo_holds, path: "cargo-holds", only: %i[index show update]
 
-  resources :manufacturers, only: %i[index show create update destroy]
+  resources :manufacturers, only: %i[index show create update destroy] do
+    collection do
+      get :options
+    end
+  end
 
   resources :components, only: %i[index show create update destroy] do
     get :class_filters, on: :collection
@@ -77,6 +85,10 @@ v1_admin_api_routes = lambda do
   end
 
   resources :fleets, only: %i[index show create update destroy] do
+    collection do
+      get :options
+    end
+
     resources :fleet_members, path: "members", only: %i[index] do
       member do
         get "login-as", to: "fleet_members#login_as"

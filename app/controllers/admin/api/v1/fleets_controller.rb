@@ -25,6 +25,18 @@ module Admin
         def show
         end
 
+        def options
+          authorize! with: ::Admin::FleetPolicy
+
+          fleet_query_params["sorts"] = "name asc"
+
+          @q = Fleet.all.ransack(fleet_query_params)
+
+          @fleets = @q.result(distinct: true)
+            .page(params[:page])
+            .per(per_page(Fleet))
+        end
+
         def create
           @fleet = Fleet.new(fleet_params)
 

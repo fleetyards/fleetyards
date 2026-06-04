@@ -7,10 +7,10 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  fleets as fetchFleets,
+  fleetOptions as fetchFleetOptions,
   type FleetQuery,
-  type Fleets,
-  type Fleet,
+  type FleetOptions,
+  type FleetOption,
 } from "@/services/fyAdminApi";
 import FilterGroup, {
   type FilterGroupParams,
@@ -53,7 +53,7 @@ watch(
   },
 );
 
-const formatter = (response: Fleets) => {
+const formatter = (response: FleetOptions) => {
   return response.items.map((fleet) => {
     return {
       label: `${fleet.name} (${fleet.fid})`,
@@ -62,7 +62,7 @@ const formatter = (response: Fleets) => {
   });
 };
 
-const fetch = async (params: FilterGroupParams<Fleet>) => {
+const fetch = async (params: FilterGroupParams<FleetOption>) => {
   const q: FleetQuery = {};
 
   if (params.search) {
@@ -79,7 +79,7 @@ const fetch = async (params: FilterGroupParams<Fleet>) => {
     }
   }
 
-  return fetchFleets({
+  return fetchFleetOptions({
     page: String(params.page || 1),
     q,
   });
