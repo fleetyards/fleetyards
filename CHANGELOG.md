@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.30.0](https://github.com/fleetyards/fleetyards/compare/v6.29.2...v6.30.0) (2026-06-04)
+
+
+### Features
+
+* **filters:** add lite options endpoints for manufacturers, users, fleets ([#4066](https://github.com/fleetyards/fleetyards/issues/4066)) ([2e8d5cc](https://github.com/fleetyards/fleetyards/commit/2e8d5cc4f38663daade59d58bf972cbe5c07d8ce))
+* **hangar:** rebuild add-ships picker on lightweight model options endpoint ([e093278](https://github.com/fleetyards/fleetyards/commit/e0932787c797cef7badfb1895712b3aef2e37bec))
+* **support:** contextual support hints in sync modal + notifications ([#4067](https://github.com/fleetyards/fleetyards/issues/4067)) ([ee59c90](https://github.com/fleetyards/fleetyards/commit/ee59c90c4394f35748e6bf40a0f9bdde85985058))
+* **ui:** replace mobile tab strip with CTA dropdown ([33dd40c](https://github.com/fleetyards/fleetyards/commit/33dd40c7ae3def5a525265f5288848a868104d49))
+
+
+### Bug Fixes
+
+* **spec:** attach store_image in model options spec ([6035099](https://github.com/fleetyards/fleetyards/commit/6035099fa2eacb3bcf0bfcfdfa1bd15a60ca9b38))
+* **ui:** center avatar upload input horizontally ([7dbdd37](https://github.com/fleetyards/fleetyards/commit/7dbdd37a245b7c1693ea17a2b4e3d03b4bd4a889))
+* **ui:** suppress horizontal scrollbar in modal body ([68a1964](https://github.com/fleetyards/fleetyards/commit/68a1964b3af80fb9615bd49e1d2dfd2a3cde19e1))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#4053](https://github.com/fleetyards/fleetyards/issues/4053)) ([c5daca7](https://github.com/fleetyards/fleetyards/commit/c5daca71ea5e5cc05e3e6d5e4aaf97fabf76e9f6))
+* **deps-dev:** bump @typescript-eslint/parser from 8.60.0 to 8.60.1 ([#4051](https://github.com/fleetyards/fleetyards/issues/4051)) ([255cad4](https://github.com/fleetyards/fleetyards/commit/255cad45137d76bd220f59c9657d1c3fdccee44e))
+* **deps-dev:** bump bullet from 8.1.2 to 8.1.3 ([#4048](https://github.com/fleetyards/fleetyards/issues/4048)) ([8b2c34d](https://github.com/fleetyards/fleetyards/commit/8b2c34de8549b4ed002a288b49acefa06fa4b2e0))
+* **deps-dev:** bump concurrently from 10.0.1 to 10.0.3 ([#4054](https://github.com/fleetyards/fleetyards/issues/4054)) ([4f456c0](https://github.com/fleetyards/fleetyards/commit/4f456c0b96fc6e6b0ea92e0911d1321e79c86b30))
+* **deps-dev:** bump eslint-plugin-vue from 10.9.1 to 10.9.2 ([#4049](https://github.com/fleetyards/fleetyards/issues/4049)) ([6ae05cb](https://github.com/fleetyards/fleetyards/commit/6ae05cb7cb3624ef2d9796e1bb83679ec6d6d9d8))
+* **deps-dev:** bump orval from 8.14.0 to 8.15.0 ([#4059](https://github.com/fleetyards/fleetyards/issues/4059)) ([94ea189](https://github.com/fleetyards/fleetyards/commit/94ea1894390d11fea72795ecbb653cda538ec436))
+* **deps-dev:** bump stylelint-scss from 7.1.1 to 7.2.0 ([#4060](https://github.com/fleetyards/fleetyards/issues/4060)) ([e242de4](https://github.com/fleetyards/fleetyards/commit/e242de409cd15ddafdf8f5d45a48a49f11f303e8))
+* **deps-dev:** bump vite from 8.0.15 to 8.0.16 ([#4047](https://github.com/fleetyards/fleetyards/issues/4047)) ([1c8a42c](https://github.com/fleetyards/fleetyards/commit/1c8a42c19bf11ac7061988317cbb5cc64265ab62))
+* **deps-dev:** bump vitest from 4.1.7 to 4.1.8 ([#4056](https://github.com/fleetyards/fleetyards/issues/4056)) ([cebed52](https://github.com/fleetyards/fleetyards/commit/cebed52eb377459a486ac8e495c310021e52ce6d))
+* **deps:** bump @tanstack/vue-query from 5.100.14 to 5.101.0 ([#4061](https://github.com/fleetyards/fleetyards/issues/4061)) ([0b1b0d7](https://github.com/fleetyards/fleetyards/commit/0b1b0d75b8038155f06089fe92cace521f0da7ed))
+* **deps:** bump appsignal from 4.8.4 to 4.8.5 ([#4057](https://github.com/fleetyards/fleetyards/issues/4057)) ([213255e](https://github.com/fleetyards/fleetyards/commit/213255efe8e4b15f9a54499b94655029abbb0574))
+* **deps:** bump aws-sdk-s3 from 1.224.0 to 1.225.0 ([#4055](https://github.com/fleetyards/fleetyards/issues/4055)) ([a3f0892](https://github.com/fleetyards/fleetyards/commit/a3f0892f3c5d58fa92afde752654fac7a25f8a22))
+* **deps:** bump axios from 1.16.1 to 1.17.0 ([#4058](https://github.com/fleetyards/fleetyards/issues/4058)) ([e264906](https://github.com/fleetyards/fleetyards/commit/e264906973c738bac13dc6cf8eaabac7e44c2ed7))
+* **deps:** bump bootsnap from 1.24.5 to 1.24.6 ([#4045](https://github.com/fleetyards/fleetyards/issues/4045)) ([7bec6d2](https://github.com/fleetyards/fleetyards/commit/7bec6d23d81883d2053f38c1fe970e347c6a2288))
+* **deps:** bump doorkeeper-openid_connect from 1.10.0 to 1.10.1 ([#4050](https://github.com/fleetyards/fleetyards/issues/4050)) ([4195067](https://github.com/fleetyards/fleetyards/commit/4195067bab065b6d5e444366f46cac0f6ea3f059))
+* **deps:** bump image_processing from 2.0.1 to 2.0.2 ([#4046](https://github.com/fleetyards/fleetyards/issues/4046)) ([d5fbfce](https://github.com/fleetyards/fleetyards/commit/d5fbfce67b00a4cf230b7f60692f305aec329ba2))
+* **deps:** bump maintenance_tasks from 2.16.0 to 2.17.0 ([#4052](https://github.com/fleetyards/fleetyards/issues/4052)) ([67dc8c7](https://github.com/fleetyards/fleetyards/commit/67dc8c74b6c238d06205f6313425c718dc5a689b))
+* **filter-group:** drop unused returnObject prop ([#4065](https://github.com/fleetyards/fleetyards/issues/4065)) ([b527894](https://github.com/fleetyards/fleetyards/commit/b5278945de21b7c50d29c074446dea3d23c563e3))
+
 ## [6.29.2](https://github.com/fleetyards/fleetyards/compare/v6.29.1...v6.29.2) (2026-06-02)
 
 
