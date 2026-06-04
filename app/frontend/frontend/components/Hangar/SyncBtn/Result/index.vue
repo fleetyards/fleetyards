@@ -330,7 +330,7 @@ const visibleSteps = computed(() =>
 
     .process-steps-item-info {
       margin-left: 30px;
-      margin-right: 30px;
+      margin-right: 10px;
 
       dl {
         font-size: 90%;
