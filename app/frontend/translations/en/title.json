@@ -99,7 +99,9 @@
         "index": "Visual Tests",
         "panels": "Panels - Visual Tests",
         "buttons": "Buttons - Visual Tests",
-        "tables": "Tables - Visual Tests"
+        "tables": "Tables - Visual Tests",
+        "notifications": "Notifications - Visual Tests",
+        "supportHint": "Support Hint - Visual Tests"
       },
       "admin": {
         "models": {

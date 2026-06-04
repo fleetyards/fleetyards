@@ -37,6 +37,12 @@ const { t } = useI18n();
       prefix="02"
     />
     <NavItem
+      :to="{ name: 'visual-tests-notifications' }"
+      :label="t('nav.visualTests.notifications')"
+      icon="fadt fa-bell"
+      prefix="02"
+    />
+    <NavItem
       :to="{ name: 'visual-tests-support-hint' }"
       :label="t('nav.visualTests.supportHint')"
       icon="fadt fa-heart"

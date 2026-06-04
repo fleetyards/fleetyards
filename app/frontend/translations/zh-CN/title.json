@@ -98,7 +98,9 @@
         "index": "视觉测试",
         "panels": "面板 - 视觉测试",
         "buttons": "按钮 - 视觉测试",
-        "tables": "表格 - 视觉测试"
+        "tables": "表格 - 视觉测试",
+        "notifications": "通知 - 视觉测试",
+        "supportHint": "支持提示 - 视觉测试"
       },
       "admin": {
         "models": {

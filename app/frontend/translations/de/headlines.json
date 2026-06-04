@@ -280,6 +280,7 @@
         "panels": "Bereiche",
         "buttons": "Schaltflächen",
         "tables": "Tabellen",
+        "notifications": "Benachrichtigungen",
         "supportHint": "Support-Hinweis"
       },
       "filterCargoRoutes": "Filter Cargo routes",

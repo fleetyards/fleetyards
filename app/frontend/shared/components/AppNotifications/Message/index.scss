@@ -16,19 +16,19 @@
     overflow: hidden;
 
     &--info {
-      background-color: $primary;
+      border-left: 4px solid $primary;
     }
 
     &--success {
-      background-color: $success;
+      border-left: 4px solid $success;
     }
 
     &--alert {
-      background-color: $danger;
+      border-left: 4px solid $danger;
     }
 
     &--warning {
-      background-color: $warning;
+      border-left: 4px solid $warning;
     }
 
     :deep(img) {

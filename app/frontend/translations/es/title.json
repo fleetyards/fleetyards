@@ -98,7 +98,9 @@
         "index": "Pruebas Visuales",
         "panels": "Paneles - Pruebas Visuales",
         "buttons": "Botones - Pruebas Visuales",
-        "tables": "Tablas - Pruebas Visuales"
+        "tables": "Tablas - Pruebas Visuales",
+        "notifications": "Notificaciones - Pruebas Visuales",
+        "supportHint": "Aviso de apoyo - Pruebas Visuales"
       },
       "admin": {
         "models": {

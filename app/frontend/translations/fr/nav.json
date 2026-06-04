@@ -88,6 +88,7 @@
         "panels": "Panneaux",
         "buttons": "Boutons",
         "tables": "Tableaux",
+        "notifications": "Notifications",
         "supportHint": "Indicateur de soutien"
       },
       "admin": {

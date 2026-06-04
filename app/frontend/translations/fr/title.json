@@ -98,7 +98,9 @@
         "index": "Tests Visuels",
         "panels": "Panneaux - Tests Visuels",
         "buttons": "Boutons - Tests Visuels",
-        "tables": "Tableaux - Tests Visuels"
+        "tables": "Tableaux - Tests Visuels",
+        "notifications": "Notifications - Tests Visuels",
+        "supportHint": "Indicateur de soutien - Tests Visuels"
       },
       "admin": {
         "models": {

@@ -88,6 +88,7 @@
         "panels": "Panels",
         "buttons": "Buttons",
         "tables": "Tables",
+        "notifications": "Notifications",
         "supportHint": "Support Hint"
       },
       "admin": {

@@ -98,7 +98,9 @@
         "index": "Test Visivi",
         "panels": "Pannelli - Test Visivi",
         "buttons": "Pulsanti - Test Visivi",
-        "tables": "Tabelle - Test Visivi"
+        "tables": "Tabelle - Test Visivi",
+        "notifications": "Notifiche - Test Visivi",
+        "supportHint": "Suggerimento supporto - Test Visivi"
       },
       "admin": {
         "models": {

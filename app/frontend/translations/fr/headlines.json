@@ -276,6 +276,7 @@
         "panels": "Panneaux",
         "buttons": "Boutons",
         "tables": "Tables",
+        "notifications": "Notifications",
         "supportHint": "Indicateur de soutien"
       },
       "filterCargoRoutes": "Filtrer les routes de fret",
