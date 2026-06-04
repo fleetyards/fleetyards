@@ -11,6 +11,7 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { SupportPromptContext } from "@/shared/composables/useSupportPrompt";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const contexts: SupportPromptContext[] = [
   "hangarSync",
@@ -21,9 +22,18 @@ const contexts: SupportPromptContext[] = [
 ];
 
 const { forceNotify } = useSupportPrompt();
+const comlink = useComlink();
 
 const trigger = (context: SupportPromptContext) => {
   forceNotify(context, { count: 10 });
+};
+
+const openSyncModalPreview = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/pages/visual-tests/support-hint/SyncModalPreview.vue"),
+    fixed: true,
+  });
 };
 </script>
 
@@ -42,6 +52,23 @@ const trigger = (context: SupportPromptContext) => {
         @click="trigger(context)"
       >
         {{ context }}
+      </Btn>
+    </div>
+  </div>
+
+  <Heading :level="HeadingLevelEnum.H2">In sync modal</Heading>
+  <p>
+    Opens a stand-in of the hangar sync modal with the inline hint at the
+    bottom.
+  </p>
+  <div class="row">
+    <div class="col-12">
+      <Btn
+        :size="BtnSizesEnum.SMALL"
+        data-test="open-sync-modal-preview"
+        @click="openSyncModalPreview"
+      >
+        Open sync modal preview
       </Btn>
     </div>
   </div>
