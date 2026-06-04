@@ -51,6 +51,14 @@ v1_api_routes = lambda do
     get "with-models", to: "manufacturers#with_models", on: :collection
   end
 
+  namespace :filters do
+    resources :manufacturers, only: [] do
+      collection do
+        get :options
+      end
+    end
+  end
+
   post "compare/share", to: "compare#share", as: :compare_share
 
   resources :images, only: %i[index] do

@@ -29,6 +29,18 @@ module Admin
         def show
         end
 
+        def options
+          authorize! with: ::Admin::ManufacturerPolicy
+
+          manufacturer_query_params["sorts"] = "name asc"
+
+          @q = Manufacturer.with_name.ransack(manufacturer_query_params)
+
+          @manufacturers = @q.result(distinct: true)
+            .page(params[:page])
+            .per(per_page(Manufacturer))
+        end
+
         def create
           @manufacturer = Manufacturer.new(manufacturer_params)
 

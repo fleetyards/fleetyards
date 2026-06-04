@@ -25,6 +25,18 @@ module Admin
         def show
         end
 
+        def options
+          authorize! with: ::Admin::UserPolicy
+
+          user_query_params["sorts"] = "username asc"
+
+          @q = authorized_scope(User.all).ransack(user_query_params)
+
+          @users = @q.result(distinct: true)
+            .page(params[:page])
+            .per(per_page(User))
+        end
+
         def update
           return if @user.update(user_params)
 

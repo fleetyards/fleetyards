@@ -121,6 +121,42 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+  "/filters/manufacturers/options":
+    get:
+      summary: Manufacturer Options
+      tags:
+      - ManufacturersFilters
+      operationId: manufacturerOptions
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ManufacturerQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ManufacturerOptions"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/models/classifications":
     get:
       summary: Model classifications Filters
@@ -9873,6 +9909,39 @@ components:
       - createdAt
       - updatedAt
       title: Manufacturer
+    ManufacturerOption:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - logo
+      title: ManufacturerOption
+    ManufacturerOptions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ManufacturerOption"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: ManufacturerOptions
     ManufacturerQuery:
       type: object
       properties:

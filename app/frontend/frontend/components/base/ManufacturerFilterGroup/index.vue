@@ -6,14 +6,15 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type ManufacturerQuery, type Manufacturers } from "@/services/fyApi";
+import {
+  manufacturerOptions as fetchManufacturerOptions,
+  type ManufacturerQuery,
+  type ManufacturerOption,
+  type ManufacturerOptions,
+} from "@/services/fyApi";
 import FilterGroup, {
   type FilterGroupParams,
 } from "@/shared/components/base/FilterGroup/index.vue";
-import {
-  manufacturers as fetchManufacturers,
-  type Manufacturer,
-} from "@/services/fyApi";
 
 type Props = {
   name: string;
@@ -52,7 +53,7 @@ watch(
   },
 );
 
-const formatter = (response: Manufacturers) => {
+const formatter = (response: ManufacturerOptions) => {
   return response.items.map((manufacturer) => {
     return {
       icon: manufacturer.logo?.smallUrl,
@@ -62,10 +63,8 @@ const formatter = (response: Manufacturers) => {
   });
 };
 
-const fetch = async (params: FilterGroupParams<Manufacturer>) => {
-  const q: ManufacturerQuery = {
-    withModels: true,
-  };
+const fetch = async (params: FilterGroupParams<ManufacturerOption>) => {
+  const q: ManufacturerQuery = {};
 
   if (params.search) {
     q.nameCont = params.search;
@@ -79,7 +78,7 @@ const fetch = async (params: FilterGroupParams<Manufacturer>) => {
     }
   }
 
-  return fetchManufacturers({
+  return fetchManufacturerOptions({
     page: String(params.page || 1),
     q,
   });

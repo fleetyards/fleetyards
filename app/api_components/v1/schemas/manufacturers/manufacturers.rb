@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module Admin
-  module V1
-    module Schemas
+module V1
+  module Schemas
+    module Manufacturers
       class Manufacturers < ::Shared::V1::Schemas::BaseList
         include OpenapiRuby::Components::Base
 
