@@ -13,6 +13,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 
 const comlink = useComlink();
 
+const hintDismissed = ref(false);
+
 const close = () => {
   comlink.emit("close-modal", true);
 };
@@ -31,7 +33,13 @@ const close = () => {
         <dt class="col-sm-7">Found Vehicles:</dt>
         <dd class="col-sm-5 text-right">8</dd>
       </dl>
-      <SupportHint inline context="hangarSync" :meta="{ count: 12 }" />
+      <SupportHint
+        v-if="!hintDismissed"
+        inline
+        context="hangarSync"
+        :meta="{ count: 12 }"
+        @dismiss="hintDismissed = true"
+      />
     </div>
     <div class="page-actions page-actions-block">
       <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="close">
