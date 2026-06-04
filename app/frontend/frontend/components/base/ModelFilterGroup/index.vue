@@ -9,8 +9,6 @@ import { ComponentExposed } from "vue-component-type-helpers";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type ModelQuery,
-  type Models,
-  type Model,
   type ModelOptions,
   type ModelOption,
 } from "@/services/fyApi";
@@ -18,29 +16,24 @@ import FilterGroup, {
   type FilterGroupParams,
   type ValueType,
 } from "@/shared/components/base/FilterGroup/index.vue";
-import {
-  models as fetchModels,
-  modelOptions as fetchModelOptions,
-} from "@/services/fyApi";
+import { modelOptions as fetchModelOptions } from "@/services/fyApi";
 
 type Props = {
   name: string;
-  modelValue?: ValueType<Model>;
+  modelValue?: ValueType<ModelOption>;
   multiple?: boolean;
   noLabel?: boolean;
-  returnObject?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   multiple: false,
   noLabel: true,
-  returnObject: false,
 });
 
 const { t } = useI18n();
 
-const internalValue = ref<ValueType<Model> | undefined>(props.modelValue);
+const internalValue = ref<ValueType<ModelOption> | undefined>(props.modelValue);
 
 onMounted(() => {
   internalValue.value = props.modelValue;
@@ -62,8 +55,8 @@ watch(
   },
 );
 
-const formatter = (response: Models | ModelOptions) => {
-  return response.items.map((model: Model | ModelOption) => {
+const formatter = (response: ModelOptions) => {
+  return response.items.map((model) => {
     return {
       label: model.name,
       value: model.slug,
@@ -72,7 +65,7 @@ const formatter = (response: Models | ModelOptions) => {
   });
 };
 
-const fetch = async (params: FilterGroupParams<Model>) => {
+const fetch = async (params: FilterGroupParams<ModelOption>) => {
   const q: ModelQuery = {};
 
   if (params.search) {
@@ -87,13 +80,7 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     }
   }
 
-  const page = String(params.page || 1);
-
-  if (props.returnObject) {
-    return fetchModels({ page, q });
-  }
-
-  return fetchModelOptions({ page, q });
+  return fetchModelOptions({ page: String(params.page || 1), q });
 };
 
 const filterGroup = ref<ComponentExposed<typeof FilterGroup>>();
@@ -133,6 +120,5 @@ defineExpose({
     :searchable="true"
     :multiple="multiple"
     :no-label="noLabel"
-    :return-object="returnObject"
   />
 </template>

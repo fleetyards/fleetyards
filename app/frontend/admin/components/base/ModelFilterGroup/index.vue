@@ -6,13 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import { ComponentExposed } from "vue-component-type-helpers";
+import { modelOptions as fetchModelOptions } from "@/services/fyApi";
 import {
-  models as fetchModels,
-  modelOptions as fetchModelOptions,
-} from "@/services/fyApi";
-import {
-  type Models,
-  type Model,
   type ModelQuery,
   type ModelOptions,
   type ModelOption,
@@ -27,7 +22,6 @@ type Props = {
   modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
-  returnObject?: boolean;
   translationKey?: string;
   hideSelected?: boolean;
   valueAttr?: "slug" | "id";
@@ -39,7 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
   translationKey: undefined,
   multiple: false,
   noLabel: true,
-  returnObject: false,
   hideSelected: false,
   valueAttr: "slug",
   inline: false,
@@ -71,8 +64,8 @@ watch(
   },
 );
 
-const formatter = (response: Models | ModelOptions) => {
-  return response.items.map((model: Model | ModelOption) => {
+const formatter = (response: ModelOptions) => {
+  return response.items.map((model) => {
     return {
       label: model.name,
       value: model[props.valueAttr],
@@ -80,7 +73,7 @@ const formatter = (response: Models | ModelOptions) => {
   });
 };
 
-const fetch = async (params: FilterGroupParams<Model>) => {
+const fetch = async (params: FilterGroupParams<ModelOption>) => {
   const q: ModelQuery = {};
 
   if (params.search) {
@@ -103,13 +96,7 @@ const fetch = async (params: FilterGroupParams<Model>) => {
     }
   }
 
-  const page = String(params.page || 1);
-
-  if (props.returnObject) {
-    return fetchModels({ page, q });
-  }
-
-  return fetchModelOptions({ page, q });
+  return fetchModelOptions({ page: String(params.page || 1), q });
 };
 
 const clear = () => {
@@ -148,7 +135,6 @@ defineExpose({
     :searchable="true"
     :multiple="multiple"
     :no-label="noLabel"
-    :return-object="returnObject"
     :hide-selected="hideSelected"
     :inline="inline"
   />
