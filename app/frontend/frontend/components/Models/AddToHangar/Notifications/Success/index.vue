@@ -44,6 +44,11 @@ const to = computed(() => {
   };
 });
 
+const modelTo = computed(() => ({
+  name: "ship",
+  params: { slug: model.value.slug },
+}));
+
 const linkLabel = computed(() => {
   if (props.vehicle.wanted) {
     return t("labels.wishlist");
@@ -67,7 +72,7 @@ const { loadedSrc, isLoaded } = useLazyLoad(target, image);
 <template>
   <MessageBody>
     {{ t("messages.vehicle.add.success.paragraph1") }}
-    <router-link :to="to" class="models-add-to-hangar-notification__name">
+    <router-link :to="modelTo" class="models-add-to-hangar-notification__name">
       <b>{{ model.name }}</b>
     </router-link>
     {{ paragraph2 }}
@@ -76,7 +81,7 @@ const { loadedSrc, isLoaded } = useLazyLoad(target, image);
     </router-link>
   </MessageBody>
   <div ref="target" class="models-add-to-hangar-notification__image">
-    <router-link :to="to">
+    <router-link :to="modelTo">
       <img v-if="isLoaded" :src="loadedSrc" :alt="alt" :title="title || alt" />
     </router-link>
   </div>
