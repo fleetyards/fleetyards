@@ -21,14 +21,12 @@ type Props = {
   modelValue?: string | string[];
   multiple?: boolean;
   noLabel?: boolean;
-  returnObject?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   multiple: false,
   noLabel: true,
-  returnObject: false,
 });
 
 const { t } = useI18n();

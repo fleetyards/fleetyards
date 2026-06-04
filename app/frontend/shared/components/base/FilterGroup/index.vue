@@ -61,7 +61,6 @@ type Props = {
   multiple?: boolean;
   disabled?: boolean;
   searchable?: boolean;
-  returnObject?: boolean;
   nullable?: boolean;
   paginated?: boolean;
   noLabel?: boolean;
@@ -84,7 +83,6 @@ const props = withDefaults(defineProps<Props>(), {
   multiple: false,
   disabled: false,
   searchable: false,
-  returnObject: false,
   nullable: true,
   paginated: false,
   noLabel: false,
@@ -400,27 +398,11 @@ const select = async (optionValue: FilterOptionValue) => {
 
     values.push(optionValue);
 
-    if (props.returnObject) {
-      emits(
-        "update:modelValue",
-        values.map((value) => {
-          return internalOptions.value.find((item) => item.value === value);
-        }),
-      );
-    } else {
-      emits("update:modelValue", values);
-    }
+    emits("update:modelValue", values);
 
     await focusSearch();
   } else {
-    if (props.returnObject) {
-      emits(
-        "update:modelValue",
-        internalOptions.value.find((item) => item.value === optionValue),
-      );
-    } else {
-      emits("update:modelValue", optionValue);
-    }
+    emits("update:modelValue", optionValue);
 
     await toggle();
   }
