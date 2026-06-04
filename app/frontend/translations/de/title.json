@@ -98,7 +98,10 @@
         "index": "Visuelle Tests",
         "panels": "Panels - Visuelle Tests",
         "buttons": "Buttons - Visuelle Tests",
-        "tables": "Tabellen - Visuelle Tests"
+        "tables": "Tabellen - Visuelle Tests",
+        "notifications": "Benachrichtigungen - Visuelle Tests",
+        "syncModal": "Sync-Modal - Visuelle Tests",
+        "supportHint": "Support-Hinweis - Visuelle Tests"
       },
       "admin": {
         "models": {

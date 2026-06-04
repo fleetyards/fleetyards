@@ -19,6 +19,9 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useRouter, useRoute } from "vue-router";
 import { extensionUrls } from "@/types/extension";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
+import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
+import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import {
   useSyncRsiHangar as useSyncRsiHangarMutation,
@@ -60,53 +63,9 @@ const pledges = ref<RsiHangarItemInput[]>([]);
 
 const seenPledgeIds = new Set<string>();
 
-const items = computed(() =>
-  pledges.value.filter((pledge) =>
-    ["ship", "component", "upgrade"].includes(pledge.type),
-  ),
-);
-
-const ships = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "ship"),
-);
-
-const components = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "component"),
-);
-
-const upgrades = computed(() =>
-  pledges.value.filter((pledge) => pledge.type === "upgrade"),
-);
-
 const result = ref<HangarSyncResult | undefined>();
 
-const importedVehicles = computed(() => result.value?.importedVehicles || []);
-const foundVehicles = computed(() => result.value?.foundVehicles || []);
-const movedVehiclesToWanted = computed(
-  () => result.value?.movedVehiclesToWanted || [],
-);
-const missingModels = computed(() => result.value?.missingModels || []);
-const importedComponents = computed(
-  () => result.value?.importedComponents || [],
-);
-const foundComponents = computed(() => result.value?.foundComponents || []);
-const missingComponents = computed(() => result.value?.missingComponents || []);
-const missingComponentVehicles = computed(
-  () => result.value?.missingComponentVehicles || [],
-);
-const importedUpgrades = computed(() => result.value?.importedUpgrades || []);
-const foundUpgrades = computed(() => result.value?.foundUpgrades || []);
-const missingUpgrades = computed(() => result.value?.missingUpgrades || []);
-const missingUpgradeVehicles = computed(
-  () => result.value?.missingUpgradeVehicles || [],
-);
-
-type ProcessStep = {
-  name: string;
-  status: "pending" | "processing" | "success" | "failure" | "backendFailure";
-};
-
-const processSteps = ref<ProcessStep[]>([
+const processSteps = ref<SyncProcessStep[]>([
   {
     name: "fetchHangar",
     status: "pending",
@@ -194,7 +153,7 @@ const checkRSIIdentity = () => {
   });
 };
 
-const updateStep = (step: string, status: ProcessStep["status"]) => {
+const updateStep = (step: string, status: SyncProcessStep["status"]) => {
   const index = processSteps.value.findIndex((s) => s.name === step);
 
   if (index !== -1) {
@@ -217,6 +176,16 @@ const retryable = computed(() => {
 
   return submitDataStatus === "backendFailure" && pledges.value.length > 0;
 });
+
+const supportPrompt = useSupportPrompt();
+const supportHintDismissed = ref(false);
+const showSupportHint = computed(
+  () =>
+    finished.value &&
+    !finishedWithErrors.value &&
+    !supportHintDismissed.value &&
+    supportPrompt.canShow(),
+);
 
 const comlink = useComlink();
 
@@ -418,7 +387,7 @@ const refreshPage = async () => {
       </div>
       <div v-else-if="!started">
         <p
-          class="flex justify-center text-uppercase relative mt-4"
+          class="flex justify-center gap-2 text-uppercase relative mt-4"
           :class="{
             'text-warning': identityStatus === 'pending',
             'text-success': identityStatus === 'connected',
@@ -447,255 +416,19 @@ const refreshPage = async () => {
         </p>
       </div>
       <div v-else>
-        <p
-          class="flex justify-center text-uppercase"
-          :class="{
-            'text-warning': !finished && !finishedWithErrors,
-            'text-success': finished,
-            'text-danger': finishedWithErrors,
-          }"
-        >
-          <b v-if="finished">{{ t("labels.syncExtension.status.finished") }}</b>
-          <b v-else-if="finishedWithErrors">
-            {{ t("labels.syncExtension.status.failed") }}
-          </b>
-          <b v-else>{{ t("labels.syncExtension.status.started") }}</b>
-        </p>
-        <ul v-if="processSteps.length" class="list-unstyled process-steps-list">
-          <li
-            v-for="step in processSteps.filter(
-              (step) => step.status !== 'pending',
-            )"
-            :key="step.name"
-            class="process-steps-item"
-            :class="{
-              'text-muted': step.status === 'pending',
-            }"
-          >
-            <div class="process-steps-item-title">
-              <p>{{ t(`labels.syncExtension.processSteps.${step.name}`) }}</p>
-              <SmallLoader
-                :loading="step.status === 'processing'"
-                alignment="right"
-              />
-              <i
-                v-if="step.status === 'success'"
-                class="fa-light fa-check text-success"
-              />
-              <i
-                v-if="step.status === 'failure'"
-                class="fa-light fa-times text-danger"
-              />
-            </div>
-            <div
-              v-if="step.name === 'fetchHangar'"
-              class="process-steps-item-info"
-            >
-              <dl class="row">
-                <dt class="col-sm-7">
-                  {{ t("labels.syncExtension.pledgeItems.pages") }}:
-                </dt>
-                <dd class="col-sm-5 text-right">{{ currentPage }}</dd>
-                <template v-if="items.length">
-                  <dt class="col-sm-7">
-                    {{ t("labels.syncExtension.pledgeItems.all") }}:
-                  </dt>
-                  <dd class="col-sm-5 text-right">{{ items.length }}</dd>
-                </template>
-                <template v-if="ships.length">
-                  <dt class="col-sm-7">
-                    {{ t("labels.syncExtension.pledgeItems.ships") }}:
-                  </dt>
-                  <dd class="col-sm-5 text-right">{{ ships.length }}</dd>
-                </template>
-                <template v-if="components.length">
-                  <dt class="col-sm-7">
-                    {{ t("labels.syncExtension.pledgeItems.components") }}:
-                  </dt>
-                  <dd class="col-sm-5 text-right">{{ components.length }}</dd>
-                </template>
-                <template v-if="upgrades.length">
-                  <dt class="col-sm-7">
-                    {{ t("labels.syncExtension.pledgeItems.upgrades") }}:
-                  </dt>
-                  <dd class="col-sm-5 text-right">{{ upgrades.length }}</dd>
-                </template>
-              </dl>
-            </div>
-            <div
-              v-if="step.name === 'submitData'"
-              class="process-steps-item-info"
-            >
-              <dl class="row">
-                <template v-if="importedVehicles.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t("labels.syncExtension.importedItems.importedVehicles")
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ importedVehicles.length }}
-                  </dd>
-                </template>
-                <template v-if="foundVehicles.length">
-                  <dt class="col-sm-8">
-                    {{ t("labels.syncExtension.importedItems.foundVehicles") }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ foundVehicles.length }}
-                  </dd>
-                </template>
-                <template v-if="movedVehiclesToWanted.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t(
-                        "labels.syncExtension.importedItems.movedVehiclesToWanted",
-                      )
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ movedVehiclesToWanted.length }}
-                  </dd>
-                </template>
-                <template v-if="missingModels.length">
-                  <dt class="col-sm-8">
-                    {{ t("labels.syncExtension.importedItems.missingModels") }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ missingModels.length }}
-                  </dd>
-                  <ul>
-                    <li
-                      v-for="item in missingModels"
-                      :key="`missing-ship-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </template>
-                <template v-if="importedComponents.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t(
-                        "labels.syncExtension.importedItems.importedComponents",
-                      )
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ importedComponents.length }}
-                  </dd>
-                </template>
-                <template v-if="foundComponents.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t("labels.syncExtension.importedItems.foundComponents")
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ foundComponents.length }}
-                  </dd>
-                </template>
-                <template v-if="missingComponents.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t("labels.syncExtension.importedItems.missingComponents")
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ missingComponents.length }}
-                  </dd>
-                  <ul>
-                    <li
-                      v-for="item in missingComponents"
-                      :key="`missing-component-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </template>
-                <template v-if="missingComponentVehicles.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t(
-                        "labels.syncExtension.importedItems.missingComponentVehicles",
-                      )
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ missingComponentVehicles.length }}
-                  </dd>
-                  <ul>
-                    <li
-                      v-for="item in missingComponentVehicles"
-                      :key="`missing-component-vehicle-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </template>
-                <template v-if="importedUpgrades.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t("labels.syncExtension.importedItems.importedUpgrades")
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ importedUpgrades.length }}
-                  </dd>
-                </template>
-                <template v-if="foundUpgrades.length">
-                  <dt class="col-sm-8">
-                    {{ t("labels.syncExtension.importedItems.foundUpgrades") }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ foundUpgrades.length }}
-                  </dd>
-                </template>
-                <template v-if="missingUpgrades.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t("labels.syncExtension.importedItems.missingUpgrades")
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ missingUpgrades.length }}
-                  </dd>
-                  <ul>
-                    <li
-                      v-for="item in missingUpgrades"
-                      :key="`missing-component-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </template>
-                <template v-if="missingUpgradeVehicles.length">
-                  <dt class="col-sm-8">
-                    {{
-                      t(
-                        "labels.syncExtension.importedItems.missingUpgradeVehicles",
-                      )
-                    }}:
-                  </dt>
-                  <dd class="col-sm-4 text-right">
-                    {{ missingUpgradeVehicles.length }}
-                  </dd>
-                  <ul>
-                    <li
-                      v-for="item in missingUpgradeVehicles"
-                      :key="`missing-component-vehicle-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </template>
-              </dl>
-            </div>
-          </li>
-        </ul>
+        <SyncResultPanel
+          :process-steps="processSteps"
+          :current-page="currentPage"
+          :pledges="pledges"
+          :result="result"
+          :finished="finished"
+          :finished-with-errors="finishedWithErrors"
+          :show-support-hint="showSupportHint"
+          @support-hint-dismiss="supportHintDismissed = true"
+        />
       </div>
     </transition>
-    <div class="page-actions page-actions-block">
+    <template #footer>
       <Btn
         v-if="finished"
         :size="BtnSizesEnum.SMALL"
@@ -742,7 +475,7 @@ const refreshPage = async () => {
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>
-    </div>
+    </template>
   </Modal>
 </template>
 

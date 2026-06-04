@@ -1,0 +1,60 @@
+@import "@/stylesheets/variables";
+
+.support-hint {
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+
+    h5,
+    strong {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+  }
+
+  &__icon {
+    color: #fff;
+    opacity: 0.85;
+  }
+
+  &__body {
+    margin: 0 0 0.75rem;
+    line-height: 1.4;
+    font-size: 0.85rem;
+    opacity: 0.95;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  &--inline {
+    border: 1px solid $panel-inner-border;
+    border-radius: $panel-content-border-radius;
+    background: $panel-bg;
+    padding: 1rem 1.25rem;
+
+    .support-hint__icon {
+      color: $primary;
+      opacity: 1;
+    }
+
+    .support-hint__heading h5 {
+      font-size: 1rem;
+    }
+
+    .support-hint__body {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &--notification {
+    width: 100%;
+  }
+}

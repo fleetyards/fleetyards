@@ -26,4 +26,31 @@ export const routes = [
       backgroundImage: "bg-7",
     },
   },
+  {
+    path: "notifications/",
+    name: "visual-tests-notifications",
+    component: () => import("@/frontend/pages/visual-tests/notifications.vue"),
+    meta: {
+      title: "visualTests.notifications",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "sync-modal/",
+    name: "visual-tests-sync-modal",
+    component: () => import("@/frontend/pages/visual-tests/sync-modal.vue"),
+    meta: {
+      title: "visualTests.syncModal",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "support-hint/",
+    name: "visual-tests-support-hint",
+    component: () => import("@/frontend/pages/visual-tests/support-hint.vue"),
+    meta: {
+      title: "visualTests.supportHint",
+      backgroundImage: "bg-7",
+    },
+  },
 ];

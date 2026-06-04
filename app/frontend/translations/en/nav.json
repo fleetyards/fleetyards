@@ -87,7 +87,10 @@
         "index": "Visual Tests",
         "panels": "Panels",
         "buttons": "Buttons",
-        "tables": "Tables"
+        "tables": "Tables",
+        "notifications": "Notifications",
+        "syncModal": "Sync Modal",
+        "supportHint": "Support Hint"
       },
       "admin": {
         "index": "Admin",

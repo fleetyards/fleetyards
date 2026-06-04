@@ -87,7 +87,10 @@
         "index": "Test Visivi",
         "panels": "Pannelli",
         "buttons": "Pulsanti",
-        "tables": "Tabelle"
+        "tables": "Tabelle",
+        "notifications": "Notifiche",
+        "syncModal": "Modal sincronizzazione",
+        "supportHint": "Suggerimento supporto"
       },
       "admin": {
         "index": "Admin",

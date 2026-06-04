@@ -48,6 +48,10 @@
       "hideLabels": "Ocultar etiquetas",
       "resetZoom": "Restablecer zoom",
       "supportUs": "Apoyar FleetYards.net",
+      "supportHint": {
+        "cta": "Apoyar FleetYards",
+        "later": "Quizás más tarde"
+      },
       "login": "Iniciar sesión",
       "signUp": "Registrarse",
       "confirmAccess": "Confirmar contraseña",

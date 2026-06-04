@@ -240,6 +240,13 @@
       "hangarGuideEmpty": "Not much to see here?",
       "hangarGuide": "Hangar Guide",
       "support": "Support FleetYards.net",
+      "supportHint": {
+        "hangarSync": "很高兴帮你完成了同步",
+        "vehicleAdded": "你的机库在不断壮大",
+        "fleetCreated": "新舰队 — 恭喜!",
+        "loginMilestone": "感谢你一直以来的支持",
+        "visitMilestone": "喜欢 FleetYards 吗?"
+      },
       "vehicle": {
         "bulkGroupEdit": "添加/移除群组"
       },
@@ -268,7 +275,10 @@
         "overview": "概览",
         "panels": "面板",
         "buttons": "按钮",
-        "tables": "表格"
+        "tables": "表格",
+        "notifications": "通知",
+        "syncModal": "同步弹窗",
+        "supportHint": "支持提示"
       },
       "filterCargoRoutes": "Filter Cargo routes",
       "filterCommodities": "Filter Commodities",

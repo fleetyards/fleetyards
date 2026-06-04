@@ -1259,6 +1259,7 @@
         "submittedBy": "Submitted By"
       },
       "syncExtension": {
+        "warnings": "Warnings",
         "status": {
           "started": "Import Started...",
           "finished": "Import Finished",

@@ -1,4 +1,12 @@
-p {
+.base-text {
   margin-top: 0;
   margin-bottom: 1rem;
+
+  &--no-spacing {
+    margin-bottom: 0;
+  }
+
+  &--muted {
+    color: $gray-light;
+  }
 }

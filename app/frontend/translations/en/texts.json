@@ -9,6 +9,13 @@
         "code": "Additionally you can get 5000 UEC starting money by using the following Recruitment Code when you buy Star Citizen:",
         "subline": "or you can support us directly via:"
       },
+      "supportHint": {
+        "hangarSync": "Background syncs are the biggest item on our hosting bill. FleetYards runs on donations — if you'd like to chip in, every bit helps.",
+        "vehicleAdded": "FleetYards is free and ad-free, and runs entirely on donations. If it's useful to you, a small contribution helps keep it that way.",
+        "fleetCreated": "Fleets are one of our most resource-heavy features. FleetYards stays free and ad-free thanks to donations — consider chipping in.",
+        "loginMilestone": "You've been around for a while — thank you. FleetYards runs on donations; if you'd like to help cover the bill, here's how.",
+        "visitMilestone": "FleetYards is community-funded — no ads, no paywalls. If you find it useful, a small donation goes a long way."
+      },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
       "featureNotReady": "This feature is not yet ready and will be available soon. Stay tuned!",
       "accessDenied": "You are not authorized to view this page.",

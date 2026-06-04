@@ -48,6 +48,10 @@
       "hideLabels": "隐藏标签",
       "resetZoom": "重置缩放",
       "supportUs": "支持FleetYards.net",
+      "supportHint": {
+        "cta": "支持 FleetYards",
+        "later": "稍后再说"
+      },
       "login": "登录",
       "signUp": "注册",
       "confirmAccess": "确认密码",

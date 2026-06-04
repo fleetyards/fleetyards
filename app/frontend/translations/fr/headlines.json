@@ -240,6 +240,13 @@
       "hangarGuideEmpty": "Rien à voir ici.",
       "hangarGuide": "Guide du Hangar",
       "support": "Soutenir FleetYards.net",
+      "supportHint": {
+        "hangarSync": "Ravis d'avoir pu t'aider avec la synchro",
+        "vehicleAdded": "Ton hangar s'agrandit",
+        "fleetCreated": "Une nouvelle flotte — bravo !",
+        "loginMilestone": "Merci de revenir nous voir",
+        "visitMilestone": "FleetYards te plaît ?"
+      },
       "vehicle": {
         "bulkGroupEdit": "Ajouter/Retirer des groupes"
       },
@@ -268,7 +275,10 @@
         "overview": "Aperçu",
         "panels": "Panneaux",
         "buttons": "Boutons",
-        "tables": "Tables"
+        "tables": "Tables",
+        "notifications": "Notifications",
+        "syncModal": "Modale Sync",
+        "supportHint": "Indicateur de soutien"
       },
       "filterCargoRoutes": "Filtrer les routes de fret",
       "filterCommodities": "Filtrer les marchandises",

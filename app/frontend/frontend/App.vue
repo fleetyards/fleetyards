@@ -40,6 +40,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { useFlashNotifications } from "@/shared/composables/useFlashNotifications";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 
 useWebpCheck(true);
 
@@ -69,6 +70,8 @@ const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
 
+const supportPrompt = useSupportPrompt();
+
 const { t, availableLocales, currentLocale } = useI18n();
 
 useFlashNotifications();
@@ -94,11 +97,25 @@ watch(
   async () => {
     if (isAuthenticated.value) {
       await requestBrowserPermission();
+      maybeCountLogin();
     } else if (route.meta.needsAuthentication) {
       await router.push({ name: "login" });
     }
   },
 );
+
+const maybeCountLogin = () => {
+  if (supportPrompt.sessionAlreadyCountedLogin()) return;
+  supportPrompt.markLoginCountedForSession();
+  supportPrompt.notifyIfMilestone("logins", [5, 10, 25, 50], "loginMilestone");
+};
+
+const maybeCountVisit = () => {
+  if (isAuthenticated.value) return;
+  if (supportPrompt.sessionAlreadyCountedVisit()) return;
+  supportPrompt.markVisitCountedForSession();
+  supportPrompt.notifyIfMilestone("visits", [10, 25, 50], "visitMilestone");
+};
 
 const route = useRoute();
 
@@ -125,6 +142,9 @@ onMounted(async () => {
 
   if (isAuthenticated.value) {
     await requestBrowserPermission();
+    maybeCountLogin();
+  } else {
+    maybeCountVisit();
   }
 
   userUpdateComlink.value = comlink.on("user-update", refetchCurrentUser);

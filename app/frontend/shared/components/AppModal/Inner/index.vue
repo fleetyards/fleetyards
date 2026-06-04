@@ -46,7 +46,6 @@ const close = () => {
     </Panel>
     <div v-if="$slots['footer']" class="modal-footer">
       <slot name="footer" />
-      <div class="clearfix" />
     </div>
   </div>
 </template>
