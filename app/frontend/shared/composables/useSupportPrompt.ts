@@ -48,7 +48,16 @@ const daysSince = (iso?: string): number | null => {
 export const useSupportPrompt = () => {
   const notificationsStore = useNotificationsStore();
 
+  const isAutomatedBrowser = (): boolean => {
+    try {
+      return navigator.webdriver === true;
+    } catch {
+      return false;
+    }
+  };
+
   const canShow = (): boolean => {
+    if (isAutomatedBrowser()) return false;
     const since = daysSince(readState().lastShownAt);
     return since === null || since > COOLDOWN_DAYS;
   };
