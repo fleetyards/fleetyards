@@ -14,7 +14,10 @@ import {
   MessageTypesEnum,
   type AppNotification,
 } from "@/shared/components/AppNotifications/types";
-import { type Vehicle } from "@/services/fyApi";
+import {
+  type Vehicle,
+  useModelsLatest as useLatestModelsQuery,
+} from "@/services/fyApi";
 import { v4 as uuidv4 } from "uuid";
 import sampleImage from "@/images/logo.png";
 
@@ -88,29 +91,26 @@ const fireWithCta = () => {
   notificationsStore.addMessage(payload);
 };
 
+const { data: latestModels, isLoading: latestModelsLoading } =
+  useLatestModelsQuery();
+
 const fireVehicleAdded = () => {
-  const sampleVehicle = {
+  const model = latestModels.value?.[0];
+  if (!model) return;
+
+  const vehicle = {
     wanted: false,
-    model: {
-      name: "Aegis Avenger Titan",
-      slug: "avenger-titan",
-      media: {
-        storeImage: {
-          mediumUrl: sampleImage,
-          smallUrl: sampleImage,
-        },
-      },
-    },
+    model,
   } as unknown as Vehicle;
 
   displaySuccess({
-    text: "Aegis Avenger Titan added to your hangar.",
+    text: `${model.name} added to your hangar.`,
     component: () =>
       import("@/frontend/components/Models/AddToHangar/Notifications/Success/index.vue"),
     componentProps: {
-      vehicle: sampleVehicle,
+      vehicle,
     },
-    icon: sampleImage,
+    icon: model.media.storeImage?.smallUrl,
   });
 };
 </script>
@@ -195,6 +195,7 @@ const fireVehicleAdded = () => {
       </Btn>
       <Btn
         :size="BtnSizesEnum.SMALL"
+        :disabled="latestModelsLoading"
         data-test="trigger-notification-vehicle-added"
         @click="fireVehicleAdded"
       >
