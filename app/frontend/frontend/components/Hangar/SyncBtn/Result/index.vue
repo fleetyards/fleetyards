@@ -86,9 +86,9 @@ const hasWarnings = computed(
 </script>
 
 <template>
-  <div class="hangar-sync-result">
+  <div class="hangar-sync-result flex flex-col gap-4">
     <p
-      class="flex justify-center text-uppercase"
+      class="flex justify-center text-uppercase mb-0"
       :class="{
         'text-warning': !finished && !finishedWithErrors,
         'text-success': finished,
