@@ -1,0 +1,20 @@
+.models-add-to-hangar-notification {
+  &__name,
+  &__name:hover,
+  &__name:focus {
+    color: #fff;
+    text-decoration: none;
+
+    b {
+      font-weight: bold;
+    }
+  }
+
+  &__image {
+    display: block;
+
+    a {
+      display: block;
+    }
+  }
+}

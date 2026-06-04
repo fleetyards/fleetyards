@@ -67,13 +67,21 @@ const { loadedSrc, isLoaded } = useLazyLoad(target, image);
 <template>
   <MessageBody>
     {{ t("messages.vehicle.add.success.paragraph1") }}
-    <b>{{ model.name }}</b>
+    <router-link :to="to" class="models-add-to-hangar-notification__name">
+      <b>{{ model.name }}</b>
+    </router-link>
     {{ paragraph2 }}
     <router-link :to="to" class="models-add-to-hangar-notification__link">
       {{ linkLabel }}
     </router-link>
   </MessageBody>
-  <div ref="target">
-    <img v-if="isLoaded" :src="loadedSrc" :alt="alt" :title="title || alt" />
+  <div ref="target" class="models-add-to-hangar-notification__image">
+    <router-link :to="to">
+      <img v-if="isLoaded" :src="loadedSrc" :alt="alt" :title="title || alt" />
+    </router-link>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "./index";
+</style>
