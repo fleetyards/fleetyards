@@ -43,6 +43,12 @@ const { t } = useI18n();
       prefix="02"
     />
     <NavItem
+      :to="{ name: 'visual-tests-sync-modal' }"
+      :label="t('nav.visualTests.syncModal')"
+      icon="fadt fa-arrows-rotate"
+      prefix="02"
+    />
+    <NavItem
       :to="{ name: 'visual-tests-support-hint' }"
       :label="t('nav.visualTests.supportHint')"
       icon="fadt fa-heart"

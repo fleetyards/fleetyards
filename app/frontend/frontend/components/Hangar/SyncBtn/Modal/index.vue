@@ -387,7 +387,7 @@ const refreshPage = async () => {
       </div>
       <div v-else-if="!started">
         <p
-          class="flex justify-center text-uppercase relative mt-4"
+          class="flex justify-center gap-2 text-uppercase relative mt-4"
           :class="{
             'text-warning': identityStatus === 'pending',
             'text-success': identityStatus === 'connected',
@@ -428,7 +428,7 @@ const refreshPage = async () => {
         />
       </div>
     </transition>
-    <div class="page-actions page-actions-block">
+    <template #footer>
       <Btn
         v-if="finished"
         :size="BtnSizesEnum.SMALL"
@@ -475,7 +475,7 @@ const refreshPage = async () => {
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>
-    </div>
+    </template>
   </Modal>
 </template>
 

@@ -36,6 +36,15 @@ export const routes = [
     },
   },
   {
+    path: "sync-modal/",
+    name: "visual-tests-sync-modal",
+    component: () => import("@/frontend/pages/visual-tests/sync-modal.vue"),
+    meta: {
+      title: "visualTests.syncModal",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "support-hint/",
     name: "visual-tests-support-hint",
     component: () => import("@/frontend/pages/visual-tests/support-hint.vue"),

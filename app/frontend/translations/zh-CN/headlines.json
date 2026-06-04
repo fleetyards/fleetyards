@@ -277,6 +277,7 @@
         "buttons": "按钮",
         "tables": "表格",
         "notifications": "通知",
+        "syncModal": "同步弹窗",
         "supportHint": "支持提示"
       },
       "filterCargoRoutes": "Filter Cargo routes",

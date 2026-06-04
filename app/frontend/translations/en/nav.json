@@ -89,6 +89,7 @@
         "buttons": "Buttons",
         "tables": "Tables",
         "notifications": "Notifications",
+        "syncModal": "Sync Modal",
         "supportHint": "Support Hint"
       },
       "admin": {

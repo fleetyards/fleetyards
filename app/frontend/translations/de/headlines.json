@@ -281,6 +281,7 @@
         "buttons": "Schaltflächen",
         "tables": "Tabellen",
         "notifications": "Benachrichtigungen",
+        "syncModal": "Sync-Modal",
         "supportHint": "Support-Hinweis"
       },
       "filterCargoRoutes": "Filter Cargo routes",

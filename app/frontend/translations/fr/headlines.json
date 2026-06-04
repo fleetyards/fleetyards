@@ -277,6 +277,7 @@
         "buttons": "Boutons",
         "tables": "Tables",
         "notifications": "Notifications",
+        "syncModal": "Modale Sync",
         "supportHint": "Indicateur de soutien"
       },
       "filterCargoRoutes": "Filtrer les routes de fret",

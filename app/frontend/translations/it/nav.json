@@ -89,6 +89,7 @@
         "buttons": "Pulsanti",
         "tables": "Tabelle",
         "notifications": "Notifiche",
+        "syncModal": "Modal sincronizzazione",
         "supportHint": "Suggerimento supporto"
       },
       "admin": {

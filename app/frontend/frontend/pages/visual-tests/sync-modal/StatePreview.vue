@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "VisualTestsSupportHintSyncModalPreview",
+  name: "VisualTestsSyncModalStatePreview",
 };
 </script>
 
@@ -10,32 +10,27 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
-import type { HangarSyncResult } from "@/services/fyApi";
+import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+
+type Props = {
+  title?: string;
+  processSteps: SyncProcessStep[];
+  currentPage: number;
+  pledges: RsiHangarItemInput[];
+  result?: HangarSyncResult;
+  finished: boolean;
+  finishedWithErrors: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  title: "Hangar Sync",
+  result: undefined,
+});
 
 const comlink = useComlink();
 
 const hintDismissed = ref(false);
-
-const processSteps: SyncProcessStep[] = [
-  { name: "fetchHangar", status: "success" },
-  { name: "submitData", status: "success" },
-];
-
-const result = {
-  importedVehicles: ["vehicle-1", "vehicle-2", "vehicle-3"],
-  foundVehicles: ["vehicle-4", "vehicle-5"],
-  movedVehiclesToWanted: [],
-  missingModels: ["Mystery Ship"],
-  importedComponents: [],
-  foundComponents: [],
-  missingComponents: [],
-  missingComponentVehicles: [],
-  importedUpgrades: [],
-  foundUpgrades: [],
-  missingUpgrades: [],
-  missingUpgradeVehicles: [],
-} as unknown as HangarSyncResult;
 
 const close = () => {
   comlink.emit("close-modal", true);
@@ -43,18 +38,18 @@ const close = () => {
 </script>
 
 <template>
-  <Modal title="Hangar Sync">
+  <Modal :title="title">
     <SyncResultPanel
       :process-steps="processSteps"
-      :current-page="1"
-      :pledges="[]"
+      :current-page="currentPage"
+      :pledges="pledges"
       :result="result"
-      :finished="true"
-      :finished-with-errors="false"
-      :show-support-hint="!hintDismissed"
+      :finished="finished"
+      :finished-with-errors="finishedWithErrors"
+      :show-support-hint="finished && !finishedWithErrors && !hintDismissed"
       @support-hint-dismiss="hintDismissed = true"
     />
-    <div class="page-actions page-actions-block">
+    <template #footer>
       <Btn
         v-if="hintDismissed"
         :size="BtnSizesEnum.SMALL"
@@ -67,6 +62,6 @@ const close = () => {
       <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="close">
         Close
       </Btn>
-    </div>
+    </template>
   </Modal>
 </template>

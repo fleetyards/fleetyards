@@ -89,6 +89,7 @@
         "buttons": "Botones",
         "tables": "Tablas",
         "notifications": "Notificaciones",
+        "syncModal": "Modal de sincronización",
         "supportHint": "Aviso de apoyo"
       },
       "admin": {

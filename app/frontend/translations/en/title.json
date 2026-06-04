@@ -101,6 +101,7 @@
         "buttons": "Buttons - Visual Tests",
         "tables": "Tables - Visual Tests",
         "notifications": "Notifications - Visual Tests",
+        "syncModal": "Sync Modal - Visual Tests",
         "supportHint": "Support Hint - Visual Tests"
       },
       "admin": {

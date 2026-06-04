@@ -277,6 +277,7 @@
         "buttons": "Botones",
         "tables": "Tablas",
         "notifications": "Notificaciones",
+        "syncModal": "Modal de sincronización",
         "supportHint": "Aviso de apoyo"
       },
       "filterCargoRoutes": "Filter Cargo routes",

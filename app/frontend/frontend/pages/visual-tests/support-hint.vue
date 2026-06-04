@@ -31,8 +31,23 @@ const trigger = (context: SupportPromptContext) => {
 const openSyncModalPreview = () => {
   comlink.emit("open-modal", {
     component: () =>
-      import("@/frontend/pages/visual-tests/support-hint/SyncModalPreview.vue"),
-    fixed: true,
+      import("@/frontend/pages/visual-tests/sync-modal/StatePreview.vue"),
+    props: {
+      title: "Hangar Sync",
+      processSteps: [
+        { name: "fetchHangar", status: "success" },
+        { name: "submitData", status: "success" },
+      ],
+      currentPage: 5,
+      pledges: [],
+      result: {
+        importedVehicles: ["v-1", "v-2", "v-3"],
+        foundVehicles: ["v-4", "v-5"],
+        missingModels: ["Mystery Ship"],
+      },
+      finished: true,
+      finishedWithErrors: false,
+    },
   });
 };
 </script>
