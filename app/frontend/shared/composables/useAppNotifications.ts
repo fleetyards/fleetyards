@@ -118,6 +118,7 @@ export const useAppNotifications = () => {
 
   const displayWarning = (notification: Partial<AppNotification>) => {
     displayMessage({
+      timeout: 8000,
       ...notification,
       type: MessageTypesEnum.WARNING,
     });
