@@ -10,11 +10,11 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            description: {type: :string, nullable: true},
-            managedBy: {type: :string, format: :uuid, nullable: true},
+            description: {type: [:string, :null]},
+            managedBy: {type: [:string, :null], format: :uuid},
             visibility: {type: :string, enum: %w[members_only officers_only]},
-            location: {type: :string, nullable: true},
-            image: {type: :string, nullable: true}
+            location: {type: [:string, :null]},
+            image: {type: [:string, :null]}
           },
           additionalProperties: false
         })

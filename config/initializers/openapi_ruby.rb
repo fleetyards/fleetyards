@@ -3,7 +3,7 @@
 OpenapiRuby.configure do |config|
   config.schemas = {
     "v1/schema" => {
-      openapi_version: "3.0.3",
+      openapi_version: "3.1.0",
       info: {
         title: "FleetYards.net API",
         version: "v1",
@@ -26,7 +26,7 @@ OpenapiRuby.configure do |config|
       prefix: URI.parse(API_ENDPOINT).path
     },
     "admin/v1/schema" => {
-      openapi_version: "3.0.3",
+      openapi_version: "3.1.0",
       info: {
         title: "FleetYards.net Command API",
         version: "v1",
@@ -51,7 +51,7 @@ OpenapiRuby.configure do |config|
       prefix: URI.parse(ADMIN_API_ENDPOINT).path
     },
     "oauth/v1/schema" => {
-      openapi_version: "3.0.3",
+      openapi_version: "3.1.0",
       info: {
         title: "FleetYards.net OAuth API",
         version: "v1",

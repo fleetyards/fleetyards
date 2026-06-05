@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            notes: {type: :string, nullable: true},
+            notes: {type: [:string, :null]},
             category: {type: :string, enum: %w[commodity component weapon equipment ammunition consumable other]}
           },
           additionalProperties: false

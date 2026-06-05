@@ -1,5 +1,5 @@
 ---
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: FleetYards.net API
   version: v1
@@ -6645,12 +6645,14 @@ components:
       type: object
       properties:
         username:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         email:
-          type: string
+          type:
+          - string
+          - 'null'
           format: email
-          nullable: true
       additionalProperties: false
       title: AccountUpdateInput
     BarChartStats:
@@ -6708,8 +6710,9 @@ components:
           required:
           - min
         offset:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             x:
               type: number
@@ -6723,8 +6726,9 @@ components:
           - "y"
           - z
         rotation:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
       additionalProperties: false
       required:
       - dimensions
@@ -7738,11 +7742,13 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         componentName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         capacity:
           type: number
       additionalProperties: false
@@ -7774,10 +7780,12 @@ components:
           type: string
         value:
           anyOf:
-          - type: string
-            nullable: true
-          - type: number
-            nullable: true
+          - type:
+            - string
+            - 'null'
+          - type:
+            - number
+            - 'null'
         name:
           type: string
           deprecated: true
@@ -7904,16 +7912,18 @@ components:
         slug:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         visibility:
           type: string
           enum:
           - members_only
           - officers_only
         location:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         itemCount:
           type: integer
         totalScu:
@@ -7921,8 +7931,9 @@ components:
         totalUnits:
           type: number
         manager:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             id:
               type: string
@@ -7955,23 +7966,27 @@ components:
         name:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         managedBy:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         visibility:
           type: string
           enum:
           - members_only
           - officers_only
         location:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         image:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       required:
       - name
       additionalProperties: false
@@ -7996,19 +8011,23 @@ components:
           - deposit
           - withdrawal
         quality:
-          type: integer
+          type:
+          - integer
+          - 'null'
           minimum: 0
           maximum: 1000
-          nullable: true
         notes:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         image:
-          "$ref": "#/components/schemas/MediaFile"
-          nullable: true
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
         item:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             id:
               type: string
@@ -8018,16 +8037,18 @@ components:
             name:
               type: string
         inventory:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             name:
               type: string
             slug:
               type: string
         member:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             id:
               type: string
@@ -8035,8 +8056,9 @@ components:
             username:
               type: string
         addedBy:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             id:
               type: string
@@ -8088,27 +8110,33 @@ components:
           - deposit
           - withdrawal
         quality:
-          type: integer
+          type:
+          - integer
+          - 'null'
           minimum: 0
           maximum: 1000
-          nullable: true
         memberId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         image:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         notes:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         itemType:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         itemId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
       required:
       - name
       - quantity
@@ -8144,8 +8172,9 @@ components:
         name:
           type: string
         notes:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         category:
           type: string
           enum:
@@ -8181,19 +8210,23 @@ components:
         unit:
           type: string
         quality:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         qualityMin:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         qualityMax:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         netQuantity:
           type: number
         inventory:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             name:
               type: string
@@ -8211,23 +8244,27 @@ components:
         name:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         managedBy:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         visibility:
           type: string
           enum:
           - members_only
           - officers_only
         location:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         image:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: FleetInventoryUpdateInput
     FleetInviteUrl:
@@ -8269,11 +8306,13 @@ components:
       type: object
       properties:
         limit:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         expiresAfterMinutes:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
       additionalProperties: false
       title: FleetInviteUrlCreateInput
     FleetMember:
@@ -8325,16 +8364,19 @@ components:
         discordProfileUrl:
           type: string
         latitude:
-          type: number
+          type:
+          - number
+          - 'null'
           format: double
-          nullable: true
         longitude:
-          type: number
+          type:
+          - number
+          - 'null'
           format: double
-          nullable: true
         currentSystemCode:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         isDestroyAllowed:
           type: boolean
         hangarUpdatedAt:
@@ -8546,8 +8588,9 @@ components:
         shipsFilter:
           "$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"
         hangarGroupId:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: FleetMembershipUpdateInput
     FleetModelCountsStats:
@@ -8647,50 +8690,62 @@ components:
       type: object
       properties:
         fid:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         logo:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         removeLogo:
           type: boolean
         backgroundImage:
-          type: string
+          type:
+          - string
+          - 'null'
           format: binary
-          nullable: true
         removeBackground:
           type: boolean
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         publicFleet:
           type: boolean
         publicFleetStats:
           type: boolean
         homepage:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         rsiSid:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         discord:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         ts:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         youtube:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         twitch:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         guilded:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: FleetUpdateInput
     FleetVehicleExport:
@@ -8735,15 +8790,18 @@ components:
           items:
             type: string
         username:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         userAvatar:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uri
-          nullable: true
         userRsiHandle:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - name
@@ -9008,11 +9066,13 @@ components:
         color:
           type: string
         sort:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         public:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
       additionalProperties: false
       required:
       - name
@@ -9085,8 +9145,9 @@ components:
         color:
           type: string
         sort:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         public:
           type: boolean
       additionalProperties: false
@@ -9126,11 +9187,13 @@ components:
         totalCargo:
           type: number
         largestShip:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         smallestShip:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         averagePledgePrice:
           type: number
         flightReadyCount:
@@ -9173,11 +9236,13 @@ components:
         totalCargo:
           type: number
         largestShip:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         smallestShip:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         flightReadyCount:
           type: integer
         uniqueModelsCount:
@@ -9454,16 +9519,18 @@ components:
         active:
           type: boolean
         status:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
           enum:
           - created
           - started
           - finished
           - failed
         result:
-          "$ref": "#/components/schemas/HangarSyncResult"
-          nullable: true
+          anyOf:
+          - "$ref": "#/components/schemas/HangarSyncResult"
+          - type: 'null'
       additionalProperties: false
       required:
       - active
@@ -10193,29 +10260,37 @@ components:
             fleetchartOffsetBeam:
               type: number
             extendedLength:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedLengthLabel:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             extendedBeam:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedBeamLabel:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             extendedHeight:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedHeightLabel:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             extendedFleetchartOffsetLength:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedFleetchartOffsetBeam:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             height:
               type: number
             heightLabel:
@@ -10505,29 +10580,37 @@ components:
             fleetchartOffsetBeam:
               type: number
             extendedLength:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedLengthLabel:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             extendedBeam:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedBeamLabel:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             extendedHeight:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedHeightLabel:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
             extendedFleetchartOffsetLength:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             extendedFleetchartOffsetBeam:
-              type: number
-              nullable: true
+              type:
+              - number
+              - 'null'
             height:
               type: number
             heightLabel:
@@ -11700,20 +11783,24 @@ components:
         title:
           type: string
         body:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         link:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         icon:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         read:
           type: boolean
         readAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         expiresAt:
           type: string
           format: date-time
@@ -11854,18 +11941,21 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         redirectUri:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         confidential:
           type: boolean
         scopes:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          nullable: true
       additionalProperties: false
       title: OauthApplicationUpdateInput
     OauthApplicationWithSecret:
@@ -11991,26 +12081,33 @@ components:
       type: object
       properties:
         armName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         armSize:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         nozzleName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         nozzleSize:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         captureRadius:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         fuelFlowRate:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         quantumFuelFlowRate:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
       additionalProperties: false
       title: RefuelBoom
     RsiHangarItemInput:
@@ -12121,18 +12218,21 @@ components:
         averagePledgePrice:
           type: integer
         largestShip:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         smallestShip:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         vehiclesCount:
           type: integer
         wishlistsCount:
           type: integer
         shipOfTheMonth:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         shipOfTheMonthCount:
           type: integer
       additionalProperties: false
@@ -12366,28 +12466,35 @@ components:
       type: object
       properties:
         avatar:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         removeAvatar:
           type: boolean
         rsiHandle:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         homepage:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         discord:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         youtube:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         guilded:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         twitch:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         saleNotify:
           type: boolean
         publicHangar:
@@ -12401,11 +12508,13 @@ components:
         hideOwner:
           type: boolean
         location:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         currentSystem:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: UserUpdateInput
     ValidationError:
@@ -12460,8 +12569,9 @@ components:
         bundled:
           type: boolean
         bundledParent:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             id:
               type: string
@@ -12471,8 +12581,9 @@ components:
             slug:
               type: string
             customName:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
         model:
           "$ref": "#/components/schemas/Model"
         modelModuleIds:
@@ -12573,11 +12684,13 @@ components:
           type: string
           format: uuid
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         serial:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         wanted:
           type: boolean
         nameVisible:
@@ -12589,34 +12702,39 @@ components:
         flagship:
           type: boolean
         modelPaintId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         boughtVia:
           "$ref": "#/components/schemas/BoughtViaEnum"
         hangarGroupIds:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
             format: uuid
-          nullable: true
         modelModuleIds:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
             format: uuid
-          nullable: true
         modelUpgradeIds:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
             format: uuid
-          nullable: true
         alternativeNames:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          nullable: true
       additionalProperties: false
       required:
       - modelId
@@ -12736,8 +12854,9 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         url:
           type: string
         fromDefaults:
@@ -12754,9 +12873,10 @@ components:
                 type: string
                 format: uuid
               componentId:
-                type: string
+                type:
+                - string
+                - 'null'
                 format: uuid
-                nullable: true
               _destroy:
                 type: boolean
       additionalProperties: false
@@ -12805,8 +12925,9 @@ components:
         bundled:
           type: boolean
         bundledParent:
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             id:
               type: string
@@ -12816,8 +12937,9 @@ components:
             slug:
               type: string
             customName:
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
         model:
           "$ref": "#/components/schemas/Model"
         username:
@@ -12950,17 +13072,20 @@ components:
             type: string
             format: uuid
         wanted:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
         public:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
         hangarGroupIds:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
             format: uuid
-          nullable: true
       additionalProperties: false
       required:
       - ids
@@ -12969,11 +13094,13 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         serial:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         wanted:
           type: boolean
         nameVisible:
@@ -12985,9 +13112,10 @@ components:
         flagship:
           type: boolean
         modelPaintId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         boughtVia:
           "$ref": "#/components/schemas/BoughtViaEnum"
         hangarGroupIds:

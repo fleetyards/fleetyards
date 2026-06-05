@@ -23,8 +23,7 @@ module Shared
               required: %w[min]
             },
             offset: {
-              type: :object,
-              nullable: true,
+              type: [:object, :null],
               properties: {
                 x: {type: :number},
                 y: {type: :number},
@@ -33,7 +32,7 @@ module Shared
               additionalProperties: false,
               required: %w[x y z]
             },
-            rotation: {type: :integer, nullable: true}
+            rotation: {type: [:integer, :null]}
           },
           additionalProperties: false,
           required: %w[dimensions capacity maxContainerSize limits]

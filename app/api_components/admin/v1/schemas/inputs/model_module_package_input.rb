@@ -11,9 +11,9 @@ module Admin
             type: :object,
             properties: {
               name: {type: :string},
-              description: {type: :string, nullable: true},
+              description: {type: [:string, :null]},
               modelId: {type: :string, format: :uuid},
-              pledgePrice: {type: :number, nullable: true},
+              pledgePrice: {type: [:number, :null]},
               active: {type: :boolean},
               hidden: {type: :boolean},
               storeImage: {type: :string},

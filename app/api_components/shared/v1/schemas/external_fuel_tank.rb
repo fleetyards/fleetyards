@@ -9,8 +9,8 @@ module Shared
         schema({
           type: :object,
           properties: {
-            name: {type: :string, nullable: true},
-            componentName: {type: :string, nullable: true},
+            name: {type: [:string, :null]},
+            componentName: {type: [:string, :null]},
             capacity: {type: :number}
           },
           additionalProperties: false,

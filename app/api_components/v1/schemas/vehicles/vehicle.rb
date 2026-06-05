@@ -22,13 +22,12 @@ module V1
             loaner: {type: :boolean},
             bundled: {type: :boolean},
             bundledParent: {
-              type: :object,
-              nullable: true,
+              type: [:object, :null],
               properties: {
                 id: {type: :string, format: :uuid},
                 name: {type: :string},
                 slug: {type: :string},
-                customName: {type: :string, nullable: true}
+                customName: {type: [:string, :null]}
               }
             },
             model: {"$ref": "#/components/schemas/Model"},

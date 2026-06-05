@@ -11,7 +11,7 @@ module V1
           properties: {
             primary: {type: :boolean},
             shipsFilter: {"$ref": "#/components/schemas/FleetMembershipShipsFilterEnum"},
-            hangarGroupId: {type: :string, nullable: true}
+            hangarGroupId: {type: [:string, :null]}
           },
           additionalProperties: false
         })

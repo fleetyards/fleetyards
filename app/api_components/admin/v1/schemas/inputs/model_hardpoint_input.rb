@@ -10,20 +10,20 @@ module Admin
           schema({
             type: :object,
             properties: {
-              name: {type: :string, nullable: true},
-              source: {type: :string, nullable: true},
-              key: {type: :string, nullable: true},
-              hardpointType: {type: :string, nullable: true},
-              group: {type: :string, nullable: true},
-              category: {type: :string, nullable: true},
-              subCategory: {type: :string, nullable: true},
-              size: {type: :string, nullable: true},
-              details: {type: :string, nullable: true},
-              mount: {type: :string, nullable: true},
-              itemSlots: {type: :integer, nullable: true},
-              loadoutIdentifier: {type: :string, nullable: true},
-              componentId: {type: :string, format: :uuid, nullable: true},
-              modelId: {type: :string, format: :uuid, nullable: true}
+              name: {type: [:string, :null]},
+              source: {type: [:string, :null]},
+              key: {type: [:string, :null]},
+              hardpointType: {type: [:string, :null]},
+              group: {type: [:string, :null]},
+              category: {type: [:string, :null]},
+              subCategory: {type: [:string, :null]},
+              size: {type: [:string, :null]},
+              details: {type: [:string, :null]},
+              mount: {type: [:string, :null]},
+              itemSlots: {type: [:integer, :null]},
+              loadoutIdentifier: {type: [:string, :null]},
+              componentId: {type: [:string, :null], format: :uuid},
+              modelId: {type: [:string, :null], format: :uuid}
             },
             additionalProperties: false
           })

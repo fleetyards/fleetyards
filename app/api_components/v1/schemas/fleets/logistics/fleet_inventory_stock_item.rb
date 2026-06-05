@@ -13,13 +13,12 @@ module V1
               name: {type: :string},
               category: {type: :string},
               unit: {type: :string},
-              quality: {type: :integer, nullable: true},
-              qualityMin: {type: :integer, nullable: true},
-              qualityMax: {type: :integer, nullable: true},
+              quality: {type: [:integer, :null]},
+              qualityMin: {type: [:integer, :null]},
+              qualityMax: {type: [:integer, :null]},
               netQuantity: {type: :number},
               inventory: {
-                type: :object,
-                nullable: true,
+                type: [:object, :null],
                 properties: {
                   name: {type: :string},
                   slug: {type: :string}

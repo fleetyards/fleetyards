@@ -9,8 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            username: {type: :string, nullable: true},
-            email: {type: :string, format: :email, nullable: true}
+            username: {type: [:string, :null]},
+            email: {type: [:string, :null], format: :email}
           },
           additionalProperties: false
         })

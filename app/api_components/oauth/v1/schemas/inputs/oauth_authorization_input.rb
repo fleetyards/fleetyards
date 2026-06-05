@@ -13,11 +13,11 @@ module Oauth
               clientId: {type: :string},
               redirectUri: {type: :string},
               responseType: {type: :string},
-              responseMode: {type: :string, nullable: true},
+              responseMode: {type: [:string, :null]},
               scope: {type: :string},
-              state: {type: :string, nullable: true},
-              codeChallenge: {type: :string, nullable: true},
-              codeChallengeMethod: {type: :string, nullable: true}
+              state: {type: [:string, :null]},
+              codeChallenge: {type: [:string, :null]},
+              codeChallengeMethod: {type: [:string, :null]}
             },
             additionalProperties: false,
             required: %w[clientId redirectUri responseType scope]
