@@ -1,10 +1,10 @@
-name: Ruby Tests Job
+name: Minitest Job
 
 on:
   workflow_call:
 
 jobs:
-  ruby-tests:
+  minitest:
     runs-on: ubuntu-latest
 
     env:
@@ -38,11 +38,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    strategy:
-      fail-fast: false
-      matrix:
-        ci_node_total: [2]
-        ci_node_index: [0, 1]
 
     steps:
       - uses: actions/checkout@v6
@@ -65,19 +60,7 @@ jobs:
       - name: Build email assets
         run: bin/build-email-assets
       - run: mkdir -p log
-      - name: Prepare test databases
-        run: bundle exec flatware fan -w 2 rake db:create db:schema:load
-      - name: Run RSpec
-        env:
-          CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
-          CI_NODE_INDEX: ${{ matrix.ci_node_index }}
-        run: |
-          mapfile -t specs < <(find spec -name '*_spec.rb' | sort)
-          total=${#specs[@]}
-          node_specs=()
-          for ((i=0; i<total; i++)); do
-            if (( i % CI_NODE_TOTAL == CI_NODE_INDEX )); then
-              node_specs+=("${specs[$i]}")
-            fi
-          done
-          bundle exec flatware rspec -w 2 "${node_specs[@]}"
+      - name: Prepare test database
+        run: bundle exec rake db:create db:schema:load
+      - name: Run Minitest
+        run: bin/rails test
