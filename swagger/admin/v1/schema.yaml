@@ -5778,13 +5778,9 @@ components:
           type: string
           format: uuid
         name:
-          type:
-          - string
-          - 'null'
+          type: string
         position:
-          type:
-          - integer
-          - 'null'
+          type: integer
         capacityScu:
           type: number
         dimensionX:
@@ -5794,21 +5790,13 @@ components:
         dimensionZ:
           type: number
         offsetX:
-          type:
-          - number
-          - 'null'
+          type: number
         offsetY:
-          type:
-          - number
-          - 'null'
+          type: number
         offsetZ:
-          type:
-          - number
-          - 'null'
+          type: number
         rotation:
-          type:
-          - integer
-          - 'null'
+          type: integer
         parent:
           type: object
           properties:
@@ -5818,9 +5806,7 @@ components:
             name:
               type: string
             slug:
-              type:
-              - string
-              - 'null'
+              type: string
           required:
           - id
           - name
@@ -6120,9 +6106,7 @@ components:
           required:
           - min
         offset:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             x:
               type: number
@@ -6136,9 +6120,7 @@ components:
           - "y"
           - z
         rotation:
-          type:
-          - integer
-          - 'null'
+          type: integer
       additionalProperties: false
       required:
       - dimensions
@@ -6962,9 +6944,7 @@ components:
           type: string
           format: uuid
         name:
-          type:
-          - string
-          - 'null'
+          type: string
         dockType:
           type: string
         dockTypeLabel:
@@ -6974,33 +6954,19 @@ components:
         shipSizeLabel:
           type: string
         group:
-          type:
-          - string
-          - 'null'
+          type: string
         length:
-          type:
-          - number
-          - 'null'
+          type: number
         beam:
-          type:
-          - number
-          - 'null'
+          type: number
         height:
-          type:
-          - number
-          - 'null'
+          type: number
         minShipSize:
-          type:
-          - integer
-          - 'null'
+          type: integer
         maxShipSize:
-          type:
-          - integer
-          - 'null'
+          type: integer
         modelId:
-          type:
-          - string
-          - 'null'
+          type: string
           format: uuid
         createdAt:
           type: string
@@ -7255,13 +7221,9 @@ components:
       type: object
       properties:
         name:
-          type:
-          - string
-          - 'null'
+          type: string
         componentName:
-          type:
-          - string
-          - 'null'
+          type: string
         capacity:
           type: number
       additionalProperties: false
@@ -8671,37 +8633,21 @@ components:
             fleetchartOffsetBeam:
               type: number
             extendedLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedLengthLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedBeamLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedHeight:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedHeightLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedFleetchartOffsetLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedFleetchartOffsetBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             height:
               type: number
             heightLabel:
@@ -9109,37 +9055,21 @@ components:
             fleetchartOffsetBeam:
               type: number
             extendedLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedLengthLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedBeamLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedHeight:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedHeightLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedFleetchartOffsetLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedFleetchartOffsetBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             height:
               type: number
             heightLabel:
@@ -10518,9 +10448,7 @@ components:
         position:
           type: integer
         hardpointId:
-          type:
-          - string
-          - 'null'
+          type: string
           format: uuid
         modelId:
           type: string
@@ -11270,13 +11198,9 @@ components:
         scopes:
           type: string
         ownerName:
-          type:
-          - string
-          - 'null'
+          type: string
         ownerId:
-          type:
-          - string
-          - 'null'
+          type: string
           format: uuid
         createdAt:
           type: string
@@ -11431,33 +11355,19 @@ components:
       type: object
       properties:
         armName:
-          type:
-          - string
-          - 'null'
+          type: string
         armSize:
-          type:
-          - string
-          - 'null'
+          type: string
         nozzleName:
-          type:
-          - string
-          - 'null'
+          type: string
         nozzleSize:
-          type:
-          - string
-          - 'null'
+          type: string
         captureRadius:
-          type:
-          - number
-          - 'null'
+          type: number
         fuelFlowRate:
-          type:
-          - number
-          - 'null'
+          type: number
         quantumFuelFlowRate:
-          type:
-          - number
-          - 'null'
+          type: number
       additionalProperties: false
       title: RefuelBoom
     RsiHangarItemKindEnum:

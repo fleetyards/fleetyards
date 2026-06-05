@@ -14,7 +14,7 @@ module Admin
             positionType: {type: :string},
             source: {type: :string},
             position: {type: :integer},
-            hardpointId: {type: [:string, :null], format: :uuid},
+            hardpointId: {type: :string, format: :uuid},
             modelId: {type: :string, format: :uuid},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}

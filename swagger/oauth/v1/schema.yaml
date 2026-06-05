@@ -188,25 +188,17 @@ components:
         redirectUri:
           type: string
         state:
-          type:
-          - string
-          - 'null'
+          type: string
         responseType:
           type: string
         responseMode:
-          type:
-          - string
-          - 'null'
+          type: string
         scope:
           type: string
         codeChallenge:
-          type:
-          - string
-          - 'null'
+          type: string
         codeChallengeMethod:
-          type:
-          - string
-          - 'null'
+          type: string
         scopes:
           type: array
           items:

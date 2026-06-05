@@ -4964,7 +4964,6 @@ paths:
       - name: usernames
         in: query
         schema:
-          type: object
           "$ref": "#/components/schemas/HangarEmbedQuery"
         style: deepObject
         explode: true
@@ -6710,9 +6709,7 @@ components:
           required:
           - min
         offset:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             x:
               type: number
@@ -6726,9 +6723,7 @@ components:
           - "y"
           - z
         rotation:
-          type:
-          - integer
-          - 'null'
+          type: integer
       additionalProperties: false
       required:
       - dimensions
@@ -7742,13 +7737,9 @@ components:
       type: object
       properties:
         name:
-          type:
-          - string
-          - 'null'
+          type: string
         componentName:
-          type:
-          - string
-          - 'null'
+          type: string
         capacity:
           type: number
       additionalProperties: false
@@ -7912,18 +7903,14 @@ components:
         slug:
           type: string
         description:
-          type:
-          - string
-          - 'null'
+          type: string
         visibility:
           type: string
           enum:
           - members_only
           - officers_only
         location:
-          type:
-          - string
-          - 'null'
+          type: string
         itemCount:
           type: integer
         totalScu:
@@ -7931,9 +7918,7 @@ components:
         totalUnits:
           type: number
         manager:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             id:
               type: string
@@ -8011,23 +7996,15 @@ components:
           - deposit
           - withdrawal
         quality:
-          type:
-          - integer
-          - 'null'
+          type: integer
           minimum: 0
           maximum: 1000
         notes:
-          type:
-          - string
-          - 'null'
+          type: string
         image:
-          anyOf:
-          - "$ref": "#/components/schemas/MediaFile"
-          - type: 'null'
+          "$ref": "#/components/schemas/MediaFile"
         item:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             id:
               type: string
@@ -8037,18 +8014,14 @@ components:
             name:
               type: string
         inventory:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             name:
               type: string
             slug:
               type: string
         member:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             id:
               type: string
@@ -8056,9 +8029,7 @@ components:
             username:
               type: string
         addedBy:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             id:
               type: string
@@ -8210,23 +8181,15 @@ components:
         unit:
           type: string
         quality:
-          type:
-          - integer
-          - 'null'
+          type: integer
         qualityMin:
-          type:
-          - integer
-          - 'null'
+          type: integer
         qualityMax:
-          type:
-          - integer
-          - 'null'
+          type: integer
         netQuantity:
           type: number
         inventory:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             name:
               type: string
@@ -8364,19 +8327,13 @@ components:
         discordProfileUrl:
           type: string
         latitude:
-          type:
-          - number
-          - 'null'
+          type: number
           format: double
         longitude:
-          type:
-          - number
-          - 'null'
+          type: number
           format: double
         currentSystemCode:
-          type:
-          - string
-          - 'null'
+          type: string
         isDestroyAllowed:
           type: boolean
         hangarUpdatedAt:
@@ -8790,18 +8747,12 @@ components:
           items:
             type: string
         username:
-          type:
-          - string
-          - 'null'
+          type: string
         userAvatar:
-          type:
-          - string
-          - 'null'
+          type: string
           format: uri
         userRsiHandle:
-          type:
-          - string
-          - 'null'
+          type: string
       additionalProperties: false
       required:
       - name
@@ -9187,13 +9138,9 @@ components:
         totalCargo:
           type: number
         largestShip:
-          type:
-          - number
-          - 'null'
+          type: number
         smallestShip:
-          type:
-          - number
-          - 'null'
+          type: number
         averagePledgePrice:
           type: number
         flightReadyCount:
@@ -9236,13 +9183,9 @@ components:
         totalCargo:
           type: number
         largestShip:
-          type:
-          - number
-          - 'null'
+          type: number
         smallestShip:
-          type:
-          - number
-          - 'null'
+          type: number
         flightReadyCount:
           type: integer
         uniqueModelsCount:
@@ -9519,18 +9462,14 @@ components:
         active:
           type: boolean
         status:
-          type:
-          - string
-          - 'null'
+          type: string
           enum:
           - created
           - started
           - finished
           - failed
         result:
-          anyOf:
-          - "$ref": "#/components/schemas/HangarSyncResult"
-          - type: 'null'
+          "$ref": "#/components/schemas/HangarSyncResult"
       additionalProperties: false
       required:
       - active
@@ -10260,37 +10199,21 @@ components:
             fleetchartOffsetBeam:
               type: number
             extendedLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedLengthLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedBeamLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedHeight:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedHeightLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedFleetchartOffsetLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedFleetchartOffsetBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             height:
               type: number
             heightLabel:
@@ -10580,37 +10503,21 @@ components:
             fleetchartOffsetBeam:
               type: number
             extendedLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedLengthLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedBeamLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedHeight:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedHeightLabel:
-              type:
-              - string
-              - 'null'
+              type: string
             extendedFleetchartOffsetLength:
-              type:
-              - number
-              - 'null'
+              type: number
             extendedFleetchartOffsetBeam:
-              type:
-              - number
-              - 'null'
+              type: number
             height:
               type: number
             heightLabel:
@@ -11783,23 +11690,15 @@ components:
         title:
           type: string
         body:
-          type:
-          - string
-          - 'null'
+          type: string
         link:
-          type:
-          - string
-          - 'null'
+          type: string
         icon:
-          type:
-          - string
-          - 'null'
+          type: string
         read:
           type: boolean
         readAt:
-          type:
-          - string
-          - 'null'
+          type: string
           format: date-time
         expiresAt:
           type: string
@@ -12081,33 +11980,19 @@ components:
       type: object
       properties:
         armName:
-          type:
-          - string
-          - 'null'
+          type: string
         armSize:
-          type:
-          - string
-          - 'null'
+          type: string
         nozzleName:
-          type:
-          - string
-          - 'null'
+          type: string
         nozzleSize:
-          type:
-          - string
-          - 'null'
+          type: string
         captureRadius:
-          type:
-          - number
-          - 'null'
+          type: number
         fuelFlowRate:
-          type:
-          - number
-          - 'null'
+          type: number
         quantumFuelFlowRate:
-          type:
-          - number
-          - 'null'
+          type: number
       additionalProperties: false
       title: RefuelBoom
     RsiHangarItemInput:
@@ -12218,21 +12103,15 @@ components:
         averagePledgePrice:
           type: integer
         largestShip:
-          type:
-          - number
-          - 'null'
+          type: number
         smallestShip:
-          type:
-          - number
-          - 'null'
+          type: number
         vehiclesCount:
           type: integer
         wishlistsCount:
           type: integer
         shipOfTheMonth:
-          type:
-          - string
-          - 'null'
+          type: string
         shipOfTheMonthCount:
           type: integer
       additionalProperties: false
@@ -12569,9 +12448,7 @@ components:
         bundled:
           type: boolean
         bundledParent:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             id:
               type: string
@@ -12581,9 +12458,7 @@ components:
             slug:
               type: string
             customName:
-              type:
-              - string
-              - 'null'
+              type: string
         model:
           "$ref": "#/components/schemas/Model"
         modelModuleIds:
@@ -12925,9 +12800,7 @@ components:
         bundled:
           type: boolean
         bundledParent:
-          type:
-          - object
-          - 'null'
+          type: object
           properties:
             id:
               type: string
@@ -12937,9 +12810,7 @@ components:
             slug:
               type: string
             customName:
-              type:
-              - string
-              - 'null'
+              type: string
         model:
           "$ref": "#/components/schemas/Model"
         username:

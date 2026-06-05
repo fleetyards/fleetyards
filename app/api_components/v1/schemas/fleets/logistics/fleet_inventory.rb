@@ -13,14 +13,14 @@ module V1
               id: {type: :string, format: :uuid},
               name: {type: :string},
               slug: {type: :string},
-              description: {type: [:string, :null]},
+              description: {type: :string},
               visibility: {type: :string, enum: %w[members_only officers_only]},
-              location: {type: [:string, :null]},
+              location: {type: :string},
               itemCount: {type: :integer},
               totalScu: {type: :number},
               totalUnits: {type: :number},
               manager: {
-                type: [:object, :null],
+                type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}

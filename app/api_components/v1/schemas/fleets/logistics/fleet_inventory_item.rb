@@ -16,11 +16,11 @@ module V1
               quantity: {type: :number},
               unit: {type: :string},
               entryType: {type: :string, enum: %w[deposit withdrawal]},
-              quality: {type: [:integer, :null], minimum: 0, maximum: 1000},
-              notes: {type: [:string, :null]},
-              image: {anyOf: [{"$ref": "#/components/schemas/MediaFile"}, {type: :null}]},
+              quality: {type: :integer, minimum: 0, maximum: 1000},
+              notes: {type: :string},
+              image: {"$ref": "#/components/schemas/MediaFile"},
               item: {
-                type: [:object, :null],
+                type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
                   type: {type: :string},
@@ -28,21 +28,21 @@ module V1
                 }
               },
               inventory: {
-                type: [:object, :null],
+                type: :object,
                 properties: {
                   name: {type: :string},
                   slug: {type: :string}
                 }
               },
               member: {
-                type: [:object, :null],
+                type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }
               },
               addedBy: {
-                type: [:object, :null],
+                type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
