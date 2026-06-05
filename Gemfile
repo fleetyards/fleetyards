@@ -137,6 +137,7 @@ end
 
 group :test do
   gem "faker"
+  gem "minitest-reporters", require: false
   gem "mocha", require: false
   gem "rails-perftest"
   gem "shoulda-matchers"

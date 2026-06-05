@@ -438,6 +438,11 @@ GEM
     minitest (6.0.6)
       drb (~> 2.0)
       prism (~> 1.5)
+    minitest-reporters (1.8.0)
+      ansi
+      builder
+      minitest (>= 5.0, < 7)
+      ruby-progressbar
     mocha (3.1.0)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.8.1)
@@ -932,6 +937,7 @@ DEPENDENCIES
   maintenance_tasks (~> 2.17)
   metadown
   mini_magick
+  minitest-reporters
   mocha
   nokogiri
   oauth2 (~> 2.0)

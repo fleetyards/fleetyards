@@ -67,7 +67,7 @@ jobs:
       - run: mkdir -p log
       - name: Prepare test databases
         run: bundle exec flatware fan -w 2 rake db:create db:schema:load
-      - name: Run tests
+      - name: Run RSpec
         env:
           CI_NODE_TOTAL: ${{ matrix.ci_node_total }}
           CI_NODE_INDEX: ${{ matrix.ci_node_index }}
@@ -81,3 +81,6 @@ jobs:
             fi
           done
           bundle exec flatware rspec -w 2 "${node_specs[@]}"
+      - name: Run Minitest
+        if: matrix.ci_node_index == 0
+        run: bin/rails test
