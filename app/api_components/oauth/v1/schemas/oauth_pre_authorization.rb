@@ -12,12 +12,12 @@ module Oauth
             clientId: {type: :string},
             clientName: {type: :string},
             redirectUri: {type: :string},
-            state: {type: :string, nullable: true},
+            state: {type: :string},
             responseType: {type: :string},
-            responseMode: {type: :string, nullable: true},
+            responseMode: {type: :string},
             scope: {type: :string},
-            codeChallenge: {type: :string, nullable: true},
-            codeChallengeMethod: {type: :string, nullable: true},
+            codeChallenge: {type: :string},
+            codeChallengeMethod: {type: :string},
             scopes: {
               type: :array,
               items: {

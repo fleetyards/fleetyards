@@ -19,12 +19,11 @@ module V1
             bundled: {type: :boolean},
             bundledParent: {
               type: :object,
-              nullable: true,
               properties: {
                 id: {type: :string, format: :uuid},
                 name: {type: :string},
                 slug: {type: :string},
-                customName: {type: :string, nullable: true}
+                customName: {type: :string}
               }
             },
             model: {"$ref": "#/components/schemas/Model"},

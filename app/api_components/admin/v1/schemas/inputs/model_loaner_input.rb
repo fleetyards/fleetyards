@@ -12,7 +12,7 @@ module Admin
             properties: {
               modelId: {type: :string, format: :uuid},
               loanerModelId: {type: :string, format: :uuid},
-              hidden: {type: :boolean, nullable: true}
+              hidden: {type: [:boolean, :null]}
             },
             additionalProperties: false
           })

@@ -10,8 +10,8 @@ module V1
           type: :object,
           properties: {
             active: {type: :boolean},
-            status: {type: :string, nullable: true, enum: %w[created started finished failed]},
-            result: {"$ref": "#/components/schemas/HangarSyncResult", nullable: true}
+            status: {type: :string, enum: %w[created started finished failed]},
+            result: {"$ref": "#/components/schemas/HangarSyncResult"}
           },
           additionalProperties: false,
           required: %w[active]

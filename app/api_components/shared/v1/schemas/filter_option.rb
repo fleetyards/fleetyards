@@ -14,8 +14,8 @@ module Shared
             label: {type: :string},
             value: {
               anyOf: [
-                {type: :string, nullable: true},
-                {type: :number, nullable: true}
+                {type: [:string, :null]},
+                {type: [:number, :null]}
               ]
             },
             name: {type: :string, deprecated: true}

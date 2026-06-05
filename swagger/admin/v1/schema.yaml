@@ -1,5 +1,5 @@
 ---
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: FleetYards.net Command API
   version: v1
@@ -5779,10 +5779,8 @@ components:
           format: uuid
         name:
           type: string
-          nullable: true
         position:
           type: integer
-          nullable: true
         capacityScu:
           type: number
         dimensionX:
@@ -5793,16 +5791,12 @@ components:
           type: number
         offsetX:
           type: number
-          nullable: true
         offsetY:
           type: number
-          nullable: true
         offsetZ:
           type: number
-          nullable: true
         rotation:
           type: integer
-          nullable: true
         parent:
           type: object
           properties:
@@ -5813,7 +5807,6 @@ components:
               type: string
             slug:
               type: string
-              nullable: true
           required:
           - id
           - name
@@ -6114,7 +6107,6 @@ components:
           - min
         offset:
           type: object
-          nullable: true
           properties:
             x:
               type: number
@@ -6129,7 +6121,6 @@ components:
           - z
         rotation:
           type: integer
-          nullable: true
       additionalProperties: false
       required:
       - dimensions
@@ -6168,17 +6159,21 @@ components:
       type: object
       properties:
         offsetX:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         offsetY:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         offsetZ:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         rotation:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
       additionalProperties: false
       title: CargoHoldInput
     CargoHoldLimit:
@@ -6950,7 +6945,6 @@ components:
           format: uuid
         name:
           type: string
-          nullable: true
         dockType:
           type: string
         dockTypeLabel:
@@ -6961,26 +6955,19 @@ components:
           type: string
         group:
           type: string
-          nullable: true
         length:
           type: number
-          nullable: true
         beam:
           type: number
-          nullable: true
         height:
           type: number
-          nullable: true
         minShipSize:
           type: integer
-          nullable: true
         maxShipSize:
           type: integer
-          nullable: true
         modelId:
           type: string
           format: uuid
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -7019,34 +7006,42 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         dockType:
           type: string
         shipSize:
           type: string
         group:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         length:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         beam:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         height:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         minShipSize:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         maxShipSize:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
       additionalProperties: false
       title: DockInput
     DockQuery:
@@ -7227,10 +7222,8 @@ components:
       properties:
         name:
           type: string
-          nullable: true
         componentName:
           type: string
-          nullable: true
         capacity:
           type: number
       additionalProperties: false
@@ -7349,10 +7342,12 @@ components:
           type: string
         value:
           anyOf:
-          - type: string
-            nullable: true
-          - type: number
-            nullable: true
+          - type:
+            - string
+            - 'null'
+          - type:
+            - number
+            - 'null'
         name:
           type: string
           deprecated: true
@@ -8639,28 +8634,20 @@ components:
               type: number
             extendedLength:
               type: number
-              nullable: true
             extendedLengthLabel:
               type: string
-              nullable: true
             extendedBeam:
               type: number
-              nullable: true
             extendedBeamLabel:
               type: string
-              nullable: true
             extendedHeight:
               type: number
-              nullable: true
             extendedHeightLabel:
               type: string
-              nullable: true
             extendedFleetchartOffsetLength:
               type: number
-              nullable: true
             extendedFleetchartOffsetBeam:
               type: number
-              nullable: true
             height:
               type: number
             heightLabel:
@@ -9069,28 +9056,20 @@ components:
               type: number
             extendedLength:
               type: number
-              nullable: true
             extendedLengthLabel:
               type: string
-              nullable: true
             extendedBeam:
               type: number
-              nullable: true
             extendedBeamLabel:
               type: string
-              nullable: true
             extendedHeight:
               type: number
-              nullable: true
             extendedHeightLabel:
               type: string
-              nullable: true
             extendedFleetchartOffsetLength:
               type: number
-              nullable: true
             extendedFleetchartOffsetBeam:
               type: number
-              nullable: true
             height:
               type: number
             heightLabel:
@@ -9359,49 +9338,63 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         source:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         key:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         hardpointType:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         group:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         category:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         subCategory:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         size:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         details:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         mount:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         itemSlots:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         loadoutIdentifier:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         componentId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
       additionalProperties: false
       title: ModelHardpointInput
     ModelHardpointLoadout:
@@ -9435,16 +9428,19 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         componentId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         modelHardpointId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
       additionalProperties: false
       title: ModelHardpointLoadoutInput
     ModelHardpointLoadoutQuery:
@@ -9669,8 +9665,9 @@ components:
           type: string
           format: uuid
         hidden:
-          type: boolean
-          nullable: true
+          type:
+          - boolean
+          - 'null'
       additionalProperties: false
       title: ModelLoanerInput
     ModelLoanerQuery:
@@ -9820,21 +9817,25 @@ components:
         name:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         manufacturerId:
           type: string
           format: uuid
         price:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         pledgePrice:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         productionStatus:
           type: string
         active:
@@ -9844,8 +9845,9 @@ components:
         storeImage:
           type: string
         scKey:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: ModelModuleInput
     ModelModulePackage:
@@ -9987,14 +9989,16 @@ components:
         name:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         modelId:
           type: string
           format: uuid
         pledgePrice:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         active:
           type: boolean
         hidden:
@@ -10446,7 +10450,6 @@ components:
         hardpointId:
           type: string
           format: uuid
-          nullable: true
         modelId:
           type: string
           format: uuid
@@ -10482,9 +10485,10 @@ components:
         position:
           type: integer
         hardpointId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
       additionalProperties: false
       title: ModelPositionInput
     ModelPositionQuery:
@@ -10741,11 +10745,13 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         hidden:
           type: boolean
         active:
@@ -10757,64 +10763,81 @@ components:
         ground:
           type: boolean
         mass:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         minCrew:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         maxCrew:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         scmSpeed:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         scmSpeedBoosted:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         maxSpeed:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         reverseSpeedBoosted:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         yaw:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         yawBoosted:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         pitch:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         pitchBoosted:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         roll:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         rollBoosted:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         scKey:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         erkulIdentifier:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         manufacturerId:
           type: string
           format: uuid
         rsiId:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         baseModelId:
           type: string
           format: uuid
         productionStatus:
           type: string
         productionNote:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         classification:
           type: string
         focus:
@@ -10824,138 +10847,181 @@ components:
         dockSize:
           type: string
         length:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         beam:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         height:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         fleetchartOffsetLength:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         fleetchartOffsetBeam:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         extendedLength:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         extendedBeam:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         extendedHeight:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         extendedFleetchartOffsetLength:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         extendedFleetchartOffsetBeam:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         onSale:
           type: boolean
         playerOwnable:
           type: boolean
         storeUrl:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         salesPageUrl:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         price:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         pledgePrice:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         cargo:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         cargoHolds:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         hydrogenFuelTankSize:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         hydrogenFuelTanks:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         quantumFuelTankSize:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         quantumFuelTanks:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         externalFuelTanks:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         refuelBoom:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         storeImage:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         fleetchartImage:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedHolo:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         topView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         sideView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         frontView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         angledView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         topViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         sideViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         frontViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         angledViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedTopView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedSideView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedFrontView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedAngledView:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedTopViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedSideViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedFrontViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         extendedAngledViewColored:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         brochure:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         holo:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: ModelUpdateInput
     ModelUpgrade:
@@ -11018,15 +11084,18 @@ components:
         name:
           type: string
         description:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
-          nullable: true
         pledgePrice:
-          type: number
-          nullable: true
+          type:
+          - number
+          - 'null'
         active:
           type: boolean
         hidden:
@@ -11130,11 +11199,9 @@ components:
           type: string
         ownerName:
           type: string
-          nullable: true
         ownerId:
           type: string
           format: uuid
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -11186,18 +11253,21 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         redirectUri:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         confidential:
           type: boolean
         scopes:
-          type: array
+          type:
+          - array
+          - 'null'
           items:
             type: string
-          nullable: true
       additionalProperties: false
       title: OauthApplicationUpdateInput
     OauthApplications:
@@ -11286,25 +11356,18 @@ components:
       properties:
         armName:
           type: string
-          nullable: true
         armSize:
           type: string
-          nullable: true
         nozzleName:
           type: string
-          nullable: true
         nozzleSize:
           type: string
-          nullable: true
         captureRadius:
           type: number
-          nullable: true
         fuelFlowRate:
           type: number
-          nullable: true
         quantumFuelFlowRate:
           type: number
-          nullable: true
       additionalProperties: false
       title: RefuelBoom
     RsiHangarItemKindEnum:
@@ -11774,11 +11837,13 @@ components:
       type: object
       properties:
         name:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         serial:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         wanted:
           type: boolean
         flagship:
@@ -11794,8 +11859,9 @@ components:
         loaner:
           type: boolean
         boughtVia:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: VehicleInput
     VehicleQuery:

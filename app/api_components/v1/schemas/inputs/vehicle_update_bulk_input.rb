@@ -10,9 +10,9 @@ module V1
           type: :object,
           properties: {
             ids: {type: :array, items: {type: :string, format: :uuid}},
-            wanted: {type: :boolean, nullable: true},
-            public: {type: :boolean, nullable: true},
-            hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true}
+            wanted: {type: [:boolean, :null]},
+            public: {type: [:boolean, :null]},
+            hangarGroupIds: {type: [:array, :null], items: {type: :string, format: :uuid}}
           },
           additionalProperties: false,
           required: %w[ids]

@@ -14,22 +14,22 @@ module Admin
                 id: {type: :string, format: :uuid},
                 parentType: {type: :string},
                 parentId: {type: :string, format: :uuid},
-                name: {type: :string, nullable: true},
-                position: {type: :integer, nullable: true},
+                name: {type: :string},
+                position: {type: :integer},
                 capacityScu: {type: :number},
                 dimensionX: {type: :number},
                 dimensionY: {type: :number},
                 dimensionZ: {type: :number},
-                offsetX: {type: :number, nullable: true},
-                offsetY: {type: :number, nullable: true},
-                offsetZ: {type: :number, nullable: true},
-                rotation: {type: :integer, nullable: true},
+                offsetX: {type: :number},
+                offsetY: {type: :number},
+                offsetZ: {type: :number},
+                rotation: {type: :integer},
                 parent: {
                   type: :object,
                   properties: {
                     id: {type: :string, format: :uuid},
                     name: {type: :string},
-                    slug: {type: :string, nullable: true}
+                    slug: {type: :string}
                   },
                   required: %w[id name]
                 },

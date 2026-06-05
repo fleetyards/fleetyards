@@ -1,5 +1,5 @@
 ---
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: FleetYards.net OAuth API
   version: v1
@@ -139,19 +139,23 @@ components:
         responseType:
           type: string
         responseMode:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         scope:
           type: string
         state:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         codeChallenge:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         codeChallengeMethod:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - clientId
@@ -185,20 +189,16 @@ components:
           type: string
         state:
           type: string
-          nullable: true
         responseType:
           type: string
         responseMode:
           type: string
-          nullable: true
         scope:
           type: string
         codeChallenge:
           type: string
-          nullable: true
         codeChallengeMethod:
           type: string
-          nullable: true
         scopes:
           type: array
           items:

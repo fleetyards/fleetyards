@@ -11,16 +11,16 @@ module Admin
             type: :object,
             properties: {
               name: {type: :string},
-              description: {type: :string, nullable: true},
-              modelId: {type: :string, format: :uuid, nullable: true},
+              description: {type: [:string, :null]},
+              modelId: {type: [:string, :null], format: :uuid},
               manufacturerId: {type: :string, format: :uuid},
-              price: {type: :number, nullable: true},
-              pledgePrice: {type: :number, nullable: true},
+              price: {type: [:number, :null]},
+              pledgePrice: {type: [:number, :null]},
               productionStatus: {type: :string},
               active: {type: :boolean},
               hidden: {type: :boolean},
               storeImage: {type: :string},
-              scKey: {type: :string, nullable: true}
+              scKey: {type: [:string, :null]}
             },
             additionalProperties: false
           })

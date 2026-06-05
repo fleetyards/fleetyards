@@ -11,7 +11,7 @@ module V1
           properties: {
             name: {type: :string},
             color: {type: :string},
-            sort: {type: :integer, nullable: true},
+            sort: {type: [:integer, :null]},
             public: {type: :boolean}
           },
           additionalProperties: false

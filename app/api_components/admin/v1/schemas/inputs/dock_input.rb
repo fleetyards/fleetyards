@@ -10,16 +10,16 @@ module Admin
           schema({
             type: :object,
             properties: {
-              name: {type: :string, nullable: true},
+              name: {type: [:string, :null]},
               dockType: {type: :string},
               shipSize: {type: :string},
-              group: {type: :string, nullable: true},
-              length: {type: :number, nullable: true},
-              beam: {type: :number, nullable: true},
-              height: {type: :number, nullable: true},
-              minShipSize: {type: :integer, nullable: true},
-              maxShipSize: {type: :integer, nullable: true},
-              modelId: {type: :string, format: :uuid, nullable: true}
+              group: {type: [:string, :null]},
+              length: {type: [:number, :null]},
+              beam: {type: [:number, :null]},
+              height: {type: [:number, :null]},
+              minShipSize: {type: [:integer, :null]},
+              maxShipSize: {type: [:integer, :null]},
+              modelId: {type: [:string, :null], format: :uuid}
             },
             additionalProperties: false
           })

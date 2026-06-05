@@ -10,9 +10,9 @@ module Admin
           schema({
             type: :object,
             properties: {
-              name: {type: :string, nullable: true},
-              componentId: {type: :string, format: :uuid, nullable: true},
-              modelHardpointId: {type: :string, format: :uuid, nullable: true}
+              name: {type: [:string, :null]},
+              componentId: {type: [:string, :null], format: :uuid},
+              modelHardpointId: {type: [:string, :null], format: :uuid}
             },
             additionalProperties: false
           })

@@ -10,10 +10,10 @@ module Admin
           schema({
             type: :object,
             properties: {
-              offsetX: {type: :number, nullable: true},
-              offsetY: {type: :number, nullable: true},
-              offsetZ: {type: :number, nullable: true},
-              rotation: {type: :integer, nullable: true}
+              offsetX: {type: [:number, :null]},
+              offsetY: {type: [:number, :null]},
+              offsetZ: {type: [:number, :null]},
+              rotation: {type: [:integer, :null]}
             },
             additionalProperties: false
           })

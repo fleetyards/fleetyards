@@ -16,8 +16,8 @@ module Admin
             confidential: {type: :boolean},
             redirectUri: {type: :string},
             scopes: {type: :string},
-            ownerName: {type: :string, nullable: true},
-            ownerId: {type: :string, format: :uuid, nullable: true},
+            ownerName: {type: :string},
+            ownerId: {type: :string, format: :uuid},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

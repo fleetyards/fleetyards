@@ -9,13 +9,13 @@ module Shared
         schema({
           type: :object,
           properties: {
-            armName: {type: :string, nullable: true},
-            armSize: {type: :string, nullable: true},
-            nozzleName: {type: :string, nullable: true},
-            nozzleSize: {type: :string, nullable: true},
-            captureRadius: {type: :number, nullable: true},
-            fuelFlowRate: {type: :number, nullable: true},
-            quantumFuelFlowRate: {type: :number, nullable: true}
+            armName: {type: :string},
+            armSize: {type: :string},
+            nozzleName: {type: :string},
+            nozzleSize: {type: :string},
+            captureRadius: {type: :number},
+            fuelFlowRate: {type: :number},
+            quantumFuelFlowRate: {type: :number}
           },
           additionalProperties: false
         })

@@ -9,14 +9,14 @@ module V1
         schema({
           type: :object,
           properties: {
-            name: {type: :string, nullable: true},
-            serial: {type: :string, nullable: true},
+            name: {type: [:string, :null]},
+            serial: {type: [:string, :null]},
             wanted: {type: :boolean},
             nameVisible: {type: :boolean},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
             flagship: {type: :boolean},
-            modelPaintId: {type: :string, format: :uuid, nullable: true},
+            modelPaintId: {type: [:string, :null], format: :uuid},
             boughtVia: {"$ref": "#/components/schemas/BoughtViaEnum"},
             hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},

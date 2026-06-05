@@ -14,7 +14,7 @@ jobs:
 
       - name: Install oasdiff
         run: |
-          curl -fsSL https://raw.githubusercontent.com/oasdiff/oasdiff/main/install.sh | version=1.11.7 sh
+          curl -fsSL https://raw.githubusercontent.com/oasdiff/oasdiff/main/install.sh | version=1.18.1 sh
 
       - name: Get base branch schemas
         run: |
@@ -37,10 +37,10 @@ jobs:
           done
 
       - name: Check public API breaking changes
-        run: oasdiff breaking --flatten-params .base/swagger/v1/schema.yaml swagger/v1/schema.yaml --fail-on WARN --err-ignore swagger/v1/oasdiff-ignore.txt --warn-ignore swagger/v1/oasdiff-ignore.txt
+        run: oasdiff breaking --auto-upgrade --flatten-params .base/swagger/v1/schema.yaml swagger/v1/schema.yaml --fail-on WARN --err-ignore swagger/v1/oasdiff-ignore.txt --warn-ignore swagger/v1/oasdiff-ignore.txt
 
       - name: Check OAuth API breaking changes
-        run: oasdiff breaking --flatten-params .base/swagger/oauth/v1/schema.yaml swagger/oauth/v1/schema.yaml --fail-on WARN --err-ignore swagger/oauth/v1/oasdiff-ignore.txt --warn-ignore swagger/oauth/v1/oasdiff-ignore.txt
+        run: oasdiff breaking --auto-upgrade --flatten-params .base/swagger/oauth/v1/schema.yaml swagger/oauth/v1/schema.yaml --fail-on WARN --err-ignore swagger/oauth/v1/oasdiff-ignore.txt --warn-ignore swagger/oauth/v1/oasdiff-ignore.txt
 
       - name: Check admin API breaking changes (warn only)
-        run: oasdiff breaking --flatten-params .base/swagger/admin/v1/schema.yaml swagger/admin/v1/schema.yaml --fail-on ERR --err-ignore swagger/admin/v1/oasdiff-ignore.txt
+        run: oasdiff breaking --auto-upgrade --flatten-params .base/swagger/admin/v1/schema.yaml swagger/admin/v1/schema.yaml --fail-on ERR --err-ignore swagger/admin/v1/oasdiff-ignore.txt

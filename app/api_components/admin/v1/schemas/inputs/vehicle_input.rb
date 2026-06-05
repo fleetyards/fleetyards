@@ -10,8 +10,8 @@ module Admin
           schema({
             type: :object,
             properties: {
-              name: {type: :string, nullable: true},
-              serial: {type: :string, nullable: true},
+              name: {type: [:string, :null]},
+              serial: {type: [:string, :null]},
               wanted: {type: :boolean},
               flagship: {type: :boolean},
               public: {type: :boolean},
@@ -19,7 +19,7 @@ module Admin
               saleNotify: {type: :boolean},
               hidden: {type: :boolean},
               loaner: {type: :boolean},
-              boughtVia: {type: :string, nullable: true}
+              boughtVia: {type: [:string, :null]}
             },
             additionalProperties: false
           })

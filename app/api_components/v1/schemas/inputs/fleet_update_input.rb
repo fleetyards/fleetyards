@@ -9,22 +9,22 @@ module V1
         schema({
           type: :object,
           properties: {
-            fid: {type: :string, nullable: true},
-            name: {type: :string, nullable: true},
-            logo: {type: :string, nullable: true},
+            fid: {type: [:string, :null]},
+            name: {type: [:string, :null]},
+            logo: {type: [:string, :null]},
             removeLogo: {type: :boolean},
-            backgroundImage: {type: :string, format: :binary, nullable: true},
+            backgroundImage: {type: [:string, :null], format: :binary},
             removeBackground: {type: :boolean},
-            description: {type: :string, nullable: true},
+            description: {type: [:string, :null]},
             publicFleet: {type: :boolean},
             publicFleetStats: {type: :boolean},
-            homepage: {type: :string, nullable: true},
-            rsiSid: {type: :string, nullable: true},
-            discord: {type: :string, nullable: true},
-            ts: {type: :string, nullable: true},
-            youtube: {type: :string, nullable: true},
-            twitch: {type: :string, nullable: true},
-            guilded: {type: :string, nullable: true}
+            homepage: {type: [:string, :null]},
+            rsiSid: {type: [:string, :null]},
+            discord: {type: [:string, :null]},
+            ts: {type: [:string, :null]},
+            youtube: {type: [:string, :null]},
+            twitch: {type: [:string, :null]},
+            guilded: {type: [:string, :null]}
           },
           additionalProperties: false
         })

@@ -20,10 +20,7 @@ RSpec.describe "api/v1/public/hangars", type: :openapi, openapi_schema_name: :"v
       produces "application/json"
 
       parameter name: :usernames, in: :query,
-        schema: {
-          type: :object,
-          "$ref": "#/components/schemas/HangarEmbedQuery"
-        },
+        schema: {"$ref": "#/components/schemas/HangarEmbedQuery"},
         style: :deepObject,
         explode: true,
         required: true

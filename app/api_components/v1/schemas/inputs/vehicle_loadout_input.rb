@@ -9,7 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
-            name: {type: :string, nullable: true},
+            name: {type: [:string, :null]},
             url: {type: :string},
             fromDefaults: {type: :boolean},
             vehicleLoadoutHardpointsAttributes: {
@@ -19,7 +19,7 @@ module V1
                 properties: {
                   id: {type: :string, format: :uuid},
                   modelHardpointId: {type: :string, format: :uuid},
-                  componentId: {type: :string, format: :uuid, nullable: true},
+                  componentId: {type: [:string, :null], format: :uuid},
                   _destroy: {type: :boolean}
                 }
               }

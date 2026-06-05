@@ -10,19 +10,19 @@ module V1
           type: :object,
           properties: {
             modelId: {type: :string, format: :uuid},
-            name: {type: :string, nullable: true},
-            serial: {type: :string, nullable: true},
+            name: {type: [:string, :null]},
+            serial: {type: [:string, :null]},
             wanted: {type: :boolean},
             nameVisible: {type: :boolean},
             public: {type: :boolean},
             saleNotify: {type: :boolean},
             flagship: {type: :boolean},
-            modelPaintId: {type: :string, format: :uuid, nullable: true},
+            modelPaintId: {type: [:string, :null], format: :uuid},
             boughtVia: {"$ref": "#/components/schemas/BoughtViaEnum"},
-            hangarGroupIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true},
-            modelModuleIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true},
-            modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}, nullable: true},
-            alternativeNames: {type: :array, items: {type: :string}, nullable: true}
+            hangarGroupIds: {type: [:array, :null], items: {type: :string, format: :uuid}},
+            modelModuleIds: {type: [:array, :null], items: {type: :string, format: :uuid}},
+            modelUpgradeIds: {type: [:array, :null], items: {type: :string, format: :uuid}},
+            alternativeNames: {type: [:array, :null], items: {type: :string}}
           },
           additionalProperties: false,
           required: %w[modelId]
