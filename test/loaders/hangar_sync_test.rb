@@ -1,27 +1,13 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require "webmock/minitest"
-require_relative "../support/hangar_import_fixtures"
 
 class HangarSyncTest < ActiveSupport::TestCase
-  include HangarImportFixtures
+  fixtures :manufacturers, :models
 
   setup do
-    @loader = ::Rsi::ModelsLoader.new
     @user = create(:user)
     @input = JSON.parse(Rails.root.join("spec/fixtures/sync/rsi_hangar.json").read)
-    @pledge_store_data = JSON.parse(File.read("spec/fixtures/rsi/pledge_store.json"))
-
-    Timecop.freeze("2017-01-01 14:00:00")
-    stub_rsi_matrix_and_pledge_store(@pledge_store_data)
-
-    @loader.all
-    load Rails.root.join("db/seeds/01_manual_models.rb")
-  end
-
-  teardown do
-    Timecop.return
   end
 
   class WithExistingVehiclesTest < HangarSyncTest
@@ -36,23 +22,23 @@ class HangarSyncTest < ActiveSupport::TestCase
     end
 
     test "syncs all data" do
-      Timecop.freeze(1.minute.from_now)
+      travel_to 1.minute.from_now do
+        result = ::HangarSync.new(@input).run(@user.id)
 
-      result = ::HangarSync.new(@input).run(@user.id)
+        assert_equal [@andromeda_ship.id, @pirate_ship.id].sort, result[:found_vehicles].sort
+        assert_equal [@jav_ship.id], result[:moved_vehicles_to_wanted]
+        assert_equal 47, result[:imported_vehicles].size
+        assert_equal [], result[:missing_components]
+        assert_equal [], result[:missing_models]
+        assert_equal [], result[:imported_components]
+        assert_equal [], result[:found_components]
+        assert_equal [], result[:missing_component_vehicles]
+        assert_equal [], result[:imported_upgrades]
+        assert_equal [], result[:found_upgrades]
 
-      assert_equal [@andromeda_ship.id, @pirate_ship.id].sort, result[:found_vehicles].sort
-      assert_equal [@jav_ship.id], result[:moved_vehicles_to_wanted]
-      assert_equal 47, result[:imported_vehicles].size
-      assert_equal [], result[:missing_components]
-      assert_equal [], result[:missing_models]
-      assert_equal [], result[:imported_components]
-      assert_equal [], result[:found_components]
-      assert_equal [], result[:missing_component_vehicles]
-      assert_equal [], result[:imported_upgrades]
-      assert_equal [], result[:found_upgrades]
-
-      assert_equal "USS Troi", @andromeda_ship.reload.name
-      assert_equal "Enterprise", @pirate_ship.reload.name
+        assert_equal "USS Troi", @andromeda_ship.reload.name
+        assert_equal "Enterprise", @pirate_ship.reload.name
+      end
     end
   end
 
@@ -94,20 +80,20 @@ class HangarSyncTest < ActiveSupport::TestCase
     end
 
     test "updates the existing vehicle instead of creating a duplicate" do
-      Timecop.freeze(1.minute.from_now)
+      travel_to 1.minute.from_now do
+        result = ::HangarSync.new(@input).run(@user.id)
 
-      result = ::HangarSync.new(@input).run(@user.id)
+        assert_includes result[:found_vehicles], @andromeda_ship.id
+        refute_includes result[:moved_vehicles_to_wanted], @andromeda_ship.id
 
-      assert_includes result[:found_vehicles], @andromeda_ship.id
-      refute_includes result[:moved_vehicles_to_wanted], @andromeda_ship.id
+        @andromeda_ship.reload
+        assert_equal "00064313", @andromeda_ship.rsi_pledge_id
+        assert_equal false, @andromeda_ship.wanted
+        assert_equal "USS Troi", @andromeda_ship.name
 
-      @andromeda_ship.reload
-      assert_equal "00064313", @andromeda_ship.rsi_pledge_id
-      assert_equal false, @andromeda_ship.wanted
-      assert_equal "USS Troi", @andromeda_ship.name
-
-      andromeda_vehicles = Vehicle.where(user_id: @user.id, model_id: @andromeda_model.id)
-      assert_equal 1, andromeda_vehicles.count
+        andromeda_vehicles = Vehicle.where(user_id: @user.id, model_id: @andromeda_model.id)
+        assert_equal 1, andromeda_vehicles.count
+      end
     end
   end
 end
