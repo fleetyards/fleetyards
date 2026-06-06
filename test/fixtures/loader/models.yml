@@ -5634,7 +5634,7 @@ model_drak_dragonfly_black:
 model_drak_dragonfly_starkitten_edition:
   active: true
   adi_map: false
-  base_model_id: 24d6f360-3ea6-4011-be31-a87b29b790e3
+  base_model_id: 75df18ec-3e4d-41e0-b403-47992a9bb13e
   beam: '0.0'
   classification: competition
   ground: false
@@ -5643,7 +5643,7 @@ model_drak_dragonfly_starkitten_edition:
   holo_colored: false
   images_count: 0
   in_game: false
-  last_updated_at: '2026-06-05T18:09:54Z'
+  last_updated_at: '2026-06-06T20:28:53Z'
   length: '0.0'
   loaners_count: 0
   mass: '0.0'
@@ -7619,7 +7619,7 @@ model_misc_raptor:
   holo_colored: false
   images_count: 0
   in_game: false
-  last_updated_at: '2026-06-05T18:09:54Z'
+  last_updated_at: '2026-06-06T20:28:53Z'
   length: '0.0'
   loaners_count: 0
   mass: '0.0'
@@ -9139,7 +9139,7 @@ model_orig_400i:
 model_orig_600i_executive_edition:
   active: true
   adi_map: false
-  base_model_id: f3c77804-9e70-4c8f-8086-352eccf6b73a
+  base_model_id: 764abed2-56a4-4679-8a4f-50a6fcdffafa
   beam: '0.0'
   classification: exploration
   ground: false
@@ -9148,7 +9148,7 @@ model_orig_600i_executive_edition:
   holo_colored: false
   images_count: 0
   in_game: false
-  last_updated_at: '2026-06-05T18:09:54Z'
+  last_updated_at: '2026-06-06T20:28:53Z'
   length: '0.0'
   loaners_count: 0
   mass: '0.0'

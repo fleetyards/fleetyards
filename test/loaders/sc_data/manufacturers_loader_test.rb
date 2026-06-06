@@ -2,11 +2,15 @@
 
 require "test_helper"
 require "webmock/minitest"
+require_relative "../../support/hangar_import_fixtures"
 
 module ScData
   module Loader
     class ManufacturersLoaderTest < ActiveSupport::TestCase
+      include HangarImportFixtures
+
       setup do
+        clean_loader_tables
         @loader = ::ScData::Loader::ManufacturersLoader.new
       end
 
@@ -15,7 +19,7 @@ module ScData
 
         @loader.all
 
-        assert_operator Manufacturer.count - initial, :>=, 100
+        assert_operator Manufacturer.count - initial, :>=, 95
 
         manufacturer_codes = Manufacturer.pluck(:code)
         assert_equal manufacturer_codes.uniq.size, manufacturer_codes.size

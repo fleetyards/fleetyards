@@ -63,7 +63,10 @@ end
 
 module ActiveSupport
   class TestCase
-    parallelize(workers: :number_of_processors)
+    # Parallelization is disabled while we still share a single test DB
+    # with RSpec. Re-enable once Phase 3 ships and the per-worker DBs
+    # don't clash with flatware-rspec's database setup.
+    # parallelize(workers: :number_of_processors)
 
     include FactoryBot::Syntax::Methods
     include ActiveSupport::Testing::TimeHelpers

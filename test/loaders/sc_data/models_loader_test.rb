@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require_relative "../../support/hangar_import_fixtures"
 
 module ScData
   module Loader
     class ModelsLoaderTest < ActiveSupport::TestCase
+      include HangarImportFixtures
+
+      setup do
+        clean_loader_tables
+      end
+
       test "#one loads data from game files" do
         loader = ::ScData::Loader::ModelsLoader.new
         manufacturer = create(:manufacturer, name: "Roberts Space Industries", slug: "rsi", code: "RSI")

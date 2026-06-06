@@ -9,6 +9,7 @@ module Rsi
     include HangarImportFixtures
 
     setup do
+      clean_loader_tables
       @loader = ::Rsi::ModelsLoader.new
       @pledge_store_data = JSON.parse(File.read("spec/fixtures/rsi/pledge_store.json"))
 

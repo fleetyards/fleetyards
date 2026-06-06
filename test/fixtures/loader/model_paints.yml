@@ -1,0 +1,245 @@
+---
+paint_anvil_ballista_dunestalker:
+  active: true
+  hidden: false
+  last_updated_at: '2024-07-22T18:51:05Z'
+  name: Ballista Dunestalker
+  on_sale: false
+  production_status: flight-ready
+  rsi_id: 185
+  rsi_name: Anvil Ballista Dunestalker
+  rsi_slug: anvil-ballista-dunestalker
+  rsi_store_url: "/pledge/ships/anvil-ballista/Anvil-Ballista-Dunestalker"
+  slug: anvil-ballista-dunestalker
+  store_url: "/pledge/ships/anvil-ballista/Anvil-Ballista-Dunestalker"
+  model: model_anvl_ballista
+paint_anvil_ballista_snowblind:
+  active: true
+  hidden: false
+  last_updated_at: '2024-07-22T18:49:29Z'
+  name: Ballista Snowblind
+  on_sale: false
+  production_status: flight-ready
+  rsi_id: 184
+  rsi_name: Anvil Ballista Snowblind
+  rsi_slug: anvil-ballista-snowblind
+  rsi_store_url: "/pledge/ships/anvil-ballista/Anvil-Ballista-Snowblind"
+  slug: anvil-ballista-snowblind
+  store_url: "/pledge/ships/anvil-ballista/Anvil-Ballista-Snowblind"
+  model: model_anvl_ballista
+paint_argo_mole_carbon_edition:
+  active: true
+  description: ARGO’s pragmatic no-nonsense approach to ship design is celebrated in the unmistakable silhouette of the MOLE. Just one look at this machine and you know it means business. Tap into your full potential with the combined force of ARGO’s patented trilateral mining system. The MOLE has a total of 24 mineral pods, each holding 12 SCU. Eight pods are usable at one time – when they’re full, either head home or jettison them for collection by another vessel and carry on mining. Three independently controlled articulated extraction stations allow for maximum power and near-limitless versatility. The MOLE lives by the adage ’many hands make for light work’.
+  hidden: false
+  last_updated_at: '2024-09-25T16:38:35Z'
+  name: Mole Carbon Edition
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: ARGO’s pragmatic no-nonsense approach to ship design is celebrated in the unmistakable silhouette of the MOLE. Just one look at this machine and you know it means business. Tap into your full potential with the combined force of ARGO’s patented trilateral mining system. The MOLE has a total of 24 mineral pods, each holding 12 SCU. Eight pods are usable at one time – when they’re full, either head home or jettison them for collection by another vessel and carry on mining. Three independently controlled articulated extraction stations allow for maximum power and near-limitless versatility. The MOLE lives by the adage ’many hands make for light work’.
+  rsi_id: 202
+  rsi_name: Argo Mole Carbon Edition
+  rsi_slug: argo-mole-carbon-edition
+  rsi_store_url: "/pledge/ships/argo-mole/Argo-Mole-Carbon-Edition"
+  slug: argo-mole-carbon-edition
+  store_url: "/pledge/ships/argo-mole/Argo-Mole-Carbon-Edition"
+  model: model_argo_mole
+paint_argo_mole_talus_edition:
+  active: true
+  description: ARGO’s pragmatic no-nonsense approach to ship design is celebrated in the unmistakable silhouette of the MOLE. Just one look at this machine and you know it means business. Tap into your full potential with the combined force of ARGO’s patented trilateral mining system. The MOLE has a total of 24 mineral pods, each holding 12 SCU. Eight pods are usable at one time – when they’re full, either head home or jettison them for collection by another vessel and carry on mining. Three independently controlled articulated extraction stations allow for maximum power and near-limitless versatility. The MOLE lives by the adage ’many hands make for light work’.
+  hidden: false
+  last_updated_at: '2024-09-25T16:38:42Z'
+  name: Mole Talus Edition
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: ARGO’s pragmatic no-nonsense approach to ship design is celebrated in the unmistakable silhouette of the MOLE. Just one look at this machine and you know it means business. Tap into your full potential with the combined force of ARGO’s patented trilateral mining system. The MOLE has a total of 24 mineral pods, each holding 12 SCU. Eight pods are usable at one time – when they’re full, either head home or jettison them for collection by another vessel and carry on mining. Three independently controlled articulated extraction stations allow for maximum power and near-limitless versatility. The MOLE lives by the adage ’many hands make for light work’.
+  rsi_id: 203
+  rsi_name: Argo Mole Talus Edition
+  rsi_slug: argo-mole-talus-edition
+  rsi_store_url: "/pledge/ships/argo-mole/Argo-Mole-Talus-Edition"
+  slug: argo-mole-talus-edition
+  store_url: "/pledge/ships/argo-mole/Argo-Mole-Talus-Edition"
+  model: model_argo_mole
+paint_carrack_expedition:
+  active: true
+  description: The Anvil Carrack features reinforced fuel tanks for long-duration flight, an advanced jump drive, and a dedicated computer core for jump charting operations. Originally a military exclusive, the Carrack is now available for civilian use. On-board accommodations include crew medical and repair facilities, and a mapping-oriented sensor suite.
+  hidden: false
+  last_updated_at: '2024-07-23T12:47:17Z'
+  name: Carrack Expedition
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: The Anvil Carrack features reinforced fuel tanks for long-duration flight, an advanced jump drive, and a dedicated computer core for jump charting operations. Originally a military exclusive, the Carrack is now available for civilian use. On-board accommodations include crew medical and repair facilities, and a mapping-oriented sensor suite.
+  rsi_id: 206
+  rsi_name: Carrack Expedition
+  rsi_slug: carrack-expedition
+  rsi_store_url: "/pledge/ships/carrack/Carrack-Expedition"
+  slug: carrack-expedition
+  store_url: "/pledge/ships/carrack/Carrack-Expedition"
+  model: model_anvl_carrack
+paint_caterpillar_best_in_show_edition:
+  active: true
+  description: First introduced in 2871, Drake Interplanetary’s Caterpillar has long proven to be a reliable, cost-effective multi-role vessel, capable of being outfitted for everything from mercantile operations to combat support. Long hailed as a hard-fought alternative to the ubiquitous Hull series, the Caterpillar is a freighter that doesn’t skimp on weaponry or customization.
+  hidden: false
+  last_updated_at: '2024-07-24T11:15:14Z'
+  name: Caterpillar Best In Show Edition
+  on_sale: false
+  production_note: Hull concept complete
+  production_status: flight-ready
+  rsi_description: First introduced in 2871, Drake Interplanetary’s Caterpillar has long proven to be a reliable, cost-effective multi-role vessel, capable of being outfitted for everything from mercantile operations to combat support. Long hailed as a hard-fought alternative to the ubiquitous Hull series, the Caterpillar is a freighter that doesn’t skimp on weaponry or customization.
+  rsi_id: 194
+  rsi_name: Caterpillar Best In Show Edition
+  rsi_slug: caterpillar-best-in-show-edition
+  rsi_store_url: "/pledge/ships/drake-caterpillar/Caterpillar-Best-In-Show-Edition"
+  slug: caterpillar-best-in-show-edition
+  store_url: "/pledge/ships/drake-caterpillar/Caterpillar-Best-In-Show-Edition"
+  model: model_drak_caterpillar
+paint_caterpillar_pirate_edition:
+  active: true
+  description: Drake maintains that the Caterpillar, a sprawling, modular spacecraft which appears at least somewhat like its namesake, is for legitimate commerce and extended search and rescue missions... but this special livery seems to suggest otherwise.
+  hidden: false
+  last_updated_at: '2024-12-04T12:54:34Z'
+  name: Caterpillar Pirate Edition
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: Drake maintains that the Caterpillar, a sprawling, modular spacecraft which appears at least somewhat like its namesake, is for legitimate commerce and extended search and rescue missions... but this special livery seems to suggest otherwise.
+  rsi_id: 125
+  rsi_name: Caterpillar Pirate Edition
+  rsi_slug: caterpillar-pirate-edition
+  rsi_store_url: "/pledge/ships/drake-caterpillar/Caterpillar-Pirate-Edition"
+  slug: caterpillar-pirate-edition
+  store_url: "/pledge/ships/drake-caterpillar/Caterpillar-Pirate-Edition"
+  model: model_drak_caterpillar
+paint_constellation_phoenix_emerald:
+  active: true
+  description: Whether you are a discerning socialite or a freewheeling party animal, the Constellation Phoenix Emerald is your personal passport to entertainment. With a swank interior cabin designed specifically for revelry, and a limited edition "lucky" paint job, the Emerald is the perfect venue to sip a glass of Radegast Gold or throw back a green Sleeping Tiger Malt while hurtling luxuriously through the stars. Just be sure to bring a designated pilot. The Phoenix Emerald comes with a Lynx rover and a Kruger P-72 Archimedes Fighter.
+  hidden: false
+  last_updated_at: '2024-07-19T15:01:56Z'
+  name: Constellation Phoenix Emerald
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: Whether you are a discerning socialite or a freewheeling party animal, the Constellation Phoenix Emerald is your personal passport to entertainment. With a swank interior cabin designed specifically for revelry, and a limited edition "lucky" paint job, the Emerald is the perfect venue to sip a glass of Radegast Gold or throw back a green Sleeping Tiger Malt while hurtling luxuriously through the stars. Just be sure to bring a designated pilot. The Phoenix Emerald comes with a Lynx rover and a Kruger P-72 Archimedes Fighter.
+  rsi_id: 156
+  rsi_name: Constellation Phoenix Emerald
+  rsi_slug: constellation-phoenix-emerald
+  rsi_store_url: "/pledge/ships/rsi-constellation/Constellation-Phoenix-Emerald"
+  slug: constellation-phoenix-emerald
+  store_url: "/pledge/ships/rsi-constellation/Constellation-Phoenix-Emerald"
+  model: model_rsi_constellation_phoenix
+paint_cutlass_black_best_in_show_edition:
+  active: true
+  description: Drake Interplanetary claims that the Cutlass Black is a low-cost, easy-to-maintain solution for local in-system militia units. The larger-than-average cargo hold, RIO seat and dedicated tractor mount are, the company literature insists, for facilitating search and rescue operations.
+  hidden: false
+  last_updated_at: '2024-07-24T11:13:09Z'
+  name: Cutlass Black Best In Show Edition
+  on_sale: false
+  production_note: Update pass in progress.
+  production_status: flight-ready
+  rsi_description: Drake Interplanetary claims that the Cutlass Black is a low-cost, easy-to-maintain solution for local in-system militia units. The larger-than-average cargo hold, RIO seat and dedicated tractor mount are, the company literature insists, for facilitating search and rescue operations.
+  rsi_id: 193
+  rsi_name: Cutlass Black Best In Show Edition
+  rsi_slug: cutlass-black-best-in-show-edition
+  rsi_store_url: "/pledge/ships/drake-cutlass/Cutlass-Black-Best-In-Show-Edition"
+  slug: cutlass-black-best-in-show-edition
+  store_url: "/pledge/ships/drake-cutlass/Cutlass-Black-Best-In-Show-Edition"
+  model: model_drak_cutlass_black
+paint_hammerhead_best_in_show_edition:
+  active: true
+  description: A fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.
+  hidden: false
+  last_updated_at: '2024-07-22T19:32:23Z'
+  name: Hammerhead Best In Show Edition
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: A fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.
+  rsi_id: 195
+  rsi_name: Hammerhead Best In Show Edition
+  rsi_slug: hammerhead-best-in-show-edition
+  rsi_store_url: "/pledge/ships/hammerhead/Hammerhead-Best-In-Show-Edition"
+  slug: hammerhead-best-in-show-edition
+  store_url: "/pledge/ships/hammerhead/Hammerhead-Best-In-Show-Edition"
+  model: model_aegs_hammerhead
+paint_mustang_alpha_vindicator:
+  active: true
+  description: Make the ultimate statement and show the universe that you are a paragon of style and a bulwark of freedom. With this limited Vindicator Edition livery, the maverick designers at Consolidated Outland have pulled out all the stops, creating a trim package that commemorates CitizenCon 2948 and embodies the spirit of daring that defines both the original vision of Silas Koerner and the unyielding determination of the UEE.
+  hidden: false
+  last_updated_at: '2024-07-19T16:30:15Z'
+  name: Mustang Alpha Vindicator
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: Make the ultimate statement and show the universe that you are a paragon of style and a bulwark of freedom. With this limited Vindicator Edition livery, the maverick designers at Consolidated Outland have pulled out all the stops, creating a trim package that commemorates CitizenCon 2948 and embodies the spirit of daring that defines both the original vision of Silas Koerner and the unyielding determination of the UEE.
+  rsi_id: 172
+  rsi_name: Mustang Alpha Vindicator
+  rsi_slug: mustang-alpha-vindicator
+  rsi_store_url: "/pledge/ships/mustang/Mustang-Alpha-Vindicator"
+  slug: mustang-alpha-vindicator
+  store_url: "/pledge/ships/mustang/Mustang-Alpha-Vindicator"
+  model: model_cnou_mustang_alpha
+paint_nautilus_solstice_edition:
+  active: true
+  description: With four centuries of distinguished service under its belt, The Aegis Dynamics Nautilus tactical minelayer represents the ultimate in strategic combat engineering, with fully-integrated mine-deployment, sweeping and disarming capabilities. This limited edition Solstice model is exclusive to members of the Chairman’s Club and includes sequential serial numbering according to production order.
+  hidden: false
+  last_updated_at: '2024-07-22T19:02:22Z'
+  name: Nautilus Solstice Edition
+  on_sale: false
+  production_status: in-concept
+  rsi_description: With four centuries of distinguished service under its belt, The Aegis Dynamics Nautilus tactical minelayer represents the ultimate in strategic combat engineering, with fully-integrated mine-deployment, sweeping and disarming capabilities. This limited edition Solstice model is exclusive to members of the Chairman’s Club and includes sequential serial numbering according to production order.
+  rsi_id: 187
+  rsi_name: Nautilus Solstice Edition
+  rsi_slug: nautilus-solstice-edition
+  rsi_store_url: "/pledge/ships/aegis-nautilus/Nautilus-Solstice-Edition"
+  slug: nautilus-solstice-edition
+  store_url: "/pledge/ships/aegis-nautilus/Nautilus-Solstice-Edition"
+  model: model_aegs_nautilus
+paint_p_72_archimedes_emerald:
+  active: true
+  description: 'Built with exacting precision and styled with urban sophistication in mind, this compact snub isn’t just for show. Fast and responsive, it’s the ideal chaperone for larger ship or the perfect partner for a solo sprint in-atmosphere. The Archimedes Emerald features an exclusive Stellar Fortuna skin, available for a limited time only. '
+  hidden: false
+  last_updated_at: '2024-07-23T12:53:36Z'
+  name: P-72 Archimedes Emerald
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: 'Built with exacting precision and styled with urban sophistication in mind, this compact snub isn’t just for show. Fast and responsive, it’s the ideal chaperone for larger ship or the perfect partner for a solo sprint in-atmosphere. The Archimedes Emerald features an exclusive Stellar Fortuna skin, available for a limited time only. '
+  rsi_id: 207
+  rsi_name: P-72 Archimedes Emerald
+  rsi_slug: p-72-archimedes-emerald
+  rsi_store_url: "/pledge/ships/p72-archimedes/P-72-Archimedes-Emerald"
+  slug: p-72-archimedes-emerald
+  store_url: "/pledge/ships/p72-archimedes/P-72-Archimedes-Emerald"
+  model: model_krig_p_72_archimedes
+paint_reclaimer_best_in_show_edition:
+  active: true
+  description: |-
+    The Aegis Reclaimer is an industrial salvage ship. Equipped with a reinforced cargo bay, a long-range jump drive and launch pods for unmanned drones, the Reclaimer is an ideal ship for taking advantage of deep space wrecks. Tractor beams, floodlights, scanner options and docking ports round out the tools on this capable, utilitarian spacecraft.
+
+    The listed Cargo Capacity is only for the dedicated Cargo Room and does not account for the salvaged material capacity which will be detailed later.
+  hidden: false
+  last_updated_at: '2024-12-02T18:12:11Z'
+  name: Reclaimer Best In Show Edition
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: |-
+    The Aegis Reclaimer is an industrial salvage ship. Equipped with a reinforced cargo bay, a long-range jump drive and launch pods for unmanned drones, the Reclaimer is an ideal ship for taking advantage of deep space wrecks. Tractor beams, floodlights, scanner options and docking ports round out the tools on this capable, utilitarian spacecraft.
+
+    The listed Cargo Capacity is only for the dedicated Cargo Room and does not account for the salvaged material capacity which will be detailed later.
+  rsi_id: 196
+  rsi_name: Reclaimer Best In Show Edition
+  rsi_slug: reclaimer-best-in-show-edition
+  rsi_store_url: "/pledge/ships/reclaimer/Reclaimer-Best-In-Show-Edition"
+  slug: reclaimer-best-in-show-edition
+  store_url: "/pledge/ships/reclaimer/Reclaimer-Best-In-Show-Edition"
+  model: model_aegs_reclaimer
+paint_valkyrie_liberator_edition:
+  active: true
+  description: For over a century, Anvil ships have distinguished themselves in countless civilian and military combat operations. Honor that proud tradition with the limited Liberator Edition Valkyrie, featuring an exclusive trim package commemorating the dropship's debut at CitizenCon 2948.
+  hidden: false
+  last_updated_at: '2024-12-10T13:59:29Z'
+  name: Valkyrie Liberator Edition
+  on_sale: false
+  production_status: flight-ready
+  rsi_description: For over a century, Anvil ships have distinguished themselves in countless civilian and military combat operations. Honor that proud tradition with the limited Liberator Edition Valkyrie, featuring an exclusive trim package commemorating the dropship's debut at CitizenCon 2948.
+  rsi_id: 171
+  rsi_name: Valkyrie Liberator Edition
+  rsi_slug: valkyrie-liberator-edition
+  rsi_store_url: "/pledge/ships/anvil-valkyrie/Valkyrie-Liberator-Edition"
+  slug: valkyrie-liberator-edition
+  store_url: "/pledge/ships/anvil-valkyrie/Valkyrie-Liberator-Edition"
+  model: model_anvl_valkyrie

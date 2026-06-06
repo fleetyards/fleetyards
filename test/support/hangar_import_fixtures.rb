@@ -1,6 +1,77 @@
 # frozen_string_literal: true
 
 module HangarImportFixtures
+  LOADER_FIXTURES_DIR = Rails.root.join("test/fixtures/loader").freeze
+
+  # Inserts the post-loader Manufacturer + Model snapshot from
+  # test/fixtures/loader/*.yml. Uses Model.insert_all so the inserts
+  # live inside the current test's transactional savepoint and roll
+  # back at test teardown — preventing pollution of loader tests that
+  # expect a clean DB. (ActiveRecord::FixtureSet.create_fixtures opens
+  # its own outer transaction, which escapes the savepoint.)
+  # Tables touched by load_loader_fixtures + any preceding loader runs.
+  # Cleaned in setup of every loader test so test class ordering can't
+  # leak state — Rails' transactional savepoint isn't isolating
+  # insert_all data between classes in practice.
+  LOADER_TABLES = [Hardpoint, ModelPaint, Model, Manufacturer].freeze
+
+  def clean_loader_tables
+    LOADER_TABLES.each(&:delete_all)
+  end
+
+  def load_loader_fixtures
+    clean_loader_tables
+    now = Time.current
+
+    mfr_data = YAML.safe_load_file(LOADER_FIXTURES_DIR.join("manufacturers.yml"))
+    mfr_template = Manufacturer.column_names.index_with { nil }
+    mfr_id_by_key = {}
+    mfr_rows = mfr_data.map do |key, attrs|
+      id = ActiveRecord::FixtureSet.identify(key, :uuid)
+      mfr_id_by_key[key] = id
+      mfr_template.merge(attrs).merge("id" => id, "created_at" => now, "updated_at" => now)
+    end
+    Manufacturer.insert_all(mfr_rows)
+
+    model_data = YAML.safe_load_file(LOADER_FIXTURES_DIR.join("models.yml"))
+    model_template = Model.column_names.index_with { nil }
+    model_id_by_key = {}
+    model_rows = model_data.map do |key, attrs|
+      mfr_key = attrs["manufacturer"]
+      id = ActiveRecord::FixtureSet.identify(key, :uuid)
+      model_id_by_key[key] = id
+      model_template
+        .merge(attrs.except("manufacturer"))
+        .merge(
+          "id" => id,
+          "manufacturer_id" => mfr_id_by_key.fetch(mfr_key),
+          "created_at" => now,
+          "updated_at" => now
+        )
+    end
+    Model.insert_all(model_rows)
+
+    paint_path = LOADER_FIXTURES_DIR.join("model_paints.yml")
+    return unless paint_path.exist?
+
+    paint_data = YAML.safe_load_file(paint_path)
+    return if paint_data.blank?
+
+    paint_template = ModelPaint.column_names.index_with { nil }
+    paint_rows = paint_data.map do |key, attrs|
+      model_key = attrs["model"]
+      paint_template
+        .merge(attrs.except("model"))
+        .merge(
+          "id" => ActiveRecord::FixtureSet.identify(key, :uuid),
+          "model_id" => model_id_by_key.fetch(model_key),
+          "created_at" => now,
+          "updated_at" => now
+        )
+    end
+    ModelPaint.insert_all(paint_rows)
+  end
+
   IMPORTED_SHIPS = [
     "100i", "125a", "135c", "300i", "315p", "325a", "350r",
     "600i Executive-Edition", "600i Explorer", "600i Touring", "85X", "890 Jump",

@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require_relative "../support/hangar_import_fixtures"
 
 class HangarSyncTest < ActiveSupport::TestCase
-  fixtures :manufacturers, :models
+  include HangarImportFixtures
 
   setup do
+    load_loader_fixtures
     @user = create(:user)
     @input = JSON.parse(Rails.root.join("spec/fixtures/sync/rsi_hangar.json").read)
   end
