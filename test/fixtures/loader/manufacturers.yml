@@ -1,0 +1,108 @@
+---
+mfr_aegs:
+  code: AEGS
+  known_for: the Avenger and Idris Frigate
+  name: Aegis Dynamics
+  rsi_id: 12
+  slug: aegis-dynamics
+mfr_anvl:
+  code: ANVL
+  description: Produces dogfighters, but with less of the pirate stigma. These ships are more expensive, less spit-and-glue
+  known_for: the Hornet Fighters
+  name: Anvil Aerospace
+  rsi_id: 3
+  slug: anvil-aerospace
+mfr_argo:
+  code: ARGO
+  name: Argo Astronautics
+  rsi_id: 73
+  slug: argo-astronautics
+mfr_banu:
+  code: BANU
+  name: Banu
+  rsi_id: 21
+  slug: banu
+mfr_cnou:
+  code: CNOU
+  known_for: the Mustang starter ship
+  name: Consolidated Outland
+  rsi_id: 22
+  slug: consolidated-outland
+mfr_crus:
+  code: CRUS
+  known_for: Genesis Starliner
+  name: Crusader Industries
+  rsi_id: 68
+  slug: crusader-industries
+mfr_drak:
+  code: DRAK
+  description: 'Ostensibly a legitimate company, it’s an open secret that they manufacture cheap, well-armed craft favored by pirates, to the point that they’re named in that vein: “Cutlass,” “Buccaneer,” “Privateer,” and “Marauder,” etc.'
+  known_for: the Cutlass and the Caterpillar
+  name: Drake Interplanetary
+  rsi_id: 5
+  slug: drake-interplanetary
+mfr_espr:
+  code: ESPR
+  description: 'Esperia is a human company specialized in creating Vanduul ship reproductions for war-time simulations. '
+  name: Esperia
+  rsi_id: 69
+  slug: esperia
+mfr_gama:
+  code: GAMA
+  name: Gatac Manufacture
+  rsi_id: 93
+  slug: gatac-manufacture
+mfr_grin:
+  code: GRIN
+  known_for: ROC and ROC-DS
+  name: Greycat Industrial
+  rsi_id: 17
+  slug: greycat-industrial
+mfr_krig:
+  code: KRIG
+  known_for: the P-52 Merlin
+  name: Kruger Intergalactic
+  rsi_id: 19
+  slug: kruger-intergalactic
+mfr_misc:
+  code: MISC
+  description: MISC mass produces very efficient, modular ships, mostly armored freighters of different sizes that make them the preferred brand for traders and larger corporations.
+  known_for: the Freelancer series
+  name: MISC
+  rsi_id: 4
+  slug: misc
+mfr_mrai:
+  code: MRAI
+  name: Mirai
+  rsi_id: 96
+  slug: mirai
+mfr_orig:
+  code: ORIG
+  description: 'The BMW of the Star Citizen universe.  Their craft are more expensive, sleeker looking status symbols, maybe more so than they’re worth?  They get numbers instead of names: “Origin 300i,”"Origin 890 Jump,” “Origin M50 Turbo,” etc.'
+  known_for: the 300i series
+  name: Origin Jumpworks
+  rsi_id: 6
+  slug: origin-jumpworks
+mfr_rsi:
+  code: RSI
+  description: 'The original creators of the engine that kickstarted humanity’s expansion into space, Roberts Space Industries build a wide range of spaceships that serve all needs starting at basic interstellar travel to deep exploration on the outer edges of the galaxy. The tagline is “Roberts Space Industries: Delivering the Stars since 2075”'
+  known_for: the Aurora and the Constellation
+  name: Roberts Space Industries
+  rsi_id: 1
+  slug: roberts-space-industries
+mfr_tmbl:
+  code: TMBL
+  known_for: The Cyclone
+  name: Tumbril
+  rsi_id: 83
+  slug: tumbril
+mfr_vncl:
+  code: VNCL
+  name: Vanduul
+  rsi_id: 13
+  slug: vanduul
+mfr_xnaa:
+  code: XNAA
+  name: Aopoa
+  rsi_id: 81
+  slug: aopoa
