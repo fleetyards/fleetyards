@@ -124,7 +124,7 @@
     "eslint-plugin-vuejs-accessibility": "^2.5.0",
     "globals": "^17.6.0",
     "jsdom": "29.1.1",
-    "knip": "^6.15.0",
+    "knip": "^6.16.1",
     "mocha": "11.7.6",
     "msw": "^2.14.6",
     "orval": "^8.15.0",
