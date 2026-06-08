@@ -123,7 +123,6 @@ group :development do
 
   gem "i18n-tasks", "~> 1.0"
   gem "listen"
-  gem "rails-erd"
 
   gem "standard"
 
