@@ -4,7 +4,7 @@ require_relative "../../test_helper"
 
 class Short::ModelCompareShareTest < ActionDispatch::IntegrationTest
   setup do
-    @short_host = Rails.configuration.app.short_domain
+    host! Rails.configuration.app.short_domain
     @carrack = create_model_with_slug("anvil-carrack")
     @cutlass = create_model_with_slug("drake-cutlass-black")
   end
@@ -16,7 +16,7 @@ class Short::ModelCompareShareTest < ActionDispatch::IntegrationTest
       short_code: "abcd1234"
     )
 
-    get "/c/abcd1234", headers: {"Host" => @short_host}
+    get "/c/abcd1234"
 
     assert_response :found
     assert_includes response.location, "/compare"
@@ -25,7 +25,7 @@ class Short::ModelCompareShareTest < ActionDispatch::IntegrationTest
   end
 
   test "redirects unknown short_codes to the bare compare page" do
-    get "/c/zzzzzzzz", headers: {"Host" => @short_host}
+    get "/c/zzzzzzzz"
 
     assert_response :found
     assert_match(%r{/compare/?\z}, response.location)
