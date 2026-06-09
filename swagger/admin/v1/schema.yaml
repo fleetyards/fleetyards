@@ -71,6 +71,25 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/admin_users/me":
+    get:
+      summary: My Data
+      tags:
+      - AdminUsers
+      operationId: me
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminUser"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/admin_users/{id}":
     parameters:
     - name: id
@@ -182,25 +201,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/admin_users/me":
-    get:
-      summary: My Data
-      tags:
-      - AdminUsers
-      operationId: me
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/AdminUser"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/cargo-holds":
     get:
       summary: Cargo Holds list
@@ -801,6 +801,46 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/features/{id}/disable":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      description: Feature name
+      required: true
+    put:
+      summary: Disable Feature
+      tags:
+      - Features
+      operationId: disableAdminFeature
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Feature"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features/{id}/disable-actor":
     parameters:
     - name: id
@@ -891,7 +931,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/features/{id}/disable":
+  "/features/{id}/enable":
     parameters:
     - name: id
       in: path
@@ -900,10 +940,10 @@ paths:
       description: Feature name
       required: true
     put:
-      summary: Disable Feature
+      summary: Enable Feature
       tags:
       - Features
-      operationId: disableAdminFeature
+      operationId: enableAdminFeature
       responses:
         '200':
           description: successful
@@ -1111,7 +1151,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/features/{id}/enable":
+  "/features/{id}/toggle-self-service":
     parameters:
     - name: id
       in: path
@@ -1120,10 +1160,10 @@ paths:
       description: Feature name
       required: true
     put:
-      summary: Enable Feature
+      summary: Toggle Feature Self-Service
       tags:
       - Features
-      operationId: enableAdminFeature
+      operationId: toggleAdminFeatureSelfService
       responses:
         '200':
           description: successful
@@ -1151,32 +1191,95 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/features/{id}/toggle-self-service":
-    parameters:
-    - name: id
-      in: path
-      schema:
-        type: string
-      description: Feature name
-      required: true
-    put:
-      summary: Toggle Feature Self-Service
+  "/fleets":
+    post:
+      summary: Create Fleet
       tags:
-      - Features
-      operationId: toggleAdminFeatureSelfService
+      - Fleets
+      operationId: createFleet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInput"
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Feature"
-        '404':
-          description: not found
+                "$ref": "#/components/schemas/Fleet"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Fleets list
+      tags:
+      - Fleets
+      operationId: fleets
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleets"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/options":
+    get:
+      summary: Fleet Options
+      tags:
+      - Fleets
+      operationId: fleetOptions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetOptions"
         '403':
           description: forbidden
           content:
@@ -1271,74 +1374,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets":
-    post:
-      summary: Create Fleet
-      tags:
-      - Fleets
-      operationId: createFleet
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Fleet"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    get:
-      summary: Fleets list
-      tags:
-      - Fleets
-      operationId: fleets
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - "$ref": "#/components/parameters/SortingParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/FleetQuery"
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Fleets"
         '403':
           description: forbidden
           content:
@@ -1464,41 +1499,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/options":
-    get:
-      summary: Fleet Options
-      tags:
-      - Fleets
-      operationId: fleetOptions
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/FleetQuery"
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FleetOptions"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     post:
       summary: Image create
@@ -1561,6 +1561,35 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/Images"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/images/bulk":
+    put:
+      summary: Bulk update images
+      tags:
+      - Images
+      operationId: updateBulkImage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ImageUpdateBulkInput"
+      responses:
+        '200':
+          description: successful
         '403':
           description: forbidden
           content:
@@ -1643,35 +1672,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '404':
           description: not_found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/images/bulk":
-    put:
-      summary: Bulk update images
-      tags:
-      - Images
-      operationId: updateBulkImage
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ImageUpdateBulkInput"
-      responses:
-        '200':
-          description: successful
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -2030,6 +2030,41 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/manufacturers/options":
+    get:
+      summary: Manufacturer Options
+      tags:
+      - Manufacturers
+      operationId: manufacturerOptions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ManufacturerQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ManufacturerOptions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/manufacturers/{id}":
     parameters:
     - name: id
@@ -2127,41 +2162,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/manufacturers/options":
-    get:
-      summary: Manufacturer Options
-      tags:
-      - Manufacturers
-      operationId: manufacturerOptions
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ManufacturerQuery"
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ManufacturerOptions"
         '403':
           description: forbidden
           content:
@@ -3514,6 +3514,40 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/model-positions/regenerate":
+    put:
+      summary: Regenerate Model Positions
+      tags:
+      - ModelPositions
+      operationId: regenerateModelPositions
+      parameters:
+      - name: model_id
+        in: query
+        schema:
+          type: string
+          format: uuid
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelPositions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/model-positions/{id}":
     parameters:
     - name: id
@@ -3607,40 +3641,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/model-positions/regenerate":
-    put:
-      summary: Regenerate Model Positions
-      tags:
-      - ModelPositions
-      operationId: regenerateModelPositions
-      parameters:
-      - name: model_id
-        in: query
-        schema:
-          type: string
-          format: uuid
-        required: true
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelPositions"
         '403':
           description: forbidden
           content:
@@ -4192,117 +4192,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/models/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: Model id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    delete:
-      summary: Destroy Model
-      tags:
-      - Models
-      operationId: destroyModel
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelExtended"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    get:
-      summary: Model Detail
-      tags:
-      - Models
-      operationId: model
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelExtended"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    put:
-      summary: Update Model
-      tags:
-      - Models
-      operationId: updateModel
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ModelUpdateInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelExtended"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/models/production-states":
     get:
       summary: Model Production states
@@ -4420,6 +4309,223 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/models/reload-paints":
+    put:
+      summary: Reload Paints
+      tags:
+      - Models
+      operationId: reloadPaints
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/reload-scdata":
+    put:
+      summary: Reload Models SC Data
+      tags:
+      - Models
+      operationId: reloadModelsScData
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/models/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Model
+      tags:
+      - Models
+      operationId: destroyModel
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Model Detail
+      tags:
+      - Models
+      operationId: model
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Model
+      tags:
+      - Models
+      operationId: updateModel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ModelUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{id}/reload-one":
+    parameters:
+    - name: id
+      in: path
+      description: Model id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Reload Single Model
+      tags:
+      - Models
+      operationId: reloadOneModel
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{id}/reload-one-matrix":
     parameters:
     - name: id
@@ -4512,112 +4618,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/models/{id}/reload-one":
-    parameters:
-    - name: id
-      in: path
-      description: Model id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    put:
-      summary: Reload Single Model
-      tags:
-      - Models
-      operationId: reloadOneModel
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/models/reload-paints":
-    put:
-      summary: Reload Paints
-      tags:
-      - Models
-      operationId: reloadPaints
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/models/reload-scdata":
-    put:
-      summary: Reload Models SC Data
-      tags:
-      - Models
-      operationId: reloadModelsScData
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                required:
-                - message
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/models/{id}/use-rsi-image":
     parameters:
     - name: id
@@ -4973,6 +4973,25 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/stats/quick-stats":
+    get:
+      summary: Stats
+      tags:
+      - Stats
+      operationId: stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/stats/registrations-per-month":
     get:
       summary: Stats Registrations per Month
@@ -4988,25 +5007,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/stats/quick-stats":
-    get:
-      summary: Stats
-      tags:
-      - Stats
-      operationId: stats
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Stats"
         '401':
           description: unauthorized
           content:
@@ -5055,6 +5055,90 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/users":
+    get:
+      summary: Users list
+      tags:
+      - Users
+      operationId: users
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/UserQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Users"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/users/options":
+    get:
+      summary: User Options
+      tags:
+      - Users
+      operationId: userOptions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/UserQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/UserOptions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users/{id}":
     parameters:
     - name: id
@@ -5178,98 +5262,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/users/{user_id}/fleets":
-    parameters:
-    - name: user_id
-      in: path
-      description: User id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    get:
-      summary: User Fleets list
-      tags:
-      - Users
-      operationId: userFleets
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/AdminUserFleets"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/users":
-    get:
-      summary: Users list
-      tags:
-      - Users
-      operationId: users
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 25
-        required: false
-      - "$ref": "#/components/parameters/SortingParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/UserQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        schema:
-          type: string
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Users"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/users/{id}/login-as":
     parameters:
     - name: id
@@ -5293,41 +5285,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/users/options":
-    get:
-      summary: User Options
-      tags:
-      - Users
-      operationId: userOptions
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/UserQuery"
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/UserOptions"
         '403':
           description: forbidden
           content:
@@ -5402,6 +5359,93 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/users/{user_id}/fleets":
+    parameters:
+    - name: user_id
+      in: path
+      description: User id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: User Fleets list
+      tags:
+      - Users
+      operationId: userFleets
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminUserFleets"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles":
+    get:
+      summary: Vehicles list
+      tags:
+      - Vehicles
+      operationId: vehicles
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/VehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicles"
         '403':
           description: forbidden
           content:
@@ -5513,50 +5557,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/vehicles":
-    get:
-      summary: Vehicles list
-      tags:
-      - Vehicles
-      operationId: vehicles
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - "$ref": "#/components/parameters/SortingParameter"
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/VehicleQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Vehicles"
         '403':
           description: forbidden
           content:
