@@ -14,6 +14,13 @@ jobs:
       DB_USER: root
       DB_PASSWORD: root
       REDIS_URL: redis://localhost:6379
+      # Must be present before Rails boots — the short_routes block is gated
+      # on `Rails.configuration.app.short_domain.present?` in
+      # config/routes.rb, which is evaluated when `bin/rails test`
+      # initializes routes (before test/test_helper.rb runs its own ENV
+      # defaults). Without this, /c/:short_code falls through to the
+      # frontend wildcard and the Vite-rendered layout crashes CI.
+      SHORT_DOMAIN: fltyrd.test
 
     services:
       postgres:
