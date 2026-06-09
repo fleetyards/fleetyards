@@ -7,27 +7,34 @@ require_relative "../config/environment"
 
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
-require "rails/test_help"
-require "minitest/reporters"
-require "sidekiq/testing"
-require "mocha/minitest"
+# Skip test-framework wiring during openapi_ruby schema generation so
+# rails/test_help doesn't fight rspec/rails for Rails' lazy-load hooks
+# when FRAMEWORK=hybrid loads both adapters in one process. The
+# Minitest DSL itself (which is all schema gen needs) is loaded by the
+# gem directly via openapi_ruby/minitest.
+unless ENV["OPENAPI_RUBY_GENERATING"]
+  require "rails/test_help"
+  require "minitest/reporters"
+  require "sidekiq/testing"
+  require "mocha/minitest"
 
-Minitest::Reporters.use!(
-  Minitest::Reporters::ProgressReporter.new(color: true),
-  ENV,
-  Minitest.backtrace_filter
-)
+  Minitest::Reporters.use!(
+    Minitest::Reporters::ProgressReporter.new(color: true),
+    ENV,
+    Minitest.backtrace_filter
+  )
 
-Sidekiq::Testing.fake!
+  Sidekiq::Testing.fake!
 
-Shoulda::Matchers.configure do |config|
-  config.integrate do |with|
-    with.test_framework :minitest
-    with.library :rails
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :minitest
+      with.library :rails
+    end
   end
-end
 
-OmniAuth.config.test_mode = true
+  OmniAuth.config.test_mode = true
+end
 
 def mock_omniauth(provider, uid: "123456", email: "oauth@example.com", nickname: "oauthuser", name: "OAuth User", image: nil)
   extra = case provider.to_s
