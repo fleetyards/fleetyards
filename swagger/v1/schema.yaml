@@ -91,12 +91,12 @@ paths:
                 type: array
                 items:
                   type: string
-  "/filters/components/item-types":
+  "/filters/components/classes":
     get:
-      summary: Components Item Types Filters
+      summary: Components Classes Filters
       tags:
       - ComponentsFilters
-      operationId: componentItemTypesFilters
+      operationId: componentClassesFilters
       responses:
         '200':
           description: successful
@@ -106,12 +106,12 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-  "/filters/components/classes":
+  "/filters/components/item-types":
     get:
-      summary: Components Classes Filters
+      summary: Components Item Types Filters
       tags:
       - ComponentsFilters
-      operationId: componentClassesFilters
+      operationId: componentItemTypesFilters
       responses:
         '200':
           description: successful
@@ -157,6 +157,21 @@ paths:
                 "$ref": "#/components/schemas/ManufacturerOptions"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/models":
+    get:
+      summary: Models Filters
+      tags:
+      - ModelsFilters
+      operationId: modelFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/filters/models/classifications":
     get:
       summary: Model classifications Filters
@@ -193,21 +208,6 @@ paths:
       tags:
       - ModelsFilters
       operationId: modelFocusFilters
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FilterOption"
-  "/filters/models":
-    get:
-      summary: Models Filters
-      tags:
-      - ModelsFilters
-      operationId: modelFilters
       responses:
         '200':
           description: successful
@@ -298,136 +298,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
-  "/fleets/{fleetSlug}/inventory-items":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    get:
-      summary: Fleet All Inventory Items
-      tags:
-      - FleetInventoryItems
-      operationId: fleetAllInventoryItems
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/FleetInventoryItemQuery"
-        style: deepObject
-        explode: true
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FleetInventoryItemsList"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/inventory-stock":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    get:
-      summary: Fleet All Inventory Stock
-      tags:
-      - FleetInventoryStock
-      operationId: fleetAllInventoryStock
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetInventoryStockItem"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/check":
-    post:
-      summary: Check Fleet FID Availability
-      tags:
-      - Fleets
-      operationId: checkFID
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CheckInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Check"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets":
     post:
       summary: Create Fleet
@@ -463,56 +333,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      schema:
-        type: string
-      description: slug
-      required: true
-    delete:
-      summary: Destroy Fleet
+  "/fleets/check":
+    post:
+      summary: Check Fleet FID Availability
       tags:
       - Fleets
-      operationId: destroyFleet
-      description: You are not the owner of this Fleet
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    get:
-      summary: Fleet Detail
-      tags:
-      - Fleets
-      operationId: fleet
+      operationId: checkFID
       security:
       - SessionCookie: []
       - Oauth2:
@@ -521,74 +347,21 @@ paths:
       - OpenId:
         - fleet
         - fleet:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Fleet"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    put:
-      summary: Update Fleet
-      tags:
-      - Fleets
-      operationId: updateFleet
-      description: You are not an Admin or Officer of this Fleet
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/FleetUpdateInput"
+              "$ref": "#/components/schemas/CheckInput"
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Fleet"
+                "$ref": "#/components/schemas/Check"
         '401':
           description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
           content:
             application/json:
               schema:
@@ -631,6 +404,106 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/invites":
+    get:
+      summary: Fleet Invites current User
+      tags:
+      - Fleets
+      operationId: fleetInvites
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetMember"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/my":
+    get:
+      summary: Fleets for current User
+      tags:
+      - Fleets
+      operationId: myFleets
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/use-invite":
+    post:
+      summary: Create Fleet Membership by Invite
+      tags:
+      - FleetInviteUrls
+      operationId: useFleetInvite
+      description: User is already a member of this fleet
+      security:
+      - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetMembershipCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/inventories":
     parameters:
     - name: fleetSlug
@@ -724,124 +597,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/inventories/{slug}":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    - name: slug
-      in: path
-      schema:
-        type: string
-      description: Inventory slug
-      required: true
-    delete:
-      summary: Delete Fleet Inventory
-      tags:
-      - FleetInventories
-      operationId: destroyFleetInventory
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden - member cannot delete
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    get:
-      summary: Fleet Inventory Detail
-      tags:
-      - FleetInventories
-      operationId: fleetInventory
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FleetInventory"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    put:
-      summary: Update Fleet Inventory
-      tags:
-      - FleetInventories
-      operationId: updateFleetInventory
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetInventoryUpdateInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FleetInventory"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden - member cannot update
           content:
             application/json:
               schema:
@@ -1085,6 +840,219 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    delete:
+      summary: Delete Fleet Inventory
+      tags:
+      - FleetInventories
+      operationId: destroyFleetInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot delete
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Fleet Inventory Detail
+      tags:
+      - FleetInventories
+      operationId: fleetInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleet Inventory
+      tags:
+      - FleetInventories
+      operationId: updateFleetInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetInventoryUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventory"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - member cannot update
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventory-items":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet All Inventory Items
+      tags:
+      - FleetInventoryItems
+      operationId: fleetAllInventoryItems
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetInventoryItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetInventoryItemsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventory-stock":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet All Inventory Stock
+      tags:
+      - FleetInventoryStock
+      operationId: fleetAllInventoryStock
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetInventoryStockItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/invite-urls":
     parameters:
     - name: fleetSlug
@@ -1248,136 +1216,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/use-invite":
-    post:
-      summary: Create Fleet Membership by Invite
-      tags:
-      - FleetInviteUrls
-      operationId: useFleetInvite
-      description: User is already a member of this fleet
-      security:
-      - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FleetMembershipCreateInput"
-      responses:
-        '201':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/FleetMember"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/fleets/invites":
-    get:
-      summary: Fleet Invites current User
-      tags:
-      - Fleets
-      operationId: fleetInvites
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/FleetMember"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/fleets/{fleetSlug}/members/{username}/accept":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    - name: username
-      in: path
-      schema:
-        type: string
-      description: Username
-      required: true
-    put:
-      summary: Accept Member
-      tags:
-      - FleetMembers
-      operationId: acceptFleetMember
-      description: No Member found
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardMessage"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members":
     parameters:
     - name: fleetSlug
@@ -1496,6 +1334,116 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/members/{username}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
+    delete:
+      summary: Remove Fleet Member
+      tags:
+      - FleetMembers
+      operationId: destroyFleetMember
+      description: Without authentication
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/members/{username}/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    put:
+      summary: Accept Member
+      tags:
+      - FleetMembers
+      operationId: acceptFleetMember
+      description: No Member found
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/members/{username}/decline":
     parameters:
     - name: fleetSlug
@@ -1614,57 +1562,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/{fleetSlug}/members/{username}":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    - name: username
-      in: path
-      schema:
-        type: string
-      description: username
-      required: true
-    delete:
-      summary: Remove Fleet Member
-      tags:
-      - FleetMembers
-      operationId: destroyFleetMember
-      description: Without authentication
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:write
-      - OpenId:
-        - fleet
-        - fleet:write
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/members/{username}/promote":
     parameters:
     - name: fleetSlug
@@ -1720,90 +1617,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/membership/accept":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    put:
-      summary: Accept Membership
-      tags:
-      - FleetMembership
-      operationId: acceptFleetMembership
-      security:
-      - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardMessage"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/fleets/{fleetSlug}/membership/decline":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    put:
-      summary: Decline Membership
-      tags:
-      - FleetMembership
-      operationId: declineFleetMembership
-      security:
-      - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardMessage"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/membership":
     parameters:
     - name: fleetSlug
@@ -1909,29 +1722,84 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/fleets/my":
-    get:
-      summary: Fleets for current User
+  "/fleets/{fleetSlug}/membership/accept":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    put:
+      summary: Accept Membership
       tags:
-      - Fleets
-      operationId: myFleets
+      - FleetMembership
+      operationId: acceptFleetMembership
       security:
       - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
+      - Oauth2: []
+      - OpenId: []
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Fleet"
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/membership/decline":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    put:
+      summary: Decline Membership
+      tags:
+      - FleetMembership
+      operationId: declineFleetMembership
+      security:
+      - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -2230,44 +2098,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/stats/vehicles-by-model":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    get:
-      summary: Fleet Stats - Vehicles by Model
-      tags:
-      - FleetStats
-      operationId: fleetVehiclesByModel
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - fleet
-        - fleet:read
-      - OpenId:
-        - fleet
-        - fleet:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/stats/vehicles":
     parameters:
     - name: fleetSlug
@@ -2310,7 +2140,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/fleets/{fleetSlug}/vehicles/export":
+  "/fleets/{fleetSlug}/stats/vehicles-by-model":
     parameters:
     - name: fleetSlug
       in: path
@@ -2319,19 +2149,10 @@ paths:
       description: Fleet slug
       required: true
     get:
-      summary: Fleet Vehicles List
+      summary: Fleet Stats - Vehicles by Model
       tags:
-      - Fleets
-      operationId: fleetVehiclesExport
-      parameters:
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/FleetVehicleQuery"
-        style: deepObject
-        explode: true
-        required: false
+      - FleetStats
+      operationId: fleetVehiclesByModel
       security:
       - SessionCookie: []
       - Oauth2:
@@ -2348,15 +2169,9 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/FleetVehicleExport"
+                  "$ref": "#/components/schemas/BarChartStats"
         '401':
           description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
           content:
             application/json:
               schema:
@@ -2430,6 +2245,191 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/vehicles/export":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Vehicles List
+      tags:
+      - Fleets
+      operationId: fleetVehiclesExport
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetVehicleExport"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: slug
+      required: true
+    delete:
+      summary: Destroy Fleet
+      tags:
+      - Fleets
+      operationId: destroyFleet
+      description: You are not the owner of this Fleet
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Fleet Detail
+      tags:
+      - Fleets
+      operationId: fleet
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleet
+      tags:
+      - Fleets
+      operationId: updateFleet
+      description: You are not an Admin or Officer of this Fleet
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
           content:
             application/json:
               schema:
@@ -2615,6 +2615,44 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/groups/sort":
+    put:
+      summary: HangarGroup sort
+      tags:
+      - HangarGroups
+      operationId: hangarGroupSort
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarGroupSortInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/groups/{id}":
     parameters:
     - name: id
@@ -2704,44 +2742,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '403':
           description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/hangar/groups/sort":
-    put:
-      summary: HangarGroup sort
-      tags:
-      - HangarGroups
-      operationId: hangarGroupSort
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:write
-      - OpenId:
-        - hangar
-        - hangar:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/HangarGroupSortInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-        '401':
-          description: unauthorized
           content:
             application/json:
               schema:
@@ -2839,6 +2839,44 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/stats":
+    get:
+      summary: Your Hangar Stats
+      tags:
+      - HangarStats
+      operationId: hangarStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarStats"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats/models-by-classification":
     get:
       summary: Hangar Stats - Models by Classification
@@ -2955,44 +2993,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/hangar/stats":
-    get:
-      summary: Your Hangar Stats
-      tags:
-      - HangarStats
-      operationId: hangarStats
-      parameters:
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/HangarQuery"
-        style: deepObject
-        explode: true
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarStats"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/sync-rsi-hangar":
     put:
       summary: Sync RSI Hangar
@@ -3218,48 +3218,54 @@ paths:
                   "$ref": "#/components/schemas/ModelPaint"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/models/{slug}/store-image":
-    parameters:
-    - name: slug
-      in: path
-      schema:
-        type: string
-      description: Model slug
-      required: true
+  "/models":
     get:
-      summary: Model Storeimage
+      summary: Models List
       tags:
       - Models
-      operationId: modelStoreImage
-      deprecated: true
+      operationId: models
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: containerFit
+        in: query
+        schema:
+          type: object
+          additionalProperties:
+            type: integer
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
       responses:
-        '302':
+        '200':
           description: successful
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/models/{slug}/fleetchart-image":
-    parameters:
-    - name: slug
-      in: path
-      schema:
-        type: string
-      description: Model slug
-      required: true
-    get:
-      summary: Model Fleetchart Image
-      tags:
-      - Models
-      operationId: modelFleetchartImage
-      deprecated: true
-      responses:
-        '302':
-          description: successful
-        '404':
-          description: not found
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/StandardError"
+                "$ref": "#/components/schemas/Models"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/models/embed":
@@ -3287,6 +3293,151 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/Model"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/models/latest":
+    get:
+      summary: Latest Models
+      tags:
+      - Models
+      operationId: modelsLatest
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Model"
+  "/models/slugs":
+    get:
+      summary: Available Model-Slugs
+      tags:
+      - Models
+      operationId: modelsSlugs
+      responses:
+        '200':
+          description: successful
+  "/models/updated":
+    get:
+      summary: Updated Models
+      tags:
+      - Models
+      operationId: modelsUpdated
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+          format: datetime
+        required: false
+      - name: to
+        in: query
+        schema:
+          type: string
+          default: now
+          format: datetime
+        required: false
+      responses:
+        '200':
+          description: successful
+        '304':
+          description: not modified
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/models/with-docks":
+    get:
+      summary: Models with Docks
+      tags:
+      - Models
+      operationId: modelsWithDocks
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/ModelQuery"
+        style: deepObject
+        explode: true
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Models"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Detail
+      tags:
+      - Models
+      operationId: model
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelExtended"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/fleetchart-image":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Fleetchart Image
+      tags:
+      - Models
+      operationId: modelFleetchartImage
+      deprecated: true
+      responses:
+        '302':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/hardpoints":
@@ -3368,71 +3519,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/models":
-    get:
-      summary: Models List
-      tags:
-      - Models
-      operationId: models
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ModelQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: containerFit
-        in: query
-        schema:
-          type: object
-          additionalProperties:
-            type: integer
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        schema:
-          type: string
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Models"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/models/latest":
-    get:
-      summary: Latest Models
-      tags:
-      - Models
-      operationId: modelsLatest
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/Model"
   "/models/{slug}/loaners":
     parameters:
     - name: slug
@@ -3616,43 +3702,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/models/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      schema:
-        type: string
-      description: Model slug
-      required: true
-    get:
-      summary: Model Detail
-      tags:
-      - Models
-      operationId: model
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ModelExtended"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/models/slugs":
-    get:
-      summary: Available Model-Slugs
-      tags:
-      - Models
-      operationId: modelsSlugs
-      responses:
-        '200':
-          description: successful
   "/models/{slug}/snub-crafts":
     parameters:
     - name: slug
@@ -3683,31 +3732,23 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/models/updated":
+  "/models/{slug}/store-image":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
     get:
-      summary: Updated Models
+      summary: Model Storeimage
       tags:
       - Models
-      operationId: modelsUpdated
-      parameters:
-      - name: from
-        in: query
-        schema:
-          type: string
-          format: datetime
-        required: false
-      - name: to
-        in: query
-        schema:
-          type: string
-          default: now
-          format: datetime
-        required: false
+      operationId: modelStoreImage
+      deprecated: true
       responses:
-        '200':
+        '302':
           description: successful
-        '304':
-          description: not modified
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/upgrades":
@@ -3822,47 +3863,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/models/with-docks":
-    get:
-      summary: Models with Docks
-      tags:
-      - Models
-      operationId: modelsWithDocks
-      parameters:
-      - name: page
-        in: query
-        schema:
-          type: string
-          default: '1'
-        required: false
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 30
-        required: false
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/ModelQuery"
-        style: deepObject
-        explode: true
-        required: false
-      - name: cacheId
-        in: query
-        schema:
-          type: string
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Models"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notification-preferences":
     get:
       summary: List notification preferences
@@ -3941,60 +3941,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/notifications/destroy-all":
-    delete:
-      summary: Delete all notifications
-      tags:
-      - Notifications
-      operationId: destroyAllNotifications
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - notifications
-        - notifications:write
-      - OpenId:
-        - notifications
-        - notifications:write
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/notifications/{id}":
-    parameters:
-    - name: id
-      in: path
-      schema:
-        type: string
-      required: true
-    delete:
-      summary: Delete a notification
-      tags:
-      - Notifications
-      operationId: destroyNotification
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - notifications
-        - notifications:write
-      - OpenId:
-        - notifications
-        - notifications:write
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications":
     get:
       summary: List notifications
@@ -4044,6 +3990,29 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/destroy-all":
+    delete:
+      summary: Delete all notifications
+      tags:
+      - Notifications
+      operationId: destroyAllNotifications
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/notifications/read-all":
     put:
       summary: Mark all notifications as read
@@ -4067,6 +4036,37 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/notifications/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+      required: true
+    delete:
+      summary: Delete a notification
+      tags:
+      - Notifications
+      operationId: destroyNotification
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - notifications
+        - notifications:write
+      - OpenId:
+        - notifications
+        - notifications:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notifications/{id}/read":
     parameters:
     - name: id
@@ -4496,31 +4496,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/password/request":
-    post:
-      summary: Request Password reset
-      tags:
-      - Password
-      operationId: requestPasswordReset
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/PasswordRequestInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardMessage"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
   "/password":
     put:
       summary: Update password
@@ -4554,6 +4529,31 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/password/request":
+    post:
+      summary: Request Password reset
+      tags:
+      - Password
+      operationId: requestPasswordReset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/PasswordRequestInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
   "/password/{token}":
     parameters:
     - name: token
@@ -4585,34 +4585,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
-  "/public/fleets/{slug}":
-    parameters:
-    - name: slug
-      in: path
-      schema:
-        type: string
-      description: slug
-      required: true
-    get:
-      summary: Fleet Detail
-      tags:
-      - Fleets
-      operationId: publicFleet
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Fleet"
-        '404':
-          description: not found if fleet is not public
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/members":
     parameters:
     - name: fleetSlug
@@ -4798,36 +4770,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/public/fleets/{fleetSlug}/stats/vehicles-by-model":
-    parameters:
-    - name: fleetSlug
-      in: path
-      schema:
-        type: string
-      description: Fleet slug
-      required: true
-    get:
-      summary: Public Fleet Vehicles by Model
-      tags:
-      - FleetStats
-      operationId: publicFleetVehiclesByModel
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/BarChartStats"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/fleets/{fleetSlug}/stats/vehicles":
     parameters:
     - name: fleetSlug
@@ -4856,7 +4798,7 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/public/fleets/{fleetSlug}/vehicles/embed":
+  "/public/fleets/{fleetSlug}/stats/vehicles-by-model":
     parameters:
     - name: fleetSlug
       in: path
@@ -4865,19 +4807,10 @@ paths:
       description: Fleet slug
       required: true
     get:
-      summary: Public Fleet Vehicles Embed for the Fleetyards Widget
+      summary: Public Fleet Vehicles by Model
       tags:
-      - Fleets
-      operationId: publicFleetVehiclesEmbed
-      parameters:
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/FleetVehicleQuery"
-        style: deepObject
-        explode: true
-        required: false
+      - FleetStats
+      operationId: publicFleetVehiclesByModel
       responses:
         '200':
           description: successful
@@ -4886,7 +4819,7 @@ paths:
               schema:
                 type: array
                 items:
-                  "$ref": "#/components/schemas/VehiclePublic"
+                  "$ref": "#/components/schemas/BarChartStats"
         '404':
           description: not found
           content:
@@ -4954,6 +4887,73 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/fleets/{fleetSlug}/vehicles/embed":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Public Fleet Vehicles Embed for the Fleetyards Widget
+      tags:
+      - Fleets
+      operationId: publicFleetVehiclesEmbed
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FleetVehicleQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/VehiclePublic"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/public/fleets/{slug}":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: slug
+      required: true
+    get:
+      summary: Fleet Detail
+      tags:
+      - Fleets
+      operationId: publicFleet
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '404':
+          description: not found if fleet is not public
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/embed":
     get:
       summary: Public Hangar embed
@@ -4977,30 +4977,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/VehiclePublic"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/public/hangars/{username}/groups":
-    parameters:
-    - name: username
-      in: path
-      schema:
-        type: string
-      description: Username
-      required: true
-    get:
-      summary: HangarGroup list
-      tags:
-      - PublicHangarGroups
-      operationId: publicHangarGroups
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/HangarGroupPublic"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}":
@@ -5043,6 +5019,67 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarPublic"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/groups":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    get:
+      summary: HangarGroup list
+      tags:
+      - PublicHangarGroups
+      operationId: publicHangarGroups
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/HangarGroupPublic"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/stats":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: username
+      required: true
+    get:
+      summary: Public Hangar Stats
+      tags:
+      - PublicHangarStats
+      operationId: publicHangarStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/HangarQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarStatsPublic"
         '404':
           description: not found
           content:
@@ -5171,43 +5208,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/public/hangars/{username}/stats":
-    parameters:
-    - name: username
-      in: path
-      schema:
-        type: string
-      description: username
-      required: true
-    get:
-      summary: Public Hangar Stats
-      tags:
-      - PublicHangarStats
-      operationId: publicHangarStats
-      parameters:
-      - name: q
-        in: query
-        schema:
-          type: object
-          "$ref": "#/components/schemas/HangarQuery"
-        style: deepObject
-        explode: true
-        required: false
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/HangarStatsPublic"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/public/users/{username}":
     parameters:
     - name: username
@@ -5296,41 +5296,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataVersion"
-  "/sessions/confirm-access":
-    post:
-      summary: confirm_access session
-      tags:
-      - Sessions
-      operationId: confirmAccess
-      security:
-      - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/ConfirmAccessInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardMessage"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/sessions":
     post:
       summary: create session
@@ -5376,29 +5341,37 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/sessions/confirm-access-email":
+  "/sessions/confirm-access":
     post:
-      summary: Send confirm access email with code
+      summary: confirm_access session
       tags:
       - Sessions
-      operationId: sendConfirmAccessEmail
+      operationId: confirmAccess
       security:
       - SessionCookie: []
+      - Oauth2: []
+      - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ConfirmAccessInput"
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/ConfirmAccessEmailResponse"
-        '401':
-          description: unauthorized
+                "$ref": "#/components/schemas/StandardMessage"
+        '400':
+          description: bad request
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden - user has password
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -5432,6 +5405,33 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/sessions/confirm-access-email":
+    post:
+      summary: Send confirm access email with code
+      tags:
+      - Sessions
+      operationId: sendConfirmAccessEmail
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ConfirmAccessEmailResponse"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden - user has password
           content:
             application/json:
               schema:
@@ -5526,6 +5526,19 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
+  "/stats/quick-stats":
+    get:
+      summary: Stats
+      tags:
+      - Stats
+      operationId: stats
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Stats"
   "/stats/ships-of-the-month":
     get:
       summary: Stats Ships of the Month
@@ -5541,19 +5554,6 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
-  "/stats/quick-stats":
-    get:
-      summary: Stats
-      tags:
-      - Stats
-      operationId: stats
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Stats"
   "/stats/vehicles-by-model":
     get:
       summary: Stats Vehicles by Model
@@ -5584,6 +5584,33 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
+  "/user-features":
+    get:
+      summary: User Feature Flags
+      tags:
+      - UserFeatures
+      operationId: userFeatures
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/UserFeature"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/user-features/{id}/disable":
     parameters:
     - name: id
@@ -5674,27 +5701,43 @@ paths:
                     type: string
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/user-features":
-    get:
-      summary: User Feature Flags
+  "/users/account":
+    put:
+      summary: Update My Account
       tags:
-      - UserFeatures
-      operationId: userFeatures
+      - Users
+      operationId: updateAccount
+      parameters:
+      - name: X-Access-Confirmation
+        in: header
+        schema:
+          type: string
+        description: Access confirmation token obtained from confirm-access endpoint.
+          Required when using OAuth/OpenID authentication.
+        required: false
       security:
       - SessionCookie: []
-      - Oauth2:
-        - profile:write
-      - OpenId:
-        - profile:write
+      - Oauth2: []
+      - OpenId: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AccountUpdateInput"
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/UserFeature"
+                "$ref": "#/components/schemas/User"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
@@ -5768,37 +5811,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
-  "/users/signup":
-    post:
-      summary: Create new User
-      tags:
-      - Users
-      operationId: signup
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/UserCreateInput"
-      responses:
-        '201':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/User"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '422':
-          description: unprocessable entity
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/users/me":
     delete:
       summary: Destroy Account
@@ -5888,32 +5900,20 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/users/account":
-    put:
-      summary: Update My Account
+  "/users/signup":
+    post:
+      summary: Create new User
       tags:
       - Users
-      operationId: updateAccount
-      parameters:
-      - name: X-Access-Confirmation
-        in: header
-        schema:
-          type: string
-        description: Access confirmation token obtained from confirm-access endpoint.
-          Required when using OAuth/OpenID authentication.
-        required: false
-      security:
-      - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      operationId: signup
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              "$ref": "#/components/schemas/AccountUpdateInput"
+              "$ref": "#/components/schemas/UserCreateInput"
       responses:
-        '200':
+        '201':
           description: successful
           content:
             application/json:
@@ -5925,32 +5925,210 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles":
+    post:
+      summary: Create new Vehicle
+      tags:
+      - Vehicles
+      operationId: createVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicle"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-  "/vehicles/{vehicle_id}/loadouts/{id}/activate":
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/bulk":
+    post:
+      summary: Create multiple vehicles
+      tags:
+      - Vehicles
+      operationId: createBulkVehicle
+      security:
+      - SessionCookie: []
+        Oauth2:
+        - hangar
+        - hangar:write
+        OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleCreateBulkInput"
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update multiple vehicles
+      tags:
+      - Vehicles
+      operationId: updateBulkVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleUpdateBulkInput"
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/check-serial":
+    post:
+      summary: Check Vehicle Serial
+      tags:
+      - Vehicles
+      operationId: checkSerialVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CheckInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Check"
+        '401':
+          description: unauthorized with wrong scope token
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/destroy-all-ingame":
+    delete:
+      summary: Delete all ingame bought Vehicles
+      tags:
+      - Vehicles
+      operationId: destroyAllIngameVehicles
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/vehicles/destroy-bulk":
+    put:
+      summary: Destroy multiple Vehicles
+      tags:
+      - Vehicles
+      operationId: destroyBulkVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleDestroyBulkInput"
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/vehicles/{id}":
     parameters:
-    - name: vehicle_id
+    - name: id
       in: path
       description: Vehicle id or serial
       schema:
         type: string
       required: true
-    - name: id
-      in: path
-      description: Loadout id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    put:
-      summary: Activate Vehicle Loadout
+    delete:
+      summary: Delete Vehicle
       tags:
-      - VehicleLoadouts
-      operationId: activateVehicleLoadout
+      - Vehicles
+      operationId: destroyVehicle
       security:
       - SessionCookie: []
       - Oauth2:
@@ -5965,7 +6143,81 @@ paths:
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/VehicleLoadout"
+                "$ref": "#/components/schemas/Vehicle"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Show Vehicle
+      tags:
+      - Vehicles
+      operationId: showVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicle"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Vehicle
+      tags:
+      - Vehicles
+      operationId: updateVehicle
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/VehicleUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Vehicle"
         '401':
           description: unauthorized
           content:
@@ -6187,272 +6439,26 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/vehicles/check-serial":
-    post:
-      summary: Check Vehicle Serial
-      tags:
-      - Vehicles
-      operationId: checkSerialVehicle
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/CheckInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Check"
-        '401':
-          description: unauthorized with wrong scope token
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/vehicles/bulk":
-    post:
-      summary: Create multiple vehicles
-      tags:
-      - Vehicles
-      operationId: createBulkVehicle
-      security:
-      - SessionCookie: []
-        Oauth2:
-        - hangar
-        - hangar:write
-        OpenId:
-        - hangar
-        - hangar:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleCreateBulkInput"
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    put:
-      summary: Update multiple vehicles
-      tags:
-      - Vehicles
-      operationId: updateBulkVehicle
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:write
-      - OpenId:
-        - hangar
-        - hangar:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleUpdateBulkInput"
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/vehicles":
-    post:
-      summary: Create new Vehicle
-      tags:
-      - Vehicles
-      operationId: createVehicle
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:write
-      - OpenId:
-        - hangar
-        - hangar:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleCreateInput"
-      responses:
-        '201':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Vehicle"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/vehicles/destroy-all-ingame":
-    delete:
-      summary: Delete all ingame bought Vehicles
-      tags:
-      - Vehicles
-      operationId: destroyAllIngameVehicles
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:write
-      - OpenId:
-        - hangar
-        - hangar:write
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/vehicles/destroy-bulk":
-    put:
-      summary: Destroy multiple Vehicles
-      tags:
-      - Vehicles
-      operationId: destroyBulkVehicle
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:write
-      - OpenId:
-        - hangar
-        - hangar:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleDestroyBulkInput"
-      responses:
-        '204':
-          description: successful
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-  "/vehicles/{id}":
+  "/vehicles/{vehicle_id}/loadouts/{id}/activate":
     parameters:
-    - name: id
+    - name: vehicle_id
       in: path
       description: Vehicle id or serial
       schema:
         type: string
       required: true
-    delete:
-      summary: Delete Vehicle
-      tags:
-      - Vehicles
-      operationId: destroyVehicle
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:write
-      - OpenId:
-        - hangar
-        - hangar:write
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Vehicle"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
-    get:
-      summary: Show Vehicle
-      tags:
-      - Vehicles
-      operationId: showVehicle
-      security:
-      - SessionCookie: []
-      - Oauth2:
-        - hangar
-        - hangar:read
-      - OpenId:
-        - hangar
-        - hangar:read
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Vehicle"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
+    - name: id
+      in: path
+      description: Loadout id
+      schema:
+        type: string
+        format: uuid
+      required: true
     put:
-      summary: Update Vehicle
+      summary: Activate Vehicle Loadout
       tags:
-      - Vehicles
-      operationId: updateVehicle
+      - VehicleLoadouts
+      operationId: activateVehicleLoadout
       security:
       - SessionCookie: []
       - Oauth2:
@@ -6461,19 +6467,13 @@ paths:
       - OpenId:
         - hangar
         - hangar:write
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/VehicleUpdateInput"
       responses:
         '200':
           description: successful
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Vehicle"
+                "$ref": "#/components/schemas/VehicleLoadout"
         '401':
           description: unauthorized
           content:
