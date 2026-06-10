@@ -517,7 +517,7 @@ GEM
     omniauth_openid_connect (0.8.0)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
-    openapi-ruby (3.5.1)
+    openapi-ruby (4.0.0)
       activesupport (>= 7.0)
       json_schemer (~> 2.4)
       rack (>= 2.0)
@@ -943,7 +943,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   omniauth-twitch
   omniauth_openid_connect
-  openapi-ruby (~> 3.5)
+  openapi-ruby (~> 4.0)
   ostruct
   paper_trail
   pg (~> 1.0)
