@@ -129,7 +129,7 @@
     "msw": "^2.14.6",
     "orval": "^8.16.0",
     "playwright": "^1.60.0",
-    "prettier": "3.8.3",
+    "prettier": "3.8.4",
     "sass": "1.100.0",
     "stylelint": "^17.13.0",
     "stylelint-config-prettier-scss": "^1.0.0",
