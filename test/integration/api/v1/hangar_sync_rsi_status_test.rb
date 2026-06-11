@@ -39,4 +39,10 @@ class Api::V1::HangarSyncRsiStatusTest < ActionDispatch::IntegrationTest
   test "GET /hangar/sync-rsi-hangar/status returns 401 when not signed in" do
     assert_api_response :get, 401
   end
+
+  test "GET /hangar/sync-rsi-hangar/status with OAuth bearer token" do
+    user = create(:user)
+
+    assert_api_response :get, 200, headers: oauth_headers_for(user, scopes: ["hangar", "hangar:write"])
+  end
 end

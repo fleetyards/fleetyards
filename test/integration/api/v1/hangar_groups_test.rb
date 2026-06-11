@@ -239,4 +239,42 @@ class Api::V1::HangarGroupsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 401, path_params: {id: group.id}, body: {name: "x"}
   end
+
+  # OAuth Bearer token variants.
+  test "POST /hangar/groups with OAuth bearer token" do
+    assert_api_response :post, 201,
+      headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"]),
+      body: {name: "Hangar Group OAuth", color: "#000000"}
+  end
+
+  test "GET /hangar/groups with OAuth bearer token" do
+    create_list(:hangar_group, 3, user: @user)
+
+    assert_api_response :get, 200, headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:read"])
+  end
+
+  test "PUT /hangar/groups/sort with OAuth bearer token" do
+    groups = create_list(:hangar_group, 3, user: @user)
+
+    assert_api_response :put, 200,
+      headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"]),
+      body: {sorting: groups.reverse.map(&:id)}
+  end
+
+  test "DELETE /hangar/groups/:id with OAuth bearer token" do
+    group = create(:hangar_group, user: @user)
+
+    assert_api_response :delete, 200,
+      path_params: {id: group.id},
+      headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"])
+  end
+
+  test "PUT /hangar/groups/:id with OAuth bearer token" do
+    group = create(:hangar_group, user: @user)
+
+    assert_api_response :put, 200,
+      path_params: {id: group.id},
+      headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"]),
+      body: {name: "Updated Group"}
+  end
 end

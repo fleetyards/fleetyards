@@ -58,4 +58,14 @@ class Api::V1::VehiclesCheckSerialTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:read"]),
       body: {value: "DO-1234-AB"}
   end
+
+  test "POST /vehicles/check-serial returns 401 for OAuth bearer with wrong scope" do
+    assert_api_response :post, 401,
+      headers: oauth_headers_for(@user, scopes: ["public"]),
+      body: {value: "DO-1234-AB"}
+  end
+
+  test "POST /vehicles/check-serial returns 401 when not signed in" do
+    assert_api_response :post, 401, body: {value: "DO-1234-AB"}
+  end
 end
