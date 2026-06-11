@@ -115,7 +115,7 @@ gem "flipper"
 gem "flipper-active_record"
 
 # openapi
-gem "openapi-ruby", "~> 3.5"
+gem "openapi-ruby", "~> 4.0"
 gem "rspec-rails", require: false
 
 group :development do
