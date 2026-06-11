@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
-require "openapi_helper"
+require_relative "../../../openapi_helper"
 
-RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema" do
-  let(:author) { create(:user) }
-  let(:user) { author }
+class Api::V1::HangarSyncRsiStatusTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
 
-  let(:Authorization) { nil }
+  openapi_schema :"v1/schema"
 
-  before do
-    sign_in(user) if user.present?
-  end
-
-  path "/hangar/sync-rsi-hangar/status" do
+  api_path "/hangar/sync-rsi-hangar/status" do
     get("Sync RSI Hangar Status") do
       operationId "syncRsiHangarStatus"
       tags "Hangar"
@@ -26,17 +21,22 @@ RSpec.describe "api/v1/hangar", type: :openapi, openapi_schema_name: :"v1/schema
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/HangarSyncStatus"
-
-        run_test!
       end
 
       response(401, "unauthorized") do
         schema "$ref": "#/components/schemas/StandardError"
-
-        let(:user) { nil }
-
-        run_test!
       end
     end
+  end
+
+  test "GET /hangar/sync-rsi-hangar/status returns sync status" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :get, 200
+  end
+
+  test "GET /hangar/sync-rsi-hangar/status returns 401 when not signed in" do
+    assert_api_response :get, 401
   end
 end
