@@ -212,4 +212,42 @@ class Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 401, path_params: {id: notification.id}, body: {}
   end
+
+  # OAuth Bearer token variants.
+  test "GET /notifications with OAuth bearer token" do
+    create_list(:notification, 3, user: @user)
+
+    assert_api_response :get, 200, headers: oauth_headers_for(@user, scopes: ["notifications", "notifications:read"])
+  end
+
+  test "DELETE /notifications/destroy-all with OAuth bearer token" do
+    create_list(:notification, 3, user: @user)
+
+    assert_api_response :delete, 204, headers: oauth_headers_for(@user, scopes: ["notifications", "notifications:write"])
+  end
+
+  test "PUT /notifications/read-all with OAuth bearer token" do
+    create_list(:notification, 3, user: @user)
+
+    assert_api_response :put, 204,
+      headers: oauth_headers_for(@user, scopes: ["notifications", "notifications:write"]),
+      body: {}
+  end
+
+  test "DELETE /notifications/:id with OAuth bearer token" do
+    notification = create(:notification, user: @user)
+
+    assert_api_response :delete, 204,
+      path_params: {id: notification.id},
+      headers: oauth_headers_for(@user, scopes: ["notifications", "notifications:write"])
+  end
+
+  test "PUT /notifications/:id/read with OAuth bearer token" do
+    notification = create(:notification, user: @user)
+
+    assert_api_response :put, 200,
+      path_params: {id: notification.id},
+      headers: oauth_headers_for(@user, scopes: ["notifications", "notifications:write"]),
+      body: {}
+  end
 end

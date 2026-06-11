@@ -53,4 +53,14 @@ class Api::V1::SessionsConfirmAccessTest < ActionDispatch::IntegrationTest
   test "POST /sessions/confirm-access returns 401 when not signed in" do
     assert_api_response :post, 401, body: {password: "enterprise"}
   end
+
+  test "POST /sessions/confirm-access with OAuth bearer token" do
+    user = create(:user, password: "enterprise")
+
+    assert_api_response :post, 200,
+      headers: oauth_headers_for(user, scopes: ["public"]),
+      body: {password: "enterprise"} do
+      assert parsed_body["token"].present?
+    end
+  end
 end

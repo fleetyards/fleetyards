@@ -60,4 +60,17 @@ class Api::V1::OtpStartTest < ActionDispatch::IntegrationTest
   test "POST /otp/start returns 401 when not signed in" do
     assert_api_response :post, 401, body: {}
   end
+
+  test "POST /otp/start with OAuth bearer + access confirmation" do
+    user = create(:user, password: "testtest")
+    headers = oauth_headers_for(user, scopes: ["public"], with_access_confirmation: true)
+
+    assert_api_response :post, 200, headers: headers, body: {}
+  end
+
+  test "POST /otp/start returns 400 for OAuth bearer without X-Access-Confirmation" do
+    user = create(:user, password: "testtest")
+
+    assert_api_response :post, 400, headers: oauth_headers_for(user, scopes: ["public"]), body: {}
+  end
 end

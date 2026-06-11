@@ -60,4 +60,17 @@ class Api::V1::OtpGenerateBackupCodesTest < ActionDispatch::IntegrationTest
   test "POST /otp/generate-backup-codes returns 401 when not signed in" do
     assert_api_response :post, 401, body: {}
   end
+
+  test "POST /otp/generate-backup-codes with OAuth bearer + access confirmation" do
+    user = create(:user, password: "testtest", otp_secret: User.generate_otp_secret, otp_required_for_login: true)
+    headers = oauth_headers_for(user, scopes: ["public"], with_access_confirmation: true)
+
+    assert_api_response :post, 200, headers: headers, body: {}
+  end
+
+  test "POST /otp/generate-backup-codes returns 400 for OAuth bearer without X-Access-Confirmation" do
+    user = create(:user, password: "testtest", otp_secret: User.generate_otp_secret, otp_required_for_login: true)
+
+    assert_api_response :post, 400, headers: oauth_headers_for(user, scopes: ["public"]), body: {}
+  end
 end
