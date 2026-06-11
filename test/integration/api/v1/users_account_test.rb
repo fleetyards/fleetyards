@@ -64,4 +64,17 @@ class Api::V1::UsersAccountTest < ActionDispatch::IntegrationTest
   test "PUT /users/account returns 401 when not signed in" do
     assert_api_response :put, 401, body: {username: "TestUser"}
   end
+
+  test "PUT /users/account with OAuth bearer + access confirmation" do
+    user = create(:user)
+    headers = oauth_headers_for(user, scopes: ["public"], with_access_confirmation: true)
+
+    assert_api_response :put, 200, headers: headers, body: {username: "TestUser"}
+  end
+
+  test "PUT /users/account returns 400 for OAuth bearer without X-Access-Confirmation" do
+    user = create(:user)
+
+    assert_api_response :put, 400, headers: oauth_headers_for(user, scopes: ["public"]), body: {username: "TestUser"}
+  end
 end

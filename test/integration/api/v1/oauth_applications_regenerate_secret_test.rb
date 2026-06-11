@@ -58,4 +58,13 @@ class Api::V1::OauthApplicationsRegenerateSecretTest < ActionDispatch::Integrati
 
     assert_api_response :put, 401, path_params: {id: app.id}, body: {}
   end
+
+  test "PUT /oauth-applications/:id/regenerate-secret with OAuth bearer token" do
+    app = create(:oauth_application, owner: @user)
+
+    assert_api_response :put, 200,
+      path_params: {id: app.id},
+      headers: oauth_headers_for(@user, scopes: ["public"]),
+      body: {}
+  end
 end

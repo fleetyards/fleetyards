@@ -41,4 +41,10 @@ class Api::V1::WishlistExportTest < ActionDispatch::IntegrationTest
   test "GET /wishlist/export returns 401 when not signed in" do
     assert_api_response :get, 401
   end
+
+  test "GET /wishlist/export with OAuth bearer token" do
+    user = create(:user, wanted_vehicle_count: 2, vehicle_count: 3)
+
+    assert_api_response :get, 200, headers: oauth_headers_for(user, scopes: ["hangar", "hangar:read"])
+  end
 end

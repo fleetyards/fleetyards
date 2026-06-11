@@ -142,4 +142,23 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
   test "PUT /users/me returns 401 when not signed in" do
     assert_api_response :put, 401, body: {discord: "x"}
   end
+
+  # OAuth Bearer token variants.
+  test "DELETE /users/me with OAuth bearer token" do
+    user = create(:user)
+
+    assert_api_response :delete, 200, headers: oauth_headers_for(user, scopes: ["public"])
+  end
+
+  test "GET /users/me with OAuth bearer token" do
+    user = create(:user)
+
+    assert_api_response :get, 200, headers: oauth_headers_for(user, scopes: ["public"])
+  end
+
+  test "PUT /users/me with OAuth bearer token" do
+    user = create(:user)
+
+    assert_api_response :put, 200, headers: oauth_headers_for(user, scopes: ["public"]), body: {discord: "DiscordServer"}
+  end
 end
