@@ -64,10 +64,9 @@ class Api::V1::UserFeaturesIndexTest < ActionDispatch::IntegrationTest
     Flipper.enable("TestFeature")
     sign_in @user
 
-    get "/api/v1/user-features", headers: {"Accept" => "application/json"}
-
-    data = JSON.parse(response.body)
-    assert_kind_of Array, data
-    assert_empty data
+    assert_api_response :get, 200 do
+      assert_kind_of Array, parsed_body
+      assert_empty parsed_body
+    end
   end
 end
