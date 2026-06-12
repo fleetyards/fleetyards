@@ -80,4 +80,11 @@ class Api::V1::FleetsUpdateTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),
       body: {discord: "https://discord.gg/1234567890"}
   end
+
+  test "PUT /fleets/:slug returns 401 for OAuth token with wrong scope" do
+    assert_api_response :put, 401,
+      path_params: {slug: @fleet.slug},
+      headers: oauth_headers_for(@admin, scopes: ["public"]),
+      body: {discord: "x"}
+  end
 end

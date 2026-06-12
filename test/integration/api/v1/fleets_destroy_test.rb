@@ -70,4 +70,10 @@ class Api::V1::FleetsDestroyTest < ActionDispatch::IntegrationTest
       path_params: {slug: @fleet.slug},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"])
   end
+
+  test "DELETE /fleets/:slug returns 401 for OAuth token with wrong scope" do
+    assert_api_response :delete, 401,
+      path_params: {slug: @fleet.slug},
+      headers: oauth_headers_for(@admin, scopes: ["public"])
+  end
 end
