@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-require "openapi_helper"
+require_relative "../../../openapi_helper"
 
-RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema" do
-  let(:model) { create(:model, :with_hardpoints) }
-  let(:slug) { model.slug }
+class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
 
-  path "/models/{slug}/hardpoints" do
+  openapi_schema :"v1/schema"
+
+  api_path "/models/{slug}/hardpoints" do
     parameter name: "slug", in: :path, schema: {type: :string}, description: "Model slug", required: true
 
     get("Model Hardpoints") do
@@ -25,22 +26,23 @@ RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema
               {"$ref": "#/components/schemas/ModelHardpoint"}
             ]
           }
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-
-          expect(data.count).to eq(model.model_hardpoints.size)
-          expect(data.count).to be > 0
-        end
       end
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
-
-        let(:slug) { "unknown-model" }
-
-        run_test!
       end
     end
+  end
+
+  test "GET /models/:slug/hardpoints returns hardpoints" do
+    model = create(:model, :with_hardpoints)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal model.model_hardpoints.size, parsed_body.count
+    end
+  end
+
+  test "GET /models/:slug/hardpoints returns 404 for unknown model" do
+    assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end
 end

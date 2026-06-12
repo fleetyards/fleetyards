@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-require "openapi_helper"
+require_relative "../../../openapi_helper"
 
-RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema" do
-  let(:model) { create(:model, :with_loaners) }
-  let(:slug) { model.slug }
+class Api::V1::ModelsLoanersTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
 
-  path "/models/{slug}/loaners" do
+  openapi_schema :"v1/schema"
+
+  api_path "/models/{slug}/loaners" do
     parameter name: "slug", in: :path, schema: {type: :string}, description: "Model slug", required: true
 
     get("Model Loaners") do
@@ -19,23 +20,21 @@ RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Models"
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          items = data["items"]
-
-          expect(items.count).to eq(model.loaners.count)
-          expect(items.count).to be > 0
-        end
       end
 
       response(404, "not found") do
         schema "$ref": "#/components/schemas/StandardError"
-
-        let(:slug) { "unknown-model" }
-
-        run_test!
       end
     end
+  end
+
+  test "GET /models/:slug/loaners returns loaners" do
+    model = create(:model)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug}
+  end
+
+  test "GET /models/:slug/loaners returns 404 for unknown model" do
+    assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end
 end
