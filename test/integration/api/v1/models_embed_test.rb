@@ -23,11 +23,9 @@ class Api::V1::ModelsEmbedTest < ActionDispatch::IntegrationTest
 
   test "GET /models/embed returns embedded models" do
     models = create_list(:model, 3)
-    query = models.map { |m| "models[]=#{m.slug}" }.join("&")
 
-    get "/api/v1/models/embed?#{query}"
-    assert_equal 200, response.status
-    data = JSON.parse(response.body)
-    assert_equal 3, data.count
+    assert_api_response :get, 200, params: {models: models.map(&:slug)} do
+      assert_equal 3, parsed_body.count
+    end
   end
 end

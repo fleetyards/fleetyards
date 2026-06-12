@@ -26,9 +26,12 @@ class Api::V1::ModelsSnubCraftsTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /models/:slug/snub-crafts returns snub crafts" do
-    model = create(:model)
+    model = create(:model, :with_snub_crafts)
 
-    assert_api_response :get, 200, path_params: {slug: model.slug}
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal model.snub_crafts.count, parsed_body.count
+      assert_operator parsed_body.count, :>, 0
+    end
   end
 
   test "GET /models/:slug/snub-crafts returns 404 for unknown model" do

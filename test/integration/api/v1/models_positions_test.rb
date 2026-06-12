@@ -27,8 +27,13 @@ class Api::V1::ModelsPositionsTest < ActionDispatch::IntegrationTest
 
   test "GET /models/:slug/positions returns positions" do
     model = create(:model)
+    create(:model_position, model: model)
+    create(:model_position, :copilot, model: model)
 
-    assert_api_response :get, 200, path_params: {slug: model.slug}
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal 2, parsed_body.count
+      assert_equal "Pilot", parsed_body.first["name"]
+    end
   end
 
   test "GET /models/:slug/positions returns 404 for unknown model" do
