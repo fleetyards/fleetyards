@@ -40,7 +40,7 @@ class Admin::Api::V1::ModelsUseRsiImageTest < ActionDispatch::IntegrationTest
   def model_with_rsi_store_image
     model = create(:model)
     model.rsi_store_image.attach(
-      io: File.open(Rails.root.join("spec/fixtures/files/test.png")),
+      io: file_fixture("test.png").open,
       filename: "test.png",
       content_type: "image/png"
     )
