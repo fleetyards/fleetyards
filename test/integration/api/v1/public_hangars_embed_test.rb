@@ -42,4 +42,10 @@ class Api::V1::PublicHangarsEmbedTest < ActionDispatch::IntegrationTest
       assert_equal 0, parsed_body.count
     end
   end
+
+  test "GET /public/hangars/embed returns an empty list for an unknown username" do
+    assert_api_response :get, 200, params: {usernames: ["not-a-user"]} do
+      assert_equal 0, parsed_body.count
+    end
+  end
 end

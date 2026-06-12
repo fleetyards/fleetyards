@@ -63,6 +63,7 @@ class Api::V1::PublicFleetsVehiclesTest < ActionDispatch::IntegrationTest
       path_params: {fleetSlug: fleet.slug},
       params: {q: {"modelNameCont" => member.vehicles.first.model.name}} do
       assert_equal 1, parsed_body["items"].count
+      assert_equal member.vehicles.first.model.name, parsed_body["items"].first.dig("model", "name")
     end
   end
 
