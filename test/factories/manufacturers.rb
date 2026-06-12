@@ -37,7 +37,7 @@ FactoryBot.define do
 
     trait :with_models do
       transient do
-        models_count { 5 }
+        models_count { 1 }
       end
 
       after(:create) do |manufacturer, evaluator|
