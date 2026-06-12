@@ -2,6 +2,69 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.30.1](https://github.com/fleetyards/fleetyards/compare/v6.30.0...v6.30.1) (2026-06-12)
+
+
+### Bug Fixes
+
+* **ci:** set SHORT_DOMAIN before Minitest boots Rails ([#4090](https://github.com/fleetyards/fleetyards/issues/4090)) ([5a2d1f7](https://github.com/fleetyards/fleetyards/commit/5a2d1f71e3644a6bdd84bc10ec34c57ec1d2c89b))
+* **test:** use host! for short_domain routing ([#4089](https://github.com/fleetyards/fleetyards/issues/4089)) ([90f783c](https://github.com/fleetyards/fleetyards/commit/90f783c9ee1a41ae5453f5d138735e9bf109203a))
+
+
+### Chores
+
+* **api:** migrate OpenAPI schemas to 3.1.0 ([#4073](https://github.com/fleetyards/fleetyards/issues/4073)) ([abd2698](https://github.com/fleetyards/fleetyards/commit/abd269824caaedb250855aa2a43d288edfd82f69))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.1.33 to 6.1.34 ([#4069](https://github.com/fleetyards/fleetyards/issues/4069)) ([8266203](https://github.com/fleetyards/fleetyards/commit/8266203e63a91d9ab0ec84ca29cbaf2349002f52))
+* **deps-dev:** bump @types/node from 25.9.1 to 25.9.2 ([#4077](https://github.com/fleetyards/fleetyards/issues/4077)) ([da30a21](https://github.com/fleetyards/fleetyards/commit/da30a21d40929d8175795be06e1cdf6aff09af2e))
+* **deps-dev:** bump @types/node from 25.9.2 to 25.9.3 ([#4096](https://github.com/fleetyards/fleetyards/issues/4096)) ([2909079](https://github.com/fleetyards/fleetyards/commit/290907943ebf936aeff7fd46876839cfd34e175f))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#4071](https://github.com/fleetyards/fleetyards/issues/4071)) ([c9760d4](https://github.com/fleetyards/fleetyards/commit/c9760d41c6026838274c9cc2b8b3e96886e3539d))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#4093](https://github.com/fleetyards/fleetyards/issues/4093)) ([2eda814](https://github.com/fleetyards/fleetyards/commit/2eda81456b7ae907b464936b91eeb1751bf0b81c))
+* **deps-dev:** bump @typescript-eslint/parser from 8.60.1 to 8.61.0 ([#4084](https://github.com/fleetyards/fleetyards/issues/4084)) ([1c1a1c3](https://github.com/fleetyards/fleetyards/commit/1c1a1c3a185b18f038b2eb1e65cd2bfb58a0da7c))
+* **deps-dev:** bump @vue/compiler-sfc from 3.5.35 to 3.5.38 ([#4116](https://github.com/fleetyards/fleetyards/issues/4116)) ([3ad806b](https://github.com/fleetyards/fleetyards/commit/3ad806b9ef2e7c84fe54438123736a0ffe87136b))
+* **deps-dev:** bump @vue/eslint-config-typescript ([#4070](https://github.com/fleetyards/fleetyards/issues/4070)) ([2204d43](https://github.com/fleetyards/fleetyards/commit/2204d4344d2712f900dc1b789fbae915fc35d1e9))
+* **deps-dev:** bump @vue/test-utils from 2.4.10 to 2.4.11 ([#4072](https://github.com/fleetyards/fleetyards/issues/4072)) ([65b4131](https://github.com/fleetyards/fleetyards/commit/65b4131dbdc8fddd5650d9cfd559aeb5f830b168))
+* **deps-dev:** bump knip from 6.15.0 to 6.16.1 ([#4080](https://github.com/fleetyards/fleetyards/issues/4080)) ([2e943ef](https://github.com/fleetyards/fleetyards/commit/2e943efa6dfe4b13f25fbcbabd1edf54d4784c6e))
+* **deps-dev:** bump orval from 8.15.0 to 8.16.0 ([#4086](https://github.com/fleetyards/fleetyards/issues/4086)) ([700629a](https://github.com/fleetyards/fleetyards/commit/700629a3d897f9d33320818d88bb34a24bf51430))
+* **deps-dev:** bump orval from 8.16.0 to 8.17.0 ([#4117](https://github.com/fleetyards/fleetyards/issues/4117)) ([30864ff](https://github.com/fleetyards/fleetyards/commit/30864fff751fc9707e768a4bc11b67d48d45e373))
+* **deps-dev:** bump prettier from 3.8.3 to 3.8.4 ([#4094](https://github.com/fleetyards/fleetyards/issues/4094)) ([877e5e0](https://github.com/fleetyards/fleetyards/commit/877e5e0a1545f8fff56d8c822f9f889e21ddd742))
+* **deps-dev:** bump sass from 1.100.0 to 1.101.0 ([#4113](https://github.com/fleetyards/fleetyards/issues/4113)) ([e2d75f4](https://github.com/fleetyards/fleetyards/commit/e2d75f4567a91d7ba4e01e67f44e50f0df46a02d))
+* **deps-dev:** bump standard from 1.54.0 to 1.55.0 ([#4095](https://github.com/fleetyards/fleetyards/issues/4095)) ([6f578ae](https://github.com/fleetyards/fleetyards/commit/6f578aee2d78a830ab458c06196b51c6d1bcd24b))
+* **deps-dev:** bump stylelint from 17.12.0 to 17.13.0 ([#4079](https://github.com/fleetyards/fleetyards/issues/4079)) ([ebcf0ae](https://github.com/fleetyards/fleetyards/commit/ebcf0ae934a01145a46b1592fedbefd32f33a207))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.3 to 3.3.4 ([#4085](https://github.com/fleetyards/fleetyards/issues/4085)) ([3469258](https://github.com/fleetyards/fleetyards/commit/34692586361a22f1e02106e7483720e767e61fbf))
+* **deps-dev:** bump vue-tsc from 3.3.3 to 3.3.4 ([#4082](https://github.com/fleetyards/fleetyards/issues/4082)) ([0bfd86d](https://github.com/fleetyards/fleetyards/commit/0bfd86d8dedad0d429dd7e171824558fec565718))
+* **deps:** bump aws-sdk-s3 from 1.225.0 to 1.225.1 ([#4097](https://github.com/fleetyards/fleetyards/issues/4097)) ([ef18bff](https://github.com/fleetyards/fleetyards/commit/ef18bff0127426c50367d5b517057cd61efa697c))
+* **deps:** bump doorkeeper from 5.9.1 to 5.9.2 ([#4078](https://github.com/fleetyards/fleetyards/issues/4078)) ([8c3f493](https://github.com/fleetyards/fleetyards/commit/8c3f4934b62fce0aab06370c946e3c7c57ec8f8e))
+* **deps:** bump highcharts from 12.6.0 to 13.0.0 ([#4114](https://github.com/fleetyards/fleetyards/issues/4114)) ([49993df](https://github.com/fleetyards/fleetyards/commit/49993df8d2ad80d4ca202379af9269e828c83e58))
+* **deps:** bump oauth2 from 2.0.20 to 2.0.22 ([#4076](https://github.com/fleetyards/fleetyards/issues/4076)) ([bac2f95](https://github.com/fleetyards/fleetyards/commit/bac2f959543ba7bb76353d3992fae991fbd02de4))
+* **deps:** bump oj from 3.17.1 to 3.17.3 ([#4068](https://github.com/fleetyards/fleetyards/issues/4068)) ([61154c9](https://github.com/fleetyards/fleetyards/commit/61154c96431f90f42bab1187dc3e214ec11c3b55))
+* **deps:** bump openapi-ruby from 3.5.1 to 4.0.0 ([#4092](https://github.com/fleetyards/fleetyards/issues/4092)) ([d2b7a61](https://github.com/fleetyards/fleetyards/commit/d2b7a61e64cbd4dc4386c1eed6e291bbad9dbb07))
+* **deps:** bump vue from 3.5.35 to 3.5.38 ([#4115](https://github.com/fleetyards/fleetyards/issues/4115)) ([3486a71](https://github.com/fleetyards/fleetyards/commit/3486a715c4143979476e8be490c7c238ff533b92))
+* **deps:** remove unused rails-erd gem ([3bb5224](https://github.com/fleetyards/fleetyards/commit/3bb5224d7df285c2e109254dff54a9aa84f2d5f6))
+* **test:** finish rspec-to-minitest migration (phase 3) ([#4123](https://github.com/fleetyards/fleetyards/issues/4123)) ([d54443f](https://github.com/fleetyards/fleetyards/commit/d54443f7f2743d2fe02a2a9294a0c6b4e994578d))
+* **test:** migrate api/v1 filters (batch 11) ([#4105](https://github.com/fleetyards/fleetyards/issues/4105)) ([07918af](https://github.com/fleetyards/fleetyards/commit/07918af7095f1af218c5647cab9daf1a66271166))
+* **test:** migrate model_modules/users/features (batch 9) ([#4103](https://github.com/fleetyards/fleetyards/issues/4103)) ([5542f1f](https://github.com/fleetyards/fleetyards/commit/5542f1f7895391f3a8d3bf988ea6b1d6468cfdd8))
+* **test:** migrate to Minitest (Phase 0 + lib/emails/mailers/loaders) ([#4075](https://github.com/fleetyards/fleetyards/issues/4075)) ([9e1a90b](https://github.com/fleetyards/fleetyards/commit/9e1a90b423b3d931dffac8043bcea7f60cd2b0d8))
+* **test:** Phase 2 batch 10 — admin models ([#4104](https://github.com/fleetyards/fleetyards/issues/4104)) ([f86d0a0](https://github.com/fleetyards/fleetyards/commit/f86d0a0fb2e1c80428317678cf0e253619e7c4c0))
+* **test:** Phase 2 batch 12 — api/v1 notifications/otp/sessions ([#4106](https://github.com/fleetyards/fleetyards/issues/4106)) ([2edfaf5](https://github.com/fleetyards/fleetyards/commit/2edfaf5d13419cd216d3d88d07183b2d6609b434))
+* **test:** Phase 2 batch 13 — api/v1 public ([#4107](https://github.com/fleetyards/fleetyards/issues/4107)) ([d022d9a](https://github.com/fleetyards/fleetyards/commit/d022d9a5373f7fb7ed5bec3ce8076b8b48574e01))
+* **test:** Phase 2 batch 14 — api/v1 oauth_applications/stats/users/wishlist ([#4108](https://github.com/fleetyards/fleetyards/issues/4108)) ([016fdb9](https://github.com/fleetyards/fleetyards/commit/016fdb90b2fcadb2fae1d30a893a9e3a7e169143))
+* **test:** Phase 2 batch 15 — api/v1 hangar/vehicle_loadouts/vehicles ([#4110](https://github.com/fleetyards/fleetyards/issues/4110)) ([4d3601e](https://github.com/fleetyards/fleetyards/commit/4d3601ebbbaa83299cd1af715c80225fe42b26be))
+* **test:** Phase 2 batch 16 — api/v1 fleets core ([#4111](https://github.com/fleetyards/fleetyards/issues/4111)) ([7965dbd](https://github.com/fleetyards/fleetyards/commit/7965dbd15e3e2ae3ed7f6431e13a7cc5dabe9085))
+* **test:** Phase 2 batch 17 — api/v1 fleets members/membership ([#4112](https://github.com/fleetyards/fleetyards/issues/4112)) ([5548150](https://github.com/fleetyards/fleetyards/commit/55481507bd8406a075e56c71c3dc8cc3997f7928))
+* **test:** Phase 2 batch 18 — api/v1 fleets inventories ([#4118](https://github.com/fleetyards/fleetyards/issues/4118)) ([61aa392](https://github.com/fleetyards/fleetyards/commit/61aa392fbf562834cea2878783b1459e49848b5d))
+* **test:** Phase 2 batch 19 — api/v1 fleets inventory_items/inventory_stock ([#4119](https://github.com/fleetyards/fleetyards/issues/4119)) ([54a52ce](https://github.com/fleetyards/fleetyards/commit/54a52ce790ebba6baa8f0b0050bb5f884467a3d5))
+* **test:** Phase 2 batch 2 — small openapi specs ([#4088](https://github.com/fleetyards/fleetyards/issues/4088)) ([6638da4](https://github.com/fleetyards/fleetyards/commit/6638da40b8e345c6e8d9dc370766b3ed53c631d7))
+* **test:** Phase 2 batch 20 — api/v1 fleets invite_urls/roles/vehicles/stats ([#4120](https://github.com/fleetyards/fleetyards/issues/4120)) ([a7eecf0](https://github.com/fleetyards/fleetyards/commit/a7eecf02f322fca9122360a67c2c9663c9003b4a))
+* **test:** Phase 2 batch 21 — api/v1 models ([#4121](https://github.com/fleetyards/fleetyards/issues/4121)) ([38832ed](https://github.com/fleetyards/fleetyards/commit/38832edba11efac0ad8c0819c2cf30b2d3b9c08e))
+* **test:** Phase 2 batch 22 — api/v1 + admin remaining (final) ([#4122](https://github.com/fleetyards/fleetyards/issues/4122)) ([c993bb9](https://github.com/fleetyards/fleetyards/commit/c993bb99fd4eb6a3a314cffa93a92caaa9c7640e))
+* **test:** Phase 2 batch 3 — admin and api small resources ([#4091](https://github.com/fleetyards/fleetyards/issues/4091)) ([3d853fa](https://github.com/fleetyards/fleetyards/commit/3d853fa98ba55fab480f768274b8fc16d0f5656f))
+* **test:** Phase 2 batch 4 — vehicles/snub_crafts/user_features/password ([#4098](https://github.com/fleetyards/fleetyards/issues/4098)) ([51e3e9d](https://github.com/fleetyards/fleetyards/commit/51e3e9d1ed700a19df4a914c39506eaf0e7c774a))
+* **test:** Phase 2 batch 5 — components/docks/images/model_paints ([#4099](https://github.com/fleetyards/fleetyards/issues/4099)) ([faffd16](https://github.com/fleetyards/fleetyards/commit/faffd168c4afff625b2a48874fc9f4d0c98e0f38))
+* **test:** Phase 2 batch 6 — model_hardpoints/loaners/loadouts/packages ([#4100](https://github.com/fleetyards/fleetyards/issues/4100)) ([8fce933](https://github.com/fleetyards/fleetyards/commit/8fce9334b938e1bf44df5ec3e6caff418ad4ef6c))
+* **test:** Phase 2 batch 7 — item_prices/manufacturers/oauth_applications/stats ([#4101](https://github.com/fleetyards/fleetyards/issues/4101)) ([7ee388e](https://github.com/fleetyards/fleetyards/commit/7ee388e350ddaf5ee3069185f0d44dbdaece5d54))
+* **test:** Phase 2 batch 8 — admin_users/model_positions/model_upgrades/videos ([#4102](https://github.com/fleetyards/fleetyards/issues/4102)) ([cb9a71e](https://github.com/fleetyards/fleetyards/commit/cb9a71ed4815e53e7926d78b6072e39ce1561aa7))
+* **test:** start Phase 2 — migrate api/v1 root specs to Minitest ([#4087](https://github.com/fleetyards/fleetyards/issues/4087)) ([b91ed41](https://github.com/fleetyards/fleetyards/commit/b91ed4189b37a931c0e28467a58353a8cf531a9b))
+
 ## [6.30.0](https://github.com/fleetyards/fleetyards/compare/v6.29.2...v6.30.0) (2026-06-04)
 
 
