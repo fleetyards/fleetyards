@@ -40,9 +40,10 @@ class Api::V1::ImagesIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /images filters by modelIn query" do
-    images = create_list(:image, 5)
+    create_list(:image, 4, gallery: create(:model))
+    target = create(:image, gallery: create(:model))
 
-    assert_api_response :get, 200, params: {q: {"modelIn" => [images.first.gallery.slug]}} do
+    assert_api_response :get, 200, params: {q: {"modelIn" => [target.gallery.slug]}} do
       assert_equal 1, parsed_body["items"].count
     end
   end
