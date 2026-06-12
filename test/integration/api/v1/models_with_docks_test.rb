@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-require "openapi_helper"
+require_relative "../../../openapi_helper"
 
-RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema" do
-  let!(:models) { create_list(:model, 6, :with_docks) }
+class Api::V1::ModelsWithDocksTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
 
-  path "/models/with-docks" do
+  openapi_schema :"v1/schema"
+
+  api_path "/models/with-docks" do
     get("Models with Docks") do
       operationId "modelsWithDocks"
       tags "Models"
@@ -25,27 +27,23 @@ RSpec.describe "api/v1/models", type: :openapi, openapi_schema_name: :"v1/schema
 
       response(200, "successful") do
         schema "$ref": "#/components/schemas/Models"
-
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          items = data["items"]
-
-          expect(items.count).to be > 0
-        end
       end
+    end
+  end
 
-      response(200, "successful", hidden: true) do
-        schema "$ref": "#/components/schemas/Models"
+  test "GET /models/with-docks returns models with docks" do
+    create_list(:model, 6, :with_docks)
 
-        let(:perPage) { 1 }
+    assert_api_response :get, 200 do
+      assert_operator parsed_body["items"].count, :>, 0
+    end
+  end
 
-        run_test! do |response|
-          data = JSON.parse(response.body)
-          items = data["items"]
+  test "GET /models/with-docks honours perPage" do
+    create_list(:model, 6, :with_docks)
 
-          expect(items.count).to eq(1)
-        end
-      end
+    assert_api_response :get, 200, params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
     end
   end
 end
