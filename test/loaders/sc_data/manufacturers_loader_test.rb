@@ -26,8 +26,8 @@ module ScData
       end
 
       test "reuses existing entries with matrix data" do
-        pledge_response_stub = File.read("spec/fixtures/rsi/300i_pledge_page.html")
-        matrix_response_stub = File.read("spec/fixtures/rsi/matrix.json")
+        pledge_response_stub = File.read("test/fixtures/rsi/300i_pledge_page.html")
+        matrix_response_stub = File.read("test/fixtures/rsi/matrix.json")
         rsi_models_loader = ::Rsi::ModelsLoader.new
 
         Timecop.freeze("2017-01-01 14:00:00")

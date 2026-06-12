@@ -43,7 +43,7 @@ FactoryBot.define do
     end
 
     trait :with_store_image do
-      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
 
     trait :hidden do

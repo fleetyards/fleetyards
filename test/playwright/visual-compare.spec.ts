@@ -16,7 +16,7 @@ import * as path from "path";
  *   localhost:8540/docs       → docs
  *   localhost:8540/admin      → admin
  *
- * Run: pnpm exec playwright test spec/playwright/visual-compare.spec.ts --reporter=html
+ * Run: pnpm exec playwright test test/playwright/visual-compare.spec.ts --reporter=html
  * Screenshots saved to: tmp/visual-compare/{before,after}/{frontend,docs,admin}/
  */
 

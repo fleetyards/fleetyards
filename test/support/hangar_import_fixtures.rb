@@ -116,7 +116,7 @@ module HangarImportFixtures
   IMPORTED_SHIPS_HANGAR_XPLOR = (IMPORTED_SHIPS + ["G12a"]).sort.freeze
 
   def stub_rsi_matrix_and_pledge_store(pledge_store_data)
-    matrix_body = File.read("spec/fixtures/rsi/matrix.json")
+    matrix_body = File.read("test/fixtures/rsi/matrix.json")
 
     stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
       .to_return(status: 200, body: matrix_body)

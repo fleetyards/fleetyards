@@ -11,7 +11,7 @@ module Rsi
     setup do
       clean_loader_tables
       @loader = ::Rsi::ModelsLoader.new
-      @pledge_store_data = JSON.parse(File.read("spec/fixtures/rsi/pledge_store.json"))
+      @pledge_store_data = JSON.parse(File.read("test/fixtures/rsi/pledge_store.json"))
 
       Timecop.freeze("2017-01-01 14:00:00")
       stub_rsi_matrix_and_pledge_store(@pledge_store_data)

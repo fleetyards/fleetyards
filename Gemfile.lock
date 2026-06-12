@@ -194,7 +194,6 @@ GEM
       railties (>= 7.2, < 8.2)
       rotp (~> 6.0)
     didkit (0.3.3)
-    diff-lcs (1.6.2)
     discordrb-webhooks (3.7.2)
       rest-client (>= 2.0.0)
     docile (1.4.1)
@@ -246,14 +245,6 @@ GEM
     ffi (1.17.4-arm64-darwin)
     ffi (1.17.4-x86_64-linux-gnu)
     fiber-storage (1.0.1)
-    flatware (2.4.0)
-      benchmark
-      drb
-      logger
-      thor (< 2.0)
-    flatware-rspec (2.4.0)
-      flatware (= 2.4.0)
-      rspec (>= 3.8)
     flipper (1.4.2)
       concurrent-ruby (< 2)
     flipper-active_record (1.4.2)
@@ -701,27 +692,6 @@ GEM
       chunky_png (~> 1.0)
       rqrcode_core (~> 2.0)
     rqrcode_core (2.1.0)
-    rspec (3.13.2)
-      rspec-core (~> 3.13.0)
-      rspec-expectations (~> 3.13.0)
-      rspec-mocks (~> 3.13.0)
-    rspec-core (3.13.6)
-      rspec-support (~> 3.13.0)
-    rspec-expectations (3.13.5)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.13.0)
-    rspec-mocks (3.13.8)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.13.0)
-    rspec-rails (8.0.4)
-      actionpack (>= 7.2)
-      activesupport (>= 7.2)
-      railties (>= 7.2)
-      rspec-core (>= 3.13.0, < 5.0.0)
-      rspec-expectations (>= 3.13.0, < 5.0.0)
-      rspec-mocks (>= 3.13.0, < 5.0.0)
-      rspec-support (>= 3.13.0, < 5.0.0)
-    rspec-support (3.13.7)
     rubocop (1.87.0)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -901,7 +871,6 @@ DEPENDENCIES
   factory_bot_rails (~> 6.5.0)
   faker
   faraday-retry
-  flatware-rspec
   flipper
   flipper-active_record
   foreman
@@ -971,7 +940,6 @@ DEPENDENCIES
   responders
   rollups
   rqrcode
-  rspec-rails
   ruby-vips
   shoulda-context
   shoulda-matchers

@@ -82,7 +82,7 @@ FactoryBot.define do
     confirmed_at { Time.now }
 
     trait :with_avatar do
-      avatar { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+      avatar { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
 
     trait :with_rsi_handle do

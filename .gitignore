@@ -17,8 +17,6 @@ config/*.key
 # test files
 coverage/*
 test/reports/*
-spec/reports
-spec/reports/*
 playwright-report
 playwright-report/*
 test-results

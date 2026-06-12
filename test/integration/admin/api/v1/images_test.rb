@@ -139,7 +139,7 @@ class Admin::Api::V1::ImagesTest < ActionDispatch::IntegrationTest
 
   def upload_blob
     ActiveStorage::Blob.create_and_upload!(
-      io: File.open(Rails.root.join("spec/fixtures/files/test.png")),
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")),
       filename: "test.png"
     )
   end

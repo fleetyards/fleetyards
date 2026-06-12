@@ -13,7 +13,7 @@ class EmailProcessorTest < ActiveSupport::TestCase
         ActionDispatch::Http::UploadedFile.new(
           filename: "img.png",
           type: "image/png",
-          tempfile: File.new(Rails.root.join("spec/fixtures/files/test.png"))
+          tempfile: File.new(Rails.root.join("test/fixtures/files/test.png"))
         )
       ]
     )

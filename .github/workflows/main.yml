@@ -57,10 +57,6 @@ jobs:
     needs: ruby-setup
     uses: ./.github/workflows/ruby-tests.job.yml
 
-  minitest:
-    needs: ruby-setup
-    uses: ./.github/workflows/minitest.job.yml
-
   seeds:
     needs: ruby-setup
     uses: ./.github/workflows/seeds.job.yml
