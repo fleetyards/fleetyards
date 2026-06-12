@@ -55,9 +55,7 @@ class Admin::Api::V1::FleetMembersIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /fleets/:fleet_id/members returns 401 when not signed in" do
-    fleet = create(:fleet, members: create_list(:user, 3))
-
-    assert_api_response :get, 401, path_params: {fleet_id: fleet.id}
+    assert_api_response :get, 401, path_params: {fleet_id: SecureRandom.uuid}
   end
 
   test "GET /fleets/:fleet_id/members returns 403 for admin without access" do
