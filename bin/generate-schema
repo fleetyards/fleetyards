@@ -12,7 +12,7 @@ set -euo pipefail
 # test_helper.rb). Only request specs contribute to the schema.
 DOMAIN=fleetyards.test \
   ON_SUBDOMAIN=true \
-  PATTERN="spec/requests/**/*_spec.rb,test/integration/**/*_test.rb" \
+  PATTERN="test/integration/**/*_test.rb" \
   bundle exec rake openapi_ruby:generate
 
 echo "cleanup old generated files"
