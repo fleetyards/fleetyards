@@ -54,6 +54,7 @@ class Api::V1::FleetsInventoriesCreateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {name: "Main Warehouse"} do
       assert_equal "Main Warehouse", parsed_body["name"]
+      assert_predicate parsed_body["slug"], :present?
     end
   end
 

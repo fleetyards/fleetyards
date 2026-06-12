@@ -45,7 +45,9 @@ class Api::V1::FleetsInventoriesShowTest < ActionDispatch::IntegrationTest
   test "GET /fleets/:slug/inventories/:slug returns the inventory" do
     sign_in @admin
 
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @inventory.slug}
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug, slug: @inventory.slug} do
+      assert_equal @inventory.name, parsed_body["name"]
+    end
   end
 
   test "GET /fleets/:slug/inventories/:slug returns 404 for unknown inventory" do

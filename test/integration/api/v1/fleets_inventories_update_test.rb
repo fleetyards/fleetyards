@@ -52,7 +52,9 @@ class Api::V1::FleetsInventoriesUpdateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug, slug: @inventory.slug},
-      body: {name: "Renamed"}
+      body: {name: "Renamed"} do
+      assert_equal "Renamed", parsed_body["name"]
+    end
   end
 
   test "PUT /fleets/:slug/inventories/:slug returns 403 for non-admin member" do
