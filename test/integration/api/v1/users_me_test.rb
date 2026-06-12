@@ -136,7 +136,9 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     user = create(:user)
     sign_in user
 
-    assert_api_response :put, 200, body: {discord: "DiscordServer"}
+    assert_api_response :put, 200, body: {discord: "DiscordServer"} do
+      assert_equal "DiscordServer", parsed_body["discord"]
+    end
   end
 
   test "PUT /users/me returns 401 when not signed in" do
