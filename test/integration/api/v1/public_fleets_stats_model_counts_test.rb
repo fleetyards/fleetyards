@@ -47,7 +47,20 @@ class Api::V1::PublicFleetsStatsModelCountsTest < ActionDispatch::IntegrationTes
     fleet = create(:fleet, public_fleet_stats: true, members: [member])
 
     assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug} do
-      assert_equal 3, parsed_body["modelCounts"].size
+      expected = member.vehicles.each_with_object({}) { |v, h| h[v.model.slug] = 1 }
+      assert_equal expected, parsed_body["modelCounts"]
+    end
+  end
+
+  test "GET /public/fleets/:fleetSlug/stats/model-counts filters by modelNameCont" do
+    member = create(:user, vehicle_count: 3)
+    fleet = create(:fleet, public_fleet_stats: true, members: [member])
+    target = member.vehicles.first
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: fleet.slug},
+      params: {q: {"modelNameCont" => target.model.name}} do
+      assert_equal({target.model.slug => 1}, parsed_body["modelCounts"])
     end
   end
 
@@ -55,5 +68,9 @@ class Api::V1::PublicFleetsStatsModelCountsTest < ActionDispatch::IntegrationTes
     fleet = create(:fleet, public_fleet_stats: false)
 
     assert_api_response :get, 404, path_params: {fleetSlug: fleet.slug}
+  end
+
+  test "GET /public/fleets/:fleetSlug/stats/model-counts returns 404 for unknown fleet" do
+    assert_api_response :get, 404, path_params: {fleetSlug: "unknown-fleet"}
   end
 end

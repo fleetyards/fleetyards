@@ -54,7 +54,19 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200,
       path_params: {username: user.username},
       params: {q: {"modelNameOrModelDescriptionCont" => vehicles.first.model.name}} do
-      assert_operator parsed_body["items"].count, :>=, 1
+      assert_equal 1, parsed_body["items"].count
+      assert_equal vehicles.first.model.name, parsed_body["items"].first.dig("model", "name")
+    end
+  end
+
+  test "GET /public/hangars/:username honours perPage" do
+    user = create(:user, :public_hangar)
+    create_list(:vehicle, 2, :public, user: user)
+
+    assert_api_response :get, 200,
+      path_params: {username: user.username},
+      params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
     end
   end
 

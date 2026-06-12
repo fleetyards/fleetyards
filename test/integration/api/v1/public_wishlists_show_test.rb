@@ -51,6 +51,7 @@ class Api::V1::PublicWishlistsShowTest < ActionDispatch::IntegrationTest
       path_params: {username: user.username},
       params: {q: {"modelNameOrModelDescriptionCont" => user.vehicles.first.model.name}} do
       assert_equal 1, parsed_body["items"].count
+      assert_equal user.vehicles.first.model.name, parsed_body["items"].first.dig("model", "name")
     end
   end
 
