@@ -60,4 +60,13 @@ class Api::V1::FleetsFindByInviteTest < ActionDispatch::IntegrationTest
       path_params: {token: invite.token},
       headers: oauth_headers_for(@user, scopes: ["fleet", "fleet:read"])
   end
+
+  test "POST /fleets/find-by-invite/:token returns 401 for OAuth token with wrong scope" do
+    fleet = create(:fleet)
+    invite = create(:fleet_invite_url, fleet: fleet)
+
+    assert_api_response :post, 401,
+      path_params: {token: invite.token},
+      headers: oauth_headers_for(@user, scopes: ["public"])
+  end
 end

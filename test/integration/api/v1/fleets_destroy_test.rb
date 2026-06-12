@@ -12,7 +12,6 @@ class Api::V1::FleetsDestroyTest < ActionDispatch::IntegrationTest
 
     delete("Destroy Fleet") do
       operationId "destroyFleet"
-      description "You are not the owner of this Fleet"
       tags "Fleets"
       produces "application/json"
 
@@ -32,7 +31,7 @@ class Api::V1::FleetsDestroyTest < ActionDispatch::IntegrationTest
         schema "$ref": "#/components/schemas/StandardError"
       end
 
-      response(403, "forbidden") do
+      response(403, "You are not the owner of this Fleet") do
         schema "$ref": "#/components/schemas/StandardError"
       end
     end

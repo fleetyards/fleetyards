@@ -2317,7 +2317,6 @@ paths:
       tags:
       - Fleets
       operationId: destroyFleet
-      description: You are not the owner of this Fleet
       security:
       - SessionCookie: []
       - Oauth2:
@@ -2342,7 +2341,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
         '403':
-          description: forbidden
+          description: You are not the owner of this Fleet
           content:
             application/json:
               schema:
@@ -2394,7 +2393,6 @@ paths:
       tags:
       - Fleets
       operationId: updateFleet
-      description: You are not an Admin or Officer of this Fleet
       security:
       - SessionCookie: []
       - Oauth2:
@@ -2429,7 +2427,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
         '403':
-          description: forbidden
+          description: You are not an Admin or Officer of this Fleet
           content:
             application/json:
               schema:

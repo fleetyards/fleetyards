@@ -56,4 +56,10 @@ class Api::V1::FleetsCheckTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@user, scopes: ["fleet", "fleet:read"]),
       body: {value: "STF"}
   end
+
+  test "POST /fleets/check returns 401 for OAuth token with wrong scope" do
+    assert_api_response :post, 401,
+      headers: oauth_headers_for(@user, scopes: ["public"]),
+      body: {value: "STF"}
+  end
 end

@@ -52,4 +52,8 @@ class Api::V1::FleetsMyTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, headers: oauth_headers_for(@user, scopes: ["fleet", "fleet:read"])
   end
+
+  test "GET /fleets/my returns 401 for OAuth token with wrong scope" do
+    assert_api_response :get, 401, headers: oauth_headers_for(@user, scopes: ["public"])
+  end
 end

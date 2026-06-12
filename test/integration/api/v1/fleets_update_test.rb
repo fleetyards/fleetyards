@@ -12,7 +12,6 @@ class Api::V1::FleetsUpdateTest < ActionDispatch::IntegrationTest
 
     put("Update Fleet") do
       operationId "updateFleet"
-      description "You are not an Admin or Officer of this Fleet"
       tags "Fleets"
       consumes "application/json"
       produces "application/json"
@@ -37,7 +36,7 @@ class Api::V1::FleetsUpdateTest < ActionDispatch::IntegrationTest
         schema "$ref": "#/components/schemas/StandardError"
       end
 
-      response(403, "forbidden") do
+      response(403, "You are not an Admin or Officer of this Fleet") do
         schema "$ref": "#/components/schemas/StandardError"
       end
     end
