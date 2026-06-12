@@ -4,7 +4,16 @@ set -euo pipefail
 
 # Pin DOMAIN and ON_SUBDOMAIN so the generated schema always contains
 # canonical dev-server URLs, regardless of the local environment.
-DOMAIN=fleetyards.test ON_SUBDOMAIN=true bundle exec rake openapi_ruby:generate
+#
+# Restrict PATTERN to request/integration specs only. Loading every
+# test/**/*_test.rb pulls in test/models/*_test.rb, whose shoulda
+# matcher calls (`should belong_to(:user)`) aren't defined under
+# OPENAPI_RUBY_GENERATING (matcher config is gated off in
+# test_helper.rb). Only request specs contribute to the schema.
+DOMAIN=fleetyards.test \
+  ON_SUBDOMAIN=true \
+  PATTERN="spec/requests/**/*_spec.rb,test/integration/**/*_test.rb" \
+  bundle exec rake openapi_ruby:generate
 
 echo "cleanup old generated files"
 
