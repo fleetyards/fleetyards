@@ -73,6 +73,14 @@ class Api::V1::FleetsVehiclesExportTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /fleets/:slug/vehicles/export is accessible to a non-admin member" do
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 3, parsed_body.count
+    end
+  end
+
   test "GET /fleets/:slug/vehicles/export returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {fleetSlug: @fleet.slug}
   end

@@ -46,8 +46,12 @@ class Api::V1::FleetsStatsModelCountsTest < ActionDispatch::IntegrationTest
 
   setup do
     Sidekiq::Testing.inline!
-    @admin = create(:user, vehicle_count: 3)
+    @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin])
+    shared_model = create(:model)
+    @shared_one = create(:vehicle, user: @admin, model: shared_model)
+    @shared_two = create(:vehicle, user: @admin, model: shared_model)
+    @unique = create(:vehicle, user: @admin)
   end
 
   teardown do
@@ -57,7 +61,22 @@ class Api::V1::FleetsStatsModelCountsTest < ActionDispatch::IntegrationTest
   test "GET /fleets/:slug/stats/model-counts returns model counts" do
     sign_in @admin
 
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal(
+        {@shared_one.model.slug => 2, @unique.model.slug => 1},
+        parsed_body["modelCounts"]
+      )
+    end
+  end
+
+  test "GET /fleets/:slug/stats/model-counts filters by modelNameCont" do
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"modelNameCont" => @shared_one.model.name}} do
+      assert_equal({@shared_one.model.slug => 2}, parsed_body["modelCounts"])
+    end
   end
 
   test "GET /fleets/:slug/stats/model-counts returns 401 when not signed in" do

@@ -10,7 +10,6 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
   api_path "/fleets/use-invite" do
     post("Create Fleet Membership by Invite") do
       operationId "useFleetInvite"
-      description "User is already a member of this fleet"
       tags "FleetInviteUrls"
       consumes "application/json"
       produces "application/json"
@@ -31,7 +30,7 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
         schema "$ref": "#/components/schemas/StandardError"
       end
 
-      response(400, "bad request") do
+      response(400, "User is already a member of this fleet") do
         schema "$ref": "#/components/schemas/ValidationError"
       end
 
@@ -56,6 +55,10 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
       assert_equal @author.username, parsed_body["username"]
       assert_equal "requested", parsed_body["status"]
     end
+
+    notification = Notification.find_by(user: @admin, notification_type: "fleet_member_requested")
+    assert_predicate notification, :present?
+    assert_kind_of FleetMembership, notification.record
   end
 
   test "POST /fleets/use-invite returns 404 for unknown token" do

@@ -468,7 +468,6 @@ paths:
       tags:
       - FleetInviteUrls
       operationId: useFleetInvite
-      description: User is already a member of this fleet
       security:
       - SessionCookie: []
       - Oauth2: []
@@ -493,7 +492,7 @@ paths:
               schema:
                 "$ref": "#/components/schemas/StandardError"
         '400':
-          description: bad request
+          description: User is already a member of this fleet
           content:
             application/json:
               schema:

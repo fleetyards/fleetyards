@@ -53,6 +53,12 @@ class Api::V1::FleetsStatsVehiclesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
   end
 
+  test "GET /fleets/:slug/stats/vehicles returns 404 for a non-member" do
+    sign_in create(:user)
+
+    assert_api_response :get, 404, path_params: {fleetSlug: @fleet.slug}
+  end
+
   test "GET /fleets/:slug/stats/vehicles returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {fleetSlug: @fleet.slug}
   end

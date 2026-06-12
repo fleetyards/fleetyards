@@ -57,6 +57,12 @@ class Api::V1::FleetsInviteUrlsDestroyTest < ActionDispatch::IntegrationTest
     assert_api_response :delete, 404, path_params: {fleetSlug: "unknown-fleet", token: @invite_url.token}
   end
 
+  test "DELETE /fleets/:slug/invite-urls/:token returns 404 for unknown token" do
+    sign_in @admin
+
+    assert_api_response :delete, 404, path_params: {fleetSlug: @fleet.slug, token: "unknown-token"}
+  end
+
   test "DELETE /fleets/:slug/invite-urls/:token returns 403 for non-admin member" do
     sign_in @member
 
