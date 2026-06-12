@@ -10,8 +10,8 @@ namespace :test_fixtures do
     WebMock.enable!
     WebMock.disable_net_connect!(allow_localhost: true)
 
-    matrix_body = File.read(Rails.root.join("spec/fixtures/rsi/matrix.json"))
-    pledge_store_data = JSON.parse(File.read(Rails.root.join("spec/fixtures/rsi/pledge_store.json")))
+    matrix_body = File.read(Rails.root.join("test/fixtures/rsi/matrix.json"))
+    pledge_store_data = JSON.parse(File.read(Rails.root.join("test/fixtures/rsi/pledge_store.json")))
 
     WebMock.stub_request(:get, %r{\Ahttps://robertsspaceindustries.com/ship-matrix/index.*})
       .to_return(status: 200, body: matrix_body)

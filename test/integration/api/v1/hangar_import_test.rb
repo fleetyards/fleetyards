@@ -38,7 +38,7 @@ class Api::V1::HangarImportTest < ActionDispatch::IntegrationTest
 
   def upload_blob(fixture)
     ActiveStorage::Blob.create_and_upload!(
-      io: File.open(Rails.root.join("spec/fixtures/files/#{fixture}")),
+      io: File.open(Rails.root.join("test/fixtures/files/#{fixture}")),
       filename: fixture
     )
   end

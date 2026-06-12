@@ -20,7 +20,7 @@
 #
 FactoryBot.define do
   factory :image do
-    file { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/image.jpg"), "image/jpeg") }
+    file { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg") }
     gallery { create(:model) }
     enabled { true }
     global { true }

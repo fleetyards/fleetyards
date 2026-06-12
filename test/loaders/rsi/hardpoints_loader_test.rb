@@ -12,7 +12,7 @@ module Rsi
       clean_loader_tables
       @andromeda = create(:model, name: "Constellation Andromeda", rsi_id: 45, rsi_chassis_id: 4)
       @loader = ::Rsi::HardpointsLoader.new
-      @matrix_response_stub = File.read("spec/fixtures/rsi/matrix.json")
+      @matrix_response_stub = File.read("test/fixtures/rsi/matrix.json")
 
       Timecop.freeze("2017-01-01 14:00:00")
 

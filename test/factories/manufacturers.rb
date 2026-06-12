@@ -23,7 +23,7 @@ FactoryBot.define do
     sc_ref { name.parameterize }
 
     trait :with_logo do
-      logo { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+      logo { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
 
     trait :with_description do

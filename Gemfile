@@ -116,7 +116,6 @@ gem "flipper-active_record"
 
 # openapi
 gem "openapi-ruby", "~> 4.0"
-gem "rspec-rails", require: false
 
 group :development do
   gem "annotaterb"
@@ -160,8 +159,6 @@ group :development, :test do
   gem "factory_bot_rails", "~> 6.5.0"
 
   gem "debug", ">= 1.0.0", platforms: %i[mri windows]
-
-  gem "flatware-rspec", require: false
 
   gem "cypress-on-rails"
 

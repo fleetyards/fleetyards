@@ -9,7 +9,7 @@ class HangarSyncTest < ActiveSupport::TestCase
   setup do
     load_loader_fixtures
     @user = create(:user)
-    @input = JSON.parse(Rails.root.join("spec/fixtures/sync/rsi_hangar.json").read)
+    @input = JSON.parse(Rails.root.join("test/fixtures/sync/rsi_hangar.json").read)
   end
 
   class WithExistingVehiclesTest < HangarSyncTest

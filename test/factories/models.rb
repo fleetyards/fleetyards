@@ -158,7 +158,7 @@ FactoryBot.define do
 
     trait :with_images do
       after(:create) do |model|
-        create_list(:image, 3, gallery: model, file: Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/image.jpg"), "image/jpeg"))
+        create_list(:image, 3, gallery: model, file: Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg"))
       end
     end
 
@@ -217,8 +217,8 @@ FactoryBot.define do
     end
 
     trait :with_legacy_images do
-      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
-      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/ship.jpg"), "image/jpeg") }
+      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/ship.jpg"), "image/jpeg") }
     end
 
     trait :with_docks do
@@ -254,15 +254,15 @@ FactoryBot.define do
     end
 
     trait :with_store_image do
-      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/ship.jpg"), "image/jpeg") }
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/ship.jpg"), "image/jpeg") }
     end
 
     trait :with_fleetchart_image do
-      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
 
     trait :with_brochure do
-      brochure { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+      brochure { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
   end
 end

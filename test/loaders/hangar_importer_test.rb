@@ -9,7 +9,7 @@ class HangarImporterTest < ActiveSupport::TestCase
   setup do
     load_loader_fixtures
     @user = create(:user)
-    @import_file = Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/imports/export.json"))
+    @import_file = Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/imports/export.json"))
     @import = ::Imports::HangarImport.create!(user_id: @user.id, import: @import_file)
   end
 

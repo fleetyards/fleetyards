@@ -41,11 +41,11 @@ FactoryBot.define do
     end
 
     trait :with_store_image do
-      store_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/ship.jpg"), "image/jpeg") }
+      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/ship.jpg"), "image/jpeg") }
     end
 
     trait :with_fleetchart_image do
-      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("spec/fixtures/files/test.png"), "image/png") }
+      fleetchart_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
     end
 
     trait :with_rsi_data do

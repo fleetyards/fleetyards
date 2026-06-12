@@ -1,4 +1,0 @@
---require spec_helper
---color
---format progress
---format html --out spec/reports/latest.html
