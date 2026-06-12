@@ -176,7 +176,7 @@ class Admin::Api::V1::ModelModulePackagesTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200, params: {q: {"nameCont" => packages.first.name}} do
-      assert_operator parsed_body["items"].count, :>=, 1
+      assert_equal 1, parsed_body["items"].count
     end
   end
 
