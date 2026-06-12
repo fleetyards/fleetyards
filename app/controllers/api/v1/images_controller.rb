@@ -16,7 +16,7 @@ module Api
 
         q = scope.ransack(image_query_params)
 
-        @images = q.result
+        @images = q.result(distinct: true)
           .page(params[:page])
           .per(per_page(Image))
       end
