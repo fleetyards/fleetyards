@@ -51,7 +51,15 @@ class Api::V1::VehiclesCreateBulkTest < ActionDispatch::IntegrationTest
     model = create(:model)
 
     assert_api_response :post, 204,
-      headers: oauth_headers_for(@user, scopes: ["hangar:write"]),
+      headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"]),
+      body: {vehicles: [{modelId: model.id, wanted: true}]}
+  end
+
+  test "POST /vehicles/bulk returns 401 for OAuth token without write scope" do
+    model = create(:model)
+
+    assert_api_response :post, 401,
+      headers: oauth_headers_for(@user, scopes: ["hangar:read"]),
       body: {vehicles: [{modelId: model.id, wanted: true}]}
   end
 end
