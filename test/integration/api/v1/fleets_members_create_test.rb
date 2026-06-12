@@ -60,6 +60,10 @@ class Api::V1::FleetsMembersCreateTest < ActionDispatch::IntegrationTest
       assert_equal @new_member.username, parsed_body["username"]
       assert_equal "invited", parsed_body["status"]
     end
+
+    notification = Notification.find_by(user: @new_member, notification_type: "fleet_invite")
+    assert_predicate notification, :present?
+    assert_kind_of FleetMembership, notification.record
   end
 
   test "POST /fleets/:slug/members returns 400 for unknown username" do

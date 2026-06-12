@@ -13,7 +13,6 @@ class Api::V1::FleetsMembersAcceptRequestTest < ActionDispatch::IntegrationTest
 
     put("Accept Member") do
       operationId "acceptFleetMember"
-      description "No Member found"
       tags "FleetMembers"
       produces "application/json"
 
@@ -35,7 +34,7 @@ class Api::V1::FleetsMembersAcceptRequestTest < ActionDispatch::IntegrationTest
         schema "$ref": "#/components/schemas/ValidationError"
       end
 
-      response(404, "not found") do
+      response(404, "No Member found") do
         schema "$ref": "#/components/schemas/StandardError"
       end
 
@@ -57,6 +56,16 @@ class Api::V1::FleetsMembersAcceptRequestTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, username: @applicant.username}, body: {}
+
+    notification = Notification.find_by(user: @applicant, notification_type: "fleet_request_accepted")
+    assert_predicate notification, :present?
+    assert_kind_of FleetMembership, notification.record
+  end
+
+  test "PUT /fleets/:slug/members/:username/accept returns 400 when the user is already a member" do
+    sign_in @admin
+
+    assert_api_response :put, 400, path_params: {fleetSlug: @fleet.slug, username: @member.username}, body: {}
   end
 
   test "PUT /fleets/:slug/members/:username/accept returns 404 for unknown member" do

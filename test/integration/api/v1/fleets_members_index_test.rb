@@ -50,13 +50,71 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
   setup do
     @admin = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@member])
+    @another_member = create(:user)
+    @fleet = create(:fleet, admins: [@admin], members: [@member, @another_member])
   end
 
-  test "GET /fleets/:slug/members lists members" do
+  test "GET /fleets/:slug/members lists all members" do
     sign_in @admin
 
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 3, parsed_body["items"].count
+    end
+  end
+
+  test "GET /fleets/:slug/members filters by usernameCont" do
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"usernameCont" => @member.username}} do
+      assert_equal 1, parsed_body["items"].count
+      assert_equal @member.username, parsed_body["items"].first["username"]
+    end
+  end
+
+  test "GET /fleets/:slug/members honours perPage" do
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {perPage: 1} do
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
+
+  test "GET /fleets/:slug/members is accessible to a non-admin member" do
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 3, parsed_body["items"].count
+    end
+  end
+
+  test "GET /fleets/:slug/members sorts by rsiHandle asc" do
+    @admin.update!(rsi_handle: "charlie")
+    @member.update!(rsi_handle: "alpha")
+    @another_member.update!(rsi_handle: "bravo")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"sorts" => "rsiHandle asc"}} do
+      assert_equal %w[alpha bravo charlie], parsed_body["items"].map { |m| m["rsiHandle"] }
+    end
+  end
+
+  test "GET /fleets/:slug/members sorts by rsiHandle desc" do
+    @admin.update!(rsi_handle: "charlie")
+    @member.update!(rsi_handle: "alpha")
+    @another_member.update!(rsi_handle: "bravo")
+    sign_in @admin
+
+    assert_api_response :get, 200,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {q: {"sorts" => "rsiHandle desc"}} do
+      assert_equal %w[charlie bravo alpha], parsed_body["items"].map { |m| m["rsiHandle"] }
+    end
   end
 
   test "GET /fleets/:slug/members returns 404 for unknown fleet" do
