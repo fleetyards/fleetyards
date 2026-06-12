@@ -167,7 +167,7 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200 do
-      assert_equal 2, parsed_body.count
+      assert_equal 3, parsed_body["items"].count
     end
   end
 
@@ -189,7 +189,7 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200, params: {perPage: 2} do
-      assert_equal 2, parsed_body.count
+      assert_equal 2, parsed_body["items"].count
     end
   end
 

@@ -178,7 +178,17 @@ class Admin::Api::V1::ModelPaintsTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200, params: {q: {"nameCont" => paints.first.name}} do
-      assert_operator parsed_body["items"].count, :>=, 1
+      assert_equal 1, parsed_body["items"].count
+    end
+  end
+
+  test "GET /model-paints paginates with perPage" do
+    create_list(:model_paint, 3)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {perPage: 2} do
+      assert_equal 2, parsed_body["items"].count
+      assert_equal 2, parsed_body.dig("meta", "pagination", "totalPages")
     end
   end
 
