@@ -21,7 +21,7 @@
 FactoryBot.define do
   factory :image do
     file { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/image.jpg"), "image/jpeg") }
-    gallery { Model.first || create(:model) }
+    gallery { Model.order(:created_at).first || create(:model) }
     enabled { true }
     global { true }
 
