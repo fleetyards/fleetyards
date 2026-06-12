@@ -195,7 +195,7 @@ class Admin::Api::V1::ItemPricesTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200, params: {q: {"itemIdEq" => prices.first.item_id}} do
-      assert_operator parsed_body["items"].count, :>=, 1
+      assert_equal 1, parsed_body["items"].count
     end
   end
 
