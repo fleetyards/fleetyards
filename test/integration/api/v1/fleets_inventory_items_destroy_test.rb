@@ -47,6 +47,8 @@ class Api::V1::FleetsInventoryItemsDestroyTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :delete, 204, path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, id: @item.id}
+
+    assert_nil FleetInventoryItem.find_by(id: @item.id)
   end
 
   test "DELETE /inventories/:slug/items/:id returns 403 for non-admin member" do

@@ -42,17 +42,29 @@ class Api::V1::FleetsInventoryItemsCreateTest < ActionDispatch::IntegrationTest
   setup do
     Flipper.enable("fleet_logistics")
     @admin = create(:user)
+    @officer = create(:user)
     @member = create(:user)
-    @fleet = create(:fleet, admins: [@admin], members: [@member])
+    @fleet = create(:fleet, admins: [@admin], officers: [@officer], members: [@member])
     @inventory = create(:fleet_inventory, fleet: @fleet)
   end
 
   def item_body(overrides = {})
-    {name: "Quantanium", category: "commodity", quantity: 100, unit: "scu", entryType: "deposit"}.merge(overrides)
+    {name: "Quantanium", category: "commodity", quantity: 250.5, unit: "scu", entryType: "deposit"}.merge(overrides)
   end
 
   test "POST /inventories/:slug/items creates an item" do
     sign_in @admin
+
+    assert_api_response :post, 201,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},
+      body: item_body do
+      assert_equal "Quantanium", parsed_body["name"]
+      assert_in_delta 250.5, parsed_body["quantity"]
+    end
+  end
+
+  test "POST /inventories/:slug/items can be called by an officer" do
+    sign_in @officer
 
     assert_api_response :post, 201,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug},

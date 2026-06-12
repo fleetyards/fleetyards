@@ -54,7 +54,9 @@ class Api::V1::FleetsInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, id: @item.id},
-      body: {name: "Updated Item"}
+      body: {notes: "Updated after mining run"} do
+      assert_equal "Updated after mining run", parsed_body["notes"]
+    end
   end
 
   test "PUT /inventories/:slug/items/:id returns 403 for non-admin member" do
@@ -62,19 +64,19 @@ class Api::V1::FleetsInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 403,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, id: @item.id},
-      body: {name: "Updated Item"}
+      body: {notes: "Updated after mining run"}
   end
 
   test "PUT /inventories/:slug/items/:id returns 401 when not signed in" do
     assert_api_response :put, 401,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, id: @item.id},
-      body: {name: "Updated Item"}
+      body: {notes: "Updated after mining run"}
   end
 
   test "PUT /inventories/:slug/items/:id with OAuth bearer token" do
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, id: @item.id},
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),
-      body: {name: "OAuth Updated"}
+      body: {notes: "OAuth updated note"}
   end
 end

@@ -45,7 +45,13 @@ class Api::V1::FleetsAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
   test "GET /fleets/:slug/inventory-stock aggregates across inventories" do
     sign_in @admin
 
-    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal 2, parsed_body.length
+
+      med_pens = parsed_body.find { |d| d["name"] == "Med Pens" }
+      assert_equal 40.0, med_pens["netQuantity"]
+      assert_equal "Medical Bay", med_pens["inventory"]["name"]
+    end
   end
 
   test "GET /fleets/:slug/inventory-stock returns 401 when not signed in" do
