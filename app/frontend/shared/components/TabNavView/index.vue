@@ -11,13 +11,14 @@ import TabNavViewItems from "@/shared/components/TabNavView/Items/index.vue";
 import TabNavViewMobileDropdown from "@/shared/components/TabNavView/MobileDropdown/index.vue";
 
 type Props = {
-  routes: RouteRecordRaw[];
+  routes?: RouteRecordRaw[];
   authenticated?: boolean;
   resourceAccess?: string[];
   activeKey?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  routes: undefined,
   authenticated: false,
   resourceAccess: undefined,
   activeKey: undefined,
@@ -69,7 +70,7 @@ watch(
     </div>
     <div class="col-12 col-md-3 tabs-wrapper">
       <TabNavViewMobileDropdown
-        v-if="mobile"
+        v-if="mobile && props.routes"
         :routes="props.routes"
         :authenticated="props.authenticated"
         :resource-access="props.resourceAccess"
@@ -77,6 +78,7 @@ watch(
       <ul v-else class="tabs">
         <slot name="nav">
           <TabNavViewItems
+            v-if="props.routes"
             :routes="props.routes"
             :authenticated="props.authenticated"
             :resource-access="props.resourceAccess"
