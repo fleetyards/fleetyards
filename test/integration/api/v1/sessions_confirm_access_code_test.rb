@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../../openapi_helper"
+require "openapi_helper"
 
 class Api::V1::SessionsConfirmAccessCodeTest < ActionDispatch::IntegrationTest
   include OpenapiRuby::Adapters::Minitest::DSL

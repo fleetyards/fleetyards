@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../../openapi_helper"
+require "openapi_helper"
 
 class Api::V1::FleetsInventoryItemsWithdrawalTest < ActionDispatch::IntegrationTest
   setup do
