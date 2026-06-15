@@ -25,12 +25,12 @@ class Api::V1::FleetsNotificationsDiscordStatusTest < ActionDispatch::Integratio
         schema type: :object,
           properties: {
             ok: {type: :boolean},
-            code: {type: :string, nullable: true},
-            message: {type: :string, nullable: true},
-            guildId: {type: :string, nullable: true},
-            guildName: {type: :string, nullable: true},
-            status: {type: :integer, nullable: true},
-            installUrl: {type: :string, nullable: true}
+            code: {type: :string},
+            message: {type: :string},
+            guildId: {type: :string},
+            guildName: {type: :string},
+            status: {type: :integer},
+            installUrl: {type: :string}
           }
       end
 

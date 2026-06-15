@@ -14,40 +14,37 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               fleetEventId: {type: :string, format: :uuid},
-              fleetEventSlotId: {type: :string, format: :uuid, nullable: true},
-              occurrenceDate: {type: :string, format: :date, nullable: true},
+              fleetEventSlotId: {type: :string, format: :uuid},
+              occurrenceDate: {type: :string, format: :date},
               status: {type: :string, enum: STATUSES},
-              notes: {type: :string, nullable: true},
-              confirmedAt: {type: :string, format: "date-time", nullable: true},
-              withdrawnAt: {type: :string, format: "date-time", nullable: true},
+              notes: {type: :string},
+              confirmedAt: {type: :string, format: "date-time"},
+              withdrawnAt: {type: :string, format: "date-time"},
               user: {
                 type: :object,
-                nullable: true,
-                properties: {
+                                properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }
               },
               vehicle: {
                 type: :object,
-                nullable: true,
-                properties: {
+                                properties: {
                   id: {type: :string, format: :uuid},
-                  name: {type: :string, nullable: true},
+                  name: {type: :string},
                   model: {
                     type: :object,
-                    nullable: true,
-                    properties: {
+                                        properties: {
                       id: {type: :string, format: :uuid},
                       name: {type: :string},
                       slug: {type: :string},
-                      classification: {type: :string, nullable: true},
-                      focus: {type: :string, nullable: true},
-                      size: {type: :string, nullable: true},
-                      minCrew: {type: :integer, nullable: true},
-                      maxCrew: {type: :integer, nullable: true},
-                      cargo: {type: :integer, nullable: true},
-                      positionCount: {type: :integer, nullable: true}
+                      classification: {type: :string},
+                      focus: {type: :string},
+                      size: {type: :string},
+                      minCrew: {type: :integer},
+                      maxCrew: {type: :integer},
+                      cargo: {type: :integer},
+                      positionCount: {type: :integer}
                     }
                   }
                 }

@@ -24,8 +24,8 @@ module V1
               type: :array,
               items: {type: :string, enum: IN_APP_EVENTS}
             },
-            discordGuildId: {type: :string, nullable: true},
-            discordChannelId: {type: :string, nullable: true},
+            discordGuildId: {type: :string},
+            discordChannelId: {type: :string},
             # discord_webhook_url is encrypted; never returned, only writable.
             discordWebhookConfigured: {type: :boolean}
           },

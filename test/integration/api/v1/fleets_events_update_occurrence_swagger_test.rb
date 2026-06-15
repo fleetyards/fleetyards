@@ -21,13 +21,13 @@ class Api::V1::FleetsEventsUpdateOccurrenceSwaggerTest < ActionDispatch::Integra
         type: :object,
         properties: {
           date: {type: :string, format: :date},
-          title: {type: :string, nullable: true},
-          description: {type: :string, nullable: true},
-          briefing: {type: :string, nullable: true},
-          location: {type: :string, nullable: true},
-          meetupLocation: {type: :string, nullable: true},
-          scenario: {type: :string, nullable: true},
-          coverImagePreset: {type: :string, nullable: true}
+          title: {type: :string},
+          description: {type: :string},
+          briefing: {type: :string},
+          location: {type: :string},
+          meetupLocation: {type: :string},
+          scenario: {type: :string},
+          coverImagePreset: {type: :string}
         },
         required: %w[date]
       }, required: true

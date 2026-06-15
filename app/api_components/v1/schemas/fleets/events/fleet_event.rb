@@ -17,42 +17,40 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               fleetId: {type: :string, format: :uuid},
-              missionId: {type: :string, format: :uuid, nullable: true},
+              missionId: {type: :string, format: :uuid},
               title: {type: :string},
               slug: {type: :string},
-              description: {type: :string, nullable: true},
-              briefing: {type: :string, nullable: true},
+              description: {type: :string},
+              briefing: {type: :string},
               status: {type: :string, enum: STATUSES},
               startsAt: {type: :string, format: "date-time"},
-              endsAt: {type: :string, format: "date-time", nullable: true},
+              endsAt: {type: :string, format: "date-time"},
               timezone: {type: :string},
-              location: {type: :string, nullable: true},
-              meetupLocation: {type: :string, nullable: true},
+              location: {type: :string},
+              meetupLocation: {type: :string},
               visibility: {type: :string, enum: VISIBILITIES},
               category: {
                 type: :string,
                 enum: V1::Schemas::Fleets::Missions::Mission::CATEGORIES
               },
-              scenario: {type: :string, nullable: true},
-              coverImagePreset: {type: :string, nullable: true},
-              coverImage: {"$ref": "#/components/schemas/MediaFile", nullable: true},
-              maxAttendees: {type: :integer, nullable: true},
+              scenario: {type: :string},
+              coverImagePreset: {type: :string},
+              coverImage: {"$ref": "#/components/schemas/MediaFile"},
+              maxAttendees: {type: :integer},
               autoLockEnabled: {type: :boolean},
-              autoLockMinutesBefore: {type: :integer, nullable: true},
-              cancelledReason: {type: :string, nullable: true},
+              autoLockMinutesBefore: {type: :integer},
+              cancelledReason: {type: :string},
               signupApproval: {type: :string, enum: SIGNUP_APPROVALS},
               viewerEventRole: {
                 type: :string,
-                nullable: true,
-                enum: VIEWER_EVENT_ROLES + [nil]
+                                enum: VIEWER_EVENT_ROLES
               },
               archived: {type: :boolean},
-              archivedAt: {type: :string, format: "date-time", nullable: true},
+              archivedAt: {type: :string, format: "date-time"},
               externalUid: {type: :string, format: :uuid},
               createdBy: {
                 type: :object,
-                nullable: true,
-                properties: {
+                                properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }
@@ -61,23 +59,23 @@ module V1
               teamCount: {type: :integer},
               past: {type: :boolean},
               signupsOpen: {type: :boolean},
-              discordEventId: {type: :string, nullable: true},
-              discordSyncedAt: {type: :string, format: "date-time", nullable: true},
+              discordEventId: {type: :string},
+              discordSyncedAt: {type: :string, format: "date-time"},
               discordConfigured: {type: :boolean},
               recurring: {type: :boolean},
               recurrenceInterval: {
                 type: :string,
                 enum: ::FleetEvent::RECURRENCE_INTERVALS,
-                nullable: true
+                
               },
-              recurrenceUntil: {type: :string, format: :date, nullable: true},
-              recurrenceCount: {type: :integer, nullable: true},
+              recurrenceUntil: {type: :string, format: :date},
+              recurrenceCount: {type: :integer},
               excludedDates: {
                 type: :array,
                 items: {type: :string, format: :date}
               },
-              occurrenceDate: {type: :string, format: :date, nullable: true},
-              parentEventSlug: {type: :string, nullable: true},
+              occurrenceDate: {type: :string, format: :date},
+              parentEventSlug: {type: :string},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },

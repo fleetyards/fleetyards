@@ -14,15 +14,14 @@ module V1
               slottableType: {type: :string, enum: %w[FleetEventTeam FleetEventShip]},
               slottableId: {type: :string, format: :uuid},
               title: {type: :string},
-              description: {type: :string, nullable: true},
+              description: {type: :string},
               position: {type: :integer},
               derived: {type: :boolean},
-              positionType: {type: :string, nullable: true},
-              modelPositionId: {type: :string, format: :uuid, nullable: true},
+              positionType: {type: :string},
+              modelPositionId: {type: :string, format: :uuid},
               signupApproval: {
                 type: :string,
-                nullable: true,
-                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS + [nil]
+                                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
               },
               effectiveSignupApproval: {
                 type: :string,

@@ -26,8 +26,7 @@ module V1
               },
               grantedBy: {
                 type: :object,
-                nullable: true,
-                properties: {
+                                properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }

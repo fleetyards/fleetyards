@@ -14,10 +14,10 @@ module V1
               slottableType: {type: :string, enum: %w[MissionTeam MissionShip]},
               slottableId: {type: :string, format: :uuid},
               title: {type: :string},
-              description: {type: :string, nullable: true},
+              description: {type: :string},
               position: {type: :integer},
               derived: {type: :boolean},
-              positionType: {type: :string, nullable: true}
+              positionType: {type: :string}
             },
             required: %w[id slottableType slottableId title position derived],
             additionalProperties: false

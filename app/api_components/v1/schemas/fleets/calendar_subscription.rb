@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             enabled: {type: :boolean},
-            feedUrl: {type: :string, format: :uri, nullable: true}
+            feedUrl: {type: :string, format: :uri}
           },
           required: %w[enabled feedUrl],
           additionalProperties: false

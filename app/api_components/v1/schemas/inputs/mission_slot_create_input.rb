@@ -12,7 +12,7 @@ module V1
             slottableType: {type: :string, enum: %w[MissionTeam MissionShip]},
             slottableId: {type: :string, format: :uuid},
             title: {type: :string},
-            description: {type: :string, nullable: true}
+            description: {type: :string}
           },
           required: %w[slottableType slottableId title],
           additionalProperties: false

@@ -9,15 +9,15 @@ module V1
         schema({
           type: :object,
           properties: {
-            title: {type: :string, nullable: true},
-            description: {type: :string, nullable: true},
-            modelId: {type: :string, format: :uuid, nullable: true},
-            classification: {type: :string, nullable: true},
-            focus: {type: :string, nullable: true},
-            minSize: {type: :string, nullable: true},
-            maxSize: {type: :string, nullable: true},
-            minCrew: {type: :integer, nullable: true},
-            minCargo: {type: :number, nullable: true}
+            title: {type: :string},
+            description: {type: :string},
+            modelId: {type: :string, format: :uuid},
+            classification: {type: :string},
+            focus: {type: :string},
+            minSize: {type: :string},
+            maxSize: {type: :string},
+            minCrew: {type: :integer},
+            minCargo: {type: :number}
           },
           additionalProperties: false
         })

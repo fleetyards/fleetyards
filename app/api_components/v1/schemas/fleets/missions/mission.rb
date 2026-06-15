@@ -24,17 +24,16 @@ module V1
               id: {type: :string, format: :uuid},
               title: {type: :string},
               slug: {type: :string},
-              description: {type: :string, nullable: true},
+              description: {type: :string},
               category: {type: :string, enum: CATEGORIES},
-              scenario: {type: :string, nullable: true},
-              coverImagePreset: {type: :string, nullable: true},
-              coverImage: {"$ref": "#/components/schemas/MediaFile", nullable: true},
+              scenario: {type: :string},
+              coverImagePreset: {type: :string},
+              coverImage: {"$ref": "#/components/schemas/MediaFile"},
               archived: {type: :boolean},
-              archivedAt: {type: :string, format: "date-time", nullable: true},
+              archivedAt: {type: :string, format: "date-time"},
               createdBy: {
                 type: :object,
-                nullable: true,
-                properties: {
+                                properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }

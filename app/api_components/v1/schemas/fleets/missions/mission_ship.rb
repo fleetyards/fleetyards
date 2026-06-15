@@ -12,33 +12,32 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               missionTeamId: {type: :string, format: :uuid},
-              title: {type: :string, nullable: true},
-              displayTitle: {type: :string, nullable: true},
-              description: {type: :string, nullable: true},
+              title: {type: :string},
+              displayTitle: {type: :string},
+              description: {type: :string},
               position: {type: :integer},
               strict: {type: :boolean},
               model: {
                 type: :object,
-                nullable: true,
-                properties: {
+                                properties: {
                   id: {type: :string, format: :uuid},
                   name: {type: :string},
                   slug: {type: :string},
-                  minCrew: {type: :integer, nullable: true},
-                  maxCrew: {type: :integer, nullable: true},
-                  image: {"$ref": "#/components/schemas/MediaFile", nullable: true}
+                  minCrew: {type: :integer},
+                  maxCrew: {type: :integer},
+                  image: {"$ref": "#/components/schemas/MediaFile"}
                 },
                 required: %w[id name slug]
               },
               filters: {
                 type: :object,
                 properties: {
-                  classification: {type: :string, nullable: true},
-                  focus: {type: :string, nullable: true},
-                  minSize: {type: :string, nullable: true},
-                  maxSize: {type: :string, nullable: true},
-                  minCrew: {type: :integer, nullable: true},
-                  minCargo: {type: :number, nullable: true}
+                  classification: {type: :string},
+                  focus: {type: :string},
+                  minSize: {type: :string},
+                  maxSize: {type: :string},
+                  minCrew: {type: :integer},
+                  minCargo: {type: :number}
                 }
               },
               slots: {

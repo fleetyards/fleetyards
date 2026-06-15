@@ -10,14 +10,14 @@ module V1
           type: :object,
           properties: {
             title: {type: :string},
-            description: {type: :string, nullable: true},
+            description: {type: :string},
             category: {
               type: :string,
               enum: V1::Schemas::Fleets::Missions::Mission::CATEGORIES
             },
-            scenario: {type: :string, nullable: true},
-            coverImagePreset: {type: :string, nullable: true},
-            coverImage: {type: :string, nullable: true}
+            scenario: {type: :string},
+            coverImagePreset: {type: :string},
+            coverImage: {type: :string}
           },
           required: %w[title],
           additionalProperties: false

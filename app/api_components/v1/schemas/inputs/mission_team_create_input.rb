@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             title: {type: :string},
-            description: {type: :string, nullable: true}
+            description: {type: :string}
           },
           required: %w[title],
           additionalProperties: false

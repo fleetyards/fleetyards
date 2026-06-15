@@ -12,11 +12,10 @@ module V1
             slottableType: {type: :string, enum: %w[FleetEventTeam FleetEventShip]},
             slottableId: {type: :string, format: :uuid},
             title: {type: :string},
-            description: {type: :string, nullable: true},
+            description: {type: :string},
             signupApproval: {
               type: :string,
-              nullable: true,
-              enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS + [nil]
+                            enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
             }
           },
           required: %w[slottableType slottableId title],

@@ -9,13 +9,13 @@ module V1
         schema({
           type: :object,
           properties: {
-            fleetEventSlotId: {type: :string, format: :uuid, nullable: true},
+            fleetEventSlotId: {type: :string, format: :uuid},
             status: {
               type: :string,
               enum: V1::Schemas::Fleets::Events::FleetEventSignup::STATUSES
             },
-            vehicleId: {type: :string, format: :uuid, nullable: true},
-            notes: {type: :string, nullable: true}
+            vehicleId: {type: :string, format: :uuid},
+            notes: {type: :string}
           },
           additionalProperties: false
         })

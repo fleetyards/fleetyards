@@ -13,9 +13,9 @@ module V1
               type: :string,
               enum: V1::Schemas::Fleets::Events::FleetEventSignup::STATUSES
             },
-            vehicleId: {type: :string, format: :uuid, nullable: true},
-            notes: {type: :string, nullable: true},
-            occurrenceDate: {type: :string, format: :date, nullable: true}
+            vehicleId: {type: :string, format: :uuid},
+            notes: {type: :string},
+            occurrenceDate: {type: :string, format: :date}
           },
           additionalProperties: false
         })

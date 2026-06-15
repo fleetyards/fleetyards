@@ -13,7 +13,7 @@ module V1
               id: {type: :string, format: :uuid},
               missionId: {type: :string, format: :uuid},
               title: {type: :string},
-              description: {type: :string, nullable: true},
+              description: {type: :string},
               position: {type: :integer},
               slots: {
                 type: :array,
