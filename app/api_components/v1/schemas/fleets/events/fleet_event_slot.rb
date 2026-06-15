@@ -21,7 +21,7 @@ module V1
               modelPositionId: {type: :string, format: :uuid},
               signupApproval: {
                 type: :string,
-                                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
+                enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
               },
               effectiveSignupApproval: {
                 type: :string,

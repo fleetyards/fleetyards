@@ -33,7 +33,7 @@ module V1
               archivedAt: {type: :string, format: "date-time"},
               createdBy: {
                 type: :object,
-                                properties: {
+                properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }

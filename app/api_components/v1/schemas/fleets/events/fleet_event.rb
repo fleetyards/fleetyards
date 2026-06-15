@@ -43,14 +43,14 @@ module V1
               signupApproval: {type: :string, enum: SIGNUP_APPROVALS},
               viewerEventRole: {
                 type: :string,
-                                enum: VIEWER_EVENT_ROLES
+                enum: VIEWER_EVENT_ROLES
               },
               archived: {type: :boolean},
               archivedAt: {type: :string, format: "date-time"},
               externalUid: {type: :string, format: :uuid},
               createdBy: {
                 type: :object,
-                                properties: {
+                properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }
@@ -65,8 +65,8 @@ module V1
               recurring: {type: :boolean},
               recurrenceInterval: {
                 type: :string,
-                enum: ::FleetEvent::RECURRENCE_INTERVALS,
-                
+                enum: ::FleetEvent::RECURRENCE_INTERVALS
+
               },
               recurrenceUntil: {type: :string, format: :date},
               recurrenceCount: {type: :integer},

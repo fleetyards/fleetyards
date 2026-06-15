@@ -22,19 +22,19 @@ module V1
               withdrawnAt: {type: :string, format: "date-time"},
               user: {
                 type: :object,
-                                properties: {
+                properties: {
                   id: {type: :string, format: :uuid},
                   username: {type: :string}
                 }
               },
               vehicle: {
                 type: :object,
-                                properties: {
+                properties: {
                   id: {type: :string, format: :uuid},
                   name: {type: :string},
                   model: {
                     type: :object,
-                                        properties: {
+                    properties: {
                       id: {type: :string, format: :uuid},
                       name: {type: :string},
                       slug: {type: :string},

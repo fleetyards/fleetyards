@@ -2240,12 +2240,16 @@ paths:
     - name: fleetSlug
       in: path
       schema:
-        type: string
+        type:
+        - string
+        - 'null'
       required: true
     - name: slug
       in: path
       schema:
-        type: string
+        type:
+        - string
+        - 'null'
       required: true
     patch:
       summary: Override fields on a single occurrence
@@ -2271,19 +2275,33 @@ paths:
                   type: string
                   format: date
                 title:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 description:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 briefing:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 location:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 meetupLocation:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 scenario:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 coverImagePreset:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
               required:
               - date
       responses:
@@ -4201,11 +4219,17 @@ paths:
               type: object
               properties:
                 discordGuildId:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 discordChannelId:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 discordWebhookUrl:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 enabledInAppEvents:
                   type: array
                   items:
@@ -10837,25 +10861,37 @@ components:
       type: object
       properties:
         missionSlug:
-          type: string
+          type:
+          - string
+          - 'null'
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         briefing:
-          type: string
+          type:
+          - string
+          - 'null'
         startsAt:
           type: string
           format: date-time
         endsAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
         timezone:
           type: string
         location:
-          type: string
+          type:
+          - string
+          - 'null'
         meetupLocation:
-          type: string
+          type:
+          - string
+          - 'null'
         visibility:
           type: string
           enum:
@@ -10874,17 +10910,27 @@ components:
           - cargo_hauling
           - exploration
         scenario:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImagePreset:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImage:
-          type: string
+          type:
+          - string
+          - 'null'
         maxAttendees:
-          type: integer
+          type:
+          - integer
+          - 'null'
         autoLockEnabled:
           type: boolean
         autoLockMinutesBefore:
-          type: integer
+          type:
+          - integer
+          - 'null'
         signupApproval:
           type: string
           enum:
@@ -10893,17 +10939,23 @@ components:
         recurring:
           type: boolean
         recurrenceInterval:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - daily
           - weekly
           - biweekly
           - monthly
         recurrenceUntil:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
         recurrenceCount:
-          type: integer
+          type:
+          - integer
+          - 'null'
       required:
       - title
       - startsAt
@@ -11047,24 +11099,42 @@ components:
       type: object
       properties:
         title:
-          type: string
+          type:
+          - string
+          - 'null'
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         classification:
-          type: string
+          type:
+          - string
+          - 'null'
         focus:
-          type: string
+          type:
+          - string
+          - 'null'
         minSize:
-          type: string
+          type:
+          - string
+          - 'null'
         maxSize:
-          type: string
+          type:
+          - string
+          - 'null'
         minCrew:
-          type: integer
+          type:
+          - integer
+          - 'null'
         minCargo:
-          type: number
+          type:
+          - number
+          - 'null'
         positionIds:
           type: array
           items:
@@ -11076,24 +11146,42 @@ components:
       type: object
       properties:
         title:
-          type: string
+          type:
+          - string
+          - 'null'
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         classification:
-          type: string
+          type:
+          - string
+          - 'null'
         focus:
-          type: string
+          type:
+          - string
+          - 'null'
         minSize:
-          type: string
+          type:
+          - string
+          - 'null'
         maxSize:
-          type: string
+          type:
+          - string
+          - 'null'
         minCrew:
-          type: integer
+          type:
+          - integer
+          - 'null'
         minCargo:
-          type: number
+          type:
+          - number
+          - 'null'
       additionalProperties: false
       title: FleetEventShipUpdateInput
     FleetEventSignup:
@@ -11177,7 +11265,9 @@ components:
       type: object
       properties:
         fleetEventSlotId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         status:
           type: string
@@ -11188,10 +11278,14 @@ components:
           - pending
           - withdrawn
         vehicleId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         notes:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: FleetEventSignupAssignInput
     FleetEventSignupCreateInput:
@@ -11206,12 +11300,18 @@ components:
           - pending
           - withdrawn
         vehicleId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         notes:
-          type: string
+          type:
+          - string
+          - 'null'
         occurrenceDate:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
       additionalProperties: false
       title: FleetEventSignupCreateInput
@@ -11227,10 +11327,14 @@ components:
           - pending
           - withdrawn
         vehicleId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         notes:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: FleetEventSignupUpdateInput
     FleetEventSlot:
@@ -11299,12 +11403,17 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         signupApproval:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - direct
           - confirmation_required
+          -
       required:
       - slottableType
       - slottableId
@@ -11317,12 +11426,17 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         signupApproval:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - direct
           - confirmation_required
+          -
       additionalProperties: false
       title: FleetEventSlotUpdateInput
     FleetEventTeam:
@@ -11363,7 +11477,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - title
       additionalProperties: false
@@ -11374,7 +11490,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: FleetEventTeamUpdateInput
     FleetEventUpdateInput:
@@ -11383,21 +11501,31 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         briefing:
-          type: string
+          type:
+          - string
+          - 'null'
         startsAt:
           type: string
           format: date-time
         endsAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
         timezone:
           type: string
         location:
-          type: string
+          type:
+          - string
+          - 'null'
         meetupLocation:
-          type: string
+          type:
+          - string
+          - 'null'
         visibility:
           type: string
           enum:
@@ -11416,19 +11544,31 @@ components:
           - cargo_hauling
           - exploration
         scenario:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImagePreset:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImage:
-          type: string
+          type:
+          - string
+          - 'null'
         maxAttendees:
-          type: integer
+          type:
+          - integer
+          - 'null'
         autoLockEnabled:
           type: boolean
         autoLockMinutesBefore:
-          type: integer
+          type:
+          - integer
+          - 'null'
         cancelledReason:
-          type: string
+          type:
+          - string
+          - 'null'
         signupApproval:
           type: string
           enum:
@@ -11437,17 +11577,23 @@ components:
         recurring:
           type: boolean
         recurrenceInterval:
-          type: string
+          type:
+          - string
+          - 'null'
           enum:
           - daily
           - weekly
           - biweekly
           - monthly
         recurrenceUntil:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date
         recurrenceCount:
-          type: integer
+          type:
+          - integer
+          - 'null'
       additionalProperties: false
       title: FleetEventUpdateInput
     FleetEventsList:
@@ -13734,7 +13880,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         category:
           type: string
           enum:
@@ -13747,11 +13895,17 @@ components:
           - cargo_hauling
           - exploration
         scenario:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImagePreset:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImage:
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - title
       additionalProperties: false
@@ -13838,24 +13992,42 @@ components:
       type: object
       properties:
         title:
-          type: string
+          type:
+          - string
+          - 'null'
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         classification:
-          type: string
+          type:
+          - string
+          - 'null'
         focus:
-          type: string
+          type:
+          - string
+          - 'null'
         minSize:
-          type: string
+          type:
+          - string
+          - 'null'
         maxSize:
-          type: string
+          type:
+          - string
+          - 'null'
         minCrew:
-          type: integer
+          type:
+          - integer
+          - 'null'
         minCargo:
-          type: number
+          type:
+          - number
+          - 'null'
         positionIds:
           type: array
           items:
@@ -13869,24 +14041,42 @@ components:
       type: object
       properties:
         title:
-          type: string
+          type:
+          - string
+          - 'null'
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         modelId:
-          type: string
+          type:
+          - string
+          - 'null'
           format: uuid
         classification:
-          type: string
+          type:
+          - string
+          - 'null'
         focus:
-          type: string
+          type:
+          - string
+          - 'null'
         minSize:
-          type: string
+          type:
+          - string
+          - 'null'
         maxSize:
-          type: string
+          type:
+          - string
+          - 'null'
         minCrew:
-          type: integer
+          type:
+          - integer
+          - 'null'
         minCargo:
-          type: number
+          type:
+          - number
+          - 'null'
       additionalProperties: false
       title: MissionShipUpdateInput
     MissionSlot:
@@ -13936,7 +14126,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - slottableType
       - slottableId
@@ -13971,7 +14163,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: MissionSlotUpdateInput
     MissionTeam:
@@ -14012,7 +14206,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - title
       additionalProperties: false
@@ -14023,7 +14219,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       title: MissionTeamUpdateInput
     MissionUpdateInput:
@@ -14032,7 +14230,9 @@ components:
         title:
           type: string
         description:
-          type: string
+          type:
+          - string
+          - 'null'
         category:
           type: string
           enum:
@@ -14045,13 +14245,21 @@ components:
           - cargo_hauling
           - exploration
         scenario:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImagePreset:
-          type: string
+          type:
+          - string
+          - 'null'
         coverImage:
-          type: string
+          type:
+          - string
+          - 'null'
         archivedAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
       additionalProperties: false
       title: MissionUpdateInput

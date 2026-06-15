@@ -19,7 +19,7 @@ module V1
               strict: {type: :boolean},
               model: {
                 type: :object,
-                                properties: {
+                properties: {
                   id: {type: :string, format: :uuid},
                   name: {type: :string},
                   slug: {type: :string},
