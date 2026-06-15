@@ -19,9 +19,9 @@ class Api::V1::FleetsNotificationsUpdateTest < ActionDispatch::IntegrationTest
       request_body schema: {
         type: :object,
         properties: {
-          discordGuildId: {type: :string},
-          discordChannelId: {type: :string},
-          discordWebhookUrl: {type: :string},
+          discordGuildId: {type: [:string, :null]},
+          discordChannelId: {type: [:string, :null]},
+          discordWebhookUrl: {type: [:string, :null]},
           enabledInAppEvents: {type: :array, items: {type: :string}}
         }
       }, required: true

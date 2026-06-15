@@ -13,8 +13,8 @@ module V1
               type: :string,
               enum: V1::Schemas::Fleets::Events::FleetEventSignup::STATUSES
             },
-            vehicleId: {type: :string, format: :uuid},
-            notes: {type: :string}
+            vehicleId: {type: [:string, :null], format: :uuid},
+            notes: {type: [:string, :null]}
           },
           additionalProperties: false
         })

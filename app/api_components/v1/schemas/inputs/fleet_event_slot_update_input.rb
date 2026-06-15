@@ -10,10 +10,10 @@ module V1
           type: :object,
           properties: {
             title: {type: :string},
-            description: {type: :string},
+            description: {type: [:string, :null]},
             signupApproval: {
-              type: :string,
-                            enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS
+              type: [:string, :null],
+              enum: V1::Schemas::Fleets::Events::FleetEvent::SIGNUP_APPROVALS + [nil]
             }
           },
           additionalProperties: false

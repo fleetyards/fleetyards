@@ -8,8 +8,8 @@ class Api::V1::FleetsEventsUpdateOccurrenceSwaggerTest < ActionDispatch::Integra
   openapi_schema :"v1/schema"
 
   api_path "/fleets/{fleetSlug}/events/{slug}/update-occurrence" do
-    parameter name: "fleetSlug", in: :path, schema: {type: :string}
-    parameter name: "slug", in: :path, schema: {type: :string}
+    parameter name: "fleetSlug", in: :path, schema: {type: [:string, :null]}
+    parameter name: "slug", in: :path, schema: {type: [:string, :null]}
 
     patch("Override fields on a single occurrence") do
       operationId "updateFleetEventOccurrence"
@@ -21,13 +21,13 @@ class Api::V1::FleetsEventsUpdateOccurrenceSwaggerTest < ActionDispatch::Integra
         type: :object,
         properties: {
           date: {type: :string, format: :date},
-          title: {type: :string},
-          description: {type: :string},
-          briefing: {type: :string},
-          location: {type: :string},
-          meetupLocation: {type: :string},
-          scenario: {type: :string},
-          coverImagePreset: {type: :string}
+          title: {type: [:string, :null]},
+          description: {type: [:string, :null]},
+          briefing: {type: [:string, :null]},
+          location: {type: [:string, :null]},
+          meetupLocation: {type: [:string, :null]},
+          scenario: {type: [:string, :null]},
+          coverImagePreset: {type: [:string, :null]}
         },
         required: %w[date]
       }, required: true
