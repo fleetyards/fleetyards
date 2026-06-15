@@ -2272,25 +2272,18 @@ paths:
                   format: date
                 title:
                   type: string
-                  nullable: true
                 description:
                   type: string
-                  nullable: true
                 briefing:
                   type: string
-                  nullable: true
                 location:
                   type: string
-                  nullable: true
                 meetupLocation:
                   type: string
-                  nullable: true
                 scenario:
                   type: string
-                  nullable: true
                 coverImagePreset:
                   type: string
-                  nullable: true
               required:
               - date
       responses:
@@ -4209,13 +4202,10 @@ paths:
               properties:
                 discordGuildId:
                   type: string
-                  nullable: true
                 discordChannelId:
                   type: string
-                  nullable: true
                 discordWebhookUrl:
                   type: string
-                  nullable: true
                 enabledInAppEvents:
                   type: array
                   items:
@@ -4267,22 +4257,16 @@ paths:
                     type: boolean
                   code:
                     type: string
-                    nullable: true
                   message:
                     type: string
-                    nullable: true
                   guildId:
                     type: string
-                    nullable: true
                   guildName:
                     type: string
-                    nullable: true
                   status:
                     type: integer
-                    nullable: true
                   installUrl:
                     type: string
-                    nullable: true
         '401':
           description: unauthorized
           content:
@@ -9418,7 +9402,6 @@ components:
         feedUrl:
           type: string
           format: uri
-          nullable: true
       required:
       - enabled
       - feedUrl
@@ -10556,10 +10539,8 @@ components:
           type: boolean
         defaultTimezone:
           type: string
-          nullable: true
         calendarFeedToken:
           type: string
-          nullable: true
         logo:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
@@ -10634,17 +10615,14 @@ components:
         missionId:
           type: string
           format: uuid
-          nullable: true
         title:
           type: string
         slug:
           type: string
         description:
           type: string
-          nullable: true
         briefing:
           type: string
-          nullable: true
         status:
           type: string
           enum:
@@ -10660,15 +10638,12 @@ components:
         endsAt:
           type: string
           format: date-time
-          nullable: true
         timezone:
           type: string
         location:
           type: string
-          nullable: true
         meetupLocation:
           type: string
-          nullable: true
         visibility:
           type: string
           enum:
@@ -10688,24 +10663,18 @@ components:
           - exploration
         scenario:
           type: string
-          nullable: true
         coverImagePreset:
           type: string
-          nullable: true
         coverImage:
           "$ref": "#/components/schemas/MediaFile"
-          nullable: true
         maxAttendees:
           type: integer
-          nullable: true
         autoLockEnabled:
           type: boolean
         autoLockMinutesBefore:
           type: integer
-          nullable: true
         cancelledReason:
           type: string
-          nullable: true
         signupApproval:
           type: string
           enum:
@@ -10713,24 +10682,20 @@ components:
           - confirmation_required
         viewerEventRole:
           type: string
-          nullable: true
           enum:
           - creator
           - admin
           - moderator
-          -
         archived:
           type: boolean
         archivedAt:
           type: string
           format: date-time
-          nullable: true
         externalUid:
           type: string
           format: uuid
         createdBy:
           type: object
-          nullable: true
           properties:
             id:
               type: string
@@ -10747,11 +10712,9 @@ components:
           type: boolean
         discordEventId:
           type: string
-          nullable: true
         discordSyncedAt:
           type: string
           format: date-time
-          nullable: true
         discordConfigured:
           type: boolean
         recurring:
@@ -10763,14 +10726,11 @@ components:
           - weekly
           - biweekly
           - monthly
-          nullable: true
         recurrenceUntil:
           type: string
           format: date
-          nullable: true
         recurrenceCount:
           type: integer
-          nullable: true
         excludedDates:
           type: array
           items:
@@ -10779,10 +10739,8 @@ components:
         occurrenceDate:
           type: string
           format: date
-          nullable: true
         parentEventSlug:
           type: string
-          nullable: true
         createdAt:
           type: string
           format: date-time
@@ -10841,7 +10799,6 @@ components:
           - username
         grantedBy:
           type: object
-          nullable: true
           properties:
             id:
               type: string
@@ -10881,30 +10838,24 @@ components:
       properties:
         missionSlug:
           type: string
-          nullable: true
         title:
           type: string
         description:
           type: string
-          nullable: true
         briefing:
           type: string
-          nullable: true
         startsAt:
           type: string
           format: date-time
         endsAt:
           type: string
           format: date-time
-          nullable: true
         timezone:
           type: string
         location:
           type: string
-          nullable: true
         meetupLocation:
           type: string
-          nullable: true
         visibility:
           type: string
           enum:
@@ -10924,21 +10875,16 @@ components:
           - exploration
         scenario:
           type: string
-          nullable: true
         coverImagePreset:
           type: string
-          nullable: true
         coverImage:
           type: string
-          nullable: true
         maxAttendees:
           type: integer
-          nullable: true
         autoLockEnabled:
           type: boolean
         autoLockMinutesBefore:
           type: integer
-          nullable: true
         signupApproval:
           type: string
           enum:
@@ -10953,14 +10899,11 @@ components:
           - weekly
           - biweekly
           - monthly
-          nullable: true
         recurrenceUntil:
           type: string
           format: date
-          nullable: true
         recurrenceCount:
           type: integer
-          nullable: true
       required:
       - title
       - startsAt
@@ -10999,50 +10942,36 @@ components:
           format: date
         status:
           type: string
-          nullable: true
         lockedAt:
           type: string
           format: date-time
-          nullable: true
         startingSoonNotifiedAt:
           type: string
           format: date-time
-          nullable: true
         cancelledAt:
           type: string
           format: date-time
-          nullable: true
         cancelledReason:
           type: string
-          nullable: true
         discordEventId:
           type: string
-          nullable: true
         discordSyncedAt:
           type: string
           format: date-time
-          nullable: true
         title:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         briefing:
           type: string
-          nullable: true
         location:
           type: string
-          nullable: true
         meetupLocation:
           type: string
-          nullable: true
         scenario:
           type: string
-          nullable: true
         coverImagePreset:
           type: string
-          nullable: true
       required:
       - id
       - fleetEventId
@@ -11059,20 +10988,16 @@ components:
           format: uuid
         title:
           type: string
-          nullable: true
         displayTitle:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         position:
           type: integer
         strict:
           type: boolean
         model:
           type: object
-          nullable: true
           properties:
             id:
               type: string
@@ -11083,13 +11008,10 @@ components:
               type: string
             minCrew:
               type: integer
-              nullable: true
             maxCrew:
               type: integer
-              nullable: true
             image:
               "$ref": "#/components/schemas/MediaFile"
-              nullable: true
           required:
           - id
           - name
@@ -11099,22 +11021,16 @@ components:
           properties:
             classification:
               type: string
-              nullable: true
             focus:
               type: string
-              nullable: true
             minSize:
               type: string
-              nullable: true
             maxSize:
               type: string
-              nullable: true
             minCrew:
               type: integer
-              nullable: true
             minCargo:
               type: number
-              nullable: true
         slots:
           type: array
           items:
@@ -11132,32 +11048,23 @@ components:
       properties:
         title:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         modelId:
           type: string
           format: uuid
-          nullable: true
         classification:
           type: string
-          nullable: true
         focus:
           type: string
-          nullable: true
         minSize:
           type: string
-          nullable: true
         maxSize:
           type: string
-          nullable: true
         minCrew:
           type: integer
-          nullable: true
         minCargo:
           type: number
-          nullable: true
         positionIds:
           type: array
           items:
@@ -11170,32 +11077,23 @@ components:
       properties:
         title:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         modelId:
           type: string
           format: uuid
-          nullable: true
         classification:
           type: string
-          nullable: true
         focus:
           type: string
-          nullable: true
         minSize:
           type: string
-          nullable: true
         maxSize:
           type: string
-          nullable: true
         minCrew:
           type: integer
-          nullable: true
         minCargo:
           type: number
-          nullable: true
       additionalProperties: false
       title: FleetEventShipUpdateInput
     FleetEventSignup:
@@ -11210,11 +11108,9 @@ components:
         fleetEventSlotId:
           type: string
           format: uuid
-          nullable: true
         occurrenceDate:
           type: string
           format: date
-          nullable: true
         status:
           type: string
           enum:
@@ -11225,18 +11121,14 @@ components:
           - withdrawn
         notes:
           type: string
-          nullable: true
         confirmedAt:
           type: string
           format: date-time
-          nullable: true
         withdrawnAt:
           type: string
           format: date-time
-          nullable: true
         user:
           type: object
-          nullable: true
           properties:
             id:
               type: string
@@ -11245,17 +11137,14 @@ components:
               type: string
         vehicle:
           type: object
-          nullable: true
           properties:
             id:
               type: string
               format: uuid
             name:
               type: string
-              nullable: true
             model:
               type: object
-              nullable: true
               properties:
                 id:
                   type: string
@@ -11266,25 +11155,18 @@ components:
                   type: string
                 classification:
                   type: string
-                  nullable: true
                 focus:
                   type: string
-                  nullable: true
                 size:
                   type: string
-                  nullable: true
                 minCrew:
                   type: integer
-                  nullable: true
                 maxCrew:
                   type: integer
-                  nullable: true
                 cargo:
                   type: integer
-                  nullable: true
                 positionCount:
                   type: integer
-                  nullable: true
       required:
       - id
       - fleetEventId
@@ -11297,7 +11179,6 @@ components:
         fleetEventSlotId:
           type: string
           format: uuid
-          nullable: true
         status:
           type: string
           enum:
@@ -11309,10 +11190,8 @@ components:
         vehicleId:
           type: string
           format: uuid
-          nullable: true
         notes:
           type: string
-          nullable: true
       additionalProperties: false
       title: FleetEventSignupAssignInput
     FleetEventSignupCreateInput:
@@ -11329,14 +11208,11 @@ components:
         vehicleId:
           type: string
           format: uuid
-          nullable: true
         notes:
           type: string
-          nullable: true
         occurrenceDate:
           type: string
           format: date
-          nullable: true
       additionalProperties: false
       title: FleetEventSignupCreateInput
     FleetEventSignupUpdateInput:
@@ -11353,10 +11229,8 @@ components:
         vehicleId:
           type: string
           format: uuid
-          nullable: true
         notes:
           type: string
-          nullable: true
       additionalProperties: false
       title: FleetEventSignupUpdateInput
     FleetEventSlot:
@@ -11377,25 +11251,20 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         position:
           type: integer
         derived:
           type: boolean
         positionType:
           type: string
-          nullable: true
         modelPositionId:
           type: string
           format: uuid
-          nullable: true
         signupApproval:
           type: string
-          nullable: true
           enum:
           - direct
           - confirmation_required
-          -
         effectiveSignupApproval:
           type: string
           enum:
@@ -11431,14 +11300,11 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         signupApproval:
           type: string
-          nullable: true
           enum:
           - direct
           - confirmation_required
-          -
       required:
       - slottableType
       - slottableId
@@ -11452,14 +11318,11 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         signupApproval:
           type: string
-          nullable: true
           enum:
           - direct
           - confirmation_required
-          -
       additionalProperties: false
       title: FleetEventSlotUpdateInput
     FleetEventTeam:
@@ -11475,7 +11338,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         position:
           type: integer
         slots:
@@ -11502,7 +11364,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
       required:
       - title
       additionalProperties: false
@@ -11514,7 +11375,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
       additionalProperties: false
       title: FleetEventTeamUpdateInput
     FleetEventUpdateInput:
@@ -11524,25 +11384,20 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         briefing:
           type: string
-          nullable: true
         startsAt:
           type: string
           format: date-time
         endsAt:
           type: string
           format: date-time
-          nullable: true
         timezone:
           type: string
         location:
           type: string
-          nullable: true
         meetupLocation:
           type: string
-          nullable: true
         visibility:
           type: string
           enum:
@@ -11562,24 +11417,18 @@ components:
           - exploration
         scenario:
           type: string
-          nullable: true
         coverImagePreset:
           type: string
-          nullable: true
         coverImage:
           type: string
-          nullable: true
         maxAttendees:
           type: integer
-          nullable: true
         autoLockEnabled:
           type: boolean
         autoLockMinutesBefore:
           type: integer
-          nullable: true
         cancelledReason:
           type: string
-          nullable: true
         signupApproval:
           type: string
           enum:
@@ -11594,14 +11443,11 @@ components:
           - weekly
           - biweekly
           - monthly
-          nullable: true
         recurrenceUntil:
           type: string
           format: date
-          nullable: true
         recurrenceCount:
           type: integer
-          nullable: true
       additionalProperties: false
       title: FleetEventUpdateInput
     FleetEventsList:
@@ -12321,10 +12167,8 @@ components:
             - fleet_event_signup.withdrawn
         discordGuildId:
           type: string
-          nullable: true
         discordChannelId:
           type: string
-          nullable: true
         discordWebhookConfigured:
           type: boolean
       required:
@@ -13833,7 +13677,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         category:
           type: string
           enum:
@@ -13847,22 +13690,17 @@ components:
           - exploration
         scenario:
           type: string
-          nullable: true
         coverImagePreset:
           type: string
-          nullable: true
         coverImage:
           "$ref": "#/components/schemas/MediaFile"
-          nullable: true
         archived:
           type: boolean
         archivedAt:
           type: string
           format: date-time
-          nullable: true
         createdBy:
           type: object
-          nullable: true
           properties:
             id:
               type: string
@@ -13897,7 +13735,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         category:
           type: string
           enum:
@@ -13911,13 +13748,10 @@ components:
           - exploration
         scenario:
           type: string
-          nullable: true
         coverImagePreset:
           type: string
-          nullable: true
         coverImage:
           type: string
-          nullable: true
       required:
       - title
       additionalProperties: false
@@ -13945,20 +13779,16 @@ components:
           format: uuid
         title:
           type: string
-          nullable: true
         displayTitle:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         position:
           type: integer
         strict:
           type: boolean
         model:
           type: object
-          nullable: true
           properties:
             id:
               type: string
@@ -13969,13 +13799,10 @@ components:
               type: string
             minCrew:
               type: integer
-              nullable: true
             maxCrew:
               type: integer
-              nullable: true
             image:
               "$ref": "#/components/schemas/MediaFile"
-              nullable: true
           required:
           - id
           - name
@@ -13985,22 +13812,16 @@ components:
           properties:
             classification:
               type: string
-              nullable: true
             focus:
               type: string
-              nullable: true
             minSize:
               type: string
-              nullable: true
             maxSize:
               type: string
-              nullable: true
             minCrew:
               type: integer
-              nullable: true
             minCargo:
               type: number
-              nullable: true
         slots:
           type: array
           items:
@@ -14018,32 +13839,23 @@ components:
       properties:
         title:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         modelId:
           type: string
           format: uuid
-          nullable: true
         classification:
           type: string
-          nullable: true
         focus:
           type: string
-          nullable: true
         minSize:
           type: string
-          nullable: true
         maxSize:
           type: string
-          nullable: true
         minCrew:
           type: integer
-          nullable: true
         minCargo:
           type: number
-          nullable: true
         positionIds:
           type: array
           items:
@@ -14058,32 +13870,23 @@ components:
       properties:
         title:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
         modelId:
           type: string
           format: uuid
-          nullable: true
         classification:
           type: string
-          nullable: true
         focus:
           type: string
-          nullable: true
         minSize:
           type: string
-          nullable: true
         maxSize:
           type: string
-          nullable: true
         minCrew:
           type: integer
-          nullable: true
         minCargo:
           type: number
-          nullable: true
       additionalProperties: false
       title: MissionShipUpdateInput
     MissionSlot:
@@ -14104,14 +13907,12 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         position:
           type: integer
         derived:
           type: boolean
         positionType:
           type: string
-          nullable: true
       required:
       - id
       - slottableType
@@ -14136,7 +13937,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
       required:
       - slottableType
       - slottableId
@@ -14172,7 +13972,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
       additionalProperties: false
       title: MissionSlotUpdateInput
     MissionTeam:
@@ -14188,7 +13987,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         position:
           type: integer
         slots:
@@ -14215,7 +14013,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
       required:
       - title
       additionalProperties: false
@@ -14227,7 +14024,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
       additionalProperties: false
       title: MissionTeamUpdateInput
     MissionUpdateInput:
@@ -14237,7 +14033,6 @@ components:
           type: string
         description:
           type: string
-          nullable: true
         category:
           type: string
           enum:
@@ -14251,17 +14046,13 @@ components:
           - exploration
         scenario:
           type: string
-          nullable: true
         coverImagePreset:
           type: string
-          nullable: true
         coverImage:
           type: string
-          nullable: true
         archivedAt:
           type: string
           format: date-time
-          nullable: true
       additionalProperties: false
       title: MissionUpdateInput
     MissionsList:
