@@ -7,7 +7,7 @@ module Discord
   # and creates / withdraws a slot-less signup. Pure ActiveRecord — no
   # Gateway plumbing — so it stays unit-testable.
   class ScheduledEventRsvpHandler
-    Result = Struct.new(:status, :detail, keyword_init: true) do
+    Result = Struct.new(:status, :detail) do
       def ok? = status == :ok
       def skipped? = status == :skipped
     end
