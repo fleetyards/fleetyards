@@ -84,7 +84,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
-    "@faker-js/faker": "^10.4.0",
+    "@faker-js/faker": "^10.5.0",
     "@pinia/testing": "^1.0.3",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/vite": "^4.3.0",
