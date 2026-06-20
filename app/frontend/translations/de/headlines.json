@@ -71,6 +71,16 @@
           "new": "Neuer Hersteller",
           "edit": "Hersteller bearbeiten"
         },
+        "supporterContributions": {
+          "index": "Unterstützer-Beiträge",
+          "new": "Neuer Beitrag",
+          "edit": "Beitrag bearbeiten"
+        },
+        "fundingGoals": {
+          "index": "Finanzierungsziele",
+          "new": "Neues Finanzierungsziel",
+          "edit": "Finanzierungsziel bearbeiten"
+        },
         "users": {
           "index": "Benutzer",
           "edit": "Benutzer bearbeiten",

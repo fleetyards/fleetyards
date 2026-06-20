@@ -77,6 +77,16 @@
           "new": "New Manufacturer",
           "edit": "Edit Manufacturer"
         },
+        "supporterContributions": {
+          "index": "Supporter Contributions",
+          "new": "New Supporter Contribution",
+          "edit": "Edit Supporter Contribution"
+        },
+        "fundingGoals": {
+          "index": "Funding Goals",
+          "new": "New Funding Goal",
+          "edit": "Edit Funding Goal"
+        },
         "users": {
           "index": "Users",
           "edit": "Edit User",

@@ -150,6 +150,20 @@
         "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",
         "syncScDataStarted": "SC-Daten-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist."
       },
+      "fundingGoal": {
+        "created": "Finanzierungsziel angelegt.",
+        "updated": "Finanzierungsziel aktualisiert.",
+        "destroyed": "Finanzierungsziel gelöscht.",
+        "createFailed": "Finanzierungsziel konnte nicht angelegt werden.",
+        "updateFailed": "Finanzierungsziel konnte nicht aktualisiert werden."
+      },
+      "supporterContribution": {
+        "created": "Unterstützer-Beitrag angelegt.",
+        "updated": "Unterstützer-Beitrag aktualisiert.",
+        "destroyed": "Unterstützer-Beitrag gelöscht.",
+        "createFailed": "Unterstützer-Beitrag konnte nicht angelegt werden.",
+        "updateFailed": "Unterstützer-Beitrag konnte nicht aktualisiert werden."
+      },
       "notification": {
         "granted": "Willkommen bei FleetYards.net Benachrichtigungen!"
       },
@@ -361,6 +375,12 @@
         },
         "manufacturer": {
           "destroy": "Bist du sicher, dass du diesen Hersteller löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "fundingGoal": {
+          "destroy": "Bist du sicher, dass du dieses Finanzierungsziel löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "supporterContribution": {
+          "destroy": "Bist du sicher, dass du diesen Unterstützer-Beitrag löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         "modelHardpoint": {
           "destroy": "Sind Sie sicher, dass Sie diesen Aufhängungspunkt löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden."

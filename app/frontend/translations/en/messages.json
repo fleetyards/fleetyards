@@ -149,6 +149,20 @@
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes."
       },
+      "fundingGoal": {
+        "created": "Funding goal created.",
+        "updated": "Funding goal updated.",
+        "destroyed": "Funding goal deleted.",
+        "createFailed": "Could not create funding goal.",
+        "updateFailed": "Could not update funding goal."
+      },
+      "supporterContribution": {
+        "created": "Supporter contribution created.",
+        "updated": "Supporter contribution updated.",
+        "destroyed": "Supporter contribution deleted.",
+        "createFailed": "Could not create supporter contribution.",
+        "updateFailed": "Could not update supporter contribution."
+      },
       "notification": {
         "granted": "Welcome to FleetYards.net Notifications!"
       },
@@ -373,6 +387,12 @@
         },
         "manufacturer": {
           "destroy": "Are you sure you want to delete this manufacturer? This action can't be reverted."
+        },
+        "fundingGoal": {
+          "destroy": "Are you sure you want to delete this funding goal? This action can't be reverted."
+        },
+        "supporterContribution": {
+          "destroy": "Are you sure you want to delete this supporter contribution? This action can't be reverted."
         },
         "modelHardpoint": {
           "destroy": "Are you sure you want to delete this hardpoint? This action can't be reverted."

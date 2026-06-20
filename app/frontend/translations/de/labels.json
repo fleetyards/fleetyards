@@ -540,6 +540,30 @@
         "logo": "Logo",
         "scRef": "SC Ref"
       },
+      "fundingGoal": {
+        "title": "Titel",
+        "description": "Beschreibung",
+        "amount": "Betrag",
+        "currency": "Währung",
+        "effectiveFrom": "Gültig ab",
+        "endedAt": "Beendet am"
+      },
+      "supporterContribution": {
+        "name": "Unterstützer-Name",
+        "amount": "Betrag",
+        "currency": "Währung",
+        "anonymous": "Anonym",
+        "recurring": "Wiederkehrend",
+        "startedAt": "Beginnt am",
+        "endedAt": "Endet am",
+        "note": "Interne Notiz",
+        "stats": {
+          "total": "Gesamt",
+          "count": "Beiträge",
+          "recurringCount": "Wiederkehrend",
+          "anonymousCount": "Anonym"
+        }
+      },
       "itemPrice": {
         "price": "Preis",
         "location": "Standort",
@@ -1021,6 +1045,13 @@
           "name": "Name",
           "withModels": "Mit Modellen",
           "logoBlank": "Ohne Logo"
+        },
+        "supporterContributions": {
+          "name": "Nach Name suchen",
+          "recurring": "Wiederkehrend",
+          "anonymous": "Anonym",
+          "startedAtGteq": "Beginnt ab",
+          "startedAtLteq": "Beginnt bis"
         },
         "images": {
           "station": "Station",
