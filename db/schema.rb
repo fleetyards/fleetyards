@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_21_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -382,6 +382,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.datetime "updated_at", null: false
     t.text "value"
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
+  end
+
+  create_table "funding_goals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "amount_cents", null: false
+    t.datetime "created_at", null: false
+    t.string "currency", default: "EUR", null: false
+    t.text "description"
+    t.date "effective_from", null: false
+    t.date "ended_at"
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["effective_from"], name: "index_funding_goals_on_effective_from"
+    t.index ["ended_at"], name: "index_funding_goals_on_ended_at"
   end
 
   create_table "github_issue_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -899,6 +912,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_28_113905) do
     t.string "title"
     t.datetime "updated_at", null: false
     t.string "url"
+  end
+
+  create_table "supporter_contributions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "amount_cents", null: false
+    t.boolean "anonymous", default: false, null: false
+    t.datetime "created_at", null: false
+    t.string "currency", default: "EUR", null: false
+    t.date "ended_at"
+    t.string "name"
+    t.text "note"
+    t.boolean "recurring", default: false, null: false
+    t.date "started_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recurring", "ended_at"], name: "index_supporter_contributions_on_recurring_and_ended_at"
+    t.index ["started_at"], name: "index_supporter_contributions_on_started_at"
   end
 
   create_table "task_forces", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
