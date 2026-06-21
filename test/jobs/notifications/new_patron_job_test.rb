@@ -12,6 +12,19 @@ module Notifications
       ::Notifications::NewPatronJob.new.perform(supporter.id)
     end
 
+    test "#perform still emails when the Discord post fails" do
+      supporter = create(:supporter_contribution, :patreon)
+      failing = stub
+      failing.stubs(:run).raises(StandardError, "discord down")
+      Discord::NewSupporter.expects(:new).with(supporter:).returns(failing)
+      AdminMailer.expects(:new_supporter).with(supporter).returns(stub(deliver_later: true))
+      Appsignal.expects(:report_error)
+
+      assert_nothing_raised do
+        ::Notifications::NewPatronJob.new.perform(supporter.id)
+      end
+    end
+
     test "#perform does nothing for a manual contribution" do
       supporter = create(:supporter_contribution)
       Discord::NewSupporter.expects(:new).never

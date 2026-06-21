@@ -8,8 +8,13 @@ module Notifications
       supporter = SupporterContribution.find_by(id: supporter_contribution_id)
       return if supporter.nil? || !supporter.patreon?
 
-      Discord::NewSupporter.new(supporter:).run
       AdminMailer.new_supporter(supporter).deliver_later
+
+      begin
+        Discord::NewSupporter.new(supporter:).run
+      rescue => e
+        Appsignal.report_error(e)
+      end
     end
   end
 end
