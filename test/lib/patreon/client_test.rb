@@ -21,7 +21,7 @@ module Patreon
               full_name: "Alice",
               patron_status: "active_patron",
               currently_entitled_amount_cents: 500,
-              pledge_amount_cents: 500,
+              will_pay_amount_cents: 500,
               pledge_relationship_start: "2026-01-15T00:00:00.000+00:00",
               last_charge_date: "2026-06-01T00:00:00.000+00:00"
             },
@@ -39,7 +39,7 @@ module Patreon
               full_name: nil,
               patron_status: "former_patron",
               currently_entitled_amount_cents: 0,
-              pledge_amount_cents: 1000,
+              will_pay_amount_cents: 1000,
               pledge_relationship_start: "2025-03-01T00:00:00.000+00:00",
               last_charge_date: "2026-05-01T00:00:00.000+00:00"
             },
@@ -71,7 +71,7 @@ module Patreon
 
       bob = members.last
       assert_equal "bob", bob.name, "falls back to user vanity when full_name is blank"
-      assert_equal 1000, bob.amount_cents, "falls back to pledge_amount_cents when entitled is 0"
+      assert_equal 1000, bob.amount_cents, "falls back to will_pay_amount_cents when entitled is 0"
     end
 
     test "#members raises Patreon::Error on an expired token" do
