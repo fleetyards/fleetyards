@@ -12,12 +12,10 @@ import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 
 type Props = {
   compact?: boolean;
-  showBreakdown?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   compact: false,
-  showBreakdown: false,
 });
 
 const { t } = useI18n();
@@ -68,26 +66,6 @@ const formattedGoal = computed(() =>
     <p v-if="!compact && progress?.goal" class="support-progress__caption">
       {{ t("texts.support.thisMonth") }}
     </p>
-    <ul
-      v-if="showBreakdown && progress?.goal?.items?.length"
-      class="support-progress__breakdown"
-    >
-      <li
-        v-for="(item, index) in progress.goal.items"
-        :key="index"
-        class="support-progress__breakdown-entry"
-      >
-        <div class="support-progress__breakdown-title">
-          <strong>{{ item.title }}</strong>
-          <span class="support-progress__breakdown-amount">
-            {{ formatCents(item.amountCents, item.currency) }}
-          </span>
-        </div>
-        <p v-if="item.description" class="support-progress__breakdown-desc">
-          {{ item.description }}
-        </p>
-      </li>
-    </ul>
   </div>
 </template>
 

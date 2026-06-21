@@ -20,7 +20,13 @@ const { t } = useI18n();
       <br />
       <div class="row">
         <div class="col-12">
-          <SupportProgress show-breakdown />
+          <SupportProgress />
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <p>{{ t("texts.support.goal") }}</p>
         </div>
       </div>
       <br />
