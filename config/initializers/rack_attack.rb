@@ -13,8 +13,7 @@ end
 Rack::Attack.throttle("api", limit: limit_proc, period: 1.hour) do |req|
   if !req.path.match?(%r{^/v\d+$}) &&
       !req.path.match?(%r{^/v\d+/docs$}) &&
-      req.host.split(".").first == "api" &&
-      !(req.referer || "").start_with?("https://fleetyards.net")
+      req.host.split(".").first == "api"
     req.ip
   end
 end
