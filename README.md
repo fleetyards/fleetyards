@@ -62,6 +62,16 @@ USD pledge amounts are converted to EUR at sync time using the free
 to the `exchange_rates` table as a fallback when the rate API is unreachable. No
 extra credentials are required for the exchange-rate lookup.
 
+When a sync creates a brand-new active patron, the team is notified by email
+(super admins) and via a Discord webhook. The Discord post is sent to an internal
+channel and is skipped unless its webhook is configured:
+
+```yaml
+discord_admin_endpoint: <discord-webhook-url>
+```
+
+The email always sends; only the Discord half depends on this credential.
+
 ## Authors and Acknowledgement
 
 - [@mortik](https://www.github.com/mortik) for development and design.

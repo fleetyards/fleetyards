@@ -22,6 +22,21 @@ class AdminMailerTest < ActionMailer::TestCase
     assert mail.body.encoded.present?
   end
 
+  test "#new_supporter renders the subject" do
+    mail = AdminMailer.new_supporter(supporter)
+    assert_equal I18n.t(:"mailer.admin.new_supporter.subject"), mail.subject
+  end
+
+  test "#new_supporter sends to super admin users" do
+    mail = AdminMailer.new_supporter(supporter)
+    assert_includes mail.to, @super_admin.email
+  end
+
+  test "#new_supporter renders the body" do
+    mail = AdminMailer.new_supporter(supporter)
+    assert mail.body.encoded.present?
+  end
+
   test "#notify_block renders the subject" do
     mail = AdminMailer.notify_block("https://robertsspaceindustries.com")
     assert_equal I18n.t(:"mailer.admin.notify_block.subject"), mail.subject
@@ -56,5 +71,9 @@ class AdminMailerTest < ActionMailer::TestCase
 
   def weekly_stats
     {registrations: 10, ships: 5, vehicles: 20, fleets: 2}
+  end
+
+  def supporter
+    create(:supporter_contribution, :patreon, name: "Alice", amount_cents: 500, currency: "EUR")
   end
 end

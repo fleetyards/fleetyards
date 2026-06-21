@@ -46,6 +46,36 @@ module Patreon
       assert_equal({created: 1, updated: 0, ended: 0, skipped: 0}, stats)
     end
 
+    test "enqueues a new-patron notification for a newly-created active patron" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      Sidekiq::Worker.clear_all
+
+      import([member])
+
+      assert_equal 1, Notifications::NewPatronJob.jobs.size
+      assert_equal SupporterContribution.find_by(patreon_member_id: "m1").id,
+        Notifications::NewPatronJob.jobs.first["args"].first
+    end
+
+    test "does not enqueue a notification when an existing patron is updated" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      import([member])
+      Sidekiq::Worker.clear_all
+
+      import([member(amount_cents: 1000)])
+
+      assert_equal 0, Notifications::NewPatronJob.jobs.size
+    end
+
+    test "does not enqueue a notification for a member created already churned" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+      Sidekiq::Worker.clear_all
+
+      import([member(status: "former_patron", last_charge_date: Date.new(2026, 5, 20))])
+
+      assert_equal 0, Notifications::NewPatronJob.jobs.size
+    end
+
     test "skips free-tier members with no positive amount" do
       stats = import([member(amount_cents: 0)])
 

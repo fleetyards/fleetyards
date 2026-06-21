@@ -13,10 +13,11 @@ module Admin
             currency: {type: :string},
             totalCount: {type: :integer},
             recurringCount: {type: :integer},
-            anonymousCount: {type: :integer}
+            anonymousCount: {type: :integer},
+            patreonSyncEnabled: {type: :boolean}
           },
           additionalProperties: false,
-          required: %w[totalAmountCents currency totalCount recurringCount anonymousCount]
+          required: %w[totalAmountCents currency totalCount recurringCount anonymousCount patreonSyncEnabled]
         })
       end
     end

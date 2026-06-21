@@ -4,6 +4,10 @@ de:
     account:
       action: Kontoeinstellungen verwalten
     admin:
+      new_supporter:
+        headline: FleetYards.net Command - Neuer Patreon-Unterstützer
+        subject: Neuer Patreon-Unterstützer
+        text: '%{name} ist jetzt Patreon-Unterstützer (%{amount})'
       notify_block:
         headline: FleetYards.net Command - Connection to RSI blocked
         subject: Verbindung zu RSI blockiert

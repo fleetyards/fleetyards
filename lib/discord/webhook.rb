@@ -22,6 +22,7 @@ module Discord
 
       client.execute do |builder|
         builder.content = content
+        builder.allowed_mentions = allowed_mentions if allowed_mentions
       end
     end
 
@@ -30,6 +31,9 @@ module Discord
     end
 
     private def get_message
+    end
+
+    private def allowed_mentions
     end
 
     private def get_title

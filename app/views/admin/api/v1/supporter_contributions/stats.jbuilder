@@ -7,3 +7,4 @@ json.currency currency || "EUR"
 json.total_count total_count.to_i
 json.recurring_count recurring_count.to_i
 json.anonymous_count anonymous_count.to_i
+json.patreon_sync_enabled PatreonSupporterSyncJob.configured?

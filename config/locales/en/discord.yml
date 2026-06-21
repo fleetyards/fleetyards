@@ -4,6 +4,9 @@ en:
     new_ship:
       message: 'Allow me to introduce: The %{manufacturer} %{model}'
       title: New Ship/Vehicle added
+    new_supporter:
+      message: '%{name} just became a Patreon supporter (%{amount})'
+      title: New Patreon Supporter
     progress_tracker_update:
       message: There have been %{changes} changes on the Progress Tracker
       title: New changes on the Progress Tracker
