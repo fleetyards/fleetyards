@@ -42,7 +42,7 @@
     "@vuepic/vue-datepicker": "^14.0.0",
     "@vueuse/core": "^14.3.0",
     "ahoy.js": "0.4.5",
-    "axios": "1.17.0",
+    "axios": "1.18.0",
     "clipboard": "2.0.11",
     "core-js": "3.49.0",
     "date-fns": "4.4.0",
