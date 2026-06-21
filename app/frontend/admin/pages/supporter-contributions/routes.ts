@@ -34,6 +34,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       needsAuthentication: true,
       access: ["supporters"],
+      nav: "hidden",
       activeRoute: "admin-supporter-contributions",
     },
   },
