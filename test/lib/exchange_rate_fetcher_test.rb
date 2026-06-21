@@ -4,7 +4,7 @@ require "test_helper"
 require "webmock/minitest"
 
 class ExchangeRateFetcherTest < ActiveSupport::TestCase
-  ENDPOINT = %r{\Ahttps://api\.frankfurter\.app/latest}
+  ENDPOINT = %r{\Ahttps://api\.frankfurter\.dev/v1/latest}
 
   test "fetches a remote rate and upserts the snapshot row" do
     stub_request(:get, ENDPOINT)

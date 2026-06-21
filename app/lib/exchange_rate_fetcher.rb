@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ExchangeRateFetcher
-  ENDPOINT = "https://api.frankfurter.app/latest"
+  ENDPOINT = "https://api.frankfurter.dev/v1/latest"
   CACHE_KEY = "exchange_rate:%s:%s"
   CACHE_TTL = 12.hours
 
@@ -29,7 +29,7 @@ class ExchangeRateFetcher
   end
 
   def self.remote_rate(from:, to:)
-    response = Typhoeus.get(ENDPOINT, params: {from: from.to_s, to: to.to_s})
+    response = Typhoeus.get(ENDPOINT, params: {from: from.to_s, to: to.to_s}, followlocation: true)
     return nil unless response.success?
 
     rate = JSON.parse(response.body).dig("rates", to.to_s)&.to_d
