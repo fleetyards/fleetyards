@@ -463,6 +463,11 @@
         "success": "Dein Hangar wurde synchronisiert.",
         "failure": "Dein Hangar konnte nicht synchronisiert werden.",
         "notLoggedIn": "Du musst auf <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> angemeldet sein, um deinen Hangar zu synchronisieren."
+      },
+      "admin": {
+        "supporterContributions": {
+          "patreonSyncStarted": "Patreon-Synchronisierung gestartet. Aktualisiere in einer Minute, um importierte Unterstützer zu sehen."
+        }
       }
     }
   }

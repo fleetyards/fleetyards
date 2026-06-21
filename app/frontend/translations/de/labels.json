@@ -1217,6 +1217,12 @@
         },
         "modelHardpoint": {
           "loadouts": "Konfigurationen"
+        },
+        "supporterContributions": {
+          "source": {
+            "patreon": "Patreon",
+            "manual": "Manuell"
+          }
         }
       },
       "hangarTable": {

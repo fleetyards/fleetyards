@@ -33,6 +33,9 @@ de:
       user: Kein Benutzer gefunden
       invite: Keine Einladung gefunden
       model: Kein Modell gefunden
+      supporter_contribution: Kein Unterstützer-Beitrag gefunden
+    supporter_contributions:
+      patreon_sync_enqueued: Patreon-Synchronisierung gestartet. Aktualisiere in einer Minute, um importierte Unterstützer zu sehen.
     reload:
       started: "%{resource} Neuladen gestartet."
       success: "%{resource} erfolgreich neu geladen."

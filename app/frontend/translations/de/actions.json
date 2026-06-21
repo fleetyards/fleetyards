@@ -8,6 +8,9 @@
           "reloadPaints": "Lackierungen neu laden",
           "reloadModules": "Module neu laden",
           "reloadLoaners": "Leihschiffe neu laden"
+        },
+        "supporterContributions": {
+          "syncFromPatreon": "Von Patreon synchronisieren"
         }
       },
       "showReleased": "Alte Versionen anzeigen",
