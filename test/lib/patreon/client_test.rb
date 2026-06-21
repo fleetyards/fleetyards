@@ -83,5 +83,24 @@ module Patreon
         @client.members(CAMPAIGN_ID).to_a
       end
     end
+
+    test "#members reports truncation when the page cap is hit" do
+      endless_page = {
+        data: [{
+          id: "m",
+          attributes: {patron_status: "active_patron", currently_entitled_amount_cents: 100},
+          relationships: {}
+        }],
+        included: [],
+        links: {next: "#{BASE}/campaigns/#{CAMPAIGN_ID}/members?page%5Bcursor%5D=loop"}
+      }
+      stub_request(:get, %r{#{Regexp.escape(BASE)}/campaigns/#{CAMPAIGN_ID}/members}o)
+        .to_return(status: 200, body: endless_page.to_json)
+      Appsignal.expects(:report_error).once
+
+      members = @client.members(CAMPAIGN_ID).to_a
+
+      assert_equal Patreon::Client::MAX_PAGES, members.size
+    end
   end
 end

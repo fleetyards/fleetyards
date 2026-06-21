@@ -53,6 +53,17 @@ module Patreon
       assert_equal({created: 0, updated: 0, ended: 0, skipped: 1}, stats)
     end
 
+    test "ends an existing record for a former patron even when amount drops to zero" do
+      ExchangeRateFetcher.stubs(:convert_cents).returns(460)
+
+      import([member])
+      stats = import([member(status: "former_patron", amount_cents: 0, last_charge_date: Date.new(2026, 5, 20))])
+
+      record = SupporterContribution.find_by(patreon_member_id: "m1")
+      assert_equal Date.new(2026, 5, 20), record.ended_at
+      assert_equal({created: 0, updated: 1, ended: 1, skipped: 0}, stats)
+    end
+
     test "does not re-convert when the source amount is unchanged" do
       ExchangeRateFetcher.expects(:convert_cents).with(500, from: "USD", to: "EUR").once.returns(460)
 

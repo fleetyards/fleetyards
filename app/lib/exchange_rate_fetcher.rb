@@ -8,9 +8,18 @@ class ExchangeRateFetcher
   class FetchError < StandardError; end
 
   def self.fetch(from:, to:)
-    Rails.cache.fetch(format(CACHE_KEY, from, to), expires_in: CACHE_TTL) do
-      remote_rate(from:, to:) || cached_rate(from:, to:)
-    end
+    key = format(CACHE_KEY, from, to)
+    cached = Rails.cache.read(key)
+    return cached if cached
+
+    rate = remote_rate(from:, to:)
+    # Only cache fresh remote rates. The DB snapshot fallback is deliberately
+    # left uncached so the next call retries the provider rather than serving a
+    # stale rate for the full TTL.
+    return cached_rate(from:, to:) if rate.blank?
+
+    Rails.cache.write(key, rate, expires_in: CACHE_TTL)
+    rate
   end
 
   def self.convert_cents(cents, from:, to:)

@@ -24,6 +24,14 @@ module Patreon
           url = payload.dig("links", "next")
           pages += 1
         end
+
+        # A remaining `url` here means we stopped at the page cap, not at the end
+        # of the feed — surface it so members past the cap aren't silently dropped.
+        if url
+          message = "Patreon members feed exceeded MAX_PAGES (#{MAX_PAGES}); members beyond #{MAX_PAGES * 100} were not synced"
+          Rails.logger.warn("[Patreon::Client] #{message}")
+          Appsignal.report_error(Patreon::Error.new(message))
+        end
       end
     end
 

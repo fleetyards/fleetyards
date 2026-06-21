@@ -29,12 +29,34 @@ module Patreon
     private
 
     def import(member)
-      if member.amount_cents.to_i <= 0
+      record = SupporterContribution.find_by(patreon_member_id: member.id)
+
+      # Free-tier or churned members report no positive amount. Don't create a
+      # row for them, but still end an existing row when they've become a former
+      # patron — otherwise a previously-synced supporter would count forever.
+      return end_or_skip(record, member) if member.amount_cents.to_i <= 0
+
+      upsert(record || SupporterContribution.new(patreon_member_id: member.id), member)
+    end
+
+    def end_or_skip(record, member)
+      if record.nil? || member.status != "former_patron"
         @stats[:skipped] += 1
         return
       end
 
-      record = SupporterContribution.find_or_initialize_by(patreon_member_id: member.id)
+      ended_now = apply_lifecycle(record, member)
+      unless record.changed?
+        @stats[:skipped] += 1
+        return
+      end
+
+      record.save!
+      @stats[:updated] += 1
+      @stats[:ended] += 1 if ended_now
+    end
+
+    def upsert(record, member)
       new_record = record.new_record?
 
       assign_defaults(record, member) if new_record
