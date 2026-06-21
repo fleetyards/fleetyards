@@ -7,6 +7,8 @@ Rails.application.configure do
     request = controller.request
     {
       remote_ip: request.remote_ip,
+      forwarded_for: sanitize.call(request.get_header("HTTP_X_FORWARDED_FOR")),
+      remote_addr: request.get_header("REMOTE_ADDR"),
       user_agent: sanitize.call(request.user_agent),
       referer: sanitize.call(request.referer&.split("?", 2)&.first)
     }
