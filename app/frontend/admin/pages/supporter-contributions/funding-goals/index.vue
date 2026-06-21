@@ -121,14 +121,6 @@ const { formatCents } = useCurrencyFormat();
 
   <Teleport to="#header-right">
     <Btn
-      :to="{ name: 'admin-supporter-contributions' }"
-      :aria-label="t('headlines.admin.supporterContributions.index')"
-      mobile-icon-only
-    >
-      <i class="fa-duotone fa-hand-holding-heart" />
-      {{ t("headlines.admin.supporterContributions.index") }}
-    </Btn>
-    <Btn
       :to="{ name: 'admin-funding-goal-create' }"
       :aria-label="t('actions.create')"
       mobile-icon-only
