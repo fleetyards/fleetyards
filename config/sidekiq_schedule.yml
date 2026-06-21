@@ -19,6 +19,11 @@ sc_data_check_job:
   cron: '0 22 */1 * *' # Daily at 22:00
   class: 'ScData::CheckJob'
   queue: 'loaders'
+patreon_supporter_sync_job:
+  cron: '17 4 */1 * *' # Daily at 4:17 UTC, after Patreon's nightly settlement
+  class: 'PatreonSupporterSyncJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
 metrics_job:
   cron: '0 1 */1 * *' # Daily at 1:00
   class: 'MetricsJob'
