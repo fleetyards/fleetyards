@@ -29,9 +29,9 @@ end
 
 Rack::Attack.throttled_response_retry_after_header = true
 
-Rack::Attack.throttled_responder = lambda do |env|
+Rack::Attack.throttled_responder = lambda do |request|
   now = Time.zone.now
-  match_data = env["rack.attack.match_data"] || {}
+  match_data = request.env["rack.attack.match_data"] || {}
 
   headers = {
     "X-RateLimit-Limit" => match_data[:limit].to_s,
@@ -42,7 +42,7 @@ Rack::Attack.throttled_responder = lambda do |env|
   [429, headers, [
     {
       code: "rate_limit.exceeded",
-      message: "API rate limit exceeded for #{env["rack.attack.match_discriminator"]}"
+      message: "API rate limit exceeded for #{request.env["rack.attack.match_discriminator"]}"
     }.to_json
   ]]
 end
