@@ -35,6 +35,7 @@ de:
       model: Kein Modell gefunden
       supporter_contribution: Kein Unterstützer-Beitrag gefunden
     supporter_contributions:
+      anonymous_name: Ein anonymer Unterstützer
       patreon_sync_enqueued: Patreon-Synchronisierung gestartet. Aktualisiere in einer Minute, um importierte Unterstützer zu sehen.
     reload:
       started: "%{resource} Neuladen gestartet."

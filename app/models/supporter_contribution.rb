@@ -78,6 +78,10 @@ class SupporterContribution < ApplicationRecord
     format("%.2f %s", amount_cents.to_f / 100, currency)
   end
 
+  def display_name
+    name.presence || I18n.t("messages.supporter_contributions.anonymous_name")
+  end
+
   private def ended_at_after_started_at
     return if ended_at.blank? || started_at.blank?
     return if ended_at >= started_at

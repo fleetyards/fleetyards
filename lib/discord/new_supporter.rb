@@ -18,10 +18,14 @@ module Discord
     end
 
     private def get_message
-      I18n.t("discord.new_supporter.message", name: supporter.name, amount: supporter.formatted_amount)
+      I18n.t("discord.new_supporter.message", name: supporter.display_name, amount: supporter.formatted_amount)
     end
 
     private def get_url
+    end
+
+    private def allowed_mentions
+      {parse: []}
     end
   end
 end
