@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.31.1](https://github.com/fleetyards/fleetyards/compare/v6.31.0...v6.31.1) (2026-06-21)
+
+
+### Bug Fixes
+
+* **imports:** add missing jbuilder partials for modules and paints imports ([#4155](https://github.com/fleetyards/fleetyards/issues/4155)) ([11e8e58](https://github.com/fleetyards/fleetyards/commit/11e8e588b426697fbf8820f546b36a692eff0fd3))
+
 ## [6.31.0](https://github.com/fleetyards/fleetyards/compare/v6.30.1...v6.31.0) (2026-06-21)
 
 
