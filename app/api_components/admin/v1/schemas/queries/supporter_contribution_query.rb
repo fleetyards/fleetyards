@@ -14,6 +14,7 @@ module Admin
               nameEq: {type: :string},
               recurringEq: {type: :boolean},
               anonymousEq: {type: :boolean},
+              sourceEq: {"$ref": "#/components/schemas/SupporterContributionSourceEnum"},
               startedAtGteq: {type: :string, format: :date},
               startedAtLteq: {type: :string, format: :date},
               endedAtGteq: {type: :string, format: :date},

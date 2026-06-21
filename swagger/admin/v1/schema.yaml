@@ -5354,6 +5354,36 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/supporter-contributions/sync-patreon":
+    post:
+      summary: Sync Supporter Contributions from Patreon
+      tags:
+      - SupporterContributions
+      operationId: syncSupporterContributionsFromPatreon
+      responses:
+        '202':
+          description: accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/supporter-contributions/{id}":
     parameters:
     - name: id
@@ -12042,6 +12072,10 @@ components:
           type: boolean
         recurring:
           type: boolean
+        source:
+          "$ref": "#/components/schemas/SupporterContributionSourceEnum"
+        patreonMemberId:
+          type: string
         startedAt:
           type: string
           format: date
@@ -12063,6 +12097,7 @@ components:
       - currency
       - anonymous
       - recurring
+      - source
       - startedAt
       - createdAt
       - updatedAt
@@ -12104,6 +12139,8 @@ components:
           type: boolean
         anonymousEq:
           type: boolean
+        sourceEq:
+          "$ref": "#/components/schemas/SupporterContributionSourceEnum"
         startedAtGteq:
           type: string
           format: date
@@ -12150,6 +12187,15 @@ components:
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: SupporterContributionSortEnum
+    SupporterContributionSourceEnum:
+      type: string
+      enum:
+      - manual
+      - patreon
+      x-enumNames:
+      - MANUAL
+      - PATREON
+      title: SupporterContributionSourceEnum
     SupporterContributionStats:
       type: object
       properties:

@@ -37,8 +37,8 @@
 #
 FactoryBot.define do
   factory :admin_user do
-    username { Faker::Internet.username(separators: ["_"]) }
-    email { Faker::Internet.email }
+    sequence(:username) { |n| "#{Faker::Internet.username(separators: ["_"])}_#{n}" }
+    sequence(:email) { |n| Faker::Internet.email(name: "admin#{n}") }
     password { Faker::Internet.password }
     password_confirmation { password }
 

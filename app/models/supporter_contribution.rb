@@ -4,20 +4,25 @@
 #
 # Table name: supporter_contributions
 #
-#  id           :uuid             not null, primary key
-#  amount_cents :integer          not null
-#  anonymous    :boolean          default(FALSE), not null
-#  currency     :string           default("EUR"), not null
-#  ended_at     :date
-#  name         :string
-#  note         :text
-#  recurring    :boolean          default(FALSE), not null
-#  started_at   :date             not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id                  :uuid             not null, primary key
+#  amount_cents        :integer          not null
+#  anonymous           :boolean          default(FALSE), not null
+#  currency            :string           default("EUR"), not null
+#  ended_at            :date
+#  name                :string
+#  note                :text
+#  recurring           :boolean          default(FALSE), not null
+#  source              :string           default("manual"), not null
+#  source_amount_cents :integer
+#  source_currency     :string
+#  started_at          :date             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  patreon_member_id   :string
 #
 # Indexes
 #
+#  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
 #  index_supporter_contributions_on_recurring_and_ended_at  (recurring,ended_at)
 #  index_supporter_contributions_on_started_at              (started_at)
 #
@@ -32,6 +37,8 @@ class SupporterContribution < ApplicationRecord
     "name asc", "name desc",
     "createdAt asc", "createdAt desc"
   ]
+
+  enum :source, {manual: "manual", patreon: "patreon"}, default: "manual"
 
   validates :amount_cents, presence: true, numericality: {greater_than: 0, only_integer: true}
   validates :currency, presence: true
@@ -52,7 +59,8 @@ class SupporterContribution < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "name", "amount_cents", "currency", "anonymous", "recurring",
-      "started_at", "ended_at", "note", "created_at", "updated_at", "id"
+      "started_at", "ended_at", "note", "source", "patreon_member_id",
+      "created_at", "updated_at", "id"
     ]
   end
 

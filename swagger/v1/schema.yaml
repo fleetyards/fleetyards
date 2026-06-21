@@ -12246,6 +12246,15 @@ components:
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: SupporterContributionSortEnum
+    SupporterContributionSourceEnum:
+      type: string
+      enum:
+      - manual
+      - patreon
+      x-enumNames:
+      - MANUAL
+      - PATREON
+      title: SupporterContributionSourceEnum
     SyncRsiHangarInput:
       type: object
       properties:
