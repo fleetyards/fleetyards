@@ -3,7 +3,6 @@ production:
   name: "Fleetyards"
   active: true
   working_directory_path: "/tmp/appsignal"
-  enable_logging: true
   ignore_errors:
       - ActiveRecord::RecordNotFound
       - ActionController::RoutingError
@@ -14,7 +13,6 @@ staging:
   name: "fleetyards"
   active: true
   working_directory_path: "/tmp/appsignal"
-  enable_logging: true
   log_level: "debug"
   ignore_errors:
       - ActiveRecord::RecordNotFound
