@@ -1,5 +1,22 @@
 # frozen_string_literal: true
 
+# == Schema Information
+#
+# Table name: compare_images
+#
+#  id         :uuid             not null, primary key
+#  share_key  :string
+#  short_code :string
+#  slug_set   :string           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_compare_images_on_share_key   (share_key) UNIQUE WHERE (share_key IS NOT NULL)
+#  index_compare_images_on_short_code  (short_code) UNIQUE WHERE (short_code IS NOT NULL)
+#  index_compare_images_on_slug_set    (slug_set) UNIQUE
+#
 require "test_helper"
 
 class CompareImageTest < ActiveSupport::TestCase
