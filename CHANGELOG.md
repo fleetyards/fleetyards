@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.31.3](https://github.com/fleetyards/fleetyards/compare/v6.31.2...v6.31.3) (2026-06-21)
+
+
+### Chores
+
+* **ci:** run db and data migrations in one SSH session ([e568cfb](https://github.com/fleetyards/fleetyards/commit/e568cfb247fa4177bdbf1a607573631e8fd8c2c7))
+* **deps:** pin kamal to 2.11.0 ([26f3007](https://github.com/fleetyards/fleetyards/commit/26f300706e376cd057f7d1d5f744a36f5f0cb7b7))
+
 ## [6.31.2](https://github.com/fleetyards/fleetyards/compare/v6.31.1...v6.31.2) (2026-06-21)
 
 
