@@ -6,6 +6,7 @@ export enum InputTypesEnum {
   URL = "url",
   COLOR = "color",
   DATE = "date",
+  DATETIME_LOCAL = "datetime-local",
 }
 
 export enum InputSizesEnum {

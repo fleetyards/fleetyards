@@ -19,7 +19,7 @@ module Api
         end
 
         def focus
-          @filters = Model.focus_filters
+          @filters = Model.focus_filters(classification: params[:classification].presence)
 
           render "api/v1/shared/filters"
         end

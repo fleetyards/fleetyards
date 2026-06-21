@@ -36,4 +36,40 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: "notifications/",
+    name: "fleet-settings-notifications",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/notifications.vue"),
+    meta: {
+      title: "fleets.settings.notifications",
+      needsAuthentication: true,
+      access: ["fleet:notifications:manage", "fleet:manage"],
+      customTitle: true,
+    },
+  },
+  {
+    path: "discord/",
+    name: "fleet-settings-discord",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/discord.vue"),
+    meta: {
+      title: "fleets.settings.discord",
+      needsAuthentication: true,
+      access: ["fleet:notifications:manage", "fleet:manage"],
+      customTitle: true,
+    },
+  },
+  {
+    path: "calendar/",
+    name: "fleet-settings-calendar",
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/settings/calendar.vue"),
+    meta: {
+      title: "fleets.settings.calendar",
+      needsAuthentication: true,
+      access: ["fleet:events:manage", "fleet:manage"],
+      customTitle: true,
+    },
+  },
 ];

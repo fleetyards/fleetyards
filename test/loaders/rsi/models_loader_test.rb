@@ -2,7 +2,7 @@
 
 require "test_helper"
 require "webmock/minitest"
-require_relative "../../support/hangar_import_fixtures"
+require "support/hangar_import_fixtures"
 
 module Rsi
   class ModelsLoaderTest < ActiveSupport::TestCase

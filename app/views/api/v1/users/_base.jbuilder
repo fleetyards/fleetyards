@@ -25,6 +25,7 @@ json.current_system user.current_system if user.current_system.present?
 json.current_system_code user.current_system_code if user.current_system_code.present?
 
 json.sale_notify user.sale_notify
+json.date_format user.date_format
 json.public_hangar user.public_hangar
 json.public_hangar_url user.public_hangar_url
 json.public_hangar_loaners user.public_hangar_loaners

@@ -1,0 +1,69 @@
+# frozen_string_literal: true
+
+json.id fleet_event.id
+json.fleet_id fleet_event.fleet_id
+json.mission_id fleet_event.mission_id
+json.title fleet_event.title
+json.slug fleet_event.slug
+json.description fleet_event.description
+json.briefing fleet_event.briefing
+json.status fleet_event.status
+json.starts_at fleet_event.starts_at
+json.ends_at fleet_event.ends_at
+json.timezone fleet_event.timezone
+json.location fleet_event.location
+json.meetup_location fleet_event.meetup_location
+json.visibility fleet_event.visibility
+json.category fleet_event.category
+json.scenario fleet_event.scenario
+json.cover_image_preset fleet_event.cover_image_preset
+json.max_attendees fleet_event.max_attendees
+json.auto_lock_enabled fleet_event.auto_lock_enabled
+json.auto_lock_minutes_before fleet_event.auto_lock_minutes_before
+json.cancelled_reason fleet_event.cancelled_reason
+json.signup_approval fleet_event.signup_approval
+json.archived fleet_event.archived?
+json.archived_at fleet_event.archived_at
+json.external_uid fleet_event.external_uid
+
+if fleet_event.cover_image.attached?
+  json.cover_image do
+    json.partial! "api/v1/shared/file", record: fleet_event, attr: :cover_image
+  end
+else
+  json.cover_image nil
+end
+
+if fleet_event.created_by.present?
+  json.created_by do
+    json.id fleet_event.created_by.id
+    json.username fleet_event.created_by.username
+  end
+else
+  json.created_by nil
+end
+
+json.signups_count fleet_event.signups_count
+json.team_count fleet_event.fleet_event_teams.size
+json.past fleet_event.past?
+json.signups_open fleet_event.signups_open?
+
+# Discord-related state for the frontend's "Sync to Discord" button.
+json.discord_event_id fleet_event.discord_event_id
+json.discord_synced_at fleet_event.discord_synced_at
+json.discord_configured(
+  ::Discord::ApiClient.configured? &&
+    fleet_event.fleet&.fleet_notification_setting&.discord_guild_id.present?
+)
+
+json.recurring fleet_event.recurring?
+json.recurrence_interval fleet_event.recurrence_interval
+json.recurrence_until fleet_event.recurrence_until
+json.recurrence_count fleet_event.recurrence_count
+json.excluded_dates(fleet_event.excluded_dates || [])
+json.occurrence_date local_assigns[:occurrence_date]
+json.parent_event_slug local_assigns[:parent_event_slug]
+
+json.viewer_event_role local_assigns[:viewer_event_role]
+
+json.partial! "api/shared/dates", record: fleet_event

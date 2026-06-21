@@ -18,6 +18,10 @@ module V1
             guilded: {type: [:string, :null]},
             twitch: {type: [:string, :null]},
             saleNotify: {type: :boolean},
+            dateFormat: {
+              type: :string,
+              enum: ::User::DATE_FORMATS.keys
+            },
             publicHangar: {type: :boolean},
             publicHangarLoaners: {type: :boolean},
             publicHangarStats: {type: :boolean},
