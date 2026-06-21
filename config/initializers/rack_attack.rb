@@ -1,6 +1,15 @@
 # frozen_string_literal: true
 
-Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
+Rack::Attack.cache.store =
+  if Rails.env.test?
+    ActiveSupport::Cache::MemoryStore.new
+  else
+    ActiveSupport::Cache::RedisCacheStore.new(
+      url: Rails.configuration.redis.url,
+      db: 1,
+      namespace: "rack-attack"
+    )
+  end
 
 limit_proc = proc do |req|
   if req.env["warden"].authenticate?(scope: :api_user)
