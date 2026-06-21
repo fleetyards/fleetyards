@@ -15,6 +15,7 @@ import FilterForm from "@/admin/components/SupporterContributions/FilterForm/ind
 import Stats from "@/admin/components/SupporterContributions/Stats/index.vue";
 import {
   useSupporterContributions,
+  useSupporterContributionsStats,
   useSyncSupporterContributionsFromPatreon,
   getSupporterContributionsQueryKey,
   type SupporterContribution,
@@ -75,6 +76,8 @@ const statsQueryParams = computed(() => {
     },
   };
 });
+
+const { data: stats } = useSupporterContributionsStats(statsQueryParams);
 
 const {
   data: supporterContributions,
@@ -163,6 +166,7 @@ const syncFromPatreon = () => {
       {{ t("headlines.admin.fundingGoals.index") }}
     </Btn>
     <Btn
+      v-if="stats?.patreonSyncEnabled"
       :aria-label="t('actions.admin.supporterContributions.syncFromPatreon')"
       :loading="syncMutation.isPending.value"
       mobile-icon-only

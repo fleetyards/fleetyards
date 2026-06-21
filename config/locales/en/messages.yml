@@ -33,6 +33,7 @@ en:
       model: No Model found
       supporter_contribution: No Supporter Contribution found
     supporter_contributions:
+      anonymous_name: An anonymous supporter
       patreon_sync_enqueued: Patreon sync started. Refresh in a minute to see imported supporters.
     reload:
       started: "%{resource} reload started."

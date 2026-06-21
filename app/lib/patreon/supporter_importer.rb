@@ -69,6 +69,8 @@ module Patreon
       record.save!
       @stats[new_record ? :created : :updated] += 1
       @stats[:ended] += 1 if ended_now
+
+      Notifications::NewPatronJob.perform_async(record.id) if new_record && record.ended_at.blank?
     end
 
     def assign_defaults(record, member)

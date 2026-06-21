@@ -10,6 +10,15 @@ class AdminMailer < ApplicationMailer
     )
   end
 
+  def new_supporter(supporter)
+    @supporter = supporter
+
+    mail(
+      to: super_admin_emails,
+      subject: I18n.t(:"mailer.admin.new_supporter.subject")
+    )
+  end
+
   def notify_block(url)
     @url = url
 

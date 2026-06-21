@@ -12209,6 +12209,8 @@ components:
           type: integer
         anonymousCount:
           type: integer
+        patreonSyncEnabled:
+          type: boolean
       additionalProperties: false
       required:
       - totalAmountCents
@@ -12216,6 +12218,7 @@ components:
       - totalCount
       - recurringCount
       - anonymousCount
+      - patreonSyncEnabled
       title: SupporterContributionStats
     SupporterContributions:
       type: object
