@@ -54,7 +54,6 @@ module Fleetyards
 
     config.exceptions_app = routes
 
-    config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
     config.middleware.use Middleware::TransformParameters
 
