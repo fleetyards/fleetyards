@@ -7,6 +7,7 @@ import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
 import { routes as oauthApplicationsRoutes } from "@/admin/pages/oauth-applications/routes";
 import { routes as maintenanceRoutes } from "@/admin/pages/maintenance/routes";
 import { routes as usersRoutes } from "@/admin/pages/users/routes";
+import { routes as supporterContributionsRoutes } from "@/admin/pages/supporter-contributions/routes";
 import { RouteRecordRaw } from "vue-router";
 
 export const routes: RouteRecordRaw[] = [
@@ -118,6 +119,18 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-user-group-crown",
       access: ["admins"],
+    },
+  },
+  {
+    path: "/supporter-contributions/",
+    component: () => import("@/admin/pages/supporter-contributions.vue"),
+    children: supporterContributionsRoutes,
+    redirect: { name: supporterContributionsRoutes[0].name },
+    meta: {
+      title: "admin.supporterContributions.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-hand-holding-heart",
+      access: ["supporters"],
     },
   },
   {

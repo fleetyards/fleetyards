@@ -1499,6 +1499,193 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/funding-goals":
+    post:
+      summary: Create Funding Goal
+      tags:
+      - FundingGoals
+      operationId: createFundingGoal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FundingGoalInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FundingGoal"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Funding Goals list
+      tags:
+      - FundingGoals
+      operationId: fundingGoals
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/FundingGoalQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FundingGoals"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/funding-goals/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Funding Goal id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Funding Goal
+      tags:
+      - FundingGoals
+      operationId: destroyFundingGoal
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FundingGoal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Funding Goal Detail
+      tags:
+      - FundingGoals
+      operationId: fundingGoal
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FundingGoal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Funding Goal
+      tags:
+      - FundingGoals
+      operationId: updateFundingGoal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FundingGoalInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FundingGoal"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/images":
     post:
       summary: Image create
@@ -5055,6 +5242,229 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/supporter-contributions":
+    post:
+      summary: Create Supporter Contribution
+      tags:
+      - SupporterContributions
+      operationId: createSupporterContribution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupporterContributionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContribution"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Supporter Contributions list
+      tags:
+      - SupporterContributions
+      operationId: supporterContributions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 30
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/SupporterContributionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContributions"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/supporter-contributions/stats":
+    get:
+      summary: Supporter Contributions Stats
+      tags:
+      - SupporterContributions
+      operationId: supporterContributionsStats
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/SupporterContributionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContributionStats"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/supporter-contributions/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Supporter Contribution id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Supporter Contribution
+      tags:
+      - SupporterContributions
+      operationId: destroySupporterContribution
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContribution"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Supporter Contribution Detail
+      tags:
+      - SupporterContributions
+      operationId: supporterContribution
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContribution"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Supporter Contribution
+      tags:
+      - SupporterContributions
+      operationId: updateSupporterContribution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupporterContributionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContribution"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/users":
     get:
       summary: Users list
@@ -7595,6 +8005,120 @@ components:
       required:
       - capacity
       title: FuelTank
+    FundingGoal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        effectiveFrom:
+          type: string
+          format: date
+        endedAt:
+          type: string
+          format: date
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - amountCents
+      - currency
+      - effectiveFrom
+      - createdAt
+      - updatedAt
+      title: FundingGoal
+    FundingGoalInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        effectiveFrom:
+          type: string
+          format: date
+        endedAt:
+          type: string
+          format: date
+      additionalProperties: false
+      required:
+      - title
+      - amountCents
+      - effectiveFrom
+      title: FundingGoalInput
+    FundingGoalQuery:
+      type: object
+      properties:
+        titleCont:
+          type: string
+        effectiveFromGteq:
+          type: string
+          format: date
+        effectiveFromLteq:
+          type: string
+          format: date
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/FundingGoalSortEnum"
+          - "$ref": "#/components/schemas/FundingGoalSortEnum"
+      additionalProperties: false
+      example: {}
+      title: FundingGoalQuery
+    FundingGoalSortEnum:
+      type: string
+      enum:
+      - title asc
+      - title desc
+      - effectiveFrom asc
+      - effectiveFrom desc
+      - amountCents asc
+      - amountCents desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - TITLE_ASC
+      - TITLE_DESC
+      - EFFECTIVE_FROM_ASC
+      - EFFECTIVE_FROM_DESC
+      - AMOUNT_CENTS_ASC
+      - AMOUNT_CENTS_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FundingGoalSortEnum
+    FundingGoals:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FundingGoal"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FundingGoals
     Gallery:
       type: object
       properties:
@@ -11502,6 +12026,165 @@ components:
       - usersCountTotal
       - fleetsCountTotal
       title: Stats
+    SupporterContribution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        anonymous:
+          type: boolean
+        recurring:
+          type: boolean
+        startedAt:
+          type: string
+          format: date
+        endedAt:
+          type: string
+          format: date
+        note:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - amountCents
+      - currency
+      - anonymous
+      - recurring
+      - startedAt
+      - createdAt
+      - updatedAt
+      title: SupporterContribution
+    SupporterContributionInput:
+      type: object
+      properties:
+        name:
+          type: string
+        amountCents:
+          type: integer
+        currency:
+          type: string
+        anonymous:
+          type: boolean
+        recurring:
+          type: boolean
+        startedAt:
+          type: string
+          format: date
+        endedAt:
+          type: string
+          format: date
+        note:
+          type: string
+      additionalProperties: false
+      required:
+      - amountCents
+      - startedAt
+      title: SupporterContributionInput
+    SupporterContributionQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        nameEq:
+          type: string
+        recurringEq:
+          type: boolean
+        anonymousEq:
+          type: boolean
+        startedAtGteq:
+          type: string
+          format: date
+        startedAtLteq:
+          type: string
+          format: date
+        endedAtGteq:
+          type: string
+          format: date
+        endedAtLteq:
+          type: string
+          format: date
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/SupporterContributionSortEnum"
+          - "$ref": "#/components/schemas/SupporterContributionSortEnum"
+      additionalProperties: false
+      example: {}
+      title: SupporterContributionQuery
+    SupporterContributionSortEnum:
+      type: string
+      enum:
+      - startedAt asc
+      - startedAt desc
+      - endedAt asc
+      - endedAt desc
+      - amountCents asc
+      - amountCents desc
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - STARTED_AT_ASC
+      - STARTED_AT_DESC
+      - ENDED_AT_ASC
+      - ENDED_AT_DESC
+      - AMOUNT_CENTS_ASC
+      - AMOUNT_CENTS_DESC
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: SupporterContributionSortEnum
+    SupporterContributionStats:
+      type: object
+      properties:
+        totalAmountCents:
+          type: integer
+        currency:
+          type: string
+        totalCount:
+          type: integer
+        recurringCount:
+          type: integer
+        anonymousCount:
+          type: integer
+      additionalProperties: false
+      required:
+      - totalAmountCents
+      - currency
+      - totalCount
+      - recurringCount
+      - anonymousCount
+      title: SupporterContributionStats
+    SupporterContributions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SupporterContribution"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: SupporterContributions
     ThrusterClassEnum:
       type: string
       enum:

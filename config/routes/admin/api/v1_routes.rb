@@ -117,6 +117,13 @@ v1_admin_api_routes = lambda do
 
   resources :imports, only: %i[index show]
 
+  resources :funding_goals, path: "funding-goals", only: %i[index show create update destroy]
+  resources :supporter_contributions, path: "supporter-contributions", only: %i[index show create update destroy] do
+    collection do
+      get :stats
+    end
+  end
+
   resources :oauth_applications, path: "oauth-applications", only: %i[index show create update destroy]
 
   resources :rsi_request_logs, path: "rsi-request-logs", only: %i[index] do

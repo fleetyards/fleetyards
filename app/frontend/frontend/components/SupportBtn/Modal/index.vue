@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import SupportProgress from "@/frontend/components/SupportProgress/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import kofiIcon from "@/images/icons/kofi_s_logo_nolabel.png";
 
@@ -16,6 +17,12 @@ const { t } = useI18n();
 <template>
   <Modal :title="t('headlines.support')">
     <div class="support-body">
+      <br />
+      <div class="row">
+        <div class="col-12">
+          <SupportProgress show-breakdown />
+        </div>
+      </div>
       <br />
       <div class="row">
         <div class="col-12">

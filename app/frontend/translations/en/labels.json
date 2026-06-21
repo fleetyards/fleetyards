@@ -577,6 +577,30 @@
         "logo": "Logo",
         "scRef": "SC Ref"
       },
+      "fundingGoal": {
+        "title": "Title",
+        "description": "Description",
+        "amount": "Amount",
+        "currency": "Currency",
+        "effectiveFrom": "Effective from",
+        "endedAt": "Ended at"
+      },
+      "supporterContribution": {
+        "name": "Supporter Name",
+        "amount": "Amount",
+        "currency": "Currency",
+        "anonymous": "Anonymous",
+        "recurring": "Recurring",
+        "startedAt": "Started at",
+        "endedAt": "Ended at",
+        "note": "Internal note",
+        "stats": {
+          "total": "Total",
+          "count": "Contributions",
+          "recurringCount": "Recurring",
+          "anonymousCount": "Anonymous"
+        }
+      },
       "itemPrice": {
         "price": "Price",
         "location": "Location",
@@ -1167,6 +1191,13 @@
           "name": "Name",
           "withModels": "With Models",
           "logoBlank": "Without Logo"
+        },
+        "supporterContributions": {
+          "name": "Search by name",
+          "recurring": "Recurring",
+          "anonymous": "Anonymous",
+          "startedAtGteq": "Started from",
+          "startedAtLteq": "Started until"
         },
         "images": {
           "station": "Station",

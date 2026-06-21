@@ -59,6 +59,8 @@ v1_api_routes = lambda do
     end
   end
 
+  get "supporters/progress", to: "supporters#progress"
+
   post "compare/share", to: "compare#share", as: :compare_share
 
   resources :images, only: %i[index] do

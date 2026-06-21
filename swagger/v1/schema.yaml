@@ -5578,6 +5578,19 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/BarChartStats"
+  "/supporters/progress":
+    get:
+      summary: Public Supporters Progress
+      tags:
+      - Supporters
+      operationId: supportersProgress
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupportProgress"
   "/user-features":
     get:
       summary: User Feature Flags
@@ -8907,6 +8920,27 @@ components:
       required:
       - capacity
       title: FuelTank
+    FundingGoalSortEnum:
+      type: string
+      enum:
+      - title asc
+      - title desc
+      - effectiveFrom asc
+      - effectiveFrom desc
+      - amountCents asc
+      - amountCents desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - TITLE_ASC
+      - TITLE_DESC
+      - EFFECTIVE_FROM_ASC
+      - EFFECTIVE_FROM_DESC
+      - AMOUNT_CENTS_ASC
+      - AMOUNT_CENTS_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: FundingGoalSortEnum
     Gallery:
       type: object
       properties:
@@ -12119,6 +12153,99 @@ components:
       - wishlistsCount
       - shipOfTheMonthCount
       title: Stats
+    SupportProgress:
+      type: object
+      properties:
+        goal:
+          type: object
+          properties:
+            amountCents:
+              type: integer
+            currency:
+              type: string
+            items:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  amountCents:
+                    type: integer
+                  currency:
+                    type: string
+                additionalProperties: false
+                required:
+                - title
+                - amountCents
+                - currency
+          additionalProperties: false
+          required:
+          - amountCents
+          - currency
+          - items
+        monthlyTotal:
+          type: object
+          properties:
+            amountCents:
+              type: integer
+            currency:
+              type: string
+          additionalProperties: false
+          required:
+          - amountCents
+          - currency
+        contributions:
+          type: array
+          items:
+            type: object
+            properties:
+              displayName:
+                type: string
+              amountCents:
+                type: integer
+              currency:
+                type: string
+              recurring:
+                type: boolean
+            additionalProperties: false
+            required:
+            - displayName
+            - amountCents
+            - currency
+            - recurring
+      additionalProperties: false
+      required:
+      - monthlyTotal
+      - contributions
+      title: SupportProgress
+    SupporterContributionSortEnum:
+      type: string
+      enum:
+      - startedAt asc
+      - startedAt desc
+      - endedAt asc
+      - endedAt desc
+      - amountCents asc
+      - amountCents desc
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - STARTED_AT_ASC
+      - STARTED_AT_DESC
+      - ENDED_AT_ASC
+      - ENDED_AT_DESC
+      - AMOUNT_CENTS_ASC
+      - AMOUNT_CENTS_DESC
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: SupporterContributionSortEnum
     SyncRsiHangarInput:
       type: object
       properties:

@@ -97,6 +97,22 @@
         "code": "Code",
         "scRef": "SC Ref"
       },
+      "fundingGoal": {
+        "title": "Serverkosten, Domain, Discord...",
+        "description": "Optionaler öffentlicher Kontext",
+        "amount": "100,00",
+        "currency": "EUR",
+        "effectiveFrom": "2026-01-01",
+        "endedAt": "leer lassen, wenn laufend"
+      },
+      "supporterContribution": {
+        "name": "Öffentlich angezeigter Name",
+        "amount": "5,00",
+        "currency": "EUR",
+        "startedAt": "2026-01-01",
+        "endedAt": "2026-12-31",
+        "note": "Optionale interne Notiz"
+      },
       "component": {
         "componentClass": "Komponentenklasse",
         "componentType": "Komponententyp",
@@ -198,6 +214,11 @@
         },
         "manufacturers": {
           "name": "Origin, Robert Space Industries, Aegis..."
+        },
+        "supporterContributions": {
+          "name": "Alice, Bob...",
+          "startedAtGteq": "2026-01-01",
+          "startedAtLteq": "2026-12-31"
         },
         "users": {
           "search": "Benutzername oder E-Mail",
