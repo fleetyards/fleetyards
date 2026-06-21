@@ -26,7 +26,13 @@ module Admin
           authorize! with: ::Admin::SupporterContributionPolicy
 
           q = SupporterContribution.ransack(supporter_contribution_query_params.except("sorts"))
-          @stats_scope = q.result(distinct: true)
+          @stats = q.result(distinct: true).pick(
+            Arel.sql("COALESCE(SUM(amount_cents), 0)"),
+            Arel.sql("MAX(currency)"),
+            Arel.sql("COUNT(*)"),
+            Arel.sql("COUNT(*) FILTER (WHERE recurring)"),
+            Arel.sql("COUNT(*) FILTER (WHERE anonymous)")
+          )
         end
 
         def show

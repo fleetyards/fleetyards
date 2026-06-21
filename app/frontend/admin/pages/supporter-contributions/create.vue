@@ -22,6 +22,7 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { todayIsoDateLocal } from "@/shared/utils/dateHelpers";
+import { toCents } from "@/shared/utils/currencyHelpers";
 import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
@@ -83,7 +84,7 @@ const onSubmit = handleSubmit(async (values) => {
 
   const payload: SupporterContributionInput = {
     name: values.name || undefined,
-    amountCents: Math.round(Number(values.amount) * 100),
+    amountCents: toCents(values.amount),
     startedAt: values.startedAt,
     endedAt: (values.recurring && values.endedAt) || undefined,
     recurring: values.recurring,

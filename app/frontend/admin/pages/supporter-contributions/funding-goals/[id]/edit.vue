@@ -23,6 +23,7 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { toCents } from "@/shared/utils/currencyHelpers";
 import { useQueryClient } from "@tanstack/vue-query";
 
 type Props = {
@@ -95,7 +96,7 @@ const onSubmit = handleSubmit(async (values) => {
   const payload: FundingGoalInput = {
     title: values.title,
     description: values.description || undefined,
-    amountCents: Math.round(Number(values.amount) * 100),
+    amountCents: toCents(values.amount),
     effectiveFrom: values.effectiveFrom,
     endedAt: values.endedAt || undefined,
     currency: values.currency,

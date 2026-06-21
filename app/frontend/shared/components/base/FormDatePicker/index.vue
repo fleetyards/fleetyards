@@ -68,7 +68,7 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const internalId = ref(`${props.name}-${uuidv4()}`);
+const internalId = ref(props.id ?? `${props.name}-${uuidv4()}`);
 
 const innerLabel = computed(() => {
   if (props.label) return props.label;
@@ -133,14 +133,6 @@ const clear = () => {
   emit("update:modelValue", undefined);
   emit("clear");
 };
-
-onMounted(() => {
-  if (props.id) {
-    internalId.value = props.id;
-  } else {
-    internalId.value = `${props.name}-${uuidv4()}`;
-  }
-});
 
 defineExpose({ clear });
 </script>

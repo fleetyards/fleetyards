@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-json.total_amount_cents @stats_scope.sum(:amount_cents)
-json.currency @stats_scope.pick(:currency) || "EUR"
-json.total_count @stats_scope.count
-json.recurring_count @stats_scope.where(recurring: true).count
-json.anonymous_count @stats_scope.where(anonymous: true).count
+total_amount_cents, currency, total_count, recurring_count, anonymous_count = @stats
+
+json.total_amount_cents total_amount_cents.to_i
+json.currency currency || "EUR"
+json.total_count total_count.to_i
+json.recurring_count recurring_count.to_i
+json.anonymous_count anonymous_count.to_i
