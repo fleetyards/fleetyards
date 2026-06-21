@@ -35,6 +35,14 @@ module Admin
           )
         end
 
+        def sync_patreon
+          authorize! with: ::Admin::SupporterContributionPolicy
+
+          PatreonSupporterSyncJob.perform_async
+
+          render json: {message: I18n.t("messages.supporter_contributions.patreon_sync_enqueued")}, status: :accepted
+        end
+
         def show
         end
 
@@ -75,7 +83,7 @@ module Admin
 
         private def supporter_contribution_query_params
           @supporter_contribution_query_params ||= params.permit(q: [
-            :name_cont, :name_eq, :recurring_eq, :anonymous_eq,
+            :name_cont, :name_eq, :recurring_eq, :anonymous_eq, :source_eq,
             :started_at_gteq, :started_at_lteq, :ended_at_gteq, :ended_at_lteq,
             :sorts, sorts: []
           ]).fetch(:q, {})

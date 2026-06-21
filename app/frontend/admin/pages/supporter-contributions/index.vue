@@ -15,14 +15,17 @@ import FilterForm from "@/admin/components/SupporterContributions/FilterForm/ind
 import Stats from "@/admin/components/SupporterContributions/Stats/index.vue";
 import {
   useSupporterContributions,
+  useSyncSupporterContributionsFromPatreon,
   getSupporterContributionsQueryKey,
   type SupporterContribution,
   type SupporterContributionSortEnum,
+  SupporterContributionSourceEnum,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSupporterContributionFilters } from "@/admin/composables/useSupporterContributionFilters";
 
 const route = useRoute();
@@ -111,10 +114,30 @@ const columns: BaseTableCol<SupporterContribution>[] = [
     label: "Anonymous",
     mobile: false,
   },
+  {
+    name: "source",
+    label: "Source",
+    mobile: false,
+  },
 ];
 
 const { t, l } = useI18n();
 const { formatCents } = useCurrencyFormat();
+const { displayInfo } = useAppNotifications();
+
+const syncMutation = useSyncSupporterContributionsFromPatreon({
+  mutation: {
+    onSuccess: () => {
+      displayInfo({
+        text: t("messages.admin.supporterContributions.patreonSyncStarted"),
+      });
+    },
+  },
+});
+
+const syncFromPatreon = () => {
+  syncMutation.mutate();
+};
 </script>
 
 <template>
@@ -138,6 +161,15 @@ const { formatCents } = useCurrencyFormat();
     >
       <i class="fa-duotone fa-bullseye-arrow" />
       {{ t("headlines.admin.fundingGoals.index") }}
+    </Btn>
+    <Btn
+      :aria-label="t('actions.admin.supporterContributions.syncFromPatreon')"
+      :loading="syncMutation.isPending.value"
+      mobile-icon-only
+      @click="syncFromPatreon"
+    >
+      <i class="fa-brands fa-patreon" />
+      {{ t("actions.admin.supporterContributions.syncFromPatreon") }}
     </Btn>
     <Btn
       :to="{ name: 'admin-supporter-contribution-create' }"
@@ -201,6 +233,16 @@ const { formatCents } = useCurrencyFormat();
         </template>
         <template #col-anonymous="{ record }">
           <i v-if="record.anonymous" class="fa-duotone fa-user-secret" />
+        </template>
+        <template #col-source="{ record }">
+          <i
+            v-if="record.source === SupporterContributionSourceEnum.PATREON"
+            class="fa-brands fa-patreon"
+            :title="t('labels.admin.supporterContributions.source.patreon')"
+          />
+          <span v-else>{{
+            t("labels.admin.supporterContributions.source.manual")
+          }}</span>
         </template>
         <template #actions="{ record }">
           <SupporterContributionActions :supporter-contribution="record" />

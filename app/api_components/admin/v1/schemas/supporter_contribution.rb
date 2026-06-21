@@ -15,6 +15,8 @@ module Admin
             currency: {type: :string},
             anonymous: {type: :boolean},
             recurring: {type: :boolean},
+            source: {"$ref": "#/components/schemas/SupporterContributionSourceEnum"},
+            patreonMemberId: {type: :string},
             startedAt: {type: :string, format: :date},
             endedAt: {type: :string, format: :date},
             note: {type: :string},
@@ -22,7 +24,7 @@ module Admin
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id amountCents currency anonymous recurring startedAt createdAt updatedAt]
+          required: %w[id amountCents currency anonymous recurring source startedAt createdAt updatedAt]
         })
       end
     end

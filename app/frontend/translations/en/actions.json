@@ -8,6 +8,9 @@
           "reloadPaints": "Reload Paints",
           "reloadModules": "Reload Modules",
           "reloadLoaners": "Reload Loaners"
+        },
+        "supporterContributions": {
+          "syncFromPatreon": "Sync from Patreon"
         }
       },
       "showReleased": "Show old Releases",
@@ -77,7 +80,7 @@
       "enableGlobally": "Enable Globally",
       "disableGlobally": "Disable Globally",
       "addActor": "Add Actor",
-      "addGroup": "Add {group}",
+      "addGroup": "Add Group",
       "remove": "Remove",
       "delete": "Delete",
       "deleteSelected": "Delete Selected",
@@ -100,7 +103,6 @@
       "addToWishlist": "Add to Wishlist",
       "addAnother": "Add another",
       "addVehicle": "Add Ships",
-      "addGroup": "Add Group",
       "addModule": "Add another Module",
       "addUpgrade": "Add another Upgrade",
       "showTableView": "Display as List",
