@@ -72,10 +72,17 @@ Rails.application.configure do
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 
-  # Log to STDOUT by default
-  config.logger = ActiveSupport::Logger.new($stdout)
-    .tap { |logger| logger.formatter = ::Logger::Formatter.new }
-    .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+  # Log to STDOUT and broadcast to AppSignal so log lines reach the AppSignal logging UI.
+  config.logger = begin
+    stdout_logger = ActiveSupport::Logger.new($stdout)
+    stdout_logger.formatter = ::Logger::Formatter.new
+
+    appsignal_logger = Appsignal::Logger.new("rails")
+
+    ActiveSupport::TaggedLogging.new(
+      ActiveSupport::BroadcastLogger.new(stdout_logger, appsignal_logger)
+    )
+  end
 
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
@@ -123,12 +130,6 @@ Rails.application.configure do
   config.action_mailer.postmark_settings = {
     api_token: Rails.application.credentials.postmark_api_token
   }
-
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
-    logger = ActiveSupport::Logger.new($stdout)
-    logger.formatter = config.log_formatter
-    config.logger = ActiveSupport::TaggedLogging.new(logger)
-  end
 
   config.action_cable.url = endpoints.cable_endpoint
   config.action_cable.allowed_request_origins = [
