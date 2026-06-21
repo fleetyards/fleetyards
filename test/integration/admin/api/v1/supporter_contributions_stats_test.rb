@@ -51,6 +51,7 @@ class Admin::Api::V1::SupporterContributionsStatsTest < ActionDispatch::Integrat
       assert_equal 3, parsed_body["totalCount"]
       assert_equal 1, parsed_body["recurringCount"]
       assert_equal 1, parsed_body["anonymousCount"]
+      assert_equal false, parsed_body["patreonSyncEnabled"]
     end
   end
 
