@@ -39,7 +39,7 @@ fleetyards/
 │       └── types/             # TypeScript types
 ├── config/                    # Rails configuration
 ├── db/                        # Migrations, schema, seeds
-├── spec/                      # RSpec tests
+├── test/                      # Minitest tests
 ├── bin/                       # Development scripts
 └── .cursor/rules/             # Detailed rule files (see below)
 ```
@@ -61,7 +61,7 @@ bin/dev                           # Alternative: start dev environment
 
 ### Testing
 ```bash
-rspec                             # Backend tests
+bin/rails test                    # Backend tests (Minitest)
 pnpm test                         # Frontend tests (Vitest)
 pnpm test:e2e:run                 # E2E tests (Playwright)
 ```
@@ -96,9 +96,9 @@ pnpm format:fix                   # Prettier formatting
 ## Backend Conventions
 
 ### Code Style
-- Write concise, idiomatic Ruby following the [Ruby Style Guide](https://rubystyle.guide/)
+- Write concise, idiomatic Ruby following [standardrb](https://github.com/standardrb/standard) — the project's linter is the source of truth for style
 - Use snake_case for files, methods, variables; CamelCase for classes/modules
-- Prefer single quotes unless interpolation is needed
+- String quoting follows standardrb's default (double quotes); don't fight the formatter
 - Follow Rails MVC conventions; use concerns for shared behavior
 - Use service objects for complex business logic
 
@@ -109,9 +109,9 @@ pnpm format:fix                   # Prettier formatting
 - Use Sidekiq for background jobs
 
 ### Testing
-- Write RSpec tests for all new features (with openapi-ruby for API specs)
-- Use FactoryBot for test data
-- Place request specs in `spec/requests/`
+- Write Minitest tests for all new features. API endpoints get integration tests in `test/integration/` using `openapi-ruby` (`include OpenapiRuby::Adapters::Minitest::DSL`) so the OpenAPI schema is generated from the same specs.
+- Use FactoryBot for test data (factories live in `test/factories/`)
+- Run the suite with `bin/rails test` or target a file with `bin/rails test path/to/file_test.rb`
 
 ### Security
 - Use strong parameters in controllers
@@ -159,7 +159,7 @@ pnpm format:fix                   # Prettier formatting
 ### Component Organization
 - Shared components live in `app/frontend/shared/components/`
 - Each component gets its own directory with `index.vue`, optional `index.scss`, `types.ts`
-- Use lowercase-with-dashes for directory names
+- Component directory names use PascalCase (or a descriptive name) — matches the existing tree (`Manufacturers/`, `OauthBtn/`, `AdminUsers/`, `base/`, …). See `.cursor/rules/frontend/components.mdc` for the full rule.
 
 ### Auto-imports
 - Vue core functions (`ref`, `onMounted`, etc.) are auto-imported — do not import them manually
@@ -212,14 +212,15 @@ Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 When adding new API endpoints, follow this order:
 
-1. **Write RSpec test first** in `spec/requests/` using `swagger_helper`
+1. **Write a Minitest integration test first** in `test/integration/` using `openapi-ruby`'s DSL (`include OpenapiRuby::Adapters::Minitest::DSL`)
 2. **Implement model methods** in `app/models/` if needed
 3. **Add controller action** in `app/controllers/api/v1/`
 4. **Update policy** in `app/policies/` for authorization
 5. **Add route** in `config/routes/api/`
-6. **Run linting**: `bundle exec standardrb --fix`
-7. **Generate schema**: `./bin/generate-schema`
-8. **Run tests**: `rspec`
+6. **Add OpenAPI components** in `app/api_components/` — never edit `swagger/*.yaml` directly
+7. **Run linting**: `bundle exec standardrb --fix`
+8. **Generate schema**: `./bin/generate-schema`
+9. **Run tests**: `bin/rails test`
 
 ## Debugging Protocol
 
