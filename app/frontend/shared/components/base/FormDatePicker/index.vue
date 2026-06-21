@@ -8,9 +8,23 @@ export default {
 import { useField, type RuleExpression } from "vee-validate";
 import { v4 as uuidv4 } from "uuid";
 import { useI18n } from "@/shared/composables/useI18n";
+import { toLocalIsoDate } from "@/shared/utils/dateHelpers";
 import { VueDatePicker } from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import type { MaybeRef } from "vue";
+
+const DATE_ONLY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+// `new Date('YYYY-MM-DD')` parses as UTC midnight; for users west of UTC
+// the resulting Date falls on the previous local day. Parse as local
+// midnight instead when the value is a date-only string.
+const parseLocal = (value: string): Date => {
+  if (DATE_ONLY_RE.test(value)) {
+    const [year, month, day] = value.split("-").map(Number);
+    return new Date(year, month - 1, day);
+  }
+  return new Date(value);
+};
 
 type Props = {
   id?: string;
@@ -47,7 +61,10 @@ const props = withDefaults(defineProps<Props>(), {
   maxDate: undefined,
 });
 
-const emit = defineEmits(["update:modelValue", "clear"]);
+const emit = defineEmits<{
+  "update:modelValue": [value: string | null | undefined];
+  clear: [];
+}>();
 
 const { t } = useI18n();
 
@@ -81,24 +98,17 @@ const {
 const hasErrors = computed(() => errors.value.length > 0);
 
 const pickerValue = computed<Date | null>({
-  get: () => (fieldValue.value ? new Date(fieldValue.value) : null),
+  get: () => (fieldValue.value ? parseLocal(fieldValue.value) : null),
   set: (next) => {
     const serialized = next
       ? props.withTime
         ? next.toISOString()
-        : toIsoDate(next)
+        : toLocalIsoDate(next)
       : null;
     handleChange(serialized);
     emit("update:modelValue", serialized);
   },
 });
-
-const toIsoDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
 
 const inputFormat = computed(() =>
   props.withTime ? "d MMM yyyy HH:mm" : "d MMM yyyy",

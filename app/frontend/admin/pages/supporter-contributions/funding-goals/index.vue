@@ -22,6 +22,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
+import { todayIsoDateLocal } from "@/shared/utils/dateHelpers";
 import { useFundingGoalFilters } from "@/admin/composables/useFundingGoalFilters";
 
 const route = useRoute();
@@ -179,7 +180,7 @@ const { formatCents } = useCurrencyFormat();
         </template>
         <template #col-active="{ record }">
           <i
-            v-if="!record.endedAt || record.endedAt >= new Date().toISOString().slice(0, 10)"
+            v-if="!record.endedAt || record.endedAt >= todayIsoDateLocal()"
             class="fa-duotone fa-circle-check"
           />
           <i v-else class="fa-duotone fa-circle-xmark" />

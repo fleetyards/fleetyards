@@ -21,6 +21,7 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { todayIsoDateLocal } from "@/shared/utils/dateHelpers";
 import { useQueryClient } from "@tanstack/vue-query";
 
 const { t } = useI18n();
@@ -48,7 +49,7 @@ const initialValues = ref<FormValues>({
   title: "",
   description: undefined,
   amount: undefined,
-  effectiveFrom: new Date().toISOString().slice(0, 10),
+  effectiveFrom: todayIsoDateLocal(),
   endedAt: undefined,
   currency: "EUR",
 });
