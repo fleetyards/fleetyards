@@ -167,6 +167,16 @@
           "workers": "工作进程",
           "tasks": "任务",
           "rsiApiStatus": "RSI API 状态"
+        },
+        "supporterContributions": {
+          "index": "支持者贡献",
+          "new": "新建支持者贡献",
+          "edit": "编辑支持者贡献"
+        },
+        "fundingGoals": {
+          "index": "资金目标",
+          "new": "新建资金目标",
+          "edit": "编辑资金目标"
         }
       }
     }

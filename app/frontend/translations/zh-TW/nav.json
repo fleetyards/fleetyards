@@ -167,6 +167,16 @@
           "workers": "工作程序",
           "tasks": "任務",
           "rsiApiStatus": "RSI API 狀態"
+        },
+        "supporterContributions": {
+          "index": "支持者貢獻",
+          "new": "新增支持者貢獻",
+          "edit": "編輯支持者貢獻"
+        },
+        "fundingGoals": {
+          "index": "資金目標",
+          "new": "新增資金目標",
+          "edit": "編輯資金目標"
         }
       }
     }

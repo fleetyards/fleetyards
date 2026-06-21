@@ -121,7 +121,6 @@
           "index": "Paints",
           "create": "Create Paint"
         },
-
         "modelModules": {
           "index": "Modules",
           "create": "Create Module",
@@ -177,6 +176,16 @@
           "tasks": "Tasks",
           "imports": "Imports",
           "rsiApiStatus": "RSI API Status"
+        },
+        "supporterContributions": {
+          "index": "Supporter Contributions",
+          "new": "New Supporter Contribution",
+          "edit": "Edit Supporter Contribution"
+        },
+        "fundingGoals": {
+          "index": "Funding Goals",
+          "new": "New Funding Goal",
+          "edit": "Edit Funding Goal"
         }
       }
     }

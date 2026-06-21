@@ -170,6 +170,16 @@
           "tasks": "Aufgaben",
           "imports": "Importe",
           "rsiApiStatus": "RSI-API-Status"
+        },
+        "supporterContributions": {
+          "index": "Unterstützer-Beiträge",
+          "new": "Neuer Beitrag",
+          "edit": "Beitrag bearbeiten"
+        },
+        "fundingGoals": {
+          "index": "Finanzierungsziele",
+          "new": "Neues Finanzierungsziel",
+          "edit": "Finanzierungsziel bearbeiten"
         }
       }
     }

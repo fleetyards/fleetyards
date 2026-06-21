@@ -167,6 +167,16 @@
           "workers": "Trabajadores",
           "tasks": "Tareas",
           "rsiApiStatus": "Estado API RSI"
+        },
+        "supporterContributions": {
+          "index": "Contribuciones de patrocinadores",
+          "new": "Nueva contribución",
+          "edit": "Editar contribución"
+        },
+        "fundingGoals": {
+          "index": "Objetivos de financiación",
+          "new": "Nuevo objetivo de financiación",
+          "edit": "Editar objetivo de financiación"
         }
       }
     }
