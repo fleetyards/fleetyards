@@ -6,8 +6,21 @@ if [ -n "$KAMAL_DESTINATION" ]; then
   DEST_FLAG="-d $KAMAL_DESTINATION"
 fi
 
-echo "Running database migrations..."
-kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" 'bin/rails db:migrate'
+# Run schema and data migrations in a single container over one SSH session.
+# Splitting them across two back-to-back `kamal app exec` calls opened a second
+# SSH connection that the host reset (Errno::ECONNRESET), failing the deploy.
+# Retry to absorb the occasional genuinely transient reset.
+echo "Running database and data migrations..."
 
-echo "Running data migrations..."
-kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" 'bin/rails data:migrate'
+attempt=1
+max_attempts=3
+until kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" \
+  'bin/rails db:migrate data:migrate'; do
+  if [ "$attempt" -ge "$max_attempts" ]; then
+    echo "Migrations failed after $max_attempts attempts." >&2
+    exit 1
+  fi
+  echo "Migration attempt $attempt failed, retrying in 5s..." >&2
+  attempt=$((attempt + 1))
+  sleep 5
+done
