@@ -4,20 +4,25 @@
 #
 # Table name: supporter_contributions
 #
-#  id           :uuid             not null, primary key
-#  amount_cents :integer          not null
-#  anonymous    :boolean          default(FALSE), not null
-#  currency     :string           default("EUR"), not null
-#  ended_at     :date
-#  name         :string
-#  note         :text
-#  recurring    :boolean          default(FALSE), not null
-#  started_at   :date             not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id                  :uuid             not null, primary key
+#  amount_cents        :integer          not null
+#  anonymous           :boolean          default(FALSE), not null
+#  currency            :string           default("EUR"), not null
+#  ended_at            :date
+#  name                :string
+#  note                :text
+#  recurring           :boolean          default(FALSE), not null
+#  source              :string           default("manual"), not null
+#  source_amount_cents :integer
+#  source_currency     :string
+#  started_at          :date             not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  patreon_member_id   :string
 #
 # Indexes
 #
+#  index_supporter_contributions_on_patreon_member_id       (patreon_member_id) UNIQUE WHERE (patreon_member_id IS NOT NULL)
 #  index_supporter_contributions_on_recurring_and_ended_at  (recurring,ended_at)
 #  index_supporter_contributions_on_started_at              (started_at)
 #
@@ -86,5 +91,20 @@ class SupporterContributionTest < ActiveSupport::TestCase
     create(:supporter_contribution, amount_cents: 9_999, started_at: Date.new(2026, 5, 28))
 
     assert_equal 1_500, SupporterContribution.monthly_total(Date.new(2026, 6, 15))
+  end
+
+  test "source defaults to manual" do
+    assert_equal "manual", SupporterContribution.new.source
+    assert SupporterContribution.new.manual?
+  end
+
+  test "patreon scope and enum select source-tagged rows" do
+    manual = create(:supporter_contribution)
+    imported = create(:supporter_contribution, :patreon)
+
+    assert imported.patreon?
+    ids = SupporterContribution.patreon.pluck(:id)
+    assert_includes ids, imported.id
+    refute_includes ids, manual.id
   end
 end
