@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_21_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_21_130100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -247,6 +247,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_21_130000) do
     t.decimal "volume", precision: 15, scale: 2
     t.integer "weapon_class"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
+  end
+
+  create_table "exchange_rates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "fetched_at", null: false
+    t.string "from_currency", null: false
+    t.decimal "rate", precision: 16, scale: 8, null: false
+    t.string "to_currency", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_currency", "to_currency"], name: "index_exchange_rates_on_from_currency_and_to_currency", unique: true
   end
 
   create_table "feature_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
