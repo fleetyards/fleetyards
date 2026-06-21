@@ -7,7 +7,7 @@ module Patreon
 
     MEMBER_FIELDS = %w[
       full_name patron_status currently_entitled_amount_cents
-      pledge_relationship_start last_charge_date last_charge_status pledge_amount_cents
+      pledge_relationship_start last_charge_date last_charge_status will_pay_amount_cents
     ].join(",")
 
     def initialize(token: Rails.application.credentials.dig(:patreon, :access_token))
@@ -70,7 +70,7 @@ module Patreon
     end
 
     def entitled_or_pledge(attrs)
-      attrs["currently_entitled_amount_cents"].to_i.nonzero? || attrs["pledge_amount_cents"].to_i
+      attrs["currently_entitled_amount_cents"].to_i.nonzero? || attrs["will_pay_amount_cents"].to_i
     end
 
     def find_user(member, included)
