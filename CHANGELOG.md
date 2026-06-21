@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.31.2](https://github.com/fleetyards/fleetyards/compare/v6.31.1...v6.31.2) (2026-06-21)
+
+
+### Bug Fixes
+
+* **security:** drop duplicate Rack::Attack middleware ([216c54a](https://github.com/fleetyards/fleetyards/commit/216c54aac8d176e5f44aed37406881973e149f39))
+* **security:** key the API throttle on req.ip again ([6581e49](https://github.com/fleetyards/fleetyards/commit/6581e4934d710b7aea4e580897119350d9c6d3d9))
+* **security:** resolve the real client IP behind the load balancer ([4e71257](https://github.com/fleetyards/fleetyards/commit/4e71257cad8d832b30f88b4b5abd5075209d3a28))
+
+
+### Chores
+
+* **logging:** log the X-Forwarded-For chain and remote_addr ([48938a3](https://github.com/fleetyards/fleetyards/commit/48938a3106faccd75339820c103ce37e77fe3a72))
+
 ## [6.31.1](https://github.com/fleetyards/fleetyards/compare/v6.31.0...v6.31.1) (2026-06-21)
 
 
