@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require "ipaddr"
 require_relative "../lib/middleware/transform_parameters"
 
 # Backport of Rails 8.2 `Rails.app.creds` — must load before config_for calls.
@@ -53,6 +54,15 @@ module Fleetyards
     Rails.autoloaders.main.ignore(Rails.root.join("app/frontend/images"))
 
     config.exceptions_app = routes
+
+    # Behind the Hetzner load balancer the LB's own public IP is the last hop in
+    # X-Forwarded-For. It must be trusted so RemoteIp resolves the real client
+    # (otherwise every request attributes to the LB). Set per environment; unset
+    # on single-server deployments where the client reaches the proxy directly.
+    if ENV["TRUSTED_PROXY_IPS"].present?
+      config.action_dispatch.trusted_proxies =
+        ENV["TRUSTED_PROXY_IPS"].split(",").map { |ip| IPAddr.new(ip.strip) }
+    end
 
     config.middleware.use Rack::Deflater
     config.middleware.use Middleware::TransformParameters

@@ -31,4 +31,20 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
     get "/api/v1/models", headers: referer
     assert_response :too_many_requests
   end
+
+  test "the throttle keys on the proxy-resolved client, not the proxy" do
+    # 10.0.0.254 is a trusted proxy by default, so RemoteIp walks past it to the
+    # real client. Two clients behind the same proxy must be throttled apart.
+    client_a = {"HTTP_X_FORWARDED_FOR" => "1.2.3.4, 10.0.0.254"}
+    client_b = {"HTTP_X_FORWARDED_FOR" => "5.6.7.8, 10.0.0.254"}
+
+    get "/api/v1/models", headers: client_a
+    assert_response :success
+
+    get "/api/v1/models", headers: client_a
+    assert_response :too_many_requests
+
+    get "/api/v1/models", headers: client_b
+    assert_response :success
+  end
 end

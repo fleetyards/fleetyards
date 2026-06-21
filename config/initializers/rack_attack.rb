@@ -23,7 +23,7 @@ Rack::Attack.throttle("api", limit: limit_proc, period: 1.hour) do |req|
   if !req.path.match?(%r{^/v\d+$}) &&
       !req.path.match?(%r{^/v\d+/docs$}) &&
       req.host.split(".").first == "api"
-    req.ip
+    (req.get_header("action_dispatch.remote_ip") || req.ip).to_s
   end
 end
 
