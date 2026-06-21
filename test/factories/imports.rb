@@ -58,5 +58,13 @@ FactoryBot.define do
     trait :models_import do
       type { Imports::ModelsImport }
     end
+
+    trait :modules_import do
+      type { Imports::ModulesImport }
+    end
+
+    trait :paints_import do
+      type { Imports::PaintsImport }
+    end
   end
 end
