@@ -2,6 +2,52 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.31.0](https://github.com/fleetyards/fleetyards/compare/v6.30.1...v6.31.0) (2026-06-21)
+
+
+### Features
+
+* notify the team when a new Patreon supporter joins ([#4152](https://github.com/fleetyards/fleetyards/issues/4152)) ([befe011](https://github.com/fleetyards/fleetyards/commit/befe0115bd5036de3fec5e3031a25f11144a5a5d))
+* Patreon supporter sync ([#4150](https://github.com/fleetyards/fleetyards/issues/4150)) ([2f98945](https://github.com/fleetyards/fleetyards/commit/2f9894558aac5b0989e909f3e6d997cb4c5c6511))
+* **supporters:** funding goals, supporter contributions, public progress widget ([#4147](https://github.com/fleetyards/fleetyards/issues/4147)) ([598ad1c](https://github.com/fleetyards/fleetyards/commit/598ad1c96ac423b80ffdea73ed83c1f3fa8cec6a))
+* **support:** replace goal breakdown with explanatory text in support modal ([8290beb](https://github.com/fleetyards/fleetyards/commit/8290bebd87d96eba2586dccb8f025aae81a16698))
+
+
+### Bug Fixes
+
+* **admin:** add missing supporter contributions and funding goals nav translations ([77083d9](https://github.com/fleetyards/fleetyards/commit/77083d95464371212c245ade3a585bfb6178a51f))
+* **admin:** hide supporter contributions sub-nav items ([#4151](https://github.com/fleetyards/fleetyards/issues/4151)) ([6cdd17a](https://github.com/fleetyards/fleetyards/commit/6cdd17ab482db1a5a5b8757c870fb5e0c08e429a))
+* **admin:** remove redundant supporter contributions header button on funding goals ([434b408](https://github.com/fleetyards/fleetyards/commit/434b4088a3b631909ed8080170927469f81e9bd9))
+* **appsignal:** route Rails logs to AppSignal logging UI ([#4154](https://github.com/fleetyards/fleetyards/issues/4154)) ([b1e1d6f](https://github.com/fleetyards/fleetyards/commit/b1e1d6f4550041f7f3d1e54bb3fd68159402644f))
+
+
+### Chores
+
+* **bin/op:** strip script dir from PATH before invoking op ([94e4967](https://github.com/fleetyards/fleetyards/commit/94e49670e520d6c6cf4a9d223b09cf7be0c2dcde))
+* **deps-dev:** bump @faker-js/faker from 10.4.0 to 10.5.0 ([#4141](https://github.com/fleetyards/fleetyards/issues/4141)) ([afcabe0](https://github.com/fleetyards/fleetyards/commit/afcabe01916a22edc1e0ee8f109e665231c82a1b))
+* **deps-dev:** bump @typescript-eslint/parser from 8.61.0 to 8.61.1 ([#4137](https://github.com/fleetyards/fleetyards/issues/4137)) ([e984689](https://github.com/fleetyards/fleetyards/commit/e984689151d4ee9542fb01d05e5f7daff424f745))
+* **deps-dev:** bump eslint from 10.4.1 to 10.5.0 ([#4128](https://github.com/fleetyards/fleetyards/issues/4128)) ([3f16873](https://github.com/fleetyards/fleetyards/commit/3f168734cf7d5a991f2efbea1112cd88188c5a83))
+* **deps-dev:** bump kamal from 2.11.0 to 2.12.0 ([#4146](https://github.com/fleetyards/fleetyards/issues/4146)) ([df7a10a](https://github.com/fleetyards/fleetyards/commit/df7a10a8703d4a56eb3b33372781f1409029f0ad))
+* **deps-dev:** bump knip from 6.16.1 to 6.17.1 ([#4139](https://github.com/fleetyards/fleetyards/issues/4139)) ([a8fa908](https://github.com/fleetyards/fleetyards/commit/a8fa90831ede312d2494570b2814931dab05cee3))
+* **deps-dev:** bump shoulda-matchers from 7.0.1 to 8.0.1 ([#4125](https://github.com/fleetyards/fleetyards/issues/4125)) ([9dca6c0](https://github.com/fleetyards/fleetyards/commit/9dca6c09e2b68f6bbf94d07cdfee24c6bd9b7b92))
+* **deps-dev:** bump the playwright group across 1 directory with 2 updates ([#4135](https://github.com/fleetyards/fleetyards/issues/4135)) ([15835dc](https://github.com/fleetyards/fleetyards/commit/15835dc5464882579b1d4e97e4f3a226c3c6aefb))
+* **deps-dev:** bump the tailwindcss group across 1 directory with 2 updates ([#4126](https://github.com/fleetyards/fleetyards/issues/4126)) ([05a0959](https://github.com/fleetyards/fleetyards/commit/05a0959b8c5c40027b5e619b1bc97af7f6005540))
+* **deps-dev:** bump vitest from 4.1.8 to 4.1.9 ([#4136](https://github.com/fleetyards/fleetyards/issues/4136)) ([225ea02](https://github.com/fleetyards/fleetyards/commit/225ea02ecad44c0a54ae69e2ca63061d6c6149fb))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.4 to 3.3.5 ([#4129](https://github.com/fleetyards/fleetyards/issues/4129)) ([e4bf4c2](https://github.com/fleetyards/fleetyards/commit/e4bf4c2f92d11890c7d519c239f5f27d857d29f9))
+* **deps-dev:** bump vue-tsc from 3.3.4 to 3.3.5 ([#4130](https://github.com/fleetyards/fleetyards/issues/4130)) ([5386d52](https://github.com/fleetyards/fleetyards/commit/5386d520b531c3f643a84ee69949d15ad3c02355))
+* **deps:** bump actions/checkout from 6 to 7 ([#4145](https://github.com/fleetyards/fleetyards/issues/4145)) ([af7e676](https://github.com/fleetyards/fleetyards/commit/af7e6766114b2735138bc257ffd63e226180b817))
+* **deps:** bump aws-sdk-s3 from 1.225.1 to 1.226.0 ([#4138](https://github.com/fleetyards/fleetyards/issues/4138)) ([2c84e87](https://github.com/fleetyards/fleetyards/commit/2c84e878f0b5910ba3976fff385c803e2d23fc4b))
+* **deps:** bump axios from 1.17.0 to 1.18.0 ([#4131](https://github.com/fleetyards/fleetyards/issues/4131)) ([55af12f](https://github.com/fleetyards/fleetyards/commit/55af12f83bbe75303b751ae1588c4432cdbb4d07))
+* **deps:** bump bundler 2.7.1 → 4.0.14 ([#4133](https://github.com/fleetyards/fleetyards/issues/4133)) ([aaa87f4](https://github.com/fleetyards/fleetyards/commit/aaa87f4ab88845f981500b6b590fb12596539838))
+* **deps:** bump doorkeeper from 5.9.2 to 5.9.3 ([#4134](https://github.com/fleetyards/fleetyards/issues/4134)) ([8b12780](https://github.com/fleetyards/fleetyards/commit/8b127808c3ea76eaf70e2fed04bd7685bedd83e6))
+* **deps:** bump i18n from 1.14.8 to 1.15.1 ([#4142](https://github.com/fleetyards/fleetyards/issues/4142)) ([7841729](https://github.com/fleetyards/fleetyards/commit/78417296b5ef405dd7d43d0fb31de293c55cb5e4))
+* **deps:** bump nokogiri from 1.19.3 to 1.19.4 ([#4144](https://github.com/fleetyards/fleetyards/issues/4144)) ([4827083](https://github.com/fleetyards/fleetyards/commit/48270830052aeee76d69d8dbf89ff778ddab466e))
+* **deps:** bump oauth2 from 2.0.22 to 2.0.24 ([#4143](https://github.com/fleetyards/fleetyards/issues/4143)) ([78a4027](https://github.com/fleetyards/fleetyards/commit/78a40273480c1137b02f72b586934798bdf8e640))
+* **deps:** bump openapi-ruby 4.0.0 → 4.0.1 ([75cafbb](https://github.com/fleetyards/fleetyards/commit/75cafbbd053418e27bc668b03065a6844b6b6f6a))
+* **docs:** align AGENTS.md with project reality ([#4149](https://github.com/fleetyards/fleetyards/issues/4149)) ([c851bec](https://github.com/fleetyards/fleetyards/commit/c851bec7bf8dd9d70aec028a0f6096757b68fc4d))
+* **test:** refresh model schema annotations ([#4148](https://github.com/fleetyards/fleetyards/issues/4148)) ([c49ac95](https://github.com/fleetyards/fleetyards/commit/c49ac9555a97ad85759b1435dd55fd6301c48f41))
+* **test:** use load-path require for openapi_helper ([07a5605](https://github.com/fleetyards/fleetyards/commit/07a560501d01acc9ec9a46bf752d2381abedb7bf))
+
 ## [6.30.1](https://github.com/fleetyards/fleetyards/compare/v6.30.0...v6.30.1) (2026-06-12)
 
 
