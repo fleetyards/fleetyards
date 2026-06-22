@@ -61,7 +61,7 @@
     "mitt": "^3.0.1",
     "nanoevents": "^9.1.0",
     "panzoom": "9.4.4",
-    "papaparse": "5.5.3",
+    "papaparse": "5.5.4",
     "photoswipe": "5.4.4",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
