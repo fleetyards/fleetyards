@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.31.4](https://github.com/fleetyards/fleetyards/compare/v6.31.3...v6.31.4) (2026-06-21)
+
+
+### Bug Fixes
+
+* **exchange-rate:** follow Frankfurter API move to api.frankfurter.dev ([ea62108](https://github.com/fleetyards/fleetyards/commit/ea62108be3bc9303cd9df8fe946e113e59fc6a7e))
+
 ## [6.31.3](https://github.com/fleetyards/fleetyards/compare/v6.31.2...v6.31.3) (2026-06-21)
 
 
