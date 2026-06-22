@@ -196,7 +196,7 @@ GEM
       railties (>= 7.2, < 8.2)
       rotp (~> 6.0)
     didkit (0.3.3)
-    discordrb-webhooks (3.7.2)
+    discordrb-webhooks (3.8.0)
       rest-client (>= 2.0.0)
     docile (1.4.1)
     domain_name (0.6.20240107)
@@ -297,7 +297,7 @@ GEM
       reline
     htmlentities (4.4.2)
     http-accept (1.7.0)
-    http-cookie (1.1.0)
+    http-cookie (1.1.6)
       domain_name (~> 0.5)
     httparty (0.24.2)
       csv
@@ -423,7 +423,7 @@ GEM
     mime-types (3.7.0)
       logger
       mime-types-data (~> 3.2025, >= 3.2025.0507)
-    mime-types-data (3.2026.0303)
+    mime-types-data (3.2026.0414)
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
