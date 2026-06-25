@@ -34,7 +34,7 @@ class FleetPolicy < FleetBasePolicy
   end
 
   relation_scope do |relation|
-    relation.where(id: user.fleet_ids)
+    relation.kept.where(id: user.fleet_ids)
   end
 
   params_filter(:create) do |params|

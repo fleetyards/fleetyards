@@ -13,7 +13,7 @@ module Api
       before_action :set_fleet
 
       def members
-        @q = @fleet.fleet_memberships.accepted.ransack(member_query_params)
+        @q = @fleet.fleet_memberships.kept.accepted.ransack(member_query_params)
 
         members = @q.result
 

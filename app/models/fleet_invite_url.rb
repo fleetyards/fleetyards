@@ -47,7 +47,7 @@ class FleetInviteUrl < ApplicationRecord
   before_validation :generate_token
 
   def self.active
-    where(
+    joins(:fleet).merge(Fleet.kept).where(
       %{
         (fleet_invite_urls.expires_after >= :time_now OR fleet_invite_urls.expires_after IS NULL)
         AND (fleet_invite_urls.limit > 0 OR fleet_invite_urls.limit IS NULL)

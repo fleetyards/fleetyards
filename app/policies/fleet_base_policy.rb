@@ -3,11 +3,11 @@ class FleetBasePolicy < ApplicationPolicy
 
   private def fleet_membership
     if record.try(:fleet_id)
-      user&.fleet_memberships&.find_by(fleet_id: record.fleet_id)
+      user&.fleet_memberships&.kept&.find_by(fleet_id: record.fleet_id)
     elsif fleet.present?
-      user&.fleet_memberships&.find_by(fleet_id: fleet.id)
+      user&.fleet_memberships&.kept&.find_by(fleet_id: fleet.id)
     elsif record.try(:id)
-      user&.fleet_memberships&.find_by(fleet_id: record&.id)
+      user&.fleet_memberships&.kept&.find_by(fleet_id: record&.id)
     end
   end
 

@@ -94,7 +94,7 @@ module Api
         end
 
         private def set_fleet
-          @fleet = Fleet.find_by!(slug: params[:fleet_slug])
+          @fleet = Fleet.kept.find_by!(slug: params[:fleet_slug])
 
           authorize! @fleet, to: :show?, with: ::Public::FleetPolicy
         end
