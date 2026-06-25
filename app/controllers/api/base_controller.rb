@@ -19,6 +19,7 @@ module Api
     skip_before_action :track_ahoy_visit
 
     before_action :authenticate_user!, except: %i[root version provider]
+    before_action :set_paper_trail_whodunnit, except: %i[root version provider]
     before_action :set_locale
     before_action :set_last_active_at
 
@@ -130,6 +131,10 @@ module Api
       return if current_user.last_active_at.present? && current_user.last_active_at > 15.minutes.ago
 
       current_user.update_column(:last_active_at, Time.current)
+    end
+
+    private def set_paper_trail_whodunnit
+      PaperTrail.request.whodunnit = proc { current_resource_owner&.id }
     end
 
     private def set_locale
