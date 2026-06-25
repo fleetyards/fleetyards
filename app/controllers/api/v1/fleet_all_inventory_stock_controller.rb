@@ -7,8 +7,8 @@ module Api
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?
 
-      before_action :check_fleet_logistics_feature
       before_action :set_fleet
+      before_action :check_fleet_logistics_feature
 
       def index
         authorize! with: FleetInventoryItemPolicy, context: {fleet: @fleet}
@@ -48,7 +48,7 @@ module Api
       end
 
       private def check_fleet_logistics_feature
-        return if feature_enabled?("fleet_logistics")
+        return if feature_enabled?("fleet_logistics", @fleet)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
