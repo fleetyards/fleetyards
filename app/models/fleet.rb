@@ -31,6 +31,7 @@
 #  index_fleets_on_fid           (fid) UNIQUE WHERE (discarded_at IS NULL)
 #
 class Fleet < ApplicationRecord
+  include Discard::Model
   include UrlFieldConcern
   include ActiveStorageVariants
 

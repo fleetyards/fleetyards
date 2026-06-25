@@ -36,6 +36,7 @@
 #
 class FleetMembership < ApplicationRecord
   include AASM
+  include Discard::Model
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -107,6 +108,9 @@ class FleetMembership < ApplicationRecord
   after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
   before_destroy :check_if_can_be_destroyed
+  before_discard :check_if_can_be_destroyed
+  after_discard :broadcast_destroy, :remove_fleet_vehicles
+  after_undiscard :broadcast_create, :schedule_setup_fleet_vehicles
 
   def has_access?(privileges)
     return false if fleet_role.blank?
@@ -160,6 +164,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def schedule_update_fleet_vehicles
+    return if discarded? || saved_change_to_discarded_at?
+
     Updater::FleetMembershipVehiclesUpdateJob.perform_async(id)
   end
 
@@ -223,6 +229,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def set_primary
+    return if discarded?
     return unless primary?
 
     # rubocop:disable Rails/SkipsModelValidations
@@ -297,6 +304,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def broadcast_update
+    return if saved_change_to_discarded_at?
+
     fleet.fleet_memberships.find_each do |member|
       FleetMembersChannel.broadcast_to(member.user, to_json)
 
