@@ -6,6 +6,7 @@
 #  aasm_state        :string
 #  accepted_at       :datetime
 #  declined_at       :datetime
+#  discarded_at      :datetime
 #  hide_ships        :boolean          default(FALSE)
 #  invited_at        :datetime
 #  invited_by        :uuid
@@ -23,8 +24,9 @@
 #
 # Indexes
 #
+#  index_fleet_memberships_on_discarded_at          (discarded_at)
 #  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
-#  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
+#  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE WHERE (discarded_at IS NULL)
 #
 # Foreign Keys
 #
