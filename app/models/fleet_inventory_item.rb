@@ -32,6 +32,8 @@
 #  fk_rails_...  (member_id => users.id)
 #
 class FleetInventoryItem < ApplicationRecord
+  has_paper_trail
+
   paginates_per 30
 
   belongs_to :fleet_inventory, touch: true

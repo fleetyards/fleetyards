@@ -29,6 +29,8 @@
 class FleetInventory < ApplicationRecord
   include ActiveStorageVariants
 
+  has_paper_trail
+
   paginates_per 30
 
   belongs_to :fleet, touch: true
