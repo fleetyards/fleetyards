@@ -7,12 +7,15 @@ json.items do
       json.fid fleet.fid
       json.name fleet.name
       json.slug fleet.slug
-      json.description fleet.description
       json.public_fleet fleet.public_fleet
-      json.created_by fleet.created_by
+      json.description fleet.description if fleet.description.present?
+      json.created_by fleet.created_by if fleet.created_by.present?
       json.source "discarded"
       json.destroyed_at fleet.discarded_at
-      json.destroyed_by fleet.versions.reorder(created_at: :desc).first&.whodunnit
+
+      destroyed_by = fleet.versions.reorder(created_at: :desc).first&.whodunnit
+      json.destroyed_by destroyed_by if destroyed_by.present?
+
       json.restorable true
     end
   else
@@ -22,12 +25,12 @@ json.items do
       json.fid object["fid"]
       json.name object["name"]
       json.slug object["slug"]
-      json.description object["description"]
-      json.public_fleet object["public_fleet"]
-      json.created_by object["created_by"]
+      json.public_fleet object["public_fleet"] || false
+      json.description object["description"] if object["description"].present?
+      json.created_by object["created_by"] if object["created_by"].present?
       json.source "purged"
       json.destroyed_at version.created_at
-      json.destroyed_by version.whodunnit
+      json.destroyed_by version.whodunnit if version.whodunnit.present?
       json.restorable true
     end
   end

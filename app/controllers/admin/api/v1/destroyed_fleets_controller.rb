@@ -10,7 +10,7 @@ module Admin
           authorize! with: ::Admin::FleetPolicy
 
           if source == "purged"
-            @destroyed_fleets = purged_fleets
+            @purged_fleets = purged_fleets
           else
             @discarded_fleets = discarded_fleets
           end
