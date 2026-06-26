@@ -166,7 +166,8 @@
         "fleets": {
           "index": "Fleets",
           "edit": "Edit Fleet",
-          "members": "Fleet Members"
+          "members": "Fleet Members",
+          "memberEdit": "Edit Fleet Member"
         },
         "oauthApplications": {
           "index": "OAuth Applications",

@@ -182,7 +182,8 @@
           "demote": "Demote",
           "accept": "Accept",
           "decline": "Decline",
-          "remove": "移除"
+          "remove": "移除",
+          "editRole": "編輯角色"
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

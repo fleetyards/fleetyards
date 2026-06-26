@@ -182,7 +182,8 @@
           "demote": "Retrocedi",
           "accept": "Accetta",
           "decline": "Rifiuta",
-          "remove": "Rimuovi"
+          "remove": "Rimuovi",
+          "editRole": "Modifica ruolo"
         },
         "inviteUrls": {
           "create": "Crea nuovo URL per invito"

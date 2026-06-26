@@ -81,7 +81,8 @@
         },
         "fleets": {
           "index": "Flotte",
-          "edit": "Modifica flotta"
+          "edit": "Modifica flotta",
+          "memberEdit": "Modifica membro"
         },
         "admins": {
           "index": "Amministratori",

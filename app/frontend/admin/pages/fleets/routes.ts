@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as fleetRoutes } from "@/admin/pages/fleets/[id]/routes";
+import { routes as fleetMemberRoutes } from "@/admin/pages/fleets/[id]/members/routes";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -27,7 +28,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: ":id/",
     component: () => import("@/admin/pages/fleets/[id].vue"),
-    children: fleetRoutes,
+    children: [...fleetRoutes, ...fleetMemberRoutes],
     redirect: { name: fleetRoutes[0].name },
     meta: {
       needsAuthentication: true,

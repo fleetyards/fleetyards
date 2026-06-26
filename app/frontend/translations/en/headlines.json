@@ -99,7 +99,8 @@
         "fleets": {
           "index": "Fleets",
           "edit": "Edit Fleet",
-          "members": "Members"
+          "members": "Members",
+          "memberEdit": "Edit Member"
         },
         "destroyedFleets": {
           "index": "Destroyed Fleets"

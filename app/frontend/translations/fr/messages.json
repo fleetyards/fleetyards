@@ -320,7 +320,8 @@
           "leave": "Êtes-vous sûr de vouloir quitter la flotte ? Cette action ne peut pas être annulée.",
           "destroy": "Êtes-vous sûr de vouloir supprimer votre flotte ? Cette action ne peut pas être annulée.",
           "members": {
-            "destroy": "Êtes-vous sûr de vouloir supprimer ce membre ?"
+            "destroy": "Êtes-vous sûr de vouloir supprimer ce membre ?",
+            "remove": "Voulez-vous vraiment retirer ce membre de la flotte ?"
           },
           "invites": {
             "decline": "Êtes-vous sûr de vouloir décliner cette invitation ? Cette action ne peut pas être annulée."

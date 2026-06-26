@@ -320,7 +320,8 @@
           "leave": "¿Estás seguro de que quieres abandonar la Flota? Esta acción no se puede revertir.",
           "destroy": "¿Estás seguro de que quieres destruir tu Flota? Esta acción no se puede revertir.",
           "members": {
-            "destroy": "¿Estás seguro de que quieres eliminar este Miembro?"
+            "destroy": "¿Estás seguro de que quieres eliminar este Miembro?",
+            "remove": "¿Seguro que quieres eliminar a este miembro de la flota?"
           },
           "invites": {
             "decline": "¿Estás seguro de que quieres rechazar esta Invitación? Esta acción no se puede revertir."

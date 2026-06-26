@@ -319,7 +319,8 @@
           "leave": "Sei sicuro di voler lasciare questa Flotta? Questa azione non potrà essere annullata.",
           "destroy": "Sei sicuro di voler eliminare la tua Flotta? Questa azione non potrà essere annullata.",
           "members": {
-            "destroy": "Sei sicuro di voler rimuovere questo membro?"
+            "destroy": "Sei sicuro di voler rimuovere questo membro?",
+            "remove": "Sei sicuro di voler rimuovere questo membro dalla flotta?"
           },
           "invites": {
             "decline": "Sei sicuro di voler rifiutare questo invito? Questa azione non potrà essere annullata."

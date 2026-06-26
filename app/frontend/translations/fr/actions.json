@@ -182,7 +182,8 @@
           "demote": "Rétrograder",
           "accept": "Accepter",
           "decline": "Décliner",
-          "remove": "Retirer"
+          "remove": "Retirer",
+          "editRole": "Modifier le rôle"
         },
         "inviteUrls": {
           "create": "Créer le nouveau lien d'invitation"
