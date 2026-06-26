@@ -3461,9 +3461,7 @@ paths:
               schema:
                 type: array
                 items:
-                  anyOf:
-                  - "$ref": "#/components/schemas/Hardpoint"
-                  - "$ref": "#/components/schemas/ModelHardpoint"
+                  "$ref": "#/components/schemas/Hardpoint"
         '404':
           description: not found
           content:
