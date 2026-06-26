@@ -483,6 +483,107 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/destroyed-fleets":
+    get:
+      summary: Destroyed Fleets list
+      tags:
+      - Fleets
+      operationId: destroyedFleets
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: source
+        in: query
+        description: discarded (soft-deleted) or purged (hard-deleted)
+        schema:
+          type: string
+          enum:
+          - discarded
+          - purged
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/DestroyedFleetQuery"
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/DestroyedFleets"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/destroyed-fleets/{id}/restore":
+    parameters:
+    - name: id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Restore a destroyed fleet
+      tags:
+      - Fleets
+      operationId: restoreDestroyedFleet
+      parameters:
+      - name: source
+        in: query
+        description: discarded (soft-deleted) or purged (hard-deleted)
+        schema:
+          type: string
+          enum:
+          - discarded
+          - purged
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Fleet"
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/docks":
     post:
       summary: Create new Dock
@@ -7377,6 +7478,70 @@ components:
       - meta
       - items
       title: Components
+    DestroyedFleet:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fid:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        publicFleet:
+          type: boolean
+        createdBy:
+          type: string
+          format: uuid
+        source:
+          type: string
+          enum:
+          - discarded
+          - purged
+        destroyedAt:
+          type: string
+          format: date-time
+        destroyedBy:
+          type: string
+        restorable:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - fid
+      - name
+      - slug
+      - publicFleet
+      - source
+      - destroyedAt
+      - restorable
+      title: DestroyedFleet
+    DestroyedFleetQuery:
+      type: object
+      properties:
+        nameOrFidCont:
+          type: string
+      additionalProperties: false
+      example: {}
+      title: DestroyedFleetQuery
+    DestroyedFleets:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/DestroyedFleet"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: DestroyedFleets
     Dock:
       type: object
       properties:
