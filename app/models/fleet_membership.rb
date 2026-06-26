@@ -84,7 +84,7 @@ class FleetMembership < ApplicationRecord
 
   validate_enum_attributes :ships_filter
 
-  validates :user_id, uniqueness: {scope: :fleet_id}
+  validates :user_id, uniqueness: {scope: :fleet_id, conditions: -> { where(discarded_at: nil) }}
 
   DEFAULT_SORTING_PARAMS = ["created_at desc", "accepted_at desc"]
   ALLOWED_SORTING_PARAMS = [

@@ -71,7 +71,7 @@ class Fleet < ApplicationRecord
     through: :models
 
   validates :fid,
-    uniqueness: {case_sensitive: false},
+    uniqueness: {case_sensitive: false, conditions: -> { where(discarded_at: nil) }},
     length: {minimum: 3},
     presence: true,
     format: {with: /\A[a-zA-Z0-9\-_]{3,}\Z/}
