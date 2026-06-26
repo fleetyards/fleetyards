@@ -16,10 +16,8 @@ import CompareCrew from "@/frontend/components/Compare/Models/Crew/index.vue";
 import CompareSpeed from "@/frontend/components/Compare/Models/Speed/index.vue";
 import CompareCargo from "@/frontend/components/Compare/Models/Cargo/index.vue";
 import CompareHardpoints from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
-import CompareHardpointsOld from "@/frontend/components/Compare/Models/HardpointsOld/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNavStore } from "@/shared/stores/nav";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
@@ -29,8 +27,6 @@ import {
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
 
 const { t } = useI18n();
-
-const { isFeatureEnabled } = useFeatures();
 
 const navStore = useNavStore();
 
@@ -108,16 +104,7 @@ watch(
             <CompareCrew :models="models" :slim="navStore.slim" />
             <CompareSpeed :models="models" :slim="navStore.slim" />
             <CompareCargo :models="models" :slim="navStore.slim" />
-            <CompareHardpoints
-              v-if="isFeatureEnabled('hardpoints-v2')"
-              :models="models"
-              :slim="navStore.slim"
-            />
-            <CompareHardpointsOld
-              v-else
-              :models="models"
-              :slim="navStore.slim"
-            />
+            <CompareHardpoints :models="models" :slim="navStore.slim" />
           </div>
         </template>
       </AsyncData>
