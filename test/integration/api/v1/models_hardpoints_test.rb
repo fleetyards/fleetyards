@@ -20,12 +20,7 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
 
       response(200, "successful") do
         schema type: :array,
-          items: {
-            anyOf: [
-              {"$ref": "#/components/schemas/Hardpoint"},
-              {"$ref": "#/components/schemas/ModelHardpoint"}
-            ]
-          }
+          items: {"$ref": "#/components/schemas/Hardpoint"}
       end
 
       response(404, "not found") do
@@ -38,7 +33,7 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
     model = create(:model, :with_hardpoints)
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
-      assert_equal model.model_hardpoints.size, parsed_body.count
+      assert_equal model.hardpoints.size, parsed_body.count
     end
   end
 
