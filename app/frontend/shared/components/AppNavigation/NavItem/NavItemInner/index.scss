@@ -1,13 +1,18 @@
 .nav-item-inner {
   position: relative;
-  height: 30px;
-  white-space: nowrap;
+  min-height: 30px;
   display: flex;
   align-items: center;
 
   .nav-item-icon {
     margin-inline-end: 15px;
     display: flex;
+    flex-shrink: 0;
+  }
+
+  .nav-item-text {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .nav-item-prefix {
