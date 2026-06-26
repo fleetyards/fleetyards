@@ -93,7 +93,7 @@ module Fleets
         record = fleet.fleet_memberships.find_or_initialize_by(user_id: membership.user_id)
         record.assign_attributes(membership.attributes.slice(*MEMBERSHIP_COLUMNS))
         record.fleet_role = role_map[membership.fleet_role_id] || fleet.default_member_role
-        record.discarded_at = nil
+        record.discarded_at = membership.discarded_at
         record.save!(validate: false)
       end
     end

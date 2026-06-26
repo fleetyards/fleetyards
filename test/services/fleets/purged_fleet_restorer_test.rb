@@ -32,6 +32,19 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
     assert_equal ["Quantum Fuel"], restored.fleet_inventories.first.fleet_inventory_items.pluck(:name)
   end
 
+  test "preserves discarded memberships instead of reactivating ex-members" do
+    fleet = create(:fleet, created_by: @creator.id, officers: [@officer])
+    fleet.fleet_memberships.find_by(user_id: @officer.id).discard
+    fleet_id = fleet.id
+
+    fleet.destroy
+
+    restored = Fleets::PurgedFleetRestorer.new(fleet_id).call
+
+    assert_not restored.fleet_memberships.find_by(user_id: @officer.id).kept?
+    assert restored.fleet_memberships.find_by(user_id: @creator.id).kept?
+  end
+
   test "raises FleetStillExists when the fleet has not been purged" do
     fleet = create(:fleet, created_by: @creator.id)
 
