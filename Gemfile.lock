@@ -350,7 +350,7 @@ GEM
       simpleidn (~> 0.2)
     jwt (3.2.0)
       base64
-    kamal (2.11.0)
+    kamal (2.12.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
       bcrypt_pbkdf (~> 1.0)
@@ -891,7 +891,7 @@ DEPENDENCIES
   irb
   jbuilder
   js_cookie_rails
-  kamal (= 2.11.0)
+  kamal (= 2.12.0)
   kaminari
   letter_opener
   letter_opener_web (~> 3.0)
