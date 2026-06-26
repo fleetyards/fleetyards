@@ -181,7 +181,7 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
 
   # GET /model-hardpoints
   test "GET /model-hardpoints lists hardpoints" do
-    create_list(:model_hardpoint, 3)
+    create_list(:hardpoint, 3)
     sign_in @user
 
     assert_api_response :get, 200 do
@@ -201,7 +201,7 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
 
   # DELETE /model-hardpoints/:id
   test "DELETE /model-hardpoints/:id destroys the hardpoint" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
     sign_in @user
 
     assert_api_response :delete, 204, path_params: {id: hardpoint.id}
@@ -214,13 +214,13 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
   end
 
   test "DELETE /model-hardpoints/:id returns 401 when not signed in" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
 
     assert_api_response :delete, 401, path_params: {id: hardpoint.id}
   end
 
   test "DELETE /model-hardpoints/:id returns 403 for admin without access" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :delete, 403, path_params: {id: hardpoint.id}
@@ -228,7 +228,7 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
 
   # GET /model-hardpoints/:id
   test "GET /model-hardpoints/:id returns the hardpoint" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
     sign_in @user
 
     assert_api_response :get, 200, path_params: {id: hardpoint.id}
@@ -241,13 +241,13 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /model-hardpoints/:id returns 401 when not signed in" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
 
     assert_api_response :get, 401, path_params: {id: hardpoint.id}
   end
 
   test "GET /model-hardpoints/:id returns 403 for admin without access" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :get, 403, path_params: {id: hardpoint.id}
@@ -255,7 +255,7 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
 
   # PUT /model-hardpoints/:id
   test "PUT /model-hardpoints/:id updates the hardpoint" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
     sign_in @user
 
     assert_api_response :put, 200, path_params: {id: hardpoint.id}, body: {name: "Updated"}
@@ -268,13 +268,13 @@ class Admin::Api::V1::ModelHardpointsTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /model-hardpoints/:id returns 401 when not signed in" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
 
     assert_api_response :put, 401, path_params: {id: hardpoint.id}, body: {name: "x"}
   end
 
   test "PUT /model-hardpoints/:id returns 403 for admin without access" do
-    hardpoint = create(:model_hardpoint)
+    hardpoint = create(:hardpoint)
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :put, 403, path_params: {id: hardpoint.id}, body: {name: "x"}
