@@ -11,6 +11,8 @@ module Fleets
 
     class NothingToRestore < StandardError; end
 
+    class FidTaken < StandardError; end
+
     MEMBERSHIP_COLUMNS = %w[
       aasm_state accepted_at invited_at requested_at declined_at primary
       hide_ships ships_filter hangar_group_id invited_by used_invite_token verified
@@ -34,6 +36,8 @@ module Fleets
 
       ActiveRecord::Base.transaction do
         fleet = version.reify
+        raise FidTaken if fleet.fid.present? && Fleet.kept.where("LOWER(fid) = ?", fleet.fid.downcase).exists?
+
         fleet.save!(validate: false)
 
         role_map = restore_roles(fleet)

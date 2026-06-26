@@ -13,7 +13,7 @@ json.items do
       json.source "discarded"
       json.destroyed_at fleet.discarded_at
 
-      destroyed_by = fleet.versions.reorder(created_at: :desc).first&.whodunnit
+      destroyed_by = @destroyed_by[@discarded_by[fleet.id]]
       json.destroyed_by destroyed_by if destroyed_by.present?
 
       json.restorable true
@@ -30,7 +30,10 @@ json.items do
       json.created_by object["created_by"] if object["created_by"].present?
       json.source "purged"
       json.destroyed_at version.created_at
-      json.destroyed_by version.whodunnit if version.whodunnit.present?
+
+      destroyed_by = @destroyed_by[version.whodunnit]
+      json.destroyed_by destroyed_by if destroyed_by.present?
+
       json.restorable true
     end
   end

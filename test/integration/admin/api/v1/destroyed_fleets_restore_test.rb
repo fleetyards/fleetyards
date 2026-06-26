@@ -70,6 +70,15 @@ class Admin::Api::V1::DestroyedFleetsRestoreTest < ActionDispatch::IntegrationTe
     assert_api_response :post, 422, path_params: {id: fleet.id}, params: {source: "purged"}
   end
 
+  test "POST /restore returns 422 when another kept fleet already uses the fid" do
+    fleet = create(:fleet, created_by: @creator.id, fid: "TAKEN")
+    fleet.discard
+    create(:fleet, created_by: @creator.id, fid: "TAKEN")
+    sign_in @user
+
+    assert_api_response :post, 422, path_params: {id: fleet.id}, params: {source: "discarded"}
+  end
+
   test "POST /restore returns 404 for an unknown destroyed fleet" do
     sign_in @user
 
