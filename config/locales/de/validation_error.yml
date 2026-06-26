@@ -20,6 +20,7 @@ de:
       accept: Flottenmitglied konnte nicht akzeptiert werden.
       decline: Flottenmitglied konnte nicht abgelehnt werden.
       destroy: Flottenmitglied konnte nicht entfernt werden.
+      update: Flottenmitglied konnte nicht aktualisiert werden.
     fleet_memberships:
       create: Flotteneinladung konnte nicht verwendet werden
       destroy: Flotte konnte nicht verlassen werden.

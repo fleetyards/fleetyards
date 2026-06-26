@@ -5,6 +5,11 @@ de:
       success: "%{resource} nicht als Hintergrund verwendet."
     background_enabled:
       success: "%{resource} als Hintergrund verwendet."
+    admin:
+      fleet_members:
+        invalid_role: Die ausgewählte Rolle gehört nicht zu dieser Flotte.
+        cannot_demote_last_admin: Dies ist der letzte Admin der Flotte und kann nicht
+          herabgestuft werden.
     confirm:
       delete: Sind Sie sicher, dass Sie diesen Eintrag löschen möchten?
       resend_confirmation: Sind Sie sicher, dass Sie die Bestätigungsanweisungen für

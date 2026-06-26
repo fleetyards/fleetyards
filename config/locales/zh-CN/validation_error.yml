@@ -20,6 +20,7 @@ zh-CN:
       accept: 无法接受舰队成员。
       decline: 无法拒绝舰队成员。
       destroy: 无法移除舰队成员。
+      update: 无法更新舰队成员。
     fleet_memberships:
       create: 舰队邀请无法使用
       destroy: 无法离开舰队。

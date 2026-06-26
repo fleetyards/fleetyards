@@ -20,6 +20,7 @@ it:
       accept: Impossibile accettare il membro della flotta.
       decline: Impossibile rifiutare il membro della flotta.
       destroy: Impossibile rimuovere il membro della flotta.
+      update: Impossibile aggiornare il membro della flotta.
     fleet_memberships:
       create: L'invito alla flotta non è stato utilizzato
       destroy: Impossibile lasciare la flotta.

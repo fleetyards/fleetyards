@@ -20,6 +20,7 @@ en:
       accept: Fleet Member could not be accepted.
       decline: Fleet Member could not be declined.
       destroy: Fleet Member could not be removed.
+      update: Fleet Member could not be updated.
     fleet_memberships:
       create: Fleet Invitation could not be used
       destroy: Fleet could not be leaved.
