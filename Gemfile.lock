@@ -99,7 +99,7 @@ GEM
       cgi
       device_detector (>= 1)
       safely_block (>= 0.4)
-    annotaterb (4.22.0)
+    annotaterb (4.23.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
     anonymous_loader (0.1.1)
@@ -335,7 +335,7 @@ GEM
       activejob (>= 7.1)
     js_cookie_rails (2.2.0)
       railties (>= 3.1)
-    json (2.19.9)
+    json (2.20.0)
     json-jwt (1.17.0)
       activesupport (>= 4.2)
       aes_key_wrap
