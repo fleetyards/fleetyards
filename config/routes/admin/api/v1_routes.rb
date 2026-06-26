@@ -96,6 +96,12 @@ v1_admin_api_routes = lambda do
     end
   end
 
+  resources :destroyed_fleets, path: "destroyed-fleets", only: %i[index] do
+    member do
+      post :restore
+    end
+  end
+
   resources :vehicles, only: %i[index show update destroy]
 
   resources :item_prices, path: "item-prices", only: %i[index show create update destroy]

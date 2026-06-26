@@ -24,6 +24,8 @@ en:
     loaner_upload:
       failure: 'Loaner Upload failed! Bad file_data: %{class_name} %{content}'
       success: Loaner Upload successfull.
+    destroyed_fleets:
+      fleet_still_exists: A fleet with this id still exists and cannot be restored.
     record_not_found:
       base: No Entry found
       fleet: No Fleet found

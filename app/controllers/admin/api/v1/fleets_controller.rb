@@ -15,7 +15,7 @@ module Admin
 
           fleet_query_params["sorts"] = sorting_params(Fleet, fleet_query_params[:sorts])
 
-          @q = Fleet.all.ransack(fleet_query_params)
+          @q = Fleet.kept.ransack(fleet_query_params)
 
           @fleets = @q.result
             .page(params[:page])
@@ -30,7 +30,7 @@ module Admin
 
           fleet_query_params["sorts"] = "name asc"
 
-          @q = Fleet.all.ransack(fleet_query_params)
+          @q = Fleet.kept.ransack(fleet_query_params)
 
           @fleets = @q.result(distinct: true)
             .page(params[:page])
