@@ -13,8 +13,8 @@ module Api
         unless: :user_signed_in?,
         only: %i[create update destroy]
 
-      before_action :check_fleet_logistics_feature
       before_action :set_fleet
+      before_action :check_fleet_logistics_feature
       before_action :set_fleet_inventory
       before_action :set_fleet_inventory_item, only: %i[update destroy]
 
@@ -94,7 +94,7 @@ module Api
       end
 
       private def check_fleet_logistics_feature
-        return if feature_enabled?("fleet_logistics")
+        return if feature_enabled?("fleet_logistics", @fleet)
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

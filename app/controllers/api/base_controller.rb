@@ -66,8 +66,8 @@ module Api
       @current_ability ||= Ability.new(current_resource_owner)
     end
 
-    def feature_enabled?(feature)
-      Flipper.enabled?(feature, current_resource_owner)
+    def feature_enabled?(feature, *actors)
+      Flipper.enabled?(feature, current_resource_owner, *actors)
     end
 
     def access_confirmed?
