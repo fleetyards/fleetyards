@@ -101,6 +101,9 @@
           "edit": "Edit Fleet",
           "members": "Members"
         },
+        "destroyedFleets": {
+          "index": "Destroyed Fleets"
+        },
         "admins": {
           "index": "Admins",
           "new": "New Admin",
