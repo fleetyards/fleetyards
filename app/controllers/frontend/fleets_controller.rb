@@ -64,7 +64,7 @@ module Frontend
     end
 
     private def fleet
-      @fleet ||= Fleet.find_by(slug: (params[:slug] || "").downcase)
+      @fleet ||= Fleet.kept.find_by(slug: (params[:slug] || "").downcase)
     end
   end
 end

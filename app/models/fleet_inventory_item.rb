@@ -32,6 +32,8 @@
 #  fk_rails_...  (member_id => users.id)
 #
 class FleetInventoryItem < ApplicationRecord
+  has_paper_trail
+
   paginates_per 30
 
   belongs_to :fleet_inventory, touch: true
@@ -103,7 +105,7 @@ class FleetInventoryItem < ApplicationRecord
 
   private def notify_inventory_entry
     fleet = fleet_inventory.fleet
-    recipients = fleet.fleet_memberships.accepted.includes(:fleet_role, :user).select { |m|
+    recipients = fleet.fleet_memberships.kept.accepted.includes(:fleet_role, :user).select { |m|
       m.has_access?(["fleet:manage", "fleet:inventories:manage", "fleet:logistics:manage"])
     }.filter_map { |m| m.user if m.user.email.present? }
 

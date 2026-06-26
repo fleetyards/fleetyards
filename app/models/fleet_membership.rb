@@ -8,6 +8,7 @@
 #  aasm_state        :string
 #  accepted_at       :datetime
 #  declined_at       :datetime
+#  discarded_at      :datetime
 #  hide_ships        :boolean          default(FALSE)
 #  invited_at        :datetime
 #  invited_by        :uuid
@@ -25,8 +26,9 @@
 #
 # Indexes
 #
+#  index_fleet_memberships_on_discarded_at          (discarded_at)
 #  index_fleet_memberships_on_fleet_role_id         (fleet_role_id)
-#  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE
+#  index_fleet_memberships_on_user_id_and_fleet_id  (user_id,fleet_id) UNIQUE WHERE (discarded_at IS NULL)
 #
 # Foreign Keys
 #
@@ -34,6 +36,7 @@
 #
 class FleetMembership < ApplicationRecord
   include AASM
+  include Discard::Model
 
   attr_accessor :update_reason, :update_reason_description, :author_id
 
@@ -81,7 +84,7 @@ class FleetMembership < ApplicationRecord
 
   validate_enum_attributes :ships_filter
 
-  validates :user_id, uniqueness: {scope: :fleet_id}
+  validates :user_id, uniqueness: {scope: :fleet_id, conditions: -> { where(discarded_at: nil) }}
 
   DEFAULT_SORTING_PARAMS = ["created_at desc", "accepted_at desc"]
   ALLOWED_SORTING_PARAMS = [
@@ -105,6 +108,9 @@ class FleetMembership < ApplicationRecord
   after_update_commit :schedule_update_fleet_vehicles
   after_commit :broadcast_update
   before_destroy :check_if_can_be_destroyed
+  before_discard :check_if_can_be_destroyed
+  after_discard :broadcast_destroy, :remove_fleet_vehicles
+  after_undiscard :broadcast_create, :schedule_setup_fleet_vehicles
 
   def has_access?(privileges)
     return false if fleet_role.blank?
@@ -158,6 +164,8 @@ class FleetMembership < ApplicationRecord
   end
 
   def schedule_update_fleet_vehicles
+    return if discarded? || saved_change_to_discarded_at?
+
     Updater::FleetMembershipVehiclesUpdateJob.perform_async(id)
   end
 
@@ -221,10 +229,11 @@ class FleetMembership < ApplicationRecord
   end
 
   def set_primary
+    return if discarded?
     return unless primary?
 
     # rubocop:disable Rails/SkipsModelValidations
-    FleetMembership.where(user_id:, primary: true)
+    FleetMembership.kept.where(user_id:, primary: true)
       .where.not(id:)
       .update_all(primary: false)
     # rubocop:enable Rails/SkipsModelValidations
@@ -246,7 +255,7 @@ class FleetMembership < ApplicationRecord
   def on_accept_invitation
     notify_fleet_admins
 
-    fleet.fleet_memberships.find_each do |member|
+    fleet.fleet_memberships.kept.find_each do |member|
       FleetVehiclesChannel.broadcast_to(member.user, to_json)
     end
   end
@@ -254,7 +263,7 @@ class FleetMembership < ApplicationRecord
   def notify_fleet_admins
     return unless requested? || accepted?
 
-    admin_users = fleet.fleet_memberships.accepted.includes(:fleet_role, :user).select { |m|
+    admin_users = fleet.fleet_memberships.kept.accepted.includes(:fleet_role, :user).select { |m|
       m.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
     }.filter_map { |m| m.user if m.user.email.present? }
 
@@ -276,7 +285,7 @@ class FleetMembership < ApplicationRecord
   def on_accept_request
     notify_new_member
 
-    fleet.fleet_memberships.find_each do |member|
+    fleet.fleet_memberships.kept.find_each do |member|
       FleetVehiclesChannel.broadcast_to(member.user, to_json)
     end
   end
@@ -295,7 +304,9 @@ class FleetMembership < ApplicationRecord
   end
 
   def broadcast_update
-    fleet.fleet_memberships.find_each do |member|
+    return if saved_change_to_discarded_at?
+
+    fleet.fleet_memberships.kept.find_each do |member|
       FleetMembersChannel.broadcast_to(member.user, to_json)
 
       next unless ships_filter_changed?
@@ -305,13 +316,13 @@ class FleetMembership < ApplicationRecord
   end
 
   def broadcast_create
-    fleet.fleet_memberships.find_each do |member|
+    fleet.fleet_memberships.kept.find_each do |member|
       FleetMembersChannel.broadcast_to(member.user, to_json)
     end
   end
 
   def broadcast_destroy
-    fleet.fleet_memberships.find_each do |member|
+    fleet.fleet_memberships.kept.find_each do |member|
       FleetMembersChannel.broadcast_to(member.user, to_json)
       FleetVehiclesChannel.broadcast_to(member.user, to_json)
     end
@@ -324,7 +335,7 @@ class FleetMembership < ApplicationRecord
   end
 
   def demote
-    return if fleet_role.permanent? && fleet_role.fleet_memberships.count == 1
+    return if fleet_role.permanent? && fleet_role.fleet_memberships.kept.count == 1
     return if prev_fleet_role == fleet_role || prev_fleet_role.nil?
 
     update(fleet_role: prev_fleet_role)

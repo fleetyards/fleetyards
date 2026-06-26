@@ -435,6 +435,10 @@
         "adminFleet": {
           "destroy": "Are you sure you want to delete this fleet? This action can't be reverted."
         },
+        "adminDestroyedFleet": {
+          "restore": "Are you sure you want to restore this fleet?",
+          "restorePurged": "Are you sure you want to restore this purged fleet? Restoring is best-effort: roles, images, invite links and fleet vehicles are not restored."
+        },
         "adminUser": {
           "destroy": "Are you sure you want to delete this admin user? This action can't be reverted."
         },

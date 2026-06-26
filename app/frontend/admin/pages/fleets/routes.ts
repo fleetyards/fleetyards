@@ -13,6 +13,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "destroyed/",
+    name: "admin-destroyed-fleets",
+    component: () => import("@/admin/pages/fleets/destroyed/index.vue"),
+    strict: true,
+    meta: {
+      needsAuthentication: true,
+      nav: "hidden",
+      activeRoute: "admin-fleets",
+      access: ["fleets"],
+    },
+  },
+  {
     path: ":id/",
     component: () => import("@/admin/pages/fleets/[id].vue"),
     children: fleetRoutes,

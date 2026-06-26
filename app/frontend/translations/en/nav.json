@@ -159,6 +159,9 @@
           "edit": "Edit",
           "members": "Members"
         },
+        "destroyedFleets": {
+          "index": "Destroyed Fleets"
+        },
         "vehicles": {
           "index": "Vehicles"
         },

@@ -121,8 +121,13 @@ class User < ApplicationRecord
     -> { order(primary: :desc) },
     dependent: :destroy,
     inverse_of: false
+  has_many :kept_fleet_memberships,
+    -> { kept.order(primary: :desc) },
+    class_name: "FleetMembership",
+    inverse_of: false
   has_many :fleets,
-    through: :fleet_memberships
+    -> { kept },
+    through: :kept_fleet_memberships
 
   has_many :notifications, dependent: :delete_all
   has_many :notification_preferences, dependent: :delete_all
@@ -399,7 +404,7 @@ class User < ApplicationRecord
   attr_accessor :destroy_fleets
 
   private def check_fleet_memberships
-    permanent_memberships = fleet_memberships.joins(:fleet_role).where(fleet_roles: {permanent: true})
+    permanent_memberships = fleet_memberships.kept.joins(:fleet_role).where(fleet_roles: {permanent: true})
     return unless permanent_memberships.exists?
 
     blocking_fleets = []
@@ -408,7 +413,7 @@ class User < ApplicationRecord
 
     permanent_memberships.each do |membership|
       fleet = membership.fleet
-      other_admin_exists = fleet.fleet_memberships
+      other_admin_exists = fleet.fleet_memberships.kept
         .joins(:fleet_role)
         .where(fleet_roles: {permanent: true})
         .where.not(id: membership.id)
@@ -416,7 +421,7 @@ class User < ApplicationRecord
 
       if other_admin_exists
         memberships_to_delete << membership
-      elsif fleet.fleet_memberships.count == 1 || destroy_fleets
+      elsif fleet.fleet_memberships.kept.count == 1 || destroy_fleets
         fleets_to_destroy << [membership, fleet]
       else
         blocking_fleets << fleet.name

@@ -7,6 +7,7 @@
 #  id                 :uuid             not null, primary key
 #  created_by         :uuid
 #  description        :text
+#  discarded_at       :datetime
 #  discord            :string
 #  fid                :string
 #  guilded            :string
@@ -26,7 +27,8 @@
 #
 # Indexes
 #
-#  index_fleets_on_fid  (fid) UNIQUE
+#  index_fleets_on_discarded_at  (discarded_at)
+#  index_fleets_on_fid           (fid) UNIQUE WHERE (discarded_at IS NULL)
 #
 require "test_helper"
 

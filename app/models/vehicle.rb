@@ -199,7 +199,7 @@ class Vehicle < ApplicationRecord
   end
 
   def update_fleet_vehicle
-    user.fleet_memberships.each do |fleet_membership|
+    user.fleet_memberships.kept.each do |fleet_membership|
       fleet_membership.update_fleet_vehicle(self)
     end
   end

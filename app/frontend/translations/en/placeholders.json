@@ -241,6 +241,9 @@
           "members": {
             "username": "Username"
           }
+        },
+        "destroyedFleets": {
+          "nameOrFid": "Name or FID"
         }
       }
     }

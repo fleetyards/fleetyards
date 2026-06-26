@@ -176,6 +176,7 @@
         "reset": "Clear Filters"
       },
       "destroyFleet": "Destroy Fleet",
+      "restore": "Restore",
       "fleet": {
         "join": "Join %{fleet}!",
         "leave": "Leave %{fleet}",

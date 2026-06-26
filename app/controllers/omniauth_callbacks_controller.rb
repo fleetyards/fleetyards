@@ -208,15 +208,15 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     public_sids = Array(raw_info["urn:user:rsi:orgs:public"]).reject(&:blank?).map(&:upcase)
 
     # rubocop:disable Rails/SkipsModelValidations
-    user.fleet_memberships.where(verified: true).update_all(verified: false)
+    user.fleet_memberships.kept.where(verified: true).update_all(verified: false)
     # rubocop:enable Rails/SkipsModelValidations
 
     return if public_sids.blank?
 
-    matching_fleets = Fleet.where("UPPER(rsi_sid) IN (?)", public_sids)
+    matching_fleets = Fleet.kept.where("UPPER(rsi_sid) IN (?)", public_sids)
 
     matching_fleets.each do |fleet|
-      membership = user.fleet_memberships.find_by(fleet_id: fleet.id)
+      membership = user.fleet_memberships.kept.find_by(fleet_id: fleet.id)
       next if membership.blank?
 
       membership.update!(verified: true)

@@ -4,6 +4,10 @@
       "true": "Yes",
       "false": "No",
       "null": "-",
+      "destroyedFleets": {
+        "discarded": "Discarded",
+        "purged": "Purged"
+      },
       "and": "and",
       "hide": "Hide",
       "show": "Show",
