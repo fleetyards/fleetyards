@@ -7,7 +7,9 @@ export default {
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
@@ -27,6 +29,16 @@ import { useFilters } from "@/shared/composables/useFilters";
 import DestroyedFleetActions from "@/admin/components/DestroyedFleets/Actions/index.vue";
 
 const { t, l } = useI18n();
+
+const crumbs = computed(() => [
+  {
+    to: { name: "admin-fleets" },
+    label: t("nav.admin.fleets.index"),
+  },
+  {
+    label: t("nav.admin.destroyedFleets.index"),
+  },
+]);
 
 const source = ref<DestroyedFleetsSource>(DestroyedFleetsSource.discarded);
 
@@ -95,6 +107,8 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
 </script>
 
 <template>
+  <BreadCrumbs :crumbs="crumbs" />
+
   <Heading hero>
     {{ t("headlines.admin.destroyedFleets.index") }}
     <HeadingSmall v-if="destroyedFleets">
@@ -107,23 +121,10 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
     </HeadingSmall>
   </Heading>
 
-  <BtnGroup inline>
-    <Btn
-      :active="source === DestroyedFleetsSource.discarded"
-      @click="setSource(DestroyedFleetsSource.discarded)"
-    >
-      {{ t("labels.destroyedFleets.discarded") }}
-    </Btn>
-    <Btn
-      :active="source === DestroyedFleetsSource.purged"
-      @click="setSource(DestroyedFleetsSource.purged)"
-    >
-      {{ t("labels.destroyedFleets.purged") }}
-    </Btn>
-  </BtnGroup>
-
-  <Panel v-if="isPurged" :variant="PanelVariantsEnum.ERROR">
-    {{ t("texts.admin.destroyedFleets.purgedWarning") }}
+  <Panel v-if="isPurged" :variant="PanelVariantsEnum.ERROR" slim>
+    <PanelBody no-min-height>
+      {{ t("texts.admin.destroyedFleets.purgedWarning") }}
+    </PanelBody>
   </Panel>
 
   <FilteredList
@@ -136,6 +137,24 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
   >
     <template #filter>
       <FilterForm />
+    </template>
+    <template #actions-left>
+      <BtnGroup inline>
+        <Btn
+          size="small"
+          :active="source === DestroyedFleetsSource.discarded"
+          @click="setSource(DestroyedFleetsSource.discarded)"
+        >
+          {{ t("labels.destroyedFleets.discarded") }}
+        </Btn>
+        <Btn
+          size="small"
+          :active="source === DestroyedFleetsSource.purged"
+          @click="setSource(DestroyedFleetsSource.purged)"
+        >
+          {{ t("labels.destroyedFleets.purged") }}
+        </Btn>
+      </BtnGroup>
     </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable

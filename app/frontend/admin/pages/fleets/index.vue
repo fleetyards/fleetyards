@@ -114,6 +114,18 @@ const { t, l } = useI18n();
     </HeadingSmall>
   </Heading>
 
+  <Teleport to="#header-right">
+    <Btn
+      :to="{ name: 'admin-destroyed-fleets' }"
+      :aria-label="t('nav.admin.destroyedFleets.index')"
+      size="small"
+      mobile-icon-only
+    >
+      <i class="fa-duotone fa-trash-can-arrow-up" />
+      {{ t("nav.admin.destroyedFleets.index") }}
+    </Btn>
+  </Teleport>
+
   <FilteredList
     name="admin-fleets"
     :records="fleets?.items || []"

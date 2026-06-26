@@ -2,7 +2,6 @@ import { routes as modelsRoutes } from "@/admin/pages/models/routes";
 import { routes as manufacturersRoutes } from "@/admin/pages/manufacturers/routes";
 import { routes as componentsRoutes } from "@/admin/pages/components/routes";
 import { routes as fleetsRoutes } from "@/admin/pages/fleets/routes";
-import { routes as destroyedFleetsRoutes } from "@/admin/pages/destroyed-fleets/routes";
 import { routes as vehiclesRoutes } from "@/admin/pages/vehicles/routes";
 import { routes as adminsRoutes } from "@/admin/pages/admins/routes";
 import { routes as oauthApplicationsRoutes } from "@/admin/pages/oauth-applications/routes";
@@ -94,18 +93,6 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-users-class",
       mobileNav: 2,
-      access: ["fleets"],
-    },
-  },
-  {
-    path: "/destroyed-fleets/",
-    component: () => import("@/admin/pages/destroyed-fleets.vue"),
-    children: destroyedFleetsRoutes,
-    redirect: { name: destroyedFleetsRoutes[0].name },
-    meta: {
-      title: "admin.destroyedFleets.index",
-      needsAuthentication: true,
-      icon: "fa-duotone fa-trash-can-arrow-up",
       access: ["fleets"],
     },
   },
