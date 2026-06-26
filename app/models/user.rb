@@ -121,9 +121,13 @@ class User < ApplicationRecord
     -> { order(primary: :desc) },
     dependent: :destroy,
     inverse_of: false
+  has_many :kept_fleet_memberships,
+    -> { kept.order(primary: :desc) },
+    class_name: "FleetMembership",
+    inverse_of: false
   has_many :fleets,
     -> { kept },
-    through: :fleet_memberships
+    through: :kept_fleet_memberships
 
   has_many :notifications, dependent: :delete_all
   has_many :notification_preferences, dependent: :delete_all

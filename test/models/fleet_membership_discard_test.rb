@@ -26,6 +26,13 @@ class FleetMembershipDiscardTest < ActiveSupport::TestCase
     assert_not fleet.fleet_memberships.kept.exists?(user_id: @member.id)
   end
 
+  test "a discarded membership is excluded from the user's fleets" do
+    fleet = create(:fleet, created_by: @creator.id, members: [@member])
+    @member.fleet_memberships.find_by(fleet_id: fleet.id).discard
+
+    assert_not @member.reload.fleets.exists?(fleet.id)
+  end
+
   test "a user can rejoin a fleet after their membership was discarded" do
     fleet = create(:fleet, created_by: @creator.id, members: [@member])
     fleet.fleet_memberships.find_by(user_id: @member.id).discard
