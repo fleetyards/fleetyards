@@ -39,4 +39,4 @@ json.items do
   end
 end
 
-json.partial! "api/shared/meta", result: (@discarded_fleets || @purged_fleets)
+json.partial! "api/shared/meta", result: @discarded_fleets || @purged_fleets
