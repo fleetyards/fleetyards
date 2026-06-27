@@ -341,7 +341,8 @@
           "leave": "Bist du sicher, dass du die Flotte verlassen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
           "destroy": "Bist du sicher, dass du deine Flotte löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
           "members": {
-            "destroy": "Bist du sicher, dass du dieses Mitglied entfernen möchtest?"
+            "destroy": "Bist du sicher, dass du dieses Mitglied entfernen möchtest?",
+            "remove": "Möchtest du dieses Mitglied wirklich aus der Flotte entfernen?"
           },
           "invites": {
             "decline": "Bist du sicher, dass du diese Einladung ablehnen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."

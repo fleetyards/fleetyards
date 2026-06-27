@@ -353,7 +353,8 @@
           "leave": "Are you sure you want to leave the Fleet? This Action can't be reverted.",
           "destroy": "Are you sure you want to destroy your Fleet? This Action can't be reverted.",
           "members": {
-            "destroy": "Are you sure you want to remove this Member?"
+            "destroy": "Are you sure you want to remove this Member?",
+            "remove": "Are you sure you want to remove this member from the fleet?"
           },
           "invites": {
             "decline": "Are you sure you want to decline this Invite? This Action can't be reverted."

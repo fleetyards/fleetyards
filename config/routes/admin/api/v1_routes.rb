@@ -89,7 +89,7 @@ v1_admin_api_routes = lambda do
       get :options
     end
 
-    resources :fleet_members, path: "members", only: %i[index] do
+    resources :fleet_members, path: "members", only: %i[index show update destroy] do
       member do
         get "login-as", to: "fleet_members#login_as"
       end

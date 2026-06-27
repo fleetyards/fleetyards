@@ -20,6 +20,7 @@ es:
       accept: No se pudo aceptar al miembro de la flota.
       decline: No se pudo rechazar al miembro de la flota.
       destroy: No se pudo eliminar al miembro de la flota.
+      update: No se pudo actualizar al miembro de la flota.
     fleet_memberships:
       create: La invitación de flota no pudo ser utilizada
       destroy: No se pudo abandonar la flota.

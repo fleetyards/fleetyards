@@ -1445,6 +1445,128 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleet_id}/members/{id}":
+    parameters:
+    - name: fleet_id
+      in: path
+      description: Fleet id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      description: Fleet Member id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Remove Fleet Member
+      tags:
+      - FleetMembers
+      operationId: removeFleetMember
+      responses:
+        '204':
+          description: successful
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Fleet Member
+      tags:
+      - FleetMembers
+      operationId: fleetMember
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminFleetMember"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Fleet Member
+      tags:
+      - FleetMembers
+      operationId: updateFleetMember
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AdminFleetMemberUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminFleetMember"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleet_id}/members/{id}/login-as":
     parameters:
     - name: fleet_id
@@ -6402,6 +6524,9 @@ components:
           type: string
         role:
           type: string
+        roleId:
+          type: string
+          format: uuid
         status:
           type: string
         acceptedAt:
@@ -6444,6 +6569,16 @@ components:
       additionalProperties: false
       example: {}
       title: AdminFleetMemberQuery
+    AdminFleetMemberUpdateInput:
+      type: object
+      properties:
+        fleetRoleId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - fleetRoleId
+      title: AdminFleetMemberUpdateInput
     AdminFleetMembers:
       type: object
       properties:
@@ -6458,6 +6593,24 @@ components:
       - meta
       - items
       title: AdminFleetMembers
+    AdminFleetRole:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        permanent:
+          type: boolean
+        rank:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - permanent
+      title: AdminFleetRole
     AdminUser:
       type: object
       properties:
@@ -7997,6 +8150,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         backgroundImage:
           "$ref": "#/components/schemas/MediaFile"
+        fleetRoles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminFleetRole"
         createdAt:
           type: string
           format: date-time
@@ -8011,6 +8168,7 @@ components:
       - slug
       - publicFleet
       - publicFleetStats
+      - fleetRoles
       - createdAt
       - updatedAt
       title: Fleet

@@ -182,7 +182,8 @@
           "demote": "Degradar",
           "accept": "Aceptar",
           "decline": "Rechazar",
-          "remove": "Eliminar"
+          "remove": "Eliminar",
+          "editRole": "Editar rol"
         },
         "inviteUrls": {
           "create": "Crear nueva URL de invitación"

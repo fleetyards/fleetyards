@@ -20,6 +20,7 @@ zh-TW:
       accept: 無法接受艦隊成員。
       decline: 無法拒絕艦隊成員。
       destroy: 無法移除艦隊成員。
+      update: 無法更新艦隊成員。
     fleet_memberships:
       create: 艦隊邀請無法使用
       destroy: 無法離開艦隊。

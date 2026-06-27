@@ -5,6 +5,11 @@ es:
       success: "%{resource} no usado como fondo."
     background_enabled:
       success: "%{resource} usado como fondo."
+    admin:
+      fleet_members:
+        invalid_role: El rol seleccionado no pertenece a esta flota.
+        cannot_demote_last_admin: Este es el último administrador de la flota y no se
+          puede degradar.
     confirm:
       delete: "¿Está seguro de que desea eliminar esta entrada?"
       resend_confirmation: "¿Está seguro de que desea reenviar las instrucciones de

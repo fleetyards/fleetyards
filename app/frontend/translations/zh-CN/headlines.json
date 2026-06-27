@@ -81,7 +81,8 @@
         },
         "fleets": {
           "index": "舰队",
-          "edit": "编辑舰队"
+          "edit": "编辑舰队",
+          "memberEdit": "编辑成员"
         },
         "admins": {
           "index": "管理员",

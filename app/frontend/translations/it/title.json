@@ -152,7 +152,8 @@
         },
         "fleets": {
           "index": "Flotte",
-          "edit": "Modifica Flotta"
+          "edit": "Modifica Flotta",
+          "memberEdit": "Modifica membro della flotta"
         },
         "oauthApplications": {
           "index": "Applicazioni OAuth",

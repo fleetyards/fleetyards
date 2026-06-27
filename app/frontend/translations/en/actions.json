@@ -197,7 +197,8 @@
           "demote": "Demote",
           "accept": "Accept",
           "decline": "Decline",
-          "remove": "Remove"
+          "remove": "Remove",
+          "editRole": "Edit Role"
         },
         "inviteUrls": {
           "create": "Create new Invite Url"

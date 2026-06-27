@@ -5,6 +5,10 @@ zh-TW:
       success: "%{resource} 未用作背景。"
     background_enabled:
       success: "%{resource} 已用作背景。"
+    admin:
+      fleet_members:
+        invalid_role: 所選角色不屬於該艦隊。
+        cannot_demote_last_admin: 這是該艦隊的最後一名管理員，無法降級。
     confirm:
       delete: 確定要刪除此項目嗎?
       resend_confirmation: 確定要為此使用者重新傳送確認說明嗎?
