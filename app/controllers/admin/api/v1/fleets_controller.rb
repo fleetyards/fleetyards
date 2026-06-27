@@ -18,6 +18,7 @@ module Admin
           @q = Fleet.kept.ransack(fleet_query_params)
 
           @fleets = @q.result
+            .includes(:fleet_roles)
             .page(params[:page])
             .per(per_page(Fleet))
         end

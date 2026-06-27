@@ -20,7 +20,8 @@ end
 json.background_image do
   json.partial! "api/v1/shared/file", record: fleet, attr: :background_image
 end
-json.fleet_roles fleet.fleet_roles.ranked do |fleet_role|
+ranked_roles = fleet.fleet_roles.select { |fleet_role| fleet_role.rank.present? }.sort_by(&:rank)
+json.fleet_roles ranked_roles do |fleet_role|
   json.id fleet_role.id
   json.name fleet_role.name
   json.permanent fleet_role.permanent || false
