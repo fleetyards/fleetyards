@@ -14,7 +14,7 @@ module Admin
         def index
           member_query_params["sorts"] = sorting_params(FleetMembership, member_query_params[:sorts])
 
-          @q = @fleet.fleet_memberships.ransack(member_query_params)
+          @q = @fleet.fleet_memberships.kept.ransack(member_query_params)
 
           @members = @q.result(distinct: true)
             .includes(:user, :fleet_role)
@@ -67,7 +67,7 @@ module Admin
         end
 
         private def set_member
-          @member = @fleet.fleet_memberships
+          @member = @fleet.fleet_memberships.kept
             .includes(:user, :fleet_role)
             .find(params[:id])
         end

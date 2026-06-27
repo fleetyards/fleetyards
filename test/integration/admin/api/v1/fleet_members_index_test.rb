@@ -48,6 +48,16 @@ class Admin::Api::V1::FleetMembersIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {fleet_id: fleet.id}
   end
 
+  test "GET /fleets/:fleet_id/members excludes discarded members" do
+    fleet = create(:fleet, members: create_list(:user, 3))
+    fleet.fleet_memberships.first.discard
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {fleet_id: fleet.id}
+
+    assert_equal 2, response.parsed_body["items"].length
+  end
+
   test "GET /fleets/:fleet_id/members returns 404 for missing fleet" do
     sign_in @user
 

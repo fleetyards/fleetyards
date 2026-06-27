@@ -53,6 +53,13 @@ class Admin::Api::V1::FleetMembersShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, path_params: {fleet_id: @fleet.id, id: SecureRandom.uuid}
   end
 
+  test "GET /members/:id returns 404 for a discarded membership" do
+    @membership.discard
+    sign_in @user
+
+    assert_api_response :get, 404, path_params: {fleet_id: @fleet.id, id: @membership.id}
+  end
+
   test "GET /members/:id returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {fleet_id: @fleet.id, id: @membership.id}
   end
