@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.32.1](https://github.com/fleetyards/fleetyards/compare/v6.32.0...v6.32.1) (2026-06-27)
+
+
+### Bug Fixes
+
+* **fleets:** restore fleet owner as admin on purged restore ([#4182](https://github.com/fleetyards/fleetyards/issues/4182)) ([9d19471](https://github.com/fleetyards/fleetyards/commit/9d19471eb46b67df27108958754f23a0264130c9))
+
 ## [6.32.0](https://github.com/fleetyards/fleetyards/compare/v6.31.4...v6.32.0) (2026-06-27)
 
 
