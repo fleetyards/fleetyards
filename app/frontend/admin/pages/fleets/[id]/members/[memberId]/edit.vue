@@ -52,6 +52,7 @@ const { defineField, handleSubmit, resetForm, meta } = useForm<{
   fleetRoleId: string;
 }>({
   initialValues: { fleetRoleId: "" },
+  validationSchema: { fleetRoleId: "required" },
 });
 
 const [fleetRoleId, fleetRoleIdProps] = defineField("fleetRoleId");
