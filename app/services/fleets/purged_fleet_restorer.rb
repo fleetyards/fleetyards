@@ -84,15 +84,17 @@ module Fleets
 
     # Role assignment is best effort: FleetRole nullifies its memberships when
     # it is destroyed (roles cascade before memberships), so the destroy
-    # snapshot's fleet_role_id may already be nil. When the old role cannot be
-    # mapped, the member falls back to the default member role and the fleet
-    # owner is re-granted admin by setup_admin_user.
+    # snapshot's fleet_role_id is usually already nil and the old role cannot be
+    # mapped. The fleet owner is the exception: setup_admin_user (run on fleet
+    # save) already recreated their membership with the admin role, so we must
+    # keep any role the record already carries rather than downgrading it.
+    # Everyone else falls back to the default member role.
     def restore_memberships(fleet, role_map)
       child_destroy_versions("FleetMembership", "fleet_id", fleet.id).find_each do |version|
         membership = version.reify
         record = fleet.fleet_memberships.find_or_initialize_by(user_id: membership.user_id)
         record.assign_attributes(membership.attributes.slice(*MEMBERSHIP_COLUMNS))
-        record.fleet_role = role_map[membership.fleet_role_id] || fleet.default_member_role
+        record.fleet_role = role_map[membership.fleet_role_id] || record.fleet_role || fleet.default_member_role
         record.discarded_at = membership.discarded_at
         record.save!(validate: false)
       end

@@ -14,7 +14,10 @@ class Fleets::PurgedFleetRestorerTest < ActiveSupport::TestCase
     inventory.fleet_inventory_items.create!(name: "Quantum Fuel", quantity: 5)
     fleet_id = fleet.id
 
-    fleet.destroy
+    # Load fresh before destroying so no membership is cached in memory with a
+    # stale fleet_role_id: this mirrors production, where the role-nullify on
+    # destroy leaves every membership's destroy snapshot with a nil role.
+    Fleet.find(fleet_id).destroy
     assert_not Fleet.exists?(fleet_id)
 
     restored = Fleets::PurgedFleetRestorer.new(fleet_id).call
