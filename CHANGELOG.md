@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.32.0](https://github.com/fleetyards/fleetyards/compare/v6.31.4...v6.32.0) (2026-06-27)
+
+
+### Features
+
+* **admin:** manage fleet members from the admin panel ([#4181](https://github.com/fleetyards/fleetyards/issues/4181)) ([99ebb9a](https://github.com/fleetyards/fleetyards/commit/99ebb9aa6c130dc859d80bc39f53bfab4864945d))
+* **fleets:** soft-delete, whodunnit and admin restore ([#4178](https://github.com/fleetyards/fleetyards/issues/4178)) ([3b2bdfa](https://github.com/fleetyards/fleetyards/commit/3b2bdfa89894a4766fd2811a6cb0880c257219d4))
+
+
+### Bug Fixes
+
+* **fleet-logistics:** gate fleet inventory endpoints on the fleet actor ([#4175](https://github.com/fleetyards/fleetyards/issues/4175)) ([040ae71](https://github.com/fleetyards/fleetyards/commit/040ae710273bc8dce469b803034e3aa22463421a))
+
+
+### Chores
+
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#4162](https://github.com/fleetyards/fleetyards/issues/4162)) ([146c114](https://github.com/fleetyards/fleetyards/commit/146c11465ba213333c72bf4a82584f939b55b494))
+* **deps-dev:** bump annotaterb from 4.22.0 to 4.23.0 ([#4174](https://github.com/fleetyards/fleetyards/issues/4174)) ([94a1fa5](https://github.com/fleetyards/fleetyards/commit/94a1fa53b4e925c864132f339a5876e22cef0558))
+* **deps-dev:** bump orval from 8.17.0 to 8.18.0 ([#4167](https://github.com/fleetyards/fleetyards/issues/4167)) ([c80e7de](https://github.com/fleetyards/fleetyards/commit/c80e7dec3f9d72f7513664386dc417400c8be302))
+* **deps:** bump @vue/eslint-config-typescript from 14.8.0 to 14.9.0 ([#4179](https://github.com/fleetyards/fleetyards/issues/4179)) ([cc3c681](https://github.com/fleetyards/fleetyards/commit/cc3c68121ff6f88754d546eb9acd21c27cea73d9))
+* **deps:** bump actions/cache from 5 to 6 ([#4172](https://github.com/fleetyards/fleetyards/issues/4172)) ([1d4de48](https://github.com/fleetyards/fleetyards/commit/1d4de4841a085a72d916e09ba2b32bd477000e1f))
+* **deps:** bump appsignal from 4.8.5 to 4.8.6 ([#4171](https://github.com/fleetyards/fleetyards/issues/4171)) ([0698898](https://github.com/fleetyards/fleetyards/commit/0698898bac05a09e034e0a89b7be2561e75d070c))
+* **deps:** bump discordrb-webhooks from 3.7.2 to 3.8.0 ([#4163](https://github.com/fleetyards/fleetyards/issues/4163)) ([d5336ec](https://github.com/fleetyards/fleetyards/commit/d5336ecacd45e377fde4acd4ab05e374c775cc8b))
+* **deps:** bump doorkeeper-openid_connect from 1.10.1 to 1.10.3 ([#4173](https://github.com/fleetyards/fleetyards/issues/4173)) ([53ab954](https://github.com/fleetyards/fleetyards/commit/53ab9543b8ba3b955de4a88c3d40d901d3d9c40f))
+* **deps:** bump i18n from 1.15.1 to 1.15.2 ([#4161](https://github.com/fleetyards/fleetyards/issues/4161)) ([7e22253](https://github.com/fleetyards/fleetyards/commit/7e22253c7b5959d9f4e7229d9e892a0583afcf5a))
+* **deps:** bump papaparse from 5.5.3 to 5.5.4 ([#4169](https://github.com/fleetyards/fleetyards/issues/4169)) ([bf62586](https://github.com/fleetyards/fleetyards/commit/bf62586723897a02eecfbd93e1e3f48c3b0cbc44))
+* **deps:** bump uuid from 14.0.0 to 14.0.1 ([#4165](https://github.com/fleetyards/fleetyards/issues/4165)) ([1902f19](https://github.com/fleetyards/fleetyards/commit/1902f1999c5051f48d4c3261492c1453945d8ce4))
+
 ## [6.31.4](https://github.com/fleetyards/fleetyards/compare/v6.31.3...v6.31.4) (2026-06-21)
 
 
