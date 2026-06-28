@@ -170,7 +170,7 @@ FactoryBot.define do
 
     trait :with_hardpoints do
       after(:create) do |model|
-        create_list(:model_hardpoint, 3, model: model)
+        create_list(:hardpoint, 3, parent: model)
       end
     end
 
