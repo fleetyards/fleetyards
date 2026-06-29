@@ -13,7 +13,7 @@ gem "sidekiq-scheduler"
 gem "sidekiq-failures"
 
 gem "paper_trail"
-gem "discard", "~> 1.4"
+gem "discard", "~> 2.0"
 
 gem "data_migrate"
 
