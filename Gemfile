@@ -130,7 +130,7 @@ group :development do
 
   # Pinned to 2.11.0: 2.12.0 intermittently resets the second back-to-back
   # `kamal app exec` SSH connection in the pre-deploy hook (Errno::ECONNRESET).
-  gem "kamal", "2.11.0", require: false
+  gem "kamal", "2.12.0", require: false
 
   gem "letter_opener"
   gem "letter_opener_web", "~> 3.0"
