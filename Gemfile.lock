@@ -200,7 +200,6 @@ GEM
       activerecord (>= 4.2, < 9.0)
     discordrb-webhooks (3.8.0)
       rest-client (>= 2.0.0)
-    docile (1.4.1)
     domain_name (0.6.20240107)
     doorkeeper (5.9.3)
       railties (>= 5)
@@ -742,16 +741,12 @@ GEM
     sidekiq-scheduler (6.0.2)
       rufus-scheduler (~> 3.2)
       sidekiq (>= 7.3, < 9)
-    simplecov (0.22.0)
-      docile (~> 1.1)
-      simplecov-html (~> 0.11)
-      simplecov_json_formatter (~> 0.1)
+    simplecov (1.0.0)
     simplecov-console (0.9.5)
       ansi
       simplecov
       terminal-table
     simplecov-html (0.13.2)
-    simplecov_json_formatter (0.1.4)
     simpleidn (0.2.3)
     snaky_hash (2.0.6)
       hashie (>= 0.1.0, < 6)
