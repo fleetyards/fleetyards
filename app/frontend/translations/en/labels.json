@@ -572,8 +572,27 @@
         "crew": "Crew",
         "speed": "Speed",
         "cargo": "Cargo",
+        "combat": "Combat",
         "hardpoints": "Hardpoints",
         "missileOptions": "Missle Options (if available)"
+      },
+      "combat": {
+        "title": "Combat",
+        "dps": "Total DPS",
+        "dpsSub": "sustained · all weapons",
+        "alpha": "Alpha",
+        "alphaSub": "per volley",
+        "weapons": "Weapons",
+        "composition": "Damage Composition",
+        "showBreakdown": "Show breakdown",
+        "hideBreakdown": "Hide breakdown",
+        "weaponName": "Weapon",
+        "size": "Size",
+        "damagePhysical": "Physical",
+        "damageEnergy": "Energy",
+        "damageDistortion": "Distortion",
+        "damageThermal": "Thermal",
+        "hint": "Sustained damage from the default loadout. Missiles excluded."
       },
       "manufacturer": {
         "longName": "Long Name",
