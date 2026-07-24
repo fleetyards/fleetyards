@@ -3,53 +3,80 @@
 Goal: build toward an in-app DPS / loadout calculator comparable to erkul.games and
 spviewer.eu, which today are only linked to externally from the hardpoints view.
 
-## Context / current state
+Branch: `feat/loadout-dps-readonly`.
 
-The raw combat data is already imported from extracted game files and exposed on the
-API:
+## Data foundation (already imported from extracted game files)
 
 - `useModelHardpoints(slug, { source })` returns a flat `Hardpoint[]`, each with
   `category`, `group`, `component.typeData`, and nested `hardpoints[]` (turret guns).
 - `ComponentWeapon.typeData`: `damagePerShot` / `damagePerSecond` (per damage type:
   physical/energy/distortion/thermal/biochemical/stun), `fireRate` (rounds **per
-  minute** — S9 cannon = 60), `pelletsPerShot`, `speed`, `range`, `beam`.
-- Per-component stats already render in `Models/Hardpoints/Details/index.vue`.
-- `number.json` already defines a `dps` format (`"%{count} DPS"`).
+  minute**), `pelletsPerShot`, `speed`, `range`, `beam`.
+- `ComponentShield.typeData`: `maxHealth`, `maxRegen`, per-type `resistance.{type}.max`.
+- Hull HP: **not** in the Foundry Records entity (`SHealthComponentParams.Health` is a
+  placeholder). It lives in the CryEngine vehicle implementation XML at
+  `Data/Scripts/Entities/Vehicles/Implementations/Xml/<ship>.xml`, referenced by the
+  entity's `VehicleComponentParams.vehicleDefinition`, as `<Part damageMax>` per part.
+  `vehicleHullDamageNormalizationValue` is a damage-normalization constant, **not** hull
+  HP (600i: 55k vs real 197k) — do not use it.
 
-What's missing (see the full gap analysis): a calculation/aggregation layer, aggregate
-UI, a real per-hardpoint picker + persistence, and ship hull HP for EHP/TTK.
+## Done
 
-## This slice: read-only aggregate DPS panel (frontend-only)
+### Read-only aggregate DPS panel (frontend-only)
+- `composables/useLoadoutStats.ts` (+ spec) — rolls up default-loadout weapons into
+  `dps` and `alpha` per damage type, plus a per-weapon list. Recurses into turrets;
+  excludes missiles.
+- `components/Models/CombatMetrics/index.vue` — hero tiles (total DPS, alpha, weapon
+  count), damage-composition bar with hover-isolate, animated collapsible per-weapon
+  table (`Collapsed`).
+- Note: our DPS = alpha × fireRate/60 = erkul **burst** DPS (theoretical max fire
+  rate), labelled "burst". We do **not** model heat/power throttling, so we don't
+  produce erkul's lower "sustained" number.
 
-No backend, no migration, no new API. Aggregate the **default-equipped** components
-already returned by `useModelHardpoints` and display headline combat numbers on the
-ship page, reflecting the existing game-files / ship-matrix source toggle.
+### Survivability card (frontend + backend)
+- `composables/useShieldStats.ts` (+ spec) — total shield HP, regen, HP-weighted
+  per-type resistances from default-loadout shields.
+- `components/Models/SurvivabilityMetrics/index.vue` — shield HP + hull HP tiles,
+  resistance bars.
+- Shared frame extracted to `components/Models/metricsCard.scss`.
 
-### Steps
+### Hull HP end-to-end pipeline
+- Parser `ScData::Parser::ModelsParser#extract_hull_health` sums `<Part damageMax>`
+  from the implementation XML → `hull_health` on parsed model JSON (regenerated).
+- Migration `add hull_health` + `ModelsLoader` maps it.
+- API: `hullHealth` on the model metrics schema + jbuilder (omitted when absent).
+- Validated vs erkul within patch tolerance (600i 198,500 vs 197,250; 211/245 models
+  populated — the rest have no implementation XML).
 
-1. **`composables/useLoadoutStats.ts`** — pure rollup over `Hardpoint[]`.
-   - Recursively collect weapon hardpoints (`category === WEAPONS`) with a component.
-   - Classify each `ComponentWeapon`:
-     - beam (`beam && damagePerSecond`) → contributes to sustained DPS only.
-     - projectile (`fireRate && damagePerShot`, not beam) → alpha = `Σ perShot ×
-       pellets`; DPS = `alpha × fireRate / 60`.
-     - missile (has `trackingSignal`, no `fireRate`) → excluded in v1 (one-shot; note
-       as follow-up).
-   - Output `dps` and `alpha` as `{ total, physical, energy, distortion, thermal }`,
-     plus `weaponCount` and `hasData`.
-2. **`useLoadoutStats.spec.ts`** — vitest unit test with synthetic hardpoints
-   (projectile + beam + nested turret gun) asserting the arithmetic.
-3. **`components/Models/CombatMetrics/index.vue`** — mirrors `BaseMetrics` styling;
-   renders total DPS, alpha, and per-damage-type split. Renders only when
-   `weaponCount > 0`.
-4. **Mount** in `Models/Hardpoints/new.vue` (owns hardpoints + source toggle) so it
-   tracks the selected source.
-5. **i18n** — add `labels.metrics.combat` and a `labels.combat.*` block (en).
+### Layout
+- Combat + survivability cards sit in a two-column row at the top of the hardpoints
+  section (`Models/Hardpoints/new.vue`).
 
-### Explicitly deferred
+## Still missing / next slices
 
-- Missiles, gimbal/convergence, spread/recoil.
-- Sustained-vs-burst power/heat budget simulation.
-- EHP / TTK (needs ship hull HP import — absent on `Model`).
-- Interactive per-hardpoint picker + persistence to `VehicleLoadoutHardpoint`.
-- Loadout-vs-loadout comparison.
+1. **Per-part hull exposure** — we only expose the total. erkul shows each part
+   (name, HP) and a vital / secondary / breakable / subpart classification. Parts and
+   `damageMax` are available in the implementation XML; the class split needs more
+   digging into the part damage-behavior data. Would need a `hull_parts` store
+   (jsonb column or table), API array, and a breakdown UI.
+2. **EHP / time-to-kill** — combine shield HP (× resistances) + hull HP into an
+   effective-HP / TTK-vs-a-loadout figure. Now unblocked by hull HP.
+3. **Sustained DPS** — model power draw vs power-plant output and heat vs cooler
+   capacity to derive erkul's throttled sustained DPS (currently burst only).
+4. **Interactive per-hardpoint picker + persistence** — swap components per slot and
+   recompute; persist to the existing `VehicleLoadoutHardpoint` table (schema ready).
+5. **Loadout-vs-loadout / ship-vs-ship combat comparison** — extend `compare.vue`.
+6. **Weapon detail gaps** — spread/recoil and projectile falloff aren't imported, so
+   effective-DPS-at-range can't be computed yet. Missiles and gimbal/convergence
+   deferred.
+7. **i18n** — only `en` has the new `labels.combat.*` / `labels.survivability.*` keys
+   and the `dps` number format; other locales fall back to English.
+
+## Verification / ops notes
+
+- Tests: `pnpm vitest run app/frontend/frontend/composables/*.spec.ts` (loadout +
+  shield stats).
+- Regenerating hull HP after a game-data version bump: rerun `ModelsParser#all` (writes
+  `data/sc_data/parsed/.../models`), then `ScData::Loader::ModelsLoader#all`.
+- After schema changes: `./bin/generate-schema` (regenerates swagger + orval client),
+  then format + lint.
