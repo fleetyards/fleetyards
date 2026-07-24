@@ -71,6 +71,7 @@ module ScData
 
       private def update_metrics(model_data, update_params)
         update_params[:mass] = model_data.dig("mass")&.to_f
+        update_params[:hull_health] = model_data.dig("hull_health")&.to_f
         update_params[:sc_length] = model_data.dig("metrics", "y")&.to_f
         update_params[:sc_beam] = model_data.dig("metrics", "x")&.to_f
         update_params[:sc_height] = model_data.dig("metrics", "z")&.to_f
