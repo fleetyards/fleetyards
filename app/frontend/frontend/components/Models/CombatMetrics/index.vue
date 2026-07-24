@@ -54,41 +54,41 @@ const composition = computed(() => {
 </script>
 
 <template>
-  <div v-if="stats.hasData" class="combat-panel">
-    <div class="combat-panel__head">
-      <span class="combat-panel__title">
-        <span class="combat-panel__dot" />
+  <div v-if="stats.hasData" class="metrics-card combat-panel">
+    <div class="metrics-card__head">
+      <span class="metrics-card__title">
+        <span class="metrics-card__dot" />
         {{ t("labels.combat.title") }}
       </span>
     </div>
 
-    <div class="combat-panel__body">
-      <div class="combat-panel__hero">
-        <div class="tile tile--primary">
-          <div class="tile__label">{{ t("labels.combat.dps") }}</div>
-          <div class="tile__value">
+    <div class="metrics-card__body">
+      <div class="metrics-card__hero">
+        <div class="metrics-card__tile metrics-card__tile--primary">
+          <div class="metrics-card__tile__label">{{ t("labels.combat.dps") }}</div>
+          <div class="metrics-card__tile__value">
             {{ toNumber(round(stats.dps.total), "integer") }}
-            <span class="tile__unit">DPS</span>
+            <span class="metrics-card__tile__unit">DPS</span>
           </div>
-          <div class="tile__sub">{{ t("labels.combat.dpsSub") }}</div>
+          <div class="metrics-card__tile__sub">{{ t("labels.combat.dpsSub") }}</div>
         </div>
-        <div class="tile">
-          <div class="tile__label">{{ t("labels.combat.alpha") }}</div>
-          <div class="tile__value">
+        <div class="metrics-card__tile">
+          <div class="metrics-card__tile__label">{{ t("labels.combat.alpha") }}</div>
+          <div class="metrics-card__tile__value">
             {{ toNumber(round(stats.alpha.total), "integer") }}
-            <span class="tile__unit">DMG</span>
+            <span class="metrics-card__tile__unit">DMG</span>
           </div>
-          <div class="tile__sub">{{ t("labels.combat.alphaSub") }}</div>
+          <div class="metrics-card__tile__sub">{{ t("labels.combat.alphaSub") }}</div>
         </div>
-        <div class="tile">
-          <div class="tile__label">{{ t("labels.combat.weapons") }}</div>
-          <div class="tile__value">
+        <div class="metrics-card__tile">
+          <div class="metrics-card__tile__label">{{ t("labels.combat.weapons") }}</div>
+          <div class="metrics-card__tile__value">
             {{ toNumber(stats.weaponCount, "integer") }}
           </div>
         </div>
       </div>
 
-      <div class="combat-panel__section-label">
+      <div class="metrics-card__section-label">
         {{ t("labels.combat.composition") }}
       </div>
       <div
@@ -121,7 +121,7 @@ const composition = computed(() => {
       </div>
 
       <Collapsed :visible="expanded" :duration="200">
-        <div class="combat-panel__divider" />
+        <div class="metrics-card__divider" />
         <table class="weapon-table">
           <thead>
             <tr>
@@ -143,10 +143,10 @@ const composition = computed(() => {
         </table>
       </Collapsed>
 
-      <div class="combat-panel__footer">
+      <div class="metrics-card__footer">
         <button
           type="button"
-          class="combat-panel__toggle"
+          class="metrics-card__toggle"
           @click="expanded = !expanded"
         >
           {{
@@ -155,203 +155,19 @@ const composition = computed(() => {
               : t("labels.combat.showBreakdown")
           }}
         </button>
-        <span class="combat-panel__hint">{{ t("labels.combat.hint") }}</span>
+        <span class="metrics-card__hint">{{ t("labels.combat.hint") }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/frontend/components/Models/metricsCard";
+
 $c-physical: $text-color;
 $c-energy: $primary;
 $c-distortion: $cyan;
 $c-thermal: $warning;
-
-.combat-panel {
-  position: relative;
-  margin: 15px 0 40px;
-  background: $panel-bg;
-  border: 2px solid rgba($gray-light, 0.5);
-  border-radius: 16px;
-  box-shadow: 0 6px 18px -12px rgba(#000, 0.8);
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    left: 34px;
-    right: 34px;
-    height: 3px;
-    background: #4a4f54;
-    border-radius: 1px;
-  }
-
-  &::before {
-    top: -2px;
-  }
-
-  &::after {
-    bottom: -2px;
-  }
-
-  &__head {
-    padding: 16px 18px 12px;
-  }
-
-  &__title {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 15px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: lighten($text-color, 15%);
-  }
-
-  &__dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: $gold;
-    box-shadow: 0 0 10px 1px rgba($gold, 0.55);
-  }
-
-  &__body {
-    padding: 4px 18px 18px;
-  }
-
-  &__hero {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
-    gap: 1px;
-    background: rgba($gray-light, 0.28);
-    border: 1px solid rgba($gray-light, 0.28);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 20px;
-
-    @media (max-width: 576px) {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  &__section-label {
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: $gray-light;
-    margin: 4px 0 10px;
-  }
-
-  &__divider {
-    height: 1px;
-    background: rgba($gray-light, 0.28);
-    margin: 20px 0;
-  }
-
-  &__footer {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
-
-  &__toggle {
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 6px 13px;
-    background: transparent;
-    color: $text-color;
-    border: 1px solid rgba($gray-light, 0.5);
-    border-radius: 999px;
-    cursor: pointer;
-    transition: all 0.15s ease;
-
-    &:hover {
-      color: lighten($text-color, 15%);
-      border-color: $primary;
-    }
-  }
-
-  &__hint {
-    font-size: 11.5px;
-    color: $gray;
-  }
-}
-
-.tile {
-  position: relative;
-  background: $gray-black;
-  padding: 14px 16px;
-
-  &--primary {
-    grid-column: 1;
-
-    @media (max-width: 576px) {
-      grid-column: 1 / -1;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 12px;
-      bottom: 12px;
-      width: 3px;
-      background: linear-gradient($gold, rgba($gold, 0.15));
-      border-radius: 2px;
-    }
-  }
-
-  &__label {
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: $gray-light;
-    margin-bottom: 7px;
-  }
-
-  &__value {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 1;
-    color: lighten($text-color, 15%);
-    font-variant-numeric: tabular-nums;
-  }
-
-  &--primary &__value {
-    font-size: 40px;
-    color: #fff;
-
-    @media (max-width: 576px) {
-      font-size: 32px;
-    }
-  }
-
-  &__unit {
-    font-family: "Open Sans", sans-serif;
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    color: $gray-light;
-  }
-
-  &__sub {
-    margin-top: 6px;
-    font-size: 11px;
-    color: $gray;
-  }
-}
 
 .compbar {
   display: flex;
