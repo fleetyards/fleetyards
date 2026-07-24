@@ -131,6 +131,7 @@ module V1
                 lengthLabel: {type: :string},
                 mass: {type: :number},
                 massLabel: {type: :string},
+                hullHealth: {type: :number},
                 quantumFuelTankSize: {type: :number},
                 size: {type: :string},
                 sizeLabel: {type: :string},

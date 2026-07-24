@@ -10258,6 +10258,8 @@ components:
               type: number
             massLabel:
               type: string
+            hullHealth:
+              type: number
             quantumFuelTankSize:
               type: number
             size:
@@ -10562,6 +10564,8 @@ components:
               type: number
             massLabel:
               type: string
+            hullHealth:
+              type: number
             quantumFuelTankSize:
               type: number
             size:
