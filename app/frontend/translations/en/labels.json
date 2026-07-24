@@ -594,6 +594,20 @@
         "damageThermal": "Thermal",
         "hint": "Sustained damage from the default loadout. Missiles excluded."
       },
+      "survivability": {
+        "title": "Survivability",
+        "shieldHp": "Shield HP",
+        "shieldHpSub": "total · all generators",
+        "regen": "Regen",
+        "regenSub": "at full charge",
+        "shields": "Generators",
+        "resistances": "Shield Resistances",
+        "resistancePhysical": "Physical",
+        "resistanceEnergy": "Energy",
+        "resistanceDistortion": "Distortion",
+        "resistanceThermal": "Thermal",
+        "hint": "Shield strength from the default loadout. Hull HP not yet available."
+      },
       "manufacturer": {
         "longName": "Long Name",
         "code": "Code",
