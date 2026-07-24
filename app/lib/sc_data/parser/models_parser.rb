@@ -41,6 +41,7 @@ module ScData
               base_expediting_fee: values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            hull_health: extract_hull_health(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
@@ -93,6 +94,7 @@ module ScData
               base_expediting_fee: insurance.dig("shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            hull_health: extract_hull_health(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
@@ -234,6 +236,35 @@ module ScData
         definition_data = extract_modification_definition(definition_data, modification_key)
 
         definition_data.dig("Vehicle", "Parts", "Part", "mass")&.to_f
+      end
+
+      # Hull health is the sum of every part's `damageMax` in the vehicle
+      # implementation XML (matches the total hull HP shown by erkul.games).
+      private def extract_hull_health(component_params)
+        definition_file_path = component_params.dig("vehicleDefinition")
+
+        return if definition_file_path.blank?
+
+        modification_key = component_params.dig("modification")
+
+        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+
+        definition_data = extract_modification_definition(definition_data, modification_key)
+
+        total = sum_part_damage(definition_data.dig("Vehicle", "Parts"))
+
+        total.positive? ? total : nil
+      end
+
+      private def sum_part_damage(node)
+        case node
+        when Hash
+          node.sum { |key, value| (key == "damageMax") ? value.to_f : sum_part_damage(value) }
+        when Array
+          node.sum { |value| sum_part_damage(value) }
+        else
+          0.0
+        end
       end
 
       private def extract_modification_definition(definition_data, modification_key)

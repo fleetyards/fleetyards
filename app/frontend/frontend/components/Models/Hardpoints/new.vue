@@ -9,8 +9,12 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import HardpointGroup from "./Group/index.vue";
+import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
+import ModelSurvivabilityMetrics from "@/frontend/components/Models/SurvivabilityMetrics/index.vue";
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
+import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import {
   useModelHardpoints as useModelHardpointsQuery,
   HardpointGroupEnum,
@@ -81,6 +85,14 @@ const {
 } = useModelHardpointsQuery(props.model.slug, modelHardpointsQueryParams, {
   query: { enabled: !!props.model },
 });
+
+const combatStats = useLoadoutStats(
+  () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+);
+
+const shieldStats = useShieldStats(
+  () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+);
 </script>
 
 <template>
@@ -126,6 +138,20 @@ const {
         </BtnGroup>
       </div>
       <ModelRefuelBoom :model="model" />
+      <div
+        v-if="combatStats.hasData || shieldStats.hasData || model.metrics.hullHealth"
+        class="row combat-row"
+      >
+        <div class="col-12 col-lg-6">
+          <ModelCombatMetrics :hardpoints="(hardpoints as Hardpoint[])" />
+        </div>
+        <div class="col-12 col-lg-6">
+          <ModelSurvivabilityMetrics
+            :hardpoints="(hardpoints as Hardpoint[])"
+            :hull-health="model.metrics.hullHealth"
+          />
+        </div>
+      </div>
       <div v-if="hardpoints?.length" class="row">
         <div class="col-12 col-md-6 col-lg-4">
           <HardpointGroup

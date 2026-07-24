@@ -14,6 +14,7 @@
     "base_expediting_fee": "8970"
   },
   "mass": 135649.0,
+  "hull_health": 17000.0,
   "metrics": {
     "x": 11.0,
     "y": 11.5,
