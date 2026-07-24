@@ -11,10 +11,12 @@ import { useShieldStats } from "@/frontend/composables/useShieldStats";
 
 type Props = {
   hardpoints?: Hardpoint[];
+  hullHealth?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hardpoints: () => [],
+  hullHealth: undefined,
 });
 
 const { t, toNumber } = useI18n();
@@ -22,10 +24,13 @@ const { t, toNumber } = useI18n();
 const stats = useShieldStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
+
+const hasHull = computed(() => (props.hullHealth ?? 0) > 0);
+const hasData = computed(() => stats.value.hasData || hasHull.value);
 </script>
 
 <template>
-  <div v-if="stats.hasData" class="metrics-card survivability-panel">
+  <div v-if="hasData" class="metrics-card survivability-panel">
     <div class="metrics-card__head">
       <span class="metrics-card__title">
         <span class="metrics-card__dot" />
@@ -35,7 +40,10 @@ const round = (value: number) => Math.round(value);
 
     <div class="metrics-card__body">
       <div class="metrics-card__hero">
-        <div class="metrics-card__tile metrics-card__tile--primary">
+        <div
+          v-if="stats.hasData"
+          class="metrics-card__tile metrics-card__tile--primary"
+        >
           <div class="metrics-card__tile__label">
             {{ t("labels.survivability.shieldHp") }}
           </div>
@@ -44,27 +52,24 @@ const round = (value: number) => Math.round(value);
             <span class="metrics-card__tile__unit">HP</span>
           </div>
           <div class="metrics-card__tile__sub">
-            {{ t("labels.survivability.shieldHpSub") }}
+            {{ toNumber(stats.totalRegen, "integer") }} HP/s ·
+            {{ toNumber(stats.shieldCount, "integer") }}×
           </div>
         </div>
-        <div class="metrics-card__tile">
+        <div
+          v-if="hasHull"
+          class="metrics-card__tile"
+          :class="{ 'metrics-card__tile--primary': !stats.hasData }"
+        >
           <div class="metrics-card__tile__label">
-            {{ t("labels.survivability.regen") }}
+            {{ t("labels.survivability.hullHp") }}
           </div>
           <div class="metrics-card__tile__value">
-            {{ toNumber(round(stats.totalRegen), "integer") }}
-            <span class="metrics-card__tile__unit">HP/s</span>
+            {{ toNumber(round(hullHealth ?? 0), "integer") }}
+            <span class="metrics-card__tile__unit">HP</span>
           </div>
           <div class="metrics-card__tile__sub">
-            {{ t("labels.survivability.regenSub") }}
-          </div>
-        </div>
-        <div class="metrics-card__tile">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.survivability.shields") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(stats.shieldCount, "integer") }}
+            {{ t("labels.survivability.hullHpSub") }}
           </div>
         </div>
       </div>
@@ -105,6 +110,14 @@ const round = (value: number) => Math.round(value);
 
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/metricsCard";
+
+.metrics-card__hero {
+  grid-template-columns: 1.5fr 1fr;
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+}
 
 $c-physical: $text-color;
 $c-energy: $primary;
