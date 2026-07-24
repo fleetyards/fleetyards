@@ -145,6 +145,7 @@ json.metrics do
   json.length_label model.length_label
   json.mass model.mass.to_f
   json.mass_label model.mass.to_f.to_s
+  json.hull_health model.hull_health.to_f if model.hull_health.present?
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.size model.size
   json.size_label model.size&.humanize
