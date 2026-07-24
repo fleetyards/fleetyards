@@ -1,0 +1,189 @@
+// Shared visual frame for ship-page stat cards (combat, survivability, …).
+// Imported into each card's scoped <style>, so the generic class names
+// (`.metrics-card*`) are scoped per component.
+
+.metrics-card {
+  position: relative;
+  margin: 15px 0 40px;
+  background: $panel-bg;
+  border: 2px solid rgba($gray-light, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 6px 18px -12px rgba(#000, 0.8);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 34px;
+    right: 34px;
+    height: 3px;
+    background: #4a4f54;
+    border-radius: 1px;
+  }
+
+  &::before {
+    top: -2px;
+  }
+
+  &::after {
+    bottom: -2px;
+  }
+
+  &__head {
+    padding: 16px 18px 12px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: lighten($text-color, 15%);
+  }
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $gold;
+    box-shadow: 0 0 10px 1px rgba($gold, 0.55);
+  }
+
+  &__body {
+    padding: 4px 18px 18px;
+  }
+
+  &__hero {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 1px;
+    background: rgba($gray-light, 0.28);
+    border: 1px solid rgba($gray-light, 0.28);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__section-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $gray-light;
+    margin: 4px 0 10px;
+  }
+
+  &__divider {
+    height: 1px;
+    background: rgba($gray-light, 0.28);
+    margin: 20px 0;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  &__toggle {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 13px;
+    background: transparent;
+    color: $text-color;
+    border: 1px solid rgba($gray-light, 0.5);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: lighten($text-color, 15%);
+      border-color: $primary;
+    }
+  }
+
+  &__hint {
+    font-size: 11.5px;
+    color: $gray;
+  }
+
+  &__tile {
+    position: relative;
+    background: $gray-black;
+    padding: 14px 16px;
+
+    &--primary {
+      grid-column: 1;
+
+      @media (max-width: 576px) {
+        grid-column: 1 / -1;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 12px;
+        bottom: 12px;
+        width: 3px;
+        background: linear-gradient($gold, rgba($gold, 0.15));
+        border-radius: 2px;
+      }
+    }
+
+    &__label {
+      font-family: "Orbitron", tahoma, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: $gray-light;
+      margin-bottom: 7px;
+    }
+
+    &__value {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      font-family: "Orbitron", tahoma, sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 1;
+      color: lighten($text-color, 15%);
+      font-variant-numeric: tabular-nums;
+    }
+
+    &--primary &__value {
+      font-size: 40px;
+      color: #fff;
+
+      @media (max-width: 576px) {
+        font-size: 32px;
+      }
+    }
+
+    &__unit {
+      font-family: "Open Sans", sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: $gray-light;
+    }
+
+    &__sub {
+      margin-top: 6px;
+      font-size: 11px;
+      color: $gray;
+    }
+  }
+}
