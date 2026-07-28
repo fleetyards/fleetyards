@@ -132,6 +132,19 @@ module V1
                 mass: {type: :number},
                 massLabel: {type: :string},
                 hullHealth: {type: :number},
+                hullParts: {
+                  type: :array,
+                  items: {
+                    type: :object,
+                    properties: {
+                      name: {type: :string},
+                      health: {type: :number},
+                      category: {type: :string, enum: %w[vital secondary breakable subpart]}
+                    },
+                    required: %w[name health category],
+                    additionalProperties: false
+                  }
+                },
                 quantumFuelTankSize: {type: :number},
                 size: {type: :string},
                 sizeLabel: {type: :string},

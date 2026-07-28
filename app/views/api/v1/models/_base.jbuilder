@@ -146,6 +146,9 @@ json.metrics do
   json.mass model.mass.to_f
   json.mass_label model.mass.to_f.to_s
   json.hull_health model.hull_health.to_f if model.hull_health.present?
+  if model.hull_parts.present?
+    json.hull_parts model.hull_parts.map { |part| {name: part["name"], health: part["health"].to_f, category: part["category"]} }
+  end
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.size model.size
   json.size_label model.size&.humanize
