@@ -599,6 +599,15 @@
         "shieldHp": "Shield HP",
         "hullHp": "Hull HP",
         "hullHpSub": "total across all parts",
+        "hullComposition": "Hull Composition",
+        "showParts": "Show hull parts",
+        "hideParts": "Hide hull parts",
+        "category": {
+          "vital": "Vital",
+          "secondary": "Secondary",
+          "breakable": "Breakable",
+          "subpart": "Subparts"
+        },
         "resistances": "Shield Resistances",
         "resistancePhysical": "Physical",
         "resistanceEnergy": "Energy",

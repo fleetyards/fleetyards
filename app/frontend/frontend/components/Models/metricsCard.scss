@@ -86,6 +86,16 @@
     margin: 20px 0;
   }
 
+  &__actions {
+    margin-top: 16px;
+  }
+
+  // Padding on an inner wrapper of the collapsible content, so the toggle has a
+  // gap from the revealed content without touching the animated Collapsed root.
+  &__breakdown {
+    padding-top: 16px;
+  }
+
   &__footer {
     display: flex;
     align-items: center;

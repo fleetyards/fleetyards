@@ -149,6 +149,7 @@ const shieldStats = useShieldStats(
           <ModelSurvivabilityMetrics
             :hardpoints="(hardpoints as Hardpoint[])"
             :hull-health="model.metrics.hullHealth"
+            :hull-parts="model.metrics.hullParts"
           />
         </div>
       </div>

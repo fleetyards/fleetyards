@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import type { Hardpoint } from "@/services/fyApi";
 import Collapsed from "@/shared/components/Collapsed.vue";
+import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useLoadoutStats,
@@ -30,27 +31,29 @@ const round = (value: number) => Math.round(value);
 const expanded = ref(false);
 const hoveredType = ref<string | null>(null);
 
-const damageTypes: { key: keyof DamageBreakdown; label: string }[] = [
-  { key: "physical", label: "labels.combat.damagePhysical" },
-  { key: "energy", label: "labels.combat.damageEnergy" },
-  { key: "distortion", label: "labels.combat.damageDistortion" },
-  { key: "thermal", label: "labels.combat.damageThermal" },
-];
+const damageTypes: { key: keyof DamageBreakdown; label: string; color: string }[] =
+  [
+    { key: "physical", label: "labels.combat.damagePhysical", color: "#c8c8c8" },
+    { key: "energy", label: "labels.combat.damageEnergy", color: "#428bca" },
+    { key: "distortion", label: "labels.combat.damageDistortion", color: "#38bec9" },
+    { key: "thermal", label: "labels.combat.damageThermal", color: "#fa6800" },
+  ];
 
-const composition = computed(() => {
-  const total = stats.value.dps.total;
-  if (!total) return [];
-
-  return damageTypes
-    .map(({ key, label }) => ({
+const composition = computed(() =>
+  damageTypes
+    .map(({ key, label, color }) => ({
       key,
       label,
+      color,
       value: stats.value.dps[key],
-      pct: (stats.value.dps[key] / total) * 100,
     }))
     .filter((entry) => entry.value > 0)
-    .sort((a, b) => b.value - a.value);
-});
+    .sort((a, b) => b.value - a.value),
+);
+
+const damageMeta = Object.fromEntries(
+  damageTypes.map((entry) => [entry.key, entry]),
+);
 </script>
 
 <template>
@@ -91,59 +94,13 @@ const composition = computed(() => {
       <div class="metrics-card__section-label">
         {{ t("labels.combat.composition") }}
       </div>
-      <div
-        class="compbar"
-        :class="{ 'compbar--dimmed': hoveredType }"
-      >
-        <div
-          v-for="seg in composition"
-          :key="seg.key"
-          class="compbar__seg"
-          :class="{ 'compbar__seg--active': hoveredType === seg.key }"
-          :data-type="seg.key"
-          :style="{ width: `${seg.pct}%` }"
-        />
-      </div>
+      <CompositionBar
+        :segments="composition"
+        :highlighted="hoveredType"
+        @highlight="hoveredType = $event"
+      />
 
-      <div class="legend">
-        <div
-          v-for="seg in composition"
-          :key="seg.key"
-          class="legend__row"
-          @mouseenter="hoveredType = seg.key"
-          @mouseleave="hoveredType = null"
-        >
-          <span class="legend__swatch" :data-type="seg.key" />
-          <span class="legend__label">{{ t(seg.label) }}</span>
-          <span class="legend__value">{{ toNumber(round(seg.value), "integer") }}</span>
-          <span class="legend__pct">{{ toNumber(round(seg.pct), "integer") }}%</span>
-        </div>
-      </div>
-
-      <Collapsed :visible="expanded" :duration="200">
-        <div class="metrics-card__divider" />
-        <table class="weapon-table">
-          <thead>
-            <tr>
-              <th>{{ t("labels.combat.weaponName") }}</th>
-              <th class="num">{{ t("labels.combat.size") }}</th>
-              <th class="num">{{ t("labels.combat.dps") }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="weapon in stats.weapons" :key="weapon.id">
-              <td class="weapon-table__name">{{ weapon.name }}</td>
-              <td class="num">
-                <span v-if="weapon.size">S{{ weapon.size }}</span>
-                <span v-else>—</span>
-              </td>
-              <td class="num">{{ toNumber(round(weapon.dps), "integer") }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </Collapsed>
-
-      <div class="metrics-card__footer">
+      <div class="metrics-card__actions">
         <button
           type="button"
           class="metrics-card__toggle"
@@ -155,6 +112,40 @@ const composition = computed(() => {
               : t("labels.combat.showBreakdown")
           }}
         </button>
+      </div>
+
+      <Collapsed :visible="expanded" :duration="200">
+        <div class="metrics-card__breakdown">
+          <table class="weapon-table">
+            <thead>
+            <tr>
+              <th>{{ t("labels.combat.weaponName") }}</th>
+              <th class="num">{{ t("labels.combat.size") }}</th>
+              <th class="num">{{ t("labels.combat.dps") }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="weapon in stats.weapons" :key="weapon.id">
+              <td class="weapon-table__name">
+                <span
+                  class="weapon-table__type"
+                  :style="{ background: damageMeta[weapon.type]?.color }"
+                  :title="t(damageMeta[weapon.type]?.label)"
+                />
+                {{ weapon.name }}
+              </td>
+              <td class="num">
+                <span v-if="weapon.size">S{{ weapon.size }}</span>
+                <span v-else>—</span>
+              </td>
+              <td class="num">{{ toNumber(round(weapon.dps), "integer") }}</td>
+            </tr>
+          </tbody>
+          </table>
+        </div>
+      </Collapsed>
+
+      <div class="metrics-card__footer">
         <span class="metrics-card__hint">{{ t("labels.combat.hint") }}</span>
       </div>
     </div>
@@ -163,106 +154,6 @@ const composition = computed(() => {
 
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/metricsCard";
-
-$c-physical: $text-color;
-$c-energy: $primary;
-$c-distortion: $cyan;
-$c-thermal: $warning;
-
-.compbar {
-  display: flex;
-  height: 16px;
-  border-radius: 999px;
-  overflow: hidden;
-  background: $gray-black;
-  border: 1px solid rgba($gray-light, 0.28);
-
-  &__seg {
-    height: 100%;
-    transition: opacity 0.18s ease;
-
-    &[data-type="physical"] {
-      background: $c-physical;
-    }
-    &[data-type="energy"] {
-      background: $c-energy;
-    }
-    &[data-type="distortion"] {
-      background: $c-distortion;
-    }
-    &[data-type="thermal"] {
-      background: $c-thermal;
-    }
-  }
-
-  &--dimmed &__seg:not(&__seg--active) {
-    opacity: 0.25;
-  }
-}
-
-.legend {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px 22px;
-  margin-top: 16px;
-
-  @media (max-width: 576px) {
-    grid-template-columns: 1fr;
-  }
-
-  &__row {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    align-items: center;
-    gap: 9px;
-    padding: 5px 6px;
-    border-radius: 6px;
-    transition: background 0.15s ease;
-
-    &:hover {
-      background: rgba(#fff, 0.03);
-    }
-  }
-
-  &__swatch {
-    width: 9px;
-    height: 9px;
-    border-radius: 2px;
-
-    &[data-type="physical"] {
-      background: $c-physical;
-    }
-    &[data-type="energy"] {
-      background: $c-energy;
-    }
-    &[data-type="distortion"] {
-      background: $c-distortion;
-    }
-    &[data-type="thermal"] {
-      background: $c-thermal;
-    }
-  }
-
-  &__label {
-    font-size: 13px;
-    color: $text-color;
-  }
-
-  &__value {
-    font-weight: 700;
-    font-size: 13px;
-    color: lighten($text-color, 15%);
-    font-variant-numeric: tabular-nums;
-  }
-
-  &__pct {
-    font-size: 12px;
-    color: $gray-light;
-    min-width: 42px;
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-  }
-}
 
 .weapon-table {
   width: 100%;
@@ -299,6 +190,15 @@ $c-thermal: $warning;
 
   &__name {
     color: lighten($text-color, 15%);
+  }
+
+  &__type {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 2px;
+    vertical-align: middle;
   }
 }
 </style>

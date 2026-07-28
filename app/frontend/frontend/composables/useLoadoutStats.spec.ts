@@ -124,5 +124,6 @@ describe("computeLoadoutStats", () => {
     expect(stats.weapons.map((w) => w.name)).toEqual(["Big Gun", "Small Gun"]);
     expect(stats.weapons[0].dps).toBeCloseTo(900);
     expect(stats.weapons[0].size).toBe("4");
+    expect(stats.weapons[0].type).toBe("energy");
   });
 });

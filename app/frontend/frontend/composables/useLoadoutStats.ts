@@ -13,11 +13,14 @@ export type DamageBreakdown = {
   thermal: number;
 };
 
+export type DamageType = "physical" | "energy" | "distortion" | "thermal";
+
 export type WeaponStat = {
   id: string;
   name: string;
   size?: string;
   dps: number;
+  type: DamageType;
 };
 
 export type LoadoutStats = {
@@ -28,7 +31,12 @@ export type LoadoutStats = {
   hasData: boolean;
 };
 
-const DAMAGE_TYPES = ["physical", "energy", "distortion", "thermal"] as const;
+const DAMAGE_TYPES: DamageType[] = [
+  "physical",
+  "energy",
+  "distortion",
+  "thermal",
+];
 
 function emptyBreakdown(): DamageBreakdown {
   return { total: 0, physical: 0, energy: 0, distortion: 0, thermal: 0 };
@@ -101,11 +109,16 @@ export function computeLoadoutStats(
       continue;
     }
 
+    const type = DAMAGE_TYPES.reduce((best, current) =>
+      weaponDps[current] > weaponDps[best] ? current : best,
+    );
+
     weapons.push({
       id: hardpoint.id,
       name: component.name,
       size: component.size,
       dps: weaponDps.total,
+      type,
     });
   }
 
