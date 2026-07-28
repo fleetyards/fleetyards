@@ -31,6 +31,7 @@
 #  hidden                            :boolean          default(TRUE)
 #  holo_colored                      :boolean          default(FALSE)
 #  hull_health                       :decimal(15, 2)
+#  hull_parts                        :jsonb
 #  hydrogen_fuel_tank_size           :decimal(15, 2)
 #  hydrogen_fuel_tanks               :string
 #  images_count                      :integer          default(0)
