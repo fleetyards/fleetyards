@@ -35,6 +35,33 @@ const hoveredCategory = ref<string | null>(null);
 const hasHull = computed(() => (props.hullHealth ?? 0) > 0);
 const hasData = computed(() => stats.value.hasData || hasHull.value);
 
+// Combined survivability pool (shield HP + hull HP), and the resistance-adjusted
+// effective HP against each hull-lethal damage type: shields absorb
+// `1 / (1 - resistance)` more of that type before the hull is exposed. Distortion
+// is excluded — it downs shields rather than destroying the hull.
+const EHP_TYPES = [
+  { key: "physical", label: "labels.survivability.resistancePhysical", color: "#c8c8c8" },
+  { key: "energy", label: "labels.survivability.resistanceEnergy", color: "#428bca" },
+  { key: "thermal", label: "labels.survivability.resistanceThermal", color: "#fa6800" },
+];
+
+const combinedHp = computed(() => (props.hullHealth ?? 0) + stats.value.totalHp);
+
+const effectiveHp = computed(() => {
+  if (combinedHp.value <= 0) return [];
+
+  const hull = props.hullHealth ?? 0;
+  const shield = stats.value.totalHp;
+  const resistance = Object.fromEntries(
+    stats.value.resistances.map((entry) => [entry.key, entry.value]),
+  );
+
+  return EHP_TYPES.map(({ key, label, color }) => {
+    const value = Math.min(resistance[key] ?? 0, 0.95);
+    return { key, label, color, value: hull + shield / (1 - value) };
+  });
+});
+
 const CATEGORY_ORDER = ["vital", "secondary", "breakable", "subpart"] as const;
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -86,10 +113,19 @@ const humanizePart = (name: string) =>
 
     <div class="metrics-card__body">
       <div class="metrics-card__hero">
-        <div
-          v-if="stats.hasData"
-          class="metrics-card__tile metrics-card__tile--primary"
-        >
+        <div class="metrics-card__tile metrics-card__tile--primary">
+          <div class="metrics-card__tile__label">
+            {{ t("labels.survivability.totalHp") }}
+          </div>
+          <div class="metrics-card__tile__value">
+            {{ toNumber(round(combinedHp), "integer") }}
+            <span class="metrics-card__tile__unit">HP</span>
+          </div>
+          <div class="metrics-card__tile__sub">
+            {{ t("labels.survivability.totalHpSub") }}
+          </div>
+        </div>
+        <div v-if="stats.hasData" class="metrics-card__tile">
           <div class="metrics-card__tile__label">
             {{ t("labels.survivability.shieldHp") }}
           </div>
@@ -102,11 +138,7 @@ const humanizePart = (name: string) =>
             {{ toNumber(stats.shieldCount, "integer") }}×
           </div>
         </div>
-        <div
-          v-if="hasHull"
-          class="metrics-card__tile"
-          :class="{ 'metrics-card__tile--primary': !stats.hasData }"
-        >
+        <div v-if="hasHull" class="metrics-card__tile">
           <div class="metrics-card__tile__label">
             {{ t("labels.survivability.hullHp") }}
           </div>
@@ -119,6 +151,21 @@ const humanizePart = (name: string) =>
           </div>
         </div>
       </div>
+
+      <template v-if="effectiveHp.length">
+        <div class="metrics-card__section-label">
+          {{ t("labels.survivability.effectiveHp") }}
+        </div>
+        <div class="ehp">
+          <div v-for="entry in effectiveHp" :key="entry.key" class="ehp__item">
+            <span class="ehp__swatch" :style="{ background: entry.color }" />
+            <span class="ehp__label">{{ t(entry.label) }}</span>
+            <span class="ehp__value">
+              {{ toNumber(round(entry.value), "integer") }}
+            </span>
+          </div>
+        </div>
+      </template>
 
       <template v-if="stats.resistances.length">
         <div class="metrics-card__section-label">
@@ -220,18 +267,51 @@ const humanizePart = (name: string) =>
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/metricsCard";
 
-.metrics-card__hero {
-  grid-template-columns: 1.5fr 1fr;
-
-  @media (max-width: 576px) {
-    grid-template-columns: 1fr;
-  }
-}
-
 $c-physical: $text-color;
 $c-energy: $primary;
 $c-distortion: $cyan;
 $c-thermal: $warning;
+
+.ehp {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: $gray-black;
+    border: 1px solid rgba($gray-light, 0.28);
+    border-radius: 6px;
+  }
+
+  &__swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex: none;
+  }
+
+  &__label {
+    font-size: 12px;
+    color: $gray-light;
+    flex: 1;
+  }
+
+  &__value {
+    font-weight: 700;
+    font-size: 13px;
+    color: lighten($text-color, 15%);
+    font-variant-numeric: tabular-nums;
+  }
+}
 
 .resist {
   display: grid;

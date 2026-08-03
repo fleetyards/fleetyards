@@ -596,6 +596,9 @@
       },
       "survivability": {
         "title": "Survivability",
+        "totalHp": "Total HP",
+        "totalHpSub": "shield + hull",
+        "effectiveHp": "Effective HP",
         "shieldHp": "Shield HP",
         "hullHp": "Hull HP",
         "hullHpSub": "total across all parts",
