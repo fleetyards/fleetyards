@@ -60,7 +60,9 @@ export const useSessionStore = defineStore("session", {
       }
 
       return (
-        this.currentUser?.resourceAccess?.includes(resource) ||
+        (this.currentUser?.resourceAccess as string[] | undefined)?.includes(
+          resource,
+        ) ||
         this.isSuperAdmin ||
         false
       );

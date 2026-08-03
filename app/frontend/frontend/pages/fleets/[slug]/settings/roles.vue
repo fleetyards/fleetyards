@@ -77,7 +77,9 @@ const privilegeGroups: Record<string, string[]> = {
 };
 
 const hasPrivilege = (role: FleetRoleExtended, privilege: string) => {
-  return role.resourceAccess?.includes(privilege) ?? false;
+  return (
+    (role.resourceAccess as string[] | undefined)?.includes(privilege) ?? false
+  );
 };
 
 const isImpliedByManage = (role: FleetRoleExtended, privilege: string) => {
