@@ -36,7 +36,7 @@ module V1
           twoFactorQrCodeUrl: {type: :string},
           twoFactorProvisioningUrl: {type: :string},
           hangarUpdatedAt: {type: :string, format: "date-time"},
-          resourceAccess: {type: :array, items: {type: :string}},
+          resourceAccess: {type: :array, items: {"$ref": "#/components/schemas/UserResourceAccessEnum"}},
           authConnections: {type: :array, items: {type: :string}},
           passwordSetManually: {type: :boolean},
           oauthOnly: {type: :boolean},

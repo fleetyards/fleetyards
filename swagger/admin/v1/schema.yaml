@@ -6630,7 +6630,7 @@ components:
         resourceAccess:
           type: array
           items:
-            type: string
+            "$ref": "#/components/schemas/AdminUserResourceAccessEnum"
         superAdmin:
           type: boolean
         createdAt:
@@ -6728,9 +6728,50 @@ components:
         resourceAccess:
           type: array
           items:
-            type: string
+            "$ref": "#/components/schemas/AdminUserResourceAccessEnum"
       additionalProperties: false
       title: AdminUserInput
+    AdminUserResourceAccessEnum:
+      type: string
+      enum:
+      - admins
+      - components
+      - features
+      - fleets
+      - images
+      - imports
+      - maintenance
+      - manufacturers
+      - model_modules
+      - models
+      - oauth_applications
+      - pghero
+      - rsi-api-status
+      - stats
+      - supporters
+      - users
+      - vehicles
+      - workers
+      x-enumNames:
+      - ADMINS
+      - COMPONENTS
+      - FEATURES
+      - FLEETS
+      - IMAGES
+      - IMPORTS
+      - MAINTENANCE
+      - MANUFACTURERS
+      - MODEL_MODULES
+      - MODELS
+      - OAUTH_APPLICATIONS
+      - PGHERO
+      - RSI_API_STATUS
+      - STATS
+      - SUPPORTERS
+      - USERS
+      - VEHICLES
+      - WORKERS
+      title: AdminUserResourceAccessEnum
     AdminUsers:
       type: object
       properties:
@@ -8305,6 +8346,71 @@ components:
       additionalProperties: false
       example: {}
       title: FleetQuery
+    FleetRoleResourceAccessEnum:
+      type: string
+      enum:
+      - fleet:update
+      - fleet:update:images
+      - fleet:update:description
+      - fleet:delete
+      - fleet:manage
+      - fleet:memberships:read
+      - fleet:memberships:create
+      - fleet:memberships:update
+      - fleet:memberships:delete
+      - fleet:memberships:manage
+      - fleet:invites:read
+      - fleet:invites:create
+      - fleet:invites:update
+      - fleet:invites:delete
+      - fleet:invites:manage
+      - fleet:vehicles:read
+      - fleet:vehicles:create
+      - fleet:vehicles:update
+      - fleet:vehicles:delete
+      - fleet:vehicles:manage
+      - fleet:roles:read
+      - fleet:roles:create
+      - fleet:roles:update
+      - fleet:roles:delete
+      - fleet:roles:manage
+      - fleet:inventories:read
+      - fleet:inventories:create
+      - fleet:inventories:update
+      - fleet:inventories:delete
+      - fleet:inventories:manage
+      x-enumNames:
+      - FLEET_UPDATE
+      - FLEET_UPDATE_IMAGES
+      - FLEET_UPDATE_DESCRIPTION
+      - FLEET_DELETE
+      - FLEET_MANAGE
+      - FLEET_MEMBERSHIPS_READ
+      - FLEET_MEMBERSHIPS_CREATE
+      - FLEET_MEMBERSHIPS_UPDATE
+      - FLEET_MEMBERSHIPS_DELETE
+      - FLEET_MEMBERSHIPS_MANAGE
+      - FLEET_INVITES_READ
+      - FLEET_INVITES_CREATE
+      - FLEET_INVITES_UPDATE
+      - FLEET_INVITES_DELETE
+      - FLEET_INVITES_MANAGE
+      - FLEET_VEHICLES_READ
+      - FLEET_VEHICLES_CREATE
+      - FLEET_VEHICLES_UPDATE
+      - FLEET_VEHICLES_DELETE
+      - FLEET_VEHICLES_MANAGE
+      - FLEET_ROLES_READ
+      - FLEET_ROLES_CREATE
+      - FLEET_ROLES_UPDATE
+      - FLEET_ROLES_DELETE
+      - FLEET_ROLES_MANAGE
+      - FLEET_INVENTORIES_READ
+      - FLEET_INVENTORIES_CREATE
+      - FLEET_INVENTORIES_UPDATE
+      - FLEET_INVENTORIES_DELETE
+      - FLEET_INVENTORIES_MANAGE
+      title: FleetRoleResourceAccessEnum
     FleetSortEnum:
       type: string
       enum:
@@ -12739,6 +12845,11 @@ components:
       additionalProperties: false
       example: {}
       title: UserQuery
+    UserResourceAccessEnum:
+      type: string
+      enum: []
+      x-enumNames: []
+      title: UserResourceAccessEnum
     UserSortEnum:
       type: string
       enum:
