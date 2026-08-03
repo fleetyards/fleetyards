@@ -10,6 +10,7 @@ import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vu
 import type { Hardpoint, ModelMetricsHullPartsItem } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
+import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -26,6 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t, toNumber } = useI18n();
 
 const stats = useShieldStats(() => props.hardpoints);
+const loadout = useLoadoutStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
 
@@ -60,6 +62,16 @@ const effectiveHp = computed(() => {
     const value = Math.min(resistance[key] ?? 0, 0.95);
     return { key, label, color, value: hull + shield / (1 - value) };
   });
+});
+
+// Mirror-match estimate: seconds for an identical ship's own burst DPS to chew
+// through the combined HP pool. Ignores shield regen and resistances — a rough
+// "how tanky" figure, not a duel simulation.
+const ttk = computed(() => {
+  const dps = loadout.value.dps.total;
+  if (dps <= 0 || combinedHp.value <= 0) return null;
+
+  return combinedHp.value / dps;
 });
 
 const CATEGORY_ORDER = ["vital", "secondary", "breakable", "subpart"] as const;
@@ -150,6 +162,12 @@ const humanizePart = (name: string) =>
             {{ t("labels.survivability.hullHpSub") }}
           </div>
         </div>
+      </div>
+
+      <div v-if="ttk" class="ttk">
+        <span class="ttk__label">{{ t("labels.survivability.ttk") }}</span>
+        <span class="ttk__value">~{{ toNumber(round(ttk), "integer") }}s</span>
+        <span class="ttk__note">{{ t("labels.survivability.ttkSub") }}</span>
       </div>
 
       <template v-if="effectiveHp.length">
@@ -271,6 +289,47 @@ $c-physical: $text-color;
 $c-energy: $primary;
 $c-distortion: $cyan;
 $c-thermal: $warning;
+
+.ttk {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px 12px;
+  background: $gray-black;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 6px;
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $gray-light;
+  }
+
+  &__value {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: lighten($text-color, 15%);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__note {
+    margin-left: auto;
+    font-size: 11px;
+    color: $gray;
+  }
+
+  @media (max-width: 576px) {
+    flex-wrap: wrap;
+
+    &__note {
+      margin-left: 0;
+    }
+  }
+}
 
 .ehp {
   display: grid;

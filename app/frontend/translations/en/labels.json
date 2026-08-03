@@ -599,6 +599,8 @@
         "totalHp": "Total HP",
         "totalHpSub": "shield + hull",
         "effectiveHp": "Effective HP",
+        "ttk": "Time to Kill",
+        "ttkSub": "vs its own guns · burst · no regen",
         "shieldHp": "Shield HP",
         "hullHp": "Hull HP",
         "hullHpSub": "total across all parts",
