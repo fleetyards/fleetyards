@@ -20,11 +20,13 @@ export type WeaponStat = {
   name: string;
   size?: string;
   dps: number;
+  sustainedDps: number;
   type: DamageType;
 };
 
 export type LoadoutStats = {
   dps: DamageBreakdown;
+  sustainedDps: DamageBreakdown;
   alpha: DamageBreakdown;
   weapons: WeaponStat[];
   weaponCount: number;
@@ -83,12 +85,40 @@ function isMissile(weapon: ComponentWeapon): boolean {
   return "trackingSignal" in (weapon as Record<string, unknown>);
 }
 
+// Fraction of burst DPS a weapon can sustain indefinitely, from its duty cycle.
+// Energy weapons drain a shot pool then wait for cooldown + regen; ballistic
+// weapons fire until they overheat then wait out the overheat lockout. Validated
+// against erkul.games (energy: exact; ballistic: within ~1%).
+function sustainedRatio(weapon: ComponentWeapon): number {
+  const fireRate = weapon.fireRate ? weapon.fireRate / 60 : 0;
+  if (fireRate <= 0) return 1;
+
+  const regen = weapon.regen;
+  if (regen?.maxAmmoLoad && regen.maxRegenPerSecond) {
+    const pool = regen.maxAmmoLoad;
+    const timeFiring = pool / fireRate;
+    const timeRegen = pool / regen.maxRegenPerSecond;
+    const cooldown = regen.regenerationCooldown || 0;
+    return timeFiring / (timeFiring + cooldown + timeRegen);
+  }
+
+  const heat = weapon.heat;
+  if (heat?.overheatTemperature && weapon.heatPerShot && heat.overheatFixTime) {
+    const timeFiring =
+      heat.overheatTemperature / (weapon.heatPerShot * fireRate);
+    return timeFiring / (timeFiring + heat.overheatFixTime);
+  }
+
+  return 1;
+}
+
 export function computeLoadoutStats(
   hardpoints: Hardpoint[] | undefined,
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
 
   const dps = emptyBreakdown();
+  const sustainedDps = emptyBreakdown();
   const alpha = emptyBreakdown();
   const weapons: WeaponStat[] = [];
 
@@ -96,19 +126,19 @@ export function computeLoadoutStats(
     const component = hardpoint.component!;
     const weapon = component.typeData as ComponentWeapon;
     const weaponDps = emptyBreakdown();
+    const ratio = sustainedRatio(weapon);
 
     if (weapon.beam && weapon.damagePerSecond) {
       addBreakdown(dps, weapon.damagePerSecond, 1);
+      addBreakdown(sustainedDps, weapon.damagePerSecond, ratio);
       addBreakdown(weaponDps, weapon.damagePerSecond, 1);
     } else if (!isMissile(weapon) && weapon.fireRate && weapon.damagePerShot) {
       const pellets = weapon.pelletsPerShot || 1;
+      const shotsPerSecond = (pellets * weapon.fireRate) / 60;
       addBreakdown(alpha, weapon.damagePerShot, pellets);
-      addBreakdown(dps, weapon.damagePerShot, (pellets * weapon.fireRate) / 60);
-      addBreakdown(
-        weaponDps,
-        weapon.damagePerShot,
-        (pellets * weapon.fireRate) / 60,
-      );
+      addBreakdown(dps, weapon.damagePerShot, shotsPerSecond);
+      addBreakdown(sustainedDps, weapon.damagePerShot, shotsPerSecond * ratio);
+      addBreakdown(weaponDps, weapon.damagePerShot, shotsPerSecond);
     } else {
       continue;
     }
@@ -122,6 +152,7 @@ export function computeLoadoutStats(
       name: component.name,
       size: component.size,
       dps: weaponDps.total,
+      sustainedDps: weaponDps.total * ratio,
       type,
     });
   }
@@ -130,6 +161,7 @@ export function computeLoadoutStats(
 
   return {
     dps,
+    sustainedDps,
     alpha,
     weapons,
     weaponCount: weapons.length,

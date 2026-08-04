@@ -580,6 +580,8 @@
         "title": "Combat",
         "dps": "Total DPS",
         "dpsSub": "burst · all weapons",
+        "sustained": "Sustained DPS",
+        "sustainedSub": "with regen & heat",
         "alpha": "Alpha",
         "alphaSub": "per volley",
         "weapons": "Weapons",
@@ -588,11 +590,13 @@
         "hideBreakdown": "Hide breakdown",
         "weaponName": "Weapon",
         "size": "Size",
+        "burstShort": "Burst",
+        "sustainedShort": "Sust.",
         "damagePhysical": "Physical",
         "damageEnergy": "Energy",
         "damageDistortion": "Distortion",
         "damageThermal": "Thermal",
-        "hint": "Theoretical burst DPS from the default loadout, ignoring heat and power limits. Missiles excluded."
+        "hint": "DPS from the default loadout. Sustained factors in each weapon's energy-pool regen and overheat cycle. Missiles excluded."
       },
       "survivability": {
         "title": "Survivability",
