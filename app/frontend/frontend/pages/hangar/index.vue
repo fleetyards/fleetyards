@@ -46,6 +46,7 @@ import {
   useHangar as useHangarQuery,
   useHangarGroups as useHangarGroupsQuery,
   hangarExport as fetchHangarExport,
+  hangarLinkExport as fetchHangarLinkExport,
   useDestroyHangar as useDestroyHangarMutation,
   type HangarParams,
   getHangarQueryKey,
@@ -201,14 +202,8 @@ useSubscription({
   received: () => debounce(fetch, 500),
 });
 
-const exportJson = async () => {
-  if (!currentUser?.value) {
-    return;
-  }
-
-  const exportedData = await fetchHangarExport(hangarQueryParams);
-
-  if (!exportedData || !window.URL) {
+const downloadExport = (exportedData: unknown, suffix: string) => {
+  if (!currentUser?.value || !exportedData || !window.URL) {
     displayAlert({ text: t("messages.hangarExport.failure") });
     return;
   }
@@ -223,7 +218,7 @@ const exportJson = async () => {
 
   link.setAttribute(
     "download",
-    `fleetyards-${currentUser.value.username}-hangar-${format(
+    `fleetyards-${currentUser.value.username}-${suffix}-${format(
       new Date(),
       "yyyy-MM-dd",
     )}.json`,
@@ -234,6 +229,22 @@ const exportJson = async () => {
   link.click();
 
   document.body.removeChild(link);
+};
+
+const exportJson = async () => {
+  if (!currentUser?.value) {
+    return;
+  }
+
+  downloadExport(await fetchHangarExport(hangarQueryParams), "hangar");
+};
+
+const exportHangarLink = async () => {
+  if (!currentUser?.value) {
+    return;
+  }
+
+  downloadExport(await fetchHangarLinkExport(hangarQueryParams), "hangar-link");
 };
 
 const showResetIngameModal = () => {
@@ -467,6 +478,15 @@ const openDisplayOptionsModal = () => {
         >
           <i class="fa-light fa-download" />
           <span>{{ t("actions.export") }}</span>
+        </Btn>
+
+        <Btn
+          :size="BtnSizesEnum.SMALL"
+          :aria-label="t('actions.exportHangarLink')"
+          @click="exportHangarLink"
+        >
+          <i class="fa-light fa-download" />
+          <span>{{ t("actions.exportHangarLink") }}</span>
         </Btn>
 
         <HangarImportBtn :size="BtnSizesEnum.SMALL" @finished="fetch" />
