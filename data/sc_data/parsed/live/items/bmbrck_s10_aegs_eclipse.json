@@ -7,9 +7,9 @@
   "size": "10",
   "grade": "1",
   "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
-  "name": null,
+  "name": "Aegis Eclipse 1xS10 Bomb Rack",
   "short_name": null,
-  "description": null,
+  "description": "Item Type: Bomb Rack\\nManufacturer: Aegis Dynamics\\nSize: S10\\n\\nBuilt specifically for the Eclipse, this bomb rack carries 1 S10 bombs.",
   "inventory_consumption": {
     "micro_scu": 120000000.0,
     "dimensions": {

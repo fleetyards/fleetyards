@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Anvil F7C-M Hornet Heartseeker Mk I",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Medium Fighter\\n\\nDesigned for pilots whose true love is the pulse-pounding thrill of a harrowing dogfight, the limited-edition F7C-M Heartseeker Mk I is 'the one' for true combat die-hards. Loaded with top-of-the-line components and outfitted with four imposing Behring laser cannons, this fierce eradicator hones the legendary combat proficiency of the Super Hornet to give you the ultimate edge in space combat.",
   "career": "Combat",
@@ -270,8 +270,15 @@
         },
         {
           "name": "hardpoint_size_4",
-          "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
-          "key": null
+          "ref": "ea49d194-0c0b-43e1-82fb-d72f35c1af05",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "52c1793e-5610-4daa-aafe-a8cf55e60283",
+              "key": null
+            }
+          ]
         }
       ]
     },

@@ -7,7 +7,7 @@
   "name": "Argo ATLS GEO IKTI",
   "description": null,
   "career": "Ground",
-  "role": "<= PLACEHOLDER =>",
+  "role": "Combat",
   "insurance": {
     "base_wait_time_minutes": "7.5",
     "mandatory_wait_time_minutes": "2.5",

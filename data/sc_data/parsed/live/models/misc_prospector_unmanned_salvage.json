@@ -5,7 +5,7 @@
   "gravlev": "0",
   "min_crew": "1",
   "name": "MISC Prospector",
-  "description": "Manufacturer: MISC\\nFocus: Mining\\n\\nFor years, the Prospector has been the universe’s preferred mining vessel for solo operators. Featuring MISC’s sleek design sensibility and a bevy of upgraded high-tech mining tools, the 2947 Prospector perfectly balances form and functionality.",
+  "description": "Manufacturer: MISC\\nFocus: Light Mining\\n\\nFor years, the Prospector has been the universe’s preferred mining vessel for solo operators. Featuring MISC’s sleek design sensibility and a bevy of upgraded high-tech mining tools, the 2947 Prospector perfectly balances form and functionality.",
   "career": "Industrial",
   "role": "Light Mining",
   "insurance": {
@@ -146,8 +146,15 @@
       "loadout": [
         {
           "name": "hardpoint_mining_laser",
-          "ref": "8bfc261a-6c67-4bec-b5b5-71407e086ec9",
-          "key": null
+          "ref": "24122aa8-495b-4b2f-9d81-9b7a87e51c8d",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_mining_laser",
+              "ref": "8bfc261a-6c67-4bec-b5b5-71407e086ec9",
+              "key": null
+            }
+          ]
         }
       ]
     },

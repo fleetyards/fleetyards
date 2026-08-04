@@ -104,13 +104,13 @@
     },
     {
       "name": "hardpoint_door_sideDoor",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenClose_Ursa_Side"
+      "ref": "f6df19c9-3ea6-4a43-a935-c411741b7555",
+      "key": null
     },
     {
       "name": "hardpoint_door_ramp",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenClose_Ursa_Ramp"
+      "ref": "d96b5d2f-bf5e-4f44-84a0-b53140eedd91",
+      "key": null
     },
     {
       "name": "hardpoint_controller_weapon",

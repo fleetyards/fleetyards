@@ -1,0 +1,31 @@
+{
+  "key": "GAMA_Tyilui_SeatDash_CoPilot",
+  "ref": "9e66cf61-d96c-4ec2-8732-c62b158a2761",
+  "category": "seat",
+  "type": "Seat",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "adf5fa24-be2b-49aa-9af6-b335b6e0f9ac",
+  "name": "TRGT. STATUS",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_addon",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    }
+  ]
+}

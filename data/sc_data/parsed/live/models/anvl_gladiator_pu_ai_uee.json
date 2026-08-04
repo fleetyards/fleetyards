@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Anvil Gladiator",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Bomber\\n\\nThe civilian model of the Gladiator appeals to those that want to explore the ‘verse with a bit of added security. Supporting a maximum of two, the Gladiator is perfectly equipped to explore and fight with or without a wingman. The Civilian model allows pilots to choose between an extra cargo hold or a bomb bay.",
   "career": "Combat",

@@ -7,9 +7,9 @@
   "size": "3",
   "grade": "1",
   "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
-  "name": null,
+  "name": "Anvil Gladiator S3 Bomb Rack",
   "short_name": "CST-313",
-  "description": null,
+  "description": "Item Type: Bomb Rack\\nManufacturer: Anvil Aerospace\\nSize: S3\\n\\nOutfit the Gladiator with this S3 bomb rack that carries 6 payloads.",
   "inventory_consumption": {
     "micro_scu": 4200000.0,
     "dimensions": {

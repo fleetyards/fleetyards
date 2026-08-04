@@ -1,0 +1,21 @@
+{
+  "key": "Paint_ATLS_silver_teal_white",
+  "ref": "8194bc48-51b2-4fdb-8f8d-acc117760679",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "556e18bc-9d67-4a9a-b801-f067ce1f95a2",
+  "name": "ATLS Foundation Fest Livery",
+  "short_name": null,
+  "description": "Foundation Festival is an opportunity for Citizens and Civilians to come together and strengthen the foundation of our community. Show your commitment to a better universe with this custom livery.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

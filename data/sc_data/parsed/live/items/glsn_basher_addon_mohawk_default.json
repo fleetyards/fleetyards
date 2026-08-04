@@ -1,0 +1,24 @@
+{
+  "key": "GLSN_Basher_Addon_Mohawk_Default",
+  "ref": "ddb7efe9-bbeb-4651-92b4-c9340834969c",
+  "category": "module",
+  "type": "Module",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "768b4380-6486-4187-8c22-bc3deaf80770",
+  "name": "Basher Chopper Bodykit Top",
+  "short_name": null,
+  "description": "The quickest, surefire way to let everyone who sees you know that you're no one to mess with - the Chopper Bodykit gives the top of your ship a dramatic edge without sacrificing aerodynamics. With this giant steel-plated mast on, you won't just turn heads; your enemies will turn tail on your approach too.",
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "durability": {
+    "health": 700.0
+  }
+}

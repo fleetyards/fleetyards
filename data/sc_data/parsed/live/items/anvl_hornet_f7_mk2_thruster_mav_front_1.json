@@ -22,7 +22,7 @@
     "health": 5000.0
   },
   "type_data": {
-    "thrust_capacity": 1445000.0,
+    "thrust_capacity": 1444380.0,
     "fuel_burn_rate_per10_k_newton": 0.053958,
     "thruster_type": "Maneuver",
     "thruster_class": "mav"

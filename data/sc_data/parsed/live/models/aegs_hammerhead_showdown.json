@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "2",
+  "min_crew": "9",
   "name": "Aegis Hammerhead 2949 Best In Show Edition",
   "description": "Manufacturer: Aegis Dynamics \\nFocus: Heavy Gunship\\n\\nA fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.",
   "career": "Combat",

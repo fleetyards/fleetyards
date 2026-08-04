@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "RSI Constellation Taurus Wikelo War Special",
   "description": "Manufacturer: RSI\\nFocus: Medium Freight\\n\\nPaired down to fully focus on hauling, the Taurus provides the most cargo space of any ship in RSI’s Constellation line-up. What it loses in versatility it more than makes up for in potential profits thanks to its tractor beams, a cargo release system for quick unloading, and a security hold reinforced with tech plating.\\n\\nWikelo here. Made useful modifications to make ship much more fighter like. Very impressive.",
   "career": "Transporter",

@@ -164,8 +164,8 @@
     },
     {
       "name": "hardpoint_seat_pilot",
-      "ref": null,
-      "key": "ANVL_Lightning_F8_SCItem_Seat_Pilot"
+      "ref": "5e246a30-db97-4ba0-91a8-702d4c35add0",
+      "key": null
     },
     {
       "name": "hardpoint_seat_access",

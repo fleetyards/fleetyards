@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Anvil Hurricane",
   "description": "Manufacturer: Anvil Aerospace\\nFocus: Heavy Fighter\\n\\nBig things do come in small packages: the Hurricane is a fighting spacecraft that packs a deadly punch into a slight fuselage. The spacecraft compensates for its lack of creature comforts with its powerful armament: six guns capable of blasting their way through nearly anything. Hurricane pilots have yet to find an enemy shield they can't knock down.",
   "career": "Combat",
@@ -15,9 +15,9 @@
   },
   "mass": 86745.0,
   "metrics": {
-    "x": 0.0,
-    "y": 0.0,
-    "z": 0.0
+    "x": 18.5,
+    "y": 24.0,
+    "z": 6.5
   },
   "loadout": [
     {

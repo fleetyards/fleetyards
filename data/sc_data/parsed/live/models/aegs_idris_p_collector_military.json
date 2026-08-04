@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "28",
   "name": "Aegis Idris-P Wikelo War Special",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Frigate\\n\\nA mark two 'peacekeeper' variant developed for the UEE patrol services, the Idris-P strips the standard ship's ship-to-ship gun and spinal mount in favor of additional cargo capacity and superior speed.\\n\\nWikelo here. Made useful modifications to make ship fight more hard. Very impressive.",
   "career": "Combat",

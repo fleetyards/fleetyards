@@ -26,12 +26,6 @@
       "types": [
         "ControlPanel"
       ]
-    },
-    {
-      "name": "hardpoint_Ext_Door_Bottom_HACK",
-      "min_size": "1",
-      "max_size": "1",
-      "types": []
     }
   ],
   "default_loadout": [

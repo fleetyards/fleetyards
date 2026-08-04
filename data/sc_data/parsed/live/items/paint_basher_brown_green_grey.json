@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Basher_Brown_Green_Grey",
+  "ref": "104ee9bf-95c5-4b0d-b9c6-fcec1d97fccd",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c063e546-0490-4c1f-9991-db9a29a1e3b3",
+  "name": "Basher Corroded Livery",
+  "short_name": null,
+  "description": "The Corroded livery embraces the Basher's less than conventional origins by featuring well-oxidized copper plating along the ship's hull.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

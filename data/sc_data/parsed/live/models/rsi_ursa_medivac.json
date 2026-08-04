@@ -104,13 +104,13 @@
     },
     {
       "name": "hardpoint_door_sideDoor",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenClose_Ursa_Medivac_Side"
+      "ref": "89f57cf2-786f-4739-a336-498584e7dd98",
+      "key": null
     },
     {
       "name": "hardpoint_door_ramp",
-      "ref": null,
-      "key": "Door_RN_RoomConnector_Breachable_OpenClose_Ursa_Medivac_Ramp"
+      "ref": "44383f93-a44a-4e77-8714-7a338020e592",
+      "key": null
     },
     {
       "name": "hardpoint_controller_weapon",

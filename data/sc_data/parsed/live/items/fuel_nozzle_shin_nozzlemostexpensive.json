@@ -3,7 +3,7 @@
   "ref": "b564d9f5-e9fb-414c-abbf-48a3552044e8",
   "category": "refuel_boom",
   "type": "DockingCollar",
-  "sub_type": null,
+  "sub_type": "Fuel",
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "ab35f85f-919f-4457-8d58-4e885ea6c5c0",

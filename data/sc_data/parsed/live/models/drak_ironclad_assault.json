@@ -15,9 +15,9 @@
   },
   "mass": 720000.0,
   "metrics": {
-    "x": 39.5,
-    "y": 13.4,
-    "z": 111.5
+    "x": 50.0,
+    "y": 117.0,
+    "z": 25.0
   },
   "loadout": [
     {
@@ -32,7 +32,7 @@
     },
     {
       "name": "hardpoint_seat_remote_turret_left",
-      "ref": "c85b5496-969b-4d7a-adf3-a6563366cbb8",
+      "ref": "19b03394-564f-4111-b8da-fbefe8938ce1",
       "key": null,
       "loadout": []
     },
@@ -807,6 +807,31 @@
     {
       "name": "hardpoint_nose_manned_turret_cap",
       "ref": "25ea1c06-9422-49b8-9d24-3ab9468e49d0",
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_01",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_02",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_03",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_04",
+      "ref": null,
+      "key": null
+    },
+    {
+      "name": "hardpoint_owners_flair_05",
+      "ref": null,
       "key": null
     },
     {

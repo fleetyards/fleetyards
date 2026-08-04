@@ -7,9 +7,9 @@
   "size": "5",
   "grade": "1",
   "manufacturer_ref": "b922abdb-0634-4358-9eee-60118f3cf3a7",
-  "name": null,
+  "name": "Anvil Gladiator S5 Bomb Rack",
   "short_name": null,
-  "description": null,
+  "description": "Item Type: Bomb Rack\\nManufacturer: Anvil Aerospace\\nSize: S5\\n\\nOutfit the Gladiator with this S5 bomb rack that carries 2 payloads.",
   "inventory_consumption": {
     "micro_scu": 4200000.0,
     "dimensions": {
