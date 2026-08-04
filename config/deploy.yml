@@ -8,6 +8,12 @@
 service: fleetyards
 deploy_timeout: 120
 
+aliases:
+  # Import manually-curated models/paints that aren't covered by the RSI ship-matrix or
+  # hangar-sync importers (see db/seeds/01_manual_models.rb). Idempotent, safe to re-run.
+  # Usage: kamal seed-manual -d live
+  seed-manual: app exec --reuse "bin/rails models:seed_manual"
+
 image: fleetyards/app
 
 servers:
