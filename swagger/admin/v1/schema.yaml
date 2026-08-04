@@ -6055,6 +6055,27 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/resource-access-catalog":
+    get:
+      summary: Resource Access Catalog
+      tags:
+      - AdminUsers
+      operationId: resourceAccessCatalog
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/AdminResourceAccessGroup"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/rsi-request-logs":
     get:
       summary: RSI Request Logs list
@@ -7603,6 +7624,20 @@ components:
       - meta
       - items
       title: AdminNotifications
+    AdminResourceAccessGroup:
+      type: object
+      properties:
+        key:
+          type: string
+        privileges:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminUserResourceAccessEnum"
+      additionalProperties: false
+      required:
+      - key
+      - privileges
+      title: AdminResourceAccessGroup
     AdminUser:
       type: object
       properties:
