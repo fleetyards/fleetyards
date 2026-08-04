@@ -139,15 +139,17 @@ const shieldStats = useShieldStats(
       </div>
       <ModelRefuelBoom :model="model" />
       <div
-        v-if="combatStats.hasData || shieldStats.hasData || model.metrics.hullHealth"
+        v-if="
+          combatStats.hasData || shieldStats.hasData || model.metrics.hullHealth
+        "
         class="row combat-row"
       >
         <div class="col-12 col-lg-6">
-          <ModelCombatMetrics :hardpoints="(hardpoints as Hardpoint[])" />
+          <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
         </div>
         <div class="col-12 col-lg-6">
           <ModelSurvivabilityMetrics
-            :hardpoints="(hardpoints as Hardpoint[])"
+            :hardpoints="hardpoints as Hardpoint[]"
             :hull-health="model.metrics.hullHealth"
             :hull-parts="model.metrics.hullParts"
           />

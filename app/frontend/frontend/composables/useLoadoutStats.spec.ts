@@ -15,7 +15,11 @@ function weaponHardpoint(
     id: Math.random().toString(),
     name: "weapon",
     category: HardpointCategoryEnum.WEAPONS,
-    component: { name: "Weapon", typeData, ...component } as Hardpoint["component"],
+    component: {
+      name: "Weapon",
+      typeData,
+      ...component,
+    } as Hardpoint["component"],
     hardpoints: children,
     createdAt: "",
     updatedAt: "",
@@ -109,16 +113,14 @@ describe("computeLoadoutStats", () => {
 
   it("returns a per-weapon list sorted by DPS descending", () => {
     const stats = computeLoadoutStats([
-      weaponHardpoint(
-        { fireRate: 60, damagePerShot: { energy: 100 } },
-        [],
-        { name: "Small Gun", size: "1" },
-      ),
-      weaponHardpoint(
-        { fireRate: 60, damagePerShot: { energy: 900 } },
-        [],
-        { name: "Big Gun", size: "4" },
-      ),
+      weaponHardpoint({ fireRate: 60, damagePerShot: { energy: 100 } }, [], {
+        name: "Small Gun",
+        size: "1",
+      }),
+      weaponHardpoint({ fireRate: 60, damagePerShot: { energy: 900 } }, [], {
+        name: "Big Gun",
+        size: "4",
+      }),
     ]);
 
     expect(stats.weapons.map((w) => w.name)).toEqual(["Big Gun", "Small Gun"]);

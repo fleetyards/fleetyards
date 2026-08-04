@@ -104,7 +104,11 @@ export function computeLoadoutStats(
       const pellets = weapon.pelletsPerShot || 1;
       addBreakdown(alpha, weapon.damagePerShot, pellets);
       addBreakdown(dps, weapon.damagePerShot, (pellets * weapon.fireRate) / 60);
-      addBreakdown(weaponDps, weapon.damagePerShot, (pellets * weapon.fireRate) / 60);
+      addBreakdown(
+        weaponDps,
+        weapon.damagePerShot,
+        (pellets * weapon.fireRate) / 60,
+      );
     } else {
       continue;
     }
@@ -124,7 +128,13 @@ export function computeLoadoutStats(
 
   weapons.sort((a, b) => b.dps - a.dps);
 
-  return { dps, alpha, weapons, weaponCount: weapons.length, hasData: weapons.length > 0 };
+  return {
+    dps,
+    alpha,
+    weapons,
+    weaponCount: weapons.length,
+    hasData: weapons.length > 0,
+  };
 }
 
 export function useLoadoutStats(

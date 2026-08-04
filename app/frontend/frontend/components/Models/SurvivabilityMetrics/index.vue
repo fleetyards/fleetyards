@@ -195,7 +195,9 @@ const humanizePart = (name: string) =>
             <table class="hull-table">
               <tbody>
                 <tr v-for="part in group.parts" :key="part.name">
-                  <td class="hull-table__name">{{ humanizePart(part.name) }}</td>
+                  <td class="hull-table__name">
+                    {{ humanizePart(part.name) }}
+                  </td>
                   <td class="num">
                     {{ toNumber(round(part.health), "integer") }}
                   </td>
