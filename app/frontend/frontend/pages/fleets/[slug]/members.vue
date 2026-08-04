@@ -13,16 +13,8 @@ type Props = {
 };
 
 const props = defineProps<Props>();
-
-const resourceAccess = computed(
-  () => props.membership?.fleetRole?.resourceAccess,
-);
 </script>
 
 <template>
-  <router-view
-    :fleet="props.fleet"
-    :membership="props.membership"
-    :resource-access="resourceAccess"
-  />
+  <router-view :fleet="props.fleet" :membership="props.membership" />
 </template>

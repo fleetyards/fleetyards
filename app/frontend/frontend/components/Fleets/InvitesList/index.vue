@@ -16,11 +16,14 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
-import type { FleetMember } from "@/services/fyApi";
+import type {
+  FleetMember,
+  FleetMembershipCapabilities,
+} from "@/services/fyApi";
 
 type Props = {
   members: FleetMember[];
-  resourceAccess?: string[];
+  capabilities?: FleetMembershipCapabilities;
   emptyVisible?: boolean;
 };
 
@@ -146,7 +149,7 @@ const tableColumns = computed<BaseTableCol<FleetMember>[]>(() => [
     </template>
 
     <template #actions="{ record }">
-      <MemberActions :member="record" :resource-access="props.resourceAccess" />
+      <MemberActions :member="record" :capabilities="props.capabilities" />
     </template>
     <template #empty>
       <Empty :name="t('labels.fleet.members.pending')" inline />

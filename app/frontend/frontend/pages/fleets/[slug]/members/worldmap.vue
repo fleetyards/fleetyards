@@ -20,7 +20,6 @@ import {
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();

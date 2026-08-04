@@ -11,9 +11,11 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { checkAccess } from "@/shared/utils/Access";
 import { storeToRefs } from "pinia";
-import type { FleetMember } from "@/services/fyApi";
+import type {
+  FleetMember,
+  FleetMembershipCapabilities,
+} from "@/services/fyApi";
 import {
   useDestroyFleetMember as useDestroyFleetMemberMutation,
   useDemoteFleetMember as useDemoteFleetMemberMutation,
@@ -24,7 +26,7 @@ import {
 
 type Props = {
   member: FleetMember;
-  resourceAccess?: string[];
+  capabilities?: FleetMembershipCapabilities;
   withLabels?: boolean;
 };
 
@@ -51,11 +53,8 @@ const updating = ref(false);
 const canUpdateMembers = computed(() => {
   if (props.member && currentUser?.value) {
     return (
-      checkAccess(props.resourceAccess, [
-        "fleet:memberships:update",
-        "fleet:memberships:manage",
-        "fleet:manage",
-      ]) && props.member.username !== currentUser.value.username
+      (props.capabilities?.updateMembers ?? false) &&
+      props.member.username !== currentUser.value.username
     );
   }
 
@@ -65,11 +64,8 @@ const canUpdateMembers = computed(() => {
 const canDeleteMembers = computed(() => {
   if (props.member && currentUser?.value) {
     return (
-      checkAccess(props.resourceAccess, [
-        "fleet:memberships:delete",
-        "fleet:memberships:manage",
-        "fleet:manage",
-      ]) && props.member.username !== currentUser.value.username
+      (props.capabilities?.destroyMembers ?? false) &&
+      props.member.username !== currentUser.value.username
     );
   }
 

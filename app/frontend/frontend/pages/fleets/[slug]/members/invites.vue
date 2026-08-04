@@ -17,7 +17,6 @@ import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterFo
 import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue";
 
 import { useFilters } from "@/shared/composables/useFilters";
-import { checkAccess } from "@/shared/utils/Access";
 import {
   ChannelsEnum,
   useSubscription,
@@ -35,7 +34,6 @@ import {
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -46,12 +44,8 @@ const route = useRoute();
 
 const comlink = useComlink();
 
-const canInvite = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:invites:create",
-    "fleet:invites:manage",
-    "fleet:manage",
-  ]),
+const canInvite = computed(
+  () => props.membership?.capabilities?.createInvites ?? false,
 );
 
 const defaultStates = ["invited", "requested", "declined"];
@@ -206,7 +200,7 @@ const openInviteModal = () => {
     <template #default="{ emptyVisible }">
       <FleetInvitesList
         :members="memberItems"
-        :resource-access="resourceAccess"
+        :capabilities="props.membership?.capabilities"
         :empty-visible="emptyVisible"
       />
     </template>
