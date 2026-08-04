@@ -81,4 +81,35 @@ class GithubIssueCreatorTest < ActiveSupport::TestCase
       creator.run
     end
   end
+
+  test "#resolve closes the open issue when one exists" do
+    create(:github_issue_log, task_type: "paints_import", issue_number: 100, content_digest: "stale")
+    @client.expects(:issue).with(REPO, 100).returns({number: 100, state: "open"})
+    @client.expects(:close_issue).with(REPO, 100)
+
+    creator.resolve
+  end
+
+  test "#resolve does nothing when the prior issue is already closed" do
+    create(:github_issue_log, task_type: "paints_import", issue_number: 100, content_digest: "stale")
+    @client.expects(:issue).with(REPO, 100).returns({number: 100, state: "closed"})
+    @client.expects(:close_issue).never
+
+    creator.resolve
+  end
+
+  test "#resolve does nothing when no issue was ever logged" do
+    @client.expects(:issue).never
+    @client.expects(:close_issue).never
+
+    creator.resolve
+  end
+
+  test "#resolve does nothing without a github token" do
+    Rails.application.credentials.stubs(:github_token).returns(nil)
+    create(:github_issue_log, task_type: "paints_import", issue_number: 100, content_digest: "stale")
+    @client.expects(:close_issue).never
+
+    creator.resolve
+  end
 end

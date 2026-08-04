@@ -15,14 +15,16 @@ module Loaders
 
       Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
 
-      if missing_loaners.present? || missing_models.present?
-        body = missing_loaners_body(missing_loaners, missing_models)
+      creator = GithubIssueCreator.new(
+        task_type: "loaner_sync",
+        title: "Missing Loaners",
+        body: missing_loaners_body(missing_loaners, missing_models)
+      )
 
-        GithubIssueCreator.new(
-          task_type: "loaner_sync",
-          title: "Missing Loaners",
-          body:
-        ).run
+      if missing_loaners.present? || missing_models.present?
+        creator.run
+      else
+        creator.resolve
       end
     end
 

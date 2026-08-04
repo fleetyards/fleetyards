@@ -9,12 +9,16 @@ module Loaders
 
       results = ::PaintsImporter.new.run
 
+      creator = GithubIssueCreator.new(
+        task_type: "paints_import",
+        title: "Paints Import Results",
+        body: ::PaintsImporter.github_issue_body(results)
+      )
+
       if results[:new_with_error][:count].positive? || results[:model_not_found][:count].positive?
-        GithubIssueCreator.new(
-          task_type: "paints_import",
-          title: "Paints Import Results",
-          body: ::PaintsImporter.github_issue_body(results)
-        ).run
+        creator.run
+      else
+        creator.resolve
       end
 
       import.finish!

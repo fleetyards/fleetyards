@@ -26,7 +26,7 @@ module Loaders
       ::Loaders::PaintsImportJob.new.perform
     end
 
-    test "#perform does not create a GitHub issue when there is nothing to resolve" do
+    test "#perform resolves any open GitHub issue when there is nothing to report" do
       results = {
         new: {count: 1, items: [{model_name: "Aurora", name: "Red Alert"}]},
         new_with_error: {count: 0, items: []},
@@ -37,7 +37,14 @@ module Loaders
       importer.expects(:run).returns(results)
       PaintsImporter.stubs(:new).returns(importer)
 
-      GithubIssueCreator.expects(:new).never
+      creator = mock("GithubIssueCreator")
+      creator.expects(:resolve).returns(nil)
+      creator.expects(:run).never
+      GithubIssueCreator.expects(:new).with(
+        task_type: "paints_import",
+        title: "Paints Import Results",
+        body: anything
+      ).returns(creator)
 
       ::Loaders::PaintsImportJob.new.perform
     end
