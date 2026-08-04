@@ -196,8 +196,8 @@ GEM
       railties (>= 7.2, < 8.2)
       rotp (~> 6.0)
     didkit (0.3.3)
-    discard (1.4.0)
-      activerecord (>= 4.2, < 9.0)
+    discard (2.0.0)
+      activerecord (>= 7.0, < 9.0)
     discordrb-webhooks (3.8.0)
       rest-client (>= 2.0.0)
     docile (1.4.1)
@@ -867,7 +867,7 @@ DEPENDENCIES
   deep_merge
   devise
   devise-two-factor
-  discard (~> 1.4)
+  discard (~> 2.0)
   discordrb-webhooks
   doorkeeper (~> 5.9)
   doorkeeper-jwt
