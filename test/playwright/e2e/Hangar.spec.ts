@@ -42,7 +42,7 @@ test.describe("Hangar", () => {
     await page.locator("input[name='password']").fill("password");
     await page.getByTestId("submit-login").click();
 
-    await expect(page).toHaveURL(/\//);
+    await expect(page.getByTestId("user-menu")).toContainText("test");
 
     await nav.click("ships");
 
