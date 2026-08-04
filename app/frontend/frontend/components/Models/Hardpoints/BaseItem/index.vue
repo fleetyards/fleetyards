@@ -24,6 +24,10 @@ import {
   type ComponentPowerPlant,
   type ComponentQuantumDrive,
 } from "@/services/fyApi";
+import {
+  powerPlantContextKey,
+  powerPlantPips,
+} from "@/frontend/components/Models/Hardpoints/powerPlant";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -97,6 +101,26 @@ const hardpointNames = computed(() => {
 
 const typeData = computed(() => {
   return hardpoint.value.component?.typeData;
+});
+
+const powerPlantContext = inject(powerPlantContextKey);
+
+const powerPips = computed(() => {
+  const context = powerPlantContext?.value;
+  if (
+    hardpoint.value.category !== HardpointCategoryEnum.POWERPLANT ||
+    !context ||
+    !typeData.value ||
+    !("powerBase" in typeData.value)
+  ) {
+    return null;
+  }
+
+  const plant = typeData.value as ComponentPowerPlant;
+  const size = Number(hardpoint.value.component?.size);
+  if (!plant.powerBase || !size) return null;
+
+  return powerPlantPips(plant.powerBase, size, context);
 });
 
 const multiplier = computed(() => {
@@ -228,6 +252,9 @@ const missileDamage = computed(() => {
                   "powerOutput",
                 )
               }}
+              <span v-if="powerPips" class="hardpoint-item__pips">
+                · {{ toNumber(powerPips, "powerPips") }}
+              </span>
             </span>
             <span
               v-else-if="
