@@ -14751,6 +14751,8 @@ components:
           type: string
         isDestroyAllowed:
           type: boolean
+        capabilities:
+          "$ref": "#/components/schemas/FleetMembershipCapabilities"
         hangarUpdatedAt:
           type: string
           format: date-time
@@ -14894,6 +14896,60 @@ components:
       required:
       - total
       title: FleetMembersStatsPublic
+    FleetMembershipCapabilities:
+      type: object
+      properties:
+        readMembers:
+          type: boolean
+        createMembers:
+          type: boolean
+        updateMembers:
+          type: boolean
+        destroyMembers:
+          type: boolean
+        readInvites:
+          type: boolean
+        createInvites:
+          type: boolean
+        destroyInvites:
+          type: boolean
+        readInventories:
+          type: boolean
+        createInventories:
+          type: boolean
+        updateInventories:
+          type: boolean
+        destroyInventories:
+          type: boolean
+        readVehicles:
+          type: boolean
+        readRoles:
+          type: boolean
+        manageFleet:
+          type: boolean
+        updateFleet:
+          type: boolean
+        destroyFleet:
+          type: boolean
+      additionalProperties: false
+      required:
+      - readMembers
+      - createMembers
+      - updateMembers
+      - destroyMembers
+      - readInvites
+      - createInvites
+      - destroyInvites
+      - readInventories
+      - createInventories
+      - updateInventories
+      - destroyInventories
+      - readVehicles
+      - readRoles
+      - manageFleet
+      - updateFleet
+      - destroyFleet
+      title: FleetMembershipCapabilities
     FleetMembershipCreateInput:
       type: object
       properties:

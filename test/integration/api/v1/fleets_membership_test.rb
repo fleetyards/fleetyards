@@ -126,6 +126,8 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_equal @member.username, parsed_body["username"]
+      assert_equal @membership.capabilities[:read_members], parsed_body.dig("capabilities", "readMembers")
+      assert_equal @membership.capabilities[:manage_fleet], parsed_body.dig("capabilities", "manageFleet")
     end
   end
 
