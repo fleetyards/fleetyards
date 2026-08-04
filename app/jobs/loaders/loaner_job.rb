@@ -3,26 +3,35 @@
 module Loaders
   class LoanerJob < ::Loaders::BaseJob
     def perform
-      missing_loaners, missing_models = ::Rsi::LoanerLoader.new.run
+      # Serialize per task so a clean run's resolve can't close an issue a concurrent
+      # problematic run just opened. Both recompute their results while holding the lock.
+      ApplicationRecord.with_advisory_lock("loaders:loaner_sync") do
+        result = ::Rsi::LoanerLoader.new.run
+        missing_loaners, missing_models = result
 
-      model_ids = ModelLoaner.pluck(:model_id).uniq
+        model_ids = ModelLoaner.pluck(:model_id).uniq
 
-      model_ids.each do |model_id|
-        Vehicle.where(model_id:, loaner: false).find_each(&:add_loaners)
-      end
+        model_ids.each do |model_id|
+          Vehicle.where(model_id:, loaner: false).find_each(&:add_loaners)
+        end
 
-      loaner_model_ids = ModelLoaner.pluck(:loaner_model_id).uniq
+        loaner_model_ids = ModelLoaner.pluck(:loaner_model_id).uniq
 
-      Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
+        Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
 
-      if missing_loaners.present? || missing_models.present?
-        body = missing_loaners_body(missing_loaners, missing_models)
-
-        GithubIssueCreator.new(
+        creator = GithubIssueCreator.new(
           task_type: "loaner_sync",
           title: "Missing Loaners",
-          body:
-        ).run
+          body: missing_loaners_body(missing_loaners, missing_models)
+        )
+
+        if missing_loaners.present? || missing_models.present?
+          creator.run
+        elsif result
+          # Only resolve on a genuine clean result; a nil result means the RSI fetch failed,
+          # so leave any open issue untouched rather than closing a still-live failure.
+          creator.resolve
+        end
       end
     end
 
