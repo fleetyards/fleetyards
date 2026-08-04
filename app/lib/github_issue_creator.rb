@@ -16,13 +16,29 @@ class GithubIssueCreator
 
     return if last_log&.content_digest == digest
 
-    issue = client.create_issue(repo, @title, @body)
+    open_issue = open_issue_for(last_log)
+
+    issue =
+      if open_issue
+        client.update_issue(repo, open_issue[:number], @title, @body)
+      else
+        client.create_issue(repo, @title, @body)
+      end
 
     GithubIssueLog.create!(
       task_type: @task_type,
       content_digest: digest,
       issue_number: issue[:number]
     )
+  end
+
+  private def open_issue_for(last_log)
+    return if last_log&.issue_number.blank?
+
+    issue = client.issue(repo, last_log.issue_number)
+    issue if issue[:state] == "open"
+  rescue Octokit::NotFound
+    nil
   end
 
   private def client
