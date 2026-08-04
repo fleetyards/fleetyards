@@ -1373,6 +1373,34 @@
             "patreon": "Patreon",
             "manual": "Manual"
           }
+        },
+        "resourceAccess": {
+          "title": "Resource Access",
+          "groups": {
+            "ship_data": "Ship Data",
+            "community": "Community",
+            "system": "System"
+          },
+          "privileges": {
+            "models": "Models",
+            "model_modules": "Model Modules",
+            "components": "Components",
+            "manufacturers": "Manufacturers",
+            "vehicles": "Vehicles",
+            "images": "Images",
+            "fleets": "Fleets",
+            "users": "Users",
+            "supporters": "Supporters",
+            "admins": "Admins",
+            "oauth_applications": "OAuth Applications",
+            "maintenance": "Maintenance",
+            "imports": "Imports",
+            "features": "Features",
+            "workers": "Workers",
+            "pghero": "PgHero",
+            "rsi-api-status": "RSI API Status",
+            "stats": "Stats"
+          }
         }
       },
       "hangarTable": {
