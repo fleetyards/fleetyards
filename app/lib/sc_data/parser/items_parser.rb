@@ -450,6 +450,16 @@ module ScData
               }.compact
             end
 
+            heat = weapon_data.dig("connectionParams", "simplifiedHeatParams", "SWeaponSimplifiedHeatParams")
+            if heat.present?
+              type_data[:heat] = {
+                overheat_temperature: heat["overheatTemperature"]&.to_f,
+                cooling_per_second: heat["coolingPerSecond"]&.to_f,
+                time_till_cooling_starts: heat["timeTillCoolingStarts"]&.to_f,
+                overheat_fix_time: heat["overheatFixTime"]&.to_f
+              }.compact
+            end
+
             item[:type_data] = type_data.compact
           end
         end
