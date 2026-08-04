@@ -28,12 +28,10 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -77,12 +75,8 @@ const historyRecords = computed<FleetInventoryItem[]>(
   () => history.value?.items ?? [],
 );
 
-const canManageItems = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:inventories:manage",
-    "fleet:inventories:update",
-  ]),
+const canManageItems = computed(
+  () => props.membership?.capabilities?.updateInventories ?? false,
 );
 
 const destroyMutation = useDestroyFleetInventoryItem();

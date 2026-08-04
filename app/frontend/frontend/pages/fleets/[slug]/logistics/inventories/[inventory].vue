@@ -30,12 +30,10 @@ import { useInventoryStockList } from "@/frontend/composables/useInventoryStockL
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -96,12 +94,8 @@ const activeRecords = computed<(FleetInventoryItem | InventoryStockRecord)[]>(
   () => (activeTab.value === "stock" ? stockRecords.value : itemsList.value),
 );
 
-const canManageInventory = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:inventories:manage",
-    "fleet:inventories:update",
-  ]),
+const canManageInventory = computed(
+  () => props.membership?.capabilities?.updateInventories ?? false,
 );
 
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();

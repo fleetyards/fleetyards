@@ -32,12 +32,10 @@ import { useInventoryStockList } from "@/frontend/composables/useInventoryStockL
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -47,12 +45,12 @@ const comlink = useComlink();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
-const canManageInventories = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:inventories:manage",
-    "fleet:inventories:create",
-  ]),
+const canCreateInventories = computed(
+  () => props.membership?.capabilities?.createInventories ?? false,
+);
+
+const canUpdateInventories = computed(
+  () => props.membership?.capabilities?.updateInventories ?? false,
 );
 
 const activeTab = ref<"stock" | "log">("stock");
@@ -173,7 +171,7 @@ const crumbs = computed(() => [
     </div>
   </div>
 
-  <Teleport v-if="canManageInventories" to="#header-right">
+  <Teleport v-if="canCreateInventories" to="#header-right">
     <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openInventoryModal()">
       <i class="fa-light fa-plus" />
       {{ t("actions.logistics.createInventory") }}
@@ -191,7 +189,7 @@ const crumbs = computed(() => [
           params: { slug: fleet.slug, inventory: record.slug },
         }"
         :manager="record.manager"
-        :editable="canManageInventories"
+        :editable="canUpdateInventories"
         @edit="openInventoryModal(record)"
       />
     </template>
