@@ -38,5 +38,16 @@ module Loaders
 
       ::Loaders::LoanerJob.new.perform
     end
+
+    test "#perform leaves the issue untouched when the RSI fetch fails" do
+      @loader.expects(:run).returns(nil)
+
+      creator = mock("GithubIssueCreator")
+      creator.expects(:run).never
+      creator.expects(:resolve).never
+      GithubIssueCreator.expects(:new).returns(creator)
+
+      ::Loaders::LoanerJob.new.perform
+    end
   end
 end
