@@ -5,6 +5,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     get :my
     post "use-invite", to: "fleet_invite_urls#use"
     post "find-by-invite/:token", to: "fleets#find_by_invite"
+    get "resource-access-catalog", to: "fleet_resource_access_catalog#index"
   end
 
   resources :fleet_vehicles, path: "vehicles", only: %i[index] do
