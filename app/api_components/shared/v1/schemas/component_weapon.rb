@@ -57,6 +57,16 @@ module Shared
                 requestedAmmoLoad: {type: :number}
               },
               additionalProperties: false
+            },
+            heat: {
+              type: :object,
+              properties: {
+                overheatTemperature: {type: :number},
+                coolingPerSecond: {type: :number},
+                timeTillCoolingStarts: {type: :number},
+                overheatFixTime: {type: :number}
+              },
+              additionalProperties: false
             }
           },
           additionalProperties: false
