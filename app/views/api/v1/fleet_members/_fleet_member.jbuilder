@@ -5,3 +5,7 @@ json.cache! ["v1", member] do
 end
 
 json.is_destroy_allowed(local_assigns.fetch(:is_destroy_allowed, false))
+
+if local_assigns.fetch(:with_capabilities, false)
+  json.capabilities member.capabilities.transform_keys { |key| key.to_s.camelize(:lower) }
+end

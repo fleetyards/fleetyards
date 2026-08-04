@@ -34,6 +34,7 @@ module V1
             longitude: {type: :number, format: :double},
             currentSystemCode: {type: :string},
             isDestroyAllowed: {type: :boolean},
+            capabilities: {"$ref": "#/components/schemas/FleetMembershipCapabilities"},
             hangarUpdatedAt: {type: :string, format: "date-time"},
             lastActiveAt: {type: :string, format: "date-time"},
             invitedAt: {type: :string, format: "date-time"},
