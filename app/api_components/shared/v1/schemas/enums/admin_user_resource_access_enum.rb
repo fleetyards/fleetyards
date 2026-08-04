@@ -7,26 +7,7 @@ module Shared
         class AdminUserResourceAccessEnum
           include OpenapiRuby::Components::Base
 
-          PRIVILEGES = %w[
-            admins
-            components
-            features
-            fleets
-            images
-            imports
-            maintenance
-            manufacturers
-            model_modules
-            models
-            oauth_applications
-            pghero
-            rsi-api-status
-            stats
-            supporters
-            users
-            vehicles
-            workers
-          ].freeze
+          PRIVILEGES = ::AdminUser::AVAILABLE_PRIVILEGES
 
           schema({
             type: :string,

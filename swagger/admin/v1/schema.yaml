@@ -7726,43 +7726,43 @@ components:
     AdminUserResourceAccessEnum:
       type: string
       enum:
-      - admins
-      - components
-      - features
-      - fleets
-      - images
-      - imports
-      - maintenance
-      - manufacturers
-      - model_modules
       - models
+      - model_modules
+      - components
+      - manufacturers
+      - vehicles
+      - images
+      - fleets
+      - users
+      - supporters
+      - admins
       - oauth_applications
+      - maintenance
+      - imports
+      - features
+      - workers
       - pghero
       - rsi-api-status
       - stats
-      - supporters
-      - users
-      - vehicles
-      - workers
       x-enumNames:
-      - ADMINS
-      - COMPONENTS
-      - FEATURES
-      - FLEETS
-      - IMAGES
-      - IMPORTS
-      - MAINTENANCE
-      - MANUFACTURERS
-      - MODEL_MODULES
       - MODELS
+      - MODEL_MODULES
+      - COMPONENTS
+      - MANUFACTURERS
+      - VEHICLES
+      - IMAGES
+      - FLEETS
+      - USERS
+      - SUPPORTERS
+      - ADMINS
       - OAUTH_APPLICATIONS
+      - MAINTENANCE
+      - IMPORTS
+      - FEATURES
+      - WORKERS
       - PGHERO
       - RSI_API_STATUS
       - STATS
-      - SUPPORTERS
-      - USERS
-      - VEHICLES
-      - WORKERS
       title: AdminUserResourceAccessEnum
     AdminUsers:
       type: object
