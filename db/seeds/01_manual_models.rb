@@ -94,9 +94,11 @@ dunlevy = Model.find_or_create_by!(name: "Gladius Dunlevy") do |model|
   model.classification = "combat"
   model.production_status = "flight-ready"
   model.size = "small"
-  model.base_model_id = gladius&.id
   model.hidden = false
 end
+# Backfill outside the create-only block so the link is set once Gladius exists, even if
+# Dunlevy was first seeded before the RSI importer created the base model.
+dunlevy.update!(base_model_id: gladius.id) if gladius && dunlevy.base_model_id.blank?
 attach_store_image.call(dunlevy, "gladius-dunlevy.jpg")
 
 misc = Manufacturer.find_or_create_by!(name: "Musashi Industrial & Starflight Concern") do |m|
