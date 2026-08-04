@@ -26,8 +26,7 @@ describe("powerPlantPips", () => {
     const context: PowerPlantContext = { count: n, sizeSum: n * size };
 
     const perPlant = powerPlantPips(powerBase, size, context);
-    const total =
-      n * Math.round(powerBase / n) + (n - 1) * context.sizeSum;
+    const total = n * Math.round(powerBase / n) + (n - 1) * context.sizeSum;
 
     expect(Number.isInteger(perPlant)).toBe(true);
     expect(perPlant * n).toBe(total);
