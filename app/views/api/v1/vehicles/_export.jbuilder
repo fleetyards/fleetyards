@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.name vehicle.export_name
-json.slug vehicle.model.slug
+json.slug local_assigns[:hangar_link] ? vehicle.model.hangar_link_slug : vehicle.model.slug
 json.ship_code vehicle.model.sc_data_identifier
 json.manufacturer_name vehicle.model.manufacturer.name
 json.manufacturer_code vehicle.model.manufacturer.code

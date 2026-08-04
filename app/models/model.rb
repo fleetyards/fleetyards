@@ -673,6 +673,13 @@ class Model < ApplicationRecord
     frontend_model_url(slug:)
   end
 
+  def hangar_link_slug
+    return legacy_slug if legacy_slug.present?
+
+    prefix = "#{manufacturer&.code&.downcase}-"
+    slug&.start_with?(prefix) ? slug.delete_prefix(prefix) : slug
+  end
+
   private def broadcast_update
     ActionCable.server.broadcast("models", to_json)
   end

@@ -8,10 +8,10 @@ module Api
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[show export items]
+        only: %i[show export export_hangar_link items]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
-        except: %i[show export items]
+        except: %i[show export export_hangar_link items]
 
       after_action -> { pagination_header(:vehicles) }, only: %i[show]
 
@@ -93,21 +93,13 @@ module Api
       def export
         authorize! to: :show?, with: ::HangarPolicy
 
-        scope = authorized_scope(Vehicle.all).visible.purchased
+        @vehicles = export_vehicles
+      end
 
-        scope = loaner_included?(scope)
-        scope = bundled_included?(scope)
+      def export_hangar_link
+        authorize! to: :show?, with: ::HangarPolicy
 
-        vehicle_query_params["sorts"] = "model_name asc"
-
-        @q = scope.ransack(vehicle_query_params)
-
-        @vehicles = Vehicle.where(
-          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
-        )
-          .order(@q.result.order_values)
-          .includes(model: [:manufacturer])
-          .joins(model: [:manufacturer])
+        @vehicles = export_vehicles
       end
 
       def sync_rsi_hangar
@@ -184,6 +176,24 @@ module Api
         return if errors.blank?
 
         render json: ValidationError.new("vehicle.move_all_ingame_to_wish_list", errors:), status: :bad_request
+      end
+
+      private def export_vehicles
+        scope = authorized_scope(Vehicle.all).visible.purchased
+
+        scope = loaner_included?(scope)
+        scope = bundled_included?(scope)
+
+        vehicle_query_params["sorts"] = "model_name asc"
+
+        @q = scope.ransack(vehicle_query_params)
+
+        Vehicle.where(
+          Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
+        )
+          .order(@q.result.order_values)
+          .includes(model: [:manufacturer])
+          .joins(model: [:manufacturer])
       end
 
       private def import_params
