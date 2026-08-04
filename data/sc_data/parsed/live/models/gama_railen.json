@@ -14,6 +14,244 @@
     "base_expediting_fee": "5500"
   },
   "mass": 1476352.0,
+  "hull_health": 62168.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 38000.0,
+      "category": "vital"
+    },
+    {
+      "name": "geo_arm_top_right",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_right_piece_001",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_right_piece_002",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_right_piece_003",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_right_piece_004",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_right_piece_005",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_bottom_right",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_bottom_right_piece_001",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_bottom_right_piece_002",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_bottom_right_piece_003",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_tractorbeam_plate_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_tractorbeam_plate_a_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_tractorbeam_plate_b_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_tractorbeam_plate_c_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_thruster_aux_top",
+      "health": 2200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_upper_thruster_big_cover",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_upper_thruster_small_cover",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_tail",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_antenna_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_antenna_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_thruster_aux_bottom",
+      "health": 2200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_lower_thruster_big_cover",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_lower_thruster_small_cover",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_bottom_left",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_bottom_left_piece_001",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_bottom_left_piece_003",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_bottom_left_piece_002",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_tractorbeam_plate_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_tractorbeam_plate_a_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_tractorbeam_plate_b_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_tractorbeam_plate_c_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_top_left",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_left_piece_004",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_left_piece_003",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_left_piece_002",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_top_left_piece_001",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_c_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_c_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_b_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_b_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_a_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_a_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_missiledoor_upleft",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_missiledoor_upright",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_missiledoor_bottomright",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_missiledoor_bottomleft",
+      "health": 1.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 53.0,
     "y": 52.0,

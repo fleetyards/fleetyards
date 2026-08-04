@@ -14,6 +14,139 @@
     "base_expediting_fee": "4689"
   },
   "mass": 83092.72,
+  "hull_health": 23013.0,
+  "hull_parts": [
+    {
+      "name": "Nose",
+      "health": 4000.0,
+      "category": "vital"
+    },
+    {
+      "name": "canopy",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shipitem_door_front_nose_b_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "ladder_door",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body",
+      "health": 4000.0,
+      "category": "vital"
+    },
+    {
+      "name": "landing_gear_front_door_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_front_door_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bay_door_l_a",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bay_door_l_b",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bay_door_r_a",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bay_door_r_b",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear_Wing_Left",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear_Wing_Right",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Front_Wing_Left",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "landinggear_door_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Front_Wing_Right",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "landinggear_door_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "shipitem_door_rear_l_02_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shipitem_door_rear_l_01_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shipitem_door_rear_l_03_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shipitem_door_rear_r_01_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shipitem_door_rear_r_02_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shipitem_door_rear_r_03_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shipitem_door_front_mesh",
+      "health": 1.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 24.5,
     "y": 24.5,

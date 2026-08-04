@@ -14,6 +14,29 @@
     "base_expediting_fee": "2526"
   },
   "mass": 45143.0,
+  "hull_health": 4550.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 1700.0,
+      "category": "vital"
+    },
+    {
+      "name": "Spoiler",
+      "health": 850.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 1000.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 12.0,
     "y": 19.0,

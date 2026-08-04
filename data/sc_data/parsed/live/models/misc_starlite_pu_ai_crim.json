@@ -14,6 +14,54 @@
     "base_expediting_fee": "5530"
   },
   "mass": 346548.0,
+  "hull_health": 68250.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 27000.0,
+      "category": "vital"
+    },
+    {
+      "name": "dbr_body_right",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_thruster_right",
+      "health": 11200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_body_left",
+      "health": 8000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_thruster_left",
+      "health": 11200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_spoiler",
+      "health": 1750.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_wing_left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_wing_right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_clamp_detach",
+      "health": 100.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 19.9,
     "y": 32.0,

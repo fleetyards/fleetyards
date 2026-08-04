@@ -14,6 +14,104 @@
     "base_expediting_fee": "9430"
   },
   "mass": 610246.06,
+  "hull_health": 77000.0,
+  "hull_parts": [
+    {
+      "name": "Nose",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Engine_FL_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_FR_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "tail_top",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mesh_tail_body",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rl",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_rr",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_roof_body",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_upper_left",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_upper_left_flap",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_RL_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_upper_right",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_upper_right_flap",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_RR_Split",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_right_flap",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mesh_wing_left_flap",
+      "health": 100.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 38.0,
     "y": 48.0,

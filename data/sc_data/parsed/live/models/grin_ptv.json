@@ -14,6 +14,144 @@
     "base_expediting_fee": "115"
   },
   "mass": 1500.0,
+  "hull_health": 8510.0,
+  "hull_parts": [
+    {
+      "name": "GRIN_PTV",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wheel1",
+      "health": 900.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel2",
+      "health": 900.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel4",
+      "health": 900.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel3",
+      "health": 900.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body",
+      "health": 1200.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_100_debris_wheel3",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_100_debris1",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_100_debris_wheel4",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_100_debris_wheel1",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_100_debris2",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_100_debris_wheel2",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_100_debris3",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_100_debris_steering",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "glass",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "glass_100_debris2",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "glass_100_debris1",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "headLightRight",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "headLightRightFlare",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "headLightLeft",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "headLightLeftFlare",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "brakeLightRight",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "brakeLightRightFlare",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "brakeLightLeft",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "brakeLightLeftFlare",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "reverseLightRight",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "reverseLightLeft",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 2.5,
     "y": 3.5,

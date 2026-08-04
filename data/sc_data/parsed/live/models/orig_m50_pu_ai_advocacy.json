@@ -14,6 +14,69 @@
     "base_expediting_fee": "3040"
   },
   "mass": 9772.0,
+  "hull_health": 2281.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 400.0,
+      "category": "vital"
+    },
+    {
+      "name": "PowerplantHousingRight",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingLeft",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingRight",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "PowerplantHousingLeft",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Canopy",
+      "health": 80.0,
+      "category": "subpart"
+    },
+    {
+      "name": "LadderHatch",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingFrontRight",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingFrontLeft",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "EngineCover",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 11.0,
     "y": 11.5,

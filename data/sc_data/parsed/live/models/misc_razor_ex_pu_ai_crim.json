@@ -14,6 +14,74 @@
     "base_expediting_fee": "2740"
   },
   "mass": 10860.0,
+  "hull_health": 7200.0,
+  "hull_parts": [
+    {
+      "name": "hull_front",
+      "health": 700.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_front_left",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_front_right",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_bridge_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_bridge_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hull_rear",
+      "health": 700.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_rear_left",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_rear_right",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_top",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy_front",
+      "health": 550.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy_top",
+      "health": 550.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy_left",
+      "health": 550.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy_right",
+      "health": 550.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 9.0,
     "y": 12.5,

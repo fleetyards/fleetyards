@@ -14,6 +14,219 @@
     "base_expediting_fee": "9000"
   },
   "mass": 720000.0,
+  "hull_health": 258000.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 120000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_mid",
+      "health": 40000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_deck_fence_piece087",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece090",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece098",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_r_002",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_l_000",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_l_001",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_mid_door_r_003",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece092",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece096",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece099",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_deck_fence_piece086",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_677",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_679",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_683",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_687",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_735",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_755",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_757",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_underbelly_piece010",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_underbelly_piece006",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_machined007",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_machined005",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_nose_armour",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_op_slats",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_op_slats002",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_op_slats004",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_l_001",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_r_001",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_l_002",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_container_large_door_r_002",
+      "health": 6000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_004",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_003",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_01",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_detatch_panel_02",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_gate_693",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_engine_fairing_018",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_engine_fairing_043",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_box_detail_009",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_fender_end001",
+      "health": 2000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_fender_end",
+      "health": 2000.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 50.0,
     "y": 117.0,

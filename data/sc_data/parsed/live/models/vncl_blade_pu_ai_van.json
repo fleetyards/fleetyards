@@ -14,6 +14,119 @@
     "base_expediting_fee": "5124"
   },
   "mass": 23219.0,
+  "hull_health": 7950.0,
+  "hull_parts": [
+    {
+      "name": "Nose",
+      "health": 2150.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body",
+      "health": 2150.0,
+      "category": "vital"
+    },
+    {
+      "name": "Spoiler",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Left_Tip",
+      "health": 275.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Belly",
+      "health": 750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Rib1_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib2_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib3_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib4_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib5_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib6_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib7_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib7_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib6_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib5_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib4_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib3_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib2_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rib1_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Right_Tip",
+      "health": 275.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 16.5,
     "y": 20.5,

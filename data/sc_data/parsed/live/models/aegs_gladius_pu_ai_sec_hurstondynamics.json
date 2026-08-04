@@ -14,6 +14,139 @@
     "base_expediting_fee": "2335"
   },
   "mass": 48552.06,
+  "hull_health": 6110.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 2350.0,
+      "category": "vital"
+    },
+    {
+      "name": "WingLeft",
+      "health": 600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "WingLeft_Tip",
+      "health": 260.0,
+      "category": "secondary"
+    },
+    {
+      "name": "TipWing_Left_B",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "TipWing_Left_A",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingLeft_Mid_Flap",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRight",
+      "health": 600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "WingRight_Tip",
+      "health": 260.0,
+      "category": "secondary"
+    },
+    {
+      "name": "TipWing_Right_A",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "TipWing_Right_B",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRight_Mid_Flap",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Belly",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Belly_Wing_Left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Belly_Wing_Right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rudder_Right",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Rudder_Right_Flap",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "RearWingRight",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "RearWingRight_Flap",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "RearWingLeft",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "RearWingLeft_Flap",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rudder_Left",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Rudder_Left_Flap",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "FrontWing_Right",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "FrontWing_Left",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Canopy",
+      "health": 100.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 17.5,
     "y": 21.0,

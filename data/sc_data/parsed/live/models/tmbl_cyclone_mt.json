@@ -14,6 +14,119 @@
     "base_expediting_fee": "1605"
   },
   "mass": 3084.0,
+  "hull_health": 6910.0,
+  "hull_parts": [
+    {
+      "name": "TMBL_Cyclone",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wheelFL",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheelFR",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheelBR",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheelBL",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "body",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "rear_armor_plating_left",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mud_flap_bl",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mud_flap_fl",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "mud_flap_fr",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_armor_plating_right",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mud_flap_br",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hood",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "livery_decal",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "$lod1_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod2_livery_decal",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_decals",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "$lod1_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod2_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod3_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod4_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "$lod5_body_decals",
+      "health": 1.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 8.75,
     "y": 6.0,

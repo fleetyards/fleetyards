@@ -14,6 +14,364 @@
     "base_expediting_fee": "44030"
   },
   "mass": 10427000.0,
+  "hull_health": 3947100.0,
+  "hull_parts": [
+    {
+      "name": "M_Body",
+      "health": 918000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Tip_Top_Left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Fin_Top_Left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Tip_Bot_Left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Fin_Bot_Left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Tip_Top_Right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Fin_Top_Right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Tip_Bot_Right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_DET_Rear_Aileron_Fin_Bot_Right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Body_Underside_Plate",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Body_AirbrakePanel_Top_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Body_AirbrakePanel_Top_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Body_AirbrakePanel_Bot_Right",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Body_AirbrakePanel_Bot_Left",
+      "health": 10000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_DET_Airbrake_Tip_Bot_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_DET_Airbrake_Tip_Bot_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_DET_Airbrake_Tip_Top_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_DET_Airbrake_Tip_Top_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body_LG_Front_Hatch_rear_L_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body_LG_Front_Hatch_rear_L_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body_LG_Front_Hatch_rear_R_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Bottom_Left",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Bottom_Right",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Top_Left",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Top_Right",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Slide_Bottom_Left",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Slide_Bottom_Right",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Slide_Top_Left",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Turret_Hatch_Slide_Top_Right",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Body_Side_Panel_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Body_Side_Panel_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_Neck_Rear",
+      "health": 720000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Neck_Rear_Vent_Right",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Rear_Vent_Left",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_Neck_Front",
+      "health": 440000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Nose_Top_Cover_Panel",
+      "health": 2500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Nose_Side_Detail_Right",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Nose_Side_Detail_Left",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Front_Topside_Cover_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Front_Topside_Cover_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Front_Side_Plate_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Front_Side_Plate_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Front_Hatch_Static",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_04_Right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_04_Left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_03_Right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_03_Left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_02_Right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_02_Left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_01_Right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_EscPod_01_Left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Front_Aileron_Tip_Right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Neck_Front_Aileron_Rotator_Right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Neck_Front_Aileron_Tip_Left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Neck_Front_Aileron_Rotator_Left",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_Nose",
+      "health": 220000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_Rear",
+      "health": 1200000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Base_Top_Right",
+      "health": 45000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Cap_Top_Right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Top_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Base_Top_Left",
+      "health": 45000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Rear_DET_Mesh_Thruster_Cap_Top_Left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Top_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Base_Bot_Right",
+      "health": 45000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Cap_Bot_Right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Bot_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Base_Bot_Left",
+      "health": 45000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Cap_Bot_Left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Bot_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "M_DET_Mesh_Thruster_Housing_Middle_Left",
+      "health": 60000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "M_DET_Mesh_Thruster_Housing_Middle_Right",
+      "health": 60000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 87.0,
     "y": 181.0,

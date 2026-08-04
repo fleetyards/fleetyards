@@ -14,6 +14,119 @@
     "base_expediting_fee": "33750"
   },
   "mass": 43896159.0,
+  "hull_health": 153200.0,
+  "hull_parts": [
+    {
+      "name": "Body_Front",
+      "health": 100000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Front",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "MissileLauncher_hatchDoorA_TL",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "MissileLauncher_hatchDoorA_TR",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "MissileLauncher_hatchDoorB_TL",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "MissileLauncher_hatchDoorB_TR",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Body_Top",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Glass_Left_Atrium",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Rear",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Right_Atrium",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Top",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body_Front_Top",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Glass_Bridge",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Dining",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Left_Bar",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Left_Bridge",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Right_Bar",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Glass_Right_Bridge",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 80.0,
     "y": 210.0,

@@ -14,6 +14,254 @@
     "base_expediting_fee": "6000"
   },
   "mass": 1348962.0,
+  "hull_health": 70460.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 42000.0,
+      "category": "vital"
+    },
+    {
+      "name": "anim_missiledoor_bottomleft",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_missiledoor_bottomright",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_missiledoor_upleft",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_missiledoor_upright",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_hold_right_upper",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_plate_left_lower",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_plate_left_upper",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_plate_right_lower",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_plate_right_upper",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_top_left",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_top_lower_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_left_000",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_left_001",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_left_002",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_left_003",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_bottom_right",
+      "health": 3200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_arm_bottom_right_001",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_bottom_right_002",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_bottom_right_000",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_bottom_left",
+      "health": 3200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_arm_bottom_left_000",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_bottom_left_001",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_bottom_left_002",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_bottom_left_003",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_hold_right_lower",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_hold_left_upper",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_sliding_mechanism_stone_hold_left_lower",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_thruster_aux_top_a",
+      "health": 2200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_thruster_cover_a",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_thruster_cover_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_thruster_aux_bottom_a",
+      "health": 2200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_thruster_cover_a_lower",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_thruster_cover_b_lower",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_top_right",
+      "health": 3200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_arm_top_lower_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_right_000",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_right_001",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_right_002",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_arm_top_plate_right_003",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_antenna_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_antenna_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_a_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_a_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_b_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_b_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_c_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm_support_top_c_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_side_stone_cap_right_upper",
+      "health": 500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 58.75,
     "y": 52.0,

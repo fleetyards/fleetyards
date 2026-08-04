@@ -14,6 +14,44 @@
     "base_expediting_fee": "75"
   },
   "mass": 4850.0,
+  "hull_health": 3500.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 750.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "gravlev_nacelle_r_left",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "gravlev_nacelle_r_right",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "gravlev_nacelle_f_right",
+      "health": 450.0,
+      "category": "breakable"
+    },
+    {
+      "name": "gravlev_nacelle_f_left",
+      "health": 450.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 1.32,
     "y": 1.45,

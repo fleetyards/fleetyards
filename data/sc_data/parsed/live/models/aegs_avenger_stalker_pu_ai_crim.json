@@ -14,6 +14,74 @@
     "base_expediting_fee": "2658"
   },
   "mass": 48986.3,
+  "hull_health": 11900.0,
+  "hull_parts": [
+    {
+      "name": "Nose",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Canopy",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 680.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Flap_Right",
+      "health": 10.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingTip_Right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 680.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Flap_Left",
+      "health": 10.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingTip_Left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "HullTail_Right",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Right_Tail_Fin_Flap",
+      "health": 10.0,
+      "category": "subpart"
+    },
+    {
+      "name": "HullTail_Left",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Left_Tail_Fin_Flap",
+      "health": 10.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 15.0,
     "y": 20.0,

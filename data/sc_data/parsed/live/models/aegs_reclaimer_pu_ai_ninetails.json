@@ -14,6 +14,259 @@
     "base_expediting_fee": "12555"
   },
   "mass": 9509853.5,
+  "hull_health": 123002.0,
+  "hull_parts": [
+    {
+      "name": "Front",
+      "health": 50000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Main_Engine_BlockRight_VTOL",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Main_Engine_BlockRight",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Joint_Right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Main_Engine_Right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopRight_Tip_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopRight_Tip",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arms_LowerRight_Tip_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_LowerRight_Tip",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Main_Engine_BlockLeft_VTOL",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Main_Engine_BlockLeft",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Joint_Left",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Main_Engine_Left",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopLeft_Tip_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopLeft_Tip",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arms_LowerLeft_Tip_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_LowerLeft_Tip",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arms_TopRight_Block_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopRight_Block",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopRight_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopRight",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Top_Pistons_Right_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Top_Pistons_Right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arms_TopLeft_Block_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopLeft_Block",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopLeft_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_TopLeft",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Top_Pistons_Left_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Top_Pistons_Left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arms_LowerRight_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_LowerRight",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Lower_Pistons_Right_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Lower_Pistons_Right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Arms_LowerLeft_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_LowerLeft",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Lower_Pistons_Left_VTOL",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Arms_Lower_Pistons_Left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear",
+      "health": 50000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Bracket_Right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Aux_Arms_Lower_Right_Bottom",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Aux_Arms_Lower_Right_B",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Aux_Arms_Top_Right_A",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Aux_Arms_Top_Right_B",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Aux_Arms_Block_Right",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Bracket_Left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Aux_Arms_Lower_Left_Bottom",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Aux_Arms_Lower_Left_B",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Aux_Arms_Top_Left_A",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Aux_Arms_Top_Left_B",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Aux_Arms_Block_Left",
+      "health": 2000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 120.0,
     "y": 160.0,

@@ -14,6 +14,114 @@
     "base_expediting_fee": "5050"
   },
   "mass": 68317.0,
+  "hull_health": 15250.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 3150.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_right",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_debris",
+      "health": 1600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_flap_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "small_wing_left",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "small_wing_flap_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "small_wing_right",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "small_wing_flap_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail",
+      "health": 1900.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thrust_vector_flap_a",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_b",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_c",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_wing_debris",
+      "health": 1600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 3150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "canopy_copilot",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy_pilot",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_debris",
+      "health": 1600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_flap_left",
+      "health": 50.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 24.0,
     "y": 24.0,

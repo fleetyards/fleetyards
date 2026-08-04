@@ -14,6 +14,59 @@
     "base_expediting_fee": "5920"
   },
   "mass": 33276.0,
+  "hull_health": 33600.0,
+  "hull_parts": [
+    {
+      "name": "nose",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_wheel_left01",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_left02",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_left03",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_left04",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right01",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right02",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right03",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right04",
+      "health": 1700.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 7.0,
     "y": 17.0,

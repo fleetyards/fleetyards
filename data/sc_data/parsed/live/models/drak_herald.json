@@ -14,6 +14,74 @@
     "base_expediting_fee": "1015"
   },
   "mass": 62205.0,
+  "hull_health": 6420.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 2100.0,
+      "category": "vital"
+    },
+    {
+      "name": "sat_array_lower_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "sat_array_upper_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "sat_flap_lower",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "sat_array_upper_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "sat_flap_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "sat_flap_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "sat_array_lower_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingLeft_Detach",
+      "health": 660.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingRight_Detach",
+      "health": 660.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail",
+      "health": 2100.0,
+      "category": "vital"
+    },
+    {
+      "name": "pipe_cover_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "pipe_cover_left",
+      "health": 100.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 12.5,
     "y": 24.75,

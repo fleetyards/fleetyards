@@ -14,6 +14,34 @@
     "base_expediting_fee": "12027"
   },
   "mass": 400457.06,
+  "hull_health": 81500.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 18000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Nose",
+      "health": 17500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingLeft",
+      "health": 14000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "WingRight",
+      "health": 14000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Bridge",
+      "health": 18000.0,
+      "category": "vital"
+    }
+  ],
   "metrics": {
     "x": 32.0,
     "y": 56.0,

@@ -14,6 +14,79 @@
     "base_expediting_fee": "17643"
   },
   "mass": 45720.0,
+  "hull_health": 27044.0,
+  "hull_parts": [
+    {
+      "name": "nose",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "cockpit_canopy",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_left",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_left_broken",
+      "health": 320.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wingtip_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right_broken",
+      "health": 320.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wingtip_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bay_door_l_a",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bay_door_l_b",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bay_door_r_a",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bay_door_r_b",
+      "health": 1.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 24.5,
     "y": 24.5,

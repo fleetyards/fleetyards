@@ -14,6 +14,104 @@
     "base_expediting_fee": "3375"
   },
   "mass": 72032.0,
+  "hull_health": 15550.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 2650.0,
+      "category": "vital"
+    },
+    {
+      "name": "IntakeLeft",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "MissileBay_Left",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "EngineHousing",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "thrust_vector_flap_c",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_a",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "thrust_vector_flap_b",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "IntakeRight",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "MissileBay_Right",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 2650.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Canopy",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRightRear",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingRight_Debris",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "LG_Door_Rear_R",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingLeftRear",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "WingLeft_Debris",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "LG_Door_Rear_L",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 1800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail_Debris",
+      "health": 1500.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 25.5,
     "y": 28.25,

@@ -14,6 +14,89 @@
     "base_expediting_fee": "4148"
   },
   "mass": 86745.0,
+  "hull_health": 18226.0,
+  "hull_parts": [
+    {
+      "name": "nose",
+      "health": 7800.0,
+      "category": "vital"
+    },
+    {
+      "name": "canopy_exterior",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Canopy_interior",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body",
+      "health": 7000.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_bottom_left",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_bottom_left_flap",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "stabilizer_left",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "stabilizer_left_flap",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_top_left",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_top_left_flap",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_bottom_right",
+      "health": 800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_bottom_right_flap",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_top_right",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_top_right_flap",
+      "health": 25.0,
+      "category": "subpart"
+    },
+    {
+      "name": "stabilizer_right",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "stabilizer_right_flap",
+      "health": 25.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 18.5,
     "y": 24.0,
