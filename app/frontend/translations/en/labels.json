@@ -447,6 +447,7 @@
             "fleet:memberships:manage": "Manage Members",
             "fleet:invites:read": "View Invites",
             "fleet:invites:create": "Create Invites",
+            "fleet:invites:update": "Update Invites",
             "fleet:invites:delete": "Delete Invites",
             "fleet:invites:manage": "Manage Invites",
             "fleet:vehicles:read": "View Vehicles",
