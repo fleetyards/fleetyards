@@ -365,6 +365,7 @@
             "fleet:memberships:manage": "Mitglieder verwalten",
             "fleet:invites:read": "Einladungen ansehen",
             "fleet:invites:create": "Einladungen erstellen",
+            "fleet:invites:update": "Einladungen bearbeiten",
             "fleet:invites:delete": "Einladungen löschen",
             "fleet:invites:manage": "Einladungen verwalten",
             "fleet:vehicles:read": "Fahrzeuge ansehen",
