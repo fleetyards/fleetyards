@@ -33,6 +33,10 @@ import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import type { ComponentPowerPlant } from "@/services/fyApi";
+import {
+  powerPlantContextKey,
+  type PowerPlantContext,
+} from "@/frontend/components/Models/Hardpoints/powerPlant";
 
 type Props = {
   hardpoints: Hardpoint[];
@@ -43,24 +47,40 @@ const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
 
-const powerPips = computed(() => {
-  if (props.category !== HardpointCategoryEnum.POWERPLANT) return null;
+const powerPlants = computed(() => {
+  if (props.category !== HardpointCategoryEnum.POWERPLANT) return [];
 
-  const plants = props.hardpoints
+  return props.hardpoints
     .map((hp) => hp.component)
     .filter((c) => c?.typeData && "powerBase" in c.typeData && c.size);
+});
 
-  const n = plants.length;
-  if (n === 0) return null;
+const powerPlantContext = computed<PowerPlantContext | null>(() => {
+  const plants = powerPlants.value;
+  if (plants.length === 0) return null;
 
-  const baseSegments = plants.reduce(
+  return {
+    count: plants.length,
+    sizeSum: plants.reduce((sum, c) => sum + Number(c!.size), 0),
+  };
+});
+
+provide(powerPlantContextKey, powerPlantContext);
+
+const powerPips = computed(() => {
+  const context = powerPlantContext.value;
+  if (!context) return null;
+
+  const baseSegments = powerPlants.value.reduce(
     (sum, c) =>
-      sum + Math.round((c!.typeData as ComponentPowerPlant).powerBase! / n),
+      sum +
+      Math.round(
+        (c!.typeData as ComponentPowerPlant).powerBase! / context.count,
+      ),
     0,
   );
-  const sizeSum = plants.reduce((sum, c) => sum + Number(c!.size), 0);
 
-  return baseSegments + (n - 1) * sizeSum;
+  return baseSegments + (context.count - 1) * context.sizeSum;
 });
 
 const modelSlug = inject<ComputedRef<string> | undefined>(
