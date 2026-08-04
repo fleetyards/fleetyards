@@ -2,6 +2,7 @@ resource :hangar, only: %i[show destroy] do
   get :items
   put :import
   get :export
+  get "export/hangar-link", to: "hangars#export_hangar_link"
   put "sync-rsi-hangar", to: "hangars#sync_rsi_hangar"
   get "sync-rsi-hangar/status", to: "hangars#sync_rsi_hangar_status"
 
