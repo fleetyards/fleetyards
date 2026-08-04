@@ -12,8 +12,10 @@ import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useFleetRoles as useFleetRolesQuery,
+  useFleetResourceAccessCatalog,
   type Fleet,
   type FleetMember,
+  type FleetResourceAccessGroup,
   type FleetRoleExtended,
 } from "@/services/fyApi";
 
@@ -31,65 +33,14 @@ const route = useRoute();
 const fleetSlug = computed(() => route.params.slug as string);
 
 const { data: roles } = useFleetRolesQuery(fleetSlug);
+const { data: catalog } = useFleetResourceAccessCatalog();
 
-const privilegeGroups: Record<string, string[]> = {
-  fleet: [
-    "fleet:update",
-    "fleet:update:images",
-    "fleet:update:description",
-    "fleet:delete",
-    "fleet:manage",
-  ],
-  memberships: [
-    "fleet:memberships:read",
-    "fleet:memberships:create",
-    "fleet:memberships:update",
-    "fleet:memberships:delete",
-    "fleet:memberships:manage",
-  ],
-  invites: [
-    "fleet:invites:read",
-    "fleet:invites:create",
-    "fleet:invites:delete",
-    "fleet:invites:manage",
-  ],
-  vehicles: [
-    "fleet:vehicles:read",
-    "fleet:vehicles:create",
-    "fleet:vehicles:update",
-    "fleet:vehicles:delete",
-    "fleet:vehicles:manage",
-  ],
-  roles: [
-    "fleet:roles:read",
-    "fleet:roles:create",
-    "fleet:roles:update",
-    "fleet:roles:delete",
-    "fleet:roles:manage",
-  ],
-  inventories: [
-    "fleet:inventories:read",
-    "fleet:inventories:create",
-    "fleet:inventories:update",
-    "fleet:inventories:delete",
-    "fleet:inventories:manage",
-  ],
-  missions: [
-    "fleet:missions:read",
-    "fleet:missions:create",
-    "fleet:missions:update",
-    "fleet:missions:delete",
-    "fleet:missions:manage",
-  ],
-  events: [
-    "fleet:events:read",
-    "fleet:events:create",
-    "fleet:events:update",
-    "fleet:events:delete",
-    "fleet:events:manage",
-  ],
-  notifications: ["fleet:notifications:manage"],
-};
+// The top-level "fleet" group's manage privilege (fleet:manage) implies every
+// other privilege across all groups; a group's own manage implies the rest of
+// that group. Both are sourced from the catalog so no privilege list is hardcoded.
+const globalManagePrivilege = computed(
+  () => catalog.value?.find((group) => group.key === "fleet")?.managePrivilege,
+);
 
 const hasPrivilege = (role: FleetRoleExtended, privilege: string) => {
   return (
@@ -97,20 +48,25 @@ const hasPrivilege = (role: FleetRoleExtended, privilege: string) => {
   );
 };
 
-const isImpliedByManage = (role: FleetRoleExtended, privilege: string) => {
-  if (privilege === "fleet:manage") return false;
+const isImpliedByManage = (
+  role: FleetRoleExtended,
+  group: FleetResourceAccessGroup,
+  privilege: string,
+) => {
+  const globalManage = globalManagePrivilege.value;
 
-  // fleet:manage implies everything (including other :manage privileges)
-  if (hasPrivilege(role, "fleet:manage")) {
+  if (privilege === globalManage) return false;
+
+  if (globalManage && hasPrivilege(role, globalManage)) {
     return !hasPrivilege(role, privilege);
   }
 
-  // group-level :manage implies other privileges in the same group
-  if (!privilege.endsWith(":manage")) {
-    const prefix = privilege.substring(0, privilege.lastIndexOf(":"));
-    const manageKey = `${prefix}:manage`;
-
-    return !hasPrivilege(role, privilege) && hasPrivilege(role, manageKey);
+  if (
+    group.managePrivilege &&
+    privilege !== group.managePrivilege &&
+    hasPrivilege(role, group.managePrivilege)
+  ) {
+    return !hasPrivilege(role, privilege);
   }
 
   return false;
@@ -118,7 +74,7 @@ const isImpliedByManage = (role: FleetRoleExtended, privilege: string) => {
 </script>
 
 <template>
-  <div v-if="roles" class="fleet-roles">
+  <div v-if="roles && catalog" class="fleet-roles">
     <Panel v-for="role in roles" :key="role.id" class="fleet-role">
       <PanelHeading :level="HeadingLevelEnum.H3">
         {{ role.name }}
@@ -129,28 +85,28 @@ const isImpliedByManage = (role: FleetRoleExtended, privilege: string) => {
       <PanelBody>
         <div class="fleet-role-privileges">
           <div
-            v-for="(privileges, group) in privilegeGroups"
-            :key="group"
+            v-for="group in catalog"
+            :key="group.key"
             class="privilege-group"
           >
             <h4 class="privilege-group-name">
-              {{ t(`labels.fleet.roles.privilegeGroups.${group}`) }}
+              {{ t(`labels.fleet.roles.privilegeGroups.${group.key}`) }}
             </h4>
             <ul class="privilege-list">
               <li
-                v-for="privilege in privileges"
+                v-for="privilege in group.privileges"
                 :key="privilege"
                 class="privilege-item"
                 :class="{
                   active: hasPrivilege(role, privilege),
-                  implied: isImpliedByManage(role, privilege),
+                  implied: isImpliedByManage(role, group, privilege),
                 }"
               >
                 <i
                   :class="
                     hasPrivilege(role, privilege)
                       ? 'fa-solid fa-check text-success'
-                      : isImpliedByManage(role, privilege)
+                      : isImpliedByManage(role, group, privilege)
                         ? 'fa-solid fa-check text-info'
                         : 'fa-solid fa-times text-muted'
                   "
