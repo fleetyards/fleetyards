@@ -14,9 +14,9 @@ class GithubIssueCreator
 
     last_log = GithubIssueLog.where(task_type: @task_type).order(created_at: :desc).first
 
-    return if last_log&.content_digest == digest
-
     open_issue = open_issue_for(last_log)
+
+    return if open_issue && last_log.content_digest == digest
 
     issue =
       if open_issue
