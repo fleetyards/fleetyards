@@ -15,6 +15,10 @@ import {
   type ComponentQuantumDrive,
   type ComponentThruster,
 } from "@/services/fyApi";
+import {
+  powerPlantContextKey,
+  powerPlantPips,
+} from "@/frontend/components/Models/Hardpoints/powerPlant";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -24,6 +28,8 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
+
+const powerPlantContext = inject(powerPlantContextKey);
 
 type Stat = {
   label: string;
@@ -185,6 +191,17 @@ const stats = computed<Stat[]>(() => {
     const pp = typeData as ComponentPowerPlant;
     if (pp.powerBase) {
       result.push(stat("powerPlants.output", pp.powerBase, "powerOutput"));
+    }
+    const context = powerPlantContext?.value;
+    const size = Number(props.hardpoint.component?.size);
+    if (pp.powerBase && context && size) {
+      result.push(
+        stat(
+          "powerPlants.pips",
+          powerPlantPips(pp.powerBase, size, context),
+          "powerPips",
+        ),
+      );
     }
   } else if (category === HardpointCategoryEnum.QUANTUMDRIVE) {
     const qd = typeData as ComponentQuantumDrive;

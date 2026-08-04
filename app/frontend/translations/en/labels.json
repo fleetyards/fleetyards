@@ -766,7 +766,8 @@
           "coolingRate": "Cooling Rate"
         },
         "powerPlants": {
-          "output": "Output"
+          "output": "Output",
+          "pips": "Pips"
         },
         "quantumDrives": {
           "speed": "Speed",
