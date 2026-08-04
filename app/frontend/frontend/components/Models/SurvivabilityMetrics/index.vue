@@ -42,12 +42,26 @@ const hasData = computed(() => stats.value.hasData || hasHull.value);
 // `1 / (1 - resistance)` more of that type before the hull is exposed. Distortion
 // is excluded — it downs shields rather than destroying the hull.
 const EHP_TYPES = [
-  { key: "physical", label: "labels.survivability.resistancePhysical", color: "#c8c8c8" },
-  { key: "energy", label: "labels.survivability.resistanceEnergy", color: "#428bca" },
-  { key: "thermal", label: "labels.survivability.resistanceThermal", color: "#fa6800" },
+  {
+    key: "physical",
+    label: "labels.survivability.resistancePhysical",
+    color: "#c8c8c8",
+  },
+  {
+    key: "energy",
+    label: "labels.survivability.resistanceEnergy",
+    color: "#428bca",
+  },
+  {
+    key: "thermal",
+    label: "labels.survivability.resistanceThermal",
+    color: "#fa6800",
+  },
 ];
 
-const combinedHp = computed(() => (props.hullHealth ?? 0) + stats.value.totalHp);
+const combinedHp = computed(
+  () => (props.hullHealth ?? 0) + stats.value.totalHp,
+);
 
 const effectiveHp = computed(() => {
   if (combinedHp.value <= 0) return [];
