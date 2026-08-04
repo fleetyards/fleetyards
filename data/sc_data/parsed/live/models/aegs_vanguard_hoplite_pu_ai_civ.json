@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Aegis Vanguard Hoplite",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Drop Ship \\n\\nThe Vanguard Hoplite is a cross between the winning Vanguard deep space fighter and a dedicated boarding ship. Adapted from proven assault ship designs, the Hoplite is the perfect tool for inserting an armored strike team with enough firepower to get them out again.",
   "career": "Combat",

@@ -7,9 +7,9 @@
   "size": "1",
   "grade": "1",
   "manufacturer_ref": "ec227ef3-fb08-4897-abdb-579eb4e87c25",
-  "name": "Grav Lev 1",
-  "short_name": "Grav Lev 1",
-  "description": "Grav Lev 1",
+  "name": "Grav-Lev 1",
+  "short_name": "Grav-Lev 1",
+  "description": "Grav-Lev 1",
   "inventory_consumption": {
     "micro_scu": 1.0,
     "dimensions": {

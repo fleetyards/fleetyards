@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "MISC Freelancer MIS",
   "description": "Manufacturer: MISC\\nFocus: Gunship\\n\\nThe Freelancer MIS is a limited edition militarized variant of the classic mercantile ship developed by the UEE. These were produced in very small quantity due to some early payload incidents. This version sacrifices the majority of the cargo capacity to make way for missiles.",
   "career": "Combat",

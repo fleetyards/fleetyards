@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "MISC Reliant Kore",
   "description": "Manufacturer: MISC\\nFocus: Starter / Light Freight\\n\\nWith the Reliant Kore, MISC adds to its already impressive lineup of ships, a smaller introductory-class spacecraft. Utilizing advanced Xi’An designs, the Reliant features broad, sleek wings, omni-directional thrusters and a fully-articulated two-seat cockpit that supports horizontal and vertical flight modes. All of this combines with a larger carrying capacity than many ships in its class to make the Kore a natural choice for short-range hauling, or with the simple addition of a few optional components, this can-do ship can do anything you dream of.",
   "career": "Transporter",

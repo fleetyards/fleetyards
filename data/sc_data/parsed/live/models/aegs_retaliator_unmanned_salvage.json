@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "7",
   "name": "Aegis Retaliator",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Modular\\n\\nThis civilian refit of the Retaliator updates the military ship's chassis with unladen space able to be fitted with various modules to suit your needs.",
   "career": "Combat",

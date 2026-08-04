@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "RSI Constellation Aquila",
   "description": null,
   "career": "Exploration",

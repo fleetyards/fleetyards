@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Aegis Vanguard Warden",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Fighter\\n\\nA hard-charging bulldog of a fighter which features extensive forward-mounted weaponry designed to tear through the shields and armor of other spacecraft. So-named because their multiple-jump range allows them to form the vanguard of any military expedition, Vanguards have seen extensive service against the Vanduul.",
   "career": "Combat",

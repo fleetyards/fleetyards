@@ -1,0 +1,21 @@
+{
+  "key": "SoftLock_EngineeringScreen_Template_FlatInteraction",
+  "ref": "1457a4ac-ec77-42a0-bebe-ef16489ae9da",
+  "category": "utility",
+  "type": "SeatDashboard",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": "Screen",
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  }
+}

@@ -22,7 +22,7 @@
     "health": 11200.0
   },
   "type_data": {
-    "thrust_capacity": 1760000.0,
+    "thrust_capacity": 2124088.0,
     "fuel_burn_rate_per10_k_newton": 0.37,
     "thruster_type": "Main",
     "thruster_class": "main"

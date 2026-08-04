@@ -87,8 +87,8 @@
     },
     {
       "name": "hardpoint_personal_inventory",
-      "ref": null,
-      "key": "PersonalStorage_GRIN_STV"
+      "ref": "9749b221-ac93-43ec-8925-61f5bebdca1d",
+      "key": null
     },
     {
       "name": "hardpoint_weapon_rack_right",

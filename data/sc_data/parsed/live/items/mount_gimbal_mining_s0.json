@@ -1,0 +1,35 @@
+{
+  "key": "Mount_Gimbal_Mining_S0",
+  "ref": "cb58c2be-83a7-4e38-968a-0e12ccebb5a2",
+  "category": "weapon_mounts",
+  "type": "UtilityTurret",
+  "sub_type": "GunTurret",
+  "size": "0",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.2233005,
+      "y": 2.211008,
+      "z": 0.801895
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_mining_laser",
+      "min_size": "0",
+      "max_size": "0",
+      "types": [
+        "WeaponMining"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 5000.0
+  },
+  "type_data": {}
+}

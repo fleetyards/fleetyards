@@ -90,7 +90,7 @@
     "fire_rate": 100.0,
     "heat_per_shot": 6.0,
     "damage_per_shot": {
-      "physical": 683.1,
+      "physical": 610.0,
       "energy": 0.0,
       "distortion": 0.0,
       "thermal": 0.0,

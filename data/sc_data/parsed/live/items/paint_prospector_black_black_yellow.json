@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Prospector_Black_Black_Yellow",
+  "ref": "27787ecd-4621-4c11-b643-7dd31fb5c165",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "de0be71f-7b2c-40f7-b328-8fda1409c37c",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

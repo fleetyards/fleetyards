@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "RSI Constellation Andromeda",
   "description": "Manufacturer: RSI\\nFocus: Medium Freight / Gunship\\n\\nThe Constellation Andromeda is a dependable multi-crew freighter that appeals to merchants across the empire thanks to its versatility. One of the most popular ships that RSI produces, the iconic Andromeda features a well-appointed cargo bay, a snub-fighter docking port, and a signature wrap-around bridge.",
   "career": "Multi-Role",

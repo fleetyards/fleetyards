@@ -420,8 +420,8 @@
     },
     {
       "name": "hardpoint_rear_ramp",
-      "ref": null,
-      "key": "Door_Ship_Exterior_CRUS_Starlifter_Rear_Ramp"
+      "ref": "15de3627-2cae-424c-bd9d-24c5a697eedc",
+      "key": null
     },
     {
       "name": "hardpoint_cargo_large",

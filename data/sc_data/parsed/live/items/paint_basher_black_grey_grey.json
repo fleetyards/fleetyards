@@ -1,0 +1,21 @@
+{
+  "key": "Paint_Basher_Black_Grey_Grey",
+  "ref": "e744089e-db14-4b75-be46-75ad37461b55",
+  "category": "paints",
+  "type": "Paints",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3fbc45c1-f124-403b-a012-2812844fac58",
+  "name": "Basher Razorburn Livery",
+  "short_name": null,
+  "description": "With an aggressive rusted look, the Razorburn livery shows that 'verse that you're ready to scrap.",
+  "inventory_consumption": {
+    "micro_scu": 24000.0,
+    "dimensions": {
+      "x": 0.3,
+      "y": 0.4,
+      "z": 0.2
+    }
+  }
+}

@@ -146,8 +146,15 @@
       "loadout": [
         {
           "name": "hardpoint_mining_laser",
-          "ref": "8bfc261a-6c67-4bec-b5b5-71407e086ec9",
-          "key": null
+          "ref": "24122aa8-495b-4b2f-9d81-9b7a87e51c8d",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_mining_laser",
+              "ref": "8bfc261a-6c67-4bec-b5b5-71407e086ec9",
+              "key": null
+            }
+          ]
         }
       ]
     },

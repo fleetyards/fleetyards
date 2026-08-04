@@ -1,0 +1,80 @@
+{
+  "key": "KLWE_LaserRepeater_S1_mr01",
+  "ref": "b6560a92-d608-40d9-ba56-3207a71c0948",
+  "category": "weapons",
+  "type": "WeaponGun",
+  "sub_type": "Gun",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "name": "CF-117 Bulldog \"Hazard-Zone\" Repeater",
+  "short_name": "CF-117 Bulldog \"Hazard-Zone\" Repeater",
+  "description": "Manufacturer: Klaus & Werner\\nItem Type: Laser Repeater\\nSize: 1\\n\\nFeaturing a three-barrel sequential fire design, the Klaus & Werner CF-117 Bulldog laser repeater is capable of delivering high velocity energy rounds while maintaining heat efficiency making it a favorite among new pilots who are outfitting their first ship. The Hazard-Zone edition, adorned with striking mustard yellow highlights on a black base, will have you armed and ready to fight in style.",
+  "inventory_consumption": {
+    "micro_scu": 84000.0,
+    "dimensions": {
+      "x": 0.4466009,
+      "y": 0.801895,
+      "z": 1.105504
+    }
+  },
+  "loadout": [
+    {
+      "name": "BAR1",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "MEC",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "POW",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    },
+    {
+      "name": "VEN",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "WeaponAttachment"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 525.0
+  },
+  "ammunition": {
+    "max_ammo_count": 0.0,
+    "initial_ammo_count": 0.0,
+    "max_restock_count": 3.0
+  },
+  "type_data": {
+    "fire_rate": 750.0,
+    "heat_per_shot": 0.0,
+    "damage_per_shot": {
+      "physical": 0.0,
+      "energy": 17.496,
+      "distortion": 0.0,
+      "thermal": 0.0,
+      "biochemical": 0.0,
+      "stun": 0.0
+    },
+    "pellets_per_shot": 1,
+    "speed": 1500.0,
+    "range": 1605.0,
+    "ammo_cost": 1,
+    "max_ammo": 0
+  }
+}

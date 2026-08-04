@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "8",
+  "min_crew": "7",
   "name": "Aegis Tiburon",
   "description": null,
   "career": "Combat",
@@ -15,9 +15,9 @@
   },
   "mass": 5158975.0,
   "metrics": {
-    "x": 0.0,
-    "y": 0.0,
-    "z": 0.0
+    "x": 68.0,
+    "y": 121.0,
+    "z": 20.0
   },
   "loadout": [
     {

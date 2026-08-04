@@ -22,7 +22,7 @@
     "health": 11800.0
   },
   "type_data": {
-    "thrust_capacity": 1287090.0,
+    "thrust_capacity": 1340934.0,
     "fuel_burn_rate_per10_k_newton": 0.125,
     "thruster_type": "Retro",
     "thruster_class": "retro"

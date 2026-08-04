@@ -1,0 +1,40 @@
+{
+  "key": "Fuel_Nozzle_Template",
+  "ref": "137f9735-b5ac-4e92-b857-45c6c78f7125",
+  "category": "refuel_boom",
+  "type": "DockingCollar",
+  "sub_type": "Fuel",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "itemport_vehicle_attach",
+      "min_size": "0",
+      "max_size": "8",
+      "types": [
+        "NOITEM_Vehicle",
+        "NOITEM_Vehicle"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 200.0
+  },
+  "type_data": {
+    "capture_radius": 3.0,
+    "fuel_flow_rate": 1.65,
+    "quantum_fuel_flow_rate": 0.91
+  }
+}

@@ -65,7 +65,7 @@
     "heat_per_shot": 0.0,
     "damage_per_shot": {
       "physical": 0.0,
-      "energy": 72.9,
+      "energy": 50.0,
       "distortion": 0.0,
       "thermal": 0.0,
       "biochemical": 0.0,

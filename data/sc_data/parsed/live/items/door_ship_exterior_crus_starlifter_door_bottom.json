@@ -26,24 +26,12 @@
       "types": [
         "ControlPanel"
       ]
-    },
-    {
-      "name": "hardpoint_Ext_Door_Bottom_HACK",
-      "min_size": "1",
-      "max_size": "1",
-      "types": []
     }
   ],
   "default_loadout": [
     {
       "name": "IP_Exterior",
       "key": "ControlPanel_Screen_DoorControl_Starlifter_Exterior_Button",
-      "ref": null,
-      "default_loadout": []
-    },
-    {
-      "name": "hardpoint_Ext_Door_Bottom_HACK",
-      "key": "CRUS_Starlifter_Ext_Door_Bottom",
       "ref": null,
       "default_loadout": []
     }

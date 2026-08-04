@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "8",
   "name": "Origin 890 Jump",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Luxury Touring\\n\\nWith an elegant, sleek exterior that belies its spacious interior, the 890 Jump is a true engineering marvel; crafted to impress from every angle by combining a unique, innovative design with the finest materials and the most advanced technology. The result is a vessel that is in a class all of its own, a masterpiece worthy of the name Origin.",
   "career": "Exploration",

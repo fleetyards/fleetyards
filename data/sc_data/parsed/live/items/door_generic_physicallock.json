@@ -1,0 +1,37 @@
+{
+  "key": "Door_Generic_PhysicalLock",
+  "ref": "38fe4ea8-2d07-44fd-9aeb-63d73cce90d3",
+  "category": "doors",
+  "type": null,
+  "sub_type": null,
+  "size": null,
+  "grade": null,
+  "manufacturer_ref": null,
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 0.0,
+    "dimensions": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    }
+  },
+  "loadout": [
+    {
+      "name": "Slot_PhysicalLock",
+      "min_size": "0",
+      "max_size": "0",
+      "types": []
+    }
+  ],
+  "default_loadout": [
+    {
+      "name": "Slot_PhysicalLock",
+      "key": null,
+      "ref": "00e5f3fd-a094-4179-a3be-f2b95caef3f9",
+      "default_loadout": []
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "key": "GLSN_Basher_Thruster_Main",
+  "ref": "7586ff7c-cfec-4e66-83cb-253a2593cdae",
+  "category": "thrusters",
+  "type": "MainThruster",
+  "sub_type": "FixedThruster",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "6116471c-891d-4830-8968-650b6deafc00",
+  "name": null,
+  "short_name": null,
+  "description": null,
+  "inventory_consumption": {
+    "micro_scu": 1.0,
+    "dimensions": {
+      "x": 0.15,
+      "y": 0.15,
+      "z": 0.15
+    }
+  },
+  "loadout": [
+    {
+      "name": "hardpoint_nozzleflap_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_03",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_04",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_05",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_06",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_07",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_08",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_09",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_10",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_11",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_nozzleflap_12",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    }
+  ],
+  "durability": {
+    "health": 1000.0
+  },
+  "type_data": {
+    "thrust_capacity": 1608309.0,
+    "fuel_burn_rate_per10_k_newton": 0.125,
+    "thruster_type": "Main",
+    "thruster_class": "main"
+  }
+}

@@ -51,7 +51,7 @@
     "beam": true,
     "damage_per_second": {
       "physical": 0.0,
-      "energy": 2100.0,
+      "energy": 2600.0,
       "distortion": 0.0,
       "thermal": 0.0,
       "biochemical": 0.0,

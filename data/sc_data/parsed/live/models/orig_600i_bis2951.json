@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "5",
   "name": "Origin 600i 2951 BIS",
   "description": "Manufacturer: Origin Jumpworks\\nFocus: Expedition\\n\\nThis multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs. To celebrate the 600i being voted a Best in Show finalist for 2951, this edition of the ship features a special blue and black livery already applied.",
   "career": "Exploration",

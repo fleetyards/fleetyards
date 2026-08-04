@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "4",
   "name": "RSI Constellation Phoenix Emerald",
   "description": "Manufacturer: RSI \\nFocus: Luxury Touring\\n\\nWhether you are a discerning socialite or a freewheeling party animal, the Constellation Phoenix Emerald is your personal passport to entertainment. With a swank interior cabin designed specifically for revelry, and a limited edition \"lucky\" paint job, the Emerald is the perfect venue to sip a glass of Radegast Gold or throw back a green Sleeping Tiger Malt while hurtling luxuriously through the stars. Just be sure to bring a designated pilot.",
   "career": "Exploration",

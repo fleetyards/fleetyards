@@ -3,7 +3,7 @@
   "ground": false,
   "movement_class": "Spaceship",
   "gravlev": "0",
-  "min_crew": "1",
+  "min_crew": "2",
   "name": "Aegis Vanguard Harbinger",
   "description": "Manufacturer: Aegis Dynamics\\nFocus: Heavy Fighter / Bomber\\n\\nThe Vanguard Harbinger is Earth's standard fighter/bomber, converting the standard Warden's escape pod into a potent bomb bay. The extended range of the Vanguard and the relatively small profile mean that it can go where carrier-based ships or larger strategic bombers don't, strike hard, and then make it back to base.",
   "career": "Combat",

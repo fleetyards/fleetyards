@@ -7,9 +7,9 @@
   "size": "5",
   "grade": "1",
   "manufacturer_ref": "cf4a74bf-eb2c-462a-9b78-f7f2724c31d2",
-  "name": null,
+  "name": "Aegis Retaliator 8xS5 Front Bomb Rack",
   "short_name": null,
-  "description": null,
+  "description": "Item Type: Bomb Rack\\nManufacturer: Aegis Dynamics\\nSize: S5\\n\\nMade to fit the front of the Retaliator, this rack can carry 8 S5 bombs.",
   "inventory_consumption": {
     "micro_scu": 120000000.0,
     "dimensions": {

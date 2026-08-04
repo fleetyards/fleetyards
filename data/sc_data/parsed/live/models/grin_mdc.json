@@ -123,7 +123,7 @@
     },
     {
       "name": "hardpoint_comp_computer_mdc",
-      "ref": null,
+      "ref": "a6b4604a-358b-4ee7-8c0f-f3f43427154d",
       "key": null
     },
     {
@@ -190,6 +190,11 @@
       "name": "hardpoint_towhook_04",
       "ref": null,
       "key": "constraint_MXC_towhook"
+    },
+    {
+      "name": "hardpoint_floor",
+      "ref": "e2af8af7-1098-4396-8f4b-16aa471f5e1c",
+      "key": null
     }
   ]
 }
