@@ -485,7 +485,7 @@ const openDisplayOptionsModal = () => {
           :aria-label="t('actions.exportHangarLink')"
           @click="exportHangarLink"
         >
-          <i class="fa-light fa-download" />
+          <i class="fa-light fa-link" />
           <span>{{ t("actions.exportHangarLink") }}</span>
         </Btn>
 
