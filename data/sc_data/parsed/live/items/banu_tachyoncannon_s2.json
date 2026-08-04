@@ -103,6 +103,14 @@
     "ammo_cost": 1,
     "max_ammo": 0,
     "charge_time": 1.75,
-    "overcharge_time": 0.0
+    "overcharge_time": 0.0,
+    "regen": {
+      "max_ammo_load": 25.0,
+      "max_regen_per_second": 3.0,
+      "cost_per_bullet": 400.0,
+      "regeneration_cooldown": 1.73,
+      "requested_regen_per_second": 2250.0,
+      "requested_ammo_load": 1300.0
+    }
   }
 }

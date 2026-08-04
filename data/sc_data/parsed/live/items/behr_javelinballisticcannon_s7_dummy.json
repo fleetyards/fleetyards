@@ -97,6 +97,12 @@
   "type_data": {
     "fire_rate": 90.0,
     "heat_per_shot": 17500.0,
-    "max_ammo": 276
+    "max_ammo": 276,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 23.9,
+      "time_till_cooling_starts": 0.884,
+      "overheat_fix_time": 4.73
+    }
   }
 }

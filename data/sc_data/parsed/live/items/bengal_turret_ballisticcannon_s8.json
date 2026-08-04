@@ -75,6 +75,12 @@
     "speed": 1112.0,
     "range": 5004.0,
     "ammo_cost": 1,
-    "max_ammo": 309
+    "max_ammo": 309,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 26.4,
+      "time_till_cooling_starts": 0.802,
+      "overheat_fix_time": 4.06
+    }
   }
 }
