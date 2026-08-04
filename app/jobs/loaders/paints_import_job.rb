@@ -7,18 +7,22 @@ module Loaders
 
       import.start!
 
-      results = ::PaintsImporter.new.run
+      # Serialize per task so a clean run's resolve can't close an issue a concurrent
+      # problematic run just opened. Both recompute their results while holding the lock.
+      ApplicationRecord.with_advisory_lock("loaders:paints_import") do
+        results = ::PaintsImporter.new.run
 
-      creator = GithubIssueCreator.new(
-        task_type: "paints_import",
-        title: "Paints Import Results",
-        body: ::PaintsImporter.github_issue_body(results)
-      )
+        creator = GithubIssueCreator.new(
+          task_type: "paints_import",
+          title: "Paints Import Results",
+          body: ::PaintsImporter.github_issue_body(results)
+        )
 
-      if results[:new_with_error][:count].positive? || results[:model_not_found][:count].positive?
-        creator.run
-      else
-        creator.resolve
+        if results[:new_with_error][:count].positive? || results[:model_not_found][:count].positive?
+          creator.run
+        else
+          creator.resolve
+        end
       end
 
       import.finish!
