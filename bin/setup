@@ -182,6 +182,19 @@ FileUtils.chdir APP_ROOT do
   FileUtils.mkdir_p(File.join(APP_ROOT, "log"))
   FileUtils.mkdir_p(File.join(APP_ROOT, "tmp"))
 
+  # Link the gitignored sc_data/raw dump from the main worktree so the sc-data
+  # parser can read it here (git worktrees don't copy gitignored files).
+  if wt_name && (main_root = main_worktree_root)
+    main_raw = File.join(main_root, "data", "sc_data", "raw")
+    wt_raw = File.join(APP_ROOT, "data", "sc_data", "raw")
+
+    if File.directory?(main_raw) && !File.exist?(wt_raw)
+      FileUtils.mkdir_p(File.dirname(wt_raw))
+      FileUtils.ln_s(main_raw, wt_raw)
+      puts "   Linked data/sc_data/raw -> #{main_raw}" if VERBOSE
+    end
+  end
+
   if FRESH
     run_step "Wiping application state", "docker compose down -v"
   end
