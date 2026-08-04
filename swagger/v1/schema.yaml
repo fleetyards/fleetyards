@@ -462,6 +462,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/resource-access-catalog":
+    get:
+      summary: Fleet Resource Access Catalog
+      tags:
+      - FleetRoles
+      operationId: fleetResourceAccessCatalog
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetResourceAccessGroup"
   "/fleets/use-invite":
     post:
       summary: Create Fleet Membership by Invite
@@ -8625,6 +8640,22 @@ components:
       - meta
       - items
       title: FleetPublicVehicles
+    FleetResourceAccessGroup:
+      type: object
+      properties:
+        key:
+          type: string
+        privileges:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetRoleResourceAccessEnum"
+        managePrivilege:
+          "$ref": "#/components/schemas/FleetRoleResourceAccessEnum"
+      additionalProperties: false
+      required:
+      - key
+      - privileges
+      title: FleetResourceAccessGroup
     FleetRole:
       type: object
       properties:
