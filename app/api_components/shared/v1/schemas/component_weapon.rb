@@ -45,7 +45,19 @@ module Shared
             ammoCost: {type: :integer},
             maxAmmo: {type: :integer},
             chargeTime: {type: :number},
-            overchargeTime: {type: :number}
+            overchargeTime: {type: :number},
+            regen: {
+              type: :object,
+              properties: {
+                maxAmmoLoad: {type: :number},
+                maxRegenPerSecond: {type: :number},
+                costPerBullet: {type: :number},
+                regenerationCooldown: {type: :number},
+                requestedRegenPerSecond: {type: :number},
+                requestedAmmoLoad: {type: :number}
+              },
+              additionalProperties: false
+            }
           },
           additionalProperties: false
         })

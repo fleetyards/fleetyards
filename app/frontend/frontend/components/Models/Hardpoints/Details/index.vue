@@ -131,6 +131,19 @@ const stats = computed<Stat[]>(() => {
       if (weapon.heatPerShot) {
         result.push(stat("weapons.heatPerShot", weapon.heatPerShot, "integer"));
       }
+      if (weapon.regen?.maxAmmoLoad) {
+        result.push(stat("weapons.pool", weapon.regen.maxAmmoLoad, "integer"));
+      }
+      if (weapon.regen?.maxRegenPerSecond) {
+        result.push(
+          stat("weapons.maxRegen", weapon.regen.maxRegenPerSecond, "integer"),
+        );
+      }
+      if (weapon.regen?.costPerBullet) {
+        result.push(
+          stat("weapons.costPerShot", weapon.regen.costPerBullet, "integer"),
+        );
+      }
     }
   } else if (category === HardpointCategoryEnum.SHIELDGENERATOR) {
     const shield = typeData as ComponentShield;
