@@ -60,17 +60,9 @@ const shipsNavActive = computed(() => {
   return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
 });
 
-const hasLogisticsAccess = computed(() => {
-  const access = membership.value?.fleetRole?.resourceAccess;
-  if (!access) return false;
-  return access.some((a: string) =>
-    [
-      "fleet:manage",
-      "fleet:inventories:manage",
-      "fleet:inventories:read",
-    ].includes(a),
-  );
-});
+const hasLogisticsAccess = computed(
+  () => membership.value?.capabilities?.readInventories ?? false,
+);
 
 const comlink = useComlink();
 

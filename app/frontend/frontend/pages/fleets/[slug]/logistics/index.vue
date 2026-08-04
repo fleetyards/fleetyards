@@ -26,14 +26,11 @@ import {
 import InventoryItemFilterForm from "@/frontend/components/Fleets/Logistics/InventoryItemFilterForm/index.vue";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useI18n } from "@/shared/composables/useI18n";
-import { checkAccess } from "@/shared/utils/Access";
-
 type StockItemWithId = FleetInventoryStockItem & { id: string };
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -42,12 +39,8 @@ const { t } = useI18n();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
-const canManageInventories = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:inventories:manage",
-    "fleet:inventories:create",
-  ]),
+const canManageInventories = computed(
+  () => props.membership?.capabilities?.createInventories ?? false,
 );
 
 const activeTab = ref<"stock" | "log">("stock");

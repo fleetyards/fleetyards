@@ -16,10 +16,6 @@ type Props = {
 const props = defineProps<Props>();
 
 const { isFeatureEnabled } = useFeatures();
-
-const resourceAccess = computed(
-  () => props.membership?.fleetRole?.resourceAccess,
-);
 </script>
 
 <template>
@@ -27,6 +23,5 @@ const resourceAccess = computed(
     v-if="isFeatureEnabled('fleet_logistics')"
     :fleet="props.fleet"
     :membership="props.membership"
-    :resource-access="resourceAccess"
   />
 </template>
