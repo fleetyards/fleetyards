@@ -203,7 +203,7 @@ GEM
     domain_name (0.6.20240107)
     doorkeeper (5.9.3)
       railties (>= 5)
-    doorkeeper-jwt (0.4.2)
+    doorkeeper-jwt (0.4.3)
       jwt (>= 2.1)
     doorkeeper-openid_connect (1.10.5)
       doorkeeper (>= 5.5, < 6.0)
