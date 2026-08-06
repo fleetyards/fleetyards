@@ -446,8 +446,7 @@ export const useHardpointStats = (
         );
       }
       const sigs = radar.signatureDetection as
-        | Record<string, { sensitivity?: number }>
-        | undefined;
+        Record<string, { sensitivity?: number }> | undefined;
       if (sigs) {
         if (sigs.ir?.sensitivity != null) {
           result.push(resistanceStat("radar.ir", sigs.ir.sensitivity));
