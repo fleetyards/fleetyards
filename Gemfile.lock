@@ -275,10 +275,10 @@ GEM
     google-protobuf (4.34.0-x86_64-linux-gnu)
       bigdecimal
       rake (~> 13.3)
-    graphlient (0.8.0)
+    graphlient (0.9.0)
       faraday (~> 2.0)
       graphql-client
-    graphql (2.5.26)
+    graphql (2.6.7)
       base64
       fiber-storage
       logger
