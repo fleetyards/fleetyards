@@ -31,8 +31,8 @@ importers:
         specifier: ^1.1.7
         version: 1.1.7(vue@3.5.38(typescript@6.0.3))
       '@number-flow/vue':
-        specifier: ^0.5.0
-        version: 0.5.0(vue@3.5.38(typescript@6.0.3))
+        specifier: ^0.5.2
+        version: 0.5.2(vue@3.5.38(typescript@6.0.3))
       '@rails/actioncable':
         specifier: 8.1.300
         version: 8.1.300
@@ -1447,8 +1447,8 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@number-flow/vue@0.5.0':
-    resolution: {integrity: sha512-9XfuYLsBQUhB0lLEZ4mRcGfyeJEVfpDt9o+nhAKIdoMOOQrvqz/K0Qh4h8wj8dgM67KM6ZA2JNoyqzIDUkfR6g==}
+  '@number-flow/vue@0.5.2':
+    resolution: {integrity: sha512-+FvSTXuIVeFxiTMQFv7NFGE8qqy6qVe+0s/55yascW4JWkd60twPGjN+/iFQCNW43EI2w3Yn1oUXt93kYdAyEA==}
     peerDependencies:
       vue: ^3
 
@@ -4593,8 +4593,8 @@ packages:
   nth-check@2.1.1:
     resolution: {integrity: sha512-lqjrjmaOoAnWfMmBPL+XNnynZh2+swxiX3WUE0s4yEHI6m+AwrK2UZOimIRl3X/4QctVqS8AiZjFqyOGrMXb/w==}
 
-  number-flow@0.6.0:
-    resolution: {integrity: sha512-K8flNq2Wqus53vjp/btVo3qXFkagF8dIdYavreBfE7hlvFFG/b1HMGEH6nZL+mlrJ+4lbLP9OmPv3t2rmRkpSQ==}
+  number-flow@0.6.2:
+    resolution: {integrity: sha512-MCnImG4Q5vPwhSXnov56nOuyyKn6LC+Qd7II1UiKc+ACRtug5iAtn0+CwXNxM38AC5lSowEY+oYEtZX2qMnUyw==}
 
   object-hash@3.0.0:
     resolution: {integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==}
@@ -7324,10 +7324,10 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.20.1
 
-  '@number-flow/vue@0.5.0(vue@3.5.38(typescript@6.0.3))':
+  '@number-flow/vue@0.5.2(vue@3.5.38(typescript@6.0.3))':
     dependencies:
       esm-env: 1.2.2
-      number-flow: 0.6.0
+      number-flow: 0.6.2
       vue: 3.5.38(typescript@6.0.3)
 
   '@one-ini/wasm@0.1.1': {}
@@ -10534,7 +10534,7 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  number-flow@0.6.0:
+  number-flow@0.6.2:
     dependencies:
       esm-env: 1.2.2
 
