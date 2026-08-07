@@ -135,17 +135,16 @@ gimbal 80 °/s).
 - **Source:** mount / joint params in the item or vehicle XML.
 - **Have:** not parsed.
 
-## 5. Armor stats (P2, not parsed)
+## 5. Armor stats — DONE
 
-erkul Defense card: **Armor HP 23 760**, **deflection** (Phys 139 / Energy 88),
-**damage reduction** (Phys 30% / Energy 50%), **self-resistance** (Phys 19% /
-Energy -15%).
+erkul Defense card: **Armor HP**, **deflection** (Phys/Energy), **damage
+reduction** (Phys/Energy), **self-resistance** (Phys/Energy, can be negative).
 
-- **Source:** ship armor component (`SCItemVehicleArmorParams` or similar) in the
-  entity / implementation XML.
-- **Have:** we parse armor damage resistances for the ARMOR hardpoint category
-  (physical/energy/distortion/thermal %) but not the ship-level armor HP,
-  deflection, damage reduction, or self-resistance summary.
+- **Shipped:** the armor component parses **Health**, per-type **deflection**
+  (`SCItemVehicleArmorParams → armorDeflection`), the **damage-reduction**
+  multipliers (`damageMultiplier`, shown as `1 − mult`), and **self-resistance**
+  (`SHealthComponentParams → DamageResistances`, also `1 − mult` so amplified
+  types read negative). Armor rows headline HP and show all four.
 
 ## 6. Emitted signatures + modifiers (P2, mostly blocked on the power/heat sim)
 
