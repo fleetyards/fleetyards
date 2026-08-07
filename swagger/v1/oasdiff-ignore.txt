@@ -1,2 +1,3 @@
 PUT /password removed the request property 'currentPassword'
 PUT /password/{token} removed the request property 'currentPassword'
+GET /models/{slug}/hardpoints the `items/` response's property type/format changed from ``/`` to `object`/`` for status `200`
