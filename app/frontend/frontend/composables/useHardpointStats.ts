@@ -506,7 +506,9 @@ export const useHardpointStats = (
         );
       }
       if (cm.maxAmmo) {
-        result.push(stat("weapons.ammo", cm.maxAmmo as number, "integer"));
+        result.push(
+          stat("weapons.ammo", cm.maxAmmo as number, "integer", true),
+        );
       }
       if (cm.speed) {
         result.push(stat("weapons.speed", cm.speed as number, "weaponSpeed"));
@@ -544,15 +546,18 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.FUEL_INTAKES) {
       const fi = typeData as Record<string, unknown>;
-      if (fi.fuelPushRate) {
-        result.push(
-          stat("fuelIntakes.pushRate", fi.fuelPushRate as number, "fuelRate"),
-        );
+      // Fuel rates are small fractions (e.g. 0.2, 2.5); format with toNumber
+      // directly — the shared `stat` helper integer-rounds, collapsing them to 0.
+      const fuelRate = (labelKey: string, value: number, primary = false) => ({
+        label: t(`labels.hardpoint.${labelKey}`),
+        value: String(toNumber(value, "fuelRate")),
+        primary,
+      });
+      if (typeof fi.fuelPushRate === "number" && fi.fuelPushRate > 0) {
+        result.push(fuelRate("fuelIntakes.pushRate", fi.fuelPushRate, true));
       }
-      if (fi.minimumRate) {
-        result.push(
-          stat("fuelIntakes.minRate", fi.minimumRate as number, "fuelRate"),
-        );
+      if (typeof fi.minimumRate === "number" && fi.minimumRate > 0) {
+        result.push(fuelRate("fuelIntakes.minRate", fi.minimumRate));
       }
     }
 
