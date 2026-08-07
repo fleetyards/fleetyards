@@ -516,16 +516,30 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.ARMOR) {
       const armor = typeData as Record<string, unknown>;
-      const armorTypes: [string, string][] = [
+      if (typeof armor.health === "number" && armor.health > 0) {
+        result.push(stat("armor.hp", armor.health, "integer", true));
+      }
+      // erkul-style damage reduction = 1 − the incoming-damage multiplier.
+      const reductionTypes: [string, string][] = [
         ["damagePhysical", "armor.physical"],
         ["damageEnergy", "armor.energy"],
         ["damageDistortion", "armor.distortion"],
         ["damageThermal", "armor.thermal"],
       ];
-      for (const [key, labelKey] of armorTypes) {
+      for (const [key, labelKey] of reductionTypes) {
+        const mult = armor[key];
+        if (typeof mult === "number" && mult < 1) {
+          result.push(resistanceStat(labelKey, 1 - mult));
+        }
+      }
+      const deflectTypes: [string, string][] = [
+        ["deflectionPhysical", "armor.deflectPhysical"],
+        ["deflectionEnergy", "armor.deflectEnergy"],
+      ];
+      for (const [key, labelKey] of deflectTypes) {
         const val = armor[key];
         if (typeof val === "number" && val > 0) {
-          result.push(resistanceStat(labelKey, val));
+          result.push(stat(labelKey, val, "integer"));
         }
       }
     } else if (category === HardpointCategoryEnum.FUEL_INTAKES) {

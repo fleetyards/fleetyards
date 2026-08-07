@@ -850,10 +850,13 @@
           "rs": "RS"
         },
         "armor": {
+          "hp": "HP",
           "physical": "Physical",
           "energy": "Energy",
           "distortion": "Distortion",
-          "thermal": "Thermal"
+          "thermal": "Thermal",
+          "deflectPhysical": "Phys Deflect",
+          "deflectEnergy": "Energy Deflect"
         },
         "fuelIntakes": {
           "pushRate": "Push Rate",
