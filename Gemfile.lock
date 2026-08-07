@@ -169,7 +169,7 @@ GEM
     css_parser (2.1.0)
       addressable
     csv (3.3.6)
-    cypress-on-rails (1.20.0)
+    cypress-on-rails (1.20.1)
       rack
     data_migrate (11.3.1)
       activerecord (>= 6.1)
