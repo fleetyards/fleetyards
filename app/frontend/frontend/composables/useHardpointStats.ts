@@ -544,6 +544,18 @@ export const useHardpointStats = (
           result.push(stat(labelKey, val, "integer"));
         }
       }
+      // Self-resistance: how the armor resists damage to itself (1 − multiplier;
+      // can be negative when a damage type is amplified, matching erkul).
+      const selfResistTypes: [string, string][] = [
+        ["selfResistancePhysical", "armor.selfPhysical"],
+        ["selfResistanceEnergy", "armor.selfEnergy"],
+      ];
+      for (const [key, labelKey] of selfResistTypes) {
+        const mult = armor[key];
+        if (typeof mult === "number" && mult !== 1) {
+          result.push(resistanceStat(labelKey, 1 - mult));
+        }
+      }
     } else if (category === HardpointCategoryEnum.FUEL_INTAKES) {
       const fi = typeData as Record<string, unknown>;
       // Fuel rates are small fractions (e.g. 0.2, 2.5); format with toNumber

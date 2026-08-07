@@ -856,7 +856,9 @@
           "distortion": "Distortion",
           "thermal": "Thermal",
           "deflectPhysical": "Phys Deflect",
-          "deflectEnergy": "Energy Deflect"
+          "deflectEnergy": "Energy Deflect",
+          "selfPhysical": "Self-Res Phys",
+          "selfEnergy": "Self-Res Energy"
         },
         "fuelIntakes": {
           "pushRate": "Push Rate",

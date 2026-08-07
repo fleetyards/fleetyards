@@ -523,8 +523,13 @@ module ScData
           damage_info = armor_data.dig("damageMultiplier", "DamageInfo") if armor_data.dig("damageMultiplier").is_a?(Hash)
           signal_data = armor_data.dig("signalCrossSection", "SItemSignalEmission") if armor_data.dig("signalCrossSection").is_a?(Hash)
           deflection = armor_data.dig("armorDeflection", "deflectionValue")
+          resistances = values.dig("Components", "SHealthComponentParams", "DamageResistances", "DamageResistance")
           item[:type_data] = {
             health: values.dig("Components", "SHealthComponentParams", "Health")&.to_f,
+            self_resistance_physical: resistances&.dig("PhysicalResistance", "Multiplier")&.to_f,
+            self_resistance_energy: resistances&.dig("EnergyResistance", "Multiplier")&.to_f,
+            self_resistance_distortion: resistances&.dig("DistortionResistance", "Multiplier")&.to_f,
+            self_resistance_thermal: resistances&.dig("ThermalResistance", "Multiplier")&.to_f,
             damage_physical: damage_info&.dig("DamagePhysical")&.to_f,
             damage_energy: damage_info&.dig("DamageEnergy")&.to_f,
             damage_distortion: damage_info&.dig("DamageDistortion")&.to_f,
