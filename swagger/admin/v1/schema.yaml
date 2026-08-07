@@ -7010,6 +7010,7 @@ components:
         typeData:
           anyOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
+          - "$ref": "#/components/schemas/ComponentJumpDrive"
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
@@ -7113,6 +7114,21 @@ components:
       - MILITARY
       - COMPETITION
       title: ComponentItemClassEnum
+    ComponentJumpDrive:
+      type: object
+      properties:
+        alignmentRate:
+          type: number
+        alignmentDecayRate:
+          type: number
+        tuningRate:
+          type: number
+        tuningDecayRate:
+          type: number
+        fuelUsageEfficiencyMultiplier:
+          type: number
+      additionalProperties: false
+      title: ComponentJumpDrive
     ComponentPowerPlant:
       type: object
       properties:
@@ -7126,6 +7142,8 @@ components:
       type: object
       properties:
         quantumFuelRequirement:
+          type: number
+        quantumFuelConsumption:
           type: number
         jumpRange:
           type: number
@@ -7563,6 +7581,8 @@ components:
           type: number
         heatPerShot:
           type: number
+        powerConsumption:
+          type: number
         damagePerShot:
           type: object
           properties:
@@ -7641,6 +7661,14 @@ components:
             timeTillCoolingStarts:
               type: number
             overheatFixTime:
+              type: number
+          additionalProperties: false
+        penetration:
+          type: object
+          properties:
+            maxThickness:
+              type: number
+            baseDistance:
               type: number
           additionalProperties: false
       additionalProperties: false
@@ -9594,6 +9622,8 @@ components:
                 additionalProperties: false
             quantumFuelTankSize:
               type: number
+            weaponPoolSize:
+              type: number
             size:
               type: string
             sizeLabel:
@@ -10038,6 +10068,8 @@ components:
                 - category
                 additionalProperties: false
             quantumFuelTankSize:
+              type: number
+            weaponPoolSize:
               type: number
             size:
               type: string

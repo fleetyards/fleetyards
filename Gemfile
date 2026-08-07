@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby file: ".tool-versions"
 
-gem "rails", "8.1.3.1"
+gem "rails", "8.1.3"
 
 gem "pg", "~> 1.0"
 

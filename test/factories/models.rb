@@ -102,6 +102,7 @@
 #  store_url                         :string(255)
 #  upgrade_kits_count                :integer          default(0)
 #  videos_count                      :integer          default(0)
+#  weapon_pool_size                  :integer
 #  yaw                               :decimal(15, 2)
 #  yaw_boosted                       :decimal(15, 2)
 #  created_at                        :datetime

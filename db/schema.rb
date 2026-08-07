@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_28_180221) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_07_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -790,6 +790,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_28_180221) do
     t.datetime "updated_at", precision: nil
     t.integer "upgrade_kits_count", default: 0
     t.integer "videos_count", default: 0
+    t.integer "weapon_pool_size"
     t.decimal "yaw", precision: 15, scale: 2
     t.decimal "yaw_boosted", precision: 15, scale: 2
     t.index ["base_model_id"], name: "index_models_on_base_model_id"

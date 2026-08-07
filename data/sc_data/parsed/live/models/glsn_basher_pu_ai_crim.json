@@ -14,6 +14,7 @@
     "base_expediting_fee": "2500"
   },
   "mass": 16527.0,
+  "weapon_pool_size": 4,
   "hull_health": 5194.0,
   "hull_parts": [
     {

@@ -213,6 +213,11 @@ module ScData
         if values.dig("Components", "SCItemQuantumDriveParams")
           item[:type_data] = {
             quantum_fuel_requirement: values.dig("Components", "SCItemQuantumDriveParams", "quantumFuelRequirement").to_f,
+            # Quantum-fuel consumption in milli-SCU per Gm of travel (from the
+            # drive's "Travelling" resource state). Max jump range (Gm) =
+            # quantum_fuel_tank_SCU * 1000 / quantum_fuel_consumption. Validated
+            # exact vs erkul.games and spviewer.eu across S1-S4 drives.
+            quantum_fuel_consumption: extract_resource_consumption(values, "QuantumFuel"),
             jump_range: values.dig("Components", "SCItemQuantumDriveParams", "jumpRange").to_f,
             disconnect_range: values.dig("Components", "SCItemQuantumDriveParams", "disconnectRange").to_f,
             drive_speed: values.dig("Components", "SCItemQuantumDriveParams", "params", "driveSpeed").to_f,
@@ -253,6 +258,17 @@ module ScData
             }
           }
 
+        end
+
+        if values.dig("Components", "SCItemJumpDriveParams")
+          jump = values.dig("Components", "SCItemJumpDriveParams")
+          item[:type_data] = {
+            alignment_rate: jump["alignmentRate"]&.to_f,
+            alignment_decay_rate: jump["alignmentDecayRate"]&.to_f,
+            tuning_rate: jump["tuningRate"]&.to_f,
+            tuning_decay_rate: jump["tuningDecayRate"]&.to_f,
+            fuel_usage_efficiency_multiplier: jump["fuelUsageEfficiencyMultiplier"]&.to_f
+          }.compact
         end
 
         if values.dig("Components", "SCItemRadarComponentParams")
@@ -426,6 +442,7 @@ module ScData
               fire_rate: fire_actions&.dig("fireRate")&.to_f,
               heat_per_shot: fire_actions&.dig("heatPerShot")&.to_f,
               damage_per_shot: extract_ammo_damage(ammo),
+              penetration: extract_ammo_penetration(ammo),
               pellets_per_shot: fire_actions&.dig("launchParams", "SProjectileLauncher", "pelletCount")&.to_i,
               speed: projectile_speed,
               range: (projectile_speed && projectile_lifetime) ? (projectile_speed * projectile_lifetime).round(1) : nil,
@@ -459,6 +476,11 @@ module ScData
                 overheat_fix_time: heat["overheatFixTime"]&.to_f
               }.compact
             end
+
+            # Steady-state Power draw (resource units/s), used to size the ship's
+            # shared weapon-power pool for sustained-DPS throttling.
+            power_consumption = extract_resource_consumption(values, "Power")
+            type_data[:power_consumption] = power_consumption if power_consumption.present?
 
             item[:type_data] = type_data.compact
           end
@@ -627,6 +649,21 @@ module ScData
           thermal: damage_info["DamageThermal"]&.to_f,
           biochemical: damage_info["DamageBiochemical"]&.to_f,
           stun: damage_info["DamageStun"]&.to_f
+        }.compact.presence
+      end
+
+      private def extract_ammo_penetration(ammo)
+        return if ammo.blank?
+
+        bullet = ammo.dig("projectileParams", "BulletProjectileParams")
+        return if bullet.blank?
+
+        max_thickness = bullet.dig("pierceabilityParams", "maxPenetrationThickness")&.to_f
+        base_distance = bullet.dig("penetrationParams", "basePenetrationDistance")&.to_f
+
+        {
+          max_thickness:,
+          base_distance:
         }.compact.presence
       end
 
@@ -903,7 +940,8 @@ module ScData
             next if amount.blank?
 
             units = amount.dig("SStandardResourceUnit", "standardResourceUnits") ||
-              amount.dig("SStandardCargoUnit", "standardCargoUnits")
+              amount.dig("SStandardCargoUnit", "standardCargoUnits") ||
+              amount.dig("SMicroResourceUnit", "microResourceUnits")
             return units.to_f if units.present?
           end
         end

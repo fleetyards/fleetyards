@@ -34,6 +34,8 @@ require "test_helper"
 #  height                            :decimal(15, 2)   default(0.0), not null
 #  hidden                            :boolean          default(TRUE)
 #  holo_colored                      :boolean          default(FALSE)
+#  hull_health                       :decimal(15, 2)
+#  hull_parts                        :jsonb
 #  hydrogen_fuel_tank_size           :decimal(15, 2)
 #  hydrogen_fuel_tanks               :string
 #  images_count                      :integer          default(0)
@@ -104,6 +106,7 @@ require "test_helper"
 #  store_url                         :string(255)
 #  upgrade_kits_count                :integer          default(0)
 #  videos_count                      :integer          default(0)
+#  weapon_pool_size                  :integer
 #  yaw                               :decimal(15, 2)
 #  yaw_boosted                       :decimal(15, 2)
 #  created_at                        :datetime

@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import loadoutListIcon from "@/images/icons/loadout-list-icon.svg";
 import HardpointQuantity from "@/frontend/components/Models/Hardpoints/Quantity/index.vue";
 
 type Props = {
@@ -21,18 +20,16 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <div class="hardpoint-item">
-    <div v-if="count" class="hardpoint-item__list">
-      <img
-        v-if="intended"
-        :src="loadoutListIcon"
-        class="hardpoint-item__list-icon"
-        alt="hardpoint-list-icon"
-      />
-      <HardpointQuantity :quantity="count" tag="span" />
-    </div>
     <div class="hardpoint-item__wrapper">
       <div class="hardpoint-item__inner">
         <slot name="default" />
+        <HardpointQuantity
+          v-if="count && count > 1"
+          :quantity="count"
+          tag="span"
+          class="hardpoint-item__count"
+        />
+        <slot name="actions" />
       </div>
       <slot name="loadout" />
     </div>

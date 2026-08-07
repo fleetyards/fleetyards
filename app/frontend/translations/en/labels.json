@@ -578,13 +578,14 @@
       },
       "combat": {
         "title": "Combat",
-        "dps": "Total DPS",
-        "dpsSub": "burst · all weapons",
+        "dps": "Burst DPS",
+        "dpsSub": "%{count} weapons",
         "sustained": "Sustained DPS",
         "sustainedSub": "with regen & heat",
         "alpha": "Alpha",
         "alphaSub": "per volley",
         "weapons": "Weapons",
+        "missileDamage": "Missile Damage",
         "composition": "Damage Composition",
         "showBreakdown": "Show breakdown",
         "hideBreakdown": "Hide breakdown",
@@ -778,6 +779,10 @@
         },
         "weapons": {
           "dps": "DPS",
+          "burstDps": "Burst DPS",
+          "sustainedDps": "Sustained DPS",
+          "efficiency": "Efficiency",
+          "penetration": "Penetration",
           "fireRate": "Fire Rate",
           "speed": "Speed",
           "range": "Range",
@@ -818,15 +823,23 @@
           "coolingRate": "Cooling Rate"
         },
         "powerPlants": {
-          "output": "Output",
-          "pips": "Pips"
+          "output": "Output"
         },
         "quantumDrives": {
           "speed": "Speed",
           "range": "Range",
-          "fuelConsumption": "Fuel Rate",
+          "fuelConsumption": "Consumption",
           "spoolUpTime": "Spool Up",
-          "cooldownTime": "Cooldown"
+          "cooldownTime": "Cooldown",
+          "splineSpeed": "Orbit",
+          "accel": "Accel"
+        },
+        "jumpDrives": {
+          "fuelEfficiency": "Fuel Efficiency",
+          "alignRate": "Align Rate",
+          "tuneRate": "Tune Rate",
+          "alignDecay": "Align Decay",
+          "tuneDecay": "Tune Decay"
         },
         "radar": {
           "aimAssistRange": "Assist Range",
@@ -848,6 +861,11 @@
         "sources": {
           "game_files": "Game Files",
           "ship_matrix": "Ship Matrix"
+        },
+        "density": {
+          "title": "View",
+          "compact": "Compact",
+          "expanded": "Expanded"
         },
         "fuelTanks": {
           "hydrogen": "Hydrogen Fuel Tank",

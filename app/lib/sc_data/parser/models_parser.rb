@@ -41,6 +41,7 @@ module ScData
               base_expediting_fee: values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            weapon_pool_size: extract_weapon_pool_size(values),
             **extract_hull(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
@@ -261,6 +262,24 @@ module ScData
           hull_health: parts.sum { |part| part[:health] },
           hull_parts: parts
         }
+      end
+
+      # The ship's shared weapon-power pool size (in power segments). Sustained
+      # DPS throttles once the mounted weapons' combined power draw exceeds it.
+      # Ships without a fixed weapon pool are power-unlimited (nil).
+      private def extract_weapon_pool_size(values)
+        pools = values.dig(
+          "Components",
+          "SItemPortContainerComponentParams",
+          "resourceNetworkPowerPools",
+          "itemPools",
+          "FixedPowerPool"
+        )
+        return if pools.blank?
+
+        pools = [pools] if pools.is_a?(Hash)
+        weapon_pool = pools.find { |pool| pool["itemType"] == "WeaponGun" }
+        weapon_pool&.dig("poolSize")&.to_i
       end
 
       private def collect_hull_parts(node, parts = [])

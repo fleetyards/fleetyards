@@ -8,6 +8,7 @@ export default {
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
+import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import {
   HardpointSourceEnum,
   type Hardpoint,
@@ -57,9 +58,6 @@ const label = computed(() => {
       <HardpointComponent>
         <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
           {{ label }}
-          <span>
-            {{ toNumber(typeData.capacity, "cargo") }}
-          </span>
         </template>
         <template v-else>
           {{ hardpoint.name }}
@@ -68,6 +66,11 @@ const label = computed(() => {
           </span>
         </template>
       </HardpointComponent>
+      <HardpointHeadline
+        v-if="typeData?.capacity"
+        :value="toNumber(typeData.capacity, 'cargo')"
+        :unit="t('labels.cargoGridViewer.capacity')"
+      />
     </template>
   </HardpointItem>
 </template>

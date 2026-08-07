@@ -20,5 +20,12 @@
   },
   "durability": {
     "health": 280000.0
+  },
+  "type_data": {
+    "alignment_rate": 0.2,
+    "alignment_decay_rate": 0.1,
+    "tuning_rate": 0.26,
+    "tuning_decay_rate": 0.5,
+    "fuel_usage_efficiency_multiplier": 8.0
   }
 }

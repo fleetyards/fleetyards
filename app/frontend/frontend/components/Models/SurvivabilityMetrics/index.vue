@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import Collapsed from "@/shared/components/Collapsed.vue";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Hardpoint, ModelMetricsHullPartsItem } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
@@ -129,171 +130,166 @@ const humanizePart = (name: string) =>
 </script>
 
 <template>
-  <div v-if="hasData" class="metrics-card survivability-panel">
-    <div class="metrics-card__head">
-      <span class="metrics-card__title">
-        <span class="metrics-card__dot" />
-        {{ t("labels.survivability.title") }}
+  <MetricsCard
+    v-if="hasData"
+    :title="t('labels.survivability.title')"
+    class="survivability-panel"
+  >
+    <div class="metrics-card__hero">
+      <div class="metrics-card__tile metrics-card__tile--primary">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.survivability.totalHp") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(round(combinedHp), "integer") }}
+          <span class="metrics-card__tile__unit">HP</span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.survivability.totalHpSub") }}
+        </div>
+      </div>
+      <div v-if="stats.hasData" class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.survivability.shieldHp") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(round(stats.totalHp), "integer") }}
+          <span class="metrics-card__tile__unit">HP</span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ toNumber(stats.totalRegen, "integer") }} HP/s ·
+          {{ toNumber(stats.shieldCount, "integer") }}×
+        </div>
+      </div>
+      <div v-if="hasHull" class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.survivability.hullHp") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(round(hullHealth ?? 0), "integer") }}
+          <span class="metrics-card__tile__unit">HP</span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.survivability.hullHpSub") }}
+        </div>
+      </div>
+    </div>
+
+    <div v-if="ttk" class="ttk">
+      <span class="ttk__label">{{ t("labels.survivability.ttk") }}</span>
+      <span class="ttk__value">~{{ toNumber(round(ttk), "integer") }}s</span>
+      <span class="ttk__note">{{ t("labels.survivability.ttkSub") }}</span>
+    </div>
+
+    <template v-if="effectiveHp.length">
+      <div class="metrics-card__section-label">
+        {{ t("labels.survivability.effectiveHp") }}
+      </div>
+      <div class="ehp">
+        <div v-for="entry in effectiveHp" :key="entry.key" class="ehp__item">
+          <span class="ehp__swatch" :style="{ background: entry.color }" />
+          <span class="ehp__label">{{ t(entry.label) }}</span>
+          <span class="ehp__value">
+            {{ toNumber(round(entry.value), "integer") }}
+          </span>
+        </div>
+      </div>
+    </template>
+
+    <template v-if="stats.resistances.length">
+      <div class="metrics-card__section-label">
+        {{ t("labels.survivability.resistances") }}
+      </div>
+      <div class="resist">
+        <div
+          v-for="resistance in stats.resistances"
+          :key="resistance.key"
+          class="resist__row"
+        >
+          <span class="resist__label">{{ t(resistance.label) }}</span>
+          <div class="resist__track">
+            <div
+              class="resist__fill"
+              :data-type="resistance.key"
+              :style="{ width: `${resistance.value * 100}%` }"
+            />
+          </div>
+          <span class="resist__value">
+            {{ toNumber(round(resistance.value * 100), "integer") }}%
+          </span>
+        </div>
+      </div>
+    </template>
+
+    <template v-if="hullComposition.length">
+      <div class="metrics-card__section-label">
+        {{ t("labels.survivability.hullComposition") }}
+      </div>
+      <CompositionBar
+        :segments="hullComposition"
+        :highlighted="hoveredCategory"
+        @highlight="hoveredCategory = $event"
+      />
+    </template>
+
+    <div v-if="hullParts.length" class="metrics-card__actions">
+      <button
+        type="button"
+        class="metrics-card__toggle"
+        @click="expanded = !expanded"
+      >
+        {{
+          expanded
+            ? t("labels.survivability.hideParts")
+            : t("labels.survivability.showParts")
+        }}
+      </button>
+    </div>
+
+    <Collapsed :visible="expanded" :duration="200">
+      <div class="metrics-card__breakdown">
+        <div
+          v-for="group in partGroups"
+          :key="group.category"
+          class="hull-group"
+          @mouseenter="hoveredCategory = group.category"
+          @mouseleave="hoveredCategory = null"
+        >
+          <div class="hull-group__header">
+            <span class="hull-group__label">
+              <span
+                class="hull-group__swatch"
+                :style="{ background: CATEGORY_COLORS[group.category] }"
+              />
+              {{ t(group.label) }}
+            </span>
+            <span class="hull-group__meta">
+              {{ group.parts.length }} ·
+              {{ toNumber(round(group.total), "integer") }} HP
+            </span>
+          </div>
+          <table class="hull-table">
+            <tbody>
+              <tr v-for="part in group.parts" :key="part.name">
+                <td class="hull-table__name">
+                  {{ humanizePart(part.name) }}
+                </td>
+                <td class="num">
+                  {{ toNumber(round(part.health), "integer") }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </Collapsed>
+
+    <div class="metrics-card__footer">
+      <span class="metrics-card__hint">
+        {{ t("labels.survivability.hint") }}
       </span>
     </div>
-
-    <div class="metrics-card__body">
-      <div class="metrics-card__hero">
-        <div class="metrics-card__tile metrics-card__tile--primary">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.survivability.totalHp") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(round(combinedHp), "integer") }}
-            <span class="metrics-card__tile__unit">HP</span>
-          </div>
-          <div class="metrics-card__tile__sub">
-            {{ t("labels.survivability.totalHpSub") }}
-          </div>
-        </div>
-        <div v-if="stats.hasData" class="metrics-card__tile">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.survivability.shieldHp") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(round(stats.totalHp), "integer") }}
-            <span class="metrics-card__tile__unit">HP</span>
-          </div>
-          <div class="metrics-card__tile__sub">
-            {{ toNumber(stats.totalRegen, "integer") }} HP/s ·
-            {{ toNumber(stats.shieldCount, "integer") }}×
-          </div>
-        </div>
-        <div v-if="hasHull" class="metrics-card__tile">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.survivability.hullHp") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(round(hullHealth ?? 0), "integer") }}
-            <span class="metrics-card__tile__unit">HP</span>
-          </div>
-          <div class="metrics-card__tile__sub">
-            {{ t("labels.survivability.hullHpSub") }}
-          </div>
-        </div>
-      </div>
-
-      <div v-if="ttk" class="ttk">
-        <span class="ttk__label">{{ t("labels.survivability.ttk") }}</span>
-        <span class="ttk__value">~{{ toNumber(round(ttk), "integer") }}s</span>
-        <span class="ttk__note">{{ t("labels.survivability.ttkSub") }}</span>
-      </div>
-
-      <template v-if="effectiveHp.length">
-        <div class="metrics-card__section-label">
-          {{ t("labels.survivability.effectiveHp") }}
-        </div>
-        <div class="ehp">
-          <div v-for="entry in effectiveHp" :key="entry.key" class="ehp__item">
-            <span class="ehp__swatch" :style="{ background: entry.color }" />
-            <span class="ehp__label">{{ t(entry.label) }}</span>
-            <span class="ehp__value">
-              {{ toNumber(round(entry.value), "integer") }}
-            </span>
-          </div>
-        </div>
-      </template>
-
-      <template v-if="stats.resistances.length">
-        <div class="metrics-card__section-label">
-          {{ t("labels.survivability.resistances") }}
-        </div>
-        <div class="resist">
-          <div
-            v-for="resistance in stats.resistances"
-            :key="resistance.key"
-            class="resist__row"
-          >
-            <span class="resist__label">{{ t(resistance.label) }}</span>
-            <div class="resist__track">
-              <div
-                class="resist__fill"
-                :data-type="resistance.key"
-                :style="{ width: `${resistance.value * 100}%` }"
-              />
-            </div>
-            <span class="resist__value">
-              {{ toNumber(round(resistance.value * 100), "integer") }}%
-            </span>
-          </div>
-        </div>
-      </template>
-
-      <template v-if="hullComposition.length">
-        <div class="metrics-card__section-label">
-          {{ t("labels.survivability.hullComposition") }}
-        </div>
-        <CompositionBar
-          :segments="hullComposition"
-          :highlighted="hoveredCategory"
-          @highlight="hoveredCategory = $event"
-        />
-      </template>
-
-      <div v-if="hullParts.length" class="metrics-card__actions">
-        <button
-          type="button"
-          class="metrics-card__toggle"
-          @click="expanded = !expanded"
-        >
-          {{
-            expanded
-              ? t("labels.survivability.hideParts")
-              : t("labels.survivability.showParts")
-          }}
-        </button>
-      </div>
-
-      <Collapsed :visible="expanded" :duration="200">
-        <div class="metrics-card__breakdown">
-          <div
-            v-for="group in partGroups"
-            :key="group.category"
-            class="hull-group"
-            @mouseenter="hoveredCategory = group.category"
-            @mouseleave="hoveredCategory = null"
-          >
-            <div class="hull-group__header">
-              <span class="hull-group__label">
-                <span
-                  class="hull-group__swatch"
-                  :style="{ background: CATEGORY_COLORS[group.category] }"
-                />
-                {{ t(group.label) }}
-              </span>
-              <span class="hull-group__meta">
-                {{ group.parts.length }} ·
-                {{ toNumber(round(group.total), "integer") }} HP
-              </span>
-            </div>
-            <table class="hull-table">
-              <tbody>
-                <tr v-for="part in group.parts" :key="part.name">
-                  <td class="hull-table__name">
-                    {{ humanizePart(part.name) }}
-                  </td>
-                  <td class="num">
-                    {{ toNumber(round(part.health), "integer") }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </Collapsed>
-
-      <div class="metrics-card__footer">
-        <span class="metrics-card__hint">
-          {{ t("labels.survivability.hint") }}
-        </span>
-      </div>
-    </div>
-  </div>
+  </MetricsCard>
 </template>
 
 <style lang="scss" scoped>

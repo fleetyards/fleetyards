@@ -37,6 +37,10 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.0
+    },
     "pellets_per_shot": 1,
     "speed": 700.0,
     "range": 2100.0,

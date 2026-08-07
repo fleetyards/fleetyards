@@ -8,6 +8,7 @@ export default {
 import type { Hardpoint } from "@/services/fyApi";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useLoadoutStats,
@@ -24,7 +25,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t, toNumber } = useI18n();
 
-const stats = useLoadoutStats(() => props.hardpoints);
+const weaponPoolSize = inject<Ref<number | undefined>>(
+  "weaponPoolSize",
+  ref(undefined),
+);
+
+const stats = useLoadoutStats(
+  () => props.hardpoints,
+  () => toValue(weaponPoolSize),
+);
 
 const round = (value: number) => Math.round(value);
 
@@ -64,127 +73,123 @@ const damageMeta = Object.fromEntries(
 </script>
 
 <template>
-  <div v-if="stats.hasData" class="metrics-card combat-panel">
-    <div class="metrics-card__head">
-      <span class="metrics-card__title">
-        <span class="metrics-card__dot" />
-        {{ t("labels.combat.title") }}
+  <MetricsCard
+    v-if="stats.hasData"
+    :title="t('labels.combat.title')"
+    class="combat-panel"
+  >
+    <div class="metrics-card__hero">
+      <div class="metrics-card__tile metrics-card__tile--primary">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.combat.dps") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(round(stats.dps.total), "integer") }}
+          <span class="metrics-card__tile__unit">DPS</span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.combat.dpsSub", { count: stats.weaponCount }) }}
+        </div>
+      </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.combat.sustained") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(round(stats.sustainedDps.total), "integer") }}
+          <span class="metrics-card__tile__unit">DPS</span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.combat.sustainedSub") }}
+        </div>
+      </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.combat.alpha") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(round(stats.alpha.total), "integer") }}
+          <span class="metrics-card__tile__unit">DMG</span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.combat.alphaSub") }}
+        </div>
+      </div>
+    </div>
+
+    <div v-if="stats.missileDamage" class="metrics-card__aux">
+      <span class="metrics-card__aux-label">
+        {{ t("labels.combat.missileDamage") }}
+      </span>
+      <span class="metrics-card__aux-value">
+        {{ toNumber(round(stats.missileDamage), "integer") }}
       </span>
     </div>
 
-    <div class="metrics-card__body">
-      <div class="metrics-card__hero">
-        <div class="metrics-card__tile metrics-card__tile--primary">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.combat.dps") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(round(stats.dps.total), "integer") }}
-            <span class="metrics-card__tile__unit">DPS</span>
-          </div>
-          <div class="metrics-card__tile__sub">
-            {{ t("labels.combat.dpsSub") }}
-          </div>
-        </div>
-        <div class="metrics-card__tile">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.combat.sustained") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(round(stats.sustainedDps.total), "integer") }}
-            <span class="metrics-card__tile__unit">DPS</span>
-          </div>
-          <div class="metrics-card__tile__sub">
-            {{ t("labels.combat.sustainedSub") }}
-          </div>
-        </div>
-        <div class="metrics-card__tile">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.combat.alpha") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(round(stats.alpha.total), "integer") }}
-            <span class="metrics-card__tile__unit">DMG</span>
-          </div>
-          <div class="metrics-card__tile__sub">
-            {{ t("labels.combat.alphaSub") }}
-          </div>
-        </div>
-        <div class="metrics-card__tile">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.combat.weapons") }}
-          </div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(stats.weaponCount, "integer") }}
-          </div>
-        </div>
-      </div>
-
-      <div class="metrics-card__section-label">
-        {{ t("labels.combat.composition") }}
-      </div>
-      <CompositionBar
-        :segments="composition"
-        :highlighted="hoveredType"
-        @highlight="hoveredType = $event"
-      />
-
-      <div class="metrics-card__actions">
-        <button
-          type="button"
-          class="metrics-card__toggle"
-          @click="expanded = !expanded"
-        >
-          {{
-            expanded
-              ? t("labels.combat.hideBreakdown")
-              : t("labels.combat.showBreakdown")
-          }}
-        </button>
-      </div>
-
-      <Collapsed :visible="expanded" :duration="200">
-        <div class="metrics-card__breakdown">
-          <table class="weapon-table">
-            <thead>
-              <tr>
-                <th>{{ t("labels.combat.weaponName") }}</th>
-                <th class="num">{{ t("labels.combat.size") }}</th>
-                <th class="num">{{ t("labels.combat.burstShort") }}</th>
-                <th class="num">{{ t("labels.combat.sustainedShort") }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="weapon in stats.weapons" :key="weapon.id">
-                <td class="weapon-table__name">
-                  <span
-                    class="weapon-table__type"
-                    :style="{ background: damageMeta[weapon.type]?.color }"
-                    :title="t(damageMeta[weapon.type]?.label)"
-                  />
-                  {{ weapon.name }}
-                </td>
-                <td class="num">
-                  <span v-if="weapon.size">S{{ weapon.size }}</span>
-                  <span v-else>—</span>
-                </td>
-                <td class="num">
-                  {{ toNumber(round(weapon.dps), "integer") }}
-                </td>
-                <td class="num">
-                  {{ toNumber(round(weapon.sustainedDps), "integer") }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </Collapsed>
-
-      <div class="metrics-card__footer">
-        <span class="metrics-card__hint">{{ t("labels.combat.hint") }}</span>
-      </div>
+    <div class="metrics-card__section-label">
+      {{ t("labels.combat.composition") }}
     </div>
-  </div>
+    <CompositionBar
+      :segments="composition"
+      :highlighted="hoveredType"
+      @highlight="hoveredType = $event"
+    />
+
+    <div class="metrics-card__actions">
+      <button
+        type="button"
+        class="metrics-card__toggle"
+        @click="expanded = !expanded"
+      >
+        {{
+          expanded
+            ? t("labels.combat.hideBreakdown")
+            : t("labels.combat.showBreakdown")
+        }}
+      </button>
+    </div>
+
+    <Collapsed :visible="expanded" :duration="200">
+      <div class="metrics-card__breakdown">
+        <table class="weapon-table">
+          <thead>
+            <tr>
+              <th>{{ t("labels.combat.weaponName") }}</th>
+              <th class="num">{{ t("labels.combat.size") }}</th>
+              <th class="num">{{ t("labels.combat.burstShort") }}</th>
+              <th class="num">{{ t("labels.combat.sustainedShort") }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="weapon in stats.weapons" :key="weapon.id">
+              <td class="weapon-table__name">
+                <span
+                  class="weapon-table__type"
+                  :style="{ background: damageMeta[weapon.type]?.color }"
+                  :title="t(damageMeta[weapon.type]?.label)"
+                />
+                {{ weapon.name }}
+              </td>
+              <td class="num">
+                <span v-if="weapon.size">S{{ weapon.size }}</span>
+                <span v-else>—</span>
+              </td>
+              <td class="num">
+                {{ toNumber(round(weapon.dps), "integer") }}
+              </td>
+              <td class="num">
+                {{ toNumber(round(weapon.sustainedDps), "integer") }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </Collapsed>
+
+    <div class="metrics-card__footer">
+      <span class="metrics-card__hint">{{ t("labels.combat.hint") }}</span>
+    </div>
+  </MetricsCard>
 </template>
 
 <style lang="scss" scoped>

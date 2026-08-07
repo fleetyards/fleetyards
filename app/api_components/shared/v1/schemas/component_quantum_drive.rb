@@ -10,6 +10,7 @@ module Shared
           type: :object,
           properties: {
             quantumFuelRequirement: {type: :number},
+            quantumFuelConsumption: {type: :number},
             jumpRange: {type: :number},
             disconnectRange: {type: :number},
             driveSpeed: {type: :number},

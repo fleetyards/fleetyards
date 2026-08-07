@@ -69,6 +69,10 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.0
+    },
     "speed": 0.0,
     "range": 0.0,
     "max_ammo": 0

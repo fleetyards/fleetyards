@@ -5,8 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useI18n } from "@/shared/composables/useI18n";
-
 type Props = {
   size?: number;
 };
@@ -14,14 +12,10 @@ type Props = {
 withDefaults(defineProps<Props>(), {
   size: undefined,
 });
-
-const { t } = useI18n();
 </script>
 
 <template>
-  <div v-if="size" class="hardpoint-item__size">
-    {{ t("labels.hardpoint.size") }} {{ size }}
-  </div>
+  <div v-if="size" class="hardpoint-item__size">S{{ size }}</div>
 </template>
 
 <style lang="scss" scoped>

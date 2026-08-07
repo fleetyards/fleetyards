@@ -35,6 +35,14 @@ provide(
   computed(() => props.model.slug),
 );
 
+provide(
+  "quantumFuelTankSize",
+  computed(() => props.model.metrics?.quantumFuelTankSize),
+);
+
+const density = ref<"compact" | "expanded">("compact");
+provide("hardpointDensity", density);
+
 const { t } = useI18n();
 
 const erkulUrl = computed(() => {
@@ -88,6 +96,19 @@ const {
 
 const combatStats = useLoadoutStats(
   () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+  () => props.model.metrics?.weaponPoolSize,
+);
+
+provide(
+  "weaponPoolSize",
+  computed(() => props.model.metrics?.weaponPoolSize),
+);
+
+// The loadout-wide weapon-power throttle, so per-weapon rows show the same
+// sustained factor the Combat card totals from.
+provide(
+  "weaponPowerRatio",
+  computed(() => combatStats.value.weaponPowerRatio),
 );
 
 const shieldStats = useShieldStats(
@@ -116,7 +137,7 @@ const shieldStats = useShieldStats(
           </Btn>
         </BtnGroup>
       </div>
-      <div class="flex justify-end">
+      <div class="flex justify-end hardpoints__toolbar">
         <BtnGroup>
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"
@@ -140,7 +161,10 @@ const shieldStats = useShieldStats(
       <ModelRefuelBoom :model="model" />
       <div
         v-if="
-          combatStats.hasData || shieldStats.hasData || model.metrics.hullHealth
+          source === HardpointSourceEnum.GAME_FILES &&
+          (combatStats.hasData ||
+            shieldStats.hasData ||
+            model.metrics.hullHealth)
         "
         class="row combat-row"
       >
@@ -153,6 +177,39 @@ const shieldStats = useShieldStats(
             :hull-health="model.metrics.hullHealth"
             :hull-parts="model.metrics.hullParts"
           />
+        </div>
+      </div>
+      <div v-if="hardpoints?.length" class="hardpoints__viewbar">
+        <span class="hardpoints__viewbar-label">
+          {{ t("labels.hardpoint.density.title") }}
+        </span>
+        <div
+          class="hardpoints__seg"
+          role="tablist"
+          :aria-label="t('labels.hardpoint.density.title')"
+        >
+          <button
+            type="button"
+            class="hardpoints__seg-btn"
+            :class="{
+              'hardpoints__seg-btn--active': density === 'compact',
+            }"
+            :aria-pressed="density === 'compact'"
+            @click="density = 'compact'"
+          >
+            {{ t("labels.hardpoint.density.compact") }}
+          </button>
+          <button
+            type="button"
+            class="hardpoints__seg-btn"
+            :class="{
+              'hardpoints__seg-btn--active': density === 'expanded',
+            }"
+            :aria-pressed="density === 'expanded'"
+            @click="density = 'expanded'"
+          >
+            {{ t("labels.hardpoint.density.expanded") }}
+          </button>
         </div>
       </div>
       <div v-if="hardpoints?.length" class="row">

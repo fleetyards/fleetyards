@@ -150,6 +150,7 @@ json.metrics do
     json.hull_parts model.hull_parts.map { |part| {name: part["name"], health: part["health"].to_f, category: part["category"]} }
   end
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
+  json.weapon_pool_size model.weapon_pool_size if model.weapon_pool_size.present?
   json.size model.size
   json.size_label model.size&.humanize
   json.dock_size model.dock_size
