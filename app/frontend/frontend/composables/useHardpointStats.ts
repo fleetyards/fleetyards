@@ -506,7 +506,9 @@ export const useHardpointStats = (
         );
       }
       if (cm.maxAmmo) {
-        result.push(stat("weapons.ammo", cm.maxAmmo as number, "integer"));
+        result.push(
+          stat("weapons.ammo", cm.maxAmmo as number, "integer", true),
+        );
       }
       if (cm.speed) {
         result.push(stat("weapons.speed", cm.speed as number, "weaponSpeed"));
@@ -516,29 +518,58 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.ARMOR) {
       const armor = typeData as Record<string, unknown>;
-      const armorTypes: [string, string][] = [
+      if (typeof armor.health === "number" && armor.health > 0) {
+        result.push(stat("armor.hp", armor.health, "integer", true));
+      }
+      // erkul-style damage reduction = 1 − the incoming-damage multiplier.
+      const reductionTypes: [string, string][] = [
         ["damagePhysical", "armor.physical"],
         ["damageEnergy", "armor.energy"],
         ["damageDistortion", "armor.distortion"],
         ["damageThermal", "armor.thermal"],
       ];
-      for (const [key, labelKey] of armorTypes) {
+      for (const [key, labelKey] of reductionTypes) {
+        const mult = armor[key];
+        if (typeof mult === "number" && mult < 1) {
+          result.push(resistanceStat(labelKey, 1 - mult));
+        }
+      }
+      const deflectTypes: [string, string][] = [
+        ["deflectionPhysical", "armor.deflectPhysical"],
+        ["deflectionEnergy", "armor.deflectEnergy"],
+      ];
+      for (const [key, labelKey] of deflectTypes) {
         const val = armor[key];
         if (typeof val === "number" && val > 0) {
-          result.push(resistanceStat(labelKey, val));
+          result.push(stat(labelKey, val, "integer"));
+        }
+      }
+      // Self-resistance: how the armor resists damage to itself (1 − multiplier;
+      // can be negative when a damage type is amplified, matching erkul).
+      const selfResistTypes: [string, string][] = [
+        ["selfResistancePhysical", "armor.selfPhysical"],
+        ["selfResistanceEnergy", "armor.selfEnergy"],
+      ];
+      for (const [key, labelKey] of selfResistTypes) {
+        const mult = armor[key];
+        if (typeof mult === "number" && mult !== 1) {
+          result.push(resistanceStat(labelKey, 1 - mult));
         }
       }
     } else if (category === HardpointCategoryEnum.FUEL_INTAKES) {
       const fi = typeData as Record<string, unknown>;
-      if (fi.fuelPushRate) {
-        result.push(
-          stat("fuelIntakes.pushRate", fi.fuelPushRate as number, "fuelRate"),
-        );
+      // Fuel rates are small fractions (e.g. 0.2, 2.5); format with toNumber
+      // directly — the shared `stat` helper integer-rounds, collapsing them to 0.
+      const fuelRate = (labelKey: string, value: number, primary = false) => ({
+        label: t(`labels.hardpoint.${labelKey}`),
+        value: String(toNumber(value, "fuelRate")),
+        primary,
+      });
+      if (typeof fi.fuelPushRate === "number" && fi.fuelPushRate > 0) {
+        result.push(fuelRate("fuelIntakes.pushRate", fi.fuelPushRate, true));
       }
-      if (fi.minimumRate) {
-        result.push(
-          stat("fuelIntakes.minRate", fi.minimumRate as number, "fuelRate"),
-        );
+      if (typeof fi.minimumRate === "number" && fi.minimumRate > 0) {
+        result.push(fuelRate("fuelIntakes.minRate", fi.minimumRate));
       }
     }
 

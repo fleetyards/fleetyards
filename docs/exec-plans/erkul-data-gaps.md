@@ -135,28 +135,44 @@ gimbal 80 °/s).
 - **Source:** mount / joint params in the item or vehicle XML.
 - **Have:** not parsed.
 
-## 5. Armor stats (P2, not parsed)
+## 5. Armor stats — DONE
 
-erkul Defense card: **Armor HP 23 760**, **deflection** (Phys 139 / Energy 88),
-**damage reduction** (Phys 30% / Energy 50%), **self-resistance** (Phys 19% /
-Energy -15%).
+erkul Defense card: **Armor HP**, **deflection** (Phys/Energy), **damage
+reduction** (Phys/Energy), **self-resistance** (Phys/Energy, can be negative).
 
-- **Source:** ship armor component (`SCItemVehicleArmorParams` or similar) in the
-  entity / implementation XML.
-- **Have:** we parse armor damage resistances for the ARMOR hardpoint category
-  (physical/energy/distortion/thermal %) but not the ship-level armor HP,
-  deflection, damage reduction, or self-resistance summary.
+- **Shipped:** the armor component parses **Health**, per-type **deflection**
+  (`SCItemVehicleArmorParams → armorDeflection`), the **damage-reduction**
+  multipliers (`damageMultiplier`, shown as `1 − mult`), and **self-resistance**
+  (`SHealthComponentParams → DamageResistances`, also `1 − mult` so amplified
+  types read negative). Armor rows headline HP and show all four.
 
-## 6. Emitted signatures + modifiers (P2, not parsed)
+## 6. Emitted signatures + modifiers (P2, mostly blocked on the power/heat sim)
 
 erkul: emitted **IR 8.4k / EM 31.2k / CS 30.4k** plus armor signature modifiers
 (EM/IR/CS +9%).
 
-- **Source:** component/entity signature params (power plant EM, IR emission,
-  cross-section) + armor signature multipliers.
-- **Have:** radar *detection* signatures only (the `signatureDetection`
-  sensitivities we already surface on RADAR). The ship's own *emitted* IR/EM/CS
-  is not parsed.
+**Spike (2026-08-07) — decoded from erkul's JS** (`chunk-FWWRRMGF.js`: `Ao`,
+`Ro`, `dr`, `pr`). erkul's `signature = {em, ir, crossSection:{x,y,z},
+armorModifier, sources[]}`:
+
+- **CS** = `vehicle.crossSection.{x,y,z} × armor.signalCrossSection`, and the UI
+  shows the **max axis**. Source data is static:
+  `crossSectionParams → SSCSignatureSystemManualCrossSectionParams → crossSection`
+  (Asgard 20139/7624/27912; max 27912 × ~1.09 armor ≈ erkul's 30.4k). **Clean +
+  implementable.**
+- **EM** (`dr`) = Σ each component's `emNominal` (its resource `Online`-state
+  `signature.em.nominal`) **scaled by the live power allocation** — only
+  `poweredOn` components, weighted by `activeSegments`, power-range modifiers,
+  then × armor EM multiplier.
+- **IR** (`pr`) = Σ `irNominal × (activeSegments/units) × power-range modifier ×
+  ship coolingRatio × armor IR multiplier`.
+
+**Verdict:** EM/IR are live functions of the **power-allocation + heat
+simulation** we don't have (same blocker as §1 sustained DPS). Faithful EM/IR
+needs that subsystem — not a gap-fill. **Only CS is cleanly deliverable.**
+
+- **Have:** radar *detection* signatures (RADAR); armor signal multipliers
+  (parsed on the armor component).
 
 ## 7. Countermeasures counts (P3, may partly have)
 
