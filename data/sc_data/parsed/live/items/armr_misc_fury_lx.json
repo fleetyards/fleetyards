@@ -23,6 +23,10 @@
   },
   "type_data": {
     "health": 550.0,
+    "self_resistance_physical": 1.0,
+    "self_resistance_energy": 1.35,
+    "self_resistance_distortion": 1.0,
+    "self_resistance_thermal": 1.0,
     "damage_physical": 0.85,
     "damage_energy": 0.7,
     "damage_distortion": 1.0,
