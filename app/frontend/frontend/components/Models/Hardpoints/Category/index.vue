@@ -33,6 +33,10 @@ import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import type { ComponentPowerPlant } from "@/services/fyApi";
+import {
+  powerPlantContextKey,
+  type PowerPlantContext,
+} from "@/frontend/components/Models/Hardpoints/powerPlant";
 
 type Props = {
   hardpoints: Hardpoint[];
@@ -43,24 +47,42 @@ const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
 
-const powerPips = computed(() => {
+const powerPlantContext = computed<PowerPlantContext | null>(() => {
   if (props.category !== HardpointCategoryEnum.POWERPLANT) return null;
 
   const plants = props.hardpoints
     .map((hp) => hp.component)
     .filter((c) => c?.typeData && "powerBase" in c.typeData && c.size);
 
-  const n = plants.length;
-  if (n === 0) return null;
+  if (plants.length === 0) return null;
+
+  return {
+    count: plants.length,
+    sizeSum: plants.reduce((sum, c) => sum + Number(c!.size), 0),
+  };
+});
+
+// Each plant item resolves its own pip share from this ship-level context.
+provide(powerPlantContextKey, powerPlantContext);
+
+const powerPips = computed(() => {
+  const context = powerPlantContext.value;
+  if (!context) return null;
+
+  const plants = props.hardpoints
+    .map((hp) => hp.component)
+    .filter((c) => c?.typeData && "powerBase" in c.typeData && c.size);
 
   const baseSegments = plants.reduce(
     (sum, c) =>
-      sum + Math.round((c!.typeData as ComponentPowerPlant).powerBase! / n),
+      sum +
+      Math.round(
+        (c!.typeData as ComponentPowerPlant).powerBase! / context.count,
+      ),
     0,
   );
-  const sizeSum = plants.reduce((sum, c) => sum + Number(c!.size), 0);
 
-  return baseSegments + (n - 1) * sizeSum;
+  return baseSegments + (context.count - 1) * context.sizeSum;
 });
 
 const modelSlug = inject<ComputedRef<string> | undefined>(

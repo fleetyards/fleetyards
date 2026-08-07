@@ -12,6 +12,10 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
+import {
+  powerPlantContextKey,
+  powerPlantPips,
+} from "@/frontend/components/Models/Hardpoints/powerPlant";
 
 export type HardpointStat = {
   label: string;
@@ -43,6 +47,10 @@ export const useHardpointStats = (
     "weaponPowerRatio",
     undefined,
   );
+
+  // Ship-level power-plant context (plant count + size sum), provided by the
+  // power-plant Category, so each plant can show its own pip share.
+  const powerPlantContext = inject(powerPlantContextKey, undefined);
 
   const stat = (
     labelKey: string,
@@ -315,6 +323,17 @@ export const useHardpointStats = (
       if (pp.powerBase) {
         result.push(
           stat("powerPlants.output", pp.powerBase, "powerOutput", true),
+        );
+      }
+      const context = toValue(powerPlantContext);
+      const size = Number(hp.component?.size);
+      if (pp.powerBase && context && size) {
+        result.push(
+          stat(
+            "powerPlants.pips",
+            powerPlantPips(pp.powerBase, size, context),
+            "powerPips",
+          ),
         );
       }
     } else if (category === HardpointCategoryEnum.QUANTUMDRIVE) {
