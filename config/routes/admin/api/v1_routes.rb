@@ -3,6 +3,8 @@
 v1_admin_api_routes = lambda do
   resource :sessions, only: %i[create destroy]
 
+  get "resource-access-catalog", to: "resource_access_catalog#index"
+
   resources :admin_users, only: %i[index show create update destroy] do
     collection do
       get :me

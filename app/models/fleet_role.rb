@@ -41,15 +41,27 @@ class FleetRole < ApplicationRecord
     "fleet:roles:manage"
   ].freeze
 
+  PRIVILEGE_GROUPS = {
+    "fleet" => Fleet::AVAILABLE_PRIVILEGES,
+    "memberships" => FleetMembership::AVAILABLE_PRIVILEGES,
+    "invites" => FleetInviteUrl::AVAILABLE_PRIVILEGES,
+    "vehicles" => FleetVehicle::AVAILABLE_PRIVILEGES,
+    "roles" => FleetRole::AVAILABLE_PRIVILEGES,
+    "inventories" => FleetInventory::AVAILABLE_PRIVILEGES
+  }.freeze
+
+  def self.privilege_groups
+    PRIVILEGE_GROUPS.map do |key, privileges|
+      {
+        key: key,
+        privileges: privileges,
+        manage_privilege: privileges.find { |privilege| privilege.end_with?(":manage") }
+      }
+    end
+  end
+
   def self.all_available_privileges
-    [
-      Fleet::AVAILABLE_PRIVILEGES,
-      FleetMembership::AVAILABLE_PRIVILEGES,
-      FleetInviteUrl::AVAILABLE_PRIVILEGES,
-      FleetVehicle::AVAILABLE_PRIVILEGES,
-      FleetRole::AVAILABLE_PRIVILEGES,
-      FleetInventory::AVAILABLE_PRIVILEGES
-    ].flatten.uniq
+    PRIVILEGE_GROUPS.values.flatten.uniq
   end
 
   validates :name, uniqueness: {case_sensitive: false, scope: :fleet}, presence: true

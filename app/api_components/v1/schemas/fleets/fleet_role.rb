@@ -12,7 +12,7 @@ module V1
             id: {type: :string, format: :uuid},
             name: {type: :string},
             slug: {type: :string},
-            resourceAccess: {type: :array, items: {type: :string}}
+            resourceAccess: {type: :array, items: {"$ref": "#/components/schemas/FleetRoleResourceAccessEnum"}}
           },
           additionalProperties: false,
           required: %w[id name slug]

@@ -18,7 +18,6 @@ import FleetMembersList from "@/frontend/components/Fleets/MembersList/index.vue
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
-import { checkAccess } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   ChannelsEnum,
@@ -38,7 +37,6 @@ import {
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -51,12 +49,8 @@ const comlink = useComlink();
 
 const mobile = useMobile();
 
-const canManageInvites = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:memberships:read",
-    "fleet:memberships:manage",
-    "fleet:manage",
-  ]),
+const canManageInvites = computed(
+  () => props.membership?.capabilities?.readMembers ?? false,
 );
 
 const { isFeatureEnabled } = useFeatures();
@@ -221,7 +215,7 @@ const crumbs = computed(() => {
     <template #default="{ emptyVisible }">
       <FleetMembersList
         :members="memberItems"
-        :resource-access="resourceAccess"
+        :capabilities="props.membership?.capabilities"
         :empty-visible="emptyVisible"
       />
     </template>

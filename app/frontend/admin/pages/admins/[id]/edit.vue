@@ -10,7 +10,9 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import {
   type AdminUser,
   type AdminUserInput,
+  type AdminUserResourceAccessEnum,
   useUpdateAdminUser,
+  useResourceAccessCatalog,
   getAdminUsersQueryKey,
   getAdminUserQueryKey,
 } from "@/services/fyAdminApi";
@@ -56,6 +58,20 @@ const [passwordConfirmation, passwordConfirmationProps] = defineField(
   "passwordConfirmation",
 );
 const [superAdmin, superAdminProps] = defineField("superAdmin");
+const [resourceAccess] = defineField("resourceAccess");
+
+const { data: resourceAccessCatalog } = useResourceAccessCatalog();
+
+const hasPrivilege = (privilege: AdminUserResourceAccessEnum) =>
+  (resourceAccess.value ?? []).includes(privilege);
+
+const togglePrivilege = (privilege: AdminUserResourceAccessEnum) => {
+  const current = resourceAccess.value ?? [];
+
+  resourceAccess.value = current.includes(privilege)
+    ? current.filter((entry) => entry !== privilege)
+    : [...current, privilege];
+};
 
 const submitting = ref(false);
 
@@ -133,6 +149,34 @@ const handleCancel = async () => {
         />
       </div>
     </div>
+    <div v-if="!superAdmin && resourceAccessCatalog" class="resource-access">
+      <h3 class="resource-access-title">
+        {{ t("labels.admin.resourceAccess.title") }}
+      </h3>
+      <div class="resource-access-groups">
+        <div
+          v-for="group in resourceAccessCatalog"
+          :key="group.key"
+          class="resource-access-group"
+        >
+          <h4 class="resource-access-group-name">
+            {{ t(`labels.admin.resourceAccess.groups.${group.key}`) }}
+          </h4>
+          <label
+            v-for="privilege in group.privileges"
+            :key="privilege"
+            class="resource-access-item"
+          >
+            <input
+              type="checkbox"
+              :checked="hasPrivilege(privilege)"
+              @change="togglePrivilege(privilege)"
+            />
+            {{ t(`labels.admin.resourceAccess.privileges.${privilege}`) }}
+          </label>
+        </div>
+      </div>
+    </div>
     <FormActions
       :submitting="submitting"
       form-id="admin-admin-user-edit-form"
@@ -141,3 +185,34 @@ const handleCancel = async () => {
     />
   </form>
 </template>
+
+<style lang="scss" scoped>
+.resource-access {
+  margin-top: 20px;
+}
+
+.resource-access-title {
+  margin: 0 0 12px;
+}
+
+.resource-access-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.resource-access-group-name {
+  margin: 0 0 8px;
+  font-size: 0.9em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.resource-access-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+</style>
