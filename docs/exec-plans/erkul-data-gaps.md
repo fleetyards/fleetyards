@@ -208,16 +208,15 @@ damage type (composition) and per-weapon, but not by who controls the weapon.
 - **Source:** the hardpoint's control type is in the mount data (pilot vs
   turret); needs a group axis on the loadout-stats aggregation.
 
-## 12. Hull part classification (P2, not parsed)
+## 12. Hull part classification — DONE
 
 erkul: **Vital 2 (40 000 hp) / Secondary 9 (26 600 hp) / Breakable 6 (5 400 hp)
 / Subpart 2 (5 000 hp)**, 27 parts total.
 
-- **Source:** part damage-behavior flags in the vehicle implementation XML (the
-  same file the total `damageMax` sum already comes from — see
-  `project_hull_hp_source`).
-- **Have:** total hull HP + a summed `hullParts` breakdown; the vital / secondary
-  / breakable / subpart class split is not parsed.
+- **Shipped:** the parser classifies each part (`part_category`) and the model
+  exposes `hullParts[{name, health, category}]` with the vital / secondary /
+  breakable / subpart enum. The Survivability card renders the breakdown by
+  class (behind the "Show parts" toggle). Not a gap.
 
 ---
 
