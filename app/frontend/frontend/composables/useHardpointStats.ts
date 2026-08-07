@@ -174,7 +174,21 @@ export const useHardpointStats = (
         }
       } else if ("trackingSignal" in typeData) {
         if (weapon.damagePerShot) {
-          addDamageBreakdown(result, weapon.damagePerShot);
+          // Lead with total payload damage as the key metric; only spell out the
+          // per-type split when the warhead actually mixes damage types.
+          const entries = Object.entries(weapon.damagePerShot).filter(
+            ([, value]) => typeof value === "number" && value > 0,
+          );
+          const total = entries.reduce(
+            (sum, [, value]) => sum + (value as number),
+            0,
+          );
+          if (total) {
+            result.push(stat("missiles.damage", total, "damage", true));
+          }
+          if (entries.length > 1) {
+            addDamageBreakdown(result, weapon.damagePerShot);
+          }
         }
         if (weapon.speed) {
           result.push(stat("missiles.speed", weapon.speed, "missileSpeed"));
