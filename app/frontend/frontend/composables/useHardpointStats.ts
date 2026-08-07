@@ -320,6 +320,10 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.POWERPLANT) {
       const pp = typeData as ComponentPowerPlant;
+      // Output is a per-plant rating, so it stays as-is even on a stacked row.
+      // Pips are a ship-pool contribution, so they sum across the stack (the
+      // total the category header used to show).
+      const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
       if (pp.powerBase) {
         result.push(
           stat("powerPlants.output", pp.powerBase, "powerOutput", true),
@@ -331,7 +335,7 @@ export const useHardpointStats = (
         result.push(
           stat(
             "powerPlants.pips",
-            powerPlantPips(pp.powerBase, size, context),
+            powerPlantPips(pp.powerBase, size, context) * stackCount,
             "powerPips",
           ),
         );
