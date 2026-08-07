@@ -32,7 +32,6 @@ import missilesIconUrl from "@/images/hardpoints/missiles.svg";
 import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
-import type { ComponentPowerPlant } from "@/services/fyApi";
 import {
   powerPlantContextKey,
   type PowerPlantContext,
@@ -45,7 +44,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toNumber } = useI18n();
+const { t } = useI18n();
 
 const powerPlantContext = computed<PowerPlantContext | null>(() => {
   if (props.category !== HardpointCategoryEnum.POWERPLANT) return null;
@@ -64,26 +63,6 @@ const powerPlantContext = computed<PowerPlantContext | null>(() => {
 
 // Each plant item resolves its own pip share from this ship-level context.
 provide(powerPlantContextKey, powerPlantContext);
-
-const powerPips = computed(() => {
-  const context = powerPlantContext.value;
-  if (!context) return null;
-
-  const plants = props.hardpoints
-    .map((hp) => hp.component)
-    .filter((c) => c?.typeData && "powerBase" in c.typeData && c.size);
-
-  const baseSegments = plants.reduce(
-    (sum, c) =>
-      sum +
-      Math.round(
-        (c!.typeData as ComponentPowerPlant).powerBase! / context.count,
-      ),
-    0,
-  );
-
-  return baseSegments + (context.count - 1) * context.sizeSum;
-});
 
 const modelSlug = inject<ComputedRef<string> | undefined>(
   "modelSlug",
@@ -184,9 +163,6 @@ const icons = {
       />
       <span class="hardpoint-category__name">
         {{ t(`labels.hardpoint.categories.${category}`) }}
-      </span>
-      <span v-if="powerPips" class="hardpoint-category__stat">
-        {{ toNumber(powerPips, "powerPips") }}
       </span>
       <Btn
         v-if="category === HardpointCategoryEnum.CARGOGRID && modelSlug"
