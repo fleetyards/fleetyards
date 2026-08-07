@@ -75,6 +75,14 @@
     "speed": 843.6,
     "range": 1349.8,
     "ammo_cost": 1,
-    "max_ammo": 0
+    "max_ammo": 0,
+    "regen": {
+      "max_ammo_load": 75.0,
+      "max_regen_per_second": 15.0,
+      "cost_per_bullet": 440.0,
+      "regeneration_cooldown": 0.364,
+      "requested_regen_per_second": 2566.67,
+      "requested_ammo_load": 15400.0
+    }
   }
 }

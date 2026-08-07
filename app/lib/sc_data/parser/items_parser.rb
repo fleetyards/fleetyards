@@ -438,6 +438,28 @@ module ScData
               type_data[:overcharge_time] = charged["overchargeTime"]&.to_f
             end
 
+            regen = weapon_data.dig("weaponRegenConsumerParams", "SWeaponRegenConsumerParams")
+            if regen.present?
+              type_data[:regen] = {
+                max_ammo_load: regen["maxAmmoLoad"]&.to_f,
+                max_regen_per_second: regen["maxRegenPerSec"]&.to_f,
+                cost_per_bullet: regen["regenerationCostPerBullet"]&.to_f,
+                regeneration_cooldown: regen["regenerationCooldown"]&.to_f,
+                requested_regen_per_second: regen["requestedRegenPerSec"]&.to_f,
+                requested_ammo_load: regen["requestedAmmoLoad"]&.to_f
+              }.compact
+            end
+
+            heat = weapon_data.dig("connectionParams", "simplifiedHeatParams", "SWeaponSimplifiedHeatParams")
+            if heat.present?
+              type_data[:heat] = {
+                overheat_temperature: heat["overheatTemperature"]&.to_f,
+                cooling_per_second: heat["coolingPerSecond"]&.to_f,
+                time_till_cooling_starts: heat["timeTillCoolingStarts"]&.to_f,
+                overheat_fix_time: heat["overheatFixTime"]&.to_f
+              }.compact
+            end
+
             item[:type_data] = type_data.compact
           end
         end

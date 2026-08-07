@@ -111,6 +111,53 @@ describe("computeLoadoutStats", () => {
     expect(stats.dps.total).toBeCloseTo(175);
   });
 
+  it("has no sustained penalty when a weapon lacks regen and heat data", () => {
+    const stats = computeLoadoutStats([
+      weaponHardpoint({ fireRate: 60, damagePerShot: { energy: 100 } }),
+    ]);
+
+    expect(stats.dps.total).toBeCloseTo(100);
+    expect(stats.sustainedDps.total).toBeCloseTo(100);
+    expect(stats.weapons[0].sustainedDps).toBeCloseTo(100);
+  });
+
+  it("applies the energy-pool duty cycle to sustained DPS", () => {
+    // pool 10 empties in 10s at 1 shot/s; refills at 5/s → 2s; no cooldown.
+    // ratio = 10 / (10 + 0 + 2) = 0.8333
+    const stats = computeLoadoutStats([
+      weaponHardpoint({
+        fireRate: 60,
+        damagePerShot: { energy: 100 },
+        regen: {
+          maxAmmoLoad: 10,
+          maxRegenPerSecond: 5,
+          regenerationCooldown: 0,
+        },
+      }),
+    ]);
+
+    expect(stats.dps.energy).toBeCloseTo(100);
+    expect(stats.sustainedDps.energy).toBeCloseTo(83.333, 2);
+  });
+
+  it("applies the overheat duty cycle to sustained DPS for ballistics", () => {
+    // 10 heat/s reaches 100 in 10s; 10s overheat lockout → ratio 0.5
+    const stats = computeLoadoutStats([
+      weaponHardpoint({
+        fireRate: 60,
+        heatPerShot: 10,
+        damagePerShot: { physical: 100 },
+        heat: {
+          overheatTemperature: 100,
+          overheatFixTime: 10,
+        },
+      }),
+    ]);
+
+    expect(stats.dps.physical).toBeCloseTo(100);
+    expect(stats.sustainedDps.physical).toBeCloseTo(50);
+  });
+
   it("returns a per-weapon list sorted by DPS descending", () => {
     const stats = computeLoadoutStats([
       weaponHardpoint({ fireRate: 60, damagePerShot: { energy: 100 } }, [], {

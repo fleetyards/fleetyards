@@ -88,6 +88,18 @@ const damageMeta = Object.fromEntries(
         </div>
         <div class="metrics-card__tile">
           <div class="metrics-card__tile__label">
+            {{ t("labels.combat.sustained") }}
+          </div>
+          <div class="metrics-card__tile__value">
+            {{ toNumber(round(stats.sustainedDps.total), "integer") }}
+            <span class="metrics-card__tile__unit">DPS</span>
+          </div>
+          <div class="metrics-card__tile__sub">
+            {{ t("labels.combat.sustainedSub") }}
+          </div>
+        </div>
+        <div class="metrics-card__tile">
+          <div class="metrics-card__tile__label">
             {{ t("labels.combat.alpha") }}
           </div>
           <div class="metrics-card__tile__value">
@@ -138,7 +150,8 @@ const damageMeta = Object.fromEntries(
               <tr>
                 <th>{{ t("labels.combat.weaponName") }}</th>
                 <th class="num">{{ t("labels.combat.size") }}</th>
-                <th class="num">{{ t("labels.combat.dps") }}</th>
+                <th class="num">{{ t("labels.combat.burstShort") }}</th>
+                <th class="num">{{ t("labels.combat.sustainedShort") }}</th>
               </tr>
             </thead>
             <tbody>
@@ -157,6 +170,9 @@ const damageMeta = Object.fromEntries(
                 </td>
                 <td class="num">
                   {{ toNumber(round(weapon.dps), "integer") }}
+                </td>
+                <td class="num">
+                  {{ toNumber(round(weapon.sustainedDps), "integer") }}
                 </td>
               </tr>
             </tbody>

@@ -77,6 +77,12 @@
     "ammo_cost": 1,
     "max_ammo": 1500,
     "charge_time": 10.0,
-    "overcharge_time": 5.0
+    "overcharge_time": 5.0,
+    "heat": {
+      "overheat_temperature": 100.0,
+      "cooling_per_second": 2.0,
+      "time_till_cooling_starts": 1.0,
+      "overheat_fix_time": 5.0
+    }
   }
 }

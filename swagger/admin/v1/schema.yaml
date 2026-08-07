@@ -7615,6 +7615,34 @@ components:
           type: number
         overchargeTime:
           type: number
+        regen:
+          type: object
+          properties:
+            maxAmmoLoad:
+              type: number
+            maxRegenPerSecond:
+              type: number
+            costPerBullet:
+              type: number
+            regenerationCooldown:
+              type: number
+            requestedRegenPerSecond:
+              type: number
+            requestedAmmoLoad:
+              type: number
+          additionalProperties: false
+        heat:
+          type: object
+          properties:
+            overheatTemperature:
+              type: number
+            coolingPerSecond:
+              type: number
+            timeTillCoolingStarts:
+              type: number
+            overheatFixTime:
+              type: number
+          additionalProperties: false
       additionalProperties: false
       title: ComponentWeapon
     Components:
