@@ -12,6 +12,10 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
+import {
+  powerPlantContextKey,
+  powerPlantPips,
+} from "@/frontend/components/Models/Hardpoints/powerPlant";
 
 export type HardpointStat = {
   label: string;
@@ -43,6 +47,10 @@ export const useHardpointStats = (
     "weaponPowerRatio",
     undefined,
   );
+
+  // Ship-level power-plant context (plant count + size sum), provided by the
+  // power-plant Category, so each plant can show its own pip share.
+  const powerPlantContext = inject(powerPlantContextKey, undefined);
 
   const stat = (
     labelKey: string,
@@ -166,7 +174,21 @@ export const useHardpointStats = (
         }
       } else if ("trackingSignal" in typeData) {
         if (weapon.damagePerShot) {
-          addDamageBreakdown(result, weapon.damagePerShot);
+          // Lead with total payload damage as the key metric; only spell out the
+          // per-type split when the warhead actually mixes damage types.
+          const entries = Object.entries(weapon.damagePerShot).filter(
+            ([, value]) => typeof value === "number" && value > 0,
+          );
+          const total = entries.reduce(
+            (sum, [, value]) => sum + (value as number),
+            0,
+          );
+          if (total) {
+            result.push(stat("missiles.damage", total, "damage", true));
+          }
+          if (entries.length > 1) {
+            addDamageBreakdown(result, weapon.damagePerShot);
+          }
         }
         if (weapon.speed) {
           result.push(stat("missiles.speed", weapon.speed, "missileSpeed"));
@@ -312,9 +334,24 @@ export const useHardpointStats = (
       }
     } else if (category === HardpointCategoryEnum.POWERPLANT) {
       const pp = typeData as ComponentPowerPlant;
+      // Output is a per-plant rating, so it stays as-is even on a stacked row.
+      // Pips are a ship-pool contribution, so they sum across the stack (the
+      // total the category header used to show).
+      const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
       if (pp.powerBase) {
         result.push(
           stat("powerPlants.output", pp.powerBase, "powerOutput", true),
+        );
+      }
+      const context = toValue(powerPlantContext);
+      const size = Number(hp.component?.size);
+      if (pp.powerBase && context && size) {
+        result.push(
+          stat(
+            "powerPlants.pips",
+            powerPlantPips(pp.powerBase, size, context) * stackCount,
+            "powerPips",
+          ),
         );
       }
     } else if (category === HardpointCategoryEnum.QUANTUMDRIVE) {
@@ -446,8 +483,7 @@ export const useHardpointStats = (
         );
       }
       const sigs = radar.signatureDetection as
-        | Record<string, { sensitivity?: number }>
-        | undefined;
+        Record<string, { sensitivity?: number }> | undefined;
       if (sigs) {
         if (sigs.ir?.sensitivity != null) {
           result.push(resistanceStat("radar.ir", sigs.ir.sensitivity));
