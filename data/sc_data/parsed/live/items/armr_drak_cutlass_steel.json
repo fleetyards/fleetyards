@@ -22,11 +22,16 @@
     "health": 10935.0
   },
   "type_data": {
+    "health": 10935.0,
     "damage_physical": 0.7,
     "damage_energy": 0.5,
     "damage_distortion": 1.0,
     "damage_thermal": 1.0,
     "damage_biochemical": 1.0,
-    "damage_stun": 1.0
+    "damage_stun": 1.0,
+    "deflection_physical": 32.0,
+    "deflection_energy": 29.0,
+    "deflection_distortion": 0.0,
+    "deflection_thermal": 0.0
   }
 }
