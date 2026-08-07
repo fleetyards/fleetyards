@@ -14,6 +14,89 @@
     "base_expediting_fee": "5060"
   },
   "mass": 13000.0,
+  "hull_health": 16991.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 14500.0,
+      "category": "vital"
+    },
+    {
+      "name": "bar_front_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bar_front_right_cover",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_roof",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_right",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "fender_right_light",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_light_sheild_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bar_front",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_left",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "fender_left_light",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bar_front_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "bar_front_left_cover",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_light_sheild_right",
+      "health": 80.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_rear",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "head_light_sheild_right",
+      "health": 80.0,
+      "category": "subpart"
+    },
+    {
+      "name": "head_light_sheild_left",
+      "health": 80.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 8.75,
     "y": 6.0,

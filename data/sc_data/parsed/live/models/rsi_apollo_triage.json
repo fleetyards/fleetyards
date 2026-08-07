@@ -14,6 +14,329 @@
     "base_expediting_fee": "8970"
   },
   "mass": 630456.0,
+  "hull_health": 116700.0,
+  "hull_parts": [
+    {
+      "name": "geo_body",
+      "health": 33000.0,
+      "category": "vital"
+    },
+    {
+      "name": "dmg_belly_wing_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_belly_wing_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_antenna_top_center",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nose_antenna_inner_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nose_antenna_inner_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_Fuelport_Front_Door001",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_nose_left_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_nose_right_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_nose_bottom_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_nose_bottom_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nose_antenna_outer_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_nose_antenna_outer_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_wing_nose_bottom_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_wing_nose_bottom_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_nose_right_top_a",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_nose_left_top_a",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dmg_right_hull_top",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_right_hull_bottom_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_right_hull_bottom_a",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_rear",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dmg_tail_side_wings_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_tail_side_wings_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_rear_panel_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_rear_panel_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_antenna_top_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_antenna_top_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_bottom_center",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dmg_left_hull_top",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_left_hull_bottom_a",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_left_hull_bottom_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_mount_right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_antenna_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_nacelle_right_side",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_nacelle_right_bottom",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_nacelle_right_top",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_antenna_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_mount_left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nacelle_antenna_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_nacelle_left_top",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_nacelle_left_bottom",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_nacelle_left_side",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_tail_antenna_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_k",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_top_left_a",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_top_left_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_top_right_a",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_panel_top_right_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_a",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_b",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_c",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_d",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_e",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_f",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_g",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_h",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_j",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dmg_body_plates_i",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 73.0,
     "y": 54.0,

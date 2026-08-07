@@ -14,6 +14,119 @@
     "base_expediting_fee": "9200"
   },
   "mass": 171700.0,
+  "hull_health": 69300.0,
+  "hull_parts": [
+    {
+      "name": "nose",
+      "health": 10500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 18000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_wing_stabilizer_right",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_right",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_extra_right",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_wing_stabilizer_left",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_left",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_rear_wing_vertical_stabilizer_extra_left",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "humerus_base_e_left",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "humerus_left",
+      "health": 6000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ulna_left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_phalange_a_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_b_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_c_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_d_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "humerus_base_e_right",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "humerus_right",
+      "health": 6000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ulna_right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_phalange_a_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_b_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_c_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_phalange_d_right",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 32.0,
     "y": 34.0,

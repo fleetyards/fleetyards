@@ -14,6 +14,109 @@
     "base_expediting_fee": "2700"
   },
   "mass": 36527.0,
+  "hull_health": 7980.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 2000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Rear_Landing_Gear_Door_Left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear_Landing_Gear_Door_Bottom",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear_Landing_Gear_Door_Right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Engine_Left",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_Right",
+      "health": 1000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "intake_left",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "intake_right",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tailFlap_left",
+      "health": 40.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tailFlap_right",
+      "health": 40.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_left_attach",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_right_attach",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Nose",
+      "health": 400.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Front_Landing_Gear_Door_Center",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Front_Landing_Gear_Door_Left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Front_Landing_Gear_Door_Right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Cockpit_Canopy_Door",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "landing_gear_front_attach",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 16.75,
     "y": 15.25,

@@ -14,6 +14,229 @@
     "base_expediting_fee": "12940"
   },
   "mass": 500000.0,
+  "hull_health": 149819.0,
+  "hull_parts": [
+    {
+      "name": "geo_body",
+      "health": 45000.0,
+      "category": "vital"
+    },
+    {
+      "name": "geo_tail",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_front_sides",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_flap_upper_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_tip_left",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_turret_base_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_flap_lower_bot_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_flap_lower_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_hull_cover",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_hull_cover_underside",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_lower_sides",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_sides",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_side_panel_left",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_side_panel_right",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_alcove_tech",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_turret_lock_top",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_turret_barrier_top",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_track_spline_housing",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_flap_upper_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_wing_tip_right",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_flap_lower_bot_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_flap_lower_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_radar_unit",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_esc_pods_left",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_esc_pods_right",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_front_side_panel_left",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_body_front_side_panel_right",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_tail_right",
+      "health": 25000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_tail_fin_right",
+      "health": 1300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_small_tail_fin_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_tail_left",
+      "health": 25000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_tail_fin_left",
+      "health": 1300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_small_tail_fin_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_underside_plate_04_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_underside_plate_04_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_underside_plate_02_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_underside_plate_02_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_outer_panels_addon_06_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_outer_panels_addon_04_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_outer_panels_addon_03_left",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_outer_panels_addon_02_right",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_outer_panels_addon_01_left",
+      "health": 400.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 38.0,
     "y": 53.5,

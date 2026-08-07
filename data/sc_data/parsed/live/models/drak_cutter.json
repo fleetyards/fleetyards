@@ -14,6 +14,44 @@
     "base_expediting_fee": "2280"
   },
   "mass": 81677.0,
+  "hull_health": 17100.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 6500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_armour_top",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_r_geo",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debrisproxy_spoiler_left",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "debrisproxy_spoiler_right",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_l_geo",
+      "health": 3000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 16.0,
     "y": 20.0,

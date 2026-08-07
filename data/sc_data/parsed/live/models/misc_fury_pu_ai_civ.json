@@ -14,6 +14,84 @@
     "base_expediting_fee": "1483"
   },
   "mass": 13939.0,
+  "hull_health": 5830.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 750.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body_Top_Plate",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Front_Lower_Plate",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_Wing_Top_Left",
+      "health": 340.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_Slide_Top_Left",
+      "health": 340.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_Flap_Top_Left",
+      "health": 340.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_Wing_Top_Right",
+      "health": 340.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_Slide_Top_Right",
+      "health": 340.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_Flap_Top_Right",
+      "health": 340.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_Wing_Bottom_Left",
+      "health": 340.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_Slide_Bottom_Left",
+      "health": 340.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_Flap_Bottom_Left",
+      "health": 340.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_Wing_Bottom_Right",
+      "health": 340.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Mesh_Slide_Bottom_Right",
+      "health": 340.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Mesh_Flap_Bottom_Right",
+      "health": 340.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 5.4,
     "y": 7.0,

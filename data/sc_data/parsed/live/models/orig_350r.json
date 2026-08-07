@@ -14,6 +14,64 @@
     "base_expediting_fee": "4573"
   },
   "mass": 69677.0,
+  "hull_health": 8700.0,
+  "hull_parts": [
+    {
+      "name": "nose",
+      "health": 1900.0,
+      "category": "vital"
+    },
+    {
+      "name": "glass_canopy_front",
+      "health": 1500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 1900.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_left_bottom",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_b_left",
+      "health": 500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_left_top",
+      "health": 200.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_flap_left",
+      "health": 200.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right_bottom",
+      "health": 800.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_b_right",
+      "health": 500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_right_top",
+      "health": 200.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wing_flap_right",
+      "health": 200.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 17.0,
     "y": 27.0,

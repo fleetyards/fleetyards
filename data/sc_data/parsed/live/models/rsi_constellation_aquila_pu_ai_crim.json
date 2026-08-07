@@ -14,6 +14,284 @@
     "base_expediting_fee": "9171"
   },
   "mass": 386857.0,
+  "hull_health": 180844.0,
+  "hull_parts": [
+    {
+      "name": "RSI_Constellation_Aquila",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "neck",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose_TurretHousings",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 15000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "turbine_cover_wingl_bot_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingl_bot_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingl_bot_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingl_bot_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingl_top_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingl_top_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingl_top_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingl_top_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 15000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "turbine_cover_wingr_top_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingr_top_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingr_bot_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingr_bot_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingr_top_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingr_top_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingr_bot_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_wingr_bot_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_turret_door_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_turret_door_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_turret_door_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose_turret_door_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_lightgroup",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "misslerack_arm_body_left_arm",
+      "health": 1750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "misslerack_arm_body_right_arm",
+      "health": 1750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "misslerack_arm_tail_left_arm",
+      "health": 1750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_tower_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 15000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_tower_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 15000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "misslerack_arm_tail_right_arm",
+      "health": 1750.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nacelle_bottom_right",
+      "health": 15000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "turbine_cover_naceller_bot_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_naceller_bot_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_naceller_bot_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_naceller_bot_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_naceller_top_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_naceller_top_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_naceller_top_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_naceller_top_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_bottom_left",
+      "health": 15000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "turbine_cover_nacellel_bot_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_nacellel_bot_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_nacellel_bot_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_nacellel_bot_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_nacellel_top_front_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_nacellel_top_rear_out",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_nacellel_top_front_in",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "turbine_cover_nacellel_top_rear_in",
+      "health": 20.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 27.75,
     "y": 63.5,

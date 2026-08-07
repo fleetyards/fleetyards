@@ -14,6 +14,74 @@
     "base_expediting_fee": "3375"
   },
   "mass": 259270.5,
+  "hull_health": 67600.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 16500.0,
+      "category": "vital"
+    },
+    {
+      "name": "nose",
+      "health": 13500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear",
+      "health": 11700.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_left",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_right",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_base_left",
+      "health": 10400.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_geo_left",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_flap_geo_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_base_right",
+      "health": 10400.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_geo_right",
+      "health": 150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "vtol_flap_geo_right",
+      "health": 150.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 47.5,
     "y": 44.0,

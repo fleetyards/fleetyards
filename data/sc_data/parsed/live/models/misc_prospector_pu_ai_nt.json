@@ -14,6 +14,94 @@
     "base_expediting_fee": "3040"
   },
   "mass": 122096.0,
+  "hull_health": 34000.0,
+  "hull_parts": [
+    {
+      "name": "Nose",
+      "health": 13800.0,
+      "category": "vital"
+    },
+    {
+      "name": "Coupling_FR",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Basket_R",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Coupling_FL",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Basket_L",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose_Pipes",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_landinggear_front",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear",
+      "health": 13800.0,
+      "category": "vital"
+    },
+    {
+      "name": "Coupling_RL",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Coupling_RR",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Rear_Pipes",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_landinggear_left",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_landinggear_right",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_MainThruster_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_MainThruster_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_RetroThruster_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_RetroThruster_right",
+      "health": 200.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 16.5,
     "y": 26.5,

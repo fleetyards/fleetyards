@@ -14,6 +14,144 @@
     "base_expediting_fee": "4200"
   },
   "mass": 43540.37,
+  "hull_health": 89300.0,
+  "hull_parts": [
+    {
+      "name": "geo_body",
+      "health": 8100.0,
+      "category": "vital"
+    },
+    {
+      "name": "geo_body_shell_back",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_arm_rear_bottom_left",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_guardian_mx_wing_bottom_left",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_hinge_attach_left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_flap_01_wing_bottom_left",
+      "health": 1200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_flap_02_wing_bottom_left",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_lg_panel_b_front_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_arm_rear_top_a_left",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_guardian_mx_wing_top_left",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_flap_02_wing_top_left",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_arm_rear_top_a_right",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_guardian_mx_wing_top_right",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_flap_02_wing_top_right",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_wing_arm_rear_bottom_right",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_guardian_mx_wing_bottom_right",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_wing_hinge_attach_right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_flap_02_wing_bottom_right",
+      "health": 700.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_flap_01_wing_bottom_right",
+      "health": 1200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_lg_panel_b_front_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_thruster_arm_b_left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_c_left",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_b_right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_c_right",
+      "health": 6000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_body_top",
+      "health": 1900.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 5600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_nose_cap",
+      "health": 1200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 17.0,
     "y": 26.0,

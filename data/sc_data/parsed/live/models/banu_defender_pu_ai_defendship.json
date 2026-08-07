@@ -14,6 +14,44 @@
     "base_expediting_fee": "6168"
   },
   "mass": 119930.0,
+  "hull_health": 13800.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 3500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Pod",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Hull_Left",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Hull_Right",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Canopy_Left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Canopy_Right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Body_Panels_02",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 24.5,
     "y": 24.5,

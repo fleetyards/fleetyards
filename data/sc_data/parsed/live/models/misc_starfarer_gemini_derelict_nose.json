@@ -14,6 +14,44 @@
     "base_expediting_fee": "15995"
   },
   "mass": 200000.0,
+  "hull_health": 75800.0,
+  "hull_parts": [
+    {
+      "name": "nose",
+      "health": 31500.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 31500.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_back_right",
+      "health": 3600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "spoiler_mid",
+      "health": 1200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "leg_right",
+      "health": 2200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_back_left",
+      "health": 3600.0,
+      "category": "secondary"
+    },
+    {
+      "name": "leg_left",
+      "health": 2200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 48.5,
     "y": 102.0,

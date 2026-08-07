@@ -14,6 +14,74 @@
     "base_expediting_fee": "3000"
   },
   "mass": 120677.0,
+  "hull_health": 6700.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 5000.0,
+      "category": "vital"
+    },
+    {
+      "name": "geo_body_bottom_side_panel_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_bottom_side_panel_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_panel_cap_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_top_armour_left_01",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_top_armour_left_02",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_top_armour_right_01",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_top_girders",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_top_side_panel_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_body_top_side_panel_left001",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_engine_brace_bottom",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_side_tube_left_greeble",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_side_tube_right_greeble",
+      "health": 150.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 16.0,
     "y": 20.0,

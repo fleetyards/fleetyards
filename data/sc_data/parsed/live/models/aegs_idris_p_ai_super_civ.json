@@ -14,6 +14,109 @@
     "base_expediting_fee": "118580"
   },
   "mass": 37854373.0,
+  "hull_health": 15515000.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 3600000.0,
+      "category": "vital"
+    },
+    {
+      "name": "airlock_section",
+      "health": 375000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Idris_Thruster_Main_01_Left",
+      "health": 300000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Idris_Thruster_Main_01_Right",
+      "health": 300000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose",
+      "health": 2750000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Nose_VFX_Hack",
+      "health": 1000000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "walkway_left",
+      "health": 1000000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_engine_mount_left",
+      "health": 300000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Idris_Thruster_Main_02_Left",
+      "health": 200000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Bridge",
+      "health": 2150000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Idris_Thruster_Main_01_RearLeft",
+      "health": 300000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Idris_Thruster_Main_01_RearRight",
+      "health": 300000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 2150000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "escapepod_door_rear_left",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "escapepod_door_rear_right",
+      "health": 5000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "radar",
+      "health": 190000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_antennamount",
+      "health": 190000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "walkway_right",
+      "health": 100000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_engine_mount_right",
+      "health": 100000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Idris_Thruster_Main_02_Right",
+      "health": 200000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 127.0,
     "y": 243.0,

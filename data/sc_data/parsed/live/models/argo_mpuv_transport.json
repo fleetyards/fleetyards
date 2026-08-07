@@ -14,6 +14,34 @@
     "base_expediting_fee": "270"
   },
   "mass": 9210.0,
+  "hull_health": 5920.0,
+  "hull_parts": [
+    {
+      "name": "Nose",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Body",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "Cargo_Container_Exterior",
+      "health": 440.0,
+      "category": "vital"
+    },
+    {
+      "name": "Leg_Left",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Leg_Right",
+      "health": 240.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 9.0,
     "y": 10.5,

@@ -41,6 +41,7 @@ module ScData
               base_expediting_fee: values.dig("StaticEntityClassData", "SEntityInsuranceProperties", "shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            **extract_hull(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
@@ -93,6 +94,7 @@ module ScData
               base_expediting_fee: insurance.dig("shipInsuranceParams", "baseExpeditingFee")
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
+            **extract_hull(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
@@ -234,6 +236,58 @@ module ScData
         definition_data = extract_modification_definition(definition_data, modification_key)
 
         definition_data.dig("Vehicle", "Parts", "Part", "mass")&.to_f
+      end
+
+      # Hull health comes from the vehicle implementation XML's part tree. Each
+      # structural part carries a `damageMax`; the ItemPort parts (weapon/thruster
+      # mounts) are excluded, matching the hull HP erkul.games reports. Returns the
+      # per-part breakdown and their sum.
+      private def extract_hull(component_params)
+        definition_file_path = component_params.dig("vehicleDefinition")
+
+        return {} if definition_file_path.blank?
+
+        modification_key = component_params.dig("modification")
+
+        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+
+        definition_data = extract_modification_definition(definition_data, modification_key)
+
+        parts = collect_hull_parts(definition_data.dig("Vehicle", "Parts", "Part"))
+
+        return {} if parts.blank?
+
+        {
+          hull_health: parts.sum { |part| part[:health] },
+          hull_parts: parts
+        }
+      end
+
+      private def collect_hull_parts(node, parts = [])
+        case node
+        when Array
+          node.each { |value| collect_hull_parts(value, parts) }
+        when Hash
+          damage_max = node["damageMax"].to_f
+          if node["name"].present? && node["class"] != "ItemPort" && damage_max.positive?
+            parts << {name: node["name"], health: damage_max, category: part_category(node)}
+          end
+          collect_hull_parts(node.dig("Parts", "Part"), parts)
+        end
+
+        parts
+      end
+
+      # Mirrors the part grouping erkul.games shows: a part that triggers ship
+      # destruction is vital, a standalone detachable part is secondary, a
+      # structural part with sub-parts is breakable, and a leaf detail is a subpart.
+      private def part_category(node)
+        behaviors = Array.wrap(node.dig("DamageBehaviors", "DamageBehavior")).map { |behavior| behavior["class"] }
+
+        return "vital" if behaviors.include?("Group")
+        return "secondary" if behaviors.include?("DetachPart")
+
+        node["Parts"].present? ? "breakable" : "subpart"
       end
 
       private def extract_modification_definition(definition_data, modification_key)

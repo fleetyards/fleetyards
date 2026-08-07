@@ -14,6 +14,594 @@
     "base_expediting_fee": "8970"
   },
   "mass": 472368.0,
+  "hull_health": 72789.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 40000.0,
+      "category": "vital"
+    },
+    {
+      "name": "dbr_spoiler",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_wings_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_wings_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_middle_top_wing_large_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_middle_top_wing_large_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_middle_bottom_wing_large_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_middle_bottom_wing_large_left",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spindle",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_spindle_mainbar_00",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_mainbar_02",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_slider_base_rear_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_rear_top_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_04_rear_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_03_rear_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_rear_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_rear_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_04_rear_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_rear_top_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_02_rear_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_01_rear_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_rear_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_rear_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_02_rear_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_rear_bottom_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_04_rear_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_04_rear_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_03_rear_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_rear_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_rear_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_rear_bottom_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_02_rear_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_02_rear_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_01_rear_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_rear_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_rear_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_front_top_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_04_front_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_04_front_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_03_front_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_front_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_front_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_front_top_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_02_front_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_02_front_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_01_front_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_front_top_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_front_top_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_front_bottom_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_04_front_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_03_front_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_front_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_front_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_04_front_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_front_bottom_left",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_02_front_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_01_front_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_front_bottom_left",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_front_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_02_front_bottom_left",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_front_bottom_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_04_front_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_04_front_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_03_front_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_front_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_front_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_front_bottom_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_02_front_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_02_front_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_01_front_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_front_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_front_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_front_top_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_04_front_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_03_front_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_front_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_front_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_04_front_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_front_top_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_02_front_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_01_front_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_front_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_front_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_02_front_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_rear_bottom_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_04_rear_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_03_rear_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_rear_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_rear_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_04_rear_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_rear_bottom_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_bottom_02_rear_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_plate_arms_01_rear_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_rear_bottom_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_rear_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_02_rear_bottom_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_04_rear_top_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_04_rear_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_04_rear_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_03_rear_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_03_rear_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_03_rear_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_geo_hinge_02_rear_top_right",
+      "health": 1050.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_top_02_rear_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_02_rear_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_plate_arms_01_rear_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "anim_spindle_plate_01_rear_top_right",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "geo_spindle_plate_01_rear_top_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_plate_slider_base_rear_right",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_mainbar_03",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_mainbar_04",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_mainbar_05",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_mainbar_06",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_spindle_mainbar_07",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_rear_lower_wings_right",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_lower_wings_left",
+      "health": 100.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 16.7,
     "y": 71.0,

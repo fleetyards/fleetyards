@@ -14,6 +14,89 @@
     "base_expediting_fee": "1015"
   },
   "mass": 11972.0,
+  "hull_health": 25200.0,
+  "hull_parts": [
+    {
+      "name": "RSI_Ursa_Rover",
+      "health": 2000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Body",
+      "health": 13000.0,
+      "category": "vital"
+    },
+    {
+      "name": "wheel1",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel1_center",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel1_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel2",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel2_center",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel2_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel3",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel3_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel4",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel4_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel5",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel5_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel6",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "wheel6_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 8.75,
     "y": 6.0,

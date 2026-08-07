@@ -14,6 +14,119 @@
     "base_expediting_fee": "6910"
   },
   "mass": 130562.0,
+  "hull_health": 26350.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 6000.0,
+      "category": "vital"
+    },
+    {
+      "name": "dbr_cockpit_flap_l",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_face_grill",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_cockpit_flap_r",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_rear_top_vent_detail",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_top_details_01",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_long_bar_01",
+      "health": 70.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_long_bar_02",
+      "health": 70.0,
+      "category": "subpart"
+    },
+    {
+      "name": "engine_clamp",
+      "health": 4500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_mesh",
+      "health": 3000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_left_wing_tip_details_01",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_left_wing_tip_details_03",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "lg_headlight_lw",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nacelle_right_main_mesh",
+      "health": 5000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_mesh",
+      "health": 3500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_antenna_02_geo",
+      "health": 70.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_antenna_base_01",
+      "health": 70.0,
+      "category": "subpart"
+    },
+    {
+      "name": "lg_headlight_rw",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_tip_geo",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "dbr_antenna_base_04",
+      "health": 170.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_front_rail_door_geo",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "dbr_tail_bottom_part",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 18.0,
     "y": 26.5,

@@ -14,6 +14,119 @@
     "base_expediting_fee": "2535"
   },
   "mass": 68311.0,
+  "hull_health": 14100.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 2150.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_nose",
+      "health": 2150.0,
+      "category": "breakable"
+    },
+    {
+      "name": "cockpit_rim",
+      "health": 1600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "sub_frame",
+      "health": 2000.0,
+      "category": "secondary"
+    },
+    {
+      "name": "small_wing_left",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "small_wing_right",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right_Upper_Thruster_Shoulder",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right_Upper_Thruster_Elbow",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right_Upper_Thruster_Housing",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right_Upper",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Right_Lower_Thruster_Shoulder",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right_Lower_Thruster_Elbow",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right_Lower_Thruster_Housing",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Right_Lower",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left_Upper_Thruster_Shoulder",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left_Upper_Thruster_Elbow",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left_Upper_Thruster_Housing",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left_Upper",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Wing_Left_Lower_Thruster_Shoulder",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left_Lower_Thruster_Elbow",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left_Lower_Thruster_Housing",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left_Lower",
+      "health": 300.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 13.5,
     "y": 32.0,

@@ -9541,6 +9541,29 @@ components:
               type: number
             massLabel:
               type: string
+            hullHealth:
+              type: number
+            hullParts:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                  category:
+                    type: string
+                    enum:
+                    - vital
+                    - secondary
+                    - breakable
+                    - subpart
+                required:
+                - name
+                - health
+                - category
+                additionalProperties: false
             quantumFuelTankSize:
               type: number
             size:
@@ -9963,6 +9986,29 @@ components:
               type: number
             massLabel:
               type: string
+            hullHealth:
+              type: number
+            hullParts:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                  category:
+                    type: string
+                    enum:
+                    - vital
+                    - secondary
+                    - breakable
+                    - subpart
+                required:
+                - name
+                - health
+                - category
+                additionalProperties: false
             quantumFuelTankSize:
               type: number
             size:

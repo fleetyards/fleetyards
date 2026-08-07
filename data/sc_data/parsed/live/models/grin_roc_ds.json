@@ -14,6 +14,89 @@
     "base_expediting_fee": "1825"
   },
   "mass": 2000.0,
+  "hull_health": 13902.0,
+  "hull_parts": [
+    {
+      "name": "GRIN_ROC_DS",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rollcage_main",
+      "health": 2250.0,
+      "category": "vital"
+    },
+    {
+      "name": "light_bar",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "roof",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_frame",
+      "health": 250.0,
+      "category": "breakable"
+    },
+    {
+      "name": "windshield",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "bottom_hatch",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "top_hatch_front",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_FL",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_FL_assembly",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_FR",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_FR_assembly",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_wheel_RL",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_RR",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_ML",
+      "health": 1500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_MR",
+      "health": 1500.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 5.0,
     "y": 6.6,

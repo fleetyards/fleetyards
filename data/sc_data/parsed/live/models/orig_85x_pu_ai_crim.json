@@ -14,6 +14,24 @@
     "base_expediting_fee": "510"
   },
   "mass": 18993.5,
+  "hull_health": 2100.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 900.0,
+      "category": "vital"
+    },
+    {
+      "name": "wing_left",
+      "health": 600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right",
+      "health": 600.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 14.0,
     "y": 13.5,

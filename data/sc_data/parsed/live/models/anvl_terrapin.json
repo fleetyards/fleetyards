@@ -14,6 +14,129 @@
     "base_expediting_fee": "3940"
   },
   "mass": 149850.0,
+  "hull_health": 173201.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Front_left_leg",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_main_thruster_base_left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "terrapin_thruster_main_front_left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Body_Bottom",
+      "health": 15000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose",
+      "health": 20000.0,
+      "category": "vital"
+    },
+    {
+      "name": "fuelport_inflight_housing",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail",
+      "health": 20000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Leg_rear_right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_Main_thruster_base_right",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_right_Main_Thruster_wing_top",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_right_Main_Thruster_wing_bot",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "terrapin_thruster_main_rear_right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Leg_rear_Left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_main_thruster_base_left",
+      "health": 1000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "rear_left_Main_Thruster_wing_top",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_left_Main_Thruster_wing_bot",
+      "health": 3000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "terrapin_thruster_main_rear_left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Flap_Top_right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Flap_Top_left",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_top_plate",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Front_right_leg",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_main_thruster_base_right",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "terrapin_thruster_main_front_right",
+      "health": 10000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 16.5,
     "y": 20.0,

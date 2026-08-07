@@ -14,6 +14,64 @@
     "base_expediting_fee": "2050"
   },
   "mass": 639886.0,
+  "hull_health": 115700.0,
+  "hull_parts": [
+    {
+      "name": "Front",
+      "health": 40700.0,
+      "category": "vital"
+    },
+    {
+      "name": "ARGO_RAFT_FL_LG_MainShaft_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ARGO_RAFT_FR_LG_MainShaft_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Rear_Right",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ARGO_RAFT_RR_LG_MainShaft_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ARGO_RAFT_RR_VTOL_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ARGO_RAFT_FR_VTOL_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ARGO_RAFT_FL_VTOL_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "Rear_Left",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ARGO_RAFT_RL_LG_MainShaft_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    },
+    {
+      "name": "ARGO_RAFT_RL_VTOL_Mesh",
+      "health": 7500.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 23.0,
     "y": 39.5,

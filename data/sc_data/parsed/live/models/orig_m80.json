@@ -14,6 +14,104 @@
     "base_expediting_fee": "8970"
   },
   "mass": 135649.0,
+  "hull_health": 17000.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 5000.0,
+      "category": "vital"
+    },
+    {
+      "name": "wings_top_right",
+      "health": 1800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_end_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spoiler_side_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_top_left",
+      "health": 1800.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_end_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "spoiler_side_left",
+      "health": 300.0,
+      "category": "breakable"
+    },
+    {
+      "name": "spoiler_top_middle",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wings_bottom_right",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wings_bottom_left",
+      "health": 1500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_right",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "tail_left",
+      "health": 500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "tail_middle",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shoulder_fin_small_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shoulder_fin_small_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shoulder_wing_right",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "shoulder_wing_left",
+      "health": 300.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 1000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy",
+      "health": 200.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 11.0,
     "y": 11.5,

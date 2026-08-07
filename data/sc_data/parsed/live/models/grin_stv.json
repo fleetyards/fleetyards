@@ -14,6 +14,44 @@
     "base_expediting_fee": "540"
   },
   "mass": 2500.0,
+  "hull_health": 4250.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 2500.0,
+      "category": "vital"
+    },
+    {
+      "name": "mesh_bonnet_plate",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Bonnet_Arm",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_fr",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_rl",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_rr",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "fender_fl",
+      "health": 250.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 8.75,
     "y": 6.0,

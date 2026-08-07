@@ -14,6 +14,69 @@
     "base_expediting_fee": "190"
   },
   "mass": 1000.0,
+  "hull_health": 8100.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 3500.0,
+      "category": "vital"
+    },
+    {
+      "name": "front",
+      "health": 2500.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_barbreakbottom_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_panelbreak_bumper_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_panelbreak_bumper_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_barbreakbottom_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel_rl_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel_rr_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "rear_panelbreak_left",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_panelbreak_right",
+      "health": 250.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel_fl_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wheel_fr_mudguard",
+      "health": 150.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 8.75,
     "y": 6.0,

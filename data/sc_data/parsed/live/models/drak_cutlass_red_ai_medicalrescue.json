@@ -14,6 +14,54 @@
     "base_expediting_fee": "6310"
   },
   "mass": 222300.0,
+  "hull_health": 34520.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 6600.0,
+      "category": "vital"
+    },
+    {
+      "name": "Wing_Right",
+      "health": 1880.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_Left",
+      "health": 1880.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Canopy",
+      "health": 6200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 6600.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Main_Base_Left",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Main_Left",
+      "health": 5200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Main_Base_Right",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Thruster_Main_Right",
+      "health": 5200.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 26.5,
     "y": 37.5,

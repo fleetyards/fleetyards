@@ -14,6 +14,164 @@
     "base_expediting_fee": "32116"
   },
   "mass": 317870.29,
+  "hull_health": 138981.0,
+  "hull_parts": [
+    {
+      "name": "nose",
+      "health": 35000.0,
+      "category": "vital"
+    },
+    {
+      "name": "body",
+      "health": 50000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "body_lower_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_rl_geom",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_rl_damage",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_rl_fin_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_mlr_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_mlr_damage",
+      "health": 240.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left_m_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_left_m_damage",
+      "health": 2800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "main_wing_slider_a_left",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "large_wing_piston_geom_l",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "large_wing_piston_2",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "left_wing_rs_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_lower_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_rl_geom",
+      "health": 240.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_rl_damage",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_rl_fin_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_mlr_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_mlr_damage",
+      "health": 240.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right_m_geom",
+      "health": 480.0,
+      "category": "breakable"
+    },
+    {
+      "name": "wing_right_m_damage",
+      "health": 2800.0,
+      "category": "subpart"
+    },
+    {
+      "name": "right_wing_rs_geom",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "main_wing_slider_a_right",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "main_wing_slider_a_left_r",
+      "health": 4000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "large_wing_piston_003",
+      "health": 4000.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_left_wing_damage",
+      "health": 100.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_left_wing_flp_geom",
+      "health": 100.0,
+      "category": "subpart"
+    },
+    {
+      "name": "front_right_wing_damage",
+      "health": 1.0,
+      "category": "breakable"
+    },
+    {
+      "name": "front_right_wing_flp_geom",
+      "health": 600.0,
+      "category": "subpart"
+    },
+    {
+      "name": "glass",
+      "health": 100.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 44.0,
     "y": 70.5,

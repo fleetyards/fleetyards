@@ -14,6 +14,154 @@
     "base_expediting_fee": "2500"
   },
   "mass": 16527.0,
+  "hull_health": 5194.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 1300.0,
+      "category": "vital"
+    },
+    {
+      "name": "body_wing_left",
+      "health": 250.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_shield_left",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_left",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engine_left",
+      "health": 550.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engine_left_spike_01",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "engine_left_spike_02",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "engine_left_spike_03",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_wing_right",
+      "health": 250.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Wing_shield_right",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "wing_right",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engine_right",
+      "health": 550.0,
+      "category": "breakable"
+    },
+    {
+      "name": "engine_right_spike_01",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "engine_right_spike_02",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "engine_right_spike_03",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_inventory_door",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "weapon_cover_right",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "nose",
+      "health": 200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "mohawk_front",
+      "health": 500.0,
+      "category": "subpart"
+    },
+    {
+      "name": "harpoon_01",
+      "health": 75.0,
+      "category": "subpart"
+    },
+    {
+      "name": "harpoon_02",
+      "health": 75.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_nozzle",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "anim_arm",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "weapon_cover_left",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_cablemount_left",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_cablemount_right",
+      "health": 20.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy_frame",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "geo_cockpit_canopy",
+      "health": 150.0,
+      "category": "subpart"
+    },
+    {
+      "name": "canopy_screen",
+      "health": 1.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 11.3,
     "y": 13.7,

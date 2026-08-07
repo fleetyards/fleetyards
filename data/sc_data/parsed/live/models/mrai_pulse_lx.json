@@ -14,6 +14,64 @@
     "base_expediting_fee": "75"
   },
   "mass": 2140.0,
+  "hull_health": 1550.0,
+  "hull_parts": [
+    {
+      "name": "body",
+      "health": 700.0,
+      "category": "vital"
+    },
+    {
+      "name": "arm_front_left_debris_a",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "arm_front_left_debris_a_panel",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "arm_front_right_debris_a",
+      "health": 50.0,
+      "category": "breakable"
+    },
+    {
+      "name": "arm_front_right_debris_a_panel",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_panel_back_left_debris",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_panel_back_right_debris",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_spoiler_upper_right_mesh",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 400.0,
+      "category": "subpart"
+    },
+    {
+      "name": "component_housing_mesh",
+      "health": 50.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body_spoiler_upper_left_mesh",
+      "health": 50.0,
+      "category": "subpart"
+    }
+  ],
   "metrics": {
     "x": 1.5,
     "y": 3.5,

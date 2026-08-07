@@ -14,6 +14,59 @@
     "base_expediting_fee": "24582"
   },
   "mass": 4542311.0,
+  "hull_health": 295600.0,
+  "hull_parts": [
+    {
+      "name": "Body",
+      "health": 80000.0,
+      "category": "vital"
+    },
+    {
+      "name": "custom_decal",
+      "health": 200.0,
+      "category": "subpart"
+    },
+    {
+      "name": "Tail",
+      "health": 65000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose",
+      "health": 80000.0,
+      "category": "vital"
+    },
+    {
+      "name": "Front_Right",
+      "health": 15200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Front_Left",
+      "health": 15200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_MountB_Right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_MountB_Left",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_mountA_Right",
+      "health": 10000.0,
+      "category": "breakable"
+    },
+    {
+      "name": "Engine_mountA_Left",
+      "health": 10000.0,
+      "category": "breakable"
+    }
+  ],
   "metrics": {
     "x": 72.0,
     "y": 120.0,

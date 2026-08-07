@@ -14,6 +14,69 @@
     "base_expediting_fee": "2475"
   },
   "mass": 36276.0,
+  "hull_health": 37801.0,
+  "hull_parts": [
+    {
+      "name": "ANVL_Spartan",
+      "health": 4200.0,
+      "category": "breakable"
+    },
+    {
+      "name": "nose",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "WheelFrontLeft01DmgGroup",
+      "health": 1.0,
+      "category": "subpart"
+    },
+    {
+      "name": "body",
+      "health": 10000.0,
+      "category": "vital"
+    },
+    {
+      "name": "hardpoint_wheel_left01",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_left03",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_left04",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_left02",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right01",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right02",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right03",
+      "health": 1700.0,
+      "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_right04",
+      "health": 1700.0,
+      "category": "secondary"
+    }
+  ],
   "metrics": {
     "x": 7.0,
     "y": 17.0,
