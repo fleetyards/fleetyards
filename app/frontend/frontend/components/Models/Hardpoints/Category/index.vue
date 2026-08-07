@@ -33,10 +33,6 @@ import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import type { ComponentPowerPlant } from "@/services/fyApi";
-import {
-  powerPlantContextKey,
-  type PowerPlantContext,
-} from "@/frontend/components/Models/Hardpoints/powerPlant";
 
 type Props = {
   hardpoints: Hardpoint[];
@@ -47,40 +43,24 @@ const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
 
-const powerPlants = computed(() => {
-  if (props.category !== HardpointCategoryEnum.POWERPLANT) return [];
+const powerPips = computed(() => {
+  if (props.category !== HardpointCategoryEnum.POWERPLANT) return null;
 
-  return props.hardpoints
+  const plants = props.hardpoints
     .map((hp) => hp.component)
     .filter((c) => c?.typeData && "powerBase" in c.typeData && c.size);
-});
 
-const powerPlantContext = computed<PowerPlantContext | null>(() => {
-  const plants = powerPlants.value;
-  if (plants.length === 0) return null;
+  const n = plants.length;
+  if (n === 0) return null;
 
-  return {
-    count: plants.length,
-    sizeSum: plants.reduce((sum, c) => sum + Number(c!.size), 0),
-  };
-});
-
-provide(powerPlantContextKey, powerPlantContext);
-
-const powerPips = computed(() => {
-  const context = powerPlantContext.value;
-  if (!context) return null;
-
-  const baseSegments = powerPlants.value.reduce(
+  const baseSegments = plants.reduce(
     (sum, c) =>
-      sum +
-      Math.round(
-        (c!.typeData as ComponentPowerPlant).powerBase! / context.count,
-      ),
+      sum + Math.round((c!.typeData as ComponentPowerPlant).powerBase! / n),
     0,
   );
+  const sizeSum = plants.reduce((sum, c) => sum + Number(c!.size), 0);
 
-  return baseSegments + (context.count - 1) * context.sizeSum;
+  return baseSegments + (n - 1) * sizeSum;
 });
 
 const modelSlug = inject<ComputedRef<string> | undefined>(
@@ -177,10 +157,12 @@ const icons = {
       <img
         v-else
         :src="icons[category as keyof typeof icons]"
-        class="hardpoint-category__icon"
+        class="hardpoint-category__icon hardpoint-category__icon--img"
         :alt="`icon-${category}`"
       />
-      {{ t(`labels.hardpoint.categories.${category}`) }}
+      <span class="hardpoint-category__name">
+        {{ t(`labels.hardpoint.categories.${category}`) }}
+      </span>
       <span v-if="powerPips" class="hardpoint-category__stat">
         {{ toNumber(powerPips, "powerPips") }}
       </span>

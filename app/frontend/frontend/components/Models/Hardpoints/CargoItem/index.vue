@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
+import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import { type Hardpoint, type CargoHold } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { humanizeHoldName } from "@/shared/utils/CargoHolds";
@@ -48,19 +49,21 @@ const label = computed(() => {
 <template>
   <HardpointItem :count="count" :intended="intended">
     <template #default>
-      <div class="hardpoint-item__cargo-container text-muted">
-        {{ t("labels.hardpoint.maxContainerSize") }}:
-        {{ toNumber(typeData?.maxContainerSize?.size || "", "cargo") }}
-      </div>
-      <div class="hardpoint-item__cargo">
-        {{ toNumber(typeData?.capacity || "", "cargo") }}
-      </div>
       <HardpointComponent class="hardpoint-item__cargo-component">
         <template v-if="hardpoint.component">
           {{ label }}
         </template>
         <template v-else>TBD</template>
       </HardpointComponent>
+      <div class="hardpoint-item__cargo-container text-muted">
+        {{ t("labels.hardpoint.maxContainerSize") }}:
+        {{ toNumber(typeData?.maxContainerSize?.size || "", "cargo") }}
+      </div>
+      <HardpointHeadline
+        v-if="typeData?.capacity"
+        :value="toNumber(typeData.capacity, 'cargo')"
+        :unit="t('labels.cargoGridViewer.capacity')"
+      />
     </template>
   </HardpointItem>
 </template>

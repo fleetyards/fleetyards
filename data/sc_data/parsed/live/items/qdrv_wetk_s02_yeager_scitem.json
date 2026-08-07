@@ -33,6 +33,7 @@
   },
   "type_data": {
     "quantum_fuel_requirement": 0.02289,
+    "quantum_fuel_consumption": 13.0,
     "jump_range": 3.402823e+38,
     "disconnect_range": 38076.0,
     "drive_speed": 278000000.0,

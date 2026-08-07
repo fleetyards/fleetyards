@@ -14,8 +14,17 @@
     display: flex;
     align-items: center;
     width: 100%;
-    margin-block: 10px;
-    color: darken($text-color, 20%);
+    margin-block: 12px 8px;
+  }
+
+  // Typography lives on the label text, not the flex container, so it doesn't
+  // inherit into sibling children like the <Btn> link or the icon.
+  &__name {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $gray-light;
   }
 
   &__link {
@@ -31,18 +40,26 @@
 
   &__stat {
     margin-left: auto;
-    color: $gray-light;
+    color: $gold;
     font-size: 90%;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 
   &__icon {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
-    color: $primary;
-    margin-right: 10px;
-    font-size: 1.3rem;
+    color: $gray-light;
+    margin-right: 9px;
+    font-size: 1.1rem;
+  }
+
+  // SVG icons ship with a hard-coded $primary fill; desaturate it so the icons
+  // read as quiet neutral wayfinding rather than a second accent colour.
+  &__icon--img {
+    object-fit: contain;
+    filter: grayscale(1);
   }
 }

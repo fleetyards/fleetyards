@@ -71,6 +71,10 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.44625
+    },
     "pellets_per_shot": 1,
     "speed": 1016.0,
     "range": 7762.2,
@@ -83,6 +87,7 @@
       "regeneration_cooldown": 1.7,
       "requested_regen_per_second": 32033.0,
       "requested_ammo_load": 192200.0
-    }
+    },
+    "power_consumption": 2.8
   }
 }

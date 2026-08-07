@@ -146,6 +146,7 @@ module V1
                   }
                 },
                 quantumFuelTankSize: {type: :number},
+                weaponPoolSize: {type: :number},
                 size: {type: :string},
                 sizeLabel: {type: :string},
                 dockSize: {type: :string}

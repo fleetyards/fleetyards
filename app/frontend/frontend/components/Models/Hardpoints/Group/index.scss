@@ -1,10 +1,6 @@
 .hardpoint-group {
-  &__label {
-    font-size: 20px;
-    font-family: "Orbitron", tahoma, sans-serif;
-    text-transform: uppercase;
-  }
-
+  // Inner padding for the compare view's plain Panel rendering; the ship-page
+  // card path (MetricsCard slim) supplies its own body padding.
   &__inner {
     padding: 20px 20px 10px;
   }

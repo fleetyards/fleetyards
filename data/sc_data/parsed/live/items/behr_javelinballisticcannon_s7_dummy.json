@@ -103,6 +103,7 @@
       "cooling_per_second": 23.9,
       "time_till_cooling_starts": 0.884,
       "overheat_fix_time": 4.73
-    }
+    },
+    "power_consumption": 0.1
   }
 }

@@ -12,6 +12,7 @@ module Shared
             beam: {type: :boolean},
             fireRate: {type: :number},
             heatPerShot: {type: :number},
+            powerConsumption: {type: :number},
             damagePerShot: {
               type: :object,
               properties: {
@@ -65,6 +66,14 @@ module Shared
                 coolingPerSecond: {type: :number},
                 timeTillCoolingStarts: {type: :number},
                 overheatFixTime: {type: :number}
+              },
+              additionalProperties: false
+            },
+            penetration: {
+              type: :object,
+              properties: {
+                maxThickness: {type: :number},
+                baseDistance: {type: :number}
               },
               additionalProperties: false
             }

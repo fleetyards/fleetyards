@@ -1,3 +1,65 @@
 .hardpoints {
   min-height: 400px;
+
+  &__toolbar {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  // Density toggle sits with the hardpoint groups it controls; a pill segmented
+  // control in the metrics-card HUD language.
+  &__viewbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 4px 0 16px;
+  }
+
+  &__viewbar-label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: $gray-light;
+  }
+
+  &__seg {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid rgba($gray-light, 0.5);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  &__seg-btn {
+    padding: 7px 16px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: $gray-light;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      color 0.15s ease,
+      background 0.15s ease;
+
+    &:hover {
+      color: lighten($text-color, 15%);
+    }
+
+    &--active {
+      color: #171a1d;
+      background: $gold;
+      box-shadow: 0 0 12px -2px rgba($gold, 0.5);
+
+      // Keep the dark label readable on the gold pill when hovered (otherwise
+      // the base hover colour — light grey — washes out against the gold).
+      &:hover {
+        color: #171a1d;
+      }
+    }
+  }
 }

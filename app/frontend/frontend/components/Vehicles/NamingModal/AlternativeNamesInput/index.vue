@@ -21,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   name: "alternativeNames",
 });
 
-const modelValue = defineModel<string[]>({ default: () => [] });
+const modelValue = defineModel<string[]>({ default: [] });
 
 const { t } = useI18n();
 

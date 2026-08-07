@@ -97,6 +97,10 @@
       "biochemical": 0.0,
       "stun": 0.0
     },
+    "penetration": {
+      "max_thickness": 0.5,
+      "base_distance": 0.476
+    },
     "pellets_per_shot": 1,
     "speed": 1200.0,
     "range": 2496.0,
@@ -107,6 +111,7 @@
       "cooling_per_second": 22.3,
       "time_till_cooling_starts": 0.605,
       "overheat_fix_time": 2.64
-    }
+    },
+    "power_consumption": 0.1
   }
 }

@@ -11,49 +11,65 @@ import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vu
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
 import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vue";
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
+import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manufacturer/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
-import HardpointDetails from "@/frontend/components/Models/Hardpoints/Details/index.vue";
+import { useHardpointStats } from "@/frontend/composables/useHardpointStats";
 import {
   HardpointSourceEnum,
   HardpointCategoryEnum,
   type Hardpoint,
-  type ComponentWeapon,
-  type ComponentShield,
-  type ComponentCooler,
-  type ComponentPowerPlant,
-  type ComponentQuantumDrive,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   hardpoints: Hardpoint[];
   intended?: boolean;
+  collapsible?: boolean;
+  // Number of identical parent stacks this loadout sits under, so nested DPS
+  // totals reflect every copy of the item across the stacked spot.
+  countMultiplier?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   intended: false,
+  collapsible: false,
+  countMultiplier: 1,
 });
 
-const { t, toNumber } = useI18n();
+const emit = defineEmits<{ toggle: [] }>();
 
-const expanded = ref(false);
-const detailsExpanded = ref(false);
+const { t } = useI18n();
+
+const density = inject<Ref<"compact" | "expanded">>(
+  "hardpointDensity",
+  ref("compact"),
+);
+
+const expanded = ref(density.value === "expanded");
+
+watch(density, (value) => {
+  expanded.value = value === "expanded";
+});
 
 const isGroup = computed(() => {
   return props.hardpoints.length > 1;
-});
-
-const hasDetails = computed(() => {
-  return !!hardpoint.value.component?.typeData;
 });
 
 const toggleExpanded = () => {
   expanded.value = !expanded.value;
 };
 
-const toggleDetails = () => {
-  detailsExpanded.value = !detailsExpanded.value;
+// Only a real stack (>1 identical mount) collapses to a summary row; single
+// items always render, even when the global density is "expanded".
+const stackExpanded = computed(() => isGroup.value && expanded.value);
+
+const onRowClick = () => {
+  if (props.collapsible) {
+    emit("toggle");
+  } else if (isGroup.value) {
+    toggleExpanded();
+  }
 };
 
 const hardpoint = computed(() => {
@@ -63,6 +79,20 @@ const hardpoint = computed(() => {
 const count = computed(() => {
   return props.hardpoints.length;
 });
+
+// Total copies of this item across the stacked spot: its own stack size times
+// any stacked parent (e.g. a gimbal mount present ×4 that each hold this gun).
+const effectiveCount = computed(() => count.value * props.countMultiplier);
+
+// The single primary stat is promoted to a right-aligned gold headline; every
+// remaining stat renders inline on the card — there is no separate details
+// panel, so the row surfaces the component's full stat set.
+const detailStats = useHardpointStats(
+  () => hardpoint.value,
+  () => effectiveCount.value,
+);
+const primaryStat = computed(() => detailStats.value.find((s) => s.primary));
+const inlineStats = computed(() => detailStats.value.filter((s) => !s.primary));
 
 const loadout = computed(() => {
   if (hardpoint.value.hardpoints?.length) {
@@ -94,212 +124,98 @@ const hardpointNames = computed(() => {
     })
     .join(", ");
 });
-
-const typeData = computed(() => {
-  return hardpoint.value.component?.typeData;
-});
-
-const multiplier = computed(() => {
-  return expanded.value ? 1 : count.value;
-});
-
-const weaponDps = computed(() => {
-  if (!typeData.value) return null;
-
-  const weapon = typeData.value as ComponentWeapon;
-
-  if (weapon.beam && weapon.damagePerSecond) {
-    return (
-      Math.round(
-        Object.values(weapon.damagePerSecond).reduce(
-          (sum: number, val) => sum + (typeof val === "number" ? val : 0),
-          0,
-        ),
-      ) * multiplier.value
-    );
-  }
-
-  if (!weapon.fireRate || !weapon.damagePerShot) return null;
-
-  const totalDamage = Object.values(weapon.damagePerShot).reduce(
-    (sum: number, val) => sum + (typeof val === "number" ? val : 0),
-    0,
-  );
-  const pellets = weapon.pelletsPerShot || 1;
-
-  return (
-    Math.round((totalDamage * pellets * weapon.fireRate) / 60) *
-    multiplier.value
-  );
-});
-
-const missileDamage = computed(() => {
-  if (!typeData.value || !("trackingSignal" in typeData.value)) return null;
-
-  const weapon = typeData.value as ComponentWeapon;
-  if (!weapon.damagePerShot) return null;
-
-  return (
-    Math.round(
-      Object.values(weapon.damagePerShot).reduce(
-        (sum: number, val) => sum + (typeof val === "number" ? val : 0),
-        0,
-      ),
-    ) * multiplier.value
-  );
-});
 </script>
 
 <template>
-  <button v-if="isGroup" class="hardpoint-group-toggle" @click="toggleExpanded">
-    <i class="fa-solid" :class="expanded ? 'fa-minus' : 'fa-plus'" />
-  </button>
-  <HardpointItem v-show="!expanded" :count="count" :intended="intended">
+  <HardpointItem
+    v-show="!stackExpanded"
+    :count="count"
+    :intended="intended"
+    :class="{ 'hardpoint-item--clickable': isGroup || collapsible }"
+    @click="onRowClick"
+  >
+    <template v-if="isGroup || collapsible" #actions>
+      <span class="hardpoint-item__controls">
+        <i
+          class="fa-solid hardpoint-item__ctl hardpoint-stack-chevron"
+          :class="collapsible ? 'fa-chevron-up' : 'fa-chevron-down'"
+        />
+      </span>
+    </template>
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
-      <HardpointComponent>
-        <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
-          <template v-if="hardpoint.component && hardpoint.component.name">
-            {{ hardpoint.component.name }}
-            <span v-if="hardpoint.component.itemClass">
-              {{ hardpoint.component.itemClassLabel }}
-              {{ t("labels.component.grade") }}
-              {{ hardpoint.component.gradeLabel }}
-            </span>
-            <span
-              v-if="
-                hardpoint.category === HardpointCategoryEnum.WEAPONS &&
-                weaponDps
-              "
-            >
-              {{ toNumber(weaponDps, "dps") }}
-            </span>
-            <span
-              v-else-if="
-                hardpoint.category === HardpointCategoryEnum.WEAPONS &&
-                missileDamage
-              "
-            >
-              {{ toNumber(missileDamage, "damage") }}
-            </span>
-            <span
-              v-else-if="
-                hardpoint.category === HardpointCategoryEnum.SHIELDGENERATOR &&
-                typeData &&
-                'maxHealth' in typeData
-              "
-            >
-              {{
-                toNumber((typeData as ComponentShield).maxHealth, "shieldHp")
-              }}
-              /
-              {{
-                toNumber(
-                  (typeData as ComponentShield).maxHealth /
-                    (typeData as ComponentShield).maxRegen,
-                  "shieldRegen",
-                )
-              }}
-            </span>
-            <span
-              v-else-if="
-                hardpoint.category === HardpointCategoryEnum.COOLER &&
-                typeData &&
-                'coolingRate' in typeData
-              "
-            >
-              {{
-                toNumber(
-                  (typeData as ComponentCooler).coolingRate,
-                  "coolingRate",
-                )
-              }}
-            </span>
-            <span
-              v-else-if="
-                hardpoint.category === HardpointCategoryEnum.POWERPLANT &&
-                typeData &&
-                'powerBase' in typeData
-              "
-            >
-              {{
-                toNumber(
-                  (typeData as ComponentPowerPlant).powerBase,
-                  "powerOutput",
-                )
-              }}
-            </span>
-            <span
-              v-else-if="
-                hardpoint.category === HardpointCategoryEnum.QUANTUMDRIVE &&
-                typeData &&
-                'driveSpeed' in typeData
-              "
-            >
-              {{
-                toNumber(
-                  (typeData as ComponentQuantumDrive).driveSpeed,
-                  "driveSpeed",
-                )
-              }}
-            </span>
+      <div class="hardpoint-item__main">
+        <HardpointComponent>
+          <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
+            <template v-if="hardpoint.component && hardpoint.component.name">
+              {{ hardpoint.component.name }}
+              <span v-if="hardpoint.component.itemClass">
+                {{ hardpoint.component.itemClassLabel }}
+                {{ t("labels.component.grade") }}
+                {{ hardpoint.component.gradeLabel }}
+              </span>
+            </template>
+            <template v-else>
+              {{ hardpointNames }}
+              <span v-if="!loadout.length">TBD</span>
+            </template>
           </template>
           <template v-else>
-            {{ hardpointNames }}
-            <span v-if="!loadout.length">TBD</span>
+            <template
+              v-if="
+                (hardpoint.category !== HardpointCategoryEnum.TURRET &&
+                  hardpoint.category !== HardpointCategoryEnum.MISSILE_RACKS) ||
+                intended
+              "
+            >
+              {{ hardpoint.name }}
+            </template>
+            <span v-if="hardpoint.details">
+              {{ hardpoint.details }}
+            </span>
           </template>
-        </template>
-        <template v-else>
-          <template
-            v-if="
-              (hardpoint.category !== HardpointCategoryEnum.TURRET &&
-                hardpoint.category !== HardpointCategoryEnum.MISSILE_RACKS) ||
-              intended
-            "
-          >
-            {{ hardpoint.name }}
-          </template>
-          <span v-if="hardpoint.details">
-            {{ hardpoint.details }}
-          </span>
-        </template>
-      </HardpointComponent>
-      <HardpointManufacturer
-        :manufacturer="hardpoint.component?.manufacturer"
-      />
-      <button
-        v-if="hasDetails"
-        class="hardpoint-item__detail-toggle"
-        @click="toggleDetails"
-      >
-        <i
-          class="fa-solid fa-chevron-down"
-          :class="{ 'fa-rotate-180': detailsExpanded }"
+        </HardpointComponent>
+        <HardpointManufacturer
+          :manufacturer="hardpoint.component?.manufacturer"
         />
-      </button>
+        <div v-if="inlineStats.length" class="hardpoint-item__stats">
+          <span
+            v-for="(s, i) in inlineStats"
+            :key="i"
+            class="hardpoint-item__stat"
+          >
+            <span class="hardpoint-item__stat-k">{{ s.label }}</span>
+            <span class="hardpoint-item__stat-v">{{ s.value }}</span>
+          </span>
+        </div>
+      </div>
+      <HardpointHeadline
+        v-if="primaryStat"
+        :value="primaryStat.value"
+        :unit="primaryStat.label"
+      />
     </template>
     <template #loadout>
-      <Collapsed v-if="hasDetails" :visible="detailsExpanded" :duration="200">
-        <HardpointDetails :hardpoint="hardpoint" />
-      </Collapsed>
       <div v-if="loadout.length" class="hardpoint-item__loadout">
         <HardpointBaseItem
           v-for="(items, key) in groupedLoadout"
           :key="key"
           :hardpoints="items"
+          :count-multiplier="effectiveCount"
           intended
         />
       </div>
     </template>
   </HardpointItem>
 
-  <!-- Expanded: show each item individually -->
-  <Collapsed v-if="isGroup" :visible="expanded" :duration="200">
+  <Collapsed v-if="isGroup" :visible="stackExpanded" :duration="200">
     <HardpointBaseItem
       v-for="hp in hardpoints"
       :key="hp.id"
       :hardpoints="[hp]"
       :intended="intended"
+      collapsible
+      @toggle="toggleExpanded"
     />
   </Collapsed>
 </template>

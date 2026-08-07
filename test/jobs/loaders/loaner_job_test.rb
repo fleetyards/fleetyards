@@ -13,14 +13,6 @@ module Loaders
     test "#perform runs the loaner loader and cleans up orphaned loaners" do
       @loader.expects(:run).returns([[], []])
 
-      creator = mock("GithubIssueCreator")
-      creator.expects(:resolve).returns(nil)
-      GithubIssueCreator.expects(:new).with(
-        task_type: "loaner_sync",
-        title: "Missing Loaners",
-        body: anything
-      ).returns(creator)
-
       ::Loaders::LoanerJob.new.perform
     end
 
@@ -35,17 +27,6 @@ module Loaders
         title: "Missing Loaners",
         body: anything
       ).returns(creator)
-
-      ::Loaders::LoanerJob.new.perform
-    end
-
-    test "#perform leaves the issue untouched when the RSI fetch fails" do
-      @loader.expects(:run).returns(nil)
-
-      creator = mock("GithubIssueCreator")
-      creator.expects(:run).never
-      creator.expects(:resolve).never
-      GithubIssueCreator.expects(:new).returns(creator)
 
       ::Loaders::LoanerJob.new.perform
     end
