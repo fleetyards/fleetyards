@@ -205,11 +205,16 @@ FileUtils.chdir APP_ROOT do
   docker = run_step "Starting Docker services", "docker compose up -d --wait --wait-timeout 30", async: true
   run_step_wait(ruby_deps, node_deps, docker)
 
-  # Group B: Prepare databases and build Vite test assets (need deps + Docker)
+  # Group B: Prepare databases and build Vite assets (need deps + Docker)
   dev_db = run_step "Preparing database (dev)", "DB_PORT=#{db_port} WORKTREE_SUFFIX=#{db_suffix} bin/rails db:prepare", async: true
   test_db = run_step "Preparing database (test)", "DB_PORT=#{db_port} WORKTREE_SUFFIX=#{db_suffix} RAILS_ENV=test bin/rails db:prepare", async: true
   vite_build = run_step "Building email assets (test)", "bin/build-email-assets", async: true
-  run_step_wait(dev_db, test_db, vite_build)
+  # auto-imports.d.ts and components.d.ts are gitignored and only written by the
+  # Vite plugins, so vue-tsc reports every auto-imported symbol as undefined
+  # until a build has run at least once. Builds to vite-dev, so it does not race
+  # the email assets build over the vite-test manifest.
+  frontend_types = run_step "Generating frontend type declarations", "bin/vite build", async: true
+  run_step_wait(dev_db, test_db, vite_build, frontend_types)
 
   # Group C: Clean logs/tmp (need databases)
   clean = run_step "Cleaning logs and temp files", "bin/rails log:clear tmp:clear", async: true
