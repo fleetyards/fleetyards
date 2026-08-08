@@ -9,6 +9,7 @@ import {
   type ComponentQuantumDrive,
   type ComponentJumpDrive,
   type ComponentThruster,
+  type ComponentArmor,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -517,12 +518,12 @@ export const useHardpointStats = (
         result.push(stat("weapons.range", cm.range as number, "weaponRange"));
       }
     } else if (category === HardpointCategoryEnum.ARMOR) {
-      const armor = typeData as Record<string, unknown>;
-      if (typeof armor.health === "number" && armor.health > 0) {
+      const armor = typeData as ComponentArmor;
+      if (armor.health && armor.health > 0) {
         result.push(stat("armor.hp", armor.health, "integer", true));
       }
       // erkul-style damage reduction = 1 − the incoming-damage multiplier.
-      const reductionTypes: [string, string][] = [
+      const reductionTypes: [keyof ComponentArmor, string][] = [
         ["damagePhysical", "armor.physical"],
         ["damageEnergy", "armor.energy"],
         ["damageDistortion", "armor.distortion"],
@@ -534,7 +535,7 @@ export const useHardpointStats = (
           result.push(resistanceStat(labelKey, 1 - mult));
         }
       }
-      const deflectTypes: [string, string][] = [
+      const deflectTypes: [keyof ComponentArmor, string][] = [
         ["deflectionPhysical", "armor.deflectPhysical"],
         ["deflectionEnergy", "armor.deflectEnergy"],
       ];
@@ -546,7 +547,7 @@ export const useHardpointStats = (
       }
       // Self-resistance: how the armor resists damage to itself (1 − multiplier;
       // can be negative when a damage type is amplified, matching erkul).
-      const selfResistTypes: [string, string][] = [
+      const selfResistTypes: [keyof ComponentArmor, string][] = [
         ["selfResistancePhysical", "armor.selfPhysical"],
         ["selfResistanceEnergy", "armor.selfEnergy"],
       ];
