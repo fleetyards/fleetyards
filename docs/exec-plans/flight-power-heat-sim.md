@@ -123,6 +123,39 @@ Unlocks §8.
 | Flight-controller afterburner | `controller_flight_*` afterburner params | ❌ |
 | Base SCM speed | IFCS (currently RSI-sourced) | ❌ (needs decode) |
 
+## Decode log — Phase 1 (power allocation)
+
+Findings from `chunk-FWWRRMGF.js` (2026-08-08):
+
+- **Power-plant output:** `Lt(e)` = `resource.states[Online].flows[generate].
+  produces[Power, unitKind=powerSegment].units`. Total available segments = Σ
+  over powered-on plants.
+- **The default allocation is an ALGORITHM, not a data field.** The Asgard has
+  no `initialPowerAllocation`; erkul computes the distribution with `co(e, mode,
+  …)` — a multi-pass greedy allocator over per-family buckets `$n = {weapon,
+  engine, shield, qdrive, radar, lifeSupport, coolers, qed, emp, miningLaser,
+  salvage, tractorBeam, towingbeam}`:
+  1. `Zn` — base/minimum per family in priority order (SCM: lifeSupport →
+     miningLaser → salvage → emp → weapon(1) → shield → radar → engine …; NAV
+     swaps qdrive in for weapon/shield/emp).
+  2. `Jn` — fill: weapon up to `min(weaponConsumptionPoints, poolSize)`, then
+     shield / radar / engine.
+  3. `ft` — cooler-balancing loop (≤200 iters): add cooler segments until
+     cooling ≥ heat generation.
+  4. `Ct` / `rt` — cooler refinement + remaining distribution.
+  Per-mode (SCM vs NAV); `initialPowerAllocation` short-circuits it when present.
+- Helpers to port: `Xn, Zn, Jn, ft, it, Ct, rt, tt, W, $, nt, et, D, Rt, me, yt,
+  X, fo` + the `$n` family model.
+
+### ⚠️ Power ↔ heat are coupled
+
+`ft` balances cooler segments against **heat generation vs cooling**, so the
+power allocation depends on the heat model. Phases 1 and 2 can't be fully
+independent — either build the heat pass alongside Phase 1, or Phase 1 uses a
+simplified cooler allocation (all coolers on) and Phase 2 refines it. **Revised
+approach:** treat "power + heat" as one combined phase; ship flight (IFCS)
+separately as it's the only truly independent piece.
+
 ## Risks
 
 - **Faithfulness:** erkul's engine is intricate (power-range curves, per-mode
