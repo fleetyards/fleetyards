@@ -30,6 +30,21 @@
     "min_phys_radius": 250.0,
     "pressure": 0.0,
     "unleash_time": 1.5,
-    "cooldown_time": 22.0
+    "cooldown_time": 22.0,
+    "power_consumption": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    }
   }
 }
