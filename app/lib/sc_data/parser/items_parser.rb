@@ -556,6 +556,19 @@ module ScData
           }.compact
         end
 
+        # Power draw + its power-range modifier for power-drawing components —
+        # inputs for the ship-wide power-allocation sim (erkul's `z` /
+        # `powerRanges`). Only components that actually draw Power need this, so
+        # power_ranges is tied to a present power_consumption.
+        if item[:type_data].is_a?(Hash)
+          power_draw = extract_resource_consumption(values, "Power")
+          if power_draw.present?
+            item[:type_data][:power_consumption] ||= power_draw
+            power_ranges = extract_power_ranges(values)
+            item[:type_data][:power_ranges] ||= power_ranges if power_ranges.present?
+          end
+        end
+
         item
       end
 
