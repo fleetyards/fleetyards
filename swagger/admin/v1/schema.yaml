@@ -7011,6 +7011,7 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
           - "$ref": "#/components/schemas/ComponentJumpDrive"
+          - "$ref": "#/components/schemas/ComponentArmor"
           - "$ref": "#/components/schemas/CargoHold"
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
@@ -7039,6 +7040,47 @@ components:
       - createdAt
       - updatedAt
       title: Component
+    ComponentArmor:
+      type: object
+      properties:
+        health:
+          type: number
+        damagePhysical:
+          type: number
+        damageEnergy:
+          type: number
+        damageDistortion:
+          type: number
+        damageThermal:
+          type: number
+        damageBiochemical:
+          type: number
+        damageStun:
+          type: number
+        deflectionPhysical:
+          type: number
+        deflectionEnergy:
+          type: number
+        deflectionDistortion:
+          type: number
+        deflectionThermal:
+          type: number
+        selfResistancePhysical:
+          type: number
+        selfResistanceEnergy:
+          type: number
+        selfResistanceDistortion:
+          type: number
+        selfResistanceThermal:
+          type: number
+        signalInfrared:
+          type: number
+        signalElectromagnetic:
+          type: number
+        signalCrossSection:
+          type: number
+      additionalProperties: false
+      title: ComponentArmor
     ComponentClassEnum:
       type: string
       enum:

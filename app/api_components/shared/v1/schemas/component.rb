@@ -60,6 +60,7 @@ module Shared
               anyOf: [
                 {"$ref": "#/components/schemas/ComponentQuantumDrive"},
                 {"$ref": "#/components/schemas/ComponentJumpDrive"},
+                {"$ref": "#/components/schemas/ComponentArmor"},
                 {"$ref": "#/components/schemas/CargoHold"},
                 {"$ref": "#/components/schemas/FuelTank"},
                 {"$ref": "#/components/schemas/ComponentThruster"},
