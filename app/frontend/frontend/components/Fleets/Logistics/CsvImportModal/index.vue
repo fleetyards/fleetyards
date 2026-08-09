@@ -71,7 +71,7 @@ const importCsv = async () => {
 
     if (results.value.imported > 0) {
       displaySuccess({
-        text: t("messages.fleets.logistics.csvImport.success", {
+        text: t("messages.logistics.csvImport.success", {
           count: results.value.imported,
         }),
       });
@@ -83,7 +83,7 @@ const importCsv = async () => {
     }
   } catch {
     displayAlert({
-      text: t("messages.fleets.logistics.csvImport.failure"),
+      text: t("messages.logistics.csvImport.failure"),
     });
   } finally {
     importing.value = false;
@@ -92,14 +92,14 @@ const importCsv = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.fleets.logistics.importCsv')">
+  <Modal :title="t('headlines.logistics.importCsv')">
     <p class="text-muted">
-      {{ t("labels.fleets.logistics.csvImportHelp") }}
+      {{ t("labels.logistics.csvImportHelp") }}
     </p>
 
     <Btn @click="downloadTemplate">
       <i class="fa-duotone fa-download" />
-      {{ t("actions.fleets.logistics.downloadTemplate") }}
+      {{ t("actions.logistics.downloadTemplate") }}
     </Btn>
 
     <hr />
@@ -115,12 +115,12 @@ const importCsv = async () => {
 
     <template v-if="results">
       <div v-if="results.imported > 0" class="mb-2 text-success">
-        {{ results.imported }} {{ t("labels.fleets.logistics.imported") }}
+        {{ results.imported }} {{ t("labels.logistics.imported") }}
       </div>
       <div v-if="results.errors.length > 0" class="mb-2">
         <p class="text-danger">
           {{ results.errors.length }}
-          {{ t("labels.fleets.logistics.importErrors") }}:
+          {{ t("labels.logistics.importErrors") }}:
         </p>
         <ul class="text-danger small">
           <li v-for="(error, i) in results.errors" :key="i">
@@ -135,7 +135,7 @@ const importCsv = async () => {
       :loading="importing"
       @click="importCsv"
     >
-      {{ t("actions.fleets.logistics.importCsv") }}
+      {{ t("actions.logistics.importCsv") }}
     </Btn>
   </Modal>
 </template>
