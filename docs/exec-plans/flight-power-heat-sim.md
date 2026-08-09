@@ -17,6 +17,24 @@ those subsystems. Each was individually spiked and confirmed sim-blocked
 | **§3** Per-weapon overheat state ("NO OVERHEAT") | Heat sim |
 | **§8** Flight boost (boosted SCM, boost regen, boost delay) | IFCS/flight sim |
 
+## Strategic driver — the interactive power-distribution calculator
+
+Confirmed 2026-08-09: the end goal is an erkul-style **interactive pip UI** where
+the user allocates power to weapons / shields / engines / etc. and sees DPS,
+sustained, and signatures respond live. That is what this sim is *for* — it's the
+dependency for the calculator's headline interactive feature. The `co()` port
+isn't just to reproduce erkul's *default* numbers; it becomes the **allocation
+engine the UI drives**: `co()` computes the auto-distribution, and the calculator
+lets the user override per-family pips, re-running the sim.
+
+**Finding (2026-08-09) — §1 is already exact at the default distribution.** From
+the decoded `Jn`, weapons are filled to `min(weaponConsumptionPoints, poolSize)`
+segments, so the default `poolRatio = min(1, poolSize/consumption)` = the
+`weaponPowerRatio` we already ship (Asgard → 1 681, exact). §1 only needs the
+full sim for **segment-starved** ships (rare) and the **interactive** case (user
+moves pips off weapons). So the sim's real payoffs are the **pip UI** (its reason
+to exist), **§6** emitted signatures, and **§3 / §8**.
+
 ## Source of truth
 
 erkul's client-side calc engine, reverse-engineered from its JS bundle:
