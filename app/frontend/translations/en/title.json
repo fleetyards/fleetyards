@@ -36,7 +36,9 @@
         "publicStats": "%{user} Hangar Stats",
         "wishlist": "Wishlist",
         "publicWishlist": "%{user} Wishlist",
-        "vehicleLoadouts": "Vehicle Loadouts"
+        "vehicleLoadouts": "Vehicle Loadouts",
+        "inventories": "My Hangar Inventories",
+        "inventory": "%{inventory}"
       },
       "requestPassword": "Request Password",
       "changePassword": "Change Password",
