@@ -39,6 +39,7 @@ import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   ChannelsEnum,
@@ -67,6 +68,8 @@ const deleting = ref(false);
 const highlightedGroup = ref<string>("");
 
 const mobile = useMobile();
+
+const { isFeatureEnabled } = useFeatures();
 
 const sessionStore = useSessionStore();
 
@@ -397,6 +400,15 @@ const openDisplayOptionsModal = () => {
       {{ t("labels.fleetchart") }}
     </Btn>
 
+    <Btn
+      v-if="isFeatureEnabled('hangar_inventories')"
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-inventories' }"
+    >
+      <i class="fa-duotone fa-boxes-stacked" />
+      {{ t("labels.hangarInventories") }}
+    </Btn>
+
     <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
       <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
@@ -438,6 +450,14 @@ const openDisplayOptionsModal = () => {
           <Btn data-test="fleetchart-link" @click="toggleFleetchart">
             <i class="fa-duotone fa-starship" />
             <span>{{ t("labels.fleetchart") }}</span>
+          </Btn>
+
+          <Btn
+            v-if="isFeatureEnabled('hangar_inventories')"
+            :to="{ name: 'hangar-inventories' }"
+          >
+            <i class="fa-duotone fa-boxes-stacked" />
+            <span>{{ t("labels.hangarInventories") }}</span>
           </Btn>
 
           <Btn :to="{ name: 'hangar-stats' }">
