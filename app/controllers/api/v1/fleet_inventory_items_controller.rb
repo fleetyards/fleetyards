@@ -69,7 +69,7 @@ module Api
 
         file = params.require(:file)
 
-        importer = FleetInventoryItemCsvImporter.new(@fleet_inventory, file, current_resource_owner)
+        importer = InventoryItemCsvImporter.new(@fleet_inventory, file, current_resource_owner)
         result = importer.call
 
         render json: result, status: :ok
