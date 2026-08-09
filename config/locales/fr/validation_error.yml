@@ -32,6 +32,22 @@ fr:
       create: Le groupe n'a pas pu être créé
       destroy: Le groupe n'a pas pu être détruit
       update: Le groupe n'a pas pu être mise à jour
+    fleet_inventories:
+      create: L'inventaire n'a pas pu être créé.
+      update: L'inventaire n'a pas pu être mis à jour.
+      destroy: L'inventaire n'a pas pu être détruit.
+    fleet_inventory_items:
+      create: L'entrée d'inventaire n'a pas pu être créée.
+      update: L'entrée d'inventaire n'a pas pu être mise à jour.
+      destroy: L'entrée d'inventaire n'a pas pu être détruite.
+    hangar_inventories:
+      create: L'inventaire n'a pas pu être créé.
+      update: L'inventaire n'a pas pu être mis à jour.
+      destroy: L'inventaire n'a pas pu être détruit.
+    hangar_inventory_items:
+      create: L'entrée d'inventaire n'a pas pu être créée.
+      update: L'entrée d'inventaire n'a pas pu être mise à jour.
+      destroy: L'entrée d'inventaire n'a pas pu être détruite.
     image:
       create: Impossible de créer l'image
       update: Impossible de mettre à jour l'image
