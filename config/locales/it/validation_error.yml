@@ -32,6 +32,22 @@ it:
       create: Impossibile creare il gruppo
       destroy: Impossibile eliminare il gruppo
       update: Impossibile aggiornare il gruppo
+    fleet_inventories:
+      create: Impossibile creare l'inventario.
+      update: Impossibile aggiornare l'inventario.
+      destroy: Impossibile eliminare l'inventario.
+    fleet_inventory_items:
+      create: Impossibile creare la voce di inventario.
+      update: Impossibile aggiornare la voce di inventario.
+      destroy: Impossibile eliminare la voce di inventario.
+    hangar_inventories:
+      create: Impossibile creare l'inventario.
+      update: Impossibile aggiornare l'inventario.
+      destroy: Impossibile eliminare l'inventario.
+    hangar_inventory_items:
+      create: Impossibile creare la voce di inventario.
+      update: Impossibile aggiornare la voce di inventario.
+      destroy: Impossibile eliminare la voce di inventario.
     image:
       create: Impossibile creare l'immagine
       update: Impossibile aggiornare l'immagine
