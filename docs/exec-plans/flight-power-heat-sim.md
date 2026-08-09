@@ -165,6 +165,33 @@ Findings from `chunk-FWWRRMGF.js` (2026-08-08):
 - Helpers to port: `Xn, Zn, Jn, ft, it, Ct, rt, tt, W, $, nt, et, D, Rt, me, yt,
   X, fo` + the `$n` family model.
 
+### Allocation primitives (decoded 2026-08-09)
+
+State `= {remaining, perPort:{}, perFamily:{…0}}`; each port `= {portPath,
+family, size, disabled, critical, selected, poweredOn, floor, units}` where
+`size` = the segments the component occupies.
+
+- **`D(state, port, family)`** — the atomic allocate: `port.selected=true;
+  perPort[port]+=size; perFamily[family]+=size; remaining-=size`. (`Re` = undo.)
+- **`W(ports, family, state)`** — base pass, **critical only**: allocate each
+  `!disabled && critical && !selected && size<=remaining`.
+- **`$(ports, family, state)`** — greedy fill a family: allocate each
+  `!disabled && !selected` until one doesn't fit (`size>remaining` → break).
+- **`nt(ports, cap, state)`** — weapons base: allocate weapon ports up to `cap`
+  segments (`Zn` calls `nt(weapon, 1)`).
+- **`et(ports, family, target, state)`** → **`ot`**: fill a family up to
+  `target - perFamily[family]` more segments (`Jn` calls
+  `et(weapon, min(weaponConsumptionPoints, poolSize))`).
+- **`Ae(ports, portPath, n, family, state)`** — fill one specific port up to n.
+- **`it(cooler, …, state)`** — **heat-coupled**: scan cooler segments from
+  `floor..units`, return the first where `cooling(seg) ≥ coolingConsumptionPerSec`
+  (this is the power↔heat link `ft` iterates).
+
+**Port model TODO (next decode):** how erkul builds each port's `size` /
+`family` / `critical` / `floor` / `units` from the item + loadout data (the
+`lo`/`An`/`Kn`/`te` helpers) — the input mapping the TS sim needs before it can
+run the passes above.
+
 ### ⚠️ Power ↔ heat are coupled
 
 `ft` balances cooler segments against **heat generation vs cooling**, so the
