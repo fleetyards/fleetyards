@@ -61,8 +61,8 @@ const isDeposit = computed(() => entryType.value === "deposit");
 
 const modalTitle = computed(() =>
   isDeposit.value
-    ? t("headlines.fleets.logistics.deposit")
-    : t("headlines.fleets.logistics.withdrawal"),
+    ? t("headlines.logistics.deposit")
+    : t("headlines.logistics.withdrawal"),
 );
 
 const validationSchema = {
@@ -95,45 +95,45 @@ const [notes, notesProps] = defineField("notes");
 const entryTypeOptions: FilterOption[] = [
   {
     value: "deposit",
-    label: t("labels.fleets.logistics.entryTypes.deposit"),
+    label: t("labels.logistics.entryTypes.deposit"),
   },
   {
     value: "withdrawal",
-    label: t("labels.fleets.logistics.entryTypes.withdrawal"),
+    label: t("labels.logistics.entryTypes.withdrawal"),
   },
 ];
 
 const categoryOptions: FilterOption[] = [
   {
     value: "commodity",
-    label: t("labels.fleets.logistics.categories.commodity"),
+    label: t("labels.logistics.categories.commodity"),
   },
   {
     value: "component",
-    label: t("labels.fleets.logistics.categories.component"),
+    label: t("labels.logistics.categories.component"),
   },
   {
     value: "weapon",
-    label: t("labels.fleets.logistics.categories.weapon"),
+    label: t("labels.logistics.categories.weapon"),
   },
   {
     value: "equipment",
-    label: t("labels.fleets.logistics.categories.equipment"),
+    label: t("labels.logistics.categories.equipment"),
   },
   {
     value: "ammunition",
-    label: t("labels.fleets.logistics.categories.ammunition"),
+    label: t("labels.logistics.categories.ammunition"),
   },
   {
     value: "consumable",
-    label: t("labels.fleets.logistics.categories.consumable"),
+    label: t("labels.logistics.categories.consumable"),
   },
-  { value: "other", label: t("labels.fleets.logistics.categories.other") },
+  { value: "other", label: t("labels.logistics.categories.other") },
 ];
 
 const unitOptions: FilterOption[] = [
-  { value: "scu", label: t("labels.fleets.logistics.units.scu") },
-  { value: "units", label: t("labels.fleets.logistics.units.units") },
+  { value: "scu", label: t("labels.logistics.units.scu") },
+  { value: "units", label: t("labels.logistics.units.units") },
 ];
 
 // Load stock items for withdrawal picker
@@ -149,7 +149,7 @@ const loadStockItems = async () => {
 const stockItemOptions = computed<FilterOption[]>(() =>
   stockItems.value.map((item) => ({
     value: `${item.name}|||${item.category}|||${item.unit}`,
-    label: `${item.name} (${item.netQuantity} ${t(`labels.fleets.logistics.units.${item.unit}`)})`,
+    label: `${item.name} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`,
   })),
 );
 
@@ -161,7 +161,7 @@ onMounted(() => {
 const existingItemOptions = computed<FilterOption[]>(() =>
   stockItems.value.map((item) => ({
     value: `${item.name}|||${item.category}|||${item.unit}`,
-    label: `${item.name} (${t(`labels.fleets.logistics.categories.${item.category}`)})`,
+    label: `${item.name} (${t(`labels.logistics.categories.${item.category}`)})`,
   })),
 );
 
@@ -249,8 +249,8 @@ const onSubmit = handleSubmit(async (values) => {
     .then(() => {
       displaySuccess({
         text: isDeposit.value
-          ? t("messages.fleets.logistics.inventoryItem.deposit.success")
-          : t("messages.fleets.logistics.inventoryItem.withdrawal.success"),
+          ? t("messages.logistics.inventoryItem.deposit.success")
+          : t("messages.logistics.inventoryItem.withdrawal.success"),
       });
       comlink.emit("fleet-inventory-item-created");
       comlink.emit("close-modal");
@@ -258,8 +258,8 @@ const onSubmit = handleSubmit(async (values) => {
     .catch(() => {
       displayAlert({
         text: isDeposit.value
-          ? t("messages.fleets.logistics.inventoryItem.deposit.failure")
-          : t("messages.fleets.logistics.inventoryItem.withdrawal.failure"),
+          ? t("messages.logistics.inventoryItem.deposit.failure")
+          : t("messages.logistics.inventoryItem.withdrawal.failure"),
       });
     })
     .finally(() => {
@@ -274,7 +274,7 @@ const onSubmit = handleSubmit(async (values) => {
       <FilterGroup
         v-model="entryType"
         :options="entryTypeOptions"
-        :label="t('labels.fleets.logistics.entryType')"
+        :label="t('labels.logistics.entryType')"
         name="entryType"
         :searchable="false"
       />
@@ -283,7 +283,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="memberId"
         :query-fn="fetchMembers"
         :query-response-formatter="formatMembers"
-        :label="t('labels.fleets.logistics.member')"
+        :label="t('labels.logistics.member')"
         name="memberId"
         :searchable="true"
         :nullable="true"
@@ -294,15 +294,15 @@ const onSubmit = handleSubmit(async (values) => {
         <FilterGroup
           v-model="selectedStockItem"
           :options="stockItemOptions"
-          :label="t('labels.fleets.logistics.selectItem')"
+          :label="t('labels.logistics.selectItem')"
           name="stockItem"
           :searchable="true"
         />
 
         <p v-if="selectedStockMax !== undefined" class="text-muted">
-          {{ t("labels.fleets.logistics.currentStock") }}:
+          {{ t("labels.logistics.currentStock") }}:
           {{ selectedStockMax }}
-          {{ t(`labels.fleets.logistics.units.${unit}`) }}
+          {{ t(`labels.logistics.units.${unit}`) }}
         </p>
       </template>
 
@@ -312,7 +312,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-if="existingItemOptions.length"
           v-model="selectedExistingItem"
           :options="existingItemOptions"
-          :label="t('labels.fleets.logistics.existingItem')"
+          :label="t('labels.logistics.existingItem')"
           name="existingItem"
           :searchable="true"
           :nullable="true"
@@ -322,14 +322,14 @@ const onSubmit = handleSubmit(async (values) => {
           v-bind="nameProps"
           name="name"
           :rules="validationSchema.name"
-          :label="t('labels.fleets.logistics.itemName')"
+          :label="t('labels.logistics.itemName')"
         />
         <FilterGroup
           v-model="category"
           v-bind="categoryProps"
           name="category"
           :options="categoryOptions"
-          :label="t('labels.fleets.logistics.category')"
+          :label="t('labels.logistics.category')"
           :searchable="false"
         />
       </template>
@@ -342,7 +342,7 @@ const onSubmit = handleSubmit(async (values) => {
             name="quantity"
             :type="InputTypesEnum.NUMBER"
             :rules="validationSchema.quantity"
-            :label="t('labels.fleets.logistics.quantity')"
+            :label="t('labels.logistics.quantity')"
             :min="0"
             no-placeholder
             :max="!isDeposit && selectedStockMax ? selectedStockMax : undefined"
@@ -360,7 +360,7 @@ const onSubmit = handleSubmit(async (values) => {
                 </select>
               </template>
               <span v-else class="base-input__suffix-text">
-                {{ t(`labels.fleets.logistics.units.${unit}`) }}
+                {{ t(`labels.logistics.units.${unit}`) }}
               </span>
             </template>
           </FormInput>
@@ -372,7 +372,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-bind="qualityProps"
             name="quality"
             :type="InputTypesEnum.NUMBER"
-            :label="t('labels.fleets.logistics.quality')"
+            :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"
             :max="1000"
@@ -385,7 +385,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="image"
         v-bind="imageProps"
         name="image"
-        :label="t('labels.fleets.logistics.image')"
+        :label="t('labels.logistics.image')"
         :allowed-types="AllowedFileTypes.IMAGE"
         clearable
       />
@@ -394,8 +394,8 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="notes"
         v-bind="notesProps"
         name="notes"
-        :label="t('labels.fleets.logistics.notes')"
-        :placeholder="t('labels.fleets.logistics.notesPlaceholder')"
+        :label="t('labels.logistics.notes')"
+        :placeholder="t('labels.logistics.notesPlaceholder')"
       />
     </form>
 
@@ -404,8 +404,8 @@ const onSubmit = handleSubmit(async (values) => {
         <Btn :loading="submitting" @click="onSubmit" :size="BtnSizesEnum.LG">
           {{
             isDeposit
-              ? t("actions.fleets.logistics.deposit")
-              : t("actions.fleets.logistics.withdraw")
+              ? t("actions.logistics.deposit")
+              : t("actions.logistics.withdraw")
           }}
         </Btn>
       </div>

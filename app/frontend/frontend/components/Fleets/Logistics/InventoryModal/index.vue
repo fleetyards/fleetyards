@@ -70,11 +70,11 @@ const [managedBy] = defineField("managedBy");
 const visibilityOptions: FilterOption[] = [
   {
     value: "members_only",
-    label: t("labels.fleets.logistics.visibilities.members_only"),
+    label: t("labels.logistics.visibilities.members_only"),
   },
   {
     value: "officers_only",
-    label: t("labels.fleets.logistics.visibilities.officers_only"),
+    label: t("labels.logistics.visibilities.officers_only"),
   },
 ];
 
@@ -121,8 +121,8 @@ const onSubmit = handleSubmit(async (values) => {
     .then(() => {
       displaySuccess({
         text: isEdit.value
-          ? t("messages.fleets.logistics.inventory.update.success")
-          : t("messages.fleets.logistics.inventory.create.success"),
+          ? t("messages.logistics.inventory.update.success")
+          : t("messages.logistics.inventory.create.success"),
       });
       comlink.emit(
         isEdit.value ? "fleet-inventory-updated" : "fleet-inventory-created",
@@ -132,8 +132,8 @@ const onSubmit = handleSubmit(async (values) => {
     .catch(() => {
       displayAlert({
         text: isEdit.value
-          ? t("messages.fleets.logistics.inventory.update.failure")
-          : t("messages.fleets.logistics.inventory.create.failure"),
+          ? t("messages.logistics.inventory.update.failure")
+          : t("messages.logistics.inventory.create.failure"),
       });
     })
     .finally(() => {
@@ -146,8 +146,8 @@ const onSubmit = handleSubmit(async (values) => {
   <Modal
     :title="
       isEdit
-        ? t('headlines.fleets.logistics.editInventory')
-        : t('headlines.fleets.logistics.createInventory')
+        ? t('headlines.logistics.editInventory')
+        : t('headlines.logistics.createInventory')
     "
   >
     <form id="inventory-form" @submit.prevent="onSubmit">
@@ -156,7 +156,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-bind="imageProps"
         :file="(inventory as any)?.image"
         name="image"
-        :label="t('labels.fleets.logistics.image')"
+        :label="t('labels.logistics.image')"
         :allowed-types="AllowedFileTypes.IMAGE"
         clearable
       />
@@ -165,33 +165,33 @@ const onSubmit = handleSubmit(async (values) => {
         v-bind="nameProps"
         name="name"
         :rules="validationSchema.name"
-        :label="t('labels.fleets.logistics.inventoryName')"
+        :label="t('labels.logistics.inventoryName')"
       />
       <FormTextarea
         v-model="description"
         v-bind="descriptionProps"
         name="description"
-        :label="t('labels.fleets.logistics.description')"
+        :label="t('labels.logistics.description')"
       />
       <FormInput
         v-model="location"
         v-bind="locationProps"
         name="location"
-        :label="t('labels.fleets.logistics.location')"
+        :label="t('labels.logistics.location')"
       />
       <FilterGroup
         v-model="visibility"
         v-bind="visibilityProps"
         name="visibility"
         :options="visibilityOptions"
-        :label="t('labels.fleets.logistics.visibility')"
+        :label="t('labels.logistics.visibility')"
         :searchable="false"
       />
       <FilterGroup
         v-model="managedBy"
         :query-fn="fetchMembers"
         :query-response-formatter="formatMembers"
-        :label="t('labels.fleets.logistics.managedBy')"
+        :label="t('labels.logistics.managedBy')"
         name="managedBy"
         :searchable="true"
         :nullable="true"

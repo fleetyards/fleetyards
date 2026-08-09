@@ -11,7 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import InventoryPanel from "@/frontend/components/Fleets/Logistics/InventoryPanel/index.vue";
+import InventoryPanel from "@/frontend/components/Logistics/InventoryPanel/index.vue";
 import {
   type Fleet,
   type FleetMember,
@@ -53,12 +53,13 @@ const canCreate = computed(() =>
   ]),
 );
 
-const openCreateModal = () => {
+const openInventoryModal = (inventory?: FleetInventory) => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Fleets/Logistics/InventoryModal/index.vue"),
     props: {
       fleet: props.fleet,
+      inventory,
     },
   });
 };
@@ -85,13 +86,13 @@ const crumbs = computed(() => [
   <div class="row">
     <div class="col-12 col-lg-8">
       <Heading size="hero" hero>{{
-        t("headlines.fleets.logistics.inventories")
+        t("headlines.logistics.inventories")
       }}</Heading>
     </div>
     <div class="col-12 col-lg-4 flex justify-end items-center">
       <div v-if="canCreate" class="page-actions page-actions-right">
-        <Btn @click="openCreateModal">
-          {{ t("actions.fleets.logistics.createInventory") }}
+        <Btn @click="openInventoryModal()">
+          {{ t("actions.logistics.createInventory") }}
         </Btn>
       </div>
     </div>
@@ -103,9 +104,13 @@ const crumbs = computed(() => [
     <template #default="{ record }">
       <InventoryPanel
         :inventory="record"
-        :fleet="fleet"
-        :fleet-slug="fleet.slug"
+        :to="{
+          name: 'fleet-logistics-inventory',
+          params: { slug: fleet.slug, inventory: record.slug },
+        }"
+        :managed-by="record.manager?.username"
         :editable="canCreate"
+        @edit="openInventoryModal(record)"
       />
     </template>
   </Grid>
