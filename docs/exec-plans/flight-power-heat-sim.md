@@ -35,6 +35,18 @@ full sim for **segment-starved** ships (rare) and the **interactive** case (user
 moves pips off weapons). So the sim's real payoffs are the **pip UI** (its reason
 to exist), **§6** emitted signatures, and **§3 / §8**.
 
+## Integration finding (2026-08-09)
+
+Family map from our `item_type` → erkul family: `WeaponGun`→weapon, `Shield`→
+shield, `Cooler`→coolers, `Radar`→radar, `QuantumDrive`→qdrive, `EMP`→emp,
+`PowerPlant`→segment source (`power_base`). **Coverage gap:** we don't currently
+parse a Power draw for `engine`/`lifeSupport` families that erkul's `co()`
+allocates to — so a faithful full allocation needs those added (or confirmed
+absent) plus the exact non-weapon block sizing. Until then the allocation core
+(`powerSim.ts`) stays a standalone tested unit, **not wired** into the shipped
+sustained calc (which is already exact for non-starved ships, so wiring an
+incomplete allocation would risk a regression for no visible gain).
+
 ## Source of truth
 
 erkul's client-side calc engine, reverse-engineered from its JS bundle:
