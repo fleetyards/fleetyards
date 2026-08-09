@@ -130,6 +130,8 @@ class User < ApplicationRecord
     -> { kept },
     through: :kept_fleet_memberships
 
+  has_many :hangar_inventories, dependent: :destroy
+
   has_many :notifications, dependent: :delete_all
   has_many :notification_preferences, dependent: :delete_all
 
