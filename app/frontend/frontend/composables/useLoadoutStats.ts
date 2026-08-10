@@ -139,6 +139,9 @@ export function computeLoadoutStats(
   // the actual weapon allocation.
   const hasOverrides = overrides && Object.keys(overrides).length > 0;
   const powerRatio = hasOverrides ? sim.weaponPoolRatio : sim.weaponMaxRatio;
+  // Unpowered weapons (0 pips) can't fire at all — zero burst/alpha too, not
+  // just sustained.
+  const powered = powerRatio > 0 ? 1 : 0;
 
   const dps = emptyBreakdown();
   const sustainedDps = emptyBreakdown();
@@ -150,19 +153,19 @@ export function computeLoadoutStats(
     const component = hardpoint.component!;
     const weapon = component.typeData as ComponentWeapon;
     const weaponDps = emptyBreakdown();
-    const ratio = sustainedRatio(weapon, powerRatio);
+    const ratio = sustainedRatio(weapon, powerRatio) * powered;
 
     if (weapon.beam && weapon.damagePerSecond) {
-      addBreakdown(dps, weapon.damagePerSecond, 1);
+      addBreakdown(dps, weapon.damagePerSecond, powered);
       addBreakdown(sustainedDps, weapon.damagePerSecond, ratio);
-      addBreakdown(weaponDps, weapon.damagePerSecond, 1);
+      addBreakdown(weaponDps, weapon.damagePerSecond, powered);
     } else if (!isMissile(weapon) && weapon.fireRate && weapon.damagePerShot) {
       const pellets = weapon.pelletsPerShot || 1;
       const shotsPerSecond = (pellets * weapon.fireRate) / 60;
-      addBreakdown(alpha, weapon.damagePerShot, pellets);
-      addBreakdown(dps, weapon.damagePerShot, shotsPerSecond);
+      addBreakdown(alpha, weapon.damagePerShot, pellets * powered);
+      addBreakdown(dps, weapon.damagePerShot, shotsPerSecond * powered);
       addBreakdown(sustainedDps, weapon.damagePerShot, shotsPerSecond * ratio);
-      addBreakdown(weaponDps, weapon.damagePerShot, shotsPerSecond);
+      addBreakdown(weaponDps, weapon.damagePerShot, shotsPerSecond * powered);
     } else {
       // Missiles (and other non-DPS munitions) don't contribute to DPS/alpha,
       // but their total payload damage is surfaced separately.

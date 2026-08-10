@@ -44,6 +44,11 @@ const stats = useLoadoutStats(
 
 const round = (value: number) => Math.round(value);
 
+// toNumber renders 0 as "N/A"; here a zeroed value is a real 0 (e.g. weapons
+// unpowered), so show "0" instead.
+const dmg = (value: number) =>
+  round(value) > 0 ? toNumber(round(value), "integer") : "0";
+
 const hoveredType = ref<string | null>(null);
 
 const damageTypes: {
@@ -86,7 +91,7 @@ const composition = computed(() =>
           {{ t("labels.combat.dps") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(round(stats.dps.total), "integer") }}
+          {{ dmg(stats.dps.total) }}
           <span class="metrics-card__tile__unit">DPS</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -98,7 +103,7 @@ const composition = computed(() =>
           {{ t("labels.combat.sustained") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(round(stats.sustainedDps.total), "integer") }}
+          {{ dmg(stats.sustainedDps.total) }}
           <span class="metrics-card__tile__unit">DPS</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -110,7 +115,7 @@ const composition = computed(() =>
           {{ t("labels.combat.alpha") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(round(stats.alpha.total), "integer") }}
+          {{ dmg(stats.alpha.total) }}
           <span class="metrics-card__tile__unit">DMG</span>
         </div>
         <div class="metrics-card__tile__sub">

@@ -5,6 +5,7 @@ import {
   type ComponentWeapon,
 } from "@/services/fyApi";
 import { computeLoadoutStats } from "./useLoadoutStats";
+import { WEAPON_POOL_PORT } from "./useLoadoutSim";
 
 function weaponHardpoint(
   typeData: ComponentWeapon,
@@ -174,5 +175,21 @@ describe("computeLoadoutStats", () => {
     expect(stats.weapons[0].dps).toBeCloseTo(900);
     expect(stats.weapons[0].size).toBe("4");
     expect(stats.weapons[0].type).toBe("energy");
+  });
+
+  it("zeroes all weapon damage when weapons are unpowered (0 pips)", () => {
+    const weapon = weaponHardpoint({
+      fireRate: 60,
+      pelletsPerShot: 1,
+      damagePerShot: { energy: 100 },
+      powerConsumption: 2,
+    });
+
+    expect(computeLoadoutStats([weapon], 4).dps.total).toBeGreaterThan(0);
+
+    const off = computeLoadoutStats([weapon], 4, { [WEAPON_POOL_PORT]: 0 });
+    expect(off.dps.total).toBe(0);
+    expect(off.sustainedDps.total).toBe(0);
+    expect(off.alpha.total).toBe(0);
   });
 });
