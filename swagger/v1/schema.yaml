@@ -76,6 +76,19 @@ paths:
                 "$ref": "#/components/schemas/Components"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/components/weapons":
+    get:
+      summary: Ship guns for the deflection check
+      tags:
+      - Components
+      operationId: componentWeapons
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/WeaponIndex"
   "/features":
     get:
       summary: Feature Flags for User
@@ -13389,6 +13402,49 @@ components:
       - meta
       - items
       title: Videos
+    WeaponIndex:
+      type: array
+      items:
+        "$ref": "#/components/schemas/WeaponIndexItem"
+      title: WeaponIndex
+    WeaponIndexItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        size:
+          type: string
+        manufacturerCode:
+          type: string
+        beam:
+          type: boolean
+        weaponClass:
+          type: string
+        pelletsPerShot:
+          type: integer
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - damagePerShot
+      title: WeaponIndexItem
   securitySchemes:
     BearerAuth:
       type: http

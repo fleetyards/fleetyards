@@ -1,4 +1,6 @@
-resources :components, only: [:index]
+resources :components, only: [:index] do
+  get :weapons, on: :collection
+end
 
 namespace :filters do
   resources :components, only: [] do
