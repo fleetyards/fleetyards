@@ -18,13 +18,16 @@ import {
 export { WEAPON_POOL_PORT, type PortOverrides } from "./powerSim";
 
 // A single power column in the pip UI — one component, or the shared weapon
-// pool. `label` is the component name (undefined for the weapon pool).
+// pool. `label` is the component name (undefined for the weapon pool). `locked`
+// means every segment is mandatory (all-critical, e.g. a quantum drive) so the
+// level can't be changed.
 export type PowerColumn = {
   portPath: string;
   family: PowerFamily;
   label?: string;
   allocated: number;
   capacity: number;
+  locked: boolean;
 };
 
 // FleetYards hardpoint category → erkul power family. Only the families erkul
@@ -66,6 +69,10 @@ export type LoadoutSimResult = {
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
 // pool `maxItemCount`); the rest are unpowered backups. 2 is the game default.
 export const DEFAULT_SHIELD_MAX_ITEM_COUNT = 2;
+
+// The active shields share a pool (like weapons), so they aggregate into one
+// column / override key rather than one per generator.
+export const SHIELD_POOL_PORT = "shieldPool";
 
 type Collected = {
   plants: { units: number; size: number; poweredOn: boolean }[];
@@ -114,17 +121,21 @@ function collectPorts(
           const isBackupShield =
             family === "shield" && ++acc.shieldsSeen > shieldMaxItemCount;
           if (!isBackupShield) {
+            // Shields share a pool → one aggregate column; every other family
+            // is one column per component.
+            const portPath =
+              family === "shield" ? SHIELD_POOL_PORT : hardpoint.id;
             const minimumFraction =
               typeData.powerMinimumFraction == null
                 ? undefined
                 : numeric(typeData.powerMinimumFraction);
             acc.otherPorts.push(
-              ...componentBlocks(hardpoint.id, family, {
+              ...componentBlocks(portPath, family, {
                 units: draw,
                 minimumFraction,
               }),
             );
-            if (hardpoint.component?.name) {
+            if (family !== "shield" && hardpoint.component?.name) {
               acc.portLabels[hardpoint.id] = hardpoint.component.name;
             }
           }
@@ -173,16 +184,22 @@ function buildColumns(
   portLabels: Record<string, string>,
   state: AllocationState,
 ): PowerColumn[] {
-  const byPort = new Map<string, { family: PowerFamily; capacity: number }>();
+  const byPort = new Map<
+    string,
+    { family: PowerFamily; capacity: number; critical: number }
+  >();
   const order: string[] = [];
   for (const port of ports) {
     let entry = byPort.get(port.portPath);
     if (!entry) {
-      entry = { family: port.family, capacity: 0 };
+      entry = { family: port.family, capacity: 0, critical: 0 };
       byPort.set(port.portPath, entry);
       order.push(port.portPath);
     }
-    if (!port.disabled) entry.capacity += port.size;
+    if (!port.disabled) {
+      entry.capacity += port.size;
+      if (port.critical) entry.critical += port.size;
+    }
   }
 
   const columns = order
@@ -190,6 +207,7 @@ function buildColumns(
       const entry = byPort.get(portPath) as {
         family: PowerFamily;
         capacity: number;
+        critical: number;
       };
       return {
         portPath,
@@ -197,6 +215,8 @@ function buildColumns(
         label: portPath === WEAPON_POOL_PORT ? undefined : portLabels[portPath],
         allocated: state.perPort[portPath] ?? 0,
         capacity: entry.capacity,
+        // All-critical components (e.g. quantum drives) can't be turned down.
+        locked: entry.critical >= entry.capacity,
       };
     })
     .filter((column) => column.capacity > 0);

@@ -17,6 +17,14 @@ import {
   type FlightMode,
   type PowerFamily,
 } from "@/frontend/composables/powerSim";
+import weaponsIconUrl from "@/images/hardpoints/weapons.svg";
+import shieldGeneratorsIconUrl from "@/images/hardpoints/shield_generators.svg";
+import coolersIconUrl from "@/images/hardpoints/coolers.svg";
+import radarIconUrl from "@/images/hardpoints/radar.svg";
+import quantumDrivesIconUrl from "@/images/hardpoints/quantum_drives.svg";
+import qedIconUrl from "@/images/hardpoints/qed.svg";
+import empIconUrl from "@/images/hardpoints/emp.svg";
+import mainThrustersIconUrl from "@/images/hardpoints/main_thrusters.svg";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -39,7 +47,19 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-// Short column labels (erkul-style compact glyphs under each pip bar).
+// The hardpoint icon per family (engine falls back to the thruster glyph); a
+// short text label covers families without a dedicated icon.
+const FAMILY_ICON: Partial<Record<PowerFamily, string>> = {
+  weapon: weaponsIconUrl,
+  shield: shieldGeneratorsIconUrl,
+  coolers: coolersIconUrl,
+  radar: radarIconUrl,
+  qdrive: quantumDrivesIconUrl,
+  qed: qedIconUrl,
+  emp: empIconUrl,
+  engine: mainThrustersIconUrl,
+};
+
 const SHORT_LABEL: Record<PowerFamily, string> = {
   weapon: "WPN",
   engine: "ENG",
@@ -73,8 +93,10 @@ const columnLabel = (column: PowerColumn) =>
   column.label ?? t(`labels.power.families.${column.family}`);
 
 // Click pip cell at `level` (1-based, bottom-up): jump the component to that
-// level, or step it down one when clicking the current top cell.
+// level, or step it down one when clicking the current top cell. Locked
+// (all-critical) components can't be changed.
 const setLevel = (column: PowerColumn, level: number) => {
+  if (column.locked) return;
   const target = Math.max(
     0,
     Math.min(column.capacity, level === column.allocated ? level - 1 : level),
@@ -124,7 +146,10 @@ const reset = () => emit("update:modelValue", {});
         v-for="column in columns"
         :key="column.portPath"
         class="power-col"
-        :class="{ 'power-col--weapon': column.family === 'weapon' }"
+        :class="{
+          'power-col--weapon': column.family === 'weapon',
+          'power-col--locked': column.locked,
+        }"
       >
         <div class="power-col__count">{{ column.allocated }}</div>
         <div
@@ -144,12 +169,19 @@ const reset = () => emit("update:modelValue", {});
               'power-col__pip--on': level <= column.allocated,
               'power-col__pip--top': level === column.allocated,
             }"
+            :disabled="column.locked"
             :aria-label="`${columnLabel(column)}: ${level}`"
             @click="setLevel(column, level)"
           />
         </div>
         <div class="power-col__label" :title="columnLabel(column)">
-          {{ SHORT_LABEL[column.family] }}
+          <img
+            v-if="FAMILY_ICON[column.family]"
+            :src="FAMILY_ICON[column.family]"
+            :alt="columnLabel(column)"
+            class="power-col__icon"
+          />
+          <span v-else>{{ SHORT_LABEL[column.family] }}</span>
         </div>
       </div>
     </div>
@@ -282,6 +314,20 @@ const reset = () => emit("update:modelValue", {});
     letter-spacing: 0.08em;
     color: $gray;
     text-transform: uppercase;
+    height: 16px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__icon {
+    width: 15px;
+    height: 15px;
+    opacity: 0.75;
+  }
+
+  &--locked &__pip {
+    pointer-events: none;
+    opacity: 0.55;
   }
 }
 </style>

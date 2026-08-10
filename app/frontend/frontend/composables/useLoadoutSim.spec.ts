@@ -186,6 +186,17 @@ describe("overrides (pip UI)", () => {
     const coolerCol = sim.columns.find((c) => c.portPath === cooler.id);
     expect(coolerCol?.allocated).toBe(2);
   });
+
+  it("locks an all-critical component (quantum drive, min fraction 1)", () => {
+    const qd = hp(HardpointCategoryEnum.QUANTUMDRIVE, {
+      powerConsumption: 3,
+      powerMinimumFraction: 1,
+    });
+    const sim = simulateLoadoutPower([plant(40, 2), qd], 0);
+    const col = sim.columns.find((c) => c.portPath === qd.id);
+    expect(col?.locked).toBe(true);
+    expect(col?.allocated).toBe(col?.capacity);
+  });
 });
 
 describe("shield active cap", () => {
@@ -196,8 +207,8 @@ describe("shield active cap", () => {
 
   it("powers only the first 2 shields by default (rest are backups)", () => {
     const sim = simulateLoadoutPower([plant(40, 2), ...shields(3)], 0);
-    // 2 columns of 4 cells; the 3rd shield draws no power (no column).
-    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(2);
+    // Shields aggregate into ONE column; 2 active × 4 cells = 8, 3rd is backup.
+    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(1);
     expect(familyCapacity(sim, "shield")).toBe(8);
   });
 
@@ -209,7 +220,7 @@ describe("shield active cap", () => {
       undefined,
       3,
     );
-    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(3);
+    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(1);
     expect(familyCapacity(sim, "shield")).toBe(12);
   });
 });
