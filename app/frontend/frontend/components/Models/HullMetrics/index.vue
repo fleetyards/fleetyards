@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import type { ModelMetricsHullPartsItem } from "@/services/fyApi";
+import type {
+  ModelMetricsHullPartsItem,
+  ModelMetricsHullDoorsItem,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useHullParts } from "@/frontend/composables/useHullParts";
@@ -15,11 +18,13 @@ import { useHullParts } from "@/frontend/composables/useHullParts";
 type Props = {
   hullHealth?: number;
   hullParts?: ModelMetricsHullPartsItem[];
+  hullDoors?: ModelMetricsHullDoorsItem[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hullHealth: undefined,
   hullParts: () => [],
+  hullDoors: () => [],
 });
 
 const { t, toNumber } = useI18n();
@@ -36,7 +41,18 @@ const num = (value: number) => (value ? toNumber(value, "integer") : "0");
 const hoveredCategory = ref<string | null>(null);
 
 const hullHp = computed(() => props.hullHealth ?? 0);
-const hasData = computed(() => hullHp.value > 0 || props.hullParts.length > 0);
+const hasData = computed(
+  () =>
+    hullHp.value > 0 ||
+    props.hullParts.length > 0 ||
+    props.hullDoors.length > 0,
+);
+
+// Doors are their own area, deliberately outside hull HP — shooting one does not
+// damage the hull.
+const doorHp = computed(() =>
+  props.hullDoors.reduce((sum, door) => sum + door.health, 0),
+);
 
 const openPartsModal = () => {
   comlink.emit("open-modal", {
@@ -46,6 +62,7 @@ const openPartsModal = () => {
     props: {
       hullHealth: props.hullHealth,
       hullParts: props.hullParts,
+      hullDoors: props.hullDoors,
     },
   });
 };
@@ -79,6 +96,18 @@ const openPartsModal = () => {
         </div>
         <div class="metrics-card__tile__sub">
           {{ t("labels.hull.partsSub", { count: composition.length }) }}
+        </div>
+      </div>
+      <div v-if="hullDoors.length" class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.hull.doors") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ num(round(doorHp)) }}
+          <span class="metrics-card__tile__unit">HP</span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.hull.doorsSub", { count: hullDoors.length }) }}
         </div>
       </div>
     </div>

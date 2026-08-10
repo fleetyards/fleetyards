@@ -177,6 +177,7 @@ const shieldStats = useShieldStats(
         <ModelHullMetrics
           :hull-health="model.metrics.hullHealth"
           :hull-parts="model.metrics.hullParts"
+          :hull-doors="model.metrics.hullDoors"
         />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">

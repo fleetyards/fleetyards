@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
-import type { ModelMetricsHullPartsItem } from "@/services/fyApi";
+import type {
+  ModelMetricsHullPartsItem,
+  ModelMetricsHullDoorsItem,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useHullParts,
@@ -18,11 +21,13 @@ import {
 type Props = {
   hullHealth?: number;
   hullParts?: ModelMetricsHullPartsItem[];
+  hullDoors?: ModelMetricsHullDoorsItem[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hullHealth: undefined,
   hullParts: () => [],
+  hullDoors: () => [],
 });
 
 const { t, toNumber } = useI18n();
@@ -40,6 +45,21 @@ const hoveredCategory = ref<string | null>(null);
 
 const barWidth = (health: number) =>
   maxPartHealth.value > 0 ? `${(health / maxPartHealth.value) * 100}%` : "0%";
+
+// Doors are a separate area, ranked among themselves — their HP runs far above
+// hull part HP on capitals, so sharing the parts scale would flatten it.
+const rankedDoors = computed(() =>
+  [...props.hullDoors].sort((a, b) => b.health - a.health),
+);
+
+const doorHp = computed(() =>
+  rankedDoors.value.reduce((sum, door) => sum + door.health, 0),
+);
+
+const maxDoorHealth = computed(() => rankedDoors.value[0]?.health ?? 0);
+
+const doorBarWidth = (health: number) =>
+  maxDoorHealth.value > 0 ? `${(health / maxDoorHealth.value) * 100}%` : "0%";
 </script>
 
 <template>
@@ -137,6 +157,41 @@ const barWidth = (health: number) =>
           </tbody>
         </table>
       </div>
+
+      <template v-if="rankedDoors.length">
+        <div class="parts-head parts-head--doors">
+          <span>{{ t("labels.hull.doors") }}</span>
+          <span class="parts-head__meta">
+            {{ rankedDoors.length }} · {{ num(round(doorHp)) }} HP
+          </span>
+        </div>
+
+        <table class="parts-table">
+          <tbody>
+            <tr v-for="door in rankedDoors" :key="door.name">
+              <td class="parts-table__name">
+                {{ humanizeHullPart(door.name) }}
+              </td>
+              <td class="parts-table__cat">
+                <span class="parts-table__chip parts-table__chip--door">
+                  {{ t("labels.hull.door") }}
+                </span>
+              </td>
+              <td class="parts-table__bar">
+                <span class="parts-table__track">
+                  <span
+                    class="parts-table__fill"
+                    :style="{ width: doorBarWidth(door.health) }"
+                  />
+                </span>
+              </td>
+              <td class="num">{{ num(round(door.health)) }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="parts-note">{{ t("labels.hull.doorsNote") }}</p>
+      </template>
 
       <p class="parts-note">{{ t("labels.hull.partsNote") }}</p>
     </div>
@@ -236,6 +291,23 @@ const barWidth = (health: number) =>
   }
 }
 
+.parts-head--doors {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+
+  .parts-head__meta {
+    font-family: "Open Sans", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: $gray-light;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
 .parts-head {
   font-family: "Orbitron", tahoma, sans-serif;
   font-size: 9px;
@@ -291,6 +363,10 @@ const barWidth = (health: number) =>
     width: 1%;
   }
 
+  &__chip--door {
+    color: $primary;
+  }
+
   &__chip {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 8.5px;
@@ -313,6 +389,7 @@ const barWidth = (health: number) =>
 
   &__fill {
     display: block;
+    background: $primary;
     height: 100%;
     border-radius: 999px;
   }

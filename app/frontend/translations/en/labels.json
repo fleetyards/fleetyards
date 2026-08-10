@@ -659,18 +659,22 @@
           "cosmetic": "Cosmetic"
         },
         "composition": "Hull Composition",
+        "door": "Door",
+        "doors": "Doors",
+        "doorsNote": "Breakable interior doors are a separate area — they carry their own health and are not part of hull HP.",
+        "doorsSub": "%{count} breakable",
         "hint": "Hull HP is the sum of all part health.",
         "hullHp": "Hull HP",
         "hullHpSub": "total across all parts",
         "integrity": "Hull Integrity",
+        "noHp": "no HP",
         "parts": "Hull Parts",
         "partsNote": "Parts are ranked by health; cosmetic parts (doors, ladders, flaps) carry no health of their own. The game files expose no parent/child links, so this is a flat list rather than a structural tree.",
         "partsSub": "across %{count} categories",
         "partsTree": "Parts · damageMax",
         "showParts": "Show hull parts",
         "title": "Hull",
-        "totalHp": "Total Hull HP",
-        "noHp": "no HP"
+        "totalHp": "Total Hull HP"
       },
       "manufacturer": {
         "longName": "Long Name",
