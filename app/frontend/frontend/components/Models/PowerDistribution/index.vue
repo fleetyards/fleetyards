@@ -39,6 +39,23 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
+// Short column labels (erkul-style compact glyphs under each pip bar).
+const SHORT_LABEL: Record<PowerFamily, string> = {
+  weapon: "WPN",
+  engine: "ENG",
+  shield: "SHD",
+  qdrive: "QD",
+  radar: "RAD",
+  lifeSupport: "LS",
+  coolers: "COOL",
+  qed: "QED",
+  emp: "EMP",
+  miningLaser: "MIN",
+  salvage: "SLV",
+  tractorBeam: "TRC",
+  towingbeam: "TOW",
+};
+
 const sim = useLoadoutSim(
   () => props.hardpoints,
   () => props.weaponPoolSize,
@@ -51,6 +68,7 @@ const families = computed(() =>
     (family) => ({
       family,
       label: t(`labels.power.families.${family}`),
+      short: SHORT_LABEL[family],
       allocated: sim.value.perFamily[family],
       capacity: sim.value.familyCapacity[family],
     }),
@@ -63,14 +81,16 @@ const usedSegments = computed(
 
 const hasOverrides = computed(() => Object.keys(props.modelValue).length > 0);
 
-const setTarget = (family: PowerFamily, target: number) => {
+// Click pip cell at `level` (1-based, bottom-up): jump the family to that level,
+// or step it down one when clicking the current top cell (so weapons can reach 0).
+const setLevel = (family: PowerFamily, level: number) => {
+  const current = sim.value.perFamily[family];
   const capacity = sim.value.familyCapacity[family];
-  const clamped = Math.max(0, Math.min(capacity, target));
-  emit("update:modelValue", { ...props.modelValue, [family]: clamped });
-};
-
-const step = (family: PowerFamily, delta: number) => {
-  setTarget(family, sim.value.perFamily[family] + delta);
+  const target = Math.max(
+    0,
+    Math.min(capacity, level === current ? level - 1 : level),
+  );
+  emit("update:modelValue", { ...props.modelValue, [family]: target });
 };
 
 const reset = () => emit("update:modelValue", {});
@@ -110,55 +130,40 @@ const reset = () => emit("update:modelValue", {});
       </div>
     </div>
 
-    <ul class="power-panel__families">
-      <li
+    <div class="power-bars">
+      <div
         v-for="entry in families"
         :key="entry.family"
-        class="power-family"
-        :class="{ 'power-family--weapon': entry.family === 'weapon' }"
+        class="power-col"
+        :class="{ 'power-col--weapon': entry.family === 'weapon' }"
       >
-        <div class="power-family__head">
-          <span class="power-family__label">{{ entry.label }}</span>
-          <span class="power-family__count">
-            {{ entry.allocated
-            }}<span class="power-family__count-max">/{{ entry.capacity }}</span>
-          </span>
-        </div>
-        <div class="power-family__control">
+        <div class="power-col__count">{{ entry.allocated }}</div>
+        <div
+          class="power-col__stack"
+          role="slider"
+          :aria-label="entry.label"
+          :aria-valuenow="entry.allocated"
+          :aria-valuemin="0"
+          :aria-valuemax="entry.capacity"
+        >
           <button
+            v-for="level in entry.capacity"
+            :key="level"
             type="button"
-            class="power-family__step"
-            :disabled="entry.allocated <= 0"
-            :aria-label="`- ${entry.label}`"
-            @click="step(entry.family, -1)"
-          >
-            −
-          </button>
-          <div
-            class="power-family__bar"
-            role="progressbar"
-            :aria-valuenow="entry.allocated"
-            :aria-valuemax="entry.capacity"
-          >
-            <span
-              v-for="n in entry.capacity"
-              :key="n"
-              class="power-family__pip"
-              :class="{ 'power-family__pip--on': n <= entry.allocated }"
-            />
-          </div>
-          <button
-            type="button"
-            class="power-family__step"
-            :disabled="entry.allocated >= entry.capacity"
-            :aria-label="`+ ${entry.label}`"
-            @click="step(entry.family, 1)"
-          >
-            +
-          </button>
+            class="power-col__pip"
+            :class="{
+              'power-col__pip--on': level <= entry.allocated,
+              'power-col__pip--top': level === entry.allocated,
+            }"
+            :aria-label="`${entry.label}: ${level}`"
+            @click="setLevel(entry.family, level)"
+          />
         </div>
-      </li>
-    </ul>
+        <div class="power-col__label" :title="entry.label">
+          {{ entry.short }}
+        </div>
+      </div>
+    </div>
 
     <div class="metrics-card__actions">
       <button
@@ -186,7 +191,7 @@ const reset = () => emit("update:modelValue", {});
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
 
   &__seg {
@@ -219,85 +224,76 @@ const reset = () => emit("update:modelValue", {});
     color: $gray;
     font-variant-numeric: tabular-nums;
   }
-
-  &__families {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
 }
 
-.power-family {
-  &__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 5px;
-  }
+.power-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 180px;
+  overflow-x: auto;
+}
 
-  &__label {
-    font-size: 12px;
-    color: lighten($text-color, 15%);
-  }
+.power-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 34px;
+  gap: 6px;
 
   &__count {
-    font-size: 12px;
+    font-size: 13px;
     font-variant-numeric: tabular-nums;
     color: $text-color;
+    min-height: 16px;
   }
 
-  &__count-max {
-    color: $gray;
-  }
-
-  &__control {
+  &__stack {
     display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  &__step {
-    flex: 0 0 auto;
-    width: 24px;
-    height: 24px;
-    border: 1px solid rgba($gray-light, 0.28);
-    border-radius: 4px;
-    background: transparent;
-    color: $text-color;
-    font-size: 15px;
-    line-height: 1;
-    cursor: pointer;
-
-    &:disabled {
-      opacity: 0.35;
-      cursor: default;
-    }
-  }
-
-  &__bar {
-    flex: 1 1 auto;
-    display: flex;
+    flex-direction: column-reverse;
     gap: 2px;
-    min-width: 0;
+    width: 100%;
+    max-width: 40px;
   }
 
   &__pip {
-    flex: 1 1 0;
-    height: 10px;
+    height: 9px;
+    border: 0;
     border-radius: 2px;
-    background: rgba($gray-light, 0.22);
-    transition: background 0.12s ease;
+    background: rgba($gray-light, 0.18);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.1s ease;
+
+    &:hover {
+      background: rgba($gray-light, 0.32);
+    }
 
     &--on {
-      background: rgba($primary, 0.55);
+      background: rgba($primary, 0.4);
+    }
+
+    &--top {
+      background: $primary;
     }
   }
 
-  &--weapon .power-family__pip--on {
-    background: rgba(#fa6800, 0.7);
+  &--weapon &__pip--on {
+    background: rgba(#fa6800, 0.45);
+  }
+
+  &--weapon &__pip--top {
+    background: #fa6800;
+  }
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 8.5px;
+    letter-spacing: 0.08em;
+    color: $gray;
+    text-transform: uppercase;
   }
 }
 </style>
