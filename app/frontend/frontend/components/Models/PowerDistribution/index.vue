@@ -329,7 +329,7 @@ const cellHeight = (span: number) =>
 .power-bars {
   display: flex;
   align-items: flex-end;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 6px;
   min-height: 180px;
   overflow-x: auto;
@@ -339,7 +339,7 @@ const cellHeight = (span: number) =>
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 0 0 auto;
+  flex: 1 1 0;
   min-width: 30px;
   gap: 6px;
 
@@ -354,7 +354,8 @@ const cellHeight = (span: number) =>
     display: flex;
     flex-direction: column-reverse;
     gap: 2px;
-    width: 26px;
+    width: 100%;
+    max-width: 44px;
   }
 
   &__pip {
