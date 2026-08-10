@@ -166,7 +166,13 @@ export function allocatePower(
   allocCritical(of("salvage"), state);
   if (mode === "SCM") {
     allocCritical(of("emp"), state);
-    weaponBase(of("weapon"), 1, state);
+    // Weapons get a 1-segment base, unless the user explicitly overrides them
+    // to fewer (letting the pip UI take weapons down to 0).
+    const weaponBaseCap =
+      opts.overrides?.weapon === undefined
+        ? 1
+        : Math.min(1, opts.overrides.weapon);
+    weaponBase(of("weapon"), weaponBaseCap, state);
     allocCritical(of("shield"), state);
   } else {
     allocCritical(of("qdrive"), state);

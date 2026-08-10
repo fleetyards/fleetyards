@@ -155,6 +155,12 @@ describe("overrides (pip UI)", () => {
     expect(sim.familyCapacity.weapon).toBe(4);
     expect(sim.familyCapacity.shield).toBe(4);
   });
+
+  it("lets the user take weapons all the way to 0 (no forced base)", () => {
+    const sim = simulateLoadoutPower(asgardLike(), 4, "SCM", { weapon: 0 });
+    expect(sim.perFamily.weapon).toBe(0);
+    expect(sim.weaponPoolRatio).toBe(0);
+  });
 });
 
 describe("POWER_FAMILY_BY_CATEGORY", () => {
