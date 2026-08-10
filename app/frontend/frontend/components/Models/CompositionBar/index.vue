@@ -30,6 +30,9 @@ const emit = defineEmits<{ highlight: [key: string | null] }>();
 const { t, toNumber } = useI18n();
 
 const round = (value: number) => Math.round(value);
+// `toNumber` renders any falsy value as "N/A"; a segment rounding to 0% is a
+// real value, not missing data.
+const num = (value: number) => (value ? toNumber(value, "integer") : "0");
 
 const rows = computed(() => {
   const total = props.segments.reduce((sum, segment) => sum + segment.value, 0);
@@ -68,9 +71,7 @@ const rows = computed(() => {
         <span class="composition__value">
           {{ toNumber(round(row.value), format) }}
         </span>
-        <span class="composition__pct">
-          {{ toNumber(round(row.pct), "integer") }}%
-        </span>
+        <span class="composition__pct"> {{ num(round(row.pct)) }}% </span>
       </div>
     </div>
   </div>

@@ -136,18 +136,21 @@
       gap: 6px;
       font-family: "Orbitron", tahoma, sans-serif;
       font-weight: 700;
-      font-size: 24px;
+      font-size: 21px;
       line-height: 1;
       color: lighten($text-color, 15%);
       font-variant-numeric: tabular-nums;
+      // Thousands are separated by a space, which flex would otherwise treat as
+      // a break opportunity — "4 910" must never split across two lines.
+      white-space: nowrap;
     }
 
     &--primary &__value {
-      font-size: 40px;
+      font-size: 30px;
       color: #fff;
 
       @media (max-width: 576px) {
-        font-size: 32px;
+        font-size: 26px;
       }
     }
 

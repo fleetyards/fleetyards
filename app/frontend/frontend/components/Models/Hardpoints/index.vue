@@ -10,7 +10,8 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import HardpointGroup from "./Group/index.vue";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
-import ModelSurvivabilityMetrics from "@/frontend/components/Models/SurvivabilityMetrics/index.vue";
+import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
+import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
@@ -166,18 +167,17 @@ const shieldStats = useShieldStats(
             shieldStats.hasData ||
             model.metrics.hullHealth)
         "
-        class="row combat-row"
+        class="metrics-grid"
       >
-        <div class="col-12 col-lg-6">
-          <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
-        </div>
-        <div class="col-12 col-lg-6">
-          <ModelSurvivabilityMetrics
-            :hardpoints="hardpoints as Hardpoint[]"
-            :hull-health="model.metrics.hullHealth"
-            :hull-parts="model.metrics.hullParts"
-          />
-        </div>
+        <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
+        <ModelDefenseMetrics
+          :hardpoints="hardpoints as Hardpoint[]"
+          :model-name="model.name"
+        />
+        <ModelHullMetrics
+          :hull-health="model.metrics.hullHealth"
+          :hull-parts="model.metrics.hullParts"
+        />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
         <span class="hardpoints__viewbar-label">
