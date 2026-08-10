@@ -70,11 +70,27 @@ Each phase lands as its own PR, validated against erkul on the **Asgard**.
   `power_consumption` is in the DB. `minimumConsumptionFraction` is not parsed
   yet; `componentBlocks` defaults the critical block to 1 segment (exact when
   the fraction is 0, which is today's norm — a fidelity refinement otherwise).
-- **Remaining gate (needs the app + fresh data):** the on-disk parsed data + DB
-  are **stale** — only weapons carry `power_consumption`. Re-parse/reload so the
-  generic per-component power draw (shields/coolers/radar/qdrive/emp/
-  lifeSupport/controller) lands in the DB, then **validate the default
-  per-family segments vs erkul on the Asgard**. No UI yet.
+- **Parser gap found + fixed.** The generic Power extractor only read
+  `ItemResourceDeltaConsumption` + `SStandardResourceUnit`, so it caught weapons
+  + quantum drives but missed every segment-based converter (shields, coolers,
+  radars, controllers, QEDs declare their draw as `ItemResourceDeltaConversion`
+  with `SPowerSegmentResourceUnit`). Extended to traverse both delta kinds and
+  both unit representations, and to capture `minimumConsumptionFraction`
+  (`power_minimum_fraction`, erkul's `minimumFraction`). After re-parse: 763
+  components now carry a Power draw (controller 238, weapons 233, cooler 81,
+  shield 73, radar 67, qdrive 63, qed 5).
+- **Validated vs erkul on the Asgard** ✅ (real DB data → `useLoadoutSim`):
+  weapons Σ 7.8 → consumption 8, pool 4 → **weapon `poolRatio` = 0.5**, matching
+  erkul exactly. Full SCM split (24 segments): weapon 4, shield 16, radar 3,
+  engine 1 — coherent (shields prioritized, weapon at pool, fully consumed). The
+  precise non-weapon segment split will be visually re-checked against erkul in
+  Phase 3 (when the pip UI actually displays it).
+- **Data note:** the fix lives in the parser; the committed parsed JSON under
+  `data/sc_data/parsed/` is **stale** relative to it (and to `main`'s parser —
+  re-parsing also surfaces unrelated `cooling_rate`/`zero_damage_range`/
+  `max_ammo` drift). Regenerating the committed parsed data is a **separate
+  data-pipeline task**, not part of this feature branch; the local worktree DB
+  was reloaded so development/validation can proceed.
 
 ### Phase 2 — Wire default sustained (no regression)
 - Replace the standalone `weaponPowerRatio` in `useLoadoutStats` with the sim's
