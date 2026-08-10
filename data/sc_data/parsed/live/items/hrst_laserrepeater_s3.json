@@ -114,6 +114,8 @@
       "requested_regen_per_second": 4853.0,
       "requested_ammo_load": 29120.0
     },
-    "power_consumption": 0.75
+    "power_consumption": 0.75,
+    "weapon_class": "LaserRepeater",
+    "mountable": true
   }
 }

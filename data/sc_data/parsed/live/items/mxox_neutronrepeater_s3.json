@@ -114,6 +114,7 @@
       "requested_regen_per_second": 3958.0,
       "requested_ammo_load": 23750.0
     },
-    "power_consumption": 0.75
+    "power_consumption": 0.75,
+    "mountable": true
   }
 }

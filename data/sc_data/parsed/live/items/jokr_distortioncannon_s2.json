@@ -114,6 +114,8 @@
       "requested_regen_per_second": 1125.0,
       "requested_ammo_load": 6750.0
     },
-    "power_consumption": 1.2
+    "power_consumption": 1.2,
+    "weapon_class": "DistortionCannon",
+    "mountable": true
   }
 }

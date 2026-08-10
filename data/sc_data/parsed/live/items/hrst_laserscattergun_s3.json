@@ -114,6 +114,8 @@
       "requested_regen_per_second": 4133.0,
       "requested_ammo_load": 24800.0
     },
-    "power_consumption": 1.0
+    "power_consumption": 1.0,
+    "weapon_class": "ScatterGun",
+    "mountable": true
   }
 }

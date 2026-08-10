@@ -88,6 +88,8 @@
       "requested_regen_per_second": 48050.0,
       "requested_ammo_load": 288300.0
     },
-    "power_consumption": 3.1
+    "power_consumption": 3.1,
+    "weapon_class": "LaserCannon",
+    "mountable": true
   }
 }

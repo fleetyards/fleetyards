@@ -88,6 +88,8 @@
       "requested_regen_per_second": 10600.0,
       "requested_ammo_load": 63600.0
     },
-    "power_consumption": 1.6
+    "power_consumption": 1.6,
+    "weapon_class": "DistortionScatterGun",
+    "mountable": true
   }
 }

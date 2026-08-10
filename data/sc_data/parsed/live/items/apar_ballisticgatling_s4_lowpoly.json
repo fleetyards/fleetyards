@@ -86,6 +86,8 @@
       "time_till_cooling_starts": 0.756,
       "overheat_fix_time": 4.21
     },
-    "power_consumption": 0.1
+    "power_consumption": 0.1,
+    "weapon_class": "BallisticGatling",
+    "mountable": true
   }
 }

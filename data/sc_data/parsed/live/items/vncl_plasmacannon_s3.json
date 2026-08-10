@@ -88,6 +88,8 @@
       "requested_regen_per_second": 4220.0,
       "requested_ammo_load": 3750.0
     },
-    "power_consumption": 1.5
+    "power_consumption": 1.5,
+    "weapon_class": "PlasmaCannon",
+    "mountable": true
   }
 }

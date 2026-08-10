@@ -112,6 +112,8 @@
       "time_till_cooling_starts": 0.66,
       "overheat_fix_time": 2.98
     },
-    "power_consumption": 0.1
+    "power_consumption": 0.1,
+    "weapon_class": "BallisticCannon",
+    "mountable": true
   }
 }

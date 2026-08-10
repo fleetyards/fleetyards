@@ -45,6 +45,7 @@
     "speed": 700.0,
     "range": 2100.0,
     "ammo_cost": 1,
-    "max_ammo": 36
+    "max_ammo": 36,
+    "mountable": false
   }
 }

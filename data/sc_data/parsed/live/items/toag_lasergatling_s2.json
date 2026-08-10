@@ -114,6 +114,8 @@
       "requested_regen_per_second": 1742.0,
       "requested_ammo_load": 10450.0
     },
-    "power_consumption": 0.335
+    "power_consumption": 0.335,
+    "weapon_class": "LaserGatling",
+    "mountable": true
   }
 }

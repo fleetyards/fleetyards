@@ -114,6 +114,8 @@
       "requested_regen_per_second": 1689.0,
       "requested_ammo_load": 10132.0
     },
-    "power_consumption": 0.75
+    "power_consumption": 0.75,
+    "weapon_class": "DistortionRepeater",
+    "mountable": true
   }
 }

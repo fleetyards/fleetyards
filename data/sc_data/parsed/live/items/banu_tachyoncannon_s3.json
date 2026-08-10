@@ -116,6 +116,8 @@
       "requested_regen_per_second": 3300.0,
       "requested_ammo_load": 1600.0
     },
-    "power_consumption": 2.0
+    "power_consumption": 2.0,
+    "weapon_class": "TachyonCannon",
+    "mountable": true
   }
 }
