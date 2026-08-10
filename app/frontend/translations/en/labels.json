@@ -593,6 +593,30 @@
         "damageThermal": "Thermal",
         "hint": "DPS from the default loadout. Sustained factors in each weapon's energy-pool regen and overheat cycle. Missiles excluded."
       },
+      "power": {
+        "title": "Power Distribution",
+        "scm": "SCM",
+        "nav": "NAV",
+        "reset": "Reset",
+        "auto": "Auto",
+        "segmentsUsed": "%{used} / %{total} segments",
+        "hint": "Move power between systems. Weapons' sustained DPS scales with the power they get; the rest is auto-balanced.",
+        "families": {
+          "weapon": "Weapons",
+          "shield": "Shields",
+          "engine": "Engine",
+          "radar": "Radar",
+          "coolers": "Coolers",
+          "qdrive": "Quantum Drive",
+          "qed": "QED",
+          "emp": "EMP",
+          "lifeSupport": "Life Support",
+          "miningLaser": "Mining Laser",
+          "salvage": "Salvage",
+          "tractorBeam": "Tractor Beam",
+          "towingbeam": "Towing Beam"
+        }
+      },
       "defense": {
         "title": "Defense",
         "shieldHp": "Shield HP",

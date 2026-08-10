@@ -8,32 +8,47 @@ import {
 
 let seq = 0;
 
+// The component payload union, taken from the generated Hardpoint type. Each
+// member is all-optional, so a minimal `{ powerBase }` / `{ powerConsumption }`
+// fixture satisfies it without hand-rolling a shape.
+type ComponentTypeData = NonNullable<Hardpoint["component"]>["typeData"];
+
 function hp(
   category: HardpointCategoryEnum,
-  typeData: Record<string, unknown>,
-  extra: Partial<Hardpoint> = {},
+  typeData: ComponentTypeData,
+  opts: { size?: number; children?: Hardpoint[] } = {},
 ): Hardpoint {
   seq += 1;
   return {
     id: `hp-${seq}`,
     name: category,
     category,
-    component: { size: 1, typeData } as Hardpoint["component"],
-    ...extra,
+    component: {
+      name: category,
+      size: String(opts.size ?? 1),
+      typeData,
+    } as Hardpoint["component"],
+    hardpoints: opts.children ?? [],
+    createdAt: "",
+    updatedAt: "",
   } as Hardpoint;
 }
+
+const plant = (powerBase: number, size = 1) =>
+  hp(HardpointCategoryEnum.POWERPLANT, { powerBase }, { size });
+
+const weapons = (count: number, draw: number) =>
+  Array.from({ length: count }, () =>
+    hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: draw }),
+  );
 
 describe("useLoadoutSim", () => {
   it("reproduces the max-power weapon ratio when segments are ample (Asgard)", () => {
     // One plant of 20 segments, 4 weapons drawing 2 each (consumption 8), a
     // shield and life support. Weapon pool 4 → weapon fills to 4 → ratio 0.5.
-    const hardpoints: Hardpoint[] = [
-      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 20 }, {
-        component: { size: 2, typeData: { powerBase: 20 } },
-      } as Partial<Hardpoint>),
-      ...Array.from({ length: 4 }, () =>
-        hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 }),
-      ),
+    const hardpoints = [
+      plant(20, 2),
+      ...weapons(4, 2),
       hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 3 }),
       hp(HardpointCategoryEnum.LIFESUPPORT, { powerConsumption: 1 }),
     ];
@@ -49,14 +64,10 @@ describe("useLoadoutSim", () => {
   });
 
   it("throttles the weapon pool when the plant is segment-starved", () => {
-    const hardpoints: Hardpoint[] = [
-      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 3 }, {
-        component: { size: 1, typeData: { powerBase: 3 } },
-      } as Partial<Hardpoint>),
+    const hardpoints = [
+      plant(3),
       hp(HardpointCategoryEnum.LIFESUPPORT, { powerConsumption: 2 }),
-      ...Array.from({ length: 4 }, () =>
-        hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 }),
-      ),
+      ...weapons(4, 2),
     ];
 
     const sim = useLoadoutSim(hardpoints, 4).value;
@@ -68,32 +79,16 @@ describe("useLoadoutSim", () => {
   });
 
   it("treats a ship without a weapon pool as power-unlimited (ratio 1)", () => {
-    const hardpoints: Hardpoint[] = [
-      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 10 }, {
-        component: { size: 1, typeData: { powerBase: 10 } },
-      } as Partial<Hardpoint>),
-      hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 }),
-    ];
+    const hardpoints = [plant(10), ...weapons(1, 2)];
 
     expect(useLoadoutSim(hardpoints, 0).value.weaponPoolRatio).toBe(1);
     expect(useLoadoutSim(hardpoints, undefined).value.weaponPoolRatio).toBe(1);
   });
 
   it("descends into nested hardpoints (weapons under a mount)", () => {
-    const hardpoints: Hardpoint[] = [
-      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 20 }, {
-        component: { size: 1, typeData: { powerBase: 20 } },
-      } as Partial<Hardpoint>),
-      hp(
-        HardpointCategoryEnum.WEAPON_MOUNTS,
-        {},
-        {
-          hardpoints: [
-            hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 }),
-            hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 }),
-          ],
-        },
-      ),
+    const hardpoints = [
+      plant(20),
+      hp(HardpointCategoryEnum.WEAPON_MOUNTS, {}, { children: weapons(2, 2) }),
     ];
 
     const sim = useLoadoutSim(hardpoints, 2).value;
@@ -104,16 +99,9 @@ describe("useLoadoutSim", () => {
 });
 
 describe("weaponMaxRatio (sustained-DPS input)", () => {
-  const weapons = (n: number, draw: number) =>
-    Array.from({ length: n }, () =>
-      hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: draw }),
-    );
-
   it("equals min(1, pool/consumption) when the plant has ample power", () => {
     const hardpoints = [
-      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 40 }, {
-        component: { size: 2, typeData: { powerBase: 40 } },
-      } as Partial<Hardpoint>),
+      plant(40, 2),
       ...weapons(4, 2), // consumption 8, pool 4 → 0.5
       hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
     ];
@@ -122,9 +110,7 @@ describe("weaponMaxRatio (sustained-DPS input)", () => {
 
   it("caps below the uncapped ratio when the plant is segment-starved", () => {
     const hardpoints = [
-      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 3 }, {
-        component: { size: 1, typeData: { powerBase: 3 } },
-      } as Partial<Hardpoint>),
+      plant(3),
       hp(HardpointCategoryEnum.LIFESUPPORT, { powerConsumption: 2 }),
       ...weapons(4, 2), // consumption 8, pool 4 → uncapped 0.5
     ];
@@ -135,29 +121,22 @@ describe("weaponMaxRatio (sustained-DPS input)", () => {
   });
 
   it("falls back to the uncapped ratio when there is no plant data (no regression)", () => {
-    const hardpoints = [...weapons(4, 2)]; // no power plant at all
-    expect(simulateLoadoutPower(hardpoints, 4).weaponMaxRatio).toBeCloseTo(0.5);
+    expect(simulateLoadoutPower(weapons(4, 2), 4).weaponMaxRatio).toBeCloseTo(
+      0.5,
+    );
   });
 
   it("is 1 for a ship without a weapon pool", () => {
-    const hardpoints = [
-      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 5 }, {
-        component: { size: 1, typeData: { powerBase: 5 } },
-      } as Partial<Hardpoint>),
-      ...weapons(2, 2),
-    ];
-    expect(simulateLoadoutPower(hardpoints, 0).weaponMaxRatio).toBe(1);
+    expect(
+      simulateLoadoutPower([plant(5), ...weapons(2, 2)], 0).weaponMaxRatio,
+    ).toBe(1);
   });
 });
 
 describe("overrides (pip UI)", () => {
   const asgardLike = (): Hardpoint[] => [
-    hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 20 }, {
-      component: { size: 2, typeData: { powerBase: 20 } },
-    } as Partial<Hardpoint>),
-    ...Array.from({ length: 4 }, () =>
-      hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 }),
-    ),
+    plant(20, 2),
+    ...weapons(4, 2),
     hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
   ];
 

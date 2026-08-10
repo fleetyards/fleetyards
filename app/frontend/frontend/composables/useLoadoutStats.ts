@@ -134,10 +134,11 @@ export function computeLoadoutStats(
     "SCM",
     overrides,
   );
-  // Baseline sustained uses the max-power ratio; once the user throttles weapons
-  // via the pip UI, it follows their actual weapon allocation.
-  const powerRatio =
-    overrides?.weapon === undefined ? sim.weaponMaxRatio : sim.weaponPoolRatio;
+  // Baseline sustained uses the max-power ratio; once the user engages the pip
+  // UI (any family override — even a shield bump squeezes weapons), it follows
+  // the actual weapon allocation.
+  const hasOverrides = overrides && Object.keys(overrides).length > 0;
+  const powerRatio = hasOverrides ? sim.weaponPoolRatio : sim.weaponMaxRatio;
 
   const dps = emptyBreakdown();
   const sustainedDps = emptyBreakdown();

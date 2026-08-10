@@ -12,9 +12,12 @@ import HardpointGroup from "./Group/index.vue";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
+import ModelPowerDistribution from "@/frontend/components/Models/PowerDistribution/index.vue";
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
+import type { FamilyOverrides } from "@/frontend/composables/useLoadoutSim";
+import type { FlightMode } from "@/frontend/composables/powerSim";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import {
   useModelHardpoints as useModelHardpointsQuery,
@@ -95,9 +98,19 @@ const {
   query: { enabled: !!props.model },
 });
 
+// User pip choices from the Power Distribution control; empty = auto (default).
+const powerOverrides = ref<FamilyOverrides>({});
+const flightMode = ref<FlightMode>("SCM");
+
+// Reset overrides when the ship (or hardpoint source) changes.
+watch([() => props.model.slug, source], () => {
+  powerOverrides.value = {};
+});
+
 const combatStats = useLoadoutStats(
   () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
   () => props.model.metrics?.weaponPoolSize,
+  powerOverrides,
 );
 
 provide(
@@ -178,6 +191,12 @@ const shieldStats = useShieldStats(
           :hull-health="model.metrics.hullHealth"
           :hull-parts="model.metrics.hullParts"
           :hull-doors="model.metrics.hullDoors"
+        />
+        <ModelPowerDistribution
+          v-model="powerOverrides"
+          v-model:mode="flightMode"
+          :hardpoints="hardpoints as Hardpoint[]"
+          :weapon-pool-size="model.metrics?.weaponPoolSize"
         />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
