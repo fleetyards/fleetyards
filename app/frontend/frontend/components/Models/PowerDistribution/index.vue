@@ -123,10 +123,11 @@ const applyTarget = (column: PowerColumn, desired: number) => {
   emit("update:modelValue", { ...props.modelValue, [column.portPath]: target });
 };
 
-// Click pip cell at `level` (bottom-up): jump to that level, or step down one
-// when clicking the current top cell.
+// Click pip cell at `level` (bottom-up): allocate exactly that many segments —
+// click a lower pip to reduce, the same pip does nothing. (Turn fully off via
+// the icon.)
 const setLevel = (column: PowerColumn, level: number) =>
-  applyTarget(column, level === column.allocated ? level - 1 : level);
+  applyTarget(column, level);
 
 // Click the icon: drain the column to 0 if it has any pips, else fill it from
 // the pool — erkul's icon toggle.
