@@ -17,6 +17,36 @@ those subsystems. Each was individually spiked and confirmed sim-blocked
 | **§3** Per-weapon overheat state ("NO OVERHEAT") | Heat sim |
 | **§8** Flight boost (boosted SCM, boost regen, boost delay) | IFCS/flight sim |
 
+## Strategic driver — the interactive power-distribution calculator
+
+Confirmed 2026-08-09: the end goal is an erkul-style **interactive pip UI** where
+the user allocates power to weapons / shields / engines / etc. and sees DPS,
+sustained, and signatures respond live. That is what this sim is *for* — it's the
+dependency for the calculator's headline interactive feature. The `co()` port
+isn't just to reproduce erkul's *default* numbers; it becomes the **allocation
+engine the UI drives**: `co()` computes the auto-distribution, and the calculator
+lets the user override per-family pips, re-running the sim.
+
+**Finding (2026-08-09) — §1 is already exact at the default distribution.** From
+the decoded `Jn`, weapons are filled to `min(weaponConsumptionPoints, poolSize)`
+segments, so the default `poolRatio = min(1, poolSize/consumption)` = the
+`weaponPowerRatio` we already ship (Asgard → 1 681, exact). §1 only needs the
+full sim for **segment-starved** ships (rare) and the **interactive** case (user
+moves pips off weapons). So the sim's real payoffs are the **pip UI** (its reason
+to exist), **§6** emitted signatures, and **§3 / §8**.
+
+## Integration finding (2026-08-09)
+
+Family map from our `item_type` → erkul family: `WeaponGun`→weapon, `Shield`→
+shield, `Cooler`→coolers, `Radar`→radar, `QuantumDrive`→qdrive, `EMP`→emp,
+`PowerPlant`→segment source (`power_base`). **Coverage gap:** we don't currently
+parse a Power draw for `engine`/`lifeSupport` families that erkul's `co()`
+allocates to — so a faithful full allocation needs those added (or confirmed
+absent) plus the exact non-weapon block sizing. Until then the allocation core
+(`powerSim.ts`) stays a standalone tested unit, **not wired** into the shipped
+sustained calc (which is already exact for non-starved ships, so wiring an
+incomplete allocation would risk a regression for no visible gain).
+
 ## Source of truth
 
 erkul's client-side calc engine, reverse-engineered from its JS bundle:
@@ -146,6 +176,33 @@ Findings from `chunk-FWWRRMGF.js` (2026-08-08):
   Per-mode (SCM vs NAV); `initialPowerAllocation` short-circuits it when present.
 - Helpers to port: `Xn, Zn, Jn, ft, it, Ct, rt, tt, W, $, nt, et, D, Rt, me, yt,
   X, fo` + the `$n` family model.
+
+### Allocation primitives (decoded 2026-08-09)
+
+State `= {remaining, perPort:{}, perFamily:{…0}}`; each port `= {portPath,
+family, size, disabled, critical, selected, poweredOn, floor, units}` where
+`size` = the segments the component occupies.
+
+- **`D(state, port, family)`** — the atomic allocate: `port.selected=true;
+  perPort[port]+=size; perFamily[family]+=size; remaining-=size`. (`Re` = undo.)
+- **`W(ports, family, state)`** — base pass, **critical only**: allocate each
+  `!disabled && critical && !selected && size<=remaining`.
+- **`$(ports, family, state)`** — greedy fill a family: allocate each
+  `!disabled && !selected` until one doesn't fit (`size>remaining` → break).
+- **`nt(ports, cap, state)`** — weapons base: allocate weapon ports up to `cap`
+  segments (`Zn` calls `nt(weapon, 1)`).
+- **`et(ports, family, target, state)`** → **`ot`**: fill a family up to
+  `target - perFamily[family]` more segments (`Jn` calls
+  `et(weapon, min(weaponConsumptionPoints, poolSize))`).
+- **`Ae(ports, portPath, n, family, state)`** — fill one specific port up to n.
+- **`it(cooler, …, state)`** — **heat-coupled**: scan cooler segments from
+  `floor..units`, return the first where `cooling(seg) ≥ coolingConsumptionPerSec`
+  (this is the power↔heat link `ft` iterates).
+
+**Port model TODO (next decode):** how erkul builds each port's `size` /
+`family` / `critical` / `floor` / `units` from the item + loadout data (the
+`lo`/`An`/`Kn`/`te` helpers) — the input mapping the TS sim needs before it can
+run the passes above.
 
 ### ⚠️ Power ↔ heat are coupled
 

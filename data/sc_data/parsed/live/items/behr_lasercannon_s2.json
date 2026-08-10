@@ -88,6 +88,20 @@
       "requested_regen_per_second": 2815.0,
       "requested_ammo_load": 16887.0
     },
-    "power_consumption": 1.0
+    "power_consumption": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    }
   }
 }

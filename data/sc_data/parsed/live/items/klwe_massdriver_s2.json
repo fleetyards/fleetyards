@@ -114,6 +114,20 @@
       "time_till_cooling_starts": 0.952,
       "overheat_fix_time": 4.63
     },
-    "power_consumption": 1.6
+    "power_consumption": 1.6,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    }
   }
 }

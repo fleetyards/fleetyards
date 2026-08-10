@@ -71,6 +71,21 @@
       "min_jump_distance": 0.0,
       "ifcs_handover_down_time": 0.0,
       "ifcs_handover_respool_time": 0.0
+    },
+    "power_consumption": 11.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 0.7
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 0.85
+      },
+      "high": {
+        "start": 1.0,
+        "modifier": 1.0
+      }
     }
   }
 }
