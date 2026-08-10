@@ -201,6 +201,7 @@ const shieldStats = useShieldStats(
           v-model:mode="flightMode"
           :hardpoints="hardpoints as Hardpoint[]"
           :weapon-pool-size="model.metrics?.weaponPoolSize"
+          class="metrics-grid__full"
         />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">

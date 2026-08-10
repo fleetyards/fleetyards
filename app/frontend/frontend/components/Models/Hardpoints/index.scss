@@ -85,4 +85,8 @@
   > * {
     margin: 0;
   }
+
+  &__full {
+    grid-column: 1 / -1;
+  }
 }
