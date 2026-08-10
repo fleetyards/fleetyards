@@ -34,8 +34,8 @@ importers:
         specifier: ^0.5.2
         version: 0.5.2(vue@3.5.38(typescript@6.0.3))
       '@rails/actioncable':
-        specifier: 8.1.300
-        version: 8.1.300
+        specifier: 8.1.301
+        version: 8.1.301
       '@rails/activestorage':
         specifier: ^8.1.300
         version: 8.1.300
@@ -1822,8 +1822,8 @@ packages:
   '@pmndrs/pointer-events@6.6.29':
     resolution: {integrity: sha512-o4YD6VfJgDYjFgde/YyAw2X5KY454tdmOXrHGOvKTWJBHzkL90B5vH4rqmexwRVvaDfT3YLvVh/Dm5cBbgZXMg==}
 
-  '@rails/actioncable@8.1.300':
-    resolution: {integrity: sha512-zOENQsq3NM2jyBY6Z2qtZa3V/R/6OEqA+LGKixQbBMl7kk/J3FXDRcszPe74LsHNgB01jCl/DXu/xA8sHt4I/g==}
+  '@rails/actioncable@8.1.301':
+    resolution: {integrity: sha512-n4Q6DfnqnZ604xgqeqURNyUmk6JtPoKf++UeV9agvecIkV3AcpgJs5D08Kx8WnZNgM7u4av9ezfIXv+CgdV94A==}
 
   '@rails/activestorage@8.1.300':
     resolution: {integrity: sha512-AOv3zZrTJjQlzm4L9uzOQtCz6zaM4IqUyux6yzSqmS+PZ8EzwD1F2JAc4LlJNJAv4MSyNYriG+CaCm1QbQTjsA==}
@@ -7634,7 +7634,7 @@ snapshots:
 
   '@pmndrs/pointer-events@6.6.29': {}
 
-  '@rails/actioncable@8.1.300': {}
+  '@rails/actioncable@8.1.301': {}
 
   '@rails/activestorage@8.1.300':
     dependencies:
