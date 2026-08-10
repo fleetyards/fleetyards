@@ -186,22 +186,26 @@ const shieldStats = useShieldStats(
         "
         class="metrics-grid"
       >
-        <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
-        <ModelDefenseMetrics
-          :hardpoints="hardpoints as Hardpoint[]"
-          :model-name="model.name"
-        />
-        <ModelHullMetrics
-          :hull-health="model.metrics.hullHealth"
-          :hull-parts="model.metrics.hullParts"
-          :hull-doors="model.metrics.hullDoors"
-        />
-        <ModelPowerDistribution
-          v-model="powerOverrides"
-          v-model:mode="flightMode"
-          :hardpoints="hardpoints as Hardpoint[]"
-          :weapon-pool-size="model.metrics?.weaponPoolSize"
-        />
+        <div class="metrics-grid__col">
+          <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
+          <ModelPowerDistribution
+            v-model="powerOverrides"
+            v-model:mode="flightMode"
+            :hardpoints="hardpoints as Hardpoint[]"
+            :weapon-pool-size="model.metrics?.weaponPoolSize"
+          />
+        </div>
+        <div class="metrics-grid__col">
+          <ModelDefenseMetrics
+            :hardpoints="hardpoints as Hardpoint[]"
+            :model-name="model.name"
+          />
+          <ModelHullMetrics
+            :hull-health="model.metrics.hullHealth"
+            :hull-parts="model.metrics.hullParts"
+            :hull-doors="model.metrics.hullDoors"
+          />
+        </div>
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
         <span class="hardpoints__viewbar-label">

@@ -68,18 +68,27 @@
 // alignment keeps each card at its natural height instead of stretching it to
 // the tallest in the row, which is where the empty space came from.
 .metrics-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   margin-bottom: 20px;
 
-  // Combat / Defense / Hull / Power as a 2×2 grid on wider screens.
+  // Two independent columns (Combat/Power · Defense/Hull) that pack their cards
+  // tightly, so a shorter card leaves no row-alignment whitespace beside it.
   @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+    flex-direction: row;
+    align-items: flex-start;
   }
 
-  > * {
-    margin: 0;
+  &__col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1 1 0;
+    min-width: 0;
+
+    > * {
+      margin: 0;
+    }
   }
 }
