@@ -86,64 +86,74 @@ function allocCritical(ports: PowerPort[], state: AllocationState): void {
   }
 }
 
-// $: greedily fill a family until a block doesn't fit.
-function fillGreedy(ports: PowerPort[], state: AllocationState): void {
-  for (const p of ports) {
-    if (p.disabled || p.selected) continue;
-    if (p.size > state.remaining) break;
-    alloc(state, p);
-  }
-}
-
-// nt: allocate weapon blocks up to `cap` segments (the weapon base).
-function weaponBase(
+// Fill a single port (component) toward `target` total segments for that port,
+// taking blocks that still fit. The shared weapon pool is one port; every other
+// component is its own port.
+function fillPortTo(
   ports: PowerPort[],
-  cap: number,
-  state: AllocationState,
-): void {
-  const target = Math.min(cap, state.remaining);
-  let taken = 0;
-  for (const p of ports) {
-    if (taken >= target) break;
-    if (p.disabled || p.selected) continue;
-    if (p.size > state.remaining) break;
-    alloc(state, p);
-    taken += p.size;
-  }
-}
-
-// et/ot: fill a family up to `target` total segments for that family.
-function fillTo(
-  ports: PowerPort[],
-  family: PowerFamily,
+  portPath: string,
   target: number,
   state: AllocationState,
 ): void {
-  const need = target - state.perFamily[family];
-  if (need <= 0) return;
-  let taken = 0;
   for (const p of ports) {
-    if (p.disabled || p.selected) continue;
-    if (taken + p.size > need || p.size > state.remaining) break;
+    if (p.portPath !== portPath || p.disabled || p.selected) continue;
+    if ((state.perPort[portPath] ?? 0) >= target) break;
+    if (p.size > state.remaining) break;
     alloc(state, p);
-    taken += p.size;
-    if (taken >= need) break;
   }
 }
+
+// The shared weapon-pool port. All weapon blocks share this portPath so the pool
+// is one column in the UI and one override key.
+export const WEAPON_POOL_PORT = "weaponPool";
+
+// User pip choices: target segments per component (by portPath), the weapon pool
+// keyed by WEAPON_POOL_PORT.
+export type PortOverrides = Record<string, number>;
 
 export type AllocateOptions = {
   mode?: FlightMode;
   // Weapon fill target = min(weaponConsumptionPoints, weaponPoolSize).
   weaponConsumption: number;
   weaponPoolSize: number;
-  // User pip choices: target segments per family. A family with an override is
-  // filled to that target instead of greedily — the interactive pip UI's input.
-  overrides?: Partial<Record<PowerFamily, number>>;
+  overrides?: PortOverrides;
 };
 
-// co(): the default auto-distribution (base pass Zn, then fill pass Jn), with an
-// optional per-family override target (the pip UI). The cooler heat-balancing
-// pass and refinements are not yet ported.
+const SCM_PRIORITY: PowerFamily[] = [
+  "lifeSupport",
+  "miningLaser",
+  "salvage",
+  "emp",
+  "weapon",
+  "shield",
+  "radar",
+  "engine",
+  "coolers",
+  "qdrive",
+  "qed",
+  "tractorBeam",
+  "towingbeam",
+];
+
+const NAV_PRIORITY: PowerFamily[] = [
+  "lifeSupport",
+  "miningLaser",
+  "salvage",
+  "qdrive",
+  "radar",
+  "engine",
+  "shield",
+  "coolers",
+  "weapon",
+  "emp",
+  "qed",
+  "tractorBeam",
+  "towingbeam",
+];
+
+// co(): the auto-distribution — mandatory criticals first, then each component
+// filled toward its target (a per-port override, else its natural maximum) in
+// family-priority order. The cooler heat-balancing pass is not yet ported.
 export function allocatePower(
   ports: PowerPort[],
   totalSegments: number,
@@ -151,84 +161,32 @@ export function allocatePower(
 ): AllocationState {
   const mode = opts.mode ?? "SCM";
   const state = emptyState(totalSegments);
+  const overrides = opts.overrides ?? {};
   const of = (f: PowerFamily) => ports.filter((p) => p.family === f);
+  const weaponCap = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
+  const priority = mode === "SCM" ? SCM_PRIORITY : NAV_PRIORITY;
 
-  // Fill a family to its override target if the user set one, else greedily.
-  const fill = (f: PowerFamily) => {
-    const target = opts.overrides?.[f];
-    if (target === undefined) fillGreedy(of(f), state);
-    else fillTo(of(f), f, target, state);
-  };
+  // Base pass: mandatory critical blocks per family, in priority order.
+  for (const family of priority) allocCritical(of(family), state);
 
-  // Zn — base: critical blocks per family in priority order, weapon base 1.
-  allocCritical(of("lifeSupport"), state);
-  allocCritical(of("miningLaser"), state);
-  allocCritical(of("salvage"), state);
-  if (mode === "SCM") {
-    allocCritical(of("emp"), state);
-    // Weapons get a 1-segment base, unless the user explicitly overrides them
-    // to fewer (letting the pip UI take weapons down to 0).
-    const weaponBaseCap =
-      opts.overrides?.weapon === undefined
-        ? 1
-        : Math.min(1, opts.overrides.weapon);
-    weaponBase(of("weapon"), weaponBaseCap, state);
-    allocCritical(of("shield"), state);
-  } else {
-    allocCritical(of("qdrive"), state);
-  }
-  allocCritical(of("radar"), state);
-  allocCritical(of("engine"), state);
-
-  // Jn — fill every family in priority order (weapons capped at their pool);
-  // a family with a user override fills to that target, otherwise greedily. All
-  // families are covered so the pip UI can allocate to any of them.
-  const weaponDefault = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
-  const weaponTarget = opts.overrides?.weapon ?? weaponDefault;
-  const fillWeapon = () =>
-    fillTo(
-      of("weapon"),
-      "weapon",
-      Math.min(weaponTarget, opts.weaponPoolSize, opts.weaponConsumption),
-      state,
-    );
-
-  const priority: PowerFamily[] =
-    mode === "SCM"
-      ? [
-          "miningLaser",
-          "salvage",
-          "weapon",
-          "shield",
-          "radar",
-          "engine",
-          "coolers",
-          "qdrive",
-          "qed",
-          "emp",
-          "tractorBeam",
-          "towingbeam",
-          "lifeSupport",
-        ]
-      : [
-          "miningLaser",
-          "salvage",
-          "qdrive",
-          "radar",
-          "engine",
-          "shield",
-          "coolers",
-          "weapon",
-          "qed",
-          "emp",
-          "tractorBeam",
-          "towingbeam",
-          "lifeSupport",
-        ];
-
+  // Fill pass: each distinct component (portPath) up to its target.
   for (const family of priority) {
-    if (family === "weapon") fillWeapon();
-    else fill(family);
+    const familyPorts = of(family);
+    const seen = new Set<string>();
+    for (const port of familyPorts) {
+      if (seen.has(port.portPath)) continue;
+      seen.add(port.portPath);
+      const isWeapon = family === "weapon";
+      const target =
+        overrides[port.portPath] ??
+        (isWeapon ? weaponCap : Number.POSITIVE_INFINITY);
+      fillPortTo(
+        familyPorts,
+        port.portPath,
+        isWeapon ? Math.min(target, weaponCap) : target,
+        state,
+      );
+    }
   }
 
   return state;
@@ -289,15 +247,16 @@ export function componentBlocks(
 }
 
 // ue: the shared weapon pool — `poolSize` size-1 blocks, of which the first
-// `ceil(Σ units)` (the summed weapon consumption) are enabled.
+// `ceil(Σ units)` (the summed weapon consumption) are enabled. All blocks share
+// one portPath so the pool is a single column / override key.
 export function weaponPoolBlocks(
-  portPathPrefix: string,
+  portPath: string,
   weaponUnitsSum: number,
   poolSize: number,
 ): PowerPort[] {
   const consumption = Math.ceil(weaponUnitsSum);
   return Array.from({ length: poolSize }, (_, i) => ({
-    portPath: `${portPathPrefix}#${i}`,
+    portPath,
     family: "weapon" as const,
     size: 1,
     disabled: i >= consumption,

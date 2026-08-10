@@ -7,10 +7,25 @@ import {
   totalSegments,
   weaponPoolBlocks,
   weaponPoolRatio,
+  WEAPON_POOL_PORT,
+  type AllocationState,
   type FlightMode,
+  type PortOverrides,
   type PowerFamily,
   type PowerPort,
 } from "./powerSim";
+
+export { WEAPON_POOL_PORT, type PortOverrides } from "./powerSim";
+
+// A single power column in the pip UI — one component, or the shared weapon
+// pool. `label` is the component name (undefined for the weapon pool).
+export type PowerColumn = {
+  portPath: string;
+  family: PowerFamily;
+  label?: string;
+  allocated: number;
+  capacity: number;
+};
 
 // FleetYards hardpoint category → erkul power family. Only the families erkul
 // feeds power segments to are mapped; every other category (thrusters, fuel,
@@ -33,15 +48,12 @@ export const POWER_FAMILY_BY_CATEGORY: Partial<
   [HardpointCategoryEnum.SALVAGEMUNCHING]: "salvage",
 };
 
-export type FamilyOverrides = Partial<Record<PowerFamily, number>>;
-
 export type LoadoutSimResult = {
   totalSegments: number;
   remaining: number;
   perFamily: Record<PowerFamily, number>;
-  // Max segments each family could hold (for the pip UI slider bounds): the sum
-  // of its enabled port sizes.
-  familyCapacity: Record<PowerFamily, number>;
+  // Per-component (+ weapon pool) columns for the pip UI, in display order.
+  columns: PowerColumn[];
   // Weapon sustained-DPS ratio at the *current* allocation (reflects overrides).
   weaponPoolRatio: number;
   // Weapon sustained-DPS ratio with weapons at maximum pips (other families
@@ -59,6 +71,7 @@ type Collected = {
   plants: { units: number; size: number; poweredOn: boolean }[];
   weaponUnits: number;
   otherPorts: PowerPort[];
+  portLabels: Record<string, string>;
   shieldsSeen: number;
 };
 
@@ -111,6 +124,9 @@ function collectPorts(
                 minimumFraction,
               }),
             );
+            if (hardpoint.component?.name) {
+              acc.portLabels[hardpoint.id] = hardpoint.component.name;
+            }
           }
         }
       }
@@ -150,14 +166,55 @@ function computeWeaponMaxRatio(
   return Math.min(uncapped, weaponMax / consumption);
 }
 
+// Group the allocation into display columns: one per component (+ the shared
+// weapon pool), ordered by family, dropping ports with no capacity.
+function buildColumns(
+  ports: PowerPort[],
+  portLabels: Record<string, string>,
+  state: AllocationState,
+): PowerColumn[] {
+  const byPort = new Map<string, { family: PowerFamily; capacity: number }>();
+  const order: string[] = [];
+  for (const port of ports) {
+    let entry = byPort.get(port.portPath);
+    if (!entry) {
+      entry = { family: port.family, capacity: 0 };
+      byPort.set(port.portPath, entry);
+      order.push(port.portPath);
+    }
+    if (!port.disabled) entry.capacity += port.size;
+  }
+
+  const columns = order
+    .map((portPath) => {
+      const entry = byPort.get(portPath) as {
+        family: PowerFamily;
+        capacity: number;
+      };
+      return {
+        portPath,
+        family: entry.family,
+        label: portPath === WEAPON_POOL_PORT ? undefined : portLabels[portPath],
+        allocated: state.perPort[portPath] ?? 0,
+        capacity: entry.capacity,
+      };
+    })
+    .filter((column) => column.capacity > 0);
+
+  return columns.sort(
+    (a, b) =>
+      POWER_FAMILIES.indexOf(a.family) - POWER_FAMILIES.indexOf(b.family),
+  );
+}
+
 // Pure core: build the family ports from a loadout, run erkul's allocation over
-// the plants' segments, and expose the per-family segments and the weapon
-// sustained-DPS ratios (default SCM split + max-weapon).
+// the plants' segments, and expose the per-component columns and the weapon
+// sustained-DPS ratios (current allocation + max-weapon).
 export function simulateLoadoutPower(
   hardpoints: Hardpoint[] | undefined,
   weaponPoolSize: number | undefined,
   mode: FlightMode = "SCM",
-  overrides?: FamilyOverrides,
+  overrides?: PortOverrides,
   shieldMaxItemCount: number = DEFAULT_SHIELD_MAX_ITEM_COUNT,
 ): LoadoutSimResult {
   const acc = collectPorts(
@@ -166,6 +223,7 @@ export function simulateLoadoutPower(
       plants: [],
       weaponUnits: 0,
       otherPorts: [],
+      portLabels: {},
       shieldsSeen: 0,
     },
     shieldMaxItemCount,
@@ -175,16 +233,9 @@ export function simulateLoadoutPower(
   const consumption = Math.ceil(acc.weaponUnits);
 
   const ports: PowerPort[] = [
-    ...weaponPoolBlocks("weaponPool", acc.weaponUnits, pool),
+    ...weaponPoolBlocks(WEAPON_POOL_PORT, acc.weaponUnits, pool),
     ...acc.otherPorts,
   ];
-
-  const familyCapacity = Object.fromEntries(
-    POWER_FAMILIES.map((f) => [f, 0]),
-  ) as Record<PowerFamily, number>;
-  for (const port of ports) {
-    if (!port.disabled) familyCapacity[port.family] += port.size;
-  }
 
   const state = allocatePower(ports, segments, {
     mode,
@@ -193,11 +244,13 @@ export function simulateLoadoutPower(
     overrides,
   });
 
+  const columns = buildColumns(ports, acc.portLabels, state);
+
   return {
     totalSegments: segments,
     remaining: state.remaining,
     perFamily: state.perFamily,
-    familyCapacity,
+    columns,
     // No fixed weapon pool → the ship's guns are power-unlimited (ratio 1).
     weaponPoolRatio: pool <= 0 ? 1 : weaponPoolRatio(state, consumption),
     weaponMaxRatio: computeWeaponMaxRatio(
@@ -214,7 +267,7 @@ export function useLoadoutSim(
   hardpoints: MaybeRefOrGetter<Hardpoint[] | undefined>,
   weaponPoolSize: MaybeRefOrGetter<number | undefined>,
   mode: MaybeRefOrGetter<FlightMode> = () => "SCM",
-  overrides: MaybeRefOrGetter<FamilyOverrides | undefined> = () => undefined,
+  overrides: MaybeRefOrGetter<PortOverrides | undefined> = () => undefined,
   shieldMaxItemCount: MaybeRefOrGetter<number | undefined> = () => undefined,
 ) {
   return computed<LoadoutSimResult>(() =>

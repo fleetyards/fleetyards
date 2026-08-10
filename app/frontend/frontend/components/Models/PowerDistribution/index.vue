@@ -10,10 +10,10 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useLoadoutSim,
-  type FamilyOverrides,
+  type PortOverrides,
+  type PowerColumn,
 } from "@/frontend/composables/useLoadoutSim";
 import {
-  POWER_FAMILIES,
   type FlightMode,
   type PowerFamily,
 } from "@/frontend/composables/powerSim";
@@ -21,7 +21,7 @@ import {
 type Props = {
   hardpoints?: Hardpoint[];
   weaponPoolSize?: number;
-  modelValue?: FamilyOverrides;
+  modelValue?: PortOverrides;
   mode?: FlightMode;
 };
 
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  "update:modelValue": [value: FamilyOverrides];
+  "update:modelValue": [value: PortOverrides];
   "update:mode": [value: FlightMode];
 }>();
 
@@ -63,34 +63,23 @@ const sim = useLoadoutSim(
   () => props.modelValue,
 );
 
-const families = computed(() =>
-  POWER_FAMILIES.filter((family) => sim.value.familyCapacity[family] > 0).map(
-    (family) => ({
-      family,
-      label: t(`labels.power.families.${family}`),
-      short: SHORT_LABEL[family],
-      allocated: sim.value.perFamily[family],
-      capacity: sim.value.familyCapacity[family],
-    }),
-  ),
-);
-
+const columns = computed(() => sim.value.columns);
 const usedSegments = computed(
   () => sim.value.totalSegments - sim.value.remaining,
 );
-
 const hasOverrides = computed(() => Object.keys(props.modelValue).length > 0);
 
-// Click pip cell at `level` (1-based, bottom-up): jump the family to that level,
-// or step it down one when clicking the current top cell (so weapons can reach 0).
-const setLevel = (family: PowerFamily, level: number) => {
-  const current = sim.value.perFamily[family];
-  const capacity = sim.value.familyCapacity[family];
+const columnLabel = (column: PowerColumn) =>
+  column.label ?? t(`labels.power.families.${column.family}`);
+
+// Click pip cell at `level` (1-based, bottom-up): jump the component to that
+// level, or step it down one when clicking the current top cell.
+const setLevel = (column: PowerColumn, level: number) => {
   const target = Math.max(
     0,
-    Math.min(capacity, level === current ? level - 1 : level),
+    Math.min(column.capacity, level === column.allocated ? level - 1 : level),
   );
-  emit("update:modelValue", { ...props.modelValue, [family]: target });
+  emit("update:modelValue", { ...props.modelValue, [column.portPath]: target });
 };
 
 const reset = () => emit("update:modelValue", {});
@@ -98,7 +87,7 @@ const reset = () => emit("update:modelValue", {});
 
 <template>
   <MetricsCard
-    v-if="families.length && sim.totalSegments > 0"
+    v-if="columns.length && sim.totalSegments > 0"
     :title="t('labels.power.title')"
     class="power-panel"
   >
@@ -132,35 +121,35 @@ const reset = () => emit("update:modelValue", {});
 
     <div class="power-bars">
       <div
-        v-for="entry in families"
-        :key="entry.family"
+        v-for="column in columns"
+        :key="column.portPath"
         class="power-col"
-        :class="{ 'power-col--weapon': entry.family === 'weapon' }"
+        :class="{ 'power-col--weapon': column.family === 'weapon' }"
       >
-        <div class="power-col__count">{{ entry.allocated }}</div>
+        <div class="power-col__count">{{ column.allocated }}</div>
         <div
           class="power-col__stack"
           role="slider"
-          :aria-label="entry.label"
-          :aria-valuenow="entry.allocated"
+          :aria-label="columnLabel(column)"
+          :aria-valuenow="column.allocated"
           :aria-valuemin="0"
-          :aria-valuemax="entry.capacity"
+          :aria-valuemax="column.capacity"
         >
           <button
-            v-for="level in entry.capacity"
+            v-for="level in column.capacity"
             :key="level"
             type="button"
             class="power-col__pip"
             :class="{
-              'power-col__pip--on': level <= entry.allocated,
-              'power-col__pip--top': level === entry.allocated,
+              'power-col__pip--on': level <= column.allocated,
+              'power-col__pip--top': level === column.allocated,
             }"
-            :aria-label="`${entry.label}: ${level}`"
-            @click="setLevel(entry.family, level)"
+            :aria-label="`${columnLabel(column)}: ${level}`"
+            @click="setLevel(column, level)"
           />
         </div>
-        <div class="power-col__label" :title="entry.label">
-          {{ entry.short }}
+        <div class="power-col__label" :title="columnLabel(column)">
+          {{ SHORT_LABEL[column.family] }}
         </div>
       </div>
     </div>
@@ -229,8 +218,8 @@ const reset = () => emit("update:modelValue", {});
 .power-bars {
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 6px;
   min-height: 180px;
   overflow-x: auto;
 }
@@ -239,8 +228,8 @@ const reset = () => emit("update:modelValue", {});
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 1 1 0;
-  min-width: 34px;
+  flex: 0 0 auto;
+  min-width: 30px;
   gap: 6px;
 
   &__count {
@@ -254,8 +243,7 @@ const reset = () => emit("update:modelValue", {});
     display: flex;
     flex-direction: column-reverse;
     gap: 2px;
-    width: 100%;
-    max-width: 40px;
+    width: 26px;
   }
 
   &__pip {

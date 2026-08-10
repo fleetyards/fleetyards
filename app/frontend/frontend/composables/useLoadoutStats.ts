@@ -4,7 +4,7 @@ import {
   type Hardpoint,
   type ComponentWeapon,
 } from "@/services/fyApi";
-import { simulateLoadoutPower, type FamilyOverrides } from "./useLoadoutSim";
+import { simulateLoadoutPower, type PortOverrides } from "./useLoadoutSim";
 
 export type DamageBreakdown = {
   total: number;
@@ -125,7 +125,7 @@ export function sustainedRatio(
 export function computeLoadoutStats(
   hardpoints: Hardpoint[] | undefined,
   weaponPoolSize?: number,
-  overrides?: FamilyOverrides,
+  overrides?: PortOverrides,
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
   const sim = simulateLoadoutPower(
@@ -205,7 +205,7 @@ export function computeLoadoutStats(
 export function useLoadoutStats(
   hardpoints: MaybeRefOrGetter<Hardpoint[] | undefined>,
   weaponPoolSize?: MaybeRefOrGetter<number | undefined>,
-  overrides?: MaybeRefOrGetter<FamilyOverrides | undefined>,
+  overrides?: MaybeRefOrGetter<PortOverrides | undefined>,
 ) {
   return computed(() =>
     computeLoadoutStats(

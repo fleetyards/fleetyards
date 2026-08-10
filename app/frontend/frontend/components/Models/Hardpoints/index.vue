@@ -16,7 +16,7 @@ import ModelPowerDistribution from "@/frontend/components/Models/PowerDistributi
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
-import type { FamilyOverrides } from "@/frontend/composables/useLoadoutSim";
+import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
 import type { FlightMode } from "@/frontend/composables/powerSim";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import {
@@ -99,7 +99,7 @@ const {
 });
 
 // User pip choices from the Power Distribution control; empty = auto (default).
-const powerOverrides = ref<FamilyOverrides>({});
+const powerOverrides = ref<PortOverrides>({});
 const flightMode = ref<FlightMode>("SCM");
 
 // Reset overrides when the ship (or hardpoint source) changes.

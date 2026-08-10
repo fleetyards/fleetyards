@@ -4,7 +4,16 @@ import {
   POWER_FAMILY_BY_CATEGORY,
   simulateLoadoutPower,
   useLoadoutSim,
+  WEAPON_POOL_PORT,
+  type LoadoutSimResult,
 } from "./useLoadoutSim";
+import type { PowerFamily } from "./powerSim";
+
+// Sum a family's per-component column capacities.
+const familyCapacity = (sim: LoadoutSimResult, family: PowerFamily) =>
+  sim.columns
+    .filter((column) => column.family === family)
+    .reduce((sum, column) => sum + column.capacity, 0);
 
 let seq = 0;
 
@@ -141,7 +150,9 @@ describe("overrides (pip UI)", () => {
   ];
 
   it("throttles weapons down to the override target", () => {
-    const sim = simulateLoadoutPower(asgardLike(), 4, "SCM", { weapon: 2 });
+    const sim = simulateLoadoutPower(asgardLike(), 4, "SCM", {
+      [WEAPON_POOL_PORT]: 2,
+    });
     expect(sim.perFamily.weapon).toBe(2);
     // consumption 8, weapon segments 2 → ratio 0.25 (below the 0.5 max).
     expect(sim.weaponPoolRatio).toBeCloseTo(0.25);
@@ -149,27 +160,31 @@ describe("overrides (pip UI)", () => {
     expect(sim.weaponMaxRatio).toBeCloseTo(0.5);
   });
 
-  it("reports each family's capacity for the slider bounds", () => {
+  it("exposes one column per component with its capacity", () => {
     const sim = simulateLoadoutPower(asgardLike(), 4);
-    // weapon pool 4, consumption 8 → 4 enabled blocks.
-    expect(sim.familyCapacity.weapon).toBe(4);
-    expect(sim.familyCapacity.shield).toBe(4);
+    const weaponCol = sim.columns.find((c) => c.portPath === WEAPON_POOL_PORT);
+    expect(weaponCol?.capacity).toBe(4);
+    expect(familyCapacity(sim, "shield")).toBe(4);
   });
 
   it("lets the user take weapons all the way to 0 (no forced base)", () => {
-    const sim = simulateLoadoutPower(asgardLike(), 4, "SCM", { weapon: 0 });
+    const sim = simulateLoadoutPower(asgardLike(), 4, "SCM", {
+      [WEAPON_POOL_PORT]: 0,
+    });
     expect(sim.perFamily.weapon).toBe(0);
     expect(sim.weaponPoolRatio).toBe(0);
   });
 
-  it("allocates to any non-weapon family the user boosts (coolers/qdrive)", () => {
-    const hardpoints = [
-      plant(40, 2),
-      ...weapons(4, 2),
-      hp(HardpointCategoryEnum.COOLER, { powerConsumption: 3 }),
-    ];
-    const sim = simulateLoadoutPower(hardpoints, 4, "SCM", { coolers: 2 });
-    expect(sim.perFamily.coolers).toBe(2);
+  it("allocates to a specific non-weapon component the user boosts", () => {
+    const cooler = hp(HardpointCategoryEnum.COOLER, { powerConsumption: 3 });
+    const sim = simulateLoadoutPower(
+      [plant(40, 2), ...weapons(4, 2), cooler],
+      4,
+      "SCM",
+      { [cooler.id]: 2 },
+    );
+    const coolerCol = sim.columns.find((c) => c.portPath === cooler.id);
+    expect(coolerCol?.allocated).toBe(2);
   });
 });
 
@@ -181,8 +196,9 @@ describe("shield active cap", () => {
 
   it("powers only the first 2 shields by default (rest are backups)", () => {
     const sim = simulateLoadoutPower([plant(40, 2), ...shields(3)], 0);
-    // Each shield = 4 cells; only 2 active → 8; the 3rd draws no power.
-    expect(sim.familyCapacity.shield).toBe(8);
+    // 2 columns of 4 cells; the 3rd shield draws no power (no column).
+    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(2);
+    expect(familyCapacity(sim, "shield")).toBe(8);
   });
 
   it("respects a ship's own shield cap", () => {
@@ -193,7 +209,8 @@ describe("shield active cap", () => {
       undefined,
       3,
     );
-    expect(sim.familyCapacity.shield).toBe(12);
+    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(3);
+    expect(familyCapacity(sim, "shield")).toBe(12);
   });
 });
 
