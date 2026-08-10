@@ -145,6 +145,18 @@ module V1
                     additionalProperties: false
                   }
                 },
+                hullDoors: {
+                  type: :array,
+                  items: {
+                    type: :object,
+                    properties: {
+                      name: {type: :string},
+                      health: {type: :number}
+                    },
+                    required: %w[name health],
+                    additionalProperties: false
+                  }
+                },
                 quantumFuelTankSize: {type: :number},
                 weaponPoolSize: {type: :number},
                 size: {type: :string},

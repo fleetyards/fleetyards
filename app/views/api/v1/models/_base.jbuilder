@@ -149,6 +149,9 @@ json.metrics do
   if model.hull_parts.present?
     json.hull_parts model.hull_parts.map { |part| {name: part["name"], health: part["health"].to_f, category: part["category"]} }
   end
+  if model.hull_doors.present?
+    json.hull_doors model.hull_doors.map { |door| {name: door["name"], health: door["health"].to_f} }
+  end
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.weapon_pool_size model.weapon_pool_size if model.weapon_pool_size.present?
   json.size model.size

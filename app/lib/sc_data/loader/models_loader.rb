@@ -73,6 +73,7 @@ module ScData
         update_params[:mass] = model_data.dig("mass")&.to_f
         update_params[:hull_health] = model_data.dig("hull_health")&.to_f
         update_params[:hull_parts] = model_data.dig("hull_parts")
+        update_params[:hull_doors] = extract_hull_doors(model_data)
         update_params[:weapon_pool_size] = model_data.dig("weapon_pool_size")
         update_params[:sc_length] = model_data.dig("metrics", "y")&.to_f
         update_params[:sc_beam] = model_data.dig("metrics", "x")&.to_f
@@ -80,6 +81,38 @@ module ScData
         update_params[:ground] = model_data.dig("ground") || false
 
         update_params
+      end
+
+      # Breakable interior doors, which erkul shows as an area of their own. They
+      # are not hull parts: the vehicle XML lists them as `class="ItemPort"`
+      # entries, so collect_hull_parts skips them, and their health lives on the
+      # door item rather than the geometry. Kept out of hull_health for the same
+      # reason erkul separates them — shooting a door does not damage the hull.
+      private def extract_hull_doors(model_data)
+        doors = (model_data["loadout"] || []).filter_map do |entry|
+          health = door_health_index[entry["ref"]] ||
+            door_health_index[entry["key"]&.downcase]
+
+          next if health.blank?
+
+          {name: entry["name"], health: health}
+        end
+
+        doors.presence
+      end
+
+      # load_items globs and parses every item file, so index the doors once
+      # rather than looking each one up per model.
+      private def door_health_index
+        @door_health_index ||= load_items("items").each_with_object({}) do |item, index|
+          next unless item[:category] == "doors"
+
+          health = item.dig(:durability, :health).to_f
+          next unless health.positive?
+
+          index[item[:ref]] = health if item[:ref].present?
+          index[item[:key]&.downcase] = health if item[:key].present?
+        end
       end
 
       private def update_quantum_fuel_tanks(hardpoints, update_params)

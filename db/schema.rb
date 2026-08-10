@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_07_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_10_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -714,6 +714,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_07_120000) do
     t.decimal "height", precision: 15, scale: 2, default: "0.0", null: false
     t.boolean "hidden", default: true
     t.boolean "holo_colored", default: false
+    t.jsonb "hull_doors"
     t.decimal "hull_health", precision: 15, scale: 2
     t.jsonb "hull_parts"
     t.decimal "hydrogen_fuel_tank_size", precision: 15, scale: 2
