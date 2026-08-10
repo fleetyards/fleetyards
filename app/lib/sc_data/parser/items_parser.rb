@@ -66,6 +66,8 @@ module ScData
         # rest down to :unknown so they don't surface as module slots.
         category = "unknown" if category == "module" && type != "Module"
 
+        tags = values.dig("Components", "SAttachableComponentParams", "AttachDef", "Tags").to_s.split
+
         item = {
           key:,
           ref: value_or_nil(values.dig("__ref")),
@@ -546,6 +548,12 @@ module ScData
           }.compact
         end
 
+        if item[:type_data].present? && type == "WeaponGun"
+          item[:type_data][:weapon_class] = extract_item_class(tags)
+          item[:type_data][:mountable] = tags.include?("weaponMountUsable")
+          item[:type_data].compact!
+        end
+
         if values.dig("Components", "SCItemTurretParams")
           turret_data = values.dig("Components", "SCItemTurretParams")
           item[:type_data] = {
@@ -557,6 +565,27 @@ module ScData
         end
 
         item
+      end
+
+      # The AttachDef `Tags` attribute mixes manufacturer codes, engine flags and
+      # a weapon's class ("BallisticGatling", "LaserRepeater"). Only the class is
+      # useful, and it is the only classification the game files give us — Type
+      # and SubType are the far coarser "WeaponGun" / "Gun".
+      ITEM_CLASS_TAGS = %w[
+        BallisticGatling BallisticCannon BallisticRepeater
+        LaserCannon LaserRepeater LaserGatling
+        DistortionCannon DistortionRepeater DistortionScatterGun
+        PlasmaCannon NeutronCannon TachyonCannon
+        ScatterGun MassDriver
+      ].freeze
+
+      private def extract_item_class(tags)
+        # Longest match first so "DistortionScatterGun" is not read as
+        # "ScatterGun", and tolerate the vendor-prefixed forms the files use
+        # (e.g. "BANU_TachyonCannon").
+        ITEM_CLASS_TAGS
+          .sort_by { |candidate| -candidate.length }
+          .find { |candidate| tags.any? { |tag| tag.end_with?(candidate) } }
       end
 
       private def extract_item_loadout(values)
