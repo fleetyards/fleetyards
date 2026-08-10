@@ -1,3 +1,25 @@
 PUT /password removed the request property 'currentPassword'
 PUT /password/{token} removed the request property 'currentPassword'
 GET /models/{slug}/hardpoints the `items/` response's property type/format changed from ``/`` to `object`/`` for status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #1: Model]/metrics/hullParts/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /hangar added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /models added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/embed added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/latest added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/with-docks added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/{slug} added the new `cosmetic` enum value to the `metrics/hullParts/items/category` response property for the response status `200`
+GET /models/{slug}/loaners added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/{slug}/snub-crafts added the new `cosmetic` enum value to the `items/metrics/hullParts/items/category` response property for the response status `200`
+GET /models/{slug}/variants added the new `cosmetic` enum value to the `items/items/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #1: Model]/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `cosmetic` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `cosmetic` enum value to the `items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `cosmetic` enum value to the `items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+POST /vehicles added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `201`
+DELETE /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
+PUT /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
+GET /wishlist added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
