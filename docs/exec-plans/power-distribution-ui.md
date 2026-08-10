@@ -47,11 +47,34 @@ See `flight-power-heat-sim.md` for the full decode of erkul's engine.
 Each phase lands as its own PR, validated against erkul on the **Asgard**.
 
 ### Phase 1 — Port construction + `useLoadoutSim` (default allocation)
-- Parse the coverage-gap families (engine/lifeSupport power draw) or confirm
-  absent; pin the non-weapon block sizing from the decode.
-- Build `useLoadoutSim` (loadout → ports → `allocatePower` → result).
-- **Validate the default allocation vs erkul** (per-family segments on the
-  Asgard). No UI yet.
+- **Decode complete.** The whole port model is decoded: `z` (a component's
+  Power draw = units + `minimumConsumptionFraction`), `K` (critical block size),
+  `le` (a component's blocks: one `critical` block of size `K`, then
+  `round(units − K)` size-1 blocks), `ue` (weapon pool = `poolSize` size-1
+  blocks, first `ceil(Σ units)` enabled), `Wt` (shields, capped at
+  `shieldMaxItemCount`), `Et` (total segments = `Σ round(units/n) + (n−1)·Σ size`
+  over powered plants), and the family map `Kn` (Weapon→weapon, Shield→shield,
+  Cooler→coolers, Radar→radar, LifeSupport→lifeSupport, QuantumDrive→qdrive,
+  QED→qed, EMP→emp, MiningLaser/SalvageHead→…, Controller+FlightController→
+  engine). Nothing left to reverse-engineer.
+- **Built + unit-tested** (`powerSim.ts` + `useLoadoutSim.ts`):
+  - `componentBlocks`/`weaponPoolBlocks`/`totalSegments` (the `le`/`ue`/`Et`
+    port primitives).
+  - `useLoadoutSim(hardpoints, weaponPoolSize, mode)` — walks the hardpoint
+    tree, maps each category to its family (`POWER_FAMILY_BY_CATEGORY`), gathers
+    plants + shared weapon pool + per-component blocks, runs `allocatePower`,
+    and returns per-family segments + weapon `poolRatio`.
+- **Coverage-gap resolution:** a component contributes ports only when it
+  declares a Power draw, so there is no separate "gap" — engine (`Controller`)
+  and lifeSupport (`LifeSupport`) are mapped and will populate once their
+  `power_consumption` is in the DB. `minimumConsumptionFraction` is not parsed
+  yet; `componentBlocks` defaults the critical block to 1 segment (exact when
+  the fraction is 0, which is today's norm — a fidelity refinement otherwise).
+- **Remaining gate (needs the app + fresh data):** the on-disk parsed data + DB
+  are **stale** — only weapons carry `power_consumption`. Re-parse/reload so the
+  generic per-component power draw (shields/coolers/radar/qdrive/emp/
+  lifeSupport/controller) lands in the DB, then **validate the default
+  per-family segments vs erkul on the Asgard**. No UI yet.
 
 ### Phase 2 — Wire default sustained (no regression)
 - Replace the standalone `weaponPowerRatio` in `useLoadoutStats` with the sim's
@@ -79,9 +102,9 @@ Each phase adds regression coverage in a spec.
 
 ## Risks / open questions
 
-- **Non-weapon block sizing** — the exact segment sizing per non-weapon family
-  isn't fully decoded; Phase 1 must pin it (decode `An`/`kn`/the family block
-  construction) or reverse-fit against the Asgard.
+- ~~**Non-weapon block sizing**~~ — **decoded** (`le`/`K`, see Phase 1): each
+  component becomes one `critical` block of size `round(units × minFraction)`
+  (default 1) plus `round(units − critical)` size-1 blocks.
 - **Power ↔ heat coupling** — the default allocation's cooler pass (`ft`) needs
   the heat model; Phase 1 may use a simplified cooler allocation, refined in
   Phase 4.
