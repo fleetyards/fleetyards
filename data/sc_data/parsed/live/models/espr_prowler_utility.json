@@ -18,6 +18,11 @@
   "hull_health": 69300.0,
   "hull_parts": [
     {
+      "name": "ESPR_Prowler_Utility",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 10500.0,
       "category": "vital"

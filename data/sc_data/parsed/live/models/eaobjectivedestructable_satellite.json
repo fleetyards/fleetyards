@@ -18,6 +18,11 @@
   "hull_health": 700001.0,
   "hull_parts": [
     {
+      "name": "EA_destructable_satellite_dish",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 450000.0,
       "category": "vital"

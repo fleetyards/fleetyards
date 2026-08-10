@@ -89,6 +89,8 @@
       "requested_ammo_load": 28800.0
     },
     "power_consumption": 1.2,
+    "weapon_class": "DistortionScatterGun",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

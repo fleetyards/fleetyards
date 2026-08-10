@@ -17,6 +17,11 @@
   "hull_health": 33600.0,
   "hull_parts": [
     {
+      "name": "ANVL_Centurion",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 10000.0,
       "category": "vital"
@@ -25,6 +30,206 @@
       "name": "body",
       "health": 10000.0,
       "category": "vital"
+    },
+    {
+      "name": "hardpoint_arm_lower_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left01_target",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left02_target",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left03_target",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left04_target",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right01_target",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right02_target",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right03_target",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right04_target",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_left01",
@@ -65,6 +270,91 @@
       "name": "hardpoint_wheel_right04",
       "health": 1700.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_spindle_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_spindle_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_spindle_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_spindle_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_spindle_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_spindle_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_spindle_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_spindle_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_lower_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

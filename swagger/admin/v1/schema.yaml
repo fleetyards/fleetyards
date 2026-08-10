@@ -9657,10 +9657,24 @@ components:
                     - secondary
                     - breakable
                     - subpart
+                    - cosmetic
                 required:
                 - name
                 - health
                 - category
+                additionalProperties: false
+            hullDoors:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                required:
+                - name
+                - health
                 additionalProperties: false
             quantumFuelTankSize:
               type: number
@@ -10104,10 +10118,24 @@ components:
                     - secondary
                     - breakable
                     - subpart
+                    - cosmetic
                 required:
                 - name
                 - health
                 - category
+                additionalProperties: false
+            hullDoors:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  health:
+                    type: number
+                required:
+                - name
+                - health
                 additionalProperties: false
             quantumFuelTankSize:
               type: number
@@ -13313,6 +13341,49 @@ components:
       - meta
       - items
       title: Videos
+    WeaponIndex:
+      type: array
+      items:
+        "$ref": "#/components/schemas/WeaponIndexItem"
+      title: WeaponIndex
+    WeaponIndexItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        size:
+          type: string
+        manufacturerCode:
+          type: string
+        beam:
+          type: boolean
+        weaponClass:
+          type: string
+        pelletsPerShot:
+          type: integer
+        damagePerShot:
+          type: object
+          properties:
+            physical:
+              type: number
+            energy:
+              type: number
+            distortion:
+              type: number
+            thermal:
+              type: number
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - damagePerShot
+      title: WeaponIndexItem
   securitySchemes:
     BearerAuth:
       type: http

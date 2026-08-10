@@ -11,24 +11,38 @@ export type Resistance = {
   value: number;
 };
 
+export type Absorption = {
+  key: string;
+  label: string;
+  min: number;
+  max: number;
+};
+
 export type ShieldStats = {
   totalHp: number;
   totalRegen: number;
   shieldCount: number;
   resistances: Resistance[];
+  // Share of each type the shield soaks. Anything below 100% bleeds through to
+  // the hull while the shield is still up — that is what ballistics exploit.
+  absorptions: Absorption[];
+  resistanceByType: Record<string, number>;
+  resistanceMinByType: Record<string, number>;
+  absorptionByType: Record<string, number>;
+  absorptionMinByType: Record<string, number>;
   hasData: boolean;
 };
 
 type ComponentShieldResistanceMap = NonNullable<ComponentShield["resistance"]>;
 
-const RESISTANCE_TYPES: {
+const DAMAGE_TYPES: {
   key: keyof ComponentShieldResistanceMap;
   label: string;
 }[] = [
-  { key: "physical", label: "labels.survivability.resistancePhysical" },
-  { key: "energy", label: "labels.survivability.resistanceEnergy" },
-  { key: "distortion", label: "labels.survivability.resistanceDistortion" },
-  { key: "thermal", label: "labels.survivability.resistanceThermal" },
+  { key: "physical", label: "labels.defense.damageType.physical" },
+  { key: "energy", label: "labels.defense.damageType.energy" },
+  { key: "distortion", label: "labels.defense.damageType.distortion" },
+  { key: "thermal", label: "labels.defense.damageType.thermal" },
 ];
 
 function collectShieldHardpoints(
@@ -51,6 +65,29 @@ function collectShieldHardpoints(
   return collected;
 }
 
+// Percentages don't sum — average them, weighted by each shield's HP (a bigger
+// shield contributes more to the effective profile). `fallback` is the value
+// used when no shield reports the stat at all.
+function weightedByHp(
+  shields: ComponentShield[],
+  pick: (shield: ComponentShield) => number | undefined,
+  fallback: number,
+): number {
+  let weighted = 0;
+  let weight = 0;
+
+  for (const shield of shields) {
+    const hp = shield.maxHealth || 0;
+    const value = pick(shield);
+    if (value != null && hp > 0) {
+      weighted += value * hp;
+      weight += hp;
+    }
+  }
+
+  return weight > 0 ? weighted / weight : fallback;
+}
+
 export function computeShieldStats(
   hardpoints: Hardpoint[] | undefined,
 ): ShieldStats {
@@ -66,30 +103,60 @@ export function computeShieldStats(
     totalRegen += shield.maxRegen || 0;
   }
 
-  // Resistances are percentages, so they don't sum — average them, weighted
-  // by each shield's HP (a bigger shield contributes more to the effective
-  // resistance profile).
-  const resistances = RESISTANCE_TYPES.map(({ key, label }) => {
-    let weighted = 0;
-    let weight = 0;
+  const resistanceByType: Record<string, number> = {};
+  const resistanceMinByType: Record<string, number> = {};
+  const absorptionByType: Record<string, number> = {};
+  const absorptionMinByType: Record<string, number> = {};
 
-    for (const shield of shields) {
-      const hp = shield.maxHealth || 0;
-      const resistance = shield.resistance?.[key]?.max;
-      if (resistance != null && hp > 0) {
-        weighted += resistance * hp;
-        weight += hp;
-      }
-    }
+  for (const { key } of DAMAGE_TYPES) {
+    resistanceByType[key] = weightedByHp(
+      shields,
+      (shield) => shield.resistance?.[key]?.max,
+      0,
+    );
+    resistanceMinByType[key] = weightedByHp(
+      shields,
+      (shield) => shield.resistance?.[key]?.min,
+      0,
+    );
+    // Absent absorption data means the shield soaks the type completely.
+    absorptionByType[key] = weightedByHp(
+      shields,
+      (shield) => shield.absorption?.[key]?.max,
+      1,
+    );
+    absorptionMinByType[key] = weightedByHp(
+      shields,
+      (shield) => shield.absorption?.[key]?.min,
+      1,
+    );
+  }
 
-    return { key, label, value: weight > 0 ? weighted / weight : 0 };
-  }).filter((entry) => entry.value > 0);
+  const resistances = DAMAGE_TYPES.map(({ key, label }) => ({
+    key,
+    label,
+    value: resistanceByType[key],
+  })).filter((entry) => entry.value > 0);
+
+  const absorptions = shields.length
+    ? DAMAGE_TYPES.map(({ key, label }) => ({
+        key,
+        label,
+        min: absorptionMinByType[key],
+        max: absorptionByType[key],
+      }))
+    : [];
 
   return {
     totalHp,
     totalRegen,
     shieldCount: shields.length,
     resistances,
+    absorptions,
+    resistanceByType,
+    resistanceMinByType,
+    absorptionByType,
+    absorptionMinByType,
     hasData: shields.length > 0 && totalHp > 0,
   };
 }

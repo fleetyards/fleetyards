@@ -18,6 +18,11 @@
   "hull_health": 62168.0,
   "hull_parts": [
     {
+      "name": "gama_railen",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 38000.0,
       "category": "vital"

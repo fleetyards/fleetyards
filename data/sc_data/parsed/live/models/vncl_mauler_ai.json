@@ -18,6 +18,11 @@
   "hull_health": 5370010.0,
   "hull_parts": [
     {
+      "name": "VNCL_Mauler",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 5000000.0,
       "category": "vital"

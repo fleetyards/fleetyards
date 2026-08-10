@@ -89,6 +89,8 @@
       "requested_ammo_load": 15400.0
     },
     "power_consumption": 1.0,
+    "weapon_class": "ScatterGun",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

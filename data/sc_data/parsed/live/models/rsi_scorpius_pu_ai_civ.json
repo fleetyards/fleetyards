@@ -18,6 +18,11 @@
   "hull_health": 43660.0,
   "hull_parts": [
     {
+      "name": "RSI_Scorpius",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 6500.0,
       "category": "vital"

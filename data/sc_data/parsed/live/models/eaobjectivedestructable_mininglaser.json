@@ -18,6 +18,11 @@
   "hull_health": 450000.0,
   "hull_parts": [
     {
+      "name": "ea_destructable_probe",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 450000.0,
       "category": "vital"

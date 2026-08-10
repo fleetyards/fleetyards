@@ -18,6 +18,11 @@
   "hull_health": 11475.0,
   "hull_parts": [
     {
+      "name": "probe_turret_1_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "cockpit",
       "health": 4000.0,
       "category": "vital"

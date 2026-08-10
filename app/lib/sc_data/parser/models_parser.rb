@@ -287,9 +287,9 @@ module ScData
         when Array
           node.each { |value| collect_hull_parts(value, parts) }
         when Hash
-          damage_max = node["damageMax"].to_f
-          if node["name"].present? && node["class"] != "ItemPort" && damage_max.positive?
-            parts << {name: node["name"], health: damage_max, category: part_category(node)}
+          if node["name"].present? && node["class"] != "ItemPort"
+            damage_max = node["damageMax"].to_f
+            parts << {name: node["name"], health: damage_max, category: part_category(node, damage_max)}
           end
           collect_hull_parts(node.dig("Parts", "Part"), parts)
         end
@@ -297,10 +297,13 @@ module ScData
         parts
       end
 
-      # Mirrors the part grouping erkul.games shows: a part that triggers ship
+      # Mirrors the part grouping erkul.games shows: a part with no health at all
+      # (doors, ladders, step plates) is cosmetic, a part that triggers ship
       # destruction is vital, a standalone detachable part is secondary, a
       # structural part with sub-parts is breakable, and a leaf detail is a subpart.
-      private def part_category(node)
+      private def part_category(node, damage_max)
+        return "cosmetic" unless damage_max.positive?
+
         behaviors = Array.wrap(node.dig("DamageBehaviors", "DamageBehavior")).map { |behavior| behavior["class"] }
 
         return "vital" if behaviors.include?("Group")

@@ -89,6 +89,8 @@
       "requested_ammo_load": 5625.0
     },
     "power_consumption": 2.1,
+    "weapon_class": "PlasmaCannon",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

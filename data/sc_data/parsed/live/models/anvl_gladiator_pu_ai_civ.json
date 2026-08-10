@@ -18,6 +18,11 @@
   "hull_health": 34800.0,
   "hull_parts": [
     {
+      "name": "ANVL_Gladiator",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 5500.0,
       "category": "breakable"
@@ -26,6 +31,11 @@
       "name": "shield_generator_cover",
       "health": 400.0,
       "category": "subpart"
+    },
+    {
+      "name": "landing_gear_front_helper",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "cockpitbay_outerdoor_left",
@@ -83,6 +93,11 @@
       "category": "breakable"
     },
     {
+      "name": "tailfin_left_rudder_control",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_tailfin_left_rudder",
       "health": 200.0,
       "category": "subpart"
@@ -103,6 +118,11 @@
       "category": "breakable"
     },
     {
+      "name": "tailfin_right_rudder_control",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_tailfin_right_rudder",
       "health": 200.0,
       "category": "subpart"
@@ -121,6 +141,11 @@
       "name": "wing_right_tip",
       "health": 400.0,
       "category": "breakable"
+    },
+    {
+      "name": "landing_gear_right_wing_helper",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "wing_flap_side_right",
@@ -183,6 +208,11 @@
       "category": "breakable"
     },
     {
+      "name": "landing_gear_left_wing_helper",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "wing_flap_side_left",
       "health": 200.0,
       "category": "subpart"
@@ -191,6 +221,11 @@
       "name": "wing_flap_main_left",
       "health": 200.0,
       "category": "subpart"
+    },
+    {
+      "name": "landing_gear_rear_helper",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

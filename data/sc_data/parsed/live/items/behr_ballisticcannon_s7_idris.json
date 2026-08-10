@@ -87,6 +87,8 @@
       "overheat_fix_time": 10.0
     },
     "power_consumption": 0.1,
+    "weapon_class": "LaserCannon",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

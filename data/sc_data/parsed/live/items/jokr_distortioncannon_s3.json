@@ -115,6 +115,8 @@
       "requested_ammo_load": 10140.0
     },
     "power_consumption": 1.5,
+    "weapon_class": "DistortionCannon",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

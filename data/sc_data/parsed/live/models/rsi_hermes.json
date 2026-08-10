@@ -18,6 +18,11 @@
   "hull_health": 116700.0,
   "hull_parts": [
     {
+      "name": "rsi_apollo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_body",
       "health": 33000.0,
       "category": "vital"
@@ -31,6 +36,11 @@
       "name": "dmg_belly_wing_right",
       "health": 400.0,
       "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicledestroyed",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "geo_tail_antenna_top_center",
@@ -51,6 +61,16 @@
       "name": "dmg_Fuelport_Front_Door001",
       "health": 200.0,
       "category": "subpart"
+    },
+    {
+      "name": "geo_nose_bottom_part_b",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_front_nose_part_b",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dmg_panel_nose_left_b",
@@ -83,6 +103,16 @@
       "category": "subpart"
     },
     {
+      "name": "geo_canopy_struts",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_glass_canopy",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "dmg_wing_nose_bottom_right",
       "health": 200.0,
       "category": "subpart"
@@ -108,6 +138,11 @@
       "category": "breakable"
     },
     {
+      "name": "geo_body_right_hull",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "dmg_right_hull_top",
       "health": 200.0,
       "category": "subpart"
@@ -126,6 +161,21 @@
       "name": "geo_body_rear",
       "health": 1000.0,
       "category": "breakable"
+    },
+    {
+      "name": "geo_body_rear_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_body_bottom_back",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_tail_side_plates",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dmg_tail_side_wings_right",
@@ -158,6 +208,11 @@
       "category": "subpart"
     },
     {
+      "name": "geo_body_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "dmg_body_bottom_center",
       "health": 200.0,
       "category": "subpart"
@@ -166,6 +221,11 @@
       "name": "geo_body_left",
       "health": 6000.0,
       "category": "breakable"
+    },
+    {
+      "name": "geo_body_left_hull",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dmg_left_hull_top",

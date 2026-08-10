@@ -18,6 +18,11 @@
   "hull_health": 70460.0,
   "hull_parts": [
     {
+      "name": "gama_tyilui",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 42000.0,
       "category": "vital"

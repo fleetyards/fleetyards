@@ -18,6 +18,11 @@
   "hull_health": 15550.0,
   "hull_parts": [
     {
+      "name": "ANVL_Hornet",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 2650.0,
       "category": "vital"
@@ -78,6 +83,11 @@
       "category": "subpart"
     },
     {
+      "name": "WingRight",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "WingRight_Debris",
       "health": 1500.0,
       "category": "secondary"
@@ -91,6 +101,11 @@
       "name": "WingLeftRear",
       "health": 700.0,
       "category": "subpart"
+    },
+    {
+      "name": "WingLeft",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "WingLeft_Debris",

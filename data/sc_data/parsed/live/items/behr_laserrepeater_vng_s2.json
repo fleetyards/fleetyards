@@ -55,6 +55,7 @@
       "requested_ammo_load": 19390.0
     },
     "power_consumption": 0.713,
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

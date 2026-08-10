@@ -18,6 +18,11 @@
   "hull_health": 323500.0,
   "hull_parts": [
     {
+      "name": "misc_hull_c",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 60000.0,
       "category": "vital"
@@ -171,6 +176,56 @@
       "name": "Center",
       "health": 9000.0,
       "category": "subpart"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_003_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_004_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_005_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_006_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_007_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_008_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_009_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_010_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_002_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BONE_Tunnel_Collar_001_CTRL",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

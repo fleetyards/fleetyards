@@ -18,9 +18,19 @@
   "hull_health": 197250.0,
   "hull_parts": [
     {
+      "name": "ORIG_600i",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 45000.0,
       "category": "vital"
+    },
+    {
+      "name": "underpanel_rear_b",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Wing_Left",
@@ -38,6 +48,11 @@
       "category": "secondary"
     },
     {
+      "name": "underpanel_rear_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 45000.0,
       "category": "vital"
@@ -46,6 +61,16 @@
       "name": "Front",
       "health": 45000.0,
       "category": "vital"
+    },
+    {
+      "name": "underpanel_front_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "underpanel_front_b",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

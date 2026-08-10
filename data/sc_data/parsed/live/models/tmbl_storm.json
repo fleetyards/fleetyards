@@ -22,6 +22,11 @@
       "category": "breakable"
     },
     {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 27000.0,
       "category": "vital"
@@ -135,6 +140,16 @@
       "name": "component_door_rear_right",
       "health": 500.0,
       "category": "subpart"
+    },
+    {
+      "name": "hardpoint_tread_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_tread_left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_front_right_00",

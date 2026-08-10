@@ -18,6 +18,11 @@
   "hull_health": 389204.0,
   "hull_parts": [
     {
+      "name": "rsi_perseus",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_main_wings",
       "health": 95000.0,
       "category": "vital"

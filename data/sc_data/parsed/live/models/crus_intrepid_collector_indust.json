@@ -18,6 +18,11 @@
   "hull_health": 15350.0,
   "hull_parts": [
     {
+      "name": "crus_intrepid",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 3300.0,
       "category": "vital"

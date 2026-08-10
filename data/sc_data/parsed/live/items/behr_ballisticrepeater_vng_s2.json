@@ -53,6 +53,7 @@
       "overheat_fix_time": 1.61
     },
     "power_consumption": 0.1,
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

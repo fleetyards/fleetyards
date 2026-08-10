@@ -18,6 +18,11 @@
   "hull_health": 40200.0,
   "hull_parts": [
     {
+      "name": "ANVL_Lightning_F8",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 9200.0,
       "category": "vital"

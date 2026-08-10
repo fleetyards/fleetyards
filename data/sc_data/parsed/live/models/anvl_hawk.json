@@ -18,6 +18,11 @@
   "hull_health": 16600.0,
   "hull_parts": [
     {
+      "name": "ANVL_Hawk",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 2000.0,
       "category": "vital"
@@ -66,6 +71,11 @@
       "name": "tail",
       "health": 1500.0,
       "category": "breakable"
+    },
+    {
+      "name": "tail_connection",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

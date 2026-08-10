@@ -27,6 +27,26 @@
       "category": "vital"
     },
     {
+      "name": "hardpoint_tread_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_tread_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "tread_guard_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "tread_guard_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_drive_sprocket_right",
       "health": 800.0,
       "category": "subpart"
@@ -140,6 +160,11 @@
       "name": "hardpoint_wheel_right_hidden_rear_09",
       "health": 800.0,
       "category": "subpart"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

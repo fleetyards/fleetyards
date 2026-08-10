@@ -18,6 +18,11 @@
   "hull_health": 17100.0,
   "hull_parts": [
     {
+      "name": "DRAK_Cutter",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 6500.0,
       "category": "vital"
@@ -33,6 +38,21 @@
       "category": "breakable"
     },
     {
+      "name": "body_greeble_l",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_greeble_r",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_greeble_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "debrisproxy_spoiler_left",
       "health": 50.0,
       "category": "breakable"
@@ -46,6 +66,16 @@
       "name": "nose",
       "health": 3000.0,
       "category": "breakable"
+    },
+    {
+      "name": "window_armour_l",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "window_armour_r",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "vtol_l_geo",

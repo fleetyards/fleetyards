@@ -18,6 +18,11 @@
   "hull_health": 90053.0,
   "hull_parts": [
     {
+      "name": "ANVL_Valkyrie",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 25000.0,
       "category": "vital"
@@ -86,6 +91,11 @@
       "name": "Tail_Shell",
       "health": 1.0,
       "category": "subpart"
+    },
+    {
+      "name": "Nose_Bottom",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Engine_FL",

@@ -18,6 +18,11 @@
   "hull_health": 6700.0,
   "hull_parts": [
     {
+      "name": "drak_command_module",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 5000.0,
       "category": "vital"

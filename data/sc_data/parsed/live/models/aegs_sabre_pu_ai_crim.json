@@ -18,6 +18,11 @@
   "hull_health": 23013.0,
   "hull_parts": [
     {
+      "name": "AEGS_Sabre",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 4000.0,
       "category": "vital"

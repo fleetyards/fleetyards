@@ -42,6 +42,91 @@
       "category": "secondary"
     },
     {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_spoke_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_main_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBL_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_spoke_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFR_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_main_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_shock_top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelBR_spoke",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheelFL_body_support",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 2000.0,
       "category": "vital"

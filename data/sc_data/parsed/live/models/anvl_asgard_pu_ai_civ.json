@@ -18,9 +18,19 @@
   "hull_health": 77000.0,
   "hull_parts": [
     {
+      "name": "anvl_asgard",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 20000.0,
       "category": "vital"
+    },
+    {
+      "name": "Engine_FL",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Engine_FL_Split",
@@ -28,9 +38,24 @@
       "category": "breakable"
     },
     {
+      "name": "Engine_FR",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Engine_FR_Split",
       "health": 2500.0,
       "category": "breakable"
+    },
+    {
+      "name": "Nose_Bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Tail",
@@ -73,6 +98,11 @@
       "category": "subpart"
     },
     {
+      "name": "Engine_RL",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Engine_RL_Split",
       "health": 2500.0,
       "category": "breakable"
@@ -86,6 +116,11 @@
       "name": "mesh_wing_upper_right_flap",
       "health": 100.0,
       "category": "subpart"
+    },
+    {
+      "name": "Engine_RR",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Engine_RR_Split",
@@ -111,6 +146,11 @@
       "name": "mesh_wing_left_flap",
       "health": 100.0,
       "category": "subpart"
+    },
+    {
+      "name": "Nose_Shell",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

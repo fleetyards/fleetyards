@@ -113,6 +113,8 @@
       "overheat_fix_time": 1.74
     },
     "power_consumption": 0.1,
+    "weapon_class": "BallisticRepeater",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

@@ -32,6 +32,7 @@
 #  height                            :decimal(15, 2)   default(0.0), not null
 #  hidden                            :boolean          default(TRUE)
 #  holo_colored                      :boolean          default(FALSE)
+#  hull_doors                        :jsonb
 #  hull_health                       :decimal(15, 2)
 #  hull_parts                        :jsonb
 #  hydrogen_fuel_tank_size           :decimal(15, 2)

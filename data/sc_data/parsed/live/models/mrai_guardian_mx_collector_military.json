@@ -18,6 +18,11 @@
   "hull_health": 89300.0,
   "hull_parts": [
     {
+      "name": "mrai_guardian_mx",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_body",
       "health": 8100.0,
       "category": "vital"
@@ -136,6 +141,11 @@
       "name": "geo_thruster_arm_c_right",
       "health": 6000.0,
       "category": "breakable"
+    },
+    {
+      "name": "geo_body_middle_bottom",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "geo_body_top",

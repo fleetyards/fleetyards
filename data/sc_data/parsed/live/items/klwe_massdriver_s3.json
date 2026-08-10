@@ -115,6 +115,8 @@
       "overheat_fix_time": 5.0
     },
     "power_consumption": 2.0,
+    "weapon_class": "MassDriver",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

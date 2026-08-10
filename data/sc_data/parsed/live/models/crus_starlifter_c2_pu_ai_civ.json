@@ -18,6 +18,11 @@
   "hull_health": 78400.0,
   "hull_parts": [
     {
+      "name": "CRUS_Starlifter",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 45000.0,
       "category": "vital"
@@ -41,6 +46,16 @@
       "name": "Wing_Right",
       "health": 3600.0,
       "category": "breakable"
+    },
+    {
+      "name": "LGearBayDoorFront_R_Geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "LGearBayDoorFront_L_Geo",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Nose_Mesh",

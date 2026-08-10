@@ -18,6 +18,11 @@
   "hull_health": 370200.0,
   "hull_parts": [
     {
+      "name": "RSI_Bengal",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 40000.0,
       "category": "breakable"

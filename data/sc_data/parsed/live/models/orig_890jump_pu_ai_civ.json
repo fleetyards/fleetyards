@@ -18,6 +18,11 @@
   "hull_health": 153200.0,
   "hull_parts": [
     {
+      "name": "ORIG_890Jump",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body_Front",
       "health": 100000.0,
       "category": "vital"

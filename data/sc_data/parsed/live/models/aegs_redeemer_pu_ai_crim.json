@@ -18,6 +18,11 @@
   "hull_health": 66700.0,
   "hull_parts": [
     {
+      "name": "AEGS_Redeemer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 17000.0,
       "category": "vital"

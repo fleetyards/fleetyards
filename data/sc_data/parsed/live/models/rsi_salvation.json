@@ -18,6 +18,11 @@
   "hull_health": 5503.0,
   "hull_parts": [
     {
+      "name": "rsi_salvation",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 2400.0,
       "category": "vital"

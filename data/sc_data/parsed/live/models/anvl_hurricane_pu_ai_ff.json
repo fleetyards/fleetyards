@@ -18,9 +18,19 @@
   "hull_health": 18226.0,
   "hull_parts": [
     {
+      "name": "ANVL_Hurricane",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 7800.0,
       "category": "vital"
+    },
+    {
+      "name": "hardpoint_landing_gear_front",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "canopy_exterior",

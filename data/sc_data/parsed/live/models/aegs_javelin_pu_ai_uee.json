@@ -18,6 +18,11 @@
   "hull_health": 7852400.0,
   "hull_parts": [
     {
+      "name": "AEGS_Javelin",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 5000000.0,
       "category": "vital"

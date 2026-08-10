@@ -117,6 +117,8 @@
       "requested_ammo_load": 1300.0
     },
     "power_consumption": 1.6,
+    "weapon_class": "TachyonCannon",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

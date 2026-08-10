@@ -18,6 +18,11 @@
   "hull_health": 1950.0,
   "hull_parts": [
     {
+      "name": "drak_pitbull",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 550.0,
       "category": "vital"

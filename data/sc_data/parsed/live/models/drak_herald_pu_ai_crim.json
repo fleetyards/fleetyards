@@ -18,9 +18,19 @@
   "hull_health": 6420.0,
   "hull_parts": [
     {
+      "name": "DRAK_Herald",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 2100.0,
       "category": "vital"
+    },
+    {
+      "name": "Anim_Door",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "sat_array_lower_right",

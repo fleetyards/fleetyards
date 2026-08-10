@@ -115,6 +115,8 @@
       "requested_ammo_load": 10132.0
     },
     "power_consumption": 0.75,
+    "weapon_class": "DistortionRepeater",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

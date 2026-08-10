@@ -27,9 +27,54 @@
       "category": "subpart"
     },
     {
+      "name": "wheel1_damper",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel1_top_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel1_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2_top_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel2_damper",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "wheel2",
       "health": 900.0,
       "category": "subpart"
+    },
+    {
+      "name": "wheel4_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel4_top_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel4_damper",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "wheel4",
@@ -37,9 +82,24 @@
       "category": "subpart"
     },
     {
+      "name": "wheel3_top_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "wheel3",
       "health": 900.0,
       "category": "subpart"
+    },
+    {
+      "name": "wheel3_bottom_wishbone",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wheel3_damper",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "body",
@@ -100,6 +160,11 @@
       "name": "glass_100_debris1",
       "health": 1.0,
       "category": "subpart"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "headLightRight",

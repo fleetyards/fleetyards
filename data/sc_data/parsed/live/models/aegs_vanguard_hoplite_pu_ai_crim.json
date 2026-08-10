@@ -18,6 +18,11 @@
   "hull_health": 42800.0,
   "hull_parts": [
     {
+      "name": "AEGS_Vanguard",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 10000.0,
       "category": "vital"
@@ -53,9 +58,19 @@
       "category": "subpart"
     },
     {
+      "name": "Wing_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Wing_Right_Geo",
       "health": 800.0,
       "category": "secondary"
+    },
+    {
+      "name": "Wing_Right_Flaps",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Wing_Right_Flaps_Geo",
@@ -78,9 +93,19 @@
       "category": "subpart"
     },
     {
+      "name": "Wing_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Wing_Left_Geo",
       "health": 800.0,
       "category": "secondary"
+    },
+    {
+      "name": "Wing_Left_Flaps",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Wing_Left_Flaps_Geo",
@@ -96,6 +121,11 @@
       "name": "Wing_Back_Left",
       "health": 1800.0,
       "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

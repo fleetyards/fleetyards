@@ -18,6 +18,11 @@
   "hull_health": 19417.0,
   "hull_parts": [
     {
+      "name": "rsi_aurora_mk2",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_nose",
       "health": 3000.0,
       "category": "vital"

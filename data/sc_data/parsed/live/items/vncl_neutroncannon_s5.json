@@ -89,6 +89,8 @@
       "requested_ammo_load": 5625.0
     },
     "power_consumption": 1.4,
+    "weapon_class": "NeutronCannon",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

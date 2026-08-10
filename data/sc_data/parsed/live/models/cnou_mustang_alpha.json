@@ -18,14 +18,29 @@
   "hull_health": 10080.0,
   "hull_parts": [
     {
+      "name": "CNOU_Mustang",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 1900.0,
       "category": "vital"
     },
     {
+      "name": "hardpoint_landing_gear_front",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "cockpit_glass_frame",
       "health": 80.0,
       "category": "breakable"
+    },
+    {
+      "name": "cockpit_glass_frame_inner",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "body",

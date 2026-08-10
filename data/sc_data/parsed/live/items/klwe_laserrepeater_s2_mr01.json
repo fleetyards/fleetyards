@@ -89,6 +89,8 @@
       "requested_ammo_load": 12150.0
     },
     "power_consumption": 0.6,
+    "weapon_class": "LaserRepeater",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

@@ -18,6 +18,11 @@
   "hull_health": 138981.0,
   "hull_parts": [
     {
+      "name": "aegs_retaliator",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 35000.0,
       "category": "vital"
@@ -148,6 +153,11 @@
       "category": "subpart"
     },
     {
+      "name": "front_left_wing",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "front_left_wing_damage",
       "health": 100.0,
       "category": "breakable"
@@ -156,6 +166,11 @@
       "name": "front_left_wing_flp_geom",
       "health": 100.0,
       "category": "subpart"
+    },
+    {
+      "name": "front_right_wing",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "front_right_wing_damage",

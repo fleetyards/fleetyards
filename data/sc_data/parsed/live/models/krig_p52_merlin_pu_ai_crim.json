@@ -18,6 +18,11 @@
   "hull_health": 2430.0,
   "hull_parts": [
     {
+      "name": "KRIG_P52_Merlin",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 950.0,
       "category": "vital"
@@ -33,9 +38,19 @@
       "category": "subpart"
     },
     {
+      "name": "wing_left_animation",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "wing_left_animation_geo",
       "health": 200.0,
       "category": "breakable"
+    },
+    {
+      "name": "wing_right_animation",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "wing_right_animation_geo",

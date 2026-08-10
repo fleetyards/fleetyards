@@ -115,6 +115,8 @@
       "requested_ammo_load": 128130.0
     },
     "power_consumption": 2.93,
+    "weapon_class": "LaserCannon",
+    "mountable": true,
     "power_ranges": {
       "low": {
         "start": 0.0,

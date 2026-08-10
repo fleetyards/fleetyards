@@ -18,6 +18,11 @@
   "hull_health": 32500.0,
   "hull_parts": [
     {
+      "name": "RSI_Mantis",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body_main",
       "health": 2650.0,
       "category": "vital"
