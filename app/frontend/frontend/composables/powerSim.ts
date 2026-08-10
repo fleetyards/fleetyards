@@ -151,6 +151,17 @@ const NAV_PRIORITY: PowerFamily[] = [
   "towingbeam",
 ];
 
+// Quantum drive draws no power in SCM — it's a NAV-mode system.
+const NAV_ONLY_FAMILIES: PowerFamily[] = ["qdrive"];
+
+// Families the default auto-distribution fills beyond their critical minimum;
+// every other family sits at its critical floor until the user assigns pips
+// (matching erkul's default, e.g. life support at 1, engine at its minimum).
+const PRIMARY_FILL: Record<FlightMode, PowerFamily[]> = {
+  SCM: ["weapon", "shield", "radar"],
+  NAV: ["qdrive", "engine", "radar"],
+};
+
 // co(): the auto-distribution — mandatory criticals first, then each component
 // filled toward its target (a per-port override, else its natural maximum) in
 // family-priority order. The cooler heat-balancing pass is not yet ported.
@@ -166,20 +177,46 @@ export function allocatePower(
   const weaponCap = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
   const priority = mode === "SCM" ? SCM_PRIORITY : NAV_PRIORITY;
 
-  // Base pass: mandatory critical blocks per family, in priority order.
-  for (const family of priority) allocCritical(of(family), state);
+  // Skip a component when it's turned off (target 0), or when it's a NAV-only
+  // system (quantum drive) in SCM that the user hasn't explicitly powered.
+  const skip = (family: PowerFamily, portPath: string) => {
+    if (overrides[portPath] === 0) return true;
+    return (
+      mode === "SCM" &&
+      NAV_ONLY_FAMILIES.includes(family) &&
+      overrides[portPath] === undefined
+    );
+  };
 
-  // Fill pass: each distinct component (portPath) up to its target.
+  // Base pass: mandatory critical blocks per family, in priority order.
+  for (const family of priority) {
+    allocCritical(
+      of(family).filter((port) => !skip(family, port.portPath)),
+      state,
+    );
+  }
+
+  // Fill pass: each component to its target. An explicit override wins; else a
+  // primary family fills to its max, and every other family stays at its
+  // critical floor (its pips return to the pool).
+  const primary = PRIMARY_FILL[mode];
   for (const family of priority) {
     const familyPorts = of(family);
+    const isWeapon = family === "weapon";
+    const isPrimary = primary.includes(family);
     const seen = new Set<string>();
     for (const port of familyPorts) {
       if (seen.has(port.portPath)) continue;
       seen.add(port.portPath);
-      const isWeapon = family === "weapon";
-      const target =
-        overrides[port.portPath] ??
-        (isWeapon ? weaponCap : Number.POSITIVE_INFINITY);
+      if (skip(family, port.portPath)) continue;
+
+      const override = overrides[port.portPath];
+      let target: number;
+      if (override !== undefined) target = override;
+      else if (isPrimary)
+        target = isWeapon ? weaponCap : Number.POSITIVE_INFINITY;
+      else continue; // non-primary, no override → criticals only
+
       fillPortTo(
         familyPorts,
         port.portPath,

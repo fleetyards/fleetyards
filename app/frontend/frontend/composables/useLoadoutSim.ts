@@ -18,16 +18,16 @@ import {
 export { WEAPON_POOL_PORT, type PortOverrides } from "./powerSim";
 
 // A single power column in the pip UI — one component, or the shared weapon
-// pool. `label` is the component name (undefined for the weapon pool). `locked`
-// means every segment is mandatory (all-critical, e.g. a quantum drive) so the
-// level can't be changed.
+// pool. `label` is the component name (undefined for the weapon pool). `min` is
+// the mandatory floor: the component is either off (0) or on at ≥ `min`
+// segments (min === capacity for all-critical systems like the quantum drive).
 export type PowerColumn = {
   portPath: string;
   family: PowerFamily;
   label?: string;
   allocated: number;
   capacity: number;
-  locked: boolean;
+  min: number;
 };
 
 // FleetYards hardpoint category → erkul power family. Only the families erkul
@@ -215,8 +215,9 @@ function buildColumns(
         label: portPath === WEAPON_POOL_PORT ? undefined : portLabels[portPath],
         allocated: state.perPort[portPath] ?? 0,
         capacity: entry.capacity,
-        // All-critical components (e.g. quantum drives) can't be turned down.
-        locked: entry.critical >= entry.capacity,
+        // Mandatory floor: a component is either off or on at ≥ this many
+        // segments (equals capacity for all-critical systems like the QD).
+        min: entry.critical,
       };
     })
     .filter((column) => column.capacity > 0);

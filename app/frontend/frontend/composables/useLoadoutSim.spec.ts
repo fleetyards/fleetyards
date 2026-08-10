@@ -5,6 +5,7 @@ import {
   simulateLoadoutPower,
   useLoadoutSim,
   WEAPON_POOL_PORT,
+  SHIELD_POOL_PORT,
   type LoadoutSimResult,
 } from "./useLoadoutSim";
 import type { PowerFamily } from "./powerSim";
@@ -187,15 +188,40 @@ describe("overrides (pip UI)", () => {
     expect(coolerCol?.allocated).toBe(2);
   });
 
-  it("locks an all-critical component (quantum drive, min fraction 1)", () => {
+  it("leaves the quantum drive unpowered in SCM but powered in NAV", () => {
     const qd = hp(HardpointCategoryEnum.QUANTUMDRIVE, {
       powerConsumption: 3,
       powerMinimumFraction: 1,
     });
-    const sim = simulateLoadoutPower([plant(40, 2), qd], 0);
-    const col = sim.columns.find((c) => c.portPath === qd.id);
-    expect(col?.locked).toBe(true);
-    expect(col?.allocated).toBe(col?.capacity);
+    const ports = [plant(40, 2), qd];
+    const scm = simulateLoadoutPower(ports, 0, "SCM");
+    expect(scm.columns.find((c) => c.portPath === qd.id)?.allocated).toBe(0);
+    const nav = simulateLoadoutPower(ports, 0, "NAV");
+    expect(nav.columns.find((c) => c.portPath === qd.id)?.allocated).toBe(3);
+  });
+
+  it("defaults a non-primary system to its critical floor (life support 1)", () => {
+    // LS: units 2 @ 0.5 min fraction → critical 1; not greedily filled.
+    const ls = hp(HardpointCategoryEnum.LIFESUPPORT, {
+      powerConsumption: 2,
+      powerMinimumFraction: 0.5,
+    });
+    const col = simulateLoadoutPower([plant(40, 2), ls], 0).columns.find(
+      (c) => c.portPath === ls.id,
+    );
+    expect(col?.allocated).toBe(1);
+    expect(col?.capacity).toBe(2);
+  });
+
+  it("returns freed pips to the pool instead of redistributing", () => {
+    const ports = asgardLike();
+    const base = simulateLoadoutPower(ports, 4);
+    const reduced = simulateLoadoutPower(ports, 4, "SCM", {
+      [SHIELD_POOL_PORT]: 1,
+    });
+    // Dropping shields frees segments into `remaining`, not into other families.
+    expect(reduced.remaining).toBeGreaterThan(base.remaining);
+    expect(reduced.perFamily.weapon).toBe(base.perFamily.weapon);
   });
 });
 

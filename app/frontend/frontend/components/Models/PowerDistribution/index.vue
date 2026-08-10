@@ -93,14 +93,20 @@ const columnLabel = (column: PowerColumn) =>
   column.label ?? t(`labels.power.families.${column.family}`);
 
 // Click pip cell at `level` (1-based, bottom-up): jump the component to that
-// level, or step it down one when clicking the current top cell. Locked
-// (all-critical) components can't be changed.
+// level, or step it down one when clicking the current top cell. A component is
+// either off (0) or on at ≥ its mandatory floor, so a target below the floor
+// snaps to off (turning all-critical systems like the QD into an on/off toggle).
 const setLevel = (column: PowerColumn, level: number) => {
-  if (column.locked) return;
-  const target = Math.max(
-    0,
-    Math.min(column.capacity, level === column.allocated ? level - 1 : level),
-  );
+  let target = level === column.allocated ? level - 1 : level;
+  if (target > 0 && target < column.min) target = 0;
+  target = Math.max(0, Math.min(column.capacity, target));
+  emit("update:modelValue", { ...props.modelValue, [column.portPath]: target });
+};
+
+// Click the icon: drain the column to 0 if it has any pips, else fill it up
+// (bounded by the available pool) — erkul's icon toggle.
+const toggleColumn = (column: PowerColumn) => {
+  const target = column.allocated > 0 ? 0 : column.capacity;
   emit("update:modelValue", { ...props.modelValue, [column.portPath]: target });
 };
 
@@ -148,7 +154,7 @@ const reset = () => emit("update:modelValue", {});
         class="power-col"
         :class="{
           'power-col--weapon': column.family === 'weapon',
-          'power-col--locked': column.locked,
+          'power-col--off': column.allocated === 0,
         }"
       >
         <div class="power-col__count">{{ column.allocated }}</div>
@@ -169,12 +175,17 @@ const reset = () => emit("update:modelValue", {});
               'power-col__pip--on': level <= column.allocated,
               'power-col__pip--top': level === column.allocated,
             }"
-            :disabled="column.locked"
             :aria-label="`${columnLabel(column)}: ${level}`"
             @click="setLevel(column, level)"
           />
         </div>
-        <div class="power-col__label" :title="columnLabel(column)">
+        <button
+          type="button"
+          class="power-col__label"
+          :title="columnLabel(column)"
+          :aria-label="columnLabel(column)"
+          @click="toggleColumn(column)"
+        >
           <img
             v-if="FAMILY_ICON[column.family]"
             :src="FAMILY_ICON[column.family]"
@@ -182,7 +193,7 @@ const reset = () => emit("update:modelValue", {});
             class="power-col__icon"
           />
           <span v-else>{{ SHORT_LABEL[column.family] }}</span>
-        </div>
+        </button>
       </div>
     </div>
 
@@ -317,6 +328,10 @@ const reset = () => emit("update:modelValue", {});
     height: 16px;
     display: flex;
     align-items: center;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
   }
 
   &__icon {
@@ -325,9 +340,20 @@ const reset = () => emit("update:modelValue", {});
     opacity: 0.75;
   }
 
-  &--locked &__pip {
-    pointer-events: none;
-    opacity: 0.55;
+  // A column with no pips reads as "off" — dim its count and icon.
+  &--off {
+    .power-col__count {
+      color: $gray;
+      opacity: 0.5;
+    }
+
+    .power-col__icon {
+      opacity: 0.3;
+    }
+
+    .power-col__label {
+      opacity: 0.6;
+    }
   }
 }
 </style>
