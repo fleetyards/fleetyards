@@ -136,10 +136,14 @@ export type AllocateOptions = {
   // Weapon fill target = min(weaponConsumptionPoints, weaponPoolSize).
   weaponConsumption: number;
   weaponPoolSize: number;
+  // User pip choices: target segments per family. A family with an override is
+  // filled to that target instead of greedily — the interactive pip UI's input.
+  overrides?: Partial<Record<PowerFamily, number>>;
 };
 
-// co(): the default auto-distribution (base pass Zn, then fill pass Jn).
-// The cooler heat-balancing pass and refinements are not yet ported.
+// co(): the default auto-distribution (base pass Zn, then fill pass Jn), with an
+// optional per-family override target (the pip UI). The cooler heat-balancing
+// pass and refinements are not yet ported.
 export function allocatePower(
   ports: PowerPort[],
   totalSegments: number,
@@ -148,6 +152,13 @@ export function allocatePower(
   const mode = opts.mode ?? "SCM";
   const state = emptyState(totalSegments);
   const of = (f: PowerFamily) => ports.filter((p) => p.family === f);
+
+  // Fill a family to its override target if the user set one, else greedily.
+  const fill = (f: PowerFamily) => {
+    const target = opts.overrides?.[f];
+    if (target === undefined) fillGreedy(of(f), state);
+    else fillTo(of(f), f, target, state);
+  };
 
   // Zn — base: critical blocks per family in priority order, weapon base 1.
   allocCritical(of("lifeSupport"), state);
@@ -164,22 +175,24 @@ export function allocatePower(
   allocCritical(of("engine"), state);
 
   // Jn — fill.
-  fillGreedy(of("miningLaser"), state);
-  fillGreedy(of("salvage"), state);
+  fill("miningLaser");
+  fill("salvage");
   if (mode === "SCM") {
+    const weaponDefault = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
+    const weaponTarget = opts.overrides?.weapon ?? weaponDefault;
     fillTo(
       of("weapon"),
       "weapon",
-      Math.min(opts.weaponConsumption, opts.weaponPoolSize),
+      Math.min(weaponTarget, opts.weaponPoolSize, opts.weaponConsumption),
       state,
     );
-    fillGreedy(of("shield"), state);
-    fillGreedy(of("radar"), state);
-    fillGreedy(of("engine"), state);
+    fill("shield");
+    fill("radar");
+    fill("engine");
   } else {
-    fillGreedy(of("qdrive"), state);
-    fillGreedy(of("radar"), state);
-    fillGreedy(of("engine"), state);
+    fill("qdrive");
+    fill("radar");
+    fill("engine");
   }
 
   return state;

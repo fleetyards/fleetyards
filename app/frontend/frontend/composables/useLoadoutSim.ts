@@ -3,6 +3,7 @@ import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
 import {
   allocatePower,
   componentBlocks,
+  POWER_FAMILIES,
   totalSegments,
   weaponPoolBlocks,
   weaponPoolRatio,
@@ -32,16 +33,21 @@ export const POWER_FAMILY_BY_CATEGORY: Partial<
   [HardpointCategoryEnum.SALVAGEMUNCHING]: "salvage",
 };
 
+export type FamilyOverrides = Partial<Record<PowerFamily, number>>;
+
 export type LoadoutSimResult = {
   totalSegments: number;
   remaining: number;
   perFamily: Record<PowerFamily, number>;
-  // Weapon sustained-DPS ratio in the *default* SCM auto-distribution.
+  // Max segments each family could hold (for the pip UI slider bounds): the sum
+  // of its enabled port sizes.
+  familyCapacity: Record<PowerFamily, number>;
+  // Weapon sustained-DPS ratio at the *current* allocation (reflects overrides).
   weaponPoolRatio: number;
   // Weapon sustained-DPS ratio with weapons at maximum pips (other families
   // dropped to their mandatory minimums) — the max-power model sustained DPS
-  // uses. Equals min(1, poolSize/consumption) unless the plant literally can't
-  // deliver enough segments to fill the pool.
+  // uses as its baseline. Equals min(1, poolSize/consumption) unless the plant
+  // literally can't deliver enough segments to fill the pool.
   weaponMaxRatio: number;
 };
 
@@ -139,6 +145,7 @@ export function simulateLoadoutPower(
   hardpoints: Hardpoint[] | undefined,
   weaponPoolSize: number | undefined,
   mode: FlightMode = "SCM",
+  overrides?: FamilyOverrides,
 ): LoadoutSimResult {
   const acc = collectPorts(hardpoints, {
     plants: [],
@@ -154,16 +161,25 @@ export function simulateLoadoutPower(
     ...acc.otherPorts,
   ];
 
+  const familyCapacity = Object.fromEntries(
+    POWER_FAMILIES.map((f) => [f, 0]),
+  ) as Record<PowerFamily, number>;
+  for (const port of ports) {
+    if (!port.disabled) familyCapacity[port.family] += port.size;
+  }
+
   const state = allocatePower(ports, segments, {
     mode,
     weaponConsumption: consumption,
     weaponPoolSize: pool,
+    overrides,
   });
 
   return {
     totalSegments: segments,
     remaining: state.remaining,
     perFamily: state.perFamily,
+    familyCapacity,
     // No fixed weapon pool → the ship's guns are power-unlimited (ratio 1).
     weaponPoolRatio: pool <= 0 ? 1 : weaponPoolRatio(state, consumption),
     weaponMaxRatio: computeWeaponMaxRatio(
@@ -180,12 +196,14 @@ export function useLoadoutSim(
   hardpoints: MaybeRefOrGetter<Hardpoint[] | undefined>,
   weaponPoolSize: MaybeRefOrGetter<number | undefined>,
   mode: MaybeRefOrGetter<FlightMode> = () => "SCM",
+  overrides: MaybeRefOrGetter<FamilyOverrides | undefined> = () => undefined,
 ) {
   return computed<LoadoutSimResult>(() =>
     simulateLoadoutPower(
       toValue(hardpoints),
       toValue(weaponPoolSize),
       toValue(mode),
+      toValue(overrides),
     ),
   );
 }

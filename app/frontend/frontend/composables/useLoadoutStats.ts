@@ -4,7 +4,7 @@ import {
   type Hardpoint,
   type ComponentWeapon,
 } from "@/services/fyApi";
-import { simulateLoadoutPower } from "./useLoadoutSim";
+import { simulateLoadoutPower, type FamilyOverrides } from "./useLoadoutSim";
 
 export type DamageBreakdown = {
   total: number;
@@ -125,12 +125,19 @@ export function sustainedRatio(
 export function computeLoadoutStats(
   hardpoints: Hardpoint[] | undefined,
   weaponPoolSize?: number,
+  overrides?: FamilyOverrides,
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
-  const powerRatio = simulateLoadoutPower(
+  const sim = simulateLoadoutPower(
     hardpoints,
     weaponPoolSize,
-  ).weaponMaxRatio;
+    "SCM",
+    overrides,
+  );
+  // Baseline sustained uses the max-power ratio; once the user throttles weapons
+  // via the pip UI, it follows their actual weapon allocation.
+  const powerRatio =
+    overrides?.weapon === undefined ? sim.weaponMaxRatio : sim.weaponPoolRatio;
 
   const dps = emptyBreakdown();
   const sustainedDps = emptyBreakdown();
@@ -197,8 +204,13 @@ export function computeLoadoutStats(
 export function useLoadoutStats(
   hardpoints: MaybeRefOrGetter<Hardpoint[] | undefined>,
   weaponPoolSize?: MaybeRefOrGetter<number | undefined>,
+  overrides?: MaybeRefOrGetter<FamilyOverrides | undefined>,
 ) {
   return computed(() =>
-    computeLoadoutStats(toValue(hardpoints), toValue(weaponPoolSize)),
+    computeLoadoutStats(
+      toValue(hardpoints),
+      toValue(weaponPoolSize),
+      toValue(overrides),
+    ),
   );
 }

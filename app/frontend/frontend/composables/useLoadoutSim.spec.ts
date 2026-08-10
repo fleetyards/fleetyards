@@ -150,6 +150,34 @@ describe("weaponMaxRatio (sustained-DPS input)", () => {
   });
 });
 
+describe("overrides (pip UI)", () => {
+  const asgardLike = (): Hardpoint[] => [
+    hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 20 }, {
+      component: { size: 2, typeData: { powerBase: 20 } },
+    } as Partial<Hardpoint>),
+    ...Array.from({ length: 4 }, () =>
+      hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 }),
+    ),
+    hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
+  ];
+
+  it("throttles weapons down to the override target", () => {
+    const sim = simulateLoadoutPower(asgardLike(), 4, "SCM", { weapon: 2 });
+    expect(sim.perFamily.weapon).toBe(2);
+    // consumption 8, weapon segments 2 → ratio 0.25 (below the 0.5 max).
+    expect(sim.weaponPoolRatio).toBeCloseTo(0.25);
+    // The max-power baseline is unaffected by the override.
+    expect(sim.weaponMaxRatio).toBeCloseTo(0.5);
+  });
+
+  it("reports each family's capacity for the slider bounds", () => {
+    const sim = simulateLoadoutPower(asgardLike(), 4);
+    // weapon pool 4, consumption 8 → 4 enabled blocks.
+    expect(sim.familyCapacity.weapon).toBe(4);
+    expect(sim.familyCapacity.shield).toBe(4);
+  });
+});
+
 describe("POWER_FAMILY_BY_CATEGORY", () => {
   it("maps the power-drawing families and leaves the rest unmapped", () => {
     expect(POWER_FAMILY_BY_CATEGORY[HardpointCategoryEnum.WEAPONS]).toBe(
