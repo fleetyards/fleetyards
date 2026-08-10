@@ -118,6 +118,10 @@ provide(
   computed(() => props.model.metrics?.weaponPoolSize),
 );
 
+// The user's pip choices, so the Combat card totals recompute from the same
+// distribution the control shows.
+provide("powerOverrides", powerOverrides);
+
 // The loadout-wide weapon-power throttle, so per-weapon rows show the same
 // sustained factor the Combat card totals from.
 provide(

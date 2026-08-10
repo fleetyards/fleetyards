@@ -13,6 +13,7 @@ import {
   useLoadoutStats,
   type DamageBreakdown,
 } from "@/frontend/composables/useLoadoutStats";
+import type { FamilyOverrides } from "@/frontend/composables/useLoadoutSim";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -29,9 +30,16 @@ const weaponPoolSize = inject<Ref<number | undefined>>(
   ref(undefined),
 );
 
+// The Power Distribution control's pip choices; absent (standalone use) → auto.
+const powerOverrides = inject<Ref<FamilyOverrides | undefined>>(
+  "powerOverrides",
+  ref(undefined),
+);
+
 const stats = useLoadoutStats(
   () => props.hardpoints,
   () => toValue(weaponPoolSize),
+  () => toValue(powerOverrides),
 );
 
 const round = (value: number) => Math.round(value);
