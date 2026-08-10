@@ -8,6 +8,7 @@ export default {
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Hardpoint } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import { useArmorStats } from "@/frontend/composables/useArmorStats";
 
@@ -22,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t, toNumber } = useI18n();
+
+const comlink = useComlink();
 
 const shield = useShieldStats(() => props.hardpoints);
 const armor = useArmorStats(() => props.hardpoints);
@@ -42,6 +45,18 @@ const absorptionLabel = (entry: { min: number; max: number }) =>
   entry.min === entry.max
     ? percent(entry.max)
     : `${percent(entry.min)} – ${percent(entry.max)}`;
+
+const openDeflectionCheck = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/DeflectionCheckModal/index.vue"),
+    wide: true,
+    props: {
+      modelName: props.modelName,
+      hardpoints: props.hardpoints,
+    },
+  });
+};
 </script>
 
 <template>
@@ -187,6 +202,16 @@ const absorptionLabel = (entry: { min: number; max: number }) =>
         </template>
       </dl>
     </template>
+
+    <div v-if="armor.hasData" class="metrics-card__actions">
+      <button
+        type="button"
+        class="metrics-card__toggle"
+        @click="openDeflectionCheck"
+      >
+        {{ t("labels.defense.openDeflectionCheck") }}
+      </button>
+    </div>
 
     <div class="metrics-card__footer">
       <span class="metrics-card__hint">

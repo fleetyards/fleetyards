@@ -617,7 +617,38 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Shield and armor values from the default loadout. Absorption below 100% means that damage type reaches the hull while the shields are still up."
+        "hint": "Shield and armor values from the default loadout. Absorption below 100% means that damage type reaches the hull while the shields are still up.",
+        "openDeflectionCheck": "Deflection check"
+      },
+      "deflectionCheck": {
+        "title": "Deflection Check",
+        "intro": "— which guns pierce its defenses?",
+        "noArmor": "This ship carries no armor, so nothing is deflected.",
+        "allSizes": "All",
+        "deflected": "deflected",
+        "pierce": "pierce",
+        "weapon": "Weapon",
+        "boundary": "Deflection boundary",
+        "alpha": "Alpha",
+        "threshold": "Threshold crossed",
+        "absorbed": "absorbed",
+        "versus": "vs",
+        "hoverHint": "Hover a weapon for the per-type breakdown.",
+        "note": "Alpha is compared per pellet, after the shield's soak — a gun pierces when it beats the deflection on any damage type. Types the shields absorb completely never reach the armor, so they are listed as absorbed rather than deflected: stopped by the shield, not the hull. Shield absorption interpolates across its published min–max range by shield health, and armor deflection scales linearly with armor health. Laser beams are excluded — they deal continuous damage, so there is no per-shot alpha to test.",
+        "margin": "Margin",
+        "reachesArmor": "Reaches armor",
+        "stoppedByShields": "Shield absorbs",
+        "verdict": {
+          "absorbed": "Absorbed",
+          "deflected": "Deflected",
+          "pierces": "Pierced"
+        },
+        "shieldHealth": "Shield health",
+        "armorHealth": "Armor health",
+        "absorb": "Absorb",
+        "defl": "Defl",
+        "type": "Type",
+        "size": "Size"
       },
       "hull": {
         "category": {
