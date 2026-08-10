@@ -19,6 +19,15 @@
 #  component_id :uuid
 #  parent_id    :uuid             not null
 #
+# Indexes
+#
+#  index_hardpoints_on_component_id  (component_id)
+#  index_hardpoints_on_parent        (parent_type,parent_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (component_id => components.id)
+#
 FactoryBot.define do
   factory :hardpoint do
     source { Hardpoint.sources.keys.sample }
