@@ -163,6 +163,30 @@ describe("overrides (pip UI)", () => {
   });
 });
 
+describe("shield active cap", () => {
+  const shields = (count: number) =>
+    Array.from({ length: count }, () =>
+      hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
+    );
+
+  it("powers only the first 2 shields by default (rest are backups)", () => {
+    const sim = simulateLoadoutPower([plant(40, 2), ...shields(3)], 0);
+    // Each shield = 4 cells; only 2 active → 8; the 3rd draws no power.
+    expect(sim.familyCapacity.shield).toBe(8);
+  });
+
+  it("respects a ship's own shield cap", () => {
+    const sim = simulateLoadoutPower(
+      [plant(40, 2), ...shields(3)],
+      0,
+      "SCM",
+      undefined,
+      3,
+    );
+    expect(sim.familyCapacity.shield).toBe(12);
+  });
+});
+
 describe("POWER_FAMILY_BY_CATEGORY", () => {
   it("maps the power-drawing families and leaves the rest unmapped", () => {
     expect(POWER_FAMILY_BY_CATEGORY[HardpointCategoryEnum.WEAPONS]).toBe(

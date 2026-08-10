@@ -51,10 +51,15 @@ export type LoadoutSimResult = {
   weaponMaxRatio: number;
 };
 
+// Ships run only the first N shields at once (the vehicle's Dynamic Shield power
+// pool `maxItemCount`); the rest are unpowered backups. 2 is the game default.
+export const DEFAULT_SHIELD_MAX_ITEM_COUNT = 2;
+
 type Collected = {
   plants: { units: number; size: number; poweredOn: boolean }[];
   weaponUnits: number;
   otherPorts: PowerPort[];
+  shieldsSeen: number;
 };
 
 function numeric(value: unknown): number {
@@ -64,10 +69,12 @@ function numeric(value: unknown): number {
 
 // Walk the hardpoint tree, gathering the powered plants (segment sources), the
 // summed weapon Power draw (the shared pool), and the per-component blocks for
-// every other power-drawing family.
+// every other power-drawing family. Shields beyond `shieldMaxItemCount` are
+// backups and draw no power.
 function collectPorts(
   hardpoints: Hardpoint[] | undefined,
   acc: Collected,
+  shieldMaxItemCount: number,
 ): Collected {
   for (const hardpoint of hardpoints ?? []) {
     const typeData = hardpoint.component?.typeData as
@@ -90,22 +97,27 @@ function collectPorts(
         if (family === "weapon") {
           acc.weaponUnits += draw;
         } else if (family && draw > 0) {
-          const minimumFraction =
-            typeData.powerMinimumFraction == null
-              ? undefined
-              : numeric(typeData.powerMinimumFraction);
-          acc.otherPorts.push(
-            ...componentBlocks(hardpoint.id, family, {
-              units: draw,
-              minimumFraction,
-            }),
-          );
+          // Shields past the active cap are unpowered backups.
+          const isBackupShield =
+            family === "shield" && ++acc.shieldsSeen > shieldMaxItemCount;
+          if (!isBackupShield) {
+            const minimumFraction =
+              typeData.powerMinimumFraction == null
+                ? undefined
+                : numeric(typeData.powerMinimumFraction);
+            acc.otherPorts.push(
+              ...componentBlocks(hardpoint.id, family, {
+                units: draw,
+                minimumFraction,
+              }),
+            );
+          }
         }
       }
     }
 
     if (hardpoint.hardpoints?.length) {
-      collectPorts(hardpoint.hardpoints, acc);
+      collectPorts(hardpoint.hardpoints, acc, shieldMaxItemCount);
     }
   }
 
@@ -146,12 +158,18 @@ export function simulateLoadoutPower(
   weaponPoolSize: number | undefined,
   mode: FlightMode = "SCM",
   overrides?: FamilyOverrides,
+  shieldMaxItemCount: number = DEFAULT_SHIELD_MAX_ITEM_COUNT,
 ): LoadoutSimResult {
-  const acc = collectPorts(hardpoints, {
-    plants: [],
-    weaponUnits: 0,
-    otherPorts: [],
-  });
+  const acc = collectPorts(
+    hardpoints,
+    {
+      plants: [],
+      weaponUnits: 0,
+      otherPorts: [],
+      shieldsSeen: 0,
+    },
+    shieldMaxItemCount,
+  );
   const pool = weaponPoolSize ?? 0;
   const segments = totalSegments(acc.plants);
   const consumption = Math.ceil(acc.weaponUnits);
@@ -197,6 +215,7 @@ export function useLoadoutSim(
   weaponPoolSize: MaybeRefOrGetter<number | undefined>,
   mode: MaybeRefOrGetter<FlightMode> = () => "SCM",
   overrides: MaybeRefOrGetter<FamilyOverrides | undefined> = () => undefined,
+  shieldMaxItemCount: MaybeRefOrGetter<number | undefined> = () => undefined,
 ) {
   return computed<LoadoutSimResult>(() =>
     simulateLoadoutPower(
@@ -204,6 +223,7 @@ export function useLoadoutSim(
       toValue(weaponPoolSize),
       toValue(mode),
       toValue(overrides),
+      toValue(shieldMaxItemCount) ?? DEFAULT_SHIELD_MAX_ITEM_COUNT,
     ),
   );
 }
