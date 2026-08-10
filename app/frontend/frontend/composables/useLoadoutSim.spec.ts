@@ -161,6 +161,16 @@ describe("overrides (pip UI)", () => {
     expect(sim.perFamily.weapon).toBe(0);
     expect(sim.weaponPoolRatio).toBe(0);
   });
+
+  it("allocates to any non-weapon family the user boosts (coolers/qdrive)", () => {
+    const hardpoints = [
+      plant(40, 2),
+      ...weapons(4, 2),
+      hp(HardpointCategoryEnum.COOLER, { powerConsumption: 3 }),
+    ];
+    const sim = simulateLoadoutPower(hardpoints, 4, "SCM", { coolers: 2 });
+    expect(sim.perFamily.coolers).toBe(2);
+  });
 });
 
 describe("shield active cap", () => {

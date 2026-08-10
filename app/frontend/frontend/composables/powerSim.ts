@@ -180,25 +180,55 @@ export function allocatePower(
   allocCritical(of("radar"), state);
   allocCritical(of("engine"), state);
 
-  // Jn — fill.
-  fill("miningLaser");
-  fill("salvage");
-  if (mode === "SCM") {
-    const weaponDefault = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
-    const weaponTarget = opts.overrides?.weapon ?? weaponDefault;
+  // Jn — fill every family in priority order (weapons capped at their pool);
+  // a family with a user override fills to that target, otherwise greedily. All
+  // families are covered so the pip UI can allocate to any of them.
+  const weaponDefault = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
+  const weaponTarget = opts.overrides?.weapon ?? weaponDefault;
+  const fillWeapon = () =>
     fillTo(
       of("weapon"),
       "weapon",
       Math.min(weaponTarget, opts.weaponPoolSize, opts.weaponConsumption),
       state,
     );
-    fill("shield");
-    fill("radar");
-    fill("engine");
-  } else {
-    fill("qdrive");
-    fill("radar");
-    fill("engine");
+
+  const priority: PowerFamily[] =
+    mode === "SCM"
+      ? [
+          "miningLaser",
+          "salvage",
+          "weapon",
+          "shield",
+          "radar",
+          "engine",
+          "coolers",
+          "qdrive",
+          "qed",
+          "emp",
+          "tractorBeam",
+          "towingbeam",
+          "lifeSupport",
+        ]
+      : [
+          "miningLaser",
+          "salvage",
+          "qdrive",
+          "radar",
+          "engine",
+          "shield",
+          "coolers",
+          "weapon",
+          "qed",
+          "emp",
+          "tractorBeam",
+          "towingbeam",
+          "lifeSupport",
+        ];
+
+  for (const family of priority) {
+    if (family === "weapon") fillWeapon();
+    else fill(family);
   }
 
   return state;
