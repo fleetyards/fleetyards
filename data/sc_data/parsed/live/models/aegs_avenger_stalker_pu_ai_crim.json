@@ -18,6 +18,11 @@
   "hull_health": 11900.0,
   "hull_parts": [
     {
+      "name": "AEGS_Avenger",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 2500.0,
       "category": "vital"
@@ -38,6 +43,11 @@
       "category": "breakable"
     },
     {
+      "name": "right_air_brake",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Wing_Flap_Right",
       "health": 10.0,
       "category": "subpart"
@@ -56,6 +66,11 @@
       "name": "Wing_Flap_Left",
       "health": 10.0,
       "category": "subpart"
+    },
+    {
+      "name": "left_air_brake",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "WingTip_Left",

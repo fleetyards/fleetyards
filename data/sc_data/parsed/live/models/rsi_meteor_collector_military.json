@@ -18,6 +18,11 @@
   "hull_health": 30150.0,
   "hull_parts": [
     {
+      "name": "rsi_meteor",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body_main",
       "health": 2750.0,
       "category": "vital"
@@ -26,6 +31,11 @@
       "name": "nose_wingmount_right",
       "health": 1050.0,
       "category": "breakable"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "body_spine_mid_housing",
@@ -171,6 +181,11 @@
       "name": "body_rear_diffuser",
       "health": 200.0,
       "category": "subpart"
+    },
+    {
+      "name": "bottom_hull",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dbr_small_fin_right",

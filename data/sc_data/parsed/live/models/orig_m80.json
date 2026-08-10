@@ -18,6 +18,11 @@
   "hull_health": 17000.0,
   "hull_parts": [
     {
+      "name": "orig_m80",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 5000.0,
       "category": "vital"

@@ -18,14 +18,34 @@
   "hull_health": 1570.0,
   "hull_parts": [
     {
+      "name": "DRAK_Dragonfly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 880.0,
       "category": "vital"
     },
     {
+      "name": "front_leg_mount",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_front_right_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nacelle_front_right_main",
       "health": 160.0,
       "category": "breakable"
+    },
+    {
+      "name": "nacelle_front_left_base",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "nacelle_front_left_main",
@@ -38,9 +58,24 @@
       "category": "breakable"
     },
     {
+      "name": "body_leg_mount",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_rear_left_base",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nacelle_rear_left_main",
       "health": 160.0,
       "category": "breakable"
+    },
+    {
+      "name": "nacelle_rear_right_base",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "nacelle_rear_right_main",

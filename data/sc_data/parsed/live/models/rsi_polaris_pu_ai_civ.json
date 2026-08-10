@@ -18,9 +18,24 @@
   "hull_health": 3947100.0,
   "hull_parts": [
     {
+      "name": "rsi_polaris",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "M_Body",
       "health": 918000.0,
       "category": "vital"
+    },
+    {
+      "name": "M_Mesh_Rear_Aileron_Base_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Aileron_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Mesh_DET_Rear_Aileron_Tip_Top_Left",
@@ -33,6 +48,26 @@
       "category": "subpart"
     },
     {
+      "name": "Anim_Clamp_TR_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Clamp_TL_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Mesh_Rear_Aileron_Base_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Aileron_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Mesh_DET_Rear_Aileron_Tip_Bot_Left",
       "health": 1000.0,
       "category": "breakable"
@@ -41,6 +76,26 @@
       "name": "Mesh_DET_Rear_Aileron_Fin_Bot_Left",
       "health": 500.0,
       "category": "subpart"
+    },
+    {
+      "name": "Anim_Clamp_BL_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Clamp_BR_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Mesh_Rear_Aileron_Base_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Aileron_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Mesh_DET_Rear_Aileron_Tip_Top_Right",
@@ -53,6 +108,26 @@
       "category": "subpart"
     },
     {
+      "name": "Anim_Clamp_TR_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Clamp_TL_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Mesh_Rear_Aileron_Base_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Aileron_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Mesh_DET_Rear_Aileron_Tip_Bot_Right",
       "health": 1000.0,
       "category": "breakable"
@@ -61,6 +136,16 @@
       "name": "Mesh_DET_Rear_Aileron_Fin_Bot_Right",
       "health": 500.0,
       "category": "subpart"
+    },
+    {
+      "name": "Anim_Clamp_BR_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Clamp_BL_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Body_Underside_Plate",
@@ -88,9 +173,69 @@
       "category": "subpart"
     },
     {
+      "name": "Airbrake_Piston_Lower_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Piston_Upper_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Piston_Lower_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Piston_Upper_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Piston_Lower_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Piston_Upper_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Piston_Lower_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Piston_Upper_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Rotator_Inner_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Rotator_Outer_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Mesh_DET_Airbrake_Tip_Bot_Left",
       "health": 1000.0,
       "category": "subpart"
+    },
+    {
+      "name": "Airbrake_Rotator_Inner_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Rotator_Outer_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Mesh_DET_Airbrake_Tip_Bot_Right",
@@ -98,9 +243,29 @@
       "category": "subpart"
     },
     {
+      "name": "Airbrake_Rotator_Inner_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Rotator_Outer_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Mesh_DET_Airbrake_Tip_Top_Left",
       "health": 1000.0,
       "category": "subpart"
+    },
+    {
+      "name": "Airbrake_Rotator_Inner_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airbrake_Rotator_Outer_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Mesh_DET_Airbrake_Tip_Top_Right",
@@ -108,9 +273,19 @@
       "category": "subpart"
     },
     {
+      "name": "Anim_Hatch_Slider_rear_L_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body_LG_Front_Hatch_rear_L_left",
       "health": 200.0,
       "category": "subpart"
+    },
+    {
+      "name": "Anim_Hatch_Slider_rear_L_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Body_LG_Front_Hatch_rear_L_right",
@@ -118,9 +293,24 @@
       "category": "subpart"
     },
     {
+      "name": "Anim_Hatch_Slider_rear_R_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body_LG_Front_Hatch_rear_R_left",
       "health": 200.0,
       "category": "subpart"
+    },
+    {
+      "name": "Anim_Hatch_Slider_rear_R_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body_LG_Front_Hatch_rear_R_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Turret_Hatch_Bottom_Left",
@@ -273,6 +463,51 @@
       "category": "subpart"
     },
     {
+      "name": "Anim_Side_Sensor_Upper_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Side_Sensor_Lower_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Side_Sensor_Upper_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Side_Sensor_Lower_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Hatch_Slider_front_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_Neck_LG_Front_Hatch_front_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Hatch_Slider_front_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_Neck_LG_Front_Hatch_front_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Front_Aileron_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "M_DET_Neck_Front_Aileron_Tip_Right",
       "health": 1000.0,
       "category": "breakable"
@@ -281,6 +516,11 @@
       "name": "M_DET_Neck_Front_Aileron_Rotator_Right",
       "health": 500.0,
       "category": "subpart"
+    },
+    {
+      "name": "Anim_Front_Aileron_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Neck_Front_Aileron_Tip_Left",
@@ -293,6 +533,16 @@
       "category": "subpart"
     },
     {
+      "name": "Anim_Front_Aileron_Cover_01Front_Aileron_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Front_Aileron_Cover_01Front_Aileron_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "M_Nose",
       "health": 220000.0,
       "category": "subpart"
@@ -301,6 +551,11 @@
       "name": "M_Rear",
       "health": 1200000.0,
       "category": "breakable"
+    },
+    {
+      "name": "Anim_Rear_Arms_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Rear_Mesh_Thruster_Base_Top_Right",
@@ -313,9 +568,34 @@
       "category": "breakable"
     },
     {
+      "name": "M_DET_Rear_Mesh_Thruster_Piston_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Top_Right",
       "health": 1000.0,
       "category": "subpart"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Static_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_Rear_Arms_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Arms_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Rear_Mesh_Thruster_Base_Top_Left",
@@ -328,9 +608,34 @@
       "category": "breakable"
     },
     {
+      "name": "M_DET_Rear_Mesh_Thruster_Piston_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Top_Left",
       "health": 1000.0,
       "category": "subpart"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Static_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_Rear_Arms_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Arms_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Rear_Mesh_Thruster_Base_Bot_Right",
@@ -343,9 +648,34 @@
       "category": "breakable"
     },
     {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Bot_Right",
       "health": 1000.0,
       "category": "subpart"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Piston_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Static_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_Rear_Arms_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Arms_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Rear_Mesh_Thruster_Base_Bot_Left",
@@ -358,9 +688,29 @@
       "category": "breakable"
     },
     {
+      "name": "M_DET_Rear_Mesh_Thruster_Piston_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Fin_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "M_DET_Rear_Mesh_Thruster_Fin_Tip_Bot_Left",
       "health": 1000.0,
       "category": "subpart"
+    },
+    {
+      "name": "M_DET_Rear_Mesh_Thruster_Static_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "M_Rear_Arms_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "M_DET_Mesh_Thruster_Housing_Middle_Left",
@@ -371,6 +721,26 @@
       "name": "M_DET_Mesh_Thruster_Housing_Middle_Right",
       "health": 60000.0,
       "category": "breakable"
+    },
+    {
+      "name": "Anim_Rear_Nacelle_02_Top_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Nacelle_02_Top_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Nacelle_02_Bot_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Anim_Rear_Nacelle_01_Bot_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

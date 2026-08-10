@@ -18,6 +18,11 @@
   "hull_health": 75800.0,
   "hull_parts": [
     {
+      "name": "MISC_Starfarer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 31500.0,
       "category": "vital"

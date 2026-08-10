@@ -18,6 +18,11 @@
   "hull_health": 67600.0,
   "hull_parts": [
     {
+      "name": "crus_spirit",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 16500.0,
       "category": "vital"

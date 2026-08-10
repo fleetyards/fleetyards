@@ -18,9 +18,24 @@
   "hull_health": 91500.0,
   "hull_parts": [
     {
+      "name": "DRAK_Caterpillar",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 60000.0,
       "category": "vital"
+    },
+    {
+      "name": "Wing",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body_Detach_Upper",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Engine_Center_Left",
@@ -31,6 +46,11 @@
       "name": "Engine_Center_Right",
       "health": 1500.0,
       "category": "breakable"
+    },
+    {
+      "name": "Tail",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Engine_Right",
@@ -46,6 +66,11 @@
       "name": "Nose",
       "health": 25500.0,
       "category": "breakable"
+    },
+    {
+      "name": "Nose_Pipes",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

@@ -18,6 +18,11 @@
   "hull_health": 5194.0,
   "hull_parts": [
     {
+      "name": "GLSN_Basher",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 1300.0,
       "category": "vital"
@@ -101,6 +106,11 @@
       "name": "weapon_cover_right",
       "health": 150.0,
       "category": "subpart"
+    },
+    {
+      "name": "hardpoint_lights_ext",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "nose",

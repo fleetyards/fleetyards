@@ -18,6 +18,11 @@
   "hull_health": 18015000.0,
   "hull_parts": [
     {
+      "name": "AEGS_Idris",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 6100000.0,
       "category": "vital"
@@ -28,9 +33,19 @@
       "category": "breakable"
     },
     {
+      "name": "Engine_Mount_Single_Idris_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Idris_Thruster_Main_01_Left",
       "health": 300000.0,
       "category": "breakable"
+    },
+    {
+      "name": "Engine_Mount_Single_Idris_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Idris_Thruster_Main_01_Right",

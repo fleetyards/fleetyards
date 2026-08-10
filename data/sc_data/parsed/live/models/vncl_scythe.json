@@ -18,6 +18,11 @@
   "hull_health": 11701.0,
   "hull_parts": [
     {
+      "name": "VNCL_Scythe",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 4000.0,
       "category": "vital"
@@ -36,6 +41,11 @@
       "name": "wing_left",
       "health": 480.0,
       "category": "breakable"
+    },
+    {
+      "name": "landing_gear_left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "wing_right_arm",
@@ -118,6 +128,11 @@
       "category": "subpart"
     },
     {
+      "name": "landing_gear_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "wing_right_tailD",
       "health": 1.0,
       "category": "breakable"
@@ -163,9 +178,39 @@
       "category": "subpart"
     },
     {
+      "name": "landing_gear_rear_housing",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "landing_gear_rear",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "landing_gear_rear_cover",
       "health": 200.0,
       "category": "subpart"
+    },
+    {
+      "name": "cockpit_lock",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit_opening",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit_floor",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cockpit_base_plate",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

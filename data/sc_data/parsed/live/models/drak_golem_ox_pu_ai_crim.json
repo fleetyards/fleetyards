@@ -18,14 +18,34 @@
   "hull_health": 20700.0,
   "hull_parts": [
     {
+      "name": "drak_golem_ox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 2350.0,
       "category": "vital"
     },
     {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "anim_vtol_rotate_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "m_det_fr_vtol",
       "health": 1450.0,
       "category": "breakable"
+    },
+    {
+      "name": "anim_vtol_rotate_left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "m_det_fl_vtol",
@@ -43,6 +63,11 @@
       "category": "subpart"
     },
     {
+      "name": "m_vtol_rotator_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "m_vtol_rear_cover_left",
       "health": 1000.0,
       "category": "breakable"
@@ -51,6 +76,11 @@
       "name": "m_det_vtol_ext_main_housing_left",
       "health": 500.0,
       "category": "subpart"
+    },
+    {
+      "name": "m_vtol_rotator_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "m_vtol_rear_cover_right",

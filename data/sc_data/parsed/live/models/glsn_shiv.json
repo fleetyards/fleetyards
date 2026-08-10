@@ -18,6 +18,11 @@
   "hull_health": 34300.0,
   "hull_parts": [
     {
+      "name": "GLSN_Shiv",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 5000.0,
       "category": "vital"
@@ -26,6 +31,11 @@
       "name": "Wing_Right",
       "health": 3000.0,
       "category": "breakable"
+    },
+    {
+      "name": "Side_Thruster_Body_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dbr_Wing_Right_addons",
@@ -88,9 +98,29 @@
       "category": "breakable"
     },
     {
+      "name": "Thruster_Main_Base_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Thruster_Main_Base_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "fuel_greeble",
       "health": 300.0,
       "category": "subpart"
+    },
+    {
+      "name": "Tail_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Tail_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dbr_Tail_panel",
@@ -146,6 +176,11 @@
       "name": "Wing_Left",
       "health": 3000.0,
       "category": "breakable"
+    },
+    {
+      "name": "Side_Thruster_Body_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dbr_Wing_Left_addons",

@@ -18,6 +18,11 @@
   "hull_health": 24930.0,
   "hull_parts": [
     {
+      "name": "ESPR_Talon",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 2000.0,
       "category": "vital"
@@ -26,6 +31,21 @@
       "name": "eject_joint",
       "health": 80.0,
       "category": "breakable"
+    },
+    {
+      "name": "Cockpit",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hatch_geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "rail_extension",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Leg_Right",
@@ -61,6 +81,16 @@
       "name": "leg_feathers_05_right",
       "health": 150.0,
       "category": "subpart"
+    },
+    {
+      "name": "slider_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "knee_joint_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "wing_small_segment_01_right",
@@ -198,6 +228,16 @@
       "category": "subpart"
     },
     {
+      "name": "Rudder_geo",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "body_spine",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Leg_Left",
       "health": 1900.0,
       "category": "breakable"
@@ -276,6 +316,11 @@
       "name": "Tail_Left",
       "health": 1650.0,
       "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Wing_Left",

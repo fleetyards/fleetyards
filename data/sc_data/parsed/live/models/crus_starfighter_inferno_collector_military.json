@@ -18,6 +18,11 @@
   "hull_health": 38600.0,
   "hull_parts": [
     {
+      "name": "CRUS_Starfighter",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 12000.0,
       "category": "vital"

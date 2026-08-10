@@ -18,6 +18,11 @@
   "hull_health": 149819.0,
   "hull_parts": [
     {
+      "name": "ANVL_Paladin",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_body",
       "health": 45000.0,
       "category": "vital"
@@ -138,9 +143,19 @@
       "category": "subpart"
     },
     {
+      "name": "geo_wing_turret_base_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "dbr_radar_unit",
       "health": 1000.0,
       "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroy",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dbr_esc_pods_left",
@@ -178,6 +193,11 @@
       "category": "subpart"
     },
     {
+      "name": "geo_vtol_con_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "dbr_tail_left",
       "health": 25000.0,
       "category": "breakable"
@@ -188,9 +208,34 @@
       "category": "subpart"
     },
     {
+      "name": "geo_rear_thruster_diffs_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_rear_inner_tail_detail_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_rear_antenna_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "geo_rear_pipes_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "dbr_small_tail_fin_left",
       "health": 400.0,
       "category": "subpart"
+    },
+    {
+      "name": "geo_vtol_con_left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "dbr_underside_plate_04_right",

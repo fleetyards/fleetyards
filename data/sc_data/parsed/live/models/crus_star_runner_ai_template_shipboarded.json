@@ -18,6 +18,11 @@
   "hull_health": 41400.0,
   "hull_parts": [
     {
+      "name": "CRUS_Star_Runner",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 14000.0,
       "category": "vital"
@@ -28,9 +33,19 @@
       "category": "breakable"
     },
     {
+      "name": "nacelle_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "wing_right",
       "health": 6600.0,
       "category": "breakable"
+    },
+    {
+      "name": "nacelle_left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "wing_left",

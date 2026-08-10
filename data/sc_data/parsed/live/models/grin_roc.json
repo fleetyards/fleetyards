@@ -17,9 +17,34 @@
   "hull_health": 9400.0,
   "hull_parts": [
     {
+      "name": "GRIN_ROC",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_FL",
       "health": 1500.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_FL_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FL_control_arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FL_shock",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_FR",
@@ -27,14 +52,49 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_wheel_FR_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR_control_arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR_shock",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_RL",
       "health": 1500.0,
       "category": "secondary"
     },
     {
+      "name": "hardpoint_wheel_RL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_RR",
       "health": 1500.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_RR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "rollcage_main",
@@ -50,6 +110,11 @@
       "name": "rear_frame",
       "health": 250.0,
       "category": "breakable"
+    },
+    {
+      "name": "rear_storage_trunck",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "side_panel_right",

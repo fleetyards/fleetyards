@@ -18,6 +18,11 @@
   "hull_health": 29760.0,
   "hull_parts": [
     {
+      "name": "DRAK_Cutlass_Black",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 6500.0,
       "category": "vital"

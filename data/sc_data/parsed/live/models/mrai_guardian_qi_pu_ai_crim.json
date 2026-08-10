@@ -18,9 +18,24 @@
   "hull_health": 69200.0,
   "hull_parts": [
     {
+      "name": "mrai_guardian",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_body",
       "health": 7100.0,
       "category": "vital"
+    },
+    {
+      "name": "nose",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "wing_top_left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "geo_wing_left_top_middle",
@@ -43,6 +58,11 @@
       "category": "subpart"
     },
     {
+      "name": "wing_top_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_wing_right_top_middle",
       "health": 4000.0,
       "category": "breakable"
@@ -61,6 +81,11 @@
       "name": "geo_wing_arm_right_rear_top_a",
       "health": 300.0,
       "category": "subpart"
+    },
+    {
+      "name": "wing_bottom_left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "geo_wing_bottom_left_middle",
@@ -83,6 +108,11 @@
       "category": "subpart"
     },
     {
+      "name": "wing_bottom_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_wing_bottom_right_middle",
       "health": 4000.0,
       "category": "breakable"
@@ -103,6 +133,11 @@
       "category": "subpart"
     },
     {
+      "name": "thruster_arm_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_thruster_arm_left_b",
       "health": 5000.0,
       "category": "breakable"
@@ -113,6 +148,16 @@
       "category": "breakable"
     },
     {
+      "name": "geo_thruster_arm_left_a",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "thruster_arm_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "geo_thruster_arm_right_b",
       "health": 5000.0,
       "category": "breakable"
@@ -121,6 +166,11 @@
       "name": "geo_thruster_arm_right_c",
       "health": 5000.0,
       "category": "breakable"
+    },
+    {
+      "name": "geo_thruster_arm_right_a",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "geo_body_top_front_a",

@@ -18,6 +18,11 @@
   "hull_health": 5740.0,
   "hull_parts": [
     {
+      "name": "RSI_Aurora",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 1940.0,
       "category": "vital"
@@ -33,6 +38,11 @@
       "category": "secondary"
     },
     {
+      "name": "Hardpoint_Wing_Landing_Gear_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Wing_Top_Left",
       "health": 480.0,
       "category": "secondary"
@@ -41,6 +51,11 @@
       "name": "Wing_Bottom_Right",
       "health": 480.0,
       "category": "secondary"
+    },
+    {
+      "name": "Hardpoint_Wing_Landing_Gear_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Wing_Top_Right",

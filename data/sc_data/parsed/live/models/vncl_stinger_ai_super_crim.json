@@ -18,6 +18,11 @@
   "hull_health": 47314.0,
   "hull_parts": [
     {
+      "name": "vncl_stinger",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 12500.0,
       "category": "vital"

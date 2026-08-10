@@ -18,6 +18,11 @@
   "hull_health": 2281.0,
   "hull_parts": [
     {
+      "name": "ORIG_M50",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 400.0,
       "category": "vital"
@@ -56,6 +61,11 @@
       "name": "Canopy",
       "health": 80.0,
       "category": "subpart"
+    },
+    {
+      "name": "Cockpit_interior",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "LadderHatch",

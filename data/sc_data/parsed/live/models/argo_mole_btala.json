@@ -18,6 +18,11 @@
   "hull_health": 130000.0,
   "hull_parts": [
     {
+      "name": "ARGO_MOLE",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Front",
       "health": 45000.0,
       "category": "vital"

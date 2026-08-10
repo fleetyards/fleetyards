@@ -18,6 +18,11 @@
   "hull_health": 187200.0,
   "hull_parts": [
     {
+      "name": "aegs_tiburon",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 60000.0,
       "category": "vital"
@@ -46,6 +51,16 @@
       "name": "Tail",
       "health": 25000.0,
       "category": "breakable"
+    },
+    {
+      "name": "cargo_door_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cargo_door_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "nose",

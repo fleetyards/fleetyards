@@ -18,6 +18,11 @@
   "hull_health": 15250.0,
   "hull_parts": [
     {
+      "name": "anvl_hornet_f7cm_mk2",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 3150.0,
       "category": "vital"

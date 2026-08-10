@@ -18,6 +18,11 @@
   "hull_health": 295600.0,
   "hull_parts": [
     {
+      "name": "AEGS_Hammerhead",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 80000.0,
       "category": "vital"
@@ -33,9 +38,34 @@
       "category": "breakable"
     },
     {
+      "name": "cargo_door_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "cargo_door_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 80000.0,
       "category": "vital"
+    },
+    {
+      "name": "Airlock_Section",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airlock_doorA_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Airlock_doorA_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Front_Right",
@@ -43,9 +73,19 @@
       "category": "breakable"
     },
     {
+      "name": "Lift_Door_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Front_Left",
       "health": 15200.0,
       "category": "breakable"
+    },
+    {
+      "name": "Lift_Door_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Engine_MountB_Right",

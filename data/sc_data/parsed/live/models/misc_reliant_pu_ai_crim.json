@@ -18,6 +18,11 @@
   "hull_health": 15460.0,
   "hull_parts": [
     {
+      "name": "MISC_Reliant",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 3000.0,
       "category": "vital"

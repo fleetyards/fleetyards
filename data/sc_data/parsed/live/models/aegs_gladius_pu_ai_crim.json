@@ -18,6 +18,11 @@
   "hull_health": 6110.0,
   "hull_parts": [
     {
+      "name": "AEGS_Gladius",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 2350.0,
       "category": "vital"
@@ -88,6 +93,66 @@
       "category": "subpart"
     },
     {
+      "name": "FuelHole",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BellyGearDoor_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "LandingGearHingeFront",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "BellyGearDoor_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_A",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_A_Hinge",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_B",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_B_Hinge",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_C",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_C_Hinge",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_D",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Landing_Gear_Door_D_Hinge",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Rudder_Right",
       "health": 50.0,
       "category": "breakable"
@@ -133,14 +198,74 @@
       "category": "breakable"
     },
     {
+      "name": "LadderBehindBottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "LadderBehindTop",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "StepPlate",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Ladder_Main",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Ladder_Bottom",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Ladder_Details",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "FrontWing_Right",
       "health": 50.0,
       "category": "breakable"
     },
     {
+      "name": "FrontWing_Right_Flap",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "FrontWing_Left",
       "health": 50.0,
       "category": "breakable"
+    },
+    {
+      "name": "FrontWing_Left_Flap",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Door_C",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Door_A",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Door_B",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Ladder_Interior",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Canopy",

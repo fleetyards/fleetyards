@@ -42,6 +42,36 @@
       "category": "breakable"
     },
     {
+      "name": "rear_storage_trunck",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "rear_susp",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Rear_CtrlArm_A_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Rear_CtrlArm_B_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Rear_CtrlArm_B_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Rear_CtrlArm_A_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "windshield",
       "health": 200.0,
       "category": "subpart"
@@ -67,6 +97,21 @@
       "category": "subpart"
     },
     {
+      "name": "hardpoint_wheel_FL_control_arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FL_shock",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_FR",
       "health": 1500.0,
       "category": "secondary"
@@ -77,9 +122,34 @@
       "category": "subpart"
     },
     {
+      "name": "hardpoint_wheel_FR_control_arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR_shock",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_RL",
       "health": 1500.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_RL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_RR",
@@ -87,14 +157,29 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_wheel_RR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_ML",
       "health": 1500.0,
       "category": "secondary"
     },
     {
+      "name": "hardpoint_wheel_ML_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_MR",
       "health": 1500.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_MR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

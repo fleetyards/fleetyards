@@ -18,6 +18,11 @@
   "hull_health": 5920.0,
   "hull_parts": [
     {
+      "name": "ARGO_MPUV_Transport",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 2500.0,
       "category": "vital"

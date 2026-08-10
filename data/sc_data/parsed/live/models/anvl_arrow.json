@@ -18,6 +18,11 @@
   "hull_health": 7130.0,
   "hull_parts": [
     {
+      "name": "ANVL_Arrow",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 2050.0,
       "category": "vital"
@@ -41,6 +46,26 @@
       "name": "stabilizer_right",
       "health": 800.0,
       "category": "subpart"
+    },
+    {
+      "name": "vertical_stabilizer_bottom_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "vertical_stabilizer_bottom_right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "vertical_stabilizer_top_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "vertical_stabilizer_top_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "nose",

@@ -18,6 +18,11 @@
   "hull_health": 27044.0,
   "hull_parts": [
     {
+      "name": "AEGS_Eclipse",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 10000.0,
       "category": "vital"

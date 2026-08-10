@@ -18,6 +18,11 @@
   "hull_health": 84200.0,
   "hull_parts": [
     {
+      "name": "misc_starlancer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 35000.0,
       "category": "vital"

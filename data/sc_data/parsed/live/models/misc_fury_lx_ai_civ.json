@@ -18,9 +18,24 @@
   "hull_health": 2160.0,
   "hull_parts": [
     {
+      "name": "MISC_Fury_LX",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 400.0,
       "category": "vital"
+    },
+    {
+      "name": "Cockpit_Glass_Top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Cockpit_Glass_Bottom",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Body_Top_Plate",
@@ -51,6 +66,11 @@
       "name": "Mesh_Wing_Top_Right",
       "health": 240.0,
       "category": "breakable"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

@@ -18,6 +18,11 @@
   "hull_health": 59500.0,
   "hull_parts": [
     {
+      "name": "misc_fortune",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nose",
       "health": 15200.0,
       "category": "vital"

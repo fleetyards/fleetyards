@@ -18,6 +18,11 @@
   "hull_health": 6250.0,
   "hull_parts": [
     {
+      "name": "ANVL_Pisces",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 4500.0,
       "category": "vital"

@@ -18,6 +18,11 @@
   "hull_health": 11740.0,
   "hull_parts": [
     {
+      "name": "GAMA_Syulen",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 2000.0,
       "category": "vital"

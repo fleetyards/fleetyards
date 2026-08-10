@@ -17,6 +17,11 @@
   "hull_health": 10600.0,
   "hull_parts": [
     {
+      "name": "DRAK_Mule",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 2000.0,
       "category": "vital"
@@ -27,9 +32,29 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_wheel_FL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FL_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_ML",
       "health": 800.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_ML_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_ML_hub",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_FR",
@@ -37,9 +62,34 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_wheel_FR_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_FR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_MR",
       "health": 800.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_MR_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_MR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_RR",
@@ -47,9 +97,29 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_wheel_RR_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_RR_hub",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_RL",
       "health": 800.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_wheel_RL_assembly",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_wheel_RL_hub",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Cargo_Arms",
@@ -70,6 +140,16 @@
       "name": "Rear",
       "health": 2000.0,
       "category": "secondary"
+    },
+    {
+      "name": "Components_Rear",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Rear_Components_Interior",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "sidetray_right",

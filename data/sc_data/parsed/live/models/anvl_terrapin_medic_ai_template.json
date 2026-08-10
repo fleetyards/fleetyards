@@ -18,6 +18,11 @@
   "hull_health": 173201.0,
   "hull_parts": [
     {
+      "name": "anvl_terrapin",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 20000.0,
       "category": "vital"
@@ -121,6 +126,16 @@
       "name": "tail_top_plate",
       "health": 200.0,
       "category": "subpart"
+    },
+    {
+      "name": "vent_flap_top_base_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Vent_flap_top_base_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Front_right_leg",

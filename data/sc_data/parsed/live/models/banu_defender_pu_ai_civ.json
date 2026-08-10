@@ -18,6 +18,11 @@
   "hull_health": 13800.0,
   "hull_parts": [
     {
+      "name": "BANU_Defender",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 3500.0,
       "category": "vital"
@@ -26,6 +31,11 @@
       "name": "Pod",
       "health": 4000.0,
       "category": "breakable"
+    },
+    {
+      "name": "Body_Damage",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Wing_Hull_Left",
@@ -38,6 +48,16 @@
       "category": "breakable"
     },
     {
+      "name": "Wing_Left_Arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Wing_Right_Arm",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Canopy_Left",
       "health": 50.0,
       "category": "subpart"
@@ -46,6 +66,11 @@
       "name": "Canopy_Right",
       "health": 50.0,
       "category": "subpart"
+    },
+    {
+      "name": "Body_Panels",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Body_Panels_02",

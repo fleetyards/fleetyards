@@ -18,6 +18,11 @@
   "hull_health": 7950.0,
   "hull_parts": [
     {
+      "name": "vncl_blade",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 2150.0,
       "category": "vital"

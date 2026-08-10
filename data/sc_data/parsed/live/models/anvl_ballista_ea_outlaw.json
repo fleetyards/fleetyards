@@ -37,9 +37,69 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_spindle_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_front_left02",
       "health": 1700.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_spindle_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left02",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_front_right01",
@@ -47,9 +107,69 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_spindle_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right01",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_front_right02",
       "health": 1700.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_spindle_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right02",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right02",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_back_left01",
@@ -57,9 +177,69 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_spindle_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_back_left02",
       "health": 1700.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_spindle_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_left04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_left04",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "hardpoint_wheel_back_right01",
@@ -67,9 +247,74 @@
       "category": "secondary"
     },
     {
+      "name": "hardpoint_spindle_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right03",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hardpoint_wheel_back_right02",
       "health": 1700.0,
       "category": "secondary"
+    },
+    {
+      "name": "hardpoint_spindle_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_drive_shaft_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_lower_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_suspension_housing_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_arm_upper_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_piston_right04",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "massBox",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

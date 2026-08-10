@@ -18,6 +18,11 @@
   "hull_health": 258000.0,
   "hull_parts": [
     {
+      "name": "drak_ironclad",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 120000.0,
       "category": "vital"

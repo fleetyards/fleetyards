@@ -18,6 +18,11 @@
   "hull_health": 91000.0,
   "hull_parts": [
     {
+      "name": "DRAK_Corsair",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 15000.0,
       "category": "vital"
@@ -63,6 +68,11 @@
       "category": "breakable"
     },
     {
+      "name": "nacelle_left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "nacelle_left_mesh",
       "health": 12500.0,
       "category": "secondary"
@@ -76,6 +86,21 @@
       "name": "wing_bottom_hinge_b_mesh",
       "health": 2500.0,
       "category": "breakable"
+    },
+    {
+      "name": "main_thruster_b_left_rotator",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "thruster_b_left_rotator_mesh",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "nacelle_right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "nacelle_right_mesh",
@@ -116,6 +141,11 @@
       "name": "right_wing_rotator_mesh",
       "health": 2500.0,
       "category": "subpart"
+    },
+    {
+      "name": "thruster_b_right_rotator_mesh",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "landing_gear_door_left_rotator_mesh",

@@ -18,6 +18,16 @@
   "hull_health": 7980.0,
   "hull_parts": [
     {
+      "name": "DRAK_Buccaneer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "hardpoint_lights_ext",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 2000.0,
       "category": "vital"
@@ -111,6 +121,11 @@
       "name": "Cockpit_Canopy_Door",
       "health": 100.0,
       "category": "subpart"
+    },
+    {
+      "name": "Hardpoint_Landing_Gear_Front",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "landing_gear_front_attach",

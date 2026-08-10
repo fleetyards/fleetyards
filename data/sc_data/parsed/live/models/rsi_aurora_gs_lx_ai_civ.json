@@ -18,6 +18,11 @@
   "hull_health": 6350.0,
   "hull_parts": [
     {
+      "name": "rsi_aurora_gs",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Nose",
       "health": 3100.0,
       "category": "vital"
@@ -71,6 +76,11 @@
       "name": "Wing_Bottom_Right",
       "health": 700.0,
       "category": "secondary"
+    },
+    {
+      "name": "Hardpoint_Wing_Landing_Gear_Right",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Wing_Landing_Gear_Right_Door_Left",
@@ -186,6 +196,11 @@
       "name": "Wing_Landing_Gear_Left_Door_Left",
       "health": 1.0,
       "category": "subpart"
+    },
+    {
+      "name": "Hardpoint_Wing_Landing_Gear_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "mesh_door_fan_left_rear_03",

@@ -18,6 +18,11 @@
   "hull_health": 32000.0,
   "hull_parts": [
     {
+      "name": "RSI_Zeus",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 15000.0,
       "category": "vital"

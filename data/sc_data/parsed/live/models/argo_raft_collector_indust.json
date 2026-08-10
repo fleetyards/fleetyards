@@ -18,6 +18,11 @@
   "hull_health": 115700.0,
   "hull_parts": [
     {
+      "name": "ARGO_RAFT",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Front",
       "health": 40700.0,
       "category": "vital"

@@ -18,9 +18,19 @@
   "hull_health": 123002.0,
   "hull_parts": [
     {
+      "name": "AEGS_Reclaimer",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Front",
       "health": 50000.0,
       "category": "vital"
+    },
+    {
+      "name": "Front2",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Main_Engine_BlockRight_VTOL",
@@ -238,6 +248,16 @@
       "category": "breakable"
     },
     {
+      "name": "Aux_Joint_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body_Right",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Bracket_Left",
       "health": 1000.0,
       "category": "breakable"
@@ -266,6 +286,16 @@
       "name": "Aux_Arms_Block_Left",
       "health": 2000.0,
       "category": "breakable"
+    },
+    {
+      "name": "Aux_Joint_Left",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Body_Left",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

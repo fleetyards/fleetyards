@@ -18,9 +18,24 @@
   "hull_health": 5830.0,
   "hull_parts": [
     {
+      "name": "MISC_Fury",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "Body",
       "health": 750.0,
       "category": "vital"
+    },
+    {
+      "name": "Cockpit_Glass_Top",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
+      "name": "Cockpit_Glass_Bottom",
+      "health": 0.0,
+      "category": "cosmetic"
     },
     {
       "name": "Body_Top_Plate",
@@ -91,6 +106,11 @@
       "name": "Mesh_Flap_Bottom_Right",
       "health": 340.0,
       "category": "subpart"
+    },
+    {
+      "name": "hardpoint_vehicle_destroyed",
+      "health": 0.0,
+      "category": "cosmetic"
     }
   ],
   "metrics": {

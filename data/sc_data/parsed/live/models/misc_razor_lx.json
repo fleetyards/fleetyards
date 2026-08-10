@@ -18,6 +18,11 @@
   "hull_health": 7200.0,
   "hull_parts": [
     {
+      "name": "MISC_Razor",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "hull_front",
       "health": 700.0,
       "category": "vital"

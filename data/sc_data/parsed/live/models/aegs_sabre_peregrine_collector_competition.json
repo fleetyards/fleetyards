@@ -18,6 +18,11 @@
   "hull_health": 13550.0,
   "hull_parts": [
     {
+      "name": "AEGS_Sabre_Peregrine",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 2400.0,
       "category": "vital"

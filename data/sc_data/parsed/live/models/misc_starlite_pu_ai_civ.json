@@ -18,6 +18,11 @@
   "hull_health": 68250.0,
   "hull_parts": [
     {
+      "name": "misc_starlite",
+      "health": 0.0,
+      "category": "cosmetic"
+    },
+    {
       "name": "body",
       "health": 27000.0,
       "category": "vital"
