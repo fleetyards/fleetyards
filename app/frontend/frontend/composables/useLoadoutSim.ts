@@ -78,8 +78,15 @@ function collectPorts(
         if (family === "weapon") {
           acc.weaponUnits += draw;
         } else if (family && draw > 0) {
+          const minimumFraction =
+            typeData.powerMinimumFraction == null
+              ? undefined
+              : numeric(typeData.powerMinimumFraction);
           acc.otherPorts.push(
-            ...componentBlocks(hardpoint.id, family, { units: draw }),
+            ...componentBlocks(hardpoint.id, family, {
+              units: draw,
+              minimumFraction,
+            }),
           );
         }
       }
