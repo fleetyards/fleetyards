@@ -195,3 +195,78 @@ export function weaponPoolRatio(
   if (weaponConsumption <= 0) return 1;
   return Math.min(1, state.perFamily.weapon / weaponConsumption);
 }
+
+// --- Port construction (erkul `z`/`K`/`le`/`ue`/`Et`) --------------------
+// Builds the `PowerPort[]` blocks a loadout feeds to `allocatePower`, from each
+// component's Power draw. A component drawing `units` power becomes ~`round(units)`
+// size-1 blocks, of which the minimum (`round(units × minimumFraction)`, or 1
+// when there is no explicit minimum) is a single `critical` block that must stay
+// powered. Weapons are special-cased into the shared weapon pool (`ue`).
+
+// A component's Power consumption, as read from parsed `power_consumption` /
+// `power_ranges`. `minimumFraction` is the flow's `minimumConsumptionFraction`
+// (0 for almost every component today).
+export type PowerDraw = {
+  units: number;
+  minimumFraction?: number;
+};
+
+// K: the size of the mandatory (critical) block. Defaults to 1 segment when the
+// component declares no minimum fraction (`minimumFraction || 1/units`).
+function criticalSize(units: number, minimumFraction?: number): number {
+  if (units <= 0) return 0;
+  const fraction = minimumFraction || 1 / units;
+  return Math.round(units * fraction);
+}
+
+// le: a single non-weapon component's blocks — one `critical` block sized `K`,
+// then `round(units − K)` regular size-1 blocks.
+export function componentBlocks(
+  portPath: string,
+  family: PowerFamily,
+  draw: PowerDraw | undefined,
+): PowerPort[] {
+  if (!draw || draw.units <= 0) return [];
+  const critical = criticalSize(draw.units, draw.minimumFraction);
+  const regular = Math.max(0, Math.round(draw.units - critical));
+  const blocks: PowerPort[] = [];
+  if (critical > 0) {
+    blocks.push({ portPath, family, size: critical, critical: true });
+  }
+  for (let i = 0; i < regular; i++) {
+    blocks.push({ portPath, family, size: 1 });
+  }
+  return blocks;
+}
+
+// ue: the shared weapon pool — `poolSize` size-1 blocks, of which the first
+// `ceil(Σ units)` (the summed weapon consumption) are enabled.
+export function weaponPoolBlocks(
+  portPathPrefix: string,
+  weaponUnitsSum: number,
+  poolSize: number,
+): PowerPort[] {
+  const consumption = Math.ceil(weaponUnitsSum);
+  return Array.from({ length: poolSize }, (_, i) => ({
+    portPath: `${portPathPrefix}#${i}`,
+    family: "weapon" as const,
+    size: 1,
+    disabled: i >= consumption,
+  }));
+}
+
+// Et: total available segments from the powered plants. A single plant yields
+// its `units`; multiple plants add a `(count − 1) × Σ size` coupling bonus.
+export function totalSegments(
+  plants: { units: number; size: number; poweredOn: boolean }[],
+): number {
+  const powered = plants.filter((p) => p.poweredOn);
+  if (powered.length === 0) return 0;
+  let units = 0;
+  let sizeSum = 0;
+  for (const p of powered) {
+    units += Math.round(p.units / powered.length);
+    sizeSum += p.size;
+  }
+  return units + (powered.length - 1) * sizeSum;
+}
