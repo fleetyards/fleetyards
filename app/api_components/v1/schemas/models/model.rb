@@ -139,7 +139,7 @@ module V1
                     properties: {
                       name: {type: :string},
                       health: {type: :number},
-                      category: {type: :string, enum: %w[vital secondary breakable subpart]}
+                      category: {type: :string, enum: %w[vital secondary breakable subpart cosmetic]}
                     },
                     required: %w[name health category],
                     additionalProperties: false

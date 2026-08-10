@@ -10412,6 +10412,7 @@ components:
                     - secondary
                     - breakable
                     - subpart
+                    - cosmetic
                 required:
                 - name
                 - health
@@ -10741,6 +10742,7 @@ components:
                     - secondary
                     - breakable
                     - subpart
+                    - cosmetic
                 required:
                 - name
                 - health
