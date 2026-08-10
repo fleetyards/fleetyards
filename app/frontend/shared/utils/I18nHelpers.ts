@@ -13,7 +13,10 @@ const formatStat = (i18n: I18n, value: number): string => {
   const stripped = decimal?.replace(/0+$/, "");
   const result = stripped ? `${integer}${separator}${stripped}` : integer;
 
-  return result.replaceAll(delimiter, "\u200A");
+  // Narrow no-break space as the thousands separator. A hair space (U+200A) was
+  // too thin to group six-figure values legibly (288000 read as one run of
+  // digits), and being breakable it let values split across lines mid-number.
+  return result.replaceAll(delimiter, "\u202F");
 };
 
 export const i18nHelpers = (i18n: I18n) => {
