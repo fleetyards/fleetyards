@@ -60,6 +60,16 @@ const FAMILY_ICON: Partial<Record<PowerFamily, string>> = {
   engine: mainThrustersIconUrl,
 };
 
+// FontAwesome fallback for families without a hardpoint SVG (mirroring the
+// glyphs the Hardpoints view uses).
+const FAMILY_FA_ICON: Partial<Record<PowerFamily, string>> = {
+  lifeSupport: "fa-star-of-life",
+  salvage: "fa-bin-recycle",
+  miningLaser: "fa-gem",
+  tractorBeam: "fa-magnet",
+  towingbeam: "fa-link",
+};
+
 const SHORT_LABEL: Record<PowerFamily, string> = {
   weapon: "WPN",
   engine: "ENG",
@@ -92,25 +102,55 @@ const hasOverrides = computed(() => Object.keys(props.modelValue).length > 0);
 const columnLabel = (column: PowerColumn) =>
   column.label ?? t(`labels.power.families.${column.family}`);
 
-// Click pip cell at `level` (1-based, bottom-up): jump the component to that
-// level, or step it down one when clicking the current top cell. A component is
-// either off (0) or on at ≥ its mandatory floor, so a target below the floor
-// snaps to off (turning all-critical systems like the QD into an on/off toggle).
-const setLevel = (column: PowerColumn, level: number) => {
-  let target = level === column.allocated ? level - 1 : level;
+// Set a column toward `desired` segments, honoring the rules: a component is
+// off (0) or on at ≥ its mandatory floor, and an increase can't exceed the pips
+// available in the pool (so clicking with an empty pool does nothing).
+const applyTarget = (column: PowerColumn, desired: number) => {
+  let target = Math.max(0, Math.min(column.capacity, desired));
   if (target > 0 && target < column.min) target = 0;
-  target = Math.max(0, Math.min(column.capacity, target));
+
+  if (target > column.allocated) {
+    const available = sim.value.remaining;
+    if (column.allocated === 0) {
+      if (available < column.min) return; // can't afford to turn it on
+      target = Math.min(target, available);
+    } else {
+      target = Math.min(target, column.allocated + available);
+    }
+  }
+
+  if (target === column.allocated) return;
   emit("update:modelValue", { ...props.modelValue, [column.portPath]: target });
 };
 
-// Click the icon: drain the column to 0 if it has any pips, else fill it up
-// (bounded by the available pool) — erkul's icon toggle.
-const toggleColumn = (column: PowerColumn) => {
-  const target = column.allocated > 0 ? 0 : column.capacity;
-  emit("update:modelValue", { ...props.modelValue, [column.portPath]: target });
-};
+// Click pip cell at `level` (bottom-up): jump to that level, or step down one
+// when clicking the current top cell.
+const setLevel = (column: PowerColumn, level: number) =>
+  applyTarget(column, level === column.allocated ? level - 1 : level);
+
+// Click the icon: drain the column to 0 if it has any pips, else fill it from
+// the pool — erkul's icon toggle.
+const toggleColumn = (column: PowerColumn) =>
+  applyTarget(column, column.allocated > 0 ? 0 : column.capacity);
 
 const reset = () => emit("update:modelValue", {});
+
+// Pip cells for a column: the mandatory floor renders as one taller block, then
+// each optional segment as its own cell. `level` is the allocation this cell
+// represents (its top).
+const cells = (column: PowerColumn) => {
+  const list: { level: number; span: number }[] = [];
+  if (column.min > 0) list.push({ level: column.min, span: column.min });
+  for (let level = column.min + 1; level <= column.capacity; level += 1) {
+    list.push({ level, span: 1 });
+  }
+  return list;
+};
+
+const PIP_HEIGHT = 9;
+const PIP_GAP = 2;
+const cellHeight = (span: number) =>
+  `${span * PIP_HEIGHT + (span - 1) * PIP_GAP}px`;
 </script>
 
 <template>
@@ -167,16 +207,18 @@ const reset = () => emit("update:modelValue", {});
           :aria-valuemax="column.capacity"
         >
           <button
-            v-for="level in column.capacity"
-            :key="level"
+            v-for="cell in cells(column)"
+            :key="cell.level"
             type="button"
             class="power-col__pip"
             :class="{
-              'power-col__pip--on': level <= column.allocated,
-              'power-col__pip--top': level === column.allocated,
+              'power-col__pip--on': cell.level <= column.allocated,
+              'power-col__pip--top': cell.level === column.allocated,
+              'power-col__pip--block': cell.span > 1,
             }"
-            :aria-label="`${columnLabel(column)}: ${level}`"
-            @click="setLevel(column, level)"
+            :style="{ height: cellHeight(cell.span) }"
+            :aria-label="`${columnLabel(column)}: ${cell.level}`"
+            @click="setLevel(column, cell.level)"
           />
         </div>
         <button
@@ -191,6 +233,11 @@ const reset = () => emit("update:modelValue", {});
             :src="FAMILY_ICON[column.family]"
             :alt="columnLabel(column)"
             class="power-col__icon"
+          />
+          <i
+            v-else-if="FAMILY_FA_ICON[column.family]"
+            class="fa-duotone power-col__fa"
+            :class="FAMILY_FA_ICON[column.family]"
           />
           <span v-else>{{ SHORT_LABEL[column.family] }}</span>
         </button>
@@ -338,6 +385,12 @@ const reset = () => emit("update:modelValue", {});
     width: 15px;
     height: 15px;
     opacity: 0.75;
+  }
+
+  &__fa {
+    font-size: 13px;
+    color: $gray;
+    opacity: 0.85;
   }
 
   // A column with no pips reads as "off" — dim its count and icon.

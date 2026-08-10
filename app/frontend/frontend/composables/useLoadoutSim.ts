@@ -258,12 +258,33 @@ export function simulateLoadoutPower(
     ...acc.otherPorts,
   ];
 
-  const state = allocatePower(ports, segments, {
+  const allocateOpts = {
     mode,
     weaponConsumption: consumption,
     weaponPoolSize: pool,
-    overrides,
-  });
+  };
+
+  // The default distribution (no user input).
+  const baseline = allocatePower(ports, segments, allocateOpts);
+
+  // Once the user assigns pips, pin every untouched component to its baseline
+  // and honor the overrides — so freed pips return to the pool rather than
+  // being greedily re-grabbed by another primary family (e.g. shields).
+  let state = baseline;
+  if (overrides && Object.keys(overrides).length > 0) {
+    const targets: PortOverrides = {};
+    const seen = new Set<string>();
+    for (const port of ports) {
+      if (seen.has(port.portPath)) continue;
+      seen.add(port.portPath);
+      targets[port.portPath] =
+        overrides[port.portPath] ?? baseline.perPort[port.portPath] ?? 0;
+    }
+    state = allocatePower(ports, segments, {
+      ...allocateOpts,
+      overrides: targets,
+    });
+  }
 
   const columns = buildColumns(ports, acc.portLabels, state);
 

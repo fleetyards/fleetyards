@@ -173,6 +173,9 @@ export function allocatePower(
   const mode = opts.mode ?? "SCM";
   const state = emptyState(totalSegments);
   const overrides = opts.overrides ?? {};
+  // Reset selection so the same ports can be re-allocated (e.g. baseline pass
+  // then override pass).
+  for (const port of ports) port.selected = false;
   const of = (f: PowerFamily) => ports.filter((p) => p.family === f);
   const weaponCap = Math.min(opts.weaponConsumption, opts.weaponPoolSize);
   const priority = mode === "SCM" ? SCM_PRIORITY : NAV_PRIORITY;
