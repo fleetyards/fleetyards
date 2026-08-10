@@ -92,10 +92,17 @@ Each phase lands as its own PR, validated against erkul on the **Asgard**.
   data-pipeline task**, not part of this feature branch; the local worktree DB
   was reloaded so development/validation can proceed.
 
-### Phase 2 — Wire default sustained (no regression)
-- Replace the standalone `weaponPowerRatio` in `useLoadoutStats` with the sim's
-  weapon `poolRatio`. Validate a sample of ships (ample-power ships unchanged;
-  segment-starved ships now more accurate).
+### Phase 2 — Wire sustained from the sim ✅
+- **Done.** `useLoadoutStats` now drives sustained DPS from the sim's
+  `weaponMaxRatio` (single source of truth), *not* the default-SCM split — that
+  preserves the chosen **max-power** model. `weaponMaxRatio` = weapons filled to
+  pool after every family's mandatory criticals, capped by the plant's segments:
+  it equals the old `min(1, poolSize/consumption)` for every ship whose plant
+  can fill the pool and only drops lower for genuinely segment-starved ships.
+  Guards on missing plant data (`segments <= 0` → uncapped) so ships whose plant
+  power isn't parsed (e.g. prod before the data regen) never regress. The
+  standalone `weaponPowerRatio` was removed. 32 unit tests green;
+  `useLoadoutStats.spec` unchanged (no regression).
 
 ### Phase 3 — The pip UI
 - `PowerDistribution.vue` control (per-family segments, +/- pips, SCM/NAV mode).
