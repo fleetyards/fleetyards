@@ -136,6 +136,21 @@ const toggleColumn = (column: PowerColumn) =>
 
 const reset = () => emit("update:modelValue", {});
 
+// Hover preview: while hovering a pip, the column renders as if allocated to the
+// hovered level (fills up going higher, empties going lower) so the click result
+// is visible before committing.
+const hoveredPort = ref<string | null>(null);
+const hoveredLevel = ref(0);
+const onPipHover = (column: PowerColumn, level: number) => {
+  hoveredPort.value = column.portPath;
+  hoveredLevel.value = level;
+};
+const clearHover = () => {
+  hoveredPort.value = null;
+};
+const shownLevel = (column: PowerColumn) =>
+  hoveredPort.value === column.portPath ? hoveredLevel.value : column.allocated;
+
 // Pip cells for a column: the mandatory floor renders as one taller block, then
 // each optional segment as its own cell. `level` is the allocation this cell
 // represents (its top).
@@ -213,12 +228,17 @@ const cellHeight = (span: number) =>
             type="button"
             class="power-col__pip"
             :class="{
-              'power-col__pip--on': cell.level <= column.allocated,
-              'power-col__pip--top': cell.level === column.allocated,
+              'power-col__pip--on': cell.level <= shownLevel(column),
+              'power-col__pip--top': cell.level === shownLevel(column),
               'power-col__pip--block': cell.span > 1,
+              'power-col__pip--preview': hoveredPort === column.portPath,
             }"
             :style="{ height: cellHeight(cell.span) }"
             :aria-label="`${columnLabel(column)}: ${cell.level}`"
+            @mouseenter="onPipHover(column, cell.level)"
+            @focus="onPipHover(column, cell.level)"
+            @mouseleave="clearHover"
+            @blur="clearHover"
             @click="setLevel(column, cell.level)"
           />
         </div>
@@ -346,7 +366,8 @@ const cellHeight = (span: number) =>
     padding: 0;
     transition: background 0.1s ease;
 
-    &:hover {
+    // Ordered so on/top override the preview tint (later rule wins).
+    &--preview {
       background: rgba($gray-light, 0.32);
     }
 
