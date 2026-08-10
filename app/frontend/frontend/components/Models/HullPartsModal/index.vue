@@ -211,6 +211,9 @@ const doorBarWidth = (health: number) =>
     flex-direction: column;
     gap: 4px;
     padding: 10px 14px;
+    min-width: 0;
+    overflow: hidden;
+    container-type: inline-size;
     background: $gray-black;
     border: 1px solid rgba($gray-light, 0.28);
     border-radius: 6px;
@@ -227,7 +230,9 @@ const doorBarWidth = (health: number) =>
   &__value {
     font-family: "Orbitron", tahoma, sans-serif;
     font-weight: 700;
-    font-size: 22px;
+    // Capital hulls run past a million; scale to the tile so the value cannot
+    // outgrow it.
+    font-size: clamp(15px, 16cqw, 22px);
     line-height: 1;
     color: lighten($text-color, 15%);
     font-variant-numeric: tabular-nums;
