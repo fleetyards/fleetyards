@@ -104,10 +104,21 @@ Each phase lands as its own PR, validated against erkul on the **Asgard**.
   standalone `weaponPowerRatio` was removed. 32 unit tests green;
   `useLoadoutStats.spec` unchanged (no regression).
 
-### Phase 3 — The pip UI
-- `PowerDistribution.vue` control (per-family segments, +/- pips, SCM/NAV mode).
-- User overrides flow into `useLoadoutSim` (erkul's `te`/`Q` override path);
-  DPS/sustained recompute live. Optional: persist the user's setting.
+### Phase 3 — The pip UI ✅
+- **Done.** `PowerDistribution.vue` on the loadout page: per-family power
+  segments with +/- steppers, an SCM/NAV toggle, a segment budget, and reset.
+- `allocatePower` gained per-family override targets; `simulateLoadoutPower`
+  threads them through and exposes `familyCapacity` (slider bounds) + the
+  current-allocation `weaponPoolRatio`.
+- Overrides flow into `useLoadoutStats`: engaging **any** override switches
+  sustained DPS from the max-power baseline to the actual weapon allocation (a
+  shield bump squeezes weapons too). Overrides reset on ship / source change.
+- Component typing extended (radar + controller schemas added; power fields on
+  shield/cooler/qdrive) so consumers use generated types.
+- **Not yet:** persistence of the user's pip setting; NAV mode currently
+  re-prioritises the *display* only (DPS stays an SCM stat).
+- **Still to validate:** a visual pass in-app against erkul (the worktree DB has
+  the fresh power data; committed parsed JSON is still the separate data-regen).
 
 ### Phase 4 — Signatures (§6) react to the distribution
 - Build the heat model (`coolingRatio`) + parse per-component EM/IR nominal.
