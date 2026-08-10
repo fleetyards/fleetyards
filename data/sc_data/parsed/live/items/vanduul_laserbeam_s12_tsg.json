@@ -73,6 +73,21 @@
     "heat_per_second": 50000.0,
     "full_damage_range": 9500.0,
     "zero_damage_range": 10000.0,
-    "mountable": true
+    "mountable": true,
+    "power_consumption": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    }
   }
 }

@@ -116,6 +116,20 @@
     },
     "power_consumption": 0.45,
     "weapon_class": "DistortionRepeater",
-    "mountable": true
+    "mountable": true,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    }
   }
 }

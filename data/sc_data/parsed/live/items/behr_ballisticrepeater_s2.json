@@ -114,6 +114,20 @@
     },
     "power_consumption": 0.1,
     "weapon_class": "BallisticRepeater",
-    "mountable": true
+    "mountable": true,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    }
   }
 }

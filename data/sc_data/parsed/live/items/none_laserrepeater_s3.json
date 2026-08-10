@@ -116,6 +116,20 @@
     },
     "power_consumption": 0.75,
     "weapon_class": "LaserRepeater",
-    "mountable": true
+    "mountable": true,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    }
   }
 }
