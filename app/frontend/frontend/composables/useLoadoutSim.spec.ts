@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
-import { POWER_FAMILY_BY_CATEGORY, useLoadoutSim } from "./useLoadoutSim";
+import {
+  POWER_FAMILY_BY_CATEGORY,
+  simulateLoadoutPower,
+  useLoadoutSim,
+} from "./useLoadoutSim";
 
 let seq = 0;
 
@@ -96,6 +100,53 @@ describe("useLoadoutSim", () => {
     // Two nested weapons drawing 2 each → consumption 4, pool 2 → ratio 0.5.
     expect(sim.perFamily.weapon).toBe(2);
     expect(sim.weaponPoolRatio).toBeCloseTo(0.5);
+  });
+});
+
+describe("weaponMaxRatio (sustained-DPS input)", () => {
+  const weapons = (n: number, draw: number) =>
+    Array.from({ length: n }, () =>
+      hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: draw }),
+    );
+
+  it("equals min(1, pool/consumption) when the plant has ample power", () => {
+    const hardpoints = [
+      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 40 }, {
+        component: { size: 2, typeData: { powerBase: 40 } },
+      } as Partial<Hardpoint>),
+      ...weapons(4, 2), // consumption 8, pool 4 → 0.5
+      hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
+    ];
+    expect(simulateLoadoutPower(hardpoints, 4).weaponMaxRatio).toBeCloseTo(0.5);
+  });
+
+  it("caps below the uncapped ratio when the plant is segment-starved", () => {
+    const hardpoints = [
+      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 3 }, {
+        component: { size: 1, typeData: { powerBase: 3 } },
+      } as Partial<Hardpoint>),
+      hp(HardpointCategoryEnum.LIFESUPPORT, { powerConsumption: 2 }),
+      ...weapons(4, 2), // consumption 8, pool 4 → uncapped 0.5
+    ];
+    // 3 segments, 1 reserved as life-support critical → weapons max 2 of pool 4.
+    const ratio = simulateLoadoutPower(hardpoints, 4).weaponMaxRatio;
+    expect(ratio).toBeLessThan(0.5);
+    expect(ratio).toBeCloseTo(2 / 8);
+  });
+
+  it("falls back to the uncapped ratio when there is no plant data (no regression)", () => {
+    const hardpoints = [...weapons(4, 2)]; // no power plant at all
+    expect(simulateLoadoutPower(hardpoints, 4).weaponMaxRatio).toBeCloseTo(0.5);
+  });
+
+  it("is 1 for a ship without a weapon pool", () => {
+    const hardpoints = [
+      hp(HardpointCategoryEnum.POWERPLANT, { powerBase: 5 }, {
+        component: { size: 1, typeData: { powerBase: 5 } },
+      } as Partial<Hardpoint>),
+      ...weapons(2, 2),
+    ];
+    expect(simulateLoadoutPower(hardpoints, 0).weaponMaxRatio).toBe(1);
   });
 });
 

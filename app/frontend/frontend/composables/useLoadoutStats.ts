@@ -4,6 +4,7 @@ import {
   type Hardpoint,
   type ComponentWeapon,
 } from "@/services/fyApi";
+import { simulateLoadoutPower } from "./useLoadoutSim";
 
 export type DamageBreakdown = {
   total: number;
@@ -121,33 +122,15 @@ export function sustainedRatio(
   return 1;
 }
 
-// erkul's weapon-power-pool throttle: the mounted energy weapons draw Power to
-// regen; when their combined draw exceeds the ship's fixed weapon pool, every
-// energy weapon's sustained regen is scaled down by this ratio. Ships without a
-// fixed weapon pool (`weaponPoolSize` absent) are unlimited → 1.
-export function weaponPowerRatio(
-  hardpoints: Hardpoint[] | undefined,
-  weaponPoolSize: number | undefined,
-): number {
-  if (!weaponPoolSize || weaponPoolSize <= 0) return 1;
-
-  const draw = collectWeaponHardpoints(hardpoints).reduce((sum, hardpoint) => {
-    const weapon = hardpoint.component!.typeData as ComponentWeapon;
-    return sum + (weapon.powerConsumption ?? 0);
-  }, 0);
-
-  const consumption = Math.ceil(draw);
-  if (consumption <= 0) return 1;
-
-  return Math.min(1, weaponPoolSize / consumption);
-}
-
 export function computeLoadoutStats(
   hardpoints: Hardpoint[] | undefined,
   weaponPoolSize?: number,
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
-  const powerRatio = weaponPowerRatio(hardpoints, weaponPoolSize);
+  const powerRatio = simulateLoadoutPower(
+    hardpoints,
+    weaponPoolSize,
+  ).weaponMaxRatio;
 
   const dps = emptyBreakdown();
   const sustainedDps = emptyBreakdown();
