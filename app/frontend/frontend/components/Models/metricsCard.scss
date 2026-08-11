@@ -15,6 +15,31 @@
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 20px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    // Fixed tracks instead of flex basis + grow: every tile keeps the same width
+    // across both rows however long its value runs, which the flex hero cannot
+    // guarantee. For cards whose figures are all peers — no headline stat to
+    // give `--primary` to — so the values also sit a step smaller.
+    &--grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      &-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .metrics-card__tile {
+        padding: 12px 14px;
+      }
+
+      .metrics-card__tile__value {
+        font-size: clamp(13px, 11cqw, 18px);
+      }
+    }
   }
 
   &__section-label {
@@ -48,6 +73,72 @@
       font-weight: 600;
       font-variant-numeric: tabular-nums;
       color: lighten($text-color, 15%);
+    }
+  }
+
+  // A list of secondary stats. `__aux` covers a single one-line stat and carries
+  // its own bottom margin, so it cannot serve a card that has five or more of
+  // them; these stack, and pair up two-per-line where the card is wide enough.
+  &__rows {
+    display: flex;
+    flex-direction: column;
+
+    &--split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 26px;
+
+      // Both cells of the final line, since `:last-child` only reaches one of
+      // them. Assumes an even cell count — an odd trailing cell keeps its rule.
+      .metrics-card__row:nth-last-child(-n + 2) {
+        border-bottom: 0;
+      }
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba($gray-light, 0.16);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    // For values too long to sit beside their label — a list of locations, say.
+    &--stack {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 4px;
+
+      .metrics-card__row__value {
+        text-align: left;
+        white-space: normal;
+      }
+    }
+
+    &__label {
+      font-family: "Orbitron", tahoma, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: $gray-light;
+      flex: none;
+    }
+
+    &__value {
+      min-width: 0;
+      overflow: hidden;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: lighten($text-color, 15%);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

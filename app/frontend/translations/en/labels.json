@@ -586,6 +586,15 @@
         "maneuverability": "Maneuverability",
         "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
       },
+      "base": {
+        "price": "Price",
+        "priceInGame": "In-game",
+        "pricePledge": "Pledge",
+        "fuel": "Fuel",
+        "fuelHydrogen": "Hydrogen",
+        "fuelQuantum": "Quantum",
+        "availability": "Availability"
+      },
       "cargo": {
         "title": "Cargo",
         "holdsSub": "across %{count} holds",

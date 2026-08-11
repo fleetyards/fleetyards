@@ -30,7 +30,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import Panel from "@/shared/components/base/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
@@ -359,12 +358,8 @@ const adiMap = computed(() => {
               inline
             />
           </template>
-          <Panel slim>
-            <ModelBaseMetrics :model="model" :extended="extendedState" />
-          </Panel>
-          <Panel slim>
-            <ModelCrewMetrics :model="model" />
-          </Panel>
+          <ModelBaseMetrics :model="model" :extended="extendedState" />
+          <ModelCrewMetrics :model="model" />
           <div class="page-actions page-actions-block">
             <Btn
               v-if="model.onSale && price"

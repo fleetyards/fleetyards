@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { Model } from "@/services/fyApi";
 
@@ -18,27 +19,26 @@ const { t, toNumber } = useI18n();
 </script>
 
 <template>
-  <div class="row metrics-padding">
-    <div class="col-12 col-lg-3">
-      <div class="metrics-title">
-        {{ t("labels.metrics.crew") }}
-      </div>
-    </div>
-    <div class="col-12 col-lg-9 metrics-block">
-      <div class="row">
-        <div class="col-6 col-md-6">
-          <div class="metrics-label">{{ t("model.minCrew") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(model.crew.min, "people") }}
-          </div>
+  <MetricsCard :title="t('labels.metrics.crew')">
+    <div
+      class="metrics-card__hero metrics-card__hero--grid metrics-card__hero--grid-2"
+    >
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.minCrew") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(model.crew.min, "people") }}
         </div>
-        <div class="col-6 col-md-6">
-          <div class="metrics-label">{{ t("model.maxCrew") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(model.crew.max, "people") }}
-          </div>
+      </div>
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">{{ t("model.maxCrew") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(model.crew.max, "people") }}
         </div>
       </div>
     </div>
-  </div>
+  </MetricsCard>
 </template>
+
+<style lang="scss" scoped>
+@import "@/frontend/components/Models/metricsCard";
+</style>
