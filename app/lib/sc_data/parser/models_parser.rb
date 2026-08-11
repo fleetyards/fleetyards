@@ -42,6 +42,7 @@ module ScData
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
             weapon_pool_size: extract_weapon_pool_size(values),
+            signature_cross_section: extract_cross_section(values),
             **extract_hull(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
@@ -280,6 +281,27 @@ module ScData
         pools = [pools] if pools.is_a?(Hash)
         weapon_pool = pools.find { |pool| pool["itemType"] == "WeaponGun" }
         weapon_pool&.dig("poolSize")&.to_i
+      end
+
+      # The ship's manual radar cross-section per axis — its passive
+      # detectability. erkul lets you pick which axis (x/y/z) to read.
+      private def extract_cross_section(values)
+        cross_section = values.dig(
+          "Components",
+          "SSCSignatureSystemParams",
+          "radarProperties",
+          "SSCRadarContactProperites",
+          "crossSectionParams",
+          "SSCSignatureSystemManualCrossSectionParams",
+          "crossSection"
+        )
+        return if cross_section.blank?
+
+        {
+          x: cross_section["x"].to_f,
+          y: cross_section["y"].to_f,
+          z: cross_section["z"].to_f
+        }
       end
 
       private def collect_hull_parts(node, parts = [])

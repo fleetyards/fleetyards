@@ -182,5 +182,23 @@
   ],
   "durability": {
     "health": 1500.0
+  },
+  "type_data": {
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

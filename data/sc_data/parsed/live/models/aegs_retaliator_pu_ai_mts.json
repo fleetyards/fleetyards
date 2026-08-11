@@ -15,6 +15,11 @@
   },
   "mass": 317870.29,
   "weapon_pool_size": 8,
+  "signature_cross_section": {
+    "x": 15100.0,
+    "y": 4700.0,
+    "z": 36000.0
+  },
   "hull_health": 138981.0,
   "hull_parts": [
     {
@@ -725,6 +730,11 @@
       "name": "hardpoint_ground_fuel_port",
       "ref": null,
       "key": "Door_NoRoomConnector_retaliator_Ground_FuelPort"
+    },
+    {
+      "name": "hardpoint_interior_docking_door",
+      "ref": null,
+      "key": "Door_RN_RoomConnector_Breachable_OpenClose_AEGS_Retaliator_Interior_Docking"
     },
     {
       "name": "hardpoint_exterior_docking_door",

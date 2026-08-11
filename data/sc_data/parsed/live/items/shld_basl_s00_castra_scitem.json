@@ -103,6 +103,10 @@
         "start": 2.0,
         "modifier": 1.0
       }
-    }
+    },
+    "power_consumption": 2.0,
+    "power_minimum_fraction": 0.5,
+    "signature_em": 990.0,
+    "signature_ir": 0.0
   }
 }

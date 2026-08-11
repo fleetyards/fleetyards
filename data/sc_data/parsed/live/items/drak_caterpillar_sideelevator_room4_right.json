@@ -24,11 +24,23 @@
       "min_size": "1",
       "max_size": "1",
       "types": []
+    },
+    {
+      "name": "hardpoint_door_switch_interior",
+      "min_size": "1",
+      "max_size": "1",
+      "types": []
     }
   ],
   "default_loadout": [
     {
       "name": "hardpoint_door_switch_exterior",
+      "key": "Door_Ship_Switch_Exterior",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "hardpoint_door_switch_interior",
       "key": "Door_Ship_Switch_Exterior",
       "ref": null,
       "default_loadout": []

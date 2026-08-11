@@ -17,5 +17,25 @@
       "y": 0.15,
       "z": 0.15
     }
+  },
+  "type_data": {
+    "power_consumption": 2.0,
+    "power_minimum_fraction": 1.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

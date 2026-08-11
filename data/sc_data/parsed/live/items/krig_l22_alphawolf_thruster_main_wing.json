@@ -98,6 +98,86 @@
       "types": [
         "AttachedPart"
       ]
+    },
+    {
+      "name": "hardpoint_fin_interior",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_01",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_02",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_03",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_04",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_05",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_06",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_07",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_08",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
+    },
+    {
+      "name": "hardpoint_fin_interior_09",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "AttachedPart"
+      ]
     }
   ],
   "durability": {
@@ -107,6 +187,22 @@
     "thrust_capacity": 978266.5,
     "fuel_burn_rate_per10_k_newton": 0.125,
     "thruster_type": "Main",
-    "thruster_class": "main"
+    "thruster_class": "main",
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

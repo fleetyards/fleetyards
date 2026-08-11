@@ -15,6 +15,11 @@
   },
   "mass": 639886.0,
   "weapon_pool_size": 6,
+  "signature_cross_section": {
+    "x": 13518.0,
+    "y": 6392.0,
+    "z": 16567.0
+  },
   "hull_health": 115700.0,
   "hull_parts": [
     {

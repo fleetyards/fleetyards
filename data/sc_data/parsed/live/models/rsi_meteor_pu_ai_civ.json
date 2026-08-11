@@ -15,6 +15,11 @@
   },
   "mass": 238832.0,
   "weapon_pool_size": 4,
+  "signature_cross_section": {
+    "x": 7800.0,
+    "y": 3600.0,
+    "z": 14000.0
+  },
   "hull_health": 30150.0,
   "hull_parts": [
     {
@@ -614,6 +619,11 @@
     {
       "name": "hardpoint_air_traffic_controller",
       "ref": "f6ea8f48-88c9-4cd4-b6b9-166827baa570",
+      "key": null
+    },
+    {
+      "name": "hardpoint_relay_interior",
+      "ref": "fd9d74e7-8b0a-46d3-8d14-7bf7c5e93900",
       "key": null
     },
     {

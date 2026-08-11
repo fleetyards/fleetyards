@@ -22,6 +22,22 @@
     "health": 980.0
   },
   "type_data": {
-    "power_base": 21.0
+    "power_base": 21.0,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 10400.0,
+    "signature_ir": 0.0
   }
 }

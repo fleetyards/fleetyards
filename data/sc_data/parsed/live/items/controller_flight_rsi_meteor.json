@@ -32,6 +32,24 @@
       "pitch": 55.199999999999996,
       "yaw": 45.6,
       "roll": 186.0
-    }
+    },
+    "power_consumption": 4.0,
+    "power_minimum_fraction": 0.25,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

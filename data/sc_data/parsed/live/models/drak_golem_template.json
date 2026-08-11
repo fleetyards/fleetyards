@@ -15,6 +15,7 @@
   },
   "mass": null,
   "weapon_pool_size": 4,
+  "signature_cross_section": null,
   "metrics": {
     "x": 0.0,
     "y": 0.0,

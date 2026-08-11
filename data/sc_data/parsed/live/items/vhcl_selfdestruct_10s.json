@@ -24,6 +24,22 @@
     "radius": "10",
     "min_phys_radius": "10",
     "phys_radius": "30",
-    "time": "10"
+    "time": "10",
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }
