@@ -71,6 +71,7 @@ module Fleetyards
     config.sc_data = config_for("app/sc_data")
     config.maintainer = config_for("app/maintainer")
     config.rsi = config_for("app/rsi")
+    config.uex = config_for("app/uex")
     config.api_schema = config_for("app/api_schema")
     config.redis = config_for(:redis)
     config.basic_auth = config_for(:basic_auth)
