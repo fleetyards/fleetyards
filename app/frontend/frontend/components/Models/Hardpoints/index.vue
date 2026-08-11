@@ -16,6 +16,7 @@ import ModelFlightMetrics from "@/frontend/components/Models/FlightMetrics/index
 import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
 import ModelPowerDistribution from "@/frontend/components/Models/PowerDistribution/index.vue";
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
+import ModelExternalFuelTanks from "@/frontend/components/Models/ExternalFuelTanks/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
 import {
@@ -215,7 +216,6 @@ const showMetrics = computed(
           </Btn>
         </BtnGroup>
       </div>
-      <ModelRefuelBoom v-if="showMetrics" :model="model" />
       <div v-if="showMetrics" class="metrics-grid">
         <div class="metrics-grid__col">
           <ModelCombatMetrics
@@ -246,6 +246,8 @@ const showMetrics = computed(
         <div class="metrics-grid__col">
           <ModelFlightMetrics :model="model" />
           <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
+          <ModelExternalFuelTanks :model="model" />
+          <ModelRefuelBoom :model="model" />
         </div>
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">

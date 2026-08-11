@@ -593,6 +593,20 @@
         "containers": "Container Capacity",
         "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
       },
+      "fuelTanks": {
+        "capacitySub": "across %{count} pods",
+        "podsSub": "external mounts",
+        "components": "Pod Types",
+        "perPod": "per pod",
+        "hint": "Fuel carried in pods mounted on external hardpoints; the bar shows each type's share of the total capacity."
+      },
+      "refuelBoom": {
+        "fuelFlowSub": "hydrogen transfer",
+        "quantumFlowSub": "quantum transfer",
+        "captureRadiusSub": "docking tolerance",
+        "equipment": "Equipment",
+        "hint": "Transfer rates of the refueling arm and the docking tolerance of its nozzle."
+      },
       "combat": {
         "title": "Combat",
         "dps": "Burst DPS",
