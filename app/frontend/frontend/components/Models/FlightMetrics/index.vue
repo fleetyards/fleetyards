@@ -8,7 +8,6 @@ export default {
 import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Model } from "@/services/fyApi";
-import type { FlightMode } from "@/frontend/composables/powerSim";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -27,10 +26,12 @@ const enginePowerRatio = inject<Ref<number | undefined>>(
   ref(1),
 );
 const powered = computed(() => ((toValue(enginePowerRatio) ?? 1) > 0 ? 1 : 0));
-
-// SCM / NAV mode swaps the headline speed (from Hardpoints; SCM standalone).
-const flightMode = inject<Ref<FlightMode>>("flightMode", ref("SCM"));
-const isNav = computed(() => toValue(flightMode) === "NAV");
+// How much of the rated boost the thrusters can currently deliver (engine power
+// relative to its default fill). Only the *boosted* handling scales with this;
+// the speeds and base handling don't.
+const boostFactor = computed(() =>
+  Math.min(1, Math.max(0, toValue(enginePowerRatio) ?? 1)),
+);
 
 const speeds = computed(() => props.model.speeds);
 const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
@@ -42,22 +43,23 @@ const hasData = computed(() =>
 );
 
 const gate = (value?: number) => (value ?? 0) * powered.value;
-const speed = (value: number) => toNumber(Math.round(value), "speed");
-const rotation = (value: number) => toNumber(Math.round(value), "rotation");
+// Boosted handling interpolates from the base rate up to the rated boosted rate
+// by how much boost the engine power supports.
+const boosted = (base?: number, rated?: number) =>
+  gate((base ?? 0) + ((rated ?? base ?? 0) - (base ?? 0)) * boostFactor.value);
+// toNumber renders 0 as "N/A"; a gated-to-zero flight figure is a real 0.
+const speed = (value: number) =>
+  Math.round(value) > 0 ? toNumber(Math.round(value), "speed") : "0";
+const rotation = (value: number) =>
+  Math.round(value) > 0 ? toNumber(Math.round(value), "rotation") : "0";
 
 const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
-const headline = useTransition(
-  () => gate(isNav.value ? speeds.value.maxSpeed : speeds.value.scmSpeed),
-  animate,
-);
+const scmSpeed = useTransition(() => gate(speeds.value.scmSpeed), animate);
 const boostSpeed = useTransition(
   () => gate(speeds.value.scmSpeedBoosted),
   animate,
 );
-const reverseSpeed = useTransition(
-  () => gate(speeds.value.reverseSpeedBoosted),
-  animate,
-);
+const maxSpeed = useTransition(() => gate(speeds.value.maxSpeed), animate);
 const groundMax = useTransition(
   () => gate(speeds.value.groundMaxSpeed),
   animate,
@@ -68,11 +70,17 @@ const groundReverse = useTransition(
 );
 
 const pitchBoost = useTransition(
-  () => gate(speeds.value.pitchBoosted),
+  () => boosted(speeds.value.pitch, speeds.value.pitchBoosted),
   animate,
 );
-const yawBoost = useTransition(() => gate(speeds.value.yawBoosted), animate);
-const rollBoost = useTransition(() => gate(speeds.value.rollBoosted), animate);
+const yawBoost = useTransition(
+  () => boosted(speeds.value.yaw, speeds.value.yawBoosted),
+  animate,
+);
+const rollBoost = useTransition(
+  () => boosted(speeds.value.roll, speeds.value.rollBoosted),
+  animate,
+);
 
 const rotations = computed(() => [
   {
@@ -91,8 +99,6 @@ const rotations = computed(() => [
     boost: rollBoost.value,
   },
 ]);
-
-const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
 </script>
 
 <template>
@@ -120,12 +126,10 @@ const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
       </template>
       <template v-else>
         <div class="metrics-card__tile metrics-card__tile--primary">
-          <div class="metrics-card__tile__label">
-            {{ isNav ? t("model.maxSpeed") : t("model.scmSpeed") }}
-          </div>
-          <div class="metrics-card__tile__value">{{ speed(headline) }}</div>
+          <div class="metrics-card__tile__label">{{ t("model.scmSpeed") }}</div>
+          <div class="metrics-card__tile__value">{{ speed(scmSpeed) }}</div>
           <div class="metrics-card__tile__sub">
-            {{ isNav ? t("labels.flight.nav") : t("labels.flight.scm") }}
+            {{ t("labels.flight.scm") }}
           </div>
         </div>
         <div class="metrics-card__tile">
@@ -137,11 +141,12 @@ const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
             {{ t("labels.flight.boostSub") }}
           </div>
         </div>
-        <div v-if="hasReverse" class="metrics-card__tile">
-          <div class="metrics-card__tile__label">
-            {{ t("labels.flight.reverse") }}
+        <div class="metrics-card__tile">
+          <div class="metrics-card__tile__label">{{ t("model.maxSpeed") }}</div>
+          <div class="metrics-card__tile__value">{{ speed(maxSpeed) }}</div>
+          <div class="metrics-card__tile__sub">
+            {{ t("labels.flight.nav") }}
           </div>
-          <div class="metrics-card__tile__value">{{ speed(reverseSpeed) }}</div>
         </div>
       </template>
     </div>

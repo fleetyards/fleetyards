@@ -155,10 +155,11 @@ const NAV_PRIORITY: PowerFamily[] = [
 const NAV_ONLY_FAMILIES: PowerFamily[] = ["qdrive"];
 
 // Families the default auto-distribution fills beyond their critical minimum;
-// every other family sits at its critical floor until the user assigns pips
-// (matching erkul's default, e.g. life support at 1, engine at its minimum).
+// every other family sits at its critical floor until the user assigns pips.
+// Mirrors erkul's `Jn` fill order — weapon/shield/radar/engine in SCM — so the
+// engine gets its rated pips by default (which drives the flight figures).
 const PRIMARY_FILL: Record<FlightMode, PowerFamily[]> = {
-  SCM: ["weapon", "shield", "radar"],
+  SCM: ["weapon", "shield", "radar", "engine"],
   NAV: ["qdrive", "engine", "radar"],
 };
 

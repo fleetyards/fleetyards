@@ -144,9 +144,6 @@ provide(
   computed(() => powerSim.value.enginePowerRatio),
 );
 
-// SCM / NAV mode → Flight card swaps the headline speed (SCM ↔ max).
-provide("flightMode", flightMode);
-
 // The loadout-wide weapon-power throttle, so per-weapon rows show the same
 // sustained factor the Combat card totals from.
 provide(
