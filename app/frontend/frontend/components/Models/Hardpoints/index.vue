@@ -16,7 +16,10 @@ import ModelPowerDistribution from "@/frontend/components/Models/PowerDistributi
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
-import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
+import {
+  useLoadoutSim,
+  type PortOverrides,
+} from "@/frontend/composables/useLoadoutSim";
 import type { FlightMode } from "@/frontend/composables/powerSim";
 import { useShieldStats } from "@/frontend/composables/useShieldStats";
 import {
@@ -121,6 +124,18 @@ provide(
 // The user's pip choices, so the Combat card totals recompute from the same
 // distribution the control shows.
 provide("powerOverrides", powerOverrides);
+
+// Shield power allocation → Defense card scales shield HP/regen with the pips.
+const powerSim = useLoadoutSim(
+  () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+  () => props.model.metrics?.weaponPoolSize,
+  flightMode,
+  powerOverrides,
+);
+provide(
+  "shieldPoolRatio",
+  computed(() => powerSim.value.shieldPoolRatio),
+);
 
 // The loadout-wide weapon-power throttle, so per-weapon rows show the same
 // sustained factor the Combat card totals from.

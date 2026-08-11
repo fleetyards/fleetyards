@@ -90,18 +90,28 @@ function weightedByHp(
 
 export function computeShieldStats(
   hardpoints: Hardpoint[] | undefined,
+  shieldPoolRatio = 1,
 ): ShieldStats {
   const shields = collectShieldHardpoints(hardpoints).map(
     (hardpoint) => hardpoint.component!.typeData as ComponentShield,
   );
 
-  let totalHp = 0;
-  let totalRegen = 0;
+  // Regen scales with the shield power allocation; an unpowered shield (0 pips)
+  // offers no protection, so its HP drops to 0 as well.
+  const powered = shieldPoolRatio > 0 ? 1 : 0;
+
+  let rawHp = 0;
+  let rawRegen = 0;
 
   for (const shield of shields) {
-    totalHp += shield.maxHealth || 0;
-    totalRegen += shield.maxRegen || 0;
+    rawHp += shield.maxHealth || 0;
+    rawRegen += shield.maxRegen || 0;
   }
+
+  // Displayed values reflect the current power; hasData stays true whenever the
+  // ship structurally has shields, so an unpowered shield shows 0 (not hidden).
+  const totalHp = rawHp * powered;
+  const totalRegen = rawRegen * shieldPoolRatio;
 
   const resistanceByType: Record<string, number> = {};
   const resistanceMinByType: Record<string, number> = {};
@@ -157,12 +167,15 @@ export function computeShieldStats(
     resistanceMinByType,
     absorptionByType,
     absorptionMinByType,
-    hasData: shields.length > 0 && totalHp > 0,
+    hasData: shields.length > 0 && rawHp > 0,
   };
 }
 
 export function useShieldStats(
   hardpoints: MaybeRefOrGetter<Hardpoint[] | undefined>,
+  shieldPoolRatio?: MaybeRefOrGetter<number | undefined>,
 ) {
-  return computed(() => computeShieldStats(toValue(hardpoints)));
+  return computed(() =>
+    computeShieldStats(toValue(hardpoints), toValue(shieldPoolRatio) ?? 1),
+  );
 }

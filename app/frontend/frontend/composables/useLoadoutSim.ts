@@ -64,6 +64,9 @@ export type LoadoutSimResult = {
   // uses as its baseline. Equals min(1, poolSize/consumption) unless the plant
   // literally can't deliver enough segments to fill the pool.
   weaponMaxRatio: number;
+  // Shield power ratio (allocated shield segments / capacity) — scales shield
+  // HP/regen; 0 when shields are unpowered.
+  shieldPoolRatio: number;
 };
 
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
@@ -288,6 +291,14 @@ export function simulateLoadoutPower(
 
   const columns = buildColumns(ports, acc.portLabels, state);
 
+  // Shield power ratio = allocated shield segments / shield capacity (0 when
+  // shields are unpowered, 1 when there are no shields). Drives shield HP/regen.
+  const shieldColumn = columns.find((column) => column.family === "shield");
+  const shieldPoolRatio =
+    shieldColumn && shieldColumn.capacity > 0
+      ? Math.min(1, shieldColumn.allocated / shieldColumn.capacity)
+      : 1;
+
   return {
     totalSegments: segments,
     remaining: state.remaining,
@@ -301,6 +312,7 @@ export function simulateLoadoutPower(
       segments,
       acc.otherPorts,
     ),
+    shieldPoolRatio,
   };
 }
 

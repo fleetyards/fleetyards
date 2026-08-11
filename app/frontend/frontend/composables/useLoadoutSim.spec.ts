@@ -223,6 +223,14 @@ describe("overrides (pip UI)", () => {
     expect(reduced.remaining).toBeGreaterThan(base.remaining);
     expect(reduced.perFamily.weapon).toBe(base.perFamily.weapon);
   });
+
+  it("exposes a shieldPoolRatio that drops to 0 when shields are unpowered", () => {
+    expect(simulateLoadoutPower(asgardLike(), 4).shieldPoolRatio).toBe(1);
+    const off = simulateLoadoutPower(asgardLike(), 4, "SCM", {
+      [SHIELD_POOL_PORT]: 0,
+    });
+    expect(off.shieldPoolRatio).toBe(0);
+  });
 });
 
 describe("shield active cap", () => {

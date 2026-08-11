@@ -26,7 +26,17 @@ const { t, toNumber } = useI18n();
 
 const comlink = useComlink();
 
-const shield = useShieldStats(() => props.hardpoints);
+// Shield power allocation from the Power Distribution control (1 = full when
+// standalone); scales shield HP + regen.
+const shieldPoolRatio = inject<Ref<number | undefined>>(
+  "shieldPoolRatio",
+  ref(undefined),
+);
+
+const shield = useShieldStats(
+  () => props.hardpoints,
+  () => toValue(shieldPoolRatio),
+);
 const armor = useArmorStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
