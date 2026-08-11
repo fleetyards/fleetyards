@@ -242,6 +242,7 @@ const shieldStats = useShieldStats(
           <HardpointGroup
             v-for="group in [
               HardpointGroupEnum.WEAPON,
+              HardpointGroupEnum.DEFENSE,
               HardpointGroupEnum.AUXILIARY,
             ]"
             :key="group"
