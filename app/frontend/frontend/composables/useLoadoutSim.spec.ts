@@ -300,6 +300,17 @@ describe("shield active cap", () => {
   });
 });
 
+describe("weapon pool headroom", () => {
+  it("renders the full pool but is only fillable up to weapon demand", () => {
+    // One energy weapon drawing 2 (consumption 2) with a pool of 10 → the
+    // column shows all 10 slots, but only 2 can take power.
+    const sim = simulateLoadoutPower([plant(40, 2), ...weapons(1, 2)], 10);
+    const wpn = sim.columns.find((c) => c.portPath === WEAPON_POOL_PORT);
+    expect(wpn?.capacity).toBe(10);
+    expect(wpn?.fillable).toBe(2);
+  });
+});
+
 describe("tractor beams", () => {
   it("groups tractor beams into their own column, not the weapon pool", () => {
     const tractorA = hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 });

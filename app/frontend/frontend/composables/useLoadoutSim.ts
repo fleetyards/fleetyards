@@ -20,11 +20,15 @@ export { WEAPON_POOL_PORT, type PortOverrides } from "./powerSim";
 // One controllable unit inside a column: a single component (or the shared
 // weapon pool). `min` is the mandatory floor — the unit is either off (0) or on
 // at ≥ `min` segments (min === capacity for all-critical systems like the QD).
+// `capacity` is every rendered slot; `fillable` is how many can actually take
+// power (they differ only for the weapon pool, which shows its full pool but is
+// fillable only up to the mounted energy weapons' demand).
 export type PowerColumnMember = {
   portPath: string;
   label?: string;
   allocated: number;
   capacity: number;
+  fillable: number;
   min: number;
 };
 
@@ -221,18 +225,26 @@ function buildColumns(
 ): PowerColumn[] {
   const byPort = new Map<
     string,
-    { family: PowerFamily; capacity: number; critical: number }
+    {
+      family: PowerFamily;
+      capacity: number;
+      fillable: number;
+      critical: number;
+    }
   >();
   const order: string[] = [];
   for (const port of ports) {
     let entry = byPort.get(port.portPath);
     if (!entry) {
-      entry = { family: port.family, capacity: 0, critical: 0 };
+      entry = { family: port.family, capacity: 0, fillable: 0, critical: 0 };
       byPort.set(port.portPath, entry);
       order.push(port.portPath);
     }
+    // Every block is a rendered slot; only enabled ones can take power. They
+    // differ only for the weapon pool's headroom past the weapons' demand.
+    entry.capacity += port.size;
     if (!port.disabled) {
-      entry.capacity += port.size;
+      entry.fillable += port.size;
       if (port.critical) entry.critical += port.size;
     }
   }
@@ -247,6 +259,7 @@ function buildColumns(
       label: portPath === WEAPON_POOL_PORT ? undefined : portLabels[portPath],
       allocated: state.perPort[portPath] ?? 0,
       capacity: entry.capacity,
+      fillable: entry.fillable,
       // Mandatory floor: a component is either off or on at ≥ this many
       // segments (equals capacity for all-critical systems like the QD).
       min: entry.critical,
@@ -259,6 +272,7 @@ function buildColumns(
           ...member,
           allocated: 0,
           capacity: 0,
+          fillable: 0,
           min: 0,
           label: undefined,
           family: entry.family,
@@ -270,6 +284,7 @@ function buildColumns(
       column.members.push(member);
       column.allocated += member.allocated;
       column.capacity += member.capacity;
+      column.fillable += member.fillable;
       column.min += member.min;
     } else {
       columns.push({ ...member, family: entry.family, members: [member] });
