@@ -262,7 +262,7 @@ GEM
     geocoder (1.8.6)
       base64 (>= 0.1.0)
       csv (>= 3.0.0)
-    git (4.4.0)
+    git (5.0.4)
       activesupport (>= 5.0)
       addressable (~> 2.8)
       process_executer (~> 4.0)
