@@ -231,6 +231,23 @@ describe("overrides (pip UI)", () => {
     });
     expect(off.shieldPoolRatio).toBe(0);
   });
+
+  it("interpolates aim-assist range by radar power", () => {
+    const radar = hp(HardpointCategoryEnum.RADAR, {
+      powerConsumption: 5,
+      aimAssistMin: 1200,
+      aimAssistRange: 1925,
+    });
+    const ports = [plant(40, 2), radar];
+    // Radar is a primary family → fully powered → aim-assist reaches its max.
+    const full = simulateLoadoutPower(ports, 0);
+    expect(full.aimAssistMax).toBe(1925);
+    expect(full.aimAssist).toBe(1925);
+
+    // Radar off → no aim assist.
+    const off = simulateLoadoutPower(ports, 0, "SCM", { [radar.id]: 0 });
+    expect(off.aimAssist).toBe(0);
+  });
 });
 
 describe("shield active cap", () => {

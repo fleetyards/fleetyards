@@ -45,7 +45,7 @@ const emit = defineEmits<{
   "update:mode": [value: FlightMode];
 }>();
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 
 // The hardpoint icon per family (engine falls back to the thruster glyph); a
 // short text label covers families without a dedicated icon.
@@ -98,6 +98,14 @@ const usedSegments = computed(
   () => sim.value.totalSegments - sim.value.remaining,
 );
 const hasOverrides = computed(() => Object.keys(props.modelValue).length > 0);
+
+// Aim-assist readout for the power pane: effective range + how full it is
+// relative to the radar's max (grows as the radar gets more power).
+const aimAssistPercent = computed(() =>
+  sim.value.aimAssistMax > 0
+    ? Math.round((sim.value.aimAssist / sim.value.aimAssistMax) * 100)
+    : 0,
+);
 
 const columnLabel = (column: PowerColumn) =>
   column.label ?? t(`labels.power.families.${column.family}`);
@@ -201,6 +209,21 @@ const cellHeight = (span: number) =>
           })
         }}
       </div>
+    </div>
+
+    <div v-if="sim.aimAssistMax > 0" class="power-readout">
+      <span class="power-readout__label">{{
+        t("labels.power.aimAssist")
+      }}</span>
+      <div class="power-readout__track">
+        <div
+          class="power-readout__fill"
+          :style="{ width: `${aimAssistPercent}%` }"
+        />
+      </div>
+      <span class="power-readout__value">
+        {{ sim.aimAssist ? toNumber(sim.aimAssist, "integer") : 0 }} m
+      </span>
     </div>
 
     <div class="power-bars">
@@ -323,6 +346,46 @@ const cellHeight = (span: number) =>
     letter-spacing: 0.08em;
     color: $gray;
     font-variant-numeric: tabular-nums;
+  }
+}
+
+.power-readout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gray;
+    min-width: 76px;
+  }
+
+  &__track {
+    flex: 1;
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: $gray-black;
+    border: 1px solid rgba($gray-light, 0.28);
+  }
+
+  &__fill {
+    height: 100%;
+    background: $primary;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
+  &__value {
+    font-size: 12px;
+    color: $text-color;
+    font-variant-numeric: tabular-nums;
+    min-width: 64px;
+    text-align: right;
   }
 }
 

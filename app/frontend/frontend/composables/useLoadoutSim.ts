@@ -67,6 +67,10 @@ export type LoadoutSimResult = {
   // Shield power ratio (allocated shield segments / capacity) — scales shield
   // HP/regen; 0 when shields are unpowered.
   shieldPoolRatio: number;
+  // Effective aim-assist range (m) at the current radar power, and the radar's
+  // max (for the bar's full scale). 0 when there's no radar / it's unpowered.
+  aimAssist: number;
+  aimAssistMax: number;
 };
 
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
@@ -83,6 +87,7 @@ type Collected = {
   otherPorts: PowerPort[];
   portLabels: Record<string, string>;
   shieldsSeen: number;
+  radarAim?: { min: number; max: number };
 };
 
 function numeric(value: unknown): number {
@@ -140,6 +145,17 @@ function collectPorts(
             );
             if (family !== "shield" && hardpoint.component?.name) {
               acc.portLabels[hardpoint.id] = hardpoint.component.name;
+            }
+            // Capture the radar's aim-assist range for the power-pane readout.
+            if (
+              family === "radar" &&
+              !acc.radarAim &&
+              typeData.aimAssistRange
+            ) {
+              acc.radarAim = {
+                min: numeric(typeData.aimAssistMin),
+                max: numeric(typeData.aimAssistRange),
+              };
             }
           }
         }
@@ -299,6 +315,22 @@ export function simulateLoadoutPower(
       ? Math.min(1, shieldColumn.allocated / shieldColumn.capacity)
       : 1;
 
+  // Radar power ratio → effective aim-assist range (erkul's `or`): interpolated
+  // between the radar's min and max by radar power, 0 when the radar is off.
+  const radarColumn = columns.find((column) => column.family === "radar");
+  const radarPoolRatio =
+    radarColumn && radarColumn.capacity > 0
+      ? Math.min(1, radarColumn.allocated / radarColumn.capacity)
+      : 0;
+  const aimAssistMax = acc.radarAim?.max ?? 0;
+  const aimAssist =
+    acc.radarAim && radarPoolRatio > 0
+      ? Math.round(
+          acc.radarAim.min +
+            (acc.radarAim.max - acc.radarAim.min) * radarPoolRatio,
+        )
+      : 0;
+
   return {
     totalSegments: segments,
     remaining: state.remaining,
@@ -313,6 +345,8 @@ export function simulateLoadoutPower(
       acc.otherPorts,
     ),
     shieldPoolRatio,
+    aimAssist,
+    aimAssistMax,
   };
 }
 
