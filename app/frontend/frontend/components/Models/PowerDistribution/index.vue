@@ -123,7 +123,7 @@ const memberLabel = (column: PowerColumn, member: PowerColumnMember) =>
 // and an increase can't exceed the pips available in the pool (so clicking with
 // an empty pool does nothing).
 const applyTarget = (member: PowerColumnMember, desired: number) => {
-  let target = Math.max(0, Math.min(member.capacity, desired));
+  let target = Math.max(0, Math.min(member.fillable, desired));
   if (target > 0 && target < member.min) target = 0;
 
   if (target > member.allocated) {
@@ -148,8 +148,9 @@ const onCellClick = (
   member: PowerColumnMember,
   level: number,
 ) => {
+  if (level > member.fillable) return; // headroom slot — not fillable
   if (column.members.length > 1 && level === member.min) {
-    applyTarget(member, member.allocated > 0 ? 0 : member.capacity);
+    applyTarget(member, member.allocated > 0 ? 0 : member.fillable);
   } else {
     applyTarget(member, level);
   }
@@ -161,7 +162,7 @@ const toggleColumn = (column: PowerColumn) => {
   const anyOn = column.members.some((member) => member.allocated > 0);
   const next: PortOverrides = { ...props.modelValue };
   for (const member of column.members) {
-    next[member.portPath] = anyOn ? 0 : member.capacity;
+    next[member.portPath] = anyOn ? 0 : member.fillable;
   }
   emit("update:modelValue", next);
 };
@@ -174,6 +175,7 @@ const reset = () => emit("update:modelValue", {});
 const hoveredPort = ref<string | null>(null);
 const hoveredLevel = ref(0);
 const onPipHover = (member: PowerColumnMember, level: number) => {
+  if (level > member.fillable) return; // don't preview unfillable headroom
   hoveredPort.value = member.portPath;
   hoveredLevel.value = level;
 };
@@ -260,7 +262,9 @@ const cellHeight = (span: number) =>
           'power-col--off': column.allocated === 0,
         }"
       >
-        <div class="power-col__count">{{ column.allocated }}</div>
+        <div class="power-col__count">
+          {{ column.allocated }} / {{ column.capacity }}
+        </div>
         <div
           class="power-col__stack"
           role="group"
@@ -285,6 +289,7 @@ const cellHeight = (span: number) =>
                 'power-col__pip--top': cell.level === shownLevel(member),
                 'power-col__pip--block': cell.span > 1,
                 'power-col__pip--preview': hoveredPort === member.portPath,
+                'power-col__pip--headroom': cell.level > member.fillable,
                 'power-col__pip--memberoff':
                   column.members.length > 1 && member.allocated === 0,
               }"
@@ -490,6 +495,13 @@ const cellHeight = (span: number) =>
     &--memberoff {
       background: rgba($gray-light, 0.1);
     }
+
+    // Weapon-pool headroom: shown for scale but not fillable.
+    &--headroom {
+      background: transparent;
+      border: 1px solid rgba($gray-light, 0.16);
+      cursor: not-allowed;
+    }
   }
 
   // erkul-style count inside a merged (span > 1) block.
@@ -540,7 +552,7 @@ const cellHeight = (span: number) =>
 
   &__fa {
     font-size: 13px;
-    color: $text-color;
+    color: $primary;
     opacity: 0.9;
   }
 
