@@ -5,7 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import type { Hardpoint } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -44,6 +46,15 @@ const round = (value: number) => Math.round(value);
 // zero — nothing absorbed is a real result, not missing data.
 const num = (value: number) => (value ? toNumber(value, "integer") : "0");
 
+// Shield HP/regen animate as the pip allocation changes; the regen bar fills to
+// the share of full regen the shield currently gets (its power ratio).
+const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
+const shieldHp = useTransition(() => shield.value.totalHp, animate);
+const shieldRegen = useTransition(() => shield.value.totalRegen, animate);
+const regenPercent = computed(() =>
+  Math.round((toValue(shieldPoolRatio) ?? 1) * 100),
+);
+
 const hasData = computed(() => shield.value.hasData || armor.value.hasData);
 
 const percent = (value: number) => `${Math.round(value * 100)}%`;
@@ -81,7 +92,7 @@ const openDeflectionCheck = () => {
           {{ t("labels.defense.shieldHp") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ num(round(shield.totalHp)) }}
+          {{ num(round(shieldHp)) }}
           <span class="metrics-card__tile__unit">HP</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -93,9 +104,10 @@ const openDeflectionCheck = () => {
           {{ t("labels.defense.shieldRegen") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ num(round(shield.totalRegen)) }}
+          {{ num(round(shieldRegen)) }}
           <span class="metrics-card__tile__unit">HP/s</span>
         </div>
+        <ProgressBar :progress="regenPercent" class="shield-regen-bar" />
         <div class="metrics-card__tile__sub">
           {{ t("labels.defense.shieldRegenSub") }}
         </div>
@@ -233,6 +245,10 @@ const openDeflectionCheck = () => {
 
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/metricsCard";
+
+.shield-regen-bar {
+  margin: 6px 0 2px;
+}
 
 .stat-rows {
   display: grid;
