@@ -95,16 +95,25 @@ Follow that precedent rather than inventing fuzzy matching.
 
 ### Step 1 — `UexClient`
 
-`app/services/uex/client.rb`. Three GETs, `User-Agent` set, JSON parsed, non-`ok`
-`status` raised. Base URL from `ENV.fetch("UEX_API_URL", "https://api.uexcorp.uk/2.0")`
-so it can be pointed at a fixture host in tests. No token handling — add it only
-if we later need a write or user endpoint.
+`app/lib/uex/client.rb` (`app/lib` is where every other external-data loader
+lives — `rsi/`, `sc_data/`, `patreon/`; `app/services` holds one unrelated
+class). Four GETs, `User-Agent` set, JSON parsed, non-`ok` `status` raised. Base
+URL from `Rails.configuration.uex.endpoint` (`config/app/uex.yml`, overridable
+via `UEX_ENDPOINT`), matching how `config/app/rsi.yml` is wired, so it can be
+pointed at a fixture host in tests. No token handling — add it only if we later
+need a write or user endpoint.
 
 ### Step 2 — `Uex::VehicleMatcher`
 
-Wraps the layered lookup from decision 3: slug → name → name_full → explicit
-`MAPPINGS` hash for the eight. Returns `nil` on a miss and collects misses so the
-job can report them. Unit-tested against a fixture, including one case per layer.
+Wraps the layered lookup from decision 3. `MAPPINGS` runs *first*, as an
+override, then slug → name → name_full: the hand-curated entry should win over a
+generic match so a wrong name collision can always be corrected. Returns `nil` on
+a miss and collects misses so the job can report them. Unit-tested against a
+fixture, including one case per layer.
+
+`MAPPINGS` keys on the UEX slug and points at our `Model` slug (not name) —
+`slug` is the matcher's primary key everywhere else, and it avoids repeating
+`San'tok.yāi`'s apostrophe and macron.
 
 ### Step 3 — `Uex::PriceSyncer`
 
@@ -146,6 +155,13 @@ emails with issue creation for the paints/loaner flows). Do the same here so the
 eight-ship mapping stays maintained as UEX adds vehicles, instead of silently
 dropping prices.
 
+Two constraints that fall out of `GithubIssueCreator`: it dedupes on a SHA of the
+body, so the body must carry **only** the unmatched list — putting the daily
+created/updated/removed counts in it would change the digest every run and open a
+fresh issue every day. And the creator only runs when there is something
+unmatched. The counts go on `import.output` instead, where the admin imports view
+already shows them.
+
 ### Step 6 — Verify
 
 - Model spec for `sell` vs `buy` mapping (decision 1).
@@ -154,14 +170,41 @@ dropping prices.
   a ship with both a buy and a rental row (Avenger Titan and Constellation
   Andromeda both have both).
 
+## Outcome
+
+Ran `Uex::PriceSyncer` against the live API on 2026-08-11 in development:
+
+```
+created=632 updated=0 removed=0 unmatched=0
+288 sell, 344 rental, 0 buy — 179 models with availability
+```
+
+A second run reported `created=0 updated=0 removed=0`, so the upsert is
+idempotent. All eight `MAPPINGS` entries resolve. `GET /v1/models/aegs-avenger-titan`
+returns an empty `boughtAt`, two `soldAt` locations and three `rentalAt` rows at
+`timeRange: "1-day"` — decision 1 lands the right way round.
+
+Also needed, not in the original plan: `Imports::UexPricesImport` has to be added
+to `ImportTypeEnum` (then `./bin/generate-schema`) and needs a jbuilder partial at
+`app/views/api/v1/imports/uex_prices_imports/`, or `ImportTest`'s
+"every broadcasting import type renders its jbuilder partial" fails.
+
 ## Notes
 
-- The frontend needs no changes. `_base.jbuilder` already serialises
-  `availability.{boughtAt,soldAt,rentalAt}`, and the Base card's Availability
-  modal already renders location, price and rental period.
-- Attribution: UEX data is community-maintained. Check their terms for a
-  required credit before shipping, and if one is needed put it in the modal
-  footer.
+- The frontend needs no changes to *work*. `_base.jbuilder` already serialises
+  `availability.{boughtAt,soldAt,rentalAt}` and the models controller already
+  preloads `:item_prices` on every endpoint that renders a model, so no N+1
+  appears now that the table is non-empty.
+- Correction to the earlier claim: `Models/BaseMetrics` renders only
+  `modelPrice.location` for both `soldAt` and `rentalAt` — not price, not rental
+  period. The data is in the payload; showing it is a separate UI change.
+- Attribution: UEX's API terms (section 5 of <https://uexcorp.space/about/terms>)
+  impose no credit requirement. They do publish an optional "Powered by UEX"
+  badge at `https://uexcorp.space/img/api/uex-api-badge-powered.png`, worth adding
+  as a courtesy but not a blocker.
+- Rental period still wants an in-game check (decision 2). Nothing in the data
+  can confirm it; if it turns out to be the 30-day rate, change
+  `Uex::PriceSyncer::RENTAL_TIME_RANGE` and re-run — no migration needed.
 - `Model#sold_at` / `#rental_at` already `sort_by(&:price)` and
   `uniq(&:location)`, so duplicate locations across terminals collapse in the
   API response regardless of what we store.
