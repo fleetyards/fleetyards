@@ -154,6 +154,13 @@ json.metrics do
   end
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.weapon_pool_size model.weapon_pool_size if model.weapon_pool_size.present?
+  if model.signature_cross_section.present?
+    json.signature_cross_section do
+      json.x model.signature_cross_section["x"].to_f
+      json.y model.signature_cross_section["y"].to_f
+      json.z model.signature_cross_section["z"].to_f
+    end
+  end
   json.size model.size
   json.size_label model.size&.humanize
   json.dock_size model.dock_size

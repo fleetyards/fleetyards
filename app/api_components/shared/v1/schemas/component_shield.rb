@@ -28,6 +28,25 @@ module Shared
           additionalProperties: false
         }.freeze
 
+        POWER_RANGE_ENTRY = {
+          type: :object,
+          properties: {
+            start: {type: :number},
+            modifier: {type: :number}
+          },
+          additionalProperties: false
+        }.freeze
+
+        POWER_RANGES = {
+          type: :object,
+          properties: {
+            low: POWER_RANGE_ENTRY,
+            medium: POWER_RANGE_ENTRY,
+            high: POWER_RANGE_ENTRY
+          },
+          additionalProperties: false
+        }.freeze
+
         schema({
           type: :object,
           properties: {
@@ -37,7 +56,11 @@ module Shared
             downedRegenDelay: {type: :number},
             damagedRegenDelay: {type: :number},
             resistance: DAMAGE_TYPE_MAP,
-            absorption: DAMAGE_TYPE_MAP
+            absorption: DAMAGE_TYPE_MAP,
+            powerConsumption: {type: :number},
+            powerMinimumFraction: {type: :number},
+            powerRanges: POWER_RANGES,
+            signatureEm: {type: :number}
           },
           additionalProperties: false,
           required: %w[maxHealth maxRegen]
