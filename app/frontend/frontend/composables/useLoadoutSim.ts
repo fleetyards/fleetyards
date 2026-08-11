@@ -96,7 +96,21 @@ type HeatComponent = {
   ranges: PowerRange[];
   coolingRate: number;
   irNominal: number;
+  emNominal: number;
 };
+
+// A power plant as an EM source (plants emit the most EM, weighted by ship-wide
+// power utilization) and a segment source.
+type PowerPlant = {
+  units: number;
+  size: number;
+  poweredOn: boolean;
+  emNominal: number;
+  ranges: PowerRange[];
+};
+
+// A weapon's EM contribution (per-weapon nominal + its power-range curve).
+type WeaponEmSource = { emNominal: number; ranges: PowerRange[] };
 
 // FleetYards hardpoint category → erkul power family. Only the families erkul
 // feeds power segments to are mapped; every other category (thrusters, fuel,
@@ -149,6 +163,8 @@ export type LoadoutSimResult = {
   coolingRatio: number;
   // Emitted infrared signature at the current allocation (scaled by cooling).
   emittedIr: number;
+  // Emitted electromagnetic signature at the current allocation.
+  emittedEm: number;
 };
 
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
@@ -156,8 +172,9 @@ export type LoadoutSimResult = {
 export const DEFAULT_SHIELD_MAX_ITEM_COUNT = 2;
 
 type Collected = {
-  plants: { units: number; size: number; poweredOn: boolean }[];
+  plants: PowerPlant[];
   weaponUnits: number;
+  weaponEmSources: WeaponEmSource[];
   otherPorts: PowerPort[];
   portLabels: Record<string, string>;
   shieldsSeen: number;
@@ -192,6 +209,8 @@ function collectPorts(
             units,
             size: numeric(hardpoint.component?.size),
             poweredOn: true,
+            emNominal: numeric(typeData.signatureEm),
+            ranges: toRanges(typeData.powerRanges),
           });
         }
       } else {
@@ -205,6 +224,13 @@ function collectPorts(
         const draw = numeric(typeData.powerConsumption);
         if (family === "weapon") {
           acc.weaponUnits += draw;
+          const emNominal = numeric(typeData.signatureEm);
+          if (emNominal > 0) {
+            acc.weaponEmSources.push({
+              emNominal,
+              ranges: toRanges(typeData.powerRanges),
+            });
+          }
         } else if (family && draw > 0) {
           // Shields past the active cap are unpowered backups.
           const isBackupShield =
@@ -230,6 +256,7 @@ function collectPorts(
               coolingRate:
                 family === "coolers" ? numeric(typeData.coolingRate) : 0,
               irNominal: numeric(typeData.signatureIr),
+              emNominal: numeric(typeData.signatureEm),
             });
             if (hardpoint.component?.name) {
               acc.portLabels[hardpoint.id] = hardpoint.component.name;
@@ -428,6 +455,55 @@ function computeHeat(
   };
 }
 
+// EM signature (erkul's `yr`): power plants weighted by ship-wide power
+// utilization, weapons weighted by their pool fill ratio, and every other
+// powered component scaled by its active-segment fraction — each × its
+// power-range modifier and nominal EM emission.
+function computeEm(
+  plants: PowerPlant[],
+  weaponEmSources: WeaponEmSource[],
+  components: HeatComponent[],
+  perPort: Record<string, number>,
+  usedSegments: number,
+  totalSegments: number,
+  weaponAllocated: number,
+  weaponRatio: number,
+): number {
+  let em = 0;
+
+  const poweredPlants = plants.filter((plant) => plant.poweredOn);
+  if (poweredPlants.length > 0 && totalSegments > 0) {
+    const utilization = usedSegments / totalSegments;
+    const perPlant = Math.round(usedSegments) / poweredPlants.length;
+    const plantSum = poweredPlants.reduce(
+      (sum, plant) =>
+        sum + plant.emNominal * rangeModifier(plant.ranges, perPlant),
+      0,
+    );
+    em += plantSum * utilization;
+  }
+
+  if (weaponAllocated > 0 && weaponRatio > 0) {
+    const weaponSum = weaponEmSources.reduce(
+      (sum, weapon) =>
+        sum + weapon.emNominal * rangeModifier(weapon.ranges, weaponAllocated),
+      0,
+    );
+    em += weaponSum * weaponRatio;
+  }
+
+  for (const component of components) {
+    const active = perPort[component.portPath] ?? 0;
+    if (active <= 0 || component.units <= 0) continue;
+    em +=
+      component.emNominal *
+      rangeModifier(component.ranges, active) *
+      (active / component.units);
+  }
+
+  return em;
+}
+
 // Pure core: build the family ports from a loadout, run erkul's allocation over
 // the plants' segments, and expose the per-component columns and the weapon
 // sustained-DPS ratios (current allocation + max-weapon).
@@ -443,6 +519,7 @@ export function simulateLoadoutPower(
     {
       plants: [],
       weaponUnits: 0,
+      weaponEmSources: [],
       otherPorts: [],
       portLabels: {},
       shieldsSeen: 0,
@@ -517,10 +594,18 @@ export function simulateLoadoutPower(
         )
       : 0;
 
-  const heat = computeHeat(
+  const usedSegments = segments - state.remaining;
+  const heat = computeHeat(acc.components, usedSegments, state.perPort);
+  const weaponRatioValue = pool <= 0 ? 1 : weaponPoolRatio(state, consumption);
+  const emittedEm = computeEm(
+    acc.plants,
+    acc.weaponEmSources,
     acc.components,
-    segments - state.remaining,
     state.perPort,
+    usedSegments,
+    segments,
+    state.perPort[WEAPON_POOL_PORT] ?? 0,
+    weaponRatioValue,
   );
 
   return {
@@ -529,7 +614,7 @@ export function simulateLoadoutPower(
     perFamily: state.perFamily,
     columns,
     // No fixed weapon pool → the ship's guns are power-unlimited (ratio 1).
-    weaponPoolRatio: pool <= 0 ? 1 : weaponPoolRatio(state, consumption),
+    weaponPoolRatio: weaponRatioValue,
     weaponMaxRatio: computeWeaponMaxRatio(
       pool,
       consumption,
@@ -544,6 +629,7 @@ export function simulateLoadoutPower(
     heatGeneration: heat.heatGeneration,
     coolingRatio: heat.coolingRatio,
     emittedIr: heat.emittedIr,
+    emittedEm,
   };
 }
 

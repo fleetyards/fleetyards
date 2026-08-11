@@ -602,7 +602,9 @@
         "aimAssist": "Aim Assist",
         "cooling": "Cooling",
         "ir": "IR",
+        "em": "EM",
         "cs": "CS",
+        "csAxisHint": "Click to switch axis (x / y / z)",
         "segmentsUsed": "%{used} / %{total} segments",
         "hint": "Move power between systems. Weapons' sustained DPS scales with the power they get; the rest is auto-balanced.",
         "families": {

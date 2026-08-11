@@ -30,7 +30,7 @@ import mainThrustersIconUrl from "@/images/hardpoints/main_thrusters.svg";
 type Props = {
   hardpoints?: Hardpoint[];
   weaponPoolSize?: number;
-  crossSection?: number;
+  crossSection?: { x?: number; y?: number; z?: number };
   modelValue?: PortOverrides;
   mode?: FlightMode;
 };
@@ -118,15 +118,30 @@ const coolingPercent = computed(() => Math.round(sim.value.coolingRatio * 100));
 const coolingFill = computed(() => Math.min(coolingPercent.value, 100));
 const coolingOver = computed(() => coolingPercent.value > 100);
 
-// Signature readouts (erkul's IR / CS numbers). IR is power-reactive (from the
-// active coolers); CS is the ship's fixed cross-section. Compact-formatted
-// (e.g. "9.8k") like erkul. EM is not modelled yet.
+// Signature readouts (erkul's IR / EM / CS numbers). IR + EM are power-reactive;
+// CS is the ship's fixed cross-section per axis. Compact-formatted ("9.8k").
 const compact = (value: number) =>
   value >= 1000 ? `${(value / 1000).toFixed(1)}k` : `${Math.round(value)}`;
 const emittedIr = computed(() => sim.value.emittedIr);
-const crossSection = computed(() => props.crossSection ?? 0);
+const emittedEm = computed(() => sim.value.emittedEm);
+
+// Cross-section: erkul shows one axis at a time with a clickable label to cycle
+// x → y → z. Default to the largest axis.
+const CS_AXES = ["x", "y", "z"] as const;
+type CsAxis = (typeof CS_AXES)[number];
+const csValue = (axis: CsAxis) => Math.round(props.crossSection?.[axis] ?? 0);
+const csAxis = ref<CsAxis>(
+  CS_AXES.reduce((best, axis) => (csValue(axis) > csValue(best) ? axis : best)),
+);
+const cycleCsAxis = () => {
+  csAxis.value = CS_AXES[(CS_AXES.indexOf(csAxis.value) + 1) % CS_AXES.length];
+};
+const crossSection = computed(() => csValue(csAxis.value));
+const hasCrossSection = computed(() =>
+  CS_AXES.some((axis) => csValue(axis) > 0),
+);
 const hasSignatures = computed(
-  () => emittedIr.value > 0 || crossSection.value > 0,
+  () => emittedIr.value > 0 || emittedEm.value > 0 || hasCrossSection.value,
 );
 
 const familyLabel = (family: PowerFamily) =>
@@ -260,14 +275,27 @@ const cellHeight = (span: number) =>
     </div>
 
     <div v-if="hasSignatures" class="power-sigs">
-      <div class="power-sigs__item">
-        <span class="power-sigs__label">{{ t("labels.power.ir") }}</span>
+      <div class="power-sigs__item" :title="t('labels.power.ir')">
+        <i class="fa-duotone fa-fire-flame-simple power-sigs__icon" />
         <span class="power-sigs__value">{{ compact(emittedIr) }}</span>
       </div>
-      <div v-if="crossSection > 0" class="power-sigs__item">
-        <span class="power-sigs__label">{{ t("labels.power.cs") }}</span>
-        <span class="power-sigs__value">{{ compact(crossSection) }}</span>
+      <div class="power-sigs__item" :title="t('labels.power.em')">
+        <i class="fa-duotone fa-bolt power-sigs__icon" />
+        <span class="power-sigs__value">{{ compact(emittedEm) }}</span>
       </div>
+      <button
+        v-if="hasCrossSection"
+        type="button"
+        class="power-sigs__item power-sigs__item--toggle"
+        :title="t('labels.power.csAxisHint')"
+        @click="cycleCsAxis"
+      >
+        <i class="fa-duotone fa-diamond power-sigs__icon" />
+        <span class="power-sigs__value">
+          {{ compact(crossSection) }}
+          <span class="power-sigs__axis">{{ csAxis.toUpperCase() }}</span>
+        </span>
+      </button>
     </div>
 
     <div
@@ -442,21 +470,32 @@ const cellHeight = (span: number) =>
 
 .power-sigs {
   display: flex;
-  gap: 28px;
+  justify-content: center;
+  gap: 32px;
   margin-bottom: 16px;
 
   &__item {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 8px;
+
+    &--toggle {
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+
+      &:hover .power-sigs__value,
+      &:hover .power-sigs__icon {
+        color: $primary;
+      }
+    }
   }
 
-  &__label {
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 9.5px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: $gray;
+  &__icon {
+    font-size: 14px;
+    color: $primary;
+    opacity: 0.9;
   }
 
   &__value {
@@ -464,6 +503,13 @@ const cellHeight = (span: number) =>
     font-weight: 600;
     color: $text-color;
     font-variant-numeric: tabular-nums;
+  }
+
+  &__axis {
+    font-size: 10px;
+    font-weight: 600;
+    color: $gray;
+    margin-left: 2px;
   }
 }
 

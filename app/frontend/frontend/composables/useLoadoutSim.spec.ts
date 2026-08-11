@@ -364,6 +364,23 @@ describe("heat (cooling ratio)", () => {
     expect(coolerOff.emittedIr).toBe(0);
   });
 
+  it("computes an EM signature from plants and powered components", () => {
+    const emPlant = hp(
+      HardpointCategoryEnum.POWERPLANT,
+      { powerBase: 40, signatureEm: 6000 },
+      { size: 2 },
+    );
+    const shield = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
+      powerConsumption: 4,
+      signatureEm: 1600,
+    });
+    const sim = simulateLoadoutPower([emPlant, shield], 0);
+    expect(sim.emittedEm).toBeGreaterThan(0);
+    // No plant / nothing powered → no EM.
+    const dark = simulateLoadoutPower([shield], 0);
+    expect(dark.emittedEm).toBe(0);
+  });
+
   it("exceeds 1 when the coolers can't keep up (under-cooled)", () => {
     // A tiny cooler against a fully-powered shield generates far more heat than
     // it can dissipate → cooling load well above 1.
