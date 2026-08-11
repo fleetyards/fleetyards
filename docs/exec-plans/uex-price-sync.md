@@ -66,11 +66,24 @@ vehicle:
 | Mustang Alpha | 9,639 | 610,470 | 1.58% |
 
 A tight cluster at ~2.5% is consistent with a single fixed duration, and in game
-the 1-day rate sits in that band. **Recommendation: store `1-day`.** It should
-be confirmed against an in-game terminal before shipping — if it turns out to be
-30-day, every rental figure is wrong by ~30×, and nothing in the data would tell
-us. The alternative is relaxing the validation to allow a null `time_range`,
-which is honest but pushes an "unknown period" case into the UI.
+the 1-day rate sits in that band. **Recommendation: store `1-day`.**
+
+**Confirmed 2026-08-11** against an in-game rental board for the Avenger Titan,
+which prices all four durations at every terminal:
+
+| 1 day | 3 day | 7 days | 30 days |
+| ---: | ---: | ---: | ---: |
+| 27,165 | 71,308 | 142,616 | 509,344 |
+
+UEX's `price_rent` of 27,165 is the 1-day figure, so `RENTAL_TIME_RANGE = "1-day"`
+is right and no relaxed validation is needed. The multipliers are 1× / 2.63× /
+5.25× / 18.75×, i.e. longer rentals are discounted rather than linear — had we
+guessed 30-day, the figure would have been wrong by 18.75×, not the ~30× assumed
+above.
+
+UEX carries only the 1-day rate, so the other three durations are simply absent
+from the feed. `ItemPrice#time_range` already enumerates all four, so a future
+source could add them without a migration.
 
 ### 3. Eight ships need a manual mapping
 
@@ -209,9 +222,11 @@ to `ImportTypeEnum` (then `./bin/generate-schema`) and needs a jbuilder partial 
   availability, since availability on other item types is not UEX-sourced. Text
   rather than their badge image — the CSP `img-src` list would need widening for a
   remote asset.
-- Rental period still wants an in-game check (decision 2). Nothing in the data
-  can confirm it; if it turns out to be the 30-day rate, change
-  `Uex::PriceSyncer::RENTAL_TIME_RANGE` and re-run — no migration needed.
+- Rental period confirmed in-game (see decision 2): 27,165 for the Avenger Titan
+  is the 1-day rate. Nothing left open here.
+- Buy figures match the in-game board, with one 4 aUEC drift: UEX reports
+  1,290,370 at New Deal Lorville against 1,290,366 in game. Expected for a
+  community-maintained feed with per-row verification dates, not a sync fault.
 - `Model#sold_at` / `#rental_at` already `sort_by(&:price)` and
   `uniq(&:location)`, so duplicate locations across terminals collapse in the
   API response regardless of what we store.

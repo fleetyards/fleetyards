@@ -6,8 +6,8 @@ module Uex
     TERMINAL_TYPES = %w[vehicle_buy vehicle_rent].freeze
 
     # UEX carries a single rental row per (vehicle, terminal) with no period
-    # field. Rent sits at ~2.5% of the purchase price across the whole set,
-    # which is the in-game 1-day rate.
+    # field. It is the 1-day rate: in game the Avenger Titan rents at 27,165 /
+    # 71,308 / 142,616 / 509,344 for 1 / 3 / 7 / 30 days, and UEX reports 27,165.
     RENTAL_TIME_RANGE = "1-day"
 
     Result = Struct.new(:created, :updated, :removed, :unmatched) do
