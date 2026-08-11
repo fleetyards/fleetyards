@@ -5,7 +5,6 @@ import {
   simulateLoadoutPower,
   useLoadoutSim,
   WEAPON_POOL_PORT,
-  SHIELD_POOL_PORT,
   type LoadoutSimResult,
 } from "./useLoadoutSim";
 import type { PowerFamily } from "./powerSim";
@@ -215,9 +214,12 @@ describe("overrides (pip UI)", () => {
 
   it("returns freed pips to the pool instead of redistributing", () => {
     const ports = asgardLike();
+    const shieldId = ports.find(
+      (h) => h.category === HardpointCategoryEnum.SHIELDGENERATOR,
+    )!.id;
     const base = simulateLoadoutPower(ports, 4);
     const reduced = simulateLoadoutPower(ports, 4, "SCM", {
-      [SHIELD_POOL_PORT]: 1,
+      [shieldId]: 1,
     });
     // Dropping shields frees segments into `remaining`, not into other families.
     expect(reduced.remaining).toBeGreaterThan(base.remaining);
@@ -225,9 +227,13 @@ describe("overrides (pip UI)", () => {
   });
 
   it("exposes a shieldPoolRatio that drops to 0 when shields are unpowered", () => {
-    expect(simulateLoadoutPower(asgardLike(), 4).shieldPoolRatio).toBe(1);
-    const off = simulateLoadoutPower(asgardLike(), 4, "SCM", {
-      [SHIELD_POOL_PORT]: 0,
+    const ports = asgardLike();
+    const shieldId = ports.find(
+      (h) => h.category === HardpointCategoryEnum.SHIELDGENERATOR,
+    )!.id;
+    expect(simulateLoadoutPower(ports, 4).shieldPoolRatio).toBe(1);
+    const off = simulateLoadoutPower(ports, 4, "SCM", {
+      [shieldId]: 0,
     });
     expect(off.shieldPoolRatio).toBe(0);
   });
@@ -258,8 +264,11 @@ describe("shield active cap", () => {
 
   it("powers only the first 2 shields by default (rest are backups)", () => {
     const sim = simulateLoadoutPower([plant(40, 2), ...shields(3)], 0);
-    // Shields aggregate into ONE column; 2 active × 4 cells = 8, 3rd is backup.
-    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(1);
+    // Shields stack into ONE column with a member per active generator
+    // (2 active × 4 cells = 8), the 3rd is a backup.
+    const shieldCols = sim.columns.filter((c) => c.family === "shield");
+    expect(shieldCols).toHaveLength(1);
+    expect(shieldCols[0].members).toHaveLength(2);
     expect(familyCapacity(sim, "shield")).toBe(8);
   });
 
@@ -271,8 +280,38 @@ describe("shield active cap", () => {
       undefined,
       3,
     );
-    expect(sim.columns.filter((c) => c.family === "shield")).toHaveLength(1);
+    const shieldCols = sim.columns.filter((c) => c.family === "shield");
+    expect(shieldCols).toHaveLength(1);
+    expect(shieldCols[0].members).toHaveLength(3);
     expect(familyCapacity(sim, "shield")).toBe(12);
+  });
+
+  it("lets a single generator be disabled independently", () => {
+    const gens = shields(2);
+    const ports = [plant(40, 2), ...gens];
+    const full = simulateLoadoutPower(ports, 0);
+    expect(full.shieldPoolRatio).toBe(1);
+    // Turning off just one of two equal generators halves the shield ratio,
+    // while the stacked column keeps both members.
+    const one = simulateLoadoutPower(ports, 0, "SCM", { [gens[0].id]: 0 });
+    expect(one.shieldPoolRatio).toBeCloseTo(0.5);
+    const shieldCol = one.columns.find((c) => c.family === "shield");
+    expect(shieldCol?.members).toHaveLength(2);
+  });
+});
+
+describe("tractor beams", () => {
+  it("groups tractor beams into their own column, not the weapon pool", () => {
+    const tractorA = hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 2 });
+    tractorA.component!.type = "TractorBeam";
+    const tractorB = hp(HardpointCategoryEnum.TURRET, { powerConsumption: 3 });
+    tractorB.component!.type = "TractorBeam";
+    const sim = simulateLoadoutPower([plant(40, 2), tractorA, tractorB], 4);
+    // They must not inflate weapon consumption / the weapon pool.
+    expect(sim.perFamily.weapon).toBe(0);
+    const col = sim.columns.find((c) => c.family === "tractorBeam");
+    expect(col?.members).toHaveLength(2);
+    expect(col?.capacity).toBe(5);
   });
 });
 

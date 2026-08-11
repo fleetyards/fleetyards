@@ -17,18 +17,33 @@ import {
 
 export { WEAPON_POOL_PORT, type PortOverrides } from "./powerSim";
 
-// A single power column in the pip UI — one component, or the shared weapon
-// pool. `label` is the component name (undefined for the weapon pool). `min` is
-// the mandatory floor: the component is either off (0) or on at ≥ `min`
-// segments (min === capacity for all-critical systems like the quantum drive).
-export type PowerColumn = {
+// One controllable unit inside a column: a single component (or the shared
+// weapon pool). `min` is the mandatory floor — the unit is either off (0) or on
+// at ≥ `min` segments (min === capacity for all-critical systems like the QD).
+export type PowerColumnMember = {
   portPath: string;
-  family: PowerFamily;
   label?: string;
   allocated: number;
   capacity: number;
   min: number;
 };
+
+// A single column in the pip UI. Most families render one column per component;
+// grouped families (shields, tractor/towing beams) stack every component into
+// one column with a `members` entry per generator/beam so each can be toggled
+// individually. Column-level `allocated`/`capacity`/`min` sum the members.
+export type PowerColumn = PowerColumnMember & {
+  family: PowerFamily;
+  members: PowerColumnMember[];
+};
+
+// Families whose components stack into a single column (each still individually
+// toggleable). Everything else — notably coolers — is one column per component.
+const GROUPED_FAMILIES = new Set<PowerFamily>([
+  "shield",
+  "tractorBeam",
+  "towingbeam",
+]);
 
 // FleetYards hardpoint category → erkul power family. Only the families erkul
 // feeds power segments to are mapped; every other category (thrusters, fuel,
@@ -77,10 +92,6 @@ export type LoadoutSimResult = {
 // pool `maxItemCount`); the rest are unpowered backups. 2 is the game default.
 export const DEFAULT_SHIELD_MAX_ITEM_COUNT = 2;
 
-// The active shields share a pool (like weapons), so they aggregate into one
-// column / override key rather than one per generator.
-export const SHIELD_POOL_PORT = "shieldPool";
-
 type Collected = {
   plants: { units: number; size: number; poweredOn: boolean }[];
   weaponUnits: number;
@@ -120,7 +131,13 @@ function collectPorts(
           });
         }
       } else {
-        const family = POWER_FAMILY_BY_CATEGORY[category];
+        // Tractor/towing beams are miscategorised (weapons/turret/unknown), so
+        // their component type is the reliable signal — it also keeps them out
+        // of the shared weapon pool.
+        const componentType = hardpoint.component?.type;
+        let family = POWER_FAMILY_BY_CATEGORY[category];
+        if (componentType === "TractorBeam") family = "tractorBeam";
+        else if (componentType === "TowingBeam") family = "towingbeam";
         const draw = numeric(typeData.powerConsumption);
         if (family === "weapon") {
           acc.weaponUnits += draw;
@@ -129,21 +146,19 @@ function collectPorts(
           const isBackupShield =
             family === "shield" && ++acc.shieldsSeen > shieldMaxItemCount;
           if (!isBackupShield) {
-            // Shields share a pool → one aggregate column; every other family
-            // is one column per component.
-            const portPath =
-              family === "shield" ? SHIELD_POOL_PORT : hardpoint.id;
+            // One column per component (each shield generator included) so any
+            // single generator can be toggled independently.
             const minimumFraction =
               typeData.powerMinimumFraction == null
                 ? undefined
                 : numeric(typeData.powerMinimumFraction);
             acc.otherPorts.push(
-              ...componentBlocks(portPath, family, {
+              ...componentBlocks(hardpoint.id, family, {
                 units: draw,
                 minimumFraction,
               }),
             );
-            if (family !== "shield" && hardpoint.component?.name) {
+            if (hardpoint.component?.name) {
               acc.portLabels[hardpoint.id] = hardpoint.component.name;
             }
             // Capture the radar's aim-assist range for the power-pane readout.
@@ -196,8 +211,9 @@ function computeWeaponMaxRatio(
   return Math.min(uncapped, weaponMax / consumption);
 }
 
-// Group the allocation into display columns: one per component (+ the shared
-// weapon pool), ordered by family, dropping ports with no capacity.
+// Group the allocation into display columns: one member per component (+ the
+// shared weapon pool), with grouped families stacking their members into a
+// single column. Ordered by family, dropping ports with no capacity.
 function buildColumns(
   ports: PowerPort[],
   portLabels: Record<string, string>,
@@ -221,25 +237,44 @@ function buildColumns(
     }
   }
 
-  const columns = order
-    .map((portPath) => {
-      const entry = byPort.get(portPath) as {
-        family: PowerFamily;
-        capacity: number;
-        critical: number;
-      };
-      return {
-        portPath,
-        family: entry.family,
-        label: portPath === WEAPON_POOL_PORT ? undefined : portLabels[portPath],
-        allocated: state.perPort[portPath] ?? 0,
-        capacity: entry.capacity,
-        // Mandatory floor: a component is either off or on at ≥ this many
-        // segments (equals capacity for all-critical systems like the QD).
-        min: entry.critical,
-      };
-    })
-    .filter((column) => column.capacity > 0);
+  const columns: PowerColumn[] = [];
+  const grouped = new Map<PowerFamily, PowerColumn>();
+  for (const portPath of order) {
+    const entry = byPort.get(portPath)!;
+    if (entry.capacity <= 0) continue;
+    const member: PowerColumnMember = {
+      portPath,
+      label: portPath === WEAPON_POOL_PORT ? undefined : portLabels[portPath],
+      allocated: state.perPort[portPath] ?? 0,
+      capacity: entry.capacity,
+      // Mandatory floor: a component is either off or on at ≥ this many
+      // segments (equals capacity for all-critical systems like the QD).
+      min: entry.critical,
+    };
+
+    if (GROUPED_FAMILIES.has(entry.family)) {
+      let column = grouped.get(entry.family);
+      if (!column) {
+        column = {
+          ...member,
+          allocated: 0,
+          capacity: 0,
+          min: 0,
+          label: undefined,
+          family: entry.family,
+          members: [],
+        };
+        grouped.set(entry.family, column);
+        columns.push(column);
+      }
+      column.members.push(member);
+      column.allocated += member.allocated;
+      column.capacity += member.capacity;
+      column.min += member.min;
+    } else {
+      columns.push({ ...member, family: entry.family, members: [member] });
+    }
+  }
 
   return columns.sort(
     (a, b) =>
@@ -307,13 +342,17 @@ export function simulateLoadoutPower(
 
   const columns = buildColumns(ports, acc.portLabels, state);
 
-  // Shield power ratio = allocated shield segments / shield capacity (0 when
-  // shields are unpowered, 1 when there are no shields). Drives shield HP/regen.
-  const shieldColumn = columns.find((column) => column.family === "shield");
+  // Shield power ratio = allocated shield segments / total shield capacity
+  // across every active generator (0 when shields are unpowered, 1 when there
+  // are no shields). Drives shield HP/regen and scales with a disabled generator.
+  const shieldColumns = columns.filter((column) => column.family === "shield");
+  const shieldCapacity = shieldColumns.reduce((sum, c) => sum + c.capacity, 0);
+  const shieldAllocated = shieldColumns.reduce(
+    (sum, c) => sum + c.allocated,
+    0,
+  );
   const shieldPoolRatio =
-    shieldColumn && shieldColumn.capacity > 0
-      ? Math.min(1, shieldColumn.allocated / shieldColumn.capacity)
-      : 1;
+    shieldCapacity > 0 ? Math.min(1, shieldAllocated / shieldCapacity) : 1;
 
   // Radar power ratio → effective aim-assist range (erkul's `or`): interpolated
   // between the radar's min and max by radar power, 0 when the radar is off.
