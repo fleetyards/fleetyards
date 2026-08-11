@@ -420,6 +420,30 @@ describe("heat (cooling ratio)", () => {
   });
 });
 
+describe("engine power ratio (flight scaling)", () => {
+  it("is 1 at the default and drops as engine pips are pulled", () => {
+    const engine = hp(HardpointCategoryEnum.CONTROLLER, {
+      powerConsumption: 8,
+      powerMinimumFraction: 0.125,
+    });
+    const ports = [plant(40, 2), engine];
+    expect(simulateLoadoutPower(ports, 0).enginePowerRatio).toBe(1);
+    const off = simulateLoadoutPower(ports, 0, "SCM", { [engine.id]: 0 });
+    expect(off.enginePowerRatio).toBe(0);
+  });
+
+  it("is 1 when the ship has no engine power family", () => {
+    const sim = simulateLoadoutPower(
+      [
+        plant(40, 2),
+        hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
+      ],
+      0,
+    );
+    expect(sim.enginePowerRatio).toBe(1);
+  });
+});
+
 describe("weapon pool headroom", () => {
   it("renders the full pool but is only fillable up to weapon demand", () => {
     // One energy weapon drawing 2 (consumption 2) with a pool of 10 → the

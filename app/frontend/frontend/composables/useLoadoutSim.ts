@@ -149,6 +149,9 @@ export type LoadoutSimResult = {
   // Shield power ratio (allocated shield segments / capacity) — scales shield
   // HP/regen; 0 when shields are unpowered.
   shieldPoolRatio: number;
+  // Engine power relative to the default distribution — scales flight speed and
+  // handling; 1 at the default, 0 when the engine is fully unpowered.
+  enginePowerRatio: number;
   // Effective aim-assist range (m) at the current radar power, and the radar's
   // max (for the bar's full scale). 0 when there's no radar / it's unpowered.
   aimAssist: number;
@@ -578,6 +581,21 @@ export function simulateLoadoutPower(
   const shieldPoolRatio =
     shieldCapacity > 0 ? Math.min(1, shieldAllocated / shieldCapacity) : 1;
 
+  // Engine (thruster) power relative to the default distribution — scales the
+  // flight stats. 1 at the default allocation (the ship's rated figures already
+  // reflect it), lower as the user pulls engine pips, higher as they add them.
+  // 1 when the ship has no engine power family (nothing to scale against).
+  const hasEngine = columns.some((column) => column.family === "engine");
+  const engineBaseline = baseline.perFamily.engine;
+  const engineCurrent = state.perFamily.engine;
+  const enginePowerRatio = !hasEngine
+    ? 1
+    : engineBaseline > 0
+      ? engineCurrent / engineBaseline
+      : engineCurrent > 0
+        ? 1
+        : 0;
+
   // Radar power ratio → effective aim-assist range (erkul's `or`): interpolated
   // between the radar's min and max by radar power, 0 when the radar is off.
   const radarColumn = columns.find((column) => column.family === "radar");
@@ -622,6 +640,7 @@ export function simulateLoadoutPower(
       acc.otherPorts,
     ),
     shieldPoolRatio,
+    enginePowerRatio,
     aimAssist,
     aimAssistMax,
     coolingPerSec: heat.coolingPerSec,

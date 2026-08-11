@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -17,6 +18,14 @@ const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
 
+// Engine power relative to the default distribution (provided by Hardpoints).
+// Scales the flight figures with the thruster pips; 1 when standalone.
+const enginePowerRatio = inject<Ref<number | undefined>>(
+  "enginePowerRatio",
+  ref(1),
+);
+const ratio = computed(() => toValue(enginePowerRatio) ?? 1);
+
 const speeds = computed(() => props.model.speeds);
 const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
 
@@ -26,12 +35,40 @@ const hasData = computed(() =>
     : !!(speeds.value.scmSpeed || speeds.value.maxSpeed),
 );
 
-// The handling axes (°/s) — only meaningful for spaceflight.
+const scaled = (value?: number) => (value ?? 0) * ratio.value;
+
+const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
+const scmSpeed = useTransition(() => scaled(speeds.value.scmSpeed), animate);
+const scmBoost = useTransition(
+  () => scaled(speeds.value.scmSpeedBoosted),
+  animate,
+);
+
+const speed = (value: number) => toNumber(Math.round(value), "speed");
+const rotation = (value: number) => toNumber(Math.round(value), "rotation");
+
+// Handling axes (°/s), base → boosted, scaled by engine power — only meaningful
+// for spaceflight.
 const rotations = computed(() => [
-  { label: t("model.pitch"), value: speeds.value.pitch },
-  { label: t("model.yaw"), value: speeds.value.yaw },
-  { label: t("model.roll"), value: speeds.value.roll },
+  {
+    label: t("model.pitch"),
+    base: speeds.value.pitch,
+    boost: speeds.value.pitchBoosted,
+  },
+  {
+    label: t("model.yaw"),
+    base: speeds.value.yaw,
+    boost: speeds.value.yawBoosted,
+  },
+  {
+    label: t("model.roll"),
+    base: speeds.value.roll,
+    boost: speeds.value.rollBoosted,
+  },
 ]);
+
+const reverseSpeed = computed(() => scaled(speeds.value.reverseSpeedBoosted));
+const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
 </script>
 
 <template>
@@ -62,21 +99,25 @@ const rotations = computed(() => [
       <template v-else>
         <div class="metrics-card__tile metrics-card__tile--primary">
           <div class="metrics-card__tile__label">{{ t("model.scmSpeed") }}</div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(speeds.scmSpeed, "speed") }}
-          </div>
+          <div class="metrics-card__tile__value">{{ speed(scmSpeed) }}</div>
           <div class="metrics-card__tile__sub">
             {{ t("labels.flight.scm") }}
           </div>
         </div>
         <div class="metrics-card__tile">
-          <div class="metrics-card__tile__label">{{ t("model.maxSpeed") }}</div>
-          <div class="metrics-card__tile__value">
-            {{ toNumber(speeds.maxSpeed, "speed") }}
+          <div class="metrics-card__tile__label">
+            {{ t("labels.flight.boost") }}
           </div>
+          <div class="metrics-card__tile__value">{{ speed(scmBoost) }}</div>
           <div class="metrics-card__tile__sub">
-            {{ t("labels.flight.nav") }}
+            {{ t("labels.flight.boostSub") }}
           </div>
+        </div>
+        <div v-if="hasReverse" class="metrics-card__tile">
+          <div class="metrics-card__tile__label">
+            {{ t("labels.flight.reverse") }}
+          </div>
+          <div class="metrics-card__tile__value">{{ speed(reverseSpeed) }}</div>
         </div>
       </template>
     </div>
@@ -92,7 +133,10 @@ const rotations = computed(() => [
           class="flight-rot__item"
         >
           <span class="flight-rot__value">
-            {{ toNumber(axis.value, "rotation") }}
+            {{ rotation(scaled(axis.base)) }}
+            <span v-if="axis.boost" class="flight-rot__boost">
+              → {{ rotation(scaled(axis.boost)) }}
+            </span>
           </span>
           <span class="flight-rot__label">{{ axis.label }}</span>
         </div>
@@ -124,10 +168,16 @@ const rotations = computed(() => [
   }
 
   &__value {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     color: $text-color;
     font-variant-numeric: tabular-nums;
+  }
+
+  &__boost {
+    font-size: 11px;
+    font-weight: 600;
+    color: $primary;
   }
 
   &__label {
