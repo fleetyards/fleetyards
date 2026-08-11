@@ -584,7 +584,7 @@
         "boostSub": "afterburner",
         "reverse": "Reverse",
         "maneuverability": "Maneuverability",
-        "hint": "Boosted handling scales with the thruster pips; all zero when the engine is unpowered."
+        "hint": "Boosted handling scales with the engine pips; speeds and base handling are fixed."
       },
       "cargo": {
         "title": "Cargo",

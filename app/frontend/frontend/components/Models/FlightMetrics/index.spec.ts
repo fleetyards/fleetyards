@@ -72,14 +72,17 @@ describe("FlightMetrics engine reactivity", () => {
     expect(boosts(wrapper)).toEqual(["→ 11", "→ 11", "→ 19"]);
   });
 
-  it("zeroes the handling when the engine is unpowered", async () => {
+  it("keeps base handling and hides the boost at the engine floor (ratio 0)", async () => {
+    // The IFCS speeds/base handling are constant game figures; at the mandatory
+    // engine floor there's simply no afterburner boost to show.
     const { wrapper, enginePowerRatio } = mountFlight(1);
     enginePowerRatio.value = 0;
     await nextTick();
     expect(wrapper.findAll(".flight-rot__value").map((n) => n.text())).toEqual([
-      "0",
-      "0",
-      "0",
+      "10",
+      "10",
+      "17",
     ]);
+    expect(wrapper.findAll(".flight-rot__boost")).toHaveLength(0);
   });
 });

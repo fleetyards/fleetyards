@@ -18,17 +18,14 @@ const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
 
-// Engine power from the pip UI (Hardpoints). erkul: with the engine unpowered
-// (0 pips) the ship is dead in the water — every flight figure reads 0; any
-// power at all restores the rated figures. 1 (powered) when standalone.
+// Engine power from the pip UI (Hardpoints) — the game's IFCS afterburner ratio
+// (engine power above its floor, up to full pips). Only the *boosted* handling
+// scales with it; the speeds and base handling are constant game figures, as in
+// the IFCS flight model. 1 (full boost) when standalone / no engine family.
 const enginePowerRatio = inject<Ref<number | undefined>>(
   "enginePowerRatio",
   ref(1),
 );
-const powered = computed(() => ((toValue(enginePowerRatio) ?? 1) > 0 ? 1 : 0));
-// How much of the rated boost the thrusters can currently deliver — the game's
-// IFCS afterburner ratio (engine power above its floor, up to full pips). Only
-// the *boosted* handling scales with this; the speeds and base handling don't.
 const boostFactor = computed(() =>
   Math.min(1, Math.max(0, toValue(enginePowerRatio) ?? 1)),
 );
@@ -42,30 +39,29 @@ const hasData = computed(() =>
     : !!(speeds.value.scmSpeed || speeds.value.maxSpeed),
 );
 
-const gate = (value?: number) => (value ?? 0) * powered.value;
 // Boosted handling interpolates from the base rate up to the rated boosted rate
-// by how much boost the engine power supports.
+// by how much boost the engine power supports (0 → base, 1 → rated).
 const boosted = (base?: number, rated?: number) =>
-  gate((base ?? 0) + ((rated ?? base ?? 0) - (base ?? 0)) * boostFactor.value);
-// toNumber renders 0 as "N/A"; a gated-to-zero flight figure is a real 0.
+  (base ?? 0) + ((rated ?? base ?? 0) - (base ?? 0)) * boostFactor.value;
+// toNumber renders 0 as "N/A"; a real zero flight figure should read "0".
 const speed = (value: number) =>
   Math.round(value) > 0 ? toNumber(Math.round(value), "speed") : "0";
 const rotation = (value: number) =>
   Math.round(value) > 0 ? toNumber(Math.round(value), "rotation") : "0";
 
 const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
-const scmSpeed = useTransition(() => gate(speeds.value.scmSpeed), animate);
+const scmSpeed = useTransition(() => speeds.value.scmSpeed ?? 0, animate);
 const boostSpeed = useTransition(
-  () => gate(speeds.value.scmSpeedBoosted),
+  () => speeds.value.scmSpeedBoosted ?? 0,
   animate,
 );
-const maxSpeed = useTransition(() => gate(speeds.value.maxSpeed), animate);
+const maxSpeed = useTransition(() => speeds.value.maxSpeed ?? 0, animate);
 const groundMax = useTransition(
-  () => gate(speeds.value.groundMaxSpeed),
+  () => speeds.value.groundMaxSpeed ?? 0,
   animate,
 );
 const groundReverse = useTransition(
-  () => gate(speeds.value.groundReverseSpeed),
+  () => speeds.value.groundReverseSpeed ?? 0,
   animate,
 );
 
@@ -82,23 +78,24 @@ const rollBoost = useTransition(
   animate,
 );
 
-const rotations = computed(() => [
-  {
-    label: t("model.pitch"),
-    base: gate(speeds.value.pitch),
-    boost: pitchBoost.value,
-  },
-  {
-    label: t("model.yaw"),
-    base: gate(speeds.value.yaw),
-    boost: yawBoost.value,
-  },
-  {
-    label: t("model.roll"),
-    base: gate(speeds.value.roll),
-    boost: rollBoost.value,
-  },
-]);
+// Only surface the boosted rate when the engine power actually lifts it above
+// the base handling; at the mandatory floor there's no afterburner to show.
+const rotations = computed(() =>
+  [
+    {
+      label: t("model.pitch"),
+      base: speeds.value.pitch ?? 0,
+      boost: pitchBoost,
+    },
+    { label: t("model.yaw"), base: speeds.value.yaw ?? 0, boost: yawBoost },
+    { label: t("model.roll"), base: speeds.value.roll ?? 0, boost: rollBoost },
+  ].map((axis) => ({
+    label: axis.label,
+    base: axis.base,
+    boost: axis.boost.value,
+    showBoost: Math.round(axis.boost.value) > Math.round(axis.base),
+  })),
+);
 </script>
 
 <template>
@@ -163,7 +160,7 @@ const rotations = computed(() => [
         >
           <span class="flight-rot__value">
             {{ rotation(axis.base) }}
-            <span v-if="axis.boost" class="flight-rot__boost">
+            <span v-if="axis.showBoost" class="flight-rot__boost">
               → {{ rotation(axis.boost) }}
             </span>
           </span>
