@@ -198,10 +198,17 @@ to `ImportTypeEnum` (then `./bin/generate-schema`) and needs a jbuilder partial 
 - Correction to the earlier claim: `Models/BaseMetrics` renders only
   `modelPrice.location` for both `soldAt` and `rentalAt` — not price, not rental
   period. The data is in the payload; showing it is a separate UI change.
+- The ship page cannot be checked in a fresh worktree: it has no `.env`, so
+  `FRONTEND_ENDPOINT` is unset, the CORS origin list does not include
+  `fleetyards.test:8270`, and the model fetch dies after its preflight leaving the
+  page body empty. Verified the attribution with a Vitest mount instead.
 - Attribution: UEX's API terms (section 5 of <https://uexcorp.space/about/terms>)
-  impose no credit requirement. They do publish an optional "Powered by UEX"
-  badge at `https://uexcorp.space/img/api/uex-api-badge-powered.png`, worth adding
-  as a courtesy but not a blocker.
+  impose no credit requirement, but a "Powered by UEX" link to
+  <https://uexcorp.space> now sits under the availability lists in
+  `Models/BaseMetrics` as a courtesy. It renders only when the ship has
+  availability, since availability on other item types is not UEX-sourced. Text
+  rather than their badge image — the CSP `img-src` list would need widening for a
+  remote asset.
 - Rental period still wants an in-game check (decision 2). Nothing in the data
   can confirm it; if it turns out to be the 30-day rate, change
   `Uex::PriceSyncer::RENTAL_TIME_RANGE` and re-run — no migration needed.
