@@ -6980,8 +6980,11 @@ components:
           - "$ref": "#/components/schemas/FuelTank"
           - "$ref": "#/components/schemas/ComponentThruster"
           - "$ref": "#/components/schemas/ComponentWeapon"
+          - "$ref": "#/components/schemas/ComponentTractorBeam"
           - "$ref": "#/components/schemas/ComponentShield"
           - "$ref": "#/components/schemas/ComponentCooler"
+          - "$ref": "#/components/schemas/ComponentRadar"
+          - "$ref": "#/components/schemas/ComponentController"
           - "$ref": "#/components/schemas/ComponentPowerPlant"
         hardpoints:
           type: array
@@ -7060,10 +7063,113 @@ components:
       - RSI_PROPULSION
       - RSI_THRUSTER
       title: ComponentClassEnum
+    ComponentController:
+      type: object
+      properties:
+        scmSpeed:
+          type: number
+        scmSpeedBoosted:
+          type: number
+        reverseSpeedBoosted:
+          type: number
+        maxSpeed:
+          type: number
+        angularVelocity:
+          type: object
+          properties:
+            pitch:
+              type: number
+            yaw:
+              type: number
+            roll:
+              type: number
+          additionalProperties: false
+        boostedAngularVelocity:
+          type: object
+          properties:
+            pitch:
+              type: number
+            yaw:
+              type: number
+            roll:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+      title: ComponentController
     ComponentCooler:
       type: object
       properties:
         coolingRate:
+          type: number
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+        signatureIr:
           type: number
       additionalProperties: false
       required:
@@ -7106,6 +7212,36 @@ components:
           type: number
         powerDraw:
           type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
       additionalProperties: false
       title: ComponentPowerPlant
     ComponentQuantumDrive:
@@ -7147,6 +7283,40 @@ components:
           "$ref": "#/components/schemas/ComponentQuantumDriveJump"
         quantumBoostParams:
           "$ref": "#/components/schemas/ComponentQuantumDriveBoost"
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
       additionalProperties: false
       title: ComponentQuantumDrive
     ComponentQuantumDriveBoost:
@@ -7224,6 +7394,97 @@ components:
       additionalProperties: false
       example: {}
       title: ComponentQuery
+    ComponentRadar:
+      type: object
+      properties:
+        signatureDetection:
+          type: object
+          properties:
+            ir:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            em:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            cs:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+            rs:
+              type: object
+              properties:
+                sensitivity:
+                  type: number
+                piercing:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        pingProperties:
+          type: object
+          properties:
+            cooldownTime:
+              type: number
+          additionalProperties: false
+        aimAssistRange:
+          type: number
+        aimAssistMin:
+          type: number
+        sensitivityModifiers:
+          type: object
+          properties:
+            sensitivityAddition:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
+      additionalProperties: false
+      title: ComponentRadar
     ComponentShield:
       type: object
       properties:
@@ -7341,6 +7602,40 @@ components:
                   type: number
               additionalProperties: false
           additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
+          type: number
       additionalProperties: false
       required:
       - maxHealth
@@ -7376,6 +7671,107 @@ components:
       - thrusterType
       - fuelBurnRatePer10KNewton
       title: ComponentThruster
+    ComponentTractorBeam:
+      type: object
+      properties:
+        tractorBeam:
+          type: boolean
+        minForce:
+          type: number
+        maxForce:
+          type: number
+        minDistance:
+          type: number
+        maxDistance:
+          type: number
+        fullStrengthDistance:
+          type: number
+        maxAngle:
+          type: number
+        maxVolume:
+          type: number
+        volumeForceCoefficient:
+          type: number
+        tetherBreakTime:
+          type: number
+        heatPerSecond:
+          type: number
+        rotation:
+          type: object
+          properties:
+            maxAngularVelocity:
+              type: number
+            degreesPerAction:
+              type: number
+          additionalProperties: false
+        movement:
+          type: object
+          properties:
+            maxSpeed:
+              type: number
+            maxAcceleration:
+              type: number
+          additionalProperties: false
+        cargoMode:
+          type: object
+          properties:
+            maxForce:
+              type: number
+            minDistance:
+              type: number
+            maxDistance:
+              type: number
+            fullStrengthDistance:
+              type: number
+          additionalProperties: false
+        towing:
+          type: object
+          properties:
+            towingForce:
+              type: number
+            towingMaxDistance:
+              type: number
+            towingMaxAcceleration:
+              type: number
+            quantumTowMassLimit:
+              type: number
+          additionalProperties: false
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+      additionalProperties: false
+      required:
+      - tractorBeam
+      title: ComponentTractorBeam
     ComponentTypeEnum:
       type: string
       enum:
@@ -7537,6 +7933,36 @@ components:
         heatPerShot:
           type: number
         powerConsumption:
+          type: number
+        powerRanges:
+          type: object
+          properties:
+            low:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            medium:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+            high:
+              type: object
+              properties:
+                start:
+                  type: number
+                modifier:
+                  type: number
+              additionalProperties: false
+          additionalProperties: false
+        signatureEm:
           type: number
         damagePerShot:
           type: object
@@ -10448,6 +10874,16 @@ components:
               type: number
             weaponPoolSize:
               type: number
+            signatureCrossSection:
+              type: object
+              properties:
+                x:
+                  type: number
+                "y":
+                  type: number
+                z:
+                  type: number
+              additionalProperties: false
             size:
               type: string
             sizeLabel:
@@ -10791,6 +11227,16 @@ components:
               type: number
             weaponPoolSize:
               type: number
+            signatureCrossSection:
+              type: object
+              properties:
+                x:
+                  type: number
+                "y":
+                  type: number
+                z:
+                  type: number
+              additionalProperties: false
             size:
               type: string
             sizeLabel:

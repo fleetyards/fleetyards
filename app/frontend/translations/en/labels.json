@@ -936,6 +936,7 @@
           "propulsion": "Propulsion",
           "thruster": "Thruster",
           "weapon": "Weapons",
+          "defense": "Defense",
           "other": "Other",
           "auxiliary": "Auxiliary",
           "seat": "Seats",

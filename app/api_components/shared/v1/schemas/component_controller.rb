@@ -3,8 +3,18 @@
 module Shared
   module V1
     module Schemas
-      class ComponentCooler
+      class ComponentController
         include OpenapiRuby::Components::Base
+
+        ANGULAR_VELOCITY = {
+          type: :object,
+          properties: {
+            pitch: {type: :number},
+            yaw: {type: :number},
+            roll: {type: :number}
+          },
+          additionalProperties: false
+        }.freeze
 
         POWER_RANGE_ENTRY = {
           type: :object,
@@ -28,15 +38,18 @@ module Shared
         schema({
           type: :object,
           properties: {
-            coolingRate: {type: :number},
+            scmSpeed: {type: :number},
+            scmSpeedBoosted: {type: :number},
+            reverseSpeedBoosted: {type: :number},
+            maxSpeed: {type: :number},
+            angularVelocity: ANGULAR_VELOCITY,
+            boostedAngularVelocity: ANGULAR_VELOCITY,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: POWER_RANGES,
-            signatureEm: {type: :number},
-            signatureIr: {type: :number}
+            signatureEm: {type: :number}
           },
-          additionalProperties: false,
-          required: %w[coolingRate]
+          additionalProperties: false
         })
       end
     end

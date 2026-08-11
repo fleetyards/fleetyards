@@ -65,8 +65,11 @@ module Shared
                 {"$ref": "#/components/schemas/FuelTank"},
                 {"$ref": "#/components/schemas/ComponentThruster"},
                 {"$ref": "#/components/schemas/ComponentWeapon"},
+                {"$ref": "#/components/schemas/ComponentTractorBeam"},
                 {"$ref": "#/components/schemas/ComponentShield"},
                 {"$ref": "#/components/schemas/ComponentCooler"},
+                {"$ref": "#/components/schemas/ComponentRadar"},
+                {"$ref": "#/components/schemas/ComponentController"},
                 {"$ref": "#/components/schemas/ComponentPowerPlant"}
               ]
             },

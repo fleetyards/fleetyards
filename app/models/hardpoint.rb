@@ -90,11 +90,13 @@ class Hardpoint < ApplicationRecord
       :thruster
     when "seat"
       :seat
-    when "lifesupport", "armor", "countermeasures", "utility" # , "salvagemunching"
+    when "utility" # , "salvagemunching"
       :auxiliary
+    when "armor", "countermeasures"
+      :defense
     when "radar", "computers", "scanners"
       :avionic
-    when "powerplant", "cooler", "shieldgenerator"
+    when "powerplant", "cooler", "shieldgenerator", "lifesupport"
       :system
     when "turret", "weapon_mounts", "weapons", "missile_racks", "bombcompartments",
       "quantumenforcementdevice"

@@ -37,6 +37,7 @@ const groups = [
   HardpointGroupEnum.PROPULSION,
   HardpointGroupEnum.THRUSTER,
   HardpointGroupEnum.WEAPON,
+  HardpointGroupEnum.DEFENSE,
   HardpointGroupEnum.AUXILIARY,
   HardpointGroupEnum.OTHER,
 ];
@@ -50,6 +51,8 @@ const propulsionVisible = ref(false);
 const thrusterVisible = ref(false);
 
 const weaponVisible = ref(false);
+
+const defenseVisible = ref(false);
 
 const auxiliaryVisible = ref(false);
 
@@ -95,6 +98,7 @@ const setupVisibles = () => {
   propulsionVisible.value = props.models.length > 0;
   thrusterVisible.value = props.models.length > 0;
   weaponVisible.value = props.models.length > 0;
+  defenseVisible.value = props.models.length > 0;
   auxiliaryVisible.value = props.models.length > 0;
   otherVisible.value = props.models.length > 0;
 };
@@ -114,6 +118,9 @@ const isVisible = (group: HardpointGroupEnum) => {
   }
   if (group === HardpointGroupEnum.WEAPON) {
     return weaponVisible.value;
+  }
+  if (group === HardpointGroupEnum.DEFENSE) {
+    return defenseVisible.value;
   }
   if (group === HardpointGroupEnum.AUXILIARY) {
     return auxiliaryVisible.value;
@@ -140,6 +147,9 @@ const toggle = (group: HardpointGroupEnum) => {
   }
   if (group === HardpointGroupEnum.WEAPON) {
     weaponVisible.value = !weaponVisible.value;
+  }
+  if (group === HardpointGroupEnum.DEFENSE) {
+    defenseVisible.value = !defenseVisible.value;
   }
   if (group === HardpointGroupEnum.AUXILIARY) {
     auxiliaryVisible.value = !auxiliaryVisible.value;

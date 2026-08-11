@@ -6,6 +6,25 @@ module Shared
       class ComponentWeapon
         include OpenapiRuby::Components::Base
 
+        POWER_RANGE_ENTRY = {
+          type: :object,
+          properties: {
+            start: {type: :number},
+            modifier: {type: :number}
+          },
+          additionalProperties: false
+        }.freeze
+
+        POWER_RANGES = {
+          type: :object,
+          properties: {
+            low: POWER_RANGE_ENTRY,
+            medium: POWER_RANGE_ENTRY,
+            high: POWER_RANGE_ENTRY
+          },
+          additionalProperties: false
+        }.freeze
+
         schema({
           type: :object,
           properties: {
@@ -13,6 +32,8 @@ module Shared
             fireRate: {type: :number},
             heatPerShot: {type: :number},
             powerConsumption: {type: :number},
+            powerRanges: POWER_RANGES,
+            signatureEm: {type: :number},
             damagePerShot: {
               type: :object,
               properties: {

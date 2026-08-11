@@ -159,6 +159,15 @@ module V1
                 },
                 quantumFuelTankSize: {type: :number},
                 weaponPoolSize: {type: :number},
+                signatureCrossSection: {
+                  type: :object,
+                  properties: {
+                    x: {type: :number},
+                    y: {type: :number},
+                    z: {type: :number}
+                  },
+                  additionalProperties: false
+                },
                 size: {type: :string},
                 sizeLabel: {type: :string},
                 dockSize: {type: :string}
