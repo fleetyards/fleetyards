@@ -8,7 +8,7 @@
 #  name          :string           not null
 #  position      :integer          default(0), not null
 #  position_type :integer          not null
-#  source        :integer          default("sc_data"), not null
+#  source        :integer          default(0), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  hardpoint_id  :uuid

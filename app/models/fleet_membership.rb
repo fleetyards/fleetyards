@@ -14,7 +14,7 @@
 #  invited_by        :uuid
 #  primary           :boolean          default(FALSE)
 #  requested_at      :datetime
-#  ships_filter      :integer          default("all")
+#  ships_filter      :integer          default(0)
 #  used_invite_token :string
 #  verified          :boolean          default(FALSE), not null
 #  created_at        :datetime         not null

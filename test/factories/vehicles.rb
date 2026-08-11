@@ -4,7 +4,7 @@
 #
 #  id                   :uuid             not null, primary key
 #  alternative_names    :string
-#  bought_via           :integer          default("pledge_store")
+#  bought_via           :integer          default(0)
 #  bundled              :boolean          default(FALSE), not null
 #  flagship             :boolean          default(FALSE)
 #  hidden               :boolean          default(FALSE)

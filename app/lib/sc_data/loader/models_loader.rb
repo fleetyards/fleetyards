@@ -75,6 +75,7 @@ module ScData
         update_params[:hull_parts] = model_data.dig("hull_parts")
         update_params[:hull_doors] = extract_hull_doors(model_data)
         update_params[:weapon_pool_size] = model_data.dig("weapon_pool_size")
+        update_params[:signature_cross_section] = model_data.dig("signature_cross_section")
         update_params[:sc_length] = model_data.dig("metrics", "y")&.to_f
         update_params[:sc_beam] = model_data.dig("metrics", "x")&.to_f
         update_params[:sc_height] = model_data.dig("metrics", "z")&.to_f
