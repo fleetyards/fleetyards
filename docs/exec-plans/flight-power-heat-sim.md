@@ -213,6 +213,53 @@ simplified cooler allocation (all coolers on) and Phase 2 refines it. **Revised
 approach:** treat "power + heat" as one combined phase; ship flight (IFCS)
 separately as it's the only truly independent piece.
 
+## Decode log — Phase 2 (heat + signature)
+
+Findings from `chunk-HVTWRICT.js` (erkul's current calc chunk; 2026-08-11).
+
+**Power-range modifier `L(powerRanges, seg)`** — `powerRanges` is an array of
+`{start, modifier}` sorted by `start`; `L` returns the entry whose
+`start ≤ seg < nextStart` (last = ∞), `.modifier` (default 1). Our parsed
+`power_ranges {low,medium,high:{start,modifier}}` is the same 3 entries —
+reshape to a start-sorted array for the lookup.
+
+**Cooling + coolingRatio (`Ze`/`G`)** — coolers only (`item.category==="Cooler"`).
+Per cooler: `units` = power draw, `ratedCooling` = `convert produces[Coolant].units`
+(our `cooling_rate`), `floor = round(units × (minimumFraction || 1/units))`.
+- `activeSeg = poweredOn && seg≥floor && floor>0 ? clamp(seg,0,units) : 0`.
+- `effectiveCoolingPerSec = ratedCooling × (activeSeg/units) × L(powerRanges,activeSeg)`.
+- `coolingPerSec` = Σ effective; `coolingMaxPerSec` = Σ `ratedCooling × L(powerRanges,units)`.
+- heat gen `u` = (Σ active segments across all families incl. shields + weapon
+  `min(selected,consumption)`) + (Σ over shield/lifeSupport/radar/qdrive of
+  `activeSeg × L(powerRanges,activeSeg)`).
+- **`coolingRatio = coolingPerSec>0 ? min(u/coolingPerSec, 1) : (u>0 ? 1 : 0)`.**
+
+**EM (`yr`)** = `armor.signalElectromagnetic × Σ terms`, 4 term categories:
+shields (`emNominal × L(pr,f)` × shieldRatio, `f=round(totalSeg×shieldRatio)/nShields`),
+weapons (`emNominal × L(pr,weaponSelected)` × selected/enabled), `fr` sources
+(shields/coolers/radar: `emNominal × L(pr,activeSeg) × activeSeg/units`), and
+remaining powered ports (`emNominal × L(pr,seg) × seg/powerSegmentUnits`).
+
+**IR (`gr`)** = `coolingRatio × armor.signalInfrared × Σ_{heat.sources}
+irNominal × (activeSeg/units) × L(powerRanges,activeSeg)`. Gated by coolingRatio
+(and 0 with no power).
+
+**CS (`ko`)** = `vehicle.crossSection.{x,y,z} × (armor.signalCrossSection ?? 1)`;
+displayed value = the max axis. Independent of power — trivial, ship first.
+
+**Inputs & parser gaps:** `emNominal`=`states[Online].signature.em.nominal` (❌
+new), `irNominal`=`…signature.ir.nominal` (❌ new), `powerSegmentUnits`=our
+`power_consumption` (✅), `powerRanges`=our `power_ranges` (✅ reshape),
+`ratedCooling`=our `cooling_rate` (⚠️ confirm = coolant produced),
+armor `signalElectromagnetic/Infrared/CrossSection` (❌ new, armor item),
+vehicle `crossSection.{x,y,z}` (❌ new Model metric). Armor mults default 1.
+
+**Delivery order (by cost):** CS (trivial, no power dep) → cooling %/coolingRatio
+(uses existing active-segments + cooler rates) → IR (needs `irNominal` parse) →
+EM (heaviest: 4 categories + `emNominal`). ⚠️ COOLING-bar display transform not
+in the calc chunk — verify `coolingRatio×100` vs `coolingPerSec/coolingMaxPerSec`
+against the live Ironclad (idle showed 90%) before committing.
+
 ## Risks
 
 - **Faithfulness:** erkul's engine is intricate (power-range curves, per-mode
