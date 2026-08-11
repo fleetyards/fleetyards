@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import type { Hardpoint } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -107,7 +106,15 @@ const openDeflectionCheck = () => {
           {{ num(round(shieldRegen)) }}
           <span class="metrics-card__tile__unit">HP/s</span>
         </div>
-        <ProgressBar :progress="regenPercent" class="shield-regen-bar" />
+        <div
+          class="regen-bar"
+          role="progressbar"
+          :aria-valuenow="regenPercent"
+          :aria-valuemin="0"
+          :aria-valuemax="100"
+        >
+          <div class="regen-bar__fill" :style="{ width: `${regenPercent}%` }" />
+        </div>
         <div class="metrics-card__tile__sub">
           {{ t("labels.defense.shieldRegenSub") }}
         </div>
@@ -246,8 +253,21 @@ const openDeflectionCheck = () => {
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/metricsCard";
 
-.shield-regen-bar {
-  margin: 6px 0 2px;
+// Matches the composition bar's pill look, as a single animated fill.
+.regen-bar {
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: $gray-black;
+  border: 1px solid rgba($gray-light, 0.28);
+  margin: 8px 0 2px;
+
+  &__fill {
+    height: 100%;
+    background: $primary;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
 }
 
 .stat-rows {
