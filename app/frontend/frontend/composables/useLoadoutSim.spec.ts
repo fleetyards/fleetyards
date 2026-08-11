@@ -432,6 +432,20 @@ describe("engine power ratio (flight scaling)", () => {
     expect(off.enginePowerRatio).toBe(0);
   });
 
+  it("scales between 0 and 1 as engine pips are pulled part-way", () => {
+    // Engine fills to its capacity (8) by default; halving its pips halves the
+    // ratio that drives the boosted handling.
+    const engine = hp(HardpointCategoryEnum.CONTROLLER, {
+      powerConsumption: 8,
+      powerMinimumFraction: 0.25,
+    });
+    const ports = [plant(60, 2), engine];
+    const full = simulateLoadoutPower(ports, 0);
+    expect(full.enginePowerRatio).toBe(1);
+    const half = simulateLoadoutPower(ports, 0, "SCM", { [engine.id]: 4 });
+    expect(half.enginePowerRatio).toBeCloseTo(0.5);
+  });
+
   it("is 1 when the ship has no engine power family", () => {
     const sim = simulateLoadoutPower(
       [
