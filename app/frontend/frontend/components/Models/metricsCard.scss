@@ -23,7 +23,7 @@
     // Fixed tracks instead of flex basis + grow: every tile keeps the same width
     // across both rows however long its value runs, which the flex hero cannot
     // guarantee. For cards whose figures are all peers — no headline stat to
-    // give `--primary` to — so the values also sit a step smaller.
+    // give `--primary` to — so the values sit a step smaller and at one size.
     &--grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -36,8 +36,12 @@
         padding: 12px 14px;
       }
 
+      // Flat, not the flex hero's container-relative scale. Track count differs
+      // per card, so sizing off the tile would set a two-track card's values
+      // noticeably larger than a three-track one's and the rail would read as
+      // two different type scales. `overflow: hidden` stays the backstop.
       .metrics-card__tile__value {
-        font-size: clamp(13px, 11cqw, 18px);
+        font-size: 15px;
       }
     }
   }
