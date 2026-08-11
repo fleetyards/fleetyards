@@ -99,6 +99,7 @@
 #  scm_speed_acceleration            :decimal(15, 2)
 #  scm_speed_boosted                 :decimal(15, 2)
 #  scm_speed_decceleration           :decimal(15, 2)
+#  signature_cross_section           :jsonb
 #  size                              :string
 #  slug                              :string(255)
 #  store_images_updated_at           :datetime

@@ -21,6 +21,20 @@ module ScData
           loader.one(model)
         end
       end
+
+      test "#load_model persists the parsed cross section signature" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Cross Section Test", in_game: true)
+        cross_section = {"x" => 12.5, "y" => 34.0, "z" => 56.25}
+
+        loader.stubs(:load_model_data).returns(
+          {"mass" => 1000.0, "loadout" => [], "signature_cross_section" => cross_section}
+        )
+
+        loader.load_model(model)
+
+        assert_equal cross_section, model.reload.signature_cross_section
+      end
     end
   end
 end
