@@ -24,5 +24,10 @@ $innerBorderWidth: 2px;
 @media (max-width: $desktop-breakpoint) {
   .pagination {
     justify-content: center;
+
+    &__pages {
+      min-width: 0;
+      padding: 5px;
+    }
   }
 }
