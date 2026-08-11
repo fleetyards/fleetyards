@@ -298,6 +298,29 @@ describe("shield active cap", () => {
     const shieldCol = one.columns.find((c) => c.family === "shield");
     expect(shieldCol?.members).toHaveLength(2);
   });
+
+  it("allocates each generator independently when they have headroom", () => {
+    // Each generator: crit round(5 × 0.8) = 4, plus 1 regular → capacity 5.
+    const genA = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
+      powerConsumption: 5,
+      powerMinimumFraction: 0.8,
+    });
+    const genB = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
+      powerConsumption: 5,
+      powerMinimumFraction: 0.8,
+    });
+    const sim = simulateLoadoutPower([plant(40, 2), genA, genB], 0, "SCM", {
+      [genA.id]: 4,
+      [genB.id]: 5,
+    });
+    const col = sim.columns.find((c) => c.family === "shield");
+    const a = col?.members.find((m) => m.portPath === genA.id);
+    const b = col?.members.find((m) => m.portPath === genB.id);
+    expect(a?.capacity).toBe(5);
+    expect(a?.min).toBe(4);
+    expect(a?.allocated).toBe(4);
+    expect(b?.allocated).toBe(5);
+  });
 });
 
 describe("weapon pool headroom", () => {

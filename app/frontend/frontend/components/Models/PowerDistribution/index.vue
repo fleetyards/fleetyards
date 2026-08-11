@@ -140,9 +140,11 @@ const applyTarget = (member: PowerColumnMember, desired: number) => {
   emit("update:modelValue", { ...props.modelValue, [member.portPath]: target });
 };
 
-// Click a pip cell at `level` (bottom-up). In a grouped column the mandatory
-// base block of a member is its on/off toggle (erkul's "click the generator");
-// otherwise allocate exactly `level` segments to the member.
+// Click a pip cell at `level` (bottom-up). In a stacked column the merged base
+// block sets that generator/beam to its minimum, or toggles it off when it is
+// already at the minimum — so a member with headroom (e.g. 4 + 1) can still be
+// reduced to 4 or switched off without jumping straight to full. Every other
+// pip allocates exactly `level` segments to that member.
 const onCellClick = (
   column: PowerColumn,
   member: PowerColumnMember,
@@ -150,7 +152,7 @@ const onCellClick = (
 ) => {
   if (level > member.fillable) return; // headroom slot — not fillable
   if (column.members.length > 1 && level === member.min) {
-    applyTarget(member, member.allocated > 0 ? 0 : member.fillable);
+    applyTarget(member, member.allocated === member.min ? 0 : member.min);
   } else {
     applyTarget(member, level);
   }
