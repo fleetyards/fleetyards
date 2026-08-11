@@ -579,11 +579,12 @@
       "flight": {
         "title": "Flight",
         "scm": "combat cruise",
+        "nav": "cruise",
         "boost": "Boost",
         "boostSub": "afterburner",
         "reverse": "Reverse",
         "maneuverability": "Maneuverability",
-        "hint": "Scales with the thrusters' power pips. Base → boosted handling."
+        "hint": "Boosted handling scales with the thrusters' power pips; speeds don't."
       },
       "combat": {
         "title": "Combat",
