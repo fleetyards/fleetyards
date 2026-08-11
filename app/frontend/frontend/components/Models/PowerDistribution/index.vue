@@ -276,7 +276,7 @@ const cellHeight = (span: number) =>
 
     <div v-if="hasSignatures" class="power-sigs">
       <div class="power-sigs__item" :title="t('labels.power.ir')">
-        <i class="fa-duotone fa-fire-flame-simple power-sigs__icon" />
+        <i class="fa-duotone fa-heat power-sigs__icon" />
         <span class="power-sigs__value">{{ compact(emittedIr) }}</span>
       </div>
       <div class="power-sigs__item" :title="t('labels.power.em')">
@@ -495,7 +495,6 @@ const cellHeight = (span: number) =>
   &__icon {
     font-size: 14px;
     color: $primary;
-    opacity: 0.9;
   }
 
   &__value {
