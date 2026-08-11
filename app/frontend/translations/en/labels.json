@@ -593,10 +593,19 @@
         "price": "Price",
         "priceInGame": "In-game",
         "pricePledge": "Pledge",
-        "fuel": "Fuel",
-        "fuelHydrogen": "Hydrogen",
-        "fuelQuantum": "Quantum",
         "availability": "Availability"
+      },
+      "availability": {
+        "title": "Availability",
+        "buy": "Buy",
+        "rent": "Rent",
+        "empty": "No known buy or rental locations.",
+        "timeRange": {
+          "1-day": "1 day",
+          "3-days": "3 days",
+          "7-days": "7 days",
+          "30-days": "30 days"
+        }
       },
       "cargo": {
         "title": "Cargo",

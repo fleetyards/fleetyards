@@ -6,11 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import Collapsed from "@/shared/components/Collapsed.vue";
 import type { Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 
 const { t, toNumber, toDollar, toUEC } = useI18n();
+
+const comlink = useComlink();
 
 type Props = {
   model: Model;
@@ -23,10 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
 
 const soldAt = computed(() => props.model.availability.soldAt);
 const rentalAt = computed(() => props.model.availability.rentalAt);
-
-const hasAvailability = computed(
-  () => !!soldAt.value?.length || !!rentalAt.value?.length,
-);
 
 const displayLength = computed(() => {
   if (props.extended && props.model.metrics.extendedLength) {
@@ -56,17 +54,16 @@ const hasPrice = computed(
   () => !!props.model.price || !!props.model.pledgePrice,
 );
 
-const hasFuel = computed(
-  () =>
-    !!props.model.metrics.hydrogenFuelTankSize ||
-    !!props.model.metrics.quantumFuelTankSize,
-);
-
-const hasAvailability = computed(
-  () => !!soldAt.value?.length || !!rentalAt.value?.length,
-);
-
-const availabilityVisible = ref(false);
+const openAvailability = () => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/AvailabilityModal/index.vue"),
+    props: {
+      soldAt: soldAt.value,
+      rentalAt: rentalAt.value,
+    },
+  });
+};
 </script>
 
 <template>
@@ -145,90 +142,22 @@ const availabilityVisible = ref(false);
       </div>
     </template>
 
-    <template v-if="hasFuel">
-      <div v-if="hasPrice" class="metrics-card__divider" />
-      <div class="metrics-card__section-label">
-        {{ t("labels.base.fuel") }}
-      </div>
-      <div class="metrics-card__rows metrics-card__rows--split">
-        <div
-          v-if="model.metrics.hydrogenFuelTankSize"
-          class="metrics-card__row"
-        >
-          <span class="metrics-card__row__label">
-            {{ t("labels.base.fuelHydrogen") }}
-          </span>
-          <span class="metrics-card__row__value">
-            {{ toNumber(model.metrics.hydrogenFuelTankSize, "cargo") }}
-          </span>
-        </div>
-        <div v-if="model.metrics.quantumFuelTankSize" class="metrics-card__row">
-          <span class="metrics-card__row__label">
-            {{ t("labels.base.fuelQuantum") }}
-          </span>
-          <span class="metrics-card__row__value">
-            {{ toNumber(model.metrics.quantumFuelTankSize, "cargo") }}
-          </span>
-        </div>
-      </div>
-    </template>
-
-    <div v-if="hasAvailability" class="metrics-card__actions">
+    <div class="metrics-card__actions">
       <button
         type="button"
         class="metrics-card__toggle"
-        @click="availabilityVisible = !availabilityVisible"
+        @click="openAvailability"
       >
         {{ t("labels.base.availability") }}
       </button>
-      <Collapsed :visible="availabilityVisible">
-        <div class="metrics-card__breakdown">
-          <div class="metrics-card__rows metrics-card__rows--split">
-            <div
-              v-if="soldAt && soldAt.length"
-              class="metrics-card__row metrics-card__row--stack"
-            >
-              <span class="metrics-card__row__label">
-                {{ t("model.soldAt") }}
-              </span>
-              <span class="metrics-card__row__value">
-                <ul class="base-panel__locations">
-                  <li v-for="modelPrice in soldAt" :key="modelPrice.id">
-                    {{ modelPrice.location }}
-                  </li>
-                </ul>
-              </span>
-            </div>
-            <div
-              v-if="rentalAt && rentalAt.length"
-              class="metrics-card__row metrics-card__row--stack"
-            >
-              <span class="metrics-card__row__label">
-                {{ t("model.rentalAt") }}
-              </span>
-              <span class="metrics-card__row__value">
-                <ul class="base-panel__locations">
-                  <li v-for="modelPrice in rentalAt" :key="modelPrice.id">
-                    {{ modelPrice.location }}
-                  </li>
-                </ul>
-              </span>
-            </div>
-            <div v-if="hasAvailability" class="col-12">
-              <div class="metrics-attribution">
-                <a href="https://uexcorp.space" target="_blank" rel="noopener">
-                  {{ t("model.poweredByUex") }}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Collapsed>
     </div>
 
     <div v-if="model.lastUpdatedAt" class="metrics-card__footer">
-      <span class="metrics-card__hint">
-        {{ t("model.lastUpdatedAt") }} {{ model.lastUpdatedAtLabel }}
+      <span class="base-panel__updated">
+        <span class="base-panel__updated-label">
+          {{ t("model.lastUpdatedAt") }}
+        </span>
+        {{ model.lastUpdatedAtLabel }}
       </span>
     </div>
   </MetricsCard>
@@ -250,18 +179,15 @@ const availabilityVisible = ref(false);
     white-space: nowrap;
   }
 
-  &__locations {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  // Not `__hint`: that is sized for the explanatory sentences the other cards
+  // end on, and this is a value people actually read off the card.
+  &__updated {
     font-size: 13px;
-    font-weight: 400;
     color: $text-color;
+    font-variant-numeric: tabular-nums;
 
-    li {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    &-label {
+      color: $gray-light;
     }
   }
 }
