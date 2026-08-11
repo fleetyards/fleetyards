@@ -33,6 +33,7 @@ type Props = {
   crossSection?: { x?: number; y?: number; z?: number };
   modelValue?: PortOverrides;
   mode?: FlightMode;
+  loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   crossSection: undefined,
   modelValue: () => ({}),
   mode: "SCM",
+  loading: false,
 });
 
 const emit = defineEmits<{
@@ -242,8 +244,9 @@ const cellHeight = (span: number) =>
 
 <template>
   <MetricsCard
-    v-if="columns.length && sim.totalSegments > 0"
+    v-if="loading || (columns.length && sim.totalSegments > 0)"
     :title="t('labels.power.title')"
+    :loading="loading"
     class="power-panel"
   >
     <div class="power-panel__toolbar">

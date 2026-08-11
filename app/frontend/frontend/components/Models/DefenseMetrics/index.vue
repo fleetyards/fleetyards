@@ -16,11 +16,13 @@ import { useArmorStats } from "@/frontend/composables/useArmorStats";
 type Props = {
   hardpoints?: Hardpoint[];
   modelName?: string;
+  loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hardpoints: () => [],
   modelName: "",
+  loading: false,
 });
 
 const { t, toNumber } = useI18n();
@@ -82,8 +84,9 @@ const openDeflectionCheck = () => {
 
 <template>
   <MetricsCard
-    v-if="hasData"
+    v-if="loading || hasData"
     :title="t('labels.defense.title')"
+    :loading="loading"
     class="defense-panel"
   >
     <div v-if="shield.hasData" class="metrics-card__hero">

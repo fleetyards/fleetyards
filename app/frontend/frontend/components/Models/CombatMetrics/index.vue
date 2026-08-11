@@ -18,10 +18,12 @@ import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
 
 type Props = {
   hardpoints?: Hardpoint[];
+  loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hardpoints: () => [],
+  loading: false,
 });
 
 const { t, toNumber } = useI18n();
@@ -91,8 +93,9 @@ const composition = computed(() =>
 
 <template>
   <MetricsCard
-    v-if="stats.hasData"
+    v-if="loading || stats.hasData"
     :title="t('labels.combat.title')"
+    :loading="loading"
     class="combat-panel"
   >
     <div class="metrics-card__hero">
