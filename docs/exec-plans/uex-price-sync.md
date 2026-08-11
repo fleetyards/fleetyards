@@ -160,12 +160,26 @@ fixture, including one case per layer.
 - Delete our rows for a model that UEX no longer lists, so ships removed from a
   shop stop showing a stale location. Scope the delete to `Model` item types so
   hand-entered admin rows for other item types are untouched.
-- Guard that delete against a bad snapshot. An empty feed still arrives as HTTP
-  200 with `status: "ok"`, and reading it as truth would wipe every price we hold
-  — so treat an empty feed (or one with no vehicle terminal left after filtering)
-  as an error, and hold back deletions entirely when a run would drop more than
-  `MAX_REMOVAL_RATIO` of what we already have. Upserts still apply in that case;
-  only the destructive half is skipped, and it is reported to AppSignal.
+- Guard that delete against a bad snapshot, in three layers. An empty feed still
+  arrives as HTTP 200 with `status: "ok"`, and reading it as truth would wipe
+  every price we hold.
+  1. Reject a non-array `data` in the client rather than coercing it — a null
+     `data` is malformed, not an empty snapshot.
+  2. Treat an empty feed, or one with no vehicle terminal left after filtering,
+     as an error.
+  3. **Scope deletions per terminal.** A terminal that priced anything in this
+     snapshot is authoritative for its own inventory, so one of our rows it did
+     not list really is gone. A terminal that priced *nothing* is ambiguous —
+     either every ship left or the feed came back short — and only the terminals
+     feed settles it: gone from there too, the rows go; still listed, they stay
+     and get reported. A flat percentage cannot make this call, because a real
+     terminal is a small share of the total (Astro Armada is 10.9% of rows, so
+     any threshold loose enough to permit real churn also permits losing it).
+     `MAX_REMOVAL_RATIO` stays as a backstop for the one case the rule cannot
+     judge: terminals that report, but report short.
+
+  Upserts still apply throughout; only the destructive half is held back, and
+  anything preserved is reported to AppSignal with the locations named.
 - Wrap in a transaction and report counts: created / updated / removed /
   unmatched.
 
