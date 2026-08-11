@@ -16,32 +16,28 @@
   }
 }
 
-// Metrics cards flow in a dense grid rather than Bootstrap columns: `start`
-// alignment keeps each card at its natural height instead of stretching it to
-// the tallest in the row, which is where the empty space came from.
+// Metrics cards are packed rather than assigned to fixed columns: each spans a
+// measured number of 4px rows (see useMetricsMasonry) and `dense` flow lets a
+// later card backfill a column another card left short. Stacked on narrow
+// screens, three-up once there's room.
 .metrics-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-bottom: 20px;
-
-  // Three independent columns (Combat/Power · Defense/Hull · Flight) that pack
-  // their cards tightly, so a shorter card leaves no row-alignment whitespace
-  // beside it. Stacked on narrow screens, three-up once there's room.
-  @media (min-width: 992px) {
-    flex-direction: row;
-    align-items: flex-start;
+  > * {
+    margin: 0 0 20px;
   }
 
-  &__col {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex: 1 1 0;
-    min-width: 0;
+  @media (min-width: 992px) {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 4px;
+    grid-auto-flow: row dense;
+    column-gap: 20px;
 
     > * {
       margin: 0;
+      grid-row: span var(--metrics-card-span, 60);
+      // The span includes the gap below the card, so it must sit at its natural
+      // height instead of stretching into that trailing space.
+      align-self: start;
     }
   }
 }

@@ -24,6 +24,7 @@ import {
   type PortOverrides,
 } from "@/frontend/composables/useLoadoutSim";
 import type { FlightMode } from "@/frontend/composables/powerSim";
+import { useMetricsMasonry } from "@/frontend/composables/useMetricsMasonry";
 import {
   useModelHardpoints as useModelHardpointsQuery,
   HardpointGroupEnum,
@@ -170,6 +171,10 @@ provide(
 const showMetrics = computed(
   () => props.model.inGame && source.value === HardpointSourceEnum.GAME_FILES,
 );
+
+const metricsGrid = ref<HTMLElement>();
+
+useMetricsMasonry(metricsGrid);
 </script>
 
 <template>
@@ -216,39 +221,33 @@ const showMetrics = computed(
           </Btn>
         </BtnGroup>
       </div>
-      <div v-if="showMetrics" class="metrics-grid">
-        <div class="metrics-grid__col">
-          <ModelCombatMetrics
-            :hardpoints="hardpoints as Hardpoint[]"
-            :loading="loadingHardpoints"
-          />
-          <ModelPowerDistribution
-            v-model="powerOverrides"
-            v-model:mode="flightMode"
-            :hardpoints="hardpoints as Hardpoint[]"
-            :weapon-pool-size="model.metrics?.weaponPoolSize"
-            :cross-section="model.metrics?.signatureCrossSection"
-            :loading="loadingHardpoints"
-          />
-        </div>
-        <div class="metrics-grid__col">
-          <ModelDefenseMetrics
-            :hardpoints="hardpoints as Hardpoint[]"
-            :model-name="model.name"
-            :loading="loadingHardpoints"
-          />
-          <ModelHullMetrics
-            :hull-health="model.metrics.hullHealth"
-            :hull-parts="model.metrics.hullParts"
-            :hull-doors="model.metrics.hullDoors"
-          />
-        </div>
-        <div class="metrics-grid__col">
-          <ModelFlightMetrics :model="model" />
-          <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
-          <ModelExternalFuelTanks :model="model" />
-          <ModelRefuelBoom :model="model" />
-        </div>
+      <div v-if="showMetrics" ref="metricsGrid" class="metrics-grid">
+        <ModelCombatMetrics
+          :hardpoints="hardpoints as Hardpoint[]"
+          :loading="loadingHardpoints"
+        />
+        <ModelPowerDistribution
+          v-model="powerOverrides"
+          v-model:mode="flightMode"
+          :hardpoints="hardpoints as Hardpoint[]"
+          :weapon-pool-size="model.metrics?.weaponPoolSize"
+          :cross-section="model.metrics?.signatureCrossSection"
+          :loading="loadingHardpoints"
+        />
+        <ModelDefenseMetrics
+          :hardpoints="hardpoints as Hardpoint[]"
+          :model-name="model.name"
+          :loading="loadingHardpoints"
+        />
+        <ModelHullMetrics
+          :hull-health="model.metrics.hullHealth"
+          :hull-parts="model.metrics.hullParts"
+          :hull-doors="model.metrics.hullDoors"
+        />
+        <ModelFlightMetrics :model="model" />
+        <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
+        <ModelExternalFuelTanks :model="model" />
+        <ModelRefuelBoom :model="model" />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
         <BtnGroup inline :aria-label="t('labels.hardpoint.density.title')">
