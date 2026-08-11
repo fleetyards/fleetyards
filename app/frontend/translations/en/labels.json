@@ -576,6 +576,13 @@
         "hardpoints": "Hardpoints",
         "missileOptions": "Missle Options (if available)"
       },
+      "flight": {
+        "title": "Flight",
+        "scm": "combat cruise",
+        "nav": "max / boost",
+        "maneuverability": "Maneuverability",
+        "hint": "SCM and maximum speeds with the ship's handling rates."
+      },
       "combat": {
         "title": "Combat",
         "dps": "Burst DPS",

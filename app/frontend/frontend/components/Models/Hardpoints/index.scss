@@ -73,9 +73,10 @@
   gap: 20px;
   margin-bottom: 20px;
 
-  // Two independent columns (Combat/Power · Defense/Hull) that pack their cards
-  // tightly, so a shorter card leaves no row-alignment whitespace beside it.
-  @media (min-width: 768px) {
+  // Three independent columns (Combat/Power · Defense/Hull · Flight) that pack
+  // their cards tightly, so a shorter card leaves no row-alignment whitespace
+  // beside it. Stacked on narrow screens, three-up once there's room.
+  @media (min-width: 992px) {
     flex-direction: row;
     align-items: flex-start;
   }

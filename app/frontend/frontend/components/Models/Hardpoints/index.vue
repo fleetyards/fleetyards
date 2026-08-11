@@ -12,6 +12,7 @@ import HardpointGroup from "./Group/index.vue";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
+import ModelFlightMetrics from "@/frontend/components/Models/FlightMetrics/index.vue";
 import ModelPowerDistribution from "@/frontend/components/Models/PowerDistribution/index.vue";
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -197,7 +198,9 @@ const shieldStats = useShieldStats(
           source === HardpointSourceEnum.GAME_FILES &&
           (combatStats.hasData ||
             shieldStats.hasData ||
-            model.metrics.hullHealth)
+            model.metrics.hullHealth ||
+            model.speeds?.scmSpeed ||
+            model.speeds?.groundMaxSpeed)
         "
         class="metrics-grid"
       >
@@ -221,6 +224,9 @@ const shieldStats = useShieldStats(
             :hull-parts="model.metrics.hullParts"
             :hull-doors="model.metrics.hullDoors"
           />
+        </div>
+        <div class="metrics-grid__col">
+          <ModelFlightMetrics :model="model" />
         </div>
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
