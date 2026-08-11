@@ -85,6 +85,24 @@ UEX carries only the 1-day rate, so the other three durations are simply absent
 from the feed. `ItemPrice#time_range` already enumerates all four, so a future
 source could add them without a migration.
 
+The longer periods are a pure function of the 1-day price — the per-day rate
+steps down in eighths, and the ladder reproduces all three in-game figures to the
+credit:
+
+| Period | Per-day discount | Total multiplier | Predicted | In game |
+| --- | ---: | ---: | ---: | ---: |
+| 1 day | 1 | 1× | 27,165 | 27,165 |
+| 3 day | 7/8 | 2.625× | 71,308 | 71,308 |
+| 7 days | 3/4 | 5.25× | 142,616 | 142,616 |
+| 30 days | 5/8 | 18.75× | 509,344 | 509,344 |
+
+**Decision: do not store the derived three.** They add no information, quadruple
+the rental rows, and — since `item_prices` has no sourced-vs-derived flag — would
+look exactly as authoritative as the figures UEX actually publishes, so a rebalance
+of the ladder would go unnoticed. The ladder is also only confirmed against one
+ship. If the Base card ever shows a duration breakdown, derive it at render time
+from the 1-day row.
+
 ### 3. Eight ships need a manual mapping
 
 Matching UEX vehicles to our `Model` records, measured over the 179 vehicles
@@ -142,6 +160,12 @@ fixture, including one case per layer.
 - Delete our rows for a model that UEX no longer lists, so ships removed from a
   shop stop showing a stale location. Scope the delete to `Model` item types so
   hand-entered admin rows for other item types are untouched.
+- Guard that delete against a bad snapshot. An empty feed still arrives as HTTP
+  200 with `status: "ok"`, and reading it as truth would wipe every price we hold
+  — so treat an empty feed (or one with no vehicle terminal left after filtering)
+  as an error, and hold back deletions entirely when a run would drop more than
+  `MAX_REMOVAL_RATIO` of what we already have. Upserts still apply in that case;
+  only the destructive half is skipped, and it is reported to AppSignal.
 - Wrap in a transaction and report counts: created / updated / removed /
   unmatched.
 
