@@ -13,6 +13,7 @@ import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
 import ModelFlightMetrics from "@/frontend/components/Models/FlightMetrics/index.vue";
+import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
 import ModelPowerDistribution from "@/frontend/components/Models/PowerDistribution/index.vue";
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -27,6 +28,7 @@ import {
   useModelHardpoints as useModelHardpointsQuery,
   HardpointGroupEnum,
   HardpointSourceEnum,
+  type CargoHold,
   type Hardpoint,
   type Model,
 } from "@/services/fyApi";
@@ -34,9 +36,12 @@ import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 
 type Props = {
   model: Model;
+  cargoHolds?: CargoHold[];
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  cargoHolds: () => [],
+});
 
 provide(
   "modelSlug",
@@ -154,6 +159,18 @@ provide(
 const shieldStats = useShieldStats(
   () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
 );
+
+// Everything but the cargo card is derived from the game-files loadout, so the
+// ship-matrix source has nothing to show there.
+const showLoadoutMetrics = computed(
+  () =>
+    source.value === HardpointSourceEnum.GAME_FILES &&
+    (combatStats.value.hasData ||
+      shieldStats.value.hasData ||
+      !!props.model.metrics.hullHealth ||
+      !!props.model.speeds?.scmSpeed ||
+      !!props.model.speeds?.groundMaxSpeed),
+);
 </script>
 
 <template>
@@ -199,40 +216,33 @@ const shieldStats = useShieldStats(
         </BtnGroup>
       </div>
       <ModelRefuelBoom :model="model" />
-      <div
-        v-if="
-          source === HardpointSourceEnum.GAME_FILES &&
-          (combatStats.hasData ||
-            shieldStats.hasData ||
-            model.metrics.hullHealth ||
-            model.speeds?.scmSpeed ||
-            model.speeds?.groundMaxSpeed)
-        "
-        class="metrics-grid"
-      >
+      <div v-if="showLoadoutMetrics || cargoHolds.length" class="metrics-grid">
+        <template v-if="showLoadoutMetrics">
+          <div class="metrics-grid__col">
+            <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
+            <ModelPowerDistribution
+              v-model="powerOverrides"
+              v-model:mode="flightMode"
+              :hardpoints="hardpoints as Hardpoint[]"
+              :weapon-pool-size="model.metrics?.weaponPoolSize"
+              :cross-section="model.metrics?.signatureCrossSection"
+            />
+          </div>
+          <div class="metrics-grid__col">
+            <ModelDefenseMetrics
+              :hardpoints="hardpoints as Hardpoint[]"
+              :model-name="model.name"
+            />
+            <ModelHullMetrics
+              :hull-health="model.metrics.hullHealth"
+              :hull-parts="model.metrics.hullParts"
+              :hull-doors="model.metrics.hullDoors"
+            />
+          </div>
+        </template>
         <div class="metrics-grid__col">
-          <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
-          <ModelPowerDistribution
-            v-model="powerOverrides"
-            v-model:mode="flightMode"
-            :hardpoints="hardpoints as Hardpoint[]"
-            :weapon-pool-size="model.metrics?.weaponPoolSize"
-            :cross-section="model.metrics?.signatureCrossSection"
-          />
-        </div>
-        <div class="metrics-grid__col">
-          <ModelDefenseMetrics
-            :hardpoints="hardpoints as Hardpoint[]"
-            :model-name="model.name"
-          />
-          <ModelHullMetrics
-            :hull-health="model.metrics.hullHealth"
-            :hull-parts="model.metrics.hullParts"
-            :hull-doors="model.metrics.hullDoors"
-          />
-        </div>
-        <div class="metrics-grid__col">
-          <ModelFlightMetrics :model="model" />
+          <ModelFlightMetrics v-if="showLoadoutMetrics" :model="model" />
+          <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
         </div>
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">

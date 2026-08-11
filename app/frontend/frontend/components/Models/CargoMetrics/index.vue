@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Model, CargoHold } from "@/services/fyApi";
 import {
   CONTAINER_DEFS,
@@ -68,64 +69,152 @@ function computeMaxPerSize(holds: CargoHold[]): ContainerCapacity[] {
   return results;
 }
 
-const containerCapacities = computed(() => {
-  if (!holds.value.length) return [];
-  return computeMaxPerSize(holds.value);
-});
-
 const totalCargo = computed(() => {
   return holds.value.reduce((sum, h) => sum + (h.capacity || 0), 0);
+});
+
+const containerCapacities = computed(() => {
+  if (!holds.value.length) return [];
+
+  const total = totalCargo.value || props.model.metrics.cargo || 0;
+
+  return computeMaxPerSize(holds.value).map((capacity) => {
+    const scu = capacity.size * capacity.maxQuantity;
+
+    return {
+      ...capacity,
+      scu,
+      // Boxes of one size rarely tile the grid perfectly, so this is the share
+      // of the hold that size can actually fill.
+      share: total ? Math.min(100, Math.round((scu / total) * 100)) : 0,
+    };
+  });
 });
 
 const maxContainerSize = computed(() => {
   if (!holds.value.length) return null;
   return Math.max(...holds.value.map((h) => h.maxContainerSize?.size || 0));
 });
+
+const hasData = computed(() => containerCapacities.value.length > 0);
 </script>
 
 <template>
-  <div
-    v-if="containerCapacities.length"
-    class="row cargo-metrics metrics-padding"
+  <MetricsCard
+    v-if="hasData"
+    :title="t('labels.cargo.title')"
+    class="cargo-panel"
   >
-    <div class="col-12 col-lg-3">
-      <div class="metrics-title">
-        {{ t("labels.cargoGridViewer.capacity") }}
-      </div>
-    </div>
-    <div class="col-12 col-lg-9 metrics-block">
-      <div class="row">
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">{{ t("model.cargo") }}:</div>
-          <div class="metrics-value">
-            {{ toNumber(totalCargo || model.metrics.cargo || "", "cargo") }}
-          </div>
+    <div class="metrics-card__hero">
+      <div class="metrics-card__tile metrics-card__tile--primary">
+        <div class="metrics-card__tile__label">{{ t("model.cargo") }}</div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(totalCargo || model.metrics.cargo || "", "integer") }}
+          <span class="metrics-card__tile__unit">SCU</span>
         </div>
-        <div class="col-6 col-lg-4">
-          <div class="metrics-label">
-            {{ t("labels.cargoGridViewer.maxContainerSize") }}:
-          </div>
-          <div class="metrics-value">
-            {{ maxContainerSize || "-" }}
-            {{ maxContainerSize ? "SCU" : "" }}
-          </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.cargo.holdsSub", { count: holds.length }) }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="seperator" />
+      <div class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("labels.cargoGridViewer.maxContainerSize") }}
         </div>
-      </div>
-      <div class="row">
-        <div
-          v-for="cap in containerCapacities"
-          :key="cap.size"
-          class="col-6 col-lg-3"
-        >
-          <div class="metrics-label">{{ cap.size }} SCU:</div>
-          <div class="metrics-value">{{ cap.maxQuantity }}x</div>
+        <div class="metrics-card__tile__value">
+          {{ maxContainerSize || "-" }}
+          <span v-if="maxContainerSize" class="metrics-card__tile__unit">
+            SCU
+          </span>
+        </div>
+        <div class="metrics-card__tile__sub">
+          {{ t("labels.cargo.maxContainerSub") }}
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="metrics-card__section-label">
+      {{ t("labels.cargo.containers") }}
+    </div>
+    <div class="cargo-caps">
+      <div v-for="cap in containerCapacities" :key="cap.size" class="cargo-cap">
+        <div class="cargo-cap__head">
+          <span class="cargo-cap__label">{{ cap.size }} SCU</span>
+          <span class="cargo-cap__value">{{ cap.maxQuantity }}x</span>
+          <span class="cargo-cap__share">
+            {{ toNumber(cap.scu, "integer") }} SCU · {{ cap.share }}%
+          </span>
+        </div>
+        <div class="cargo-cap__bar">
+          <div
+            class="cargo-cap__bar-fill"
+            :style="{ width: `${cap.share}%` }"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-card__footer">
+      <span class="metrics-card__hint">{{ t("labels.cargo.hint") }}</span>
+    </div>
+  </MetricsCard>
 </template>
+
+<style lang="scss" scoped>
+@import "@/frontend/components/Models/metricsCard";
+
+.cargo-caps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cargo-cap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $gray-light;
+    min-width: 52px;
+  }
+
+  &__value {
+    font-size: 13px;
+    font-weight: 600;
+    color: $text-color;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__share {
+    margin-left: auto;
+    font-size: 11px;
+    color: $gray;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  &__bar {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba($gray-light, 0.16);
+    overflow: hidden;
+  }
+
+  &__bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, rgba($primary, 0.55), $primary);
+    transition: width 0.3s ease;
+  }
+}
+</style>

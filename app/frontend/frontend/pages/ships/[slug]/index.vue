@@ -23,7 +23,6 @@ import {
 import FleetchartImages from "@/frontend/components/Models/FleetchartImages/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
-import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
 import ModelExternalFuelTanks from "@/frontend/components/Models/ExternalFuelTanks/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
@@ -462,14 +461,9 @@ const adiMap = computed(() => {
         </div>
       </div>
       <FleetchartImages v-model:extended="extendedState" :model="model" />
-      <ModelCargoMetrics
-        v-if="combinedCargoHolds.length"
-        :model="model"
-        :cargo-holds="combinedCargoHolds"
-      />
       <ModelExternalFuelTanks :model="model" />
       <hr />
-      <Hardpoints :model="model" />
+      <Hardpoints :model="model" :cargo-holds="combinedCargoHolds" />
       <CrewPositions :model="model" />
     </div>
   </div>

@@ -586,6 +586,13 @@
         "maneuverability": "Maneuverability",
         "hint": "Boosted handling scales with the thruster pips; all zero when the engine is unpowered."
       },
+      "cargo": {
+        "title": "Cargo",
+        "holdsSub": "across %{count} holds",
+        "maxContainerSub": "largest box that fits",
+        "containers": "Container Capacity",
+        "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
+      },
       "combat": {
         "title": "Combat",
         "dps": "Burst DPS",
