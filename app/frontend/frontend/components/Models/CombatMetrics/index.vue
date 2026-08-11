@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useTransition, TransitionPresets } from "@vueuse/core";
 import type { Hardpoint } from "@/services/fyApi";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -49,6 +50,15 @@ const round = (value: number) => Math.round(value);
 const dmg = (value: number) =>
   round(value) > 0 ? toNumber(round(value), "integer") : "0";
 
+// Animate the power-reactive damage totals as the pip allocation changes.
+const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
+const animatedDps = useTransition(() => stats.value.dps.total, animate);
+const animatedSustained = useTransition(
+  () => stats.value.sustainedDps.total,
+  animate,
+);
+const animatedAlpha = useTransition(() => stats.value.alpha.total, animate);
+
 const hoveredType = ref<string | null>(null);
 
 const damageTypes: {
@@ -91,7 +101,7 @@ const composition = computed(() =>
           {{ t("labels.combat.dps") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ dmg(stats.dps.total) }}
+          {{ dmg(animatedDps) }}
           <span class="metrics-card__tile__unit">DPS</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -103,7 +113,7 @@ const composition = computed(() =>
           {{ t("labels.combat.sustained") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ dmg(stats.sustainedDps.total) }}
+          {{ dmg(animatedSustained) }}
           <span class="metrics-card__tile__unit">DPS</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -115,7 +125,7 @@ const composition = computed(() =>
           {{ t("labels.combat.alpha") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ dmg(stats.alpha.total) }}
+          {{ dmg(animatedAlpha) }}
           <span class="metrics-card__tile__unit">DMG</span>
         </div>
         <div class="metrics-card__tile__sub">
