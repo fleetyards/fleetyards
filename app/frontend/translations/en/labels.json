@@ -891,7 +891,6 @@
           "maxForce": "Max Force",
           "minForce": "Min Force",
           "range": "Range",
-          "fullStrength": "Full Strength",
           "cone": "Cone",
           "tetherBreak": "Tether Break",
           "cargoForce": "Cargo Force",

@@ -10,6 +10,7 @@ import {
   type ComponentJumpDrive,
   type ComponentThruster,
   type ComponentArmor,
+  type ComponentTractorBeam,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
@@ -108,7 +109,126 @@ export const useHardpointStats = (
     const category = hp.category;
     const result: HardpointStat[] = [];
 
-    if (category === HardpointCategoryEnum.WEAPONS) {
+    // Tractor and towing beams mount in the weapons category but share none of a
+    // gun's stats, so the parsed `tractorBeam` flag is the signal to use — the
+    // game files even type some of them as SalvageHead.
+    if ("tractorBeam" in typeData) {
+      const tractor = typeData as ComponentTractorBeam;
+      const towing = tractor.towing;
+      // Beams pull together, so the force figures sum across a collapsed stack
+      // (like weapon DPS does). Reach, cone, tether and handling are per-beam
+      // ratings and stay as they are.
+      const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
+
+      // Reach reads as the falloff span erkul shows (its "75 → 150 m"): full
+      // force out to `fullStrengthDistance`, then fading to nothing at
+      // `maxDistance`. `minDistance` is not part of it — that is the 0.5 m every
+      // beam grabs from. Beams with no falloff point just show their max.
+      const rangeStat = (
+        labelKey: string,
+        fullStrength: number | undefined,
+        max: number,
+      ): HardpointStat => ({
+        label: t(`labels.hardpoint.${labelKey}`),
+        value: fullStrength
+          ? `${String(toNumber(fullStrength))} - ${String(toNumber(max, "weaponRange"))}`
+          : String(toNumber(max, "weaponRange")),
+      });
+
+      // A towing beam's own maxForce is a 5e9 "unlimited" sentinel, so its tow
+      // force is the figure that actually describes it (erkul does the same).
+      if (towing?.towingForce) {
+        result.push(
+          stat(
+            "tractorBeams.towForce",
+            towing.towingForce * stackCount,
+            "newton",
+            true,
+          ),
+        );
+      } else if (tractor.maxForce) {
+        result.push(
+          stat(
+            "tractorBeams.maxForce",
+            tractor.maxForce * stackCount,
+            "newton",
+            true,
+          ),
+        );
+      }
+      if (tractor.maxDistance) {
+        result.push(
+          rangeStat(
+            "tractorBeams.range",
+            tractor.fullStrengthDistance,
+            tractor.maxDistance,
+          ),
+        );
+      }
+      if (tractor.maxAngle) {
+        result.push(stat("tractorBeams.cone", tractor.maxAngle, "degrees"));
+      }
+      if (tractor.minForce) {
+        result.push(stat("tractorBeams.minForce", tractor.minForce, "newton"));
+      }
+      // Cargo mode swaps in far stronger overrides for hauling boxes.
+      if (tractor.cargoMode?.maxForce) {
+        result.push(
+          stat(
+            "tractorBeams.cargoForce",
+            tractor.cargoMode.maxForce * stackCount,
+            "newton",
+          ),
+        );
+      }
+      if (tractor.cargoMode?.maxDistance) {
+        result.push(
+          rangeStat(
+            "tractorBeams.cargoRange",
+            tractor.cargoMode.fullStrengthDistance,
+            tractor.cargoMode.maxDistance,
+          ),
+        );
+      }
+      if (towing?.towingMaxDistance) {
+        result.push(
+          stat(
+            "tractorBeams.towDistance",
+            towing.towingMaxDistance,
+            "weaponRange",
+          ),
+        );
+      }
+      if (towing?.quantumTowMassLimit) {
+        result.push(
+          stat(
+            "tractorBeams.quantumTowMass",
+            towing.quantumTowMassLimit,
+            "weight",
+          ),
+        );
+      }
+      if (tractor.tetherBreakTime) {
+        result.push({
+          label: t("labels.hardpoint.tractorBeams.tetherBreak"),
+          value: String(toNumber(tractor.tetherBreakTime, "seconds")),
+        });
+      }
+      if (tractor.rotation?.maxAngularVelocity) {
+        result.push(
+          stat(
+            "tractorBeams.rotationSpeed",
+            tractor.rotation.maxAngularVelocity,
+            "rotation",
+          ),
+        );
+      }
+      if (tractor.movement?.maxSpeed) {
+        result.push(
+          stat("tractorBeams.moveSpeed", tractor.movement.maxSpeed, "speed"),
+        );
+      }
+    } else if (category === HardpointCategoryEnum.WEAPONS) {
       const weapon = typeData as ComponentWeapon;
       // Sustainable-fire fraction (erkul's "efficiency"): the duty-cycle share
       // of burst the weapon can hold. Only meaningful when < 100%.
