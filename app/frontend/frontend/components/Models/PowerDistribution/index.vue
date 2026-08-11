@@ -26,11 +26,11 @@ import quantumDrivesIconUrl from "@/images/hardpoints/quantum_drives.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import mainThrustersIconUrl from "@/images/hardpoints/main_thrusters.svg";
-import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 
 type Props = {
   hardpoints?: Hardpoint[];
   weaponPoolSize?: number;
+  crossSection?: number;
   modelValue?: PortOverrides;
   mode?: FlightMode;
 };
@@ -38,6 +38,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   hardpoints: () => [],
   weaponPoolSize: undefined,
+  crossSection: undefined,
   modelValue: () => ({}),
   mode: "SCM",
 });
@@ -60,16 +61,16 @@ const FAMILY_ICON: Partial<Record<PowerFamily, string>> = {
   qed: qedIconUrl,
   emp: empIconUrl,
   engine: mainThrustersIconUrl,
-  tractorBeam: utilityItemsIconUrl,
-  towingbeam: utilityItemsIconUrl,
 };
 
-// FontAwesome fallback for families without a hardpoint SVG (mirroring the
-// glyphs the Hardpoints view uses).
+// FontAwesome fallback for families without a hardpoint SVG. Life support and
+// the beams follow erkul's glyphs (a pulse heart, arrows pulling to a center).
 const FAMILY_FA_ICON: Partial<Record<PowerFamily, string>> = {
-  lifeSupport: "fa-star-of-life",
+  lifeSupport: "fa-heart-pulse",
   salvage: "fa-bin-recycle",
   miningLaser: "fa-gem",
+  tractorBeam: "fa-arrows-to-circle",
+  towingbeam: "fa-arrows-to-circle",
 };
 
 const SHORT_LABEL: Record<PowerFamily, string> = {
@@ -117,12 +118,23 @@ const coolingPercent = computed(() => Math.round(sim.value.coolingRatio * 100));
 const coolingFill = computed(() => Math.min(coolingPercent.value, 100));
 const coolingOver = computed(() => coolingPercent.value > 100);
 
+// Signature readouts (erkul's IR / CS numbers). IR is power-reactive (from the
+// active coolers); CS is the ship's fixed cross-section. Compact-formatted
+// (e.g. "9.8k") like erkul. EM is not modelled yet.
+const compact = (value: number) =>
+  value >= 1000 ? `${(value / 1000).toFixed(1)}k` : `${Math.round(value)}`;
+const emittedIr = computed(() => sim.value.emittedIr);
+const crossSection = computed(() => props.crossSection ?? 0);
+const hasSignatures = computed(
+  () => emittedIr.value > 0 || crossSection.value > 0,
+);
+
 const familyLabel = (family: PowerFamily) =>
   t(`labels.power.families.${family}`);
-const columnLabel = (column: PowerColumn) =>
-  column.members.length > 1
-    ? familyLabel(column.family)
-    : (column.label ?? familyLabel(column.family));
+// A column is identified by its family ("Shields", "Coolers", …); the mounted
+// component's own name stays on its pips, where it identifies which member of a
+// stacked column a pip belongs to.
+const columnLabel = (column: PowerColumn) => familyLabel(column.family);
 const memberLabel = (column: PowerColumn, member: PowerColumnMember) =>
   member.label ?? familyLabel(column.family);
 
@@ -244,6 +256,17 @@ const cellHeight = (span: number) =>
             total: sim.totalSegments,
           })
         }}
+      </div>
+    </div>
+
+    <div v-if="hasSignatures" class="power-sigs">
+      <div class="power-sigs__item">
+        <span class="power-sigs__label">{{ t("labels.power.ir") }}</span>
+        <span class="power-sigs__value">{{ compact(emittedIr) }}</span>
+      </div>
+      <div v-if="crossSection > 0" class="power-sigs__item">
+        <span class="power-sigs__label">{{ t("labels.power.cs") }}</span>
+        <span class="power-sigs__value">{{ compact(crossSection) }}</span>
       </div>
     </div>
 
@@ -417,6 +440,33 @@ const cellHeight = (span: number) =>
   }
 }
 
+.power-sigs {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 16px;
+
+  &__item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  &__label {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gray;
+  }
+
+  &__value {
+    font-size: 15px;
+    font-weight: 600;
+    color: $text-color;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
 .power-readout {
   display: flex;
   align-items: center;
@@ -466,6 +516,9 @@ const cellHeight = (span: number) =>
   }
 }
 
+// The columns wrap, so the row never needs to scroll — and an `overflow-x`
+// scroll container here also turns overflow-y into `auto`, which put scrollbars
+// on the pane as soon as a ship had enough columns to wrap.
 .power-bars {
   display: flex;
   align-items: flex-end;
@@ -473,7 +526,6 @@ const cellHeight = (span: number) =>
   flex-wrap: wrap;
   gap: 14px 10px;
   min-height: 170px;
-  overflow-x: auto;
 }
 
 .power-col {
@@ -584,8 +636,11 @@ const cellHeight = (span: number) =>
     opacity: 1;
   }
 
+  // FA glyphs only fill ~0.875em of their line box, so they need a larger font
+  // size than the SVG icons' 15px to read at the same weight next to them.
   &__fa {
-    font-size: 13px;
+    font-size: 17px;
+    line-height: 15px;
     color: $primary;
     opacity: 1;
   }

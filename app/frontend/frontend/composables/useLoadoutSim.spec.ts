@@ -328,6 +328,7 @@ describe("heat (cooling ratio)", () => {
     hp(HardpointCategoryEnum.COOLER, {
       powerConsumption: 3,
       coolingRate: 30,
+      signatureIr: 7000,
       powerRanges: {
         low: { start: 1, modifier: 0.7 },
         medium: { start: 2, modifier: 0.85 },
@@ -348,6 +349,19 @@ describe("heat (cooling ratio)", () => {
       sim.heatGeneration / sim.coolingPerSec,
       5,
     );
+  });
+
+  it("emits IR from the active coolers, scaled by the cooling ratio", () => {
+    const ls = hp(HardpointCategoryEnum.LIFESUPPORT, {
+      powerConsumption: 2,
+      powerMinimumFraction: 0.5,
+    });
+    const sim = simulateLoadoutPower([plant(40, 2), cooler(), ls], 0);
+    expect(sim.emittedIr).toBeGreaterThan(0);
+
+    // No plant → no active cooling → no IR emission.
+    const coolerOff = simulateLoadoutPower([cooler(), ls], 0);
+    expect(coolerOff.emittedIr).toBe(0);
   });
 
   it("exceeds 1 when the coolers can't keep up (under-cooled)", () => {

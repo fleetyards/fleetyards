@@ -601,6 +601,8 @@
         "auto": "Auto",
         "aimAssist": "Aim Assist",
         "cooling": "Cooling",
+        "ir": "IR",
+        "cs": "CS",
         "segmentsUsed": "%{used} / %{total} segments",
         "hint": "Move power between systems. Weapons' sustained DPS scales with the power they get; the rest is auto-balanced.",
         "families": {
@@ -884,6 +886,21 @@
           "lockRange": "Lock Range",
           "lockTime": "Lock Time",
           "trackingSignal": "Tracking"
+        },
+        "tractorBeams": {
+          "maxForce": "Max Force",
+          "minForce": "Min Force",
+          "range": "Range",
+          "fullStrength": "Full Strength",
+          "cone": "Cone",
+          "tetherBreak": "Tether Break",
+          "cargoForce": "Cargo Force",
+          "cargoRange": "Cargo Range",
+          "towForce": "Tow Force",
+          "towDistance": "Tow Range",
+          "quantumTowMass": "QT Mass Limit",
+          "rotationSpeed": "Rotation",
+          "moveSpeed": "Move Speed"
         },
         "shields": {
           "hp": "HP",

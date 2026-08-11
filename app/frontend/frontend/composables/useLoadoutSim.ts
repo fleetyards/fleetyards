@@ -87,13 +87,15 @@ function rangeModifier(ranges: PowerRange[], segments: number): number {
 
 // A power-drawing component captured for the heat pass: its allocated segments
 // come from the allocation state (by portPath). Coolers additionally carry the
-// coolant they produce at full power (`coolingRate`).
+// coolant they produce at full power (`coolingRate`); `irNominal` is the
+// component's infrared signature emission at full power.
 type HeatComponent = {
   portPath: string;
   family: PowerFamily;
   units: number;
   ranges: PowerRange[];
   coolingRate: number;
+  irNominal: number;
 };
 
 // FleetYards hardpoint category → erkul power family. Only the families erkul
@@ -145,6 +147,8 @@ export type LoadoutSimResult = {
   coolingMaxPerSec: number;
   heatGeneration: number;
   coolingRatio: number;
+  // Emitted infrared signature at the current allocation (scaled by cooling).
+  emittedIr: number;
 };
 
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
@@ -225,6 +229,7 @@ function collectPorts(
               ranges: toRanges(typeData.powerRanges),
               coolingRate:
                 family === "coolers" ? numeric(typeData.coolingRate) : 0,
+              irNominal: numeric(typeData.signatureIr),
             });
             if (hardpoint.component?.name) {
               acc.portLabels[hardpoint.id] = hardpoint.component.name;
@@ -375,22 +380,27 @@ function computeHeat(
   coolingMaxPerSec: number;
   heatGeneration: number;
   coolingRatio: number;
+  emittedIr: number;
 } {
   let coolingPerSec = 0;
   let coolingMaxPerSec = 0;
   let extraHeat = 0;
   let nonHeatSegments = 0;
+  let irRaw = 0;
 
   for (const component of components) {
     const active = perPort[component.portPath] ?? 0;
     if (component.family === "coolers" && component.units > 0) {
+      const modifier = rangeModifier(component.ranges, active);
       coolingPerSec +=
-        component.coolingRate *
-        (active / component.units) *
-        rangeModifier(component.ranges, active);
+        component.coolingRate * (active / component.units) * modifier;
       coolingMaxPerSec +=
         component.coolingRate *
         rangeModifier(component.ranges, component.units);
+      // IR is emitted by the active coolers (erkul's `gr` over heat sources).
+      if (active > 0) {
+        irRaw += component.irNominal * (active / component.units) * modifier;
+      }
     }
     if (active > 0 && EXTRA_HEAT_FAMILIES.has(component.family)) {
       extraHeat += active * rangeModifier(component.ranges, active);
@@ -406,8 +416,16 @@ function computeHeat(
   // Cooling load: heat ÷ coolant provided (uncapped, so > 1 when under-cooled);
   // 0 when no cooler is powered.
   const coolingRatio = coolingPerSec > 0 ? heatGeneration / coolingPerSec : 0;
+  // Emitted IR signature scales with the active cooling (0 when cooling is off).
+  const emittedIr = irRaw * coolingRatio;
 
-  return { coolingPerSec, coolingMaxPerSec, heatGeneration, coolingRatio };
+  return {
+    coolingPerSec,
+    coolingMaxPerSec,
+    heatGeneration,
+    coolingRatio,
+    emittedIr,
+  };
 }
 
 // Pure core: build the family ports from a loadout, run erkul's allocation over
@@ -525,6 +543,7 @@ export function simulateLoadoutPower(
     coolingMaxPerSec: heat.coolingMaxPerSec,
     heatGeneration: heat.heatGeneration,
     coolingRatio: heat.coolingRatio,
+    emittedIr: heat.emittedIr,
   };
 }
 

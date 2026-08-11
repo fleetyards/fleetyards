@@ -208,6 +208,7 @@ const shieldStats = useShieldStats(
             v-model:mode="flightMode"
             :hardpoints="hardpoints as Hardpoint[]"
             :weapon-pool-size="model.metrics?.weaponPoolSize"
+            :cross-section="model.metrics?.signatureCrossSection"
           />
         </div>
         <div class="metrics-grid__col">
