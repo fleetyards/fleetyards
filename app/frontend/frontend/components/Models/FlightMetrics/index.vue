@@ -19,16 +19,14 @@ const props = defineProps<Props>();
 
 const { t, toNumber } = useI18n();
 
-// Engine power relative to the default distribution (from Hardpoints): it only
-// scales the *boosted* handling — never the speeds or base handling, matching
-// erkul. 1 (full boost) when standalone.
+// Engine power from the pip UI (Hardpoints). erkul: with the engine unpowered
+// (0 pips) the ship is dead in the water — every flight figure reads 0; any
+// power at all restores the rated figures. 1 (powered) when standalone.
 const enginePowerRatio = inject<Ref<number | undefined>>(
   "enginePowerRatio",
   ref(1),
 );
-const boostFactor = computed(() =>
-  Math.min(1, Math.max(0, toValue(enginePowerRatio) ?? 1)),
-);
+const powered = computed(() => ((toValue(enginePowerRatio) ?? 1) > 0 ? 1 : 0));
 
 // SCM / NAV mode swaps the headline speed (from Hardpoints; SCM standalone).
 const flightMode = inject<Ref<FlightMode>>("flightMode", ref("SCM"));
@@ -43,50 +41,56 @@ const hasData = computed(() =>
     : !!(speeds.value.scmSpeed || speeds.value.maxSpeed),
 );
 
-const speed = (value?: number) => toNumber(Math.round(value ?? 0), "speed");
+const gate = (value?: number) => (value ?? 0) * powered.value;
+const speed = (value: number) => toNumber(Math.round(value), "speed");
 const rotation = (value: number) => toNumber(Math.round(value), "rotation");
 
-// Boosted handling interpolates from the base rate (no engine power) up to the
-// rated boosted rate (full engine power).
-const boosted = (base?: number, max?: number) =>
-  (base ?? 0) + ((max ?? base ?? 0) - (base ?? 0)) * boostFactor.value;
+const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
+const headline = useTransition(
+  () => gate(isNav.value ? speeds.value.maxSpeed : speeds.value.scmSpeed),
+  animate,
+);
+const boostSpeed = useTransition(
+  () => gate(speeds.value.scmSpeedBoosted),
+  animate,
+);
+const reverseSpeed = useTransition(
+  () => gate(speeds.value.reverseSpeedBoosted),
+  animate,
+);
+const groundMax = useTransition(
+  () => gate(speeds.value.groundMaxSpeed),
+  animate,
+);
+const groundReverse = useTransition(
+  () => gate(speeds.value.groundReverseSpeed),
+  animate,
+);
+
+const pitchBoost = useTransition(
+  () => gate(speeds.value.pitchBoosted),
+  animate,
+);
+const yawBoost = useTransition(() => gate(speeds.value.yawBoosted), animate);
+const rollBoost = useTransition(() => gate(speeds.value.rollBoosted), animate);
 
 const rotations = computed(() => [
   {
     label: t("model.pitch"),
-    base: speeds.value.pitch,
-    max: speeds.value.pitchBoosted,
+    base: gate(speeds.value.pitch),
+    boost: pitchBoost.value,
   },
   {
     label: t("model.yaw"),
-    base: speeds.value.yaw,
-    max: speeds.value.yawBoosted,
+    base: gate(speeds.value.yaw),
+    boost: yawBoost.value,
   },
   {
     label: t("model.roll"),
-    base: speeds.value.roll,
-    max: speeds.value.rollBoosted,
+    base: gate(speeds.value.roll),
+    boost: rollBoost.value,
   },
 ]);
-
-const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
-const pitchBoost = useTransition(
-  () => boosted(speeds.value.pitch, speeds.value.pitchBoosted),
-  animate,
-);
-const yawBoost = useTransition(
-  () => boosted(speeds.value.yaw, speeds.value.yawBoosted),
-  animate,
-);
-const rollBoost = useTransition(
-  () => boosted(speeds.value.roll, speeds.value.rollBoosted),
-  animate,
-);
-const boostAnim = computed<Record<string, number>>(() => ({
-  [t("model.pitch")]: pitchBoost.value,
-  [t("model.yaw")]: yawBoost.value,
-  [t("model.roll")]: rollBoost.value,
-}));
 
 const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
 </script>
@@ -103,16 +107,14 @@ const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
           <div class="metrics-card__tile__label">
             {{ t("model.groundMaxSpeed") }}
           </div>
-          <div class="metrics-card__tile__value">
-            {{ speed(speeds.groundMaxSpeed) }}
-          </div>
+          <div class="metrics-card__tile__value">{{ speed(groundMax) }}</div>
         </div>
         <div class="metrics-card__tile">
           <div class="metrics-card__tile__label">
             {{ t("model.groundReverseSpeed") }}
           </div>
           <div class="metrics-card__tile__value">
-            {{ speed(speeds.groundReverseSpeed) }}
+            {{ speed(groundReverse) }}
           </div>
         </div>
       </template>
@@ -121,9 +123,7 @@ const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
           <div class="metrics-card__tile__label">
             {{ isNav ? t("model.maxSpeed") : t("model.scmSpeed") }}
           </div>
-          <div class="metrics-card__tile__value">
-            {{ speed(isNav ? speeds.maxSpeed : speeds.scmSpeed) }}
-          </div>
+          <div class="metrics-card__tile__value">{{ speed(headline) }}</div>
           <div class="metrics-card__tile__sub">
             {{ isNav ? t("labels.flight.nav") : t("labels.flight.scm") }}
           </div>
@@ -132,9 +132,7 @@ const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
           <div class="metrics-card__tile__label">
             {{ t("labels.flight.boost") }}
           </div>
-          <div class="metrics-card__tile__value">
-            {{ speed(speeds.scmSpeedBoosted) }}
-          </div>
+          <div class="metrics-card__tile__value">{{ speed(boostSpeed) }}</div>
           <div class="metrics-card__tile__sub">
             {{ t("labels.flight.boostSub") }}
           </div>
@@ -143,9 +141,7 @@ const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
           <div class="metrics-card__tile__label">
             {{ t("labels.flight.reverse") }}
           </div>
-          <div class="metrics-card__tile__value">
-            {{ speed(speeds.reverseSpeedBoosted) }}
-          </div>
+          <div class="metrics-card__tile__value">{{ speed(reverseSpeed) }}</div>
         </div>
       </template>
     </div>
@@ -161,9 +157,9 @@ const hasReverse = computed(() => !!speeds.value.reverseSpeedBoosted);
           class="flight-rot__item"
         >
           <span class="flight-rot__value">
-            {{ rotation(axis.base ?? 0) }}
-            <span v-if="axis.max" class="flight-rot__boost">
-              → {{ rotation(boostAnim[axis.label]) }}
+            {{ rotation(axis.base) }}
+            <span v-if="axis.boost" class="flight-rot__boost">
+              → {{ rotation(axis.boost) }}
             </span>
           </span>
           <span class="flight-rot__label">{{ axis.label }}</span>

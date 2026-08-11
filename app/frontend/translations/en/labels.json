@@ -584,7 +584,7 @@
         "boostSub": "afterburner",
         "reverse": "Reverse",
         "maneuverability": "Maneuverability",
-        "hint": "Boosted handling scales with the thrusters' power pips; speeds don't."
+        "hint": "Rated figures; all drop to zero when the engine is unpowered."
       },
       "combat": {
         "title": "Combat",
