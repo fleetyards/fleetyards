@@ -22,6 +22,10 @@ const props = withDefaults(defineProps<Props>(), {
 const soldAt = computed(() => props.model.availability.soldAt);
 const rentalAt = computed(() => props.model.availability.rentalAt);
 
+const hasAvailability = computed(
+  () => !!soldAt.value?.length || !!rentalAt.value?.length,
+);
+
 const displayLength = computed(() => {
   if (props.extended && props.model.metrics.extendedLength) {
     return props.model.metrics.extendedLength;
@@ -185,6 +189,13 @@ const displayHeight = computed(() => {
                     {{ modelPrice.location }}
                   </li>
                 </ul>
+              </div>
+            </div>
+            <div v-if="hasAvailability" class="col-12">
+              <div class="metrics-attribution">
+                <a href="https://uexcorp.space" target="_blank" rel="noopener">
+                  {{ t("model.poweredByUex") }}
+                </a>
               </div>
             </div>
           </div>

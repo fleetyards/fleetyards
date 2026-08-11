@@ -40,6 +40,12 @@
   font-weight: bold;
 }
 
+.metrics-attribution {
+  margin-top: 8px;
+  color: darken($text-color, 30%);
+  font-size: 85%;
+}
+
 .metrics-padding {
   padding: 10px 15px;
 }

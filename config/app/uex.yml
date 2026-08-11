@@ -1,0 +1,2 @@
+shared:
+  endpoint: <%= ENV["UEX_ENDPOINT"] || 'https://api.uexcorp.uk/2.0' %>
