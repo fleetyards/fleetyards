@@ -1,0 +1,54 @@
+{
+  "status": "ok",
+  "http_code": 200,
+  "data": [
+    {
+      "id": 1,
+      "id_vehicle": 1,
+      "id_terminal": 100,
+      "price_buy": 1375920,
+      "vehicle_name": "100i",
+      "terminal_name": "Astro Armada"
+    },
+    {
+      "id": 2,
+      "id_vehicle": 2,
+      "id_terminal": 100,
+      "price_buy": 1290370,
+      "vehicle_name": "Avenger Titan",
+      "terminal_name": "Astro Armada"
+    },
+    {
+      "id": 3,
+      "id_vehicle": 3,
+      "id_terminal": 100,
+      "price_buy": 9652610,
+      "vehicle_name": "Andromeda",
+      "terminal_name": "Astro Armada"
+    },
+    {
+      "id": 4,
+      "id_vehicle": 4,
+      "id_terminal": 100,
+      "price_buy": 40000000,
+      "vehicle_name": "C2 Hercules Starlifter",
+      "terminal_name": "Astro Armada"
+    },
+    {
+      "id": 5,
+      "id_vehicle": 5,
+      "id_terminal": 100,
+      "price_buy": 500000,
+      "vehicle_name": "Scythe",
+      "terminal_name": "Astro Armada"
+    },
+    {
+      "id": 6,
+      "id_vehicle": 1,
+      "id_terminal": 102,
+      "price_buy": 999999,
+      "vehicle_name": "100i",
+      "terminal_name": "ARC-L1"
+    }
+  ]
+}
