@@ -92,6 +92,7 @@ const openDisplayOptionsModal = () => {
         name: 'compare',
       }"
       :aria-label="t('actions.compare.ships')"
+      :size="BtnSizesEnum.SMALL"
       mobile-icon-only
     >
       <i class="fa-duotone fa-code-compare" />
@@ -100,6 +101,7 @@ const openDisplayOptionsModal = () => {
     <Btn
       data-test="fleetchart-link"
       :aria-label="t('labels.fleetchart')"
+      :size="BtnSizesEnum.SMALL"
       mobile-icon-only
       @click="toggleFleetchart"
     >
