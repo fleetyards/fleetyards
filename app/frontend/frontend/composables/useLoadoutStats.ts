@@ -139,8 +139,10 @@ export function computeLoadoutStats(
   // the actual weapon allocation.
   const hasOverrides = overrides && Object.keys(overrides).length > 0;
   const powerRatio = hasOverrides ? sim.weaponPoolRatio : sim.weaponMaxRatio;
-  // Unpowered weapons (0 pips) can't fire at all — zero burst/alpha too, not
-  // just sustained.
+  // Every weapon needs the weapon system powered (≥1 pip) to fire at all — zero
+  // burst/alpha too when unpowered, not just sustained. The sustained *throttle*
+  // from partial power is energy-only and handled by sustainedRatio's branch
+  // (ballistics use the heat model and ignore powerRatio).
   const powered = powerRatio > 0 ? 1 : 0;
 
   const dps = emptyBreakdown();
