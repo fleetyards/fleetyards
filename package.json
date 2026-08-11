@@ -123,7 +123,7 @@
     "eslint-plugin-prettier": "5.5.6",
     "eslint-plugin-vue": "^10.9.2",
     "eslint-plugin-vuejs-accessibility": "^2.5.0",
-    "globals": "^17.6.0",
+    "globals": "^17.9.0",
     "jsdom": "29.1.1",
     "knip": "^6.17.1",
     "mocha": "11.7.6",
