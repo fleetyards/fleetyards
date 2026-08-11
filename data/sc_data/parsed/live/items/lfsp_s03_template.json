@@ -66,5 +66,25 @@
   ],
   "durability": {
     "health": 1100.0
+  },
+  "type_data": {
+    "power_consumption": 3.0,
+    "power_minimum_fraction": 0.3333333,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 0.7
+      },
+      "medium": {
+        "start": 1.0,
+        "modifier": 0.85
+      },
+      "high": {
+        "start": 3.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 1130.0,
+    "signature_ir": 0.0
   }
 }

@@ -283,6 +283,7 @@ module ScData
           item[:type_data] = {
             signature_detection: extract_radar_signatures(detections),
             aim_assist_range: aim_assist&.dig("distanceMaxAssignment")&.to_f,
+            aim_assist_min: aim_assist&.dig("distanceMinAssignment")&.to_f,
             ping_properties: {
               cooldown_time: radar.dig("pingProperties", "cooldownTime")&.to_f
             }
@@ -429,7 +430,12 @@ module ScData
           beam = weapon_data.dig("fireActions", "SWeaponActionFireBeamParams")
           beam = beam.is_a?(Array) ? beam.first : beam
 
-          if beam.present?
+          tractor = weapon_data.dig("fireActions", "SWeaponActionFireTractorBeamParams")
+          tractor = tractor.is_a?(Array) ? tractor.first : tractor
+
+          if tractor.present?
+            item[:type_data] = extract_tractor_beam_data(tractor)
+          elsif beam.present?
             item[:type_data] = extract_beam_weapon_data(beam)
           else
             charged = weapon_data.dig("fireActions", "SWeaponActionFireChargedParams")
@@ -566,14 +572,28 @@ module ScData
 
         # Power draw + its power-range modifier for power-drawing components —
         # inputs for the ship-wide power-allocation sim (erkul's `z` /
-        # `powerRanges`). Only components that actually draw Power need this, so
-        # power_ranges is tied to a present power_consumption.
-        if item[:type_data].is_a?(Hash)
-          power_draw = extract_resource_consumption(values, "Power")
-          if power_draw.present?
-            item[:type_data][:power_consumption] ||= power_draw
-            power_ranges = extract_power_ranges(values)
-            item[:type_data][:power_ranges] ||= power_ranges if power_ranges.present?
+        # `powerRanges`). Any component that draws Power gets this, even ones
+        # without their own type_data block (e.g. life support), so the sim sees
+        # every power consumer.
+        power_draw = extract_resource_consumption(values, "Power")
+        if power_draw.present?
+          item[:type_data] = {} unless item[:type_data].is_a?(Hash)
+          item[:type_data][:power_consumption] ||= power_draw
+          minimum_fraction = extract_power_minimum_fraction(values)
+          item[:type_data][:power_minimum_fraction] ||= minimum_fraction if minimum_fraction.present?
+        end
+
+        # Signature emission (EM/IR) + its power-range modifier — captured for
+        # every resource-network component, including power plants (which
+        # produce, not consume, power but are the ship's biggest EM source).
+        signature = extract_signature(values)
+        power_ranges = extract_power_ranges(values)
+        if signature.present? || power_ranges.present?
+          item[:type_data] = {} unless item[:type_data].is_a?(Hash)
+          item[:type_data][:power_ranges] ||= power_ranges if power_ranges.present?
+          if signature.present?
+            item[:type_data][:signature_em] ||= signature[:em] unless signature[:em].nil?
+            item[:type_data][:signature_ir] ||= signature[:ir] unless signature[:ir].nil?
           end
         end
 
@@ -742,6 +762,54 @@ module ScData
         }.compact
       end
 
+      # Tractor and towing beams are WeaponGun-shaped items with no projectile,
+      # ammo or damage — every stat that matters sits on their tractor fire
+      # action. Mirrors erkul's set: pull force and reach, the beam's handling,
+      # the far stronger cargo-mode overrides, and (towing beams) the tow force
+      # plus quantum-tow mass limit.
+      private def extract_tractor_beam_data(tractor)
+        rotation = tractor.dig("rotationParams")
+        movement = tractor.dig("movementParams")
+        cargo_mode = tractor.dig("attachDetachParams", "cargoModeOverrideParams")
+
+        towing = tractor.dig("towingBeamParams", "SWeaponActionFireTractorBeamTowingParams")
+        towing = towing.is_a?(Array) ? towing.first : towing
+
+        {
+          tractor_beam: true,
+          min_force: tractor["minForce"]&.to_f,
+          max_force: tractor["maxForce"]&.to_f,
+          min_distance: tractor["minDistance"]&.to_f,
+          max_distance: tractor["maxDistance"]&.to_f,
+          full_strength_distance: tractor["fullStrengthDistance"]&.to_f,
+          max_angle: tractor["maxAngle"]&.to_f,
+          max_volume: tractor["maxVolume"]&.to_f,
+          volume_force_coefficient: tractor["volumeForceCoefficient"]&.to_f,
+          tether_break_time: tractor["tetherBreakTime"]&.to_f,
+          heat_per_second: tractor["heatPerSecond"]&.to_f,
+          rotation: {
+            max_angular_velocity: rotation&.dig("maxAngularVelocity")&.to_f,
+            degrees_per_action: rotation&.dig("degreesPerAction")&.to_f
+          }.compact.presence,
+          movement: {
+            max_speed: movement&.dig("maxSpeed")&.to_f,
+            max_acceleration: movement&.dig("maxAcceleration")&.to_f
+          }.compact.presence,
+          cargo_mode: {
+            max_force: cargo_mode&.dig("maxForceOverride")&.to_f,
+            min_distance: cargo_mode&.dig("minDistanceOverride")&.to_f,
+            max_distance: cargo_mode&.dig("maxDistanceOverride")&.to_f,
+            full_strength_distance: cargo_mode&.dig("fullStrengthDistanceOverride")&.to_f
+          }.compact.presence,
+          towing: {
+            towing_force: towing&.dig("towingForce")&.to_f,
+            towing_max_distance: towing&.dig("towingMaxDistance")&.to_f,
+            towing_max_acceleration: towing&.dig("towingMaxAcceleration")&.to_f,
+            quantum_tow_mass_limit: towing&.dig("quantumTowMassLimit")&.to_f
+          }.compact.presence
+        }.compact
+      end
+
       # Index mapping from ScDataDumper: IR=0, EM=1, CS=2, dB=3 (disabled), RS=4
       RADAR_SIGNAL_INDEX = {ir: 0, em: 1, cs: 2, rs: 4}.freeze
 
@@ -787,6 +855,21 @@ module ScData
             modifier: range["modifier"]&.to_f
           }
         end.presence
+      end
+
+      # A component's passive EM/IR signature emission at full power (erkul's
+      # `emNominal`/`irNominal`), read from the Online resource state. The sim
+      # scales these by active power segments (and IR by the cooling ratio).
+      private def extract_signature(values)
+        state = values.dig("Components", "ItemResourceComponentParams", "states", "ItemResourceState")
+        state = state.first if state.is_a?(Array)
+        params = state&.dig("signatureParams")
+        return if params.blank?
+
+        {
+          em: params.dig("EMSignature", "nominalSignature")&.to_f,
+          ir: params.dig("IRSignature", "nominalSignature")&.to_f
+        }.compact.presence
       end
 
       private def parse_inventory(key, values)
@@ -969,7 +1052,33 @@ module ScData
         nil
       end
 
+      # Both plain consumers (`ItemResourceDeltaConsumption`, e.g. weapons) and
+      # converters (`ItemResourceDeltaConversion`, e.g. shields/coolers/radar,
+      # which turn Power into their output) declare a `consumption` flow. The
+      # amount is a `SStandardResourceUnit` for standard-unit consumers or a
+      # `SPowerSegmentResourceUnit` for segment-based components — both map to
+      # erkul's `units`.
+      RESOURCE_DELTA_KEYS = %w[
+        ItemResourceDeltaConsumption
+        ItemResourceDeltaConversion
+      ].freeze
+
       private def extract_resource_consumption(values, resource_name)
+        each_resource_consumption(values, resource_name) { |units, _fraction| return units }
+        nil
+      end
+
+      # The `minimumConsumptionFraction` of a component's Power flow — the share
+      # that must stay powered (erkul's `minimumFraction`, sizing the critical
+      # allocation block).
+      private def extract_power_minimum_fraction(values)
+        each_resource_consumption(values, "Power") do |_units, fraction|
+          return fraction if fraction.present?
+        end
+        nil
+      end
+
+      private def each_resource_consumption(values, resource_name)
         irc = values.dig("Components", "ItemResourceComponentParams")
         return if irc.blank?
 
@@ -981,21 +1090,26 @@ module ScData
           deltas = state.dig("deltas")
           next if deltas.blank?
 
-          delta = deltas.dig("ItemResourceDeltaConsumption")
-          next if delta.blank?
+          RESOURCE_DELTA_KEYS.each do |delta_key|
+            delta = deltas.dig(delta_key)
+            next if delta.blank?
 
-          delta = [delta] if delta.is_a?(Hash)
-          delta.each do |d|
-            consumption = d.dig("consumption")
-            next if consumption.blank? || consumption.dig("resource") != resource_name
+            delta = [delta] if delta.is_a?(Hash)
+            delta.each do |d|
+              consumption = d.dig("consumption")
+              next if consumption.blank? || consumption.dig("resource") != resource_name
 
-            amount = consumption.dig("resourceAmountPerSecond")
-            next if amount.blank?
+              amount = consumption.dig("resourceAmountPerSecond")
+              next if amount.blank?
 
-            units = amount.dig("SStandardResourceUnit", "standardResourceUnits") ||
-              amount.dig("SStandardCargoUnit", "standardCargoUnits") ||
-              amount.dig("SMicroResourceUnit", "microResourceUnits")
-            return units.to_f if units.present?
+              units = amount.dig("SStandardResourceUnit", "standardResourceUnits") ||
+                amount.dig("SPowerSegmentResourceUnit", "units") ||
+                amount.dig("SStandardCargoUnit", "standardCargoUnits") ||
+                amount.dig("SMicroResourceUnit", "microResourceUnits")
+              next if units.blank?
+
+              yield units.to_f, d.dig("minimumConsumptionFraction")&.to_f
+            end
           end
         end
 

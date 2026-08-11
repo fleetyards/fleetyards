@@ -90,6 +90,7 @@
     },
     "power_consumption": 0.25,
     "mountable": true,
+    "power_minimum_fraction": 0.0,
     "power_ranges": {
       "low": {
         "start": 0.0,
@@ -103,6 +104,8 @@
         "start": 0.0,
         "modifier": 1.0
       }
-    }
+    },
+    "signature_em": 817.0,
+    "signature_ir": 0.0
   }
 }

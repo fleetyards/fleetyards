@@ -44,11 +44,25 @@
       "types": [
         "ControlPanel"
       ]
+    },
+    {
+      "name": "IP_Interior",
+      "min_size": "0",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
     }
   ],
   "default_loadout": [
     {
       "name": "IP_Exterior",
+      "key": "ControlPanel_Screen_DoorControl_9x16_Small_ANVL_Pisces",
+      "ref": null,
+      "default_loadout": []
+    },
+    {
+      "name": "IP_Interior",
       "key": "ControlPanel_Screen_DoorControl_9x16_Small_ANVL_Pisces",
       "ref": null,
       "default_loadout": []

@@ -35,6 +35,22 @@
   "type_data": {
     "capture_radius": 3.0,
     "fuel_flow_rate": 1.05,
-    "quantum_fuel_flow_rate": 0.58
+    "quantum_fuel_flow_rate": 0.58,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

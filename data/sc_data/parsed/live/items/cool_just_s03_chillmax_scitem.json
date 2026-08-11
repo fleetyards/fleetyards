@@ -22,6 +22,24 @@
     "health": 1500.0
   },
   "type_data": {
-    "cooling_rate": 58.0
+    "cooling_rate": 58.0,
+    "power_consumption": 5.0,
+    "power_minimum_fraction": 0.8,
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 0.7
+      },
+      "medium": {
+        "start": 1.0,
+        "modifier": 0.85
+      },
+      "high": {
+        "start": 5.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 2480.0,
+    "signature_ir": 11900.0
   }
 }

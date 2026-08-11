@@ -34,6 +34,38 @@
       "types": [
         "ControlPanel"
       ]
+    },
+    {
+      "name": "hardpoint_interior_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
+      "name": "hardpoint_interior_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
+      "name": "hardpoint_interior_front_right",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
+    },
+    {
+      "name": "hardpoint_interior_front_left",
+      "min_size": "1",
+      "max_size": "1",
+      "types": [
+        "ControlPanel"
+      ]
     }
   ],
   "default_loadout": [
@@ -52,5 +84,23 @@
   ],
   "durability": {
     "health": 14000.0
+  },
+  "type_data": {
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

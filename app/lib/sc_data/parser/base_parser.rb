@@ -134,11 +134,16 @@ module ScData
         load_ini_file("#{base_path}/Data/Localization/english/global.ini")
       end
 
+      # Cosmetic and prop entities, matched on whole key parts. Keep terms out
+      # that can name real equipment: "interior" used to be here and silently
+      # dropped the Ironclad's interior remote turrets (a tractor-beam arm and a
+      # gun turret), while the interior props it was aimed at don't live under
+      # the scanned `scitem/{ships,vehicles}` folders anyway.
       private def blacklisted_item_key?(key)
         [
           "camera", "panel", "animated", "light", "decal", "sensor", "button",
           "handle", "dashboard", "seataccess", "screen", "hud", "helper", "oc", "escape", "esc",
-          "barrel", "firingmechanism", "powerarray", "ventilation", "interior", "mfd"
+          "barrel", "firingmechanism", "powerarray", "ventilation", "mfd"
         ].any? do |filter|
           key.downcase.split("_").any? { |part| part == filter }
         end

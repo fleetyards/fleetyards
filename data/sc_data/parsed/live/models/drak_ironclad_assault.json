@@ -15,6 +15,11 @@
   },
   "mass": 720000.0,
   "weapon_pool_size": 10,
+  "signature_cross_section": {
+    "x": 8800.0,
+    "y": 17200.0,
+    "z": 37000.0
+  },
   "hull_health": 258000.0,
   "hull_parts": [
     {
@@ -330,6 +335,37 @@
       ]
     },
     {
+      "name": "hardpoint_remote_turret_interior",
+      "ref": "808eb52a-3b14-4370-a81a-4a9a9d1e6d5f",
+      "key": null,
+      "loadout": [
+        {
+          "name": "turret_left",
+          "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "7034e330-3d22-4e89-83cb-c01815dbb875",
+              "key": null
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "ref": "7fedca61-dfeb-4ecb-b421-e7c3ba55a584",
+          "key": null,
+          "loadout": [
+            {
+              "name": "hardpoint_class_2",
+              "ref": "7034e330-3d22-4e89-83cb-c01815dbb875",
+              "key": null
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "hardpoint_manned_turret_bottom",
       "ref": "b4aeccf1-3e01-437f-b348-3db04cd32a12",
       "key": null,
@@ -482,6 +518,11 @@
     },
     {
       "name": "hardpoint_controller_weapon",
+      "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
+      "key": null
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_turret_interior",
       "ref": "c78851f1-ded8-4e8d-91ec-905e3dae075e",
       "key": null
     },
@@ -932,6 +973,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_interior_airlock_door",
+      "ref": "56003793-3611-402a-bed5-8475e6ed06cb",
+      "key": null
+    },
+    {
       "name": "hardpoint_docking_module",
       "ref": "aef5dfda-50ab-458b-8cb3-f7705b0e26e2",
       "key": null,
@@ -946,6 +992,11 @@
     {
       "name": "hardpoint_command_module_docking_door",
       "ref": "acaf116d-cd25-4d32-ab9b-97de032f25f9",
+      "key": null
+    },
+    {
+      "name": "hardpoint_interior_cm_airlock_door",
+      "ref": "c4f5b7b1-cdb3-42a1-903c-4bd4410ecdac",
       "key": null
     },
     {

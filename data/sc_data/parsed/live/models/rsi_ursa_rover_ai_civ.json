@@ -382,6 +382,11 @@
       "key": null
     },
     {
+      "name": "hardpoint_relay_interior",
+      "ref": null,
+      "key": "RELAY_2slot"
+    },
+    {
       "name": "hardpoint_armor",
       "ref": "6fb0f4a2-e747-4e5d-bef7-7e481a587254",
       "key": null

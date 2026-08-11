@@ -25,6 +25,22 @@
     "thrust_capacity": 214907.7,
     "fuel_burn_rate_per10_k_newton": 0.098875,
     "thruster_type": "Retro",
-    "thruster_class": "retro"
+    "thruster_class": "retro",
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
   }
 }

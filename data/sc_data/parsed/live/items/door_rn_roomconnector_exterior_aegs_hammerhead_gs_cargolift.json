@@ -35,5 +35,23 @@
       "ref": "923d4520-0226-4808-bf1f-75a5ebdb5af8",
       "default_loadout": []
     }
-  ]
+  ],
+  "type_data": {
+    "power_ranges": {
+      "low": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "medium": {
+        "start": 0.0,
+        "modifier": 1.0
+      },
+      "high": {
+        "start": 0.0,
+        "modifier": 1.0
+      }
+    },
+    "signature_em": 0.0,
+    "signature_ir": 0.0
+  }
 }
