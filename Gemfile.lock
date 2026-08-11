@@ -201,7 +201,7 @@ GEM
     discordrb-webhooks (3.8.0)
       rest-client (>= 2.0.0)
     domain_name (0.6.20240107)
-    doorkeeper (5.9.3)
+    doorkeeper (5.9.5)
       railties (>= 5)
     doorkeeper-jwt (0.4.3)
       jwt (>= 2.1)
