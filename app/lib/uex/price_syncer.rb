@@ -10,13 +10,10 @@ module Uex
     # 71,308 / 142,616 / 509,344 for 1 / 3 / 7 / 30 days, and UEX reports 27,165.
     RENTAL_TIME_RANGE = "1-day"
 
-    # Backstop behind the per-terminal rule below, for the one case it cannot
-    # judge: terminals that report, but report short. A run that would still drop
-    # more than this share of the prices we hold is treated as a bad snapshot
-    # rather than a mass closure. Legitimate churn is a terminal or two closing —
-    # the largest vehicle terminal is well under a fifth of all rows — so this
-    # leaves ample headroom.
-    MAX_REMOVAL_RATIO = 0.5
+    # How much of a terminal's stock it must still list before we believe its
+    # omissions. A shop dropping over half its vehicles between two daily runs is
+    # not plausible churn; a feed that came back short looks exactly like that.
+    MIN_TERMINAL_RETENTION = 0.5
 
     Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unmatched) do
       def to_s
@@ -62,17 +59,9 @@ module Uex
 
       persist(
         desired,
-        reported: locations_in(purchases + rentals, terminals),
         live: terminals.values.map { |terminal| terminal["name"].to_s.strip }.to_set,
         unmatched: matcher.misses
       )
-    end
-
-    # The terminal names this snapshot actually priced something at, taken from
-    # the raw rows so a terminal that only listed vehicles we cannot match still
-    # counts as having reported.
-    private def locations_in(rows, terminals)
-      rows.filter_map { |row| terminals[row["id_terminal"]]&.dig("name")&.strip.presence }.to_set
     end
 
     private def collect(rows, vehicles:, terminals:, matcher:, price_key:, price_type:, time_range:)
@@ -119,19 +108,22 @@ module Uex
       raise Uex::Error, "UEX returned no usable rows for #{feed}; refusing to sync a snapshot that would delete live prices"
     end
 
-    private def persist(desired, reported:, live:, unmatched:)
+    private def persist(desired, live:, unmatched:)
       created = 0
       updated = 0
       removed = 0
       skipped_removals = 0
 
       ItemPrice.transaction do
+        held = ItemPrice.where(item_type: ITEM_TYPE).to_a
+        held_per_location = held.group_by(&:location).transform_values(&:size)
+        listed_per_location = desired.values.group_by { |row| row[:location] }.transform_values(&:size)
+
         # Whatever is left in here once every desired row has claimed its match
         # is a location UEX no longer lists.
-        unclaimed = ItemPrice.where(item_type: ITEM_TYPE).index_by do |item_price|
+        unclaimed = held.index_by do |item_price|
           [item_price.item_id, item_price.price_type, item_price.location, item_price.time_range]
         end
-        held_before = unclaimed.size
 
         desired.each do |key, attributes|
           item_price = unclaimed.delete(key)
@@ -150,18 +142,13 @@ module Uex
         end
 
         deletable, ambiguous = unclaimed.values.partition do |item_price|
-          deletable?(item_price.location, reported:, live:)
-        end
-
-        if wholesale_removal?(deletable.size, held_before)
-          ambiguous += deletable
-          deletable = []
+          deletable?(item_price.location, listed: listed_per_location, held: held_per_location, live:)
         end
 
         # Upserts have already applied either way, so fresh prices still land and
         # only the destructive half is held back. A later whole snapshot reconciles.
         skipped_removals = ambiguous.size
-        report_skipped_removals(ambiguous, held_before) if ambiguous.any?
+        report_skipped_removals(ambiguous, held.size) if ambiguous.any?
 
         removed = ItemPrice.where(id: deletable.map(&:id)).destroy_all.size
       end
@@ -172,17 +159,17 @@ module Uex
       )
     end
 
-    # A terminal that priced anything in this snapshot is authoritative for its
-    # own inventory, so one of our rows it did not list really is gone. A terminal
-    # that priced nothing is ambiguous — either every ship left the shop or the
-    # feed came back short — and only the terminals feed can settle it: if the
-    # shop is gone from there too, the rows go; otherwise they stay.
-    private def deletable?(location, reported:, live:)
-      reported.include?(location) || live.exclude?(location)
-    end
+    # Decided per terminal, because that is the only granularity at which the
+    # question is answerable. A terminal gone from the terminals feed has closed,
+    # so its rows go. Otherwise the test is whether it reported at anything like
+    # its usual volume: a shop discontinuing a ship or two still lists the rest,
+    # whereas a truncated feed shows up as a terminal that suddenly lists a
+    # fraction of what we hold for it — or nothing at all. Below the retention
+    # floor we keep its rows and report rather than guess.
+    private def deletable?(location, listed:, held:, live:)
+      return true if live.exclude?(location)
 
-    private def wholesale_removal?(pending, held_before)
-      held_before.positive? && pending > held_before * MAX_REMOVAL_RATIO
+      listed.fetch(location, 0) >= held.fetch(location, 0) * MIN_TERMINAL_RETENTION
     end
 
     private def report_skipped_removals(preserved, held_before)

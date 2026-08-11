@@ -159,9 +159,12 @@ module Uex
 
       result = sync(truncated)
 
-      assert_equal 0, result.removed
-      assert_equal 5, result.skipped_removals
-      assert_equal 7, ItemPrice.count, "a truncated snapshot must not delete the rows it omits"
+      # 4 of the 5 omissions are held back: the two terminals that came back well
+      # short keep their rows. The rental terminal listing 1 of the 2 we hold sits
+      # exactly on the retention floor, which is ordinary churn at that size.
+      assert_equal 4, result.skipped_removals
+      assert_equal 1, result.removed
+      assert_equal 6, ItemPrice.count
     end
 
     test "#run still removes a minority of stale rows" do
@@ -175,8 +178,6 @@ module Uex
       assert_equal 1, result.removed
     end
 
-    # The case the aggregate ratio cannot judge: a terminal drops out entirely
-    # while the snapshot stays comfortably large.
     test "#run keeps rows at a terminal that priced nothing this run" do
       sync
 
@@ -188,6 +189,21 @@ module Uex
       assert_equal 1, result.skipped_removals
       assert_equal 7, ItemPrice.count
       assert_includes ItemPrice.pluck(:location), "New Deal - Teasa Spaceport - Lorville"
+    end
+
+    # The residual case a "did it report at all?" rule cannot judge: the terminal
+    # does report, but comes back with a fraction of its stock.
+    test "#run keeps rows at a terminal that reported far less than it holds" do
+      sync
+
+      short = uex_fixture("vehicles_purchases_prices_all")
+        .reject { |row| row["id_terminal"] == 100 && [2, 3, 4].include?(row["id_vehicle"]) }
+
+      result = sync(vehicle_purchase_prices: short)
+
+      assert_equal 0, result.removed, "a terminal listing 1 of the 4 we hold looks truncated, not emptied"
+      assert_equal 3, result.skipped_removals
+      assert_equal 7, ItemPrice.count
     end
 
     test "#run removes those rows once the terminal is gone from the terminals feed" do
@@ -203,6 +219,20 @@ module Uex
       assert_equal 1, result.removed
       assert_equal 0, result.skipped_removals
       assert_not_includes ItemPrice.pluck(:location), "New Deal - Teasa Spaceport - Lorville"
+    end
+
+    test "#run removes a row when the terminal swaps one vehicle for another" do
+      sync
+
+      swapped = uex_fixture("vehicles_purchases_prices_all").map do |row|
+        (row["id_terminal"] == 103) ? row.merge("id_vehicle" => 2) : row
+      end
+
+      result = sync(vehicle_purchase_prices: swapped)
+
+      assert_equal 1, result.created
+      assert_equal 1, result.removed, "steady listing volume means the omission is real"
+      assert_equal 0, result.skipped_removals
     end
 
     private def sync(overrides = {})
