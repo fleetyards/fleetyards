@@ -38,11 +38,21 @@ const powered = computed(() => (toValue(enginePowered) ? 1 : 0));
 const speeds = computed(() => props.model.speeds);
 const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
 
-const hasData = computed(() =>
+const hasSpeeds = computed(() =>
   isGroundVehicle.value
     ? !!speeds.value.groundMaxSpeed
     : !!(speeds.value.scmSpeed || speeds.value.maxSpeed),
 );
+
+const hasFuel = computed(
+  () =>
+    !!props.model.metrics.hydrogenFuelTankSize ||
+    !!props.model.metrics.quantumFuelTankSize,
+);
+
+// Fuel is what the speeds are spent on, so it reads here rather than among the
+// base dimensions — and a ship with tanks but no recorded speeds still shows it.
+const hasData = computed(() => hasSpeeds.value || hasFuel.value);
 
 // A dead engine zeroes every flight figure; otherwise they're the game values.
 const gate = (value?: number) => (value ?? 0) * powered.value;
@@ -111,7 +121,7 @@ const rotations = computed(() =>
     :title="t('labels.flight.title')"
     class="flight-panel"
   >
-    <div class="metrics-card__hero">
+    <div v-if="hasSpeeds" class="metrics-card__hero">
       <template v-if="isGroundVehicle">
         <div class="metrics-card__tile metrics-card__tile--primary">
           <div class="metrics-card__tile__label">
@@ -155,7 +165,7 @@ const rotations = computed(() =>
       </template>
     </div>
 
-    <template v-if="!isGroundVehicle">
+    <template v-if="!isGroundVehicle && hasSpeeds">
       <div class="metrics-card__section-label">
         {{ t("labels.flight.maneuverability") }}
       </div>
@@ -176,7 +186,35 @@ const rotations = computed(() =>
       </div>
     </template>
 
-    <div class="metrics-card__footer">
+    <template v-if="hasFuel">
+      <div v-if="hasSpeeds" class="metrics-card__divider" />
+      <div class="metrics-card__section-label">
+        {{ t("labels.flight.fuel") }}
+      </div>
+      <div class="metrics-card__rows metrics-card__rows--split">
+        <div
+          v-if="model.metrics.hydrogenFuelTankSize"
+          class="metrics-card__row"
+        >
+          <span class="metrics-card__row__label">
+            {{ t("labels.flight.fuelHydrogen") }}
+          </span>
+          <span class="metrics-card__row__value">
+            {{ toNumber(model.metrics.hydrogenFuelTankSize, "cargo") }}
+          </span>
+        </div>
+        <div v-if="model.metrics.quantumFuelTankSize" class="metrics-card__row">
+          <span class="metrics-card__row__label">
+            {{ t("labels.flight.fuelQuantum") }}
+          </span>
+          <span class="metrics-card__row__value">
+            {{ toNumber(model.metrics.quantumFuelTankSize, "cargo") }}
+          </span>
+        </div>
+      </div>
+    </template>
+
+    <div v-if="hasSpeeds" class="metrics-card__footer">
       <span class="metrics-card__hint">{{ t("labels.flight.hint") }}</span>
     </div>
   </MetricsCard>

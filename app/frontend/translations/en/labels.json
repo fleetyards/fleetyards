@@ -584,6 +584,9 @@
         "boostSub": "afterburner",
         "reverse": "Reverse",
         "maneuverability": "Maneuverability",
+        "fuel": "Fuel",
+        "fuelHydrogen": "Hydrogen",
+        "fuelQuantum": "Quantum",
         "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
       },
       "base": {
