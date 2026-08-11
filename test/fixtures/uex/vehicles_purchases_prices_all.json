@@ -49,6 +49,14 @@
       "price_buy": 999999,
       "vehicle_name": "100i",
       "terminal_name": "ARC-L1"
+    },
+    {
+      "id": 7,
+      "id_vehicle": 1,
+      "id_terminal": 103,
+      "price_buy": 1401300,
+      "vehicle_name": "100i",
+      "terminal_name": "New Deal Lorville"
     }
   ]
 }

@@ -15,10 +15,10 @@ module Uex
     test "#run creates a price row per matched vehicle and vehicle terminal" do
       result = sync
 
-      assert_equal 6, result.created
+      assert_equal 7, result.created
       assert_equal 0, result.updated
       assert_equal 0, result.removed
-      assert_equal 6, ItemPrice.count
+      assert_equal 7, ItemPrice.count
     end
 
     test "#run maps a UEX purchase price to a sell price, not a buy price" do
@@ -59,7 +59,11 @@ module Uex
 
       locations = ItemPrice.where(item_type: "Model").pluck(:location).uniq
 
-      assert_equal ["Astro Armada - Area 18", "Vantage Rentals - Lorville"], locations.sort
+      assert_equal [
+        "Astro Armada - Area 18",
+        "New Deal - Teasa Spaceport - Lorville",
+        "Vantage Rentals - Lorville"
+      ], locations.sort
     end
 
     test "#run reports vehicles that resolve to no model" do
@@ -88,7 +92,7 @@ module Uex
       assert_equal 0, result.created
       assert_equal 1, result.updated
       assert_equal 0, result.removed
-      assert_equal 6, ItemPrice.count
+      assert_equal 7, ItemPrice.count
       assert_equal 1_500_000, @models[:name_match].reload.sold_at.first.price.to_i
     end
 
@@ -99,7 +103,7 @@ module Uex
       assert_equal 0, result.created
       assert_equal 0, result.updated
       assert_equal 0, result.removed
-      assert_equal 6, ItemPrice.count
+      assert_equal 7, ItemPrice.count
     end
 
     test "#run removes rows for a location UEX no longer lists" do
@@ -132,7 +136,7 @@ module Uex
         error = assert_raises(Uex::Error) { sync(feed => []) }
 
         assert_match feed.to_s, error.message
-        assert_equal 6, ItemPrice.count, "an empty #{feed} feed must not delete anything"
+        assert_equal 7, ItemPrice.count, "an empty #{feed} feed must not delete anything"
       end
     end
 
@@ -142,7 +146,7 @@ module Uex
       commodity_only = uex_fixture("terminals").map { |terminal| terminal.merge("type" => "commodity") }
 
       assert_raises(Uex::Error) { sync(terminals: commodity_only) }
-      assert_equal 6, ItemPrice.count
+      assert_equal 7, ItemPrice.count
     end
 
     test "#run keeps prices and reports when a snapshot would remove most of them" do
@@ -156,8 +160,8 @@ module Uex
       result = sync(truncated)
 
       assert_equal 0, result.removed
-      assert_equal 4, result.skipped_removals
-      assert_equal 6, ItemPrice.count, "a truncated snapshot must not delete the rows it omits"
+      assert_equal 5, result.skipped_removals
+      assert_equal 7, ItemPrice.count, "a truncated snapshot must not delete the rows it omits"
     end
 
     test "#run still removes a minority of stale rows" do
@@ -169,6 +173,36 @@ module Uex
 
       assert_equal 0, result.skipped_removals
       assert_equal 1, result.removed
+    end
+
+    # The case the aggregate ratio cannot judge: a terminal drops out entirely
+    # while the snapshot stays comfortably large.
+    test "#run keeps rows at a terminal that priced nothing this run" do
+      sync
+
+      purchases = uex_fixture("vehicles_purchases_prices_all").reject { |row| row["id_terminal"] == 103 }
+
+      result = sync(vehicle_purchase_prices: purchases)
+
+      assert_equal 0, result.removed
+      assert_equal 1, result.skipped_removals
+      assert_equal 7, ItemPrice.count
+      assert_includes ItemPrice.pluck(:location), "New Deal - Teasa Spaceport - Lorville"
+    end
+
+    test "#run removes those rows once the terminal is gone from the terminals feed" do
+      sync
+
+      closed = {
+        vehicle_purchase_prices: uex_fixture("vehicles_purchases_prices_all").reject { |row| row["id_terminal"] == 103 },
+        terminals: uex_fixture("terminals").reject { |terminal| terminal["id"] == 103 }
+      }
+
+      result = sync(closed)
+
+      assert_equal 1, result.removed
+      assert_equal 0, result.skipped_removals
+      assert_not_includes ItemPrice.pluck(:location), "New Deal - Teasa Spaceport - Lorville"
     end
 
     private def sync(overrides = {})

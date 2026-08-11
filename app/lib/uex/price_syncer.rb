@@ -10,11 +10,12 @@ module Uex
     # 71,308 / 142,616 / 509,344 for 1 / 3 / 7 / 30 days, and UEX reports 27,165.
     RENTAL_TIME_RANGE = "1-day"
 
-    # A run that would drop more than this share of the prices we already hold is
-    # treated as a bad snapshot rather than a mass closure. Legitimate churn is a
-    # terminal or two disappearing — the largest vehicle terminal accounts for
-    # well under a fifth of all rows — so this leaves ample headroom while still
-    # catching a feed that came back truncated.
+    # Backstop behind the per-terminal rule below, for the one case it cannot
+    # judge: terminals that report, but report short. A run that would still drop
+    # more than this share of the prices we hold is treated as a bad snapshot
+    # rather than a mass closure. Legitimate churn is a terminal or two closing —
+    # the largest vehicle terminal is well under a fifth of all rows — so this
+    # leaves ample headroom.
     MAX_REMOVAL_RATIO = 0.5
 
     Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unmatched) do
@@ -34,10 +35,12 @@ module Uex
         :terminals,
         @client.terminals.select { |terminal| TERMINAL_TYPES.include?(terminal["type"]) }
       ).index_by { |terminal| terminal["id"] }
+      purchases = require_rows(:vehicle_purchase_prices, @client.vehicle_purchase_prices)
+      rentals = require_rows(:vehicle_rental_prices, @client.vehicle_rental_prices)
       matcher = Uex::VehicleMatcher.new
 
       desired = collect(
-        require_rows(:vehicle_purchase_prices, @client.vehicle_purchase_prices),
+        purchases,
         vehicles:, terminals:, matcher:,
         price_key: "price_buy",
         # Ours is shop-perspective: `sell` means the shop sells it, which is what
@@ -49,7 +52,7 @@ module Uex
 
       desired.merge!(
         collect(
-          require_rows(:vehicle_rental_prices, @client.vehicle_rental_prices),
+          rentals,
           vehicles:, terminals:, matcher:,
           price_key: "price_rent",
           price_type: "rental",
@@ -57,7 +60,19 @@ module Uex
         )
       )
 
-      persist(desired, unmatched: matcher.misses)
+      persist(
+        desired,
+        reported: locations_in(purchases + rentals, terminals),
+        live: terminals.values.map { |terminal| terminal["name"].to_s.strip }.to_set,
+        unmatched: matcher.misses
+      )
+    end
+
+    # The terminal names this snapshot actually priced something at, taken from
+    # the raw rows so a terminal that only listed vehicles we cannot match still
+    # counts as having reported.
+    private def locations_in(rows, terminals)
+      rows.filter_map { |row| terminals[row["id_terminal"]]&.dig("name")&.strip.presence }.to_set
     end
 
     private def collect(rows, vehicles:, terminals:, matcher:, price_key:, price_type:, time_range:)
@@ -104,7 +119,7 @@ module Uex
       raise Uex::Error, "UEX returned no usable rows for #{feed}; refusing to sync a snapshot that would delete live prices"
     end
 
-    private def persist(desired, unmatched:)
+    private def persist(desired, reported:, live:, unmatched:)
       created = 0
       updated = 0
       removed = 0
@@ -134,14 +149,21 @@ module Uex
           updated += 1
         end
 
-        if wholesale_removal?(unclaimed.size, held_before)
-          # Upserts have already applied, so fresh prices still land; only the
-          # destructive half is held back. The next whole snapshot reconciles.
-          skipped_removals = unclaimed.size
-          report_skipped_removals(skipped_removals, held_before)
-        else
-          removed = ItemPrice.where(id: unclaimed.values.map(&:id)).destroy_all.size
+        deletable, ambiguous = unclaimed.values.partition do |item_price|
+          deletable?(item_price.location, reported:, live:)
         end
+
+        if wholesale_removal?(deletable.size, held_before)
+          ambiguous += deletable
+          deletable = []
+        end
+
+        # Upserts have already applied either way, so fresh prices still land and
+        # only the destructive half is held back. A later whole snapshot reconciles.
+        skipped_removals = ambiguous.size
+        report_skipped_removals(ambiguous, held_before) if ambiguous.any?
+
+        removed = ItemPrice.where(id: deletable.map(&:id)).destroy_all.size
       end
 
       Result.new(
@@ -150,13 +172,22 @@ module Uex
       )
     end
 
+    # A terminal that priced anything in this snapshot is authoritative for its
+    # own inventory, so one of our rows it did not list really is gone. A terminal
+    # that priced nothing is ambiguous — either every ship left the shop or the
+    # feed came back short — and only the terminals feed can settle it: if the
+    # shop is gone from there too, the rows go; otherwise they stay.
+    private def deletable?(location, reported:, live:)
+      reported.include?(location) || live.exclude?(location)
+    end
+
     private def wholesale_removal?(pending, held_before)
       held_before.positive? && pending > held_before * MAX_REMOVAL_RATIO
     end
 
-    private def report_skipped_removals(pending, held_before)
-      message = "UEX snapshot would have removed #{pending} of #{held_before} model prices; " \
-        "kept them and applied updates only"
+    private def report_skipped_removals(preserved, held_before)
+      message = "UEX snapshot omitted #{preserved.size} of #{held_before} model prices at " \
+        "#{preserved.map(&:location).uniq.sort.join(", ")}; kept them and applied updates only"
 
       Rails.logger.warn("[Uex::PriceSyncer] #{message}")
       Appsignal.report_error(Uex::Error.new(message))
