@@ -12,6 +12,7 @@ import { type BaseList } from "@/services/fyApi";
 import { useRoute } from "vue-router";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import type { MaybeRef } from "vue";
 
 type Props = {
@@ -47,6 +48,8 @@ const internalPerPage = computed(
 
 const { t } = useI18n();
 
+const mobile = useMobile();
+
 const route = useRoute();
 
 const pageRoute = (page: number) => ({
@@ -75,6 +78,7 @@ const currentPage = computed(() => {
       />
       <template v-if="pagination.totalCount > 0 && pagination.totalPages > 1">
         <Btn
+          v-if="!mobile"
           :size="size"
           :to="pageRoute(1)"
           :disabled="currentPage <= 1"
@@ -113,6 +117,7 @@ const currentPage = computed(() => {
           <i class="fa fa-chevron-right" />
         </Btn>
         <Btn
+          v-if="!mobile"
           :size="size"
           :to="pageRoute(pagination.totalPages)"
           :disabled="currentPage >= pagination.totalPages"
