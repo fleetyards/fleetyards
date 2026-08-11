@@ -421,7 +421,9 @@ describe("heat (cooling ratio)", () => {
 });
 
 describe("engine power ratio (flight scaling)", () => {
-  it("is 1 at the default and drops as engine pips are pulled", () => {
+  it("is 1 when the engine fills to capacity and 0 when unpowered", () => {
+    // Ample power fills every engine pip → full boost; pulling the pips to 0
+    // leaves the ship dead in the water (ratio 0).
     const engine = hp(HardpointCategoryEnum.CONTROLLER, {
       powerConsumption: 8,
       powerMinimumFraction: 0.125,
@@ -432,18 +434,38 @@ describe("engine power ratio (flight scaling)", () => {
     expect(off.enginePowerRatio).toBe(0);
   });
 
-  it("scales between 0 and 1 as engine pips are pulled part-way", () => {
-    // Engine fills to its capacity (8) by default; halving its pips halves the
-    // ratio that drives the boosted handling.
+  it("scales as engine pips are pulled part-way ((alloc − min) / (cap − min))", () => {
+    // Consumption 10, minimum 20% → a mandatory floor of 2. Full fills all 10
+    // → ratio 1; at 6 segments the boost ratio is (6 − 2) / (10 − 2) = 0.5.
     const engine = hp(HardpointCategoryEnum.CONTROLLER, {
-      powerConsumption: 8,
-      powerMinimumFraction: 0.25,
+      powerConsumption: 10,
+      powerMinimumFraction: 0.2,
     });
     const ports = [plant(60, 2), engine];
     const full = simulateLoadoutPower(ports, 0);
     expect(full.enginePowerRatio).toBe(1);
-    const half = simulateLoadoutPower(ports, 0, "SCM", { [engine.id]: 4 });
+    const half = simulateLoadoutPower(ports, 0, "SCM", { [engine.id]: 6 });
     expect(half.enginePowerRatio).toBeCloseTo(0.5);
+  });
+
+  it("is below 1 at the default when the engine can't fill to capacity", () => {
+    // The engine fills last, so a segment-starved plant leaves it part-filled
+    // at the default — a partial boost, like erkul's default 3/6 engine pips,
+    // rather than the fully-rated boost.
+    const engine = hp(HardpointCategoryEnum.CONTROLLER, {
+      powerConsumption: 8,
+      powerMinimumFraction: 0.125,
+    });
+    const ports = [
+      plant(6, 1),
+      hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
+      engine,
+    ];
+    const sim = simulateLoadoutPower(ports, 0);
+    const col = sim.columns.find((c) => c.family === "engine")!;
+    expect(col.allocated).toBeLessThan(col.capacity);
+    expect(sim.enginePowerRatio).toBeGreaterThan(0);
+    expect(sim.enginePowerRatio).toBeLessThan(1);
   });
 
   it("is 1 when the ship has no engine power family", () => {

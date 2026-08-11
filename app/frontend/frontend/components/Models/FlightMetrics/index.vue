@@ -26,9 +26,9 @@ const enginePowerRatio = inject<Ref<number | undefined>>(
   ref(1),
 );
 const powered = computed(() => ((toValue(enginePowerRatio) ?? 1) > 0 ? 1 : 0));
-// How much of the rated boost the thrusters can currently deliver (engine power
-// relative to its default fill). Only the *boosted* handling scales with this;
-// the speeds and base handling don't.
+// How much of the rated boost the thrusters can currently deliver — the game's
+// IFCS afterburner ratio (engine power above its floor, up to full pips). Only
+// the *boosted* handling scales with this; the speeds and base handling don't.
 const boostFactor = computed(() =>
   Math.min(1, Math.max(0, toValue(enginePowerRatio) ?? 1)),
 );
