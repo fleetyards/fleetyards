@@ -9977,6 +9977,7 @@ components:
       - Imports::HangarImport
       - Imports::ModulesImport
       - Imports::PaintsImport
+      - Imports::UexPricesImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -9987,6 +9988,7 @@ components:
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_MODULES_IMPORT
       - IMPORTS_PAINTS_IMPORT
+      - IMPORTS_UEX_PRICES_IMPORT
       title: ImportTypeEnum
     ItemPrice:
       type: object
