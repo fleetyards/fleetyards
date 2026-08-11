@@ -59,6 +59,10 @@ const EXTRA_HEAT_FAMILIES = new Set<PowerFamily>([
   "qdrive",
 ]);
 
+// Families whose active segments generate no heat load (matching erkul, where
+// powering the tractor/towing beams doesn't change the cooling ratio).
+const NON_HEAT_FAMILIES = new Set<PowerFamily>(["tractorBeam", "towingbeam"]);
+
 // A component's power-range modifier curve — `{start, modifier}` breakpoints
 // sorted ascending by `start`. The modifier for a given active-segment count is
 // the entry with the greatest `start` ≤ segments (erkul's `L`), default 1.
@@ -375,6 +379,7 @@ function computeHeat(
   let coolingPerSec = 0;
   let coolingMaxPerSec = 0;
   let extraHeat = 0;
+  let nonHeatSegments = 0;
 
   for (const component of components) {
     const active = perPort[component.portPath] ?? 0;
@@ -390,10 +395,14 @@ function computeHeat(
     if (active > 0 && EXTRA_HEAT_FAMILIES.has(component.family)) {
       extraHeat += active * rangeModifier(component.ranges, active);
     }
+    if (NON_HEAT_FAMILIES.has(component.family)) {
+      nonHeatSegments += active;
+    }
   }
 
-  // Heat generated = every active power segment, plus the extra component heat.
-  const heatGeneration = usedSegments + extraHeat;
+  // Heat generated = every active power segment (minus the families that emit
+  // none, e.g. tractor beams), plus the extra component heat.
+  const heatGeneration = usedSegments - nonHeatSegments + extraHeat;
   // Cooling load: heat ÷ coolant provided (uncapped, so > 1 when under-cooled);
   // 0 when no cooler is powered.
   const coolingRatio = coolingPerSec > 0 ? heatGeneration / coolingPerSec : 0;

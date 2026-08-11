@@ -371,6 +371,22 @@ describe("heat (cooling ratio)", () => {
     expect(sim.coolingPerSec).toBe(0);
     expect(sim.coolingRatio).toBe(0);
   });
+
+  it("does not count tractor beams toward the heat load (matches erkul)", () => {
+    const base = [
+      plant(40, 2),
+      cooler(),
+      hp(HardpointCategoryEnum.SHIELDGENERATOR, { powerConsumption: 4 }),
+    ];
+    const tractor = hp(HardpointCategoryEnum.WEAPONS, { powerConsumption: 4 });
+    tractor.component!.type = "TractorBeam";
+
+    const without = simulateLoadoutPower(base, 0);
+    const withBeam = simulateLoadoutPower([...base, tractor], 0);
+    // Powering the tractor beam must not change the cooling load.
+    expect(withBeam.heatGeneration).toBeCloseTo(without.heatGeneration, 5);
+    expect(withBeam.coolingRatio).toBeCloseTo(without.coolingRatio, 5);
+  });
 });
 
 describe("weapon pool headroom", () => {
