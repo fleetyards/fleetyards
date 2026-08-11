@@ -18,25 +18,38 @@
 @media (max-width: $desktop-breakpoint) {
   .filtered-list {
     &__actions {
+      gap: 0 10px;
+
       &-left,
       &-right {
-        flex: 1 1 auto;
         display: flex;
       }
 
       &-left {
+        flex: 0 0 auto;
         justify-content: flex-start;
       }
 
       &-right {
+        flex: 1 1 auto;
+        min-width: 0;
         justify-content: flex-end;
+        gap: 10px;
+
+        :deep(.panel-btn),
+        :deep(.panel-btn-group),
+        :deep(.panel-btn-dropdown) {
+          margin-right: 0;
+        }
       }
     }
 
     &__pagination-top {
+      order: -1;
+      flex: 1 1 auto;
+      min-width: 0;
       display: flex;
       justify-content: center;
-      width: 100%;
     }
   }
 }
