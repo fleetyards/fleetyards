@@ -622,7 +622,6 @@
         "shieldHp": "Shield HP",
         "shieldHpSub": "%{count} generators",
         "shieldRegen": "Regeneration",
-        "shieldRegenSub": "at full power",
         "shieldResistances": "Resistance",
         "shieldAbsorption": "Absorption",
         "armor": "Armor",
