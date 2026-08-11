@@ -120,6 +120,54 @@ Each phase lands as its own PR, validated against erkul on the **Asgard**.
 - **Still to validate:** a visual pass in-app against erkul (the worktree DB has
   the fresh power data; committed parsed JSON is still the separate data-regen).
 
+### Phase 3b — Tractor/towing beams + family icons ✅
+- **Parser.** Tractor and towing beams are `WeaponGun`-shaped items, so they fell
+  into the projectile branch and got a type_data of zeros (damage 0, speed 0,
+  `max_ammo` 0) — their real stats sit on `SWeaponActionFireTractorBeamParams`.
+  New `extract_tractor_beam_data` reads erkul's set: force (`min`/`max`), reach
+  (`min`/`max`/`fullStrengthDistance`), `maxAngle`, `maxVolume` +
+  `volumeForceCoefficient`, `tetherBreakTime`, the `rotationParams` /
+  `movementParams` handling, the much stronger `cargoModeOverrideParams`, and —
+  towing beams only — `towingBeamParams` (tow force/distance, QT mass limit).
+  Flagged `tractor_beam: true`, which is the discriminator the frontend uses:
+  the game files categorise these under weapons and even type some military
+  tractor beams as `SalvageHead`. Salvage heads carry a tractor action too, so
+  they gain the same data (replacing their equally meaningless projectile
+  numbers); their scraping stats are still unparsed.
+- **API.** `ComponentTractorBeam` schema + `Component.typeData` anyOf entry.
+- **UI.** `useHardpointStats` renders the beam rows (tow force leads for towing
+  beams — their own `maxForce` is a 5e9 "unlimited" sentinel). Force figures sum
+  across a collapsed stack (beams pull together, like weapon DPS sums); reach,
+  cone, tether and handling stay per-beam. Reach reads as the falloff span erkul
+  shows on its cards — `HANDLING 75 → 150 m` is full-strength → max, *not*
+  min → max. `min_distance` is 0.5 m on every beam (cargo mode included) so it
+  isn't displayed, and `maxVolume` isn't either (unclear unit, identical
+  everywhere).
+- **Verified against erkul's Ironclad card**: `3× S2 SureGrip S2 Tractor Beam`,
+  `handling 75 → 150 m`, `cargo mode ×7 / 100 → 225 m`, `tether 1.5 s`,
+  `rot 2 °/s`, `60° sweep cone` — all match the parsed values. Force figures on
+  erkul's card are power-scaled (they read 0 kN at 0 pips), so only the ratio
+  (`cargoForce / maxForce` = ×7) was checkable there.
+- **Cosmetic child ports.** Turret shells and weapon shrouds mount as nameless
+  `Misc`/`AttachedPart` items that end up uncategorised, and rendered as bare
+  "TBD" rows under their parent (e.g. the Ironclad's manned turrets). `BaseItem`
+  now drops uncategorised nameless children; a genuinely empty slot keeps its
+  category, so it still shows.
+- **Parser hardening.** `blacklisted_item_key?` matched the whole key part
+  "interior", which drops the Ironclad's two interior remote turrets (a
+  tractor-beam arm and a gun turret) on a clean re-parse. The committed parsed
+  data happens to still contain them — the parser only writes, never prunes — so
+  nothing was visibly broken, but the term is gone now. The interior props it was
+  aimed at don't live under the scanned `scitem/{ships,vehicles}` folders.
+- **Icons.** erkul's glyphs have FA Pro equivalents, so life support moved from
+  `fa-star-of-life` (a bare asterisk) to `fa-heart-pulse`, and the beams from the
+  generic utility-items SVG to `fa-arrows-to-circle`. FA glyphs fill ~0.875em, so
+  `power-col__fa` needs 17px to match the 15px SVG icons.
+- **Also.** Power-column tooltips now name the family ("Shields", "Coolers"),
+  not the mounted component; the redundant `overflow-x` on `.power-bars` is gone
+  (it also forced `overflow-y: auto`, so extra columns put scrollbars on the
+  pane).
+
 ### Phase 4 — Signatures (§6) react to the distribution
 - Build the heat model (`coolingRatio`) + parse per-component EM/IR nominal.
 - Emitted EM/IR (erkul's `dr`/`pr`) computed from the allocation → update as the
