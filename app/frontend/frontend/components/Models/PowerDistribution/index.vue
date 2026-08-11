@@ -547,13 +547,13 @@ const cellHeight = (span: number) =>
   &__icon {
     width: 15px;
     height: 15px;
-    opacity: 0.9;
+    opacity: 1;
   }
 
   &__fa {
     font-size: 13px;
     color: $primary;
-    opacity: 0.9;
+    opacity: 1;
   }
 
   // A column with no pips reads as "off" — dim its count and icon. A powered
