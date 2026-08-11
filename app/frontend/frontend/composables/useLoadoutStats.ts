@@ -134,11 +134,12 @@ export function computeLoadoutStats(
     "SCM",
     overrides,
   );
-  // Baseline sustained uses the max-power ratio; once the user engages the pip
-  // UI (any family override — even a shield bump squeezes weapons), it follows
-  // the actual weapon allocation.
-  const hasOverrides = overrides && Object.keys(overrides).length > 0;
-  const powerRatio = hasOverrides ? sim.weaponPoolRatio : sim.weaponMaxRatio;
+  // Weapon power follows the actual pip allocation shown in the power UI — the
+  // default distribution until the user assigns pips, their choices afterwards.
+  // Only when the ship has no parsed plant segments do we fall back to the
+  // segment-independent max-power ratio, so those ships never regress to 0 DPS.
+  const powerRatio =
+    sim.totalSegments > 0 ? sim.weaponPoolRatio : sim.weaponMaxRatio;
   // Every weapon needs the weapon system powered (≥1 pip) to fire at all — zero
   // burst/alpha too when unpowered, not just sustained. The sustained *throttle*
   // from partial power is energy-only and handled by sustainedRatio's branch

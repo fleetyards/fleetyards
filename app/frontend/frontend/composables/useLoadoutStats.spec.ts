@@ -27,6 +27,24 @@ function weaponHardpoint(
   } as Hardpoint;
 }
 
+// A power plant so the loadout has segments to allocate (the weapon power ratio
+// follows the real allocation whenever segments exist).
+function plant(powerBase = 40): Hardpoint {
+  return {
+    id: Math.random().toString(),
+    name: "plant",
+    category: HardpointCategoryEnum.POWERPLANT,
+    component: {
+      name: "Power Plant",
+      size: "2",
+      typeData: { powerBase },
+    } as Hardpoint["component"],
+    hardpoints: [],
+    createdAt: "",
+    updatedAt: "",
+  } as Hardpoint;
+}
+
 describe("computeLoadoutStats", () => {
   it("returns empty stats when there are no weapons", () => {
     const stats = computeLoadoutStats([]);
@@ -186,9 +204,13 @@ describe("computeLoadoutStats", () => {
       regen: { maxAmmoLoad: 10, maxRegenPerSecond: 5, regenerationCooldown: 0 },
     });
 
-    expect(computeLoadoutStats([weapon], 4).dps.total).toBeGreaterThan(0);
+    expect(computeLoadoutStats([plant(), weapon], 4).dps.total).toBeGreaterThan(
+      0,
+    );
 
-    const off = computeLoadoutStats([weapon], 4, { [WEAPON_POOL_PORT]: 0 });
+    const off = computeLoadoutStats([plant(), weapon], 4, {
+      [WEAPON_POOL_PORT]: 0,
+    });
     expect(off.dps.total).toBe(0);
     expect(off.sustainedDps.total).toBe(0);
     expect(off.alpha.total).toBe(0);
@@ -208,12 +230,14 @@ describe("computeLoadoutStats", () => {
     });
 
     // 0 pips → off.
-    const off = computeLoadoutStats([weapon], 4, { [WEAPON_POOL_PORT]: 0 });
+    const off = computeLoadoutStats([plant(), weapon], 4, {
+      [WEAPON_POOL_PORT]: 0,
+    });
     expect(off.dps.total).toBe(0);
     expect(off.alpha.total).toBe(0);
 
     // Powered → full burst and heat-limited sustained (0.5), not power-scaled.
-    const on = computeLoadoutStats([weapon], 4);
+    const on = computeLoadoutStats([plant(), weapon], 4);
     expect(on.dps.total).toBeCloseTo(100);
     expect(on.alpha.total).toBeCloseTo(100);
     expect(on.sustainedDps.total).toBeCloseTo(50);
