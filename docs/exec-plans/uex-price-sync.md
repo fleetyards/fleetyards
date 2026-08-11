@@ -167,19 +167,28 @@ fixture, including one case per layer.
      `data` is malformed, not an empty snapshot.
   2. Treat an empty feed, or one with no vehicle terminal left after filtering,
      as an error.
-  3. **Scope deletions per terminal.** A terminal that priced anything in this
-     snapshot is authoritative for its own inventory, so one of our rows it did
-     not list really is gone. A terminal that priced *nothing* is ambiguous —
-     either every ship left or the feed came back short — and only the terminals
-     feed settles it: gone from there too, the rows go; still listed, they stay
-     and get reported. A flat percentage cannot make this call, because a real
-     terminal is a small share of the total (Astro Armada is 10.9% of rows, so
-     any threshold loose enough to permit real churn also permits losing it).
-     `MAX_REMOVAL_RATIO` stays as a backstop for the one case the rule cannot
-     judge: terminals that report, but report short.
+  3. **Decide deletions per terminal, on reported volume.** A terminal missing
+     from the terminals feed has closed, so its rows go. Otherwise the question is
+     whether it reported at anything like its usual size: a shop discontinuing a
+     ship or two still lists the rest, while a truncated feed shows up as a
+     terminal listing a fraction of what we hold for it, or nothing at all. Below
+     `MIN_TERMINAL_RETENTION` of its stock we keep its rows and report.
+
+  Per terminal is the only granularity at which this is answerable. A global
+  percentage cannot work: Astro Armada is 10.9% of all rows, so any threshold
+  loose enough to permit real churn also permits silently losing that whole
+  terminal. Nor is "did it report at all?" enough — that still deletes on a
+  partial report.
 
   Upserts still apply throughout; only the destructive half is held back, and
   anything preserved is reported to AppSignal with the locations named.
+
+  Residual, accepted: a terminal that reports *above* the retention floor but was
+  still truncated will have its omissions deleted. No content-based rule can
+  separate that from a shop genuinely discontinuing that share of its stock — the
+  rows return on the next good sync. Closing it entirely would mean deleting only
+  after N consecutive absences, which needs a `last_seen_at` column on the shared
+  `item_prices` table; not worth it for a 24-hour, self-healing window.
 - Wrap in a transaction and report counts: created / updated / removed /
   unmatched.
 
