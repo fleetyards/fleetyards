@@ -323,6 +323,56 @@ describe("shield active cap", () => {
   });
 });
 
+describe("heat (cooling ratio)", () => {
+  const cooler = () =>
+    hp(HardpointCategoryEnum.COOLER, {
+      powerConsumption: 3,
+      coolingRate: 30,
+      powerRanges: {
+        low: { start: 1, modifier: 0.7 },
+        medium: { start: 2, modifier: 0.85 },
+        high: { start: 3, modifier: 1 },
+      },
+    });
+
+  it("derives a cooling load from coolers vs heat generated", () => {
+    const ls = hp(HardpointCategoryEnum.LIFESUPPORT, {
+      powerConsumption: 2,
+      powerMinimumFraction: 0.5,
+    });
+    const sim = simulateLoadoutPower([plant(40, 2), cooler(), ls], 0);
+    expect(sim.coolingPerSec).toBeGreaterThan(0);
+    expect(sim.coolingMaxPerSec).toBeGreaterThan(0);
+    expect(sim.heatGeneration).toBeGreaterThan(0);
+    expect(sim.coolingRatio).toBeCloseTo(
+      sim.heatGeneration / sim.coolingPerSec,
+      5,
+    );
+  });
+
+  it("exceeds 1 when the coolers can't keep up (under-cooled)", () => {
+    // A tiny cooler against a fully-powered shield generates far more heat than
+    // it can dissipate → cooling load well above 1.
+    const tinyCooler = hp(HardpointCategoryEnum.COOLER, {
+      powerConsumption: 2,
+      coolingRate: 4,
+    });
+    const shield = hp(HardpointCategoryEnum.SHIELDGENERATOR, {
+      powerConsumption: 12,
+    });
+    const sim = simulateLoadoutPower([plant(40, 2), tinyCooler, shield], 0);
+    expect(sim.coolingRatio).toBeGreaterThan(1);
+  });
+
+  it("has no heat or cooling when nothing is powered", () => {
+    // No plant → no segments → nothing active.
+    const sim = simulateLoadoutPower([cooler()], 0);
+    expect(sim.heatGeneration).toBe(0);
+    expect(sim.coolingPerSec).toBe(0);
+    expect(sim.coolingRatio).toBe(0);
+  });
+});
+
 describe("weapon pool headroom", () => {
   it("renders the full pool but is only fillable up to weapon demand", () => {
     // One energy weapon drawing 2 (consumption 2) with a pool of 10 → the

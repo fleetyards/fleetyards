@@ -49,6 +49,49 @@ const GROUPED_FAMILIES = new Set<PowerFamily>([
   "towingbeam",
 ]);
 
+// Families that emit extra component heat on top of their active segments
+// (erkul's `l` term in the heat-generation sum): shields, life support, radar
+// and the quantum drive.
+const EXTRA_HEAT_FAMILIES = new Set<PowerFamily>([
+  "shield",
+  "lifeSupport",
+  "radar",
+  "qdrive",
+]);
+
+// A component's power-range modifier curve — `{start, modifier}` breakpoints
+// sorted ascending by `start`. The modifier for a given active-segment count is
+// the entry with the greatest `start` ≤ segments (erkul's `L`), default 1.
+type PowerRange = { start: number; modifier: number };
+
+function toRanges(raw: unknown): PowerRange[] {
+  if (!raw || typeof raw !== "object") return [];
+  return Object.values(raw as Record<string, unknown>)
+    .filter((r): r is Record<string, unknown> => !!r && typeof r === "object")
+    .map((r) => ({ start: numeric(r.start), modifier: numeric(r.modifier) }))
+    .sort((a, b) => a.start - b.start);
+}
+
+function rangeModifier(ranges: PowerRange[], segments: number): number {
+  let modifier = 1;
+  for (const range of ranges) {
+    if (range.start <= segments) modifier = range.modifier;
+    else break;
+  }
+  return modifier;
+}
+
+// A power-drawing component captured for the heat pass: its allocated segments
+// come from the allocation state (by portPath). Coolers additionally carry the
+// coolant they produce at full power (`coolingRate`).
+type HeatComponent = {
+  portPath: string;
+  family: PowerFamily;
+  units: number;
+  ranges: PowerRange[];
+  coolingRate: number;
+};
+
 // FleetYards hardpoint category → erkul power family. Only the families erkul
 // feeds power segments to are mapped; every other category (thrusters, fuel,
 // cargo, seats, …) draws no segments. A mapped component still contributes
@@ -90,6 +133,14 @@ export type LoadoutSimResult = {
   // max (for the bar's full scale). 0 when there's no radar / it's unpowered.
   aimAssist: number;
   aimAssistMax: number;
+  // Heat: coolant produced per second at the current allocation, the maximum
+  // coolers could produce, the heat generated, and the cooling load — heat ÷
+  // coolant (erkul's `coolingRatio`, uncapped so > 1 when under-cooled; 0 with
+  // no active cooler). It also drives the IR signature.
+  coolingPerSec: number;
+  coolingMaxPerSec: number;
+  heatGeneration: number;
+  coolingRatio: number;
 };
 
 // Ships run only the first N shields at once (the vehicle's Dynamic Shield power
@@ -103,6 +154,7 @@ type Collected = {
   portLabels: Record<string, string>;
   shieldsSeen: number;
   radarAim?: { min: number; max: number };
+  components: HeatComponent[];
 };
 
 function numeric(value: unknown): number {
@@ -162,6 +214,14 @@ function collectPorts(
                 minimumFraction,
               }),
             );
+            acc.components.push({
+              portPath: hardpoint.id,
+              family,
+              units: draw,
+              ranges: toRanges(typeData.powerRanges),
+              coolingRate:
+                family === "coolers" ? numeric(typeData.coolingRate) : 0,
+            });
             if (hardpoint.component?.name) {
               acc.portLabels[hardpoint.id] = hardpoint.component.name;
             }
@@ -297,6 +357,50 @@ function buildColumns(
   );
 }
 
+// Heat pass (erkul's `Ze`/`G`): coolers turn active power segments into coolant;
+// every powered component generates heat. `coolingRatio` is the cooling *load* —
+// heat generated ÷ coolant provided — so it rises above 1 when the active
+// coolers can't keep up, and is 0 when no cooler is powered (there is no active
+// cooling system to load). It also drives the IR signature.
+function computeHeat(
+  components: HeatComponent[],
+  usedSegments: number,
+  perPort: Record<string, number>,
+): {
+  coolingPerSec: number;
+  coolingMaxPerSec: number;
+  heatGeneration: number;
+  coolingRatio: number;
+} {
+  let coolingPerSec = 0;
+  let coolingMaxPerSec = 0;
+  let extraHeat = 0;
+
+  for (const component of components) {
+    const active = perPort[component.portPath] ?? 0;
+    if (component.family === "coolers" && component.units > 0) {
+      coolingPerSec +=
+        component.coolingRate *
+        (active / component.units) *
+        rangeModifier(component.ranges, active);
+      coolingMaxPerSec +=
+        component.coolingRate *
+        rangeModifier(component.ranges, component.units);
+    }
+    if (active > 0 && EXTRA_HEAT_FAMILIES.has(component.family)) {
+      extraHeat += active * rangeModifier(component.ranges, active);
+    }
+  }
+
+  // Heat generated = every active power segment, plus the extra component heat.
+  const heatGeneration = usedSegments + extraHeat;
+  // Cooling load: heat ÷ coolant provided (uncapped, so > 1 when under-cooled);
+  // 0 when no cooler is powered.
+  const coolingRatio = coolingPerSec > 0 ? heatGeneration / coolingPerSec : 0;
+
+  return { coolingPerSec, coolingMaxPerSec, heatGeneration, coolingRatio };
+}
+
 // Pure core: build the family ports from a loadout, run erkul's allocation over
 // the plants' segments, and expose the per-component columns and the weapon
 // sustained-DPS ratios (current allocation + max-weapon).
@@ -315,6 +419,7 @@ export function simulateLoadoutPower(
       otherPorts: [],
       portLabels: {},
       shieldsSeen: 0,
+      components: [],
     },
     shieldMaxItemCount,
   );
@@ -385,6 +490,12 @@ export function simulateLoadoutPower(
         )
       : 0;
 
+  const heat = computeHeat(
+    acc.components,
+    segments - state.remaining,
+    state.perPort,
+  );
+
   return {
     totalSegments: segments,
     remaining: state.remaining,
@@ -401,6 +512,10 @@ export function simulateLoadoutPower(
     shieldPoolRatio,
     aimAssist,
     aimAssistMax,
+    coolingPerSec: heat.coolingPerSec,
+    coolingMaxPerSec: heat.coolingMaxPerSec,
+    heatGeneration: heat.heatGeneration,
+    coolingRatio: heat.coolingRatio,
   };
 }
 

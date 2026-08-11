@@ -600,6 +600,7 @@
         "reset": "Reset",
         "auto": "Auto",
         "aimAssist": "Aim Assist",
+        "cooling": "Cooling",
         "segmentsUsed": "%{used} / %{total} segments",
         "hint": "Move power between systems. Weapons' sustained DPS scales with the power they get; the rest is auto-balanced.",
         "families": {

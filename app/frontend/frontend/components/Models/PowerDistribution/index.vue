@@ -109,6 +109,14 @@ const aimAssistPercent = computed(() =>
     : 0,
 );
 
+// Cooling load: heat generated as a share of the coolant the active coolers
+// provide (erkul's coolingRatio). Can exceed 100% when the ship is under-cooled;
+// 0 with no active cooler. Only shown when the ship actually has coolers.
+const hasCoolers = computed(() => sim.value.coolingMaxPerSec > 0);
+const coolingPercent = computed(() => Math.round(sim.value.coolingRatio * 100));
+const coolingFill = computed(() => Math.min(coolingPercent.value, 100));
+const coolingOver = computed(() => coolingPercent.value > 100);
+
 const familyLabel = (family: PowerFamily) =>
   t(`labels.power.families.${family}`);
 const columnLabel = (column: PowerColumn) =>
@@ -237,6 +245,21 @@ const cellHeight = (span: number) =>
           })
         }}
       </div>
+    </div>
+
+    <div
+      v-if="hasCoolers"
+      class="power-readout"
+      :class="{ 'power-readout--over': coolingOver }"
+    >
+      <span class="power-readout__label">{{ t("labels.power.cooling") }}</span>
+      <div class="power-readout__track">
+        <div
+          class="power-readout__fill"
+          :style="{ width: `${coolingFill}%` }"
+        />
+      </div>
+      <span class="power-readout__value">{{ coolingPercent }}%</span>
     </div>
 
     <div v-if="sim.aimAssistMax > 0" class="power-readout">
@@ -431,6 +454,15 @@ const cellHeight = (span: number) =>
     font-variant-numeric: tabular-nums;
     min-width: 64px;
     text-align: right;
+  }
+
+  // Under-cooled: heat load exceeds the coolers' output.
+  &--over &__fill {
+    background: $danger;
+  }
+
+  &--over &__value {
+    color: $danger;
   }
 }
 
