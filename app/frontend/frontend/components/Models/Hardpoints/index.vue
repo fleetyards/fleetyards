@@ -202,6 +202,7 @@ const showLoadoutMetrics = computed(
       <div class="flex justify-end hardpoints__toolbar">
         <BtnGroup>
           <Btn
+            size="small"
             :active="source === HardpointSourceEnum.GAME_FILES"
             :disabled="!model.inGame"
             @click="source = HardpointSourceEnum.GAME_FILES"
@@ -211,6 +212,7 @@ const showLoadoutMetrics = computed(
             }}
           </Btn>
           <Btn
+            size="small"
             :active="source === HardpointSourceEnum.SHIP_MATRIX"
             @click="source = HardpointSourceEnum.SHIP_MATRIX"
           >
@@ -251,37 +253,24 @@ const showLoadoutMetrics = computed(
         </div>
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
-        <span class="hardpoints__viewbar-label">
-          {{ t("labels.hardpoint.density.title") }}
-        </span>
-        <div
-          class="hardpoints__seg"
-          role="tablist"
-          :aria-label="t('labels.hardpoint.density.title')"
-        >
-          <button
-            type="button"
-            class="hardpoints__seg-btn"
-            :class="{
-              'hardpoints__seg-btn--active': density === 'compact',
-            }"
+        <BtnGroup inline :aria-label="t('labels.hardpoint.density.title')">
+          <Btn
+            size="small"
+            :active="density === 'compact'"
             :aria-pressed="density === 'compact'"
             @click="density = 'compact'"
           >
             {{ t("labels.hardpoint.density.compact") }}
-          </button>
-          <button
-            type="button"
-            class="hardpoints__seg-btn"
-            :class="{
-              'hardpoints__seg-btn--active': density === 'expanded',
-            }"
+          </Btn>
+          <Btn
+            size="small"
+            :active="density === 'expanded'"
             :aria-pressed="density === 'expanded'"
             @click="density = 'expanded'"
           >
             {{ t("labels.hardpoint.density.expanded") }}
-          </button>
-        </div>
+          </Btn>
+        </BtnGroup>
       </div>
       <div v-if="hardpoints?.length" class="row">
         <div class="col-12 col-md-6 col-lg-4">
