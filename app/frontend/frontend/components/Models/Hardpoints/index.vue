@@ -143,10 +143,15 @@ provide(
   computed(() => powerSim.value.shieldPoolRatio),
 );
 
-// Engine power → Flight card scales boosted handling with the thruster pips.
+// Engine power → Flight card scales boosted handling with the thruster pips,
+// and zeroes every flight figure when the engine is fully unpowered.
 provide(
   "enginePowerRatio",
   computed(() => powerSim.value.enginePowerRatio),
+);
+provide(
+  "enginePowered",
+  computed(() => powerSim.value.engineActive),
 );
 
 // The loadout-wide weapon-power throttle, so per-weapon rows show the same

@@ -154,6 +154,9 @@ export type LoadoutSimResult = {
   // that scales boosted handling. 0 at the mandatory floor (base handling only),
   // 1 with every engine pip filled.
   enginePowerRatio: number;
+  // Whether the engine has any power (can the ship fly at all). False only when
+  // every engine pip is pulled; true when there's no engine family to gate on.
+  engineActive: boolean;
   // Effective aim-assist range (m) at the current radar power, and the radar's
   // max (for the bar's full scale). 0 when there's no radar / it's unpowered.
   aimAssist: number;
@@ -604,6 +607,12 @@ export function simulateLoadoutPower(
         )
       : 0;
 
+  // Whether the engine has any power at all. With every engine pip pulled the
+  // ship is dead in the water — the flight card reads 0 — while any power keeps
+  // it flying at its rated speeds/handling. True when the ship has no engine
+  // power family (nothing to gate on).
+  const engineActive = !engineColumn || engineColumn.allocated > 0;
+
   // Radar power ratio → effective aim-assist range (erkul's `or`): interpolated
   // between the radar's min and max by radar power, 0 when the radar is off.
   const radarColumn = columns.find((column) => column.family === "radar");
@@ -649,6 +658,7 @@ export function simulateLoadoutPower(
     ),
     shieldPoolRatio,
     enginePowerRatio,
+    engineActive,
     aimAssist,
     aimAssistMax,
     coolingPerSec: heat.coolingPerSec,

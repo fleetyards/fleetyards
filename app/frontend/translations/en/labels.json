@@ -584,7 +584,7 @@
         "boostSub": "afterburner",
         "reverse": "Reverse",
         "maneuverability": "Maneuverability",
-        "hint": "Boosted handling scales with the engine pips; speeds and base handling are fixed."
+        "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
       },
       "cargo": {
         "title": "Cargo",

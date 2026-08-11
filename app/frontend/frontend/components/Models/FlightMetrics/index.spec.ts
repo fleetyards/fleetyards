@@ -43,17 +43,21 @@ const model = () =>
     metrics: { isGroundVehicle: false },
   }) as never;
 
-function mountFlight(ratio: number) {
+function mountFlight(ratio: number, powered = true) {
   const enginePowerRatio = ref(ratio);
+  const enginePowered = ref(powered);
   const wrapper = mount(FlightMetrics, {
     props: { model: model() },
     global: {
-      provide: { enginePowerRatio },
+      provide: { enginePowerRatio, enginePowered },
       stubs: { MetricsCard: { template: "<div><slot /></div>" } },
     },
   });
-  return { wrapper, enginePowerRatio };
+  return { wrapper, enginePowerRatio, enginePowered };
 }
+
+const values = (wrapper: ReturnType<typeof mountFlight>["wrapper"]) =>
+  wrapper.findAll(".flight-rot__value").map((n) => n.text());
 
 const boosts = (wrapper: ReturnType<typeof mountFlight>["wrapper"]) =>
   wrapper.findAll(".flight-rot__boost").map((n) => n.text());
@@ -74,15 +78,24 @@ describe("FlightMetrics engine reactivity", () => {
 
   it("keeps base handling and hides the boost at the engine floor (ratio 0)", async () => {
     // The IFCS speeds/base handling are constant game figures; at the mandatory
-    // engine floor there's simply no afterburner boost to show.
+    // engine floor (still powered) there's simply no afterburner boost to show.
     const { wrapper, enginePowerRatio } = mountFlight(1);
     enginePowerRatio.value = 0;
     await nextTick();
-    expect(wrapper.findAll(".flight-rot__value").map((n) => n.text())).toEqual([
-      "10",
-      "10",
-      "17",
-    ]);
+    expect(values(wrapper)).toEqual(["10", "10", "17"]);
     expect(wrapper.findAll(".flight-rot__boost")).toHaveLength(0);
+  });
+
+  it("zeroes every flight figure when the engine is fully unpowered", async () => {
+    // Last pip pulled → no power to the engine → dead in the water.
+    const { wrapper, enginePowered } = mountFlight(1);
+    enginePowered.value = false;
+    await nextTick();
+    expect(values(wrapper)).toEqual(["0", "0", "0"]);
+    expect(wrapper.findAll(".flight-rot__boost")).toHaveLength(0);
+    // SCM / Boost / Max hero tiles all read 0 as well.
+    expect(
+      wrapper.findAll(".metrics-card__tile__value").map((n) => n.text()),
+    ).toEqual(["0", "0", "0"]);
   });
 });

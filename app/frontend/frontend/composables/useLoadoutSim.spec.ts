@@ -478,6 +478,23 @@ describe("engine power ratio (flight scaling)", () => {
     );
     expect(sim.enginePowerRatio).toBe(1);
   });
+
+  it("reports the engine inactive only when every engine pip is pulled", () => {
+    const engine = hp(HardpointCategoryEnum.CONTROLLER, {
+      powerConsumption: 8,
+      powerMinimumFraction: 0.125,
+    });
+    const ports = [plant(40, 2), engine];
+    // Default (engine powered) and at the floor → still active.
+    expect(simulateLoadoutPower(ports, 0).engineActive).toBe(true);
+    expect(
+      simulateLoadoutPower(ports, 0, "SCM", { [engine.id]: 1 }).engineActive,
+    ).toBe(true);
+    // Every pip pulled → dead in the water.
+    expect(
+      simulateLoadoutPower(ports, 0, "SCM", { [engine.id]: 0 }).engineActive,
+    ).toBe(false);
+  });
 });
 
 describe("weapon pool headroom", () => {

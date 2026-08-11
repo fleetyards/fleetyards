@@ -30,6 +30,11 @@ const boostFactor = computed(() =>
   Math.min(1, Math.max(0, toValue(enginePowerRatio) ?? 1)),
 );
 
+// The ship can only fly while the engine has power; with every engine pip
+// pulled it's dead in the water and every flight figure reads 0.
+const enginePowered = inject<Ref<boolean>>("enginePowered", ref(true));
+const powered = computed(() => (toValue(enginePowered) ? 1 : 0));
+
 const speeds = computed(() => props.model.speeds);
 const isGroundVehicle = computed(() => props.model.metrics.isGroundVehicle);
 
@@ -39,10 +44,12 @@ const hasData = computed(() =>
     : !!(speeds.value.scmSpeed || speeds.value.maxSpeed),
 );
 
+// A dead engine zeroes every flight figure; otherwise they're the game values.
+const gate = (value?: number) => (value ?? 0) * powered.value;
 // Boosted handling interpolates from the base rate up to the rated boosted rate
 // by how much boost the engine power supports (0 → base, 1 → rated).
 const boosted = (base?: number, rated?: number) =>
-  (base ?? 0) + ((rated ?? base ?? 0) - (base ?? 0)) * boostFactor.value;
+  gate((base ?? 0) + ((rated ?? base ?? 0) - (base ?? 0)) * boostFactor.value);
 // toNumber renders 0 as "N/A"; a real zero flight figure should read "0".
 const speed = (value: number) =>
   Math.round(value) > 0 ? toNumber(Math.round(value), "speed") : "0";
@@ -50,18 +57,18 @@ const rotation = (value: number) =>
   Math.round(value) > 0 ? toNumber(Math.round(value), "rotation") : "0";
 
 const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
-const scmSpeed = useTransition(() => speeds.value.scmSpeed ?? 0, animate);
+const scmSpeed = useTransition(() => gate(speeds.value.scmSpeed), animate);
 const boostSpeed = useTransition(
-  () => speeds.value.scmSpeedBoosted ?? 0,
+  () => gate(speeds.value.scmSpeedBoosted),
   animate,
 );
-const maxSpeed = useTransition(() => speeds.value.maxSpeed ?? 0, animate);
+const maxSpeed = useTransition(() => gate(speeds.value.maxSpeed), animate);
 const groundMax = useTransition(
-  () => speeds.value.groundMaxSpeed ?? 0,
+  () => gate(speeds.value.groundMaxSpeed),
   animate,
 );
 const groundReverse = useTransition(
-  () => speeds.value.groundReverseSpeed ?? 0,
+  () => gate(speeds.value.groundReverseSpeed),
   animate,
 );
 
@@ -84,11 +91,11 @@ const rotations = computed(() =>
   [
     {
       label: t("model.pitch"),
-      base: speeds.value.pitch ?? 0,
+      base: gate(speeds.value.pitch),
       boost: pitchBoost,
     },
-    { label: t("model.yaw"), base: speeds.value.yaw ?? 0, boost: yawBoost },
-    { label: t("model.roll"), base: speeds.value.roll ?? 0, boost: rollBoost },
+    { label: t("model.yaw"), base: gate(speeds.value.yaw), boost: yawBoost },
+    { label: t("model.roll"), base: gate(speeds.value.roll), boost: rollBoost },
   ].map((axis) => ({
     label: axis.label,
     base: axis.base,
