@@ -46,15 +46,14 @@ const round = (value: number) => Math.round(value);
 const num = (value: number) => (value ? toNumber(value, "integer") : "0");
 
 // Shield HP/regen animate as the pip allocation changes; the regen bar shows
-// regen as a share of the full shield HP (how much of the shield refills per
-// second — always well under 100%).
+// regen as a share of the shield's max regen (its power ratio) — 100% at full
+// shield power, 0% when unpowered.
 const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
 const shieldHp = useTransition(() => shield.value.totalHp, animate);
 const shieldRegen = useTransition(() => shield.value.totalRegen, animate);
-const regenPercent = computed(() => {
-  const hp = shield.value.totalHp;
-  return hp > 0 ? Math.round((toValue(shieldRegen) / hp) * 100) : 0;
-});
+const regenPercent = computed(() =>
+  Math.round((toValue(shieldPoolRatio) ?? 1) * 100),
+);
 
 const hasData = computed(() => shield.value.hasData || armor.value.hasData);
 
