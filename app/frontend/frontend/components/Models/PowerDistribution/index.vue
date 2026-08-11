@@ -12,6 +12,7 @@ import {
   useLoadoutSim,
   type PortOverrides,
   type PowerColumn,
+  type PowerColumnMember,
 } from "@/frontend/composables/useLoadoutSim";
 import {
   type FlightMode,
@@ -25,6 +26,7 @@ import quantumDrivesIconUrl from "@/images/hardpoints/quantum_drives.svg";
 import qedIconUrl from "@/images/hardpoints/qed.svg";
 import empIconUrl from "@/images/hardpoints/emp.svg";
 import mainThrustersIconUrl from "@/images/hardpoints/main_thrusters.svg";
+import utilityItemsIconUrl from "@/images/hardpoints/utility_items.svg";
 
 type Props = {
   hardpoints?: Hardpoint[];
@@ -58,6 +60,8 @@ const FAMILY_ICON: Partial<Record<PowerFamily, string>> = {
   qed: qedIconUrl,
   emp: empIconUrl,
   engine: mainThrustersIconUrl,
+  tractorBeam: utilityItemsIconUrl,
+  towingbeam: utilityItemsIconUrl,
 };
 
 // FontAwesome fallback for families without a hardpoint SVG (mirroring the
@@ -66,8 +70,6 @@ const FAMILY_FA_ICON: Partial<Record<PowerFamily, string>> = {
   lifeSupport: "fa-star-of-life",
   salvage: "fa-bin-recycle",
   miningLaser: "fa-gem",
-  tractorBeam: "fa-magnet",
-  towingbeam: "fa-link",
 };
 
 const SHORT_LABEL: Record<PowerFamily, string> = {
@@ -107,65 +109,87 @@ const aimAssistPercent = computed(() =>
     : 0,
 );
 
+const familyLabel = (family: PowerFamily) =>
+  t(`labels.power.families.${family}`);
 const columnLabel = (column: PowerColumn) =>
-  column.label ?? t(`labels.power.families.${column.family}`);
+  column.members.length > 1
+    ? familyLabel(column.family)
+    : (column.label ?? familyLabel(column.family));
+const memberLabel = (column: PowerColumn, member: PowerColumnMember) =>
+  member.label ?? familyLabel(column.family);
 
-// Set a column toward `desired` segments, honoring the rules: a component is
-// off (0) or on at ≥ its mandatory floor, and an increase can't exceed the pips
-// available in the pool (so clicking with an empty pool does nothing).
-const applyTarget = (column: PowerColumn, desired: number) => {
-  let target = Math.max(0, Math.min(column.capacity, desired));
-  if (target > 0 && target < column.min) target = 0;
+// Set a member (a single component or the weapon pool) toward `desired`
+// segments, honoring the rules: it is off (0) or on at ≥ its mandatory floor,
+// and an increase can't exceed the pips available in the pool (so clicking with
+// an empty pool does nothing).
+const applyTarget = (member: PowerColumnMember, desired: number) => {
+  let target = Math.max(0, Math.min(member.capacity, desired));
+  if (target > 0 && target < member.min) target = 0;
 
-  if (target > column.allocated) {
+  if (target > member.allocated) {
     const available = sim.value.remaining;
-    if (column.allocated === 0) {
-      if (available < column.min) return; // can't afford to turn it on
+    if (member.allocated === 0) {
+      if (available < member.min) return; // can't afford to turn it on
       target = Math.min(target, available);
     } else {
-      target = Math.min(target, column.allocated + available);
+      target = Math.min(target, member.allocated + available);
     }
   }
 
-  if (target === column.allocated) return;
-  emit("update:modelValue", { ...props.modelValue, [column.portPath]: target });
+  if (target === member.allocated) return;
+  emit("update:modelValue", { ...props.modelValue, [member.portPath]: target });
 };
 
-// Click pip cell at `level` (bottom-up): allocate exactly that many segments —
-// click a lower pip to reduce, the same pip does nothing. (Turn fully off via
-// the icon.)
-const setLevel = (column: PowerColumn, level: number) =>
-  applyTarget(column, level);
+// Click a pip cell at `level` (bottom-up). In a grouped column the mandatory
+// base block of a member is its on/off toggle (erkul's "click the generator");
+// otherwise allocate exactly `level` segments to the member.
+const onCellClick = (
+  column: PowerColumn,
+  member: PowerColumnMember,
+  level: number,
+) => {
+  if (column.members.length > 1 && level === member.min) {
+    applyTarget(member, member.allocated > 0 ? 0 : member.capacity);
+  } else {
+    applyTarget(member, level);
+  }
+};
 
-// Click the icon: drain the column to 0 if it has any pips, else fill it from
-// the pool — erkul's icon toggle.
-const toggleColumn = (column: PowerColumn) =>
-  applyTarget(column, column.allocated > 0 ? 0 : column.capacity);
+// Click the icon: drain the whole column to 0 if any member has pips, else fill
+// every member from the pool — erkul's icon toggle.
+const toggleColumn = (column: PowerColumn) => {
+  const anyOn = column.members.some((member) => member.allocated > 0);
+  const next: PortOverrides = { ...props.modelValue };
+  for (const member of column.members) {
+    next[member.portPath] = anyOn ? 0 : member.capacity;
+  }
+  emit("update:modelValue", next);
+};
 
 const reset = () => emit("update:modelValue", {});
 
-// Hover preview: while hovering a pip, the column renders as if allocated to the
+// Hover preview: while hovering a pip, the member renders as if allocated to the
 // hovered level (fills up going higher, empties going lower) so the click result
 // is visible before committing.
 const hoveredPort = ref<string | null>(null);
 const hoveredLevel = ref(0);
-const onPipHover = (column: PowerColumn, level: number) => {
-  hoveredPort.value = column.portPath;
+const onPipHover = (member: PowerColumnMember, level: number) => {
+  hoveredPort.value = member.portPath;
   hoveredLevel.value = level;
 };
 const clearHover = () => {
   hoveredPort.value = null;
 };
-const shownLevel = (column: PowerColumn) =>
-  hoveredPort.value === column.portPath ? hoveredLevel.value : column.allocated;
+const shownLevel = (member: PowerColumnMember) =>
+  hoveredPort.value === member.portPath ? hoveredLevel.value : member.allocated;
 
-// Pip cells for a column: the mandatory floor renders as one taller block, then
+// Pip cells for a member: the mandatory floor renders as one taller block, then
 // each optional segment as its own cell. `level` is the allocation this cell
 // represents (its top).
-const cells = (column: PowerColumn) => {
+const cells = (member: PowerColumnMember) => {
   const list: { level: number; span: number }[] = [];
-  if (column.min > 0) list.push({ level: column.min, span: column.min });
-  for (let level = column.min + 1; level <= column.capacity; level += 1) {
+  if (member.min > 0) list.push({ level: member.min, span: member.min });
+  for (let level = member.min + 1; level <= member.capacity; level += 1) {
     list.push({ level, span: 1 });
   }
   return list;
@@ -239,31 +263,45 @@ const cellHeight = (span: number) =>
         <div class="power-col__count">{{ column.allocated }}</div>
         <div
           class="power-col__stack"
-          role="slider"
+          role="group"
           :aria-label="columnLabel(column)"
-          :aria-valuenow="column.allocated"
-          :aria-valuemin="0"
-          :aria-valuemax="column.capacity"
         >
-          <button
-            v-for="cell in cells(column)"
-            :key="cell.level"
-            type="button"
-            class="power-col__pip"
-            :class="{
-              'power-col__pip--on': cell.level <= shownLevel(column),
-              'power-col__pip--top': cell.level === shownLevel(column),
-              'power-col__pip--block': cell.span > 1,
-              'power-col__pip--preview': hoveredPort === column.portPath,
-            }"
-            :style="{ height: cellHeight(cell.span) }"
-            :aria-label="`${columnLabel(column)}: ${cell.level}`"
-            @mouseenter="onPipHover(column, cell.level)"
-            @focus="onPipHover(column, cell.level)"
-            @mouseleave="clearHover"
-            @blur="clearHover"
-            @click="setLevel(column, cell.level)"
-          />
+          <template
+            v-for="(member, memberIndex) in column.members"
+            :key="member.portPath"
+          >
+            <div
+              v-if="memberIndex > 0"
+              class="power-col__divider"
+              aria-hidden="true"
+            />
+            <button
+              v-for="cell in cells(member)"
+              :key="`${member.portPath}-${cell.level}`"
+              type="button"
+              class="power-col__pip"
+              :class="{
+                'power-col__pip--on': cell.level <= shownLevel(member),
+                'power-col__pip--top': cell.level === shownLevel(member),
+                'power-col__pip--block': cell.span > 1,
+                'power-col__pip--preview': hoveredPort === member.portPath,
+                'power-col__pip--memberoff':
+                  column.members.length > 1 && member.allocated === 0,
+              }"
+              :style="{ height: cellHeight(cell.span) }"
+              :title="memberLabel(column, member)"
+              :aria-label="`${memberLabel(column, member)}: ${cell.level}`"
+              @mouseenter="onPipHover(member, cell.level)"
+              @focus="onPipHover(member, cell.level)"
+              @mouseleave="clearHover"
+              @blur="clearHover"
+              @click="onCellClick(column, member, cell.level)"
+            >
+              <span v-if="cell.span > 1" class="power-col__pip-label">{{
+                cell.span
+              }}</span>
+            </button>
+          </template>
         </div>
         <button
           type="button"
@@ -392,9 +430,9 @@ const cellHeight = (span: number) =>
 .power-bars {
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px 18px;
+  gap: 14px 10px;
   min-height: 170px;
   overflow-x: auto;
 }
@@ -403,8 +441,9 @@ const cellHeight = (span: number) =>
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 0 0 auto;
-  width: 40px;
+  flex: 1 1 0;
+  min-width: 34px;
+  max-width: 72px;
   gap: 6px;
 
   &__count {
@@ -429,6 +468,9 @@ const cellHeight = (span: number) =>
     background: rgba($gray-light, 0.18);
     cursor: pointer;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: background 0.1s ease;
 
     // Ordered so on/top override the preview tint (later rule wins).
@@ -443,6 +485,28 @@ const cellHeight = (span: number) =>
     &--top {
       background: $primary;
     }
+
+    // A generator/beam turned off inside a stacked column reads as empty.
+    &--memberoff {
+      background: rgba($gray-light, 0.1);
+    }
+  }
+
+  // erkul-style count inside a merged (span > 1) block.
+  &__pip-label {
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    color: $text-color;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  // Separates the stacked members (generators / beams) of a grouped column.
+  &__divider {
+    height: 0;
+    margin: 1px 0;
+    border-top: 1px dashed rgba($gray-light, 0.35);
   }
 
   &--weapon &__pip--on {
@@ -471,16 +535,17 @@ const cellHeight = (span: number) =>
   &__icon {
     width: 15px;
     height: 15px;
-    opacity: 0.75;
+    opacity: 0.9;
   }
 
   &__fa {
     font-size: 13px;
-    color: $gray;
-    opacity: 0.85;
+    color: $text-color;
+    opacity: 0.9;
   }
 
-  // A column with no pips reads as "off" — dim its count and icon.
+  // A column with no pips reads as "off" — dim its count and icon. A powered
+  // column (any pip, including a single critical one) stays at full strength.
   &--off {
     .power-col__count {
       color: $gray;
@@ -489,6 +554,11 @@ const cellHeight = (span: number) =>
 
     .power-col__icon {
       opacity: 0.3;
+    }
+
+    .power-col__fa {
+      color: $gray;
+      opacity: 0.4;
     }
 
     .power-col__label {
