@@ -48,6 +48,13 @@ module Uex
       assert_match "error", error.message
     end
 
+    test "raises when data is null rather than handing back an empty snapshot" do
+      stub_request(:get, "#{BASE}/terminals/")
+        .to_return(body: {status: "ok", data: nil}.to_json)
+
+      assert_raises(Uex::Error) { @client.terminals }
+    end
+
     test "raises on invalid JSON" do
       stub_request(:get, "#{BASE}/terminals/").to_return(body: "<html>nope</html>")
 

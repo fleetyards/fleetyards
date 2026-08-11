@@ -123,6 +123,54 @@ module Uex
       assert ItemPrice.exists?(hand_entered.id)
     end
 
+    # A feed that comes back empty still arrives as HTTP 200 / status "ok", and
+    # taking it at face value would wipe every price we hold.
+    [:vehicles, :terminals, :vehicle_purchase_prices, :vehicle_rental_prices].each do |feed|
+      test "#run refuses to sync when the #{feed} feed is empty" do
+        sync
+
+        error = assert_raises(Uex::Error) { sync(feed => []) }
+
+        assert_match feed.to_s, error.message
+        assert_equal 6, ItemPrice.count, "an empty #{feed} feed must not delete anything"
+      end
+    end
+
+    test "#run refuses to sync when no terminal sells or rents vehicles" do
+      sync
+
+      commodity_only = uex_fixture("terminals").map { |terminal| terminal.merge("type" => "commodity") }
+
+      assert_raises(Uex::Error) { sync(terminals: commodity_only) }
+      assert_equal 6, ItemPrice.count
+    end
+
+    test "#run keeps prices and reports when a snapshot would remove most of them" do
+      sync
+
+      truncated = {
+        vehicle_purchase_prices: [uex_fixture("vehicles_purchases_prices_all").first],
+        vehicle_rental_prices: [uex_fixture("vehicles_rentals_prices_all").first]
+      }
+
+      result = sync(truncated)
+
+      assert_equal 0, result.removed
+      assert_equal 4, result.skipped_removals
+      assert_equal 6, ItemPrice.count, "a truncated snapshot must not delete the rows it omits"
+    end
+
+    test "#run still removes a minority of stale rows" do
+      sync
+
+      purchases = uex_fixture("vehicles_purchases_prices_all").reject { |row| row["id_vehicle"] == 2 }
+
+      result = sync(vehicle_purchase_prices: purchases)
+
+      assert_equal 0, result.skipped_removals
+      assert_equal 1, result.removed
+    end
+
     private def sync(overrides = {})
       Uex::PriceSyncer.new(client: uex_client_stub(overrides)).run
     end

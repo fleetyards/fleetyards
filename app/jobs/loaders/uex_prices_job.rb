@@ -22,6 +22,7 @@ module Loaders
           created: result.created,
           updated: result.updated,
           removed: result.removed,
+          skipped_removals: result.skipped_removals,
           unmatched: result.unmatched.map { |vehicle| vehicle["slug"] }
         }
       )

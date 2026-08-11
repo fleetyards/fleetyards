@@ -35,7 +35,13 @@ module Uex
 
       raise Uex::Error, "UEX API returned status #{payload["status"].inspect} for #{path}" if payload["status"] != "ok"
 
-      Array(payload["data"])
+      data = payload["data"]
+
+      # Coercing a null `data` to [] here would hand callers a silently empty
+      # snapshot, which reads as "everything was removed".
+      raise Uex::Error, "UEX API returned a #{data.class} data field for #{path}" unless data.is_a?(Array)
+
+      data
     rescue JSON::ParserError => e
       raise Uex::Error, "UEX API returned invalid JSON for #{path}: #{e.message}"
     end

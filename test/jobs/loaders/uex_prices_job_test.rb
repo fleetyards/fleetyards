@@ -15,7 +15,7 @@ module Loaders
 
       assert_equal "finished", import.aasm_state
       assert_equal(
-        {"created" => 4, "updated" => 1, "removed" => 2, "unmatched" => []},
+        {"created" => 4, "updated" => 1, "removed" => 2, "skipped_removals" => 0, "unmatched" => []},
         import.output
       )
     end
@@ -40,10 +40,10 @@ module Loaders
       unmatched = [{"slug" => "nova-tank", "name" => "Nova Tank", "name_full" => "Tumbril Nova Tank"}]
 
       first = ::Uex::PriceSyncer.github_issue_body(
-        ::Uex::PriceSyncer::Result.new(created: 4, updated: 1, removed: 2, unmatched:)
+        ::Uex::PriceSyncer::Result.new(created: 4, updated: 1, removed: 2, skipped_removals: 0, unmatched:)
       )
       second = ::Uex::PriceSyncer.github_issue_body(
-        ::Uex::PriceSyncer::Result.new(created: 0, updated: 97, removed: 3, unmatched:)
+        ::Uex::PriceSyncer::Result.new(created: 0, updated: 97, removed: 3, skipped_removals: 2, unmatched:)
       )
 
       assert_equal first, second,
@@ -67,7 +67,7 @@ module Loaders
 
     test "the unmatched issue body names the vehicles to add to MAPPINGS" do
       result = ::Uex::PriceSyncer::Result.new(
-        created: 0, updated: 0, removed: 0,
+        created: 0, updated: 0, removed: 0, skipped_removals: 0,
         unmatched: [{"slug" => "nova-tank", "name" => "Nova Tank", "name_full" => "Tumbril Nova Tank"}]
       )
 
@@ -80,7 +80,7 @@ module Loaders
     end
 
     private def stub_syncer(unmatched: [{"slug" => "nova-tank", "name" => "Nova Tank", "name_full" => "Tumbril Nova Tank"}])
-      result = ::Uex::PriceSyncer::Result.new(created: 4, updated: 1, removed: 2, unmatched:)
+      result = ::Uex::PriceSyncer::Result.new(created: 4, updated: 1, removed: 2, skipped_removals: 0, unmatched:)
 
       syncer = mock("Uex::PriceSyncer")
       syncer.expects(:run).returns(result)
