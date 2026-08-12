@@ -12,10 +12,13 @@ code that read it — `hardpoints-v2` sat in Flipper for months after #4176 dele
 its last reference. A version-controlled registry makes the inventory a PR diff
 and lets a deploy reconcile reality with it.
 
-The registry owns the flag **list**. The admin UI at `/admin/features` still owns
-each flag's **gates** (boolean, actors, groups, percentages), and
-`feature_settings.self_service` still governs whether users may toggle a flag for
-themselves from Settings → Features.
+The registry owns the flag **list**. The admin UI still owns each flag's **gates**
+(boolean, actors, groups, percentages), and `feature_settings.self_service` still
+governs whether users may toggle a flag for themselves from Settings → Features.
+
+Creating and deleting flags through the admin UI was removed along with this
+change. It could not coexist with pruning: a flag added there has no registry
+entry, so the next deploy deleted it and every gate configured on it.
 
 ## Components
 

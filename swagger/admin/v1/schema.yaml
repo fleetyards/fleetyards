@@ -771,43 +771,6 @@ paths:
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
   "/features":
-    post:
-      summary: Create Feature
-      tags:
-      - Features
-      operationId: createAdminFeature
-      requestBody:
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/FeatureInput"
-      responses:
-        '201':
-          description: created
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/Feature"
-        '422':
-          description: invalid
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Features list
       tags:
@@ -842,34 +805,6 @@ paths:
         type: string
       description: Feature name
       required: true
-    delete:
-      summary: Delete Feature
-      tags:
-      - Features
-      operationId: destroyAdminFeature
-      responses:
-        '204':
-          description: deleted
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
     get:
       summary: Feature Detail
       tags:
@@ -8153,15 +8088,6 @@ components:
       required:
       - group
       title: FeatureGroupInput
-    FeatureInput:
-      type: object
-      properties:
-        name:
-          type: string
-      additionalProperties: false
-      required:
-      - name
-      title: FeatureInput
     FeaturePercentageInput:
       type: object
       properties:

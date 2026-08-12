@@ -3,8 +3,8 @@
 # `rake feature_flags:sync` makes Flipper match this file: it adds flags listed
 # here that are missing, and removes flags in Flipper that are not listed here
 # (prune, including all of their gate values). Sync runs on every deploy from
-# .kamal/hooks/pre-deploy. Flags are never created or deleted through the admin
-# UI — only their gates are toggled there.
+# .kamal/hooks/pre-deploy. The admin UI cannot create or delete flags — it only
+# toggles the gates of flags declared here.
 #
 # Schema per flag (mapping keyed by flag name):
 #   <flag_name>:                 # [a-z][a-z0-9_-]*
