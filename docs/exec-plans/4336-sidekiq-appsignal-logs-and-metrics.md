@@ -16,10 +16,11 @@ Resolves #4336
 
 ### D1 — Broadcast `Sidekiq.logger`, do not reroute it to `Rails.logger`
 
-Sidekiq keeps its own logger; it never writes through `Rails.logger`, which is the only logger `production.rb` broadcasts to AppSignal. Two ways to close that gap:
+Sidekiq keeps its own logger; it never writes through `Rails.logger`, which is the only logger `production.rb` broadcasts to AppSignal.
 
-- **Chosen:** wrap Sidekiq's existing logger in an `ActiveSupport::BroadcastLogger` alongside an `Appsignal::Logger`, preserving Sidekiq's own formatter and STDOUT output.
-- Rejected: `config.logger = Rails.logger`. It would work, but it discards Sidekiq's log formatting, changes container stdout in a way that affects `kamal app logs`, and couples the worker's logging to Rails' tagged-logging config.
+- **Chosen:** `Appsignal::Logger#broadcast_to`. Build an `Appsignal::Logger.new("sidekiq")`, broadcast it to Sidekiq's existing logger, and assign it as `config.logger`.
+- Rejected: `ActiveSupport::BroadcastLogger`. This was the original choice and it was wrong. The AppSignal gem implements its own broadcasting *specifically* to avoid the Rails one (`appsignal/logger.rb:233-288`): Rails' version runs the block passed to `.tagged` once per broadcast logger, duplicating log lines, and in one linked Rails issue turns the Rack response into an array of responses, breaking the app outright.
+- Rejected: `config.logger = Rails.logger`. Discards Sidekiq's formatting, changes container stdout in a way that affects `kamal app logs`, and couples worker logging to Rails' tagged-logging config.
 
 ### D2 — Give Sidekiq its own AppSignal logger group
 
@@ -83,9 +84,12 @@ The log cause is confirmed in code. The metrics cause is not. `Appsignal::Hooks:
 - **2026-08-12** Confirmed the log root cause: `production.rb:75-85` broadcasts only `Rails.logger`; Sidekiq's own logger is never attached. Verified empirically that AppSignal receives only `group=rails` lines despite three worker boots that day.
 - **2026-08-12** Traced probe registration to `appsignal/hooks/sidekiq.rb:29` (gem 4.9.1) and minutely-probe startup to `appsignal.rb:151`. Metrics cause not yet determined — deliberately left to Phase 2 diagnosis.
 - **2026-08-12** Noted AppSignal's log query window on this account is 24 hours, and out-of-range queries return empty rather than erroring.
+- **2026-08-12** D1 reversed during implementation. `ActiveSupport::BroadcastLogger` is actively unsafe here — the AppSignal gem documents that Rails' broadcasting duplicates tagged log lines and can break the Rack response entirely, which is why it ships its own `broadcast_to`. Used the gem's implementation instead.
+- **2026-08-12** Confirmed the `Appsignal.active?` guard is sound. The railtie defaults to `start_at = :on_load`, whose initializer runs before `config/initializers/*`, so AppSignal has already started when the Sidekiq initializer is evaluated. Had this been false, the guard would have been permanently false in production and the fix would have silently done nothing.
+- **2026-08-12** Phase 1 verified locally by booting Sidekiq both ways: with AppSignal active `config.logger` is an `Appsignal::Logger` broadcasting to `[Sidekiq::Logger]`; with it inactive the logger is left as `Sidekiq::Logger`. Sidekiq's stdout format was unchanged in both runs.
 
 ## Progress
 
-- [ ] Phase 1 — Sidekiq logs
+- [x] Phase 1 — Sidekiq logs (`711c09c82`, verified locally; awaiting deploy to confirm ingestion)
 - [ ] Phase 2 — Sidekiq metrics
 - [ ] Phase 3 — Verify
