@@ -7889,6 +7889,24 @@ components:
       required:
       - capacity
       title: ExternalFuelTank
+    FeatureFlagName:
+      type: string
+      enum:
+      - fleet_logistics
+      - fleet_starmap
+      - fleet_worldmap
+      - hangar_inventories
+      - hardpoints-v2
+      - oauth-applications
+      - oauth-bluesky
+      - oauth-citizenid
+      - oauth-discord
+      - oauth-github
+      - oauth-google
+      - oauth-twitch
+      - tools_cargo_grids
+      - tools_travel_times
+      title: FeatureFlagName
     FieldError:
       type: object
       properties:
