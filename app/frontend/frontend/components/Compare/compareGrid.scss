@@ -1,0 +1,115 @@
+// Shared geometry for the compare matrix. Every row — the sticky ship header and
+// each section's stat rows — reads the same `--compare-cols` template off the
+// scroll container, which is what keeps columns aligned across separate cards.
+// These classes are used from several components' scoped styles, so they live
+// here rather than in any one of them.
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: var(--compare-cols, var(--compare-label, 170px) 1fr);
+  align-items: stretch;
+
+  &:hover .compare-cell--value {
+    background: rgba(#fff, 0.025);
+  }
+}
+
+.compare-cell {
+  min-width: 0;
+  padding: 7px 14px;
+  overflow: hidden;
+
+  &--label {
+    // Frozen column: metric names stay readable however far right the matrix is
+    // scrolled. The offset clears the fixed navigation rail — the page scrolls
+    // underneath it, so sticking at 0 would park the labels behind the nav. Needs an
+    // opaque background and an edge shadow to read as a rail floating above the
+    // columns; $panel-bg is translucent and would let them show through.
+    position: sticky;
+    left: var(--compare-sticky-left, 0);
+    z-index: 2;
+    // Overrides the clipping every other cell needs: the slab below has to paint
+    // outside this cell's box.
+    overflow: visible;
+    background: $gray-darker;
+    box-shadow: 7px 0 11px -8px rgba(#000, 0.8);
+    border-right: 1px solid rgba($gray-light, 0.28);
+    font-size: 12px;
+    line-height: 1.35;
+    text-align: right;
+    color: $gray-light;
+
+    // A slab filling the strip left of the rail. The navigation is translucent and
+    // the columns scroll along behind it, which reads as torn-off text next to the
+    // frozen labels; this covers that strip in the rail's own colour.
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 100%;
+      bottom: 0;
+      width: 400px;
+      background: $gray-darker;
+    }
+  }
+
+  &--value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 5px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: lighten($text-color, 15%);
+    text-align: center;
+    transition: background 0.15s ease;
+  }
+
+  // Free-form content (composition bars, chip lists) needs the cell padding but
+  // none of the number styling.
+  &--content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &--empty {
+    color: $gray;
+    font-weight: 400;
+  }
+
+  &--best {
+    color: $gold;
+  }
+
+  &--worst {
+    color: $gray-light;
+    font-weight: 400;
+  }
+
+  &--best::after,
+  &--worst::after {
+    // A glyph rather than an icon font: it inherits the cell's colour, so best
+    // and worst never need their own markup or a second class.
+    font-family: "Open Sans", sans-serif;
+    font-size: 8px;
+    line-height: 1;
+    opacity: 0.85;
+  }
+
+  &--best::after {
+    content: "▲";
+  }
+
+  &--worst::after {
+    content: "▼";
+  }
+}
+
+// A section's rows sit flush against the card's inner edge so the sticky label
+// column has no gap to leave behind when the frame scrolls out from under it.
+.compare-matrix {
+  margin: 0 -18px;
+}

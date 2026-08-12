@@ -150,13 +150,11 @@ const handleChange = (model: string) => {
       v-if="models.length"
       :url="shareUrl"
       :title="shareTitle"
-      block
       mobile-icon-only
     />
     <Btn
       :href="erkulUrl"
       :aria-label="t('labels.hardpoints.erkul')"
-      block
       mobile-icon-only
       class="erkul-link"
     >
@@ -167,7 +165,6 @@ const handleChange = (model: string) => {
       v-tooltip="t('labels.hardpoints.spviewerTitle')"
       :href="spviewerUrl"
       :aria-label="t('labels.hardpoints.spviewer')"
-      block
       mobile-icon-only
       class="spviewer-link"
     >

@@ -5,97 +5,60 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Collapsed from "@/shared/components/Collapsed.vue";
-import CompareModelsRow from "@/frontend/components/Compare/Models/Row/index.vue";
-import CompareModelsRowTitle from "@/frontend/components/Compare/Models/Row/Title/index.vue";
-import CompareModelsRowLabel from "@/frontend/components/Compare/Models/Row/Label/index.vue";
-import CompareModelsRowValue from "@/frontend/components/Compare/Models/Row/Value/index.vue";
+import CompareSection from "@/frontend/components/Compare/Models/Section/index.vue";
+import CompareStatRow from "@/frontend/components/Compare/Models/StatRow/index.vue";
+import { useCompareFormat } from "@/frontend/components/Compare/format";
+import {
+  buildCompareRows,
+  hasCompareData,
+  type CompareMetric,
+} from "@/frontend/components/Compare/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { Model } from "@/services/fyApi";
+import type { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
-  slim?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  slim: false,
-});
+const props = defineProps<Props>();
 
-const { t, toNumber } = useI18n();
+const { t } = useI18n();
 
-const visible = ref(false);
+const { number } = useCompareFormat();
 
-onMounted(() => {
-  visible.value = props.models.length > 0;
-});
-
-watch(
-  () => props.models,
-  () => {
-    visible.value = props.models.length > 0;
-  },
-);
-
-const toggle = () => {
-  visible.value = !visible.value;
-};
-
-const rows = [
+// Fewer hands needed to fly is the advantage on min crew; more stations supported
+// is the advantage on max.
+const metrics: CompareMetric<Model>[] = [
   {
-    key: "crew-min-crew",
+    key: "min-crew",
     label: t("model.minCrew"),
-    value: (model: Model) => toNumber(model.crew.min, "people"),
+    direction: "lower",
+    raw: (model) => model.crew.min,
+    value: (model) => number(model.crew.min, "people"),
   },
   {
-    key: "crew-max-crew",
+    key: "max-crew",
     label: t("model.maxCrew"),
-    value: (model: Model) => toNumber(model.crew.max, "people"),
+    direction: "higher",
+    raw: (model) => model.crew.max,
+    value: (model) => number(model.crew.max, "people"),
   },
 ];
+
+const rows = computed(() =>
+  buildCompareRows(
+    metrics,
+    props.models.map((model) => ({ key: model.slug, subject: model })),
+  ),
+);
 </script>
 
 <template>
-  <div>
-    <CompareModelsRow
-      :models="models"
-      row-key="crew"
-      :slim="slim"
-      sticky-left
-      section
-    >
-      <template #label>
-        <CompareModelsRowTitle
-          :active="visible"
-          :title="t('labels.metrics.crew')"
-          @click="toggle"
-        />
-      </template>
-    </CompareModelsRow>
-
-    <Collapsed id="crew" :visible="visible" class="row">
-      <div class="col-12">
-        <CompareModelsRow
-          v-for="row in rows"
-          :key="row.key"
-          :models="models"
-          :row-key="row.key"
-          :slim="slim"
-          sticky-left
-        >
-          <template #label>
-            <CompareModelsRowLabel>
-              {{ row.label }}
-            </CompareModelsRowLabel>
-          </template>
-          <template #default="{ model }">
-            <CompareModelsRowValue>
-              <!-- eslint-disable-next-line vue/no-v-html -->
-              <span v-html="row.value(model)" />
-            </CompareModelsRowValue>
-          </template>
-        </CompareModelsRow>
-      </div>
-    </Collapsed>
-  </div>
+  <CompareSection
+    v-if="hasCompareData(rows)"
+    id="compare-crew"
+    :title="t('labels.metrics.crew')"
+  >
+    <CompareStatRow v-for="row in rows" :key="row.key" :row="row" />
+  </CompareSection>
 </template>

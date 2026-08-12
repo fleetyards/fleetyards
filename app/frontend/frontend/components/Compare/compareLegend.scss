@@ -1,0 +1,40 @@
+// A composition bar repeats once per compared ship, so its legend renders once in
+// the row's label cell instead. Slotted into ContentRow, which keeps the markup in
+// the consuming section's scope — hence a shared partial rather than local styles.
+
+.compare-legend {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 2px 0;
+
+  &__title {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: $gray-light;
+    margin-bottom: 3px;
+  }
+
+  &__entry {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: $gray-light;
+  }
+
+  &__swatch {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  }
+}
+
+.compare-hint {
+  padding: 12px 14px 2px;
+  font-size: 11.5px;
+  color: $gray;
+}

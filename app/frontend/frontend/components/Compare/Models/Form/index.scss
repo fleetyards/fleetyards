@@ -1,10 +1,20 @@
+// A toolbar above the matrix rather than a cell inside it: the ship picker and the
+// external-calculator links need more room than a label column gives them.
+//
+// The gap is load-bearing — the redesigned buttons no longer carry their own
+// margin-bottom, so without it they sit flush against each other and the end-caps
+// overlap the next button's edge.
 .compare-form {
-  // Column of full-width controls. They used to be separated by the buttons'
-  // own margin-bottom, so without a gap they sat flush against each other and
-  // the end-caps overlapped the next button's edge.
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
-  height: 242px;
-  max-width: 300px;
+  width: 100%;
+  max-width: 640px;
+  margin-bottom: 18px;
+
+  :deep(.filter-group) {
+    flex: 1 1 220px;
+    margin-bottom: 0;
+  }
 }

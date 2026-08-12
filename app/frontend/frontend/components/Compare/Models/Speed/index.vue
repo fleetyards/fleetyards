@@ -5,140 +5,143 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Collapsed from "@/shared/components/Collapsed.vue";
-import ModelsRow from "@/frontend/components/Compare/Models/Row/index.vue";
-import RowTitle from "@/frontend/components/Compare/Models/Row/Title/index.vue";
-import RowLabel from "@/frontend/components/Compare/Models/Row/Label/index.vue";
-import RowValue from "@/frontend/components/Compare/Models/Row/Value/index.vue";
+import CompareSection from "@/frontend/components/Compare/Models/Section/index.vue";
+import CompareStatRow from "@/frontend/components/Compare/Models/StatRow/index.vue";
+import { useCompareFormat } from "@/frontend/components/Compare/format";
+import {
+  buildCompareRows,
+  hasCompareData,
+  type CompareMetric,
+} from "@/frontend/components/Compare/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { Model } from "@/services/fyApi";
+import type { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
-  slim?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  slim: false,
+const props = defineProps<Props>();
+
+const { t } = useI18n();
+
+const { number } = useCompareFormat();
+
+const anyGround = (models: Model[]) =>
+  models.some((model) => model.metrics.isGroundVehicle);
+
+const anyFlight = (models: Model[]) =>
+  models.some((model) => !model.metrics.isGroundVehicle);
+
+const speed = (
+  key: string,
+  label: string,
+  pick: (model: Model) => number | undefined,
+  visible?: (models: Model[]) => boolean,
+): CompareMetric<Model> => ({
+  key,
+  label,
+  direction: "higher",
+  raw: pick,
+  value: (model) => number(pick(model), "speed"),
+  visible,
 });
 
-const { t, toNumber } = useI18n();
-
-const visible = ref(false);
-
-onMounted(() => {
-  visible.value = props.models.length > 0;
+const rotation = (
+  key: string,
+  label: string,
+  pick: (model: Model) => number | undefined,
+): CompareMetric<Model> => ({
+  key,
+  label,
+  direction: "higher",
+  raw: pick,
+  value: (model) => number(pick(model), "rotation"),
+  visible: anyFlight,
 });
 
-watch(
-  () => props.models,
-  () => {
-    visible.value = props.models.length > 0;
-  },
-);
-
-const toggle = () => {
-  visible.value = !visible.value;
-};
-
-const rows = [
-  {
-    key: "speed-scm-speed",
-    label: t("model.scmSpeed"),
-    value: (model: Model) => toNumber(model.speeds.scmSpeed, "speed"),
-  },
-  {
-    key: "speed-scm-speed-boosted",
-    label: t("model.scmSpeedBoosted"),
-    value: (model: Model) => toNumber(model.speeds.scmSpeedBoosted, "speed"),
-  },
-  {
-    key: "speed-max-speed",
-    label: t("model.maxSpeed"),
-    value: (model: Model) => toNumber(model.speeds.maxSpeed, "speed"),
-  },
-  {
-    key: "speed-reverse-speed-boosted",
-    label: t("model.reverseSpeedBoosted"),
-    value: (model: Model) =>
-      toNumber(model.speeds.reverseSpeedBoosted, "speed"),
-  },
-  {
-    key: "speed-ground-max-speed",
-    label: t("model.compare.groundMaxSpeed"),
-    value: (model: Model) => toNumber(model.speeds.groundMaxSpeed, "speed"),
-  },
-  {
-    key: "speed-ground-reverse-speed",
-    label: t("model.compare.groundReverseSpeed"),
-    value: (model: Model) => toNumber(model.speeds.groundReverseSpeed, "speed"),
-  },
-  {
-    key: "speed-pitch",
-    label: t("model.pitch"),
-    value: (model: Model) => toNumber(model.speeds.pitch, "rotation"),
-  },
-  {
-    key: "speed-pitch-boosted",
-    label: t("model.pitchBoosted"),
-    value: (model: Model) => toNumber(model.speeds.pitchBoosted, "rotation"),
-  },
-  {
-    key: "speed-yaw",
-    label: t("model.yaw"),
-    value: (model: Model) => toNumber(model.speeds.yaw, "rotation"),
-  },
-  {
-    key: "speed-yaw-boosted",
-    label: t("model.yawBoosted"),
-    value: (model: Model) => toNumber(model.speeds.yawBoosted, "rotation"),
-  },
-  {
-    key: "speed-roll",
-    label: t("model.roll"),
-    value: (model: Model) => toNumber(model.speeds.roll, "rotation"),
-  },
-  {
-    key: "speed-roll-boosted",
-    label: t("model.rollBoosted"),
-    value: (model: Model) => toNumber(model.speeds.rollBoosted, "rotation"),
-  },
+const metrics: CompareMetric<Model>[] = [
+  speed(
+    "scm-speed",
+    t("model.scmSpeed"),
+    (model) => model.speeds.scmSpeed,
+    anyFlight,
+  ),
+  speed(
+    "scm-speed-boosted",
+    t("model.scmSpeedBoosted"),
+    (model) => model.speeds.scmSpeedBoosted,
+    anyFlight,
+  ),
+  speed(
+    "max-speed",
+    t("model.maxSpeed"),
+    (model) => model.speeds.maxSpeed,
+    anyFlight,
+  ),
+  speed(
+    "reverse-speed-boosted",
+    t("model.reverseSpeedBoosted"),
+    (model) => model.speeds.reverseSpeedBoosted,
+    anyFlight,
+  ),
+  speed(
+    "ground-max-speed",
+    t("model.compare.groundMaxSpeed"),
+    (model) => model.speeds.groundMaxSpeed,
+    anyGround,
+  ),
+  speed(
+    "ground-reverse-speed",
+    t("model.compare.groundReverseSpeed"),
+    (model) => model.speeds.groundReverseSpeed,
+    anyGround,
+  ),
+  speed(
+    "ground-acceleration",
+    t("model.groundAcceleration"),
+    (model) => model.speeds.groundAcceleration,
+    anyGround,
+  ),
+  speed(
+    "ground-decceleration",
+    t("model.groundDecceleration"),
+    (model) => model.speeds.groundDecceleration,
+    anyGround,
+  ),
+  rotation("pitch", t("model.pitch"), (model) => model.speeds.pitch),
+  rotation(
+    "pitch-boosted",
+    t("model.pitchBoosted"),
+    (model) => model.speeds.pitchBoosted,
+  ),
+  rotation("yaw", t("model.yaw"), (model) => model.speeds.yaw),
+  rotation(
+    "yaw-boosted",
+    t("model.yawBoosted"),
+    (model) => model.speeds.yawBoosted,
+  ),
+  rotation("roll", t("model.roll"), (model) => model.speeds.roll),
+  rotation(
+    "roll-boosted",
+    t("model.rollBoosted"),
+    (model) => model.speeds.rollBoosted,
+  ),
 ];
+
+const rows = computed(() =>
+  buildCompareRows(
+    metrics,
+    props.models.map((model) => ({ key: model.slug, subject: model })),
+  ),
+);
 </script>
 
 <template>
-  <ModelsRow :models="models" row-key="speed" :slim="slim" sticky-left section>
-    <template #label>
-      <RowTitle
-        :active="visible"
-        :title="t('labels.metrics.speed')"
-        @click="toggle"
-      />
-    </template>
-  </ModelsRow>
-
-  <Collapsed id="speed" :visible="visible" class="row">
-    <div class="col-12">
-      <ModelsRow
-        v-for="row in rows"
-        :key="row.key"
-        :models="models"
-        :row-key="row.key"
-        :slim="slim"
-        sticky-left
-      >
-        <template #label>
-          <RowLabel>
-            {{ row.label }}
-          </RowLabel>
-        </template>
-        <template #default="{ model }">
-          <RowValue>
-            <!-- eslint-disable-next-line vue/no-v-html -->
-            <span v-html="row.value(model)" />
-          </RowValue>
-        </template>
-      </ModelsRow>
-    </div>
-  </Collapsed>
+  <CompareSection
+    v-if="hasCompareData(rows)"
+    id="compare-speed"
+    :title="t('labels.metrics.speed')"
+  >
+    <CompareStatRow v-for="row in rows" :key="row.key" :row="row" />
+  </CompareSection>
 </template>

@@ -1,62 +1,24 @@
-.compare-cols {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 30px;
-}
+// Widths for the whole matrix live here so every section card reads the same track
+// template. 420px is the width the hardpoint group cards were designed against on the
+// ship page — narrower and component names wrap a letter per line. `min-width` widens
+// the stack past the container once the columns no longer fit, which is what makes the
+// page scroll sideways.
+.compare-matrix-stack {
+  --compare-label: 170px;
+  --compare-col: 420px;
 
-.compare-image {
-  position: relative;
-  overflow: hidden;
-  height: 242px;
+  min-width: calc(
+    var(--compare-label) + var(--compare-count, 1) * var(--compare-col)
+  );
 
-  & > a {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    border-top-right-radius: $border-radius-base;
-    border-top-left-radius: $border-radius-base;
-    -webkit-animation-name: fadein;
-    animation-name: fadeIn;
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
+  // Below this the navigation stops being a fixed left rail, so the frozen label
+  // column has nothing to clear.
+  @media (max-width: $desktop-breakpoint) {
+    --compare-sticky-left: 0px;
   }
 
-  .remove-model {
-    position: absolute;
-    top: 10px;
-    right: 0;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $gray-darker;
-    border-radius: 10px 0 0 10px;
-    cursor: pointer;
-
-    i {
-      color: #fff;
-    }
+  @media (max-width: $tablet-breakpoint) {
+    --compare-label: 130px;
+    --compare-col: 280px;
   }
-}
-
-.compare-title {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  font-size: 120%;
-  height: 40px;
-  position: sticky;
-  top: 0;
-  z-index: 500;
-  background-color: $gray-darker;
-  border-bottom-right-radius: $border-radius-base;
-  border-bottom-left-radius: $border-radius-base;
 }

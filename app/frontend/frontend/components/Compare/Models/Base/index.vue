@@ -5,139 +5,117 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Collapsed from "@/shared/components/Collapsed.vue";
-import ModelsRow from "@/frontend/components/Compare/Models/Row/index.vue";
-import ModelsRowTitle from "@/frontend/components/Compare/Models/Row/Title/index.vue";
-import ModelsRowLabel from "@/frontend/components/Compare/Models/Row/Label/index.vue";
-import ModelsRowValue from "@/frontend/components/Compare/Models/Row/Value/index.vue";
+import CompareSection from "@/frontend/components/Compare/Models/Section/index.vue";
+import CompareStatRow from "@/frontend/components/Compare/Models/StatRow/index.vue";
+import { useCompareFormat } from "@/frontend/components/Compare/format";
+import {
+  buildCompareRows,
+  hasCompareData,
+  type CompareMetric,
+} from "@/frontend/components/Compare/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { Model } from "@/services/fyApi";
+import type { Model } from "@/services/fyApi";
 
 type Props = {
   models: Model[];
-  slim?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  slim: false,
-});
+const props = defineProps<Props>();
 
-const { t, toDollar, toNumber, toUEC } = useI18n();
+const { t } = useI18n();
 
-const visible = ref(false);
+const { number, uec, dollar, text } = useCompareFormat();
 
-onMounted(() => {
-  visible.value = props.models.length > 0;
-});
-
-watch(
-  () => props.models,
-  () => {
-    visible.value = props.models.length > 0;
-  },
-);
-
-const toggle = () => {
-  visible.value = !visible.value;
-};
-
-const rows = [
+// Dimensions and mass carry no direction on purpose — a longer or heavier ship is
+// neither better nor worse, and a winner marker there would be an opinion the data
+// does not support.
+const metrics: CompareMetric<Model>[] = [
   {
-    key: "base-manufacturer",
+    key: "manufacturer",
     label: t("model.manufacturer"),
-    value: (model: Model) => model.manufacturer?.name,
+    value: (model) => text(model.manufacturer?.name),
   },
   {
-    key: "base-production-status",
+    key: "production-status",
     label: t("model.productionStatus"),
-    value: (model: Model) =>
-      t(`labels.model.productionStatus.${model.productionStatus}`),
+    value: (model) =>
+      model.productionStatus
+        ? t(`labels.model.productionStatus.${model.productionStatus}`)
+        : undefined,
   },
   {
-    key: "base-focus",
+    key: "focus",
     label: t("model.focus"),
-    value: (model: Model) => model.focus,
+    value: (model) => text(model.focus),
   },
   {
-    key: "base-classification",
+    key: "classification",
     label: t("model.classification"),
-    value: (model: Model) => model.classificationLabel,
+    value: (model) => text(model.classificationLabel),
   },
   {
-    key: "base-size",
+    key: "size",
     label: t("model.size"),
-    value: (model: Model) => model.metrics.sizeLabel,
+    value: (model) => text(model.metrics.sizeLabel),
   },
   {
-    key: "base-length",
+    key: "length",
     label: t("model.length"),
-    value: (model: Model) => toNumber(model.metrics.length, "distance"),
+    value: (model) => number(model.metrics.length, "distance"),
   },
   {
-    key: "base-beam",
+    key: "beam",
     label: t("model.beam"),
-    value: (model: Model) => toNumber(model.metrics.beam, "distance"),
+    value: (model) => number(model.metrics.beam, "distance"),
   },
   {
-    key: "base-height",
+    key: "height",
     label: t("model.height"),
-    value: (model: Model) => toNumber(model.metrics.height, "distance"),
+    value: (model) => number(model.metrics.height, "distance"),
   },
   {
-    key: "base-mass",
+    key: "mass",
     label: t("model.mass"),
-    value: (model: Model) => toNumber(model.metrics.mass, "weight"),
+    value: (model) => number(model.metrics.mass, "weight"),
   },
   {
-    key: "base-cargo",
+    key: "cargo",
     label: t("model.cargo"),
-    value: (model: Model) => toNumber(model.metrics.cargo, "cargo"),
+    direction: "higher",
+    raw: (model) => model.metrics.cargo,
+    value: (model) => number(model.metrics.cargo, "cargo"),
   },
   {
-    key: "base-price",
+    key: "price",
     label: t("model.price"),
-    value: (model: Model) => toUEC(model.price),
+    direction: "lower",
+    html: true,
+    raw: (model) => model.price,
+    value: (model) => uec(model.price),
   },
   {
-    key: "base-pledge-price",
+    key: "pledge-price",
     label: t("model.pledgePrice"),
-    value: (model: Model) => toDollar(model.pledgePrice),
+    direction: "lower",
+    raw: (model) => model.pledgePrice,
+    value: (model) => dollar(model.pledgePrice),
   },
 ];
+
+const rows = computed(() =>
+  buildCompareRows(
+    metrics,
+    props.models.map((model) => ({ key: model.slug, subject: model })),
+  ),
+);
 </script>
 
 <template>
-  <ModelsRow :models="models" row-key="base" :slim="slim" sticky-left section>
-    <template #label>
-      <ModelsRowTitle
-        :active="visible"
-        :title="t('labels.metrics.base')"
-        @click="toggle"
-      />
-    </template>
-  </ModelsRow>
-  <Collapsed id="base" :visible="visible" class="row">
-    <div class="col-12">
-      <ModelsRow
-        v-for="row in rows"
-        :key="row.key"
-        :models="models"
-        :row-key="row.key"
-        :slim="slim"
-        sticky-left
-      >
-        <template #label>
-          <ModelsRowLabel>
-            {{ row.label }}
-          </ModelsRowLabel>
-        </template>
-        <template #default="{ model }">
-          <ModelsRowValue>
-            <!-- eslint-disable-next-line vue/no-v-html -->
-            <span v-html="row.value(model)" />
-          </ModelsRowValue>
-        </template>
-      </ModelsRow>
-    </div>
-  </Collapsed>
+  <CompareSection
+    v-if="hasCompareData(rows)"
+    id="compare-base"
+    :title="t('labels.metrics.base')"
+  >
+    <CompareStatRow v-for="row in rows" :key="row.key" :row="row" />
+  </CompareSection>
 </template>
