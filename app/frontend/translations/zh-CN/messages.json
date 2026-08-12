@@ -247,38 +247,6 @@
           }
         }
       },
-      "fleets": {
-        "logistics": {
-          "request": {
-            "create": {
-              "success": "Logistics request created.",
-              "failure": "Could not create logistics request."
-            }
-          },
-          "inventory": {
-            "create": {
-              "success": "Inventory created.",
-              "failure": "Could not create inventory."
-            }
-          },
-          "inventoryItem": {
-            "create": {
-              "success": "Item added to inventory.",
-              "failure": "Could not add item to inventory."
-            }
-          },
-          "comment": {
-            "create": {
-              "success": "Comment added.",
-              "failure": "Could not add comment."
-            }
-          },
-          "csvImport": {
-            "success": "%{count} items imported successfully.",
-            "failure": "Could not import CSV file."
-          }
-        }
-      },
       "fleetInvite": {
         "used": "<b>%{fleet} 的加入请求已发送！</b><br>一旦您的会员资格被接受，您将通过电子邮件收到通知",
         "failure": "邀请无法使用。",
@@ -432,6 +400,52 @@
         "success": "您的机库已同步。",
         "failure": "您的机库无法同步。",
         "notLoggedIn": "您需要登录 <a href=\"https://robertsspaceindustries.com\" target=\"_blank\">https://robertsspaceindustries.com</a> 以同步您的机库。"
+      },
+      "logistics": {
+        "request": {
+          "create": {
+            "success": "Logistics request created.",
+            "failure": "Could not create logistics request."
+          }
+        },
+        "inventory": {
+          "create": {
+            "success": "Inventory created.",
+            "failure": "Could not create inventory."
+          },
+          "update": {
+            "success": "Inventory updated.",
+            "failure": "Could not update inventory."
+          },
+          "destroy": {
+            "success": "Inventory deleted.",
+            "failure": "Could not delete inventory."
+          }
+        },
+        "inventoryItem": {
+          "create": {
+            "success": "Item added to inventory.",
+            "failure": "Could not add item to inventory."
+          },
+          "deposit": {
+            "success": "Deposit recorded.",
+            "failure": "Could not record deposit."
+          },
+          "withdrawal": {
+            "success": "Withdrawal recorded.",
+            "failure": "Could not record withdrawal. Check available stock."
+          }
+        },
+        "comment": {
+          "create": {
+            "success": "Comment added.",
+            "failure": "Could not add comment."
+          }
+        },
+        "csvImport": {
+          "success": "%{count} items imported successfully.",
+          "failure": "Could not import CSV file."
+        }
       }
     }
   }

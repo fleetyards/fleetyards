@@ -310,8 +310,12 @@
         "newRequest": "New Request",
         "requestItems": "Items",
         "comments": "Comments",
+        "inventoryItems": "Inventory Items",
         "createInventory": "Create Inventory",
+        "editInventory": "Edit Inventory",
         "createItem": "Add Item",
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal",
         "importCsv": "Import from CSV",
         "hangarInventories": "Hangar Inventare",
         "editItem": "Eintrag bearbeiten"

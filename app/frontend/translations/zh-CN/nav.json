@@ -16,7 +16,8 @@
       "videos": "视频",
       "hangar": {
         "index": "我的机库",
-        "vehicleLoadouts": "Loadouts"
+        "vehicleLoadouts": "Loadouts",
+        "inventories": "Inventories"
       },
       "login": "登录",
       "logout": "登出",
