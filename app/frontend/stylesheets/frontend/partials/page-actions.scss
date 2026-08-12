@@ -8,6 +8,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  // Separates the action row from adjacent content, which the buttons' own
+  // margin-bottom used to provide.
+  margin-bottom: 20px;
 
   &.page-actions-center {
     justify-content: center;

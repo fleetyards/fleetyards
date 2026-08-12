@@ -97,4 +97,16 @@ provide(BTN_CONTAINER, {
 .btn-group--block {
   @apply flex w-full;
 }
+
+/*
+ * A group can contain a plain label segment as well as buttons - the paginator
+ * puts its "1 of 9" in a bare span. Give it the same surface as a member,
+ * otherwise the track's fill shows straight through and the label reads as a
+ * highlighted panel. Direct children only, so .btn__content inside a member is
+ * untouched.
+ */
+.btn-group__track > :deep(span) {
+  @apply bg-control text-text flex items-center justify-center px-3.5;
+  @apply text-[13px] leading-tight font-semibold whitespace-nowrap;
+}
 </style>
