@@ -127,6 +127,19 @@ const toggleLoading = () => {
     </div>
   </div>
   <div class="row">
+    <div class="col-12 vt-row" data-test="group-with-label">
+      <!-- A group holding a plain label segment as well as buttons, the shape
+           the paginator uses. The label must share the members' surface. -->
+      <BtnGroup>
+        <span>1 of 9</span>
+        <Btn aria-label="Previous" disabled>
+          <i class="fa-solid fa-chevron-left" />
+        </Btn>
+        <Btn aria-label="Next"><i class="fa-solid fa-chevron-right" /></Btn>
+      </BtnGroup>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-12">
       <BtnGroup block>
         <Btn>Block</Btn>
