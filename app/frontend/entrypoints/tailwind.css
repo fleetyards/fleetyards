@@ -31,4 +31,25 @@
 
   /* Grid gutter to match Bootstrap's $grid-gutter-width: 30px (15px per side) */
   --spacing-gutter: 15px;
+
+  /*
+   * Control surfaces. Values are taken from the metrics-card language
+   * (Models/metricsCard.scss, Models/MetricsCard/index.vue) rather than the
+   * older $panel-inner-border, whose rgba(#c8c8c8, .9) edge is the glare the
+   * button redesign removes. $primary is the interactive accent throughout.
+   */
+  --color-control: rgb(39 43 48 / 0.9);
+  --color-control-hover: rgb(52 58 64 / 0.95);
+  --color-control-press: rgb(26 29 33 / 0.95);
+  --color-segment: #222;
+
+  --color-edge: rgb(122 130 136 / 0.5);
+  --color-edge-soft: rgb(122 130 136 / 0.28);
+  --color-endcap: #4a4f54;
+
+  --color-lifted: #eee;
+
+  --radius-control: 8px;
+  --radius-control-inner: 7px;
+  --radius-control-bare: 6px;
 }
