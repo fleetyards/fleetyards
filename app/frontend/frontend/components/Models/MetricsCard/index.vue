@@ -117,9 +117,6 @@ withDefaults(defineProps<Props>(), {
 }
 
 .metrics-card--slim .metrics-card__head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   padding: 14px 16px;
   border-bottom: 1px solid rgba($gray-light, 0.28);
   background: rgba(#000, 0.12);
