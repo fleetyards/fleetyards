@@ -48,6 +48,17 @@ module Uex
       assert_nil @models[:slug_match].reload.sold_at.first.location_url
     end
 
+    test "#run drops a contact url that is not a web link rather than storing it" do
+      terminals = uex_fixture("terminals").map do |terminal|
+        (terminal["id"] == 101) ? terminal.merge("contact_url" => "javascript:alert(1)") : terminal
+      end
+
+      result = sync(terminals:)
+
+      assert_equal 7, result.created, "one odd url must not fail the whole snapshot"
+      assert_nil @models[:name_match].reload.rental_at.first.location_url
+    end
+
     test "#run resolves a vehicle that only the explicit mapping covers" do
       sync
 

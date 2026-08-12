@@ -115,6 +115,27 @@ describe("ModelAvailabilityModal", () => {
     ]);
   });
 
+  it("links the shop when the location url is a web link", () => {
+    const wrapper = mountWith({
+      soldAt: [itemPrice({ locationUrl: "https://example.test/shop" })],
+    });
+
+    expect(wrapper.get("a.availability__shop").attributes("href")).toBe(
+      "https://example.test/shop",
+    );
+  });
+
+  // A location url is admin-writable and third-party fed; in an href a
+  // `javascript:` value would run on click.
+  it("refuses to link a location url that is not a web link", () => {
+    const wrapper = mountWith({
+      soldAt: [itemPrice({ locationUrl: "javascript:alert(1)" })],
+    });
+
+    expect(wrapper.find("a.availability__shop").exists()).toBe(false);
+    expect(wrapper.get(".availability__shop").text()).toBe("Astro Armada");
+  });
+
   it("splits the terminal name into shop and place", () => {
     const wrapper = mountWith({
       soldAt: [

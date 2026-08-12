@@ -67,6 +67,12 @@ const shopName = (price: ItemPrice) => price.location.split(" - ")[0];
 const placeName = (price: ItemPrice) =>
   price.location.split(" - ").slice(1).join(" · ");
 
+// A location url is admin-writable and third-party fed, and this one lands in an
+// `href`: a `javascript:` value would run on click. Rows written before the
+// model validation can still hold one, so the scheme is checked here too.
+const linkUrl = (price: ItemPrice) =>
+  /^https?:\/\//i.test(price.locationUrl ?? "") ? price.locationUrl : undefined;
+
 // Vehicle prices barely move between shops — a few percent — so bars scaled to
 // the dearest would all read full. The premium over the cheapest is the part
 // worth showing.
@@ -123,8 +129,8 @@ const premium = (price: ItemPrice, cheapest: ItemPrice) =>
               >
                 <span class="availability__loc">
                   <a
-                    v-if="price.locationUrl"
-                    :href="price.locationUrl"
+                    v-if="linkUrl(price)"
+                    :href="linkUrl(price)"
                     class="availability__shop"
                     target="_blank"
                     rel="noopener noreferrer"

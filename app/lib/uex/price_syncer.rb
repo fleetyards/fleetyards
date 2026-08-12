@@ -117,7 +117,7 @@ module Uex
           price_type:,
           location:,
           time_range:,
-          location_url: terminal["contact_url"].presence,
+          location_url: web_url(terminal["contact_url"]),
           price:
         }
 
@@ -129,6 +129,15 @@ module Uex
         existing = result[key]
         result[key] = attributes if existing.blank? || price < existing[:price]
       end
+    end
+
+    # `contact_url` is whatever a UEX contributor typed. Anything that is not a
+    # web link is dropped rather than stored: `ItemPrice` rejects it, and one odd
+    # row must not fail a validation and take the whole snapshot down with it.
+    private def web_url(value)
+      url = value.to_s.strip
+
+      url if url.match?(%r{\Ahttps?://}i)
     end
 
     # None of the four feeds is ever legitimately empty. An empty one still
