@@ -25,7 +25,7 @@ export default {
     margin-bottom: 0;
   }
 
-  :deep(.panel-btn),
+  :deep(.btn),
   :deep(.oauth-btn) {
     flex-shrink: 0;
     white-space: nowrap;

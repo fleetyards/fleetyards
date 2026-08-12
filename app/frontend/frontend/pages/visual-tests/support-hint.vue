@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
@@ -62,7 +62,6 @@ const openSyncModalPreview = () => {
       <Btn
         v-for="context in contexts"
         :key="`trigger-${context}`"
-        :size="BtnSizesEnum.SMALL"
         :data-test="`trigger-support-hint-${context}`"
         @click="trigger(context)"
       >
@@ -78,11 +77,7 @@ const openSyncModalPreview = () => {
   </p>
   <div class="row">
     <div class="col-12">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="open-sync-modal-preview"
-        @click="openSyncModalPreview"
-      >
+      <Btn data-test="open-sync-modal-preview" @click="openSyncModalPreview">
         Open sync modal preview
       </Btn>
     </div>

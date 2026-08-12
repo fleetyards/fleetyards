@@ -35,12 +35,6 @@
         min-width: 0;
         justify-content: flex-end;
         gap: 10px;
-
-        :deep(.panel-btn),
-        :deep(.panel-btn-group),
-        :deep(.panel-btn-dropdown) {
-          margin-right: 0;
-        }
       }
     }
 

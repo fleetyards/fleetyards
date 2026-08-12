@@ -1,5 +1,5 @@
 .erkul-link {
-  .panel-btn-inner {
+  .btn__content {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,15 +17,12 @@
     transition: all ease 0.5s;
   }
 
-  &:hover {
-    i {
-      background-image: url("@/images/sc_dps_calculator_black.png");
-    }
-  }
+  // No hover swap to the black icon: that existed because the old button
+  // inverted to a light surface on hover. It now stays dark.
 }
 
 .spviewer-link {
-  .panel-btn-inner {
+  .btn__content {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,13 +43,13 @@
 
 @media (max-width: $desktop-breakpoint) {
   .erkul-link {
-    .panel-btn-inner {
+    .btn__content {
       flex-direction: column;
     }
   }
 
   .spviewer-link {
-    .panel-btn-inner {
+    .btn__content {
       flex-direction: column;
     }
   }
