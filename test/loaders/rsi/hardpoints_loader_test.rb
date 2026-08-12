@@ -36,7 +36,7 @@ module Rsi
       assert_equal(
         {
           models: initial_model_count,
-          hardpoints: initial_hardpoint_count + 107,
+          hardpoints: initial_hardpoint_count + 26,
           components: initial_component_count,
           paints: initial_paint_count,
           manufacturers: initial_manufacturer_count

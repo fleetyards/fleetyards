@@ -41,11 +41,11 @@ module ScData
         stub_request(:post, %r{\Ahttps://robertsspaceindustries.com/graphql})
           .to_return(status: 200, body: [{data: {store: {search: {resources: []}}}}].to_json, headers: {"Content-Type" => "application/json"})
 
-        assert_difference -> { Manufacturer.count }, 18 do
+        assert_difference -> { Manufacturer.count }, 19 do
           rsi_models_loader.all
         end
 
-        assert_difference -> { Manufacturer.count }, 97 do
+        assert_difference -> { Manufacturer.count }, 96 do
           @loader.all
         end
 
