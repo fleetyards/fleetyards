@@ -124,7 +124,7 @@
     "eslint-plugin-vue": "^10.10.0",
     "eslint-plugin-vuejs-accessibility": "^2.5.0",
     "globals": "^17.9.0",
-    "jsdom": "29.1.1",
+    "jsdom": "30.0.1",
     "knip": "^6.32.0",
     "mocha": "11.8.0",
     "msw": "^2.14.6",
