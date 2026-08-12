@@ -36,13 +36,20 @@ const bumpProgress = () => {
 
 const fixedLoaderVisible = ref(false);
 
+let fixedLoaderTimer: ReturnType<typeof setTimeout> | undefined;
+
 const showFixedLoader = () => {
   fixedLoaderVisible.value = true;
 
-  setTimeout(() => {
+  clearTimeout(fixedLoaderTimer);
+  fixedLoaderTimer = setTimeout(() => {
     fixedLoaderVisible.value = false;
   }, 2000);
 };
+
+onBeforeUnmount(() => {
+  clearTimeout(fixedLoaderTimer);
+});
 
 const paginated: BaseList = {
   meta: {

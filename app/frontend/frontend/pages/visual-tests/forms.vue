@@ -84,10 +84,22 @@ const sizeOptions: FilterOption[] = sizes;
 
 const submitting = ref(false);
 
+// Tracked so a pending fake round-trip cannot resolve after the page is gone and
+// push its notification onto whatever route the user landed on.
+const timers: ReturnType<typeof setTimeout>[] = [];
+
+const later = (callback: () => void, delay: number) => {
+  timers.push(setTimeout(callback, delay));
+};
+
+onBeforeUnmount(() => {
+  timers.forEach(clearTimeout);
+});
+
 const onSubmit = () => {
   submitting.value = true;
 
-  setTimeout(() => {
+  later(() => {
     submitting.value = false;
     displaySuccess({ text: "Form submitted." });
   }, 1500);
@@ -104,7 +116,7 @@ const toggleTheToggle = () => {
 const fireToggleLoading = () => {
   toggleLoading.value = true;
 
-  setTimeout(() => {
+  later(() => {
     toggleLoading.value = false;
   }, 2000);
 };

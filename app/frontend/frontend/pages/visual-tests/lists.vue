@@ -141,8 +141,27 @@ const onSaveCreate = () => {
   editableList.value?.finishCreate();
 };
 
+const expandedId = ref<string | null>(null);
+
+const toggleExpanded = (id: string) => {
+  expandedId.value = expandedId.value === id ? null : id;
+};
+
+// Selection deliberately survives `items` changing, so that select-all can span
+// pages — which means removing a record does not deselect it. The owner of the
+// records has to prune the id, or bulk actions keep counting a row nobody sees.
 const onDestroy = (item: Dock) => {
   docks.value = docks.value.filter((entry) => entry.id !== item.id);
+
+  if (editableList.value) {
+    editableList.value.selected = editableList.value.selected.filter(
+      (id) => id !== item.id,
+    );
+  }
+
+  if (expandedId.value === item.id) {
+    expandedId.value = null;
+  }
 };
 
 const bulkCopy = (selected: string[]) => {
@@ -151,13 +170,10 @@ const bulkCopy = (selected: string[]) => {
 
 const resetDocks = () => {
   docks.value = buildDocks();
+  editableList.value?.finishEdit();
+  editableList.value?.finishCreate();
   editableList.value?.resetSelected();
-};
-
-const expandedId = ref<string | null>(null);
-
-const toggleExpanded = (id: string) => {
-  expandedId.value = expandedId.value === id ? null : id;
+  expandedId.value = null;
 };
 
 // ── InlineEditableList | actions-only ────────────────────────────────
