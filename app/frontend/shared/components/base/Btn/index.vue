@@ -34,6 +34,12 @@ export type Props = {
   active?: boolean;
   disabled?: boolean;
   confirm?: boolean | string;
+  /**
+   * Class the router applies while the link is active. Defaults to the router's
+   * global `active`, which Btn styles; pass "" to opt out - the paginator does,
+   * so its arrows are not highlighted just because they point at the current page.
+   */
+  routeActiveClass?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -51,6 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
   active: false,
   disabled: false,
   confirm: false,
+  routeActiveClass: undefined,
 });
 
 const emit = defineEmits(["click"]);
@@ -101,7 +108,13 @@ const btnProps = computed(() => {
   }
 
   if (props.to) {
-    return { to: props.to };
+    if (props.routeActiveClass === undefined) return { to: props.to };
+
+    return {
+      to: props.to,
+      activeClass: props.routeActiveClass,
+      exactActiveClass: props.routeActiveClass,
+    };
   }
 
   if (props.href) {
@@ -126,7 +139,7 @@ const cssClasses = computed(() => [
     "btn--grouped-block":
       container?.container === "group" && container.block.value,
     "btn--menu-item": container?.container === "menu",
-    "is-active": props.active,
+    active: props.active,
     "is-loading": props.loading,
   },
 ]);
@@ -236,14 +249,16 @@ const handleClick = (event: MouseEvent) => {
    Heights match the form controls in FormInput (43px, and 55px for its large
    variant) so a button sits flush next to an input, and they preserve the
    historical button scale: old small 42px, default 48px, large 55px. */
+/* min-width matches the height so an icon-only button stays square instead of
+   collapsing to the width of its glyph - a fa-ellipsis-v is only a few px wide. */
 .btn--sm {
-  @apply h-[43px] px-3.5 text-[13px];
+  @apply h-[43px] min-w-[43px] px-3.5 text-[13px];
 }
 .btn--md {
-  @apply h-12 px-4.5 text-[14.5px];
+  @apply h-12 min-w-12 px-4.5 text-[14.5px];
 }
 .btn--lg {
-  @apply h-[55px] px-6 text-base;
+  @apply h-[55px] min-w-[55px] px-6 text-base;
 }
 
 /* ---------- end-caps ----------
@@ -288,15 +303,15 @@ const handleClick = (event: MouseEvent) => {
 }
 
 .btn--solid:hover:not([disabled]),
-.btn--solid.is-active {
+.btn--solid.active {
   @apply bg-control-hover border-primary text-lifted;
 }
 .btn--ghost:hover:not([disabled]),
-.btn--ghost.is-active {
+.btn--ghost.active {
   @apply bg-control-hover border-primary text-lifted;
 }
 .btn--bare:hover:not([disabled]),
-.btn--bare.is-active {
+.btn--bare.active {
   @apply text-lifted;
   background-color: rgb(122 130 136 / 0.12);
 }
@@ -327,7 +342,29 @@ const handleClick = (event: MouseEvent) => {
 
 /* ---------- states ---------- */
 .btn[disabled] {
-  @apply cursor-default opacity-40;
+  @apply cursor-default;
+}
+
+/*
+ * Dim the content, not the whole element. Element-wide opacity makes an opaque
+ * surface translucent, so a disabled member of a BtnGroup let the lighter track
+ * show through and read *lighter* than its enabled siblings - the pagination
+ * arrows looked highlighted rather than dimmed.
+ */
+.btn[disabled] .btn__content {
+  @apply opacity-45;
+}
+
+.btn--solid[disabled],
+.btn--ghost[disabled] {
+  @apply border-edge-soft;
+}
+
+.btn--solid[disabled]::before,
+.btn--solid[disabled]::after,
+.btn--ghost[disabled]::before,
+.btn--ghost[disabled]::after {
+  @apply opacity-50;
 }
 
 /* The old component set outline:none with no replacement, so keyboard focus was
@@ -345,8 +382,10 @@ const handleClick = (event: MouseEvent) => {
    The group draws one border, one radius and one pair of end-caps for the whole
    control, so members carry no chrome at all. Applied here rather than from
    BtnGroup's stylesheet, so Btn owns its own appearance in every context. */
+/* Same surface as a standalone button, so a group does not read as a different
+   material. The track's fill only shows through the 1px gaps, as dividers. */
 .btn--grouped {
-  @apply bg-segment rounded-none border-0;
+  @apply bg-control rounded-none border-0;
 }
 .btn--grouped::before,
 .btn--grouped::after {
@@ -356,7 +395,7 @@ const handleClick = (event: MouseEvent) => {
   @apply text-lifted;
   background-color: #2b3034;
 }
-.btn--grouped.is-active,
+.btn--grouped.active,
 .btn--grouped[aria-pressed="true"] {
   @apply text-white;
   background-color: rgb(66 139 202 / 0.22);

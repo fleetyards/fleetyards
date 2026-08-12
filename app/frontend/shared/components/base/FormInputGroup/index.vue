@@ -25,12 +25,14 @@ export default {
     margin-bottom: 0;
   }
 
+  // No height override: Btn's own sizes match the form controls (sm 43px like
+  // .base-input, lg 55px like .base-input--large), so forcing 43px here would
+  // clamp a lg button next to a large input - which is what broke the hero
+  // search field.
   :deep(.btn),
   :deep(.oauth-btn) {
     flex-shrink: 0;
     white-space: nowrap;
-    height: 43px;
-    margin: 0;
   }
 }
 </style>

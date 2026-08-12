@@ -82,6 +82,7 @@ const currentPage = computed(() => {
           :size="size"
           :to="pageRoute(1)"
           :disabled="currentPage <= 1"
+          route-active-class=""
         >
           <i class="fa fa-chevron-double-left" />
         </Btn>
@@ -89,6 +90,7 @@ const currentPage = computed(() => {
           :size="size"
           :to="pageRoute(currentPage - 1)"
           :disabled="currentPage <= 1"
+          route-active-class=""
         >
           <i class="fa fa-chevron-left" />
         </Btn>
@@ -110,6 +112,7 @@ const currentPage = computed(() => {
           :size="size"
           :to="pageRoute(currentPage + 1)"
           :disabled="currentPage >= pagination.totalPages"
+          route-active-class=""
         >
           <i class="fa fa-chevron-right" />
         </Btn>
@@ -118,6 +121,7 @@ const currentPage = computed(() => {
           :size="size"
           :to="pageRoute(pagination.totalPages)"
           :disabled="currentPage >= pagination.totalPages"
+          route-active-class=""
         >
           <i class="fa fa-chevron-double-right" />
         </Btn>
