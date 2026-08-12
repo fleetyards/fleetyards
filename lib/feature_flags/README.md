@@ -68,9 +68,12 @@ is metadata only — it does not change how the flag evaluates.
 ## Removing a flag
 
 Delete its entry and merge. The next deploy's sync removes the Flipper feature
-**and all of its gate values** — boolean state, actors, groups, percentages.
+**and all of its gate values** — boolean state, actors, groups, percentages —
+along with its `FeatureSetting` row, so a flag does not come back self-service
+if it is ever declared again.
+
 That is irreversible: re-adding the entry later gives you a fresh flag with no
-gates, so record any rollout you still care about first.
+gates and no self-service, so record any rollout you still care about first.
 
 ## Safety
 

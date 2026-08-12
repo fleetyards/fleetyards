@@ -74,7 +74,15 @@ module FeatureFlags
 
     def apply!(to_add, to_remove)
       to_add.each { |name| flipper.add(name) }
+
+      return if to_remove.empty?
+
       to_remove.each { |name| flipper.remove(name) }
+
+      # The self-service setting has to go with the flag. Nothing else deletes
+      # these rows, so leaving one behind would silently restore
+      # user-toggleability if the flag is ever declared again.
+      FeatureSetting.where(feature_name: to_remove).destroy_all
     end
 
     def log_result(to_add, to_remove)

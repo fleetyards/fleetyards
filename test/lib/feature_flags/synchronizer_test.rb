@@ -59,6 +59,33 @@ module FeatureFlags
       assert_equal ["orphan"], flipper.removed
     end
 
+    test "pruning a flag also removes its self-service setting" do
+      FeatureSetting.create!(feature_name: "orphan", self_service: true)
+      FeatureSetting.create!(feature_name: "keeper", self_service: true)
+
+      sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]))
+
+      assert_not FeatureSetting.self_service?("orphan"),
+        "a re-declared flag would otherwise come back user-toggleable"
+      assert FeatureSetting.self_service?("keeper")
+    end
+
+    test "dry_run leaves self-service settings alone" do
+      FeatureSetting.create!(feature_name: "orphan", self_service: true)
+
+      sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]), dry_run: true)
+
+      assert FeatureSetting.self_service?("orphan")
+    end
+
+    test "prune: false leaves self-service settings alone" do
+      FeatureSetting.create!(feature_name: "orphan", self_service: true)
+
+      sync(registry: registry("keeper"), flipper: FakeFlipper.new(%w[keeper orphan]), prune: false)
+
+      assert FeatureSetting.self_service?("orphan")
+    end
+
     test "reports no changes when flipper already matches" do
       flipper = FakeFlipper.new(%w[a b])
 

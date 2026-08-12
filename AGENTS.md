@@ -248,8 +248,8 @@ To add a flag:
 Flags are created **off**. Toggle gates at `/admin/features`; mark a flag
 self-service via `FeatureSetting` so users can enable it themselves.
 
-To remove a flag, delete its entry — the next deploy prunes the Flipper feature
-and all of its gate values (irreversible).
+To remove a flag, delete its entry — the next deploy prunes the Flipper feature,
+all of its gate values and its `FeatureSetting` row (irreversible).
 
 **Do not** write a `Flipper.add` data migration. The registry owns flag lifecycle;
 a migration creates a flag the registry doesn't know about, which the next sync
