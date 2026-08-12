@@ -15,10 +15,14 @@ module Uex
     # not plausible churn; a feed that came back short looks exactly like that.
     MIN_TERMINAL_RETENTION = 0.5
 
-    Result = Struct.new(:created, :updated, :removed, :skipped_removals, :unmatched) do
+    # Stamped on the paper-trail version so a repriced model reads apart from an
+    # admin having typed the figure in by hand.
+    REPRICE_REASON = "uex_price_sync"
+
+    Result = Struct.new(:created, :updated, :removed, :skipped_removals, :repriced, :unmatched) do
       def to_s
         "created=#{created} updated=#{updated} removed=#{removed} " \
-          "skipped_removals=#{skipped_removals} unmatched=#{unmatched.size}"
+          "skipped_removals=#{skipped_removals} repriced=#{repriced} unmatched=#{unmatched.size}"
       end
     end
 
@@ -57,11 +61,39 @@ module Uex
         )
       )
 
-      persist(
+      result = persist(
         desired,
         live: terminals.values.map { |terminal| terminal["name"].to_s.strip }.to_set,
         unmatched: matcher.misses
       )
+
+      result.repriced = reprice_models
+      result
+    end
+
+    # `models.price` is the figure the ship list sorts and filters on and the one
+    # fleet value totals add up, and nothing kept it in step with the shops — it
+    # was hand-entered per model. The cheapest sell price is what a player
+    # actually pays, so that is what it now tracks.
+    #
+    # Models UEX prices nothing for keep whatever they hold: no feed row is not
+    # the same as not for sale, and a stale figure still beats none for sorting.
+    private def reprice_models
+      cheapest = ItemPrice.where(item_type: ITEM_TYPE, price_type: "sell")
+        .group(:item_id)
+        .minimum(:price)
+
+      repriced = 0
+
+      Model.where(id: cheapest.keys).find_each do |model|
+        price = cheapest[model.id]
+        next if model.price == price
+
+        model.update!(price:, update_reason: REPRICE_REASON)
+        repriced += 1
+      end
+
+      repriced
     end
 
     private def collect(rows, vehicles:, terminals:, matcher:, price_key:, price_type:, time_range:)

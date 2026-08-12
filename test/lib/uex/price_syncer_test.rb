@@ -118,6 +118,52 @@ module Uex
       assert_equal 1, @models[:name_match].reload.rental_at.size
     end
 
+    test "#run repoints models.price at the cheapest shop that sells the ship" do
+      titan = @models[:name_match]
+      titan.update!(price: 999)
+
+      result = sync
+
+      assert_equal 4, result.repriced
+      assert_equal 1_290_370, titan.reload.price.to_i
+    end
+
+    test "#run reprices from the cheapest of several shops" do
+      purchases = uex_fixture("vehicles_purchases_prices_all") +
+        [{"id" => 98, "id_vehicle" => 2, "id_terminal" => 103, "price_buy" => 1_100_000}]
+
+      sync(vehicle_purchase_prices: purchases)
+
+      assert_equal 1_100_000, @models[:name_match].reload.price.to_i
+    end
+
+    test "#run leaves the price of a model UEX sells nowhere alone" do
+      rental_only = @models[:name_match]
+      rental_only.update!(price: 999)
+
+      purchases = uex_fixture("vehicles_purchases_prices_all").reject { |row| row["id_vehicle"] == 2 }
+
+      sync(vehicle_purchase_prices: purchases)
+
+      assert_equal 999, rental_only.reload.price.to_i
+    end
+
+    test "#run reprices nothing on a second run that changed no price" do
+      sync
+      result = sync
+
+      assert_equal 0, result.repriced
+    end
+
+    test "#run records the repricing as a version so a hand-entered figure is told apart" do
+      titan = @models[:name_match]
+      titan.update!(price: 999)
+
+      sync
+
+      assert_equal "uex_price_sync", titan.versions.last.reason
+    end
+
     test "#run leaves prices for other item types alone" do
       component = create(:component)
       hand_entered = create(:item_price, item: component, price_type: :sell, time_range: nil)

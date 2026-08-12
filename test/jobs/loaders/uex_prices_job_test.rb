@@ -15,7 +15,7 @@ module Loaders
 
       assert_equal "finished", import.aasm_state
       assert_equal(
-        {"created" => 4, "updated" => 1, "removed" => 2, "skipped_removals" => 0, "unmatched" => []},
+        {"created" => 4, "updated" => 1, "removed" => 2, "skipped_removals" => 0, "repriced" => 3, "unmatched" => []},
         import.output
       )
     end
@@ -80,7 +80,7 @@ module Loaders
     end
 
     private def stub_syncer(unmatched: [{"slug" => "nova-tank", "name" => "Nova Tank", "name_full" => "Tumbril Nova Tank"}])
-      result = ::Uex::PriceSyncer::Result.new(created: 4, updated: 1, removed: 2, skipped_removals: 0, unmatched:)
+      result = ::Uex::PriceSyncer::Result.new(created: 4, updated: 1, removed: 2, skipped_removals: 0, repriced: 3, unmatched:)
 
       syncer = mock("Uex::PriceSyncer")
       syncer.expects(:run).returns(result)
