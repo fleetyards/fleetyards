@@ -10,10 +10,7 @@ import {
   useDestroyManufacturer,
   getManufacturersQueryKey,
 } from "@/services/fyAdminApi";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -57,7 +54,6 @@ const destroy = () => {
 <template>
   <Btn
     v-tooltip="!withLabels && t('actions.edit')"
-    :size="BtnSizesEnum.SMALL"
     :to="{
       name: 'admin-manufacturer-edit',
       params: { id: props.manufacturer.id },
@@ -68,9 +64,8 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.delete')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
+    :tone="BtnTonesEnum.DANGER"
   >
     <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>

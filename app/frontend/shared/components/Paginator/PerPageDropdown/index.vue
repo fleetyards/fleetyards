@@ -26,8 +26,8 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   perPage: undefined,
   steps: () => [10, 20, 50, 100],
-  size: BtnSizesEnum.DEFAULT,
-  variant: BtnVariantsEnum.DEFAULT,
+  size: undefined,
+  variant: undefined,
   inGroup: false,
 });
 
@@ -60,7 +60,7 @@ const update = (step: number | string) => {
 </script>
 
 <template>
-  <BtnDropdown :size="size" :variant="variant" mobile-block inline>
+  <BtnDropdown :size="size" :variant="variant" class="w-full md:w-auto">
     <template #label>
       <template v-if="!mobile">{{ t("paginator.labels.perPage") }}:</template>
       {{ internalValue }}
@@ -68,7 +68,6 @@ const update = (step: number | string) => {
     <Btn
       v-for="(step, index) in steps"
       :key="`per-page-drowndown-${uuid}-${index}-${step}`"
-      :size="BtnSizesEnum.SMALL"
       :active="step === internalValue"
       @click="update(step)"
     >

@@ -151,8 +151,8 @@ const onSubmit = handleSubmit(async (values) => {
           :loading="submitting"
           :type="BtnTypesEnum.SUBMIT"
           data-test="submit-login"
-          :size="BtnSizesEnum.LARGE"
           :block="true"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.login") }}
         </Btn>

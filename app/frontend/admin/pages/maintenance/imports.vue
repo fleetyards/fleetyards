@@ -12,7 +12,7 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -175,7 +175,6 @@ const columns: BaseTableCol<Import>[] = [
 
   <Teleport to="#header-right">
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingMatrix"
       :confirm="t('messages.confirm.model.reloadMatrix')"
       :aria-label="t('actions.admin.dashboard.reloadModels')"
@@ -187,7 +186,6 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingScData"
       :confirm="t('messages.confirm.model.reloadScData')"
       :aria-label="t('actions.admin.dashboard.reloadScData')"
@@ -199,7 +197,6 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingModules"
       :confirm="t('messages.confirm.model.reloadModules')"
       :aria-label="t('actions.admin.dashboard.reloadModules')"
@@ -211,7 +208,6 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadModules") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingPaints"
       :confirm="t('messages.confirm.model.reloadPaints')"
       :aria-label="t('actions.admin.dashboard.reloadPaints')"
@@ -223,7 +219,6 @@ const columns: BaseTableCol<Import>[] = [
       {{ t("actions.admin.dashboard.reloadPaints") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingLoaners"
       :confirm="t('messages.confirm.model.reloadLoaners')"
       :aria-label="t('actions.admin.dashboard.reloadLoaners')"

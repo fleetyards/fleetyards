@@ -11,6 +11,7 @@ import citizenIdIconDev from "@/images/icons/citizenid-dev.jpg";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
+  BtnTonesEnum,
   BtnTypesEnum,
 } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -32,8 +33,8 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  size: BtnSizesEnum.DEFAULT,
-  variant: BtnVariantsEnum.DEFAULT,
+  size: undefined,
+  variant: undefined,
   block: false,
   inline: false,
   connected: false,
@@ -117,8 +118,10 @@ const citizenIdIcon = computed(() =>
       v-if="providerActive"
       :size="size"
       :block="block"
-      :variant="connected && disconnectable ? BtnVariantsEnum.DANGER : variant"
-      :inline="inline"
+      :variant="variant"
+      :tone="
+        connected && disconnectable ? BtnTonesEnum.DANGER : BtnTonesEnum.NEUTRAL
+      "
       :type="BtnTypesEnum.BUTTON"
       class="oauth-btn"
       :class="{ inline: inline }"

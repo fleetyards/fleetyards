@@ -23,7 +23,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFilters } from "@/shared/composables/useFilters";
 import { usePagination } from "@/shared/composables/usePagination";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import {
   usePublicFleetStatsModelCounts as usePublicFleetStatsModelCountsQuery,
   usePublicFleetVehicles as usePublicFleetVehiclesQuery,
@@ -127,14 +127,12 @@ const refetch = async () => {
       <template #actions-right>
         <Btn
           :aria-label="t('actions.models.openTableConfiguration')"
-          :size="BtnSizesEnum.SMALL"
           @click="openDisplayOptionsModal"
         >
           <i class="fa-duotone fa-sliders" />
         </Btn>
         <Btn
           v-if="mobile"
-          :size="BtnSizesEnum.SMALL"
           data-test="fleetchart-link"
           @click="toggleFleetchart"
         >

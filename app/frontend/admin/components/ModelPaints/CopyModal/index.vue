@@ -120,9 +120,8 @@ const submit = async () => {
         <Btn
           :loading="submitting"
           :disabled="!canSubmit"
-          :size="BtnSizesEnum.LARGE"
-          :inline="true"
           @click="submit"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.copy") }}
         </Btn>

@@ -15,10 +15,7 @@ import { BaseTableCol } from "@/shared/components/base/Table/types";
 import { usePagination } from "@/shared/composables/usePagination";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   type Fleet,
   type AdminFleetMember,
@@ -207,16 +204,11 @@ const removeMember = (member: AdminFleetMember) => {
           {{ l(record.createdAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">
-          <Btn
-            v-tooltip="t('actions.users.loginAs')"
-            :size="BtnSizesEnum.SMALL"
-            @click="loginAs(record)"
-          >
+          <Btn v-tooltip="t('actions.users.loginAs')" @click="loginAs(record)">
             <i class="fa-duotone fa-right-to-bracket" />
           </Btn>
           <Btn
             v-tooltip="t('actions.fleet.members.editRole')"
-            :size="BtnSizesEnum.SMALL"
             @click="editRole(record)"
           >
             <i class="fa-duotone fa-user-pen" />
@@ -224,9 +216,8 @@ const removeMember = (member: AdminFleetMember) => {
           <Btn
             v-if="!isPermanentMember(record)"
             v-tooltip="t('actions.fleet.members.remove')"
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.DANGER"
             @click="removeMember(record)"
+            :tone="BtnTonesEnum.DANGER"
           >
             <i class="fa-duotone fa-trash" />
           </Btn>

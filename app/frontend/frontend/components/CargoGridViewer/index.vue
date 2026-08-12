@@ -19,7 +19,7 @@ import {
 } from "./constants";
 import { BoxGeometry, EdgesGeometry, LineBasicMaterial, Color } from "three";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { humanizeHoldName } from "@/shared/utils/CargoHolds";
@@ -1183,12 +1183,7 @@ const onDragEnd = (_shipIndex: number) => {
     data-test="cargo-grid-viewer"
   >
     <div class="cargo-grid-viewer__canvas">
-      <Btn
-        class="cargo-grid-viewer__reset"
-        :size="BtnSizesEnum.SMALL"
-        inline
-        @click="resetCamera"
-      >
+      <Btn class="cargo-grid-viewer__reset" @click="resetCamera">
         <i class="fa-light fa-crosshairs" />
       </Btn>
       <TresCanvas
@@ -1428,14 +1423,12 @@ const onDragEnd = (_shipIndex: number) => {
             <span v-else class="cargo-grid-viewer__ship-stats-name">
               {{ ships[0].name }}
             </span>
-            <Btn :size="BtnSizesEnum.SMALL" inline @click="emit('autoFill', 0)">
+            <Btn @click="emit('autoFill', 0)">
               {{ t("labels.cargoGridViewer.autoFillShip") }}
             </Btn>
             <Btn
               v-tooltip="t('actions.remove')"
-              :size="BtnSizesEnum.SMALL"
               data-test="remove-ship-0"
-              inline
               @click="emit('removeShip', 0)"
             >
               <i class="fa-light fa-times" />
@@ -1535,18 +1528,12 @@ const onDragEnd = (_shipIndex: number) => {
           <span v-else class="cargo-grid-viewer__ship-stats-name">
             {{ shipResult.name }}
           </span>
-          <Btn
-            :size="BtnSizesEnum.SMALL"
-            inline
-            @click="emit('autoFill', shipResult.shipIndex)"
-          >
+          <Btn @click="emit('autoFill', shipResult.shipIndex)">
             {{ t("labels.cargoGridViewer.autoFillShip") }}
           </Btn>
           <Btn
             v-tooltip="t('actions.remove')"
-            :size="BtnSizesEnum.SMALL"
             :data-test="`remove-ship-${shipResult.shipIndex}`"
-            inline
             @click="emit('removeShip', shipResult.shipIndex)"
           >
             <i class="fa-light fa-times" />

@@ -29,7 +29,7 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import HardpointLoadouts from "@/admin/components/ModelHardpoints/Loadouts/index.vue";
 
 type Props = {
@@ -176,7 +176,6 @@ const onSaveCreate = async () => {
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.hardpoints") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
@@ -189,7 +188,6 @@ const onSaveCreate = async () => {
       <Btn
         v-for="option in sourceOptions"
         :key="String(option.value)"
-        :size="BtnSizesEnum.SMALL"
         :active="sourceFilter === option.value"
         @click="sourceFilter = String(option.value)"
       >
@@ -253,7 +251,6 @@ const onSaveCreate = async () => {
       <Btn
         v-if="item.loadouts?.length"
         v-tooltip="'Loadouts'"
-        :size="BtnSizesEnum.SMALL"
         @click.stop="toggleExpand(item.id)"
       >
         <i

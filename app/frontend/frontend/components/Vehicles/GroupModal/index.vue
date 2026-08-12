@@ -161,13 +161,12 @@ const onSubmit = handleSubmit(async (values) => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          inline
           :confirm="t('messages.confirm.hangarGroup.destroy')"
           @click="onDestroy"
         >
           <i class="fa-light fa-trash" />
         </Btn>
-        <Btn :loading="submitting" size="large" inline @click="onSubmit">
+        <Btn :loading="submitting" @click="onSubmit" size="lg">
           {{ t("actions.save") }}
         </Btn>
       </div>

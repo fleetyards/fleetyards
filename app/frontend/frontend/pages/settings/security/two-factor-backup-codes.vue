@@ -82,10 +82,7 @@ const generateBackupCodes = async () => {
       <div v-if="backupCodes" class="row two-factor-backup-codes">
         <div class="col-12 col-md-6 offset-md-3">
           <BackupCodesPanel :codes="backupCodes" />
-          <Btn
-            :to="{ name: 'settings-security', hash: '#two-factor' }"
-            :exact="true"
-          >
+          <Btn :to="{ name: 'settings-security', hash: '#two-factor' }">
             {{ t("actions.done") }}
           </Btn>
         </div>

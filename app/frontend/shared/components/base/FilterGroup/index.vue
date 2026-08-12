@@ -531,10 +531,9 @@ defineExpose({
         <Btn
           v-if="fetchMoreVisible && paginated"
           :disabled="loading"
-          :variant="BtnVariantsEnum.LINK"
-          inline
           class="fade-list-item filter-group-fetch-more"
           @click="fetchMore"
+          :variant="BtnVariantsEnum.BARE"
           >{{ t("filterGroup.actions.fetchMore") }}</Btn
         >
       </div>

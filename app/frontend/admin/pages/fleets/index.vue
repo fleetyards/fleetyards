@@ -118,7 +118,6 @@ const { t, l } = useI18n();
     <Btn
       :to="{ name: 'admin-destroyed-fleets' }"
       :aria-label="t('nav.admin.destroyedFleets.index')"
-      size="small"
       mobile-icon-only
     >
       <i class="fa-duotone fa-trash-can-arrow-up" />

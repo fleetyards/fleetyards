@@ -54,7 +54,7 @@ const copyCodes = () => {
     </div>
     <hr />
     <div class="flex justify-center">
-      <Btn :variant="BtnVariantsEnum.LINK" @click="copyCodes">
+      <Btn @click="copyCodes" :variant="BtnVariantsEnum.BARE">
         {{ t("actions.copyBackupCodes") }}
       </Btn>
     </div>

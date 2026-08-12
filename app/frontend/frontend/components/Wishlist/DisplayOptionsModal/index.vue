@@ -71,9 +71,9 @@ const displayAsList = () => {
       <div class="col-6">
         <Btn
           block
-          :size="BtnSizesEnum.LARGE"
           :active="wishlistStore.gridView"
           @click="displayAsGrid"
+          :size="BtnSizesEnum.LG"
         >
           <i class="fa-solid fa-th"></i>
           {{ t("actions.showGridView") }}
@@ -82,9 +82,9 @@ const displayAsList = () => {
       <div class="col-6">
         <Btn
           block
-          :size="BtnSizesEnum.LARGE"
           :active="!wishlistStore.gridView"
           @click="displayAsList"
+          :size="BtnSizesEnum.LG"
         >
           <i class="fa-duotone fa-list"></i>
           {{ t("actions.showTableView") }}

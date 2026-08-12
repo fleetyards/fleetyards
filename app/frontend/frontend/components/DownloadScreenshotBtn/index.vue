@@ -27,8 +27,8 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
   filename: "fleetyards-screenshot",
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.DEFAULT,
+  variant: undefined,
+  size: undefined,
   inline: false,
 });
 
@@ -82,7 +82,6 @@ const download = async () => {
     :aria-label="t('actions.saveScreenshot')"
     :variant="variant"
     :size="size"
-    :inline="inline"
     @click="download"
   >
     <SmallLoader :loading="downloading" />

@@ -74,11 +74,7 @@ const toggleFleetchart = () => {
     </div>
     <div class="col-12 col-lg-4 flex justify-end items-center">
       <div v-if="!mobile" class="page-actions">
-        <Btn
-          :inline="true"
-          data-test="fleetchart-link"
-          @click="toggleFleetchart"
-        >
+        <Btn data-test="fleetchart-link" @click="toggleFleetchart">
           <i class="fa-duotone fa-starship" />
           {{ t("labels.fleetchart") }}
         </Btn>

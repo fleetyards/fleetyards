@@ -15,10 +15,7 @@ import BasePill from "@/shared/components/base/Pill/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
 import FleetFilterGroup from "@/admin/components/base/FleetFilterGroup/index.vue";
-import {
-  BtnVariantsEnum,
-  BtnSizesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   useAdminFeature,
   getAdminFeaturesQueryKey,
@@ -218,11 +215,7 @@ const stateLabel = (state: string) => {
       <div v-if="feature.groups.length > 0" class="groups-list">
         <div v-for="group in feature.groups" :key="group" class="group-item">
           <BasePill margin-right>{{ group }}</BasePill>
-          <Btn
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.DANGER"
-            @click.prevent="removeGroup(group)"
-          >
+          <Btn @click.prevent="removeGroup(group)" :tone="BtnTonesEnum.DANGER">
             {{ t("actions.remove") }}
           </Btn>
         </div>
@@ -236,7 +229,6 @@ const stateLabel = (state: string) => {
             (g) => !feature!.groups.includes(g),
           )"
           :key="group"
-          :size="BtnSizesEnum.SMALL"
           :loading="addingGroup"
           @click.prevent="addGroup(group)"
         >
@@ -257,9 +249,8 @@ const stateLabel = (state: string) => {
           <BasePill uppercase margin-right>{{ actor.type }}</BasePill>
           <span class="actor-name">{{ actor.name }}</span>
           <Btn
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.DANGER"
             @click.prevent="removeActor(actor.type, actor.id)"
+            :tone="BtnTonesEnum.DANGER"
           >
             {{ t("actions.remove") }}
           </Btn>
@@ -291,7 +282,6 @@ const stateLabel = (state: string) => {
           :no-label="false"
         />
         <Btn
-          :size="BtnSizesEnum.SMALL"
           :loading="addingActor"
           :disabled="!hasSelectedActor"
           @click.prevent="addActor"

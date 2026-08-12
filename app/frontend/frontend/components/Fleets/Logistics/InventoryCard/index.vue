@@ -26,7 +26,7 @@ const { t } = useI18n();
       params: { slug: fleet.slug, inventory: inventory.slug },
     }"
     block
-    align-start
+    class="justify-start"
   >
     <div>
       <h5>{{ inventory.name }}</h5>

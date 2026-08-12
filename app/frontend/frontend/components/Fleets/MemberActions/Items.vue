@@ -6,10 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -237,7 +234,6 @@ const declineRequest = async () => {
   <Btn
     v-if="member.status === 'requested'"
     v-tooltip="canUpdateMembers && t('actions.fleet.members.accept')"
-    :size="BtnSizesEnum.SMALL"
     :disabled="!canUpdateMembers || updating"
     @click="acceptRequest"
   >
@@ -247,7 +243,6 @@ const declineRequest = async () => {
   <Btn
     v-if="member.status === 'requested'"
     v-tooltip="canUpdateMembers && t('actions.fleet.members.decline')"
-    :size="BtnSizesEnum.SMALL"
     :disabled="!canUpdateMembers || updating"
     @click="declineRequest"
   >
@@ -257,7 +252,6 @@ const declineRequest = async () => {
   <Btn
     v-if="member.fleetRole?.slug !== 'admin' && member.status === 'accepted'"
     v-tooltip="canDeleteMembers && t('actions.fleet.members.promote')"
-    :size="BtnSizesEnum.SMALL"
     :disabled="!canDeleteMembers || updating"
     @click="promoteMember"
   >
@@ -267,7 +261,6 @@ const declineRequest = async () => {
   <Btn
     v-if="member.fleetRole?.slug !== 'member' && member.status === 'accepted'"
     v-tooltip="canDeleteMembers && t('actions.fleet.members.demote')"
-    :size="BtnSizesEnum.SMALL"
     :disabled="!canDeleteMembers || updating"
     @click="demoteMember"
   >
@@ -276,10 +269,9 @@ const declineRequest = async () => {
   </Btn>
   <Btn
     v-tooltip="canDeleteMembers && t('actions.fleet.members.remove')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.DANGER"
     :disabled="!canDeleteMembers || deleting"
     @click="removeMember"
+    :tone="BtnTonesEnum.DANGER"
   >
     <i class="fa-duotone fa-trash-alt" />
     <span v-if="withLabels">{{ t("actions.fleet.members.remove") }}</span>

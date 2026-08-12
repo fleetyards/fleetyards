@@ -30,10 +30,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAhoy } from "@/frontend/composables/useAhoy";
 import { useMe as useMeQuery } from "@/services/fyApi";
 import FetchProgressBar from "@/shared/components/FetchProgressBar/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useAxiosInterceptors } from "@/frontend/composables/useAxiosInterceptors";
 import { useCheckStoreVersion } from "@/shared/composables/useCheckStoreVersion";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -302,20 +299,13 @@ const setLocale = (locale: string) => {
             {{ t("nav.api") }}
           </a>
           |
-          <BtnDropdown
-            :text-inline="true"
-            :inline="true"
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.LINK"
-            :expand-top="true"
-          >
+          <BtnDropdown :expand-top="true" :variant="BtnVariantsEnum.BARE">
             <template #label>
               <i class="fa-duotone fa-language" /> {{ currentLocale() }}
             </template>
             <Btn
               v-for="availableLocale in locales"
               :key="`locale-${availableLocale}`"
-              :size="BtnSizesEnum.SMALL"
               :active="activeLocale(availableLocale)"
               @click="setLocale(availableLocale)"
             >

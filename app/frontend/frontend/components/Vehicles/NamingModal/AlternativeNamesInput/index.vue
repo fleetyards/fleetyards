@@ -66,12 +66,7 @@ const onChange = () => {
         <span>
           {{ t("headlines.hangar.alternativeNames") }}
         </span>
-        <Btn
-          data-test="vehicle-add-name"
-          :inline="true"
-          variant="link"
-          @click="addName"
-        >
+        <Btn data-test="vehicle-add-name" @click="addName" variant="bare">
           <i class="fa-light fa-plus" />
         </Btn>
       </h3>
@@ -92,8 +87,6 @@ const onChange = () => {
         <Btn
           v-tooltip="t('actions.hangar.useName')"
           data-test="vehicle-switch-name"
-          inline
-          size="small"
           @click="useName(index)"
         >
           <i class="fa-duotone fa-repeat" />
@@ -101,8 +94,6 @@ const onChange = () => {
         <Btn
           v-tooltip="t('actions.remove')"
           data-test="vehicle-add-name"
-          inline
-          size="small"
           @click="removeName(index)"
         >
           <i class="fa-light fa-times" />

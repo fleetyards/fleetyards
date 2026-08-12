@@ -90,7 +90,7 @@ const crumbs = computed(() => [
     </div>
     <div class="col-12 col-lg-4 flex justify-end items-center">
       <div v-if="canCreate" class="page-actions page-actions-right">
-        <Btn :inline="true" @click="openCreateModal">
+        <Btn @click="openCreateModal">
           {{ t("actions.fleets.logistics.createInventory") }}
         </Btn>
       </div>

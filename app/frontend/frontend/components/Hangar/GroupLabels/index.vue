@@ -8,7 +8,7 @@ export default {
 import Sortable from "sortablejs";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -176,12 +176,7 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
 </script>
 
 <template>
-  <BtnDropdown
-    v-if="mobile"
-    :mobile-block="true"
-    :size="BtnSizesEnum.SMALL"
-    class="labels-dropdown"
-  >
+  <BtnDropdown v-if="mobile" class="labels-dropdown w-full md:w-auto">
     <template #label>
       {{ t("labels.groups") }}
     </template>

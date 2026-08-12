@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Items from "@/frontend/components/Fleets/MemberActions/Items.vue";
@@ -23,14 +22,14 @@ const mobile = useMobile();
 </script>
 
 <template>
-  <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SMALL" inline>
+  <BtnDropdown v-if="mobile">
     <Items
       :member="props.member"
       :resource-access="props.resourceAccess"
       with-labels
     />
   </BtnDropdown>
-  <BtnGroup v-else inline>
+  <BtnGroup v-else>
     <Items :member="props.member" :resource-access="props.resourceAccess" />
   </BtnGroup>
 </template>

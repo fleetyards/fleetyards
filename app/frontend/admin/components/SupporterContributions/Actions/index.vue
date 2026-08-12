@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Items from "@/admin/components/SupporterContributions/Actions/Items.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type SupporterContribution } from "@/services/fyAdminApi";
@@ -20,10 +19,10 @@ const mobile = useMobile();
 </script>
 
 <template>
-  <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SMALL" inline>
+  <BtnDropdown v-if="mobile">
     <Items :supporter-contribution="props.supporterContribution" with-labels />
   </BtnDropdown>
-  <BtnGroup v-else inline>
+  <BtnGroup v-else>
     <Items :supporter-contribution="props.supporterContribution" />
   </BtnGroup>
 </template>

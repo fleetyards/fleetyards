@@ -12,10 +12,7 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelImage from "@/shared/components/base/Panel/Image/index.vue";
 import { PanelAlignmentsEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -212,10 +209,9 @@ const onConfirm = async () => {
 
         <div v-if="hasMore" class="text-center mt-2">
           <Btn
-            :size="BtnSizesEnum.SMALL"
-            :variant="BtnVariantsEnum.TRANSPARENT"
             :loading="loading"
             @click="loadMore"
+            :variant="BtnVariantsEnum.GHOST"
           >
             {{ t("actions.loadMore") }}
           </Btn>
@@ -226,8 +222,6 @@ const onConfirm = async () => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :size="BtnSizesEnum.SMALL"
-          :inline="true"
           :loading="linking"
           :disabled="!selectedIds.size"
           @click="onConfirm"

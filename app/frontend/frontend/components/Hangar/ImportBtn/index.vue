@@ -23,8 +23,8 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), {
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.DEFAULT,
+  variant: undefined,
+  size: undefined,
 });
 
 const { t } = useI18n();

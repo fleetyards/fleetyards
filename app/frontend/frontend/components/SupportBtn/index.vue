@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -23,7 +23,7 @@ const open = () => {
 </script>
 
 <template>
-  <Btn :size="BtnSizesEnum.SMALL" class="support-button" @click="open">
+  <Btn class="support-button" @click="open">
     {{ t("actions.supportUs") }}
   </Btn>
 </template>

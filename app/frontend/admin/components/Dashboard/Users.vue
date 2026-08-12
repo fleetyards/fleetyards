@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import Panel from "@/shared/components/base/Panel/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
@@ -118,8 +118,6 @@ const columns: BaseTableCol<User>[] = [
       </template>
       <template #actions="{ record }">
         <Btn
-          :size="BtnSizesEnum.SMALL"
-          inline
           :to="{
             name: 'admin-user-edit',
             params: { id: record.id },

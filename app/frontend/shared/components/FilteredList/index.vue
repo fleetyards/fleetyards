@@ -11,7 +11,7 @@ import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -172,7 +172,6 @@ const toggleFilter = () => {
               v-tooltip="filterTooltip"
               :active="filterVisible"
               :aria-label="filterTooltip"
-              :size="BtnSizesEnum.SMALL"
               @click="toggleFilter"
             >
               <i v-if="isFilterSelected" class="fa-solid fa-filter" />

@@ -182,12 +182,8 @@ onMounted(async () => {
     :async-status="asyncStatus"
   >
     <template v-if="mobile" #actions-right>
-      <BtnDropdown :size="BtnSizesEnum.SMALL">
-        <Btn
-          data-test="fleetchart-link"
-          :size="BtnSizesEnum.SMALL"
-          @click="toggleFleetchart"
-        >
+      <BtnDropdown>
+        <Btn data-test="fleetchart-link" @click="toggleFleetchart">
           <i class="fa-duotone fa-starship" />
           <span>{{ t("labels.fleetchart") }}</span>
         </Btn>
@@ -215,7 +211,7 @@ onMounted(async () => {
             v-if="wishlist"
             :query-result-ref="wishlist"
             :per-page="wishlist?.meta?.pagination?.defaultPerPage || 20"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             :update-per-page="() => refetch()"
           />
         </template>

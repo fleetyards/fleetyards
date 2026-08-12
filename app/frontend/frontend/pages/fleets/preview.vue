@@ -123,9 +123,9 @@ const handleLogin = () => {
                 name: 'signup',
               }"
               data-test="signup"
-              size="large"
               :block="true"
               @click="setBackRoute"
+              size="lg"
             >
               {{ t("actions.signUp") }}
             </Btn>

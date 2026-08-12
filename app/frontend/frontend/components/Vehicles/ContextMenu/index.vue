@@ -31,8 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
   editable: false,
   hideEdit: false,
   wishlist: false,
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.SMALL,
+  variant: undefined,
+  size: undefined,
   inGroup: false,
 });
 
@@ -214,12 +214,10 @@ const loadoutsRoute = computed(() => ({
     data-test="vehicle-menu"
     expand-left
     expand-bottom
-    inline
   >
     <Btn
       v-if="editable && !hideEdit"
       :aria-label="t('actions.edit')"
-      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit"
       @click="openEditModal"
     >
@@ -234,7 +232,6 @@ const loadoutsRoute = computed(() => ({
           slug: vehicle.model.slug,
         },
       }"
-      :size="BtnSizesEnum.SMALL"
     >
       <i class="fa-duotone fa-starship" />
       <span>{{ t("actions.showDetailPage") }}</span>
@@ -242,7 +239,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && !wishlist"
       :aria-label="t('actions.addToWishlist')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       data-test="vehicle-add-to-wishlist"
       @click="addToWishlist"
@@ -253,7 +249,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && wishlist"
       :aria-label="t('actions.addToHangar')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="updating"
       data-test="vehicle-add-to-hangar"
       @click="addToHangar"
@@ -264,7 +259,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable"
       :aria-label="t('actions.hangar.editName')"
-      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit-name"
       @click="openNamingModal"
     >
@@ -274,7 +268,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && !wishlist"
       :aria-label="t('actions.hangar.editGroups')"
-      :size="BtnSizesEnum.SMALL"
       data-test="vehicle-edit-groups"
       @click="openEditGroupsModal"
     >
@@ -284,7 +277,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="upgradable"
       :aria-label="t('labels.model.addons')"
-      :size="BtnSizesEnum.SMALL"
       @click="openAddonsModal"
     >
       <i class="fa fa-plus-octagon" />
@@ -293,7 +285,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable && vehicle.model?.inGame"
       :aria-label="t('actions.hangar.manageLoadouts')"
-      :size="BtnSizesEnum.SMALL"
       :to="loadoutsRoute"
     >
       <i class="fa-duotone fa-crosshairs" />
@@ -302,7 +293,6 @@ const loadoutsRoute = computed(() => ({
     <Btn
       v-if="editable"
       :aria-label="t('actions.remove')"
-      :size="BtnSizesEnum.SMALL"
       :disabled="deleting"
       data-test="vehicle-remove"
       @click="remove"

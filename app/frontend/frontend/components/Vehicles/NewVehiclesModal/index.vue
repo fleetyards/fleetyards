@@ -205,11 +205,10 @@ const save = async () => {
 
       <Btn
         v-if="hasMore"
-        :variant="BtnVariantsEnum.LINK"
         :disabled="loading"
-        inline
         class="new-vehicles__load-more"
         @click="loadMore"
+        :variant="BtnVariantsEnum.BARE"
       >
         {{ t("filterGroup.actions.fetchMore") }}
       </Btn>
@@ -224,9 +223,8 @@ const save = async () => {
         <Btn
           :loading="submitting"
           :disabled="!selectedIds.length"
-          :size="BtnSizesEnum.LARGE"
-          :inline="true"
           @click="save"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.add") }}
         </Btn>

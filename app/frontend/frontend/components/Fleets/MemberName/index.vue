@@ -31,7 +31,7 @@ const spectrumDmUrl = computed(() => {
 <template>
   <span class="member-name">
     <template v-if="hasContactOptions">
-      <BtnDropdown :variant="BtnVariantsEnum.LINK" text-inline inline>
+      <BtnDropdown :variant="BtnVariantsEnum.BARE">
         <template #label>
           <span>{{ member.username }}</span>
           <span

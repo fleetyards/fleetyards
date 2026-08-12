@@ -95,10 +95,9 @@ const openEditModal = () => {
       </template>
       <template v-if="editable" #actions>
         <Btn
-          :variant="BtnVariantsEnum.LINK"
-          :inline="true"
           class="inventory-panel-edit"
           @click.prevent="openEditModal"
+          :variant="BtnVariantsEnum.BARE"
         >
           <i class="fa-duotone fa-pen" />
         </Btn>

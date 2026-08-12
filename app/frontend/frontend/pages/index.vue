@@ -110,8 +110,8 @@ const routeForImage = (image: Image) => {
                     <Btn
                       id="search-submit"
                       :aria-label="t('labels.search')"
-                      :size="BtnSizesEnum.LARGE"
                       @click="search"
+                      :size="BtnSizesEnum.LG"
                     >
                       <i class="fa-light fa-search" />
                     </Btn>

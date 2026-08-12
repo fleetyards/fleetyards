@@ -26,7 +26,6 @@ import {
   type ModelModule,
 } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const modulesQueryParams = computed(() => {
   return {
@@ -236,10 +235,9 @@ const crumbs = [
         @selected-change="onSelectedChange"
       >
         <template #selected-actions>
-          <BtnGroup inline>
+          <BtnGroup>
             <Btn
               v-tooltip="t('actions.enableSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="activateSelected"
             >
@@ -247,7 +245,6 @@ const crumbs = [
             </Btn>
             <Btn
               v-tooltip="t('actions.disableSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="hideSelected"
             >
@@ -255,7 +252,6 @@ const crumbs = [
             </Btn>
             <Btn
               v-tooltip="t('actions.deleteSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="destroySelected"
             >
@@ -320,10 +316,9 @@ const crumbs = [
           {{ l(record.updatedAt, "datetime.formats.short") }}
         </template>
         <template #actions="{ record }">
-          <BtnGroup inline>
+          <BtnGroup>
             <Btn
               v-tooltip="t('actions.edit')"
-              :size="BtnSizesEnum.SMALL"
               :to="{
                 name: 'admin-model-module-edit',
                 params: { id: record.id },

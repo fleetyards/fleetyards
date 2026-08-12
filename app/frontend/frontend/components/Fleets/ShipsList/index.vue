@@ -285,18 +285,13 @@ const {
         <template #actions-right>
           <Btn
             :aria-label="t('actions.models.openTableConfiguration')"
-            :size="BtnSizesEnum.SMALL"
             @click="openDisplayOptionsModal"
           >
             <i class="fa-duotone fa-sliders" />
           </Btn>
-          <BtnDropdown :size="BtnSizesEnum.SMALL">
+          <BtnDropdown>
             <template v-if="mobile">
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                data-test="fleetchart-link"
-                @click="toggleFleetchart"
-              >
+              <Btn data-test="fleetchart-link" @click="toggleFleetchart">
                 <i class="fa-duotone fa-starship" />
                 <span>{{ t("labels.fleetchart") }}</span>
               </Btn>
@@ -305,16 +300,12 @@ const {
                 v-if="fleet.publicFleet"
                 :url="shareUrl"
                 :title="shareTitle"
-                :size="BtnSizesEnum.SMALL"
+                :size="BtnSizesEnum.SM"
               />
 
               <hr />
             </template>
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              :aria-label="t('actions.export')"
-              @click="exportJson"
-            >
+            <Btn :aria-label="t('actions.export')" @click="exportJson">
               <i class="fa-light fa-download" />
               <span>{{ t("actions.export") }}</span>
             </Btn>
@@ -361,7 +352,7 @@ const {
                 v-if="fleetVehicles"
                 :query-result-ref="fleetVehicles"
                 :per-page="perPage"
-                :size="BtnSizesEnum.SMALL"
+                :size="BtnSizesEnum.SM"
                 :update-per-page="updatePerPage"
               />
             </template>

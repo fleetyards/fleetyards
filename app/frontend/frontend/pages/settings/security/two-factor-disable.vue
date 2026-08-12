@@ -110,7 +110,7 @@ const onSubmit = handleSubmit(async (values) => {
 
                 <br />
 
-                <Btn :loading="submitting" type="submit" size="large">
+                <Btn :loading="submitting" type="submit" size="lg">
                   {{ t("actions.twoFactor.disable") }}
                 </Btn>
               </div>

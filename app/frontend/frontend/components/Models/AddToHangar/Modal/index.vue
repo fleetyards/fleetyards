@@ -106,18 +106,10 @@ const addToHangar = async () => {
     :title="t('headlines.addToHangar', { model: model.name })"
   >
     <div class="page-actions page-actions-block">
-      <Btn
-        :inline="true"
-        data-test="add-to-hangar-as-normal"
-        @click="addToHangar"
-      >
+      <Btn data-test="add-to-hangar-as-normal" @click="addToHangar">
         {{ t("actions.addToHangar") }}
       </Btn>
-      <Btn
-        :inline="true"
-        data-test="add-to-hangar-as-wanted"
-        @click="addToWishlist"
-      >
+      <Btn data-test="add-to-hangar-as-wanted" @click="addToWishlist">
         {{ t("actions.addToWishlist") }}
       </Btn>
     </div>

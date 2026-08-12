@@ -116,8 +116,8 @@ const submit = handleSubmit(async (values) => {
           <Btn
             :loading="submitting"
             :type="BtnTypesEnum.SUBMIT"
-            :size="BtnSizesEnum.LARGE"
             data-test="fleet-save"
+            :size="BtnSizesEnum.LG"
           >
             {{ t("actions.save") }}
           </Btn>
