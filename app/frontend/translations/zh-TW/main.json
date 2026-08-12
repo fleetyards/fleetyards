@@ -60,6 +60,7 @@
       "modular": "模組化",
       "soldAt": "在哪裡出售?",
       "rentalAt": "在哪裡租賃?",
+      "poweredByUex": "資料由 UEX 提供",
       "lastUpdatedAt": "最後更新時間?"
     },
     "component": {

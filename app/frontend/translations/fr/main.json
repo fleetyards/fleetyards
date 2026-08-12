@@ -60,6 +60,7 @@
       "modular": "Modulaire",
       "soldAt": "Vendu à?",
       "rentalAt": "Location à ?",
+      "poweredByUex": "Propulsé par UEX",
       "lastUpdatedAt": "Dernière mise à jour le ?"
     },
     "component": {
