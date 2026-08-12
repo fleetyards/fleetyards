@@ -56,7 +56,7 @@ if [ -n "$only" ] && { [ -n "$no_web" ] || [ -n "$no_worker" ] || [ -n "$no_vite
 fi
 
 if [ -n "$use_rdbg" ]; then
-  export RUBY_DEBUG_SESSION_NAME="fobizz-rails-web"
+  export RUBY_DEBUG_SESSION_NAME="fleetyards-web"
   export RAILS_SERVER_CMD="bundle exec rdbg -O -n -c -- bin/rails s -b 0.0.0.0"
 fi
 
