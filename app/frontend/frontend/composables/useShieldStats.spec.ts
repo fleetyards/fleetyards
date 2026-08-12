@@ -39,6 +39,19 @@ describe("computeShieldStats", () => {
     expect(stats.hasData).toBe(true);
   });
 
+  it("scales regen with the shield power ratio and zeroes when unpowered", () => {
+    const shields = [shieldHardpoint({ maxHealth: 10000, maxRegen: 1500 })];
+
+    const half = computeShieldStats(shields, 0.5);
+    expect(half.totalRegen).toBe(750);
+    expect(half.totalHp).toBe(10000); // powered → full HP
+
+    const off = computeShieldStats(shields, 0);
+    expect(off.totalRegen).toBe(0);
+    expect(off.totalHp).toBe(0); // unpowered → no protection
+    expect(off.hasData).toBe(true); // still shown (as 0), not hidden
+  });
+
   it("HP-weights resistances across shields", () => {
     const stats = computeShieldStats([
       shieldHardpoint({

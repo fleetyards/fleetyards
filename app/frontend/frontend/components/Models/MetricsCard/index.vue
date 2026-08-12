@@ -5,13 +5,17 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import SmallLoader from "@/shared/components/SmallLoader/index.vue";
+
 type Props = {
   title: string;
   variant?: "default" | "slim";
+  loading?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   variant: "default",
+  loading: false,
 });
 </script>
 
@@ -22,6 +26,7 @@ withDefaults(defineProps<Props>(), {
         <span class="metrics-card__dot" />
         {{ title }}
       </span>
+      <SmallLoader :loading="loading" alignment="right" />
       <slot name="head" />
     </div>
     <div class="metrics-card__body">
@@ -59,7 +64,17 @@ withDefaults(defineProps<Props>(), {
   bottom: -2px;
 }
 
+// Relative so a slotted loader is contained to the header strip rather than
+// spanning (and overlapping) the whole card. Laid out as a row so `head` slot
+// content sits opposite the title; the loader is absolute, so it stays out of
+// the flow and an empty slot leaves the title as the only child.
 .metrics-card__head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
   padding: 16px 18px 12px;
 }
 

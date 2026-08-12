@@ -147,7 +147,7 @@ const icons = {
         v-else-if="category === HardpointCategoryEnum.LIFESUPPORT"
         class="hardpoint-category__icon"
       >
-        <i class="fa-duotone fa-star-of-life fa-lg" />
+        <i class="fa-duotone fa-heart-pulse fa-lg" />
       </span>
       <span
         v-else-if="category === HardpointCategoryEnum.RELAY"

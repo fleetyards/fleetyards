@@ -12,14 +12,24 @@ import HardpointGroup from "./Group/index.vue";
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
+import ModelFlightMetrics from "@/frontend/components/Models/FlightMetrics/index.vue";
+import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
+import ModelPowerDistribution from "@/frontend/components/Models/PowerDistribution/index.vue";
 import ModelRefuelBoom from "@/frontend/components/Models/RefuelBoom/index.vue";
+import ModelExternalFuelTanks from "@/frontend/components/Models/ExternalFuelTanks/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLoadoutStats } from "@/frontend/composables/useLoadoutStats";
-import { useShieldStats } from "@/frontend/composables/useShieldStats";
+import {
+  useLoadoutSim,
+  type PortOverrides,
+} from "@/frontend/composables/useLoadoutSim";
+import type { FlightMode } from "@/frontend/composables/powerSim";
+import { useMetricsMasonry } from "@/frontend/composables/useMetricsMasonry";
 import {
   useModelHardpoints as useModelHardpointsQuery,
   HardpointGroupEnum,
   HardpointSourceEnum,
+  type CargoHold,
   type Hardpoint,
   type Model,
 } from "@/services/fyApi";
@@ -27,9 +37,12 @@ import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 
 type Props = {
   model: Model;
+  cargoHolds?: CargoHold[];
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  cargoHolds: () => [],
+});
 
 provide(
   "modelSlug",
@@ -95,14 +108,55 @@ const {
   query: { enabled: !!props.model },
 });
 
+// Cards that read the hardpoints query render right away and spin while it is
+// in flight, so they never pop into the layout once the data lands.
+const loadingHardpoints = computed(() => isLoading.value || isFetching.value);
+
+// User pip choices from the Power Distribution control; empty = auto (default).
+const powerOverrides = ref<PortOverrides>({});
+const flightMode = ref<FlightMode>("SCM");
+
+// Reset overrides when the ship (or hardpoint source) changes.
+watch([() => props.model.slug, source], () => {
+  powerOverrides.value = {};
+});
+
 const combatStats = useLoadoutStats(
   () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
   () => props.model.metrics?.weaponPoolSize,
+  powerOverrides,
 );
 
 provide(
   "weaponPoolSize",
   computed(() => props.model.metrics?.weaponPoolSize),
+);
+
+// The user's pip choices, so the Combat card totals recompute from the same
+// distribution the control shows.
+provide("powerOverrides", powerOverrides);
+
+// Shield power allocation → Defense card scales shield HP/regen with the pips.
+const powerSim = useLoadoutSim(
+  () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+  () => props.model.metrics?.weaponPoolSize,
+  flightMode,
+  powerOverrides,
+);
+provide(
+  "shieldPoolRatio",
+  computed(() => powerSim.value.shieldPoolRatio),
+);
+
+// Engine power → Flight card scales boosted handling with the thruster pips,
+// and zeroes every flight figure when the engine is fully unpowered.
+provide(
+  "enginePowerRatio",
+  computed(() => powerSim.value.enginePowerRatio),
+);
+provide(
+  "enginePowered",
+  computed(() => powerSim.value.engineActive),
 );
 
 // The loadout-wide weapon-power throttle, so per-weapon rows show the same
@@ -112,9 +166,15 @@ provide(
   computed(() => combatStats.value.weaponPowerRatio),
 );
 
-const shieldStats = useShieldStats(
-  () => (hardpoints.value as Hardpoint[] | undefined) ?? [],
+// Every metrics card is derived from the game-files loadout, which only
+// flight-ready ships have — those always carry stats, so no per-card guard.
+const showMetrics = computed(
+  () => props.model.inGame && source.value === HardpointSourceEnum.GAME_FILES,
 );
+
+const metricsGrid = ref<HTMLElement>();
+
+useMetricsMasonry(metricsGrid);
 </script>
 
 <template>
@@ -141,6 +201,7 @@ const shieldStats = useShieldStats(
       <div class="flex justify-end hardpoints__toolbar">
         <BtnGroup>
           <Btn
+            size="small"
             :active="source === HardpointSourceEnum.GAME_FILES"
             :disabled="!model.inGame"
             @click="source = HardpointSourceEnum.GAME_FILES"
@@ -150,6 +211,7 @@ const shieldStats = useShieldStats(
             }}
           </Btn>
           <Btn
+            size="small"
             :active="source === HardpointSourceEnum.SHIP_MATRIX"
             @click="source = HardpointSourceEnum.SHIP_MATRIX"
           >
@@ -159,59 +221,53 @@ const shieldStats = useShieldStats(
           </Btn>
         </BtnGroup>
       </div>
-      <ModelRefuelBoom :model="model" />
-      <div
-        v-if="
-          source === HardpointSourceEnum.GAME_FILES &&
-          (combatStats.hasData ||
-            shieldStats.hasData ||
-            model.metrics.hullHealth)
-        "
-        class="metrics-grid"
-      >
-        <ModelCombatMetrics :hardpoints="hardpoints as Hardpoint[]" />
+      <div v-if="showMetrics" ref="metricsGrid" class="metrics-grid">
+        <ModelCombatMetrics
+          :hardpoints="hardpoints as Hardpoint[]"
+          :loading="loadingHardpoints"
+        />
+        <ModelPowerDistribution
+          v-model="powerOverrides"
+          v-model:mode="flightMode"
+          :hardpoints="hardpoints as Hardpoint[]"
+          :weapon-pool-size="model.metrics?.weaponPoolSize"
+          :cross-section="model.metrics?.signatureCrossSection"
+          :loading="loadingHardpoints"
+        />
         <ModelDefenseMetrics
           :hardpoints="hardpoints as Hardpoint[]"
           :model-name="model.name"
+          :loading="loadingHardpoints"
         />
         <ModelHullMetrics
           :hull-health="model.metrics.hullHealth"
           :hull-parts="model.metrics.hullParts"
           :hull-doors="model.metrics.hullDoors"
         />
+        <ModelFlightMetrics :model="model" />
+        <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
+        <ModelExternalFuelTanks :model="model" />
+        <ModelRefuelBoom :model="model" />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
-        <span class="hardpoints__viewbar-label">
-          {{ t("labels.hardpoint.density.title") }}
-        </span>
-        <div
-          class="hardpoints__seg"
-          role="tablist"
-          :aria-label="t('labels.hardpoint.density.title')"
-        >
-          <button
-            type="button"
-            class="hardpoints__seg-btn"
-            :class="{
-              'hardpoints__seg-btn--active': density === 'compact',
-            }"
+        <BtnGroup inline :aria-label="t('labels.hardpoint.density.title')">
+          <Btn
+            size="small"
+            :active="density === 'compact'"
             :aria-pressed="density === 'compact'"
             @click="density = 'compact'"
           >
             {{ t("labels.hardpoint.density.compact") }}
-          </button>
-          <button
-            type="button"
-            class="hardpoints__seg-btn"
-            :class="{
-              'hardpoints__seg-btn--active': density === 'expanded',
-            }"
+          </Btn>
+          <Btn
+            size="small"
+            :active="density === 'expanded'"
             :aria-pressed="density === 'expanded'"
             @click="density = 'expanded'"
           >
             {{ t("labels.hardpoint.density.expanded") }}
-          </button>
-        </div>
+          </Btn>
+        </BtnGroup>
       </div>
       <div v-if="hardpoints?.length" class="row">
         <div class="col-12 col-md-6 col-lg-4">

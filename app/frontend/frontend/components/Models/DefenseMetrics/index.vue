@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Hardpoint } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -15,24 +16,46 @@ import { useArmorStats } from "@/frontend/composables/useArmorStats";
 type Props = {
   hardpoints?: Hardpoint[];
   modelName?: string;
+  loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hardpoints: () => [],
   modelName: "",
+  loading: false,
 });
 
 const { t, toNumber } = useI18n();
 
 const comlink = useComlink();
 
-const shield = useShieldStats(() => props.hardpoints);
+// Shield power allocation from the Power Distribution control (1 = full when
+// standalone); scales shield HP + regen.
+const shieldPoolRatio = inject<Ref<number | undefined>>(
+  "shieldPoolRatio",
+  ref(undefined),
+);
+
+const shield = useShieldStats(
+  () => props.hardpoints,
+  () => toValue(shieldPoolRatio),
+);
 const armor = useArmorStats(() => props.hardpoints);
 
 const round = (value: number) => Math.round(value);
 // `toNumber` renders any falsy value as "N/A", which is wrong for a genuine
 // zero — nothing absorbed is a real result, not missing data.
 const num = (value: number) => (value ? toNumber(value, "integer") : "0");
+
+// Shield HP/regen animate as the pip allocation changes; the regen bar shows
+// regen as a share of the shield's max regen (its power ratio) — 100% at full
+// shield power, 0% when unpowered.
+const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
+const shieldHp = useTransition(() => shield.value.totalHp, animate);
+const shieldRegen = useTransition(() => shield.value.totalRegen, animate);
+const regenPercent = computed(() =>
+  Math.round((toValue(shieldPoolRatio) ?? 1) * 100),
+);
 
 const hasData = computed(() => shield.value.hasData || armor.value.hasData);
 
@@ -61,8 +84,9 @@ const openDeflectionCheck = () => {
 
 <template>
   <MetricsCard
-    v-if="hasData"
+    v-if="loading || hasData"
     :title="t('labels.defense.title')"
+    :loading="loading"
     class="defense-panel"
   >
     <div v-if="shield.hasData" class="metrics-card__hero">
@@ -71,7 +95,7 @@ const openDeflectionCheck = () => {
           {{ t("labels.defense.shieldHp") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ num(round(shield.totalHp)) }}
+          {{ num(round(shieldHp)) }}
           <span class="metrics-card__tile__unit">HP</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -83,11 +107,23 @@ const openDeflectionCheck = () => {
           {{ t("labels.defense.shieldRegen") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ num(round(shield.totalRegen)) }}
+          {{ num(round(shieldRegen)) }}
           <span class="metrics-card__tile__unit">HP/s</span>
         </div>
-        <div class="metrics-card__tile__sub">
-          {{ t("labels.defense.shieldRegenSub") }}
+        <div class="regen-bar">
+          <div
+            class="regen-bar__track"
+            role="progressbar"
+            :aria-valuenow="regenPercent"
+            :aria-valuemin="0"
+            :aria-valuemax="100"
+          >
+            <div
+              class="regen-bar__fill"
+              :style="{ width: `${regenPercent}%` }"
+            />
+          </div>
+          <span class="regen-bar__pct">{{ regenPercent }} %</span>
         </div>
       </div>
     </div>
@@ -223,6 +259,38 @@ const openDeflectionCheck = () => {
 
 <style lang="scss" scoped>
 @import "@/frontend/components/Models/metricsCard";
+
+// Matches the composition bar's pill look, as a single animated fill + percent.
+.regen-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 2px;
+
+  &__track {
+    flex: 1;
+    height: 8px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: $gray-black;
+    border: 1px solid rgba($gray-light, 0.28);
+  }
+
+  &__fill {
+    height: 100%;
+    background: $primary;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+
+  &__pct {
+    font-size: 11px;
+    color: $gray;
+    font-variant-numeric: tabular-nums;
+    min-width: 34px;
+    text-align: right;
+  }
+}
 
 .stat-rows {
   display: grid;

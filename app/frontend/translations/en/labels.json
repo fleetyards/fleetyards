@@ -576,6 +576,66 @@
         "hardpoints": "Hardpoints",
         "missileOptions": "Missle Options (if available)"
       },
+      "flight": {
+        "title": "Flight",
+        "scm": "combat cruise",
+        "nav": "cruise",
+        "boost": "Boost",
+        "boostSub": "afterburner",
+        "reverse": "Reverse",
+        "maneuverability": "Maneuverability",
+        "fuel": "Fuel",
+        "fuelHydrogen": "Hydrogen",
+        "fuelQuantum": "Quantum",
+        "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
+      },
+      "base": {
+        "price": "Price",
+        "priceInGame": "In-game",
+        "pricePledge": "Pledge",
+        "availability": "Availability"
+      },
+      "availability": {
+        "title": "Availability",
+        "buy": "Buy",
+        "rent": "Rent",
+        "cheapest": {
+          "buy": "Cheapest buy",
+          "rent": "Cheapest rent"
+        },
+        "locations": {
+          "one": "%{count} location",
+          "other": "%{count} locations"
+        },
+        "empty": "No known buy or rental locations.",
+        "timeRange": {
+          "1-day": "1 day",
+          "3-days": "3 days",
+          "7-days": "7 days",
+          "30-days": "30 days"
+        }
+      },
+      "cargo": {
+        "title": "Cargo",
+        "holdsSub": "across %{count} holds",
+        "maxContainerSub": "largest box that fits",
+        "containers": "Container Capacity",
+        "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
+      },
+      "fuelTanks": {
+        "capacitySub": "across %{count} pods",
+        "podsSub": "external mounts",
+        "components": "Pod Types",
+        "perPod": "per pod",
+        "hint": "Fuel carried in pods mounted on external hardpoints; the bar shows each type's share of the total capacity."
+      },
+      "refuelBoom": {
+        "fuelFlowSub": "hydrogen transfer",
+        "quantumFlowSub": "quantum transfer",
+        "captureRadiusSub": "docking tolerance",
+        "equipment": "Equipment",
+        "hint": "Transfer rates of the refueling arm and the docking tolerance of its nozzle."
+      },
       "combat": {
         "title": "Combat",
         "dps": "Burst DPS",
@@ -593,12 +653,41 @@
         "damageThermal": "Thermal",
         "hint": "DPS from the default loadout. Sustained factors in each weapon's energy-pool regen and overheat cycle. Missiles excluded."
       },
+      "power": {
+        "title": "Power Distribution",
+        "scm": "SCM",
+        "nav": "NAV",
+        "reset": "Reset",
+        "auto": "Auto",
+        "aimAssist": "Aim Assist",
+        "cooling": "Cooling",
+        "ir": "IR",
+        "em": "EM",
+        "cs": "CS",
+        "csAxisHint": "Click to switch axis (x / y / z)",
+        "segmentsUsed": "%{used} / %{total} segments",
+        "hint": "Move power between systems. Weapons' sustained DPS scales with the power they get; the rest is auto-balanced.",
+        "families": {
+          "weapon": "Weapons",
+          "shield": "Shields",
+          "engine": "Engine",
+          "radar": "Radar",
+          "coolers": "Coolers",
+          "qdrive": "Quantum Drive",
+          "qed": "QED",
+          "emp": "EMP",
+          "lifeSupport": "Life Support",
+          "miningLaser": "Mining Laser",
+          "salvage": "Salvage",
+          "tractorBeam": "Tractor Beam",
+          "towingbeam": "Towing Beam"
+        }
+      },
       "defense": {
         "title": "Defense",
         "shieldHp": "Shield HP",
         "shieldHpSub": "%{count} generators",
         "shieldRegen": "Regeneration",
-        "shieldRegenSub": "at full power",
         "shieldResistances": "Resistance",
         "shieldAbsorption": "Absorption",
         "armor": "Armor",
@@ -859,6 +948,20 @@
           "lockRange": "Lock Range",
           "lockTime": "Lock Time",
           "trackingSignal": "Tracking"
+        },
+        "tractorBeams": {
+          "maxForce": "Max Force",
+          "minForce": "Min Force",
+          "range": "Range",
+          "cone": "Cone",
+          "tetherBreak": "Tether Break",
+          "cargoForce": "Cargo Force",
+          "cargoRange": "Cargo Range",
+          "towForce": "Tow Force",
+          "towDistance": "Tow Range",
+          "quantumTowMass": "QT Mass Limit",
+          "rotationSpeed": "Rotation",
+          "moveSpeed": "Move Speed"
         },
         "shields": {
           "hp": "HP",

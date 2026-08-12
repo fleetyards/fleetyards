@@ -48,6 +48,17 @@ module Uex
       assert_nil @models[:slug_match].reload.sold_at.first.location_url
     end
 
+    test "#run drops a contact url that is not a web link rather than storing it" do
+      terminals = uex_fixture("terminals").map do |terminal|
+        (terminal["id"] == 101) ? terminal.merge("contact_url" => "javascript:alert(1)") : terminal
+      end
+
+      result = sync(terminals:)
+
+      assert_equal 7, result.created, "one odd url must not fail the whole snapshot"
+      assert_nil @models[:name_match].reload.rental_at.first.location_url
+    end
+
     test "#run resolves a vehicle that only the explicit mapping covers" do
       sync
 
@@ -116,6 +127,52 @@ module Uex
       assert_equal 1, result.removed
       assert_empty @models[:name_match].reload.sold_at
       assert_equal 1, @models[:name_match].reload.rental_at.size
+    end
+
+    test "#run repoints models.price at the cheapest shop that sells the ship" do
+      titan = @models[:name_match]
+      titan.update!(price: 999)
+
+      result = sync
+
+      assert_equal 4, result.repriced
+      assert_equal 1_290_370, titan.reload.price.to_i
+    end
+
+    test "#run reprices from the cheapest of several shops" do
+      purchases = uex_fixture("vehicles_purchases_prices_all") +
+        [{"id" => 98, "id_vehicle" => 2, "id_terminal" => 103, "price_buy" => 1_100_000}]
+
+      sync(vehicle_purchase_prices: purchases)
+
+      assert_equal 1_100_000, @models[:name_match].reload.price.to_i
+    end
+
+    test "#run leaves the price of a model UEX sells nowhere alone" do
+      rental_only = @models[:name_match]
+      rental_only.update!(price: 999)
+
+      purchases = uex_fixture("vehicles_purchases_prices_all").reject { |row| row["id_vehicle"] == 2 }
+
+      sync(vehicle_purchase_prices: purchases)
+
+      assert_equal 999, rental_only.reload.price.to_i
+    end
+
+    test "#run reprices nothing on a second run that changed no price" do
+      sync
+      result = sync
+
+      assert_equal 0, result.repriced
+    end
+
+    test "#run records the repricing as a version so a hand-entered figure is told apart" do
+      titan = @models[:name_match]
+      titan.update!(price: 999)
+
+      sync
+
+      assert_equal "uex_price_sync", titan.versions.last.reason
     end
 
     test "#run leaves prices for other item types alone" do

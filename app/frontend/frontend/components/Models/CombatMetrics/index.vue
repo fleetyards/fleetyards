@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useTransition, TransitionPresets } from "@vueuse/core";
 import type { Hardpoint } from "@/services/fyApi";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -13,13 +14,16 @@ import {
   useLoadoutStats,
   type DamageBreakdown,
 } from "@/frontend/composables/useLoadoutStats";
+import type { PortOverrides } from "@/frontend/composables/useLoadoutSim";
 
 type Props = {
   hardpoints?: Hardpoint[];
+  loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hardpoints: () => [],
+  loading: false,
 });
 
 const { t, toNumber } = useI18n();
@@ -29,12 +33,33 @@ const weaponPoolSize = inject<Ref<number | undefined>>(
   ref(undefined),
 );
 
+// The Power Distribution control's pip choices; absent (standalone use) → auto.
+const powerOverrides = inject<Ref<PortOverrides | undefined>>(
+  "powerOverrides",
+  ref(undefined),
+);
+
 const stats = useLoadoutStats(
   () => props.hardpoints,
   () => toValue(weaponPoolSize),
+  () => toValue(powerOverrides),
 );
 
 const round = (value: number) => Math.round(value);
+
+// toNumber renders 0 as "N/A"; here a zeroed value is a real 0 (e.g. weapons
+// unpowered), so show "0" instead.
+const dmg = (value: number) =>
+  round(value) > 0 ? toNumber(round(value), "integer") : "0";
+
+// Animate the power-reactive damage totals as the pip allocation changes.
+const animate = { duration: 400, transition: TransitionPresets.easeOutCubic };
+const animatedDps = useTransition(() => stats.value.dps.total, animate);
+const animatedSustained = useTransition(
+  () => stats.value.sustainedDps.total,
+  animate,
+);
+const animatedAlpha = useTransition(() => stats.value.alpha.total, animate);
 
 const hoveredType = ref<string | null>(null);
 
@@ -68,8 +93,9 @@ const composition = computed(() =>
 
 <template>
   <MetricsCard
-    v-if="stats.hasData"
+    v-if="loading || stats.hasData"
     :title="t('labels.combat.title')"
+    :loading="loading"
     class="combat-panel"
   >
     <div class="metrics-card__hero">
@@ -78,7 +104,7 @@ const composition = computed(() =>
           {{ t("labels.combat.dps") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(round(stats.dps.total), "integer") }}
+          {{ dmg(animatedDps) }}
           <span class="metrics-card__tile__unit">DPS</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -90,7 +116,7 @@ const composition = computed(() =>
           {{ t("labels.combat.sustained") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(round(stats.sustainedDps.total), "integer") }}
+          {{ dmg(animatedSustained) }}
           <span class="metrics-card__tile__unit">DPS</span>
         </div>
         <div class="metrics-card__tile__sub">
@@ -102,7 +128,7 @@ const composition = computed(() =>
           {{ t("labels.combat.alpha") }}
         </div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(round(stats.alpha.total), "integer") }}
+          {{ dmg(animatedAlpha) }}
           <span class="metrics-card__tile__unit">DMG</span>
         </div>
         <div class="metrics-card__tile__sub">

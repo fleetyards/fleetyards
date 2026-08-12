@@ -23,6 +23,7 @@ module Loaders
           updated: result.updated,
           removed: result.removed,
           skipped_removals: result.skipped_removals,
+          repriced: result.repriced,
           unmatched: result.unmatched.map { |vehicle| vehicle["slug"] }
         }
       )

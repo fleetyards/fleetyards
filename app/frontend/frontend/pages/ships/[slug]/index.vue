@@ -23,9 +23,6 @@ import {
 import FleetchartImages from "@/frontend/components/Models/FleetchartImages/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import ModelCrewMetrics from "@/frontend/components/Models/CrewMetrics/index.vue";
-import ModelSpeedMetrics from "@/frontend/components/Models/SpeedMetrics/index.vue";
-import ModelCargoMetrics from "@/frontend/components/Models/CargoMetrics/index.vue";
-import ModelExternalFuelTanks from "@/frontend/components/Models/ExternalFuelTanks/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -33,7 +30,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import Panel from "@/shared/components/base/Panel/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useModelsStore } from "@/frontend/stores/models";
@@ -362,15 +358,8 @@ const adiMap = computed(() => {
               inline
             />
           </template>
-          <Panel slim>
-            <ModelBaseMetrics :model="model" :extended="extendedState" />
-          </Panel>
-          <Panel slim>
-            <ModelCrewMetrics :model="model" />
-          </Panel>
-          <Panel slim>
-            <ModelSpeedMetrics :model="model" />
-          </Panel>
+          <ModelBaseMetrics :model="model" :extended="extendedState" />
+          <ModelCrewMetrics :model="model" />
           <div class="page-actions page-actions-block">
             <Btn
               v-if="model.onSale && price"
@@ -466,14 +455,8 @@ const adiMap = computed(() => {
         </div>
       </div>
       <FleetchartImages v-model:extended="extendedState" :model="model" />
-      <ModelCargoMetrics
-        v-if="combinedCargoHolds.length"
-        :model="model"
-        :cargo-holds="combinedCargoHolds"
-      />
-      <ModelExternalFuelTanks :model="model" />
       <hr />
-      <Hardpoints :model="model" />
+      <Hardpoints :model="model" :cargo-holds="combinedCargoHolds" />
       <CrewPositions :model="model" />
     </div>
   </div>

@@ -90,7 +90,9 @@ const rows = computed(() => {
 
   &__seg {
     height: 100%;
-    transition: opacity 0.18s ease;
+    transition:
+      width 0.35s ease,
+      opacity 0.18s ease;
   }
 
   &__bar--dimmed &__seg:not(&__seg--active) {

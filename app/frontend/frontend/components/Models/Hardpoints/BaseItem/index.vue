@@ -94,16 +94,23 @@ const detailStats = useHardpointStats(
 const primaryStat = computed(() => detailStats.value.find((s) => s.primary));
 const inlineStats = computed(() => detailStats.value.filter((s) => !s.primary));
 
+// Cosmetic geometry (turret shells, weapon shrouds, wingtip covers) sits on
+// child ports as nameless `Misc`/`AttachedPart` items that stay uncategorised —
+// they'd render as bare "TBD" rows, unlike a genuinely empty slot, which keeps
+// its category.
+const isCosmetic = (hp: Hardpoint) =>
+  hp.category === HardpointCategoryEnum.UNKNOWN && !hp.component?.name;
+
 const loadout = computed(() => {
   if (hardpoint.value.hardpoints?.length) {
-    return hardpoint.value.hardpoints;
+    return hardpoint.value.hardpoints.filter((hp) => !isCosmetic(hp));
   }
 
   if (
     hardpoint.value.component?.hardpoints?.length &&
     hardpoint.value.component.hardpoints[0].component
   ) {
-    return hardpoint.value.component.hardpoints;
+    return hardpoint.value.component.hardpoints.filter((hp) => !isCosmetic(hp));
   }
 
   return [];

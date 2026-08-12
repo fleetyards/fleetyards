@@ -4,6 +4,7 @@ import {
   type Hardpoint,
   type ComponentWeapon,
 } from "@/services/fyApi";
+import { simulateLoadoutPower, type PortOverrides } from "./useLoadoutSim";
 
 export type DamageBreakdown = {
   total: number;
@@ -121,33 +122,29 @@ export function sustainedRatio(
   return 1;
 }
 
-// erkul's weapon-power-pool throttle: the mounted energy weapons draw Power to
-// regen; when their combined draw exceeds the ship's fixed weapon pool, every
-// energy weapon's sustained regen is scaled down by this ratio. Ships without a
-// fixed weapon pool (`weaponPoolSize` absent) are unlimited → 1.
-export function weaponPowerRatio(
-  hardpoints: Hardpoint[] | undefined,
-  weaponPoolSize: number | undefined,
-): number {
-  if (!weaponPoolSize || weaponPoolSize <= 0) return 1;
-
-  const draw = collectWeaponHardpoints(hardpoints).reduce((sum, hardpoint) => {
-    const weapon = hardpoint.component!.typeData as ComponentWeapon;
-    return sum + (weapon.powerConsumption ?? 0);
-  }, 0);
-
-  const consumption = Math.ceil(draw);
-  if (consumption <= 0) return 1;
-
-  return Math.min(1, weaponPoolSize / consumption);
-}
-
 export function computeLoadoutStats(
   hardpoints: Hardpoint[] | undefined,
   weaponPoolSize?: number,
+  overrides?: PortOverrides,
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
-  const powerRatio = weaponPowerRatio(hardpoints, weaponPoolSize);
+  const sim = simulateLoadoutPower(
+    hardpoints,
+    weaponPoolSize,
+    "SCM",
+    overrides,
+  );
+  // Weapon power follows the actual pip allocation shown in the power UI — the
+  // default distribution until the user assigns pips, their choices afterwards.
+  // Only when the ship has no parsed plant segments do we fall back to the
+  // segment-independent max-power ratio, so those ships never regress to 0 DPS.
+  const powerRatio =
+    sim.totalSegments > 0 ? sim.weaponPoolRatio : sim.weaponMaxRatio;
+  // Every weapon needs the weapon system powered (≥1 pip) to fire at all — zero
+  // burst/alpha too when unpowered, not just sustained. The sustained *throttle*
+  // from partial power is energy-only and handled by sustainedRatio's branch
+  // (ballistics use the heat model and ignore powerRatio).
+  const powered = powerRatio > 0 ? 1 : 0;
 
   const dps = emptyBreakdown();
   const sustainedDps = emptyBreakdown();
@@ -159,19 +156,19 @@ export function computeLoadoutStats(
     const component = hardpoint.component!;
     const weapon = component.typeData as ComponentWeapon;
     const weaponDps = emptyBreakdown();
-    const ratio = sustainedRatio(weapon, powerRatio);
+    const ratio = sustainedRatio(weapon, powerRatio) * powered;
 
     if (weapon.beam && weapon.damagePerSecond) {
-      addBreakdown(dps, weapon.damagePerSecond, 1);
+      addBreakdown(dps, weapon.damagePerSecond, powered);
       addBreakdown(sustainedDps, weapon.damagePerSecond, ratio);
-      addBreakdown(weaponDps, weapon.damagePerSecond, 1);
+      addBreakdown(weaponDps, weapon.damagePerSecond, powered);
     } else if (!isMissile(weapon) && weapon.fireRate && weapon.damagePerShot) {
       const pellets = weapon.pelletsPerShot || 1;
       const shotsPerSecond = (pellets * weapon.fireRate) / 60;
-      addBreakdown(alpha, weapon.damagePerShot, pellets);
-      addBreakdown(dps, weapon.damagePerShot, shotsPerSecond);
+      addBreakdown(alpha, weapon.damagePerShot, pellets * powered);
+      addBreakdown(dps, weapon.damagePerShot, shotsPerSecond * powered);
       addBreakdown(sustainedDps, weapon.damagePerShot, shotsPerSecond * ratio);
-      addBreakdown(weaponDps, weapon.damagePerShot, shotsPerSecond);
+      addBreakdown(weaponDps, weapon.damagePerShot, shotsPerSecond * powered);
     } else {
       // Missiles (and other non-DPS munitions) don't contribute to DPS/alpha,
       // but their total payload damage is surfaced separately.
@@ -214,8 +211,13 @@ export function computeLoadoutStats(
 export function useLoadoutStats(
   hardpoints: MaybeRefOrGetter<Hardpoint[] | undefined>,
   weaponPoolSize?: MaybeRefOrGetter<number | undefined>,
+  overrides?: MaybeRefOrGetter<PortOverrides | undefined>,
 ) {
   return computed(() =>
-    computeLoadoutStats(toValue(hardpoints), toValue(weaponPoolSize)),
+    computeLoadoutStats(
+      toValue(hardpoints),
+      toValue(weaponPoolSize),
+      toValue(overrides),
+    ),
   );
 }
