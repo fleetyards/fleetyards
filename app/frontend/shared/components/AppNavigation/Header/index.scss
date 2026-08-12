@@ -15,12 +15,6 @@
     :deep(.base-input) {
       margin-bottom: 0;
     }
-
-    :deep(.panel-btn),
-    :deep(.panel-btn-group) {
-      margin-bottom: 0;
-      margin-right: 0;
-    }
   }
 
   &__right {
@@ -30,12 +24,6 @@
 
     :deep(.base-input) {
       margin-bottom: 0;
-    }
-
-    :deep(.panel-btn),
-    :deep(.panel-btn-group) {
-      margin-bottom: 0;
-      margin-right: 0;
     }
   }
 }

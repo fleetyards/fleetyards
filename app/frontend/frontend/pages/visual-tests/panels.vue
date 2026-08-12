@@ -14,7 +14,7 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ModelPanel from "@/frontend/components/Models/Panel/index.vue";
 import VehiclePanel from "@/frontend/components/Vehicles/Panel/index.vue";
 import { BoughtViaEnum, type Vehicle } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import {
   PanelAlignmentsEnum,
   PanelBgColorsEnum,
@@ -360,10 +360,8 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </div>
       </div>
       <div class="col-12">
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelPanel"> Toggle </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleModelOnSale">
-          Toggle on Sale
-        </Btn>
+        <Btn @click="toggleModelPanel"> Toggle </Btn>
+        <Btn @click="toggleModelOnSale"> Toggle on Sale </Btn>
       </div>
     </div>
     <hr />
@@ -393,22 +391,20 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
         </div>
       </div>
       <div class="col-12">
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanel">
-          Toggle
-        </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelModelOnSale">
+        <Btn @click="toggleVehiclePanel"> Toggle </Btn>
+        <Btn @click="toggleVehiclePanelModelOnSale">
           Toggle on Sale: {{ vehiclePanelModelOnSale }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelEditable">
+        <Btn @click="toggleVehiclePanelEditable">
           Toggle Edtiable: {{ vehiclePanelEditable ? "editable" : "read-only" }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelFlagship">
+        <Btn @click="toggleVehiclePanelFlagship">
           Toggle Flagship: {{ vehiclePanelFlagship }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoaner">
+        <Btn @click="toggleVehiclePanelLoaner">
           Toggle Loaner: {{ vehiclePanelLoaner }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="toggleVehiclePanelLoanerHint">
+        <Btn @click="toggleVehiclePanelLoanerHint">
           Toggle Loaner Hint: {{ vehiclePanelLoanerHint }}
         </Btn>
       </div>

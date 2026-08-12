@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useNotificationsStore } from "@/shared/stores/notifications";
@@ -120,32 +120,14 @@ const fireVehicleAdded = () => {
   <p>Each button triggers a notification of the given type.</p>
   <div class="row">
     <div class="col-12">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="trigger-notification-info"
-        @click="fireInfo"
-      >
-        Info
-      </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="trigger-notification-success"
-        @click="fireSuccess"
-      >
+      <Btn data-test="trigger-notification-info" @click="fireInfo"> Info </Btn>
+      <Btn data-test="trigger-notification-success" @click="fireSuccess">
         Success
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="trigger-notification-warning"
-        @click="fireWarning"
-      >
+      <Btn data-test="trigger-notification-warning" @click="fireWarning">
         Warning
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="trigger-notification-alert"
-        @click="fireAlert"
-      >
+      <Btn data-test="trigger-notification-alert" @click="fireAlert">
         Alert
       </Btn>
     </div>
@@ -156,17 +138,12 @@ const fireVehicleAdded = () => {
   <div class="row">
     <div class="col-12">
       <Btn
-        :size="BtnSizesEnum.SMALL"
         data-test="trigger-notification-persistent"
         @click="fireInfoPersistent"
       >
         Persistent Info
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="trigger-notification-long"
-        @click="fireInfoLong"
-      >
+      <Btn data-test="trigger-notification-long" @click="fireInfoLong">
         Long Info
       </Btn>
     </div>
@@ -179,22 +156,13 @@ const fireVehicleAdded = () => {
   </p>
   <div class="row">
     <div class="col-12">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="trigger-notification-image"
-        @click="fireWithImage"
-      >
+      <Btn data-test="trigger-notification-image" @click="fireWithImage">
         With image
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="trigger-notification-cta"
-        @click="fireWithCta"
-      >
+      <Btn data-test="trigger-notification-cta" @click="fireWithCta">
         With CTA
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :disabled="latestModelsLoading"
         data-test="trigger-notification-vehicle-added"
         @click="fireVehicleAdded"

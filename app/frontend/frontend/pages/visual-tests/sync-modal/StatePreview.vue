@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
@@ -52,16 +52,12 @@ const close = () => {
     <template #footer>
       <Btn
         v-if="hintDismissed"
-        :size="BtnSizesEnum.SMALL"
-        :inline="true"
         data-test="sync-modal-preview-reset"
         @click="hintDismissed = false"
       >
         Reset hint
       </Btn>
-      <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="close">
-        Close
-      </Btn>
+      <Btn @click="close"> Close </Btn>
     </template>
   </Modal>
 </template>
