@@ -9,6 +9,14 @@ sidekiq_config = {url: Rails.configuration.redis.url, db: Rails.configuration.re
 Sidekiq.configure_server do |config|
   config.redis = sidekiq_config
 
+  # Sidekiq logs through its own logger, not Rails.logger, so the AppSignal
+  # broadcast set up in the environment config never sees worker output.
+  if Appsignal.active?
+    appsignal_logger = Appsignal::Logger.new("sidekiq")
+    appsignal_logger.broadcast_to(config.logger)
+    config.logger = appsignal_logger
+  end
+
   config.on(:startup) do
     schedule_file = Rails.root.join("config/sidekiq_schedule.yml")
     schedule_yaml = ERB.new(File.read(schedule_file)).result
