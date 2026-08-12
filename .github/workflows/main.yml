@@ -57,6 +57,9 @@ jobs:
     needs: ruby-setup
     uses: ./.github/workflows/ruby-tests.job.yml
 
+  feature-flags:
+    uses: ./.github/workflows/feature-flags.job.yml
+
   seeds:
     needs: ruby-setup
     uses: ./.github/workflows/seeds.job.yml
