@@ -8,9 +8,9 @@ export default {
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import type { Model, CargoHold } from "@/services/fyApi";
 import {
-  CONTAINER_DEFS,
-  SCU_UNIT,
-} from "@/frontend/components/CargoGridViewer/constants";
+  containerCapacities as holdCapacities,
+  maxContainerSize as holdsMaxContainerSize,
+} from "@/frontend/components/CargoGridViewer/capacity";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, toNumber } = useI18n();
@@ -24,51 +24,6 @@ const props = defineProps<Props>();
 
 const holds = computed(() => props.cargoHolds || props.model.cargoHolds || []);
 
-type ContainerCapacity = {
-  size: number;
-  maxQuantity: number;
-};
-
-function computeMaxPerSize(holds: CargoHold[]): ContainerCapacity[] {
-  const results: ContainerCapacity[] = [];
-
-  for (const def of CONTAINER_DEFS) {
-    let total = 0;
-
-    for (const hold of holds) {
-      const maxSize = hold.maxContainerSize?.size || 32;
-      if (def.size > maxSize) continue;
-
-      const gridX = hold.dimensions.x / SCU_UNIT;
-      const gridY = hold.dimensions.y / SCU_UNIT;
-      const gridZ = hold.dimensions.z / SCU_UNIT;
-
-      const orientations = [
-        { cx: def.x, cy: def.y, cz: def.z },
-        { cx: def.y, cy: def.x, cz: def.z },
-      ];
-
-      let best = 0;
-      for (const o of orientations) {
-        if (o.cx > gridX || o.cy > gridY || o.cz > gridZ) continue;
-        const count =
-          Math.floor(gridX / o.cx) *
-          Math.floor(gridY / o.cy) *
-          Math.floor(gridZ / o.cz);
-        if (count > best) best = count;
-      }
-
-      total += best;
-    }
-
-    if (total > 0) {
-      results.push({ size: def.size, maxQuantity: total });
-    }
-  }
-
-  return results;
-}
-
 const totalCargo = computed(() => {
   return holds.value.reduce((sum, h) => sum + (h.capacity || 0), 0);
 });
@@ -78,7 +33,7 @@ const containerCapacities = computed(() => {
 
   const total = totalCargo.value || props.model.metrics.cargo || 0;
 
-  return computeMaxPerSize(holds.value).map((capacity) => {
+  return holdCapacities(holds.value).map((capacity) => {
     const scu = capacity.size * capacity.maxQuantity;
 
     return {
@@ -91,10 +46,7 @@ const containerCapacities = computed(() => {
   });
 });
 
-const maxContainerSize = computed(() => {
-  if (!holds.value.length) return null;
-  return Math.max(...holds.value.map((h) => h.maxContainerSize?.size || 0));
-});
+const maxContainerSize = computed(() => holdsMaxContainerSize(holds.value));
 
 const hasData = computed(() => containerCapacities.value.length > 0);
 </script>
