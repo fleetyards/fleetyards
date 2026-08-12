@@ -99,7 +99,12 @@
         "index": "Visual Tests",
         "panels": "Panels - Visual Tests",
         "buttons": "Buttons - Visual Tests",
+        "typography": "Typography - Visual Tests",
+        "forms": "Forms - Visual Tests",
         "tables": "Tables - Visual Tests",
+        "lists": "Lists - Visual Tests",
+        "metrics": "Metrics - Visual Tests",
+        "states": "States - Visual Tests",
         "notifications": "Notifications - Visual Tests",
         "syncModal": "Sync Modal - Visual Tests",
         "supportHint": "Support Hint - Visual Tests"

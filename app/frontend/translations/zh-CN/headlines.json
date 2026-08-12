@@ -276,7 +276,12 @@
         "overview": "概览",
         "panels": "面板",
         "buttons": "按钮",
+        "typography": "排版",
+        "forms": "表单",
         "tables": "表格",
+        "lists": "列表",
+        "metrics": "指标",
+        "states": "状态",
         "notifications": "通知",
         "syncModal": "同步弹窗",
         "supportHint": "支持提示"

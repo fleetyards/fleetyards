@@ -27,6 +27,51 @@ export const routes = [
     },
   },
   {
+    path: "typography/",
+    name: "visual-tests-typography",
+    component: () => import("@/frontend/pages/visual-tests/typography.vue"),
+    meta: {
+      title: "visualTests.typography",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "forms/",
+    name: "visual-tests-forms",
+    component: () => import("@/frontend/pages/visual-tests/forms.vue"),
+    meta: {
+      title: "visualTests.forms",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "lists/",
+    name: "visual-tests-lists",
+    component: () => import("@/frontend/pages/visual-tests/lists.vue"),
+    meta: {
+      title: "visualTests.lists",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "metrics/",
+    name: "visual-tests-metrics",
+    component: () => import("@/frontend/pages/visual-tests/metrics.vue"),
+    meta: {
+      title: "visualTests.metrics",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "states/",
+    name: "visual-tests-states",
+    component: () => import("@/frontend/pages/visual-tests/states.vue"),
+    meta: {
+      title: "visualTests.states",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "notifications/",
     name: "visual-tests-notifications",
     component: () => import("@/frontend/pages/visual-tests/notifications.vue"),

@@ -276,7 +276,12 @@
         "overview": "Resumen",
         "panels": "Paneles",
         "buttons": "Botones",
+        "typography": "Tipografía",
+        "forms": "Formularios",
         "tables": "Tablas",
+        "lists": "Listas",
+        "metrics": "Métricas",
+        "states": "Estados",
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
         "supportHint": "Aviso de apoyo"

@@ -98,7 +98,12 @@
         "index": "Pruebas Visuales",
         "panels": "Paneles - Pruebas Visuales",
         "buttons": "Botones - Pruebas Visuales",
+        "typography": "Tipografía - Pruebas visuales",
+        "forms": "Formularios - Pruebas visuales",
         "tables": "Tablas - Pruebas Visuales",
+        "lists": "Listas - Pruebas visuales",
+        "metrics": "Métricas - Pruebas visuales",
+        "states": "Estados - Pruebas visuales",
         "notifications": "Notificaciones - Pruebas Visuales",
         "syncModal": "Modal de sincronización - Pruebas Visuales",
         "supportHint": "Aviso de apoyo - Pruebas Visuales"

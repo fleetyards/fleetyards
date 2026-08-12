@@ -31,28 +31,58 @@ const { t } = useI18n();
       prefix="02"
     />
     <NavItem
+      :to="{ name: 'visual-tests-typography' }"
+      :label="t('nav.visualTests.typography')"
+      icon="fadt fa-text-size"
+      prefix="03"
+    />
+    <NavItem
+      :to="{ name: 'visual-tests-forms' }"
+      :label="t('nav.visualTests.forms')"
+      icon="fadt fa-input-text"
+      prefix="04"
+    />
+    <NavItem
       :to="{ name: 'visual-tests-tables' }"
       :label="t('nav.visualTests.tables')"
       icon="fadt fa-table"
-      prefix="02"
+      prefix="05"
+    />
+    <NavItem
+      :to="{ name: 'visual-tests-lists' }"
+      :label="t('nav.visualTests.lists')"
+      icon="fadt fa-list-ul"
+      prefix="06"
+    />
+    <NavItem
+      :to="{ name: 'visual-tests-metrics' }"
+      :label="t('nav.visualTests.metrics')"
+      icon="fadt fa-gauge-high"
+      prefix="07"
+    />
+    <NavItem
+      :to="{ name: 'visual-tests-states' }"
+      :label="t('nav.visualTests.states')"
+      icon="fadt fa-spinner"
+      prefix="08"
     />
     <NavItem
       :to="{ name: 'visual-tests-notifications' }"
       :label="t('nav.visualTests.notifications')"
       icon="fadt fa-bell"
-      prefix="02"
+      prefix="09"
     />
     <NavItem
       :to="{ name: 'visual-tests-sync-modal' }"
       :label="t('nav.visualTests.syncModal')"
       icon="fadt fa-arrows-rotate"
-      prefix="02"
+      prefix="10"
     />
     <NavItem
       :to="{ name: 'visual-tests-support-hint' }"
       :label="t('nav.visualTests.supportHint')"
       icon="fadt fa-heart"
-      prefix="02"
+      prefix="11"
     />
   </div>
 </template>

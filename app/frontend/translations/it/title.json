@@ -98,7 +98,12 @@
         "index": "Test Visivi",
         "panels": "Pannelli - Test Visivi",
         "buttons": "Pulsanti - Test Visivi",
+        "typography": "Tipografia - Test visivi",
+        "forms": "Moduli - Test visivi",
         "tables": "Tabelle - Test Visivi",
+        "lists": "Elenchi - Test visivi",
+        "metrics": "Metriche - Test visivi",
+        "states": "Stati - Test visivi",
         "notifications": "Notifiche - Test Visivi",
         "syncModal": "Modal sincronizzazione - Test Visivi",
         "supportHint": "Suggerimento supporto - Test Visivi"
