@@ -171,17 +171,6 @@
           "starmap": "成员星图"
         },
         "stats": "统计",
-        "logistics": {
-          "index": "Logistics",
-          "inventories": "Inventories",
-          "requests": "Requests",
-          "newRequest": "New Request",
-          "requestItems": "Items",
-          "comments": "Comments",
-          "createInventory": "Create Inventory",
-          "createItem": "Add Item",
-          "importCsv": "Import from CSV"
-        },
         "preview": {
           "h1": "舰队预览",
           "h2": "To create a Fleet you need to have a FleetYards.net Account",
@@ -298,7 +287,24 @@
       "stationImages": "Images of %{station} near %{celestialObject}",
       "shops": "Shops",
       "shop": "%{shop} on %{station}",
-      "commodities": "Commodities"
+      "commodities": "Commodities",
+      "logistics": {
+        "index": "Logistics",
+        "inventories": "Inventories",
+        "requests": "Requests",
+        "newRequest": "New Request",
+        "requestItems": "Items",
+        "comments": "Comments",
+        "inventoryItems": "Inventory Items",
+        "createInventory": "Create Inventory",
+        "editInventory": "Edit Inventory",
+        "createItem": "Add Item",
+        "deposit": "Deposit",
+        "withdrawal": "Withdrawal",
+        "importCsv": "Import from CSV",
+        "hangarInventories": "Hangar Inventories",
+        "editItem": "Edit Entry"
+      }
     }
   }
 }

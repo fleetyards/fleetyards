@@ -16,7 +16,8 @@
       "videos": "Video",
       "hangar": {
         "index": "Il Mio Hangar",
-        "vehicleLoadouts": "Loadouts"
+        "vehicleLoadouts": "Loadouts",
+        "inventories": "Inventories"
       },
       "login": "Accedi",
       "logout": "Esci",

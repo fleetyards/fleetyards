@@ -1255,17 +1255,38 @@
           "critical": "Critical"
         },
         "searchInventories": "Search inventories...",
+        "searchItems": "Search items...",
+        "quality": "Quality (0-1000)",
+        "qualityShort": "Quality",
+        "qualityMin": "Quality >=",
+        "qualityMax": "Quality <=",
+        "existingItem": "Select existing item",
         "inventoryName": "Inventory Name",
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
           "officers_only": "Officers Only"
         },
+        "inventory": "Inventory",
+        "notesPlaceholder": "Add notes...",
+        "entryType": "Type",
+        "entryTypes": {
+          "deposit": "Deposit",
+          "withdrawal": "Withdrawal"
+        },
+        "stockView": "Current Stock",
+        "logView": "Transaction Log",
+        "addedBy": "Logged by",
+        "member": "Member",
+        "selectItem": "Select item",
+        "currentStock": "Available",
+        "location": "Location",
+        "image": "Image",
         "categories": {
           "commodity": "Commodity",
           "component": "Component",
-          "module_item": "Module",
-          "ship": "Ship",
+          "weapon": "Weapon",
+          "equipment": "Equipment",
           "ammunition": "Ammunition",
           "consumable": "Consumable",
           "other": "Other"

@@ -35,7 +35,9 @@
         "public": "Hangar di %{user}",
         "publicStats": "Statistiche dell'Hangar di %{user}",
         "wishlist": "Lista dei desideri",
-        "publicWishlist": "Lista dei desideri di %{user}"
+        "publicWishlist": "Lista dei desideri di %{user}",
+        "inventories": "My Hangar Inventories",
+        "inventory": "%{inventory}"
       },
       "requestPassword": "Richiedi la password",
       "changePassword": "Cambia la password",

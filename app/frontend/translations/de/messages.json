@@ -453,6 +453,10 @@
             "success": "Inventory created.",
             "failure": "Could not create inventory."
           },
+          "update": {
+            "success": "Inventory updated.",
+            "failure": "Could not update inventory."
+          },
           "destroy": {
             "success": "Inventar gelöscht.",
             "failure": "Inventar konnte nicht gelöscht werden."
@@ -462,6 +466,14 @@
           "create": {
             "success": "Item added to inventory.",
             "failure": "Could not add item to inventory."
+          },
+          "deposit": {
+            "success": "Deposit recorded.",
+            "failure": "Could not record deposit."
+          },
+          "withdrawal": {
+            "success": "Withdrawal recorded.",
+            "failure": "Could not record withdrawal. Check available stock."
           }
         },
         "comment": {
