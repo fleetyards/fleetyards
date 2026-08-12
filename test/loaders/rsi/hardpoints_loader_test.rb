@@ -36,7 +36,7 @@ module Rsi
       assert_equal(
         {
           models: initial_model_count,
-          hardpoints: initial_hardpoint_count + 107,
+          hardpoints: initial_hardpoint_count + 26,
           components: initial_component_count,
           paints: initial_paint_count,
           manufacturers: initial_manufacturer_count
@@ -47,6 +47,89 @@ module Rsi
         paints: ModelPaint.count,
         manufacturers: Manufacturer.count
       )
+    end
+
+    test "#all with sizes and types not covered by the fixture" do
+      @loader.all(
+        @andromeda,
+        {
+          "RSIPropulsion" => {
+            "fuel_tanks" => [
+              {"type" => "fuel_tanks", "name" => "Internal Tank", "mounts" => "1", "quantity" => "1",
+               "size" => "", "component_size" => "", "component_class" => "RSIPropulsion"}
+            ]
+          },
+          "RSIModular" => {
+            "life_support" => [
+              {"type" => "life_support", "name" => "ComfortAir Lite", "mounts" => "1", "quantity" => "1",
+               "size" => "0", "component_size" => "0", "component_class" => "RSIModular"}
+            ]
+          }
+        }
+      )
+
+      fuel_tank = Hardpoint.find_by(parent: @andromeda, sc_name: "Internal Tank")
+      assert_equal "fueltanks", fuel_tank.category
+      assert_nil fuel_tank.min_size
+
+      life_support = Hardpoint.find_by(parent: @andromeda, sc_name: "ComfortAir Lite")
+      assert_equal "lifesupport", life_support.category
+      assert_equal 0, life_support.min_size
+    end
+
+    test "#all keeps hardpoints of different types with the same name apart" do
+      data = {
+        "RSIWeapon" => {
+          "turrets" => [
+            {"type" => "turrets", "name" => "S4 Weapon", "mounts" => "1", "quantity" => "2",
+             "size" => "4", "component_size" => "4", "component_class" => "RSIWeapon"}
+          ],
+          "weapons" => [
+            {"type" => "weapons", "name" => "S4 Weapon", "mounts" => "1", "quantity" => "2",
+             "size" => "4", "component_size" => "4", "component_class" => "RSIWeapon"}
+          ]
+        }
+      }
+
+      @loader.all(@andromeda, data)
+
+      turret = Hardpoint.find_by(parent: @andromeda, category: :turret)
+      weapon = Hardpoint.find_by(parent: @andromeda, category: :weapons)
+
+      assert_equal 2, turret.hardpoints.count
+      assert_equal 2, weapon.hardpoints.count
+      assert_equal 6, Hardpoint.count
+
+      @andromeda.reload
+      updated_at = @andromeda.updated_at
+
+      Timecop.travel(1.day)
+
+      @loader.all(@andromeda, data)
+
+      assert_equal 6, Hardpoint.count
+      assert_equal [turret.id, weapon.id].sort,
+        Hardpoint.where(parent: @andromeda).pluck(:id).sort
+      assert_equal updated_at.to_i, @andromeda.reload.updated_at.to_i
+    end
+
+    test "unknown sizes raise with the offending hardpoint" do
+      error = assert_raises(RuntimeError) do
+        @loader.all(
+          @andromeda,
+          {
+            "RSIModular" => {
+              "coolers" => [
+                {"type" => "coolers", "name" => "Frost-Star SL", "mounts" => "1", "quantity" => "1",
+                 "size" => "XL", "component_size" => "XL", "component_class" => "RSIModular"}
+              ]
+            }
+          }
+        )
+      end
+
+      assert_equal 'Size missing in Mapping "XL" for Constellation Andromeda / coolers / Frost-Star SL',
+        error.message
     end
   end
 end
