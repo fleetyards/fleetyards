@@ -18,11 +18,15 @@ type Props = {
   segments: Segment[];
   format?: string;
   highlighted?: string | null;
+  // The compare matrix repeats the bar once per ship, where a legend per column
+  // would outweigh the section it belongs to — it shows one shared legend instead.
+  barOnly?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   format: "integer",
   highlighted: null,
+  barOnly: false,
 });
 
 const emit = defineEmits<{ highlight: [key: string | null] }>();
@@ -58,7 +62,7 @@ const rows = computed(() => {
         :style="{ width: `${row.pct}%`, background: row.color }"
       />
     </div>
-    <div class="composition__legend">
+    <div v-if="!barOnly" class="composition__legend">
       <div
         v-for="row in rows"
         :key="row.key"
