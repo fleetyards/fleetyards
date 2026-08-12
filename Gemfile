@@ -55,6 +55,11 @@ gem "omniauth-rails_csrf_protection"
 
 gem "useragent"
 
+# ActionCable's redis pubsub adapter declares `gem "redis", ">= 4", "< 6"`, so
+# redis 6 raises Gem::LoadError on boot. redis-store 1.12 relaxed its own bound
+# to < 7, which is what let bundler resolve redis 6 in the first place. Unpin
+# once Rails ships the redis-client-based adapter (8.2+).
+gem "redis", "< 6"
 gem "redis-actionpack"
 gem "redis-store"
 
