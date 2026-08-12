@@ -60,6 +60,7 @@
       "modular": "Modular",
       "soldAt": "Sold at?",
       "rentalAt": "Rental at?",
+      "poweredByUex": "Powered by UEX",
       "lastUpdatedAt": "Last updated at?"
     },
     "component": {

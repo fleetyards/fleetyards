@@ -60,6 +60,7 @@
       "modular": "模块化",
       "soldAt": "出售于？",
       "rentalAt": "租赁于？",
+      "poweredByUex": "数据由 UEX 提供",
       "lastUpdatedAt": "最后更新于？"
     },
     "component": {
