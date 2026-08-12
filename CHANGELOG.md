@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [6.33.1](https://github.com/fleetyards/fleetyards/compare/v6.33.0...v6.33.1) (2026-08-12)
+
+
+### Bug Fixes
+
+* **deps:** pin redis to &lt; 6 for ActionCable compatibility ([b513f95](https://github.com/fleetyards/fleetyards/commit/b513f957059229821663171259ece569a87d2d6d))
+
+
+### Chores
+
+* **deps:** bump EndBug/add-and-commit from 10 to 11 ([#4321](https://github.com/fleetyards/fleetyards/issues/4321)) ([e2e2d77](https://github.com/fleetyards/fleetyards/commit/e2e2d77c22a49193ced2cf711ee9b3cfac73b40c))
+
 ## [6.33.0](https://github.com/fleetyards/fleetyards/compare/v6.32.1...v6.33.0) (2026-08-12)
 
 
