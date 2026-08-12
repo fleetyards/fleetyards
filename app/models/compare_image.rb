@@ -113,7 +113,7 @@ class CompareImage < ApplicationRecord
   private def build_composite(models)
     require "vips"
 
-    buffers = models.filter_map { |m| m.store_image.download if m.store_image.attached? }
+    buffers = models.filter_map { |model| download_store_image(model) }
     return nil if buffers.empty?
 
     width = CANVAS_WIDTH
@@ -145,6 +145,18 @@ class CompareImage < ApplicationRecord
     end
 
     canvas.jpegsave_buffer(Q: 85)
+  end
+
+  # An attachment row can outlive its file — pruned local storage, a lost object in
+  # the bucket. Skipping that ship keeps the share image, and the page embedding it,
+  # working instead of failing the whole request on a missing file.
+  private def download_store_image(model)
+    return unless model.store_image.attached?
+
+    model.store_image.download
+  rescue ActiveStorage::FileNotFoundError
+    Rails.logger.warn("CompareImage: store image file missing for #{model.slug}")
+    nil
   end
 
   # Float [0, 1] alpha mask for the parallelogram bounded by the four corners.

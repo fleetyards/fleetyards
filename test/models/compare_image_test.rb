@@ -84,11 +84,39 @@ class CompareImageTest < ActiveSupport::TestCase
     assert_equal "BBBBBBBB", record.short_code
   end
 
+  test "composites the ships whose store image file is still there" do
+    present = create_model_with_store_image("rsi-constellation-andromeda")
+    missing = create_model_with_store_image("aegs-gladius")
+    missing.store_image.stubs(:download).raises(ActiveStorage::FileNotFoundError)
+
+    record = CompareImage.for([present, missing])
+
+    assert record.image.attached?
+  end
+
+  test "attaches nothing when every store image file is gone" do
+    first = create_model_with_store_image("rsi-constellation-andromeda")
+    second = create_model_with_store_image("aegs-gladius")
+    [first, second].each do |model|
+      model.store_image.stubs(:download).raises(ActiveStorage::FileNotFoundError)
+    end
+
+    record = CompareImage.for([first, second])
+
+    assert_not record.image.attached?
+  end
+
   private
 
   def create_model_with_slug(slug, legacy_slug: nil)
     model = create(:model)
     model.update_columns(slug: slug, legacy_slug: legacy_slug)
+    model
+  end
+
+  def create_model_with_store_image(slug)
+    model = create(:model, :with_store_image)
+    model.update_columns(slug: slug)
     model
   end
 end
