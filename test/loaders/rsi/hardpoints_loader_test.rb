@@ -77,6 +77,42 @@ module Rsi
       assert_equal 0, life_support.min_size
     end
 
+    test "#all keeps hardpoints of different types with the same name apart" do
+      data = {
+        "RSIWeapon" => {
+          "turrets" => [
+            {"type" => "turrets", "name" => "S4 Weapon", "mounts" => "1", "quantity" => "2",
+             "size" => "4", "component_size" => "4", "component_class" => "RSIWeapon"}
+          ],
+          "weapons" => [
+            {"type" => "weapons", "name" => "S4 Weapon", "mounts" => "1", "quantity" => "2",
+             "size" => "4", "component_size" => "4", "component_class" => "RSIWeapon"}
+          ]
+        }
+      }
+
+      @loader.all(@andromeda, data)
+
+      turret = Hardpoint.find_by(parent: @andromeda, category: :turret)
+      weapon = Hardpoint.find_by(parent: @andromeda, category: :weapons)
+
+      assert_equal 2, turret.hardpoints.count
+      assert_equal 2, weapon.hardpoints.count
+      assert_equal 6, Hardpoint.count
+
+      @andromeda.reload
+      updated_at = @andromeda.updated_at
+
+      Timecop.travel(1.day)
+
+      @loader.all(@andromeda, data)
+
+      assert_equal 6, Hardpoint.count
+      assert_equal [turret.id, weapon.id].sort,
+        Hardpoint.where(parent: @andromeda).pluck(:id).sort
+      assert_equal updated_at.to_i, @andromeda.reload.updated_at.to_i
+    end
+
     test "unknown sizes raise with the offending hardpoint" do
       error = assert_raises(RuntimeError) do
         @loader.all(

@@ -76,7 +76,7 @@ module Rsi
       if hardpoint_data[:quantity].to_i > 1
         hardpoint.hardpoints << (1..hardpoint_data[:quantity].to_i).map do |index|
           sub_hardpoint = Hardpoint.find_or_create_by!(
-            matrix_key: "#{hardpoint_data[:type]}_#{hardpoint_data[:name].strip}_#{size}_#{hardpoint_data[:index]}_#{mount}_#{index}",
+            matrix_key: "#{hardpoint_data[:name].strip}_#{size}_#{hardpoint_data[:index]}_#{mount}_#{index}",
             source: :ship_matrix,
             parent: hardpoint
           )
