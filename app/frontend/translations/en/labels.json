@@ -599,6 +599,14 @@
         "title": "Availability",
         "buy": "Buy",
         "rent": "Rent",
+        "cheapest": {
+          "buy": "Cheapest buy",
+          "rent": "Cheapest rent"
+        },
+        "locations": {
+          "one": "%{count} location",
+          "other": "%{count} locations"
+        },
         "empty": "No known buy or rental locations.",
         "timeRange": {
           "1-day": "1 day",
