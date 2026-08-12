@@ -107,14 +107,34 @@ module FeatureFlags
       assert_empty Registry.new.validation_errors
     end
 
-    test "the checked-in registry covers every flag referenced by a data migration" do
-      registered = Registry.new.names
-      migration_flags = Dir[Rails.root.join("db/data/*.rb")].flat_map do |path|
-        File.read(path).scan(/Flipper\.add\(["']([^"']+)["']\)/).flatten
-      end.uniq
+    test "the checked-in registry covers every flag created by a data migration" do
+      missing = migration_flag_names - Registry.new.names
 
-      assert_empty migration_flags - registered,
+      assert_empty missing,
         "flags created by data migrations but missing from config/feature_flags.yml (sync would prune them)"
+    end
+
+    test "the migration scan finds both the literal and %w forms" do
+      # Guards the heuristic below: if it silently stopped matching, the test
+      # above would pass by finding nothing rather than by the registry being
+      # complete.
+      names = migration_flag_names
+
+      assert_includes names, "fleet_logistics", "expected the Flipper.add(\"…\") form to be found"
+      assert_includes names, "oauth-discord", "expected the %w[…] loop form to be found"
+      assert_operator names.size, :>=, 13
+    end
+
+    # Data migrations create flags either as Flipper.add("name") or by looping
+    # over a %w[] array, so both shapes have to be scanned.
+    private def migration_flag_names
+      Dir[Rails.root.join("db/data/*.rb")].filter_map { |path|
+        source = File.read(path)
+        next unless source.include?("Flipper.add")
+
+        source.scan(/Flipper\.add\(\s*["']([^"']+)["']\s*\)/).flatten +
+          source.scan(/%w\[([^\]]*)\]/).flatten.flat_map(&:split)
+      }.flatten.uniq
     end
   end
 end
