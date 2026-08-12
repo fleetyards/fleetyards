@@ -139,7 +139,7 @@ defineExpose({ isFilterSelected });
       </div>
     </div>
 
-    <Btn :disabled="!isFilterSelected" :inline="true" @click="resetFilter">
+    <Btn :disabled="!isFilterSelected" @click="resetFilter">
       {{ t("actions.resetFilter") }}
     </Btn>
   </form>

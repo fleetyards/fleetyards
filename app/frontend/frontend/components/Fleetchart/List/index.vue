@@ -216,7 +216,7 @@ const drawGridLines = async () => {
   <div class="row fleetchart-list">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
-        <BtnDropdown size="small">
+        <BtnDropdown>
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.viewpoint") }}:
@@ -226,31 +226,29 @@ const drawGridLines = async () => {
           <Btn
             v-for="(option, index) in FleetchartViewpoints"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
-            size="small"
-            variant="link"
             :active="viewpoint === option"
             @click="setViewpoint(option)"
+            variant="bare"
           >
             {{ t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
 
-        <Btn size="small" :active="gridEnabled" @click="toggleGrid">
+        <Btn :active="gridEnabled" @click="toggleGrid">
           <i class="fa-duotone fa-th" />
         </Btn>
 
-        <BtnDropdown size="small">
+        <BtnDropdown>
           <template v-if="downloadName">
             <DownloadScreenshotBtn
               element="#fleetchart"
               :filename="downloadName"
-              size="small"
             />
 
             <hr />
           </template>
 
-          <Btn size="small" @click="toggleLabels">
+          <Btn @click="toggleLabels">
             <i class="fa-duotone fa-tags" />
             <span v-if="showLabels">
               {{ t("actions.hideLabels") }}
@@ -260,7 +258,7 @@ const drawGridLines = async () => {
             </span>
           </Btn>
 
-          <FleetChartStatusBtn size="small" />
+          <FleetChartStatusBtn />
         </BtnDropdown>
       </div>
 

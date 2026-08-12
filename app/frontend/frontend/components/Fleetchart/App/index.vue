@@ -245,7 +245,7 @@ const closeFleetchart = async () => {
       }"
     >
       <div class="fleetchart-app-controls">
-        <BtnDropdown size="small" flush>
+        <BtnDropdown>
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.mode") }}:
@@ -255,10 +255,9 @@ const closeFleetchart = async () => {
           <Btn
             v-for="(option, index) in FleetchartModes"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
-            size="small"
-            variant="link"
             :active="mode === option"
             @click="setMode(option)"
+            variant="bare"
           >
             {{ t(`labels.fleetchartApp.modeOptions.${option}`) }}
           </Btn>
@@ -268,20 +267,13 @@ const closeFleetchart = async () => {
           v-if="hasExtendedItems"
           v-tooltip="extendedTooltip"
           :active="extended"
-          size="small"
-          flush
           @click="toggleExtended"
         >
           <i class="fa-duotone fa-arrows-from-line" />
         </Btn>
       </div>
 
-      <Btn
-        size="large"
-        variant="link"
-        class="fleetchart-app-close"
-        @click="hide"
-      >
+      <Btn class="fleetchart-app-close" @click="hide" size="lg" variant="bare">
         <i class="fa-light fa-times" />
       </Btn>
 
@@ -291,7 +283,6 @@ const closeFleetchart = async () => {
           v-tooltip="filterTooltip"
           :active="filterVisible"
           :aria-label="filterTooltip"
-          size="small"
           @click="toggleFilter"
         >
           <span v-show="isFilterSelected">

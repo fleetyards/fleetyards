@@ -9,7 +9,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import {
   useImport,
   type Import,
@@ -170,8 +170,6 @@ const headlineTitle = (record: Import) => formatType(record.type);
             <div class="import-detail__payload-header">
               <h3>{{ t("labels.imports.input") }}</h3>
               <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
                 :title="t('actions.copy')"
                 :aria-label="t('actions.copy')"
                 @click="copyPayload(inputPayload)"
@@ -186,8 +184,6 @@ const headlineTitle = (record: Import) => formatType(record.type);
             <div class="import-detail__payload-header">
               <h3>{{ t("labels.imports.output") }}</h3>
               <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
                 :title="t('actions.copy')"
                 :aria-label="t('actions.copy')"
                 @click="copyPayload(outputPayload)"
@@ -202,8 +198,6 @@ const headlineTitle = (record: Import) => formatType(record.type);
             <div class="import-detail__payload-header">
               <h3>{{ t("labels.imports.importData") }}</h3>
               <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
                 :title="t('actions.copy')"
                 :aria-label="t('actions.copy')"
                 @click="copyPayload(importDataPayload)"

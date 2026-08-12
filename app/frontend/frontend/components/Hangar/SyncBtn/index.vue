@@ -38,8 +38,8 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), {
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.DEFAULT,
+  variant: undefined,
+  size: undefined,
   inline: false,
   to: undefined,
   href: undefined,

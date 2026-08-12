@@ -23,7 +23,6 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -154,7 +153,6 @@ const onSaveCreate = async () => {
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.docks") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >

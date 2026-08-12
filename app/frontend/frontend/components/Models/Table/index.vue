@@ -245,7 +245,7 @@ const angledImage = (record: Model) => {
         </div>
       </template>
       <template #actions="{ record }">
-        <BtnGroup inline class="vehicles-table-btn-group">
+        <BtnGroup class="vehicles-table-btn-group">
           <Btn
             v-if="!mobile"
             :to="{
@@ -254,11 +254,10 @@ const angledImage = (record: Model) => {
                 slug: record.slug,
               },
             }"
-            :size="BtnSizesEnum.SMALL"
           >
             <span class="no-wrap">{{ t("actions.showDetailPage") }}</span>
           </Btn>
-          <AddToHangar :model="record" :size="BtnSizesEnum.SMALL" />
+          <AddToHangar :model="record" :size="BtnSizesEnum.SM" />
           <ModelContextMenu :model="record" />
         </BtnGroup>
       </template>

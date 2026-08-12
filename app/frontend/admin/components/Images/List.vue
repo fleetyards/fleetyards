@@ -34,7 +34,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
 import ImageActions from "@/admin/components/Images/Actions/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { type AxiosError } from "axios";
 import { type ValidationError } from "@/services/fyAdminApi";
 
@@ -247,10 +247,9 @@ const columns: BaseTableCol<Image>[] = [
         @selected-change="onSelectedChange"
       >
         <template #selected-actions>
-          <BtnGroup inline>
+          <BtnGroup>
             <Btn
               v-tooltip="t('actions.enableSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="enableSelected"
             >
@@ -258,7 +257,6 @@ const columns: BaseTableCol<Image>[] = [
             </Btn>
             <Btn
               v-tooltip="t('actions.disableSelected')"
-              :size="BtnSizesEnum.SMALL"
               :disabled="updating"
               @click="disableSelected"
             >

@@ -18,10 +18,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useForm } from "vee-validate";
 import { type AccountUpdateInput } from "@/services/fyApi";
-import {
-  BtnVariantsEnum,
-  BtnSizesEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import {
   useUpdateAccount as useUpdateAccountMutation,
@@ -233,10 +230,10 @@ const destroy = async () => {
       <div class="text-center">
         <Btn
           :loading="deleting"
-          :variant="BtnVariantsEnum.DANGER"
-          :size="BtnSizesEnum.LARGE"
           data-test="destroy-account"
           @click="destroy"
+          :size="BtnSizesEnum.LG"
+          :tone="BtnTonesEnum.DANGER"
         >
           {{ t("actions.destroyAccount") }}
         </Btn>

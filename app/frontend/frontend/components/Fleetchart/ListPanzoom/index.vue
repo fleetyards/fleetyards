@@ -523,7 +523,7 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
   <div class="row fleetchart-list-panzoom">
     <div class="col-12 fleetchart-wrapper">
       <div class="fleetchart-controls">
-        <BtnDropdown size="small">
+        <BtnDropdown>
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.screenHeight") }}:
@@ -537,16 +537,15 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
           <Btn
             v-for="(option, index) in FleetchartScreenHeights"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
-            size="small"
-            variant="link"
             :active="selectedScreenHeight === option"
             @click="setScreenHeight(option)"
+            variant="bare"
           >
             {{ t(`labels.fleetchartApp.screenHeightOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
 
-        <BtnDropdown size="small">
+        <BtnDropdown>
           <template #label>
             <template v-if="!mobile">
               {{ t("labels.fleetchartApp.viewpoint") }}:
@@ -556,35 +555,33 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
           <Btn
             v-for="(option, index) in FleetchartViewpoints"
             :key="`fleetchart-screen-height-drowndown-${index}-${option}`"
-            size="small"
-            variant="link"
             :active="viewpoint === option"
             @click="setViewpoint(option)"
+            variant="bare"
           >
             {{ t(`labels.fleetchartApp.viewpointOptions.${option}`) }}
           </Btn>
         </BtnDropdown>
 
-        <Btn size="small" :active="gridEnabled" @click="toggleGrid">
+        <Btn :active="gridEnabled" @click="toggleGrid">
           <i class="fa-duotone fa-th" />
         </Btn>
 
-        <Btn size="small" :active="coloredEnabled" @click="toggleColored">
+        <Btn :active="coloredEnabled" @click="toggleColored">
           <i class="fa-duotone fa-palette" />
         </Btn>
 
-        <BtnDropdown size="small">
+        <BtnDropdown>
           <template v-if="downloadName">
             <DownloadScreenshotBtn
               element="#fleetchart"
               :filename="downloadName"
-              size="small"
             />
 
             <hr />
           </template>
 
-          <Btn size="small" @click="toggleLabels">
+          <Btn @click="toggleLabels">
             <i class="fa-duotone fa-tags" />
             <span v-if="showLabels">
               {{ t("actions.hideLabels") }}
@@ -594,9 +591,9 @@ const imageMaxWidth = (item: Vehicle | Model | VehiclePublic) => {
             </span>
           </Btn>
 
-          <FleetChartStatusBtn size="small" />
+          <FleetChartStatusBtn />
 
-          <Btn size="small" @click="markForReset">
+          <Btn @click="markForReset">
             <i class="fa-duotone fa-undo" />
             <span>{{ t("actions.resetZoom") }}</span>
           </Btn>

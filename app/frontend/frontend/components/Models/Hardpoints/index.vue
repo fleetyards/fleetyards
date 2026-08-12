@@ -183,15 +183,14 @@ useMetricsMasonry(metricsGrid);
       <div v-if="model.inGame" class="flex justify-center">
         <BtnGroup>
           <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
-          <Btn :href="erkulUrl" mobile-block class="erkul-link">
+          <Btn :href="erkulUrl" class="erkul-link w-full md:w-auto">
             <i />
             {{ t("labels.hardpoints.erkul") }}
           </Btn>
           <Btn
             v-tooltip="t('labels.hardpoints.spviewerTitle')"
             :href="spviewerUrl"
-            mobile-block
-            class="spviewer-link"
+            class="spviewer-link w-full md:w-auto"
           >
             <i />
             {{ t("labels.hardpoints.spviewer") }}

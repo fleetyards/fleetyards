@@ -49,10 +49,8 @@ const acceptYoutube = () => {
     <div v-else-if="video.type === 'youtube'" class="youtube-placeholder">
       <i class="fa-brands fa-youtube" />
       <div class="youtube-placeholder-buttons">
-        <Btn :inline="true" @click="acceptYoutube"> Allow video embeds </Btn>
-        <Btn :inline="true" @click="copyVideoUrl(video)">
-          Copy Youtube URL
-        </Btn>
+        <Btn @click="acceptYoutube"> Allow video embeds </Btn>
+        <Btn @click="copyVideoUrl(video)"> Copy Youtube URL </Btn>
       </div>
     </div>
   </div>

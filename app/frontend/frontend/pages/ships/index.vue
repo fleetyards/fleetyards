@@ -92,7 +92,6 @@ const openDisplayOptionsModal = () => {
         name: 'compare',
       }"
       :aria-label="t('actions.compare.ships')"
-      :size="BtnSizesEnum.SMALL"
       mobile-icon-only
     >
       <i class="fa-duotone fa-code-compare" />
@@ -101,7 +100,6 @@ const openDisplayOptionsModal = () => {
     <Btn
       data-test="fleetchart-link"
       :aria-label="t('labels.fleetchart')"
-      :size="BtnSizesEnum.SMALL"
       mobile-icon-only
       @click="toggleFleetchart"
     >
@@ -121,7 +119,6 @@ const openDisplayOptionsModal = () => {
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"
-        :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />
@@ -171,7 +168,7 @@ const openDisplayOptionsModal = () => {
             v-if="models"
             :query-result-ref="models"
             :per-page="perPage"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             :update-per-page="updatePerPage"
           />
         </template>

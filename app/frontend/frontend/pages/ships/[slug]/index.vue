@@ -288,7 +288,6 @@ const adiMap = computed(() => {
             <BtnGroup class="toggle-3d" v-if="model.media.holo">
               <Btn
                 v-if="holoviewerVisible"
-                :size="BtnSizesEnum.SMALL"
                 :to="{
                   name: 'ship-viewer',
                   params: {
@@ -299,15 +298,11 @@ const adiMap = computed(() => {
               >
                 <i class="fa-light fa-external-link-alt" />
               </Btn>
-              <Btn
-                :active="holoviewerVisible"
-                :size="BtnSizesEnum.SMALL"
-                @click="toggleHoloviewer"
-              >
+              <Btn :active="holoviewerVisible" @click="toggleHoloviewer">
                 {{ t("labels.3dView") }}
               </Btn>
 
-              <Btn v-if="adiMap" :size="BtnSizesEnum.SMALL" :href="adiMap">
+              <Btn v-if="adiMap" :href="adiMap">
                 <img :src="adiIcon" class="adi-icon" />
                 {{ t("labels.3dMap") }}
               </Btn>
@@ -379,24 +374,23 @@ const adiMap = computed(() => {
               {{ t("actions.model.store") }}
             </Btn>
 
-            <AddToHangar :model="model" :size="BtnSizesEnum.SMALL" />
+            <AddToHangar :model="model" :size="BtnSizesEnum.SM" />
 
             <ShareBtn
               v-if="!mobile"
               data-test="share"
               :url="shareUrl"
               :title="metaTitle || ''"
-              :size="BtnSizesEnum.SMALL"
+              :size="BtnSizesEnum.SM"
             />
 
-            <BtnDropdown data-test="model-dropdown" :size="BtnSizesEnum.SMALL">
+            <BtnDropdown data-test="model-dropdown">
               <Btn
                 v-if="model.hasImages"
                 :to="{
                   name: 'ship-images',
                   params: { slug: model.slug },
                 }"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa fa-images" />
                 <span>{{ t("nav.images") }}</span>
@@ -407,7 +401,6 @@ const adiMap = computed(() => {
                   name: 'ship-videos',
                   params: { slug: model.slug },
                 }"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-light fa-video" />
                 <span>{{ t("nav.videos") }}</span>
@@ -415,7 +408,6 @@ const adiMap = computed(() => {
               <Btn
                 v-if="model.media.brochure?.url"
                 :href="model.media.brochure.url"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-light fa-download" />
                 <span>{{ t("labels.model.brochure") }}</span>
@@ -426,7 +418,6 @@ const adiMap = computed(() => {
                   query: { models: [model.slug] },
                 }"
                 data-test="compare"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-light fa-code-compare" />
                 <span>{{ t("actions.compare.ships") }}</span>
@@ -436,17 +427,16 @@ const adiMap = computed(() => {
                 data-test="share"
                 :url="shareUrl"
                 :title="metaTitle || ''"
-                :size="BtnSizesEnum.SMALL"
+                :size="BtnSizesEnum.SM"
               />
               <Btn
                 v-if="model.links?.salesPageUrl"
                 :href="model.links?.salesPageUrl"
-                :size="BtnSizesEnum.SMALL"
               >
                 <i class="fa-duotone fa-megaphone" />
                 <span>{{ t("labels.model.salesPage") }}</span>
               </Btn>
-              <Btn :href="wikiUrl" :size="BtnSizesEnum.SMALL">
+              <Btn :href="wikiUrl">
                 <img :src="starcitizenToolsLogo" alt="Starcitizen.tools" />
                 <span>{{ t("labels.model.wiki") }}</span>
               </Btn>

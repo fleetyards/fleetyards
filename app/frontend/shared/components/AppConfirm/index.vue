@@ -78,21 +78,12 @@ const handleCancel = async () => {
         <!-- eslint-disable-next-line vue/no-v-html -->
         <div class="app-confirm__text" v-html="text" />
         <div class="app-confirm__buttons" data-test="confirm-buttons">
-          <Btn
-            inline
-            size="small"
-            data-test="confirm-cancel"
-            autofocus
-            @click="handleCancel"
-            >{{ cancelText }}</Btn
-          >
-          <Btn
-            inline
-            size="small"
-            data-test="confirm-ok"
-            @click="handleConfirm"
-            >{{ confirmText }}</Btn
-          >
+          <Btn data-test="confirm-cancel" autofocus @click="handleCancel">{{
+            cancelText
+          }}</Btn>
+          <Btn data-test="confirm-ok" @click="handleConfirm">{{
+            confirmText
+          }}</Btn>
         </div>
       </div>
     </div>

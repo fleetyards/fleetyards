@@ -16,7 +16,7 @@ import type {
   Model,
   FleetModelCountsStats,
 } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
@@ -227,9 +227,8 @@ const openOwnersModal = (modelSlug: string) => {
       <template #col-owner="{ record }">
         <Btn
           v-if="fleetStore.grouped"
-          variant="link"
-          :text-inline="true"
           @click="openOwnersModal(getModel(record).slug)"
+          variant="bare"
         >
           {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
         </Btn>
@@ -317,7 +316,6 @@ const openOwnersModal = (modelSlug: string) => {
               slug: getModel(record).slug,
             },
           }"
-          :size="BtnSizesEnum.SMALL"
         >
           <span class="no-wrap">{{ t("actions.showDetailPage") }}</span>
         </Btn>

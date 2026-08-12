@@ -11,7 +11,7 @@ import { HardpointCategoryEnum } from "@/services/fyAdminApi";
 import { type Hardpoint } from "@/services/fyApi";
 import HardpointItems from "@/frontend/components/Models/Hardpoints/Items/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import radarIconUrl from "@/images/hardpoints/radar.svg";
 import computersIconUrl from "@/images/hardpoints/computers.svg";
 import powerPlantsIconUrl from "@/images/hardpoints/power_plants.svg";
@@ -167,8 +167,6 @@ const icons = {
       <Btn
         v-if="category === HardpointCategoryEnum.CARGOGRID && modelSlug"
         :to="cargoGridsRoute"
-        :size="BtnSizesEnum.SMALL"
-        inline
         class="hardpoint-category__link"
       >
         <i class="fa-light fa-cube" />

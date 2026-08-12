@@ -46,8 +46,8 @@ const props = withDefaults(defineProps<Props>(), {
   type: "button",
   loading: false,
   spinner: false,
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.DEFAULT,
+  variant: undefined,
+  size: undefined,
   exact: false,
   block: false,
   mobileBlock: false,
@@ -114,9 +114,7 @@ const copyShareUrl = () => {
     v-tooltip="noLabel && t('actions.share')"
     :variant="variant"
     :size="size"
-    :inline="inline"
     :block="block"
-    :mobile-block="mobileBlock"
     :mobile-icon-only="mobileIconOnly"
     @click="share"
   >

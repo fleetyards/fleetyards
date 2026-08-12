@@ -129,10 +129,7 @@ const copyProvisioningUrl = () => {
   <div v-if="backupCodes" class="row two-factor-backup-codes">
     <div class="col-12 col-md-6 offset-md-3">
       <BackupCodesPanel :codes="backupCodes" />
-      <Btn
-        :to="{ name: 'settings-security', hash: '#two-factor' }"
-        :exact="true"
-      >
+      <Btn :to="{ name: 'settings-security', hash: '#two-factor' }">
         {{ t("actions.done") }}
       </Btn>
     </div>
@@ -175,7 +172,7 @@ const copyProvisioningUrl = () => {
 
             <br />
 
-            <Btn :loading="submitting" type="submit" size="large" :block="true">
+            <Btn :loading="submitting" type="submit" :block="true" size="lg">
               {{ t("actions.twoFactor.enable") }}
             </Btn>
           </div>

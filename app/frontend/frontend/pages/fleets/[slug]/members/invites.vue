@@ -16,7 +16,7 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import FleetMembersFilterForm from "@/frontend/components/Fleets/MembersFilterForm/index.vue";
 import FleetInvitesList from "@/frontend/components/Fleets/InvitesList/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useFilters } from "@/shared/composables/useFilters";
 import { checkAccess } from "@/shared/utils/Access";
 import {
@@ -184,11 +184,11 @@ const openInviteModal = () => {
   </Heading>
 
   <Teleport v-if="!mobile && canInvite" to="#header-right">
-    <Btn :inline="true" @click="openInviteUrlModal">
+    <Btn @click="openInviteUrlModal">
       <i class="fa-light fa-plus" />
       {{ t("actions.fleet.createInviteUrl") }}
     </Btn>
-    <Btn :inline="true" @click="openInviteModal">
+    <Btn @click="openInviteModal">
       <i class="fa-duotone fa-user-plus" />
       {{ t("actions.fleet.inviteMember") }}
     </Btn>
@@ -207,12 +207,12 @@ const openInviteModal = () => {
     </template>
 
     <template v-if="mobile && canInvite" #actions-right>
-      <BtnDropdown :size="BtnSizesEnum.SMALL">
-        <Btn :size="BtnSizesEnum.SMALL" @click="openInviteUrlModal">
+      <BtnDropdown>
+        <Btn @click="openInviteUrlModal">
           <i class="fa-light fa-plus" />
           <span>{{ t("actions.fleet.createInviteUrl") }}</span>
         </Btn>
-        <Btn :size="BtnSizesEnum.SMALL" @click="openInviteModal">
+        <Btn @click="openInviteModal">
           <i class="fa-duotone fa-user-plus" />
           <span>{{ t("actions.fleet.inviteMember") }}</span>
         </Btn>

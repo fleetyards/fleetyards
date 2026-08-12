@@ -261,23 +261,18 @@ const openDisplayOptionsModal = () => {
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"
-        :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-cog" />
       </Btn>
-      <BtnDropdown :size="BtnSizesEnum.SMALL">
+      <BtnDropdown>
         <template v-if="mobile">
-          <Btn
-            data-test="fleetchart-link"
-            :size="BtnSizesEnum.SMALL"
-            @click="toggleFleetchart"
-          >
+          <Btn data-test="fleetchart-link" @click="toggleFleetchart">
             <i class="fa-duotone fa-starship" />
             <span>{{ t("labels.fleetchart") }}</span>
           </Btn>
 
-          <Btn :to="{ name: 'hangar-stats' }" :size="BtnSizesEnum.SMALL">
+          <Btn :to="{ name: 'hangar-stats' }">
             <i class="fa-duotone fa-chart-bar" />
             <span>{{ t("labels.hangarStats") }}</span>
           </Btn>
@@ -286,16 +281,12 @@ const openDisplayOptionsModal = () => {
             v-if="currentUser && currentUser.publicWishlist && shareUrl"
             :url="shareUrl"
             :title="shareTitle"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
           />
 
           <hr />
         </template>
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          :aria-label="t('actions.export')"
-          @click="exportJson"
-        >
+        <Btn :aria-label="t('actions.export')" @click="exportJson">
           <i class="fa-light fa-download" />
           <span>{{ t("actions.export") }}</span>
         </Btn>
@@ -303,7 +294,6 @@ const openDisplayOptionsModal = () => {
         <hr />
 
         <Btn
-          :size="BtnSizesEnum.SMALL"
           :disabled="deleting"
           :aria-label="t('actions.hangar.destroyAll')"
           @click="destroyAll"
@@ -358,7 +348,7 @@ const openDisplayOptionsModal = () => {
             v-if="vehicles"
             :query-result-ref="vehicles"
             :per-page="perPage"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             :update-per-page="updatePerPage"
           />
         </template>

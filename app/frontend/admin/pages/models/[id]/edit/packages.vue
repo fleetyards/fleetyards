@@ -33,10 +33,7 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -201,7 +198,6 @@ const onSaveCreate = async () => {
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.packages") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
@@ -242,9 +238,8 @@ const onSaveCreate = async () => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.modelModulePackage.hidden')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'hidden')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-eye"
@@ -254,9 +249,8 @@ const onSaveCreate = async () => {
       </Btn>
       <Btn
         v-tooltip="t('labels.modelModulePackage.active')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'active')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-circle-check"

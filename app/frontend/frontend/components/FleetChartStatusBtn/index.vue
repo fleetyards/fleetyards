@@ -22,8 +22,8 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.DEFAULT,
+  variant: undefined,
+  size: undefined,
   inline: false,
 });
 
@@ -73,7 +73,6 @@ const toggleStatus = () => {
     :aria-label="t('actions.showStatusColor')"
     :variant="variant"
     :size="size"
-    :inline="inline"
     @click="toggleStatus"
   >
     <i

@@ -25,7 +25,6 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -156,7 +155,6 @@ const videoTypeOptions: FilterOption[] = Object.values(VideoTypeEnum).map(
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.videos") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >

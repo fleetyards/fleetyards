@@ -8,7 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import {
   type ModelExtended,
   type ModelSnubCraft,
@@ -130,7 +130,6 @@ const onSaveCreate = async () => {
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.snubCrafts") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >

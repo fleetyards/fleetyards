@@ -24,8 +24,8 @@ type Props = {
 };
 
 withDefaults(defineProps<Props>(), {
-  variant: BtnVariantsEnum.DEFAULT,
-  size: BtnSizesEnum.SMALL,
+  variant: undefined,
+  size: undefined,
   inGroup: false,
 });
 
@@ -42,7 +42,6 @@ const mobile = useMobile();
     data-test="vehicle-menu"
     expand-left
     expand-bottom
-    inline
   >
     <Btn
       v-if="mobile"
@@ -52,16 +51,11 @@ const mobile = useMobile();
           slug: model.slug,
         },
       }"
-      :size="BtnSizesEnum.SMALL"
     >
       <i class="fa-duotone fa-starship" />
       <span>{{ t("actions.showDetailPage") }}</span>
     </Btn>
-    <Btn
-      :size="BtnSizesEnum.SMALL"
-      :href="model.links?.storeUrl"
-      style="flex-grow: 3"
-    >
+    <Btn :href="model.links?.storeUrl" style="flex-grow: 3">
       <img :src="rsiLogo" alt="RSI Logo" />
       <span>{{ t("actions.model.store") }}</span>
     </Btn>
@@ -71,7 +65,6 @@ const mobile = useMobile();
         name: 'ship-images',
         params: { slug: model.slug },
       }"
-      :size="BtnSizesEnum.SMALL"
     >
       <i class="fa fa-images" />
       <span>{{ t("nav.images") }}</span>
@@ -82,16 +75,11 @@ const mobile = useMobile();
         name: 'ship-videos',
         params: { slug: model.slug },
       }"
-      :size="BtnSizesEnum.SMALL"
     >
       <i class="fa-light fa-video" />
       <span>{{ t("nav.videos") }}</span>
     </Btn>
-    <Btn
-      v-if="model.brochure"
-      :href="model.brochure"
-      :size="BtnSizesEnum.SMALL"
-    >
+    <Btn v-if="model.brochure" :href="model.brochure">
       <i class="fa-light fa-download" />
       <span>{{ t("labels.model.brochure") }}</span>
     </Btn>
@@ -101,16 +89,11 @@ const mobile = useMobile();
         query: { models: [model.slug] },
       }"
       data-test="compare"
-      :size="BtnSizesEnum.SMALL"
     >
       <i class="fa-light fa-code-compare" />
       <span>{{ t("actions.compare.ships") }}</span>
     </Btn>
-    <Btn
-      v-if="model.links?.salesPageUrl"
-      :href="model.links?.salesPageUrl"
-      :size="BtnSizesEnum.SMALL"
-    >
+    <Btn v-if="model.links?.salesPageUrl" :href="model.links?.salesPageUrl">
       <i class="fa-duotone fa-megaphone" />
       <span>{{ t("labels.model.salesPage") }}</span>
     </Btn>

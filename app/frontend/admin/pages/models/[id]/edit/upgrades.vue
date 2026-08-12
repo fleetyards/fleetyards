@@ -31,10 +31,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -185,14 +182,13 @@ const onUnlink = (record: ModelUpgrade) => {
     <Heading hero>{{ t("headlines.admin.models.edit.upgrades") }}</Heading>
     <BtnGroup>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :disabled="editableList?.creating"
         @click="editableList?.startCreate()"
       >
         <i class="fa-duotone fa-plus" />
         {{ t("actions.add") }}
       </Btn>
-      <Btn :size="BtnSizesEnum.SMALL" @click="openLinkModal">
+      <Btn @click="openLinkModal">
         <i class="fa-duotone fa-link" />
         {{ t("actions.linkExisting") }}
       </Btn>
@@ -229,9 +225,8 @@ const onUnlink = (record: ModelUpgrade) => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.modelUpgrade.hidden')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'hidden')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-eye"
@@ -241,9 +236,8 @@ const onUnlink = (record: ModelUpgrade) => {
       </Btn>
       <Btn
         v-tooltip="t('labels.modelUpgrade.active')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'active')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-circle-check"
@@ -253,9 +247,8 @@ const onUnlink = (record: ModelUpgrade) => {
       </Btn>
       <Btn
         v-tooltip="t('actions.unlink')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="onUnlink(item)"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i class="fa-duotone fa-unlink text-muted" />
         <span v-if="mobile">{{ t("actions.unlink") }}</span>

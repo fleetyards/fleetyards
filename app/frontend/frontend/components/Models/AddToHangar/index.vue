@@ -50,18 +50,18 @@ const onWishlist = computed(() => {
 
 const btnVariant = computed(() => {
   if (["panel", "menu"].includes(props.variant)) {
-    return BtnVariantsEnum.LINK;
+    return BtnVariantsEnum.BARE;
   }
 
-  return BtnVariantsEnum.DEFAULT;
+  return BtnVariantsEnum.SOLID;
 });
 
 const btnSize = computed(() => {
   if (["panel", "menu"].includes(props.variant)) {
-    return BtnSizesEnum.SMALL;
+    return BtnSizesEnum.SM;
   }
 
-  return BtnSizesEnum.DEFAULT;
+  return BtnSizesEnum.MD;
 });
 
 const comlink = useComlink();
@@ -94,7 +94,6 @@ const add = async () => {
     v-tooltip.bottom="t('actions.addToHangar')"
     :variant="btnVariant"
     :size="btnSize"
-    :inline="variant === 'menu'"
     data-test="add-to-hangar"
     @click="add"
   >

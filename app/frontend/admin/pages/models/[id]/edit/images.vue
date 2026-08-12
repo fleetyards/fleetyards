@@ -9,10 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   type ModelExtended,
   type Image,
@@ -224,10 +221,9 @@ const handleUploadDone = async (files: FileUpload[]) => {
     @destroy="onDestroy"
   >
     <template #selected-actions>
-      <BtnGroup inline>
+      <BtnGroup>
         <Btn
           v-tooltip="t('actions.enableSelected')"
-          :size="BtnSizesEnum.SMALL"
           :disabled="bulkUpdating"
           @click="enableSelected"
         >
@@ -235,7 +231,6 @@ const handleUploadDone = async (files: FileUpload[]) => {
         </Btn>
         <Btn
           v-tooltip="t('actions.disableSelected')"
-          :size="BtnSizesEnum.SMALL"
           :disabled="bulkUpdating"
           @click="disableSelected"
         >
@@ -258,9 +253,8 @@ const handleUploadDone = async (files: FileUpload[]) => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.image.active')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'enabled')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-circle-check"
@@ -270,9 +264,8 @@ const handleUploadDone = async (files: FileUpload[]) => {
       </Btn>
       <Btn
         v-tooltip="t('labels.image.global')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'global')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-globe"
@@ -282,9 +275,8 @@ const handleUploadDone = async (files: FileUpload[]) => {
       </Btn>
       <Btn
         v-tooltip="t('labels.image.background')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'background')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-image"

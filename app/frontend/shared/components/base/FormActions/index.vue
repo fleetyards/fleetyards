@@ -75,8 +75,8 @@ onBeforeUnmount(() => {
         :loading="submitting"
         :type="BtnTypesEnum.SUBMIT"
         data-test="submit-form"
-        :size="BtnSizesEnum.LARGE"
         :formId="formId"
+        :size="BtnSizesEnum.LG"
       >
         {{ t("actions.save") }}
       </Btn>

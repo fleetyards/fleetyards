@@ -19,10 +19,7 @@ import {
 import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   InputAlignmentsEnum,
   InputTypesEnum,
@@ -176,9 +173,8 @@ const formatOffset = (hold: AdminCargoHold) => {
       <Btn
         v-if="hasOffset(item)"
         v-tooltip="'Clear offsets'"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="clearOffsets(item)"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i class="fa-duotone fa-undo" />
       </Btn>

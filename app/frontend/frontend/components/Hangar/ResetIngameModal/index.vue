@@ -64,17 +64,12 @@ const removeAll = async () => {
   <Modal :title="t('headlines.hangar.resetIngame')">
     <div class="page-actions page-actions-block">
       <Btn
-        :inline="true"
         data-test="reset-ingame-modal-reset-to-wishlist"
         @click="moveToWishlist"
       >
         {{ t("actions.hangar.resetIngame.moveToWishlist") }}
       </Btn>
-      <Btn
-        :inline="true"
-        data-test="reset-ingame-modal-reset"
-        @click="removeAll"
-      >
+      <Btn data-test="reset-ingame-modal-reset" @click="removeAll">
         {{ t("actions.hangar.resetIngame.removeAll") }}
       </Btn>
     </div>

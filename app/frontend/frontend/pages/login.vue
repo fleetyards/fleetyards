@@ -163,8 +163,8 @@ const signupRoute = computed(() => {
           :loading="submitting"
           :type="BtnTypesEnum.SUBMIT"
           data-test="submit-login"
-          :size="BtnSizesEnum.LARGE"
           block
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.login") }}
         </Btn>
@@ -183,9 +183,8 @@ const signupRoute = computed(() => {
           :to="{
             name: 'request-password',
           }"
-          :variant="BtnVariantsEnum.LINK"
-          :size="BtnSizesEnum.SMALL"
           :block="true"
+          :variant="BtnVariantsEnum.BARE"
         >
           {{ t("actions.reset-password") }}
         </Btn>
@@ -193,12 +192,7 @@ const signupRoute = computed(() => {
           <p class="text-center">
             {{ t("labels.signup.link") }}
           </p>
-          <Btn
-            data-test="signup-link"
-            :to="signupRoute"
-            :size="BtnSizesEnum.SMALL"
-            :block="true"
-          >
+          <Btn data-test="signup-link" :to="signupRoute" :block="true">
             {{ t("actions.signUp") }}
           </Btn>
         </footer>

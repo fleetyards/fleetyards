@@ -89,7 +89,7 @@ const openSupportModal = () => {
         </a>
       </div>
       <div class="app-footer__support">
-        <Btn inline :variant="BtnVariantsEnum.LINK" @click="openSupportModal">
+        <Btn @click="openSupportModal" :variant="BtnVariantsEnum.BARE">
           {{ t("labels.supportUs") }}
           <i class="fa fa-heart" />
         </Btn>

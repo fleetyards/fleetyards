@@ -17,10 +17,7 @@ import {
   getModelModuleQueryKey,
 } from "@/services/fyAdminApi";
 import ModelFilterGroup from "@/admin/components/base/ModelFilterGroup/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -92,7 +89,6 @@ const onUnlinkModel = (item: Model) => {
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.modelModules.models") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
@@ -127,12 +123,11 @@ const onUnlinkModel = (item: Model) => {
     </template>
 
     <template #actions="{ item, mobile }">
-      <BtnGroup inline>
+      <BtnGroup>
         <Btn
           v-tooltip="t('actions.unlink')"
-          :size="BtnSizesEnum.SMALL"
-          :variant="BtnVariantsEnum.TRANSPARENT"
           @click="onUnlinkModel(item)"
+          :variant="BtnVariantsEnum.GHOST"
         >
           <i class="fa-duotone fa-unlink text-muted" />
           <span v-if="mobile">{{ t("actions.unlink") }}</span>
