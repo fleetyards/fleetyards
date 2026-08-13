@@ -38,10 +38,15 @@ export const useInventoryStockList = (
       if (categoryFilter && item.category !== categoryFilter) {
         return false;
       }
-      if (qualityMin !== undefined && (item.quality ?? 0) < qualityMin) {
+      // Rows from the merged endpoints carry a range rather than a single
+      // quality, so a filter keeps every row whose range reaches into it.
+      const highest = item.qualityMax ?? item.quality;
+      const lowest = item.qualityMin ?? item.quality;
+
+      if (qualityMin !== undefined && (highest ?? 0) < qualityMin) {
         return false;
       }
-      if (qualityMax !== undefined && (item.quality ?? 0) > qualityMax) {
+      if (qualityMax !== undefined && (lowest ?? 0) > qualityMax) {
         return false;
       }
       return true;

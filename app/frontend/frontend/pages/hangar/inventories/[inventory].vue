@@ -10,6 +10,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -209,6 +210,30 @@ const crumbs = computed(() => [
         >
           <template #filter>
             <InventoryItemFilterForm :update-callback="refetchAll" />
+          </template>
+
+          <template #actions-right>
+            <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SMALL">
+              <Btn :size="BtnSizesEnum.SMALL" @click="openItemModal('deposit')">
+                <i class="fa-duotone fa-arrow-down-to-bracket" />
+                <span>{{ t("actions.logistics.deposit") }}</span>
+              </Btn>
+              <Btn
+                :size="BtnSizesEnum.SMALL"
+                @click="openItemModal('withdrawal')"
+              >
+                <i class="fa-duotone fa-arrow-up-from-bracket" />
+                <span>{{ t("actions.logistics.withdraw") }}</span>
+              </Btn>
+              <Btn :size="BtnSizesEnum.SMALL" @click="openCsvImportModal">
+                <i class="fa-duotone fa-file-csv" />
+                <span>{{ t("actions.logistics.importCsv") }}</span>
+              </Btn>
+              <Btn :size="BtnSizesEnum.SMALL" @click="openEditModal">
+                <i class="fa-duotone fa-pen" />
+                <span>{{ t("actions.logistics.editInventory") }}</span>
+              </Btn>
+            </BtnDropdown>
           </template>
 
           <template #actions-left>
