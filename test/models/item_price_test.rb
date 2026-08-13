@@ -2,6 +2,25 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: item_prices
+#
+#  id           :uuid             not null, primary key
+#  item_type    :string           not null
+#  location     :string
+#  location_url :string
+#  price        :decimal(15, 2)
+#  price_type   :integer
+#  time_range   :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  item_id      :uuid             not null
+#
+# Indexes
+#
+#  index_item_prices_on_item  (item_type,item_id)
+#
 class ItemPriceTest < ActiveSupport::TestCase
   test "accepts a web location url" do
     assert build(:item_price, location_url: "https://example.test/shop").valid?
