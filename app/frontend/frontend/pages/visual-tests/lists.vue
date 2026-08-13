@@ -19,7 +19,7 @@ import { type FilterOption } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { v4 as uuidv4 } from "uuid";
 
-const { displaySuccess } = useAppNotifications();
+const { displaySuccess, dismissConfirm } = useAppNotifications();
 
 type Dock = {
   id: string;
@@ -168,7 +168,11 @@ const bulkCopy = (selected: string[]) => {
   displaySuccess({ text: `Copied ${selected.length} docks.` });
 };
 
+// A pending destroy confirmation captured the item it was opened for, and
+// `buildDocks` hands back the same ids, so confirming after a reset would delete
+// a record from the freshly restored list.
 const resetDocks = () => {
+  dismissConfirm();
   docks.value = buildDocks();
   editableList.value?.finishEdit();
   editableList.value?.finishCreate();

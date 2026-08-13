@@ -130,6 +130,10 @@ export const useAppNotifications = () => {
     comlink.emit("show-confirm", options);
   };
 
+  const dismissConfirm = () => {
+    comlink.emit("hide-confirm");
+  };
+
   return {
     displayMessage,
     displayAlert,
@@ -137,6 +141,7 @@ export const useAppNotifications = () => {
     displayInfo,
     displayWarning,
     displayConfirm,
+    dismissConfirm,
     displayNativeNotification,
     requestBrowserPermission,
   };
