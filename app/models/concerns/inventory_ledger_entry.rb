@@ -13,6 +13,11 @@ module InventoryLedgerEntry
     other: 6
   }.freeze
 
+  # item_type reaches us from the client, and a polymorphic belongs_to would
+  # happily point an entry at any model in the app — including records the
+  # signed-in user cannot see, whose name would then be copied onto the entry.
+  ITEM_TYPES = %w[Component].freeze
+
   UNITS = {scu: 0, units: 1}.freeze
 
   ENTRY_TYPES = {deposit: 0, withdrawal: 1}.freeze
@@ -38,7 +43,10 @@ module InventoryLedgerEntry
     validates :name, presence: true
     validates :quantity, numericality: {greater_than: 0}
     validates :quality, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000}, allow_nil: true
+    validates :item_type, inclusion: {in: ITEM_TYPES}, allow_blank: true
+    validates :item_type, presence: true, if: :item_id?
     validate :withdrawal_does_not_exceed_stock, if: :withdrawal?
+    validate :referenced_item_exists, if: :item_id?
 
     before_validation :set_name_from_item
   end
@@ -63,11 +71,33 @@ module InventoryLedgerEntry
     end
   end
 
+  # Falls back to the referenced game item's artwork, so an entry pointing at a
+  # component looks like that component without anyone uploading a picture.
+  def display_image
+    return image if image.attached?
+    return unless referenced_item?
+    return unless item.respond_to?(:store_image) && item.store_image.attached?
+
+    item.store_image
+  end
+
+  # Reading `item` constantizes item_type, so both the name default and the
+  # existence check have to wait until the type is known to be one of ours.
+  def referenced_item?
+    item_type.in?(ITEM_TYPES) && item.present?
+  end
+
   private def set_name_from_item
-    return if item.blank?
     return if name.present?
+    return unless referenced_item?
 
     self.name = item.name
+  end
+
+  private def referenced_item_exists
+    return unless item_type.in?(ITEM_TYPES)
+
+    errors.add(:item_id, :blank) if item.blank?
   end
 
   private def withdrawal_does_not_exceed_stock

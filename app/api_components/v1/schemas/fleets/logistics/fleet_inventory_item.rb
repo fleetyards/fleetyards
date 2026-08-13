@@ -23,8 +23,9 @@ module V1
                 type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
-                  type: {type: :string},
-                  name: {type: :string}
+                  type: {type: :string, enum: InventoryLedgerEntry::ITEM_TYPES},
+                  name: {type: :string},
+                  slug: {type: :string}
                 }
               },
               inventory: {

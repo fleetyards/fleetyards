@@ -17,7 +17,7 @@ module V1
             quality: {type: [:integer, :null], minimum: 0, maximum: 1000},
             image: {type: [:string, :null]},
             notes: {type: [:string, :null]},
-            itemType: {type: [:string, :null]},
+            itemType: {type: [:string, :null], enum: InventoryLedgerEntry::ITEM_TYPES + [nil]},
             itemId: {type: [:string, :null], format: :uuid}
           },
           required: %w[name quantity],

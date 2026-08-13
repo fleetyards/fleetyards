@@ -7,14 +7,14 @@ require "test_helper"
 # Table name: hangar_inventory_items
 #
 #  id                  :uuid             not null, primary key
-#  category            :integer          default("commodity"), not null
-#  entry_type          :integer          default("deposit"), not null
+#  category            :integer          default(0), not null
+#  entry_type          :integer          default(0), not null
 #  item_type           :string
 #  name                :string           not null
 #  notes               :text
 #  quality             :integer          default(0)
 #  quantity            :decimal(15, 2)   default(0.0), not null
-#  unit                :integer          default("scu"), not null
+#  unit                :integer          default(0), not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  hangar_inventory_id :uuid             not null
@@ -65,6 +65,38 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
       hangar_inventory: @inventory, name: "Quantanium", quantity: 1, unit: :units)
 
     assert_not withdrawal.valid?
+  end
+
+  test "takes its name from a referenced component" do
+    component = create(:component, name: "FR-66 Shield Generator")
+
+    item = create(:hangar_inventory_item, hangar_inventory: @inventory, name: nil, item: component)
+
+    assert_equal "FR-66 Shield Generator", item.name
+  end
+
+  test "rejects an item type outside the allowed list" do
+    fleet = create(:fleet)
+
+    item = build(:hangar_inventory_item, hangar_inventory: @inventory, item_type: "Fleet", item_id: fleet.id)
+
+    assert_not item.valid?
+    assert_includes item.errors.attribute_names, :item_type
+  end
+
+  test "rejects an item id without an item type" do
+    item = build(:hangar_inventory_item, hangar_inventory: @inventory, item_id: SecureRandom.uuid)
+
+    assert_not item.valid?
+    assert_includes item.errors.attribute_names, :item_type
+  end
+
+  test "rejects a reference to a component that does not exist" do
+    item = build(:hangar_inventory_item, hangar_inventory: @inventory,
+      item_type: "Component", item_id: SecureRandom.uuid)
+
+    assert_not item.valid?
+    assert_includes item.errors.attribute_names, :item_id
   end
 
   test "does not create notifications" do
