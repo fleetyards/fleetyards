@@ -46,8 +46,9 @@ module Api
 
       private def components_query_params
         @components_query_params ||= params.permit(q: [
-          :name_cont,
-          id_in: [], name_in: [], item_type_in: [], manufacturer_slug_in: [], component_class_in: []
+          :name_cont, :current_version, :hidden_eq,
+          id_in: [], name_in: [], item_type_in: [], manufacturer_slug_in: [], component_class_in: [],
+          category_in: [], component_sub_type_in: []
         ]).fetch(:q, {})
       end
     end

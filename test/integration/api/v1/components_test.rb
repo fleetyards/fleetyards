@@ -54,4 +54,48 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
       assert_equal 2, parsed_body.count
     end
   end
+
+  test "GET /components filters by categoryIn query" do
+    shield = create(:component, category: "shieldgenerator")
+    create(:component, category: "cooler")
+
+    assert_api_response :get, 200, params: {q: {"categoryIn" => ["shieldgenerator"]}} do
+      items = parsed_body["items"]
+      assert_equal 1, items.count
+      assert_equal shield.name, items.first["name"]
+    end
+  end
+
+  test "GET /components filters by componentSubTypeIn query" do
+    missile = create(:component, category: "weapons", component_sub_type: "Missile")
+    create(:component, category: "weapons", component_sub_type: "Gun")
+
+    assert_api_response :get, 200, params: {q: {"componentSubTypeIn" => ["Missile"]}} do
+      items = parsed_body["items"]
+      assert_equal 1, items.count
+      assert_equal missile.name, items.first["name"]
+    end
+  end
+
+  test "GET /components filters by hiddenEq query" do
+    visible = create(:component, category: "coolers")
+    create(:component, :hidden, category: "coolers")
+
+    assert_api_response :get, 200, params: {q: {"hiddenEq" => false, "categoryIn" => ["coolers"]}} do
+      items = parsed_body["items"]
+      assert_equal 1, items.count
+      assert_equal visible.name, items.first["name"]
+    end
+  end
+
+  test "GET /components filters out older game versions via currentVersion" do
+    current = create(:component, category: "coolers", version: Rails.configuration.sc_data[:version])
+    create(:component, category: "coolers", version: "0.0.1-live.1")
+
+    assert_api_response :get, 200, params: {q: {"currentVersion" => true}} do
+      items = parsed_body["items"]
+      assert_equal 1, items.count
+      assert_equal current.name, items.first["name"]
+    end
+  end
 end

@@ -104,6 +104,21 @@ paths:
                 type: array
                 items:
                   type: string
+  "/filters/components/categories":
+    get:
+      summary: Components Categories Filters
+      tags:
+      - ComponentsFilters
+      operationId: componentCategoriesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/filters/components/classes":
     get:
       summary: Components Classes Filters
@@ -134,6 +149,29 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/FilterOption"
+  "/filters/components/sub-types":
+    get:
+      summary: Components Sub Type Filters
+      tags:
+      - ComponentsFilters
+      operationId: componentSubTypesFilters
+      parameters:
+      - name: category
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/manufacturers/options":
     get:
       summary: Manufacturer Options
@@ -7905,6 +7943,18 @@ components:
           type: array
           items:
             type: string
+        categoryIn:
+          type: array
+          items:
+            type: string
+        componentSubTypeIn:
+          type: array
+          items:
+            type: string
+        currentVersion:
+          type: boolean
+        hiddenEq:
+          type: boolean
       additionalProperties: false
       example: {}
       title: ComponentQuery
