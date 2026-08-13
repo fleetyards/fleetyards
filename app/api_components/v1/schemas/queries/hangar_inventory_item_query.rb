@@ -10,6 +10,8 @@ module V1
           type: :object,
           properties: {
             nameCont: {type: :string},
+            nameEq: {type: :string},
+            unitEq: {type: :string, enum: %w[scu units]},
             categoryEq: {type: :string, enum: %w[commodity component weapon equipment ammunition consumable other]},
             qualityGteq: {type: :integer},
             qualityLteq: {type: :integer},

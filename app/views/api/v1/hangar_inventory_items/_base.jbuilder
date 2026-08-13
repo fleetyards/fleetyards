@@ -2,6 +2,7 @@
 
 json.id hangar_inventory_item.id
 json.name hangar_inventory_item.name
+json.stock_slug InventoryStockItem.slug_for(name: hangar_inventory_item.name, category: hangar_inventory_item.category, unit: hangar_inventory_item.unit)
 json.category hangar_inventory_item.category
 json.quantity hangar_inventory_item.quantity.to_f
 json.unit hangar_inventory_item.unit

@@ -177,6 +177,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     :loading="stockLoading"
     :empty-visible="!stockLoading && !stockRecords.length"
   >
+    <template #col-name="{ record }">
+      <slot name="stock-name" :record="record">{{ record.name }}</slot>
+    </template>
     <template #col-inventory="{ record }">
       <span class="text-muted">{{ record.inventory?.name }}</span>
     </template>
@@ -217,6 +220,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
         {{ t(`labels.logistics.entryTypes.${record.entryType}`) }}
       </span>
     </template>
+    <template #col-name="{ record }">
+      <slot name="log-name" :record="record">{{ record.name }}</slot>
+    </template>
     <template #col-inventory="{ record }">
       <span class="text-muted">{{ record.inventory?.name }}</span>
     </template>
@@ -235,6 +241,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
     <template #col-notes="{ record }">
       <span class="text-muted">{{ record.notes }}</span>
+    </template>
+    <template v-if="$slots['log-actions']" #actions="{ record }">
+      <slot name="log-actions" :record="record" />
     </template>
   </BaseTable>
 </template>

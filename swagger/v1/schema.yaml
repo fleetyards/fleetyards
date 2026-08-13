@@ -890,6 +890,146 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock/{slug}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: fleetInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Stock position slug
+      required: true
+    get:
+      summary: Fleet Inventory Stock Position
+      tags:
+      - FleetInventoryStock
+      operationId: fleetInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Fleet Inventory Stock Position
+      tags:
+      - FleetInventoryStock
+      operationId: updateFleetInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryStockPositionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete Fleet Inventory Stock Position
+      tags:
+      - FleetInventoryStock
+      operationId: destroyFleetInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '204':
+          description: no content
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/fleets/{fleetSlug}/inventories/{slug}":
     parameters:
     - name: fleetSlug
@@ -3181,6 +3321,128 @@ paths:
                 type: array
                 items:
                   "$ref": "#/components/schemas/HangarInventoryStockItem"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/stock/{slug}":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Stock position slug
+      required: true
+    get:
+      summary: Hangar Inventory Stock Position
+      tags:
+      - HangarInventoryStock
+      operationId: hangarInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    patch:
+      summary: Update Hangar Inventory Stock Position
+      tags:
+      - HangarInventoryStock
+      operationId: updateHangarInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/InventoryStockPositionInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/InventoryStockPosition"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Delete Hangar Inventory Stock Position
+      tags:
+      - HangarInventoryStock
+      operationId: destroyHangarInventoryStockItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: no content
         '401':
           description: unauthorized
           content:
@@ -9148,6 +9410,8 @@ components:
           format: uuid
         name:
           type: string
+        stockSlug:
+          type: string
         category:
           type: string
         quantity:
@@ -9289,6 +9553,13 @@ components:
       properties:
         nameCont:
           type: string
+        nameEq:
+          type: string
+        unitEq:
+          type: string
+          enum:
+          - scu
+          - units
         categoryEq:
           type: string
           enum:
@@ -9350,6 +9621,8 @@ components:
     FleetInventoryStockItem:
       type: object
       properties:
+        slug:
+          type: string
         name:
           type: string
         category:
@@ -10404,6 +10677,8 @@ components:
           format: uuid
         name:
           type: string
+        stockSlug:
+          type: string
         category:
           type: string
         quantity:
@@ -10524,6 +10799,13 @@ components:
       properties:
         nameCont:
           type: string
+        nameEq:
+          type: string
+        unitEq:
+          type: string
+          enum:
+          - scu
+          - units
         categoryEq:
           type: string
           enum:
@@ -10595,6 +10877,8 @@ components:
     HangarInventoryStockItem:
       type: object
       properties:
+        slug:
+          type: string
         name:
           type: string
         category:
@@ -11336,6 +11620,101 @@ components:
       - IMPORTS_PAINTS_IMPORT
       - IMPORTS_UEX_PRICES_IMPORT
       title: ImportTypeEnum
+    InventoryStockPosition:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+        netQuantity:
+          type: number
+        qualityMin:
+          type:
+          - integer
+          - 'null'
+        qualityMax:
+          type:
+          - integer
+          - 'null'
+        entriesCount:
+          type: integer
+        lastEntryAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        item:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            type:
+              type: string
+              enum:
+              - Component
+            name:
+              type: string
+            slug:
+              type: string
+        inventory:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+      additionalProperties: false
+      required:
+      - slug
+      - name
+      - category
+      - unit
+      - netQuantity
+      - entriesCount
+      title: InventoryStockPosition
+    InventoryStockPositionInput:
+      type: object
+      properties:
+        name:
+          type: string
+        category:
+          type: string
+          enum:
+          - commodity
+          - component
+          - weapon
+          - equipment
+          - ammunition
+          - consumable
+          - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
+      additionalProperties: false
+      title: InventoryStockPositionInput
     ItemPrice:
       type: object
       properties:

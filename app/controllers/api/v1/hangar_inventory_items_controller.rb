@@ -24,7 +24,7 @@ module Api
 
         scope = @hangar_inventory.hangar_inventory_items
 
-        query_params = params.fetch(:q, {}).permit(:name_cont, :category_eq, :quality_gteq, :quality_lteq, :s)
+        query_params = params.fetch(:q, {}).permit(:name_cont, :name_eq, :unit_eq, :category_eq, :quality_gteq, :quality_lteq, :s)
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(HangarInventoryItem, query_params["sorts"])
 
