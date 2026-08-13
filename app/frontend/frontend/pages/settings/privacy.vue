@@ -25,14 +25,23 @@ const sessionStore = useSessionStore();
 
 const submitting = ref(false);
 
-const initialValues = ref<UserUpdateInput>({
-  tracking: sessionStore.currentUser?.tracking,
+const comlink = useComlink();
+
+// Defaults to the column default so the toggle never reads as "off" while the
+// account is still loading, which would misstate whether visits are recorded.
+const currentValues = (): UserUpdateInput => ({
+  tracking: sessionStore.currentUser?.tracking ?? true,
 });
 
+const { defineField, handleSubmit, resetForm } = useForm<UserUpdateInput>({
+  initialValues: currentValues(),
+});
+
+// Re-seed the field itself rather than the initial values, which vee-validate
+// has already copied: App.vue refreshes the account after boot, so the first
+// render can be working from a stale persisted user.
 const setupForm = () => {
-  initialValues.value = {
-    tracking: sessionStore.currentUser?.tracking,
-  };
+  resetForm({ values: currentValues() });
 };
 
 onMounted(() => {
@@ -47,12 +56,6 @@ watch(
     setupForm();
   },
 );
-
-const comlink = useComlink();
-
-const { defineField, handleSubmit } = useForm({
-  initialValues: initialValues.value,
-});
 
 const [tracking, trackingProps] = defineField("tracking");
 
