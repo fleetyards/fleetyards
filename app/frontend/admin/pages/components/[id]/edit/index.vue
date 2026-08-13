@@ -18,6 +18,8 @@ import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import ManufacturerFilterGroup from "@/admin/components/base/ManufacturerFilterGroup/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
@@ -48,6 +50,7 @@ const initialValues = ref<ComponentInput>({
   hidden: props.component.hidden,
   scKey: props.component.scKey,
   scRef: props.component.scRef,
+  storeImage: undefined,
 });
 
 const validationSchema = {
@@ -72,6 +75,7 @@ const [description, descriptionProps] = defineField("description");
 const [hidden, hiddenProps] = defineField("hidden");
 const [scKey, scKeyProps] = defineField("scKey");
 const [scRef, scRefProps] = defineField("scRef");
+const [storeImage, storeImageProps] = defineField("storeImage");
 
 const submitting = ref(false);
 
@@ -215,6 +219,16 @@ const handleCancel = async () => {
             />
           </div>
         </div>
+        <hr />
+        <FormFileInput
+          v-model="storeImage"
+          v-bind="storeImageProps"
+          :file="component.media?.storeImage"
+          translation-key="component.storeImage"
+          name="storeImage"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
       </div>
     </div>
     <FormActions

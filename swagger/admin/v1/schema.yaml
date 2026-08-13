@@ -7173,7 +7173,9 @@ components:
         hidden:
           type: boolean
         storeImage:
-          type: string
+          type:
+          - string
+          - 'null'
         scIdentifier:
           type: string
         scKey:
