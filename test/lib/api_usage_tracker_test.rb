@@ -33,6 +33,17 @@ class ApiUsageTrackerTest < ActiveSupport::TestCase
     assert_nil ApiUsageTracker.track(nil, time: @time)
   end
 
+  test "#track reports store failures instead of raising" do
+    ApiUsageTracker.stubs(:store).raises(Redis::CannotConnectError)
+    Appsignal.expects(:report_error)
+
+    assert_nothing_raised do
+      assert_nil ApiUsageTracker.track(@application_id, time: @time)
+    end
+  ensure
+    ApiUsageTracker.unstub(:store)
+  end
+
   test "#count is zero for an untracked application" do
     assert_equal 0, ApiUsageTracker.count(SecureRandom.uuid, @time)
   end

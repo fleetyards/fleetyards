@@ -9,10 +9,15 @@ class ApiUsageTracker
   RETENTION = 8.days
 
   class << self
+    # Runs on the request path, so a broken counter must never surface to the
+    # client — the cache store already swallows Redis errors, this covers the rest.
     def track(application_id, time: Time.current)
       return if application_id.blank?
 
       store.increment(key(application_id, time), 1, expires_in: RETENTION)
+    rescue => e
+      Appsignal.report_error(e)
+      nil
     end
 
     def count(application_id, time)
