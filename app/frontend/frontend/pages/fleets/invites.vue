@@ -120,7 +120,7 @@ const { data: invites, isLoading } = useFleetInvitesQuery();
     </div>
     <div class="row lg:justify-center">
       <div class="col-12 col-lg-6">
-        <Panel slim>
+        <Panel>
           <transition-group
             name="fade"
             class="flex-list flex-list-users"

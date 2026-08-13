@@ -135,7 +135,6 @@ const selectedAddon = (addonId: string) => {
             <Panel
               v-tooltip="editable && selectTooltip(addon.id)"
               :alignment="PanelAlignmentsEnum.LEFT"
-              slim
               class="addon-panel"
               :class="{
                 'addon-panel-editable': editable,

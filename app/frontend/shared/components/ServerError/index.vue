@@ -9,14 +9,14 @@ import Box from "@/shared/components/Box/index.vue";
 import Text from "@/shared/components/base/Text/index.vue";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 
 const { t } = useI18n();
 </script>
 
 <template>
   <Box
-    :variant="PanelVariantsEnum.ERROR"
+    :tone="PanelTonesEnum.ERROR"
     :heading-size="HeadingSizeEnum.HERO"
     animated
     large

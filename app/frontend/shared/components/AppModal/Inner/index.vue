@@ -27,7 +27,7 @@ const close = () => {
 
 <template>
   <div class="modal-inner">
-    <Panel :outer-spacing="false" slim>
+    <Panel :outer-spacing="false">
       <div class="modal-content">
         <div class="modal-header">
           <a v-if="!fixed" class="close" aria-label="Close" @click="close">

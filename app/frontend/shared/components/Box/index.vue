@@ -8,7 +8,7 @@ export default {
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import {
   HeadingLevelEnum,
   HeadingSizeEnum,
@@ -16,7 +16,7 @@ import {
 
 type Props = {
   large?: boolean;
-  variant?: PanelVariantsEnum;
+  tone?: PanelTonesEnum;
   headingLevel?: HeadingLevelEnum;
   headingSize?: HeadingSizeEnum;
   animated?: boolean;
@@ -24,7 +24,7 @@ type Props = {
 
 withDefaults(defineProps<Props>(), {
   large: false,
-  variant: undefined,
+  tone: undefined,
   headingLevel: HeadingLevelEnum.H1,
   headingSize: HeadingSizeEnum.XXL,
   animated: false,
@@ -44,7 +44,7 @@ const slots = defineSlots<{
     }"
     class="box"
   >
-    <Panel :variant="variant" :animated="animated" slim>
+    <Panel :tone="tone" :animated="animated">
       <PanelHeading
         v-if="slots.heading"
         :level="headingLevel"
@@ -52,7 +52,7 @@ const slots = defineSlots<{
       >
         <slot name="heading" />
       </PanelHeading>
-      <PanelBody no-padding-top>
+      <PanelBody>
         <slot />
       </PanelBody>
     </Panel>
