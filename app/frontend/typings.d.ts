@@ -1,4 +1,5 @@
 import "vue-router";
+import type { FeatureFlagName } from "@/services/fyApi";
 
 declare module "vue-router" {
   interface RouteMeta {
@@ -15,7 +16,7 @@ declare module "vue-router" {
     nav?: "main" | "sub" | "footer" | "editTabs" | "hidden";
     mobileNav?: number;
     href?: string;
-    feature?: string;
+    feature?: FeatureFlagName;
     hideWhenAuthenticated?: boolean;
     needsNoAuthentication?: boolean;
   }

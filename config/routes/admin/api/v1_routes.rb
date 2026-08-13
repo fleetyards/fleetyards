@@ -139,7 +139,8 @@ v1_admin_api_routes = lambda do
     end
   end
 
-  resources :features, only: %i[index show create destroy] do
+  # Flag lifecycle belongs to config/feature_flags.yml, so no create/destroy here.
+  resources :features, only: %i[index show] do
     member do
       put :enable
       put :disable

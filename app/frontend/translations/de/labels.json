@@ -50,7 +50,8 @@
           "tools_travel_times": "Geschätzte Reisezeiten zwischen Standorten anzeigen.",
           "tools_cargo_grids": "Interaktiven Frachtraster-Viewer für Schiffe anzeigen.",
           "fleet_starmap": "Star Citizen Sternenkarte auf Flottenmitgliederseiten anzeigen."
-        }
+        },
+        "registryHint": "Flags werden in config/feature_flags.yml deklariert und beim Deploy erstellt. Hier steuerst du ihre Gates."
       },
       "oauthApplication": {
         "name": "Anwendungsname",

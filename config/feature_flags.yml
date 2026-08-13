@@ -1,0 +1,69 @@
+# Feature flag registry — single source of truth for Flipper.
+#
+# `rake feature_flags:sync` makes Flipper match this file: it adds flags listed
+# here that are missing, and removes flags in Flipper that are not listed here
+# (prune, including all of their gate values). Sync runs on every deploy from
+# .kamal/hooks/pre-deploy. The admin UI cannot create or delete flags — it only
+# toggles the gates of flags declared here.
+#
+# Schema per flag (mapping keyed by flag name):
+#   <flag_name>:                 # [a-z][a-z0-9_-]*
+#     description: "…"           # REQUIRED — what does the flag toggle?
+#     permanent: true            # optional — long-lived infrastructure gate
+#                                #   rather than a temporary rollout
+#
+# Rules are enforced by `rake feature_flags:validate` and bin/lint-feature-flags,
+# which CI runs on every push. Seeded from the flags live in Flipper at the time
+# the registry was introduced.
+
+fleet_logistics:
+  description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
+
+fleet_starmap:
+  description: "Starmap on the fleet page"
+
+fleet_worldmap:
+  description: "Member worldmap on the fleet page"
+
+hangar_inventories:
+  description: "Personal hangar inventories with a deposit/withdrawal ledger"
+
+# Superseded by the hardpoints redesign; the flag was removed from the code in
+# #4176 and is kept here only so this registry does not prune it as a side
+# effect of being introduced. Delete this entry to retire the flag.
+hardpoints-v2:
+  description: "Legacy hardpoints v2 rollout — no longer referenced in code"
+
+oauth-applications:
+  description: "User-owned OAuth applications in settings"
+  permanent: true
+
+oauth-bluesky:
+  description: "Bluesky login"
+  permanent: true
+
+oauth-citizenid:
+  description: "CitizenID login"
+  permanent: true
+
+oauth-discord:
+  description: "Discord login"
+  permanent: true
+
+oauth-github:
+  description: "GitHub login"
+  permanent: true
+
+oauth-google:
+  description: "Google login"
+  permanent: true
+
+oauth-twitch:
+  description: "Twitch login"
+  permanent: true
+
+tools_cargo_grids:
+  description: "Cargo grid comparison tool"
+
+tools_travel_times:
+  description: "Travel time calculator tool"

@@ -11,9 +11,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
+import type { FeatureFlagName } from "@/services/fyApi";
 
 type Props = {
-  feature: string;
+  feature: FeatureFlagName;
 };
 
 const props = defineProps<Props>();

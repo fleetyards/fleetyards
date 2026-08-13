@@ -222,6 +222,40 @@ When adding new API endpoints, follow this order:
 8. **Generate schema**: `./bin/generate-schema`
 9. **Run tests**: `bin/rails test`
 
+## Feature Flags
+
+Flags are declared in **`config/feature_flags.yml`** — the single source of truth.
+`FeatureFlags::Synchronizer` reconciles Flipper with it on every deploy
+(`.kamal/hooks/pre-deploy` runs `feature_flags:sync`). Full reference:
+[lib/feature_flags/README.md](lib/feature_flags/README.md).
+
+To add a flag:
+
+1. Add an entry with a `description` (plus `permanent: true` for long-lived
+   infrastructure gates like the OAuth providers):
+
+   ```yaml
+   my_new_flag:
+     description: "What this toggles"
+   ```
+
+2. Validate with `bin/rails feature_flags:validate`; CI runs the same rules via
+   `bin/lint-feature-flags`.
+3. Run `bin/rails feature_flags:sync` to create it in your dev database.
+4. Read it as usual — `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
+   `isFeatureEnabled('my_new_flag')` in Vue.
+
+Flags are created **off**. Toggle gates at `/admin/features`; mark a flag
+self-service via `FeatureSetting` so users can enable it themselves.
+
+To remove a flag, delete its entry — the next deploy prunes the Flipper feature,
+all of its gate values and its `FeatureSetting` row (irreversible).
+
+**Do not** write a `Flipper.add` data migration. The registry owns flag lifecycle;
+a migration creates a flag the registry doesn't know about, which the next sync
+prunes. The existing `db/data/*_feature_flag.rb` migrations predate the registry —
+leave them, don't add more.
+
 ## Debugging Protocol
 
 Before making changes to fix issues, follow a structured approach:
