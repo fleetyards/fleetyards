@@ -33,14 +33,21 @@ const currentValues = (): UserUpdateInput => ({
   tracking: sessionStore.currentUser?.tracking ?? true,
 });
 
-const { defineField, handleSubmit, resetForm } = useForm<UserUpdateInput>({
-  initialValues: currentValues(),
-});
+const { defineField, handleSubmit, resetForm, meta } = useForm<UserUpdateInput>(
+  {
+    initialValues: currentValues(),
+  },
+);
 
 // Re-seed the field itself rather than the initial values, which vee-validate
 // has already copied: App.vue refreshes the account after boot, so the first
-// render can be working from a stale persisted user.
+// render can be working from a stale persisted user. A pending choice wins over
+// the refresh, otherwise a background refetch would silently revert it.
 const setupForm = () => {
+  if (meta.value.dirty) {
+    return;
+  }
+
   resetForm({ values: currentValues() });
 };
 
@@ -69,6 +76,10 @@ const onSubmit = handleSubmit(async (values) => {
       data: values,
     })
     .then(() => {
+      // Saved values become the new baseline, so the refresh this triggers is
+      // no longer treated as a pending choice.
+      resetForm({ values });
+
       comlink.emit("user-update");
 
       displaySuccess({
