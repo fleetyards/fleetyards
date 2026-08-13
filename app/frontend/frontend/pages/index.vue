@@ -172,7 +172,6 @@ const routeForImage = (image: Image) => {
                 params: { slug: model.slug },
               }"
               level="h3"
-              slim
             />
           </div>
         </transition-group>

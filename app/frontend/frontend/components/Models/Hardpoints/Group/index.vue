@@ -69,7 +69,7 @@ const categories = computed(() => {
         :category="category"
       />
     </MetricsCard>
-    <Panel v-else slim>
+    <Panel v-else>
       <div class="hardpoint-group__inner">
         <HardpointCategory
           v-for="(items, category) in categories"

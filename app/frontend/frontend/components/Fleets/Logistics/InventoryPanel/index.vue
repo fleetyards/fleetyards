@@ -14,7 +14,6 @@ import { type Fleet, type FleetInventory } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import { PanelShadowsEnum } from "@/shared/components/base/Panel/types";
 import fallbackImage1 from "@/images/inventories/placeholder-1.webp";
 import fallbackImage2 from "@/images/inventories/placeholder-2.jpg";
 
@@ -74,12 +73,8 @@ const openEditModal = () => {
 </script>
 
 <template>
-  <Panel
-    :bg-image="image"
-    :shadow="PanelShadowsEnum.TOP"
-    class="inventory-panel"
-  >
-    <PanelHeading :level="HeadingLevelEnum.H2">
+  <Panel fill-height :bg-image="image" class="inventory-panel">
+    <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
       <template #default>
         <router-link
           :to="{

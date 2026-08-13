@@ -168,7 +168,6 @@ const onConfirm = async () => {
           >
             <Panel
               :alignment="PanelAlignmentsEnum.LEFT"
-              slim
               class="link-module-panel"
               @click.capture="toggleSelect(mod.id)"
             >

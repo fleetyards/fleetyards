@@ -18,8 +18,8 @@ import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
-  PanelShadowsEnum,
-  PanelBgRoundedEnum,
+  PanelRoundedEnum,
+  PanelTonesEnum,
 } from "@/shared/components/base/Panel/types";
 
 type Props = {
@@ -74,13 +74,13 @@ const route = useRoute();
     class="model-panel"
     :class="`model-panel-${model.slug}`"
     :data-test="`model-panel-${model.slug}`"
-    :highlight="highlight"
+    :tone="highlight ? PanelTonesEnum.HIGHLIGHT : PanelTonesEnum.NEUTRAL"
+    fill-height
     :bg-image="image"
-    :bg-rounded="details ? PanelBgRoundedEnum.TOP : PanelBgRoundedEnum.ALL"
-    :shadow="PanelShadowsEnum.TOP"
+    :bg-rounded="details ? PanelRoundedEnum.TOP : PanelRoundedEnum.ALL"
   >
     <template #default>
-      <PanelHeading :level="level" class="model-panel-heading">
+      <PanelHeading shadow="top" :level="level" class="model-panel-heading">
         <template #default>
           <slot name="heading-title">
             <router-link

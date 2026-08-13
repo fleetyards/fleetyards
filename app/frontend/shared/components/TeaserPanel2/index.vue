@@ -26,13 +26,11 @@ type Props = {
   item: Model | ModelModule | ModelUpgrade;
   to?: RouteLocationRaw;
   level?: HeadingLevelEnum;
-  slim?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   to: undefined,
   level: HeadingLevelEnum.H2,
-  slim: false,
 });
 
 const { supported: webpSupported } = useWebpCheck();
@@ -57,7 +55,7 @@ const storeImage = computed(() => {
 </script>
 
 <template>
-  <Panel :alignment="PanelAlignmentsEnum.LEFT" :slim="slim">
+  <Panel :alignment="PanelAlignmentsEnum.LEFT">
     <PanelImage
       :image="storeImage"
       image-size="auto"
@@ -72,7 +70,7 @@ const storeImage = computed(() => {
         </template>
         <template v-else>{{ item.name }} </template>
       </PanelHeading>
-      <PanelBody no-min-height no-padding-top>
+      <PanelBody>
         {{ item.description }}
       </PanelBody>
     </div>

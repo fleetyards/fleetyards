@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
-import { PanelTransparenciesEnum } from "@/shared/components/base/Panel/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
@@ -65,10 +64,7 @@ const handleLogin = () => {
 
         <div class="row">
           <div class="col-12 col-lg-4">
-            <Panel
-              class="info-box"
-              :transparency="PanelTransparenciesEnum.MORE"
-            >
+            <Panel class="info-box" translucent>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.fleetPreview.notified.headline") }}
@@ -81,10 +77,7 @@ const handleLogin = () => {
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel
-              class="info-box"
-              :transparency="PanelTransparenciesEnum.MORE"
-            >
+            <Panel class="info-box" translucent>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.fleetPreview.overview.headline") }}
@@ -97,10 +90,7 @@ const handleLogin = () => {
             </Panel>
           </div>
           <div class="col-12 col-lg-4">
-            <Panel
-              class="info-box"
-              :transparency="PanelTransparenciesEnum.MORE"
-            >
+            <Panel class="info-box" translucent>
               <div class="panel-heading">
                 <h2 class="panel-title text-center">
                   {{ t("texts.fleetPreview.fleetchart.headline") }}

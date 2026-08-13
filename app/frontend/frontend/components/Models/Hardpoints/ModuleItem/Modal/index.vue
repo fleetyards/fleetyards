@@ -76,7 +76,6 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
       >
         <Panel
           :alignment="PanelAlignmentsEnum.LEFT"
-          slim
           class="module-panel"
           @click="selectModule(mod)"
         >

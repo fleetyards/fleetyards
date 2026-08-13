@@ -166,7 +166,6 @@ const onConfirm = async () => {
           >
             <Panel
               :alignment="PanelAlignmentsEnum.LEFT"
-              slim
               class="link-upgrade-panel"
               @click.capture="toggleSelect(upgrade.id)"
             >
