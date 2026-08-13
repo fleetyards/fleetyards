@@ -131,6 +131,12 @@ module InventoryLedgerEntry
   end
 
   private def withdrawal_does_not_exceed_stock
+    # Stock is derived from the entries rather than stored, so two withdrawals
+    # racing each other would both read the same balance and both pass. Taking
+    # the inventory row for the rest of the surrounding save transaction makes
+    # the second one wait and re-read what the first left behind.
+    inventory&.lock! if inventory&.persisted?
+
     current = self.class.net_quantity_for(inventory_id, name, category, unit)
 
     if quantity > current

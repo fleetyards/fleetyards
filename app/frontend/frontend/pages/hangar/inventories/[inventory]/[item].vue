@@ -207,6 +207,21 @@ const crumbs = computed(() => [
           </Btn>
         </Teleport>
 
+        <div v-if="mobile" class="stock-item-actions">
+          <Btn :size="BtnSizesEnum.SMALL" @click="openEditModal">
+            <i class="fa-duotone fa-pen" />
+            {{ t("actions.logistics.editStockItem") }}
+          </Btn>
+          <Btn
+            :size="BtnSizesEnum.SMALL"
+            variant="danger"
+            @click="destroyStockItem"
+          >
+            <i class="fa-duotone fa-trash" />
+            {{ t("actions.logistics.destroyStockItem") }}
+          </Btn>
+        </div>
+
         <StockItemPanel :stock-item="stockItem" />
 
         <Heading size="lg">
@@ -236,3 +251,11 @@ const crumbs = computed(() => [
     </template>
   </AsyncData>
 </template>
+
+<style lang="scss" scoped>
+.stock-item-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+</style>
