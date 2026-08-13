@@ -32,6 +32,15 @@ def run_step_wait(*steps) = CliHelpers.run_step_wait(*steps, verbose: VERBOSE)
 
 WORKTREE_MARKER = "# -- worktree-managed --"
 
+# Gitignored data that is expensive to fetch lives once in the main worktree;
+# worktrees get symlinks so a single download serves all of them. `create`
+# paths are made on demand, the others are only linked when already present.
+SHARED_PATHS = [
+  {path: "storage", create: true},
+  {path: "dumps", create: true},
+  {path: "data/sc_data/raw", create: false}
+].freeze
+
 def detect_worktree
   git_path = File.join(APP_ROOT, ".git")
   return nil unless File.file?(git_path)
@@ -44,6 +53,39 @@ def main_worktree_root
   return nil if common_dir.empty? || !File.directory?(common_dir)
 
   File.dirname(common_dir)
+end
+
+def link_shared_paths(main_root)
+  return if main_root == APP_ROOT
+
+  SHARED_PATHS.each do |entry|
+    path = entry[:path]
+    source = File.join(main_root, path)
+    target = File.join(APP_ROOT, path)
+
+    next if File.symlink?(target) && File.readlink(target) == source
+
+    FileUtils.mkdir_p(source) if entry[:create]
+    next unless File.directory?(source)
+
+    if File.symlink?(target)
+      File.unlink(target)
+    elsif File.directory?(target)
+      unless Dir.empty?(target)
+        puts "   Kept local #{path}/ (not empty) — delete it to share #{source}"
+        next
+      end
+
+      FileUtils.rmdir(target)
+    elsif File.exist?(target)
+      puts "   Kept #{path} (not a directory) — delete it to share #{source}"
+      next
+    end
+
+    FileUtils.mkdir_p(File.dirname(target))
+    FileUtils.ln_s(source, target)
+    puts "   Linked #{path} -> #{source}" if VERBOSE
+  end
 end
 
 def worktree_port(name)
@@ -182,17 +224,12 @@ FileUtils.chdir APP_ROOT do
   FileUtils.mkdir_p(File.join(APP_ROOT, "log"))
   FileUtils.mkdir_p(File.join(APP_ROOT, "tmp"))
 
-  # Link the gitignored sc_data/raw dump from the main worktree so the sc-data
-  # parser can read it here (git worktrees don't copy gitignored files).
+  # Git worktrees don't copy gitignored files, so share the downloaded uploads,
+  # DB dumps and sc-data exports with the main worktree instead of re-fetching.
   if wt_name && (main_root = main_worktree_root)
-    main_raw = File.join(main_root, "data", "sc_data", "raw")
-    wt_raw = File.join(APP_ROOT, "data", "sc_data", "raw")
-
-    if File.directory?(main_raw) && !File.exist?(wt_raw)
-      FileUtils.mkdir_p(File.dirname(wt_raw))
-      FileUtils.ln_s(main_raw, wt_raw)
-      puts "   Linked data/sc_data/raw -> #{main_raw}" if VERBOSE
-    end
+    link_shared_paths(main_root)
+  else
+    SHARED_PATHS.each { |entry| FileUtils.mkdir_p(File.join(APP_ROOT, entry[:path])) if entry[:create] }
   end
 
   if FRESH
