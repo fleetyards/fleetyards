@@ -75,6 +75,10 @@ if it is ever declared again.
 That is irreversible: re-adding the entry later gives you a fresh flag with no
 gates and no self-service, so record any rollout you still care about first.
 
+An interrupted sync is safe to re-run. The `FeatureSetting` cleanup is keyed on
+the registry, not on what the current run removed, so it also clears rows
+stranded by a run that died after deleting the Flipper feature.
+
 ## Safety
 
 The YAML is the only thing standing between a flag and deletion, so:

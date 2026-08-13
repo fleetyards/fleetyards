@@ -75,14 +75,19 @@ module FeatureFlags
     def apply!(to_add, to_remove)
       to_add.each { |name| flipper.add(name) }
 
-      return if to_remove.empty?
+      return unless prune
 
       to_remove.each { |name| flipper.remove(name) }
 
       # The self-service setting has to go with the flag. Nothing else deletes
       # these rows, so leaving one behind would silently restore
       # user-toggleability if the flag is ever declared again.
-      FeatureSetting.where(feature_name: to_remove).destroy_all
+      #
+      # Keyed on the registry rather than on to_remove: to_remove is derived
+      # from Flipper, so a run interrupted between the two steps above would
+      # strand a setting whose feature is already gone — and no later run would
+      # ever look at it again, because it is no longer in Flipper to be removed.
+      FeatureSetting.where.not(feature_name: registry.names).destroy_all
     end
 
     def log_result(to_add, to_remove)

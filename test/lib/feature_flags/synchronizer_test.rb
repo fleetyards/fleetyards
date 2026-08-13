@@ -70,6 +70,18 @@ module FeatureFlags
       assert FeatureSetting.self_service?("keeper")
     end
 
+    test "cleans up settings for flags flipper no longer knows about" do
+      FeatureSetting.create!(feature_name: "ghost", self_service: true)
+      flipper = FakeFlipper.new(["keeper"])
+
+      result = sync(registry: registry("keeper"), flipper: flipper)
+
+      assert_empty result.removed, "nothing left in flipper to prune"
+      assert_empty flipper.removed
+      assert_not FeatureSetting.exists?(feature_name: "ghost"),
+        "an interrupted prune must be repaired by the next run"
+    end
+
     test "dry_run leaves self-service settings alone" do
       FeatureSetting.create!(feature_name: "orphan", self_service: true)
 
