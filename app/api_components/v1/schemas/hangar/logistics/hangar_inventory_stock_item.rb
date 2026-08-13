@@ -10,6 +10,7 @@ module V1
           schema({
             type: :object,
             properties: {
+              slug: {type: :string},
               name: {type: :string},
               category: {type: :string},
               unit: {type: :string},

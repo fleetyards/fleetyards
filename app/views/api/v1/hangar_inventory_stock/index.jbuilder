@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 json.array! @stock do |item|
+  json.slug InventoryStockItem.slug_for(name: item.name, category: item.category, unit: item.unit)
   json.name item.name
   json.category item.category
   json.unit item.unit

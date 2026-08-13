@@ -10,6 +10,7 @@ export type InventoryReference = {
  */
 export type InventoryStockRecord = {
   id: string;
+  slug?: string;
   name: string;
   category: string;
   unit: string;
@@ -33,6 +34,7 @@ export type InventoryPanelRecord = {
 
 export type InventoryLedgerRecord = {
   id: string;
+  stockSlug?: string;
   name: string;
   category: string;
   unit: string;

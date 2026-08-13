@@ -1695,6 +1695,13 @@
         "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
         "imported": "items imported",
         "importErrors": "errors",
+        "inStock": "In stock",
+        "entries": "Entries",
+        "lastEntry": "Last entry",
+        "history": "History",
+        "linkedItem": "Linked item",
+        "qualityRange": "Quality",
+        "stockItem": "Stock Item"
       },
       "hangarInventories": "Inventories"
     }

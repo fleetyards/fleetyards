@@ -27,6 +27,9 @@ resource :hangar, only: %i[show destroy] do
       post :import, on: :collection
     end
     get "stock", to: "hangar_inventory_stock#index"
+    get "stock/:slug", to: "hangar_inventory_stock#show", as: "stock_item"
+    patch "stock/:slug", to: "hangar_inventory_stock#update"
+    delete "stock/:slug", to: "hangar_inventory_stock#destroy"
   end
 end
 

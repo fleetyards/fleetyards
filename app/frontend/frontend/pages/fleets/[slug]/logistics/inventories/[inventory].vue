@@ -19,7 +19,9 @@ import {
   useFleetInventory,
   useFleetInventoryItems,
   useFleetInventoryStock,
+  useDestroyFleetInventoryItem,
 } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
@@ -101,6 +103,46 @@ const canAddItems = computed(() =>
     "fleet:inventories:update",
   ]),
 );
+
+const mobile = useMobile();
+
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
+
+const stockItemRoute = (slug?: string) => ({
+  name: "fleet-logistics-inventory-item",
+  params: {
+    slug: props.fleet.slug,
+    inventory: inventorySlug.value,
+    item: slug,
+  },
+});
+
+const destroyMutation = useDestroyFleetInventoryItem();
+
+const destroyEntry = (entry: FleetInventoryItem) => {
+  displayConfirm({
+    text: t("messages.logistics.inventoryItem.destroy.confirm"),
+    onConfirm: async () => {
+      try {
+        await destroyMutation.mutateAsync({
+          fleetSlug: props.fleet.slug,
+          fleetInventorySlug: inventorySlug.value,
+          id: entry.id,
+        });
+
+        displaySuccess({
+          text: t("messages.logistics.inventoryItem.destroy.success"),
+        });
+
+        await refetch();
+      } catch {
+        displayAlert({
+          text: t("messages.logistics.inventoryItem.destroy.failure"),
+        });
+      }
+    },
+  });
+};
 
 const openDepositModal = () => {
   if (!inventory.value) return;
@@ -252,6 +294,27 @@ const crumbs = computed(() => [
               show-added-by
               show-notes
             >
+              <template #stock-name="{ record }">
+                <router-link :to="stockItemRoute(record.slug)">
+                  {{ record.name }}
+                </router-link>
+              </template>
+              <template #log-name="{ record }">
+                <router-link :to="stockItemRoute(record.stockSlug)">
+                  {{ record.name }}
+                </router-link>
+              </template>
+              <template v-if="canAddItems" #log-actions="{ record }">
+                <Btn
+                  :size="BtnSizesEnum.SMALL"
+                  variant="danger"
+                  :aria-label="t('actions.logistics.destroyEntry')"
+                  :title="t('actions.logistics.destroyEntry')"
+                  @click="destroyEntry(record as FleetInventoryItem)"
+                >
+                  <i class="fa-duotone fa-trash" />
+                </Btn>
+              </template>
               <template #member="{ record }">
                 <MemberName
                   v-if="(record as FleetInventoryItem).member"

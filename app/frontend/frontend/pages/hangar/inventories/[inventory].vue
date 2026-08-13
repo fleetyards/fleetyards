@@ -11,12 +11,15 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   type HangarInventoryItem,
   useHangarInventory,
   useHangarInventoryItems,
   useHangarInventoryStock,
+  useDestroyHangarInventoryItem,
 } from "@/services/fyApi";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
@@ -30,6 +33,7 @@ const { t } = useI18n();
 const route = useRoute();
 const comlink = useComlink();
 const mobile = useMobile();
+const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const inventorySlug = computed(() => route.params.inventory as string);
 
@@ -78,6 +82,37 @@ const activeRecords = computed<(HangarInventoryItem | InventoryStockRecord)[]>(
 const refetch = async () => {
   await refetchLogItems();
   await refetchStock();
+};
+
+const stockItemRoute = (slug?: string) => ({
+  name: "hangar-inventory-item",
+  params: { inventory: inventorySlug.value, item: slug },
+});
+
+const destroyMutation = useDestroyHangarInventoryItem();
+
+const destroyEntry = (entry: HangarInventoryItem) => {
+  displayConfirm({
+    text: t("messages.logistics.inventoryItem.destroy.confirm"),
+    onConfirm: async () => {
+      try {
+        await destroyMutation.mutateAsync({
+          hangarInventorySlug: inventorySlug.value,
+          id: entry.id,
+        });
+
+        displaySuccess({
+          text: t("messages.logistics.inventoryItem.destroy.success"),
+        });
+
+        await refetch();
+      } catch {
+        displayAlert({
+          text: t("messages.logistics.inventoryItem.destroy.failure"),
+        });
+      }
+    },
+  });
 };
 
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
@@ -205,7 +240,29 @@ const crumbs = computed(() => [
               :stock-loading="stockLoading"
               :log-loading="logLoading"
               show-notes
-            />
+            >
+              <template #stock-name="{ record }">
+                <router-link :to="stockItemRoute(record.slug)">
+                  {{ record.name }}
+                </router-link>
+              </template>
+              <template #log-name="{ record }">
+                <router-link :to="stockItemRoute(record.stockSlug)">
+                  {{ record.name }}
+                </router-link>
+              </template>
+              <template #log-actions="{ record }">
+                <Btn
+                  :size="BtnSizesEnum.SMALL"
+                  variant="danger"
+                  :aria-label="t('actions.logistics.destroyEntry')"
+                  :title="t('actions.logistics.destroyEntry')"
+                  @click="destroyEntry(record as HangarInventoryItem)"
+                >
+                  <i class="fa-duotone fa-trash" />
+                </Btn>
+              </template>
+            </InventoryLedgerTables>
           </template>
         </FilteredList>
       </template>

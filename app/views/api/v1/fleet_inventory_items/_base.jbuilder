@@ -2,6 +2,7 @@
 
 json.id fleet_inventory_item.id
 json.name fleet_inventory_item.name
+json.stock_slug InventoryStockItem.slug_for(name: fleet_inventory_item.name, category: fleet_inventory_item.category, unit: fleet_inventory_item.unit)
 json.category fleet_inventory_item.category
 json.quantity fleet_inventory_item.quantity.to_f
 json.unit fleet_inventory_item.unit
