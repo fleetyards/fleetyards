@@ -44,11 +44,64 @@
 
   --color-edge: rgb(122 130 136 / 0.5);
   --color-edge-soft: rgb(122 130 136 / 0.28);
-  --color-endcap: #4a4f54;
+  --color-edge-faint: rgb(122 130 136 / 0.16);
+
+  /*
+   * $gray-light, i.e. --color-edge at full opacity. The previous #4a4f54 sat
+   * three to five points of luminance above --color-control, which made the
+   * end-cap the least visible part of the frame it is supposed to signature.
+   * Shared with Btn on purpose: a panel cap and a button cap are one motif.
+   */
+  --color-endcap: #7a8288;
 
   --color-lifted: #eee;
 
   --radius-control: 8px;
   --radius-control-inner: 7px;
   --radius-control-bare: 6px;
+
+  /*
+   * Panel surfaces. --color-surface is byte-identical to $panel-bg, and to
+   * --color-control above; see the panel-redesign plan's F10 for why that is
+   * worth knowing rather than deduplicating.
+   */
+  --color-surface: rgb(39 43 48 / 0.9);
+
+  --radius-surface: 16px;
+  --radius-surface-slim: 12px;
+  /* The panel radius less its 2px border, for content that meets the frame. */
+  --radius-surface-inner: 14px;
+
+  --shadow-surface: 0 6px 18px -12px rgb(0 0 0 / 0.8);
+  --shadow-surface-slim: 0 6px 20px -14px rgb(0 0 0 / 0.9);
+}
+
+/*
+ * End-cap geometry, shared by Panel and Btn.
+ *
+ * Deliberately outside @theme: these generate no utilities, and @theme is for
+ * values Tailwind turns into classes. Each is consumed as var(--name, literal)
+ * so the compiled rule stays self-sufficient where :root was never registered —
+ * the embed bundle, per the plan's F8. Do not drop the fallbacks.
+ *
+ * The button cap is shorter than the panel's, so its radius steps down by the
+ * same ratio and is then held to half its own height; without that ceiling a 2px
+ * cap rounds far enough to read as a lozenge rather than a seam.
+ */
+:root {
+  --cap-h: 4px;
+  --cap-h-btn: max(2px, calc(var(--cap-h, 4px) - 2px));
+  --cap-h-btn-lg: max(2px, calc(var(--cap-h, 4px) - 1px));
+
+  --cap-inset: 12%;
+
+  --cap-r: 3px;
+  --cap-r-btn: min(
+    calc(var(--cap-r, 3px) * 0.5),
+    calc(var(--cap-h-btn, 2px) / 2)
+  );
+  --cap-r-btn-lg: min(
+    calc(var(--cap-r, 3px) * 0.75),
+    calc(var(--cap-h-btn-lg, 3px) / 2)
+  );
 }
