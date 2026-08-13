@@ -6,16 +6,17 @@ export default {
 
 <script lang="ts" setup>
 import { useLazyBackground } from "@/shared/composables/useLazyBackground";
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 
 type Props = {
   image: string;
   alignment?: "left" | "right";
-  rounded?: "all" | "left" | "right" | "top" | "bottom";
+  rounded?: `${PanelRoundedEnum}`;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   alignment: undefined,
-  rounded: "all",
+  rounded: PanelRoundedEnum.ALL,
 });
 
 const target = ref<HTMLElement | null>(null);

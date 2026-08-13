@@ -1,14 +1,22 @@
+// How much chrome the surface carries.
 export enum PanelVariantsEnum {
+  // 2px edge, radius 16, end-caps, shadow.
   DEFAULT = "default",
+  // 1px edge, radius 12, no caps. For repeated cards in narrow columns, where
+  // the full frame reads as noise — the metrics-card--slim treatment.
+  SLIM = "slim",
+  // Background only. Absorbs what `transparency="complete"` used to express.
+  BARE = "bare",
+}
+
+// What the surface means. Colours the edge only; there is no filled counterpart,
+// see the panel-redesign plan's D9.
+export enum PanelTonesEnum {
+  NEUTRAL = "neutral",
   PRIMARY = "primary",
   SUCCESS = "success",
   ERROR = "error",
-}
-
-export enum PanelTransparenciesEnum {
-  DEFAULT = "default",
-  MORE = "more",
-  COMPLETE = "complete",
+  HIGHLIGHT = "highlight",
 }
 
 export enum PanelAlignmentsEnum {
@@ -16,28 +24,13 @@ export enum PanelAlignmentsEnum {
   RIGHT = "right",
 }
 
-export enum PanelShadowsEnum {
-  LEFT = "left",
-  RIGHT = "right",
-  TOP = "top",
-  BOTTOM = "bottom",
-}
-
-export enum PanelBgAlignmentsEnum {
-  LEFT = "left",
-  RIGHT = "right",
-}
-
-export enum PanelBgRoundedEnum {
+// Shared by Panel's background image, PanelImage and PanelBody. Previously three
+// near-identical declarations, one of which (PanelBody's) was a copy of
+// PanelImage's type under a misleading name.
+export enum PanelRoundedEnum {
   ALL = "all",
   LEFT = "left",
   RIGHT = "right",
   TOP = "top",
   BOTTOM = "bottom",
-}
-
-export enum PanelBgColorsEnum {
-  DEFAULT = "default",
-  PRIMARY = "primary",
-  ADMIN = "admin",
 }
