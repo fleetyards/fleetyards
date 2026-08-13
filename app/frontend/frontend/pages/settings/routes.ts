@@ -41,6 +41,15 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "privacy/",
+    name: "settings-privacy",
+    component: () => import("@/frontend/pages/settings/privacy.vue"),
+    meta: {
+      title: "settings.privacy",
+      needsAuthentication: true,
+    },
+  },
+  {
     path: "features/",
     name: "settings-features",
     component: () => import("@/frontend/pages/settings/features.vue"),

@@ -234,6 +234,7 @@
         "account": "Account",
         "profile": "Profile Settings",
         "hangar": "Hangar Settings",
+        "privacy": "Privacy Settings",
         "features": "Feature Flags",
         "connections": "Connections",
         "oauthApplications": "OAuth Applications",

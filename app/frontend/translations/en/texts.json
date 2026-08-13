@@ -101,6 +101,22 @@
         "p3": {
           "headline": "As a Guest",
           "text": "As a Guest on %{app} we collect the following data:"
+        },
+        "analytics": {
+          "headline": "Usage analytics",
+          "basis": "%{app} counts page views to understand which parts of the site are actually used. This runs on our legitimate interest in operating and improving the site, not on consent: the data is collected first-party only, IP addresses are anonymised before they are stored, no cookies or other identifiers are placed on your device, and nothing is shared with advertising networks.",
+          "retention": "Individual visits and page views are deleted after one month. Only aggregated counts, which cannot be traced back to a person, are kept beyond that. Deleting your account also deletes the visits recorded for it.",
+          "objection": {
+            "headline": "How to object",
+            "text": "You can object to usage analytics at any time, and we will stop recording it rather than merely hiding it.",
+            "user": "Your account setting under Settings is applied to every device you sign in on.",
+            "guest": "Without an account you can object here. We also honour the Global Privacy Control signal if your browser sends one."
+          }
+        }
+      },
+      "settings": {
+        "privacy": {
+          "tracking": "When this is enabled we count the pages you visit to see which parts of the site are used. IP addresses are anonymised, nothing is stored on your device, and individual visits are deleted after one month. Turning it off stops the recording entirely."
         }
       },
       "signup": {

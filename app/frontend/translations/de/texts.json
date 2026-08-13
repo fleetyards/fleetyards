@@ -96,6 +96,22 @@
         "p3": {
           "headline": "Als Gast",
           "text": "Als Gast auf %{app} sammeln wir die folgenden Daten:"
+        },
+        "analytics": {
+          "headline": "Nutzungsstatistik",
+          "basis": "%{app} zählt Seitenaufrufe, um zu verstehen, welche Bereiche der Seite tatsächlich genutzt werden. Grundlage dafür ist unser berechtigtes Interesse am Betrieb und an der Verbesserung der Seite, nicht deine Einwilligung: Die Daten werden ausschließlich von uns selbst erhoben, IP-Adressen werden vor dem Speichern anonymisiert, es werden keine Cookies oder andere Kennungen auf deinem Gerät abgelegt und nichts wird an Werbenetzwerke weitergegeben.",
+          "retention": "Einzelne Besuche und Seitenaufrufe werden nach einem Monat gelöscht. Darüber hinaus bleiben nur aggregierte Zahlen erhalten, die sich keiner Person mehr zuordnen lassen. Mit dem Löschen deines Kontos werden auch die dazu erfassten Besuche gelöscht.",
+          "objection": {
+            "headline": "Wie du widersprichst",
+            "text": "Du kannst der Nutzungsstatistik jederzeit widersprechen. Wir hören dann auf, sie zu erfassen, statt sie nur auszublenden.",
+            "user": "Die Einstellung in deinem Konto gilt auf allen Geräten, auf denen du angemeldet bist.",
+            "guest": "Ohne Konto kannst du hier widersprechen. Wir beachten außerdem das Global-Privacy-Control-Signal, wenn dein Browser es sendet."
+          }
+        }
+      },
+      "settings": {
+        "privacy": {
+          "tracking": "Wenn dies aktiviert ist, zählen wir die von dir besuchten Seiten, um zu sehen, welche Bereiche genutzt werden. IP-Adressen werden anonymisiert, auf deinem Gerät wird nichts gespeichert und einzelne Besuche werden nach einem Monat gelöscht. Beim Ausschalten wird die Erfassung vollständig gestoppt."
         }
       },
       "signup": {
