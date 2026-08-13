@@ -212,6 +212,12 @@
             "username": "Nom d'utilisateur"
           }
         }
+      },
+      "logistics": {
+        "inventoryName": "Main Depot, Cargo Bay...",
+        "description": "Optional details about this inventory",
+        "location": "e.g. Port Olisar, Area18",
+        "itemName": "Titanium, Medical Supplies..."
       }
     }
   }

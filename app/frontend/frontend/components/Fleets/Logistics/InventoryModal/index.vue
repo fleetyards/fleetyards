@@ -164,6 +164,7 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="name"
         v-bind="nameProps"
         name="name"
+        translation-key="logistics.inventoryName"
         :rules="validationSchema.name"
         :label="t('labels.logistics.inventoryName')"
       />
@@ -171,12 +172,14 @@ const onSubmit = handleSubmit(async (values) => {
         v-model="description"
         v-bind="descriptionProps"
         name="description"
+        translation-key="logistics.description"
         :label="t('labels.logistics.description')"
       />
       <FormInput
         v-model="location"
         v-bind="locationProps"
         name="location"
+        translation-key="logistics.location"
         :label="t('labels.logistics.location')"
       />
       <FilterGroup
