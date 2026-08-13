@@ -20,6 +20,11 @@ type Props = {
   level?: HeadingLevelEnum;
   size?: HeadingSizeEnum;
   tone?: `${PanelHeadingTonesEnum}`;
+  // Reduced padding and type, for a heading on a `slim` panel.
+  compact?: boolean;
+  // A rule under the heading, so a slim panel's head still reads as a head
+  // without the full frame's weight behind it.
+  divider?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +32,8 @@ const props = withDefaults(defineProps<Props>(), {
   level: HeadingLevelEnum.H1,
   size: HeadingSizeEnum.XXL,
   tone: PanelHeadingTonesEnum.DEFAULT,
+  compact: false,
+  divider: false,
 });
 
 const slots = defineSlots<{
@@ -45,6 +52,8 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
       'panel-heading--top': shadow === 'top',
       'panel-heading--bottom': shadow === 'bottom',
       'panel-heading--metric': isMetric,
+      'panel-heading--compact': compact,
+      'panel-heading--divider': divider,
     }"
   >
     <!--
@@ -128,6 +137,15 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
   padding-top: 10px;
 }
 
+.panel-heading--compact {
+  padding: 14px 16px;
+}
+
+.panel-heading--divider {
+  border-bottom: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  background: rgb(0 0 0 / 0.12);
+}
+
 /*
  * The metrics-card title: Orbitron, tracked, uppercase, with a gold status dot.
  * Kept to this tone rather than made the panel default - it works because a
@@ -137,6 +155,23 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
  */
 .panel-heading--metric {
   @apply items-center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/*
+ * In flow, opposite the title. A document heading pins its actions to the
+ * corner because the title runs the full width under them; a metric head is one
+ * short label, so its actions sit beside it.
+ */
+.panel-heading--metric .panel-heading__actions {
+  @apply static;
+  margin: 0;
+  padding: 0;
+}
+
+.panel-heading--compact .panel-heading__metric-title {
+  font-size: 13px;
 }
 
 .panel-heading__metric-title {
