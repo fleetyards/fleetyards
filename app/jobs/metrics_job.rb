@@ -17,9 +17,36 @@ class MetricsJob < ApplicationJob
     Vehicle.visible.wanted.where(loaner: false).rollup("Vehicle Wish", interval: "month")
 
     track_ship_of_the_month
+    track_api_usage
   end
 
   private
+
+  # Rolls up every day still held in Redis, not just yesterday, so a failed run
+  # does not drop a day of counters.
+  def track_api_usage
+    applications = Oauth::Application.pluck(:id, :name)
+
+    ApiUsageTracker.pending_days.each do |day|
+      applications.each do |id, name|
+        count = ApiUsageTracker.count(id, day)
+        next if count.zero?
+
+        dimensions = {application_id: id, application: name}
+
+        Rollup.where(name: ApiUsageTracker::ROLLUP_NAME, interval: "day", time: day, dimensions:).delete_all
+        Rollup.create!(
+          name: ApiUsageTracker::ROLLUP_NAME,
+          interval: "day",
+          time: day,
+          value: count,
+          dimensions:
+        )
+
+        ApiUsageTracker.reset(id, day)
+      end
+    end
+  end
 
   def track_ship_of_the_month
     month_start = Time.current.beginning_of_month

@@ -24,6 +24,7 @@ module Api
     before_action :set_last_active_at
 
     after_action :set_rate_limit_headers
+    after_action :track_api_usage
 
     authorize :user, through: :current_resource_owner
 
@@ -131,6 +132,12 @@ module Api
       return if current_user.last_active_at.present? && current_user.last_active_at > 15.minutes.ago
 
       current_user.update_column(:last_active_at, Time.current)
+    end
+
+    # Only OAuth clients carry a token — the web frontend authenticates through
+    # warden and is already covered by Ahoy.
+    private def track_api_usage
+      ApiUsageTracker.track(doorkeeper_token&.application_id)
     end
 
     private def set_paper_trail_whodunnit
