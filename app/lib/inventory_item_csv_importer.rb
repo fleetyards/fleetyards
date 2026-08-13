@@ -54,7 +54,9 @@ class InventoryItemCsvImporter
       return
     end
 
-    unit = row["unit"]&.strip&.downcase || "scu"
+    # Without a unit column the category decides: SCU for cargo, pieces for gear.
+    unit = row["unit"]&.strip&.downcase.presence ||
+      inventory.inventory_items.model.units_for_category(category).first
     unless VALID_UNITS.include?(unit)
       @errors << {row: row_number, message: "Invalid unit: #{unit}"}
       return

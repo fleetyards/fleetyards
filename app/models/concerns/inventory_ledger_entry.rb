@@ -20,6 +20,18 @@ module InventoryLedgerEntry
 
   UNITS = {scu: 0, units: 1}.freeze
 
+  # Only bulk cargo is measured in SCU; gear is counted per piece. "other" is
+  # the escape hatch for anything that does not fit either habit.
+  UNITS_BY_CATEGORY = {
+    "commodity" => ["scu"],
+    "component" => ["units"],
+    "weapon" => ["units"],
+    "equipment" => ["units"],
+    "ammunition" => ["units"],
+    "consumable" => ["units"],
+    "other" => UNITS.keys.map(&:to_s)
+  }.freeze
+
   ENTRY_TYPES = {deposit: 0, withdrawal: 1}.freeze
 
   DEFAULT_SORTING_PARAMS = ["created_at desc"]
@@ -47,6 +59,11 @@ module InventoryLedgerEntry
     validates :item_type, presence: true, if: :item_id?
     validate :withdrawal_does_not_exceed_stock, if: :withdrawal?
     validate :referenced_item_exists, if: :item_id?
+    # Existing rows predate the pairing, so only entries that touch either side
+    # of it have to satisfy it.
+    validate :unit_fits_category, if: -> {
+      new_record? || will_save_change_to_unit? || will_save_change_to_category?
+    }
 
     before_validation :set_name_from_item
   end
@@ -63,6 +80,10 @@ module InventoryLedgerEntry
 
     def inventory_foreign_key
       @inventory_foreign_key
+    end
+
+    def units_for_category(category)
+      UNITS_BY_CATEGORY.fetch(category.to_s, UNITS.keys.map(&:to_s))
     end
 
     def net_quantity_for(inventory_id, name, category, unit)
@@ -98,6 +119,15 @@ module InventoryLedgerEntry
     return unless item_type.in?(ITEM_TYPES)
 
     errors.add(:item_id, :blank) if item.blank?
+  end
+
+  private def unit_fits_category
+    return if category.blank? || unit.blank?
+
+    allowed = self.class.units_for_category(category)
+    return if unit.in?(allowed)
+
+    errors.add(:unit, :inclusion, message: "must be #{allowed.join(" or ")} for #{category} entries")
   end
 
   private def withdrawal_does_not_exceed_stock

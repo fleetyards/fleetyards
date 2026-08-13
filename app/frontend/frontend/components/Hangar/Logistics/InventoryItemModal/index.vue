@@ -47,7 +47,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
-const { categoryOptions, unitOptions, entryTypeOptions } =
+const { categoryOptions, unitOptionsFor, entryTypeOptions } =
   useInventoryOptions();
 
 const submitting = ref(false);
@@ -97,6 +97,16 @@ const isComponent = computed(
   () => category.value === HangarInventoryItemCreateInputCategory.component,
 );
 
+const unitOptions = unitOptionsFor(category);
+
+// The category dictates which units make sense, so a category change pulls the
+// unit along instead of leaving an impossible pairing the API would reject.
+watch(unitOptions, (options) => {
+  if (options.some((option) => option.value === unit.value)) return;
+
+  setFieldValue("unit", options[0].value as HangarInventoryItemCreateInputUnit);
+});
+
 const loadStockItems = async () => {
   try {
     const data = await fetchStock(props.inventory.slug);
@@ -143,7 +153,6 @@ const applyPickedComponent = (component: GameComponent) => {
   pickedComponent.value = component;
 
   setFieldValue("name", component.name);
-  setFieldValue("unit", HangarInventoryItemCreateInputUnit.units);
 };
 
 // A hand-edited name no longer describes the picked component, so the
@@ -295,7 +304,7 @@ const onSubmit = handleSubmit(async (values) => {
             :max="!isDeposit && selectedStockMax ? selectedStockMax : undefined"
           >
             <template #suffix>
-              <template v-if="isDeposit">
+              <template v-if="isDeposit && unitOptions.length > 1">
                 <select v-model="unit" class="base-input__suffix-select">
                   <option
                     v-for="opt in unitOptions"
