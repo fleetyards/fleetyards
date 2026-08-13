@@ -11,7 +11,8 @@ module V1
           properties: {
             name: {type: :string},
             notes: {type: [:string, :null]},
-            category: {type: :string, enum: %w[commodity component weapon equipment ammunition consumable other]}
+            category: {type: :string, enum: %w[commodity component weapon equipment ammunition consumable other]},
+            unit: {type: :string, enum: %w[scu units]}
           },
           additionalProperties: false
         })

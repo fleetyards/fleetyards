@@ -52,6 +52,36 @@ class Api::V1::HangarInventoryItemsImportTest < ActionDispatch::IntegrationTest
     assert_equal 2, body["errors"].count
   end
 
+  test "defaults the unit to what the category is measured in" do
+    sign_in @user
+
+    post "/api/v1/hangar/inventories/#{@inventory.slug}/items/import",
+      params: {file: csv_upload(<<~CSV)}
+        name,category,quantity
+        Quantanium,commodity,100
+        FR-66 Shield Generator,component,2
+      CSV
+
+    assert_response :success
+    assert_equal "scu", @inventory.hangar_inventory_items.find_by(name: "Quantanium").unit
+    assert_equal "units", @inventory.hangar_inventory_items.find_by(name: "FR-66 Shield Generator").unit
+  end
+
+  test "reports rows whose unit does not fit the category" do
+    sign_in @user
+
+    post "/api/v1/hangar/inventories/#{@inventory.slug}/items/import",
+      params: {file: csv_upload(<<~CSV)}
+        name,category,quantity,unit
+        FR-66 Shield Generator,component,2,scu
+      CSV
+
+    assert_response :success
+    body = JSON.parse(response.body)
+    assert_equal 0, body["imported"]
+    assert_includes body["errors"].first["message"], "must be units for component entries"
+  end
+
   test "returns 404 for another user's inventory" do
     sign_in @other_user
 

@@ -9327,6 +9327,11 @@ components:
           - ammunition
           - consumable
           - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
       additionalProperties: false
       title: FleetInventoryItemUpdateInput
     FleetInventoryItemsList:
@@ -10557,6 +10562,11 @@ components:
           - ammunition
           - consumable
           - other
+        unit:
+          type: string
+          enum:
+          - scu
+          - units
       additionalProperties: false
       title: HangarInventoryItemUpdateInput
     HangarInventoryItemsList:

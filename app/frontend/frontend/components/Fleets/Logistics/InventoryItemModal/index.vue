@@ -32,6 +32,7 @@ import {
   FleetInventoryItemCreateInputUnit,
 } from "@/services/fyApi";
 import { type FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
+import { unitsForCategory } from "@/frontend/composables/useInventoryOptions";
 
 type StockItem = {
   name: string;
@@ -138,10 +139,20 @@ const categoryOptions: FilterOption[] = [
   { value: "other", label: t("labels.logistics.categories.other") },
 ];
 
-const unitOptions: FilterOption[] = [
-  { value: "scu", label: t("labels.logistics.units.scu") },
-  { value: "units", label: t("labels.logistics.units.units") },
-];
+const unitOptions = computed<FilterOption[]>(() =>
+  unitsForCategory(category.value).map((unit) => ({
+    value: unit,
+    label: t(`labels.logistics.units.${unit}`),
+  })),
+);
+
+// The category dictates which units make sense, so a category change pulls the
+// unit along instead of leaving an impossible pairing the API would reject.
+watch(unitOptions, (options) => {
+  if (options.some((option) => option.value === unit.value)) return;
+
+  setFieldValue("unit", options[0].value as FleetInventoryItemCreateInputUnit);
+});
 
 // Load stock items for withdrawal picker
 const loadStockItems = async () => {
@@ -191,7 +202,6 @@ const applyPickedComponent = (component: GameComponent) => {
   pickedComponent.value = component;
 
   setFieldValue("name", component.name);
-  setFieldValue("unit", FleetInventoryItemCreateInputUnit.units);
 };
 
 // A hand-edited name no longer describes the picked component, so the
@@ -380,7 +390,7 @@ const onSubmit = handleSubmit(async (values) => {
             :max="!isDeposit && selectedStockMax ? selectedStockMax : undefined"
           >
             <template #suffix>
-              <template v-if="isDeposit">
+              <template v-if="isDeposit && unitOptions.length > 1">
                 <select v-model="unit" class="base-input__suffix-select">
                   <option
                     v-for="opt in unitOptions"

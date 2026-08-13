@@ -99,6 +99,39 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
     assert_includes item.errors.attribute_names, :item_id
   end
 
+  test "rejects SCU for a component entry" do
+    item = build(:hangar_inventory_item, hangar_inventory: @inventory, category: :component, unit: :scu)
+
+    assert_not item.valid?
+    assert_includes item.errors[:unit].join, "must be units for component entries"
+  end
+
+  test "rejects units for a commodity entry" do
+    item = build(:hangar_inventory_item, hangar_inventory: @inventory, category: :commodity, unit: :units)
+
+    assert_not item.valid?
+  end
+
+  test "allows either unit for an other entry" do
+    InventoryLedgerEntry::UNITS.each_key do |unit|
+      item = build(:hangar_inventory_item, hangar_inventory: @inventory, category: :other, unit: unit)
+
+      assert_predicate item, :valid?
+    end
+  end
+
+  test "leaves a stored mismatch alone until unit or category is touched" do
+    item = build(:hangar_inventory_item, hangar_inventory: @inventory, category: :component, unit: :scu)
+    item.save!(validate: false)
+
+    assert item.update(notes: "still fine")
+    assert item.update(category: :commodity), "commodity accepts the stored scu unit"
+
+    item.update_column(:category, InventoryLedgerEntry::CATEGORIES[:component])
+
+    assert_not item.reload.update(category: :weapon)
+  end
+
   test "does not create notifications" do
     assert_no_difference "Notification.count" do
       create(:hangar_inventory_item, hangar_inventory: @inventory)
