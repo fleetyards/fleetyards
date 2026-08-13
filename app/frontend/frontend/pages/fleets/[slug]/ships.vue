@@ -83,7 +83,6 @@ const toggleFleetchart = () => {
           v-if="membership && fleet.publicFleet"
           :url="shareUrl"
           :title="shareTitle"
-          :inline="true"
         />
       </div>
     </div>

@@ -9,55 +9,29 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import copyText from "@/frontend/utils/CopyText";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { SpinnerAlignment } from "@/shared/components/SmallLoader/index.vue";
-import type { RouteLocationRaw } from "vue-router";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useMobile } from "@/shared/composables/useMobile";
 
+// Only what the wrapper forwards. Anything else a caller sets - `disabled`,
+// `loading`, `to` - falls through to the Btn below on its own.
 type Props = {
   url: string;
   title: string;
-  to?: RouteLocationRaw;
-  href?: string;
-  type?: "button" | "submit";
-  loading?: boolean;
-  spinner?: boolean | SpinnerAlignment;
   variant?: BtnVariantsEnum;
   size?: BtnSizesEnum;
-  exact?: boolean;
   block?: boolean;
-  mobileBlock?: boolean;
   mobileIconOnly?: boolean;
-  inline?: boolean;
-  textInline?: boolean;
-  active?: boolean;
-  disabled?: boolean;
-  routeActiveClass?: string;
-  inGroup?: boolean;
   noLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  to: undefined,
-  href: undefined,
-  type: "button",
-  loading: false,
-  spinner: false,
   variant: undefined,
   size: undefined,
-  exact: false,
   block: false,
-  mobileBlock: false,
   mobileIconOnly: false,
-  inline: false,
-  textInline: false,
-  active: false,
-  disabled: false,
-  routeActiveClass: undefined,
-  inGroup: false,
   noLabel: false,
 });
 
