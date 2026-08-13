@@ -9183,7 +9183,11 @@ components:
               format: uuid
             type:
               type: string
+              enum:
+              - Component
             name:
+              type: string
+            slug:
               type: string
         inventory:
           type: object
@@ -9275,6 +9279,9 @@ components:
           type:
           - string
           - 'null'
+          enum:
+          - Component
+          -
         itemId:
           type:
           - string
@@ -10427,7 +10434,11 @@ components:
               format: uuid
             type:
               type: string
+              enum:
+              - Component
             name:
+              type: string
+            slug:
               type: string
         inventory:
           type: object
@@ -10498,6 +10509,9 @@ components:
           type:
           - string
           - 'null'
+          enum:
+          - Component
+          -
         itemId:
           type:
           - string

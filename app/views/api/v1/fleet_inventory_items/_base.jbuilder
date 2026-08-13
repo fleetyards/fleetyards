@@ -9,12 +9,8 @@ json.entry_type fleet_inventory_item.entry_type
 json.quality fleet_inventory_item.quality
 json.notes fleet_inventory_item.notes
 
-if fleet_inventory_item.image.attached?
-  json.image do
-    json.partial! "api/v1/shared/file", record: fleet_inventory_item, attr: :image
-  end
-else
-  json.image nil
+json.image do
+  json.partial! "api/v1/shared/inventory_image", entry: fleet_inventory_item
 end
 
 if fleet_inventory_item.fleet_inventory.present?
@@ -29,6 +25,7 @@ if fleet_inventory_item.item.present?
     json.id fleet_inventory_item.item_id
     json.type fleet_inventory_item.item_type
     json.name fleet_inventory_item.item.name
+    json.slug fleet_inventory_item.item.slug
   end
 else
   json.item nil

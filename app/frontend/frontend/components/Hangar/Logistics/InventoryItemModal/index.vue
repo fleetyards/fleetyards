@@ -19,7 +19,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
 import {
+  type Component as GameComponent,
   type FilterOption,
   type HangarInventory,
   hangarInventoryStock as fetchStock,
@@ -55,6 +57,7 @@ const entryType = ref<"deposit" | "withdrawal">(
 const selectedStockItem = ref<string | undefined>(undefined);
 const selectedExistingItem = ref<string | undefined>(undefined);
 const stockItems = ref<StockItem[]>([]);
+const pickedComponent = ref<GameComponent | undefined>(undefined);
 
 const isDeposit = computed(() => entryType.value === "deposit");
 
@@ -72,9 +75,10 @@ const validationSchema = {
 const { defineField, handleSubmit, setFieldValue } = useForm({
   initialValues: {
     name: "",
-    category: HangarInventoryItemCreateInputCategory.commodity,
+    category:
+      HangarInventoryItemCreateInputCategory.commodity as HangarInventoryItemCreateInputCategory,
     quantity: 1,
-    unit: HangarInventoryItemCreateInputUnit.scu,
+    unit: HangarInventoryItemCreateInputUnit.scu as HangarInventoryItemCreateInputUnit,
     quality: 0,
     image: undefined as string | undefined,
     notes: "",
@@ -88,6 +92,10 @@ const [unit] = defineField("unit");
 const [quality, qualityProps] = defineField("quality");
 const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
+
+const isComponent = computed(
+  () => category.value === HangarInventoryItemCreateInputCategory.component,
+);
 
 const loadStockItems = async () => {
   try {
@@ -125,10 +133,30 @@ const applyPickedItem = (val: string | undefined) => {
   setFieldValue("category", itemCategory as any);
   setFieldValue("unit", itemUnit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
+  pickedComponent.value = undefined;
 };
 
 watch(selectedExistingItem, applyPickedItem);
 watch(selectedStockItem, applyPickedItem);
+
+const applyPickedComponent = (component: GameComponent) => {
+  pickedComponent.value = component;
+
+  setFieldValue("name", component.name);
+  setFieldValue("unit", HangarInventoryItemCreateInputUnit.units);
+};
+
+// A hand-edited name no longer describes the picked component, so the
+// reference goes with it rather than mislabeling a real component.
+watch(name, (val) => {
+  if (pickedComponent.value && val !== pickedComponent.value.name) {
+    pickedComponent.value = undefined;
+  }
+});
+
+watch(isComponent, (val) => {
+  if (!val) pickedComponent.value = undefined;
+});
 
 watch(entryType, (val) => {
   if (val === "withdrawal") {
@@ -169,6 +197,8 @@ const onSubmit = handleSubmit(async (values) => {
         quality: values.quality != null ? Number(values.quality) : undefined,
         image: values.image || undefined,
         notes: values.notes || undefined,
+        itemType: pickedComponent.value ? "Component" : undefined,
+        itemId: pickedComponent.value?.id,
       },
     })
     .then(() => {
@@ -236,6 +266,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="name"
           v-bind="nameProps"
           name="name"
+          translation-key="logistics.itemName"
           :rules="validationSchema.name"
           :label="t('labels.logistics.itemName')"
         />
@@ -247,6 +278,7 @@ const onSubmit = handleSubmit(async (values) => {
           :label="t('labels.logistics.category')"
           :searchable="false"
         />
+        <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
       </template>
 
       <div class="row">

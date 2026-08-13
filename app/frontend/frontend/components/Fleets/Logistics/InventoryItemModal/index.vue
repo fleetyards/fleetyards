@@ -18,7 +18,9 @@ import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
 import {
+  type Component as GameComponent,
   type Fleet,
   type FleetInventory,
   type FilterOption,
@@ -73,9 +75,10 @@ const validationSchema = {
 const { defineField, handleSubmit, setFieldValue } = useForm({
   initialValues: {
     name: "",
-    category: FleetInventoryItemCreateInputCategory.commodity,
+    category:
+      FleetInventoryItemCreateInputCategory.commodity as FleetInventoryItemCreateInputCategory,
     quantity: 1,
-    unit: FleetInventoryItemCreateInputUnit.scu,
+    unit: FleetInventoryItemCreateInputUnit.scu as FleetInventoryItemCreateInputUnit,
     quality: 0,
     memberId: undefined as string | undefined,
     image: undefined as string | undefined,
@@ -91,6 +94,10 @@ const [quality, qualityProps] = defineField("quality");
 const [memberId] = defineField("memberId");
 const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
+
+const isComponent = computed(
+  () => category.value === FleetInventoryItemCreateInputCategory.component,
+);
 
 const entryTypeOptions: FilterOption[] = [
   {
@@ -166,6 +173,7 @@ const existingItemOptions = computed<FilterOption[]>(() =>
 );
 
 const selectedExistingItem = ref<string | undefined>(undefined);
+const pickedComponent = ref<GameComponent | undefined>(undefined);
 
 watch(selectedExistingItem, (val) => {
   if (!val) return;
@@ -176,6 +184,26 @@ watch(selectedExistingItem, (val) => {
   setFieldValue("category", itemCategory as any);
   setFieldValue("unit", itemUnit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
+  pickedComponent.value = undefined;
+});
+
+const applyPickedComponent = (component: GameComponent) => {
+  pickedComponent.value = component;
+
+  setFieldValue("name", component.name);
+  setFieldValue("unit", FleetInventoryItemCreateInputUnit.units);
+};
+
+// A hand-edited name no longer describes the picked component, so the
+// reference goes with it rather than mislabeling a real component.
+watch(name, (val) => {
+  if (pickedComponent.value && val !== pickedComponent.value.name) {
+    pickedComponent.value = undefined;
+  }
+});
+
+watch(isComponent, (val) => {
+  if (!val) pickedComponent.value = undefined;
 });
 
 // When switching to withdrawal, load stock
@@ -244,6 +272,8 @@ const onSubmit = handleSubmit(async (values) => {
         memberId: values.memberId || undefined,
         image: values.image || undefined,
         notes: values.notes || undefined,
+        itemType: pickedComponent.value ? "Component" : undefined,
+        itemId: pickedComponent.value?.id,
       },
     })
     .then(() => {
@@ -321,6 +351,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="name"
           v-bind="nameProps"
           name="name"
+          translation-key="logistics.itemName"
           :rules="validationSchema.name"
           :label="t('labels.logistics.itemName')"
         />
@@ -332,6 +363,7 @@ const onSubmit = handleSubmit(async (values) => {
           :label="t('labels.logistics.category')"
           :searchable="false"
         />
+        <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
       </template>
 
       <div class="row">
