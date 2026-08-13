@@ -25,26 +25,21 @@ class MetricsJob < ApplicationJob
   # Rolls up every day still held in Redis, not just yesterday, so a failed run
   # does not drop a day of counters.
   def track_api_usage
-    applications = Oauth::Application.pluck(:id, :name)
+    names = Oauth::Application.pluck(:id, :name).to_h
 
-    ApiUsageTracker.pending_days.each do |day|
-      applications.each do |id, name|
-        count = ApiUsageTracker.count(id, day)
-        next if count.zero?
+    ApiUsageTracker.pending_counters.each do |day, application_id, count|
+      dimensions = {application_id:, application: names[application_id]}.compact
 
-        dimensions = {application_id: id, application: name}
+      Rollup.where(name: ApiUsageTracker::ROLLUP_NAME, interval: "day", time: day, dimensions:).delete_all
+      Rollup.create!(
+        name: ApiUsageTracker::ROLLUP_NAME,
+        interval: "day",
+        time: day,
+        value: count,
+        dimensions:
+      )
 
-        Rollup.where(name: ApiUsageTracker::ROLLUP_NAME, interval: "day", time: day, dimensions:).delete_all
-        Rollup.create!(
-          name: ApiUsageTracker::ROLLUP_NAME,
-          interval: "day",
-          time: day,
-          value: count,
-          dimensions:
-        )
-
-        ApiUsageTracker.reset(id, day)
-      end
+      ApiUsageTracker.reset(application_id, day)
     end
   end
 

@@ -44,6 +44,27 @@ class ApiUsageTrackerTest < ActiveSupport::TestCase
     assert_equal 0, ApiUsageTracker.count(@application_id, @time)
   end
 
+  test "#pending_counters finds counters without a matching application" do
+    day = 2.days.ago.utc.beginning_of_day
+    ApiUsageTracker.track(@application_id, time: day)
+
+    counter = ApiUsageTracker.pending_counters.find { |_day, id, _requests| id == @application_id }
+
+    assert_not_nil counter
+    assert_equal day.to_date, counter.first.to_date
+    assert_equal 1, counter.last
+  ensure
+    ApiUsageTracker.reset(@application_id, 2.days.ago)
+  end
+
+  test "#pending_counters ignores counters of the running day" do
+    ApiUsageTracker.track(@application_id)
+
+    assert_empty ApiUsageTracker.pending_counters.select { |_day, id, _requests| id == @application_id }
+  ensure
+    ApiUsageTracker.reset(@application_id, Time.current)
+  end
+
   test "#pending_days excludes today and covers the retention window" do
     now = Time.utc(2026, 8, 13, 1, 0)
     days = ApiUsageTracker.pending_days(now:).map(&:to_date)
