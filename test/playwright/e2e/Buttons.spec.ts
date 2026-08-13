@@ -10,7 +10,8 @@ import { test, expect } from "../support/commands";
  * spec pointed at them fails everywhere except a dev server. The ships toolbar
  * happens to exercise most of what regressed anyway - a pagination BtnGroup with
  * a label segment and disabled arrows, icon-only buttons, and standalone buttons
- * to compare surfaces against.
+ * to compare surfaces against. It needs the `buttons` scenario, which seeds
+ * enough models for the paginator to render those arrows.
  *
  * Computed style rather than pixel snapshots: each of these was an invariant
  * violation, and an assertion names the broken invariant where an image diff
@@ -36,10 +37,14 @@ const pagination = (page: Page) => page.locator(".pagination").first();
 test.describe("Buttons", () => {
   test.beforeEach(async ({ page }) => {
     await app("clean");
-    await appScenario("ships");
+    await appScenario("buttons");
 
     await page.goto("/ships/");
-    await expect(pagination(page).locator(".btn").first()).toBeVisible();
+    // Waits on a disabled arrow rather than any button: it is the last part of
+    // the paginator to appear, and every group assertion below depends on it.
+    await expect(
+      pagination(page).locator(".btn[disabled]").first(),
+    ).toBeVisible();
   });
 
   test("the default size matches the form control height", async ({ page }) => {
