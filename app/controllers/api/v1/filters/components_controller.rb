@@ -17,6 +17,18 @@ module Api
 
           render "api/v1/shared/filters"
         end
+
+        def categories
+          @filters = Component.category_filters
+
+          render "api/v1/shared/filters"
+        end
+
+        def sub_types
+          @filters = Component.sub_type_filters(category: params[:category])
+
+          render "api/v1/shared/filters"
+        end
       end
     end
   end

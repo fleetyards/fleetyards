@@ -61,6 +61,16 @@ class Component < ApplicationRecord
   serialize :ammunition, coder: YAML
   serialize :inventory_consumption, coder: YAML
 
+  # Components of past patches stay in the table, so anything meant for a
+  # picker has to narrow down to the version the game currently ships.
+  scope :current_version, ->(flag = true) {
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      where(version: Rails.configuration.sc_data[:version])
+    else
+      all
+    end
+  }
+
   DEFAULT_SORTING_PARAMS = ["name asc", "created_at asc"]
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc", "createdAt asc", "createdAt desc"
@@ -84,15 +94,20 @@ class Component < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "ammunition", "component_class", "created_at", "description", "durability", "grade",
-      "heat_connection", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
+      "ammunition", "category", "component_class", "component_sub_type", "component_type",
+      "created_at", "description", "durability", "grade",
+      "heat_connection", "hidden", "id", "id_value", "item_class", "item_type", "manufacturer_id", "name",
       "power_connection", "size", "slug", "tracking_signal",
-      "type_data", "updated_at"
+      "type_data", "updated_at", "version"
     ]
   end
 
   def self.ransackable_associations(auth_object = nil)
     ["manufacturer", "shop_commodities"]
+  end
+
+  def self.ransackable_scopes(auth_object = nil)
+    ["current_version"]
   end
 
   def self.item_types
@@ -136,11 +151,45 @@ class Component < ApplicationRecord
     ]
   end
 
+  def self.categories
+    current_version.distinct.pluck(:category).compact_blank.sort
+  end
+
+  def self.sub_types(category: nil)
+    scope = current_version
+    scope = scope.where(category: category) if category.present?
+
+    scope.distinct.pluck(:component_sub_type).compact_blank.sort
+  end
+
   def self.item_type_filters
     Component.item_types.map do |item|
       Filter.new(
         category: "item_type",
         label: I18n.t("activerecord.attributes.component.item_types.#{item.downcase}"),
+        value: item
+      )
+    end
+  end
+
+  # Categories and sub types come straight out of the game files, so a patch can
+  # introduce values we have no label for yet — fall back to the raw value
+  # instead of rendering a translation-missing string into the API.
+  def self.category_filters
+    Component.categories.map do |item|
+      Filter.new(
+        category: "category",
+        label: I18n.t("filter.component.category.items.#{item}", default: item.titleize),
+        value: item
+      )
+    end
+  end
+
+  def self.sub_type_filters(category: nil)
+    Component.sub_types(category: category).map do |item|
+      Filter.new(
+        category: "sub_type",
+        label: I18n.t("filter.component.sub_type.items.#{item.underscore}", default: item.underscore.titleize),
         value: item
       )
     end
