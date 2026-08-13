@@ -87,7 +87,12 @@
         "index": "Visual Tests",
         "panels": "Panels",
         "buttons": "Buttons",
+        "typography": "Typography",
+        "forms": "Forms",
         "tables": "Tables",
+        "lists": "Lists",
+        "metrics": "Metrics",
+        "states": "States",
         "notifications": "Notifications",
         "syncModal": "Sync Modal",
         "supportHint": "Support Hint"

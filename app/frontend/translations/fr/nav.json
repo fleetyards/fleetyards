@@ -87,7 +87,12 @@
         "index": "Tests Visuels",
         "panels": "Panneaux",
         "buttons": "Boutons",
+        "typography": "Typographie",
+        "forms": "Formulaires",
         "tables": "Tableaux",
+        "lists": "Listes",
+        "metrics": "Métriques",
+        "states": "États",
         "notifications": "Notifications",
         "syncModal": "Modale Sync",
         "supportHint": "Indicateur de soutien"

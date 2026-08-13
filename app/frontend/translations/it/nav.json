@@ -87,7 +87,12 @@
         "index": "Test Visivi",
         "panels": "Pannelli",
         "buttons": "Pulsanti",
+        "typography": "Tipografia",
+        "forms": "Moduli",
         "tables": "Tabelle",
+        "lists": "Elenchi",
+        "metrics": "Metriche",
+        "states": "Stati",
         "notifications": "Notifiche",
         "syncModal": "Modal sincronizzazione",
         "supportHint": "Suggerimento supporto"

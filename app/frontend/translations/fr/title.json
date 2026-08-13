@@ -98,7 +98,12 @@
         "index": "Tests Visuels",
         "panels": "Panneaux - Tests Visuels",
         "buttons": "Boutons - Tests Visuels",
+        "typography": "Typographie - Tests visuels",
+        "forms": "Formulaires - Tests visuels",
         "tables": "Tableaux - Tests Visuels",
+        "lists": "Listes - Tests visuels",
+        "metrics": "Métriques - Tests visuels",
+        "states": "États - Tests visuels",
         "notifications": "Notifications - Tests Visuels",
         "syncModal": "Modale Sync - Tests Visuels",
         "supportHint": "Indicateur de soutien - Tests Visuels"

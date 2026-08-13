@@ -98,7 +98,12 @@
         "index": "视觉测试",
         "panels": "面板 - 视觉测试",
         "buttons": "按钮 - 视觉测试",
+        "typography": "排版 - 视觉测试",
+        "forms": "表单 - 视觉测试",
         "tables": "表格 - 视觉测试",
+        "lists": "列表 - 视觉测试",
+        "metrics": "指标 - 视觉测试",
+        "states": "状态 - 视觉测试",
         "notifications": "通知 - 视觉测试",
         "syncModal": "同步弹窗 - 视觉测试",
         "supportHint": "支持提示 - 视觉测试"
