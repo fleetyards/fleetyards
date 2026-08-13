@@ -19,7 +19,6 @@ import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.v
 import ModelCombatMetrics from "@/frontend/components/Models/CombatMetrics/index.vue";
 import ModelDefenseMetrics from "@/frontend/components/Models/DefenseMetrics/index.vue";
 import ModelHullMetrics from "@/frontend/components/Models/HullMetrics/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
   HardpointSourceEnum,
@@ -94,7 +93,7 @@ const sampleMetrics = [
     <div class="col-12 col-lg-6">
       <MetricsCard title="With Head Slot">
         <template #head>
-          <Btn :size="BtnSizesEnum.SMALL" inline>
+          <Btn>
             <i class="fa-duotone fa-arrow-up-right-from-square" />
           </Btn>
         </template>
@@ -242,7 +241,7 @@ const sampleMetrics = [
   <p>
     The rail panels from the ship detail page, fed with live
     <code>{{ SLUG }}</code> data.
-    <Btn :size="BtnSizesEnum.SMALL" inline @click="toggleExtended">
+    <Btn @click="toggleExtended">
       {{ extended ? "Collapse" : "Extend" }} dimensions
     </Btn>
   </p>

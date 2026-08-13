@@ -17,7 +17,6 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import ProgressBar from "@/shared/components/ProgressBar/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import SmallLoader from "@/shared/components/SmallLoader/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
@@ -152,22 +151,12 @@ const updatePerPage = (value: number | string) => {
     <div class="col-12 col-lg-3">
       <BaseText muted no-spacing>with progress ({{ progress }}%)</BaseText>
       <Loader loading relative :progress="progress" />
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="bump-progress"
-        @click="bumpProgress"
-      >
-        Advance
-      </Btn>
+      <Btn data-test="bump-progress" @click="bumpProgress"> Advance </Btn>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="show-fixed-loader"
-        @click="showFixedLoader"
-      >
+      <Btn data-test="show-fixed-loader" @click="showFixedLoader">
         Show fixed loader (2s)
       </Btn>
       <Loader :loading="fixedLoaderVisible" fixed />
@@ -243,7 +232,6 @@ const updatePerPage = (value: number | string) => {
   <div class="row">
     <div class="col-12">
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :disabled="latestModelsFetching"
         data-test="trigger-fetch"
         @click="refetchLatestModels"
