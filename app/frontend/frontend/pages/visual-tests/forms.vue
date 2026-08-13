@@ -20,7 +20,6 @@ import Slider from "@/shared/components/base/Slider/index.vue";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import ErrorStates from "@/frontend/pages/visual-tests/forms/ErrorStates.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import {
   InputAlignmentsEnum,
@@ -256,7 +255,7 @@ const powerMarks = (value: number) => ({ label: String(value) });
     <div class="col-12 col-md-6">
       <FormInputGroup>
         <FormInput v-model="text" name="grouped" label="RSI Handle" />
-        <Btn :size="BtnSizesEnum.SMALL" inline>Verify</Btn>
+        <Btn>Verify</Btn>
       </FormInputGroup>
     </div>
   </div>
