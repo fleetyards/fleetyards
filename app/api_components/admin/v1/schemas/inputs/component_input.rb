@@ -21,7 +21,7 @@ module Admin
               manufacturerId: {type: :string, format: :uuid},
               description: {type: :string},
               hidden: {type: :boolean},
-              storeImage: {type: :string},
+              storeImage: {type: [:string, :null]},
               scIdentifier: {type: :string},
               scKey: {type: :string},
               scRef: {type: :string}
