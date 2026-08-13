@@ -20,7 +20,6 @@ import CompareCargo from "@/frontend/components/Compare/Models/Cargo/index.vue";
 import CompareFuel from "@/frontend/components/Compare/Models/Fuel/index.vue";
 import CompareHardpoints from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNavStore } from "@/shared/stores/nav";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
@@ -31,8 +30,6 @@ import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFi
 import { useCompareHardpoints } from "@/frontend/composables/useCompareHardpoints";
 
 const { t } = useI18n();
-
-const navStore = useNavStore();
 
 const { filters } = useCompareModelFilters();
 
@@ -60,19 +57,55 @@ const { hardpointsFor, loading: hardpointsLoading } = useCompareHardpoints(
   () => models.value,
 );
 
-// Every row — header, stat rows, hardpoint lists — shares this one template, which
-// is what keeps the columns aligned across separate section cards. The tracks are a
-// fixed width rather than `1fr`: a flexible track sizes against its content, and the
-// store images' intrinsic width would stretch a two-ship comparison to a thousand
-// pixels per column. The trailing `1fr` soaks up any leftover width.
-//
-// The frozen label column has to clear the fixed navigation rail, whose width the
-// page scrolls underneath — sticking it at 0 would park it behind the nav.
+// Rows size themselves in CSS; the count only feeds the stack's minimum width, which
+// keeps the section cards' frames spanning the full matrix once it outgrows the pane.
+// Deriving that from `max-content` instead would let the store images' intrinsic width
+// blow every column out to a thousand pixels.
 const gridStyle = computed(() => ({
-  "--compare-cols": `var(--compare-label) repeat(${models.value.length}, var(--compare-col)) 1fr`,
   "--compare-count": String(models.value.length),
-  "--compare-sticky-left": navStore.slim ? "80px" : "300px",
 }));
+
+const pane = ref<HTMLElement>();
+
+// The matrix scrolls inside its own pane rather than the document: that keeps the page
+// from scrolling sideways (which left the footer and the rest of the chrome cut off at
+// viewport width) and gives both sticky axes a scrollport of their own to anchor to.
+// Its height is measured rather than guessed because the toolbar above it wraps.
+const paneOffset = ref(220);
+
+const PANE_BOTTOM_GAP = 30;
+
+const measurePane = () => {
+  if (!pane.value) {
+    return;
+  }
+
+  paneOffset.value = Math.round(
+    pane.value.getBoundingClientRect().top + window.scrollY + PANE_BOTTOM_GAP,
+  );
+};
+
+const paneStyle = computed(() => ({
+  "--compare-pane-offset": `${paneOffset.value}px`,
+}));
+
+onMounted(() => {
+  measurePane();
+  window.addEventListener("resize", measurePane);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", measurePane);
+});
+
+// The toolbar reflows as ships come and go, which moves the pane's top edge.
+watch(
+  () => models.value.length,
+  async () => {
+    await nextTick();
+    measurePane();
+  },
+);
 
 watch(
   () => filters.value.models,
@@ -108,21 +141,26 @@ watch(
               </p>
             </template>
           </Empty>
-          <div v-else class="compare-matrix-stack" :style="gridStyle">
-            <CompareHeader :models="models" />
-            <CompareView :models="models" />
-            <CompareBase :models="models" />
-            <CompareCrew :models="models" />
-            <CompareSpeed :models="models" />
-            <CompareCombat :models="models" :hardpoints-for="hardpointsFor" />
-            <CompareDefense :models="models" :hardpoints-for="hardpointsFor" />
-            <CompareHull :models="models" />
-            <CompareCargo :models="models" />
-            <CompareFuel :models="models" :hardpoints-for="hardpointsFor" />
-            <CompareHardpoints
-              :models="models"
-              :hardpoints-for="hardpointsFor"
-            />
+          <div v-else ref="pane" class="compare-pane" :style="paneStyle">
+            <div class="compare-matrix-stack" :style="gridStyle">
+              <CompareHeader :models="models" />
+              <CompareView :models="models" />
+              <CompareBase :models="models" />
+              <CompareCrew :models="models" />
+              <CompareSpeed :models="models" />
+              <CompareCombat :models="models" :hardpoints-for="hardpointsFor" />
+              <CompareDefense
+                :models="models"
+                :hardpoints-for="hardpointsFor"
+              />
+              <CompareHull :models="models" />
+              <CompareCargo :models="models" />
+              <CompareFuel :models="models" :hardpoints-for="hardpointsFor" />
+              <CompareHardpoints
+                :models="models"
+                :hardpoints-for="hardpointsFor"
+              />
+            </div>
           </div>
         </template>
       </AsyncData>

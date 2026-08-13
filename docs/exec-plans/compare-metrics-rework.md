@@ -28,52 +28,77 @@ missing, and the page reads like a different product than the ship page.
 
 ## Design
 
-### Grid, not flex rows
+### Row geometry — the old design's flex sizing, kept
 
-Today each row is its own flex row with `min-width: 450px` items, so columns only line up
-by coincidence of identical rules and 8 ships means a very wide scroll.
+Settled after three rounds of user feedback (2026-08-12/13). The rows keep the **old
+compare page's sizing recipe**, only wrapped in the new card frames:
 
-New: one CSS grid template shared by every section, driven by custom properties on the
-stack that wraps all the section cards:
-
+```scss
+.compare-cell {
+  flex: 1 1 0;
+  min-width: 450px;
+  max-width: 33%;
+}
+.compare-cell--label {
+  flex: 0 0 300px;
+  max-width: 20%;
+}
 ```
---compare-label: 170px
---compare-col: 420px
---compare-cols: var(--compare-label) repeat(<n>, var(--compare-col)) 1fr
-min-width: calc(var(--compare-label) + <n> * var(--compare-col))
-```
 
-Three things here were wrong on the first attempt and are worth keeping written down:
+`flex: 1 1 0` makes every column the same width regardless of content, so columns still
+line up across separate section cards — the property a grid was originally chosen for.
 
-- **Fixed tracks, not `1fr`.** A flexible track sizes against its content, and the store
-  images' intrinsic width stretched a two-ship comparison to ~1000px per column. The
-  trailing `1fr` soaks up leftover width instead. `minmax(0, 1fr)` also avoids the blowup
-  but then eight ships squeeze below the legible minimum.
-- **420px per column**, not 210px. That is the width the hardpoint group cards were
-  designed against on the ship page (`col-lg-4` of the fluid container); narrower and
-  component names wrap one letter per line. Eight ships ⇒ ~3.5k px, still under today's
-  ~3.9k.
-- **The horizontal scroll stays at document level**, no `overflow-x: auto` container: such
-  a container is a scrollport on both axes, which would break the ship-name row's
-  `position: sticky; top: 0`.
+**Why not a grid of fixed tracks** (two attempts, both rejected by the user):
 
-The label cell is `position: sticky` at `--compare-sticky-left`, which is the **navigation
-rail's width** (300px, 80px slim) — the page scrolls underneath the fixed nav, so sticking
-at 0 parks the labels behind it. This is what the old code's `left: 220px` plus all that
-`slim` prop plumbing was reaching for; it never worked because the cell was never
-positioned. The rail also needs an opaque background plus a `::before` slab covering the
-strip left of it: the nav is translucent, so the columns are otherwise visible sliding
-along behind it as torn-off text.
+- A grid track has to be sized up front, and **no single width serves both** a three-digit
+  number and a hardpoint item row (size badge + name + manufacturer + inline stat strip +
+  nested loadout rail). At 420px the hardpoint rows overflowed and `overflow: hidden` cut
+  component names mid-word ("Tempes / II Missil / Firestor"), with damage figures colliding
+  with names. 450px + no clipping is what the old design had, and it worked.
+- `1fr` tracks size against content, so the store images' intrinsic width stretched a
+  two-ship comparison to ~1000px per column. The `max-width: 33%` cap solves the same
+  problem without the blowup — that cap is why the old design never looked too wide.
+
+### The matrix scrolls in its own pane
+
+Both axes are pinned, each on one axis only: the **ship-name row sticks vertically**, the
+**label column sticks horizontally**. Getting there took three attempts, and the final
+architecture — user-chosen 2026-08-13 — is a height-capped `overflow: auto` pane around the
+card stack, rather than letting the document scroll sideways.
+
+Why the pane, and not document-level scroll:
+
+- **The footer and chrome cut off.** Content overflowing the document extends the scrollable
+  area but does not stretch siblings, so the footer ended at viewport width with the page
+  background showing beyond it. Same for the right-hand gap to the container edge.
+- **The frozen label column had to dodge the nav.** The page scrolls underneath the fixed
+  navigation rail, so `left: 0` parked the labels behind it; it needed an offset of the nav's
+  width (300px, 80px slim, read from `navStore.slim`) _plus_ an opaque slab painted over the
+  strip beside it, because the nav is translucent and the columns showed through as torn-off
+  text. In a pane, `left: 0` is simply the pane's edge — offset and slab both deleted.
+
+And the bug that made the first attempt look half-broken: **`position: sticky` can only
+travel inside its parent's box.** The name row was nested in a `.compare-header` wrapper
+~250px tall, so it scrolled away instantly (measured at `top: -5737px`) while the label rail
+stayed pinned. The Header component now renders its two rows as siblings of the section
+cards — no wrapper — so the name row can travel the whole pane.
+
+The pane's height is measured on mount and resize (`getBoundingClientRect().top + scrollY`)
+rather than hard-coded, because the toolbar above it wraps at narrow widths.
+
+Trade-off accepted: a nested scroll area, so there is a second vertical scrollbar while the
+pointer is over the matrix. `overscroll-behavior: contain` stops the gesture chaining to the
+page mid-comparison.
 
 ### Components
 
 | Path                                  | Role                                                                                                                    |
 | ------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `Compare/Models/Section/index.vue`    | Section frame: `MetricsCard` + collapse toggle in the (currently unused) `#head` slot, `Collapsed` body, `hasData` gate |
-| `Compare/Models/StatRow/index.vue`    | One metric row: sticky label cell + one value cell per model, best/worst classes, `#cell` slot escape hatch             |
+| `Compare/Models/StatRow/index.vue`    | One metric row: label cell + one value cell per model, best/worst classes                                               |
 | `Compare/Models/ChipsRow/index.vue`   | Multi-valued row (resistances, absorptions, deflection, reduction) reusing DefenseMetrics' chip look                    |
 | `Compare/Models/ContentRow/index.vue` | Per-model slot row for composition bars, silhouettes and hardpoint group lists                                          |
-| `Compare/Models/Header/index.vue`     | Store image + remove button per ship, plus the sticky ship-name row                                                     |
+| `Compare/Models/Header/index.vue`     | Full-bleed 242px store image + corner remove button per ship, plus the ship-name row                                    |
 | `Compare/compareGrid.scss`            | The shared grid template + cell primitives                                                                              |
 | `Compare/compareLegend.scss`          | Shared legend for the once-per-row composition-bar key                                                                  |
 | `Compare/format.ts`                   | Formatters that return `undefined` for missing data instead of `toNumber`'s "N/A"                                       |
@@ -174,8 +199,9 @@ off the model's quantum drive hardpoint.
 3. ✅ **Hardpoint data** — `useCompareHardpoints`, wired through `compare.vue`; the
    duplicate per-section fetch is gone.
 4. ✅ **New sections** — Combat, Defense, Hull, Fuel & quantum.
-5. ✅ **Header/scroll shell** — sticky ship-name row, `CompareForm` promoted to a toolbar
-   above the matrix (it needed more room than a label cell).
+5. ✅ **Header shell** — ship-name row plus the old design's full-bleed 242px store image
+   and corner remove button; `CompareForm` promoted to a toolbar above the matrix (it
+   needed more room than a label cell).
 6. ✅ **i18n** — new keys under `labels.compare.*`; existing `labels.combat.*`,
    `labels.defense.*`, `labels.hull.*` reused for row labels. English only, matching the
    ship-page cards whose non-en translations are also pending.
@@ -206,6 +232,6 @@ they need a checkout with parsed SC data — or production — to see for real.
 - Non-en translations for the whole metrics-card family are still outstanding; this plan
   does not close that gap.
 - Mobile: a matrix this wide is a scroll experience on phones no matter what. 130px labels
-  and 280px columns are the mitigation; a card-per-ship mobile fallback is out of scope.
+  and 300px columns are the mitigation; a card-per-ship mobile fallback is out of scope.
 - Hull / sustained-DPS / cross-section rows are unverified against real data for the reason
   above.

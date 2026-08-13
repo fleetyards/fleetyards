@@ -1,13 +1,16 @@
-// Shared geometry for the compare matrix. Every row — the sticky ship header and
-// each section's stat rows — reads the same `--compare-cols` template off the
-// scroll container, which is what keeps columns aligned across separate cards.
-// These classes are used from several components' scoped styles, so they live
-// here rather than in any one of them.
+// Row geometry shared by every compare section — the sticky ship-name row, the stat
+// rows and the hardpoint lists. These classes are used from several components' scoped
+// styles, so they live here rather than in any one of them.
+//
+// Flex with a generous per-ship minimum, not a grid of fixed tracks. Grid tracks have
+// to be sized up front, and no single width serves both a three-digit number and a
+// hardpoint item row (size badge + name + manufacturer + stat strip + nested loadout
+// rail); the fixed-track version clipped component names mid-word. `flex: 1 1 0` keeps
+// every column the same width regardless of content, so the columns still line up.
 
 .compare-grid {
-  display: grid;
-  grid-template-columns: var(--compare-cols, var(--compare-label, 170px) 1fr);
-  align-items: stretch;
+  display: flex;
+  flex-wrap: nowrap;
 
   &:hover .compare-cell--value {
     background: rgba(#fff, 0.025);
@@ -15,22 +18,25 @@
 }
 
 .compare-cell {
-  min-width: 0;
+  // Grows to share the row, never below the minimum, never past a third of the width —
+  // the cap is what stops two ships from each taking half the page.
+  flex: 1 1 0;
+  min-width: var(--compare-col-min, 450px);
+  max-width: 33%;
   padding: 7px 14px;
-  overflow: hidden;
 
+  // Pinned on the horizontal axis, so metric names stay readable however far right the
+  // matrix is scrolled. `left: 0` is the pane's own edge — that is the whole reason the
+  // matrix scrolls in a pane rather than the document, where this had to be offset by the
+  // fixed nav's width and paint a slab over it to stop columns showing through.
   &--label {
-    // Frozen column: metric names stay readable however far right the matrix is
-    // scrolled. The offset clears the fixed navigation rail — the page scrolls
-    // underneath it, so sticking at 0 would park the labels behind the nav. Needs an
-    // opaque background and an edge shadow to read as a rail floating above the
-    // columns; $panel-bg is translucent and would let them show through.
     position: sticky;
-    left: var(--compare-sticky-left, 0);
+    left: 0;
     z-index: 2;
-    // Overrides the clipping every other cell needs: the slab below has to paint
-    // outside this cell's box.
-    overflow: visible;
+    flex: 0 0 var(--compare-label, 300px);
+    min-width: var(--compare-label, 300px);
+    max-width: 20%;
+    // Opaque, so the columns sliding underneath stay hidden — $panel-bg is translucent.
     background: $gray-darker;
     box-shadow: 7px 0 11px -8px rgba(#000, 0.8);
     border-right: 1px solid rgba($gray-light, 0.28);
@@ -38,19 +44,6 @@
     line-height: 1.35;
     text-align: right;
     color: $gray-light;
-
-    // A slab filling the strip left of the rail. The navigation is translucent and
-    // the columns scroll along behind it, which reads as torn-off text next to the
-    // frozen labels; this covers that strip in the rail's own colour.
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 100%;
-      bottom: 0;
-      width: 400px;
-      background: $gray-darker;
-    }
   }
 
   &--value {
@@ -67,8 +60,8 @@
     transition: background 0.15s ease;
   }
 
-  // Free-form content (composition bars, chip lists) needs the cell padding but
-  // none of the number styling.
+  // Free-form content (composition bars, chip lists, hardpoint groups) needs the cell
+  // padding but none of the number styling.
   &--content {
     display: flex;
     align-items: center;
@@ -91,8 +84,8 @@
 
   &--best::after,
   &--worst::after {
-    // A glyph rather than an icon font: it inherits the cell's colour, so best
-    // and worst never need their own markup or a second class.
+    // A glyph rather than an icon font: it inherits the cell's colour, so best and
+    // worst never need their own markup or a second class.
     font-family: "Open Sans", sans-serif;
     font-size: 8px;
     line-height: 1;
@@ -108,8 +101,7 @@
   }
 }
 
-// A section's rows sit flush against the card's inner edge so the sticky label
-// column has no gap to leave behind when the frame scrolls out from under it.
+// A section's rows sit flush against the card's inner edge.
 .compare-matrix {
   margin: 0 -18px;
 }

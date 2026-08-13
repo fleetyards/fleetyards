@@ -1,24 +1,32 @@
-// Widths for the whole matrix live here so every section card reads the same track
-// template. 420px is the width the hardpoint group cards were designed against on the
-// ship page — narrower and component names wrap a letter per line. `min-width` widens
-// the stack past the container once the columns no longer fit, which is what makes the
-// page scroll sideways.
+// The matrix scrolls inside this pane instead of extending the document. Page-level
+// sideways scrolling left the footer and the rest of the chrome cut off at viewport
+// width, and forced the frozen label column to be offset by the fixed nav's width and
+// paint a slab over it. A pane fixes all of that: it respects the container's padding on
+// the right, and both sticky axes anchor to its own scrollport.
+.compare-pane {
+  max-height: calc(100vh - var(--compare-pane-offset, 220px));
+  overflow: auto;
+  // Reaching the pane's end shouldn't hand the gesture on to the page mid-comparison.
+  overscroll-behavior: contain;
+}
+
+// Column widths for the whole matrix. 450px per ship and a 300px label column are the
+// old compare page's numbers, kept because they are what a hardpoint item row needs to
+// render without clipping — see compareGrid.scss for why one width has to serve both the
+// numeric rows and the component lists.
 .compare-matrix-stack {
-  --compare-label: 170px;
-  --compare-col: 420px;
+  --compare-label: 300px;
+  --compare-col-min: 450px;
 
+  // Keeps the section cards' frames spanning the full matrix once the rows outgrow the
+  // pane; without it the cards stop at the pane's edge and the rows overflow past their
+  // own background.
   min-width: calc(
-    var(--compare-label) + var(--compare-count, 1) * var(--compare-col)
+    var(--compare-label) + var(--compare-count, 1) * var(--compare-col-min)
   );
-
-  // Below this the navigation stops being a fixed left rail, so the frozen label
-  // column has nothing to clear.
-  @media (max-width: $desktop-breakpoint) {
-    --compare-sticky-left: 0px;
-  }
 
   @media (max-width: $tablet-breakpoint) {
     --compare-label: 130px;
-    --compare-col: 280px;
+    --compare-col-min: 300px;
   }
 }
