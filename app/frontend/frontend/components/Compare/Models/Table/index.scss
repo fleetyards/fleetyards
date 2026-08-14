@@ -13,10 +13,8 @@
   position: relative;
   max-height: min(76vh, 900px);
   overflow: auto;
-  // `none`, not `contain`: contain only stops the scroll chaining to the page, while
-  // none also suppresses the elastic overscroll, so an inner pane on macOS stops
-  // rubber-banding against its own edges.
-  overscroll-behavior: none;
+  // No `overscroll-behavior` here: `stylesheets/shared/scroll.scss` owns that for every
+  // inner scroll pane in the app, this one included.
   // The scroll container is the clipping box, and the sticky header and rail paint to
   // its edges — square corners would then spill past the panel's rounded border.
   border-radius: var(--radius-surface-inner, 14px);
@@ -484,9 +482,13 @@
   min-height: 56px;
 }
 // Component lists have wildly different heights per ship, so they read as columns of
-// stacked cards only when they start at the same line.
-.compare-table__row--top > td,
-.compare-table__row--top > th {
+// stacked cards only when they start at the same line — the label included, so it sits
+// level with the first item rather than floating beside the middle of the stack.
+//
+// Qualified through `tbody tr` on purpose: `.compare-table tbody td` above sets
+// `vertical-align: middle` at specificity 0-1-2, which outranks a bare class selector.
+.compare-table tbody tr.compare-table__row--top > td,
+.compare-table tbody tr.compare-table__row--top > th {
   vertical-align: top;
 }
 
