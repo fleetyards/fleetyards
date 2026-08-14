@@ -1735,6 +1735,9 @@
           "weekly_stats": "Weekly Report"
         }
       }
+    },
+    "logistics": {
+      "overCapacity": "over cargo capacity"
     }
   }
 }

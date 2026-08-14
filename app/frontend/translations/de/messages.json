@@ -503,6 +503,20 @@
           }
         }
       }
+    },
+    "logistics": {
+      "stockItem": {
+        "destroy": {
+          "confirmAll": "Diesen Eintrag und alle zugehörigen Buchungen löschen? Das kann nicht rückgängig gemacht werden."
+        }
+      },
+      "vehicleInventory": {
+        "clear": {
+          "confirm": "Fracht dieses Schiffs leeren? Alle Buchungen werden gelöscht.",
+          "success": "Fracht geleert.",
+          "failure": "Fracht konnte nicht geleert werden."
+        }
+      }
     }
   }
 }

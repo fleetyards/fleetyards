@@ -463,6 +463,20 @@
           }
         }
       }
+    },
+    "logistics": {
+      "stockItem": {
+        "destroy": {
+          "confirmAll": "Eliminare questo articolo e tutte le sue voci? L'operazione non può essere annullata."
+        }
+      },
+      "vehicleInventory": {
+        "clear": {
+          "confirm": "Svuotare il carico di questa nave? Tutte le voci verranno eliminate.",
+          "success": "Carico svuotato.",
+          "failure": "Impossibile svuotare il carico."
+        }
+      }
     }
   }
 }

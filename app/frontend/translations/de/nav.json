@@ -190,6 +190,9 @@
           "edit": "Finanzierungsziel bearbeiten"
         }
       }
+    },
+    "hangar": {
+      "vehicleCargo": "Fracht"
     }
   }
 }

@@ -257,6 +257,9 @@
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory"
       }
+    },
+    "logistics": {
+      "clearCargo": "清空貨物"
     }
   }
 }

@@ -222,6 +222,9 @@
           "index": "Model Module Packages"
         }
       }
+    },
+    "hangar": {
+      "vehicleCargo": "Vehicle Cargo"
     }
   }
 }

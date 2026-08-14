@@ -186,6 +186,9 @@
           "edit": "Modifica obiettivo di finanziamento"
         }
       }
+    },
+    "hangar": {
+      "vehicleCargo": "Carico"
     }
   }
 }

@@ -523,6 +523,20 @@
         "destroyedAll": "All notifications deleted",
         "error": "Something went wrong"
       }
+    },
+    "logistics": {
+      "stockItem": {
+        "destroy": {
+          "confirmAll": "Delete this item and all of its entries? This cannot be undone."
+        }
+      },
+      "vehicleInventory": {
+        "clear": {
+          "confirm": "Clear this ship's cargo? Every entry is deleted.",
+          "success": "Cargo cleared.",
+          "failure": "Could not clear the cargo."
+        }
+      }
     }
   }
 }

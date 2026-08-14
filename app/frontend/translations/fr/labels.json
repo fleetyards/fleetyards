@@ -1249,6 +1249,9 @@
         "stockItem": "Stock Item"
       },
       "hangarInventories": "Inventories"
+    },
+    "logistics": {
+      "overCapacity": "au-delà de la capacité de fret"
     }
   }
 }

@@ -464,6 +464,20 @@
           }
         }
       }
+    },
+    "logistics": {
+      "stockItem": {
+        "destroy": {
+          "confirmAll": "Supprimer cet article et toutes ses entrées ? Cette action est irréversible."
+        }
+      },
+      "vehicleInventory": {
+        "clear": {
+          "confirm": "Vider la cargaison de ce vaisseau ? Toutes les entrées seront supprimées.",
+          "success": "Cargaison vidée.",
+          "failure": "Impossible de vider la cargaison."
+        }
+      }
     }
   }
 }

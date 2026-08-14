@@ -463,6 +463,20 @@
           }
         }
       }
+    },
+    "logistics": {
+      "stockItem": {
+        "destroy": {
+          "confirmAll": "删除该物品及其所有记录？此操作无法撤销。"
+        }
+      },
+      "vehicleInventory": {
+        "clear": {
+          "confirm": "清空这艘飞船的货物？所有记录都会被删除。",
+          "success": "货物已清空。",
+          "failure": "无法清空货物。"
+        }
+      }
     }
   }
 }

@@ -186,6 +186,9 @@
           "edit": "Editar objetivo de financiación"
         }
       }
+    },
+    "hangar": {
+      "vehicleCargo": "Carga"
     }
   }
 }

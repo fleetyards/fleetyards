@@ -186,6 +186,9 @@
           "edit": "編輯資金目標"
         }
       }
+    },
+    "hangar": {
+      "vehicleCargo": "貨物"
     }
   }
 }

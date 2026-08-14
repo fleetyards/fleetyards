@@ -1241,6 +1241,9 @@
         "stockItem": "Stock Item"
       },
       "hangarInventories": "Inventories"
+    },
+    "logistics": {
+      "overCapacity": "超出貨艙容量"
     }
   }
 }

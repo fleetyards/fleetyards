@@ -1316,6 +1316,9 @@
         "stockItem": "Stock Item"
       },
       "hangarInventories": "Inventare"
+    },
+    "logistics": {
+      "overCapacity": "über der Frachtkapazität"
     }
   }
 }

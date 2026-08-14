@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "HangarLogisticsInventoryItemModal",
+  name: "LogisticsInventoryItemModal",
 };
 </script>
 
@@ -28,12 +28,15 @@ import {
   type Equipment as GameEquipment,
   type Component as GameComponent,
   type FilterOption,
-  type HangarInventory,
-  hangarInventoryStock as fetchStock,
+  type InventoryItemCreateInput,
+  hangarInventoryStock,
+  vehicleInventoryStock,
   useCreateHangarInventoryItem,
-  HangarInventoryItemCreateInputCategory,
-  HangarInventoryItemCreateInputUnit,
+  useCreateVehicleInventoryItem,
+  InventoryItemCreateInputCategory,
+  InventoryItemCreateInputUnit,
 } from "@/services/fyApi";
+import type { InventoryTarget } from "@/frontend/types/logistics";
 
 type StockItem = {
   name: string;
@@ -43,7 +46,7 @@ type StockItem = {
 };
 
 type Props = {
-  inventory: HangarInventory;
+  target: InventoryTarget;
   initialEntryType?: "deposit" | "withdrawal";
 };
 
@@ -83,9 +86,9 @@ const { defineField, handleSubmit, setFieldValue } = useForm({
   initialValues: {
     name: "",
     category:
-      HangarInventoryItemCreateInputCategory.commodity as HangarInventoryItemCreateInputCategory,
+      InventoryItemCreateInputCategory.commodity as InventoryItemCreateInputCategory,
     quantity: 1,
-    unit: HangarInventoryItemCreateInputUnit.scu as HangarInventoryItemCreateInputUnit,
+    unit: InventoryItemCreateInputUnit.scu as InventoryItemCreateInputUnit,
     quality: 0,
     image: undefined as string | undefined,
     notes: "",
@@ -101,19 +104,19 @@ const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
 
 const isComponent = computed(
-  () => category.value === HangarInventoryItemCreateInputCategory.component,
+  () => category.value === InventoryItemCreateInputCategory.component,
 );
 
 const isCommodity = computed(
-  () => category.value === HangarInventoryItemCreateInputCategory.commodity,
+  () => category.value === InventoryItemCreateInputCategory.commodity,
 );
 
 // One table backs all three: the game files file magazines as weapon
 // attachments, so ammunition is not a catalogue of its own.
-const EQUIPMENT_CATEGORIES: HangarInventoryItemCreateInputCategory[] = [
-  HangarInventoryItemCreateInputCategory.weapon,
-  HangarInventoryItemCreateInputCategory.equipment,
-  HangarInventoryItemCreateInputCategory.ammunition,
+const EQUIPMENT_CATEGORIES: InventoryItemCreateInputCategory[] = [
+  InventoryItemCreateInputCategory.weapon,
+  InventoryItemCreateInputCategory.equipment,
+  InventoryItemCreateInputCategory.ammunition,
 ];
 
 const isEquipment = computed(() =>
@@ -127,12 +130,17 @@ const unitOptions = unitOptionsFor(category);
 watch(unitOptions, (options) => {
   if (options.some((option) => option.value === unit.value)) return;
 
-  setFieldValue("unit", options[0].value as HangarInventoryItemCreateInputUnit);
+  setFieldValue("unit", options[0].value as InventoryItemCreateInputUnit);
 });
+
+const fetchStock = () =>
+  props.target.kind === "hangar"
+    ? hangarInventoryStock(props.target.slug)
+    : vehicleInventoryStock(props.target.vehicleId);
 
 const loadStockItems = async () => {
   try {
-    const data = await fetchStock(props.inventory.slug);
+    const data = await fetchStock();
     stockItems.value = data as unknown as StockItem[];
   } catch {
     stockItems.value = [];
@@ -244,37 +252,45 @@ const selectedStockMax = computed(() => {
   )?.netQuantity;
 });
 
-const createMutation = useCreateHangarInventoryItem();
+const createHangarItem = useCreateHangarInventoryItem();
+const createVehicleItem = useCreateVehicleInventoryItem();
+
+const createItem = (data: InventoryItemCreateInput) =>
+  props.target.kind === "hangar"
+    ? createHangarItem.mutateAsync({
+        hangarInventorySlug: props.target.slug,
+        data,
+      })
+    : createVehicleItem.mutateAsync({
+        vehicleId: props.target.vehicleId,
+        data,
+      });
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
-  await createMutation
-    .mutateAsync({
-      hangarInventorySlug: props.inventory.slug,
-      data: {
-        name: values.name,
-        category: values.category,
-        quantity:
-          values.category === "commodity"
-            ? Number(values.quantity)
-            : Math.round(Number(values.quantity)),
-        unit: values.unit,
-        entryType: entryType.value,
-        quality: values.quality != null ? Number(values.quality) : undefined,
-        image: values.image || undefined,
-        notes: values.notes || undefined,
-        itemType: pickedItem.value?.type,
-        itemId: pickedItem.value?.id,
-      },
-    })
+  await createItem({
+    name: values.name,
+    category: values.category,
+    quantity:
+      values.category === "commodity"
+        ? Number(values.quantity)
+        : Math.round(Number(values.quantity)),
+    unit: values.unit,
+    entryType: entryType.value,
+    quality: values.quality != null ? Number(values.quality) : undefined,
+    image: values.image || undefined,
+    notes: values.notes || undefined,
+    itemType: pickedItem.value?.type,
+    itemId: pickedItem.value?.id,
+  })
     .then(() => {
       displaySuccess({
         text: isDeposit.value
           ? t("messages.logistics.inventoryItem.deposit.success")
           : t("messages.logistics.inventoryItem.withdrawal.success"),
       });
-      comlink.emit("hangar-inventory-item-created");
+      comlink.emit("inventory-item-created");
       comlink.emit("close-modal");
     })
     .catch(() => {

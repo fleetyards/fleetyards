@@ -86,6 +86,13 @@ const stockItemRoute = (inventorySlug?: string, itemSlug?: string) => ({
   params: { inventory: inventorySlug, item: itemSlug },
 });
 
+// A ship inventory shares its slug with every other ship of that model, so it is
+// reached through the ship rather than through /hangar/inventories/:slug.
+const inventoryRoute = (inventory: HangarInventory) =>
+  inventory.vehicle
+    ? { name: "hangar-vehicle-cargo", params: { id: inventory.vehicle.id } }
+    : { name: "hangar-inventory", params: { inventory: inventory.slug } };
+
 const openInventoryModal = (inventory?: HangarInventory) => {
   comlink.emit("open-modal", {
     component: () =>
@@ -103,7 +110,7 @@ const refetchEverything = async () => {
 onMounted(() => {
   comlink.on("hangar-inventory-created", () => void refetchEverything());
   comlink.on("hangar-inventory-updated", () => void refetchEverything());
-  comlink.on("hangar-inventory-item-created", () => void refetchEverything());
+  comlink.on("inventory-item-created", () => void refetchEverything());
 });
 </script>
 
@@ -133,8 +140,8 @@ onMounted(() => {
     <template #default="{ record }">
       <InventoryPanel
         :inventory="record"
-        :to="{ name: 'hangar-inventory', params: { inventory: record.slug } }"
-        editable
+        :to="inventoryRoute(record)"
+        :editable="!record.vehicle"
         @edit="openInventoryModal(record)"
       />
     </template>

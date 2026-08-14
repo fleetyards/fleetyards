@@ -279,6 +279,9 @@
         "sortOldest": "Oldest first",
         "sortNewest": "Newest first"
       }
+    },
+    "logistics": {
+      "clearCargo": "Clear Cargo"
     }
   }
 }
