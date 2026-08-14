@@ -459,10 +459,24 @@ const handleClick = (event: MouseEvent) => {
   @apply text-white;
   background-color: rgb(220 53 69 / 0.35);
 }
+/*
+ * Engaged, not hovered. A grouped member has no end-caps to carry state, and a
+ * 0.22 tint sat too close to the #2b3034 hover fill to be told apart - so this
+ * adds a second signal the hover state cannot borrow: an inset rule along the
+ * bottom edge, which reads as a pressed key rather than a lit one.
+ */
 .btn--grouped.active,
 .btn--grouped[aria-pressed="true"] {
   @apply text-white;
-  background-color: rgb(66 139 202 / 0.22);
+  background-color: rgb(66 139 202 / 0.26);
+  box-shadow: inset 0 -2px 0 var(--color-primary, #428bca);
+}
+
+/* Hovering something already on has to answer too: `.active` outranks the
+   neutral grouped hover, so without this an engaged toggle felt dead. */
+.btn--grouped.active:hover:not([disabled]),
+.btn--grouped[aria-pressed="true"]:hover:not([disabled]) {
+  background-color: rgb(66 139 202 / 0.38);
 }
 .btn--grouped:focus-visible {
   @apply outline-offset-[-2px];
