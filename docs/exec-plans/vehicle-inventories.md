@@ -15,13 +15,12 @@ Slice 2 of the inventory work. Slice 1 is the unified table described below; sli
 migrating fleet inventories onto it, which is what unlocks a combined
 hangar + ships + fleets search.
 
-## Prerequisite — the unified table (slice 1)
+## Prerequisite — the unified table (slice 1, done)
 
-Ship inventories assume `hangar_inventories` / `hangar_inventory_items` have become
-`inventories` / `inventory_items` with a polymorphic holder. That rework belongs in
-\#4340 **before it merges**: its two migrations have never run in production, so the
-change costs a migration edit rather than a data migration plus `versions.item_type` and
-`active_storage_attachments.record_type` rewrites.
+Ship inventories hang off `inventories` / `inventory_items` with a polymorphic holder.
+That rework landed inside \#4340 rather than after it: its two migrations had never run in
+production, so reshaping them cost a migration rewrite rather than a data migration plus
+`versions.item_type` and `active_storage_attachments.record_type` rewrites.
 
 ```ruby
 create_table :inventories, id: :uuid do |t|
@@ -34,8 +33,8 @@ create_table :inventories, id: :uuid do |t|
 end
 ```
 
-Slice 1 ships without `vehicle_id` — the column arrives with this slice, together with the
-partial indexes that depend on it, so \#4340 carries nothing it does not use.
+Slice 1 shipped without `vehicle_id` — the column arrives with this slice, together with
+the partial indexes that depend on it, so \#4340 carries nothing it does not use.
 
 `holder` is *who owns it* — `User` now, `Fleet` in slice 3. `vehicle_id` is *where it is*.
 Keeping those separate is what lets slice 3 express "org cargo aboard a member's Hull C"
