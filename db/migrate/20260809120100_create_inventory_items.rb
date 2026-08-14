@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class CreateHangarInventoryItems < ActiveRecord::Migration[8.1]
+class CreateInventoryItems < ActiveRecord::Migration[8.1]
   def change
-    create_table :hangar_inventory_items, id: :uuid do |t|
-      t.references :hangar_inventory, type: :uuid, null: false, foreign_key: true
+    create_table :inventory_items, id: :uuid do |t|
+      t.references :inventory, type: :uuid, null: false, foreign_key: true
       t.string :item_type
       t.uuid :item_id
       t.string :name, null: false

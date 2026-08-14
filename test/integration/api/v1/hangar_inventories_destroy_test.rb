@@ -11,7 +11,7 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
     parameter name: "slug", in: :path, schema: {type: :string}, description: "Inventory slug"
 
     delete("Delete Hangar Inventory") do
-      operationId "destroyHangarInventory"
+      operationId "destroyInventory"
       tags "HangarInventories"
 
       security [
@@ -36,22 +36,22 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
+    @inventory = create(:inventory, holder: @user)
   end
 
   test "DELETE /hangar/inventories/:slug deletes the inventory" do
     sign_in @user
 
-    assert_difference "HangarInventory.count", -1 do
+    assert_difference "Inventory.count", -1 do
       assert_api_response :delete, 204, path_params: {slug: @inventory.slug}
     end
   end
 
   test "DELETE /hangar/inventories/:slug also deletes its items" do
-    create_list(:hangar_inventory_item, 2, hangar_inventory: @inventory)
+    create_list(:inventory_item, 2, inventory: @inventory)
     sign_in @user
 
-    assert_difference "HangarInventoryItem.count", -2 do
+    assert_difference "InventoryItem.count", -2 do
       assert_api_response :delete, 204, path_params: {slug: @inventory.slug}
     end
   end

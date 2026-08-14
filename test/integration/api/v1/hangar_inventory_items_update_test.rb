@@ -12,7 +12,7 @@ class Api::V1::HangarInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
     parameter name: "id", in: :path, schema: {type: :string}, description: "Inventory item ID"
 
     put("Update Hangar Inventory Item") do
-      operationId "updateHangarInventoryItem"
+      operationId "updateInventoryItem"
       tags "HangarInventoryItems"
       consumes "application/json"
       produces "application/json"
@@ -26,7 +26,7 @@ class Api::V1::HangarInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventoryItem"
+        schema "$ref": "#/components/schemas/InventoryItem"
       end
 
       response(401, "unauthorized") do
@@ -43,8 +43,8 @@ class Api::V1::HangarInventoryItemsUpdateTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
-    @item = create(:hangar_inventory_item, hangar_inventory: @inventory)
+    @inventory = create(:inventory, holder: @user)
+    @item = create(:inventory_item, inventory: @inventory)
   end
 
   test "PUT /hangar/inventories/:slug/items/:id updates the entry" do

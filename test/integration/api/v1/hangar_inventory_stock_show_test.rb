@@ -40,16 +40,16 @@ class Api::V1::HangarInventoryStockShowTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
+    @inventory = create(:inventory, holder: @user)
 
     @component = create(:component, :with_store_image, name: "FR-66 Shield Generator")
 
-    create(:hangar_inventory_item, :component,
-      hangar_inventory: @inventory, name: "FR-66 Shield Generator", quantity: 10, quality: 900)
-    create(:hangar_inventory_item, :component,
-      hangar_inventory: @inventory, name: "FR-66 Shield Generator", quantity: 4, quality: 500, item: @component)
-    create(:hangar_inventory_item, :component, :withdrawal,
-      hangar_inventory: @inventory, name: "FR-66 Shield Generator", quantity: 3, quality: 900)
+    create(:inventory_item, :component,
+      inventory: @inventory, name: "FR-66 Shield Generator", quantity: 10, quality: 900)
+    create(:inventory_item, :component,
+      inventory: @inventory, name: "FR-66 Shield Generator", quantity: 4, quality: 500, item: @component)
+    create(:inventory_item, :component, :withdrawal,
+      inventory: @inventory, name: "FR-66 Shield Generator", quantity: 3, quality: 900)
 
     @slug = InventoryStockItem.slug_for(name: "FR-66 Shield Generator", category: "component", unit: "units")
   end
@@ -80,9 +80,9 @@ class Api::V1::HangarInventoryStockShowTest < ActionDispatch::IntegrationTest
   test "GET /hangar/inventories/:slug/stock/:slug resolves an emptied position" do
     sign_in @user
 
-    create(:hangar_inventory_item, hangar_inventory: @inventory, name: "Quantanium", quantity: 5, unit: :scu)
-    create(:hangar_inventory_item, :withdrawal,
-      hangar_inventory: @inventory, name: "Quantanium", quantity: 5, unit: :scu)
+    create(:inventory_item, inventory: @inventory, name: "Quantanium", quantity: 5, unit: :scu)
+    create(:inventory_item, :withdrawal,
+      inventory: @inventory, name: "Quantanium", quantity: 5, unit: :scu)
 
     slug = InventoryStockItem.slug_for(name: "Quantanium", category: "commodity", unit: "scu")
 

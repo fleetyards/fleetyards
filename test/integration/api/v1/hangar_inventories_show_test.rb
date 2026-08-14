@@ -22,7 +22,7 @@ class Api::V1::HangarInventoriesShowTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventory"
+        schema "$ref": "#/components/schemas/Inventory"
       end
 
       response(401, "unauthorized") do
@@ -39,7 +39,7 @@ class Api::V1::HangarInventoriesShowTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
+    @inventory = create(:inventory, holder: @user)
   end
 
   test "GET /hangar/inventories/:slug returns the inventory" do

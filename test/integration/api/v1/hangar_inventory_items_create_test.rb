@@ -11,7 +11,7 @@ class Api::V1::HangarInventoryItemsCreateTest < ActionDispatch::IntegrationTest
     parameter name: "hangarInventorySlug", in: :path, schema: {type: :string}, description: "Inventory slug"
 
     post("Create Hangar Inventory Item") do
-      operationId "createHangarInventoryItem"
+      operationId "createInventoryItem"
       tags "HangarInventoryItems"
       consumes "application/json"
       produces "application/json"
@@ -25,7 +25,7 @@ class Api::V1::HangarInventoryItemsCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventoryItem"
+        schema "$ref": "#/components/schemas/InventoryItem"
       end
 
       response(400, "validation error") do
@@ -46,7 +46,7 @@ class Api::V1::HangarInventoryItemsCreateTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
+    @inventory = create(:inventory, holder: @user)
   end
 
   def item_body(overrides = {})

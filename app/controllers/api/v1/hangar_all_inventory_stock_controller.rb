@@ -14,30 +14,30 @@ module Api
       def index
         authorize! with: HangarInventoryItemPolicy, to: :index?
 
-        inventory_ids = current_resource_owner.hangar_inventories.pluck(:id)
+        inventory_ids = current_resource_owner.inventories.pluck(:id)
 
-        @stock = HangarInventoryItem
-          .where(hangar_inventory_id: inventory_ids)
-          .joins(:hangar_inventory)
+        @stock = InventoryItem
+          .where(inventory_id: inventory_ids)
+          .joins(:inventory)
           .select(
-            "hangar_inventory_items.name",
-            "hangar_inventory_items.category",
-            "hangar_inventory_items.unit",
-            "MIN(hangar_inventory_items.quality) AS quality_min",
-            "MAX(hangar_inventory_items.quality) AS quality_max",
-            "hangar_inventories.name AS inventory_name",
-            "hangar_inventories.slug AS inventory_slug",
-            "SUM(CASE WHEN hangar_inventory_items.entry_type = 0 THEN hangar_inventory_items.quantity ELSE -hangar_inventory_items.quantity END) AS net_quantity"
+            "inventory_items.name",
+            "inventory_items.category",
+            "inventory_items.unit",
+            "MIN(inventory_items.quality) AS quality_min",
+            "MAX(inventory_items.quality) AS quality_max",
+            "inventories.name AS inventory_name",
+            "inventories.slug AS inventory_slug",
+            "SUM(CASE WHEN inventory_items.entry_type = 0 THEN inventory_items.quantity ELSE -inventory_items.quantity END) AS net_quantity"
           )
           .group(
-            "hangar_inventory_items.name",
-            "hangar_inventory_items.category",
-            "hangar_inventory_items.unit",
-            "hangar_inventories.name",
-            "hangar_inventories.slug"
+            "inventory_items.name",
+            "inventory_items.category",
+            "inventory_items.unit",
+            "inventories.name",
+            "inventories.slug"
           )
-          .having("SUM(CASE WHEN hangar_inventory_items.entry_type = 0 THEN hangar_inventory_items.quantity ELSE -hangar_inventory_items.quantity END) > 0")
-          .order("hangar_inventory_items.name")
+          .having("SUM(CASE WHEN inventory_items.entry_type = 0 THEN inventory_items.quantity ELSE -inventory_items.quantity END) > 0")
+          .order("inventory_items.name")
 
         render "api/v1/hangar_inventory_stock/index"
       end

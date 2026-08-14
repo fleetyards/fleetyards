@@ -8,7 +8,7 @@ class HangarInventoryItemPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.id == record.hangar_inventory&.user_id
+    user.present? && record.inventory&.holder == user
   end
 
   params_filter do |params|

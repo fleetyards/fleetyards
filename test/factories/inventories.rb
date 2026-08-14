@@ -2,29 +2,27 @@
 
 # == Schema Information
 #
-# Table name: hangar_inventories
+# Table name: inventories
 #
 #  id          :uuid             not null, primary key
 #  description :text
+#  holder_type :string           not null
 #  location    :string
 #  name        :string           not null
 #  slug        :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  user_id     :uuid             not null
+#  holder_id   :uuid             not null
 #
 # Indexes
 #
-#  index_hangar_inventories_on_user_id_and_lower_name  (user_id, lower((name)::text)) UNIQUE
-#  index_hangar_inventories_on_user_id_and_slug        (user_id,slug) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (user_id => users.id)
+#  index_inventories_on_holder_and_lower_name               (holder_type, holder_id, lower((name)::text)) UNIQUE
+#  index_inventories_on_holder_type_and_holder_id           (holder_type,holder_id)
+#  index_inventories_on_holder_type_and_holder_id_and_slug  (holder_type,holder_id,slug) UNIQUE
 #
 FactoryBot.define do
-  factory :hangar_inventory do
-    user
+  factory :inventory do
+    association :holder, factory: :user
     sequence(:name) { |n| "#{Faker::Commerce.department(max: 2)} #{n}" }
     description { Faker::Lorem.sentence }
 
