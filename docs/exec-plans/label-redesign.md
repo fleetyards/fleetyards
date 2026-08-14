@@ -424,3 +424,55 @@ costs — that pairing only exists behind a session.
    hand-rolled `route.query` mutation (F6) is a latent bug source, but it is
    behaviour, not design language, and it also serves the fleet page. Out of
    scope unless Phase 3 trips over it.
+
+## Follow-up: classification exclusion
+
+Closes F6's first row and open question 3, both of which turned out to be one
+question. Asked for directly: "can we also exclude classifications like we can
+with the groups filter?"
+
+### It was never a frontend gap
+
+`Chip` has carried the excluded state since Phase 1 and `ClassLabels` simply
+never reached it. The reason is upstream of the component: `hangarGroupsNotIn`
+exists as an API query key and `classificationNotIn` did not exist anywhere -
+not in `HangarQuery`, not in `FleetVehicleQuery`, not in any permit list. The
+tri-state is a schema feature that a chip happens to render.
+
+Ransack needed nothing: `ransack_alias :classification, :model_classification`
+composes with the built-in `not_in` predicate, so declaring the key in the two
+query schemas is the whole filter. The hangar permits it automatically -
+`HangarFiltersConcern` derives its permit list from the generated schema through
+`ParamsHelper` - while the fleet's hand-written list needed the key adding.
+
+### The counts had to go blind first
+
+Exclusion is unusable while a chip's count is computed from the set that chip is
+filtering, and the two endpoints failed differently:
+
+| | before | on excluding `combat` |
+| --- | --- | --- |
+| hangar stats | counts from the filtered `models` | `Combat 0` - nothing to aim at |
+| fleet stats | the chip *list* is `models.map(&:classification).uniq` | the chip **disappears** |
+
+Both now count against a scope ransacked without `classification_in` /
+`classification_not_in`, which is what `group_count_vehicle_ids` has always done
+for the group row. This is a visible behaviour change for plain inclusion too:
+including `combat` no longer zeroes every other classification's count.
+
+### Open question 3, answered
+
+`ClassLabels` moved to `useFilters`. Not for its own sake - the hand-rolled
+`route.query` mutation had no third state to write to and adding one by hand
+would have been a second copy of the group row's cycle. The move also settles two
+divergences F6 listed as gratuitous: empty keys now drop out of the URL and the
+page resets on filter, so a classification click and a group click leave the same
+query string.
+
+Consequence worth knowing: the debounce documented above ("the row cannot be
+driven faster than the debounce") now applies to the classification row too.
+
+`excludeFilterKey` is a separate prop rather than derived from `filterKey`,
+so a consumer whose endpoint has no `notIn` counterpart keeps the binary chip
+instead of silently emitting a key the API would reject under
+`additionalProperties: false`.
