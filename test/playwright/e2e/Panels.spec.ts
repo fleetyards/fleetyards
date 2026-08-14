@@ -170,28 +170,26 @@ test.describe("Panels", () => {
     page,
   }) => {
     // Recolouring the edge made a validation error the loudest thing in the
-    // viewport. Asserted against the stylesheet: no route renders a toned panel
-    // reliably, and the rule is what regressions would break.
-    const capCarriesTone = await page.evaluate(() =>
-      [...document.styleSheets].some((sheet) => {
-        try {
-          return [...sheet.cssRules].some((rule) => {
-            const selector = (rule as CSSStyleRule).selectorText;
-            return (
-              !!selector &&
-              /\.panel--(error|success|primary|highlight)::(before|after)/.test(
-                selector,
-              ) &&
-              /background-color/.test(rule.cssText)
-            );
-          });
-        } catch {
-          // Cross-origin stylesheet, not ours.
-          return false;
-        }
-      }),
-    );
+    // viewport, so the cap carries it instead.
+    //
+    // Applied to a real panel rather than matched against the stylesheet: the
+    // rules are scoped, so the selector is `.panel--error[data-v-hash]::before`
+    // and a minifier may write `:before`, which a text match on the source
+    // selector cannot be relied on to find. Adding the class to an element that
+    // already carries the scope attribute exercises the real rule.
+    const tone = await card(page).evaluate((el) => {
+      const before = getComputedStyle(el).borderTopColor;
+      el.classList.add("panel--error");
+      const result = {
+        neutralBorder: before,
+        tonedBorder: getComputedStyle(el).borderTopColor,
+        tonedCap: getComputedStyle(el, "::before").backgroundColor,
+      };
+      el.classList.remove("panel--error");
+      return result;
+    });
 
-    expect(capCarriesTone).toBe(true);
+    expect(tone.tonedCap).toBe("rgb(204, 0, 0)");
+    expect(tone.tonedBorder).toBe(tone.neutralBorder);
   });
 });
