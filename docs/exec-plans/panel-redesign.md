@@ -655,6 +655,20 @@ Cost, stated plainly: `StatsPanel`'s own markup and `index.scss` are rewritten
 animation has to survive the move to a tile. That is a real rewrite of one
 component, against removing a surface variant from the base primitive.
 
+**Status: the component half is done.** `StatsPanel` is a tile — `slim` frame,
+`$primary` rail, Orbitron figure with tabular numerals — built on
+`metricsCard.scss`'s own primitives rather than a copy, so the two stay in step.
+`index.scss` is deleted. It is `--primary` at every instance deliberately: each
+`StatsPanel` holds one figure in its own container, so it *is* the headline one
+there and the rail marks it rather than decorating it.
+
+**The host grids are not done, and are the other half.** This decision also
+proposed collapsing each row of four into one `Panel` with a shared
+`__hero--grid`, which is what produces the 1px dividers and one frame per group
+instead of four. The rows are clean and contiguous — `.row` >
+`col-12 col-sm-6 col-lg-3` — so it is mechanical, but it changes page structure
+across six files rather than a component, and can land on its own.
+
 ### Prop API: before → after
 
 | Current | Uses | New | Note |
