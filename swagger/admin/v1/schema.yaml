@@ -9893,6 +9893,34 @@ components:
       - netQuantity
       - entriesCount
       title: InventoryStockPosition
+    InventoryVehicle:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        serial:
+          type:
+          - string
+          - 'null'
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+            cargo:
+              type: number
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: InventoryVehicle
     ItemPrice:
       type: object
       properties:

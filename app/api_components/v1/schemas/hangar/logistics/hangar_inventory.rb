@@ -19,6 +19,7 @@ module V1
               totalScu: {type: :number},
               totalUnits: {type: :number},
               image: {"$ref": "#/components/schemas/MediaFile"},
+              vehicle: {"$ref": "#/components/schemas/InventoryVehicle"},
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
