@@ -95,9 +95,26 @@ class Api::V1::FleetsInventoryStockUpdateTest < ActionDispatch::IntegrationTest
       body: {name: "Quantanium Ore"} do
       assert_equal "Quantanium Ore", parsed_body["name"]
       assert_equal 70.0, parsed_body["netQuantity"]
+      assert_equal 2, parsed_body["entriesCount"]
     end
 
     assert_equal 2, @inventory.fleet_inventory_items.where(name: "Quantanium Ore").count
+    assert_empty @inventory.fleet_inventory_items.where(name: "Quantanium")
+  end
+
+  test "PATCH moves the position to a new category and unit together" do
+    sign_in @admin
+
+    assert_api_response :patch, 200,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug},
+      body: {category: "component", unit: "units"} do
+      assert_equal "component", parsed_body["category"]
+      assert_equal "units", parsed_body["unit"]
+      assert_equal(
+        InventoryStockItem.slug_for(name: "Quantanium", category: "component", unit: "units"),
+        parsed_body["slug"]
+      )
+    end
   end
 
   test "PATCH rejects a unit the new category is not measured in" do
@@ -105,7 +122,30 @@ class Api::V1::FleetsInventoryStockUpdateTest < ActionDispatch::IntegrationTest
 
     assert_api_response :patch, 400,
       path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug},
-      body: {category: "component"}
+      body: {category: "component"} do
+      assert_includes parsed_body["errors"].to_s, "must be units for component entries"
+    end
+
+    assert_equal ["commodity"], @inventory.fleet_inventory_items.pluck(:category).uniq
+  end
+
+  test "PATCH rejects a blank name" do
+    sign_in @admin
+
+    assert_api_response :patch, 400,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug},
+      body: {name: "  "}
+  end
+
+  test "PATCH is refused for a member without inventory write access" do
+    member = create(:user)
+    create(:fleet_membership, fleet: @fleet, user: member, aasm_state: :accepted)
+
+    sign_in member
+
+    assert_api_response :patch, 403,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug},
+      body: {name: "Nope"}
   end
 
   test "PATCH returns 401 when not signed in" do
@@ -121,6 +161,18 @@ class Api::V1::FleetsInventoryStockUpdateTest < ActionDispatch::IntegrationTest
       assert_api_response :delete, 204,
         path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug}
     end
+  end
+
+  test "DELETE leaves other positions alone" do
+    sign_in @admin
+
+    create(:fleet_inventory_item, fleet_inventory: @inventory,
+      name: "Titanium", category: :commodity, unit: :scu, quantity: 5)
+
+    assert_api_response :delete, 204,
+      path_params: {fleetSlug: @fleet.slug, fleetInventorySlug: @inventory.slug, slug: @slug}
+
+    assert_equal ["Titanium"], @inventory.fleet_inventory_items.pluck(:name)
   end
 
   test "DELETE returns 404 for an unknown position" do
