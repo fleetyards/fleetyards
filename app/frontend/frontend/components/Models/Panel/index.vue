@@ -75,7 +75,6 @@ const route = useRoute();
     :class="`model-panel-${model.slug}`"
     :data-test="`model-panel-${model.slug}`"
     :tone="highlight ? PanelTonesEnum.HIGHLIGHT : PanelTonesEnum.NEUTRAL"
-    fill-height
     :bg-image="image"
     :bg-rounded="details ? PanelRoundedEnum.TOP : PanelRoundedEnum.ALL"
   >

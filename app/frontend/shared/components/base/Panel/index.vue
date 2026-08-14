@@ -46,17 +46,21 @@ const cssClasses = computed(() => ({
   "panel--fill-height": props.fillHeight,
   "panel--outer-spacing": props.outerSpacing,
   "panel--translucent": props.translucent,
+  "panel--has-bg": !!props.bgImage,
 }));
 
 // The inner box only earns its place when it has a job: a row context for
-// `alignment`, or a padding context for `inset`. Otherwise the panel is one box.
-const hasInner = computed(() => !!props.alignment || props.inset);
+// `alignment`, a padding context for `inset`, or - the important one - a
+// containing block for a background image, which must cover the default slot and
+// stop there. With the image parented to `.panel` it bled behind the footer, so a
+// card's collapsed detail panel wore the ship photo too.
+const hasInner = computed(
+  () => !!props.alignment || props.inset || !!props.bgImage,
+);
 </script>
 
 <template>
   <div class="panel" :class="cssClasses">
-    <PanelBgImage v-if="bgImage" :image="bgImage" :rounded="bgRounded" />
-
     <template v-if="hasInner">
       <div
         class="panel__inner"
@@ -66,6 +70,7 @@ const hasInner = computed(() => !!props.alignment || props.inset);
           'panel__inner--right': alignment === 'right',
         }"
       >
+        <PanelBgImage v-if="bgImage" :image="bgImage" :rounded="bgRounded" />
         <slot name="default" />
       </div>
     </template>
@@ -229,30 +234,53 @@ const hasInner = computed(() => !!props.alignment || props.inset);
  * Spacing stays, unlike Btn's. A button is an inline control dropped into flex
  * rows that own their gap, which is why 112 sites passed `inline` to cancel its
  * margin; a panel is a block-level surface stacked vertically and 89 of 91 sites
- * want this. What went is the arithmetic it used to force on fill-height.
+ * want this.
  */
 .panel--outer-spacing {
   margin-bottom: 21px;
 }
 
 /*
- * align-self rather than height:100% + calc(100% - 21px): the old rule had to
- * subtract its own margin from its own height. Stretching in the flex column
- * leaves the margin out of it entirely.
+ * min-height, not height. A Bootstrap column stretches to the tallest in its
+ * flex line, so a percentage minimum fills that line - which is the equal-height
+ * behaviour the 286px floor was standing in for - while still growing past it
+ * when the content needs more.
+ *
+ * `height: 100%` cannot do that. It resolves against the column, and the column
+ * is as tall as *all* its children, so a panel with a sibling (a heading above
+ * it, say) got locked to a height smaller than its own content and spilled out
+ * over whatever followed.
+ *
+ * The margin is still subtracted so that panel plus margin fills the line rather
+ * than overflowing it by 21px.
  */
 .panel--fill-height {
   display: flex;
   flex-direction: column;
-  align-self: stretch;
-  height: 100%;
+  min-height: 100%;
 }
 
 .panel--fill-height.panel--outer-spacing {
-  height: calc(100% - 21px);
+  min-height: calc(100% - 21px);
 }
 
 .panel__inner {
   @apply relative flex flex-col;
+}
+
+/*
+ * A background image contributes no height, so a card whose content is a title
+ * and two chips collapses to text height and the photo disappears. The card
+ * declares its own min-height - see Models/Panel - and the image region fills
+ * whatever is left above the footer.
+ */
+.panel--has-bg {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel--has-bg > .panel__inner {
+  flex: 1;
 }
 
 .panel__inner--inset {
