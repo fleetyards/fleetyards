@@ -15,12 +15,18 @@ require "test_helper"
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  holder_id   :uuid             not null
+#  vehicle_id  :uuid
 #
 # Indexes
 #
-#  index_inventories_on_holder_and_lower_name               (holder_type, holder_id, lower((name)::text)) UNIQUE
+#  index_inventories_on_holder_and_lower_name               (holder_type, holder_id, lower((name)::text)) UNIQUE WHERE (vehicle_id IS NULL)
 #  index_inventories_on_holder_type_and_holder_id           (holder_type,holder_id)
-#  index_inventories_on_holder_type_and_holder_id_and_slug  (holder_type,holder_id,slug) UNIQUE
+#  index_inventories_on_holder_type_and_holder_id_and_slug  (holder_type,holder_id,slug) UNIQUE WHERE (vehicle_id IS NULL)
+#  index_inventories_on_vehicle_id                          (vehicle_id) UNIQUE WHERE (vehicle_id IS NOT NULL)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (vehicle_id => vehicles.id) ON DELETE => nullify
 #
 class InventoryTest < ActiveSupport::TestCase
   setup do
@@ -66,5 +72,90 @@ class InventoryTest < ActiveSupport::TestCase
     assert_difference "InventoryItem.count", -2 do
       @inventory.destroy
     end
+  end
+
+  test "ship inventories are exempt from the name uniqueness rule" do
+    model = create(:model, name: "Ironclad")
+    first = create(:vehicle, user: @user, model:)
+    second = create(:vehicle, user: @user, model:)
+
+    create(:inventory, holder: @user, vehicle: first, name: "Ironclad Inventory")
+    duplicate = build(:inventory, holder: @user, vehicle: second, name: "Ironclad Inventory")
+
+    assert_predicate duplicate, :valid?
+    assert_nothing_raised { duplicate.save! }
+  end
+
+  test "a vehicle holds at most one inventory" do
+    vehicle = create(:vehicle, user: @user)
+    create(:inventory, holder: @user, vehicle:)
+
+    assert_raises ActiveRecord::RecordNotUnique do
+      create(:inventory, holder: @user, vehicle:, name: "Second Hold")
+    end
+  end
+
+  test "the default name falls back from the ship name to the model name" do
+    model = create(:model, name: "Ironclad")
+
+    assert_equal "Ironclad Inventory", create(:vehicle, user: @user, model:).default_inventory_name
+    assert_equal(
+      "Rustbucket Inventory",
+      create(:vehicle, user: @user, model:, name: "Rustbucket").default_inventory_name
+    )
+  end
+
+  test "selling the ship keeps the stock and remembers where it was" do
+    vehicle = create(:vehicle, user: @user, model: create(:model, name: "Ironclad"))
+    inventory = create(:inventory, holder: @user, vehicle:, name: "Ironclad Inventory")
+    create(:inventory_item, inventory:, name: "Quantanium", quantity: 42, unit: :scu)
+
+    assert_no_difference ["Inventory.count", "InventoryItem.count"] do
+      vehicle.destroy
+    end
+
+    inventory.reload
+
+    assert_nil inventory.vehicle_id
+    assert_equal "Ironclad", inventory.location
+    assert_equal "Ironclad Inventory", inventory.name
+  end
+
+  test "provisioning names the inventory after the ship and is idempotent" do
+    vehicle = create(:vehicle, user: @user, model: create(:model, name: "Ironclad"))
+
+    inventory = assert_difference("Inventory.count", 1) do
+      Inventory.provision_for(vehicle, holder: @user)
+    end
+
+    assert_equal "Ironclad Inventory", inventory.name
+
+    assert_no_difference "Inventory.count" do
+      assert_equal inventory, Inventory.provision_for(vehicle, holder: @user)
+    end
+  end
+
+  test "a first deposit that loses the race adopts the row the winner wrote" do
+    vehicle = create(:vehicle, user: @user)
+    winner = Inventory.create!(holder: @user, vehicle:, name: "Winner")
+
+    # Going straight at `create_for` is what a request whose existence check came
+    # back empty does, and the row being there already is the race it lost. The
+    # surrounding transaction is the deposit it is in the middle of writing.
+    inventory = assert_no_difference "Inventory.count" do
+      Inventory.transaction { Inventory.create_for(vehicle, holder: @user) }
+    end
+
+    assert_equal winner, inventory
+    assert_predicate create(:inventory_item, inventory:), :persisted?
+  end
+
+  test "an existing location survives the ship being sold" do
+    vehicle = create(:vehicle, user: @user)
+    inventory = create(:inventory, holder: @user, vehicle:, location: "Port Olisar")
+
+    vehicle.destroy
+
+    assert_equal "Port Olisar", inventory.reload.location
   end
 end
