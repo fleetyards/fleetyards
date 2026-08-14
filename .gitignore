@@ -4,7 +4,9 @@
 # logfiles and tempfiles.
 log/*
 tmp/*
-dumps/*
+# not dumps/* — in worktrees this is a symlink to the main worktree, and a
+# contents pattern would leave the link itself untracked.
+dumps
 
 pids/*
 
