@@ -1,8 +1,10 @@
 import type { Model } from "@/services/fyApi";
+import type { i18nHelpers } from "@/shared/utils/I18nHelpers";
 
 export type MetricRow = {
   label: string;
-  value: string;
+  // toNumber returns a number when it has nothing to format, so not just string.
+  value: string | number;
   // Pre-formatted markup (the UEC price), rendered with v-html and tooltipped.
   html?: boolean;
 };
@@ -20,10 +22,14 @@ export type MetricRowGroup = {
  * cannot import the frontend's `useI18n` - while the rules about which figures
  * are meaningful must not diverge between them.
  */
-type I18nHelpers = {
+// Taken from the helpers themselves rather than restated: hand-written `unknown`
+// parameters are wider than what either surface's useI18n actually returns, and
+// under strictFunctionTypes that fails to assign.
+type I18nHelpers = Pick<
+  ReturnType<typeof i18nHelpers>,
+  "toNumber" | "toUEC"
+> & {
   t: (scope: string) => string;
-  toNumber: (value: unknown, unit?: string) => string;
-  toUEC: (value: unknown) => string;
 };
 
 export const useModelMetricRows = (
@@ -79,9 +85,10 @@ export const useModelMetricRows = (
 
   const summary = computed<MetricRow[]>(() => {
     const rows: MetricRow[] = [];
+    const { focus } = model();
 
-    if (model().focus) {
-      rows.push({ label: t("model.focus"), value: model().focus as string });
+    if (focus) {
+      rows.push({ label: t("model.focus"), value: focus });
     }
 
     if (model().crew.min || model().crew.max) {
