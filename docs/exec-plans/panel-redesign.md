@@ -902,9 +902,23 @@ and the ones where F3's cap collapse was worst.
     means replacing that component, not moving stylesheet rules, which is a
     larger and separate piece of work.
 
-    Consequence to state plainly: after this PR the embed keeps the old panel
-    look while the app carries the new one. Filed as a follow-up rather than
-    absorbed here.
+    Done here after all, and it turned out to be a deletion rather than a
+    rewrite: every rule in the 259-line file was reachable only from that one
+    component, and the classes it also defined for a highlight tone, panel
+    boxes, images, footers, details, transparency levels and tables had no user
+    at all. The embed card composes `Panel` and `PanelHeading`, the file is
+    gone, and the production-status band moved into the component with the
+    frontend card's treatment.
+
+    The specificity point is what settles the "could they coexist" question:
+    `embed.scss` wraps every partial in `#fleetyards-view`, so those rules
+    outranked the component's own scoped styles. Keeping the duplicate while
+    adopting the shared component was never possible.
+
+    Confirmed on `/embed-test` and `/embed-v2-test` — one box at radius 16 with a
+    2px edge, caps at 4px `#7a8288` with a 3px inward radius and a 12% inset from
+    the hand-written fallbacks alone, the 286px image floor intact, no legacy
+    wrapper in the DOM.
 
 ### Phase 7 — Verify
 
