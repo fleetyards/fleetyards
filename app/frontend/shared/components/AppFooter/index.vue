@@ -61,18 +61,30 @@ const currentYear = computed(() => new Date().getFullYear());
         </div>
 
         <div class="app-footer__disclaimer">
-          <p>
+          <p class="app-footer__disclaimer-copyright">
             <span>Copyright &copy; {{ currentYear }}</span>
             {{ copyrightOwner }}
           </p>
-          <p class="app-footer__disclaimer-rsi">
-            This is an unofficial Star Citizen fansite, not affiliated with the
-            Cloud Imperium group of companies. All content on this site not
-            authored by its host or users are property of their respective
-            owners. Star Citizen®, Squadron 42®, Roberts Space Industries®, and
-            Cloud Imperium® are registered trademarks of Cloud Imperium Rights
-            LLC. All rights reserved.
-          </p>
+
+          <!-- One paragraph per sentence. A single wrapped block breaks
+               wherever the measure runs out, which centred reads as lines
+               opening mid-clause and split the brand name across two of them.
+               Not <br>, so these still rewrap at every width. -->
+          <div class="app-footer__disclaimer-rsi">
+            <p>
+              This is an unofficial Star Citizen fansite, not affiliated with
+              the Cloud Imperium group of companies.
+            </p>
+            <p>
+              All content on this site not authored by its host or users are
+              property of their respective owners.
+            </p>
+            <p>
+              Star Citizen®, Squadron 42®, Roberts Space Industries®, and Cloud
+              Imperium® are registered trademarks of Cloud Imperium Rights LLC.
+              All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -232,19 +244,26 @@ const currentYear = computed(() => new Date().getFullYear());
   grid-area: social;
 }
 
+/* Wide enough that the first two sentences each hold one line at 16px, which is
+   what makes the per-sentence paragraphs worth having. */
 .app-footer__disclaimer {
-  @apply max-w-[70ch];
+  @apply max-w-[48rem];
 }
 
-.app-footer__disclaimer p {
+.app-footer__disclaimer-copyright {
   @apply mb-2;
 }
 
 /* Was darken($text-color, 20%) - one of the two hand-mixed greys this file used
-   in place of the token set. */
+   in place of the token set. The sentences carry no margin; line-height alone
+   sets their rhythm, so the block reads as one paragraph. */
 .app-footer__disclaimer-rsi {
-  @apply text-sm;
   color: var(--color-muted, #7a8288);
+}
+
+/* The global p margin would set them 16px apart and undo that. */
+.app-footer__disclaimer-rsi p {
+  @apply mb-0;
 }
 
 .app-footer__meta {
