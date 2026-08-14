@@ -46,14 +46,17 @@ if [ "${1:-}" = "--fetch-batch" ]; then
 
   mkdir -p "$STAGE_ROOT"
   stage=$(mktemp -d "$STAGE_ROOT/batch.XXXXXX") || exit 1
-  trap 'rm -rf "$stage"' EXIT
+  s3cmd_log=$(mktemp)
+  trap 'rm -rf "$stage" "$s3cmd_log"' EXIT
 
   sources=()
   for key in "$@"; do
     sources+=("s3://$S3_BUCKET/$key")
   done
 
-  s3 get --force --quiet "${sources[@]}" "$stage/" > /dev/null 2>&1
+  # Kept rather than discarded: without it a failed batch reports only which
+  # keys are missing, not why (throttling, auth, a vanished object).
+  s3 get --force --quiet "${sources[@]}" "$stage/" > "$s3cmd_log" 2>&1
 
   status=0
   for key in "$@"; do
@@ -73,6 +76,12 @@ if [ "${1:-}" = "--fetch-batch" ]; then
       status=1
     fi
   done
+
+  if [ "$status" != "0" ]; then
+    reason=$(grep -aE "^(ERROR|WARNING)" "$s3cmd_log" | sort -u | head -3)
+    [ -n "$reason" ] || reason=$(tail -3 "$s3cmd_log")
+    [ -n "$reason" ] && printf 'WARN: s3cmd reported for this batch:\n%s\n' "$reason" >&2
+  fi
 
   exit $status
 fi
