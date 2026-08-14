@@ -79,19 +79,21 @@ provide(BTN_CONTAINER, {
 .btn-group::after {
   content: "";
   position: absolute;
-  left: max(10px, 14%);
-  right: max(10px, 14%);
-  height: 2px;
+  left: max(10px, var(--cap-inset, 12%));
+  right: max(10px, var(--cap-inset, 12%));
+  height: var(--cap-h-btn, 2px);
   z-index: 2;
-  @apply bg-endcap rounded-[1px];
+  @apply bg-endcap;
 }
 
 .btn-group::before {
   top: -1px;
+  border-radius: 0 0 var(--cap-r-btn, 1px) var(--cap-r-btn, 1px);
 }
 
 .btn-group::after {
   bottom: -1px;
+  border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
 }
 
 .btn-group--block {
