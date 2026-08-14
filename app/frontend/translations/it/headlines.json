@@ -303,7 +303,8 @@
         "withdrawal": "Withdrawal",
         "importCsv": "Import from CSV",
         "hangarInventories": "Hangar Inventories",
-        "editItem": "Edit Entry"
+        "editItem": "Edit Entry",
+        "editStockItem": "Edit Item"
       }
     }
   }

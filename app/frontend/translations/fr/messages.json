@@ -435,6 +435,11 @@
           "withdrawal": {
             "success": "Withdrawal recorded.",
             "failure": "Could not record withdrawal. Check available stock."
+          },
+          "destroy": {
+            "success": "Entry deleted.",
+            "failure": "Could not delete entry.",
+            "confirm": "Delete this entry? The stock it added or removed is corrected accordingly."
           }
         },
         "comment": {
@@ -446,6 +451,17 @@
         "csvImport": {
           "success": "%{count} items imported successfully.",
           "failure": "Could not import CSV file."
+        },
+        "stockItem": {
+          "update": {
+            "success": "Item updated.",
+            "failure": "Could not update item."
+          },
+          "destroy": {
+            "success": "Item deleted.",
+            "failure": "Could not delete item.",
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
+          }
         }
       }
     }

@@ -252,7 +252,11 @@
         "createItem": "Add Item",
         "importCsv": "Import CSV",
         "downloadTemplate": "Download Template",
-        "destroyInventory": "Delete Inventory"
+        "destroyInventory": "Delete Inventory",
+        "destroyEntry": "Delete Entry",
+        "editStockItem": "Edit Item",
+        "destroyStockItem": "Delete Item",
+        "editInventory": "Edit Inventory"
       }
     }
   }

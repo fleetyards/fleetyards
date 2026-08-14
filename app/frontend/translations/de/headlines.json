@@ -318,7 +318,8 @@
         "withdrawal": "Withdrawal",
         "importCsv": "Import from CSV",
         "hangarInventories": "Hangar Inventare",
-        "editItem": "Eintrag bearbeiten"
+        "editItem": "Eintrag bearbeiten",
+        "editStockItem": "Edit Item"
       }
     }
   }

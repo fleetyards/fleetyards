@@ -596,7 +596,8 @@
         "componentSubType": "組件子類型",
         "itemType": "物品類型",
         "scKey": "SC Key",
-        "scRef": "SC Ref"
+        "scRef": "SC Ref",
+        "storeImage": "Store Image"
       },
       "hardpoint": {
         "legend": {
@@ -1143,6 +1144,8 @@
         "managedBy": "Managed by",
         "itemName": "Name",
         "category": "Category",
+        "component": "Component",
+        "componentCategory": "Component Type",
         "quantity": "Quantity",
         "unit": "Unit",
         "notes": "Notes",
@@ -1222,7 +1225,14 @@
         },
         "csvImportHelp": "Upload a CSV file with columns: name, category, quantity, unit, notes. Download the template for the correct format.",
         "imported": "items imported",
-        "importErrors": "errors"
+        "importErrors": "errors",
+        "inStock": "In stock",
+        "entries": "Entries",
+        "lastEntry": "Last entry",
+        "history": "History",
+        "linkedItem": "Linked item",
+        "qualityRange": "Quality",
+        "stockItem": "Stock Item"
       },
       "hangarInventories": "Inventories"
     }
