@@ -218,12 +218,14 @@ useSubscription({
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn v-if="user.publicHangarStats" :to="{ name: 'hangar-public-stats' }">
+    <Btn
+        :size="BtnSizesEnum.MD" v-if="user.publicHangarStats" :to="{ name: 'hangar-public-stats' }">
       <i class="fa-duotone fa-chart-bar" />
       {{ t("nav.stats") }}
     </Btn>
 
-    <Btn v-if="user.publicWishlist" :to="{ name: 'wishlist-public' }">
+    <Btn
+        :size="BtnSizesEnum.MD" v-if="user.publicWishlist" :to="{ name: 'wishlist-public' }">
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
@@ -233,7 +235,8 @@ useSubscription({
       </transition>
     </Btn>
 
-    <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+    <Btn
+        :size="BtnSizesEnum.MD" data-test="fleetchart-link" @click="toggleFleetchart">
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>

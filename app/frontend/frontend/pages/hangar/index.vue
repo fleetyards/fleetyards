@@ -372,7 +372,8 @@ const openDisplayOptionsModal = () => {
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn :to="{ name: 'hangar-wishlist' }">
+    <Btn
+        :size="BtnSizesEnum.MD" :to="{ name: 'hangar-wishlist' }">
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
@@ -382,12 +383,14 @@ const openDisplayOptionsModal = () => {
       </transition>
     </Btn>
 
-    <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+    <Btn
+        :size="BtnSizesEnum.MD" data-test="fleetchart-link" @click="toggleFleetchart">
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
 
-    <Btn :to="{ name: 'hangar-stats' }">
+    <Btn
+        :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
       <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
     </Btn>

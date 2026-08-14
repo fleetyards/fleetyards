@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -158,6 +159,7 @@ const syncFromPatreon = () => {
 
   <Teleport to="#header-right">
     <Btn
+        :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-funding-goals' }"
       :aria-label="t('headlines.admin.fundingGoals.index')"
       mobile-icon-only
@@ -166,6 +168,7 @@ const syncFromPatreon = () => {
       {{ t("headlines.admin.fundingGoals.index") }}
     </Btn>
     <Btn
+        :size="BtnSizesEnum.MD"
       v-if="stats?.patreonSyncEnabled"
       :aria-label="t('actions.admin.supporterContributions.syncFromPatreon')"
       :loading="syncMutation.isPending.value"
@@ -176,6 +179,7 @@ const syncFromPatreon = () => {
       {{ t("actions.admin.supporterContributions.syncFromPatreon") }}
     </Btn>
     <Btn
+        :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-supporter-contribution-create' }"
       :aria-label="t('actions.create')"
       mobile-icon-only
