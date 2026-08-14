@@ -108,7 +108,7 @@ const setNoScroll = () => {
         </div>
 
         <AppFooter
-          :revision="appStore.version"
+          :version="appStore.version"
           :codename="appStore.codename"
           :git-revision="appStore.gitRevision"
           :online="appStore.online"

@@ -9,6 +9,7 @@ import FrontendNavigation from "@/frontend/components/Navigation/index.vue";
 import AppNavigationHeader from "@/shared/components/AppNavigation/Header/index.vue";
 import FrontendNavigationMobile from "@/frontend/components/Navigation/Mobile/index.vue";
 import AppFooter from "@/shared/components/AppFooter/index.vue";
+import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
 import AppEnvironment from "@/shared/components/AppEnvironment/index.vue";
 import AppModal from "@/shared/components/AppModal/index.vue";
 import OffCanvas from "@/shared/components/OffCanvas/index.vue";
@@ -278,6 +279,8 @@ const setLocale = (locale: string) => {
           :git-revision="appStore.gitRevision"
           :online="appStore.online"
         >
+          <!-- The `|` separators are gone: the row lays itself out with a gap,
+               and separators were never the call site's content. -->
           <a
             v-tooltip="'Roberts Space Industries'"
             href="https://robertsspaceindustries.com/"
@@ -286,19 +289,15 @@ const setLocale = (locale: string) => {
           >
             RSI
           </a>
-          |
           <router-link :to="{ name: 'privacy-policy' }">
             {{ t("nav.privacyPolicy") }}
           </router-link>
-          |
           <router-link :to="{ name: 'impressum' }">
             {{ t("nav.impressum") }}
           </router-link>
-          |
           <a href="https://api.fleetyards.net" target="_blank" rel="noopener">
             {{ t("nav.api") }}
           </a>
-          |
           <BtnDropdown :expand-top="true" :variant="BtnVariantsEnum.BARE">
             <template #label>
               <i class="fa-duotone fa-language" /> {{ currentLocale() }}
@@ -312,6 +311,15 @@ const setLocale = (locale: string) => {
               {{ localeMapping[availableLocale] }} - {{ availableLocale }}
             </Btn>
           </BtnDropdown>
+
+          <!-- The support button lives here, not in AppFooter: it opens a
+               frontend modal, and the footer also renders in admin and docs. -->
+          <template #actions>
+            <SupportBtn :variant="BtnVariantsEnum.BARE">
+              {{ t("labels.supportUs") }}
+              <i class="fa fa-heart" />
+            </SupportBtn>
+          </template>
         </AppFooter>
       </div>
     </div>
