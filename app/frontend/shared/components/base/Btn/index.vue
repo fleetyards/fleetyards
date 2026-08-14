@@ -66,6 +66,18 @@ const { t } = useI18n();
 
 const container = inject(BTN_CONTAINER, null);
 
+const isSegment = computed(
+  () => container?.container === "group" && !!container.segmented?.value,
+);
+
+// Reported to the group so it can place its thumb; see BtnGroup. Registered for
+// every group member, not just segmented ones, because `segmented` can flip at
+// runtime and a member that never registered would leave a gap in the order.
+if (container?.register) {
+  const entry = container.register(() => props.active);
+  onUnmounted(entry.unregister);
+}
+
 const size = computed(
   () => props.size ?? container?.size.value ?? BtnSizesEnum.SM,
 );
@@ -136,6 +148,7 @@ const cssClasses = computed(() => [
     "btn--block": props.block,
     "btn--mobile-icon-only": props.mobileIconOnly,
     "btn--grouped": container?.container === "group",
+    "btn--segment": isSegment.value,
     "btn--grouped-block":
       container?.container === "group" && container.block.value,
     "btn--menu-item": container?.container === "menu",
@@ -184,6 +197,8 @@ const handleClick = (event: MouseEvent) => {
     class="btn"
     :class="cssClasses"
     :aria-busy="loading || undefined"
+    :role="isSegment ? 'radio' : undefined"
+    :aria-checked="isSegment ? String(active) : undefined"
     v-bind="btnProps"
     @click="handleClick"
   >
@@ -490,6 +505,25 @@ const handleClick = (event: MouseEvent) => {
 /* No :first-child/:last-child radii here on purpose: BtnGroup's inner track
    clips the end corners, so a member never needs to know its position - which
    also survives a member being wrapped by another component. */
+
+/* ---------- inside a segmented BtnGroup ----------
+ * The thumb is the fill, so a segment paints nothing of its own - including on
+ * hover and when active, which is what stops "selected" and "hovered" being the
+ * same treatment. State lives in the type instead.
+ */
+.btn--segment,
+.btn--segment:hover:not([disabled]),
+.btn--segment.active {
+  @apply bg-transparent;
+  /* The grouped active state's accent rule as well as its fill: the thumb already
+     says which segment is chosen, and an underline under it says it twice. */
+  box-shadow: none;
+}
+
+.btn--segment:hover:not([disabled]),
+.btn--segment.active {
+  @apply text-lifted;
+}
 
 /* ---------- inside a BtnDropdown list ---------- */
 .btn--menu-item {
