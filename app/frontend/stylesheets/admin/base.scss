@@ -39,7 +39,9 @@ hr {
   }
 
   &.slim-spacer {
-    margin: 10px 0;
+    // More room under than over: whatever sits above a divider carries its own
+    // bottom margin, so an even 10px reads tight below and airy above.
+    margin: 10px 0 30px;
   }
 
   &.space-bottom {
