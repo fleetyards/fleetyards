@@ -12,6 +12,7 @@ module V1
             beamGteq: {type: :number},
             beamLteq: {type: :number},
             classificationIn: {type: :array, items: {type: :string}},
+            classificationNotIn: {type: :array, items: {type: :string}},
             focusIn: {type: :array, items: {type: :string}},
             heightGteq: {type: :number},
             heightLteq: {type: :number},

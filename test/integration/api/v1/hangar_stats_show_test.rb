@@ -45,6 +45,17 @@ class Api::V1::HangarStatsShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200
   end
 
+  test "GET /hangar/stats excludes the classifications in classificationNotIn" do
+    user = create(:user)
+    create(:vehicle, user:, model: create(:model, classification: :combat))
+    create(:vehicle, user:, model: create(:model, classification: :transport))
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"classificationNotIn" => ["combat"]}} do
+      assert_equal 1, parsed_body["total"]
+    end
+  end
+
   test "GET /hangar/stats returns 401 when not signed in" do
     assert_api_response :get, 401
   end
