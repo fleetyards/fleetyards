@@ -123,6 +123,17 @@
     }
   }
 
+  // 48px, to match Btn's md where a page header puts the two side by side. The
+  // type stays at the default 16px: 19px is the large input's, and at 48px it
+  // crowds the field.
+  &--medium {
+    input {
+      height: 48px;
+      padding: 9px 14px;
+      border-radius: 6px;
+    }
+  }
+
   &--large {
     input {
       height: 55px;
