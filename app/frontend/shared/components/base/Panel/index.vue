@@ -113,7 +113,14 @@ const hasInner = computed(() => !!props.alignment || props.inset);
 .panel::before,
 .panel::after {
   content: "";
-  @apply absolute bg-endcap;
+  /*
+   * Above the background image. ::before is generated ahead of the element's
+   * children, so with both at z-index auto it painted *under* PanelBgImage -
+   * which is inset to the padding box and so covered the inner 2px of the top
+   * cap while the bottom cap, generated after the children, stayed whole. The
+   * result on every card with a bg-image was one 2px cap and one 4px cap.
+   */
+  @apply absolute z-[1] bg-endcap;
   left: max(10px, var(--cap-inset, 12%));
   right: max(10px, var(--cap-inset, 12%));
   height: var(--cap-h, 4px);
