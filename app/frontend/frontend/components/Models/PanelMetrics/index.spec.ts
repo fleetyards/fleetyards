@@ -14,7 +14,7 @@ import PanelMetrics from "./index.vue";
 /*
  * The expanded card's details. What is worth pinning is which figures reach it:
  * ship-matrix speeds are not meaningful, so speed is shown only for models whose
- * numbers come from the game files.
+ * numbers come from the game files, and both figures share one row.
  */
 const model = (overrides: Record<string, unknown> = {}) =>
   ({
@@ -38,15 +38,29 @@ const labels = (wrapper: ReturnType<typeof mount>) =>
     .findAll(".metrics-card__row__label")
     .map((node) => node.text().trim());
 
+const valueFor = (wrapper: ReturnType<typeof mount>, label: string) =>
+  wrapper
+    .findAll(".metrics-card__row")
+    .find(
+      (row) => row.find(".metrics-card__row__label").text().trim() === label,
+    )
+    ?.find(".metrics-card__row__value")
+    .text()
+    .trim();
+
 describe("PanelMetrics", () => {
-  it("shows both speeds for an in-game ship", () => {
+  it("puts both speeds of an in-game ship in one row", () => {
     const wrapper = mount(PanelMetrics, { props: { model: model() } });
 
-    expect(labels(wrapper)).toContain("model.scm");
-    expect(labels(wrapper)).toContain("model.max");
+    expect(labels(wrapper)).toContain("model.speed");
+    expect(labels(wrapper).filter((l) => l === "model.speed")).toHaveLength(1);
+
+    const speed = valueFor(wrapper, "model.speed");
+    expect(speed).toContain("210");
+    expect(speed).toContain("1125");
   });
 
-  it("shows one speed for an in-game ground vehicle", () => {
+  it("shows one figure for an in-game ground vehicle", () => {
     const wrapper = mount(PanelMetrics, {
       props: {
         model: model({
@@ -62,8 +76,7 @@ describe("PanelMetrics", () => {
       },
     });
 
-    expect(labels(wrapper)).toContain("model.max");
-    expect(labels(wrapper)).not.toContain("model.scm");
+    expect(valueFor(wrapper, "model.speed")).toBe("90");
   });
 
   it("shows no speed for a ship-matrix model", () => {
@@ -73,8 +86,7 @@ describe("PanelMetrics", () => {
       props: { model: model({ inGame: false }) },
     });
 
-    expect(labels(wrapper)).not.toContain("model.scm");
-    expect(labels(wrapper)).not.toContain("model.max");
+    expect(labels(wrapper)).not.toContain("model.speed");
   });
 
   it("always shows the dimensions", () => {

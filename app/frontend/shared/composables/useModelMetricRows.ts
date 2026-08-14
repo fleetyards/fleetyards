@@ -52,6 +52,10 @@ export const useModelMetricRows = (
   // whose figures come from the game files. isGroundVehicle rather than a
   // classification check, matching FlightMetrics: a ground vehicle reports one
   // speed, everything else reports two.
+  //
+  // Both figures share one row - SCM and max are read as a pair, and two rows
+  // for one measurement crowded a summary that is only three or four rows long.
+  // The unit sits on the second value only, since it applies to both.
   const speeds = computed<MetricRow[]>(() => {
     if (!model().inGame) {
       return [];
@@ -61,13 +65,15 @@ export const useModelMetricRows = (
 
     if (model().metrics.isGroundVehicle) {
       return [
-        { label: t("model.max"), value: toNumber(groundMaxSpeed, "speed") },
+        { label: t("model.speed"), value: toNumber(groundMaxSpeed, "speed") },
       ];
     }
 
     return [
-      { label: t("model.scm"), value: toNumber(scmSpeed, "speed") },
-      { label: t("model.max"), value: toNumber(maxSpeed, "speed") },
+      {
+        label: t("model.speed"),
+        value: `${t("model.scm")} ${toNumber(scmSpeed)} / ${t("model.max")} ${toNumber(maxSpeed, "speed")}`,
+      },
     ];
   });
 
