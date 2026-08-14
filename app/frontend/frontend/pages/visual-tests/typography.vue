@@ -226,7 +226,6 @@ const gridRecords = [
       <BaseText muted no-spacing>large</BaseText>
       <Spacer large />
       <BaseText muted no-spacing>dark</BaseText>
-      <Spacer dark />
       <BaseText muted no-spacing>mb</BaseText>
       <Spacer mb />
       <BaseText muted no-spacing>end</BaseText>
