@@ -133,9 +133,6 @@ const openEditModal = () => {
 
 <style lang="scss" scoped>
 .inventory-panel {
-  /* The bg-image contributes no height; see Models/Panel. */
-  min-height: 290px;
-
   .inventory-panel-body {
     flex: 1;
     display: flex;

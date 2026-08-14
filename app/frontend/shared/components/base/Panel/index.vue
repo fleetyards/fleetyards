@@ -270,9 +270,16 @@ const hasInner = computed(
 
 /*
  * A background image contributes no height, so a card whose content is a title
- * and two chips collapses to text height and the photo disappears. The card
- * declares its own min-height - see Models/Panel - and the image region fills
- * whatever is left above the footer.
+ * and two chips would collapse to text height and the photo would disappear.
+ *
+ * The floor sits on the image region, not on the card. On the card it only
+ * created slack while the card was short: as soon as a footer had content of its
+ * own the card outgrew 290px, the slack was gone, and the region fell back to
+ * its content height - collapsing the photo and clipping the body under it. This
+ * is where production carried it too, as `.panel-inner { min-height: 286px }`.
+ *
+ * Overridable per card through --panel-image-height, which inherits, so a
+ * consumer never has to reach into this component to change it.
  */
 .panel--has-bg {
   display: flex;
@@ -280,7 +287,21 @@ const hasInner = computed(
 }
 
 .panel--has-bg > .panel__inner {
-  flex: 1;
+  min-height: var(--panel-image-height, 286px);
+}
+
+/*
+ * 1 0 auto, never `flex: 1`. That shorthand is 1 1 0%, and a flex item's
+ * automatic minimum size is its *content-based* minimum - which is 0 for a
+ * scroll container. `.panel-body` sets overflow: hidden, so the inner was free
+ * to collapse to roughly the heading's height once the footer had any content of
+ * its own, shrinking the photo and clipping the body it was holding.
+ *
+ * Growing from the content's own height fills a stretched card without ever
+ * shrinking below what is in it.
+ */
+.panel--has-bg > .panel__inner {
+  flex: 1 0 auto;
 }
 
 .panel__inner--inset {

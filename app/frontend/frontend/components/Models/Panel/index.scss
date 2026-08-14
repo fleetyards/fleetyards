@@ -1,9 +1,4 @@
 .model-panel {
-  /* A bg-image contributes no height, so without a floor the card collapses to
-     the height of its title and chips and the photo vanishes. Production carried
-     this as .panel-inner's 286px; it belongs to the card that wants it. */
-  min-height: 290px;
-
   &--add-to-hangar-button {
     font-size: 18px;
 
