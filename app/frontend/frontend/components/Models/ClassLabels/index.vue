@@ -9,7 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import ChipRow from "@/shared/components/base/Chip/Row/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
-import { useRoute, useRouter } from "vue-router";
+import { useFilters } from "@/shared/composables/useFilters";
 
 type Props = {
   countData: {
@@ -18,58 +18,88 @@ type Props = {
     count: number;
   }[];
   filterKey?: string;
+  /**
+   * Query key for the third state. Without it the chip stays binary - in, then
+   * out - which is what a consumer whose endpoint has no `notIn` counterpart
+   * gets.
+   */
+  excludeFilterKey?: string;
   label?: string;
   hideLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   filterKey: undefined,
+  excludeFilterKey: undefined,
   label: undefined,
   hideLabel: false,
 });
 
-const route = useRoute();
+// The same composable the group row filters through, rather than a hand-rolled
+// router.replace: it drops keys whose array empties and resets the page, so
+// clicking a classification and clicking a group now leave the same URL shape.
+const { filter, filters } =
+  useFilters<Record<string, string | string[] | undefined>>();
 
-const router = useRouter();
-
-const filter = async (filter: string) => {
-  if (!props.filterKey) {
-    return;
-  }
-  const query = JSON.parse(JSON.stringify(route.query || {}));
-
-  if ((query[props.filterKey] || []).includes(filter)) {
-    const index = query[props.filterKey].findIndex(
-      (item: string) => item === filter,
-    );
-    if (index > -1) {
-      query[props.filterKey].splice(index, 1);
-    }
-  } else {
-    if (!query[props.filterKey]) {
-      query[props.filterKey] = [];
-    }
-    query[props.filterKey].push(filter);
-  }
-
-  await router.replace({
-    name: route.name || "home",
-    query,
-  });
+const toArray = (value: string | string[] | undefined): string[] => {
+  if (!value) return [];
+  if (Array.isArray(value)) return value;
+  return [value];
 };
 
-// Binary, so the third state is never reached - which is why Chip takes a state
-// rather than a pair of booleans.
+const included = computed(() =>
+  props.filterKey ? toArray(filters.value[props.filterKey]) : [],
+);
+
+const excluded = computed(() =>
+  props.excludeFilterKey ? toArray(filters.value[props.excludeFilterKey]) : [],
+);
+
+const filterClassification = (classification: string) => {
+  if (!props.filterKey) return;
+
+  if (!props.excludeFilterKey) {
+    filter({
+      [props.filterKey]: included.value.includes(classification)
+        ? included.value.filter((item) => item !== classification)
+        : [...included.value, classification],
+    });
+    return;
+  }
+
+  if (included.value.includes(classification)) {
+    filter({
+      [props.filterKey]: included.value.filter(
+        (item) => item !== classification,
+      ),
+      [props.excludeFilterKey]: [...excluded.value, classification],
+    });
+    return;
+  }
+
+  if (excluded.value.includes(classification)) {
+    filter({
+      [props.excludeFilterKey]: excluded.value.filter(
+        (item) => item !== classification,
+      ),
+    });
+    return;
+  }
+
+  filter({ [props.filterKey]: [...included.value, classification] });
+};
+
 const classificationState = (classification: string) => {
   if (!props.filterKey) {
     return ChipStatesEnum.NEUTRAL;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const classFilter = (route.query as Record<string, any>)[props.filterKey];
-
-  if (classFilter?.includes(classification)) {
+  if (included.value.includes(classification)) {
     return ChipStatesEnum.INCLUDED;
+  }
+
+  if (excluded.value.includes(classification)) {
+    return ChipStatesEnum.EXCLUDED;
   }
 
   return ChipStatesEnum.NEUTRAL;
@@ -85,7 +115,7 @@ const classificationState = (classification: string) => {
         :state="classificationState(classification.name)"
         :count="classification.count"
         :disabled="!filterKey"
-        @toggle="filter(classification.name)"
+        @toggle="filterClassification(classification.name)"
       >
         {{ classification.label }}
       </Chip>
@@ -98,7 +128,7 @@ const classificationState = (classification: string) => {
         :active="
           classificationState(classification.name) === ChipStatesEnum.INCLUDED
         "
-        @click="filter(classification.name)"
+        @click="filterClassification(classification.name)"
       >
         <Chip
           bare

@@ -309,6 +309,7 @@ const openDisplayOptionsModal = () => {
             :label="t('labels.classifications')"
             hide-label
             filter-key="classificationIn"
+            exclude-filter-key="classificationNotIn"
           />
           <GroupLabels
             v-if="hangarStats && hangarGroups"
