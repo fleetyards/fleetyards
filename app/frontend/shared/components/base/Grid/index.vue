@@ -41,7 +41,7 @@ const gridClassesWithFilter = computed(() => {
 });
 
 const cssClasses = computed(() => {
-  return `fade-list-item ${gridClasses.value}`;
+  return `fade-list-item base-grid__cell ${gridClasses.value}`;
 });
 
 const primaryValue = (record: T) => {
@@ -60,3 +60,24 @@ const primaryValue = (record: T) => {
     </div>
   </transition-group>
 </template>
+
+<style lang="scss" scoped>
+/*
+ * Equal-height cards are the grid's job, not the card's. A percentage height on
+ * the panel itself resolves against this cell - including any sibling above it -
+ * so a card with a heading beside it overflowed. Stretching from here needs no
+ * percentage: the cell is already stretched to the tallest in its flex line, and
+ * the card grows to fill what is left.
+ */
+.base-grid__cell {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1 0 auto, not 1: grow to fill the cell, but never shrink below the content's
+   own height. `flex: 1` sets a zero basis, which relies on min-height:auto alone
+   to stop a tall card being squeezed. */
+.base-grid__cell > :deep(*) {
+  flex: 1 0 auto;
+}
+</style>

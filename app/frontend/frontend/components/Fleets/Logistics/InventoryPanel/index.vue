@@ -73,7 +73,7 @@ const openEditModal = () => {
 </script>
 
 <template>
-  <Panel fill-height :bg-image="image" class="inventory-panel">
+  <Panel :bg-image="image" class="inventory-panel">
     <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
       <template #default>
         <router-link
@@ -133,6 +133,9 @@ const openEditModal = () => {
 
 <style lang="scss" scoped>
 .inventory-panel {
+  /* The bg-image contributes no height; see Models/Panel. */
+  min-height: 290px;
+
   .inventory-panel-body {
     flex: 1;
     display: flex;
