@@ -155,7 +155,7 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
           </div>
         </div>
         <div class="col-12">
-          <hr class="dark slim-spacer" />
+          <hr class="slim-spacer" />
         </div>
         <div class="col-12 col-md-6">
           <FormToggle

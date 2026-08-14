@@ -26,20 +26,20 @@ button {
 // divide with, so a rule between sections reads the same wherever it appears.
 hr {
   height: 1px;
-  margin: 20px 5%;
+  // Full width of whatever contains it. The 5% side inset was part of the same
+  // old chrome as the 3px slab: it left a rule floating narrower than the
+  // content it divides, which is obvious anywhere the container is not the page
+  // - a modal, a panel, a form column.
+  margin: 20px 0;
   background-color: rgba($gray-light, 0.28);
   border: none;
 
   &.large-spacer {
-    margin: 60px 5%;
-  }
-
-  &.dark {
-    background-color: rgba(#000, 0.5);
+    margin: 60px 0;
   }
 
   &.slim-spacer {
-    margin: 10px 5%;
+    margin: 10px 0;
   }
 
   &.space-bottom {
