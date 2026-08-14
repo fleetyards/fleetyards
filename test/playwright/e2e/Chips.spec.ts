@@ -59,6 +59,12 @@ test.describe("Chips", () => {
     const combat = toggle(page, "Combat");
 
     await combat.click();
+    // Load-bearing wait, not politeness: the state round-trips through the query
+    // string and useFilters debounces that write, so a second click landing
+    // before the first has applied reads the same pre-update filters and sets
+    // `included` again rather than advancing to `excluded`.
+    await expect(combat).toHaveAttribute("aria-pressed", "true");
+
     await combat.click();
 
     await expect(combat.locator("i")).toBeVisible();
