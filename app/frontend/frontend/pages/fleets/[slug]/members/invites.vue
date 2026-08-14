@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -184,11 +185,13 @@ const openInviteModal = () => {
   </Heading>
 
   <Teleport v-if="!mobile && canInvite" to="#header-right">
-    <Btn @click="openInviteUrlModal">
+    <Btn
+        :size="BtnSizesEnum.MD" @click="openInviteUrlModal">
       <i class="fa-light fa-plus" />
       {{ t("actions.fleet.createInviteUrl") }}
     </Btn>
-    <Btn @click="openInviteModal">
+    <Btn
+        :size="BtnSizesEnum.MD" @click="openInviteModal">
       <i class="fa-duotone fa-user-plus" />
       {{ t("actions.fleet.inviteMember") }}
     </Btn>
