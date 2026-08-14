@@ -234,7 +234,48 @@ every ship agrees; _Compare to baseline_ turns figures into ±% against one chos
 
 Views keep their scaled side/top silhouettes, scaled against the longest ship on screen.
 
-### Blocked on the button / panel rework (2026-08-14)
+### Based on `feat/panel-redesign` (2026-08-14)
+
+Rebased: `main` first (two conflicts — see below), then `--onto origin/feat/panel-redesign`,
+which cost exactly one conflict (`Compare/Models/Form/index.scss`). 156 frontend tests and
+`lint:ts` green. Regenerate the API client after any base change or `vue-tsc` reports stale
+types — main's feature-flags commit added `FeatureFlagName` and the client is gitignored.
+
+Two of our commits shrank on the way:
+
+- `CargoMetrics` — main's #4314 rebuilt it as a proper `MetricsCard` with capacity bars and
+  per-size shares. Resolution keeps main's version wholesale and only swaps its inline
+  container math for the extracted `capacity.ts` helper, which is all that commit ever wanted.
+- `MetricsCard`'s flex head — #4314 did it on main independently, so that half of the commit
+  is gone and only `CompositionBar`'s `bar-only` survives.
+
+**The panel design is the frame for the compare table.** `docs/exec-plans/panel-redesign.md`
+lands where this redesign already pointed, which is why the two fit:
+
+- **D2 "one box, one border"** — `.panel-wrapper` is deleted and `.panel` becomes the single
+  frame, because the double frame is called out as the dated signature (F2). A `MetricsCard`
+  per section inside a bordered pane was exactly that double frame; one continuous table in
+  one panel is what the new language asks for.
+- **F12 "tables get the frame for free"** — `BaseTable` now wraps `Panel` and inherits the new
+  surface with no call-site edits. The compare table takes the same shape:
+  ```
+  <Panel class="compare-table">        ← border, radius, end-caps, shadow: all inherited
+    <div class="compare-table__pane">  ← the scroll container, owning both axes
+      <table> … </table>
+  ```
+  So the hand-rolled border/radius/background on `.compare-pane` gets deleted, not ported.
+- **D1** — `MetricsCard` becomes a `Panel` composition and `metricsCard.scss` stays as the
+  slotted-content primitives. Our tiles, pills and bars keep working unchanged; only the frame
+  moves.
+- **F12's warning, worth heeding:** `Table/Col`'s row-hover rail is a 4px `$primary` bar with a
+  _triple box-shadow glow_, and the plan notes it becomes the loudest thing on the page once
+  the panel around it goes quiet. The compare table must not inherit that — keep the quiet
+  hover we already have, or the metrics language's 3px gradient rail.
+- **F13** — `slim` is deleted (D5 makes its behaviour the default) and `variant="slim"` is a
+  new, opt-in look: 1px edge, radius 12, no caps. Nothing of ours should be mechanically
+  renamed to it.
+
+### Superseded: blocked on the button / panel rework (2026-08-14)
 
 The rebuild waits for the in-flight button and panel reworks rather than racing them. Measured
 overlap against `feat/btn-redesign` (220 files, pushed): **exactly one shared file**,
