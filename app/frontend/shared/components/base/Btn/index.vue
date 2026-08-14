@@ -513,7 +513,10 @@ const handleClick = (event: MouseEvent) => {
  */
 .btn--segment,
 .btn--segment:hover:not([disabled]),
-.btn--segment.active {
+.btn--segment.active,
+/* The grouped active-hover fill is four selectors deep, so it outranks a bare
+   `.btn--segment.active` and floods the chosen segment on hover. */
+.btn--segment.active:hover:not([disabled]) {
   @apply bg-transparent;
   /* The grouped active state's accent rule as well as its fill: the thumb already
      says which segment is chosen, and an underline under it says it twice. */
