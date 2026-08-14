@@ -414,7 +414,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 vt-row">
         <Btn @click="toggleModelPanel"> Toggle </Btn>
         <Btn @click="toggleModelOnSale"> Toggle on Sale </Btn>
       </div>
@@ -445,7 +445,7 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 vt-row">
         <Btn @click="toggleVehiclePanel"> Toggle </Btn>
         <Btn @click="toggleVehiclePanelModelOnSale">
           Toggle on Sale: {{ vehiclePanelModelOnSale }}
@@ -468,6 +468,15 @@ const vehicleTruncated = computed<Vehicle | undefined>(() => {
 </template>
 
 <style lang="scss" scoped>
+/* Btn ships no margins - spacing is the container's job. Matches the .vt-row on
+   visual-tests/buttons.vue rather than inventing a second convention. */
+.vt-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
 .panel-widths {
   display: flex;
   flex-wrap: wrap;
