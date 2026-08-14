@@ -15,15 +15,15 @@ build-pipeline groundwork this one reuses. Branch stacks on `feat/btn-redesign`.
 
 Measured surface (census over `app/frontend`, `*.vue`):
 
-| Metric | Count |
-| --- | --- |
-| `<Panel>` call sites | 91 |
-| Files containing `<Panel>` | 44 |
-| Further instances via wrapper components | 116 |
+| Metric                                            | Count        |
+| ------------------------------------------------- | ------------ |
+| `<Panel>` call sites                              | 91           |
+| Files containing `<Panel>`                        | 44           |
+| Further instances via wrapper components          | 116          |
 | `<PanelHeading>` / `<PanelBody>` / `<PanelImage>` | 67 / 66 / 11 |
-| `<MetricsCard>` call sites | 11 |
-| Files restyling `.panel*` from outside | 6 |
-| Playwright specs coupled to panel internals | **4** |
+| `<MetricsCard>` call sites                        | 11           |
+| Files restyling `.panel*` from outside            | 6            |
+| Playwright specs coupled to panel internals       | **4**        |
 
 The 116 indirect instances come from five components that wrap `Panel`:
 
@@ -55,18 +55,18 @@ alignment:     left 7 | right 1
 ### F1 — The app already has two competing surface systems
 
 `MetricsCard` was built at the current design's edge rather than inside it, and
-`btn-redesign` then adopted *its* language for every control in the app. Panel is
+`btn-redesign` then adopted _its_ language for every control in the app. Panel is
 now the only major surface still speaking the old one:
 
-| | `Panel` | `MetricsCard` |
-| --- | --- | --- |
-| Frame | 2px outer + 3px inner border, two boxes | one 2px border |
-| Edge colour | `rgba(#c8c8c8, .9)` | `rgba($gray-light, .5)` |
-| Radius | 24 / 20 / 16px | 16px |
-| End-caps | 4 hairlines, `#444`, fixed 40px + 80px | 2 hairlines, `#4a4f54`, r1px |
-| Shadow | `0 1px 1px rgba(#000,.05)` | `0 6px 18px -12px rgba(#000,.8)` |
-| Title | `Heading` hero, 2.25rem | Orbitron 15px, `.2em`, gold dot |
-| Motion | `$transition-base-speed` (**500ms**) | `150ms ease` |
+|             | `Panel`                                 | `MetricsCard`                    |
+| ----------- | --------------------------------------- | -------------------------------- |
+| Frame       | 2px outer + 3px inner border, two boxes | one 2px border                   |
+| Edge colour | `rgba(#c8c8c8, .9)`                     | `rgba($gray-light, .5)`          |
+| Radius      | 24 / 20 / 16px                          | 16px                             |
+| End-caps    | 4 hairlines, `#444`, fixed 40px + 80px  | 2 hairlines, `#4a4f54`, r1px     |
+| Shadow      | `0 1px 1px rgba(#000,.05)`              | `0 6px 18px -12px rgba(#000,.8)` |
+| Title       | `Heading` hero, 2.25rem                 | Orbitron 15px, `.2em`, gold dot  |
+| Motion      | `$transition-base-speed` (**500ms**)    | `150ms ease`                     |
 
 Eleven metrics cards sit on the ship page inside and beside panels, so the two
 systems are visible in the same viewport.
@@ -87,12 +87,12 @@ The same defect `btn-redesign` fixed for buttons (its D5). Wrapper caps are inse
 80px per side, panel caps 40px, so the two pairs are concentric at different
 fractions of the width and stop reading as one motif as the panel narrows:
 
-| Panel width | Outer cap (W − 160) | Inner cap (W − 88) |
-| --- | --- | --- |
-| 600px (`col-md-7`) | 440px (73%) | 512px (85%) |
-| 290px (`col-md-4` at `md`) | 130px (**45%**) | 202px (70%) |
-| 258px (`col-sm-6` at `sm`) | 98px (**38%**) | 170px (66%) |
-| 160px | **0px — invisible** | 72px |
+| Panel width                | Outer cap (W − 160) | Inner cap (W − 88) |
+| -------------------------- | ------------------- | ------------------ |
+| 600px (`col-md-7`)         | 440px (73%)         | 512px (85%)        |
+| 290px (`col-md-4` at `md`) | 130px (**45%**)     | 202px (70%)        |
+| 258px (`col-sm-6` at `sm`) | 98px (**38%**)      | 170px (66%)        |
+| 160px                      | **0px — invisible** | 72px               |
 
 `col-md-4` is used at 12 panel sites and `col-lg-4` at 6, so the 45% case is
 live, not hypothetical.
@@ -119,7 +119,7 @@ slim to 68 not**, and the 68 fall into three groups:
 **The card grid is the case to get right.** `base/Grid` is a Bootstrap `.row`
 with `col-12 col-md-6 col-lg-4 col-xl-3 col-xxl-2dot4 col-3xl-2`. Columns stretch
 to the tallest in the row, but the `Panel` inside is not `height: 100%` —
-`Models/Panel` does not pass `fill-height` — so today the cards line up *only*
+`Models/Panel` does not pass `fill-height` — so today the cards line up _only_
 because of the 286px floor. Remove it naively and the ship grid goes ragged.
 
 That does not rescue the floor; it identifies what it is standing in for. 286px
@@ -128,7 +128,7 @@ not need, and a card with a wrapping title already overflows past its neighbours
 `fill-height` equalises to the tallest card in the row, which is what the grid
 actually wants. See D5.
 
-No site wants a 286px floor *as a panel property*. This is `btn-redesign`'s F1
+No site wants a 286px floor _as a panel property_. This is `btn-redesign`'s F1
 again: the component's default is not the one the app asks for.
 
 ### F5 — `outerSpacing` is **not** the button's margin problem
@@ -146,7 +146,9 @@ The genuine defect is the coupling it forces:
 ```scss
 &--fill-height {
   height: 100%;
-  &.panel-wrapper--outer-spacing { height: calc(100% - 21px); }
+  &.panel-wrapper--outer-spacing {
+    height: calc(100% - 21px);
+  }
 }
 ```
 
@@ -157,19 +159,19 @@ arithmetic goes; the margin does not.
 
 Measured across all call sites:
 
-| Member | Sites | Status |
-| --- | --- | --- |
-| `PanelBody` `noMinHeight` | **16** | **no-op** — no class in the map, no rule in the stylesheet |
-| `PanelHeading` `title-align` | **4** | **no-op** — not a declared prop; lands on the root `div` as a stray attribute |
-| `PanelHeading` `multiline` | **4** | **no-op** — same |
-| `PanelHeading` `hero` | 0 | declared, never read (template hardcodes `hero` on `Heading`) |
-| `to` + `linkLabel` (`PanelLink`) | **0** | dead — the only use is Panel's own template |
-| `bgOverlay` | 0 | dead |
-| `bgAlign` / `PanelBgAlignmentsEnum` | 0 | dead |
-| `PanelTransparenciesEnum.COMPLETE` | 0 | dead (`MORE` has 6) |
-| `PanelBgColorsEnum.ADMIN` | 0 | dead (`PRIMARY` has 2) |
-| `PanelShadowsEnum` LEFT/RIGHT/BOTTOM | 0 | dead (`TOP` has 3) |
-| `PanelBody` `noPadding` | 0 | dead |
+| Member                               | Sites  | Status                                                                        |
+| ------------------------------------ | ------ | ----------------------------------------------------------------------------- |
+| `PanelBody` `noMinHeight`            | **16** | **no-op** — no class in the map, no rule in the stylesheet                    |
+| `PanelHeading` `title-align`         | **4**  | **no-op** — not a declared prop; lands on the root `div` as a stray attribute |
+| `PanelHeading` `multiline`           | **4**  | **no-op** — same                                                              |
+| `PanelHeading` `hero`                | 0      | declared, never read (template hardcodes `hero` on `Heading`)                 |
+| `to` + `linkLabel` (`PanelLink`)     | **0**  | dead — the only use is Panel's own template                                   |
+| `bgOverlay`                          | 0      | dead                                                                          |
+| `bgAlign` / `PanelBgAlignmentsEnum`  | 0      | dead                                                                          |
+| `PanelTransparenciesEnum.COMPLETE`   | 0      | dead (`MORE` has 6)                                                           |
+| `PanelBgColorsEnum.ADMIN`            | 0      | dead (`PRIMARY` has 2)                                                        |
+| `PanelShadowsEnum` LEFT/RIGHT/BOTTOM | 0      | dead (`TOP` has 3)                                                            |
+| `PanelBody` `noPadding`              | 0      | dead                                                                          |
 
 Twenty-four call sites pass a prop that does nothing at all. `PanelBody` also
 declares its corner type as `PanelImageRounded`, a copy-paste duplicate of
@@ -210,7 +212,7 @@ decision.
 So the `.panel` class name and the `panel-heading-title` hook are contract and
 must survive the rebuild. `base/Panel/index.spec.ts` is 10 lines.
 
-One thing that is *better* than the button's starting point:
+One thing that is _better_ than the button's starting point:
 `frontend/pages/visual-tests/panels.vue` already exists at 417 lines and covers
 variants, alignments and bg-colors. It needs extending, not building.
 
@@ -232,16 +234,16 @@ from its background only by its edge and end-caps. See Q1.
 A grep for `.panel*` outside the component finds six files. Reading them, **only
 the embed pair is real**:
 
-| File | Verdict |
-| --- | --- |
-| `embed/components/Models/Panel/index.vue` | real — the embed's own card, `.panel-inner` / `.panel-heading` |
-| `stylesheets/embed/partials/panel.scss` | real — the 259-line F8 duplicate |
-| `frontend/pages/fleets/preview.scss` | **false positive** |
-| `frontend/pages/hangar/preview.scss` | **false positive** |
-| `frontend/components/Fleets/VehiclePanel/index.scss` | **dead file** |
+| File                                                 | Verdict                                                        |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
+| `embed/components/Models/Panel/index.vue`            | real — the embed's own card, `.panel-inner` / `.panel-heading` |
+| `stylesheets/embed/partials/panel.scss`              | real — the 259-line F8 duplicate                               |
+| `frontend/pages/fleets/preview.scss`                 | **false positive**                                             |
+| `frontend/pages/hangar/preview.scss`                 | **false positive**                                             |
+| `frontend/components/Fleets/VehiclePanel/index.scss` | **dead file**                                                  |
 
 The two preview pages never touch the component. They hand-roll
-`<div class="panel-heading">` and `<div class="panel-body">` *inside* a `Panel`
+`<div class="panel-heading">` and `<div class="panel-body">` _inside_ a `Panel`
 and style those, borrowing the class names but getting nothing from
 `PanelHeading`/`PanelBody`, whose styles are scoped. `.panel-title` there is a
 real global in `stylesheets/shared/typography.scss`. Nothing to un-leak.
@@ -278,22 +280,23 @@ it lacks `admin`, `asyncStatus`, `fillHeight`, `rowClickable` and `rowDisabled` 
 and it imports `SortableLink` and `BulkActions` from `Table`, so it is not
 standalone either. It is a parked prototype, not a migration in flight.
 
-Their *interiors* are untouched by this plan, and two things then read louder
+Their _interiors_ are untouched by this plan, and two things then read louder
 than the frame containing them:
 
 - **The row hover rail.** `Table/Col` and `Table2/Row` both draw a 4px `$primary`
   bar on hover with a **triple box-shadow glow**:
   ```scss
-  box-shadow: 3px 0 10px rgba(darken($primary, 20%), .9),
-              0 3px 10px rgba(darken($primary, 20%), .9),
-              0 -3px 10px rgba(darken($primary, 20%), .9);
+  box-shadow:
+    3px 0 10px rgba(darken($primary, 20%), 0.9),
+    0 3px 10px rgba(darken($primary, 20%), 0.9),
+    0 -3px 10px rgba(darken($primary, 20%), 0.9);
   ```
   The metrics language has the same device at `metrics-card__tile--primary` — a
   3px `linear-gradient($primary, rgba($primary, .15))` rail, no glow. Same idea,
   very different intensity. Once the panel around it goes quiet, the glow is the
   loudest thing left on the page.
 - **The header rule and label.** `Table2/Header` uses `border-bottom: 1px solid
-  $gray` (`#52575c`, solid) where the metrics language uses
+$gray` (`#52575c`, solid) where the metrics language uses
   `rgba($gray-light, .28)`; header cells are `darken($text-color, 20%)` +
   `font-weight: bold` in Open Sans, against metrics labels' Orbitron 10px
   `.16em` uppercase.
@@ -305,7 +308,7 @@ duplicate only matters if `Table2` is kept. See Q8 and Q9.
 ### F13 — `slim` collides with itself in the new API, and tables are where it bites
 
 A codemod hazard created by D6, worth naming before it is written. Today `slim`
-means *no 286px min-height*. In the new API `variant="slim"` means something
+means _no 286px min-height_. In the new API `variant="slim"` means something
 entirely different — a 1px edge at radius 12 with **no end-caps**.
 
 A mechanical `slim` → `variant="slim"` rename would silently strip the caps and
@@ -368,12 +371,12 @@ smudge rather than a signature.
 **Settled from the review rig:**
 
 ```css
-left:  max(10px, 12%);
+left: max(10px, 12%);
 right: max(10px, 12%);
 height: 4px;
-background: var(--color-endcap);          /* #7a8288 */
-border-radius: 0 0 3px 3px;               /* ::before — inward edge only */
-border-radius: 3px 3px 0 0;               /* ::after  — inward edge only */
+background: var(--color-endcap); /* #7a8288 */
+border-radius: 0 0 3px 3px; /* ::before — inward edge only */
+border-radius: 3px 3px 0 0; /* ::after  — inward edge only */
 ```
 
 No end fade. The cap holds ~76% of the width at any width, against the 38–45%
@@ -392,7 +395,7 @@ Two consequences worth naming:
   `--color-endcap`, so raising it changes #4338's buttons in the same commit
   range. That is the desired outcome — a panel cap and a button cap must read as
   the same motif — and it is only cheap while #4338 is open. Button cap
-  *heights* stay one step below the panel's (2px, 3px at `lg`), since a 43px
+  _heights_ stay one step below the panel's (2px, 3px at `lg`), since a 43px
   control cannot carry a 4px hairline.
 - `variant="slim"` still carries no caps, following `metrics-card--slim`. Once
   the cap is this much louder, a grid of repeated slim cards is exactly where it
@@ -403,19 +406,29 @@ Two consequences worth naming:
 
 ```scss
 // Panel/index.scss, today
-&::before { border-bottom-right-radius: 1px; border-bottom-left-radius: 1px; }
-&::after  { border-top-left-radius: 1px;     border-top-right-radius: 1px; }
+&::before {
+  border-bottom-right-radius: 1px;
+  border-bottom-left-radius: 1px;
+}
+&::after {
+  border-top-left-radius: 1px;
+  border-top-right-radius: 1px;
+}
 ```
 
-The top cap rounds its *bottom* corners and the bottom cap its *top* corners, so
+The top cap rounds its _bottom_ corners and the bottom cap its _top_ corners, so
 the outward edge stays a crisp line continuous with the border while the side
 facing into the panel softens. `MetricsCard` (`border-radius: 1px`) and #4338's
 `Btn` (`rounded-[1px]`) both round all four corners and lose the distinction; the
 redesign carries the original behaviour forward rather than inheriting theirs.
 
 ```css
-::before { border-radius: 0 0 var(--cap-r) var(--cap-r); }
-::after  { border-radius: var(--cap-r) var(--cap-r) 0 0; }
+::before {
+  border-radius: 0 0 var(--cap-r) var(--cap-r);
+}
+::after {
+  border-radius: var(--cap-r) var(--cap-r) 0 0;
+}
 ```
 
 Rounding one edge also lifts the clamp. A radius is limited by the sum of the two
@@ -442,7 +455,7 @@ full inward round that the bar reads as a lozenge rather than a seam.
 ```
 
 The ceiling binds at both button sizes today, so the effective rule is simply
-*half the cap height*; the proportional term is what keeps it from exceeding the
+_half the cap height_; the proportional term is what keeps it from exceeding the
 panel's own ratio if `--cap-r` is ever lowered.
 
 The panel keeps `0.75 ×` its cap height rather than taking the same ceiling. Its
@@ -459,11 +472,11 @@ to all-corner rounding in the first place.
 Three edits to `Btn`'s cap block. Nothing else about the button — sizes,
 variants, tones, hover, focus, `BtnGroup` — is touched.
 
-| | #4338 today | After | Why |
-| --- | --- | --- | --- |
-| Colour | `--color-endcap: #4a4f54` | `#7a8288` | Shared token. `#4a4f54` sits 3–5 points of luminance above the control fill, so the motif is the least visible part of the frame |
-| Inset | `max(10px, 18%)` | `max(10px, 12%)` | Panel and button read as one motif only at one inset |
-| Radius | `rounded-[1px]` — all four corners | inward edge only, `1px` sm/md · `1.5px` lg | Restores what `Panel/index.scss` does and `Btn` dropped |
+|        | #4338 today                        | After                                      | Why                                                                                                                              |
+| ------ | ---------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Colour | `--color-endcap: #4a4f54`          | `#7a8288`                                  | Shared token. `#4a4f54` sits 3–5 points of luminance above the control fill, so the motif is the least visible part of the frame |
+| Inset  | `max(10px, 18%)`                   | `max(10px, 12%)`                           | Panel and button read as one motif only at one inset                                                                             |
+| Radius | `rounded-[1px]` — all four corners | inward edge only, `1px` sm/md · `1.5px` lg | Restores what `Panel/index.scss` does and `Btn` dropped                                                                          |
 
 **Cap heights do not change.** 2px at `sm`/`md` and 3px at `lg`, exactly as
 #4338 ships them — `max(2px, --cap-h - 2px)` and `max(2px, --cap-h - 1px)`
@@ -517,11 +530,11 @@ that is a different thing that happens to share the word.
 
 The 68 sites that relied on the floor are re-homed by group:
 
-| Group | Was | Becomes |
-| --- | --- | --- |
-| Card grids — `Models/Panel`, `Modules/Panel`, `InventoryPanel` | 286px floor | `fill-height`, equalising to the tallest card in the row |
-| Chart and stat panels (37) | 286px floor | height owned by `Chart` — see Q2 |
-| Prose pages | floor never applied | nothing |
+| Group                                                          | Was                 | Becomes                                                  |
+| -------------------------------------------------------------- | ------------------- | -------------------------------------------------------- |
+| Card grids — `Models/Panel`, `Modules/Panel`, `InventoryPanel` | 286px floor         | `fill-height`, equalising to the tallest card in the row |
+| Chart and stat panels (37)                                     | 286px floor         | no change needed — `Chart` already owns 400px, see Q2    |
+| Prose pages                                                    | floor never applied | nothing                                                  |
 
 The card change is an improvement rather than a port: 286px is simultaneously too
 tall for a row of short cards and too short for one with a wrapping title, which
@@ -555,9 +568,13 @@ plan exists to get. Three treatments were compared in the rig — edge, whole ca
 and a 1–2px line along the cap's outward face — and the **whole cap** won:
 
 ```css
-.panel--error { --tone: #c00; }
+.panel--error {
+  --tone: #c00;
+}
 .panel--error::before,
-.panel--error::after { background-color: var(--tone); }
+.panel--error::after {
+  background-color: var(--tone);
+}
 ```
 
 The frame stays `--color-edge` at every tone. Each tone declares only `--tone`, so
@@ -574,10 +591,10 @@ Two consequences:
 
 **The button's tone does not move with it**, and the asymmetry is deliberate:
 
-| | carries tone via | why |
-| --- | --- | --- |
-| `Panel` | the end-cap | it has no text of its own; the title belongs to `PanelHeading` |
-| `Btn` | the label (`#f0a8ae`) plus its edge | it does, and the label survives every variant |
+|         | carries tone via                    | why                                                            |
+| ------- | ----------------------------------- | -------------------------------------------------------------- |
+| `Panel` | the end-cap                         | it has no text of its own; the title belongs to `PanelHeading` |
+| `Btn`   | the label (`#f0a8ae`) plus its edge | it does, and the label survives every variant                  |
 
 A cap-carried tone would vanish on `bare`, `grouped` and `menu-item`, which all
 set `content: none` on their caps — and `menu-item` is where destructive actions
@@ -604,7 +621,7 @@ Mapping: `variant="error"` → `tone="error"`, `highlight` → `tone="highlight"
 background image — which `PanelHeading` already implements as `--top`/`--bottom`.
 They move onto `PanelHeading shadow` and the component goes.
 
-`title-align` and `multiline` were clearly *intended* at their four sites each;
+`title-align` and `multiline` were clearly _intended_ at their four sites each;
 see Q3.
 
 ### D8 — Adopt MetricsCard's padding pair
@@ -659,7 +676,7 @@ component, against removing a surface variant from the base primitive.
 `$primary` rail, Orbitron figure with tabular numerals — built on
 `metricsCard.scss`'s own primitives rather than a copy, so the two stay in step.
 `index.scss` is deleted. It is `--primary` at every instance deliberately: each
-`StatsPanel` holds one figure in its own container, so it *is* the headline one
+`StatsPanel` holds one figure in its own container, so it _is_ the headline one
 there and the rail marks it rather than decorating it.
 
 **The host grids stay as they are — decided in review.** This plan originally
@@ -676,28 +693,28 @@ That is the one place the two diverge, and it is deliberate.
 
 ### Prop API: before → after
 
-| Current | Uses | New | Note |
-| --- | --- | --- | --- |
-| `slim` | 23 | *(omit)* | new default (D5) |
-| `fill-height` | 11 | `fill-height` | kept; `calc()` coupling dropped (F5) |
-| `alignment` | 8 | `alignment` | kept |
-| `inset` | 7 | `inset` | kept |
-| `variant="error\|success\|primary"` | 7 | `tone="…"` | D6 |
-| `transparency="more"` | 6 | `translucent` | D6 |
-| `bg-image` / `bg-rounded` | 6 | kept | |
-| `shadow="top"` | 3 | `PanelHeading shadow="top"` | D7 |
-| `bg-color="primary"` | 2 *(69 rendered)* | **removed** | D9 — `StatsPanel` becomes tiles |
-| `outer-spacing` | 2 | `outer-spacing` | **kept** — F5 |
-| `animated` | 2 | `animated` | kept |
-| `highlight` | 2 | `tone="highlight"` | D6 |
-| `to` + `link-label` | 0 | **removed** | D7 |
-| `bg-overlay`, `bg-align` | 0 | **removed** | D7 |
-| `PanelBody no-min-height` | 16 | **removed** | no-op (F6) |
-| `PanelBody no-padding-top` | 12 | **removed** | D8 |
-| `PanelBody no-padding` | 0 | **removed** | D7 |
-| `PanelHeading title-align` | 4 | implement or drop | Q3 |
-| `PanelHeading multiline` | 4 | implement or drop | Q3 |
-| `PanelHeading hero` | 0 | **removed** | D7 |
+| Current                             | Uses              | New                         | Note                                 |
+| ----------------------------------- | ----------------- | --------------------------- | ------------------------------------ |
+| `slim`                              | 23                | _(omit)_                    | new default (D5)                     |
+| `fill-height`                       | 11                | `fill-height`               | kept; `calc()` coupling dropped (F5) |
+| `alignment`                         | 8                 | `alignment`                 | kept                                 |
+| `inset`                             | 7                 | `inset`                     | kept                                 |
+| `variant="error\|success\|primary"` | 7                 | `tone="…"`                  | D6                                   |
+| `transparency="more"`               | 6                 | `translucent`               | D6                                   |
+| `bg-image` / `bg-rounded`           | 6                 | kept                        |                                      |
+| `shadow="top"`                      | 3                 | `PanelHeading shadow="top"` | D7                                   |
+| `bg-color="primary"`                | 2 _(69 rendered)_ | **removed**                 | D9 — `StatsPanel` becomes tiles      |
+| `outer-spacing`                     | 2                 | `outer-spacing`             | **kept** — F5                        |
+| `animated`                          | 2                 | `animated`                  | kept                                 |
+| `highlight`                         | 2                 | `tone="highlight"`          | D6                                   |
+| `to` + `link-label`                 | 0                 | **removed**                 | D7                                   |
+| `bg-overlay`, `bg-align`            | 0                 | **removed**                 | D7                                   |
+| `PanelBody no-min-height`           | 16                | **removed**                 | no-op (F6)                           |
+| `PanelBody no-padding-top`          | 12                | **removed**                 | D8                                   |
+| `PanelBody no-padding`              | 0                 | **removed**                 | D7                                   |
+| `PanelHeading title-align`          | 4                 | dropped                     | Q3                                   |
+| `PanelHeading multiline`            | 4                 | dropped                     | Q3                                   |
+| `PanelHeading hero`                 | 0                 | **removed**                 | D7                                   |
 
 Net on `Panel`: **15 props → 10**, and the most-passed prop (`slim`) disappears
 from every call site.
@@ -708,7 +725,7 @@ from every call site.
 
 As in `btn-redesign`, the prop API and the visuals are orthogonal — API in
 `index.vue`/`types.ts`, look in the component's CSS — so the codemod can land
-before the design is final. The two dependencies that *are* ordered: D2 must land
+before the design is final. The two dependencies that _are_ ordered: D2 must land
 before D3 (one box before one pair of caps), and Panel must be rebuilt before
 MetricsCard can be folded into it.
 
@@ -739,10 +756,14 @@ MetricsCard can be folded into it.
 
    **The embed premise holds for surfaces too**, and by a mechanism worth
    recording. Theme utilities inline with literal fallbacks as `btn-redesign`
-   found — but the compiled file *also* carries its own copy of
+   found — but the compiled file _also_ carries its own copy of
 
    ```css
-   @property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}
+   @property --tw-border-style {
+     syntax: "*";
+     inherits: false;
+     initial-value: solid;
+   }
    ```
 
    which is what keeps `border-style:var(--tw-border-style)` valid where
@@ -757,6 +778,7 @@ MetricsCard can be folded into it.
    not decorative: unlike the theme utilities, Tailwind adds no fallback to a
    bare `var()` in a hand-written declaration. `tailwind.css` carries a comment
    to that effect.
+
 2. **Visual baseline — by eye, not by snapshot.** Extend
    `visual-tests/panels.vue` to the full variant × tone × state matrix
    (default/slim/bare × 5 tones × translucent, animated, fill-height, alignment,
@@ -777,13 +799,13 @@ MetricsCard can be folded into it.
      inside the e2e container.
 
    Follow the pattern that PR settled on instead: assert the named invariant
-   with computed style against a real route, so a failure says *which* invariant
+   with computed style against a real route, so a failure says _which_ invariant
    broke rather than that something moved.
 
-   | Route | Covers |
-   | --- | --- |
+   | Route     | Covers                                                                                                                                                           |
+   | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
    | `/ships/` | the ship card — one frame not two, one pair of caps, proportional inset, `fill-height` equalisation, `.panel` class and `panel-heading-title` still present (F9) |
-   | `/stats/` | `StatsPanel` as tiles, and the chart panels that lose the 286px floor (Q2) |
+   | `/stats/` | `StatsPanel` as tiles, and the chart panels that lose the 286px floor (Q2)                                                                                       |
 
 ### Phase 1 — Tokens
 
@@ -854,8 +876,7 @@ and the ones where F3's cap collapse was worst.
 14. Rewrite `StatsPanel` as a metrics tile per D9, and collapse its six host
     grids into `__hero--grid` containers. This is the largest single edit in the
     plan and the one with the most visible blast radius — 69 instances.
-15. Give the 37 chart/stat sites their height per Q2.
-16. `prettier --write` then `eslint` on touched files.
+15. `prettier --write` then `eslint` on touched files.
 
 ### Phase 6 — Un-leak the six files — **mostly nothing to do**
 
@@ -884,30 +905,39 @@ and the ones where F3's cap collapse was worst.
 - **Q1** — `--color-control` is byte-identical to `$panel-bg` (F10), so a solid
   button on a panel reads only by its edge and caps. Intended, or should one of
   the two step apart? Cheapest to settle while `btn-redesign` is still open.
-- **Q2** — The 37 chart/stat sites losing the 286px min-height (D5): does `Chart`
-  take ownership of a height, or does each site get a `min-h-*` utility? The
-  former is fewer edits and puts the constraint on the component that has it.
-- **Q3** — `title-align="right"` and `multiline` are passed at four sites each
-  and have never done anything (F6). The four sites are all image-beside-text
-  modals (`LinkUpgradeModal`, `LinkModuleModal`, `Hardpoints/ModuleItem/Modal`,
-  `AddonsModal/Addons`). Implement what they asked for, or delete the attributes?
-- **Q4** — Do `variant="bare"` and `translucent` overlap enough to collapse into
-  one axis? Both exist to let a background image through.
-- **Q8** — Does the table *interior* come along (F12)? The frame changes for free
-  at 36 production sites, but the row hover rail's triple `$primary` glow and the
-  solid `$gray` header rule then out-shout the quieter frame around them.
-  Argument for including it: the mismatch is created by this PR. Against: it is a
-  third component rewrite on top of `StatsPanel` and `MetricsCard`. Cheaper than
-  first assessed, since only `Table` is live.
-- **Q9** — `BaseTable2` (F12) reaches no user: 4 call sites, all on the
-  visual-tests page, parked since the Vue 3 migration. It is not this plan's to
-  decide, but this plan is what surfaced it, and it changes Q8's cost. Delete it,
-  or finish it? Leaving it means every future table change is authored twice or
-  the two drift further apart. Whatever the answer, it should not quietly acquire
-  the new panel frame as if it were a shipped component.
-- **Q5** — `outer-spacing`'s 21px is inherited; MetricsCard uses `15px 0 40px`
-  and `--slim` uses `0 0 22px`. Once panels and cards are one component, which
-  spacing wins?
+- ~~**Q2** Chart heights.~~ Neither: the premise was wrong. `Chart` already
+  declares `height?: number` defaulting to `400` and hands it to the chart
+  instance, so the 286px floor was never what held those panels open. Measured
+  on `/stats/`: every chart panel is 494px (400 + heading and padding), and the
+  only non-chart panels there are the `stats-panel` tiles at 102px, which is
+  their intended height. No edits.
+- ~~**Q3** `title-align` / `multiline`.~~ Deleted. No component has ever
+  declared either prop, so they were not merely ignored - they fell through
+  Vue's attribute inheritance and rendered into the DOM as stray attributes on
+  the heading element. Removing them changes nothing on screen. A right-aligned
+  wrapping title in those four modals is a feature to add deliberately, not a
+  regression to restore.
+- ~~**Q4** `bare` vs `translucent`.~~ Nothing to collapse - `bare` was dead on
+  arrival and is deleted. It had no call site, and the prop it stood in for had
+  none either: main offered three transparency levels and only `more` was ever
+  used, at the six preview panels that now pass `translucent`. `complete`, which
+  `bare` absorbed, was never asked for by anything. The only `<Panel>` tags
+  carrying `variant` or `translucent` are `hangar/preview`, `fleets/preview`,
+  `StatsPanel` and `MetricsCard`.
+- ~~**Q8** Does the table interior come along?~~ No - out of scope, filed as
+  [#4369](https://github.com/fleetyards/fleetyards/issues/4369). The frame still changes for free at 36 sites and the row hover rail's
+  triple `$primary` glow and solid `$gray` header rule still out-shout it; that
+  mismatch is this PR's to own and to hand on, not to absorb as a third
+  component rewrite.
+- ~~**Q9** Delete or finish `BaseTable2`?~~ Neither - left alone. Worth
+  recording why the "should not quietly acquire the new frame" caveat needs no
+  action: `Table2` composes `Panel` and `PanelHeading` rather than copying their
+  styles, so it tracks the rebuild automatically and correctly. It is still only
+  reachable from the visual-tests page, so nothing presents it as shipped.
+- ~~**Q5** Which spacing wins?~~ The panel's. Both the card and its slim
+  variant now use `margin: 0 0 21px`; a column of cards used to sit almost twice
+  as far apart as a column of panels, visible on the ship page where the two
+  stack in one sidebar.
 
 ## Design review
 
