@@ -34,6 +34,27 @@ const crew = computed(() => {
   return toNumber([min, max].filter((item) => item).join(" - "), "people");
 });
 
+// Ship-matrix speeds are not meaningful, so they are only shown for models whose
+// figures come from the game files. isGroundVehicle rather than a classification
+// check, matching FlightMetrics: a ground vehicle reports one speed, everything
+// else reports two.
+const speeds = computed(() => {
+  if (!props.model.inGame) {
+    return [];
+  }
+
+  const { groundMaxSpeed, scmSpeed, maxSpeed } = props.model.speeds;
+
+  if (props.model.metrics.isGroundVehicle) {
+    return [{ label: t("model.max"), value: groundMaxSpeed }];
+  }
+
+  return [
+    { label: t("model.scm"), value: scmSpeed },
+    { label: t("model.max"), value: maxSpeed },
+  ];
+});
+
 const dimensions = computed(() => [
   {
     label: t("model.length"),
@@ -77,6 +98,12 @@ const dimensions = computed(() => [
       <div v-if="model.crew.min || model.crew.max" class="metrics-card__row">
         <span class="metrics-card__row__label">{{ t("model.crew") }}</span>
         <span class="metrics-card__row__value">{{ crew }}</span>
+      </div>
+      <div v-for="speed in speeds" :key="speed.label" class="metrics-card__row">
+        <span class="metrics-card__row__label">{{ speed.label }}</span>
+        <span class="metrics-card__row__value">
+          {{ toNumber(speed.value, "speed") }}
+        </span>
       </div>
     </div>
 
