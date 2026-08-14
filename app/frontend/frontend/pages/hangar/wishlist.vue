@@ -246,6 +246,7 @@ const openDisplayOptionsModal = () => {
     </Btn>
 
     <ShareBtn
+      :size="BtnSizesEnum.MD"
       v-if="currentUser && currentUser.publicWishlist && shareUrl"
       :url="shareUrl"
       :title="shareTitle"

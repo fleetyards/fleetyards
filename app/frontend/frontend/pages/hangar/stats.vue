@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
@@ -187,6 +188,7 @@ const wishlistTotalCreditsCompact = computed(() =>
 
   <Teleport to="#header-right">
     <ShareBtn
+      :size="BtnSizesEnum.MD"
       v-if="currentUser && currentUser.publicHangarStats && shareUrl"
       :url="shareUrl"
       :title="shareTitle"

@@ -76,7 +76,7 @@ const routeForImage = (image: Image) => {
 
 <template>
   <Teleport to="#header-right">
-    <SupportBtn />
+    <SupportBtn :size="BtnSizesEnum.MD" />
   </Teleport>
   <div class="home-screen-intro">
     <section>
