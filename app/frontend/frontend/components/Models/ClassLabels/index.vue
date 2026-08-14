@@ -19,11 +19,13 @@ type Props = {
   }[];
   filterKey?: string;
   label?: string;
+  hideLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   filterKey: undefined,
   label: undefined,
+  hideLabel: false,
 });
 
 const route = useRoute();
@@ -75,7 +77,7 @@ const classificationState = (classification: string) => {
 </script>
 
 <template>
-  <ChipRow :label="label">
+  <ChipRow :label="label" :hide-label="hideLabel">
     <transition-group name="chip-fade">
       <Chip
         v-for="classification in countData"

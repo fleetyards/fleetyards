@@ -11,10 +11,17 @@ import { useMobile } from "@/shared/composables/useMobile";
 type Props = {
   /** Row title on desktop, dropdown label on mobile - one string, one place. */
   label?: string;
+  /**
+   * Drops the visible title without dropping the label: the row still names
+   * itself to assistive tech, and mobile still labels its dropdown - which
+   * otherwise collapses to a bare ellipsis with nothing saying what it filters.
+   */
+  hideLabel?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   label: undefined,
+  hideLabel: false,
 });
 
 const mobile = useMobile();
@@ -35,8 +42,14 @@ defineExpose({ itemsEl });
     </template>
     <slot name="menu" />
   </BtnDropdown>
-  <div v-else class="chip-row" data-test="chip-row">
-    <h3 v-if="label" class="chip-row__title">{{ label }}:</h3>
+  <div
+    v-else
+    class="chip-row"
+    :role="hideLabel && label ? 'group' : undefined"
+    :aria-label="hideLabel ? label : undefined"
+    data-test="chip-row"
+  >
+    <h3 v-if="label && !hideLabel" class="chip-row__title">{{ label }}:</h3>
     <div ref="itemsEl" class="chip-row__items">
       <slot />
     </div>

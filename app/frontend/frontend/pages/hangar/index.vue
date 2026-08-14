@@ -307,6 +307,7 @@ const openDisplayOptionsModal = () => {
             v-if="hangarStats"
             :count-data="hangarStats.classifications"
             :label="t('labels.classifications')"
+            hide-label
             filter-key="classificationIn"
           />
           <GroupLabels
