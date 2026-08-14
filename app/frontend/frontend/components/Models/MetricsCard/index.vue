@@ -61,12 +61,14 @@ const isSlim = computed(() => props.variant === "slim");
 </template>
 
 <style scoped>
-.metrics-card {
-  margin: 15px 0 40px;
-}
-
+/*
+ * One rhythm, matching Panel's own 21px. The card carried 15px/40px and the slim
+ * variant 22px, so a column of cards sat almost twice as far apart as a column of
+ * panels - which is what settles the plan's Q5: the panel's spacing wins.
+ */
+.metrics-card,
 .metrics-card--slim {
-  margin: 0 0 22px;
+  margin: 0 0 21px;
 }
 
 .metrics-card__body--slim {
