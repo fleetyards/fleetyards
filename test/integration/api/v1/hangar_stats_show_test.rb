@@ -56,6 +56,22 @@ class Api::V1::HangarStatsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The counts are deliberately blind to their own filter, as the group counts
+  # are: a chip that reads 0 the moment you exclude it leaves nothing to click to
+  # undo the exclusion.
+  test "GET /hangar/stats keeps the classification counts when one is excluded" do
+    user = create(:user)
+    create(:vehicle, user:, model: create(:model, classification: :combat))
+    create(:vehicle, user:, model: create(:model, classification: :transport))
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"classificationNotIn" => ["combat"]}} do
+      combat = parsed_body["classifications"].find { |item| item["name"] == "combat" }
+
+      assert_equal 1, combat["count"]
+    end
+  end
+
   test "GET /hangar/stats returns 401 when not signed in" do
     assert_api_response :get, 401
   end
