@@ -4,9 +4,17 @@ set -u
 
 S3_BUCKET="fltyrd-live-storage"
 S3_ENDPOINT="fsn1.your-objectstorage.com"
-S3_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
-S3_SECRET_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
-S3CMD="s3cmd --host=$S3_ENDPOINT --host-bucket=%(bucket)s.$S3_ENDPOINT --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY"
+# Credentials travel through the environment, where s3cmd picks them up on its
+# own. Passing them as flags would expose them to any local `ps`.
+if [ -z "${AWS_ACCESS_KEY_ID:-}" ]; then
+  AWS_ACCESS_KEY_ID=$(op read "op://Fleetyards/HETZNER_S3/access_key_id")
+  AWS_SECRET_ACCESS_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
+  export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+fi
+
+s3() {
+  s3cmd --host="$S3_ENDPOINT" --host-bucket="%(bucket)s.$S3_ENDPOINT" "$@"
+}
 
 LOCAL_ROOT="./storage"
 STAGE_DIR="./tmp/s3_stage"
@@ -35,7 +43,7 @@ trap 'rm -f "$REMOTE_LIST" "$PENDING"' EXIT
 trap 'echo ""; echo "Interrupted — re-run to resume where this left off."; exit 130' INT
 
 echo "Listing s3://$S3_BUCKET..."
-if ! $S3CMD ls "s3://$S3_BUCKET/" | awk -v bucket="$S3_BUCKET" '
+if ! s3 ls "s3://$S3_BUCKET/" | awk -v bucket="$S3_BUCKET" '
   $1 != "DIR" && $4 ~ "^s3://" bucket "/" {
     key = substr($4, length("s3://" bucket "/") + 1)
     if (key != "") print $3 "\t" key
@@ -98,7 +106,7 @@ fetch_batch() {
     sources+=("s3://$S3_BUCKET/$key")
   done
 
-  $S3CMD get --force --quiet "${sources[@]}" "$STAGE_DIR/" > /dev/null 2>&1
+  s3 get --force --quiet "${sources[@]}" "$STAGE_DIR/" > /dev/null 2>&1
 
   for key in "${batch[@]}"; do
     staged="$STAGE_DIR/$key"
