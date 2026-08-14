@@ -9,38 +9,133 @@ S3_SECRET_KEY=$(op read "op://Fleetyards/HETZNER_S3/secret_access_key")
 S3CMD="s3cmd --host=$S3_ENDPOINT --host-bucket=%(bucket)s.$S3_ENDPOINT --access_key=$S3_ACCESS_KEY --secret_key=$S3_SECRET_KEY"
 
 LOCAL_ROOT="./storage"
-TMP_DIR="./tmp/s3_sync"
+STAGE_DIR="./tmp/s3_stage"
+# Objects are fetched in batches to amortize s3cmd startup over 80k+ keys.
+BATCH_SIZE=200
 
-mkdir -p "$TMP_DIR" "$LOCAL_ROOT"
+mkdir -p "$LOCAL_ROOT" "$STAGE_DIR"
 
-echo "Syncing s3://$S3_BUCKET to $TMP_DIR..."
-if ! $S3CMD sync --no-check-md5 "s3://$S3_BUCKET/" "$TMP_DIR/"; then
-  echo "Warning: s3cmd sync exited with non-zero status, continuing with downloaded files..."
+# The bucket is flat while Active Storage's disk service nests by key prefix.
+target_path_for() {
+  echo "$LOCAL_ROOT/${1:0:2}/${1:2:2}/$1"
+}
+
+human_size() {
+  awk -v bytes="$1" 'BEGIN {
+    split("B KB MB GB TB", units, " ")
+    i = 1
+    while (bytes >= 1024 && i < 5) { bytes /= 1024; i++ }
+    printf (i == 1 ? "%d %s" : "%.1f %s"), bytes, units[i]
+  }'
+}
+
+REMOTE_LIST=$(mktemp)
+PENDING=$(mktemp)
+trap 'rm -f "$REMOTE_LIST" "$PENDING"' EXIT
+trap 'echo ""; echo "Interrupted — re-run to resume where this left off."; exit 130' INT
+
+echo "Listing s3://$S3_BUCKET..."
+if ! $S3CMD ls "s3://$S3_BUCKET/" | awk -v bucket="$S3_BUCKET" '
+  $1 != "DIR" && $4 ~ "^s3://" bucket "/" {
+    key = substr($4, length("s3://" bucket "/") + 1)
+    if (key != "") print $3 "\t" key
+  }
+' > "$REMOTE_LIST"; then
+  echo "ERROR: could not list s3://$S3_BUCKET/"
+  exit 1
 fi
 
-echo ""
-echo "Moving files into Active Storage disk layout (storage/ab/cd/key)..."
+remote_count=$(wc -l < "$REMOTE_LIST" | tr -d ' ')
+if [ "$remote_count" = "0" ]; then
+  echo "ERROR: no objects found in s3://$S3_BUCKET/"
+  exit 1
+fi
 
-moved=0
-skipped=0
+echo "Checking which of the $remote_count objects are already present..."
 
-for file in "$TMP_DIR"/*; do
-  [ -f "$file" ] || continue
+pending_bytes=0
+present=0
 
-  key=$(basename "$file")
-  target_dir="$LOCAL_ROOT/${key:0:2}/${key:2:2}"
-  target_path="$target_dir/$key"
+while IFS=$'\t' read -r size key; do
+  target=$(target_path_for "$key")
 
-  if [ -f "$target_path" ] && [ "$(stat -f%z "$file")" = "$(stat -f%z "$target_path")" ]; then
-    skipped=$((skipped + 1))
+  if [ -f "$target" ] && [ "$(stat -f%z "$target")" = "$size" ]; then
+    present=$((present + 1))
     continue
   fi
 
-  mkdir -p "$target_dir"
-  mv "$file" "$target_path"
-  moved=$((moved + 1))
-done
+  printf '%s\n' "$key" >> "$PENDING"
+  pending_bytes=$((pending_bytes + size))
+done < "$REMOTE_LIST"
 
-rm -rf "$TMP_DIR"
+pending_count=0
+[ -f "$PENDING" ] && pending_count=$(wc -l < "$PENDING" | tr -d ' ')
 
-echo "Done! Moved: $moved, Skipped: $skipped"
+echo "  Already present: $present"
+echo "  To download:     $pending_count ($(human_size "$pending_bytes"))"
+
+if [ "$pending_count" = "0" ]; then
+  rmdir "$STAGE_DIR" 2>/dev/null
+  echo ""
+  echo "Uploads are up to date."
+  exit 0
+fi
+
+echo ""
+
+downloaded=0
+failed=0
+batch=()
+
+fetch_batch() {
+  [ "${#batch[@]}" -gt 0 ] || return 0
+
+  rm -rf "$STAGE_DIR"
+  mkdir -p "$STAGE_DIR"
+
+  sources=()
+  for key in "${batch[@]}"; do
+    sources+=("s3://$S3_BUCKET/$key")
+  done
+
+  $S3CMD get --force --quiet "${sources[@]}" "$STAGE_DIR/" > /dev/null 2>&1
+
+  for key in "${batch[@]}"; do
+    staged="$STAGE_DIR/$key"
+
+    if [ ! -f "$staged" ]; then
+      failed=$((failed + 1))
+      echo "  WARN: failed to download $key"
+      continue
+    fi
+
+    target=$(target_path_for "$key")
+    mkdir -p "$(dirname "$target")"
+    mv -f "$staged" "$target"
+    downloaded=$((downloaded + 1))
+  done
+
+  batch=()
+  printf '\r  Downloaded %d/%d objects...' "$downloaded" "$pending_count"
+}
+
+while IFS= read -r key; do
+  batch+=("$key")
+
+  if [ "${#batch[@]}" -ge "$BATCH_SIZE" ]; then
+    fetch_batch
+  fi
+done < "$PENDING"
+
+fetch_batch
+
+rm -rf "$STAGE_DIR"
+
+echo ""
+echo ""
+echo "Done! Downloaded: $downloaded, Already present: $present, Failed: $failed"
+
+if [ "$failed" != "0" ]; then
+  echo "Re-run to retry the failed objects."
+  exit 1
+fi
