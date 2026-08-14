@@ -189,6 +189,62 @@ off the model's quantum drive hardpoint.
   ship column would be taller than the rest of the section combined. The legend renders
   once, in the row's label cell.
 
+## Approved redesign (2026-08-14) — supersedes the layout above
+
+Mockup, signed off: https://claude.ai/code/artifact/c26cb0c7-01e4-45e5-99e4-46b7bd7d02e0
+
+The patched-up version reached "I'm really torn": the best/worst marks and the reused bars
+and pills were liked, the sticky behaviour and the compressed hardpoints were not. The
+mockup resolves it. What survives from the current code: `CompareMetric`, `markExtremes`,
+`useCompareFormat`, `useCompareHardpoints`, and the per-section metric definitions. What goes:
+`Section`, `StatRow`, `ChipsRow`, `ContentRow`, `Header` and the per-section `MetricsCard`
+frames.
+
+**One continuous `<table>`, no card per section.** A real table, `border-collapse: separate`,
+`table-layout: fixed`, `<col>` widths. Sticky lives on `th`: `thead th { top: 0 }`,
+`tbody th { left: 0 }`, corner cell gets both plus the highest z-index. This is the canonical
+pattern and it is why the rail no longer fights anything — a card frame per section was a box
+the frozen rail had to sit on top of, and it slid out from underneath.
+
+Section bands are rows _inside_ the table (`tr.band`), and the band title lives in the rail
+cell. Emergent win: scrolled far right you keep both the metric name and the section name.
+
+**Widths:** `--railw: 232px`, `--col: 212px` comfortable / `176px` dense. 212px is what a
+hardpoint component tile needs; the dense mode is what fits eight columns without sideways
+scroll.
+
+**Condensing header.** Store art 104px tall at rest, collapsing to name + manufacturer once
+`pane.scrollTop > 24`. Keeps the silhouette (which is half of what identifies a column)
+without a permanently tall header. Header text is right-aligned to match the figures below —
+`th` centres by default, which is what made short names left-align and long ones look centred.
+
+**Loadout compares by slot, using the hardpoint components.** Rows are slot classes (main
+guns, turrets, missiles, shield generators, power plant, coolers, quantum drive); each cell is
+the real hardpoint item tile — size badge, component name × qty, manufacturer, one headline
+stat in gold, primary-blue left rail. This is the fix for the width problem at its root:
+eight parallel lists were never a comparison, and each list wanted ~450px.
+
+**Every comparable figure carries a relative bar** (share of the row's max), because eight
+numbers in a row is past what the eye ranks unaided. Gold stays the single headline number,
+blue stays structural — unchanged colour semantics.
+
+**Two noise filters, both only worth it at this width:** _Differences only_ drops rows where
+every ship agrees; _Compare to baseline_ turns figures into ±% against one chosen column
+(click ◎ in a header). Plus the density toggle.
+
+Views keep their scaled side/top silhouettes, scaled against the longest ship on screen.
+
+### Rebuild steps
+
+1. `CompareTable` — one component rendering `<colgroup>/<thead>/<tbody>` from the section +
+   row model; move `compareGrid.scss` to table selectors, delete the flex cell classes.
+2. Cell renderers for `num` (with bar + marks), `text`, `pills`, `comp`, `view`, `fit`.
+3. `CompareHeader` → `<thead>` with the condensing art and per-column baseline/remove actions.
+4. Loadout: group the fetched hardpoints by slot class instead of by `HardpointGroupEnum`,
+   and render the item tile per cell.
+5. Toolbar: density, differences-only, baseline mode.
+6. Drop `Section`, `StatRow`, `ChipsRow`, `ContentRow` and the pane/flex CSS they carried.
+
 ## Steps — all done
 
 1. ✅ **Grid + primitives** — `compareGrid.scss`, `Section`, `StatRow`, `ChipsRow`,
