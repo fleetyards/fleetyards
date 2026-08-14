@@ -13,7 +13,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import {
   type Fleet,
   type FleetMember,
@@ -99,7 +98,7 @@ const activeRecords = computed<(FleetInventoryItem | InventoryStockRecord)[]>(
   () => (activeTab.value === "stock" ? stockRecords.value : itemsList.value),
 );
 
-const canAddItems = computed(() =>
+const canManageInventory = computed(() =>
   checkAccess(props.resourceAccess, [
     "fleet:manage",
     "fleet:inventories:manage",
@@ -188,6 +187,19 @@ const openCsvImportModal = () => {
   });
 };
 
+const openEditModal = () => {
+  if (!inventory.value) return;
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Logistics/InventoryModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      inventory: inventory.value,
+    },
+  });
+};
+
 onMounted(() => {
   comlink.on("fleet-inventory-item-created", () => void refetch());
   comlink.on("fleet-inventory-updated", () => void refetchInventory());
@@ -222,11 +234,8 @@ const crumbs = computed(() => [
           <template #default>
             {{ inventory.name }}
           </template>
-          <template
-            v-if="(inventory as unknown as { location?: string }).location"
-            #subHeading
-          >
-            {{ (inventory as unknown as { location: string }).location }}
+          <template v-if="inventory.location" #subHeading>
+            {{ inventory.location }}
           </template>
         </Heading>
         <p v-if="inventory.manager" class="inventory-detail-manager">
@@ -236,7 +245,7 @@ const crumbs = computed(() => [
         <p v-if="inventory.description" class="text-muted">
           {{ inventory.description }}
         </p>
-        <Teleport v-if="!mobile && canAddItems" to="#header-right">
+        <Teleport v-if="!mobile && canManageInventory" to="#header-right">
           <Btn :size="BtnSizesEnum.MD" @click="openDepositModal">
             {{ t("actions.logistics.deposit") }}
           </Btn>
@@ -246,6 +255,9 @@ const crumbs = computed(() => [
           <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.logistics.importCsv") }}
+          </Btn>
+          <Btn :inline="true" @click="openEditModal">
+            <i class="fa-duotone fa-pen" />
           </Btn>
         </Teleport>
 
@@ -263,7 +275,7 @@ const crumbs = computed(() => [
 
           <template #actions-right>
             <BtnDropdown
-              v-if="mobile && canAddItems"
+              v-if="mobile && canManageInventory"
               :size="BtnSizesEnum.SMALL"
             >
               <Btn :size="BtnSizesEnum.SMALL" @click="openDepositModal">
@@ -277,6 +289,10 @@ const crumbs = computed(() => [
               <Btn :size="BtnSizesEnum.SMALL" @click="openCsvImportModal">
                 <i class="fa-duotone fa-file-csv" />
                 <span>{{ t("actions.logistics.importCsv") }}</span>
+              </Btn>
+              <Btn :size="BtnSizesEnum.SMALL" @click="openEditModal">
+                <i class="fa-duotone fa-pen" />
+                <span>{{ t("actions.logistics.editInventory") }}</span>
               </Btn>
             </BtnDropdown>
           </template>
@@ -313,7 +329,7 @@ const crumbs = computed(() => [
                   {{ record.name }}
                 </router-link>
               </template>
-              <template v-if="canAddItems" #log-actions="{ record }">
+              <template v-if="canManageInventory" #log-actions="{ record }">
                 <Btn
                   :size="BtnSizesEnum.SMALL"
                   variant="danger"
