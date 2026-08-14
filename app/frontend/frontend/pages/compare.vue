@@ -15,10 +15,7 @@ import { useModelSections } from "@/frontend/components/Compare/sections/model";
 import { useLoadoutSections } from "@/frontend/components/Compare/sections/loadout";
 import type { CompareSection } from "@/frontend/components/Compare/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -136,7 +133,6 @@ watch(
                 <Btn
                   :active="differencesOnly"
                   :size="BtnSizesEnum.SM"
-                  :variant="BtnVariantsEnum.GHOST"
                   @click="differencesOnly = !differencesOnly"
                 >
                   {{ t("labels.compare.differencesOnly") }}
@@ -144,7 +140,6 @@ watch(
                 <Btn
                   :active="deltaMode"
                   :size="BtnSizesEnum.SM"
-                  :variant="BtnVariantsEnum.GHOST"
                   @click="deltaMode = !deltaMode"
                 >
                   {{ t("labels.compare.compareToBaseline") }}
