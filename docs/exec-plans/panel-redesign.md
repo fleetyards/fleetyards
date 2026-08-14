@@ -781,7 +781,7 @@ MetricsCard can be folded into it.
 
 2. **Visual baseline — by eye, not by snapshot.** Extend
    `visual-tests/panels.vue` to the full variant × tone × state matrix
-   (default/slim/bare × 5 tones × translucent, animated, fill-height, alignment,
+   (default/slim × 5 tones × translucent, animated, fill-height, alignment,
    inset, bg-image) plus a **narrow-width rig** at `col-md-4` and `col-sm-6` —
    F3's 45% and 38% cases. This is the human review surface for D5's intentional
    diffs; it is **not** automatable, see below.
@@ -884,8 +884,27 @@ and the ones where F3's cap collapse was worst.
     corrected F11 there was one file to act on and it was dead:
     `VehiclePanel/index.scss` is deleted. The two preview pages style their own
     hand-rolled divs and need no change.
-18. Reconcile `stylesheets/embed/partials/panel.scss` against the Phase 0 gate —
-    the same reconciliation `btn-redesign` step 15 does for `panel-btn.scss`.
+18. **Nothing to reconcile — the gate is answered, and it moves the duplicate
+    out of scope rather than into it.** Walking the built manifest from
+    `entrypoints/embed.ts` gives 14 chunks pulling four CSS files, all of them
+    component CSS: `Collapsed`, `Loader`, `Slider`, `pages`. `Collapsed-*.css`
+    carries two `data-v-` selectors, its own `@property --tw-border-style` and 46
+    inline `var(--token, literal)` fallbacks — so component scoped CSS _does_
+    reach the embed at runtime, self-sufficient, even though `embed.js.erb` links
+    one stylesheet and fetches only `:scripts`. Vite injects async-chunk CSS
+    itself; `Router-*.js` references `pages-*.css`.
+
+    What that changes: the 259-line duplicate is **not** required by a
+    CSS-delivery limitation. It exists because the embed has a parallel
+    _component_ — `embed/components/Models/List` imports
+    `@/embed/components/Models/Panel`, never the shared one — so there is no
+    shared Panel in the embed's module graph to deliver CSS for. Collapsing it
+    means replacing that component, not moving stylesheet rules, which is a
+    larger and separate piece of work.
+
+    Consequence to state plainly: after this PR the embed keeps the old panel
+    look while the app carries the new one. Filed as a follow-up rather than
+    absorbed here.
 
 ### Phase 7 — Verify
 
