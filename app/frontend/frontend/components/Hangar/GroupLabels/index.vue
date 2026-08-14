@@ -106,12 +106,11 @@ const sortMutation = useHangarGroupSortMutation();
 const row = ref<{ itemsEl: HTMLElement | null } | null>(null);
 let sortableInstance: Sortable | null = null;
 
-const initSortable = () => {
+const initSortable = (container?: HTMLElement | null) => {
   if (sortableInstance) {
     sortableInstance.destroy();
+    sortableInstance = null;
   }
-
-  const container = row.value?.itemsEl;
 
   if (!container) return;
 
@@ -135,8 +134,18 @@ const initSortable = () => {
 
 onMounted(() => {
   groups.value = props.hangarGroups;
-  void nextTick(() => initSortable());
 });
+
+// Bound to the element, not to mount: the row swaps its desktop branch for a
+// dropdown at the mobile breakpoint, so the container Sortable was given can be
+// replaced or removed under it. Watching re-binds on the way back to desktop and
+// releases the detached one on the way out - the previous version bound once in
+// onMounted and left dragging silently unavailable after a resize.
+watch(
+  () => row.value?.itemsEl,
+  (container) => initSortable(container),
+  { immediate: true, flush: "post" },
+);
 
 onUnmounted(() => {
   sortableInstance?.destroy();
@@ -174,7 +183,9 @@ const openNewGroupModal = () => {
   });
 };
 
-const emit = defineEmits(["highlight"]);
+const emit = defineEmits<{
+  highlight: [group?: HangarGroup | HangarGroupPublic];
+}>();
 
 const highlight = (group?: HangarGroup | HangarGroupPublic) => {
   emit("highlight", group);
