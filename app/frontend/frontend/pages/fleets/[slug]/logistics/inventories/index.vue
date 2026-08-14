@@ -20,12 +20,10 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -45,12 +43,8 @@ const inventoryList = computed<FleetInventory[]>(
   () => inventories.value?.items ?? [],
 );
 
-const canCreate = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:inventories:manage",
-    "fleet:inventories:create",
-  ]),
+const canCreate = computed(
+  () => props.membership?.capabilities?.createInventories ?? false,
 );
 
 const openCreateModal = () => {

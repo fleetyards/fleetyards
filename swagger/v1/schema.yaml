@@ -475,6 +475,21 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/resource-access-catalog":
+    get:
+      summary: Fleet Resource Access Catalog
+      tags:
+      - FleetRoles
+      operationId: fleetResourceAccessCatalog
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FleetResourceAccessGroup"
   "/fleets/use-invite":
     post:
       summary: Create Fleet Membership by Invite
@@ -6712,6 +6727,47 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
+    AdminUserResourceAccessEnum:
+      type: string
+      enum:
+      - models
+      - model_modules
+      - components
+      - manufacturers
+      - vehicles
+      - images
+      - fleets
+      - users
+      - supporters
+      - admins
+      - oauth_applications
+      - maintenance
+      - imports
+      - features
+      - workers
+      - pghero
+      - rsi-api-status
+      - stats
+      x-enumNames:
+      - MODELS
+      - MODEL_MODULES
+      - COMPONENTS
+      - MANUFACTURERS
+      - VEHICLES
+      - IMAGES
+      - FLEETS
+      - USERS
+      - SUPPORTERS
+      - ADMINS
+      - OAUTH_APPLICATIONS
+      - MAINTENANCE
+      - IMPORTS
+      - FEATURES
+      - WORKERS
+      - PGHERO
+      - RSI_API_STATUS
+      - STATS
+      title: AdminUserResourceAccessEnum
     BarChartStats:
       type: object
       properties:
@@ -8936,6 +8992,8 @@ components:
           type: string
         isDestroyAllowed:
           type: boolean
+        capabilities:
+          "$ref": "#/components/schemas/FleetMembershipCapabilities"
         hangarUpdatedAt:
           type: string
           format: date-time
@@ -9079,6 +9137,60 @@ components:
       required:
       - total
       title: FleetMembersStatsPublic
+    FleetMembershipCapabilities:
+      type: object
+      properties:
+        readMembers:
+          type: boolean
+        createMembers:
+          type: boolean
+        updateMembers:
+          type: boolean
+        destroyMembers:
+          type: boolean
+        readInvites:
+          type: boolean
+        createInvites:
+          type: boolean
+        destroyInvites:
+          type: boolean
+        readInventories:
+          type: boolean
+        createInventories:
+          type: boolean
+        updateInventories:
+          type: boolean
+        destroyInventories:
+          type: boolean
+        readVehicles:
+          type: boolean
+        readRoles:
+          type: boolean
+        manageFleet:
+          type: boolean
+        updateFleet:
+          type: boolean
+        destroyFleet:
+          type: boolean
+      additionalProperties: false
+      required:
+      - readMembers
+      - createMembers
+      - updateMembers
+      - destroyMembers
+      - readInvites
+      - createInvites
+      - destroyInvites
+      - readInventories
+      - createInventories
+      - updateInventories
+      - destroyInventories
+      - readVehicles
+      - readRoles
+      - manageFleet
+      - updateFleet
+      - destroyFleet
+      title: FleetMembershipCapabilities
     FleetMembershipCreateInput:
       type: object
       properties:
@@ -9177,6 +9289,22 @@ components:
       - meta
       - items
       title: FleetPublicVehicles
+    FleetResourceAccessGroup:
+      type: object
+      properties:
+        key:
+          type: string
+        privileges:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetRoleResourceAccessEnum"
+        managePrivilege:
+          "$ref": "#/components/schemas/FleetRoleResourceAccessEnum"
+      additionalProperties: false
+      required:
+      - key
+      - privileges
+      title: FleetResourceAccessGroup
     FleetRole:
       type: object
       properties:
@@ -9190,7 +9318,7 @@ components:
         resourceAccess:
           type: array
           items:
-            type: string
+            "$ref": "#/components/schemas/FleetRoleResourceAccessEnum"
       additionalProperties: false
       required:
       - id
@@ -9210,7 +9338,7 @@ components:
         resourceAccess:
           type: array
           items:
-            type: string
+            "$ref": "#/components/schemas/FleetRoleResourceAccessEnum"
         rank:
           type: string
         permanent:
@@ -9230,6 +9358,71 @@ components:
       - createdAt
       - updatedAt
       title: FleetRoleExtended
+    FleetRoleResourceAccessEnum:
+      type: string
+      enum:
+      - fleet:update
+      - fleet:update:images
+      - fleet:update:description
+      - fleet:delete
+      - fleet:manage
+      - fleet:memberships:read
+      - fleet:memberships:create
+      - fleet:memberships:update
+      - fleet:memberships:delete
+      - fleet:memberships:manage
+      - fleet:invites:read
+      - fleet:invites:create
+      - fleet:invites:update
+      - fleet:invites:delete
+      - fleet:invites:manage
+      - fleet:vehicles:read
+      - fleet:vehicles:create
+      - fleet:vehicles:update
+      - fleet:vehicles:delete
+      - fleet:vehicles:manage
+      - fleet:roles:read
+      - fleet:roles:create
+      - fleet:roles:update
+      - fleet:roles:delete
+      - fleet:roles:manage
+      - fleet:inventories:read
+      - fleet:inventories:create
+      - fleet:inventories:update
+      - fleet:inventories:delete
+      - fleet:inventories:manage
+      x-enumNames:
+      - FLEET_UPDATE
+      - FLEET_UPDATE_IMAGES
+      - FLEET_UPDATE_DESCRIPTION
+      - FLEET_DELETE
+      - FLEET_MANAGE
+      - FLEET_MEMBERSHIPS_READ
+      - FLEET_MEMBERSHIPS_CREATE
+      - FLEET_MEMBERSHIPS_UPDATE
+      - FLEET_MEMBERSHIPS_DELETE
+      - FLEET_MEMBERSHIPS_MANAGE
+      - FLEET_INVITES_READ
+      - FLEET_INVITES_CREATE
+      - FLEET_INVITES_UPDATE
+      - FLEET_INVITES_DELETE
+      - FLEET_INVITES_MANAGE
+      - FLEET_VEHICLES_READ
+      - FLEET_VEHICLES_CREATE
+      - FLEET_VEHICLES_UPDATE
+      - FLEET_VEHICLES_DELETE
+      - FLEET_VEHICLES_MANAGE
+      - FLEET_ROLES_READ
+      - FLEET_ROLES_CREATE
+      - FLEET_ROLES_UPDATE
+      - FLEET_ROLES_DELETE
+      - FLEET_ROLES_MANAGE
+      - FLEET_INVENTORIES_READ
+      - FLEET_INVENTORIES_CREATE
+      - FLEET_INVENTORIES_UPDATE
+      - FLEET_INVENTORIES_DELETE
+      - FLEET_INVENTORIES_MANAGE
+      title: FleetRoleResourceAccessEnum
     FleetSortEnum:
       type: string
       enum:
@@ -13033,7 +13226,7 @@ components:
         resourceAccess:
           type: array
           items:
-            type: string
+            "$ref": "#/components/schemas/UserResourceAccessEnum"
         authConnections:
           type: array
           items:
@@ -13135,6 +13328,11 @@ components:
       - publicHangarStats
       - publicWishlist
       title: UserPublic
+    UserResourceAccessEnum:
+      type: string
+      enum: []
+      x-enumNames: []
+      title: UserResourceAccessEnum
     UserSortEnum:
       type: string
       enum:

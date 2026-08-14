@@ -340,6 +340,7 @@
             "fleet:memberships:manage": "Gérer les membres",
             "fleet:invites:read": "Voir les invitations",
             "fleet:invites:create": "Créer des invitations",
+            "fleet:invites:update": "Mettre à jour les invitations",
             "fleet:invites:delete": "Supprimer des invitations",
             "fleet:invites:manage": "Gérer les invitations",
             "fleet:vehicles:read": "Voir les véhicules",

@@ -29,7 +29,6 @@ import InventoryItemFilterForm from "@/frontend/components/Fleets/Logistics/Inve
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { checkAccess } from "@/shared/utils/Access";
 import { useMobile } from "@/shared/composables/useMobile";
 
 type StockItemWithId = FleetInventoryStockItem & { id: string };
@@ -37,7 +36,6 @@ type StockItemWithId = FleetInventoryStockItem & { id: string };
 type Props = {
   fleet: Fleet;
   membership: FleetMember;
-  resourceAccess?: string[];
 };
 
 const props = defineProps<Props>();
@@ -225,12 +223,8 @@ const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
   },
 ]);
 
-const canAddItems = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:inventories:manage",
-    "fleet:inventories:update",
-  ]),
+const canAddItems = computed(
+  () => props.membership?.capabilities?.updateInventories ?? false,
 );
 
 const mobile = useMobile();

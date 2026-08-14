@@ -118,6 +118,33 @@ class FleetMembership < ApplicationRecord
     fleet_role.has_access?(privileges)
   end
 
+  # Named UI capabilities derived from the same privilege lists the fleet
+  # policies authorize against, so the client gates on evaluated booleans
+  # instead of re-checking privilege sets. Kept in sync with the policies by
+  # FleetMembershipCapabilitiesTest.
+  CAPABILITY_PRIVILEGES = {
+    read_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:read"],
+    create_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:create"],
+    update_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"],
+    destroy_members: ["fleet:manage", "fleet:memberships:manage", "fleet:memberships:destroy"],
+    read_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:read"],
+    create_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:create"],
+    destroy_invites: ["fleet:manage", "fleet:invites:manage", "fleet:invites:delete"],
+    read_inventories: ["fleet:manage", "fleet:inventories:manage", "fleet:inventories:read"],
+    create_inventories: ["fleet:manage", "fleet:inventories:manage", "fleet:inventories:create"],
+    update_inventories: ["fleet:manage", "fleet:inventories:manage", "fleet:inventories:update"],
+    destroy_inventories: ["fleet:manage", "fleet:inventories:manage", "fleet:inventories:delete"],
+    read_vehicles: ["fleet:manage", "fleet:vehicles:manage", "fleet:vehicles:read"],
+    read_roles: ["fleet:manage", "fleet:roles:manage", "fleet:roles:read"],
+    manage_fleet: ["fleet:manage"],
+    update_fleet: ["fleet:manage", "fleet:update", "fleet:update:description", "fleet:update:images"],
+    destroy_fleet: ["fleet:manage", "fleet:delete"]
+  }.freeze
+
+  def capabilities
+    CAPABILITY_PRIVILEGES.transform_values { |privileges| has_access?(privileges) }
+  end
+
   def check_if_can_be_destroyed
     return unless fleet_role&.permanent?
 
