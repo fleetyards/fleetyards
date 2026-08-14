@@ -11,7 +11,7 @@ module Api
         only: %i[index]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy]
+        only: %i[create update destroy import]
 
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
