@@ -16,10 +16,6 @@ const props = defineProps<Props>();
 
 const { t, toNumber, toUEC } = useI18n();
 
-const isGroundVehicle = computed(() => {
-  return props.model.classification === "ground";
-});
-
 const crew = computed(() => {
   let { min, max } = props.model.crew;
 
@@ -37,84 +33,82 @@ const crew = computed(() => {
 
   return toNumber([min, max].filter((item) => item).join(" - "), "people");
 });
+
+const dimensions = computed(() => [
+  {
+    label: t("model.length"),
+    value: toNumber(props.model.metrics.length, "distance"),
+  },
+  {
+    label: t("model.beam"),
+    value: toNumber(props.model.metrics.beam, "distance"),
+  },
+  {
+    label: t("model.height"),
+    value: toNumber(props.model.metrics.height, "distance"),
+  },
+  {
+    label: t("model.mass"),
+    value: toNumber(props.model.metrics.mass, "weight"),
+  },
+  {
+    label: t("model.cargo"),
+    value: toNumber(props.model.metrics.cargo, "cargo"),
+  },
+]);
 </script>
 
 <template>
-  <div>
-    <div class="row metrics-block top-metrics metrics-padding">
-      <div v-if="model.focus" class="col-6 col-md-4">
-        <div class="metrics-label">{{ t("model.focus") }}:</div>
-        <div class="metrics-value">
-          {{ model.focus }}
-        </div>
+  <div class="panel-metrics">
+    <!--
+      The same primitives the ship page's metrics cards use, so a card's expanded
+      details and the cards further down the page read as one system.
+
+      Rows rather than hero tiles: a card is the narrowest surface in the app, and
+      three tiles leave about 110px each even at 520px wide - enough for a figure,
+      not for "1 - 6 persons". `__tile__value` is nowrap and clips by design, so
+      text values belong in rows, which ellipsise against the full card width.
+    -->
+    <div class="metrics-card__rows">
+      <div v-if="model.focus" class="metrics-card__row">
+        <span class="metrics-card__row__label">{{ t("model.focus") }}</span>
+        <span class="metrics-card__row__value">{{ model.focus }}</span>
       </div>
-      <div v-if="model.crew.min || model.crew.max" class="col-6 col-md-4">
-        <div class="metrics-label">{{ t("model.crew") }}:</div>
-        <div class="metrics-value">
-          {{ crew }}
-        </div>
-      </div>
-      <div class="col-12 col-md-4">
-        <div class="metrics-label">{{ t("model.speed") }}:</div>
-        <div v-if="isGroundVehicle" class="metrics-value">
-          {{ t("model.max") }}:
-          {{ toNumber(model.speeds.groundMaxSpeed, "speed") }}
-        </div>
-        <div v-else class="metrics-value">
-          {{ t("model.scm") }}:
-          {{ toNumber(model.speeds.scmSpeed, "speed") }}
-          <br />
-          {{ t("model.max") }}:
-          {{ toNumber(model.speeds.maxSpeed, "speed") }}
-        </div>
+      <div v-if="model.crew.min || model.crew.max" class="metrics-card__row">
+        <span class="metrics-card__row__label">{{ t("model.crew") }}</span>
+        <span class="metrics-card__row__value">{{ crew }}</span>
       </div>
     </div>
 
-    <hr class="dark slim-spacer" />
+    <div class="metrics-card__divider" />
 
-    <div class="row base-metrics metrics-padding">
-      <div class="col-12 metrics-block">
-        <div class="row">
-          <div class="col-6 col-lg-4">
-            <div class="metrics-label">{{ t("model.length") }}:</div>
-            <div class="metrics-value">
-              {{ toNumber(model.metrics.length, "distance") }}
-            </div>
-            <div class="metrics-label">{{ t("model.beam") }}:</div>
-            <div class="metrics-value">
-              {{ toNumber(model.metrics.beam, "distance") }}
-            </div>
-          </div>
-          <div class="col-6 col-lg-4">
-            <div class="metrics-label">{{ t("model.height") }}:</div>
-            <div class="metrics-value">
-              {{ toNumber(model.metrics.height, "distance") }}
-            </div>
-            <div class="metrics-label">{{ t("model.mass") }}:</div>
-            <div class="metrics-value">
-              {{ toNumber(model.metrics.mass, "weight") }}
-            </div>
-          </div>
-          <div class="col-12 col-lg-4">
-            <div class="row">
-              <div class="col-6 col-lg-12">
-                <div class="metrics-label">{{ t("model.cargo") }}:</div>
-                <div class="metrics-value">
-                  {{ toNumber(model.metrics.cargo, "cargo") }}
-                </div>
-              </div>
-              <div v-if="model.price" class="col-6 col-lg-12">
-                <div class="metrics-label">{{ t("model.price") }}:</div>
-                <div
-                  v-tooltip="toUEC(model.price)"
-                  class="metrics-value"
-                  v-html="toUEC(model.price)"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div class="metrics-card__rows metrics-card__rows--split">
+      <div v-for="row in dimensions" :key="row.label" class="metrics-card__row">
+        <span class="metrics-card__row__label">{{ row.label }}</span>
+        <span class="metrics-card__row__value">{{ row.value }}</span>
+      </div>
+      <div v-if="model.price" class="metrics-card__row">
+        <span class="metrics-card__row__label">{{ t("model.price") }}</span>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span
+          v-tooltip="toUEC(model.price)"
+          class="metrics-card__row__value"
+          v-html="toUEC(model.price)"
+        />
       </div>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import "@/frontend/components/Models/metricsCard";
+
+/*
+ * The blocks used to carry their own 10px 15px through `metrics-padding` and were
+ * separated by an `hr.slim-spacer`; the padding is this component's now and the
+ * separator is `__divider`, off the same stylesheet as everything else here.
+ */
+.panel-metrics {
+  padding: 14px 16px 16px;
+}
+</style>
