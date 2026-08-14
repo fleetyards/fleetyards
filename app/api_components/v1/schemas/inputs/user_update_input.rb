@@ -23,6 +23,7 @@ module V1
             publicHangarStats: {type: :boolean},
             publicWishlist: {type: :boolean},
             hideOwner: {type: :boolean},
+            tracking: {type: :boolean},
             location: {type: [:string, :null]},
             currentSystem: {type: [:string, :null]}
           },

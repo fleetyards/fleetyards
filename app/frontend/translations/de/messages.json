@@ -56,6 +56,9 @@
       "updateHangar": {
         "success": "Hangar-Einstellungen aktualisiert."
       },
+      "updatePrivacy": {
+        "success": "Datenschutz-Einstellungen aktualisiert."
+      },
       "features": {
         "updated": "Funktion aktualisiert.",
         "error": "Funktion konnte nicht aktualisiert werden.",

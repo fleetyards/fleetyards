@@ -13021,6 +13021,8 @@ components:
           type: string
         hideOwner:
           type: boolean
+        tracking:
+          type: boolean
         twoFactorRequired:
           type: boolean
         twoFactorQrCodeUrl:
@@ -13060,6 +13062,7 @@ components:
       - publicHangarStats
       - publicWishlist
       - hideOwner
+      - tracking
       - twoFactorRequired
       - resourceAccess
       - authConnections
@@ -13208,6 +13211,8 @@ components:
         publicWishlist:
           type: boolean
         hideOwner:
+          type: boolean
+        tracking:
           type: boolean
         location:
           type:

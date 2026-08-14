@@ -774,6 +774,7 @@
         "publicHangarStats": "Öffentliche Hangar-Statistiken aktiviert",
         "publicWishlist": "Öffentliche Wunschliste aktiviert",
         "hideOwner": "Besitz für Flotten verbergen",
+        "tracking": "Anonyme Nutzungsstatistik erlauben",
         "lastActiveAt": "Zuletzt aktiv",
         "confirmedAt": "Bestätigt am"
       },

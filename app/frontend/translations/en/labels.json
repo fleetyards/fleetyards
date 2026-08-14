@@ -1134,6 +1134,7 @@
         "publicHangarStats": "Public Hangar Stats enabled",
         "publicWishlist": "Public Wishlist enabled",
         "hideOwner": "Hide Ownership for Fleets",
+        "tracking": "Allow anonymous usage analytics",
         "lastActiveAt": "Last Active",
         "confirmedAt": "Confirmed at"
       },

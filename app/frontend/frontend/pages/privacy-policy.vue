@@ -7,12 +7,29 @@ export default {
 <script lang="ts" setup>
 import AppContact from "@/frontend/components/core/AppContact/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { storeToRefs } from "pinia";
+import { useCookiesStore } from "@/frontend/stores/cookies";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const { t } = useI18n();
 
 const appName = computed(() => {
   return window.APP_NAME;
+});
+
+const sessionStore = useSessionStore();
+const cookiesStore = useCookiesStore();
+
+const { authenticated } = storeToRefs(sessionStore);
+const { trackingAccepted } = storeToRefs(cookiesStore);
+
+// Signed-in users object through their account so the choice follows them
+// between devices; this local toggle is the only route open to guests.
+const guestTracking = computed({
+  get: () => trackingAccepted.value,
+  set: (value: boolean) => cookiesStore.setTracking(value),
 });
 </script>
 
@@ -60,6 +77,28 @@ const appName = computed(() => {
           <router-link :to="{ name: 'signup' }">Signup form</router-link>
           .
         </p>
+        <br />
+
+        <h2>{{ t("texts.privacy.analytics.headline") }}</h2>
+        <p>{{ t("texts.privacy.analytics.basis", { app: appName }) }}</p>
+        <p>{{ t("texts.privacy.analytics.retention") }}</p>
+
+        <h3>{{ t("texts.privacy.analytics.objection.headline") }}</h3>
+        <p>{{ t("texts.privacy.analytics.objection.text") }}</p>
+        <p v-if="authenticated">
+          {{ t("texts.privacy.analytics.objection.user") }}
+          <router-link :to="{ name: 'settings-privacy' }">
+            {{ t("nav.settings.privacy") }}
+          </router-link>
+        </p>
+        <template v-else>
+          <p>{{ t("texts.privacy.analytics.objection.guest") }}</p>
+          <FormToggle
+            v-model="guestTracking"
+            name="guestTracking"
+            :label="t('labels.user.tracking')"
+          />
+        </template>
         <br />
 
         <h2>Why do we need this Information?</h2>
