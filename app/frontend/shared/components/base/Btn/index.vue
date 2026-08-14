@@ -395,6 +395,12 @@ const handleClick = (event: MouseEvent) => {
   @apply text-lifted;
   background-color: #2b3034;
 }
+/* Same reasoning as the menu item: a group member is a flat fill inside one
+   shared surface, so flooding it edge to edge breaks the control it sits in. */
+.btn--grouped.btn--tone-danger:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(220 53 69 / 0.35);
+}
 .btn--grouped.active,
 .btn--grouped[aria-pressed="true"] {
   @apply text-white;
@@ -424,6 +430,19 @@ const handleClick = (event: MouseEvent) => {
 .btn--menu-item:hover:not([disabled]) {
   @apply text-lifted;
   background-color: rgb(122 130 136 / 0.16);
+}
+/*
+ * A menu item has no surface of its own, so the solid variant's danger hover -
+ * which floods bg-danger edge to edge - turns a dropdown row into a solid red
+ * block. `bare` already carries the tint treatment for exactly this reason; the
+ * menu context needs it too, since `variant` defaults to solid and a dropdown
+ * item is almost never given one explicitly.
+ *
+ * Equal specificity to the solid rule, so this has to stay below it.
+ */
+.btn--menu-item.btn--tone-danger:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(220 53 69 / 0.18);
 }
 
 /* ---------- loading ---------- */
