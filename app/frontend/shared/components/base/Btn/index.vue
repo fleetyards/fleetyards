@@ -216,7 +216,10 @@ const handleClick = (event: MouseEvent) => {
 
 .btn {
   @apply relative inline-flex items-center justify-center gap-2;
-  @apply font-semibold whitespace-nowrap no-underline;
+  /* 400, as the live button has always been. Semibold at 13-14px on a dark
+     translucent surface thickens the strokes and closes the counters, so the
+     label read as heavier and less legible than the one it replaced. */
+  @apply font-normal whitespace-nowrap no-underline;
   @apply cursor-pointer border border-transparent bg-transparent;
   @apply transition-[background-color,border-color,color,outline-color] duration-150 ease-in-out;
 
@@ -251,14 +254,17 @@ const handleClick = (event: MouseEvent) => {
    historical button scale: old small 42px, default 48px, large 55px. */
 /* min-width matches the height so an icon-only button stays square instead of
    collapsing to the width of its glyph - a fa-ellipsis-v is only a few px wide. */
+/* Label sizes track the live button, which set 16px at every size. 13px was a
+   three-point drop on the most-used size and is the other half of why the labels
+   read worse than the ones they replaced; the heights are unchanged. */
 .btn--sm {
-  @apply h-[43px] min-w-[43px] px-3.5 text-[13px];
+  @apply h-[43px] min-w-[43px] px-3.5 text-[15px];
 }
 .btn--md {
-  @apply h-12 min-w-12 px-4.5 text-[14.5px];
+  @apply h-12 min-w-12 px-4.5 text-base;
 }
 .btn--lg {
-  @apply h-[55px] min-w-[55px] px-6 text-base;
+  @apply h-[55px] min-w-[55px] px-6 text-[17px];
 }
 
 /* ---------- end-caps ----------
