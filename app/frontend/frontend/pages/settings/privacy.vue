@@ -77,7 +77,9 @@ const onSubmit = handleSubmit(async (values) => {
     })
     .then(() => {
       // Saved values become the new baseline, so the refresh this triggers is
-      // no longer treated as a pending choice.
+      // no longer treated as a pending choice. Safe to rebaseline from the
+      // submitted values because the toggle is locked while the request is in
+      // flight, so they cannot have drifted.
       resetForm({ values });
 
       comlink.emit("user-update");
@@ -112,6 +114,7 @@ const onSubmit = handleSubmit(async (values) => {
           v-model="tracking"
           v-bind="trackingProps"
           name="tracking"
+          :disabled="submitting"
           :label="t('labels.user.tracking')"
         />
       </div>
