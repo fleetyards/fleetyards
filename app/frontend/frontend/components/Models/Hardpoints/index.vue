@@ -198,7 +198,7 @@ useMetricsMasonry(metricsGrid);
         </BtnGroup>
       </div>
       <div class="flex justify-end hardpoints__toolbar">
-        <BtnGroup>
+        <BtnGroup segmented>
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"
             :disabled="!model.inGame"
@@ -247,7 +247,7 @@ useMetricsMasonry(metricsGrid);
         <ModelRefuelBoom :model="model" />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
-        <BtnGroup :aria-label="t('labels.hardpoint.density.title')">
+        <BtnGroup segmented :aria-label="t('labels.hardpoint.density.title')">
           <Btn
             :active="density === 'compact'"
             :aria-pressed="density === 'compact'"

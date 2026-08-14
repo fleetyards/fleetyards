@@ -139,7 +139,7 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
       <FilterForm />
     </template>
     <template #actions-left>
-      <BtnGroup>
+      <BtnGroup segmented>
         <Btn
           :active="source === DestroyedFleetsSource.discarded"
           @click="setSource(DestroyedFleetsSource.discarded)"
