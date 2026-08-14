@@ -572,6 +572,22 @@ Two consequences:
 - The `animated` error/success states pulse the cap's opacity rather than
   interpolating a border colour, so one pair of keyframes serves every tone.
 
+**The button's tone does not move with it**, and the asymmetry is deliberate:
+
+| | carries tone via | why |
+| --- | --- | --- |
+| `Panel` | the end-cap | it has no text of its own; the title belongs to `PanelHeading` |
+| `Btn` | the label (`#f0a8ae`) plus its edge | it does, and the label survives every variant |
+
+A cap-carried tone would vanish on `bare`, `grouped` and `menu-item`, which all
+set `content: none` on their caps — and `menu-item` is where destructive actions
+mostly live, so danger would go dark exactly where it matters. Scale compounds
+it: 4px of cap on a surface hundreds of pixels wide reads; 2px on a 43px control
+signatures but cannot carry meaning.
+
+So each component uses the channel it has. What is shared is the cap's colour and
+geometry, already unified through `--color-endcap` and the `--cap-*` tokens.
+
 There is no filled counterpart to tone — see D9.
 
 Mapping: `variant="error"` → `tone="error"`, `highlight` → `tone="highlight"`,
