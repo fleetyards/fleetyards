@@ -11,6 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import debounce from "lodash.debounce";
 import { v4 as uuidv4 } from "uuid";
+import { FilterGroupSizesEnum } from "./types";
 import Option from "./Option/index.vue";
 import {
   UseQueryReturnType,
@@ -67,6 +68,7 @@ type Props = {
   bigIcon?: boolean;
   hideSelected?: boolean;
   inline?: boolean;
+  size?: `${FilterGroupSizesEnum}`;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -89,6 +91,7 @@ const props = withDefaults(defineProps<Props>(), {
   bigIcon: false,
   hideSelected: false,
   inline: false,
+  size: FilterGroupSizesEnum.DEFAULT,
 });
 
 type FilterOptionValue = FilterOption["value"];
@@ -277,6 +280,7 @@ const filteredOptions = computed(() => {
 const cssClasses = computed(() => ({
   "has-error has-feedback": props.error,
   inline: props.inline,
+  "filter-group--medium": props.size === FilterGroupSizesEnum.MEDIUM,
 }));
 
 onMounted(() => {
