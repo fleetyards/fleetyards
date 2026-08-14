@@ -375,20 +375,34 @@ both pass `classificationIn`.
 pass.
 
 Phase 5's Playwright spec landed as `test/playwright/e2e/Chips.spec.ts` with a
-`chips` scenario — but it is **unrun**. The local e2e harness does not boot the
-SPA at all: every spec, new or old, sees only the server-rendered heading and
-times out. The untouched `Footer.spec.ts`, whose whole body is
+`chips` scenario, and **CI ran it: six of the seven cases passed first time.**
+
+It could not be run locally — the local harness does not boot the SPA at all, so
+every spec, new or old, sees only the server-rendered heading and times out. The
+untouched `Footer.spec.ts`, whose whole body is
 
 ```ts
 await page.goto("/");
 await expect(page.getByTestId("app-footer")).toBeVisible();
 ```
 
-fails with the same snapshot, and so does `Hangar.spec.ts › Shows Preview`. The
-seeded data and every endpoint the page needs are fine — `.../public/hangars/
-chips/groups`, `/stats` and `/` all return correct JSON against the same test
-database — so this is the harness, not the app. **The spec needs a run in a
-working environment before this branch merges.**
+fails the same way, as does `Hangar.spec.ts › Shows Preview`. Anything e2e on
+this stack needs CI to be believed.
+
+### What the seventh case found
+
+The `excluded`-state assertion failed with `"Combat2included"` — two clicks left
+the chip *included*. Not a component defect: the tri-state lives in the query
+string and `useFilters` **debounces** that write, so a second click landing
+before the first has applied reads the same pre-update `filters.value` and sets
+`included` again rather than advancing.
+
+The fix is an intermediate assertion between the clicks, which is why the
+`cycles` case passed while this one did not — it was already waiting on each
+state. Worth knowing beyond the test: the row cannot be driven faster than the
+debounce, and a user double-clicking a chip gets one transition, not two. That is
+`useFilters` behaviour shared by every filter in the app, so it is recorded here
+rather than changed.
 
 The scenario targets the *public* hangar rather than the signed-in one for this
 reason: it removes the login step the other authenticated specs spend a minute
