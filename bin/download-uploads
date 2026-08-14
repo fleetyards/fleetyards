@@ -4,6 +4,14 @@ set -u
 
 S3_BUCKET="fltyrd-live-storage"
 S3_ENDPOINT="fsn1.your-objectstorage.com"
+
+LOCAL_ROOT="./storage"
+STAGE_ROOT="./tmp/s3_stage"
+# Every object costs a round trip, so throughput comes from concurrency rather
+# than bandwidth: batching amortizes s3cmd startup, workers hide the latency.
+PARALLEL="${PARALLEL:-8}"
+BATCH_SIZE="${BATCH_SIZE:-200}"
+
 # Credentials travel through the environment, where s3cmd picks them up on its
 # own. Passing them as flags would expose them to any local `ps`.
 if [ -z "${AWS_ACCESS_KEY_ID:-}" ]; then
@@ -15,13 +23,6 @@ fi
 s3() {
   s3cmd --host="$S3_ENDPOINT" --host-bucket="%(bucket)s.$S3_ENDPOINT" "$@"
 }
-
-LOCAL_ROOT="./storage"
-STAGE_DIR="./tmp/s3_stage"
-# Objects are fetched in batches to amortize s3cmd startup over 80k+ keys.
-BATCH_SIZE=200
-
-mkdir -p "$LOCAL_ROOT" "$STAGE_DIR"
 
 # The bucket is flat while Active Storage's disk service nests by key prefix.
 target_path_for() {
@@ -37,25 +38,63 @@ human_size() {
   }'
 }
 
+# Worker mode: fetch one batch of keys, then file them into the disk layout.
+# Re-invoked through xargs, one process per batch. Prints each stored key so the
+# parent can count progress.
+if [ "${1:-}" = "--fetch-batch" ]; then
+  shift
+
+  mkdir -p "$STAGE_ROOT"
+  stage=$(mktemp -d "$STAGE_ROOT/batch.XXXXXX") || exit 1
+  trap 'rm -rf "$stage"' EXIT
+
+  sources=()
+  for key in "$@"; do
+    sources+=("s3://$S3_BUCKET/$key")
+  done
+
+  s3 get --force --quiet "${sources[@]}" "$stage/" > /dev/null 2>&1
+
+  status=0
+  for key in "$@"; do
+    if [ ! -f "$stage/$key" ]; then
+      echo "WARN: failed to download $key" >&2
+      status=1
+      continue
+    fi
+
+    target=$(target_path_for "$key")
+    mkdir -p "$(dirname "$target")"
+
+    if mv -f "$stage/$key" "$target"; then
+      echo "$key"
+    else
+      echo "WARN: could not store $key" >&2
+      status=1
+    fi
+  done
+
+  exit $status
+fi
+
+mkdir -p "$LOCAL_ROOT" "$STAGE_ROOT"
+
 REMOTE_LIST=$(mktemp)
 PENDING=$(mktemp)
 trap 'rm -f "$REMOTE_LIST" "$PENDING"' EXIT
 trap 'echo ""; echo "Interrupted — re-run to resume where this left off."; exit 130' INT
 
 echo "Listing s3://$S3_BUCKET..."
-if ! s3 ls "s3://$S3_BUCKET/" | awk -v bucket="$S3_BUCKET" '
+s3 ls "s3://$S3_BUCKET/" | awk -v bucket="$S3_BUCKET" '
   $1 != "DIR" && $4 ~ "^s3://" bucket "/" {
     key = substr($4, length("s3://" bucket "/") + 1)
     if (key != "") print $3 "\t" key
   }
-' > "$REMOTE_LIST"; then
-  echo "ERROR: could not list s3://$S3_BUCKET/"
-  exit 1
-fi
+' > "$REMOTE_LIST"
 
 remote_count=$(wc -l < "$REMOTE_LIST" | tr -d ' ')
 if [ "$remote_count" = "0" ]; then
-  echo "ERROR: no objects found in s3://$S3_BUCKET/"
+  echo "ERROR: could not list any objects in s3://$S3_BUCKET/"
   exit 1
 fi
 
@@ -76,74 +115,34 @@ while IFS=$'\t' read -r size key; do
   pending_bytes=$((pending_bytes + size))
 done < "$REMOTE_LIST"
 
-pending_count=0
-[ -f "$PENDING" ] && pending_count=$(wc -l < "$PENDING" | tr -d ' ')
+pending_count=$(wc -l < "$PENDING" | tr -d ' ')
 
 echo "  Already present: $present"
 echo "  To download:     $pending_count ($(human_size "$pending_bytes"))"
 
 if [ "$pending_count" = "0" ]; then
-  rmdir "$STAGE_DIR" 2>/dev/null
+  rm -rf "$STAGE_ROOT"
   echo ""
   echo "Uploads are up to date."
   exit 0
 fi
 
 echo ""
+echo "Downloading in batches of $BATCH_SIZE across $PARALLEL workers..."
 
-downloaded=0
-failed=0
-batch=()
+xargs -n "$BATCH_SIZE" -P "$PARALLEL" "$0" --fetch-batch < "$PENDING" |
+  awk -v total="$pending_count" '
+    { stored++; if (stored % 50 == 0) { printf "\r  Stored %d/%d objects...", stored, total; fflush() } }
+    END { printf "\r  Stored %d/%d objects.   \n", stored, total }
+  '
+fetch_status=${PIPESTATUS[0]}
 
-fetch_batch() {
-  [ "${#batch[@]}" -gt 0 ] || return 0
-
-  rm -rf "$STAGE_DIR"
-  mkdir -p "$STAGE_DIR"
-
-  sources=()
-  for key in "${batch[@]}"; do
-    sources+=("s3://$S3_BUCKET/$key")
-  done
-
-  s3 get --force --quiet "${sources[@]}" "$STAGE_DIR/" > /dev/null 2>&1
-
-  for key in "${batch[@]}"; do
-    staged="$STAGE_DIR/$key"
-
-    if [ ! -f "$staged" ]; then
-      failed=$((failed + 1))
-      echo "  WARN: failed to download $key"
-      continue
-    fi
-
-    target=$(target_path_for "$key")
-    mkdir -p "$(dirname "$target")"
-    mv -f "$staged" "$target"
-    downloaded=$((downloaded + 1))
-  done
-
-  batch=()
-  printf '\r  Downloaded %d/%d objects...' "$downloaded" "$pending_count"
-}
-
-while IFS= read -r key; do
-  batch+=("$key")
-
-  if [ "${#batch[@]}" -ge "$BATCH_SIZE" ]; then
-    fetch_batch
-  fi
-done < "$PENDING"
-
-fetch_batch
-
-rm -rf "$STAGE_DIR"
+rm -rf "$STAGE_ROOT"
 
 echo ""
-echo ""
-echo "Done! Downloaded: $downloaded, Already present: $present, Failed: $failed"
-
-if [ "$failed" != "0" ]; then
-  echo "Re-run to retry the failed objects."
+if [ "$fetch_status" != "0" ]; then
+  echo "Some objects could not be downloaded — re-run to retry just those."
   exit 1
 fi
+
+echo "Done! Uploads are in sync."
