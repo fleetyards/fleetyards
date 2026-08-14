@@ -272,6 +272,27 @@ const handleClick = (event: MouseEvent) => {
 /* Label sizes track the live button, which set 16px at every size. 13px was a
    three-point drop on the most-used size and is the other half of why the labels
    read worse than the ones they replaced; the heights are unchanged. */
+/* xs is the chip scale, not a fourth step of the toolbar scale: 29px is exactly
+   a chip's height (1px border + 6px padding + a 15px line box, twice over), so a
+   control that sits in a chip row lines up with the chips beside it instead of
+   towering 14px over them.
+
+   7px of padding, not the 10px the height would suggest, because min-width only
+   squares an icon-only button when the padding leaves room for it: sm is tuned so
+   14 + 14 + 2 + a 13px glyph lands exactly on its 43px min-width, and xs has to
+   hold the same identity against 29. At 10px the glyph pushes the box to 35px
+   wide and min-width never applies. */
+.btn--xs {
+  @apply h-[29px] min-w-[29px] px-[7px] text-[15px];
+}
+/* At chip scale the control wears the chip's frame rather than the toolbar's -
+   the softer edge and the smaller radius - so an add button reads as part of the
+   row instead of a brighter, hollow box parked at the end of it. Two classes so
+   the variant's own edge and radius do not win on order. */
+.btn--xs.btn--solid,
+.btn--xs.btn--ghost {
+  @apply border-edge-soft rounded-control-bare;
+}
 .btn--sm {
   @apply h-[43px] min-w-[43px] px-3.5 text-[15px];
 }
@@ -320,6 +341,13 @@ const handleClick = (event: MouseEvent) => {
 .btn--ghost::after {
   bottom: -1px;
   border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
+}
+/* No caps at chip scale, the call Chip and .panel--slim already make: the inset
+   bottoms out at its 10px floor, so on a 29px icon button the cap would be a
+   third of the width - the failure F3 of the label plan names. */
+.btn--xs::before,
+.btn--xs::after {
+  content: none;
 }
 .btn--lg::before {
   height: var(--cap-h-btn-lg, 3px);

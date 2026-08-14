@@ -72,6 +72,7 @@
       "disableGlobally": "全域停用",
       "addActor": "新增角色",
       "addGroup": "新增群組",
+      "editGroup": "編輯群組",
       "remove": "移除",
       "delete": "刪除",
       "deleteSelected": "刪除選中項",

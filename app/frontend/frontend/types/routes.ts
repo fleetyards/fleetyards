@@ -58,6 +58,7 @@ type FrontendSimpleRoutes =
   | "visual-tests"
   | "visual-tests-panels"
   | "visual-tests-buttons"
+  | "visual-tests-chips"
   | "visual-tests-tables";
 
 export type FrontendRouteLocation =

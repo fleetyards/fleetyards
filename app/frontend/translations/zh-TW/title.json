@@ -106,7 +106,8 @@
         "states": "狀態 - 視覺測試",
         "notifications": "通知 - 視覺測試",
         "syncModal": "同步彈窗 - 視覺測試",
-        "supportHint": "支援提示 - 視覺測試"
+        "supportHint": "支援提示 - 視覺測試",
+        "chips": "Chips - 視覺測試"
       },
       "admin": {
         "models": {

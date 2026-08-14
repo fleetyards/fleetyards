@@ -26,6 +26,7 @@
       "deselect": "cliquer pour désélectionner",
       "networkStatusOffline": "statut du serveur : hors-ligne - service indisponible",
       "groups": "Groupes",
+      "classifications": "Classifications",
       "features": {
         "stateOn": "Activé",
         "stateOff": "Désactivé",

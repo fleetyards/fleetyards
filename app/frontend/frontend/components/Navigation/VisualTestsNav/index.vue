@@ -84,5 +84,11 @@ const { t } = useI18n();
       icon="fadt fa-heart"
       prefix="11"
     />
+    <NavItem
+      :to="{ name: 'visual-tests-chips' }"
+      :label="t('nav.visualTests.chips')"
+      icon="fadt fa-tag"
+      prefix="12"
+    />
   </div>
 </template>

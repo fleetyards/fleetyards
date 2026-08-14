@@ -41,6 +41,11 @@ module Api
 
         group_count_vehicle_ids = scope.ransack(vehicle_query_params.except("hangar_groups_in", "hangar_groups_not_in")).result.ids
 
+        # Counted against a scope blind to its own filter, exactly as the group
+        # counts are: a chip whose count collapses to 0 the moment you exclude it
+        # gives you nothing to aim at to undo the exclusion.
+        classification_count_models = scope.ransack(vehicle_query_params.except("classification_in", "classification_not_in")).result.map(&:model)
+
         wishlist_scope = authorized_scope(Vehicle.all).visible.wanted.where(loaner: false)
         wishlist_vehicles = wishlist_scope.includes(:model).map(&:model)
 
@@ -49,7 +54,7 @@ module Api
           wishlist_total: wishlist_scope.count,
           classifications: Model.classifications.map do |classification|
             ClassificationCount.new(
-              classification_count: models.count { |model| model.classification == classification },
+              classification_count: classification_count_models.count { |model| model.classification == classification },
 
               name: classification,
               label: classification.humanize

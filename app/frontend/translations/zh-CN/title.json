@@ -106,7 +106,8 @@
         "states": "状态 - 视觉测试",
         "notifications": "通知 - 视觉测试",
         "syncModal": "同步弹窗 - 视觉测试",
-        "supportHint": "支持提示 - 视觉测试"
+        "supportHint": "支持提示 - 视觉测试",
+        "chips": "Chips - 视觉测试"
       },
       "admin": {
         "models": {

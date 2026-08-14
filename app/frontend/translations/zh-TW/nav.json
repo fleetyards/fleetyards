@@ -95,7 +95,8 @@
         "states": "狀態",
         "notifications": "通知",
         "syncModal": "同步彈窗",
-        "supportHint": "支援提示"
+        "supportHint": "支援提示",
+        "chips": "Chips"
       },
       "admin": {
         "index": "管理員",

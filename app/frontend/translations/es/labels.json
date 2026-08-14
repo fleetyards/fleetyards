@@ -26,6 +26,7 @@
       "deselect": "Haz clic para deseleccionar",
       "networkStatusOffline": "Estado de red: Desconectado - Servicio no disponible",
       "groups": "Grupos",
+      "classifications": "Clasificaciones",
       "features": {
         "stateOn": "Habilitado",
         "stateOff": "Deshabilitado",

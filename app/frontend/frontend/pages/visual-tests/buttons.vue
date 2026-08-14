@@ -15,7 +15,12 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 
-const sizes = [BtnSizesEnum.SM, BtnSizesEnum.MD, BtnSizesEnum.LG];
+const sizes = [
+  BtnSizesEnum.XS,
+  BtnSizesEnum.SM,
+  BtnSizesEnum.MD,
+  BtnSizesEnum.LG,
+];
 const variants = [
   BtnVariantsEnum.SOLID,
   BtnVariantsEnum.GHOST,

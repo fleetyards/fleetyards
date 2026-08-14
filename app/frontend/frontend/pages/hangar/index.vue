@@ -23,7 +23,11 @@ import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { type HangarGroupMetric, HangarGroup } from "@/services/fyApi";
+import {
+  type HangarGroupMetric,
+  type HangarGroupPublic,
+  HangarGroup,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -188,7 +192,7 @@ const showNewModal = () => {
   });
 };
 
-const highlightGroup = (group?: HangarGroup) => {
+const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
   if (!group) {
     highlightedGroup.value = "";
     return;
@@ -302,8 +306,10 @@ const openDisplayOptionsModal = () => {
           <ModelClassLabels
             v-if="hangarStats"
             :count-data="hangarStats.classifications"
-            :label="t('labels.hangar')"
+            :label="t('labels.classifications')"
+            hide-label
             filter-key="classificationIn"
+            exclude-filter-key="classificationNotIn"
           />
           <GroupLabels
             v-if="hangarStats && hangarGroups"

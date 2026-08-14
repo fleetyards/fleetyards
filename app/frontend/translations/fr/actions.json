@@ -72,6 +72,7 @@
       "disableGlobally": "Désactiver globalement",
       "addActor": "Ajouter un acteur",
       "addGroup": "Ajouter un groupe",
+      "editGroup": "Modifier le groupe",
       "remove": "Retirer",
       "delete": "Supprimer",
       "deleteSelected": "Supprimer la sélection",

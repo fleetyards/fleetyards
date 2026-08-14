@@ -61,6 +61,7 @@ const prefillFormValues = () => {
     hangarGroupsNotIn: filters.value.hangarGroupsNotIn || [],
     manufacturerIn: filters.value.manufacturerIn || [],
     classificationIn: filters.value.classificationIn || [],
+    classificationNotIn: filters.value.classificationNotIn || [],
     focusIn: filters.value.focusIn || [],
     productionStatusIn: filters.value.productionStatusIn || [],
     priceIn: filters.value.priceIn || [],

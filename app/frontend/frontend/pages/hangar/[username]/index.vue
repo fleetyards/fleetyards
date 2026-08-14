@@ -17,7 +17,11 @@ import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { HangarGroup, type UserPublic } from "@/services/fyApi";
+import {
+  HangarGroup,
+  type HangarGroupPublic,
+  type UserPublic,
+} from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -121,7 +125,7 @@ const toggleFleetchart = () => {
   fleetchartStore.toggleFleetchart("hangar");
 };
 
-const highlightGroup = (group?: HangarGroup) => {
+const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
   if (!group) {
     highlightedGroup.value = "";
     return;
