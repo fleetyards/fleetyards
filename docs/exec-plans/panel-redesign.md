@@ -548,7 +548,31 @@ tone:    neutral | primary | success | error | highlight   (what it means)
 - `slim` — 1px edge, 12px radius, no caps, quieter shadow (`metrics-card--slim`)
 - `bare` — background only, no edge/caps/shadow; absorbs `transparency`
 
-Tone colours the **edge only**. There is no filled counterpart — see D9.
+**Tone is carried by the end-cap, not the edge — decided in review.** The first
+revision recoloured the whole border, which makes a validation error the loudest
+thing in the viewport and throws away the quiet neutral frame the rest of this
+plan exists to get. Three treatments were compared in the rig — edge, whole cap,
+and a 1–2px line along the cap's outward face — and the **whole cap** won:
+
+```css
+.panel--error { --tone: #c00; }
+.panel--error::before,
+.panel--error::after { background-color: var(--tone); }
+```
+
+The frame stays `--color-edge` at every tone. Each tone declares only `--tone`, so
+the treatment lives in one place.
+
+Two consequences:
+
+- **`slim` has no caps**, so its edge has to take the tone instead. One tone
+  therefore reads two ways depending on variant. Accepted rather than solved:
+  giving slim caps back would undo the reason it exists, and a grid of repeated
+  slim cards is where a loud cap becomes noise.
+- The `animated` error/success states pulse the cap's opacity rather than
+  interpolating a border colour, so one pair of keyframes serves every tone.
+
+There is no filled counterpart to tone — see D9.
 
 Mapping: `variant="error"` → `tone="error"`, `highlight` → `tone="highlight"`,
 `transparency="more"` → `translucent` (6 sites), `transparency="complete"` →

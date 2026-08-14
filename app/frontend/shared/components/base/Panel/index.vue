@@ -157,30 +157,63 @@ const hasInner = computed(() => !!props.alignment || props.inset);
   background-color: rgb(39 43 48 / 0.6);
 }
 
-/* ---------- tone ---------- */
-
+/* ---------- tone ----------
+ * The cap carries the tone; the frame stays neutral. Recolouring the whole edge
+ * made a validation error the loudest thing in the viewport and threw away the
+ * quiet frame this redesign is for, so the signature carries the meaning instead.
+ *
+ * Each tone only declares --tone. Fallbacks are spelled out because a bare var()
+ * gets none from Tailwind and the embed never registers :root.
+ */
 .panel--primary {
-  @apply border-primary;
+  --tone: var(--color-primary, #428bca);
 }
 
 .panel--success {
-  border-color: #4cae4c;
+  --tone: #4cae4c;
 }
 
 .panel--error {
-  border-color: #c00;
+  --tone: #c00;
 }
 
 .panel--highlight {
-  @apply border-gold;
+  --tone: var(--color-gold, #d4af37);
 }
 
-.panel--animated.panel--error {
-  animation: panel-error 1s infinite ease alternate;
+.panel--primary::before,
+.panel--primary::after,
+.panel--success::before,
+.panel--success::after,
+.panel--error::before,
+.panel--error::after,
+.panel--highlight::before,
+.panel--highlight::after {
+  background-color: var(--tone);
 }
 
-.panel--animated.panel--success {
-  animation: panel-success 1s infinite ease alternate;
+/*
+ * `slim` has no caps, so a cap-carried tone has nothing to sit on and its edge
+ * has to take it. That does mean one tone reads two ways depending on variant -
+ * an accepted limitation of putting tone on the cap, not an oversight.
+ */
+.panel--slim.panel--primary,
+.panel--slim.panel--success,
+.panel--slim.panel--error,
+.panel--slim.panel--highlight {
+  border-color: var(--tone);
+}
+
+.panel--animated.panel--error::before,
+.panel--animated.panel--error::after,
+.panel--animated.panel--success::before,
+.panel--animated.panel--success::after {
+  animation: panel-cap-pulse 1s infinite ease alternate;
+}
+
+.panel--animated.panel--slim.panel--error,
+.panel--animated.panel--slim.panel--success {
+  animation: panel-edge-pulse 1s infinite ease alternate;
 }
 
 /* ---------- layout ---------- */
@@ -245,21 +278,22 @@ const hasInner = computed(() => !!props.alignment || props.inset);
   border-top: none;
 }
 
-@keyframes panel-error {
+/* Pulses the tone itself, so one pair of keyframes serves every tone. */
+@keyframes panel-cap-pulse {
   from {
-    border-color: rgb(204 0 0 / 0.5);
+    opacity: 0.45;
   }
   to {
-    border-color: rgb(204 0 0 / 1);
+    opacity: 1;
   }
 }
 
-@keyframes panel-success {
+@keyframes panel-edge-pulse {
   from {
-    border-color: rgb(76 174 76 / 0.5);
+    border-color: color-mix(in srgb, var(--tone) 45%, transparent);
   }
   to {
-    border-color: rgb(76 174 76 / 1);
+    border-color: var(--tone);
   }
 }
 
@@ -268,8 +302,12 @@ const hasInner = computed(() => !!props.alignment || props.inset);
     transition-duration: 0ms;
   }
 
-  .panel--animated.panel--error,
-  .panel--animated.panel--success {
+  .panel--animated.panel--error::before,
+  .panel--animated.panel--error::after,
+  .panel--animated.panel--success::before,
+  .panel--animated.panel--success::after,
+  .panel--animated.panel--slim.panel--error,
+  .panel--animated.panel--slim.panel--success {
     animation: none;
   }
 }
