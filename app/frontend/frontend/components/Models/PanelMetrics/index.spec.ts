@@ -105,6 +105,21 @@ describe("PanelMetrics", () => {
     }
   });
 
+  it("renders no empty group for a model carrying no figures", () => {
+    // The e2e fixtures are exactly this: a name and a manufacturer. With speed
+    // gated on inGame the summary has nothing left to show, and an empty rows
+    // box with a divider under it is not a section.
+    const wrapper = mount(PanelMetrics, {
+      props: {
+        model: model({ focus: null, crew: {}, inGame: false }),
+      },
+    });
+
+    expect(wrapper.findAll(".metrics-card__rows")).toHaveLength(1);
+    expect(wrapper.find(".metrics-card__divider").exists()).toBe(false);
+    expect(labels(wrapper)).toContain("model.length");
+  });
+
   it("uses the metrics-card primitives rather than its own markup", () => {
     // The old block was .metrics-label / .metrics-value pairs in nested
     // Bootstrap rows; it shares the ship page's row primitives now.
