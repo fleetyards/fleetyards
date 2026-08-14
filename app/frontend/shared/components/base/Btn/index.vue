@@ -265,30 +265,48 @@ const handleClick = (event: MouseEvent) => {
    Always present. The inset is proportional so the cap holds a constant share
    of the width instead of collapsing on short buttons: the old fixed 14px each
    side left only 8px of cap on a 36px icon button. The 10px floor keeps it
-   clear of the 8px corner radius. */
+   clear of the 8px corner radius.
+
+   Geometry comes from the shared --cap-* tokens so a button cap and a panel cap
+   are one motif rather than two that drifted. The button's height steps one
+   below the panel's, and its radius steps down by the same ratio and is then
+   held to half its own height - without that ceiling a 2px cap rounds far
+   enough to read as a lozenge rather than a seam. Radius applies to the inward
+   edge only, so the outward edge stays a line continuous with the border. */
 .btn--solid::before,
 .btn--solid::after,
 .btn--ghost::before,
 .btn--ghost::after {
   content: "";
   position: absolute;
-  left: max(10px, 18%);
-  right: max(10px, 18%);
-  height: 2px;
-  @apply bg-endcap rounded-[1px];
+  left: max(10px, var(--cap-inset, 12%));
+  right: max(10px, var(--cap-inset, 12%));
+  height: var(--cap-h-btn, 2px);
+  /* Colour comes through a variable so the interaction states can stay on the
+     element - a pseudo-element cannot be selected by :hover/:focus-visible
+     without restating the whole selector four times over. The fallbacks are
+     spelled out because a bare var() gets none from Tailwind and the embed
+     bundle never registers :root. */
+  background-color: var(--btn-cap, var(--color-endcap, #7a8288));
   transition: background-color 150ms ease-in-out;
 }
 .btn--solid::before,
 .btn--ghost::before {
   top: -1px;
+  border-radius: 0 0 var(--cap-r-btn, 1px) var(--cap-r-btn, 1px);
 }
 .btn--solid::after,
 .btn--ghost::after {
   bottom: -1px;
+  border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
 }
-.btn--lg::before,
+.btn--lg::before {
+  height: var(--cap-h-btn-lg, 3px);
+  border-radius: 0 0 var(--cap-r-btn-lg, 1.5px) var(--cap-r-btn-lg, 1.5px);
+}
 .btn--lg::after {
-  height: 3px;
+  height: var(--cap-h-btn-lg, 3px);
+  border-radius: var(--cap-r-btn-lg, 1.5px) var(--cap-r-btn-lg, 1.5px) 0 0;
 }
 
 /* ---------- variants ---------- */
@@ -302,13 +320,22 @@ const handleClick = (event: MouseEvent) => {
   @apply text-text rounded-control-bare border-transparent bg-transparent;
 }
 
+/*
+ * Hover, press and focus light the end-cap and leave the frame alone. Recolouring
+ * the border swapped the entire outline of the control, which in a toolbar reads
+ * as the button changing shape rather than responding; the cap is already this
+ * component's signature, so it is the piece that answers. Same call the panel
+ * made for tone - see docs/exec-plans/panel-redesign.md.
+ */
 .btn--solid:hover:not([disabled]),
 .btn--solid.active {
-  @apply bg-control-hover border-primary text-lifted;
+  @apply bg-control-hover text-lifted;
+  --btn-cap: var(--color-primary, #428bca);
 }
 .btn--ghost:hover:not([disabled]),
 .btn--ghost.active {
-  @apply bg-control-hover border-primary text-lifted;
+  @apply bg-control-hover text-lifted;
+  --btn-cap: var(--color-primary, #428bca);
 }
 .btn--bare:hover:not([disabled]),
 .btn--bare.active {
@@ -319,7 +346,16 @@ const handleClick = (event: MouseEvent) => {
 .btn--solid:active:not([disabled]),
 .btn--ghost:active:not([disabled]) {
   @apply bg-control-press;
-  border-color: rgb(66 139 202 / 0.6);
+  /* Dimmer than hover, so the press reads as the control receding along with
+     its surface rather than as a second, brighter hover. */
+  --btn-cap: rgb(66 139 202 / 0.6);
+}
+
+/* The outline stays - see the focus rule below. This only brings the cap along,
+   so a keyboard-focused button and a hovered one are lit the same way. */
+.btn--solid:focus-visible,
+.btn--ghost:focus-visible {
+  --btn-cap: var(--color-primary, #428bca);
 }
 
 /* ---------- tone ---------- */
@@ -331,9 +367,20 @@ const handleClick = (event: MouseEvent) => {
 .btn--tone-danger.btn--bare {
   color: #f0a8ae;
 }
+/*
+ * A danger button floods, so it cannot borrow the primary cap the neutral states
+ * use: blue on that red surface, and blue against the resting pink label when the
+ * button is focused but not hovered. Its cap follows its text to white instead.
+ * The tone-plus-variant pair outranks the neutral hover/press/focus rules.
+ */
 .btn--tone-danger.btn--solid:hover:not([disabled]),
 .btn--tone-danger.btn--ghost:hover:not([disabled]) {
   @apply bg-danger border-danger text-white;
+  --btn-cap: rgb(255 255 255 / 0.65);
+}
+.btn--tone-danger.btn--solid:focus-visible,
+.btn--tone-danger.btn--ghost:focus-visible {
+  --btn-cap: rgb(255 255 255 / 0.65);
 }
 .btn--tone-danger.btn--bare:hover:not([disabled]) {
   @apply text-white;
