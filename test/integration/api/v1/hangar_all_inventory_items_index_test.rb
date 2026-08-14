@@ -14,7 +14,7 @@ class Api::V1::HangarAllInventoryItemsIndexTest < ActionDispatch::IntegrationTes
       produces "application/json"
 
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
-      parameter name: "perPage", in: :query, schema: {type: :string, default: HangarInventoryItem.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: InventoryItem.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,
@@ -44,13 +44,13 @@ class Api::V1::HangarAllInventoryItemsIndexTest < ActionDispatch::IntegrationTes
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user, name: "Mining Ops")
-    @other_inventory = create(:hangar_inventory, user: @user, name: "Medical Bay")
+    @inventory = create(:inventory, holder: @user, name: "Mining Ops")
+    @other_inventory = create(:inventory, holder: @user, name: "Medical Bay")
   end
 
   test "GET /hangar/inventory-items lists entries across all inventories" do
-    create_list(:hangar_inventory_item, 2, hangar_inventory: @inventory)
-    create_list(:hangar_inventory_item, 3, hangar_inventory: @other_inventory)
+    create_list(:inventory_item, 2, inventory: @inventory)
+    create_list(:inventory_item, 3, inventory: @other_inventory)
     sign_in @user
 
     assert_api_response :get, 200 do
@@ -59,7 +59,7 @@ class Api::V1::HangarAllInventoryItemsIndexTest < ActionDispatch::IntegrationTes
   end
 
   test "GET /hangar/inventory-items does not include other users' entries" do
-    create_list(:hangar_inventory_item, 2, hangar_inventory: create(:hangar_inventory, user: @other_user))
+    create_list(:inventory_item, 2, inventory: create(:inventory, holder: @other_user))
     sign_in @user
 
     assert_api_response :get, 200 do

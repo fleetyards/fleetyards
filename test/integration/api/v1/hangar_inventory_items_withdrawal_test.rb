@@ -6,9 +6,9 @@ class Api::V1::HangarInventoryItemsWithdrawalTest < ActionDispatch::IntegrationT
   setup do
     Flipper.enable("hangar_inventories")
     @user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
-    create(:hangar_inventory_item,
-      hangar_inventory: @inventory,
+    @inventory = create(:inventory, holder: @user)
+    create(:inventory_item,
+      inventory: @inventory,
       name: "Quantanium",
       category: :commodity,
       quantity: 100,
@@ -37,7 +37,7 @@ class Api::V1::HangarInventoryItemsWithdrawalTest < ActionDispatch::IntegrationT
   end
 
   test "withdrawal only counts stock from the same inventory" do
-    other_inventory = create(:hangar_inventory, user: @user)
+    other_inventory = create(:inventory, holder: @user)
 
     post "/api/v1/hangar/inventories/#{other_inventory.slug}/items",
       params: {name: "Quantanium", category: "commodity", quantity: 10, unit: "scu", entryType: "withdrawal"},

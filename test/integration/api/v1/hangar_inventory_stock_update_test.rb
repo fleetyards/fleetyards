@@ -68,11 +68,11 @@ class Api::V1::HangarInventoryStockUpdateTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
+    @inventory = create(:inventory, holder: @user)
 
-    create(:hangar_inventory_item, hangar_inventory: @inventory,
+    create(:inventory_item, inventory: @inventory,
       name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
-    create(:hangar_inventory_item, :withdrawal, hangar_inventory: @inventory,
+    create(:inventory_item, :withdrawal, inventory: @inventory,
       name: "Quantanium", category: :commodity, unit: :scu, quantity: 30)
 
     @slug = InventoryStockItem.slug_for(name: "Quantanium", category: "commodity", unit: "scu")
@@ -89,8 +89,8 @@ class Api::V1::HangarInventoryStockUpdateTest < ActionDispatch::IntegrationTest
       assert_equal 2, parsed_body["entriesCount"]
     end
 
-    assert_equal 2, @inventory.hangar_inventory_items.where(name: "Quantanium Ore").count
-    assert_empty @inventory.hangar_inventory_items.where(name: "Quantanium")
+    assert_equal 2, @inventory.inventory_items.where(name: "Quantanium Ore").count
+    assert_empty @inventory.inventory_items.where(name: "Quantanium")
   end
 
   test "PATCH moves the position to a new category and unit together" do
@@ -117,7 +117,7 @@ class Api::V1::HangarInventoryStockUpdateTest < ActionDispatch::IntegrationTest
       assert_includes parsed_body["errors"].to_s, "must be units for component entries"
     end
 
-    assert_equal ["commodity"], @inventory.hangar_inventory_items.pluck(:category).uniq
+    assert_equal ["commodity"], @inventory.inventory_items.pluck(:category).uniq
   end
 
   test "PATCH rejects a blank name" do
@@ -145,7 +145,7 @@ class Api::V1::HangarInventoryStockUpdateTest < ActionDispatch::IntegrationTest
   test "DELETE removes the position with all of its entries" do
     sign_in @user
 
-    assert_difference "HangarInventoryItem.count", -2 do
+    assert_difference "InventoryItem.count", -2 do
       assert_api_response :delete, 204, path_params: {hangarInventorySlug: @inventory.slug, slug: @slug}
     end
   end
@@ -153,12 +153,12 @@ class Api::V1::HangarInventoryStockUpdateTest < ActionDispatch::IntegrationTest
   test "DELETE leaves other positions alone" do
     sign_in @user
 
-    create(:hangar_inventory_item, hangar_inventory: @inventory,
+    create(:inventory_item, inventory: @inventory,
       name: "Titanium", category: :commodity, unit: :scu, quantity: 5)
 
     assert_api_response :delete, 204, path_params: {hangarInventorySlug: @inventory.slug, slug: @slug}
 
-    assert_equal ["Titanium"], @inventory.hangar_inventory_items.pluck(:name)
+    assert_equal ["Titanium"], @inventory.inventory_items.pluck(:name)
   end
 
   test "DELETE returns 404 for an unknown position" do

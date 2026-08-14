@@ -33,11 +33,11 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    inv1 = create(:hangar_inventory, user: @user, name: "Mining Ops")
-    inv2 = create(:hangar_inventory, user: @user, name: "Medical Bay")
-    create(:hangar_inventory_item, hangar_inventory: inv1, name: "Quantanium", category: :commodity, quantity: 200, unit: :scu, entry_type: :deposit)
-    create(:hangar_inventory_item, hangar_inventory: inv2, name: "Med Pens", category: :consumable, quantity: 50, unit: :units, entry_type: :deposit)
-    create(:hangar_inventory_item, hangar_inventory: inv2, name: "Med Pens", category: :consumable, quantity: 10, unit: :units, entry_type: :withdrawal)
+    inv1 = create(:inventory, holder: @user, name: "Mining Ops")
+    inv2 = create(:inventory, holder: @user, name: "Medical Bay")
+    create(:inventory_item, inventory: inv1, name: "Quantanium", category: :commodity, quantity: 200, unit: :scu, entry_type: :deposit)
+    create(:inventory_item, inventory: inv2, name: "Med Pens", category: :consumable, quantity: 50, unit: :units, entry_type: :deposit)
+    create(:inventory_item, inventory: inv2, name: "Med Pens", category: :consumable, quantity: 10, unit: :units, entry_type: :withdrawal)
   end
 
   test "GET /hangar/inventory-stock aggregates across inventories" do
@@ -55,8 +55,8 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
   end
 
   test "GET /hangar/inventory-stock does not include other users' stock" do
-    other_inventory = create(:hangar_inventory, user: @other_user, name: "Foreign Bay")
-    create(:hangar_inventory_item, hangar_inventory: other_inventory, name: "Titanium", category: :commodity, quantity: 10, unit: :scu, entry_type: :deposit)
+    other_inventory = create(:inventory, holder: @other_user, name: "Foreign Bay")
+    create(:inventory_item, inventory: other_inventory, name: "Titanium", category: :commodity, quantity: 10, unit: :scu, entry_type: :deposit)
     sign_in @user
 
     assert_api_response :get, 200 do

@@ -16,7 +16,7 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
-      parameter name: "perPage", in: :query, schema: {type: :string, default: HangarInventoryItem.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: InventoryItem.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,
@@ -50,11 +50,11 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
+    @inventory = create(:inventory, holder: @user)
   end
 
   test "GET /hangar/inventories/:slug/items lists the ledger entries" do
-    create_list(:hangar_inventory_item, 3, hangar_inventory: @inventory)
+    create_list(:inventory_item, 3, inventory: @inventory)
     sign_in @user
 
     assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
@@ -63,8 +63,8 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /hangar/inventories/:slug/items filters by category" do
-    create(:hangar_inventory_item, hangar_inventory: @inventory, category: :commodity)
-    create(:hangar_inventory_item, :component, hangar_inventory: @inventory)
+    create(:inventory_item, inventory: @inventory, category: :commodity)
+    create(:inventory_item, :component, inventory: @inventory)
     sign_in @user
 
     get "/api/v1/hangar/inventories/#{@inventory.slug}/items?q[categoryEq]=component"

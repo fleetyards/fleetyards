@@ -39,11 +39,11 @@ class Api::V1::HangarInventoryStockIndexTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
-    create(:hangar_inventory_item, hangar_inventory: @inventory, name: "Quantanium", category: :commodity, quantity: 100, unit: :scu, entry_type: :deposit)
-    create(:hangar_inventory_item, hangar_inventory: @inventory, name: "Quantanium", category: :commodity, quantity: 50, unit: :scu, entry_type: :deposit)
-    create(:hangar_inventory_item, hangar_inventory: @inventory, name: "Quantanium", category: :commodity, quantity: 30, unit: :scu, entry_type: :withdrawal)
-    create(:hangar_inventory_item, hangar_inventory: @inventory, name: "Medical Supplies", category: :consumable, quantity: 10, unit: :units, entry_type: :deposit)
+    @inventory = create(:inventory, holder: @user)
+    create(:inventory_item, inventory: @inventory, name: "Quantanium", category: :commodity, quantity: 100, unit: :scu, entry_type: :deposit)
+    create(:inventory_item, inventory: @inventory, name: "Quantanium", category: :commodity, quantity: 50, unit: :scu, entry_type: :deposit)
+    create(:inventory_item, inventory: @inventory, name: "Quantanium", category: :commodity, quantity: 30, unit: :scu, entry_type: :withdrawal)
+    create(:inventory_item, inventory: @inventory, name: "Medical Supplies", category: :consumable, quantity: 10, unit: :units, entry_type: :deposit)
   end
 
   test "GET /hangar/inventories/:slug/stock aggregates deposits minus withdrawals" do

@@ -20,24 +20,24 @@ module Api
       before_action :set_hangar_inventory_item, only: %i[update destroy]
 
       def index
-        authorize!
+        authorize! with: HangarInventoryItemPolicy
 
-        scope = @hangar_inventory.hangar_inventory_items
+        scope = @hangar_inventory.inventory_items
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :name_eq, :unit_eq, :category_eq, :quality_gteq, :quality_lteq, :s)
         normalize_sort_params(query_params)
-        query_params["sorts"] = sorting_params(HangarInventoryItem, query_params["sorts"])
+        query_params["sorts"] = sorting_params(InventoryItem, query_params["sorts"])
 
         @q = scope.ransack(query_params)
         result = @q.result(distinct: true)
 
-        @hangar_inventory_items = result_with_pagination(result, per_page(HangarInventoryItem))
+        @hangar_inventory_items = result_with_pagination(result, per_page(InventoryItem))
       end
 
       def create
-        @hangar_inventory_item = @hangar_inventory.hangar_inventory_items.new(hangar_inventory_item_params)
+        @hangar_inventory_item = @hangar_inventory.inventory_items.new(hangar_inventory_item_params)
 
-        authorize! @hangar_inventory_item
+        authorize! @hangar_inventory_item, with: HangarInventoryItemPolicy
 
         if @hangar_inventory_item.save
           render :show, status: :created
@@ -47,7 +47,7 @@ module Api
       end
 
       def update
-        authorize! @hangar_inventory_item
+        authorize! @hangar_inventory_item, with: HangarInventoryItemPolicy
 
         if @hangar_inventory_item.update(hangar_inventory_item_params)
           render :show
@@ -57,7 +57,7 @@ module Api
       end
 
       def destroy
-        authorize! @hangar_inventory_item
+        authorize! @hangar_inventory_item, with: HangarInventoryItemPolicy
 
         unless @hangar_inventory_item.destroy
           render json: ValidationError.new("hangar_inventory_items.destroy", errors: @hangar_inventory_item.errors), status: :bad_request
@@ -80,11 +80,11 @@ module Api
       end
 
       private def set_hangar_inventory
-        @hangar_inventory = current_resource_owner.hangar_inventories.find_by!(slug: params[:hangar_inventory_slug])
+        @hangar_inventory = current_resource_owner.inventories.find_by!(slug: params[:hangar_inventory_slug])
       end
 
       private def set_hangar_inventory_item
-        @hangar_inventory_item = @hangar_inventory.hangar_inventory_items.find(params[:id])
+        @hangar_inventory_item = @hangar_inventory.inventory_items.find(params[:id])
       end
     end
   end

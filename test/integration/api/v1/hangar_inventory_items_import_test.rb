@@ -7,7 +7,7 @@ class Api::V1::HangarInventoryItemsImportTest < ActionDispatch::IntegrationTest
     Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
-    @inventory = create(:hangar_inventory, user: @user)
+    @inventory = create(:inventory, holder: @user)
   end
 
   def csv_upload(content)
@@ -32,7 +32,7 @@ class Api::V1::HangarInventoryItemsImportTest < ActionDispatch::IntegrationTest
     body = JSON.parse(response.body)
     assert_equal 2, body["imported"]
     assert_empty body["errors"]
-    assert_equal 2, @inventory.hangar_inventory_items.count
+    assert_equal 2, @inventory.inventory_items.count
   end
 
   test "reports per-row errors without aborting valid rows" do
@@ -63,8 +63,8 @@ class Api::V1::HangarInventoryItemsImportTest < ActionDispatch::IntegrationTest
       CSV
 
     assert_response :success
-    assert_equal "scu", @inventory.hangar_inventory_items.find_by(name: "Quantanium").unit
-    assert_equal "units", @inventory.hangar_inventory_items.find_by(name: "FR-66 Shield Generator").unit
+    assert_equal "scu", @inventory.inventory_items.find_by(name: "Quantanium").unit
+    assert_equal "units", @inventory.inventory_items.find_by(name: "FR-66 Shield Generator").unit
   end
 
   test "reports rows whose unit does not fit the category" do

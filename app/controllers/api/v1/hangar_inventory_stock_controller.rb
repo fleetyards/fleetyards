@@ -61,7 +61,7 @@ module Api
       end
 
       private def set_hangar_inventory
-        @hangar_inventory = current_resource_owner.hangar_inventories.find_by!(slug: params[:hangar_inventory_slug])
+        @hangar_inventory = current_resource_owner.inventories.find_by!(slug: params[:hangar_inventory_slug])
       end
     end
   end

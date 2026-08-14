@@ -9,7 +9,7 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
 
   api_path "/hangar/inventories" do
     post("Create Hangar Inventory") do
-      operationId "createHangarInventory"
+      operationId "createInventory"
       tags "HangarInventories"
       consumes "application/json"
       produces "application/json"
@@ -23,7 +23,7 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/HangarInventory"
+        schema "$ref": "#/components/schemas/Inventory"
       end
 
       response(400, "validation error") do
@@ -52,14 +52,14 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
   end
 
   test "POST /hangar/inventories returns 400 for duplicate name" do
-    create(:hangar_inventory, user: @user, name: "Area 18 Locker")
+    create(:inventory, holder: @user, name: "Area 18 Locker")
     sign_in @user
 
     assert_api_response :post, 400, body: {name: "Area 18 Locker"}
   end
 
   test "POST /hangar/inventories allows another user to reuse the same name" do
-    create(:hangar_inventory, user: create(:user), name: "Area 18 Locker")
+    create(:inventory, holder: create(:user), name: "Area 18 Locker")
     sign_in @user
 
     assert_api_response :post, 201, body: {name: "Area 18 Locker"}

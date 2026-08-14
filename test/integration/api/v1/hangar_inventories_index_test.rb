@@ -14,7 +14,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
       produces "application/json"
 
       parameter name: "page", in: :query, schema: {type: :string, default: "1"}, required: false
-      parameter name: "perPage", in: :query, schema: {type: :string, default: HangarInventory.default_per_page}, required: false
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Inventory.default_per_page}, required: false
       parameter name: "q", in: :query,
         schema: {
           type: :object,
@@ -47,7 +47,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /hangar/inventories lists the current user's inventories" do
-    create_list(:hangar_inventory, 3, user: @user)
+    create_list(:inventory, 3, holder: @user)
     sign_in @user
 
     assert_api_response :get, 200 do
@@ -56,7 +56,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /hangar/inventories does not list other users' inventories" do
-    create_list(:hangar_inventory, 2, user: @other_user)
+    create_list(:inventory, 2, holder: @other_user)
     sign_in @user
 
     assert_api_response :get, 200 do
@@ -67,7 +67,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
   test "GET /hangar/inventories is allowed when hangar_inventories is enabled for the user actor" do
     Flipper.disable("hangar_inventories")
     Flipper.enable_actor("hangar_inventories", @user)
-    create_list(:hangar_inventory, 3, user: @user)
+    create_list(:inventory, 3, holder: @user)
     sign_in @user
 
     assert_api_response :get, 200 do

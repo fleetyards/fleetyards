@@ -18,7 +18,7 @@ module InventoryStock
     def inventory_items_association(association_name)
       has_many association_name, dependent: :destroy
 
-      alias_method :inventory_items, association_name
+      alias_method :inventory_items, association_name if association_name != :inventory_items
     end
   end
 

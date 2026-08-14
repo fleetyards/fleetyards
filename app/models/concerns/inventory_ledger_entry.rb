@@ -72,8 +72,12 @@ module InventoryLedgerEntry
     def inventory_association(association_name)
       belongs_to association_name, touch: true
 
-      alias_method :inventory, association_name
-      alias_attribute :inventory_id, :"#{association_name}_id"
+      # Aliasing a name to itself makes the generated reader call itself, so the
+      # canonical association is left alone.
+      if association_name != :inventory
+        alias_method :inventory, association_name
+        alias_attribute :inventory_id, :"#{association_name}_id"
+      end
 
       @inventory_foreign_key = :"#{association_name}_id"
     end

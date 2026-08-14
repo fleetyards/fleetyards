@@ -14,10 +14,10 @@ json.image do
   json.partial! "api/v1/shared/inventory_image", entry: hangar_inventory_item
 end
 
-if hangar_inventory_item.hangar_inventory.present?
+if hangar_inventory_item.inventory.present?
   json.inventory do
-    json.name hangar_inventory_item.hangar_inventory.name
-    json.slug hangar_inventory_item.hangar_inventory.slug
+    json.name hangar_inventory_item.inventory.name
+    json.slug hangar_inventory_item.inventory.slug
   end
 end
 
