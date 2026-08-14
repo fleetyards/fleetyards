@@ -9,6 +9,7 @@
   // headline stat — since the loadout rows are the widest thing in the table. It is a
   // minimum, not a width: auto layout lets a column take more when its content needs it.
   --compare-col: 260px;
+  --compare-col-max: 400px;
 
   position: relative;
   max-height: min(76vh, 900px);
@@ -22,6 +23,7 @@
   @media (max-width: $tablet-breakpoint) {
     --compare-rail: 150px;
     --compare-col: 220px;
+    --compare-col-max: 320px;
   }
 
   // Auto layout, deliberately not `fixed`: a fixed-layout table ignores cell
@@ -35,11 +37,14 @@
     min-width: 100%;
   }
 
+  // A table column is as wide as its widest cell, and the loadout rows are always that
+  // cell — so in practice the hardpoint tiles pick the width for every column, and the
+  // cap is what actually sets it. 400px is where those tiles read comfortably, close to
+  // the ~400px column they were designed against on the ship page.
   thead th:not(.compare-table__rail),
   tbody td {
     min-width: var(--compare-col);
-    // ...but one long value must not run away with the column either.
-    max-width: calc(var(--compare-col) * 1.6);
+    max-width: var(--compare-col-max);
   }
 
   th.compare-table__rail {
