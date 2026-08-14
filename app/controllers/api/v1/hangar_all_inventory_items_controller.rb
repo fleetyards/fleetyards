@@ -5,7 +5,7 @@ module Api
     class HangarAllInventoryItemsController < ::Api::BaseController
       include HangarInventoriesFeatureConcern
 
-      after_action -> { pagination_header(:hangar_inventory_items) }, only: %i[index]
+      after_action -> { pagination_header(:inventory_items) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
@@ -28,7 +28,7 @@ module Api
         @q = scope.ransack(query_params)
         result = @q.result(distinct: true)
 
-        @hangar_inventory_items = result_with_pagination(result, per_page(InventoryItem))
+        @inventory_items = result_with_pagination(result, per_page(InventoryItem))
 
         render "api/v1/hangar_inventory_items/index"
       end
