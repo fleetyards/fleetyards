@@ -204,7 +204,10 @@ const currentYear = computed(() => new Date().getFullYear());
  * existed to reset those positions one by one.
  */
 .app-footer__inner {
-  @apply grid items-start gap-5 px-6 py-8 text-center;
+  /* 30px top and a 24px side inset keep what shipped: the logo pinned top-left
+     and the social row top-right, both about 25px in. Less at the bottom, where
+     the meta row is the last thing on the page rather than a column start. */
+  @apply grid items-start gap-5 px-6 pt-[30px] pb-4 text-center;
   /* auto, not a fixed 100px: the side columns size to the logo and to four
      30px social icons with their gaps, which a fixed track would overflow. */
   grid-template-columns: auto 1fr auto;
@@ -266,8 +269,10 @@ const currentYear = computed(() => new Date().getFullYear());
   @apply mb-0;
 }
 
+/* Centred rather than spread to the corners: the two values are ~125px and
+   ~93px wide, so justify-between put the better part of 900px between them. */
 .app-footer__meta {
-  @apply flex flex-wrap items-center justify-between gap-2 text-sm;
+  @apply flex flex-wrap items-center justify-center gap-x-8 gap-y-2;
   grid-area: meta;
 }
 
@@ -315,10 +320,6 @@ const currentYear = computed(() => new Date().getFullYear());
 
   .app-footer__social {
     @apply justify-center;
-  }
-
-  .app-footer__meta {
-    @apply justify-center text-center;
   }
 
   .nav-visible .app-footer {
