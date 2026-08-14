@@ -9,17 +9,12 @@ import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { transformErrors } from "@/frontend/utils/transformErrors";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import {
-  type Fleet,
-  type FleetMemberCreateInput,
-  type ValidationError,
-} from "@/services/fyApi";
+import { type Fleet, type FleetMemberCreateInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useCreateFleetMember as useCreateFleetMemberMutation } from "@/services/fyApi";
-import { type ErrorType } from "@/services/axiosClient";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 const { t } = useI18n();
@@ -64,23 +59,15 @@ const onSubmit = handleSubmit(async (values) => {
       comlink.emit("close-modal");
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const { message, formErrors } = validationErrorFrom(error, {
+        userId: "username",
+      });
 
-      if (response.response?.data?.errors) {
-        setErrors(
-          transformErrors(response.response.data.errors, {
-            user_id: "username",
-          }),
-        );
+      setErrors(formErrors);
 
-        displayAlert({
-          text: response.response?.data?.message,
-        });
-      } else {
-        displayAlert({
-          text: response.response?.data?.message,
-        });
-      }
+      displayAlert({
+        text: message,
+      });
     })
     .finally(() => {
       submitting.value = false;

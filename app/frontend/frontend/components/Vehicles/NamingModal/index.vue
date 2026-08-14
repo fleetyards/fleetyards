@@ -11,14 +11,9 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { transformErrors } from "@/frontend/utils/transformErrors";
-import {
-  type Vehicle,
-  type VehicleUpdateInput,
-  type ValidationError,
-} from "@/services/fyApi";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import { type Vehicle, type VehicleUpdateInput } from "@/services/fyApi";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { type ErrorType } from "@/services/axiosClient";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import AlternativeNamesInput from "./AlternativeNamesInput/index.vue";
@@ -92,19 +87,13 @@ const onSubmit = handleSubmit(async (values) => {
       comlink.emit("close-modal");
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const { message, formErrors } = validationErrorFrom(error);
 
-      if (response.response?.data?.errors) {
-        setErrors(transformErrors(response.response.data.errors));
+      setErrors(formErrors);
 
-        displayAlert({
-          text: response.response?.data?.message,
-        });
-      } else {
-        displayAlert({
-          text: response.response?.data?.message,
-        });
-      }
+      displayAlert({
+        text: message,
+      });
     })
     .finally(() => {
       submitting.value = false;
