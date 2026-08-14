@@ -5,8 +5,6 @@ export enum PanelVariantsEnum {
   // 1px edge, radius 12, no caps. For repeated cards in narrow columns, where
   // the full frame reads as noise — the metrics-card--slim treatment.
   SLIM = "slim",
-  // Background only. Absorbs what `transparency="complete"` used to express.
-  BARE = "bare",
 }
 
 // What the surface means. Colours the edge only; there is no filled counterpart,

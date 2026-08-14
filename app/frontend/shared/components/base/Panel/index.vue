@@ -155,16 +155,6 @@ const hasInner = computed(
   content: none;
 }
 
-.panel--bare {
-  @apply border-transparent bg-transparent;
-  box-shadow: none;
-}
-
-.panel--bare::before,
-.panel--bare::after {
-  content: none;
-}
-
 .panel--translucent {
   background-color: rgb(39 43 48 / 0.6);
 }
