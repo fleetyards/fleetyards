@@ -12,7 +12,7 @@ class Api::V1::HangarInventoryItemsDestroyTest < ActionDispatch::IntegrationTest
     parameter name: "id", in: :path, schema: {type: :string}, description: "Inventory item ID"
 
     delete("Delete Hangar Inventory Item") do
-      operationId "destroyInventoryItem"
+      operationId "destroyHangarInventoryItem"
       tags "HangarInventoryItems"
 
       security [

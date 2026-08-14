@@ -11,7 +11,7 @@ class Api::V1::HangarInventoriesUpdateTest < ActionDispatch::IntegrationTest
     parameter name: "slug", in: :path, schema: {type: :string}, description: "Inventory slug"
 
     put("Update Hangar Inventory") do
-      operationId "updateInventory"
+      operationId "updateHangarInventory"
       tags "HangarInventories"
       consumes "application/json"
       produces "application/json"
@@ -25,7 +25,7 @@ class Api::V1::HangarInventoriesUpdateTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Inventory"
+        schema "$ref": "#/components/schemas/HangarInventory"
       end
 
       response(401, "unauthorized") do

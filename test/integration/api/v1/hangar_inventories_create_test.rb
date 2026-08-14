@@ -9,7 +9,7 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
 
   api_path "/hangar/inventories" do
     post("Create Hangar Inventory") do
-      operationId "createInventory"
+      operationId "createHangarInventory"
       tags "HangarInventories"
       consumes "application/json"
       produces "application/json"
@@ -23,7 +23,7 @@ class Api::V1::HangarInventoriesCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/Inventory"
+        schema "$ref": "#/components/schemas/HangarInventory"
       end
 
       response(400, "validation error") do

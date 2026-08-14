@@ -11,7 +11,7 @@ class Api::V1::HangarInventoryItemsCreateTest < ActionDispatch::IntegrationTest
     parameter name: "hangarInventorySlug", in: :path, schema: {type: :string}, description: "Inventory slug"
 
     post("Create Hangar Inventory Item") do
-      operationId "createInventoryItem"
+      operationId "createHangarInventoryItem"
       tags "HangarInventoryItems"
       consumes "application/json"
       produces "application/json"
@@ -25,7 +25,7 @@ class Api::V1::HangarInventoryItemsCreateTest < ActionDispatch::IntegrationTest
       ]
 
       response(201, "successful") do
-        schema "$ref": "#/components/schemas/InventoryItem"
+        schema "$ref": "#/components/schemas/HangarInventoryItem"
       end
 
       response(400, "validation error") do
