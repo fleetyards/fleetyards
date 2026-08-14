@@ -358,17 +358,12 @@ const handleClick = (event: MouseEvent) => {
   --btn-cap: var(--color-primary, #428bca);
 }
 
-/* ---------- tone ----------
- * The cap carries the tone, as it does on Panel: recolouring the edge as well
- * made the whole frame shout before anything had been clicked. The frame stays
- * neutral and the label keeps its tint, because the label is the one channel
- * that survives bare, grouped and menu-item - none of which have a cap.
- */
-.btn--tone-danger {
-  --btn-cap: var(--color-danger, #dc3545);
-}
+/* ---------- tone ---------- */
 .btn--tone-danger.btn--solid,
-.btn--tone-danger.btn--ghost,
+.btn--tone-danger.btn--ghost {
+  border-color: rgb(220 53 69 / 0.55);
+  color: #f0a8ae;
+}
 .btn--tone-danger.btn--bare {
   color: #f0a8ae;
 }
