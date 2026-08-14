@@ -43,12 +43,17 @@ const box = async (locator: Locator) => {
 const card = (page: Page) => page.locator(".model-panel").first();
 
 test.describe("Panels", () => {
+  // Seeded once for the file rather than per test. Every assertion here is
+  // read-only, and cleaning and reseeding eleven times costs minutes without
+  // buying any isolation.
+  test.beforeAll(async () => {
+    await app("clean");
+    await appScenario("ships");
+  });
+
   // Reached through the nav rather than by goto("/ships/"), which is how
   // Ships.spec.ts does it - a direct load of the list route renders no cards.
   test.beforeEach(async ({ page, nav }) => {
-    await app("clean");
-    await appScenario("ships");
-
     await page.goto("/");
     await nav.click("ships");
 
