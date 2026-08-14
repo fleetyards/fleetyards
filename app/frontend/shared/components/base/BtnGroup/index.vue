@@ -109,6 +109,9 @@ provide(BTN_CONTAINER, {
  */
 .btn-group__track > :deep(span) {
   @apply bg-control text-text flex items-center justify-center px-3.5;
-  @apply text-[13px] leading-tight font-semibold whitespace-nowrap;
+  /* Mirrors .btn--sm's label, since a group with a label segment is a paginator
+     and paginators are sm. If Btn's type scale moves, this moves with it - it
+     cannot inherit, because size is a per-member prop the group cannot see. */
+  @apply text-[15px] leading-tight font-normal whitespace-nowrap;
 }
 </style>
