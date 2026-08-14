@@ -219,7 +219,7 @@ const sampleMetrics = [
     </div>
     <div class="col-12 col-md-6 col-lg-4">
       <BaseText muted no-spacing>in a panel body</BaseText>
-      <Panel slim>
+      <Panel>
         <PanelBody>
           <MetricsList :metrics="sampleMetrics" />
         </PanelBody>
@@ -247,17 +247,17 @@ const sampleMetrics = [
   </p>
   <div v-if="model" class="row">
     <div class="col-12 col-lg-4">
-      <Panel slim>
+      <Panel>
         <ModelBaseMetrics :model="model" :extended="extended" />
       </Panel>
     </div>
     <div class="col-12 col-lg-4">
-      <Panel slim>
+      <Panel>
         <ModelCrewMetrics :model="model" />
       </Panel>
     </div>
     <div class="col-12 col-lg-4">
-      <Panel slim>
+      <Panel>
         <ModelSpeedMetrics :model="model" />
       </Panel>
     </div>
@@ -267,7 +267,7 @@ const sampleMetrics = [
   <p>The compact metrics block used inside model panels.</p>
   <div v-if="model" class="row">
     <div class="col-12 col-lg-6">
-      <Panel slim>
+      <Panel>
         <ModelPanelMetrics :model="model" />
       </Panel>
     </div>
