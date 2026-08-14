@@ -185,13 +185,11 @@ const openInviteModal = () => {
   </Heading>
 
   <Teleport v-if="!mobile && canInvite" to="#header-right">
-    <Btn
-        :size="BtnSizesEnum.MD" @click="openInviteUrlModal">
+    <Btn :size="BtnSizesEnum.MD" @click="openInviteUrlModal">
       <i class="fa-light fa-plus" />
       {{ t("actions.fleet.createInviteUrl") }}
     </Btn>
-    <Btn
-        :size="BtnSizesEnum.MD" @click="openInviteModal">
+    <Btn :size="BtnSizesEnum.MD" @click="openInviteModal">
       <i class="fa-duotone fa-user-plus" />
       {{ t("actions.fleet.inviteMember") }}
     </Btn>

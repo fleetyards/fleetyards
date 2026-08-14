@@ -117,7 +117,7 @@ const { t, l } = useI18n();
 
   <Teleport to="#header-right">
     <Btn
-        :size="BtnSizesEnum.MD"
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-destroyed-fleets' }"
       :aria-label="t('nav.admin.destroyedFleets.index')"
       mobile-icon-only

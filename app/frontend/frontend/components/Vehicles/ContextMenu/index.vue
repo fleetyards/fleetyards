@@ -11,6 +11,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import {
   BtnSizesEnum,
+  BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -291,6 +292,7 @@ const loadoutsRoute = computed(() => ({
       <span>{{ t("actions.hangar.manageLoadouts") }}</span>
     </Btn>
     <Btn
+      :tone="BtnTonesEnum.DANGER"
       v-if="editable"
       :aria-label="t('actions.remove')"
       :disabled="deleting"

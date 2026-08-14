@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
@@ -174,6 +175,7 @@ const destroyBulk = async () => {
     {{ t("actions.hangar.editGroupsSelected") }}
   </Btn>
   <Btn
+    :tone="BtnTonesEnum.DANGER"
     v-tooltip="t('actions.deleteSelected')"
     :disabled="deleting"
     @click="destroyBulk"

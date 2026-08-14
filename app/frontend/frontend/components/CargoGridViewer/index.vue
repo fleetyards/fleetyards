@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, Grid, Html } from "@tresjs/cientos";
 import type { Group } from "three";
@@ -1427,6 +1428,7 @@ const onDragEnd = (_shipIndex: number) => {
               {{ t("labels.cargoGridViewer.autoFillShip") }}
             </Btn>
             <Btn
+              :tone="BtnTonesEnum.DANGER"
               v-tooltip="t('actions.remove')"
               data-test="remove-ship-0"
               @click="emit('removeShip', 0)"
@@ -1532,6 +1534,7 @@ const onDragEnd = (_shipIndex: number) => {
             {{ t("labels.cargoGridViewer.autoFillShip") }}
           </Btn>
           <Btn
+            :tone="BtnTonesEnum.DANGER"
             v-tooltip="t('actions.remove')"
             :data-test="`remove-ship-${shipResult.shipIndex}`"
             @click="emit('removeShip', shipResult.shipIndex)"

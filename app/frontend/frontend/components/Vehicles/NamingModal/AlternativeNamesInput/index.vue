@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useField } from "vee-validate";
 import { useI18n } from "@/shared/composables/useI18n";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -92,6 +93,7 @@ const onChange = () => {
           <i class="fa-duotone fa-repeat" />
         </Btn>
         <Btn
+          :tone="BtnTonesEnum.DANGER"
           v-tooltip="t('actions.remove')"
           data-test="vehicle-add-name"
           @click="removeName(index)"

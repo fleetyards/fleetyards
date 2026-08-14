@@ -30,7 +30,7 @@ import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   ChannelsEnum,
   useSubscription,
@@ -232,13 +232,15 @@ const openDisplayOptionsModal = () => {
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn
-        :size="BtnSizesEnum.MD" data-test="fleetchart-link" @click="toggleFleetchart">
+      :size="BtnSizesEnum.MD"
+      data-test="fleetchart-link"
+      @click="toggleFleetchart"
+    >
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
 
-    <Btn
-        :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
+    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
       <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
     </Btn>
@@ -296,6 +298,7 @@ const openDisplayOptionsModal = () => {
         <hr />
 
         <Btn
+          :tone="BtnTonesEnum.DANGER"
           :disabled="deleting"
           :aria-label="t('actions.hangar.destroyAll')"
           @click="destroyAll"
