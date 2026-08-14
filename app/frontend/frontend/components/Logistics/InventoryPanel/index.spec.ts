@@ -1,7 +1,20 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
+
+// The panel carries a background image, and jsdom has no IntersectionObserver
+// for useLazyBackground to hand it to.
+beforeAll(() => {
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  );
+});
 
 const inventory = (
   overrides: Partial<InventoryPanelRecord> = {},
