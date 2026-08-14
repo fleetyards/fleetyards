@@ -9,10 +9,16 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import CompareForm from "@/frontend/components/Compare/Models/Form/index.vue";
+import CompareActions from "@/frontend/components/Compare/Models/Actions/index.vue";
 import CompareTable from "@/frontend/components/Compare/Models/Table/index.vue";
 import { useModelSections } from "@/frontend/components/Compare/sections/model";
 import { useLoadoutSections } from "@/frontend/components/Compare/sections/loadout";
 import type { CompareSection } from "@/frontend/components/Compare/types";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -102,7 +108,10 @@ watch(
 
   <div class="row compare-models">
     <div class="col-12">
-      <CompareForm :models="models" />
+      <div class="compare-header">
+        <CompareForm />
+        <CompareActions :models="models" />
+      </div>
 
       <AsyncData :async-status="asyncStatus">
         <template #resolved>
@@ -123,15 +132,51 @@ watch(
 
           <template v-else>
             <div class="compare-toolbar">
-              <Btn
-                :active="differencesOnly"
-                @click="differencesOnly = !differencesOnly"
-              >
-                {{ t("labels.compare.differencesOnly") }}
-              </Btn>
-              <Btn :active="deltaMode" @click="deltaMode = !deltaMode">
-                {{ t("labels.compare.compareToBaseline") }}
-              </Btn>
+              <div class="compare-toolbar__modes">
+                <Btn
+                  :active="differencesOnly"
+                  :size="BtnSizesEnum.SM"
+                  :variant="BtnVariantsEnum.GHOST"
+                  @click="differencesOnly = !differencesOnly"
+                >
+                  {{ t("labels.compare.differencesOnly") }}
+                </Btn>
+                <Btn
+                  :active="deltaMode"
+                  :size="BtnSizesEnum.SM"
+                  :variant="BtnVariantsEnum.GHOST"
+                  @click="deltaMode = !deltaMode"
+                >
+                  {{ t("labels.compare.compareToBaseline") }}
+                </Btn>
+              </div>
+
+              <!-- Only the keys in play: the bar and the row winner in normal mode, the
+                   comparison hues once a baseline is chosen. -->
+              <dl class="compare-legend">
+                <template v-if="deltaMode">
+                  <dt class="compare-legend__key compare-legend__key--better">
+                    +%
+                  </dt>
+                  <dd>{{ t("labels.compare.legend.better") }}</dd>
+                  <dt class="compare-legend__key compare-legend__key--worse">
+                    −%
+                  </dt>
+                  <dd>{{ t("labels.compare.legend.worse") }}</dd>
+                </template>
+                <template v-else>
+                  <dt class="compare-legend__key compare-legend__key--bar">
+                    <span />
+                  </dt>
+                  <dd>{{ t("labels.compare.legend.share") }}</dd>
+                </template>
+                <dt class="compare-legend__key compare-legend__key--best">▲</dt>
+                <dd>{{ t("labels.compare.legend.best") }}</dd>
+                <dt class="compare-legend__key compare-legend__key--worst">
+                  ▼
+                </dt>
+                <dd>{{ t("labels.compare.legend.worst") }}</dd>
+              </dl>
             </div>
 
             <!-- The panel is the frame: border, radius, end-caps and shadow all come

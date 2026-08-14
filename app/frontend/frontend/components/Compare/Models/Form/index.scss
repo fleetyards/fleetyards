@@ -1,20 +1,10 @@
-// A toolbar above the matrix rather than a cell inside it: the ship picker and the
-// external-calculator links need more room than a label column gives them.
-//
-// The gap is load-bearing — the redesigned buttons no longer carry their own
-// margin-bottom, so without it they sit flush against each other and the end-caps
-// overlap the next button's edge.
+// Just the ship picker now — the share and calculator links are the page's key actions
+// and live top-right in `Compare/Models/Actions`.
 .compare-form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  max-width: 640px;
-  margin-bottom: 18px;
+  flex: 1 1 240px;
+  max-width: 320px;
 
   :deep(.filter-group) {
-    flex: 1 1 220px;
     margin-bottom: 0;
   }
 }

@@ -312,6 +312,13 @@
           "quantumDrives": "Quantum drives",
           "thrusters": "Main thrusters",
           "countermeasures": "Countermeasures"
+        },
+        "legend": {
+          "best": "best in row",
+          "worst": "worst",
+          "share": "share of the row's best",
+          "better": "beats the baseline",
+          "worse": "behind it"
         }
       },
       "cargoRoutes": "Cargo routes",
