@@ -41,6 +41,10 @@ class Inventory < ApplicationRecord
 
   has_one_attached :image
 
+  # Slugs are unique among these only. Two Ironclads produce the same slug, so a
+  # ship inventory is addressed through its ship instead.
+  scope :addressable_by_slug, -> { where(vehicle_id: nil) }
+
   validates :name, presence: true
   validates :name, uniqueness: {case_sensitive: false, scope: [:holder_type, :holder_id]},
     unless: :vehicle_id?

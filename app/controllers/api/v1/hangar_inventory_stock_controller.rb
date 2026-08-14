@@ -18,7 +18,7 @@ module Api
       before_action :set_stock_item, only: %i[show update destroy]
 
       private def inventory
-        @inventory ||= current_resource_owner.inventories.find_by!(slug: params[:hangar_inventory_slug])
+        @inventory ||= current_resource_owner.inventories.addressable_by_slug.find_by!(slug: params[:hangar_inventory_slug])
       end
 
       private def inventory_policy
