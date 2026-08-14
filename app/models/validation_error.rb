@@ -9,6 +9,14 @@ class ValidationError
     self.errors = transform_errors(errors) if errors.present?
   end
 
+  def as_json(*)
+    {
+      code: code,
+      message: message,
+      errors: errors&.map { |field_error| field_error.merge(attribute: camelize(field_error[:attribute])) }
+    }.compact
+  end
+
   private def transform_errors(errors)
     errors_list = errors.is_a?(Array) ? errors : [errors]
     errors_list.flat_map(&:errors)
@@ -19,5 +27,12 @@ class ValidationError
           messages: attribute_errors.map { |error| {code: error.type, message: error.full_message} }.uniq
         }
       end
+  end
+
+  # Matches the key casing of every other response: Jbuilder is configured with
+  # `key_format camelize: :lower`, and inbound params are decamelized again by
+  # Middleware::TransformParameters.
+  private def camelize(attribute)
+    attribute.to_s.camelize(:lower)
   end
 end
