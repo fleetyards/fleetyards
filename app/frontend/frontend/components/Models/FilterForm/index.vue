@@ -20,7 +20,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { type ModelQuery } from "@/services/fyApi";
 import { useModelFilters } from "@/frontend/composables/useModelFilters";
-import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import {
+  InputSizesEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 
 type Props = {
   hideQuicksearch?: boolean;
@@ -87,6 +90,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
   <form @submit.prevent="handleSubmit">
     <Teleport v-if="!hideQuicksearch" to="#header-left">
       <FormInput
+        :size="InputSizesEnum.MEDIUM"
         v-model="form.searchCont"
         name="search"
         translation-key="filters.models.name"

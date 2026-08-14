@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
@@ -54,6 +55,7 @@ watch(
   <form @submit.prevent="handleSubmit">
     <Teleport to="#header-left">
       <FormInput
+        :size="InputSizesEnum.MEDIUM"
         v-model="form.nameCont"
         name="search"
         translation-key="filters.supporterContributions.name"

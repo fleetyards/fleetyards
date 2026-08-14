@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { type DestroyedFleetQuery } from "@/services/fyAdminApi";
 import { useFilters } from "@/shared/composables/useFilters";
@@ -42,6 +43,7 @@ watch(
   <form @submit.prevent="handleSubmit">
     <Teleport to="#header-left">
       <FormInput
+        :size="InputSizesEnum.MEDIUM"
         v-model="form.nameOrFidCont"
         name="search"
         translation-key="filters.destroyedFleets.nameOrFid"
