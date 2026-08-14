@@ -5,9 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { useMobile } from "@/shared/composables/useMobile";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import ChipRow from "@/shared/components/base/Chip/Row/index.vue";
+import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useRoute, useRouter } from "vue-router";
 
 type Props = {
@@ -24,8 +25,6 @@ const props = withDefaults(defineProps<Props>(), {
   filterKey: undefined,
   label: undefined,
 });
-
-const mobile = useMobile();
 
 const route = useRoute();
 
@@ -57,60 +56,84 @@ const filter = async (filter: string) => {
   });
 };
 
-const isActive = (classification: string) => {
+// Binary, so the third state is never reached - which is why Chip takes a state
+// rather than a pair of booleans.
+const classificationState = (classification: string) => {
   if (!props.filterKey) {
-    return false;
+    return ChipStatesEnum.NEUTRAL;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const classFilter = (route.query as Record<string, any>)[props.filterKey];
-  if (!classFilter) {
-    return false;
+
+  if (classFilter?.includes(classification)) {
+    return ChipStatesEnum.INCLUDED;
   }
 
-  if (classFilter.includes(classification)) {
-    return true;
-  }
-
-  return false;
+  return ChipStatesEnum.NEUTRAL;
 };
 </script>
 
 <template>
-  <BtnDropdown v-if="mobile" class="labels-dropdown w-full md:w-auto">
-    <template #label>Classifications</template>
-    <template #default>
-      <Btn
-        v-for="classification in countData"
-        :key="`dropdown-${classification.name}`"
-        class="labels-dropdown-item"
-        :class="{
-          active: isActive(classification.name),
-        }"
-        @click="filter(classification.name)"
-        variant="bare"
-      >
-        {{ classification.label }}
-        <span class="label-count">{{ classification.count }}</span>
-      </Btn>
-    </template>
-  </BtnDropdown>
-  <div v-else class="labels">
-    <transition-group name="fade-list" appear>
-      <a
+  <ChipRow :label="label">
+    <transition-group name="chip-fade">
+      <Chip
         v-for="classification in countData"
         :key="classification.name"
-        :class="{
-          'label-link': filterKey,
-          active: isActive(classification.name),
-        }"
-        class="label fade-list-item"
+        :state="classificationState(classification.name)"
+        :count="classification.count"
+        :disabled="!filterKey"
+        @toggle="filter(classification.name)"
+      >
+        {{ classification.label }}
+      </Chip>
+    </transition-group>
+
+    <template #menu>
+      <Btn
+        v-for="classification in countData"
+        :key="`menu-${classification.name}`"
+        :active="
+          classificationState(classification.name) === ChipStatesEnum.INCLUDED
+        "
         @click="filter(classification.name)"
       >
-        <span class="label-inner">
-          {{ classification.label }}: {{ classification.count }}
-        </span>
-      </a>
-    </transition-group>
-  </div>
+        <Chip
+          bare
+          :state="classificationState(classification.name)"
+          :count="classification.count"
+        >
+          {{ classification.label }}
+        </Chip>
+      </Btn>
+    </template>
+  </ChipRow>
 </template>
+
+<style scoped>
+/*
+ * Local, at 150ms. The global `fade-list` this replaces put `transition: all .5s`
+ * on every chip - the 500ms the panel redesign retired - and its enter half never
+ * ran at all: the stylesheet still uses Vue 2's `-enter` rather than
+ * `-enter-from`.
+ */
+.chip-fade-enter-active,
+.chip-fade-leave-active {
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.chip-fade-enter-from,
+.chip-fade-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip-fade-enter-active,
+  .chip-fade-leave-active {
+    transition-duration: 1ms;
+  }
+}
+</style>

@@ -302,7 +302,7 @@ const openDisplayOptionsModal = () => {
           <ModelClassLabels
             v-if="hangarStats"
             :count-data="hangarStats.classifications"
-            :label="t('labels.hangar')"
+            :label="t('labels.classifications')"
             filter-key="classificationIn"
           />
           <GroupLabels
