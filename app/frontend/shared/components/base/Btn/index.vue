@@ -359,24 +359,24 @@ const handleClick = (event: MouseEvent) => {
 }
 
 /* ---------- tone ----------
- * The cap carries the tone, as it does on Panel: recolouring the edge as well
- * made the whole frame shout before anything had been clicked. The frame stays
- * neutral and the label keeps its tint, because the label is the one channel
- * that survives bare, grouped and menu-item - none of which have a cap.
+ * The cap carries the tone, and only the cap. The frame, the surface and the
+ * label all stay exactly as a neutral button's, so a destructive control reads
+ * as an ordinary one wearing a red signature. The earlier #f0a8ae label tint is
+ * gone: pink text on the neutral surface read as a disabled or error state
+ * rather than as an available action.
+ *
+ * Consequence worth knowing: bare, grouped and menu-item set `content: none` on
+ * their caps, so those variants carry no resting marker at all and rely on their
+ * hover tint below.
  */
 .btn--tone-danger {
   --btn-cap: var(--color-danger, #dc3545);
 }
-.btn--tone-danger.btn--solid,
-.btn--tone-danger.btn--ghost,
-.btn--tone-danger.btn--bare {
-  color: #f0a8ae;
-}
 /*
- * A danger button floods, so it cannot borrow the primary cap the neutral states
- * use: blue on that red surface, and blue against the resting pink label when the
- * button is focused but not hovered. Its cap follows its text to white instead.
- * The tone-plus-variant pair outranks the neutral hover/press/focus rules.
+ * A danger button floods on hover, so it cannot borrow the primary cap the
+ * neutral states use - blue on that red surface. Its cap follows the label to
+ * white instead, which keeps the signature legible through the flood. The
+ * tone-plus-variant pair outranks the neutral hover/press/focus rules.
  */
 .btn--tone-danger.btn--solid:hover:not([disabled]),
 .btn--tone-danger.btn--ghost:hover:not([disabled]) {
