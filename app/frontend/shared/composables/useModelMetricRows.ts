@@ -13,6 +13,8 @@ export type MetricRowGroup = {
   rows: MetricRow[];
   // Dimensions and price sit two-up; the summary rows run full width.
   split?: boolean;
+  // Optional e2e hook, set by the surface that has a contract on it.
+  testId?: string;
 };
 
 /*

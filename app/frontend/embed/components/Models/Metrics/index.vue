@@ -26,11 +26,19 @@ const { groups } = useModelMetricRows(() => props.model, {
   toNumber,
   toUEC,
 });
+
+// The summary block keeps its `top-metrics` hook: four embed specs assert it is
+// visible with the details open and gone when they close.
+const groupsWithHooks = computed(() =>
+  groups.value.map((group, index) =>
+    index === 0 ? { ...group, testId: "top-metrics" } : group,
+  ),
+);
 </script>
 
 <template>
   <div class="embed-model-metrics">
-    <ModelMetricRows :groups="groups" />
+    <ModelMetricRows :groups="groupsWithHooks" />
   </div>
 </template>
 

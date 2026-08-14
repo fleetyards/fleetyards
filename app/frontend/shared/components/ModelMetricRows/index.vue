@@ -29,6 +29,7 @@ defineProps<Props>();
     <div
       class="metrics-card__rows"
       :class="{ 'metrics-card__rows--split': group.split }"
+      :data-test="group.testId"
     >
       <div v-for="row in group.rows" :key="row.label" class="metrics-card__row">
         <span class="metrics-card__row__label">{{ row.label }}</span>
