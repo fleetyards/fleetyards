@@ -11,7 +11,7 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
     parameter name: "slug", in: :path, schema: {type: :string}, description: "Inventory slug"
 
     delete("Delete Hangar Inventory") do
-      operationId "destroyInventory"
+      operationId "destroyHangarInventory"
       tags "HangarInventories"
 
       security [

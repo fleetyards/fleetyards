@@ -22,7 +22,7 @@ class Api::V1::HangarInventoriesShowTest < ActionDispatch::IntegrationTest
       ]
 
       response(200, "successful") do
-        schema "$ref": "#/components/schemas/Inventory"
+        schema "$ref": "#/components/schemas/HangarInventory"
       end
 
       response(401, "unauthorized") do
