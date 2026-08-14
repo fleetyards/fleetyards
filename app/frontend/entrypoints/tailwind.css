@@ -105,3 +105,19 @@
     calc(var(--cap-h-btn-lg, 3px) / 2)
   );
 }
+
+/*
+ * Width of the off-canvas navigation, which the page slides sideways by while it
+ * is open. The literal appears four times in partials/app-navigation.scss and
+ * twice in shared/layout.scss; AppFooter consumes this token instead of copying
+ * it a seventh time. Converting the other two files is a separate change.
+ */
+:root {
+  --nav-width: 300px;
+}
+
+@media (max-width: 370px) {
+  :root {
+    --nav-width: 250px;
+  }
+}
