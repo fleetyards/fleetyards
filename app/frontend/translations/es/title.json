@@ -106,7 +106,8 @@
         "states": "Estados - Pruebas visuales",
         "notifications": "Notificaciones - Pruebas Visuales",
         "syncModal": "Modal de sincronización - Pruebas Visuales",
-        "supportHint": "Aviso de apoyo - Pruebas Visuales"
+        "supportHint": "Aviso de apoyo - Pruebas Visuales",
+        "chips": "Chips - Pruebas Visuales"
       },
       "admin": {
         "models": {

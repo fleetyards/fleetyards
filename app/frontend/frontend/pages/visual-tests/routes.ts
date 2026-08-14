@@ -98,4 +98,13 @@ export const routes = [
       backgroundImage: "bg-7",
     },
   },
+  {
+    path: "chips/",
+    name: "visual-tests-chips",
+    component: () => import("@/frontend/pages/visual-tests/chips.vue"),
+    meta: {
+      title: "visualTests.chips",
+      backgroundImage: "bg-7",
+    },
+  },
 ];

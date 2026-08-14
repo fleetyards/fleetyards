@@ -106,7 +106,8 @@
         "states": "Zustände - Visuelle Tests",
         "notifications": "Benachrichtigungen - Visuelle Tests",
         "syncModal": "Sync-Modal - Visuelle Tests",
-        "supportHint": "Support-Hinweis - Visuelle Tests"
+        "supportHint": "Support-Hinweis - Visuelle Tests",
+        "chips": "Chips - Visuelle Tests"
       },
       "admin": {
         "models": {

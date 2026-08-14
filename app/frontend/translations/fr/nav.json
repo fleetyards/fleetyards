@@ -95,7 +95,8 @@
         "states": "États",
         "notifications": "Notifications",
         "syncModal": "Modale Sync",
-        "supportHint": "Indicateur de soutien"
+        "supportHint": "Indicateur de soutien",
+        "chips": "Chips"
       },
       "admin": {
         "index": "Admin",
