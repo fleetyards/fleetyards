@@ -275,31 +275,24 @@ lands where this redesign already pointed, which is why the two fit:
   new, opt-in look: 1px edge, radius 12, no caps. Nothing of ours should be mechanically
   renamed to it.
 
-### Superseded: blocked on the button / panel rework (2026-08-14)
+### Where this sits in the stack
 
-The rebuild waits for the in-flight button and panel reworks rather than racing them. Measured
-overlap against `feat/btn-redesign` (220 files, pushed): **exactly one shared file**,
-`Compare/Models/Form/index.scss`. So rebasing later is cheap — this is a sequencing choice,
-not a merge-risk one.
+```
+main  ←  feat/btn-redesign (#4338)  ←  feat/panel-redesign (#4362)  ←  this branch
+```
 
-Where the coupling actually is:
+Both design-system reworks are **stacked PRs**, so basing on `feat/panel-redesign` picks up the
+button rework too — the Btn commits on the panel branch are continuations of #4338, not a
+competing fork. At the time of writing the panel branch is one commit behind btn's tip
+(`9131eb801 test(ui): unit-test Btn behaviour`, which is why `Btn/index.spec.ts` is the only
+btn file missing here), and forked from `f2c64b40f`, two commits behind `main`. Both gaps close
+when the lower branches rebase; re-rebase this branch then, which has cost 1–2 trivial
+conflicts each time.
 
-- **Buttons — real.** The compare toolbar is `Btn` / `BtnGroup` / `ShareBtn` / `ModelFilterGroup`,
-  and `feat/btn-redesign` rewrites `Btn/index.vue` and `Btn/types.ts`. This branch already
-  dropped the `block` prop from the compare form's buttons to make them a toolbar; that edit
-  needs revisiting against the new prop API on rebase.
-- **Panels — small, and shrinking.** `feat/btn-redesign` does not touch `base/Panel` or
-  `MetricsCard` (only `panel-btn` styles and a few feature panels), and no `panel-redesign`
-  branch exists yet. More to the point, the approved redesign _removes_ compare's dependence
-  on panel frames — one continuous table, no card per section — so a panel rework's blast
-  radius here is much smaller than it would have been against the patched version.
-- **Inherited for free:** compare reuses `CompositionBar` and the chip/pill styling, so
-  whatever the panel rework does to those, compare picks up automatically. That is the
-  intent.
-
-Preferred order: let `feat/btn-redesign` land on `main`, rebase this branch onto `main`, then
-run the rebuild steps below. Stacking directly on the unmerged branch is possible (the
-hardpoints redesign did exactly that) but only worth it if buttons stay unmerged for a while.
+Consequence for the rebuild: it runs against the **final** design system, not a moving one.
+The compare toolbar is `Btn` / `BtnGroup` / `ShareBtn` / `ModelFilterGroup`, all already on the
+new API here — which is what let the toolbar conversion (dropping `block`, adding the `gap` the
+new buttons need) be validated rather than guessed.
 
 ### Rebuild steps
 
