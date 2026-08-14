@@ -428,7 +428,7 @@ const cellHeight = (span: number) =>
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 
 .power-panel {
   &__toolbar {

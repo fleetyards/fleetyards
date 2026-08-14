@@ -5,7 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import ModelMetricRows from "@/shared/components/ModelMetricRows/index.vue";
 import { useI18n } from "@/embed/composables/useI18n";
+import { useModelMetricRows } from "@/shared/composables/useModelMetricRows";
 import type { Model } from "@/services/fyApi";
 
 type Props = {
@@ -14,87 +16,26 @@ type Props = {
 
 const props = defineProps<Props>();
 
+// The embed's own translations, not the frontend's: same keys, 16K of `en`
+// against 1.4M of eight locales. The rows themselves come from the shared
+// composable so the two surfaces cannot disagree about which figures a model has.
 const { t, toNumber, toUEC } = useI18n();
 
-const isGroundVehicle = computed(() => props.model.classification === "ground");
-
-const crew = computed(() => {
-  const { min: minCrew, max: maxCrew } = props.model.crew;
-
-  if (minCrew === maxCrew && minCrew) {
-    return toNumber(minCrew, "people");
-  }
-
-  return toNumber(
-    [minCrew, maxCrew].filter((item) => item).join(" - "),
-    "people",
-  );
-});
-
-const speeds = computed(() => {
-  if (isGroundVehicle.value) {
-    return `${t("model.max")}: ${toNumber(props.model.speeds.groundMaxSpeed, "speed")}`;
-  }
-
-  return `${t("model.scm")}: ${toNumber(props.model.speeds.scmSpeed, "speed")}<br>${t("model.max")}: ${toNumber(props.model.speeds.maxSpeed, "speed")}`;
+const { groups } = useModelMetricRows(() => props.model, {
+  t,
+  toNumber,
+  toUEC,
 });
 </script>
 
 <template>
   <div class="embed-model-metrics">
-    <div
-      class="embed-metrics-grid metrics-block top-metrics metrics-padding"
-      data-test="top-metrics"
-    >
-      <div>
-        <template v-if="model.focus">
-          <div class="metrics-label">{{ t("model.focus") }}:</div>
-          <div class="metrics-value">
-            {{ model.focus }}
-          </div>
-        </template>
-        <div class="metrics-label">{{ t("model.speed") }}:</div>
-        <div class="metrics-value" v-html="speeds" />
-      </div>
-      <div v-if="model.crew.min || model.crew.max">
-        <div class="metrics-label">{{ t("model.crew") }}:</div>
-        <div class="metrics-value">
-          {{ crew }}
-        </div>
-      </div>
-    </div>
-
-    <hr class="dark slim-spacer" />
-
-    <div class="embed-metrics-grid metrics-block metrics-padding">
-      <div>
-        <div class="metrics-label">{{ t("model.length") }}:</div>
-        <div class="metrics-value">
-          {{ toNumber(model.metrics.length, "distance") }}
-        </div>
-        <div class="metrics-label">{{ t("model.beam") }}:</div>
-        <div class="metrics-value">
-          {{ toNumber(model.metrics.beam, "distance") }}
-        </div>
-        <div class="metrics-label">{{ t("model.cargo") }}:</div>
-        <div class="metrics-value">
-          {{ toNumber(model.metrics.cargo, "cargo") }}
-        </div>
-      </div>
-      <div>
-        <div class="metrics-label">{{ t("model.height") }}:</div>
-        <div class="metrics-value">
-          {{ toNumber(model.metrics.height, "distance") }}
-        </div>
-        <div class="metrics-label">{{ t("model.mass") }}:</div>
-        <div class="metrics-value">
-          {{ toNumber(model.metrics.mass, "weight") }}
-        </div>
-        <template v-if="model.price">
-          <div class="metrics-label">{{ t("model.price") }}:</div>
-          <span class="metrics-value" v-html="toUEC(model.price)" />
-        </template>
-      </div>
-    </div>
+    <ModelMetricRows :groups="groups" />
   </div>
 </template>
+
+<style scoped>
+.embed-model-metrics {
+  padding: 14px 16px 16px;
+}
+</style>

@@ -78,7 +78,7 @@ const suffix = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 
 /* The tile is the whole body, so the body adds no padding of its own. */
 .stats-panel__body {

@@ -90,8 +90,6 @@ const image = computed(
 </template>
 
 <style lang="scss" scoped>
-@import "@/stylesheets/variables";
-
 // The same band the frontend card uses between photo and metrics, so the two
 // surfaces read as one design rather than two generations of it.
 .embed-model-panel__production-status {

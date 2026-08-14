@@ -160,7 +160,7 @@ const hasData = computed(() => containerCapacities.value.length > 0);
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 
 .cargo-caps {
   display: flex;
