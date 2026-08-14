@@ -32,7 +32,7 @@ import {
   FleetInventoryItemCreateInputUnit,
 } from "@/services/fyApi";
 import { type FilterGroupParams } from "@/shared/components/base/FilterGroup/index.vue";
-import { unitsForCategory } from "@/frontend/composables/useInventoryOptions";
+import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 
 type StockItem = {
   name: string;
@@ -52,6 +52,8 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
+const { categoryOptions, unitOptionsFor, entryTypeOptions } =
+  useInventoryOptions();
 
 const submitting = ref(false);
 const entryType = ref<"deposit" | "withdrawal">(
@@ -100,51 +102,7 @@ const isComponent = computed(
   () => category.value === FleetInventoryItemCreateInputCategory.component,
 );
 
-const entryTypeOptions: FilterOption[] = [
-  {
-    value: "deposit",
-    label: t("labels.logistics.entryTypes.deposit"),
-  },
-  {
-    value: "withdrawal",
-    label: t("labels.logistics.entryTypes.withdrawal"),
-  },
-];
-
-const categoryOptions: FilterOption[] = [
-  {
-    value: "commodity",
-    label: t("labels.logistics.categories.commodity"),
-  },
-  {
-    value: "component",
-    label: t("labels.logistics.categories.component"),
-  },
-  {
-    value: "weapon",
-    label: t("labels.logistics.categories.weapon"),
-  },
-  {
-    value: "equipment",
-    label: t("labels.logistics.categories.equipment"),
-  },
-  {
-    value: "ammunition",
-    label: t("labels.logistics.categories.ammunition"),
-  },
-  {
-    value: "consumable",
-    label: t("labels.logistics.categories.consumable"),
-  },
-  { value: "other", label: t("labels.logistics.categories.other") },
-];
-
-const unitOptions = computed<FilterOption[]>(() =>
-  unitsForCategory(category.value).map((unit) => ({
-    value: unit,
-    label: t(`labels.logistics.units.${unit}`),
-  })),
-);
+const unitOptions = unitOptionsFor(category);
 
 // The category dictates which units make sense, so a category change pulls the
 // unit along instead of leaving an impossible pairing the API would reject.

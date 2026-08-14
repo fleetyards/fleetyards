@@ -51,12 +51,10 @@ const { defineField, handleSubmit } = useForm({
     name: props.inventory?.name ?? "",
     description: props.inventory?.description ?? "",
     visibility: props.inventory?.visibility ?? "members_only",
-    location:
-      (props.inventory as { location?: string } | undefined)?.location ?? "",
+    location: props.inventory?.location ?? "",
     image: undefined as string | undefined,
     managedBy:
-      (props.inventory?.manager as { id?: string } | undefined)?.id ??
-      (undefined as string | undefined),
+      props.inventory?.manager?.id ?? (undefined as string | undefined),
   },
 });
 
@@ -154,7 +152,7 @@ const onSubmit = handleSubmit(async (values) => {
       <FormFileInput
         v-model="image"
         v-bind="imageProps"
-        :file="(inventory as any)?.image"
+        :file="inventory?.image"
         name="image"
         :label="t('labels.logistics.image')"
         :allowed-types="AllowedFileTypes.IMAGE"
