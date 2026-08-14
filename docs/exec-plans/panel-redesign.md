@@ -662,12 +662,17 @@ component, against removing a surface variant from the base primitive.
 `StatsPanel` holds one figure in its own container, so it *is* the headline one
 there and the rail marks it rather than decorating it.
 
-**The host grids are not done, and are the other half.** This decision also
+**The host grids stay as they are — decided in review.** This plan originally
 proposed collapsing each row of four into one `Panel` with a shared
-`__hero--grid`, which is what produces the 1px dividers and one frame per group
-instead of four. The rows are clean and contiguous — `.row` >
-`col-12 col-sm-6 col-lg-3` — so it is mechanical, but it changes page structure
-across six files rather than a component, and can land on its own.
+`__hero--grid`, for 1px dividers and one frame per group. Reviewed against the
+per-stat framing and the per-stat framing won: a tile in its own slim frame reads
+as a discrete figure, which is what a stats page is a list of, where a shared
+hero implies the four are facets of one measurement. It also leaves the six host
+pages untouched.
+
+Consequence to accept: the `__hero` container's 1px dividers never appear here,
+so `StatsPanel` uses the tile primitive without the hero that normally holds it.
+That is the one place the two diverge, and it is deliberate.
 
 ### Prop API: before → after
 
