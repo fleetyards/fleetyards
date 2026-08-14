@@ -66,7 +66,7 @@ Rails.application.configure do
 
     img_src = [
       :self, :data, :blob, FRONTEND_ENDPOINT, api_endpoint, cdn_endpoint, legacy_cdn_endpoint,
-      Rails.configuration.rsi.endpoint, "https://img.youtube.com", "https://img.buymeacoffee.com",
+      Rails.configuration.rsi.endpoint, "https://img.youtube.com",
       "https://validator.swagger.io",
       s3_endpoint, storage_cdn_endpoint,
       "https://*.basemaps.cartocdn.com"
