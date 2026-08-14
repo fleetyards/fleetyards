@@ -318,6 +318,16 @@
   border-radius: 2px;
 }
 
+// Two encodings that answer different questions, so they are deliberately different
+// colours and both stay visible at once:
+//
+//   gold  — *the* best in the row. A superlative: one cell, or the cells tied for it.
+//   green — better than the chosen baseline. A comparative: possibly seven of eight.
+//
+// Painting the comparative gold too would make most of the table gold in baseline mode
+// and cost gold its meaning as the rare headline accent. So the marker carries the
+// superlative and the colour carries the comparison — in baseline mode a cell can be a
+// green figure with a gold ▲, meaning "beats the baseline, and wins the row".
 .compare-table__cell--best {
   .compare-table__value {
     color: $gold;
@@ -326,27 +336,32 @@
   .compare-table__track-fill {
     background: $gold;
   }
-
-  .compare-table__value::after {
-    content: "▲";
-    font-family: "Open Sans", sans-serif;
-    font-size: 8px;
-    align-self: center;
-  }
 }
 
-.compare-table__cell--worst {
-  .compare-table__value {
-    font-weight: 400;
-    color: $gray-light;
-  }
+.compare-table__cell--worst .compare-table__value {
+  font-weight: 400;
+  color: $gray-light;
+}
 
-  .compare-table__value::after {
-    content: "▼";
-    font-family: "Open Sans", sans-serif;
-    font-size: 8px;
-    align-self: center;
-  }
+// The marker rides the figure in either mode. Previously it hung off
+// `__value` alone, so switching to baseline mode silently dropped the row winner.
+.compare-table__cell--best .compare-table__value::after,
+.compare-table__cell--best .compare-table__delta::after {
+  content: " ▲";
+  color: $gold;
+}
+
+.compare-table__cell--worst .compare-table__value::after,
+.compare-table__cell--worst .compare-table__delta::after {
+  content: " ▼";
+  color: $gray-light;
+}
+
+.compare-table__value::after,
+.compare-table__delta::after {
+  font-family: "Open Sans", sans-serif;
+  font-size: 8px;
+  align-self: center;
 }
 
 // ── delta mode ──────────────────────────────────────────────────────────────────
@@ -358,12 +373,14 @@
   text-align: right;
   white-space: nowrap;
 
+  // Softened off the palette rather than hand-picked: these land on most cells in
+  // baseline mode, where full-strength $danger would read as an error state.
   &--better {
-    color: #6ac47a;
+    color: lighten($success, 6%);
   }
 
   &--worse {
-    color: #d3736f;
+    color: mix($danger, $text-color, 60%);
   }
 
   &--even {
