@@ -180,7 +180,7 @@ useMetricsMasonry(metricsGrid);
 <template>
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
-      <div v-if="model.inGame" class="flex justify-center">
+      <div v-if="model.inGame" class="flex justify-center hardpoints__links">
         <BtnGroup>
           <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
           <Btn :href="erkulUrl" class="erkul-link w-full md:w-auto">

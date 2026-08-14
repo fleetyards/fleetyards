@@ -1,3 +1,14 @@
+// BtnGroup ships no margin and controls.scss only restores spacing for controls
+// dropped straight into a grid column, a form or a float - not a flex row. These
+// two rows own theirs, so the switch does not sit flush on the panel below it.
+.hardpoints__toolbar {
+  margin-bottom: 20px;
+}
+
+.hardpoints__links {
+  margin-bottom: 20px;
+}
+
 .hardpoints {
   min-height: 400px;
 
