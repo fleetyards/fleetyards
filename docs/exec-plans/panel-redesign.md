@@ -227,15 +227,34 @@ $panel-bg          = rgba($gray-darker, .9) = rgb(39 43 48 / .9)
 Byte-identical. A `variant="solid"` button sitting on a panel is distinguished
 from its background only by its edge and end-caps. See Q1.
 
-### F11 — Outside-in restyling is small
+### F11 — Outside-in restyling is smaller than a grep suggests
 
-Six files, twelve selectors — a much lighter version of the button's 17
-stylesheets:
+A grep for `.panel*` outside the component finds six files. Reading them, **only
+the embed pair is real**:
 
-- `embed/components/Models/Panel/index.vue` — `.panel-inner`, `.panel-heading`
-- `stylesheets/embed/partials/panel.scss` — the F8 duplicate
-- `frontend/pages/{fleets,hangar}/preview.scss` — `.panel-body`
-- `frontend/components/Fleets/VehiclePanel/index.scss` — `.panel-image`, `.panel-heading`
+| File | Verdict |
+| --- | --- |
+| `embed/components/Models/Panel/index.vue` | real — the embed's own card, `.panel-inner` / `.panel-heading` |
+| `stylesheets/embed/partials/panel.scss` | real — the 259-line F8 duplicate |
+| `frontend/pages/fleets/preview.scss` | **false positive** |
+| `frontend/pages/hangar/preview.scss` | **false positive** |
+| `frontend/components/Fleets/VehiclePanel/index.scss` | **dead file** |
+
+The two preview pages never touch the component. They hand-roll
+`<div class="panel-heading">` and `<div class="panel-body">` *inside* a `Panel`
+and style those, borrowing the class names but getting nothing from
+`PanelHeading`/`PanelBody`, whose styles are scoped. `.panel-title` there is a
+real global in `stylesheets/shared/typography.scss`. Nothing to un-leak.
+
+`VehiclePanel/index.scss` was 81 lines positioning an `.on-sale` badge and a
+`.panel-add-to-hangar-button` inside `.panel-image` / `.panel-heading`. Neither
+class is rendered anywhere — `Models/Panel` calls them `model-panel-on-sale` and
+`model-panel--add-to-hangar-button` — and the file was not imported by anything,
+including the component beside it. Deleted rather than migrated.
+
+So the button redesign's 17 leaked stylesheets have no real counterpart here. The
+one genuine coupling left is the embed's parallel implementation, which is F8's
+problem, not a leak.
 
 ### F12 — Tables get the frame for free, and their interior then out-shouts it
 
@@ -741,10 +760,14 @@ MetricsCard can be folded into it.
 
 ### Phase 4 — Fold in `MetricsCard`
 
-11. Rewrite `MetricsCard` as a `Panel` composition (D1); keep `metricsCard.scss`
-    as content primitives with its scope comment intact.
-12. Verify the 11 metrics-card sites, especially `Hardpoints/Group`'s `--slim`
-    cards in narrow columns and `PowerDistribution`'s interactive tiles.
+11. ~~Rewrite `MetricsCard` as a `Panel` composition.~~ **Done.** The frame is
+    Panel's; `metricsCard.scss` is untouched and the card hands its slot straight
+    through, which `MetricsCard/index.spec.ts` now asserts. The slim head keeps
+    its rule through two new `PanelHeading` options — `compact` and `divider` —
+    rather than a `:deep()` reach into Panel's internals.
+12. **Outstanding.** The 11 metrics-card sites are not yet verified in a browser,
+    `Hardpoints/Group`'s `--slim` cards and `PowerDistribution`'s interactive
+    tiles above all.
 
 ### Phase 4b — The card components
 
@@ -775,9 +798,12 @@ and the ones where F3's cap collapse was worst.
 15. Give the 37 chart/stat sites their height per Q2.
 16. `prettier --write` then `eslint` on touched files.
 
-### Phase 6 — Un-leak the six files
+### Phase 6 — Un-leak the six files — **mostly nothing to do**
 
-17. Fold F11's overrides into variants or scoped exceptions.
+17. ~~Fold F11's overrides into variants or scoped exceptions.~~ **Done.** Per the
+    corrected F11 there was one file to act on and it was dead:
+    `VehiclePanel/index.scss` is deleted. The two preview pages style their own
+    hand-rolled divs and need no change.
 18. Reconcile `stylesheets/embed/partials/panel.scss` against the Phase 0 gate —
     the same reconciliation `btn-redesign` step 15 does for `panel-btn.scss`.
 
