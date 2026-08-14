@@ -160,7 +160,7 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template #footer>
-      <div class="group-modal__actions">
+      <div class="modal-actions">
         <Btn
           :confirm="t('messages.confirm.hangarGroup.destroy')"
           :tone="BtnTonesEnum.DANGER"
@@ -178,13 +178,4 @@ const onSubmit = handleSubmit(async (values) => {
   </Modal>
 </template>
 
-<style lang="scss" scoped>
-/* Btn ships no margins, so the row owns the gap. Was a Bootstrap float, which
-   left the two buttons separated only by inline whitespace. */
-.group-modal__actions {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-}
-</style>
+<style lang="scss" scoped></style>

@@ -102,7 +102,7 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn :loading="submitting" @click="onSubmit" size="lg">
           {{ t("actions.save") }}
         </Btn>

@@ -214,7 +214,7 @@ const onConfirm = async () => {
     </div>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :loading="linking"
           :disabled="!selectedIds.size"

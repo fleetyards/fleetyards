@@ -1,3 +1,15 @@
+// A modal's footer actions. Was Bootstrap's .float-sm-right, which separated two
+// buttons by inline whitespace alone once Btn stopped shipping margins - and left
+// their vertical spacing to controls.scss patching the float container. A flex row
+// owns both, and reads as the same thing as .page-actions and BtnGroup.
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .no-scroll {
   overflow: hidden !important;
 }
