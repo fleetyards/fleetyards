@@ -36,7 +36,10 @@ const props = withDefaults(defineProps<Props>(), {
   bare: false,
 });
 
-const emit = defineEmits(["toggle", "edit"]);
+const emit = defineEmits<{
+  toggle: [];
+  edit: [];
+}>();
 
 const { t } = useI18n();
 

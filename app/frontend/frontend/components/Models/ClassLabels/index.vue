@@ -110,7 +110,7 @@ const classificationState = (classification: string) => {
   </ChipRow>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 /*
  * Local, at 150ms. The global `fade-list` this replaces put `transition: all .5s`
  * on every chip - the 500ms the panel redesign retired - and its enter half never
