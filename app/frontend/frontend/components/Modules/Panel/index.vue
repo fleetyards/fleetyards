@@ -104,9 +104,6 @@ const hasFooter = computed(
 
 <style lang="scss" scoped>
 .module-panel {
-  /* The bg-image contributes no height; see Models/Panel. */
-  min-height: 290px;
-
   .module-panel-body {
     flex: 1;
   }
