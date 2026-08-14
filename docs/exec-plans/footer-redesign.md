@@ -362,11 +362,14 @@ and the revision value itself is rendered as visible monospace text instead of a
 hooks added for the social list and the version line; `data-test="app-footer"` is
 unchanged, so `Footer.spec.ts` still applies.
 
-`Footer.spec.ts` itself is **unrun**: the local e2e harness never boots the SPA,
-so that spec fails on its own branch and on `feat/panel-redesign` too, before any
-change here. Phase 5's screenshot pass across the three apps is likewise
-outstanding — and it matters more for this branch than most, since D1 and D2
-change the footer's appearance on every page of all three.
+`Footer.spec.ts` passes on CI — both e2e shards green on #4366. It could not be
+run locally: the local harness never boots the SPA, so that spec fails on
+`feat/panel-redesign` too, before any change here. Anything e2e on this stack
+needs CI to be believed.
+
+Phase 5's screenshot pass across the three apps is still outstanding, and it
+matters more for this branch than most, since D1 and D2 change the footer's
+appearance on every page of all three.
 
 ## Open questions
 
