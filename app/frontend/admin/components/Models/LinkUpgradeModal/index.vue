@@ -178,11 +178,7 @@ const onConfirm = async () => {
                 :alt="upgrade.name"
               />
               <div>
-                <PanelHeading
-                  :level="HeadingLevelEnum.H3"
-                  title-align="right"
-                  multiline
-                >
+                <PanelHeading :level="HeadingLevelEnum.H3">
                   {{ upgrade.name }}
                 </PanelHeading>
                 <div

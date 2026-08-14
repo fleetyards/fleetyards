@@ -87,11 +87,7 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
             :alt="mod.name"
           />
           <div>
-            <PanelHeading
-              :level="HeadingLevelEnum.H3"
-              title-align="right"
-              multiline
-            >
+            <PanelHeading :level="HeadingLevelEnum.H3">
               {{ mod.name }}
             </PanelHeading>
             <div
