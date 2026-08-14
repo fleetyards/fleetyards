@@ -17,26 +17,9 @@
   }
 
   hr {
-    height: 3px;
+    height: 1px;
     margin: 20px 5%;
-    background-color: $gray;
+    background-color: rgba($gray-light, 0.28);
     border: none;
-    border-radius: 50%;
-
-    &.large-spacer {
-      margin: 60px 5%;
-    }
-
-    &.dark {
-      background-color: $gray-black;
-    }
-
-    &.slim-spacer {
-      margin: 10px 5%;
-    }
-
-    &.space-bottom {
-      margin-bottom: 30px;
-    }
   }
 }

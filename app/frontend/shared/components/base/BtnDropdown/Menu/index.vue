@@ -97,10 +97,10 @@ provide(BTN_CONTAINER, {
  * edge-soft rule the rest of the system divides with, and spans the menu's full
  * width rather than floating inset, matching how a panel heading divides.
  */
+/* The global rule draws the hairline now, so only its page-level margins need
+   answering: 20px 5% insets the line and pushes the groups apart inside a 200px
+   menu. This used to have to undo a 3px pill as well. */
 .btn-menu :deep(hr) {
-  @apply border-edge-soft my-1.5 border-t bg-transparent;
-  height: 0;
-  border-radius: 0;
-  margin-inline: 0;
+  margin: 6px 0;
 }
 </style>
