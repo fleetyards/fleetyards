@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -49,6 +50,7 @@ watch(
   <form @submit.prevent="handleSubmit">
     <Teleport to="#header-left">
       <FormInput
+        :size="InputSizesEnum.MEDIUM"
         v-model="form.searchCont"
         name="search"
         translation-key="filters.users.search"

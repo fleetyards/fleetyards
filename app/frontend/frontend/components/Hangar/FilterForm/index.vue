@@ -22,7 +22,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 import { type HangarQuery } from "@/services/fyApi";
-import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import {
+  InputSizesEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 
 type Props = {
   hideQuicksearch?: boolean;
@@ -95,6 +98,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
   <form @submit.prevent="handleSubmit">
     <Teleport v-if="!hideQuicksearch" to="#header-left">
       <FormInput
+        :size="InputSizesEnum.MEDIUM"
         v-model="form.searchCont"
         name="vehicle-search"
         translation-key="filters.vehicles.name"
