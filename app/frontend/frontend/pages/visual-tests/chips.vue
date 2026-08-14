@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import ChipRow from "@/shared/components/base/Chip/Row/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -116,7 +117,7 @@ const longRow = Array.from({ length: 18 }, (_, index) => ({
           {{ group.name }}
         </Chip>
         <template #actions>
-          <Btn aria-label="Add Group">
+          <Btn :size="BtnSizesEnum.XS" aria-label="Add Group">
             <i class="fa-regular fa-plus" />
           </Btn>
         </template>
