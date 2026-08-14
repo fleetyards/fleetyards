@@ -7,18 +7,12 @@ export default {
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import CompareForm from "@/frontend/components/Compare/Models/Form/index.vue";
-import CompareHeader from "@/frontend/components/Compare/Models/Header/index.vue";
-import CompareView from "@/frontend/components/Compare/Models/View/index.vue";
-import CompareBase from "@/frontend/components/Compare/Models/Base/index.vue";
-import CompareCrew from "@/frontend/components/Compare/Models/Crew/index.vue";
-import CompareSpeed from "@/frontend/components/Compare/Models/Speed/index.vue";
-import CompareCombat from "@/frontend/components/Compare/Models/Combat/index.vue";
-import CompareDefense from "@/frontend/components/Compare/Models/Defense/index.vue";
-import CompareHull from "@/frontend/components/Compare/Models/Hull/index.vue";
-import CompareCargo from "@/frontend/components/Compare/Models/Cargo/index.vue";
-import CompareFuel from "@/frontend/components/Compare/Models/Fuel/index.vue";
-import CompareHardpoints from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
+import CompareTable from "@/frontend/components/Compare/Models/Table/index.vue";
+import { useModelSections } from "@/frontend/components/Compare/sections/model";
+import { useLoadoutSections } from "@/frontend/components/Compare/sections/loadout";
+import type { CompareSection } from "@/frontend/components/Compare/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
@@ -31,81 +25,66 @@ import { useCompareHardpoints } from "@/frontend/composables/useCompareHardpoint
 
 const { t } = useI18n();
 
-const { filters } = useCompareModelFilters();
+const { filter, filters } = useCompareModelFilters();
 
-const items = computed(() => {
-  return filters.value.models || [];
-});
+const items = computed(() => filters.value.models || []);
 
-const params = computed<ModelsParams>(() => {
-  return {
-    q: {
-      slugIn: filters.value.models || ["-1"],
-    },
-  };
-});
+const params = computed<ModelsParams>(() => ({
+  q: { slugIn: filters.value.models || ["-1"] },
+}));
 
 const { data, refetch, ...asyncStatus } = useModelsQuery(params);
 
-const models = computed(() => {
-  return (
-    data.value?.items.filter((model) => items.value.includes(model.slug)) || []
-  );
-});
+const models = computed(
+  () =>
+    data.value?.items.filter((model) => items.value.includes(model.slug)) || [],
+);
 
 const { hardpointsFor, loading: hardpointsLoading } = useCompareHardpoints(
   () => models.value,
 );
 
-// Rows size themselves in CSS; the count only feeds the stack's minimum width, which
-// keeps the section cards' frames spanning the full matrix once it outgrows the pane.
-// Deriving that from `max-content` instead would let the store images' intrinsic width
-// blow every column out to a thousand pixels.
-const gridStyle = computed(() => ({
-  "--compare-count": String(models.value.length),
-}));
-
-const pane = ref<HTMLElement>();
-
-// The matrix scrolls inside its own pane rather than the document: that keeps the page
-// from scrolling sideways (which left the footer and the rest of the chrome cut off at
-// viewport width) and gives both sticky axes a scrollport of their own to anchor to.
-// Its height is measured rather than guessed because the toolbar above it wraps.
-const paneOffset = ref(220);
-
-const PANE_BOTTOM_GAP = 30;
-
-const measurePane = () => {
-  if (!pane.value) {
-    return;
-  }
-
-  paneOffset.value = Math.round(
-    pane.value.getBoundingClientRect().top + window.scrollY + PANE_BOTTOM_GAP,
-  );
-};
-
-const paneStyle = computed(() => ({
-  "--compare-pane-offset": `${paneOffset.value}px`,
-}));
-
-onMounted(() => {
-  measurePane();
-  window.addEventListener("resize", measurePane);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("resize", measurePane);
-});
-
-// The toolbar reflows as ships come and go, which moves the pane's top edge.
-watch(
-  () => models.value.length,
-  async () => {
-    await nextTick();
-    measurePane();
-  },
+const { views, base, crew, flight, cargo, fuel } = useModelSections(
+  () => models.value,
+  hardpointsFor,
 );
+
+const { combat, defense, hull, loadout } = useLoadoutSections(
+  () => models.value,
+  hardpointsFor,
+);
+
+// Combat-forward, then what keeps you alive, then what you carry — the ship page's
+// emphasis. Sections that no compared ship has data for drop out on their own.
+const sections = computed<CompareSection[]>(() =>
+  [
+    views.value,
+    base.value,
+    crew.value,
+    flight.value,
+    combat.value,
+    defense.value,
+    hull.value,
+    cargo.value,
+    fuel.value,
+    loadout.value,
+  ].filter((section): section is CompareSection => !!section),
+);
+
+const differencesOnly = ref(false);
+const deltaMode = ref(false);
+const baseline = ref<string>();
+
+// The baseline is a column, so it cannot outlive the set it belongs to.
+watch(models, () => {
+  if (!baseline.value || !items.value.includes(baseline.value)) {
+    baseline.value = models.value[0]?.slug;
+  }
+});
+
+const remove = (slug: string) => {
+  filter({ models: items.value.filter((entry) => entry !== slug) });
+};
 
 watch(
   () => filters.value.models,
@@ -141,27 +120,33 @@ watch(
               </p>
             </template>
           </Empty>
-          <div v-else ref="pane" class="compare-pane" :style="paneStyle">
-            <div class="compare-matrix-stack" :style="gridStyle">
-              <CompareHeader :models="models" />
-              <CompareView :models="models" />
-              <CompareBase :models="models" />
-              <CompareCrew :models="models" />
-              <CompareSpeed :models="models" />
-              <CompareCombat :models="models" :hardpoints-for="hardpointsFor" />
-              <CompareDefense
-                :models="models"
-                :hardpoints-for="hardpointsFor"
-              />
-              <CompareHull :models="models" />
-              <CompareCargo :models="models" />
-              <CompareFuel :models="models" :hardpoints-for="hardpointsFor" />
-              <CompareHardpoints
-                :models="models"
-                :hardpoints-for="hardpointsFor"
-              />
+
+          <template v-else>
+            <div class="compare-toolbar">
+              <Btn
+                :active="differencesOnly"
+                @click="differencesOnly = !differencesOnly"
+              >
+                {{ t("labels.compare.differencesOnly") }}
+              </Btn>
+              <Btn :active="deltaMode" @click="deltaMode = !deltaMode">
+                {{ t("labels.compare.compareToBaseline") }}
+              </Btn>
             </div>
-          </div>
+
+            <!-- The panel is the frame: border, radius, end-caps and shadow all come
+                 from the redesigned surface, so the table carries none of its own. -->
+            <Panel class="compare-panel">
+              <CompareTable
+                v-model:baseline="baseline"
+                :models="models"
+                :sections="sections"
+                :delta="deltaMode"
+                :differences-only="differencesOnly"
+                @remove="remove"
+              />
+            </Panel>
+          </template>
         </template>
       </AsyncData>
 

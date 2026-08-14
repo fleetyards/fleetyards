@@ -296,6 +296,22 @@
           "x": "Cross Section X",
           "y": "Cross Section Y",
           "z": "Cross Section Z"
+        },
+        "useAsBaseline": "Use as baseline",
+        "baseline": "Baseline",
+        "differencesOnly": "Differences only",
+        "compareToBaseline": "Compare to baseline",
+        "loadoutBySlot": "Loadout by slot",
+        "slots": {
+          "guns": "Main guns",
+          "turrets": "Turrets",
+          "missiles": "Missiles",
+          "shields": "Shield generators",
+          "powerPlants": "Power plants",
+          "coolers": "Coolers",
+          "quantumDrives": "Quantum drives",
+          "thrusters": "Main thrusters",
+          "countermeasures": "Countermeasures"
         }
       },
       "cargoRoutes": "Cargo routes",

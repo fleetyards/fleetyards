@@ -1,32 +1,16 @@
-// The matrix scrolls inside this pane instead of extending the document. Page-level
-// sideways scrolling left the footer and the rest of the chrome cut off at viewport
-// width, and forced the frozen label column to be offset by the fixed nav's width and
-// paint a slab over it. A pane fixes all of that: it respects the container's padding on
-// the right, and both sticky axes anchor to its own scrollport.
-.compare-pane {
-  max-height: calc(100vh - var(--compare-pane-offset, 220px));
-  overflow: auto;
-  // Reaching the pane's end shouldn't hand the gesture on to the page mid-comparison.
-  overscroll-behavior: contain;
+.compare-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+  margin-bottom: 14px;
 }
 
-// Column widths for the whole matrix. 450px per ship and a 300px label column are the
-// old compare page's numbers, kept because they are what a hardpoint item row needs to
-// render without clipping — see compareGrid.scss for why one width has to serve both the
-// numeric rows and the component lists.
-.compare-matrix-stack {
-  --compare-label: 300px;
-  --compare-col-min: 450px;
-
-  // Keeps the section cards' frames spanning the full matrix once the rows outgrow the
-  // pane; without it the cards stop at the pane's edge and the rows overflow past their
-  // own background.
-  min-width: calc(
-    var(--compare-label) + var(--compare-count, 1) * var(--compare-col-min)
-  );
-
-  @media (max-width: $tablet-breakpoint) {
-    --compare-label: 130px;
-    --compare-col-min: 300px;
+// The panel supplies the frame; the table brings only its own scrolling, so the body
+// padding goes and the rows sit flush against the surface's inner edge.
+.compare-panel {
+  :deep(.panel-body) {
+    padding: 0;
+    overflow: hidden;
   }
 }

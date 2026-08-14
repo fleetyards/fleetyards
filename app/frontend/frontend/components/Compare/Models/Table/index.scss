@@ -1,0 +1,498 @@
+// One table owning both scroll axes. Sticky positioning resolves against the nearest
+// scroll container, so the pane is what lets `top: 0` and `left: 0` both work — and it
+// keeps the page from scrolling sideways, which cut the footer off at viewport width.
+//
+// Sticky lives on `th`, which needs `border-collapse: separate` to keep its borders.
+.compare-table {
+  --compare-rail: 240px;
+  // The floor a hardpoint item tile needs — size badge, component, manufacturer and
+  // headline stat — since the loadout rows are the widest thing in the table. It is a
+  // minimum, not a width: auto layout lets a column take more when its content needs it.
+  --compare-col: 260px;
+
+  position: relative;
+  max-height: min(76vh, 900px);
+  overflow: auto;
+  // `none`, not `contain`: contain only stops the scroll chaining to the page, while
+  // none also suppresses the elastic overscroll, so an inner pane on macOS stops
+  // rubber-banding against its own edges.
+  overscroll-behavior: none;
+  // The scroll container is the clipping box, and the sticky header and rail paint to
+  // its edges — square corners would then spill past the panel's rounded border.
+  border-radius: var(--radius-surface-inner, 14px);
+
+  @media (max-width: $tablet-breakpoint) {
+    --compare-rail: 150px;
+    --compare-col: 220px;
+  }
+
+  // Auto layout, deliberately not `fixed`: a fixed-layout table ignores cell
+  // `min-width`, so nothing stops a column being squeezed below what a hardpoint tile
+  // needs. With auto layout the minimum is a real floor and wide content takes the room
+  // it needs instead of being crushed.
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  thead th:not(.compare-table__rail),
+  tbody td {
+    min-width: var(--compare-col);
+    // ...but one long value must not run away with the column either.
+    max-width: calc(var(--compare-col) * 1.6);
+  }
+
+  th.compare-table__rail {
+    width: var(--compare-rail);
+    min-width: var(--compare-rail);
+  }
+}
+
+// ── pinned header ───────────────────────────────────────────────────────────────
+
+.compare-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  padding: 0;
+  background: $gray-darker;
+  border-bottom: 1px solid rgba($gray-light, 0.28);
+  vertical-align: bottom;
+}
+
+.compare-table__corner {
+  left: 0;
+  z-index: 4;
+}
+
+.compare-table__count {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: $gray;
+}
+
+.compare-table__ship {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 14px 11px;
+  // Right-aligned to match every figure in the column beneath it: `th` centres by
+  // default, which left short names and their manufacturer disagreeing.
+  text-align: right;
+}
+
+.compare-table__art {
+  position: relative;
+  height: 150px;
+  border-radius: $border-radius-base;
+  overflow: hidden;
+  transition:
+    height 0.22s ease,
+    opacity 0.22s ease;
+}
+
+.compare-table--pinned .compare-table__art {
+  height: 0;
+  opacity: 0;
+}
+
+.compare-table__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  :deep(.lazy-image__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.compare-table__actions {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.compare-table thead th:hover .compare-table__actions,
+.compare-table__actions:focus-within {
+  opacity: 1;
+}
+
+.compare-table__action {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 11px;
+  background: rgba(#000, 0.6);
+  color: $text-color;
+  border: 1px solid rgba($gray-light, 0.4);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    color: lighten($text-color, 15%);
+    border-color: $primary;
+  }
+
+  &--on {
+    color: $gold;
+    border-color: rgba($gold, 0.6);
+  }
+}
+
+.compare-table__name {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 4px 7px;
+  line-height: 1.25;
+
+  a {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 14px;
+    color: lighten($text-color, 15%);
+
+    &:hover {
+      color: $gold;
+    }
+  }
+}
+
+.compare-table__tag {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: $gold;
+}
+
+.compare-table__mfr {
+  font-size: 10.5px;
+  color: $gray-light;
+}
+
+// ── frozen label rail ───────────────────────────────────────────────────────────
+
+.compare-table th.compare-table__rail {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  padding: 8px 14px;
+  background: $gray-darker;
+  border-right: 1px solid rgba($gray-light, 0.28);
+  box-shadow: 8px 0 12px -10px rgba(#000, 0.9);
+  font-family: "Open Sans", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: right;
+  color: $gray-light;
+}
+
+// ── section bands: the metrics-card voice without a card frame, which is the box the
+//    frozen rail kept sliding out from under ─────────────────────────────────────
+
+.compare-table__band th.compare-table__rail {
+  padding-top: 22px;
+  padding-bottom: 8px;
+}
+
+.compare-table__band td {
+  padding: 22px 0 8px;
+  border-bottom: 1px solid rgba($gray-light, 0.28);
+}
+
+.compare-table__band-rule {
+  height: 1px;
+  background: linear-gradient(90deg, rgba($gray-light, 0.28), transparent 70%);
+}
+
+.compare-table__band-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 9px;
+  width: 100%;
+  padding: 0;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: lighten($text-color, 15%);
+  background: none;
+  border: 0;
+  cursor: pointer;
+
+  i {
+    font-size: 9px;
+    color: $gray;
+    transition: transform 0.2s ease;
+  }
+
+  &[aria-expanded="false"] i {
+    transform: rotate(-90deg);
+  }
+}
+
+.compare-table__dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $gold;
+  box-shadow: 0 0 8px 1px rgba($gold, 0.5);
+}
+
+// ── data cells ──────────────────────────────────────────────────────────────────
+
+.compare-table tbody td {
+  padding: 8px 14px;
+  border-left: 1px solid rgba($gray-light, 0.14);
+  border-bottom: 1px solid rgba($gray-light, 0.14);
+  vertical-align: middle;
+}
+
+.compare-table tbody th.compare-table__rail {
+  border-bottom: 1px solid rgba($gray-light, 0.14);
+}
+
+.compare-table__row:hover td {
+  background: rgba(#fff, 0.022);
+}
+
+.compare-table__value {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 4px;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: lighten($text-color, 15%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compare-table__unit {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 600;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: $gray;
+}
+
+.compare-table__empty {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 12px;
+  text-align: right;
+  color: $gray;
+}
+
+// Deliberately quiet: the metrics language's rail, not the table's 4px hover bar with
+// its triple glow, which the panel redesign flags as the loudest thing left on a quiet
+// panel.
+.compare-table__track {
+  height: 2px;
+  margin-top: 5px;
+  background: rgba($gray-light, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.compare-table__track-fill {
+  height: 100%;
+  background: $primary;
+  border-radius: 2px;
+}
+
+.compare-table__cell--best {
+  .compare-table__value {
+    color: $gold;
+  }
+
+  .compare-table__track-fill {
+    background: $gold;
+  }
+
+  .compare-table__value::after {
+    content: "▲";
+    font-family: "Open Sans", sans-serif;
+    font-size: 8px;
+    align-self: center;
+  }
+}
+
+.compare-table__cell--worst {
+  .compare-table__value {
+    font-weight: 400;
+    color: $gray-light;
+  }
+
+  .compare-table__value::after {
+    content: "▼";
+    font-family: "Open Sans", sans-serif;
+    font-size: 8px;
+    align-self: center;
+  }
+}
+
+// ── delta mode ──────────────────────────────────────────────────────────────────
+
+.compare-table__delta {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+
+  &--better {
+    color: #6ac47a;
+  }
+
+  &--worse {
+    color: #d3736f;
+  }
+
+  &--even {
+    color: $gray;
+  }
+
+  &--base {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: $gold;
+  }
+}
+
+// ── chips ───────────────────────────────────────────────────────────────────────
+
+.compare-table__chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 2px 7px;
+  background: $gray-black;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 4px;
+  white-space: nowrap;
+
+  &__label {
+    font-family: "Open Sans", sans-serif;
+    font-size: 10px;
+    color: $gray;
+  }
+
+  &__value {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: lighten($text-color, 15%);
+  }
+
+  &[data-type="energy"] .chip__label {
+    color: $primary;
+  }
+
+  &[data-type="distortion"] .chip__label {
+    color: $cyan;
+  }
+
+  &[data-type="thermal"] .chip__label {
+    color: $warning;
+  }
+
+  &[data-negative="true"] .chip__value {
+    color: $danger;
+  }
+}
+
+// ── composition bar + its shared legend ─────────────────────────────────────────
+
+.compare-table__comp {
+  display: flex;
+  height: 9px;
+  background: $gray-black;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 999px;
+  overflow: hidden;
+
+  span {
+    height: 100%;
+  }
+}
+
+.compare-table__legend {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.compare-table__legend-title {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $gray-light;
+  margin-bottom: 3px;
+}
+
+.compare-table__legend-entry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: $gray-light;
+}
+
+.compare-table__swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+// ── scaled silhouettes ──────────────────────────────────────────────────────────
+
+.compare-table__view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+}
+// Component lists have wildly different heights per ship, so they read as columns of
+// stacked cards only when they start at the same line.
+.compare-table__row--top > td,
+.compare-table__row--top > th {
+  vertical-align: top;
+}
+
+// ── loadout ─────────────────────────────────────────────────────────────────────
+// The cell renders the ship page's own `HardpointItems`, so there is nothing to style
+// here beyond letting it use the full cell width.
+.compare-table td :deep(.hardpoint-items) {
+  min-width: 0;
+}
