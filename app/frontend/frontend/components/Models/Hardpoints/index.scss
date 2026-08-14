@@ -1,28 +1,32 @@
-// BtnGroup ships no margin and controls.scss only restores spacing for controls
-// dropped straight into a grid column, a form or a float - not a flex row. These
-// two rows own theirs, so the switch does not sit flush on the panel below it.
-.hardpoints__toolbar {
-  margin-bottom: 20px;
-}
-
-.hardpoints__links {
-  margin-bottom: 20px;
-}
-
 .hardpoints {
   min-height: 400px;
 
-  &__toolbar {
-    gap: 12px;
+  // The loadout links and the source switch share one line - they used to be two
+  // stacked rows, which only read as two rows while the metrics grid separated
+  // them from the density switch further down. A ship-matrix view has no
+  // metrics, so all three collapsed into one stack of controls.
+  //
+  // BtnGroup ships no margin of its own and controls.scss only restores spacing
+  // for controls dropped into a grid column, a form or a float - not a flex row
+  // - so the row carries its own bottom spacing.
+  &__controls {
+    display: flex;
+    align-items: center;
     flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
   }
 
-  // Density toggle sits with the hardpoint groups it controls, aligned with the
-  // source toggle above it.
+  &__source {
+    // Right-aligned whether or not the links are there to push it.
+    margin-inline-start: auto;
+  }
+
+  // Density stays with the hardpoint groups it controls rather than joining the
+  // row above, where it would be nowhere near what it changes.
   &__viewbar {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
     margin: 4px 0 16px;
   }
 }
