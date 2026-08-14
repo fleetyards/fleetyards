@@ -122,7 +122,7 @@ const { formatCents } = useCurrencyFormat();
 
   <Teleport to="#header-right">
     <Btn
-        :size="BtnSizesEnum.MD"
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-funding-goal-create' }"
       :aria-label="t('actions.create')"
       mobile-icon-only

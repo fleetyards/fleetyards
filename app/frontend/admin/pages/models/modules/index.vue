@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -251,6 +252,7 @@ const crumbs = [
               <i class="fa-duotone fa-eye-slash" />
             </Btn>
             <Btn
+              :tone="BtnTonesEnum.DANGER"
               v-tooltip="t('actions.deleteSelected')"
               :disabled="updating"
               @click="destroySelected"

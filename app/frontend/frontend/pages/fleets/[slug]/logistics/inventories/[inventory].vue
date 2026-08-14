@@ -326,16 +326,13 @@ const crumbs = computed(() => [
           {{ inventory.description }}
         </p>
         <Teleport v-if="!mobile && canAddItems" to="#header-right">
-          <Btn
-        :size="BtnSizesEnum.MD" @click="openDepositModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openDepositModal">
             {{ t("actions.fleets.logistics.deposit") }}
           </Btn>
-          <Btn
-        :size="BtnSizesEnum.MD" @click="openWithdrawModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openWithdrawModal">
             {{ t("actions.fleets.logistics.withdraw") }}
           </Btn>
-          <Btn
-        :size="BtnSizesEnum.MD" @click="openCsvImportModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.fleets.logistics.importCsv") }}
           </Btn>

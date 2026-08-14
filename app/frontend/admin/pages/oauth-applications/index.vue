@@ -80,7 +80,7 @@ const { t, l } = useI18n();
 
   <Teleport to="#header-right">
     <Btn
-        :size="BtnSizesEnum.MD"
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-oauth-application-create' }"
       :aria-label="t('actions.create')"
       mobile-icon-only
