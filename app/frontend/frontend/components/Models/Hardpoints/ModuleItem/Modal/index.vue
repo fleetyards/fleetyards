@@ -106,7 +106,7 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
       </div>
     </div>
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn v-if="selectedModuleSlug" @click="clearModule">
           {{ t("labels.hardpoint.clearModule") }}
         </Btn>

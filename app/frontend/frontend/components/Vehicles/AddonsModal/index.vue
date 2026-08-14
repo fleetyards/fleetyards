@@ -171,7 +171,7 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template v-if="editable" #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn :loading="mutation.isPending.value" @click="onSubmit">
           {{ t("actions.save") }}
         </Btn>

@@ -162,7 +162,7 @@ const useName = (newName: string) => {
     </form>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :loading="submitting"
           data-test="vehicle-save"
