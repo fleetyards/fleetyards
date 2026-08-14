@@ -14,8 +14,8 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
-import { generateOtpBackupCodes, type StandardError } from "@/services/fyApi";
-import { type ErrorType } from "@/services/axiosClient";
+import { generateOtpBackupCodes } from "@/services/fyApi";
+import { standardErrorFrom } from "@/shared/utils/ApiErrors";
 
 const { t } = useI18n();
 
@@ -50,20 +50,15 @@ const generateBackupCodes = async () => {
       backupCodes.value = data.codes;
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<StandardError>;
+      const { code } = standardErrorFrom(error);
 
-      console.error(error);
-
-      if (response.response?.data.code === "requires_access_confirmation") {
+      if (code === "requires_access_confirmation") {
         comlink.emit("access-confirmation-required");
       } else {
         displayAlert({
           text: t("messages.twoFactor.backupCodes.failure"),
         });
       }
-      displayAlert({
-        text: t("messages.twoFactor.backupCodes.failure"),
-      });
     })
     .finally(() => {
       submitting.value = false;

@@ -16,11 +16,8 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useForm } from "vee-validate";
-import {
-  useDisableOtpSetup as useDisableOtpSetupMutation,
-  type ValidationError,
-} from "@/services/fyApi";
-import { type ErrorType } from "@/services/axiosClient";
+import { useDisableOtpSetup as useDisableOtpSetupMutation } from "@/services/fyApi";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
@@ -64,9 +61,9 @@ const onSubmit = handleSubmit(async (values) => {
         .catch(() => {});
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const { code } = validationErrorFrom(error);
 
-      if (response.code === "requires_access_confirmation") {
+      if (code === "requires_access_confirmation") {
         comlink.emit("access-confirmation-required");
       } else {
         displayAlert({

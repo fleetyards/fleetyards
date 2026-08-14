@@ -21,9 +21,8 @@ import { useForm } from "vee-validate";
 import {
   useStartOtpSetup as useStartOtpSetupMutation,
   useEnableOtpSetup as useEnableOtpSetupMutation,
-  type ValidationError,
 } from "@/services/fyApi";
-import { type ErrorType } from "@/services/axiosClient";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 const { t } = useI18n();
 
@@ -89,9 +88,9 @@ const onSubmit = handleSubmit(async (values) => {
       });
     })
     .catch((error) => {
-      const response = error as unknown as ErrorType<ValidationError>;
+      const { code } = validationErrorFrom(error);
 
-      if (response.code === "requires_access_confirmation") {
+      if (code === "requires_access_confirmation") {
         comlink.emit("access-confirmation-required");
       } else {
         displayAlert({

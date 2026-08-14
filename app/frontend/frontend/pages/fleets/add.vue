@@ -11,12 +11,11 @@ import { BtnSizesEnum, BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { type FleetCreateInput, type ValidationError } from "@/services/fyApi";
+import { type FleetCreateInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
-import { transformErrors } from "@/frontend/utils/transformErrors";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useCreateFleet as useCreateFleetMutation } from "@/services/fyApi";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
-import { AxiosError } from "axios";
 
 const { t } = useI18n();
 
@@ -70,12 +69,9 @@ const submit = handleSubmit(async (values) => {
         .catch(() => {});
     })
     .catch((error) => {
-      const errorResponse = (error as AxiosError<ValidationError>).response
-        ?.data;
+      const { formErrors } = validationErrorFrom(error);
 
-      if (errorResponse?.errors) {
-        setErrors(transformErrors(errorResponse.errors));
-      }
+      setErrors(formErrors);
 
       displayAlert({
         text: t("messages.fleet.create.failure"),

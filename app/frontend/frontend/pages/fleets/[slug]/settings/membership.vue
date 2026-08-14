@@ -18,6 +18,7 @@ import {
   FleetMembershipShipsFilterEnum,
 } from "@/services/fyApi";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useUpdateFleetMembership } from "@/services/fyApi/services/fleet-membership/fleet-membership";
 import { useHangarGroups } from "@/services/fyApi/services/hangar-groups/hangar-groups";
 
@@ -133,20 +134,12 @@ const onSubmit = handleSubmit(async (values) => {
 
     // TODO: Emit fleet-update event when event system is implemented
   } catch (error) {
-    const errorResponse = error as {
-      response?: {
-        data?: { errors?: Record<string, string[]>; message?: string };
-      };
-    };
+    const { message, formErrors } = validationErrorFrom(error);
 
-    if (errorResponse.response?.data?.errors) {
-      setErrors(errorResponse.response.data.errors);
-    }
+    setErrors(formErrors);
 
     displayAlert({
-      text:
-        errorResponse.response?.data?.message ||
-        t("messages.fleet.members.update.failure"),
+      text: message || t("messages.fleet.members.update.failure"),
     });
   } finally {
     submitting.value = false;
