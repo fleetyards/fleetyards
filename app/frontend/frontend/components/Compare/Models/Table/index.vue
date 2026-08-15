@@ -11,6 +11,10 @@ import FleetchartItemImage from "@/frontend/components/Fleetchart/List/Item/Imag
 import HardpointItems from "@/frontend/components/Models/Hardpoints/Items/index.vue";
 import { markExtremes } from "@/frontend/components/Compare/highlights";
 import {
+  deltasAgainst,
+  type CompareDelta,
+} from "@/frontend/components/Compare/delta";
+import {
   rowIsUniform,
   type CompareSection,
   type CompareTableRow,
@@ -105,37 +109,27 @@ const sharesFor = (row: ValueRow) => {
   );
 };
 
-const deltaFor = (row: ValueRow, index: number) => {
-  const base = row.cells[baselineIndex.value]?.raw;
-  const value = row.cells[index]?.raw;
+const deltasFor = (row: ValueRow) =>
+  deltasAgainst(
+    row.cells.map((cell) => cell.raw),
+    baselineIndex.value,
+    row.direction,
+  );
 
-  if (
-    baselineIndex.value < 0 ||
-    typeof base !== "number" ||
-    typeof value !== "number" ||
-    base === 0
-  ) {
-    return undefined;
-  }
+// Baseline mode speaks only in percentages, so it applies to the rows a baseline can
+// anchor. A textual row — manufacturer, classification, production status — has nothing
+// to diff, and keeps showing its values rather than collapsing to a column of dashes.
+const anchored = (row: ValueRow) => deltasFor(row).some((entry) => entry);
 
-  const percent = ((value - base) / Math.abs(base)) * 100;
-  const better = row.direction === "lower" ? percent < 0 : percent > 0;
-
-  return {
-    label: `${percent > 0 ? "+" : ""}${toNumber(
-      Math.abs(percent) < 10
-        ? Math.round(percent * 10) / 10
-        : Math.round(percent),
-      "",
-    )}%`,
-    tone:
-      Math.abs(percent) < 0.5 || !row.direction
-        ? "even"
-        : better
-          ? "better"
-          : "worse",
-  };
-};
+const deltaLabel = (delta?: CompareDelta) =>
+  delta
+    ? `${delta.percent > 0 ? "+" : ""}${toNumber(
+        Math.abs(delta.percent) < 10
+          ? Math.round(delta.percent * 10) / 10
+          : Math.round(delta.percent),
+        "",
+      )}%`
+    : "";
 </script>
 
 <template>
@@ -241,20 +235,19 @@ const deltaFor = (row: ValueRow, index: number) => {
                       marksFor(row)[index] === 'worst',
                   }"
                 >
-                  <template v-if="delta && index === baselineIndex">
+                  <template v-if="delta && anchored(row)">
                     <div
+                      v-if="index === baselineIndex"
                       class="compare-table__delta compare-table__delta--base"
                     >
                       {{ t("labels.compare.baseline") }}
                     </div>
-                  </template>
-                  <template v-else-if="delta">
                     <div
-                      v-if="deltaFor(row, index)"
+                      v-else-if="deltasFor(row)[index]"
                       class="compare-table__delta"
-                      :class="`compare-table__delta--${deltaFor(row, index)?.tone}`"
+                      :class="`compare-table__delta--${deltasFor(row)[index]?.tone}`"
                     >
-                      {{ deltaFor(row, index)?.label }}
+                      {{ deltaLabel(deltasFor(row)[index]) }}
                     </div>
                     <div v-else class="compare-table__empty">—</div>
                   </template>
