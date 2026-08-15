@@ -9,6 +9,14 @@ updates:
     labels:
       - dependencies
       - ruby
+    ignore:
+      # ActionCable's redis pubsub adapter declares `>= 4, < 6`, so redis 6
+      # raises Gem::LoadError on boot. Mirrors the `gem "redis", "< 6"` pin in
+      # the Gemfile — lift both once Rails ships the redis-client-based
+      # adapter (8.2+).
+      - dependency-name: redis
+        versions:
+          - ">= 6"
 
   - package-ecosystem: npm
     directory: /
