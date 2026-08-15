@@ -137,6 +137,12 @@
       "category": "subpart"
     }
   ],
+  "speeds": {
+    "max": 32.0,
+    "reverse": 19.0,
+    "acceleration": 10.0,
+    "decceleration": 10.0
+  },
   "metrics": {
     "x": 3.9,
     "y": 6.0,
