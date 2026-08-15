@@ -20,7 +20,10 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
+import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/index.vue";
+import { type PickedItem } from "@/frontend/components/Logistics/types";
 import {
+  type Commodity,
   type Component as GameComponent,
   type FilterOption,
   type HangarInventory,
@@ -57,7 +60,9 @@ const entryType = ref<"deposit" | "withdrawal">(
 const selectedStockItem = ref<string | undefined>(undefined);
 const selectedExistingItem = ref<string | undefined>(undefined);
 const stockItems = ref<StockItem[]>([]);
-const pickedComponent = ref<GameComponent | undefined>(undefined);
+// One slot for whichever catalogue the category exposes, so the submit and the
+// name-edit rule stay single rather than growing a branch per item type.
+const pickedItem = ref<PickedItem | undefined>(undefined);
 
 const isDeposit = computed(() => entryType.value === "deposit");
 
@@ -95,6 +100,10 @@ const [notes, notesProps] = defineField("notes");
 
 const isComponent = computed(
   () => category.value === HangarInventoryItemCreateInputCategory.component,
+);
+
+const isCommodity = computed(
+  () => category.value === HangarInventoryItemCreateInputCategory.commodity,
 );
 
 const unitOptions = unitOptionsFor(category);
@@ -143,28 +152,50 @@ const applyPickedItem = (val: string | undefined) => {
   setFieldValue("category", itemCategory as any);
   setFieldValue("unit", itemUnit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
-  pickedComponent.value = undefined;
+  pickedItem.value = undefined;
 };
 
 watch(selectedExistingItem, applyPickedItem);
 watch(selectedStockItem, applyPickedItem);
 
 const applyPickedComponent = (component: GameComponent) => {
-  pickedComponent.value = component;
+  pickedItem.value = {
+    type: "Component",
+    id: component.id,
+    name: component.name,
+  };
 
   setFieldValue("name", component.name);
 };
 
-// A hand-edited name no longer describes the picked component, so the
-// reference goes with it rather than mislabeling a real component.
+const applyPickedCommodity = (commodity: Commodity) => {
+  pickedItem.value = {
+    type: "Commodity",
+    id: commodity.id,
+    name: commodity.name,
+  };
+
+  setFieldValue("name", commodity.name);
+};
+
+// A hand-edited name no longer describes the picked item, so the reference goes
+// with it rather than mislabeling a real component or commodity. Typing a name
+// that isn't in the catalogue at all stays allowed; it just isn't a reference.
 watch(name, (val) => {
-  if (pickedComponent.value && val !== pickedComponent.value.name) {
-    pickedComponent.value = undefined;
+  if (pickedItem.value && val !== pickedItem.value.name) {
+    pickedItem.value = undefined;
   }
 });
 
-watch(isComponent, (val) => {
-  if (!val) pickedComponent.value = undefined;
+// Switching away from the category that offered the picker leaves the reference
+// pointing at the wrong kind of thing.
+watch([isComponent, isCommodity], ([component, commodity]) => {
+  if (!pickedItem.value) return;
+
+  const stillOffered =
+    pickedItem.value.type === "Component" ? component : commodity;
+
+  if (!stillOffered) pickedItem.value = undefined;
 });
 
 watch(entryType, (val) => {
@@ -206,8 +237,8 @@ const onSubmit = handleSubmit(async (values) => {
         quality: values.quality != null ? Number(values.quality) : undefined,
         image: values.image || undefined,
         notes: values.notes || undefined,
-        itemType: pickedComponent.value ? "Component" : undefined,
-        itemId: pickedComponent.value?.id,
+        itemType: pickedItem.value?.type,
+        itemId: pickedItem.value?.id,
       },
     })
     .then(() => {
@@ -288,6 +319,7 @@ const onSubmit = handleSubmit(async (values) => {
           :searchable="false"
         />
         <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
+        <CommodityPicker v-if="isCommodity" @select="applyPickedCommodity" />
       </template>
 
       <div class="row">
