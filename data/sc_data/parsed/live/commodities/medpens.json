@@ -4,7 +4,7 @@
   "ref": "41224404-8b20-45ee-8719-4a60e2b026c8",
   "name": "MedPens",
   "commodity_type": "medical_supply",
-  "commodity_type_name": null,
+  "commodity_type_name": "Medical Supply",
   "description": "The MedPen from CureLife is a complete multi-function individual first-aid system designed and constructed for the rigors of field use.",
   "icon": null
 }

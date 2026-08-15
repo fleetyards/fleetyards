@@ -4,7 +4,7 @@
   "ref": "20d1f023-d753-4d1e-938a-51e1770ba0b9",
   "name": "Hephaestanite",
   "commodity_type": "mineral",
-  "commodity_type_name": null,
+  "commodity_type_name": "Mineral",
   "description": "Found often near volcanic outcroppings, this mineral is commonly used for a thermal insulator.",
   "icon": null
 }

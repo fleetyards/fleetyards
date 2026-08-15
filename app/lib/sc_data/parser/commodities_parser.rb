@@ -194,7 +194,10 @@ module ScData
       end
 
       private def localize(key)
-        value = commodity_translations[key]
+        # The index is downcased, so the lookup has to be too. Commodity keys
+        # arrive downcased already, but the type keys are camel case
+        # (@items_commodities_type_consumerGoods) and silently missed.
+        value = commodity_translations[key.downcase]
 
         return if value.blank? || value == "@LOC_EMPTY"
 

@@ -4,7 +4,7 @@
   "ref": "5dc139aa-39b1-4c50-8c1e-c17d012c7b92",
   "name": "Medical Supplies",
   "commodity_type": "medical_supply",
-  "commodity_type_name": null,
+  "commodity_type_name": "Medical Supply",
   "description": "A variety of items produced primarily to treat injury or illness.",
   "icon": null
 }

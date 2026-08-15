@@ -4,7 +4,7 @@
   "ref": "ef684d49-1b24-4a5b-9ff6-0c7e61228553",
   "name": "Quantainium",
   "commodity_type": "mineral",
-  "commodity_type_name": null,
+  "commodity_type_name": "Mineral",
   "description": "A highly unstable mineral used in the production of quantum fuel.",
   "icon": "ui/textures/vector/general/items/inv_icon_aphorite.svg"
 }

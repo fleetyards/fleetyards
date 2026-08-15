@@ -4,7 +4,7 @@
   "ref": "59a0ff6e-6c48-48c5-8e75-00bbebd3fbf2",
   "name": "Recycled Material Composite",
   "commodity_type": "processed_goods",
-  "commodity_type_name": null,
+  "commodity_type_name": "Processed Goods",
   "description": "Recycled Material Composite, commonly referred to as RMC, is the end result of low-tier salvaging where a myriad of alloys and polymers are mixed together during the collection process.",
   "icon": "ui/textures/vector/general/items/inv_icon_hpmc.svg"
 }

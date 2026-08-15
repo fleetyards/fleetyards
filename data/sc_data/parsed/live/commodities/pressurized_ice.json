@@ -4,7 +4,7 @@
   "ref": null,
   "name": "Pressurized Ice",
   "commodity_type": "mineral",
-  "commodity_type_name": null,
+  "commodity_type_name": "Mineral",
   "description": "Ice that has been purified and compressed to transparent by restricting natural expansion. This allows for more efficient transport in bulk.",
   "icon": null
 }

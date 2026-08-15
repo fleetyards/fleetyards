@@ -4,7 +4,7 @@
   "ref": "f5246e60-4877-4c0a-8bad-e6b9b26e8887",
   "name": "Dolivine",
   "commodity_type": "mineral",
-  "commodity_type_name": null,
+  "commodity_type_name": "Mineral",
   "description": "A dull green gemstone that is used decoratively but also can be used for industrial purposes thanks to its resistance to weathering and high density.",
   "icon": "ui/textures/vector/general/items/inv_icon_dolivine.svg"
 }

@@ -4,7 +4,7 @@
   "ref": "e39c7a65-a67e-4086-a71c-7635bdff7759",
   "name": "HexaPolyMesh Coating",
   "commodity_type": "processed_goods",
-  "commodity_type_name": null,
+  "commodity_type_name": "Processed Goods",
   "description": "This liquid hexagonal lattice bonds readily to surfaces when electrically charged, solidifying almost instantaneously to create an incredibly strong and durable polymer mesh that maintains integrity at a range of temperatures and pressures.",
   "icon": "ui/textures/vector/general/items/inv_icon_hpmc.svg"
 }

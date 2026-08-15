@@ -4,7 +4,7 @@
   "ref": "9f6d7b98-31ad-447b-8061-702f39a22ac2",
   "name": "Quartz",
   "commodity_type": "mineral",
-  "commodity_type_name": null,
+  "commodity_type_name": "Mineral",
   "description": "A chiral crystal composed of silicon and oxygen that can be found in a wide variety of forms and colors.",
   "icon": "ui/textures/vector/general/items/inv_icon_quartz.svg"
 }

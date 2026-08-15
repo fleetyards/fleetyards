@@ -4,7 +4,7 @@
   "ref": "40453bc6-e2e6-4643-ae75-064f3fe4f036",
   "name": "OxyPens",
   "commodity_type": "medical_supply",
-  "commodity_type_name": null,
+  "commodity_type_name": "Medical Supply",
   "description": "The OxyPen is an easy-to-carry disposable first-aid system designed by CureLife to refill pressure suit oxygen reserves in emergency situations.",
   "icon": null
 }

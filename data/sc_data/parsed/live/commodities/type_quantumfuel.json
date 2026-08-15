@@ -4,7 +4,7 @@
   "ref": "d86099d1-e57e-4e73-b966-534c9410f04e",
   "name": "Quantum Fuel",
   "commodity_type": "processed_goods",
-  "commodity_type_name": null,
+  "commodity_type_name": "Processed Goods",
   "description": "Fuel used by quantum drives to propel ships at high speeds or, if equipped with a jump module, through jump tunnels to other systems.",
   "icon": "ui/textures/vector/general/items/inv_icon_quantumfuel.svg"
 }

@@ -4,7 +4,7 @@
   "ref": "6cff1dcd-b2f7-4e4f-ba48-ffa884184b37",
   "name": "Zeta-Prolanide",
   "commodity_type": "consumer_goods",
-  "commodity_type_name": null,
+  "commodity_type_name": "Consumer Goods",
   "description": "This chemical is an industrial reactant that has found widespread use neutralizing irradiated materials. Because of how volatile it is, it must be kept in an electrically charged state or else a rapid exothermic reaction may occur before desired.",
   "icon": null
 }

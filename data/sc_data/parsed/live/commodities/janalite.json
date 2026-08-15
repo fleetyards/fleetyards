@@ -4,7 +4,7 @@
   "ref": null,
   "name": "Janalite",
   "commodity_type": "mineral",
-  "commodity_type_name": null,
+  "commodity_type_name": "Mineral",
   "description": "This rare mineral is valued as an industrial anti-matter precursor. While more stable than other precursors like Feynmaline, it's tougher structure and energy resistance makes it much more difficult to utilize as well as collect.",
   "icon": null
 }

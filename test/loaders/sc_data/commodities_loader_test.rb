@@ -22,6 +22,16 @@ module ScData
         assert_equal slugs.uniq.size, slugs.size
       end
 
+      # The localization index is downcased while the game's type keys are camel
+      # case, so a lookup that skips the downcase silently drops the label for
+      # every multi-word type and leaves the single-word ones looking fine.
+      test "every parsed commodity carries the label for its type" do
+        parsed = @loader.load_items("commodities")
+
+        assert_empty parsed.select { |commodity| commodity[:commodity_type_name].blank? }
+          .map { |commodity| commodity[:sc_key] }
+      end
+
       test "#all assigns a type to every commodity" do
         @loader.all
 
