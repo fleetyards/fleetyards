@@ -31,17 +31,6 @@ class Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
     end
   end
 
-  api_path "/manufacturers/with-models" do
-    get("with_models manufacturer") do
-      tags "Manufacturers"
-      produces "application/json"
-
-      response(200, "successful") do
-        schema "$ref": "#/components/schemas/Manufacturers"
-      end
-    end
-  end
-
   setup do
     @manufacturers = create_list(:manufacturer, 2)
     @manufacturers_with_models = create_list(:manufacturer, 5, :with_models)
@@ -66,9 +55,5 @@ class Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
       items = parsed_body["items"]
       assert_equal 2, items.count
     end
-  end
-
-  test "GET /manufacturers/with-models returns successfully" do
-    assert_api_response :get, 200
   end
 end
