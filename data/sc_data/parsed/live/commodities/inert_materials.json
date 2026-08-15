@@ -1,0 +1,10 @@
+{
+  "key": "inert_materials",
+  "sc_key": "items_commodities_inert_materials",
+  "ref": "39e6305c-8d6a-4a1f-a0b0-70eaf2c1e43a",
+  "name": "Inert Materials",
+  "commodity_type": "mineral",
+  "commodity_type_name": null,
+  "description": "Non-valuable materials collected during the mining process.",
+  "icon": "ui/textures/vector/general/items/inv_icon_inertmaterials.svg"
+}

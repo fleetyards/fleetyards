@@ -1,0 +1,10 @@
+{
+  "key": "steel",
+  "sc_key": "items_commodities_steel",
+  "ref": "08e30ea3-0b36-4945-a57e-91bf3608f1b4",
+  "name": "Steel",
+  "commodity_type": "alloy",
+  "commodity_type_name": "Alloy",
+  "description": "An alloy of iron and carbon, this ancient material is still in uses thanks to its affordable price and high tensile strength.",
+  "icon": null
+}

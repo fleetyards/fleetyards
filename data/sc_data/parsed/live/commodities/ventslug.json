@@ -1,0 +1,10 @@
+{
+  "key": "ventslug",
+  "sc_key": "items_commodities_ventslug",
+  "ref": null,
+  "name": "Vent Slug",
+  "commodity_type": "food",
+  "commodity_type_name": "Food",
+  "description": "NDR: 19\nHEI: 05\nEffects: Toxic, Cognitive Impairing\n\nThese slugs live in moist environments and eat mold that grows there. They can frequently be found inside and near life support vents where condensation can accumulate and are often brought aboard stations to help keep systems clean. Can be consumed, but they often can be mildly toxic to Humans owing to their diet.",
+  "icon": null
+}

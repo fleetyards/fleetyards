@@ -1,0 +1,10 @@
+{
+  "key": "constructionmaterialschunks",
+  "sc_key": "items_commodities_constructionmaterialschunks",
+  "ref": null,
+  "name": "Construction Salvage",
+  "commodity_type": "processed_goods",
+  "commodity_type_name": null,
+  "description": null,
+  "icon": null
+}

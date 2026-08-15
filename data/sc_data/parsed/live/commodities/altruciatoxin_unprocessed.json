@@ -1,0 +1,10 @@
+{
+  "key": "altruciatoxin_unprocessed",
+  "sc_key": "items_commodities_altruciatoxin_unprocessed",
+  "ref": "599a5fca-1d2f-4661-bd97-1fbb17fbc6ac",
+  "name": "Revenant Tree Pollen",
+  "commodity_type": "vice",
+  "commodity_type_name": "Vice",
+  "description": "The pollen of Revenant Tree (altrucia lacus).",
+  "icon": null
+}

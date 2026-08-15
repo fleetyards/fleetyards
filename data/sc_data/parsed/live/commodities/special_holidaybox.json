@@ -1,0 +1,10 @@
+{
+  "key": "special_holidaybox",
+  "sc_key": "items_commodities_special_holidaybox",
+  "ref": "de5b17b7-a9f8-4495-bd74-8cb1785c95d8",
+  "name": "Luminalia Gift",
+  "commodity_type": "consumer_goods",
+  "commodity_type_name": null,
+  "description": "A small, wrapped package meant to get you in the Luminalia spirit. Banu merchants celebrating the holiday used to hide small gifts aboard their ship to encourage revelers to explore all their wares. As the holiday grew in popularity within the UEE, Human merchants modified this tradition by hiding empty gift-wrapped packages around a space station or landing zone that could be exchanged for credits if returned unopened. The increased foot traffic into their stores spurned holiday sales and became a tradition in its own right. \n\nStow this gift for sentimental value, or sell it at a commodities terminal and spend the credits on a holiday gift for yourself.",
+  "icon": "ui/textures/vector/general/items/inv_icon_holiday_box.svg"
+}

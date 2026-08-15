@@ -1,0 +1,10 @@
+{
+  "key": "laranite_raw",
+  "sc_key": "items_commodities_laranite_raw",
+  "ref": "8bbbdeac-788c-43fc-9a84-0b3a0ed2e714",
+  "name": "Laranite (Raw)",
+  "commodity_type": "mineral",
+  "commodity_type_name": null,
+  "description": "A somewhat radioactive, crystalline gemstone. Black with streaks of dark red, it can only be used as jewelry if shielded.",
+  "icon": "ui/textures/vector/general/items/inv_icon_laranite.svg"
+}

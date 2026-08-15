@@ -1,0 +1,10 @@
+{
+  "key": "bexalite_raw",
+  "sc_key": "items_commodities_bexalite_raw",
+  "ref": "05544778-ca64-44fb-85fd-fdd6db81d543",
+  "name": "Bexalite (Raw)",
+  "commodity_type": "mineral",
+  "commodity_type_name": null,
+  "description": "This mineral harvested from worlds with no natural magnetic core, has found widespread use in electrical systems.",
+  "icon": "ui/textures/vector/general/items/inv_icon_bexalite.svg"
+}

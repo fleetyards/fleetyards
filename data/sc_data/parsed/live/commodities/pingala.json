@@ -1,0 +1,10 @@
+{
+  "key": "pingala",
+  "sc_key": "items_commodities_pingala",
+  "ref": "9b262b7a-e251-44cb-bd62-4cb2fb4733d9",
+  "name": "Pingala Seeds",
+  "commodity_type": "natural",
+  "commodity_type_name": "Natural Materials",
+  "description": "Every aspect of the pingala follows the golden ratio resulting a visually arresting plant. This include its seeds which are highly sought after by plant collectors. Especially since attempts to cultivate the pingala in greenhouse environments has proven extremely difficult.",
+  "icon": "ui/textures/vector/general/items/inv_icon_agriculturalsupplies.svg"
+}

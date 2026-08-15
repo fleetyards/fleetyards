@@ -1,0 +1,10 @@
+{
+  "key": "astatine",
+  "sc_key": "items_commodities_astatine",
+  "ref": "89dd252f-cb81-48fc-ad8a-3576a6c348cc",
+  "name": "Astatine",
+  "commodity_type": "gas",
+  "commodity_type_name": "Gas",
+  "description": "A dangerously radioactive, highly unstable halogen. Some of its isotopes have half-lives of one second or less.",
+  "icon": null
+}

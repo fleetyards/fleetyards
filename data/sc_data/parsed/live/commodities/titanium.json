@@ -1,0 +1,10 @@
+{
+  "key": "titanium",
+  "sc_key": "items_commodities_titanium",
+  "ref": "893b2031-a1a0-4f6a-9940-e909f8cf4a05",
+  "name": "Titanium",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "This silver-colored chemical element is excellent at producing strong, lightweight alloys.",
+  "icon": "ui/textures/vector/general/items/inv_icon_titanium.svg"
+}

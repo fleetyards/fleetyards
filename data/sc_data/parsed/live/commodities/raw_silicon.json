@@ -1,0 +1,10 @@
+{
+  "key": "raw_silicon",
+  "sc_key": "items_commodities_raw_silicon",
+  "ref": null,
+  "name": "Raw Silicon",
+  "commodity_type": "nonmetals",
+  "commodity_type_name": "Nonmetals",
+  "description": "A strong and brittle element with good thermal conductivity. Crystalizes in a diamond form.",
+  "icon": null
+}

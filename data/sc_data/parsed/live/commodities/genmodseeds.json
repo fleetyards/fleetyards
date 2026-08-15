@@ -1,0 +1,10 @@
+{
+  "key": "genmodseeds",
+  "sc_key": "items_commodities_genmodseeds",
+  "ref": null,
+  "name": "Genmod Seeds",
+  "commodity_type": "food",
+  "commodity_type_name": "Food",
+  "description": null,
+  "icon": null
+}

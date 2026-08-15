@@ -1,0 +1,10 @@
+{
+  "key": "nitrogen",
+  "sc_key": "items_commodities_nitrogen",
+  "ref": "f00b7cd0-5f10-494c-9fef-e49a6585520d",
+  "name": "Nitrogen",
+  "commodity_type": "gas",
+  "commodity_type_name": "Gas",
+  "description": "A low-density, diatomic gas with no color or odor in its natural state. A necessary element in human respiration.",
+  "icon": null
+}

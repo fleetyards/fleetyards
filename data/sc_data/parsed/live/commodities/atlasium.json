@@ -1,0 +1,10 @@
+{
+  "key": "atlasium",
+  "sc_key": "items_commodities_atlasium",
+  "ref": "af5dcf22-7a28-4b1e-88f0-4309d34be11a",
+  "name": "Atlasium",
+  "commodity_type": "alloy",
+  "commodity_type_name": "Alloy",
+  "description": "This very strong metal alloy is often one of the few materials salvageable from severe wreck sites.",
+  "icon": "ui/textures/vector/general/items/inv_icon_atlasium.svg"
+}

@@ -1,0 +1,10 @@
+{
+  "key": "taranite_raw",
+  "sc_key": "items_commodities_taranite_raw",
+  "ref": "522803b2-6cb5-4a2a-9d17-6d80b5578cc2",
+  "name": "Taranite (Raw)",
+  "commodity_type": "mineral",
+  "commodity_type_name": null,
+  "description": "Extremely conductive, this mineral was first discovered when a researcher noticed a breed of electrosensitive hermit crab using pieces of it to form its shell.",
+  "icon": "ui/textures/vector/general/items/inv_icon_taranite.svg"
+}

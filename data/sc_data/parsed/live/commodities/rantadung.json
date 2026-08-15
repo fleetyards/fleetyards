@@ -1,0 +1,10 @@
+{
+  "key": "rantadung",
+  "sc_key": "items_commodities_rantadung",
+  "ref": "86c1fde0-1e2b-40d9-a3c7-1d39ef742c68",
+  "name": "Ranta Dung",
+  "commodity_type": "agricultural_supply",
+  "commodity_type_name": null,
+  "description": "A dry cube-shaped dung that comes from a large isopod-like crustacean known as a Ranta. It has recently been discovered that the dung contains a unique bacterial biome that helps the Ranta process and digest minerals and some researches are hopeful will lead to industrial or medical innovations.",
+  "icon": "ui/textures/vector/general/items/inv_icon_rantadung.svg"
+}

@@ -1,0 +1,10 @@
+{
+  "key": "mercury",
+  "sc_key": "items_commodities_mercury",
+  "ref": "8ec29949-159d-4980-b36b-c6f9b8215333",
+  "name": "Mercury",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "Mercury description.",
+  "icon": null
+}

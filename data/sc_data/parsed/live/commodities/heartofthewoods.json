@@ -1,0 +1,10 @@
+{
+  "key": "heartofthewoods",
+  "sc_key": "items_commodities_heartofthewoods",
+  "ref": "b4f39fc2-6d8f-4d71-82a1-33be63dbc035",
+  "name": "Heart of the Woods",
+  "commodity_type": "natural",
+  "commodity_type_name": "Natural Materials",
+  "description": "NDR: 31\nEffects: Toxic\n\nThis fungus produces fleshy deep-red caps that grow in a pattern resembling a internal structure of a heart. Found in cold climates, it typically grows on trees and decaying logs. Not yet successfully cultivated commercially, this deep flavored mushroom is prized by epicureans across the 'verse and can fetch a high price in the right markets. It does contain a mild toxin that is destroyed when cooked, so consuming raw should be avoided.",
+  "icon": "ui/textures/vector/general/items/inv_icon_heartofthewoods.svg"
+}

@@ -1,0 +1,10 @@
+{
+  "key": "beryl",
+  "sc_key": "items_commodities_beryl",
+  "ref": "57e2094c-bc2d-4479-9af6-8918059b604e",
+  "name": "Beryl",
+  "commodity_type": "mineral",
+  "commodity_type_name": null,
+  "description": "A mineral that creates natural hexagonal crystals. Colorless in its pure form, its impure forms include the gems emerald and aquamarine.",
+  "icon": "ui/textures/vector/general/items/inv_icon_beryl.svg"
+}
