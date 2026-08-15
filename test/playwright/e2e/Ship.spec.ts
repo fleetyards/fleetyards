@@ -25,7 +25,10 @@ test.describe("Ship", () => {
 
     await expect(page).toHaveURL(/\/ships\/aegs-ironclad/);
 
-    await expect(page.locator("h1")).toContainText("Ironclad");
+    // Scoped to the ship's own headline: the hardpoints section renders its empty state
+    // as a second `h1` once it resolves, so a bare `h1` locator only passes while that
+    // section is still loading.
+    await expect(page.getByTestId("model-headline")).toContainText("Ironclad");
 
     await dropdown.click("model", "compare");
 

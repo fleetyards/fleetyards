@@ -1,10 +1,10 @@
+// Just the ship picker now — the share and calculator links are the page's key actions
+// and live top-right in `Compare/Models/Actions`.
 .compare-form {
-  // Column of full-width controls. They used to be separated by the buttons'
-  // own margin-bottom, so without a gap they sat flush against each other and
-  // the end-caps overlapped the next button's edge.
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  height: 242px;
-  max-width: 300px;
+  flex: 1 1 240px;
+  max-width: 320px;
+
+  :deep(.filter-group) {
+    margin-bottom: 0;
+  }
 }

@@ -6,18 +6,17 @@ export default {
 
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
-import CompareRow from "@/frontend/components/Compare/Models/Row/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
 import CompareForm from "@/frontend/components/Compare/Models/Form/index.vue";
-import CompareHeaderImage from "@/frontend/components/Compare/Models/HeaderImage/index.vue";
-import CompareHeaderTitle from "@/frontend/components/Compare/Models/HeaderTitle/index.vue";
-import CompareView from "@/frontend/components/Compare/Models/View/index.vue";
-import CompareBase from "@/frontend/components/Compare/Models/Base/index.vue";
-import CompareCrew from "@/frontend/components/Compare/Models/Crew/index.vue";
-import CompareSpeed from "@/frontend/components/Compare/Models/Speed/index.vue";
-import CompareCargo from "@/frontend/components/Compare/Models/Cargo/index.vue";
-import CompareHardpoints from "@/frontend/components/Compare/Models/Hardpoints/index.vue";
+import CompareActions from "@/frontend/components/Compare/Models/Actions/index.vue";
+import CompareTable from "@/frontend/components/Compare/Models/Table/index.vue";
+import { useModelSections } from "@/frontend/components/Compare/sections/model";
+import { useLoadoutSections } from "@/frontend/components/Compare/sections/loadout";
+import type { CompareSection } from "@/frontend/components/Compare/types";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useNavStore } from "@/shared/stores/nav";
 import Empty from "@/shared/components/Empty/index.vue";
 import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import {
@@ -25,32 +24,70 @@ import {
   useModels as useModelsQuery,
 } from "@/services/fyApi";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
+import { useCompareHardpoints } from "@/frontend/composables/useCompareHardpoints";
 
 const { t } = useI18n();
 
-const navStore = useNavStore();
+const { filter, filters } = useCompareModelFilters();
 
-const { filters } = useCompareModelFilters();
+const items = computed(() => filters.value.models || []);
 
-const items = computed(() => {
-  return filters.value.models || [];
-});
-
-const params = computed<ModelsParams>(() => {
-  return {
-    q: {
-      slugIn: filters.value.models || ["-1"],
-    },
-  };
-});
+const params = computed<ModelsParams>(() => ({
+  q: { slugIn: filters.value.models || ["-1"] },
+}));
 
 const { data, refetch, ...asyncStatus } = useModelsQuery(params);
 
-const models = computed(() => {
-  return (
-    data.value?.items.filter((model) => items.value.includes(model.slug)) || []
-  );
+const models = computed(
+  () =>
+    data.value?.items.filter((model) => items.value.includes(model.slug)) || [],
+);
+
+const { hardpointsFor, loading: hardpointsLoading } = useCompareHardpoints(
+  () => models.value,
+);
+
+const { views, base, crew, flight, cargo, fuel } = useModelSections(
+  () => models.value,
+  hardpointsFor,
+);
+
+const { combat, defense, hull, loadout } = useLoadoutSections(
+  () => models.value,
+  hardpointsFor,
+);
+
+// Combat-forward, then what keeps you alive, then what you carry — the ship page's
+// emphasis. Sections that no compared ship has data for drop out on their own.
+const sections = computed<CompareSection[]>(() =>
+  [
+    views.value,
+    base.value,
+    crew.value,
+    flight.value,
+    combat.value,
+    defense.value,
+    hull.value,
+    cargo.value,
+    fuel.value,
+    loadout.value,
+  ].filter((section): section is CompareSection => !!section),
+);
+
+const differencesOnly = ref(false);
+const deltaMode = ref(false);
+const baseline = ref<string>();
+
+// The baseline is a column, so it cannot outlive the set it belongs to.
+watch(models, () => {
+  if (!baseline.value || !items.value.includes(baseline.value)) {
+    baseline.value = models.value[0]?.slug;
+  }
 });
+
+const remove = (slug: string) => {
+  filter({ models: items.value.filter((entry) => entry !== slug) });
+};
 
 watch(
   () => filters.value.models,
@@ -66,48 +103,94 @@ watch(
 <template>
   <Heading hidden>{{ t("headlines.compare.ships") }}</Heading>
 
-  <div class="compare-models row">
+  <div class="row compare-models">
     <div class="col-12">
-      <CompareRow
-        :models="models"
-        row-key="image"
-        :slim="navStore.slim"
-        headline
-      >
-        <template #label>
-          <CompareForm :models="models" />
-        </template>
-        <template #default="{ model }">
-          <CompareHeaderImage :model="model" />
-        </template>
-      </CompareRow>
+      <div class="compare-header">
+        <CompareForm />
+        <CompareActions :models="models" />
+      </div>
+
       <AsyncData :async-status="asyncStatus">
         <template #resolved>
-          <div v-if="!models.length" class="row compare-row">
-            <div class="col-12">
-              <Empty :variant="EmptyVariantsEnum.BOX" hide-actions>
-                <template #title>
-                  {{ t("headlines.compare.ships") }}
+          <Empty
+            v-if="!models.length"
+            :variant="EmptyVariantsEnum.BOX"
+            hide-actions
+          >
+            <template #title>
+              {{ t("headlines.compare.ships") }}
+            </template>
+            <template #info>
+              <p class="text-muted">
+                {{ t("texts.compare.ships.info") }}
+              </p>
+            </template>
+          </Empty>
+
+          <template v-else>
+            <div class="compare-toolbar">
+              <div class="compare-toolbar__modes">
+                <Btn
+                  :active="differencesOnly"
+                  :size="BtnSizesEnum.SM"
+                  @click="differencesOnly = !differencesOnly"
+                >
+                  {{ t("labels.compare.differencesOnly") }}
+                </Btn>
+                <Btn
+                  :active="deltaMode"
+                  :size="BtnSizesEnum.SM"
+                  @click="deltaMode = !deltaMode"
+                >
+                  {{ t("labels.compare.compareToBaseline") }}
+                </Btn>
+              </div>
+
+              <!-- Only the keys in play: the bar and the row winner in normal mode, the
+                   comparison hues once a baseline is chosen. -->
+              <dl class="compare-legend">
+                <template v-if="deltaMode">
+                  <dt class="compare-legend__key compare-legend__key--better">
+                    +%
+                  </dt>
+                  <dd>{{ t("labels.compare.legend.better") }}</dd>
+                  <dt class="compare-legend__key compare-legend__key--worse">
+                    −%
+                  </dt>
+                  <dd>{{ t("labels.compare.legend.worse") }}</dd>
                 </template>
-                <template #info>
-                  <p class="text-muted">
-                    {{ t("texts.compare.ships.info") }}
-                  </p>
+                <template v-else>
+                  <dt class="compare-legend__key compare-legend__key--bar">
+                    <span />
+                  </dt>
+                  <dd>{{ t("labels.compare.legend.share") }}</dd>
                 </template>
-              </Empty>
+                <dt class="compare-legend__key compare-legend__key--best">▲</dt>
+                <dd>{{ t("labels.compare.legend.best") }}</dd>
+                <dt class="compare-legend__key compare-legend__key--worst">
+                  ▼
+                </dt>
+                <dd>{{ t("labels.compare.legend.worst") }}</dd>
+              </dl>
             </div>
-          </div>
-          <div v-else class="compare-wrapper">
-            <CompareHeaderTitle :models="models" :slim="navStore.slim" />
-            <CompareView :models="models" :slim="navStore.slim" />
-            <CompareBase :models="models" :slim="navStore.slim" />
-            <CompareCrew :models="models" :slim="navStore.slim" />
-            <CompareSpeed :models="models" :slim="navStore.slim" />
-            <CompareCargo :models="models" :slim="navStore.slim" />
-            <CompareHardpoints :models="models" :slim="navStore.slim" />
-          </div>
+
+            <!-- The panel is the frame: border, radius, end-caps and shadow all come
+                 from the redesigned surface, so the table carries none of its own. -->
+            <Panel class="compare-panel">
+              <CompareTable
+                v-model:baseline="baseline"
+                :models="models"
+                :sections="sections"
+                :delta="deltaMode"
+                :differences-only="differencesOnly"
+                @remove="remove"
+              />
+            </Panel>
+          </template>
         </template>
       </AsyncData>
+
+      <Loader :loading="hardpointsLoading" fixed />
     </div>
   </div>
 </template>

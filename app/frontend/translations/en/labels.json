@@ -281,7 +281,45 @@
         "addModel": {
           "nullablePrompt": "Add a Ship"
         },
-        "enough": "Don't you think 8 Ships are enough? ;)"
+        "enough": "Don't you think 8 Ships are enough? ;)",
+        "toggleSection": "Toggle %{section}",
+        "shipCount": {
+          "one": "%{count} Ship",
+          "other": "%{count} Ships"
+        },
+        "containersOfSize": "%{size} SCU Containers",
+        "shieldGenerators": "Shield Generators",
+        "armorHp": "Armor HP",
+        "fuelAndQuantum": "Fuel & Quantum",
+        "weaponPoolSize": "Weapon Power Pool",
+        "crossSection": {
+          "x": "Cross Section X",
+          "y": "Cross Section Y",
+          "z": "Cross Section Z"
+        },
+        "useAsBaseline": "Use as baseline",
+        "baseline": "Baseline",
+        "differencesOnly": "Differences only",
+        "compareToBaseline": "Compare to baseline",
+        "loadoutBySlot": "Loadout by slot",
+        "slots": {
+          "guns": "Main guns",
+          "turrets": "Turrets",
+          "missiles": "Missiles",
+          "shields": "Shield generators",
+          "powerPlants": "Power plants",
+          "coolers": "Coolers",
+          "quantumDrives": "Quantum drives",
+          "thrusters": "Main thrusters",
+          "countermeasures": "Countermeasures"
+        },
+        "legend": {
+          "best": "best in row",
+          "worst": "worst",
+          "share": "share of the row's best",
+          "better": "beats the baseline",
+          "worse": "behind it"
+        }
       },
       "cargoRoutes": "Cargo routes",
       "uecPerUnit": "aUEC / Unit",

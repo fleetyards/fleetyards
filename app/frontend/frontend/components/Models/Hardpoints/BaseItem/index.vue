@@ -92,7 +92,18 @@ const detailStats = useHardpointStats(
   () => effectiveCount.value,
 );
 const primaryStat = computed(() => detailStats.value.find((s) => s.primary));
-const inlineStats = computed(() => detailStats.value.filter((s) => !s.primary));
+
+// A consumer that repeats this row across many columns — the compare table — can cap the
+// strip so a cell shows the key metrics instead of the component's whole stat set. The
+// gold headline is never capped; it is the key figure. Unset means "show everything",
+// which is what the ship page wants.
+const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
+
+const inlineStats = computed(() => {
+  const stats = detailStats.value.filter((s) => !s.primary);
+
+  return typeof statLimit === "number" ? stats.slice(0, statLimit) : stats;
+});
 
 // Cosmetic geometry (turret shells, weapon shrouds, wingtip covers) sits on
 // child ports as nameless `Misc`/`AttachedPart` items that stay uncategorised —

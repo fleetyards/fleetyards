@@ -16,6 +16,7 @@ import FilterGroup, {
   type FilterGroupParams,
   type ValueType,
 } from "@/shared/components/base/FilterGroup/index.vue";
+import { FilterGroupSizesEnum } from "@/shared/components/base/FilterGroup/types";
 import { modelOptions as fetchModelOptions } from "@/services/fyApi";
 
 type Props = {
@@ -23,12 +24,14 @@ type Props = {
   modelValue?: ValueType<ModelOption>;
   multiple?: boolean;
   noLabel?: boolean;
+  size?: `${FilterGroupSizesEnum}`;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   multiple: false,
   noLabel: true,
+  size: undefined,
 });
 
 const { t } = useI18n();
@@ -120,5 +123,6 @@ defineExpose({
     :searchable="true"
     :multiple="multiple"
     :no-label="noLabel"
+    :size="size"
   />
 </template>
