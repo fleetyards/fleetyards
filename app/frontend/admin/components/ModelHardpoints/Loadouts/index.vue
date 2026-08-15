@@ -17,7 +17,6 @@ import {
 } from "@/services/fyAdminApi";
 import type { ModelHardpointLoadoutInput } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   hardpoint: ModelHardpoint;
@@ -116,7 +115,6 @@ const onSaveCreate = async () => {
         {{ t("labels.admin.modelHardpoint.loadouts") }}
       </h4>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :disabled="editableList?.creating"
         @click="editableList?.startCreate()"
       >

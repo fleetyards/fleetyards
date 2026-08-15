@@ -29,7 +29,7 @@ const { t } = useI18n();
       <Text>{{ t("texts.accessDenied") }}</Text>
     </template>
     <template #footer>
-      <Btn :to="{ name: 'home' }" :exact="true">
+      <Btn :to="{ name: 'home' }">
         <i class="fa fa-chevron-left" />
         {{ t("actions.backToHome").toUpperCase() }}
       </Btn>

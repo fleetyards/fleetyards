@@ -9,7 +9,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import type { Model, MediaFile } from "@/services/fyApi";
 
 type Props = {
@@ -208,18 +208,10 @@ onMounted(() => {
 <template>
   <div v-if="hasImages" class="fleetchart-views-wrapper">
     <BtnGroup v-if="hasExtendedState" class="fleetchart-views-toggle">
-      <Btn
-        :active="!extended"
-        :size="BtnSizesEnum.SMALL"
-        @click="setExtended(false)"
-      >
+      <Btn :active="!extended" @click="setExtended(false)">
         {{ t("labels.model.state.retracted") }}
       </Btn>
-      <Btn
-        :active="extended"
-        :size="BtnSizesEnum.SMALL"
-        @click="setExtended(true)"
-      >
+      <Btn :active="extended" @click="setExtended(true)">
         {{ t("labels.model.state.extended") }}
       </Btn>
     </BtnGroup>

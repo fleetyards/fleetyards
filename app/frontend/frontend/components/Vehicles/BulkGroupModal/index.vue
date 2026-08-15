@@ -108,10 +108,9 @@ const save = async () => {
       <div class="float-sm-right">
         <Btn
           :loading="submitting"
-          :size="BtnSizesEnum.LARGE"
           data-test="vehicle-save"
-          :inline="true"
           @click="save"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.save") }}
         </Btn>

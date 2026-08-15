@@ -154,10 +154,9 @@ const useName = (newName: string) => {
       <div class="float-sm-right">
         <Btn
           :loading="submitting"
-          size="large"
           data-test="vehicle-save"
-          :inline="true"
           @click="onSubmit"
+          size="lg"
         >
           {{ t("actions.save") }}
         </Btn>

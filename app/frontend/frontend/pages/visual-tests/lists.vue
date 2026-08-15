@@ -12,7 +12,6 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import ListGroup from "@/shared/components/ListGroup/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { type FilterOption } from "@/services/fyApi";
@@ -243,11 +242,7 @@ const toggleFilteredListEmpty = () => {
           <span>{{ item.name }}</span>
         </template>
         <template #actions="{ item }">
-          <Btn
-            :size="BtnSizesEnum.SMALL"
-            inline
-            @click="displaySuccess({ text: `Picked ${item.name}` })"
-          >
+          <Btn @click="displaySuccess({ text: `Picked ${item.name}` })">
             <i class="fa-duotone fa-arrow-right" />
           </Btn>
         </template>
@@ -268,7 +263,6 @@ const toggleFilteredListEmpty = () => {
   <div class="flex items-center justify-between">
     <div>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :disabled="editableList?.creating"
         data-test="start-create"
         @click="editableList?.startCreate()"
@@ -276,11 +270,7 @@ const toggleFilteredListEmpty = () => {
         <i class="fa-duotone fa-plus" />
         Add
       </Btn>
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        data-test="reset-docks"
-        @click="resetDocks"
-      >
+      <Btn data-test="reset-docks" @click="resetDocks">
         <i class="fa-duotone fa-rotate-left" />
         Reset
       </Btn>
@@ -300,7 +290,7 @@ const toggleFilteredListEmpty = () => {
     @destroy="onDestroy"
   >
     <template #selected-actions="{ selected }">
-      <Btn :size="BtnSizesEnum.SMALL" @click="bulkCopy(selected)">
+      <Btn @click="bulkCopy(selected)">
         <i class="fa-duotone fa-copy" />
         Copy
       </Btn>
@@ -354,7 +344,6 @@ const toggleFilteredListEmpty = () => {
 
     <template #actions="{ item, mobile }">
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :class="expandedId === item.id ? 'text-primary' : ''"
         data-test="toggle-expanded"
         @click="toggleExpanded(item.id)"
@@ -390,11 +379,7 @@ const toggleFilteredListEmpty = () => {
       <span>{{ item.name }}</span>
     </template>
     <template #actions="{ item }">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        inline
-        @click="displaySuccess({ text: `Pinned ${item.name}` })"
-      >
+      <Btn @click="displaySuccess({ text: `Pinned ${item.name}` })">
         <i class="fa-duotone fa-thumbtack" />
       </Btn>
     </template>
@@ -422,7 +407,6 @@ const toggleFilteredListEmpty = () => {
   <div class="row">
     <div class="col-12">
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :active="filteredListLoading"
         data-test="toggle-filtered-list-loading"
         @click="toggleFilteredListLoading"
@@ -430,7 +414,6 @@ const toggleFilteredListEmpty = () => {
         Loading
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :active="filteredListRefetching"
         data-test="toggle-filtered-list-refetching"
         @click="toggleFilteredListRefetching"
@@ -438,7 +421,6 @@ const toggleFilteredListEmpty = () => {
         Refetching
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :active="!filteredListRecords.length"
         data-test="toggle-filtered-list-empty"
         @click="toggleFilteredListEmpty"
@@ -446,7 +428,6 @@ const toggleFilteredListEmpty = () => {
         Empty
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :active="filteredListError"
         data-test="toggle-filtered-list-error"
         @click="toggleFilteredListError"
@@ -463,7 +444,7 @@ const toggleFilteredListEmpty = () => {
     :is-filter-selected="!!filteredListSize"
   >
     <template #actions-left>
-      <Btn :size="BtnSizesEnum.SMALL">
+      <Btn>
         <i class="fa-duotone fa-plus" />
       </Btn>
     </template>

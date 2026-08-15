@@ -1,0 +1,27 @@
+// Btn ships no margins of its own - spacing belongs to whatever lays the
+// buttons out. Flex containers (page-actions, BtnGroup, the header and toolbar
+// slots) use `gap`, but a control dropped straight into a Bootstrap grid column,
+// a form or a float sits in normal flow with nothing separating it from the
+// content beneath. Those cases relied on the old component's margin-bottom, so
+// the spacing is restored here, once, on the containers rather than on the
+// component - which is what let 112 call sites drop the `inline` prop whose only
+// job was to cancel that same margin.
+//
+// Not reset on :last-child: the following content is usually the next grid row,
+// outside this container, and the old button margined itself unconditionally.
+//
+// Direct children only - a button nested deeper is inside some other layout,
+// which owns its own spacing.
+$control-flow-gap: 20px;
+
+[class*="col-"],
+form,
+.float-sm-right,
+.float-right,
+.text-center {
+  > .btn,
+  > .btn-group,
+  > .btn-dropdown {
+    margin-bottom: $control-flow-gap;
+  }
+}

@@ -9,10 +9,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   type ModelExtended,
   type ModelPaint,
@@ -179,7 +176,6 @@ const bulkCopy = (selectedIds: string[]) => {
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.paints") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="editableList?.creating"
       @click="editableList?.startCreate()"
     >
@@ -202,7 +198,7 @@ const bulkCopy = (selectedIds: string[]) => {
     @destroy="onDestroy"
   >
     <template #selected-actions="{ selected }">
-      <Btn :size="BtnSizesEnum.SMALL" @click="bulkCopy(selected)">
+      <Btn @click="bulkCopy(selected)">
         <i class="fa-duotone fa-copy" />
         {{ t("actions.copy") }}
       </Btn>
@@ -221,9 +217,8 @@ const bulkCopy = (selectedIds: string[]) => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.modelPaint.hidden')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'hidden')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-eye"
@@ -233,9 +228,8 @@ const bulkCopy = (selectedIds: string[]) => {
       </Btn>
       <Btn
         v-tooltip="t('labels.modelPaint.active')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         @click="toggleField(item, 'active')"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-circle-check"
@@ -243,11 +237,7 @@ const bulkCopy = (selectedIds: string[]) => {
         />
         <span v-if="mobile">{{ t("labels.modelPaint.active") }}</span>
       </Btn>
-      <Btn
-        v-tooltip="!mobile && t('actions.copy')"
-        :size="BtnSizesEnum.SMALL"
-        @click="copyPaint(item)"
-      >
+      <Btn v-tooltip="!mobile && t('actions.copy')" @click="copyPaint(item)">
         <i class="fa-duotone fa-copy" />
         <span v-if="mobile">{{ t("actions.copy") }}</span>
       </Btn>

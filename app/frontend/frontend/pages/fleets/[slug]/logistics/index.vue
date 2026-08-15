@@ -240,7 +240,6 @@ const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
             name: 'fleet-logistics-inventories',
             params: { slug: fleet.slug },
           }"
-          :inline="true"
         >
           {{ t("actions.fleets.logistics.viewInventories") }}
         </Btn>
@@ -261,21 +260,11 @@ const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
     </template>
 
     <template #actions-left>
-      <BtnGroup inline>
-        <Btn
-          :active="activeTab === 'stock'"
-          inline
-          size="small"
-          @click="activeTab = 'stock'"
-        >
+      <BtnGroup>
+        <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
           {{ t("labels.fleets.logistics.stockView") }}
         </Btn>
-        <Btn
-          :active="activeTab === 'log'"
-          size="small"
-          inline
-          @click="activeTab = 'log'"
-        >
+        <Btn :active="activeTab === 'log'" @click="activeTab = 'log'">
           {{ t("labels.fleets.logistics.logView") }}
         </Btn>
       </BtnGroup>

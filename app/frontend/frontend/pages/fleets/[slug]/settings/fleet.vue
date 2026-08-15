@@ -8,10 +8,7 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useForm } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
@@ -312,10 +309,10 @@ const onDestroy = async () => {
       <div class="text-center">
         <Btn
           :loading="deleting"
-          :size="BtnSizesEnum.LARGE"
-          :variant="BtnVariantsEnum.DANGER"
           data-test="fleet-delete"
           @click="onDestroy"
+          :size="BtnSizesEnum.LG"
+          :tone="BtnTonesEnum.DANGER"
         >
           {{ t("actions.destroyFleet") }}
         </Btn>

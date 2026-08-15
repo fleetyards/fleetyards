@@ -209,7 +209,7 @@ const shouldHighlight = computed(() => {
         :vehicle="vehicle as Vehicle"
         :editable="editable"
         :wishlist="wishlist"
-        :variant="BtnVariantsEnum.LINK"
+        :variant="BtnVariantsEnum.BARE"
         class="vehicle-panel--context-menu-button"
       />
 

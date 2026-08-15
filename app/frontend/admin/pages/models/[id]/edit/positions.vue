@@ -24,7 +24,6 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -182,16 +181,11 @@ const onRegenerate = async () => {
       </BasePill>
     </Heading>
     <div class="flex gap-2">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        :disabled="regenerating"
-        @click="onRegenerate"
-      >
+      <Btn :disabled="regenerating" @click="onRegenerate">
         <i class="fa-duotone fa-arrows-rotate" />
         {{ t("actions.regenerate") }}
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :disabled="editableList?.creating"
         @click="editableList?.startCreate()"
       >

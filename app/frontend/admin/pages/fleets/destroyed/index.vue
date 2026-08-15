@@ -139,16 +139,14 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
       <FilterForm />
     </template>
     <template #actions-left>
-      <BtnGroup inline>
+      <BtnGroup>
         <Btn
-          size="small"
           :active="source === DestroyedFleetsSource.discarded"
           @click="setSource(DestroyedFleetsSource.discarded)"
         >
           {{ t("labels.destroyedFleets.discarded") }}
         </Btn>
         <Btn
-          size="small"
           :active="source === DestroyedFleetsSource.purged"
           @click="setSource(DestroyedFleetsSource.purged)"
         >

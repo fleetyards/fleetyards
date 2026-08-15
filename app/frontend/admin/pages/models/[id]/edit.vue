@@ -7,7 +7,7 @@ import {
   getModelsQueryKey,
   ImportTypeEnum,
 } from "@/services/fyAdminApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { routes as editRoutes } from "./edit/routes";
@@ -129,9 +129,7 @@ const syncScData = () => {
     <template #actions v-if="!mobile">
       <Btn
         v-tooltip="t('actions.models.syncMatrix')"
-        :size="BtnSizesEnum.SMALL"
         :loading="isSyncingMatrix"
-        inline
         spinner
         @click="syncMatrix"
       >
@@ -140,9 +138,7 @@ const syncScData = () => {
       </Btn>
       <Btn
         v-tooltip="t('actions.models.syncScData')"
-        :size="BtnSizesEnum.SMALL"
         :loading="isSyncingScData"
-        inline
         spinner
         @click="syncScData"
       >

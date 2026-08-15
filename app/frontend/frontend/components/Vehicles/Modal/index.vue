@@ -192,10 +192,9 @@ const paintsFilterFormatter = (paints: ModelPaint[]) => {
       <div class="float-sm-right">
         <Btn
           :loading="submitting"
-          :size="BtnSizesEnum.LARGE"
           data-test="vehicle-save"
-          :inline="true"
           @click="onSubmit"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.save") }}
         </Btn>

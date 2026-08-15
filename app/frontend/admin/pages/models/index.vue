@@ -19,7 +19,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import {
   useModels as useModelsQuery,
   getModelsQueryKey,
@@ -212,7 +212,6 @@ watch(
 
   <Teleport to="#header-right">
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :to="{ name: 'admin-model-modules' }"
       :aria-label="t('headlines.admin.modelModules.index')"
       mobile-icon-only
@@ -221,7 +220,6 @@ watch(
       {{ t("headlines.admin.modelModules.index") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingMatrix"
       :confirm="t('messages.confirm.model.reloadMatrix')"
       :aria-label="t('actions.admin.dashboard.reloadModels')"
@@ -233,7 +231,6 @@ watch(
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :loading="isReloadingScData"
       :confirm="t('messages.confirm.model.reloadScData')"
       :aria-label="t('actions.admin.dashboard.reloadScData')"
@@ -245,7 +242,6 @@ watch(
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :to="{ name: 'admin-model-create' }"
       :aria-label="t('actions.create')"
       mobile-icon-only
@@ -266,7 +262,6 @@ watch(
     <template #actions-right>
       <Btn
         :aria-label="t('actions.models.openTableConfiguration')"
-        :size="BtnSizesEnum.SMALL"
         @click="openDisplayOptionsModal"
       >
         <i class="fa-duotone fa-sliders" />

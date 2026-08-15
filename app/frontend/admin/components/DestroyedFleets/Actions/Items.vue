@@ -10,7 +10,7 @@ import {
   useRestoreDestroyedFleet,
   getDestroyedFleetsQueryKey,
 } from "@/services/fyAdminApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -61,7 +61,6 @@ const restore = () => {
 <template>
   <Btn
     v-tooltip="!withLabels && t('actions.restore')"
-    :size="BtnSizesEnum.SMALL"
     :disabled="!destroyedFleet.restorable"
     @click="restore"
   >

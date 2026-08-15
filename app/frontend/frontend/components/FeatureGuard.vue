@@ -40,7 +40,7 @@ const enabled = computed(() => isFeatureEnabled(props.feature));
       <Text>{{ t("texts.featureNotReady") }}</Text>
     </template>
     <template #footer>
-      <Btn :to="{ name: 'home' }" :exact="true">
+      <Btn :to="{ name: 'home' }">
         <i class="fa fa-chevron-left" />
         {{ t("actions.backToHome").toUpperCase() }}
       </Btn>

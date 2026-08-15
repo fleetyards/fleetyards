@@ -325,13 +325,13 @@ const crumbs = computed(() => [
           {{ inventory.description }}
         </p>
         <Teleport v-if="!mobile && canAddItems" to="#header-right">
-          <Btn :inline="true" @click="openDepositModal">
+          <Btn @click="openDepositModal">
             {{ t("actions.fleets.logistics.deposit") }}
           </Btn>
-          <Btn :inline="true" @click="openWithdrawModal">
+          <Btn @click="openWithdrawModal">
             {{ t("actions.fleets.logistics.withdraw") }}
           </Btn>
-          <Btn :inline="true" @click="openCsvImportModal">
+          <Btn @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.fleets.logistics.importCsv") }}
           </Btn>
@@ -350,21 +350,11 @@ const crumbs = computed(() => [
           </template>
 
           <template #actions-left>
-            <BtnGroup inline>
-              <Btn
-                :active="activeTab === 'stock'"
-                inline
-                size="small"
-                @click="activeTab = 'stock'"
-              >
+            <BtnGroup>
+              <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
                 {{ t("labels.fleets.logistics.stockView") }}
               </Btn>
-              <Btn
-                :active="activeTab === 'log'"
-                inline
-                size="small"
-                @click="activeTab = 'log'"
-              >
+              <Btn :active="activeTab === 'log'" @click="activeTab = 'log'">
                 {{ t("labels.fleets.logistics.logView") }}
               </Btn>
             </BtnGroup>

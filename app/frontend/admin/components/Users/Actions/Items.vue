@@ -13,10 +13,7 @@ import {
   useDestroyUser,
   getUsersQueryKey,
 } from "@/services/fyAdminApi";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -150,23 +147,17 @@ const destroy = () => {
 <template>
   <Btn
     v-tooltip="!withLabels && t('actions.edit')"
-    :size="BtnSizesEnum.SMALL"
     :to="{ name: 'admin-user-edit', params: { id: user.id } }"
   >
     <i class="fa-duotone fa-pen-to-square" />
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
-  <Btn
-    v-tooltip="!withLabels && t('actions.users.loginAs')"
-    :size="BtnSizesEnum.SMALL"
-    @click="loginAs"
-  >
+  <Btn v-tooltip="!withLabels && t('actions.users.loginAs')" @click="loginAs">
     <i class="fa-duotone fa-right-to-bracket" />
     <span v-if="withLabels">{{ t("actions.users.loginAs") }}</span>
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.users.resendConfirmation')"
-    :size="BtnSizesEnum.SMALL"
     @click="resendConfirmation"
   >
     <i class="fa-duotone fa-envelope" />
@@ -174,7 +165,6 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.users.sendPasswordReset')"
-    :size="BtnSizesEnum.SMALL"
     @click="sendPasswordReset"
   >
     <i class="fa-duotone fa-key" />
@@ -182,9 +172,8 @@ const destroy = () => {
   </Btn>
   <Btn
     v-tooltip="!withLabels && t('actions.delete')"
-    :size="BtnSizesEnum.SMALL"
-    :variant="BtnVariantsEnum.DANGER"
     @click="destroy"
+    :tone="BtnTonesEnum.DANGER"
   >
     <i class="fa-duotone fa-trash" />
     <span v-if="withLabels">{{ t("actions.delete") }}</span>

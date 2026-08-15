@@ -93,12 +93,7 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
     <template #footer>
       <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :size="BtnSizesEnum.LARGE"
-          :inline="true"
-          @click="onSubmit"
-        >
+        <Btn :loading="submitting" @click="onSubmit" :size="BtnSizesEnum.LG">
           {{ t("actions.fleet.members.invite") }}
         </Btn>
       </div>

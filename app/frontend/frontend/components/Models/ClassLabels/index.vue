@@ -77,23 +77,18 @@ const isActive = (classification: string) => {
 </script>
 
 <template>
-  <BtnDropdown
-    v-if="mobile"
-    :mobile-block="true"
-    size="small"
-    class="labels-dropdown"
-  >
+  <BtnDropdown v-if="mobile" class="labels-dropdown w-full md:w-auto">
     <template #label>Classifications</template>
     <template #default>
       <Btn
         v-for="classification in countData"
         :key="`dropdown-${classification.name}`"
-        variant="link"
         class="labels-dropdown-item"
         :class="{
           active: isActive(classification.name),
         }"
         @click="filter(classification.name)"
+        variant="bare"
       >
         {{ classification.label }}
         <span class="label-count">{{ classification.count }}</span>

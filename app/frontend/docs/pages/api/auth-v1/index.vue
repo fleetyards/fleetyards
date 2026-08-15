@@ -11,7 +11,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { SwaggerUIBundle } from "swagger-ui-dist";
 import copyText from "@/shared/utils/CopyText";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -79,7 +79,7 @@ onMounted(() => {
           no-label
           inline
         />
-        <Btn :size="BtnSizesEnum.SMALL" inline @click="copySchemaUrl">
+        <Btn @click="copySchemaUrl">
           <i class="fa-duotone fa-copy" />
         </Btn>
       </div>

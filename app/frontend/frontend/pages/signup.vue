@@ -173,8 +173,8 @@ const onSubmit = handleSubmit(async (values) => {
           :loading="submitting"
           :type="BtnTypesEnum.SUBMIT"
           data-test="submit-signup"
-          :size="BtnSizesEnum.LARGE"
           :block="true"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.signUp") }}
         </Btn>
@@ -197,7 +197,7 @@ const onSubmit = handleSubmit(async (values) => {
             {{ t("labels.alreadyRegistered") }}
           </p>
 
-          <Btn :to="loginRoute" :size="BtnSizesEnum.SMALL" :block="true">
+          <Btn :to="loginRoute" :block="true">
             {{ t("actions.login") }}
           </Btn>
         </footer>

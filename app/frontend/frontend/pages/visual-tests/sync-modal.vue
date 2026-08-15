@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
 import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
@@ -178,7 +178,6 @@ const openState = (state: State) => {
       <h4>{{ state.label }}</h4>
       <p class="text-muted">{{ state.description }}</p>
       <Btn
-        :size="BtnSizesEnum.SMALL"
         :data-test="`open-sync-modal-${state.key}`"
         @click="openState(state)"
       >

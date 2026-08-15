@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
 import { useNotificationsStore } from "@/shared/stores/notifications";
 
@@ -36,12 +36,7 @@ const onCta = (event: MouseEvent) => {
     <div class="notification-cta-demo">
       <b>{{ title }}</b>
       <p>{{ body }}</p>
-      <Btn
-        :size="BtnSizesEnum.X_SMALL"
-        :inline="true"
-        data-test="notification-cta-button"
-        @click="onCta"
-      >
+      <Btn data-test="notification-cta-button" @click="onCta">
         {{ ctaLabel }}
       </Btn>
     </div>

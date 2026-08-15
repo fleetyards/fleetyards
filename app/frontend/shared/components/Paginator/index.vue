@@ -27,7 +27,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   updatePerPage: undefined,
   perPage: undefined,
-  size: BtnSizesEnum.SMALL,
+  size: undefined,
   inline: false,
   hash: undefined,
 });
@@ -68,7 +68,7 @@ const currentPage = computed(() => {
     v-if="pagination && (perPageSelectable || pagination.totalCount > 0)"
     class="pagination"
   >
-    <BtnGroup :inline="inline">
+    <BtnGroup>
       <PerPageDropdown
         v-if="perPageSelectable"
         :size="size"

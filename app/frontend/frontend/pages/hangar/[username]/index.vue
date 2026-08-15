@@ -247,30 +247,21 @@ useSubscription({
     :async-status="asyncStatus"
   >
     <template v-if="mobile" #actions-right>
-      <BtnDropdown :size="BtnSizesEnum.SMALL">
+      <BtnDropdown>
         <Btn
           v-if="user.publicHangarStats"
           :to="{ name: 'hangar-public-stats' }"
-          :size="BtnSizesEnum.SMALL"
         >
           <i class="fa-duotone fa-chart-bar" />
           <span>{{ t("nav.stats") }}</span>
         </Btn>
 
-        <Btn
-          v-if="user.publicWishlist"
-          :to="{ name: 'hangar-wishlist' }"
-          :size="BtnSizesEnum.SMALL"
-        >
+        <Btn v-if="user.publicWishlist" :to="{ name: 'hangar-wishlist' }">
           <i class="fa-duotone fa-wand-sparkles" />
           <span>{{ t("labels.wishlist") }}</span>
         </Btn>
 
-        <Btn
-          data-test="fleetchart-link"
-          :size="BtnSizesEnum.SMALL"
-          @click="toggleFleetchart"
-        >
+        <Btn data-test="fleetchart-link" @click="toggleFleetchart">
           <i class="fa-duotone fa-starship" />
           <span>{{ t("labels.fleetchart") }}</span>
         </Btn>
@@ -304,7 +295,7 @@ useSubscription({
             v-if="vehicles"
             :query-result-ref="vehicles"
             :per-page="perPage"
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             :update-per-page="updatePerPage"
           />
         </template>

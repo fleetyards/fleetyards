@@ -6,10 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -76,20 +73,13 @@ const dismissInline = (event: MouseEvent) => {
     </div>
     <p class="support-hint__body" v-html="t(bodyKey, meta)" />
     <div class="support-hint__actions">
-      <Btn
-        :size="BtnSizesEnum.SMALL"
-        :inline="true"
-        data-test="support-hint-cta"
-        @click="openSupportModal"
-      >
+      <Btn data-test="support-hint-cta" @click="openSupportModal">
         {{ t("actions.supportHint.cta") }}
       </Btn>
       <Btn
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.LINK"
-        :inline="true"
         data-test="support-hint-dismiss"
         @click="dismissInline"
+        :variant="BtnVariantsEnum.BARE"
       >
         {{ t("actions.supportHint.later") }}
       </Btn>
@@ -102,12 +92,7 @@ const dismissInline = (event: MouseEvent) => {
         <strong>{{ t(headlineKey) }}</strong>
       </div>
       <p class="support-hint__body" v-html="t(bodyKey, meta)" />
-      <Btn
-        :size="BtnSizesEnum.X_SMALL"
-        :inline="true"
-        data-test="support-hint-cta"
-        @click="openSupportModal"
-      >
+      <Btn data-test="support-hint-cta" @click="openSupportModal">
         {{ t("actions.supportHint.cta") }}
       </Btn>
     </div>

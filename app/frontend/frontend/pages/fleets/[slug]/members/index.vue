@@ -158,7 +158,6 @@ const crumbs = computed(() => {
   <Teleport v-if="!mobile" to="#header-right">
     <Btn
       v-if="worldmapEnabled"
-      :inline="true"
       :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
     >
       <i class="fa-duotone fa-globe" />
@@ -166,7 +165,6 @@ const crumbs = computed(() => {
     </Btn>
     <Btn
       v-if="starmapEnabled"
-      :inline="true"
       :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
     >
       <i class="fa-duotone fa-planet-ringed" />
@@ -174,7 +172,6 @@ const crumbs = computed(() => {
     </Btn>
     <Btn
       v-if="canManageInvites"
-      :inline="true"
       :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
     >
       <i class="fa-duotone fa-user-plus" />

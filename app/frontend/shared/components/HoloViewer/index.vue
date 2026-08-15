@@ -11,7 +11,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { type Camera, type Mesh, type Object3D, type Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { TresCanvas } from "@tresjs/core";
 import { OrbitControls, TransformControls, Grid } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
@@ -293,41 +293,30 @@ defineExpose({
   >
     <Btn
       v-if="internalFullscreen"
-      variant="link"
       class="holo-viewer__close"
       @click.prevent.stop="disableFullscreen"
+      variant="bare"
     >
       <i class="fa-light fa-times" />
     </Btn>
     <BtnGroup
       v-if="controllable || internalFullscreen"
       class="holo-viewer__actions"
-      inline
     >
       <Btn
         v-tooltip="autoRotateTooltip"
-        :size="BtnSizesEnum.SMALL"
         :active="internalAutoRotate"
-        inline
         @click="toggleAutoRotate"
       >
         <i class="fa-light fa-planet-ringed" />
       </Btn>
-      <Btn
-        v-tooltip="zoomTooltip"
-        :size="BtnSizesEnum.SMALL"
-        :active="zoom"
-        inline
-        @click="toggleZoom"
-      >
+      <Btn v-tooltip="zoomTooltip" :active="zoom" @click="toggleZoom">
         <i class="fa-light fa-search-plus" />
       </Btn>
       <Btn
         v-if="colored"
         v-tooltip="colorTooltip"
-        :size="BtnSizesEnum.SMALL"
         :active="color"
-        inline
         @click="toggleColor"
       >
         <i class="fa-duotone fa-fill-drip" />

@@ -138,7 +138,7 @@ async function deny() {
 
     <template #footer>
       <div class="authorize-actions">
-        <BaseBtn variant="danger" :disabled="submitting" block @click="deny">
+        <BaseBtn tone="danger" :disabled="submitting" block @click="deny">
           {{ t("actions.oauthAuthorize.deny") }}
         </BaseBtn>
         <BaseBtn

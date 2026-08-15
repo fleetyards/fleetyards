@@ -2,13 +2,21 @@
   &__actions {
     display: flex;
     justify-content: space-between;
-    gap: 0 20px;
+    // Separates the toolbar from the list below it. Used to come from the
+    // buttons' own margin-bottom, which Btn no longer ships.
+    gap: 20px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
   }
 
+  &__actions-left,
   &__actions-right {
     display: flex;
+    align-items: center;
+    gap: 10px;
+  }
 
+  &__actions-right {
     :deep(.pagination) {
       width: auto;
     }
@@ -35,12 +43,6 @@
         min-width: 0;
         justify-content: flex-end;
         gap: 10px;
-
-        :deep(.panel-btn),
-        :deep(.panel-btn-group),
-        :deep(.panel-btn-dropdown) {
-          margin-right: 0;
-        }
       }
     }
 

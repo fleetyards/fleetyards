@@ -10,10 +10,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import Toggle from "@/shared/components/base/Toggle/index.vue";
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import UserFilterGroup from "@/admin/components/base/UserFilterGroup/index.vue";
@@ -255,10 +252,9 @@ const hasSelectedActor = computed(() => {
     <template #actions="{ item, mobile }">
       <Btn
         v-tooltip="t('labels.features.toggle')"
-        :size="BtnSizesEnum.SMALL"
-        :variant="BtnVariantsEnum.TRANSPARENT"
         data-test="toggle-feature"
         @click="toggleFeature(item)"
+        :variant="BtnVariantsEnum.GHOST"
       >
         <i
           class="fa-duotone fa-power-off"
@@ -331,11 +327,7 @@ const hasSelectedActor = computed(() => {
               class="edit-group-item"
             >
               <BasePill margin-right>{{ group }}</BasePill>
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
-                @click.prevent="removeGroup(item.name, group)"
-              >
+              <Btn @click.prevent="removeGroup(item.name, group)">
                 <i class="fa-duotone fa-times" />
               </Btn>
             </div>
@@ -344,9 +336,7 @@ const hasSelectedActor = computed(() => {
                 (g) => !item.groups.includes(g),
               )"
               :key="group"
-              :size="BtnSizesEnum.SMALL"
               :data-test="`add-group-${group}`"
-              inline
               @click.prevent="addGroup(item.name, group)"
             >
               <i class="fa-duotone fa-plus" />
@@ -366,8 +356,6 @@ const hasSelectedActor = computed(() => {
               <BasePill uppercase margin-right>{{ actor.type }}</BasePill>
               <span>{{ actor.name }}</span>
               <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
                 @click.prevent="removeActor(item.name, actor.type, actor.id)"
               >
                 <i class="fa-duotone fa-times" />
@@ -395,11 +383,7 @@ const hasSelectedActor = computed(() => {
               name="feature-fleet"
               :no-label="false"
             />
-            <Btn
-              :size="BtnSizesEnum.SMALL"
-              :disabled="!hasSelectedActor"
-              @click.prevent="addActor(item)"
-            >
+            <Btn :disabled="!hasSelectedActor" @click.prevent="addActor(item)">
               <i class="fa-duotone fa-plus" />
               {{ t("actions.addActor") }}
             </Btn>

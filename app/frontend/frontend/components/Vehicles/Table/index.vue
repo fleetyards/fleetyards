@@ -15,7 +15,7 @@ import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
@@ -374,11 +374,10 @@ const resetSelected = () => {
         <HangarGroups :groups="record.hangarGroups" size="large" />
       </template>
       <template #actions="{ record }">
-        <BtnGroup inline class="vehicles-table-btn-group">
+        <BtnGroup class="vehicles-table-btn-group">
           <Btn
             v-if="record && editable && !record.loaner"
             :aria-label="t('actions.edit')"
-            :size="BtnSizesEnum.SMALL"
             data-test="vehicle-edit"
             @click="openEditModal(record)"
           >

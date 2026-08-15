@@ -25,11 +25,13 @@
   }
 }
 
-.panel-btn {
+.btn {
+  // The old hover inverted the button to a light surface, so nested text had to
+  // go dark. The button now keeps a dark surface and lifts its text instead.
   &:hover:not([disabled]),
   &.active {
     .user-item-ship {
-      color: color.adjust(invert($text-color), $lightness: 10%);
+      color: lighten($text-color, 15%);
     }
   }
 }

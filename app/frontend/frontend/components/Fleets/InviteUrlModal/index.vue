@@ -23,7 +23,6 @@ import {
   FleetInviteUrl,
   FleetInviteUrlCreateInput,
 } from "@/services/fyApi";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   fleet: Fleet;
@@ -193,14 +192,10 @@ const copy = (inviteUrl: FleetInviteUrl) => {
           class="url-input"
           @click="copy(inviteUrl)"
         />
-        <Btn :size="BtnSizesEnum.SMALL" :inline="true" @click="copy(inviteUrl)">
+        <Btn @click="copy(inviteUrl)">
           <i class="fa-duotone fa-copy" />
         </Btn>
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          :inline="true"
-          @click="remove(inviteUrl)"
-        >
+        <Btn @click="remove(inviteUrl)">
           <i class="fa-duotone fa-trash" />
         </Btn>
       </div>

@@ -72,7 +72,7 @@ const sortedVehicles = computed(() =>
             v-if="vehicle.username"
             :href="`/hangar/${vehicle.username}`"
             block
-            align-start
+            class="justify-start"
           >
             <div class="user-item">
               <Avatar :avatar="vehicle.userAvatar" size="small" />
@@ -87,7 +87,7 @@ const sortedVehicles = computed(() =>
               </span>
             </div>
           </Btn>
-          <Btn v-else disabled block align-start>
+          <Btn v-else disabled block class="justify-start">
             <div class="user-item">
               <Avatar size="small" />
               <span class="user-item-username">

@@ -122,11 +122,7 @@ const columns2 = [
           <a :href="'mailto:' + record.email">{{ record.email }}</a>
         </template>
         <template #actions="{ record }">
-          <Btn
-            size="small"
-            inline
-            @click="displaySuccess({ text: `Edit ${record.name}` })"
-          >
+          <Btn @click="displaySuccess({ text: `Edit ${record.name}` })">
             <i class="fa fa-edit" />
           </Btn>
         </template>
@@ -171,11 +167,7 @@ const columns2 = [
         :selectable="false"
       >
         <template #actions="{ record }">
-          <Btn
-            size="small"
-            inline
-            @click="displaySuccess({ text: `Edit ${record.name}` })"
-          >
+          <Btn @click="displaySuccess({ text: `Edit ${record.name}` })">
             <i class="fa fa-edit" />
           </Btn>
         </template>
@@ -202,11 +194,7 @@ const columns2 = [
           <a :href="'mailto:' + record.email">{{ record.email }}</a>
         </template>
         <template #actions="{ record }">
-          <Btn
-            size="small"
-            inline
-            @click="displaySuccess({ text: `Edit ${record.name}` })"
-          >
+          <Btn @click="displaySuccess({ text: `Edit ${record.name}` })">
             <i class="fa fa-edit" />
           </Btn>
         </template>
@@ -249,11 +237,7 @@ const columns2 = [
         :records="records"
       >
         <template #actions="{ record }">
-          <Btn
-            size="small"
-            inline
-            @click="displaySuccess({ text: `Edit ${record.name}` })"
-          >
+          <Btn @click="displaySuccess({ text: `Edit ${record.name}` })">
             <i class="fa fa-edit" />
           </Btn>
         </template>

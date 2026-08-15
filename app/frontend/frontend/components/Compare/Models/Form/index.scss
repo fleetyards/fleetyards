@@ -1,4 +1,10 @@
 .compare-form {
+  // Column of full-width controls. They used to be separated by the buttons'
+  // own margin-bottom, so without a gap they sat flush against each other and
+  // the end-caps overlapped the next button's edge.
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   height: 242px;
   max-width: 300px;
 }

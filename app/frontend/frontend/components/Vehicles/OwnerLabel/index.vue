@@ -39,18 +39,13 @@ const openOwnersModal = () => {
 <template>
   <div class="owner">
     <template v-if="modelSlug">
-      <Btn
-        variant="link"
-        :text-inline="true"
-        class="owner-more-action"
-        @click="openOwnersModal"
-      >
+      <Btn class="owner-more-action" @click="openOwnersModal" variant="bare">
         {{ t("labels.vehicle.owner") }} <i class="fa fa-bars-staggered" />
       </Btn>
     </template>
     <template v-else-if="owner">
       {{ t("labels.vehicle.owner") }}
-      <Btn :href="`/hangar/${owner}`" variant="link" :text-inline="true">
+      <Btn :href="`/hangar/${owner}`" variant="bare">
         {{ owner }}
       </Btn>
     </template>

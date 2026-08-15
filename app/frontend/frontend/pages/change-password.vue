@@ -117,8 +117,8 @@ const onSubmit = handleSubmit(async (values) => {
         <Btn
           :loading="submitting"
           :type="BtnTypesEnum.SUBMIT"
-          :size="BtnSizesEnum.LARGE"
           :block="true"
+          :size="BtnSizesEnum.LG"
         >
           {{ t("actions.save") }}
         </Btn>
@@ -128,7 +128,7 @@ const onSubmit = handleSubmit(async (values) => {
             {{ t("labels.alreadyRegistered") }}
           </p>
 
-          <Btn :to="{ name: 'login' }" :size="BtnSizesEnum.SMALL" :block="true">
+          <Btn :to="{ name: 'login' }" :block="true">
             {{ t("actions.login") }}
           </Btn>
         </footer>

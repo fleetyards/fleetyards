@@ -19,7 +19,6 @@ import {
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import ModelForm from "@/admin/components/Models/Form/index.vue";
 import ItemPricesList from "@/admin/components/ItemPrices/List.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 
 type Props = {
   model: ModelExtended;
@@ -106,7 +105,6 @@ const itemPricesList = ref<{
   <div class="flex items-center justify-between">
     <Heading hero>{{ t("headlines.admin.models.edit.itemPrices") }}</Heading>
     <Btn
-      :size="BtnSizesEnum.SMALL"
       :disabled="itemPricesList?.creating"
       @click="itemPricesList?.startCreate()"
     >
