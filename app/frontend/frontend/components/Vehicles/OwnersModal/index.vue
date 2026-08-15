@@ -8,9 +8,12 @@ export default {
 import { useRoute } from "vue-router";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
-import Avatar from "@/shared/components/Avatar/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import MemberContactMenu from "@/frontend/components/base/MemberContactMenu/index.vue";
+import OwnerRow from "@/frontend/components/Vehicles/OwnersModal/Row/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import type { Owner } from "@/frontend/components/Vehicles/OwnersModal/types";
 import {
   type VehiclePublic,
   type FleetVehiclesParams,
@@ -21,14 +24,6 @@ import {
 type Props = {
   modelSlug: string;
   fleetSlug: string;
-};
-
-type Owner = {
-  key: string;
-  username?: string;
-  avatar?: string;
-  count: number;
-  ships: string[];
 };
 
 const props = defineProps<Props>();
@@ -84,7 +79,12 @@ const owners = computed<Owner[]>(() => {
     const owner = vehicle.username
       ? (named.get(vehicle.username) ?? {
           key: vehicle.username,
-          username: vehicle.username,
+          member: {
+            username: vehicle.username,
+            rsiHandle: vehicle.userRsiHandle,
+            discordProfileUrl: vehicle.userDiscordProfileUrl,
+            citizenidProfileUrl: vehicle.userCitizenidProfileUrl,
+          },
           avatar: vehicle.userAvatar,
           count: 0,
           ships: [],
@@ -97,15 +97,19 @@ const owners = computed<Owner[]>(() => {
       owner.ships.push(ship);
     }
 
-    if (owner.username) {
-      named.set(owner.username, owner);
+    if (owner.member?.username) {
+      named.set(owner.member.username, owner);
     }
   });
 
   const sorted = [...named.values()].sort((a, b) =>
-    (a.username as string).localeCompare(b.username as string, undefined, {
-      sensitivity: "base",
-    }),
+    (a.member?.username as string).localeCompare(
+      b.member?.username as string,
+      undefined,
+      {
+        sensitivity: "base",
+      },
+    ),
   );
 
   return anonymous.count > 0 ? [...sorted, anonymous] : sorted;
@@ -120,31 +124,19 @@ const owners = computed<Owner[]>(() => {
     <Empty v-else-if="!owners.length" :inline="true" :hide-actions="true" />
     <ul v-else class="owners">
       <li v-for="owner in owners" :key="owner.key">
-        <component
-          :is="owner.username ? 'a' : 'div'"
-          class="owner"
-          :class="{ 'owner--anonymous': !owner.username }"
-          :href="owner.username ? `/hangar/${owner.username}` : undefined"
-          :target="owner.username ? '_blank' : undefined"
-          :rel="owner.username ? 'noopener' : undefined"
-        >
-          <Avatar :avatar="owner.avatar" size="small" />
-          <span class="owner__body">
-            <span class="owner__name">
-              {{ owner.username || t("labels.anonymous") }}
-              <span v-if="owner.count > 1" class="owner__count">
-                {{ owner.count }}&times;
-              </span>
-            </span>
-            <span
-              v-if="owner.ships.length"
-              :title="owner.ships.join(', ')"
-              class="owner__ships"
-            >
-              {{ owner.ships.join(", ") }}
-            </span>
-          </span>
-        </component>
+        <BtnDropdown v-if="owner.member">
+          <template #trigger="{ toggle, visible }">
+            <OwnerRow
+              :owner="owner"
+              as="button"
+              aria-haspopup="menu"
+              :aria-expanded="visible"
+              @click="toggle"
+            />
+          </template>
+          <MemberContactMenu :member="owner.member" :hangar="true" />
+        </BtnDropdown>
+        <OwnerRow v-else :owner="owner" />
       </li>
     </ul>
   </Modal>
