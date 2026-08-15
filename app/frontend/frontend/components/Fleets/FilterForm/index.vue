@@ -18,6 +18,7 @@ import FleetMemberFilterGroup from "@/frontend/components/base/FleetMemberFilter
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 const { t } = useI18n();
 const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
@@ -25,6 +26,7 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 const route = useRoute();
 
 type FleetsFilterForm = {
+  searchCont?: string;
   modelNameCont?: string;
   onSaleEq?: string;
   loanerEq?: string;
@@ -46,6 +48,7 @@ type FleetsFilterForm = {
 
 const prefillFormValues = () => {
   return {
+    searchCont: filters.value.searchCont,
     modelNameCont: filters.value.modelNameCont,
     onSaleEq: filters.value.onSaleEq,
     loanerEq: filters.value.loanerEq,
@@ -92,6 +95,17 @@ const submit = () => {
 
 <template>
   <form @submit.prevent="submit">
+    <Teleport to="#header-left">
+      <FormInput
+        name="search"
+        :size="InputSizesEnum.MEDIUM"
+        v-model="form.searchCont"
+        translation-key="filters.models.name"
+        :no-label="true"
+        :clearable="true"
+      />
+    </Teleport>
+
     <FormInput
       id="model-name"
       name="model-name"

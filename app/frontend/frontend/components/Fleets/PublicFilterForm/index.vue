@@ -18,6 +18,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { FleetVehicleQuery } from "@/services/fyApi";
 import { useFilters } from "@/shared/composables/useFilters";
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 
 const { t } = useI18n();
 
@@ -26,6 +27,7 @@ const { filter, resetFilter, isFilterSelected, filters } =
 
 function setupForm() {
   form.value = {
+    searchCont: filters.value.searchCont,
     modelNameCont: filters.value.modelNameCont,
     onSaleEq: filters.value.onSaleEq,
     loanerEq: filters.value.loanerEq,
@@ -52,6 +54,17 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 
 <template>
   <form @submit.prevent="filter(form)">
+    <Teleport to="#header-left">
+      <FormInput
+        name="search"
+        :size="InputSizesEnum.MEDIUM"
+        v-model="form.searchCont"
+        translation-key="filters.models.name"
+        :no-label="true"
+        :clearable="true"
+      />
+    </Teleport>
+
     <FormInput
       id="model-name"
       name="model-name"
