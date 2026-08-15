@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_13_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_15_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -154,6 +154,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_13_120000) do
     t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
     t.index ["parent_type", "parent_id", "max_container_size_scu"], name: "index_cargo_holds_on_parent_and_max_container_size"
     t.index ["parent_type", "parent_id"], name: "index_cargo_holds_on_parent_type_and_parent_id"
+  end
+
+  create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "commodity_type"
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "icon"
+    t.string "name", null: false
+    t.string "sc_key"
+    t.string "sc_ref"
+    t.string "slug", null: false
+    t.integer "uex_id"
+    t.string "uex_slug"
+    t.datetime "updated_at", null: false
+    t.string "version"
+    t.index ["commodity_type"], name: "index_commodities_on_commodity_type"
+    t.index ["sc_key"], name: "index_commodities_on_sc_key", unique: true
+    t.index ["slug"], name: "index_commodities_on_slug", unique: true
+    t.index ["uex_slug"], name: "index_commodities_on_uex_slug"
   end
 
   create_table "compare_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
