@@ -9,6 +9,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable, {
   type BaseTableCol,
@@ -228,24 +229,26 @@ const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
   <BreadCrumbs :crumbs="crumbs" />
 
   <div class="row">
-    <div class="col-12 col-lg-8">
+    <div class="col-12">
       <Heading size="hero" hero>{{
         t("headlines.fleets.logistics.index")
       }}</Heading>
     </div>
-    <div class="col-12 col-lg-4 flex justify-end items-center">
-      <div v-if="canManageInventories" class="page-actions page-actions-right">
-        <Btn
-          :to="{
-            name: 'fleet-logistics-inventories',
-            params: { slug: fleet.slug },
-          }"
-        >
-          {{ t("actions.fleets.logistics.viewInventories") }}
-        </Btn>
-      </div>
-    </div>
   </div>
+
+  <Teleport v-if="canManageInventories" to="#header-right">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
+      :to="{
+        name: 'fleet-logistics-inventories',
+        params: { slug: fleet.slug },
+      }"
+    >
+      <i class="fa-duotone fa-boxes-stacked" />
+      {{ t("actions.fleets.logistics.viewInventories") }}
+    </Btn>
+  </Teleport>
 
   <FilteredList
     name="all-inventory-items"

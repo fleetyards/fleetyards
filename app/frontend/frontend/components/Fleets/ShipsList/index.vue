@@ -10,7 +10,6 @@ import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
-import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import FleetVehiclePanel from "@/frontend/components/Fleets/VehiclePanel/index.vue";
 import FleetVehiclesTable from "@/frontend/components/Fleets/VehiclesTable/index.vue";
 import FleetVehiclesFilterForm from "@/frontend/components/Fleets/FilterForm/index.vue";
@@ -43,8 +42,6 @@ import {
 
 type Props = {
   fleet: Fleet;
-  shareUrl: string;
-  shareTitle: string;
 };
 
 const props = defineProps<Props>();
@@ -75,10 +72,6 @@ const fleetchartStore = useFleetchartStore();
 const fleetchartVisible = computed(() => {
   return fleetchartStore.isVisible("fleet");
 });
-
-const toggleFleetchart = () => {
-  fleetchartStore.toggleFleetchart("fleet");
-};
 
 watch(
   () => grouped.value,
@@ -291,21 +284,6 @@ const {
             <i class="fa-duotone fa-sliders" />
           </Btn>
           <BtnDropdown>
-            <template v-if="mobile">
-              <Btn data-test="fleetchart-link" @click="toggleFleetchart">
-                <i class="fa-duotone fa-starship" />
-                <span>{{ t("labels.fleetchart") }}</span>
-              </Btn>
-
-              <ShareBtn
-                v-if="fleet.publicFleet"
-                :url="shareUrl"
-                :title="shareTitle"
-                :size="BtnSizesEnum.SM"
-              />
-
-              <hr />
-            </template>
             <Btn :aria-label="t('actions.export')" @click="exportJson">
               <i class="fa-light fa-download" />
               <span>{{ t("actions.export") }}</span>
