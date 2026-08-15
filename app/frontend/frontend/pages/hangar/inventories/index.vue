@@ -118,7 +118,7 @@ onMounted(() => {
   <Teleport to="#header-right">
     <Btn
       :size="BtnSizesEnum.MD"
-      :aria-label="t('actions.logistics.createInventory')"
+      data-test="hangar-inventory-create"
       mobile-icon-only
       @click="openInventoryModal()"
     >

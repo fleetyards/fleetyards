@@ -357,7 +357,12 @@ const onSubmit = handleSubmit(async (values) => {
 
     <template #footer>
       <div class="float-sm-right">
-        <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
+        <Btn
+          :loading="submitting"
+          :size="BtnSizesEnum.LG"
+          data-test="inventory-item-save"
+          @click="onSubmit"
+        >
           {{
             isDeposit
               ? t("actions.logistics.deposit")

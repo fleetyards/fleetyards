@@ -55,7 +55,11 @@ const image = computed(
 </script>
 
 <template>
-  <Panel :bg-image="image" class="inventory-panel">
+  <Panel
+    :bg-image="image"
+    :data-test="`inventory-panel-${inventory.slug}`"
+    class="inventory-panel"
+  >
     <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
       <template #default>
         <router-link :to="to">

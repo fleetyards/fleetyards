@@ -184,6 +184,7 @@ const crumbs = computed(() => [
         <Teleport to="#header-right">
           <Btn
             :size="BtnSizesEnum.MD"
+            data-test="inventory-deposit"
             mobile-icon-only
             @click="openItemModal('deposit')"
           >
