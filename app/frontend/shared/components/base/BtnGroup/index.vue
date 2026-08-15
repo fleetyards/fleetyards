@@ -118,7 +118,7 @@ provide(BTN_CONTAINER, {
 
 /*
  * The metrics-card__hero pattern: the container owns the border and radius, and
- * the 1px gap lets the container background read as hairline dividers between
+ * the 1px gap lets the track's background read as hairline dividers between
  * members. Members are flat fills with no chrome of their own.
  */
 .btn-group {
@@ -135,9 +135,13 @@ provide(BTN_CONTAINER, {
  *
  * The clipping lives here rather than on .btn-group because the group's end-caps
  * sit outside its border and overflow:hidden would crop them.
+ *
+ * --color-seam, not an edge token: this fill is only ever seen through the 1px
+ * gaps, and at that width a translucent grey took its colour from whatever the
+ * control was sitting on. See the token's note in tailwind.css.
  */
 .btn-group__track {
-  @apply bg-edge-soft flex items-stretch overflow-hidden;
+  @apply bg-seam flex items-stretch overflow-hidden;
   gap: 1px;
   width: 100%;
   border-radius: var(--radius-control-inner, 7px);
