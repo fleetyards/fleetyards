@@ -53,10 +53,24 @@ class Commodity < ApplicationRecord
   ]
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name slug commodity_type sc_key uex_code created_at updated_at]
+    %w[id name slug commodity_type sc_key uex_code created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
     []
+  end
+
+  def self.commodity_types
+    where.not(commodity_type: nil).distinct.order(:commodity_type).pluck(:commodity_type)
+  end
+
+  def self.type_filters
+    commodity_types.map do |item|
+      Filter.new(
+        category: "commodity_type",
+        label: I18n.t("filter.commodity.commodity_type.items.#{item}", default: item.titleize),
+        value: item
+      )
+    end
   end
 end

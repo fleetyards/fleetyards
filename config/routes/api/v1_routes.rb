@@ -44,6 +44,7 @@ v1_api_routes = lambda do
   draw "api/vehicle_loadouts_routes"
   draw "api/fleets_routes"
   draw "api/components_routes"
+  draw "api/commodities_routes"
   draw "api/notifications_routes"
   draw "api/notification_preferences_routes"
 
