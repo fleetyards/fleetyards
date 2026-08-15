@@ -51,10 +51,12 @@ onUnmounted(() => {
 });
 
 const toggle = (event: MouseEvent) => {
-  const { target } = event;
+  // The trigger, not whatever was clicked inside it: a click landing on a label
+  // or an icon would otherwise anchor the menu to that glyph's box.
+  const target = (event.currentTarget || event.target) as HTMLElement | null;
 
   if (target) {
-    const bounding = (target as HTMLElement).getBoundingClientRect();
+    const bounding = target.getBoundingClientRect();
 
     const expandLeft =
       props.expandLeft || window.innerWidth - bounding.left < 300;
@@ -108,21 +110,26 @@ const documentClick = (event: MouseEvent) => {
   <div
     ref="wrapper"
     class="btn-dropdown"
-    :class="{ 'btn-dropdown--grouped': grouped }"
+    :class="{
+      'btn-dropdown--grouped': grouped,
+      'btn-dropdown--custom-trigger': !!$slots.trigger,
+    }"
   >
-    <Btn
-      :size="size"
-      :variant="variant"
-      :tone="tone"
-      :active="visible"
-      aria-haspopup="menu"
-      :aria-expanded="visible"
-      @click="toggle"
-    >
-      <slot name="label">
-        <i class="fa-solid fa-ellipsis-v" />
-      </slot>
-    </Btn>
+    <slot name="trigger" :toggle="toggle" :visible="visible">
+      <Btn
+        :size="size"
+        :variant="variant"
+        :tone="tone"
+        :active="visible"
+        aria-haspopup="menu"
+        :aria-expanded="visible"
+        @click="toggle"
+      >
+        <slot name="label">
+          <i class="fa-solid fa-ellipsis-v" />
+        </slot>
+      </Btn>
+    </slot>
     <Teleport to="body">
       <Menu
         ref="btnList"
@@ -152,6 +159,15 @@ const documentClick = (event: MouseEvent) => {
  * The outside-click test uses DOM containment, which is unaffected.
  */
 .btn-dropdown--grouped {
+  display: contents;
+}
+
+/*
+ * A custom trigger brings its own box, and one that positions itself - the
+ * panel tag pins to the bottom of a panel - has to resolve against the panel
+ * rather than against this wrapper. Same call as above, for the same reason.
+ */
+.btn-dropdown--custom-trigger {
   display: contents;
 }
 </style>

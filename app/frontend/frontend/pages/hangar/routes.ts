@@ -20,7 +20,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/hangar/wishlist.vue"),
     meta: {
       needsAuthentication: true,
-      quickSearch: "searchCont",
       title: "hangar.wishlist",
       primaryAction: true,
       backgroundImage: "bg-5",

@@ -31,7 +31,6 @@ import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItem
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
-import { useMobile } from "@/shared/composables/useMobile";
 
 type StockItemWithId = FleetInventoryStockItem & { id: string };
 
@@ -234,8 +233,6 @@ const canAddItems = computed(() =>
   ]),
 );
 
-const mobile = useMobile();
-
 const openDepositModal = () => {
   if (!inventory.value) return;
 
@@ -325,14 +322,28 @@ const crumbs = computed(() => [
         <p v-if="inventory.description" class="text-muted">
           {{ inventory.description }}
         </p>
-        <Teleport v-if="!mobile && canAddItems" to="#header-right">
-          <Btn :size="BtnSizesEnum.MD" @click="openDepositModal">
+        <Teleport v-if="canAddItems" to="#header-right">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openDepositModal"
+          >
+            <i class="fa-duotone fa-arrow-down-to-square" />
             {{ t("actions.fleets.logistics.deposit") }}
           </Btn>
-          <Btn :size="BtnSizesEnum.MD" @click="openWithdrawModal">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openWithdrawModal"
+          >
+            <i class="fa-duotone fa-arrow-up-from-square" />
             {{ t("actions.fleets.logistics.withdraw") }}
           </Btn>
-          <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openCsvImportModal"
+          >
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.fleets.logistics.importCsv") }}
           </Btn>

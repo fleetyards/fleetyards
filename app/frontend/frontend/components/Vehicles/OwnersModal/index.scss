@@ -1,37 +1,14 @@
-.user-item {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  .user-item-username {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 50px;
-    margin-left: 10px;
-    white-space: normal;
-    text-align: left;
-  }
-
-  .user-item-ship {
-    display: block;
-    color: darken($text-color, 20%);
-    font-size: 90%;
-    transition: color $transition-base-speed ease;
-  }
-
-  .user-item-ship-serial {
-    white-space: nowrap;
-  }
+.owners {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.btn {
-  // The old hover inverted the button to a light surface, so nested text had to
-  // go dark. The button now keeps a dark surface and lifts its text instead.
-  &:hover:not([disabled]),
-  &.active {
-    .user-item-ship {
-      color: lighten($text-color, 15%);
-    }
+@media (min-width: $desktop-breakpoint) {
+  .owners {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

@@ -8,6 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
@@ -83,19 +84,19 @@ const crumbs = computed(() => [
 <template>
   <BreadCrumbs :crumbs="crumbs" />
   <div class="row">
-    <div class="col-12 col-lg-8">
+    <div class="col-12">
       <Heading size="hero" hero>{{
         t("headlines.fleets.logistics.inventories")
       }}</Heading>
     </div>
-    <div class="col-12 col-lg-4 flex justify-end items-center">
-      <div v-if="canCreate" class="page-actions page-actions-right">
-        <Btn @click="openCreateModal">
-          {{ t("actions.fleets.logistics.createInventory") }}
-        </Btn>
-      </div>
-    </div>
   </div>
+
+  <Teleport v-if="canCreate" to="#header-right">
+    <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openCreateModal">
+      <i class="fa-light fa-plus" />
+      {{ t("actions.fleets.logistics.createInventory") }}
+    </Btn>
+  </Teleport>
 
   <Loader :loading="isLoading" />
 

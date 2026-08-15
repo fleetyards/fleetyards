@@ -118,7 +118,7 @@ provide(BTN_CONTAINER, {
 
 /*
  * The metrics-card__hero pattern: the container owns the border and radius, and
- * the 1px gap lets the container background read as hairline dividers between
+ * the 1px gap lets the track's background read as hairline dividers between
  * members. Members are flat fills with no chrome of their own.
  */
 .btn-group {
@@ -135,9 +135,13 @@ provide(BTN_CONTAINER, {
  *
  * The clipping lives here rather than on .btn-group because the group's end-caps
  * sit outside its border and overflow:hidden would crop them.
+ *
+ * --color-seam, not an edge token: this fill is only ever seen through the 1px
+ * gaps, and at that width a translucent grey took its colour from whatever the
+ * control was sitting on. See the token's note in tailwind.css.
  */
 .btn-group__track {
-  @apply bg-edge-soft flex items-stretch overflow-hidden;
+  @apply bg-seam flex items-stretch overflow-hidden;
   gap: 1px;
   width: 100%;
   border-radius: var(--radius-control-inner, 7px);
@@ -231,9 +235,12 @@ provide(BTN_CONTAINER, {
  */
 .btn-group__track > :deep(span) {
   @apply bg-control text-text flex items-center justify-center px-3.5;
-  /* Mirrors .btn--sm's label, since a group with a label segment is a paginator
-     and paginators are sm. If Btn's type scale moves, this moves with it - it
-     cannot inherit, because size is a per-member prop the group cannot see. */
-  @apply text-[15px] leading-tight font-normal whitespace-nowrap;
+  /* Mirrors .btn--sm's label and height, since a group with a label segment is a
+     paginator and paginators are sm. If Btn's type scale moves, this moves with
+     it - it cannot inherit, because size is a per-member prop the group cannot
+     see. The height is not decoration: on a single-page list the arrows are gone
+     and this label is the only member left, so without it the whole control
+     collapses to the label's own padding. */
+  @apply min-h-[43px] text-[15px] leading-tight font-normal whitespace-nowrap;
 }
 </style>

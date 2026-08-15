@@ -47,6 +47,18 @@
   --color-edge-faint: rgb(122 130 136 / 0.16);
 
   /*
+   * The hairline a BtnGroup's 1px member gaps read as. Opaque, unlike the edge
+   * tokens: a translucent divider lets whatever the control sits on - a panel, a
+   * store image, the page - through the seam, so the paginator's dividers
+   * changed colour from one list to the next.
+   *
+   * $gray-dark, which is what --color-edge-soft composited to over the control
+   * fill on a dark page - so the seam keeps the frame's own colour family rather
+   * than cutting a near-black gap through a control the frame draws in grey.
+   */
+  --color-seam: #3a3f44;
+
+  /*
    * $gray-light, i.e. --color-edge at full opacity. The previous #4a4f54 sat
    * three to five points of luminance above --color-control, which made the
    * end-cap the least visible part of the frame it is supposed to signature.

@@ -9,6 +9,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import PanelUserTag from "@/frontend/components/base/PanelUserTag/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { type Fleet, type FleetInventory } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -99,10 +100,11 @@ const openEditModal = () => {
       </template>
     </PanelHeading>
     <PanelBody class="inventory-panel-body" rounded="bottom">
-      <div v-if="inventory.manager" class="inventory-panel-manager">
-        {{ t("labels.fleets.logistics.managedBy") }}
-        {{ inventory.manager.username }}
-      </div>
+      <PanelUserTag
+        v-if="inventory.manager"
+        :label="t('labels.fleets.logistics.managedBy')"
+        :member="inventory.manager"
+      />
       <div class="inventory-panel-counts">
         <div class="inventory-panel-count">
           <span class="inventory-panel-count-number">
@@ -146,20 +148,6 @@ const openEditModal = () => {
     > :first-child {
       font-size: 18px;
     }
-  }
-
-  &-manager {
-    position: absolute;
-    bottom: 10px;
-    right: 0;
-    padding: 4px 10px;
-    background-color: $primary;
-    border-radius: 10px 0 0 10px;
-    font-size: 0.85em;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: #fff;
   }
 
   &-counts {

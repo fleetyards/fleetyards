@@ -11,7 +11,10 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { FleetMemberQuery, type FilterOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFilters } from "@/shared/composables/useFilters";
-import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import {
+  InputSizesEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 
 type Props = {
   variant?: "members" | "invites";
@@ -92,14 +95,20 @@ const stateOptions: FilterOption[] = [
 
 <template>
   <form @submit.prevent="filter(form)">
-    <FormInput
-      id="username"
-      name="username"
-      v-model="form.usernameCont"
-      translation-key="filters.fleets.members.username"
-      :no-label="true"
-      :clearable="true"
-    />
+    <!-- In the page header rather than this sidebar, like the hangar's: a
+         members list is searched by name far more often than it is filtered, and
+         the sidebar is collapsed by default. -->
+    <Teleport to="#header-left">
+      <FormInput
+        id="username"
+        name="username"
+        :size="InputSizesEnum.MEDIUM"
+        v-model="form.usernameCont"
+        translation-key="filters.fleets.members.username"
+        :no-label="true"
+        :clearable="true"
+      />
+    </Teleport>
 
     <FilterGroup
       v-model="form.roleIn"
