@@ -10,7 +10,8 @@ module UexFixtures
       vehicles: uex_fixture("vehicles"),
       vehicle_purchase_prices: uex_fixture("vehicles_purchases_prices_all"),
       vehicle_rental_prices: uex_fixture("vehicles_rentals_prices_all"),
-      terminals: uex_fixture("terminals")
+      terminals: uex_fixture("terminals"),
+      commodities: uex_fixture("commodities")
     }.merge(overrides)
 
     client = mock("Uex::Client")
@@ -26,6 +27,18 @@ module UexFixtures
       name_match: create(:model, name: "Avenger Titan", manufacturer: create(:manufacturer, code: "AEGS")),
       name_full_match: create(:model, name: "Constellation Andromeda", manufacturer: create(:manufacturer, code: "RSI")),
       mapping_match: create(:model, name: "C2 Hercules", manufacturer: create(:manufacturer, code: "CRUS"))
+    }
+  end
+
+  # The commodities the fixture UEX rows are expected to resolve to: two by
+  # name, one through MAPPINGS, and one UEX offers a near-neighbour for
+  # ("Organics") that must not be taken as a match.
+  def create_uex_fixture_commodities
+    {
+      name_match: create(:commodity, name: "Gold", sc_key: "items_commodities_gold"),
+      punctuated_match: create(:commodity, name: "Agricium (Ore)", sc_key: "items_commodities_agricium_ore"),
+      mapping_match: create(:commodity, name: "Lastaprene", sc_key: "items_commodities_lastaprene"),
+      near_neighbour: create(:commodity, name: "Organs", sc_key: "items_commodities_organs")
     }
   end
 end

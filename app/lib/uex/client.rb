@@ -22,6 +22,10 @@ module Uex
       get("terminals")
     end
 
+    def commodities
+      get("commodities")
+    end
+
     private def get(path)
       # UEX answers 403 to requests without a User-Agent, so it is not optional.
       response = Typhoeus.get(

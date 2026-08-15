@@ -1,0 +1,65 @@
+{
+  "status": "ok",
+  "data": [
+    {
+      "id": 33,
+      "name": "Gold",
+      "code": "GOLD",
+      "kind": "Metal",
+      "weight_scu": 1.25,
+      "price_buy": 27527,
+      "price_sell": 28270,
+      "is_available": 1
+    },
+    {
+      "id": 24,
+      "name": "Agricium (Ore)",
+      "code": "AGRIORE",
+      "kind": "Metal",
+      "weight_scu": 1.0,
+      "price_buy": 0,
+      "price_sell": 2245,
+      "is_available": 1
+    },
+    {
+      "id": 137,
+      "name": "Lastaphrene",
+      "code": "LASTA",
+      "kind": "Man-made",
+      "weight_scu": 1.0,
+      "price_buy": 0,
+      "price_sell": 0,
+      "is_available": 1
+    },
+    {
+      "id": 145,
+      "name": "Lunes",
+      "code": "LUNE",
+      "kind": "Food",
+      "weight_scu": 1.0,
+      "price_buy": 0,
+      "price_sell": 0,
+      "is_available": 1
+    },
+    {
+      "id": 186,
+      "name": "Organics",
+      "code": "ORGA",
+      "kind": "Organics",
+      "weight_scu": 1.0,
+      "price_buy": 9799,
+      "price_sell": 12615,
+      "is_available": 1
+    },
+    {
+      "id": 999,
+      "name": "Aslarite",
+      "code": "ASLA",
+      "kind": "Mineral",
+      "weight_scu": 1.0,
+      "price_buy": 0,
+      "price_sell": 5100,
+      "is_available": 1
+    }
+  ]
+}
