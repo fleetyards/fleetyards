@@ -16,6 +16,9 @@ if fleet_inventory.manager.present?
   json.manager do
     json.id fleet_inventory.manager.id
     json.username fleet_inventory.manager.username
+    json.rsi_handle fleet_inventory.manager.rsi_handle
+    json.discord_profile_url fleet_inventory.manager.discord_profile_url
+    json.citizenid_profile_url fleet_inventory.manager.citizenid_profile_url
   end
 else
   json.manager nil

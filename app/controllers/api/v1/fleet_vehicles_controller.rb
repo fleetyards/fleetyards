@@ -18,6 +18,7 @@ module Api
         :model_paint,
         :module_package,
         :vehicle_loadouts,
+        {user: [:omniauth_connections]},
         {model: [:manufacturer]},
         {vehicle_modules: :model_module},
         {vehicle_upgrades: :model_upgrade},

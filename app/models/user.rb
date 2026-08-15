@@ -254,17 +254,25 @@ class User < ApplicationRecord
   def citizenid_profile_url
     return unless rsi_handle_verified?
 
-    connection = omniauth_connections.find_by(provider: "citizenid")
+    connection = connection_for("citizenid")
     return if connection.blank?
 
     "#{Rails.configuration.app.citizenid[:issuer]}profile/#{connection.uid}"
   end
 
   def discord_profile_url
-    connection = omniauth_connections.find_by(provider: "discord")
+    connection = connection_for("discord")
     return if connection.blank?
 
     "https://discord.com/users/#{connection.uid}"
+  end
+
+  # detect rather than find_by: a user has at most a handful of connections, so
+  # reading them from a preloaded association costs one query for all providers
+  # instead of one per profile url - the fleet vehicle list asks every owner for
+  # two of them.
+  private def connection_for(provider)
+    omniauth_connections.detect { |connection| connection.provider == provider }
   end
 
   def public_wishlist_url

@@ -23,7 +23,10 @@ module V1
                 type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
-                  username: {type: :string}
+                  username: {type: :string},
+                  rsiHandle: {type: :string},
+                  discordProfileUrl: {type: :string, format: :uri},
+                  citizenidProfileUrl: {type: :string, format: :uri}
                 }
               },
               image: {"$ref": "#/components/schemas/MediaFile"},

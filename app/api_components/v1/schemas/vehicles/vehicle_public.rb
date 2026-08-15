@@ -30,6 +30,10 @@ module V1
             username: {type: :string},
             userAvatar: {type: :string, format: :uri},
             userRsiHandle: {type: :string},
+            # Only the fleet-scoped vehicle endpoints send these; the public hangar
+            # and public fleet payloads carry no contact details for an owner.
+            userDiscordProfileUrl: {type: :string, format: :uri},
+            userCitizenidProfileUrl: {type: :string, format: :uri},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
