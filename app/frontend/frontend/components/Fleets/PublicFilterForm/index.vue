@@ -25,8 +25,8 @@ const { t } = useI18n();
 const { filter, resetFilter, isFilterSelected, filters } =
   useFilters<FleetVehicleQuery>({ updateCallback: setupForm });
 
-function setupForm() {
-  form.value = {
+function prefillFormValues(): FleetVehicleQuery {
+  return {
     searchCont: filters.value.searchCont,
     modelNameCont: filters.value.modelNameCont,
     onSaleEq: filters.value.onSaleEq,
@@ -47,7 +47,19 @@ function setupForm() {
   };
 }
 
-const form = ref<FleetVehicleQuery>({});
+function setupForm() {
+  form.value = prefillFormValues();
+}
+
+const form = ref<FleetVehicleQuery>(prefillFormValues());
+
+watch(
+  () => form.value,
+  () => {
+    filter(form.value);
+  },
+  { deep: true },
+);
 
 const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 </script>
