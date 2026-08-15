@@ -131,10 +131,29 @@ const refetchEverything = async () => {
   await refetchItems();
 };
 
+const inventoryCreatedComlink = ref();
+const inventoryUpdatedComlink = ref();
+const inventoryItemCreatedComlink = ref();
+
 onMounted(() => {
-  comlink.on("fleet-inventory-created", () => void refetchEverything());
-  comlink.on("fleet-inventory-updated", () => void refetchEverything());
-  comlink.on("fleet-inventory-item-created", () => void refetchEverything());
+  inventoryCreatedComlink.value = comlink.on(
+    "fleet-inventory-created",
+    () => void refetchEverything(),
+  );
+  inventoryUpdatedComlink.value = comlink.on(
+    "fleet-inventory-updated",
+    () => void refetchEverything(),
+  );
+  inventoryItemCreatedComlink.value = comlink.on(
+    "fleet-inventory-item-created",
+    () => void refetchEverything(),
+  );
+});
+
+onUnmounted(() => {
+  inventoryCreatedComlink.value();
+  inventoryUpdatedComlink.value();
+  inventoryItemCreatedComlink.value();
 });
 
 const crumbs = computed(() => [
