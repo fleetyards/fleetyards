@@ -105,6 +105,24 @@ class FleetInventoryItemTest < ActiveSupport::TestCase
     assert_includes item.errors.attribute_names, :item_type
   end
 
+  test "accepts a reference to a commodity" do
+    commodity = create(:commodity, name: "Gold")
+
+    item = build(:fleet_inventory_item, fleet_inventory: @inventory, name: nil,
+      category: :commodity, unit: :scu, item: commodity)
+
+    assert_predicate item, :valid?
+    assert_equal "Gold", item.name
+  end
+
+  test "rejects a reference to a commodity that does not exist" do
+    item = build(:fleet_inventory_item, fleet_inventory: @inventory,
+      item_type: "Commodity", item_id: SecureRandom.uuid)
+
+    assert_not item.valid?
+    assert_includes item.errors.attribute_names, :item_id
+  end
+
   test "rejects a reference to a component that does not exist" do
     item = build(:fleet_inventory_item, fleet_inventory: @inventory,
       item_type: "Component", item_id: SecureRandom.uuid)
