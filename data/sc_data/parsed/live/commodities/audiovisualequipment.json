@@ -1,0 +1,10 @@
+{
+  "key": "audiovisualequipment",
+  "sc_key": "items_commodities_audiovisualequipment",
+  "ref": "7d6416a5-7ec4-4fec-9a07-ae88a5e2ee98",
+  "name": "Audio-Visual Equipment",
+  "commodity_type": "consumer_goods",
+  "commodity_type_name": "Consumer Goods",
+  "description": "Devices, cabling, and rigging used for multimedia presentations and events.",
+  "icon": null
+}

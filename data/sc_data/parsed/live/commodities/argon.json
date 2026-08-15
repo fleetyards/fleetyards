@@ -1,0 +1,10 @@
+{
+  "key": "argon",
+  "sc_key": "items_commodities_argon",
+  "ref": "2be53905-e22e-4c75-9b05-7716d65552dc",
+  "name": "Argon",
+  "commodity_type": "gas",
+  "commodity_type_name": "Gas",
+  "description": "Chemically inert under most conditions, argon is an odorless, colorless gas that is as soluble in water as oxygen. Appears lilac in a discharge tube.",
+  "icon": null
+}

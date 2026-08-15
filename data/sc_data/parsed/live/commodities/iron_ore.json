@@ -1,0 +1,10 @@
+{
+  "key": "iron_ore",
+  "sc_key": "items_commodities_iron_ore",
+  "ref": null,
+  "name": "Iron (Ore)",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "Element Fe, strong, malleable, highly susceptible to rust and found in large volume across most star systems.",
+  "icon": null
+}

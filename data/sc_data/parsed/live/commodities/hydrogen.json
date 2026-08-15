@@ -1,0 +1,10 @@
+{
+  "key": "hydrogen",
+  "sc_key": "items_commodities_hydrogen",
+  "ref": "3a6782c6-8ffa-4df8-9daa-5656be09356e",
+  "name": "Hydrogen",
+  "commodity_type": "gas",
+  "commodity_type_name": "Gas",
+  "description": "The most abundant element in the universe. The building block of stars. Highly flammable in its pure form.",
+  "icon": null
+}

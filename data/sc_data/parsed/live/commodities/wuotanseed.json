@@ -1,0 +1,10 @@
+{
+  "key": "wuotanseed",
+  "sc_key": "items_commodities_wuotanseed",
+  "ref": null,
+  "name": "Wuotan Seed",
+  "commodity_type": "natural",
+  "commodity_type_name": "Natural Materials",
+  "description": "Harvested from the wuotan plant, these seed pods become bioluminescent when ripe to draw attention and encourage their spread. They are often collected to utilize as a natural light source.",
+  "icon": null
+}

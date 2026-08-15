@@ -1,0 +1,10 @@
+{
+  "key": "partillium",
+  "sc_key": "items_commodities_partillium",
+  "ref": "65d3a21c-b265-4a25-91e8-55b25c56afee",
+  "name": "Partillium",
+  "commodity_type": "gas",
+  "commodity_type_name": "Gas",
+  "description": "Partillium description.",
+  "icon": null
+}

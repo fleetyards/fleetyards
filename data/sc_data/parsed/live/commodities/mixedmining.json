@@ -1,0 +1,10 @@
+{
+  "key": "mixedmining",
+  "sc_key": "items_commodities_mixedmining",
+  "ref": "891080af-43fb-4afa-890c-8d7acdf5eb76",
+  "name": "Mixed Mining",
+  "commodity_type": "mineral",
+  "commodity_type_name": "Mineral",
+  "description": "A mixed collection of commodities obtained by mining",
+  "icon": null
+}

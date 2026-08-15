@@ -1,0 +1,10 @@
+{
+  "key": "iodine",
+  "sc_key": "items_commodities_iodine",
+  "ref": "a542c867-6f1b-497e-860e-c8353dac6169",
+  "name": "Iodine",
+  "commodity_type": "gas",
+  "commodity_type_name": "Gas",
+  "description": "The heaviest stable halogen. Sublimes from a purple-black metallic solid into a violet gas.",
+  "icon": null
+}

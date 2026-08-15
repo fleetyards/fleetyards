@@ -1,0 +1,10 @@
+{
+  "key": "thrust",
+  "sc_key": "items_commodities_thrust",
+  "ref": "385e46f7-9768-45af-aa9f-4049c2021386",
+  "name": "Thrust",
+  "commodity_type": "vice",
+  "commodity_type_name": "Vice",
+  "description": "This cocktail of chemicals provides the user with a massive boost of energy, increased sociability, euphoria, and heightened tactile sensitivity. Rumored to have been developed as an energy drink base, this drug has proven popular among those wishing for extra energy or to \"party longer.\" However, owing to the risk of heart attack, deadly dehydration, and seizures, the mix has been banned in most areas. Users can be identified by their stuttering, rambling speech, flushed skin, and sweating.",
+  "icon": "ui/textures/vector/general/items/inv_icon_altruciatoxin.svg"
+}

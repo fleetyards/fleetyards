@@ -1,0 +1,10 @@
+{
+  "key": "carbon",
+  "sc_key": "items_commodities_carbon",
+  "ref": "1e65e4c1-c7c2-4ed6-9d02-f20deb26d74b",
+  "name": "Carbon",
+  "commodity_type": "nonmetals",
+  "commodity_type_name": "Nonmetals",
+  "description": "Owing to carbon's ability to form a variety of allotropes with vastly different properties and its sheer abundance in the universe, this element is used in a wide variety of applications.",
+  "icon": null
+}

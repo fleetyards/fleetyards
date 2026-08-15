@@ -1,0 +1,10 @@
+{
+  "key": "agricium",
+  "sc_key": "items_commodities_agricium",
+  "ref": "a3975b75-4566-4849-a46e-e462a99a2c34",
+  "name": "Agricium",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "A rare and valuable silvery metal with a blue-green sheen. Malleable, ductile, and largely non-reactive.",
+  "icon": null
+}

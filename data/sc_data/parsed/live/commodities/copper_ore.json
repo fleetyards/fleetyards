@@ -1,0 +1,10 @@
+{
+  "key": "copper_ore",
+  "sc_key": "items_commodities_copper_ore",
+  "ref": "8772fc77-f003-44c1-97c3-de3726059d21",
+  "name": "Copper (Ore)",
+  "commodity_type": "metal",
+  "commodity_type_name": "Metal",
+  "description": "A soft red-orange colored metal with high conductivity. Prone to oxidation unless properly treated.",
+  "icon": "ui/textures/vector/general/items/inv_icon_copper.svg"
+}

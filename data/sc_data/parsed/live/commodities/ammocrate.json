@@ -1,0 +1,10 @@
+{
+  "key": "ammocrate",
+  "sc_key": "items_commodities_ammocrate",
+  "ref": null,
+  "name": "Ammo Crate",
+  "commodity_type": "processed_goods",
+  "commodity_type_name": "Processed Goods",
+  "description": null,
+  "icon": null
+}
