@@ -8,6 +8,7 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
@@ -83,20 +84,21 @@ const crumbs = computed(() => [
 
 <template>
   <BreadCrumbs :crumbs="crumbs" />
-  <div class="row">
-    <div class="col-12 col-lg-8">
-      <Heading size="hero" hero>{{
-        t("headlines.logistics.inventories")
-      }}</Heading>
-    </div>
-    <div class="col-12 col-lg-4 flex justify-end items-center">
-      <div v-if="canCreate" class="page-actions page-actions-right">
-        <Btn @click="openInventoryModal()">
-          {{ t("actions.logistics.createInventory") }}
-        </Btn>
-      </div>
-    </div>
-  </div>
+  <Heading size="hero" hero>
+    {{ t("headlines.logistics.inventories") }}
+  </Heading>
+
+  <Teleport v-if="canCreate" to="#header-right">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('actions.logistics.createInventory')"
+      mobile-icon-only
+      @click="openInventoryModal()"
+    >
+      <i class="fa-light fa-plus" />
+      {{ t("actions.logistics.createInventory") }}
+    </Btn>
+  </Teleport>
 
   <Loader :loading="isLoading" />
 
