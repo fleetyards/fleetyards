@@ -8,23 +8,30 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import {
   type Fleet,
   type FleetMember,
+  type FleetInventory,
   type FleetInventoryItem,
+  useFleetInventories,
   useFleetAllInventoryStock,
   useFleetAllInventoryItems,
 } from "@/services/fyApi";
+import InventoryPanel from "@/frontend/components/Logistics/InventoryPanel/index.vue";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
@@ -36,6 +43,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const comlink = useComlink();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
@@ -49,6 +57,16 @@ const canManageInventories = computed(() =>
 
 const activeTab = ref<"stock" | "log">("stock");
 
+const {
+  data: inventories,
+  isLoading: inventoriesLoading,
+  refetch: refetchInventories,
+} = useFleetInventories(fleetSlug, {});
+
+const inventoryList = computed<FleetInventory[]>(
+  () => inventories.value?.items ?? [],
+);
+
 const refetchAll = async () => {
   await refetchItems();
 };
@@ -60,8 +78,11 @@ const queryParams = computed(() => ({
 }));
 
 // Stock view
-const { data: stockData, isLoading: stockLoading } =
-  useFleetAllInventoryStock(fleetSlug);
+const {
+  data: stockData,
+  isLoading: stockLoading,
+  refetch: refetchStock,
+} = useFleetAllInventoryStock(fleetSlug);
 
 const { stockRecords } = useInventoryStockList(stockData);
 
@@ -93,6 +114,48 @@ const stockItemRoute = (inventorySlug?: string, itemSlug?: string) => ({
   },
 });
 
+const openInventoryModal = (inventory?: FleetInventory) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Logistics/InventoryModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      inventory,
+    },
+  });
+};
+
+const refetchEverything = async () => {
+  await refetchInventories();
+  await refetchStock();
+  await refetchItems();
+};
+
+const inventoryCreatedComlink = ref();
+const inventoryUpdatedComlink = ref();
+const inventoryItemCreatedComlink = ref();
+
+onMounted(() => {
+  inventoryCreatedComlink.value = comlink.on(
+    "fleet-inventory-created",
+    () => void refetchEverything(),
+  );
+  inventoryUpdatedComlink.value = comlink.on(
+    "fleet-inventory-updated",
+    () => void refetchEverything(),
+  );
+  inventoryItemCreatedComlink.value = comlink.on(
+    "fleet-inventory-item-created",
+    () => void refetchEverything(),
+  );
+});
+
+onUnmounted(() => {
+  inventoryCreatedComlink.value();
+  inventoryUpdatedComlink.value();
+  inventoryItemCreatedComlink.value();
+});
+
 const crumbs = computed(() => [
   {
     to: { name: "fleet", params: { slug: props.fleet.slug } },
@@ -111,20 +174,38 @@ const crumbs = computed(() => [
   </div>
 
   <Teleport v-if="canManageInventories" to="#header-right">
-    <Btn
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      :to="{
-        name: 'fleet-logistics-inventories',
-        params: { slug: fleet.slug },
-      }"
-    >
-      <i class="fa-duotone fa-boxes-stacked" />
-      {{ t("actions.logistics.viewInventories") }}
+    <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openInventoryModal()">
+      <i class="fa-light fa-plus" />
+      {{ t("actions.logistics.createInventory") }}
     </Btn>
   </Teleport>
 
+  <Loader :loading="inventoriesLoading" />
+
+  <Grid v-if="inventoryList.length" :records="inventoryList" primary-key="id">
+    <template #default="{ record }">
+      <InventoryPanel
+        :inventory="record"
+        :to="{
+          name: 'fleet-logistics-inventory',
+          params: { slug: fleet.slug, inventory: record.slug },
+        }"
+        :managed-by="record.manager?.username"
+        :editable="canManageInventories"
+        @edit="openInventoryModal(record)"
+      />
+    </template>
+  </Grid>
+
+  <Empty
+    v-if="!inventoriesLoading && !inventoryList.length"
+    variant="box"
+    hide-actions
+    name="inventories"
+  />
+
   <FilteredList
+    v-if="inventoryList.length"
     name="all-inventory-items"
     :records="activeRecords"
     :async-status="logAsyncStatus"

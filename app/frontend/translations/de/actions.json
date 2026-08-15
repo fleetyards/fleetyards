@@ -245,7 +245,6 @@
         "hideRemoved": "Entfernte Einträge ausblenden"
       },
       "logistics": {
-        "viewInventories": "View Inventories",
         "viewRequests": "View Requests",
         "newRequest": "New Request",
         "createRequest": "Create Request",

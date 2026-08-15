@@ -213,13 +213,6 @@ const crumbs = computed(() => [
     to: { name: "fleet-logistics", params: { slug: props.fleet.slug } },
     label: t("nav.fleets.logistics.index"),
   },
-  {
-    to: {
-      name: "fleet-logistics-inventories",
-      params: { slug: props.fleet.slug },
-    },
-    label: t("headlines.logistics.inventories"),
-  },
 ]);
 </script>
 
