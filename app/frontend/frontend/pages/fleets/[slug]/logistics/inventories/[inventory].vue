@@ -11,7 +11,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import {
   type Fleet,
@@ -104,8 +103,6 @@ const canManageInventory = computed(() =>
     "fleet:inventories:update",
   ]),
 );
-
-const mobile = useMobile();
 
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
@@ -262,7 +259,11 @@ const crumbs = computed(() => [
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.logistics.importCsv") }}
           </Btn>
-          <Btn :size="BtnSizesEnum.MD" @click="openEditModal">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            :aria-label="t('actions.logistics.editInventory')"
+            @click="openEditModal"
+          >
             <i class="fa-duotone fa-pen" />
           </Btn>
         </Teleport>
@@ -277,30 +278,6 @@ const crumbs = computed(() => [
         >
           <template #filter>
             <InventoryItemFilterForm :update-callback="refetchAll" />
-          </template>
-
-          <template #actions-right>
-            <BtnDropdown
-              v-if="mobile && canManageInventory"
-              :size="BtnSizesEnum.SM"
-            >
-              <Btn :size="BtnSizesEnum.SM" @click="openDepositModal">
-                <i class="fa-duotone fa-arrow-down-to-bracket" />
-                <span>{{ t("actions.logistics.deposit") }}</span>
-              </Btn>
-              <Btn :size="BtnSizesEnum.SM" @click="openWithdrawModal">
-                <i class="fa-duotone fa-arrow-up-from-bracket" />
-                <span>{{ t("actions.logistics.withdraw") }}</span>
-              </Btn>
-              <Btn :size="BtnSizesEnum.SM" @click="openCsvImportModal">
-                <i class="fa-duotone fa-file-csv" />
-                <span>{{ t("actions.logistics.importCsv") }}</span>
-              </Btn>
-              <Btn :size="BtnSizesEnum.SM" @click="openEditModal">
-                <i class="fa-duotone fa-pen" />
-                <span>{{ t("actions.logistics.editInventory") }}</span>
-              </Btn>
-            </BtnDropdown>
           </template>
 
           <template #actions-left>

@@ -10,7 +10,6 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -28,12 +27,10 @@ import { useInventoryStockList } from "@/frontend/composables/useInventoryStockL
 import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useMobile } from "@/shared/composables/useMobile";
 
 const { t } = useI18n();
 const route = useRoute();
 const comlink = useComlink();
-const mobile = useMobile();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const inventorySlug = computed(() => route.params.inventory as string);
@@ -184,18 +181,36 @@ const crumbs = computed(() => [
           {{ inventory.description }}
         </p>
 
-        <Teleport v-if="!mobile" to="#header-right">
-          <Btn :size="BtnSizesEnum.MD" @click="openItemModal('deposit')">
+        <Teleport to="#header-right">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openItemModal('deposit')"
+          >
+            <i class="fa-duotone fa-arrow-down-to-square" />
             {{ t("actions.logistics.deposit") }}
           </Btn>
-          <Btn :size="BtnSizesEnum.MD" @click="openItemModal('withdrawal')">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openItemModal('withdrawal')"
+          >
+            <i class="fa-duotone fa-arrow-up-from-square" />
             {{ t("actions.logistics.withdraw") }}
           </Btn>
-          <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            mobile-icon-only
+            @click="openCsvImportModal"
+          >
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.logistics.importCsv") }}
           </Btn>
-          <Btn :size="BtnSizesEnum.MD" @click="openEditModal">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            :aria-label="t('actions.logistics.editInventory')"
+            @click="openEditModal"
+          >
             <i class="fa-duotone fa-pen" />
           </Btn>
         </Teleport>
@@ -210,27 +225,6 @@ const crumbs = computed(() => [
         >
           <template #filter>
             <InventoryItemFilterForm :update-callback="refetchAll" />
-          </template>
-
-          <template #actions-right>
-            <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SM">
-              <Btn :size="BtnSizesEnum.SM" @click="openItemModal('deposit')">
-                <i class="fa-duotone fa-arrow-down-to-bracket" />
-                <span>{{ t("actions.logistics.deposit") }}</span>
-              </Btn>
-              <Btn :size="BtnSizesEnum.SM" @click="openItemModal('withdrawal')">
-                <i class="fa-duotone fa-arrow-up-from-bracket" />
-                <span>{{ t("actions.logistics.withdraw") }}</span>
-              </Btn>
-              <Btn :size="BtnSizesEnum.SM" @click="openCsvImportModal">
-                <i class="fa-duotone fa-file-csv" />
-                <span>{{ t("actions.logistics.importCsv") }}</span>
-              </Btn>
-              <Btn :size="BtnSizesEnum.SM" @click="openEditModal">
-                <i class="fa-duotone fa-pen" />
-                <span>{{ t("actions.logistics.editInventory") }}</span>
-              </Btn>
-            </BtnDropdown>
           </template>
 
           <template #actions-left>

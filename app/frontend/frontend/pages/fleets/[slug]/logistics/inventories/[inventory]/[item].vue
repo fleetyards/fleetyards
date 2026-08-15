@@ -28,7 +28,6 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useMobile } from "@/shared/composables/useMobile";
 import { checkAccess } from "@/shared/utils/Access";
 
 type Props = {
@@ -43,7 +42,6 @@ const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const comlink = useComlink();
-const mobile = useMobile();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
 const fleetSlug = computed(() => props.fleet.slug);
@@ -222,13 +220,14 @@ const crumbs = computed(() => [
           </template>
         </Heading>
 
-        <Teleport v-if="!mobile && canManageItems" to="#header-right">
-          <Btn :size="BtnSizesEnum.MD" @click="openEditModal">
+        <Teleport v-if="canManageItems" to="#header-right">
+          <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openEditModal">
             <i class="fa-duotone fa-pen" />
             {{ t("actions.logistics.editStockItem") }}
           </Btn>
           <Btn
             :size="BtnSizesEnum.MD"
+            mobile-icon-only
             :tone="BtnTonesEnum.DANGER"
             @click="destroyStockItem"
           >
@@ -236,21 +235,6 @@ const crumbs = computed(() => [
             {{ t("actions.logistics.destroyStockItem") }}
           </Btn>
         </Teleport>
-
-        <div v-if="mobile && canManageItems" class="stock-item-actions">
-          <Btn :size="BtnSizesEnum.SM" @click="openEditModal">
-            <i class="fa-duotone fa-pen" />
-            {{ t("actions.logistics.editStockItem") }}
-          </Btn>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            :tone="BtnTonesEnum.DANGER"
-            @click="destroyStockItem"
-          >
-            <i class="fa-duotone fa-trash" />
-            {{ t("actions.logistics.destroyStockItem") }}
-          </Btn>
-        </div>
 
         <StockItemPanel :stock-item="stockItem" />
 
@@ -299,11 +283,3 @@ const crumbs = computed(() => [
     </template>
   </AsyncData>
 </template>
-
-<style lang="scss" scoped>
-.stock-item-actions {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-</style>
