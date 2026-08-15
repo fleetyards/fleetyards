@@ -2,6 +2,31 @@
 
 require "test_helper"
 
+# == Schema Information
+#
+# Table name: commodities
+#
+#  id             :uuid             not null, primary key
+#  commodity_type :string
+#  description    :text
+#  icon           :string
+#  name           :string           not null
+#  sc_key         :string
+#  sc_ref         :string
+#  slug           :string           not null
+#  uex_code       :string
+#  version        :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  uex_id         :integer
+#
+# Indexes
+#
+#  index_commodities_on_commodity_type  (commodity_type)
+#  index_commodities_on_sc_key          (sc_key) UNIQUE
+#  index_commodities_on_slug            (slug) UNIQUE
+#  index_commodities_on_uex_code        (uex_code)
+#
 class CommodityTest < ActiveSupport::TestCase
   test "generates a slug from the name" do
     commodity = create(:commodity, name: "Agricium (Ore)")

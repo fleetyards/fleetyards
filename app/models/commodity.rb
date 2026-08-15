@@ -12,7 +12,7 @@
 #  sc_key         :string
 #  sc_ref         :string
 #  slug           :string           not null
-#  uex_slug       :string
+#  uex_code       :string
 #  version        :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
@@ -23,7 +23,7 @@
 #  index_commodities_on_commodity_type  (commodity_type)
 #  index_commodities_on_sc_key          (sc_key) UNIQUE
 #  index_commodities_on_slug            (slug) UNIQUE
-#  index_commodities_on_uex_slug        (uex_slug)
+#  index_commodities_on_uex_code        (uex_code)
 #
 class Commodity < ApplicationRecord
   paginates_per 60
@@ -52,7 +52,7 @@ class Commodity < ApplicationRecord
   ]
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[name slug commodity_type sc_key uex_slug created_at updated_at]
+    %w[name slug commodity_type sc_key uex_code created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)
