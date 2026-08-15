@@ -5,14 +5,17 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import PanelTag from "@/frontend/components/base/PanelTag/index.vue";
+import PanelUserTag from "@/frontend/components/base/PanelUserTag/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 
 const { t } = useI18n();
 
 type Props = {
   fleetSlug: string;
-  owner?: string;
+  owner?: MemberContact;
   modelSlug?: string;
 };
 
@@ -36,64 +39,13 @@ const openOwnersModal = () => {
 </script>
 
 <template>
-  <button v-if="modelSlug" type="button" class="owner" @click="openOwnersModal">
+  <PanelTag v-if="modelSlug" @click="openOwnersModal">
     {{ t("labels.vehicle.owner") }}
     <i class="fa fa-bars-staggered" />
-  </button>
-  <a
+  </PanelTag>
+  <PanelUserTag
     v-else-if="owner"
-    class="owner"
-    :href="`/hangar/${owner}`"
-    target="_blank"
-    rel="noopener"
-  >
-    {{ t("labels.vehicle.owner") }}
-    <span class="owner__name">{{ owner }}</span>
-  </a>
+    :label="t('labels.vehicle.owner')"
+    :member="owner"
+  />
 </template>
-
-<style lang="scss" scoped>
-/*
- * The tag is the control, rather than a div wrapping a Btn: Btn is sized for a
- * toolbar - 43px tall with a fixed 15px label - so it, not the tag, was setting
- * the height, and its hover tint painted a second, inset box inside the blue.
- * Restyling that from here meant reaching into another component with :deep.
- */
-.owner {
-  position: absolute;
-  bottom: 10px;
-  right: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  // Same box as .model-panel-on-sale, the other tag pinned to this panel, so the
-  // two read as one family rather than two sizes of badge.
-  height: 40px;
-  margin: 0;
-  padding: 0 12px;
-  background-color: $primary;
-  border: 0;
-  border-radius: 10px 0 0 10px;
-  color: #fff;
-  font-size: 13px;
-  line-height: 1.4;
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.15s ease-in-out;
-}
-
-.owner:hover {
-  background-color: color.adjust($primary, $lightness: 8%);
-  color: #fff;
-}
-
-.owner:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: -4px;
-}
-
-.owner__name {
-  font-weight: 600;
-}
-</style>

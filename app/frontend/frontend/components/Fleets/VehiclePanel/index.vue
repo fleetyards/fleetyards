@@ -14,6 +14,7 @@ import type {
   FleetModelCountsStats,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 
 const { t } = useI18n();
 
@@ -69,8 +70,30 @@ const loaner = computed(() => {
   return (props.fleetVehicle as VehiclePublic).loaner;
 });
 
-const username = computed(() => {
-  return (props.fleetVehicle as VehiclePublic).username;
+const owner = computed<MemberContact | undefined>(() => {
+  const vehicle = props.fleetVehicle as VehiclePublic;
+
+  if (!vehicle.username) {
+    return undefined;
+  }
+
+  return {
+    username: vehicle.username,
+    rsiHandle: vehicle.userRsiHandle,
+    discordProfileUrl: vehicle.userDiscordProfileUrl,
+    citizenidProfileUrl: vehicle.userCitizenidProfileUrl,
+  };
+});
+
+// Only a grouped panel stands for several ships and so needs the owners modal.
+// A single vehicle names its own owner - and its `slug` is the vehicle's, which
+// the modal, filtering by model slug, would find nothing for.
+const ownersModelSlug = computed(() => {
+  if ((props.fleetVehicle as VehiclePublic).model) {
+    return undefined;
+  }
+
+  return props.fleetVehicle.slug;
 });
 
 const serial = computed(() => {
@@ -171,8 +194,8 @@ const route = useRoute();
       </div>
       <VehicleOwner
         v-if="showOwner"
-        :owner="username"
-        :model-slug="fleetVehicle.slug"
+        :owner="owner"
+        :model-slug="ownersModelSlug"
         :fleet-slug="fleetSlug"
       />
       <LoadoutMarker v-if="activeLoadout" :loadout="activeLoadout" />
