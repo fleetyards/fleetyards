@@ -65,13 +65,21 @@ module InventoryScoped
       end
     end
 
+    # Provisioning happens inside the transaction for the same reason it does in
+    # `create`: an import that lands nothing — an empty file, a malformed one, or
+    # one whose every row is rejected — must not leave an inventory behind.
     def import
       authorize! inventory, with: inventory_policy, to: :update?
 
       file = params.require(:file)
+      result = nil
 
-      importer = InventoryItemCsvImporter.new(provisioned_inventory, file, current_resource_owner)
-      result = importer.call
+      ActiveRecord::Base.transaction do
+        importer = InventoryItemCsvImporter.new(provisioned_inventory, file, current_resource_owner)
+        result = importer.call
+
+        raise ActiveRecord::Rollback if result[:imported].to_i.zero?
+      end
 
       render json: result, status: :ok
     end

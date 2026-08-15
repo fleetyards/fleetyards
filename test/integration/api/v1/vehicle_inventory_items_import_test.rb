@@ -54,6 +54,35 @@ class Api::V1::VehicleInventoryItemsImportTest < ActionDispatch::IntegrationTest
     assert_equal 1, inventory.inventory_items.count
   end
 
+  test "an import that lands nothing leaves no inventory behind" do
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      post import_path, params: {file: csv_upload(<<~CSV)}
+        name,category,quantity,unit
+        ,commodity,10,scu
+        Titanium,spaceship,10,scu
+      CSV
+    end
+
+    assert_response :success
+    body = JSON.parse(response.body)
+
+    assert_equal 0, body["imported"]
+    assert_equal 2, body["errors"].count
+  end
+
+  test "a malformed file leaves no inventory behind" do
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      post import_path, params: {file: csv_upload("name,quantity\n\"unclosed,10\n")}
+    end
+
+    assert_response :success
+    assert_equal 0, JSON.parse(response.body)["imported"]
+  end
+
   test "reports per-row errors without aborting valid rows" do
     sign_in @user
 
