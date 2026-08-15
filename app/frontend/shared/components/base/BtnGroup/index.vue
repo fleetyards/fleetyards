@@ -235,9 +235,12 @@ provide(BTN_CONTAINER, {
  */
 .btn-group__track > :deep(span) {
   @apply bg-control text-text flex items-center justify-center px-3.5;
-  /* Mirrors .btn--sm's label, since a group with a label segment is a paginator
-     and paginators are sm. If Btn's type scale moves, this moves with it - it
-     cannot inherit, because size is a per-member prop the group cannot see. */
-  @apply text-[15px] leading-tight font-normal whitespace-nowrap;
+  /* Mirrors .btn--sm's label and height, since a group with a label segment is a
+     paginator and paginators are sm. If Btn's type scale moves, this moves with
+     it - it cannot inherit, because size is a per-member prop the group cannot
+     see. The height is not decoration: on a single-page list the arrows are gone
+     and this label is the only member left, so without it the whole control
+     collapses to the label's own padding. */
+  @apply min-h-[43px] text-[15px] leading-tight font-normal whitespace-nowrap;
 }
 </style>
