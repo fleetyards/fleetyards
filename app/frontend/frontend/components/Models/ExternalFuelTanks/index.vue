@@ -128,7 +128,7 @@ const groups = computed<Group[]>(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 
 .fuel-tanks {
   display: flex;

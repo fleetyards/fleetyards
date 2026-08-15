@@ -40,5 +40,5 @@ const { t, toNumber } = useI18n();
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 </style>

@@ -1,0 +1,10 @@
+{
+  "it": {
+    "baseChip": {
+      "states": {
+        "included": "incluso",
+        "excluded": "escluso"
+      }
+    }
+  }
+}

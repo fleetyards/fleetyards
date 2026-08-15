@@ -168,7 +168,6 @@ const onConfirm = async () => {
           >
             <Panel
               :alignment="PanelAlignmentsEnum.LEFT"
-              slim
               class="link-module-panel"
               @click.capture="toggleSelect(mod.id)"
             >
@@ -181,11 +180,7 @@ const onConfirm = async () => {
                 :alt="mod.name"
               />
               <div>
-                <PanelHeading
-                  :level="HeadingLevelEnum.H3"
-                  title-align="right"
-                  multiline
-                >
+                <PanelHeading :level="HeadingLevelEnum.H3">
                   {{ mod.name }}
                 </PanelHeading>
                 <p v-if="mod.manufacturer" class="text-muted mb-0">
@@ -220,7 +215,7 @@ const onConfirm = async () => {
     </div>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :loading="linking"
           :disabled="!selectedIds.size"

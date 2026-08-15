@@ -168,7 +168,11 @@ onMounted(async () => {
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      data-test="fleetchart-link"
+      @click="toggleFleetchart"
+    >
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>

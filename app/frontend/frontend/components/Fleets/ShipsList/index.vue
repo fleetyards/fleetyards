@@ -210,9 +210,10 @@ const {
         <div class="fleet-labels">
           <ModelClassLabels
             v-if="fleetStats"
-            :label="t('labels.fleet.classes')"
+            :label="t('labels.classifications')"
             :count-data="fleetStats.classifications"
             filter-key="classificationIn"
+            exclude-filter-key="classificationNotIn"
           />
         </div>
       </div>

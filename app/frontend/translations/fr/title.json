@@ -106,7 +106,8 @@
         "states": "États - Tests visuels",
         "notifications": "Notifications - Tests Visuels",
         "syncModal": "Modale Sync - Tests Visuels",
-        "supportHint": "Indicateur de soutien - Tests Visuels"
+        "supportHint": "Indicateur de soutien - Tests Visuels",
+        "chips": "Chips - Tests Visuels"
       },
       "admin": {
         "models": {

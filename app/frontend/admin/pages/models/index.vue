@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -212,6 +213,7 @@ watch(
 
   <Teleport to="#header-right">
     <Btn
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-model-modules' }"
       :aria-label="t('headlines.admin.modelModules.index')"
       mobile-icon-only
@@ -220,6 +222,7 @@ watch(
       {{ t("headlines.admin.modelModules.index") }}
     </Btn>
     <Btn
+      :size="BtnSizesEnum.MD"
       :loading="isReloadingMatrix"
       :confirm="t('messages.confirm.model.reloadMatrix')"
       :aria-label="t('actions.admin.dashboard.reloadModels')"
@@ -231,6 +234,7 @@ watch(
       {{ t("actions.admin.dashboard.reloadModels") }}
     </Btn>
     <Btn
+      :size="BtnSizesEnum.MD"
       :loading="isReloadingScData"
       :confirm="t('messages.confirm.model.reloadScData')"
       :aria-label="t('actions.admin.dashboard.reloadScData')"
@@ -242,6 +246,7 @@ watch(
       {{ t("actions.admin.dashboard.reloadScData") }}
     </Btn>
     <Btn
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-model-create' }"
       :aria-label="t('actions.create')"
       mobile-icon-only

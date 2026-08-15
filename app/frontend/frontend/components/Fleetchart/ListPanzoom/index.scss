@@ -1,3 +1,5 @@
+@import "../controls";
+
 .fleetchart-list-panzoom {
   .fleetchart-scroll-wrapper {
     position: relative;
@@ -37,14 +39,6 @@
 
 .fleetchart-wrapper {
   position: relative;
-
-  .fleetchart-controls {
-    position: fixed;
-    right: 20px;
-    bottom: 0;
-    z-index: 1000;
-    display: flex;
-  }
 
   .fleetchart-grid-label {
     position: fixed;

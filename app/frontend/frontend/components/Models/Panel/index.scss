@@ -29,12 +29,25 @@
     }
   }
 
+  /*
+   * The band between the photo and the metrics. Was a 75%-size centred line under
+   * a near-black rule, which read as a leftover from the old chrome. It now
+   * borrows the metrics-card label treatment - Orbitron, tracked, uppercase,
+   * $gray-light - and the divider colour the rows below it use, so the three
+   * sections of an expanded card share one language.
+   */
   &-production-status {
-    padding: 4px 6px;
-    color: $gray-light;
-    font-size: 75%;
+    padding: 9px 16px;
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
     line-height: 1;
-    text-align: center;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.6);
+    color: $gray-light;
+    background: rgba(#000, 0.12);
+    border-bottom: 1px solid rgba($gray-light, 0.28);
+
+    strong {
+      font-weight: 500;
+    }
   }
 }

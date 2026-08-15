@@ -162,5 +162,5 @@ const composition = computed(() =>
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 </style>

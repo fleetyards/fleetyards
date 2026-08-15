@@ -83,7 +83,7 @@ bin/setup-live                    # Run Kamal setup for production
 ### Linting & Formatting
 ```bash
 bundle exec standardrb --fix      # Ruby linting (always run after changing .rb files)
-pnpm lint:fix                     # Frontend linting (ESLint + Stylelint + Prettier)
+pnpm lint:fix                     # Frontend linting (ESLint + Prettier; no Stylelint, see below)
 pnpm lint:ts                      # TypeScript type checking
 pnpm format:fix                   # Prettier formatting
 ```
@@ -184,6 +184,10 @@ pnpm format:fix                   # Prettier formatting
 - **Always** run `pnpm lint:fix` after modifying frontend files
 - Use `pnpm lint:ts` for TypeScript type checking
 - Note: `type-check` and `typecheck` commands do not exist in this project
+- SCSS is **not** linted. Four stylelint packages are in devDependencies but the
+  repo has no stylelint config, so nothing runs them and `stylelint` on a file
+  fails with "No configuration provided". Treat stylesheet conventions as
+  reviewed by eye, not enforced.
 
 ## Git Workflow
 

@@ -108,7 +108,8 @@
         "states": "States - Visual Tests",
         "notifications": "Notifications - Visual Tests",
         "syncModal": "Sync Modal - Visual Tests",
-        "supportHint": "Support Hint - Visual Tests"
+        "supportHint": "Support Hint - Visual Tests",
+        "chips": "Chips - Visual Tests"
       },
       "admin": {
         "models": {

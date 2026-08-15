@@ -110,7 +110,7 @@ const nozzleLabel = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 
 // The equipment rows carry component names rather than figures, so they wrap
 // instead of holding the baseline row the numeric aux stats use.

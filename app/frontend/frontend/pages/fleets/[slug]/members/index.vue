@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import debounce from "lodash.debounce";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -157,6 +158,7 @@ const crumbs = computed(() => {
 
   <Teleport v-if="!mobile" to="#header-right">
     <Btn
+      :size="BtnSizesEnum.MD"
       v-if="worldmapEnabled"
       :to="{ name: 'fleet-members-worldmap', params: { slug: fleet.slug } }"
     >
@@ -164,6 +166,7 @@ const crumbs = computed(() => {
       {{ t("actions.fleet.worldmap") }}
     </Btn>
     <Btn
+      :size="BtnSizesEnum.MD"
       v-if="starmapEnabled"
       :to="{ name: 'fleet-members-starmap', params: { slug: fleet.slug } }"
     >
@@ -171,6 +174,7 @@ const crumbs = computed(() => {
       {{ t("actions.fleet.starmap") }}
     </Btn>
     <Btn
+      :size="BtnSizesEnum.MD"
       v-if="canManageInvites"
       :to="{ name: 'fleet-members-invites', params: { slug: fleet.slug } }"
     >

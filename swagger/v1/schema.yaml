@@ -9378,6 +9378,10 @@ components:
           type: array
           items:
             type: string
+        classificationNotIn:
+          type: array
+          items:
+            type: string
         focusIn:
           type: array
           items:
@@ -9849,6 +9853,10 @@ components:
         beamLteq:
           type: number
         classificationIn:
+          type: array
+          items:
+            type: string
+        classificationNotIn:
           type: array
           items:
             type: string

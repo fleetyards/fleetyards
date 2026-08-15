@@ -9,30 +9,27 @@ type Props = {
   large?: boolean;
   slim?: boolean;
   mb?: boolean;
-  dark?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   large: false,
   slim: false,
   mb: false,
-  dark: false,
 });
 
-const cssClasses = computed(() => {
-  return {
-    "spacer-large": props.large,
-    "spacer-dark": props.dark,
-    "spacer-slim": props.slim,
-    "spacer-mb": props.mb,
-  };
-});
+/*
+ * The classes the global `hr` rule already defines. This component used to carry
+ * a stylesheet restating that rule - and emitted `spacer-large` against a
+ * `.spacer--large` selector, so every modifier on it had been dead: large, slim
+ * and mb all rendered as the plain rule.
+ */
+const cssClasses = computed(() => ({
+  "large-spacer": props.large,
+  "slim-spacer": props.slim,
+  "space-bottom": props.mb,
+}));
 </script>
 
 <template>
-  <hr class="spacer" :class="cssClasses" />
+  <hr :class="cssClasses" />
 </template>
-
-<style lang="scss" scoped>
-@import "index";
-</style>

@@ -66,15 +66,10 @@ const { t } = useI18n();
           <img :src="kofiIcon" alt="Ko-fi Icon" width="30" />
           Ko-fi
         </Btn>
-        <a
-          href="https://www.buymeacoffee.com/mortik"
-          aria-label="Buy me a coffee"
-          class="support-buymeacoffee"
-        >
-          <img
-            src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=martenk&button_colour=428bca&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00"
-          />
-        </a>
+        <Btn href="https://www.buymeacoffee.com/mortik" size="lg">
+          <i class="fa-solid fa-mug-hot" />
+          Buy me a coffee
+        </Btn>
       </div>
     </div>
   </Modal>

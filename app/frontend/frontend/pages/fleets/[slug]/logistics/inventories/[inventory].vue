@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -325,13 +326,13 @@ const crumbs = computed(() => [
           {{ inventory.description }}
         </p>
         <Teleport v-if="!mobile && canAddItems" to="#header-right">
-          <Btn @click="openDepositModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openDepositModal">
             {{ t("actions.fleets.logistics.deposit") }}
           </Btn>
-          <Btn @click="openWithdrawModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openWithdrawModal">
             {{ t("actions.fleets.logistics.withdraw") }}
           </Btn>
-          <Btn @click="openCsvImportModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.fleets.logistics.importCsv") }}
           </Btn>
@@ -350,7 +351,7 @@ const crumbs = computed(() => [
           </template>
 
           <template #actions-left>
-            <BtnGroup>
+            <BtnGroup segmented>
               <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
                 {{ t("labels.fleets.logistics.stockView") }}
               </Btn>

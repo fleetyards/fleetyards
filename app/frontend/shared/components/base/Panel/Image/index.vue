@@ -5,16 +5,15 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import LazyImage from "@/shared/components/LazyImage/index.vue";
 import { RouteLocationRaw } from "vue-router";
-
-type PanelImageRounded = "all" | "top" | "right" | "bottom" | "left";
 
 type Props = {
   image?: string;
   alt?: string;
   to?: RouteLocationRaw;
-  rounded?: PanelImageRounded;
+  rounded?: `${PanelRoundedEnum}`;
   imageSize?: "default" | "auto";
 };
 

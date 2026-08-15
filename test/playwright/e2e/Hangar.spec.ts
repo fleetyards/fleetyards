@@ -40,9 +40,25 @@ test.describe("Hangar", () => {
 
     await page.locator("input[name='login']").fill("test");
     await page.locator("input[name='password']").fill("password");
+
+    const sessionCreated = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/v1/sessions") &&
+        response.request().method() === "POST",
+    );
+
     await page.getByTestId("submit-login").click();
 
-    await expect(page).toHaveURL(/\//);
+    await sessionCreated;
+
+    /*
+     * Not `toHaveURL(/\//)`, which is what this waited on before: every URL
+     * contains a slash, so that assertion passed instantly while the page was
+     * still on /login/ and never waited for the login at all. The nav click
+     * below then raced the post-login redirect, and the run failed on the next
+     * assertion with the URL either still /login/ or back at /.
+     */
+    await expect(page).not.toHaveURL(/\/login/);
 
     await nav.click("ships");
 
@@ -53,7 +69,18 @@ test.describe("Hangar", () => {
       .getByTestId("add-to-hangar")
       .click();
 
+    // Same guard the name-change below already uses: without it the hangar page
+    // can request its list before the vehicle exists, and the assertion that
+    // follows looks for a card the server has not been told about yet.
+    const vehicleCreated = page.waitForResponse(
+      (response) =>
+        response.url().includes("/api/v1/vehicles") &&
+        response.request().method() === "POST",
+    );
+
     await page.getByTestId("add-to-hangar-as-normal").click();
+
+    await vehicleCreated;
 
     await nav.click("hangar");
 

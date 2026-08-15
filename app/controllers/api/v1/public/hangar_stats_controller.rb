@@ -29,12 +29,15 @@ module Api
 
           group_count_vehicle_ids = scope.ransack(vehicle_query_params.except("hangar_groups_in", "hangar_groups_not_in")).result.ids
 
+          # See the signed-in controller: the counts stay blind to their own filter.
+          classification_count_models = scope.ransack(vehicle_query_params.except("classification_in", "classification_not_in")).result.map(&:model)
+
           @quick_stats = QuickStats.new(
             total: vehicles.count,
             wishlist_total: @user.public_wishlist ? @user.vehicles.wanted.public.where(loaner: false).count : nil,
             classifications: Model.classifications.map do |classification|
               ClassificationCount.new(
-                classification_count: models.count { |model| model.classification == classification },
+                classification_count: classification_count_models.count { |model| model.classification == classification },
 
                 name: classification,
                 label: classification.humanize

@@ -207,7 +207,7 @@ onMounted(() => {
 
 <template>
   <div v-if="hasImages" class="fleetchart-views-wrapper">
-    <BtnGroup v-if="hasExtendedState" class="fleetchart-views-toggle">
+    <BtnGroup v-if="hasExtendedState" segmented class="fleetchart-views-toggle">
       <Btn :active="!extended" @click="setExtended(false)">
         {{ t("labels.model.state.retracted") }}
       </Btn>

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import copyText from "@/frontend/utils/CopyText";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -195,7 +196,7 @@ const copy = (inviteUrl: FleetInviteUrl) => {
         <Btn @click="copy(inviteUrl)">
           <i class="fa-duotone fa-copy" />
         </Btn>
-        <Btn @click="remove(inviteUrl)">
+        <Btn :tone="BtnTonesEnum.DANGER" @click="remove(inviteUrl)">
           <i class="fa-duotone fa-trash" />
         </Btn>
       </div>

@@ -26,6 +26,7 @@
       "deselect": "点击取消选择",
       "networkStatusOffline": "网络状态：离线 - 服务不可用",
       "groups": "分组",
+      "classifications": "分类",
       "features": {
         "stateOn": "已启用",
         "stateOff": "已禁用",

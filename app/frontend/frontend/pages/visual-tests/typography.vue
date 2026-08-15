@@ -18,7 +18,7 @@ import {
   HeadingLevelEnum,
   HeadingSizeEnum,
 } from "@/shared/components/base/Heading/types";
-import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 
 const headingSizes = [
   HeadingSizeEnum.LG,
@@ -226,7 +226,6 @@ const gridRecords = [
       <BaseText muted no-spacing>large</BaseText>
       <Spacer large />
       <BaseText muted no-spacing>dark</BaseText>
-      <Spacer dark />
       <BaseText muted no-spacing>mb</BaseText>
       <Spacer mb />
       <BaseText muted no-spacing>end</BaseText>
@@ -245,19 +244,19 @@ const gridRecords = [
       </Box>
     </div>
     <div class="col-12 col-lg-3">
-      <Box :variant="PanelVariantsEnum.PRIMARY">
+      <Box :tone="PanelTonesEnum.PRIMARY">
         <template #heading>Primary</template>
         Box content.
       </Box>
     </div>
     <div class="col-12 col-lg-3">
-      <Box :variant="PanelVariantsEnum.SUCCESS">
+      <Box :tone="PanelTonesEnum.SUCCESS">
         <template #heading>Success</template>
         Box content.
       </Box>
     </div>
     <div class="col-12 col-lg-3">
-      <Box :variant="PanelVariantsEnum.ERROR">
+      <Box :tone="PanelTonesEnum.ERROR">
         <template #heading>Error</template>
         Box content.
       </Box>
@@ -289,7 +288,7 @@ const gridRecords = [
   </p>
   <BaseGrid :records="gridRecords" primary-key="id">
     <template #default="{ record, index }">
-      <Panel slim>
+      <Panel>
         <PanelBody>
           <BaseText no-spacing>{{ index + 1 }}. {{ record.name }}</BaseText>
           <BaseText muted no-spacing>{{ record.manufacturer }}</BaseText>
@@ -299,7 +298,7 @@ const gridRecords = [
   </BaseGrid>
   <BaseGrid :records="gridRecords" primary-key="id" grid-base="2">
     <template #default="{ record }">
-      <Panel slim>
+      <Panel>
         <PanelBody>
           <BaseText no-spacing>{{ record.name }} — grid-base 2</BaseText>
         </PanelBody>
@@ -308,7 +307,7 @@ const gridRecords = [
   </BaseGrid>
   <BaseGrid :records="gridRecords" primary-key="id" filter-visible>
     <template #default="{ record }">
-      <Panel slim>
+      <Panel>
         <PanelBody>
           <BaseText no-spacing>{{ record.name }} — filter visible</BaseText>
         </PanelBody>

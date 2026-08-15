@@ -82,6 +82,7 @@
       "disableGlobally": "Disable Globally",
       "addActor": "Add Actor",
       "addGroup": "Add Group",
+      "editGroup": "Edit Group",
       "remove": "Remove",
       "delete": "Delete",
       "deleteSelected": "Delete Selected",

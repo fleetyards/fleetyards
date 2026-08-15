@@ -5,6 +5,7 @@ export enum BtnTypesEnum {
 }
 
 export enum BtnSizesEnum {
+  XS = "xs",
   SM = "sm",
   MD = "md",
   LG = "lg",

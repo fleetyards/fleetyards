@@ -50,9 +50,17 @@ provide(BTN_CONTAINER, {
 <style scoped>
 @reference "../../../../../entrypoints/tailwind.css";
 
+/*
+ * Opaque, unlike a button. --color-control is 0.9, which is right for an in-flow
+ * control - a little of the page showing through is harmless there. A menu floats
+ * over arbitrary content at z-index 2100, so whatever it covers competes with its
+ * labels: a photographic page background behind the fleetchart, row text behind a
+ * table's actions. --color-gray-darker is the same colour at full opacity, so the
+ * menu reads as the same material without the bleed-through.
+ */
 .btn-menu {
   @apply absolute hidden min-w-[200px] flex-col;
-  @apply bg-control border-edge rounded-control border;
+  @apply bg-gray-darker border-edge rounded-control border;
   z-index: 2100;
   font-size: 1rem;
 }
@@ -82,7 +90,17 @@ provide(BTN_CONTAINER, {
 }
 
 /* Slot content this component lays out - see the :deep note in Btn/index.vue. */
+/*
+ * A separator, not a bar. The global `hr` is a 3px rounded $gray fill from the
+ * old language, so adding a border-top on top of it drew the line twice - one
+ * hairline sitting on a grey slab. This resets the fill and keeps the 1px
+ * edge-soft rule the rest of the system divides with, and spans the menu's full
+ * width rather than floating inset, matching how a panel heading divides.
+ */
+/* The global rule draws the hairline now, so only its page-level margins need
+   answering: 20px 5% insets the line and pushes the groups apart inside a 200px
+   menu. This used to have to undo a 3px pill as well. */
 .btn-menu :deep(hr) {
-  @apply border-edge-soft my-1.5 border-t;
+  margin: 6px 0;
 }
 </style>

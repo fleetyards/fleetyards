@@ -180,8 +180,8 @@ useMetricsMasonry(metricsGrid);
 <template>
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
-      <div v-if="model.inGame" class="flex justify-center">
-        <BtnGroup>
+      <div class="hardpoints__controls">
+        <BtnGroup v-if="model.inGame" class="hardpoints__links">
           <span class="text-muted">{{ t("labels.hardpoints.prefix") }}</span>
           <Btn :href="erkulUrl" class="erkul-link w-full md:w-auto">
             <i />
@@ -196,9 +196,7 @@ useMetricsMasonry(metricsGrid);
             {{ t("labels.hardpoints.spviewer") }}
           </Btn>
         </BtnGroup>
-      </div>
-      <div class="flex justify-end hardpoints__toolbar">
-        <BtnGroup>
+        <BtnGroup segmented class="hardpoints__source">
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"
             :disabled="!model.inGame"
@@ -247,7 +245,7 @@ useMetricsMasonry(metricsGrid);
         <ModelRefuelBoom :model="model" />
       </div>
       <div v-if="hardpoints?.length" class="hardpoints__viewbar">
-        <BtnGroup :aria-label="t('labels.hardpoint.density.title')">
+        <BtnGroup segmented :aria-label="t('labels.hardpoint.density.title')">
           <Btn
             :active="density === 'compact'"
             :aria-pressed="density === 'compact'"

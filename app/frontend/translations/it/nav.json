@@ -95,7 +95,8 @@
         "states": "Stati",
         "notifications": "Notifiche",
         "syncModal": "Modal sincronizzazione",
-        "supportHint": "Suggerimento supporto"
+        "supportHint": "Suggerimento supporto",
+        "chips": "Chips"
       },
       "admin": {
         "index": "Admin",

@@ -133,7 +133,7 @@ const resetSelected = () => {
 </script>
 
 <template>
-  <Panel :id="props.id" class="base-table w-full" slim>
+  <Panel :id="props.id" class="base-table w-full">
     <PanelHeading v-if="props.title || slots.title" :level="props.titleLevel">
       <slot name="title">{{ props.title }}</slot>
     </PanelHeading>

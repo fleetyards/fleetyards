@@ -166,7 +166,6 @@ const onConfirm = async () => {
           >
             <Panel
               :alignment="PanelAlignmentsEnum.LEFT"
-              slim
               class="link-upgrade-panel"
               @click.capture="toggleSelect(upgrade.id)"
             >
@@ -179,11 +178,7 @@ const onConfirm = async () => {
                 :alt="upgrade.name"
               />
               <div>
-                <PanelHeading
-                  :level="HeadingLevelEnum.H3"
-                  title-align="right"
-                  multiline
-                >
+                <PanelHeading :level="HeadingLevelEnum.H3">
                   {{ upgrade.name }}
                 </PanelHeading>
                 <div
@@ -215,7 +210,7 @@ const onConfirm = async () => {
     </div>
 
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :loading="linking"
           :disabled="!selectedIds.size"

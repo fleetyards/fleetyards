@@ -21,6 +21,23 @@ export type BtnContainerContext = {
   /** Members share the container's width equally. Passed as context rather than
    *  applied with `> :deep(*)`, so the member still styles itself. */
   block: ComputedRef<boolean>;
+  /**
+   * A segmented group is a *switch*: one member is chosen, and the container
+   * draws a single thumb that slides to it. Members drop their own fill entirely
+   * - the thumb is the fill - and take radio semantics, because a mode switch is
+   * a choice rather than a row of independent actions. Optional: a `menu`
+   * container is not a switch and provides neither this nor `register`.
+   */
+  segmented?: ComputedRef<boolean>;
+  /**
+   * Members announce themselves so the container can place its thumb. Reported
+   * rather than measured: the group would otherwise have to reach into the DOM
+   * for a member's index and active state, which is the coupling this context
+   * exists to avoid. Registration order is mount order, which is DOM order.
+   */
+  register?: (active: () => boolean) => {
+    unregister: () => void;
+  };
 };
 
 export const BTN_CONTAINER: InjectionKey<BtnContainerContext> =

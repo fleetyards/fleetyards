@@ -10,7 +10,7 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
@@ -121,8 +121,8 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
     </HeadingSmall>
   </Heading>
 
-  <Panel v-if="isPurged" :variant="PanelVariantsEnum.ERROR" slim>
-    <PanelBody no-min-height>
+  <Panel v-if="isPurged" :tone="PanelTonesEnum.ERROR">
+    <PanelBody>
       {{ t("texts.admin.destroyedFleets.purgedWarning") }}
     </PanelBody>
   </Panel>
@@ -139,7 +139,7 @@ const columns: BaseTableCol<DestroyedFleet>[] = [
       <FilterForm />
     </template>
     <template #actions-left>
-      <BtnGroup>
+      <BtnGroup segmented>
         <Btn
           :active="source === DestroyedFleetsSource.discarded"
           @click="setSource(DestroyedFleetsSource.discarded)"

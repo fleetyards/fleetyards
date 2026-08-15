@@ -17,7 +17,11 @@ import GroupLabels from "@/frontend/components/Hangar/GroupLabels/index.vue";
 import FleetchartApp from "@/frontend/components/Fleetchart/App/index.vue";
 import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { HangarGroup, type UserPublic } from "@/services/fyApi";
+import {
+  HangarGroup,
+  type HangarGroupPublic,
+  type UserPublic,
+} from "@/services/fyApi";
 import RsiProfileLink from "@/shared/components/RsiProfileLink/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -121,7 +125,7 @@ const toggleFleetchart = () => {
   fleetchartStore.toggleFleetchart("hangar");
 };
 
-const highlightGroup = (group?: HangarGroup) => {
+const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
   if (!group) {
     highlightedGroup.value = "";
     return;
@@ -218,12 +222,20 @@ useSubscription({
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn v-if="user.publicHangarStats" :to="{ name: 'hangar-public-stats' }">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      v-if="user.publicHangarStats"
+      :to="{ name: 'hangar-public-stats' }"
+    >
       <i class="fa-duotone fa-chart-bar" />
       {{ t("nav.stats") }}
     </Btn>
 
-    <Btn v-if="user.publicWishlist" :to="{ name: 'wishlist-public' }">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      v-if="user.publicWishlist"
+      :to="{ name: 'wishlist-public' }"
+    >
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
@@ -233,7 +245,11 @@ useSubscription({
       </transition>
     </Btn>
 
-    <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      data-test="fleetchart-link"
+      @click="toggleFleetchart"
+    >
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>

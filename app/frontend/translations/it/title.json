@@ -106,7 +106,8 @@
         "states": "Stati - Test visivi",
         "notifications": "Notifiche - Test Visivi",
         "syncModal": "Modal sincronizzazione - Test Visivi",
-        "supportHint": "Suggerimento supporto - Test Visivi"
+        "supportHint": "Suggerimento supporto - Test Visivi",
+        "chips": "Chips - Test Visivi"
       },
       "admin": {
         "models": {

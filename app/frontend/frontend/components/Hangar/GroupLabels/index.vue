@@ -6,11 +6,13 @@ export default {
 
 <script lang="ts" setup>
 import Sortable from "sortablejs";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import ChipRow from "@/shared/components/base/Chip/Row/index.vue";
+import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 
 import { useI18n } from "@/shared/composables/useI18n";
-import { useMobile } from "@/shared/composables/useMobile";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
   type HangarGroup,
@@ -24,18 +26,20 @@ import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
 type Props = {
   hangarGroups?: (HangarGroup | HangarGroupPublic)[];
   hangarGroupCounts?: HangarGroupMetric[];
+  label?: string;
   editable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   hangarGroups: () => [],
   hangarGroupCounts: () => [],
+  label: undefined,
   editable: false,
 });
 
 const { t } = useI18n();
 
-const mobile = useMobile();
+const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
 
 watch(
   () => props.hangarGroups,
@@ -84,35 +88,37 @@ const filterGroup = (group: string) => {
   }
 };
 
-const isActive = (group: string) => {
-  return toArray(filters.value.hangarGroupsIn).includes(group);
-};
+const groupState = (group: string) => {
+  if (toArray(filters.value.hangarGroupsIn).includes(group)) {
+    return ChipStatesEnum.INCLUDED;
+  }
 
-const isInverted = (group: string) => {
-  return toArray(filters.value.hangarGroupsNotIn).includes(group);
-};
+  if (toArray(filters.value.hangarGroupsNotIn).includes(group)) {
+    return ChipStatesEnum.EXCLUDED;
+  }
 
-const groups = ref<(HangarGroup | HangarGroupPublic)[]>([]);
+  return ChipStatesEnum.NEUTRAL;
+};
 
 const { displayAlert } = useAppNotifications();
 
 const sortMutation = useHangarGroupSortMutation();
 
-const sortableContainer = ref<HTMLElement | null>(null);
+const row = ref<{ itemsEl: HTMLElement | null } | null>(null);
 let sortableInstance: Sortable | null = null;
 
-const initSortable = () => {
+const initSortable = (container?: HTMLElement | null) => {
   if (sortableInstance) {
     sortableInstance.destroy();
+    sortableInstance = null;
   }
 
-  if (!sortableContainer.value) return;
+  if (!container) return;
 
-  sortableInstance = Sortable.create(sortableContainer.value, {
+  sortableInstance = Sortable.create(container, {
     animation: 150,
     onEnd: () => {
-      const items =
-        sortableContainer.value?.querySelectorAll("[data-group-id]");
+      const items = container.querySelectorAll("[data-group-id]");
       if (!items) return;
 
       const newOrder = Array.from(items).map((el) =>
@@ -129,8 +135,18 @@ const initSortable = () => {
 
 onMounted(() => {
   groups.value = props.hangarGroups;
-  void nextTick(() => initSortable());
 });
+
+// Bound to the element, not to mount: the row swaps its desktop branch for a
+// dropdown at the mobile breakpoint, so the container Sortable was given can be
+// replaced or removed under it. Watching re-binds on the way back to desktop and
+// releases the detached one on the way out - the previous version bound once in
+// onMounted and left dragging silently unavailable after a resize.
+watch(
+  () => row.value?.itemsEl,
+  (container) => initSortable(container),
+  { immediate: true, flush: "post" },
+);
 
 onUnmounted(() => {
   sortableInstance?.destroy();
@@ -168,7 +184,9 @@ const openNewGroupModal = () => {
   });
 };
 
-const emit = defineEmits(["highlight"]);
+const emit = defineEmits<{
+  highlight: [group?: HangarGroup | HangarGroupPublic];
+}>();
 
 const highlight = (group?: HangarGroup | HangarGroupPublic) => {
   emit("highlight", group);
@@ -176,90 +194,60 @@ const highlight = (group?: HangarGroup | HangarGroupPublic) => {
 </script>
 
 <template>
-  <BtnDropdown v-if="mobile" class="labels-dropdown w-full md:w-auto">
-    <template #label>
-      {{ t("labels.groups") }}
-    </template>
-    <Btn
+  <ChipRow ref="row" :label="label ?? t('labels.groups')">
+    <Chip
       v-for="group in groups"
       :key="group.id"
-      class="labels-dropdown-item"
-      :class="{
-        active: isActive(group.slug),
-        inverted: isInverted(group.slug),
-      }"
-      @click="filterGroup(group.slug)"
+      :data-group-id="group.id"
+      :state="groupState(group.slug)"
+      :dot="group.color"
+      :count="groupCount(group).count"
+      :editable="editable"
+      :edit-label="t('actions.editGroup')"
+      @toggle="filterGroup(group.slug)"
+      @edit="openGroupModal(group)"
+      @contextmenu.prevent="openGroupModal(group)"
+      @mouseenter="highlight(group)"
+      @mouseleave="highlight()"
     >
-      <span
-        :style="{
-          'background-color': group.color,
-        }"
-        class="label-color"
-      />
-      <span class="label-text-wrapper">
-        <span class="label-text">
-          {{ group.name }}
-        </span>
-        <span class="label-count">{{ groupCount(group).count }}</span>
-      </span>
-    </Btn>
-    <Btn
-      v-if="editable"
-      class="labels-dropdown-item"
-      @click="openNewGroupModal"
-    >
-      <i class="fa-regular fa-plus" />
-      <span class="label-text-wrapper">
-        <span class="label-text">
-          {{ t("actions.addGroup") }}
-        </span>
-      </span>
-    </Btn>
-  </BtnDropdown>
-  <div v-else class="labels">
-    <h3 v-if="groups.length || editable" class="label-title">
-      {{ t("labels.groups") }}:
-    </h3>
-    <div ref="sortableContainer" class="labels-sortable">
-      <a
-        v-for="group in groups"
-        :key="group.id"
-        :data-group-id="group.id"
-        :class="{
-          active: isActive(group.slug),
-          inverted: isInverted(group.slug),
-        }"
-        class="label label-link fade-list-item"
-        @click.exact="filterGroup(group.slug)"
-        @click.right.prevent="openGroupModal(group)"
-        @mouseenter="highlight(group)"
-        @mouseleave="highlight()"
-      >
-        <span class="label-inner">
-          <span
-            :style="{
-              'background-color': group.color,
-            }"
-            class="label-color"
-          />
-          {{ group.name }}: {{ groupCount(group).count }}
-        </span>
-      </a>
-    </div>
-    <a
-      v-if="editable"
-      v-tooltip="t('actions.addGroup')"
-      :aria-label="t('actions.addGroup')"
-      class="label label-link"
-      @click="openNewGroupModal"
-    >
-      <span class="label-inner">
-        <i class="fa-regular fa-plus" />
-      </span>
-    </a>
-  </div>
-</template>
+      {{ group.name }}
+    </Chip>
 
-<style lang="scss" scoped>
-@import "index";
-</style>
+    <template #actions>
+      <Btn
+        v-if="editable"
+        v-tooltip="t('actions.addGroup')"
+        :size="BtnSizesEnum.XS"
+        :aria-label="t('actions.addGroup')"
+        @click="openNewGroupModal"
+      >
+        <i class="fa-regular fa-plus" />
+      </Btn>
+    </template>
+
+    <!-- The mobile items go through Btn's own `active` prop. The stylesheet this
+         replaces reached at Btn's internals with six !important declarations -
+         the override class btn-redesign swept out of 17 files. -->
+    <template #menu>
+      <Btn
+        v-for="group in groups"
+        :key="`menu-${group.id}`"
+        :active="groupState(group.slug) === ChipStatesEnum.INCLUDED"
+        @click="filterGroup(group.slug)"
+      >
+        <Chip
+          bare
+          :state="groupState(group.slug)"
+          :dot="group.color"
+          :count="groupCount(group).count"
+        >
+          {{ group.name }}
+        </Chip>
+      </Btn>
+      <Btn v-if="editable" @click="openNewGroupModal">
+        <i class="fa-regular fa-plus" />
+        {{ t("actions.addGroup") }}
+      </Btn>
+    </template>
+  </ChipRow>
+</template>

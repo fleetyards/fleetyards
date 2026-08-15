@@ -66,6 +66,18 @@ const { t } = useI18n();
 
 const container = inject(BTN_CONTAINER, null);
 
+const isSegment = computed(
+  () => container?.container === "group" && !!container.segmented?.value,
+);
+
+// Reported to the group so it can place its thumb; see BtnGroup. Registered for
+// every group member, not just segmented ones, because `segmented` can flip at
+// runtime and a member that never registered would leave a gap in the order.
+if (container?.register) {
+  const entry = container.register(() => props.active);
+  onUnmounted(entry.unregister);
+}
+
 const size = computed(
   () => props.size ?? container?.size.value ?? BtnSizesEnum.SM,
 );
@@ -136,6 +148,7 @@ const cssClasses = computed(() => [
     "btn--block": props.block,
     "btn--mobile-icon-only": props.mobileIconOnly,
     "btn--grouped": container?.container === "group",
+    "btn--segment": isSegment.value,
     "btn--grouped-block":
       container?.container === "group" && container.block.value,
     "btn--menu-item": container?.container === "menu",
@@ -184,6 +197,8 @@ const handleClick = (event: MouseEvent) => {
     class="btn"
     :class="cssClasses"
     :aria-busy="loading || undefined"
+    :role="isSegment ? 'radio' : undefined"
+    :aria-checked="isSegment ? String(active) : undefined"
     v-bind="btnProps"
     @click="handleClick"
   >
@@ -216,7 +231,10 @@ const handleClick = (event: MouseEvent) => {
 
 .btn {
   @apply relative inline-flex items-center justify-center gap-2;
-  @apply font-semibold whitespace-nowrap no-underline;
+  /* 400, as the live button has always been. Semibold at 13-14px on a dark
+     translucent surface thickens the strokes and closes the counters, so the
+     label read as heavier and less legible than the one it replaced. */
+  @apply font-normal whitespace-nowrap no-underline;
   @apply cursor-pointer border border-transparent bg-transparent;
   @apply transition-[background-color,border-color,color,outline-color] duration-150 ease-in-out;
 
@@ -251,44 +269,93 @@ const handleClick = (event: MouseEvent) => {
    historical button scale: old small 42px, default 48px, large 55px. */
 /* min-width matches the height so an icon-only button stays square instead of
    collapsing to the width of its glyph - a fa-ellipsis-v is only a few px wide. */
+/* Label sizes track the live button, which set 16px at every size. 13px was a
+   three-point drop on the most-used size and is the other half of why the labels
+   read worse than the ones they replaced; the heights are unchanged. */
+/* xs is the chip scale, not a fourth step of the toolbar scale: 29px is exactly
+   a chip's height (1px border + 6px padding + a 15px line box, twice over), so a
+   control that sits in a chip row lines up with the chips beside it instead of
+   towering 14px over them.
+
+   7px of padding, not the 10px the height would suggest, because min-width only
+   squares an icon-only button when the padding leaves room for it: sm is tuned so
+   14 + 14 + 2 + a 13px glyph lands exactly on its 43px min-width, and xs has to
+   hold the same identity against 29. At 10px the glyph pushes the box to 35px
+   wide and min-width never applies. */
+.btn--xs {
+  @apply h-[29px] min-w-[29px] px-[7px] text-[15px];
+}
+/* At chip scale the control wears the chip's frame rather than the toolbar's -
+   the softer edge and the smaller radius - so an add button reads as part of the
+   row instead of a brighter, hollow box parked at the end of it. Two classes so
+   the variant's own edge and radius do not win on order. */
+.btn--xs.btn--solid,
+.btn--xs.btn--ghost {
+  @apply border-edge-soft rounded-control-bare;
+}
 .btn--sm {
-  @apply h-[43px] min-w-[43px] px-3.5 text-[13px];
+  @apply h-[43px] min-w-[43px] px-3.5 text-[15px];
 }
 .btn--md {
-  @apply h-12 min-w-12 px-4.5 text-[14.5px];
+  @apply h-12 min-w-12 px-4.5 text-base;
 }
 .btn--lg {
-  @apply h-[55px] min-w-[55px] px-6 text-base;
+  @apply h-[55px] min-w-[55px] px-6 text-[17px];
 }
 
 /* ---------- end-caps ----------
    Always present. The inset is proportional so the cap holds a constant share
    of the width instead of collapsing on short buttons: the old fixed 14px each
    side left only 8px of cap on a 36px icon button. The 10px floor keeps it
-   clear of the 8px corner radius. */
+   clear of the 8px corner radius.
+
+   Geometry comes from the shared --cap-* tokens so a button cap and a panel cap
+   are one motif rather than two that drifted. The button's height steps one
+   below the panel's, and its radius steps down by the same ratio and is then
+   held to half its own height - without that ceiling a 2px cap rounds far
+   enough to read as a lozenge rather than a seam. Radius applies to the inward
+   edge only, so the outward edge stays a line continuous with the border. */
 .btn--solid::before,
 .btn--solid::after,
 .btn--ghost::before,
 .btn--ghost::after {
   content: "";
   position: absolute;
-  left: max(10px, 18%);
-  right: max(10px, 18%);
-  height: 2px;
-  @apply bg-endcap rounded-[1px];
+  left: max(10px, var(--cap-inset, 12%));
+  right: max(10px, var(--cap-inset, 12%));
+  height: var(--cap-h-btn, 2px);
+  /* Colour comes through a variable so the interaction states can stay on the
+     element - a pseudo-element cannot be selected by :hover/:focus-visible
+     without restating the whole selector four times over. The fallbacks are
+     spelled out because a bare var() gets none from Tailwind and the embed
+     bundle never registers :root. */
+  background-color: var(--btn-cap, var(--color-endcap, #7a8288));
   transition: background-color 150ms ease-in-out;
 }
 .btn--solid::before,
 .btn--ghost::before {
   top: -1px;
+  border-radius: 0 0 var(--cap-r-btn, 1px) var(--cap-r-btn, 1px);
 }
 .btn--solid::after,
 .btn--ghost::after {
   bottom: -1px;
+  border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
 }
-.btn--lg::before,
+/* No caps at chip scale, the call Chip and .panel--slim already make: the inset
+   bottoms out at its 10px floor, so on a 29px icon button the cap would be a
+   third of the width - the failure F3 of the label plan names. */
+.btn--xs::before,
+.btn--xs::after {
+  content: none;
+}
+.btn--lg::before {
+  height: var(--cap-h-btn-lg, 3px);
+  border-radius: 0 0 var(--cap-r-btn-lg, 1.5px) var(--cap-r-btn-lg, 1.5px);
+}
 .btn--lg::after {
-  height: 3px;
+  height: var(--cap-h-btn-lg, 3px);
+  border-radius: var(--cap-r-btn-lg, 1.5px) var(--cap-r-btn-lg, 1.5px) 0 0;
 }
 
 /* ---------- variants ---------- */
@@ -302,13 +369,22 @@ const handleClick = (event: MouseEvent) => {
   @apply text-text rounded-control-bare border-transparent bg-transparent;
 }
 
+/*
+ * Hover, press and focus light the end-cap and leave the frame alone. Recolouring
+ * the border swapped the entire outline of the control, which in a toolbar reads
+ * as the button changing shape rather than responding; the cap is already this
+ * component's signature, so it is the piece that answers. Same call the panel
+ * made for tone - see docs/exec-plans/panel-redesign.md.
+ */
 .btn--solid:hover:not([disabled]),
 .btn--solid.active {
-  @apply bg-control-hover border-primary text-lifted;
+  @apply bg-control-hover text-lifted;
+  --btn-cap: var(--color-primary, #428bca);
 }
 .btn--ghost:hover:not([disabled]),
 .btn--ghost.active {
-  @apply bg-control-hover border-primary text-lifted;
+  @apply bg-control-hover text-lifted;
+  --btn-cap: var(--color-primary, #428bca);
 }
 .btn--bare:hover:not([disabled]),
 .btn--bare.active {
@@ -319,21 +395,46 @@ const handleClick = (event: MouseEvent) => {
 .btn--solid:active:not([disabled]),
 .btn--ghost:active:not([disabled]) {
   @apply bg-control-press;
-  border-color: rgb(66 139 202 / 0.6);
+  /* Dimmer than hover, so the press reads as the control receding along with
+     its surface rather than as a second, brighter hover. */
+  --btn-cap: rgb(66 139 202 / 0.6);
 }
 
-/* ---------- tone ---------- */
-.btn--tone-danger.btn--solid,
-.btn--tone-danger.btn--ghost {
-  border-color: rgb(220 53 69 / 0.55);
-  color: #f0a8ae;
+/* The outline stays - see the focus rule below. This only brings the cap along,
+   so a keyboard-focused button and a hovered one are lit the same way. */
+.btn--solid:focus-visible,
+.btn--ghost:focus-visible {
+  --btn-cap: var(--color-primary, #428bca);
 }
-.btn--tone-danger.btn--bare {
-  color: #f0a8ae;
+
+/* ---------- tone ----------
+ * The cap carries the tone, and only the cap. The frame, the surface and the
+ * label all stay exactly as a neutral button's, so a destructive control reads
+ * as an ordinary one wearing a red signature. The earlier #f0a8ae label tint is
+ * gone: pink text on the neutral surface read as a disabled or error state
+ * rather than as an available action.
+ *
+ * Consequence worth knowing: bare, grouped and menu-item set `content: none` on
+ * their caps, so those variants carry no resting marker at all and rely on their
+ * hover tint below.
+ */
+.btn--tone-danger {
+  --btn-cap: var(--color-danger, #dc3545);
 }
+/*
+ * A danger button floods on hover, so it cannot borrow the primary cap the
+ * neutral states use - blue on that red surface. Its cap follows the label to
+ * white instead, which keeps the signature legible through the flood. The
+ * tone-plus-variant pair outranks the neutral hover/press/focus rules.
+ */
 .btn--tone-danger.btn--solid:hover:not([disabled]),
 .btn--tone-danger.btn--ghost:hover:not([disabled]) {
   @apply bg-danger border-danger text-white;
+  --btn-cap: rgb(255 255 255 / 0.65);
+}
+.btn--tone-danger.btn--solid:focus-visible,
+.btn--tone-danger.btn--ghost:focus-visible {
+  --btn-cap: rgb(255 255 255 / 0.65);
 }
 .btn--tone-danger.btn--bare:hover:not([disabled]) {
   @apply text-white;
@@ -395,10 +496,30 @@ const handleClick = (event: MouseEvent) => {
   @apply text-lifted;
   background-color: #2b3034;
 }
+/* Same reasoning as the menu item: a group member is a flat fill inside one
+   shared surface, so flooding it edge to edge breaks the control it sits in. */
+.btn--grouped.btn--tone-danger:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(220 53 69 / 0.35);
+}
+/*
+ * Engaged, not hovered. A grouped member has no end-caps to carry state, and a
+ * 0.22 tint sat too close to the #2b3034 hover fill to be told apart - so this
+ * adds a second signal the hover state cannot borrow: an inset rule along the
+ * bottom edge, which reads as a pressed key rather than a lit one.
+ */
 .btn--grouped.active,
 .btn--grouped[aria-pressed="true"] {
   @apply text-white;
-  background-color: rgb(66 139 202 / 0.22);
+  background-color: rgb(66 139 202 / 0.26);
+  box-shadow: inset 0 -2px 0 var(--color-primary, #428bca);
+}
+
+/* Hovering something already on has to answer too: `.active` outranks the
+   neutral grouped hover, so without this an engaged toggle felt dead. */
+.btn--grouped.active:hover:not([disabled]),
+.btn--grouped[aria-pressed="true"]:hover:not([disabled]) {
+  background-color: rgb(66 139 202 / 0.38);
 }
 .btn--grouped:focus-visible {
   @apply outline-offset-[-2px];
@@ -413,6 +534,28 @@ const handleClick = (event: MouseEvent) => {
    clips the end corners, so a member never needs to know its position - which
    also survives a member being wrapped by another component. */
 
+/* ---------- inside a segmented BtnGroup ----------
+ * The thumb is the fill, so a segment paints nothing of its own - including on
+ * hover and when active, which is what stops "selected" and "hovered" being the
+ * same treatment. State lives in the type instead.
+ */
+.btn--segment,
+.btn--segment:hover:not([disabled]),
+.btn--segment.active,
+/* The grouped active-hover fill is four selectors deep, so it outranks a bare
+   `.btn--segment.active` and floods the chosen segment on hover. */
+.btn--segment.active:hover:not([disabled]) {
+  @apply bg-transparent;
+  /* The grouped active state's accent rule as well as its fill: the thumb already
+     says which segment is chosen, and an underline under it says it twice. */
+  box-shadow: none;
+}
+
+.btn--segment:hover:not([disabled]),
+.btn--segment.active {
+  @apply text-lifted;
+}
+
 /* ---------- inside a BtnDropdown list ---------- */
 .btn--menu-item {
   @apply w-full justify-start rounded-none border-0 bg-transparent;
@@ -424,6 +567,19 @@ const handleClick = (event: MouseEvent) => {
 .btn--menu-item:hover:not([disabled]) {
   @apply text-lifted;
   background-color: rgb(122 130 136 / 0.16);
+}
+/*
+ * A menu item has no surface of its own, so the solid variant's danger hover -
+ * which floods bg-danger edge to edge - turns a dropdown row into a solid red
+ * block. `bare` already carries the tint treatment for exactly this reason; the
+ * menu context needs it too, since `variant` defaults to solid and a dropdown
+ * item is almost never given one explicitly.
+ *
+ * Equal specificity to the solid rule, so this has to stay below it.
+ */
+.btn--menu-item.btn--tone-danger:hover:not([disabled]) {
+  @apply text-white;
+  background-color: rgb(220 53 69 / 0.18);
 }
 
 /* ---------- loading ---------- */

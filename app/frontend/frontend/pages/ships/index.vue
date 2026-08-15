@@ -87,6 +87,7 @@ const openDisplayOptionsModal = () => {
 
   <Teleport to="#header-right">
     <Btn
+      :size="BtnSizesEnum.MD"
       data-test="model-compare-link"
       :to="{
         name: 'compare',
@@ -98,6 +99,7 @@ const openDisplayOptionsModal = () => {
       {{ t("actions.compare.ships") }}
     </Btn>
     <Btn
+      :size="BtnSizesEnum.MD"
       data-test="fleetchart-link"
       :aria-label="t('labels.fleetchart')"
       mobile-icon-only

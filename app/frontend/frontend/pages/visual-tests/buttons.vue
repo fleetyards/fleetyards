@@ -15,7 +15,12 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 
-const sizes = [BtnSizesEnum.SM, BtnSizesEnum.MD, BtnSizesEnum.LG];
+const sizes = [
+  BtnSizesEnum.XS,
+  BtnSizesEnum.SM,
+  BtnSizesEnum.MD,
+  BtnSizesEnum.LG,
+];
 const variants = [
   BtnVariantsEnum.SOLID,
   BtnVariantsEnum.GHOST,
@@ -25,6 +30,11 @@ const tones = [BtnTonesEnum.NEUTRAL, BtnTonesEnum.DANGER];
 
 const loading = ref(false);
 const active = ref<string | null>("grid");
+const source = ref("game");
+const view = ref("exterior");
+const autoRotate = ref(true);
+const zoom = ref(false);
+const colour = ref(true);
 
 const toggleLoading = () => {
   loading.value = !loading.value;
@@ -109,9 +119,61 @@ const toggleLoading = () => {
   <Heading :level="HeadingLevelEnum.H2"
     >Group — container owns the chrome</Heading
   >
+  <Heading :level="HeadingLevelEnum.H2"
+    >Segmented — a switch, not a row of actions</Heading
+  >
+  <Heading :level="HeadingLevelEnum.H2"
+    >Group of toggles — independent, several can be on</Heading
+  >
   <div class="row">
     <div class="col-12 vt-row">
+      <!-- HoloViewer's case: not a switch. Any combination is valid, so there is
+           no thumb to slide and each member carries its own on state. -->
       <BtnGroup>
+        <Btn
+          aria-label="Auto rotate"
+          :active="autoRotate"
+          @click="autoRotate = !autoRotate"
+        >
+          <i class="fa-light fa-planet-ringed" />
+        </Btn>
+        <Btn aria-label="Zoom" :active="zoom" @click="zoom = !zoom">
+          <i class="fa-light fa-search-plus" />
+        </Btn>
+        <Btn aria-label="Colour" :active="colour" @click="colour = !colour">
+          <i class="fa-light fa-palette" />
+        </Btn>
+      </BtnGroup>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 vt-row">
+      <BtnGroup segmented>
+        <Btn :active="source === 'game'" @click="source = 'game'">
+          Game Files
+        </Btn>
+        <Btn :active="source === 'matrix'" @click="source = 'matrix'">
+          Ship Matrix
+        </Btn>
+      </BtnGroup>
+      <BtnGroup segmented>
+        <Btn :active="view === 'exterior'" @click="view = 'exterior'">
+          Exterior
+        </Btn>
+        <Btn :active="view === 'interior'" @click="view = 'interior'">
+          Interior
+        </Btn>
+        <Btn :active="view === 'blueprint'" @click="view = 'blueprint'">
+          Blueprint
+        </Btn>
+      </BtnGroup>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 vt-row">
+      <BtnGroup segmented>
         <Btn :active="active === 'grid'" @click="active = 'grid'">Grid</Btn>
         <Btn :active="active === 'list'" @click="active = 'list'">List</Btn>
         <Btn :active="active === 'table'" @click="active = 'table'">Table</Btn>

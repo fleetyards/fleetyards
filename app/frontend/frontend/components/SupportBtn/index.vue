@@ -6,9 +6,23 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
+
+type Props = {
+  size?: `${BtnSizesEnum}`;
+  variant?: `${BtnVariantsEnum}`;
+};
+
+withDefaults(defineProps<Props>(), {
+  size: undefined,
+  variant: undefined,
+});
 
 const { t } = useI18n();
 
@@ -23,7 +37,10 @@ const open = () => {
 </script>
 
 <template>
-  <Btn class="support-button" @click="open">
-    {{ t("actions.supportUs") }}
+  <!-- Slotted so the footer can keep its own label and heart without a second
+       copy of the modal-opening logic; the default is what every other caller
+       already showed. -->
+  <Btn class="support-button" :size="size" :variant="variant" @click="open">
+    <slot>{{ t("actions.supportUs") }}</slot>
   </Btn>
 </template>

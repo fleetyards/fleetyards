@@ -258,7 +258,7 @@ const openDeflectionCheck = () => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 
 // Matches the composition bar's pill look, as a single animated fill + percent.
 .regen-bar {

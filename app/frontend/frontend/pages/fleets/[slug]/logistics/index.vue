@@ -260,7 +260,7 @@ const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
     </template>
 
     <template #actions-left>
-      <BtnGroup>
+      <BtnGroup segmented>
         <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
           {{ t("labels.fleets.logistics.stockView") }}
         </Btn>

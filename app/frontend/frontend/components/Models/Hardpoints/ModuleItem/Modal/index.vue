@@ -76,7 +76,6 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
       >
         <Panel
           :alignment="PanelAlignmentsEnum.LEFT"
-          slim
           class="module-panel"
           @click="selectModule(mod)"
         >
@@ -88,11 +87,7 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
             :alt="mod.name"
           />
           <div>
-            <PanelHeading
-              :level="HeadingLevelEnum.H3"
-              title-align="right"
-              multiline
-            >
+            <PanelHeading :level="HeadingLevelEnum.H3">
               {{ mod.name }}
             </PanelHeading>
             <div
@@ -107,7 +102,7 @@ const isSelected = (mod: ModelModule) => mod.slug === props.selectedModuleSlug;
       </div>
     </div>
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn v-if="selectedModuleSlug" @click="clearModule">
           {{ t("labels.hardpoint.clearModule") }}
         </Btn>

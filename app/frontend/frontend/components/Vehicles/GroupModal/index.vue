@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -159,17 +160,22 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
     </form>
     <template #footer>
-      <div class="float-sm-right">
+      <div class="modal-actions">
         <Btn
           :confirm="t('messages.confirm.hangarGroup.destroy')"
+          :tone="BtnTonesEnum.DANGER"
+          :size="BtnSizesEnum.LG"
+          :aria-label="t('actions.delete')"
           @click="onDestroy"
         >
           <i class="fa-light fa-trash" />
         </Btn>
-        <Btn :loading="submitting" @click="onSubmit" size="lg">
+        <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
           {{ t("actions.save") }}
         </Btn>
       </div>
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped></style>

@@ -23,7 +23,11 @@ import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
 import Paginator from "@/shared/components/Paginator/index.vue";
-import { type HangarGroupMetric, HangarGroup } from "@/services/fyApi";
+import {
+  type HangarGroupMetric,
+  type HangarGroupPublic,
+  HangarGroup,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -35,7 +39,7 @@ import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   ChannelsEnum,
   useSubscription,
@@ -188,7 +192,7 @@ const showNewModal = () => {
   });
 };
 
-const highlightGroup = (group?: HangarGroup) => {
+const highlightGroup = (group?: HangarGroup | HangarGroupPublic) => {
   if (!group) {
     highlightedGroup.value = "";
     return;
@@ -302,8 +306,10 @@ const openDisplayOptionsModal = () => {
           <ModelClassLabels
             v-if="hangarStats"
             :count-data="hangarStats.classifications"
-            :label="t('labels.hangar')"
+            :label="t('labels.classifications')"
+            hide-label
             filter-key="classificationIn"
+            exclude-filter-key="classificationNotIn"
           />
           <GroupLabels
             v-if="hangarStats && hangarGroups"
@@ -372,7 +378,7 @@ const openDisplayOptionsModal = () => {
   </div>
 
   <Teleport v-if="!mobile" to="#header-right">
-    <Btn :to="{ name: 'hangar-wishlist' }">
+    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-wishlist' }">
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.wishlist") }}
       <transition name="fade" mode="out-in" appear>
@@ -382,17 +388,22 @@ const openDisplayOptionsModal = () => {
       </transition>
     </Btn>
 
-    <Btn data-test="fleetchart-link" @click="toggleFleetchart">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      data-test="fleetchart-link"
+      @click="toggleFleetchart"
+    >
       <i class="fa-duotone fa-starship" />
       {{ t("labels.fleetchart") }}
     </Btn>
 
-    <Btn :to="{ name: 'hangar-stats' }">
+    <Btn :size="BtnSizesEnum.MD" :to="{ name: 'hangar-stats' }">
       <i class="fa-light fa-chart-bar" />
       {{ t("labels.hangarStats") }}
     </Btn>
 
     <ShareBtn
+      :size="BtnSizesEnum.MD"
       v-if="currentUser && currentUser.publicHangar && shareUrl"
       :url="shareUrl"
       :title="shareTitle"
@@ -487,6 +498,7 @@ const openDisplayOptionsModal = () => {
         <hr />
 
         <Btn
+          :tone="BtnTonesEnum.DANGER"
           :disabled="deleting"
           :aria-label="t('actions.hangar.destroyAll')"
           @click="destroyAll"

@@ -14,10 +14,7 @@ import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import { type ModelModule } from "@/services/fyApi";
-import {
-  PanelShadowsEnum,
-  PanelBgRoundedEnum,
-} from "@/shared/components/base/Panel/types";
+import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
 
@@ -82,16 +79,15 @@ const hasFooter = computed(
   <Panel
     class="module-panel"
     :bg-image="storeImage"
-    :bg-rounded="hasFooter ? PanelBgRoundedEnum.TOP : PanelBgRoundedEnum.ALL"
-    :shadow="PanelShadowsEnum.TOP"
+    :bg-rounded="hasFooter ? PanelRoundedEnum.TOP : PanelRoundedEnum.ALL"
   >
     <template #default>
-      <PanelHeading :level="HeadingLevelEnum.H2">
+      <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
         {{ module.name }}
       </PanelHeading>
     </template>
     <template v-if="hasFooter" #footer>
-      <PanelBody class="module-panel-body" no-min-height>
+      <PanelBody class="module-panel-body">
         <p v-if="module.description">
           {{ module.description }}
         </p>

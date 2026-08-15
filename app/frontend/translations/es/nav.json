@@ -95,7 +95,8 @@
         "states": "Estados",
         "notifications": "Notificaciones",
         "syncModal": "Modal de sincronización",
-        "supportHint": "Aviso de apoyo"
+        "supportHint": "Aviso de apoyo",
+        "chips": "Chips"
       },
       "admin": {
         "index": "Admin",

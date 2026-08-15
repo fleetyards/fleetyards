@@ -1,0 +1,10 @@
+{
+  "zh-CN": {
+    "baseChip": {
+      "states": {
+        "included": "已包含",
+        "excluded": "已排除"
+      }
+    }
+  }
+}

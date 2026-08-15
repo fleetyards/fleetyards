@@ -165,7 +165,6 @@ const resetSelected = () => {
   <Panel
     :id="props.id"
     class="base-table w-full"
-    :slim="true"
     :fill-height="props.fillHeight"
   >
     <PanelHeading v-if="props.title || slots.title" :level="props.titleLevel">

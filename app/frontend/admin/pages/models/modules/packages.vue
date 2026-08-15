@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -126,6 +127,7 @@ const { t } = useI18n();
 
   <Teleport to="#header-right">
     <Btn
+      :size="BtnSizesEnum.MD"
       :to="{ name: 'admin-model-create' }"
       :aria-label="t('actions.create')"
       mobile-icon-only
