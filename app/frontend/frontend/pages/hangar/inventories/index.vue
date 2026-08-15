@@ -79,6 +79,13 @@ const activeRecords = computed<(HangarInventoryItem | InventoryStockRecord)[]>(
   () => (activeTab.value === "stock" ? stockRecords.value : itemsList.value),
 );
 
+// Every row of the merged stock and log views is grouped per inventory, so it
+// carries the inventory it came from and can point at that inventory's item.
+const stockItemRoute = (inventorySlug?: string, itemSlug?: string) => ({
+  name: "hangar-inventory-item",
+  params: { inventory: inventorySlug, item: itemSlug },
+});
+
 const openInventoryModal = (inventory?: HangarInventory) => {
   comlink.emit("open-modal", {
     component: () =>
@@ -172,7 +179,26 @@ onMounted(() => {
         :stock-loading="stockLoading"
         :log-loading="logLoading"
         show-inventory
-      />
+      >
+        <template #stock-name="{ record }">
+          <router-link
+            v-if="record.inventory?.slug && record.slug"
+            :to="stockItemRoute(record.inventory.slug, record.slug)"
+          >
+            {{ record.name }}
+          </router-link>
+          <template v-else>{{ record.name }}</template>
+        </template>
+        <template #log-name="{ record }">
+          <router-link
+            v-if="record.inventory?.slug && record.stockSlug"
+            :to="stockItemRoute(record.inventory.slug, record.stockSlug)"
+          >
+            {{ record.name }}
+          </router-link>
+          <template v-else>{{ record.name }}</template>
+        </template>
+      </InventoryLedgerTables>
     </template>
   </FilteredList>
 </template>
