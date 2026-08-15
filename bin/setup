@@ -130,20 +130,23 @@ def write_superset_ports(port, vite_port)
   File.write(File.join(superset_dir, "ports.json"), JSON.pretty_generate(config) + "\n")
 end
 
-def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db, cookie_prefix: nil)
-  env_local = File.join(APP_ROOT, ".env.local")
+def write_managed_env(filename, managed_body)
+  path = File.join(APP_ROOT, filename)
 
   # Preserve user content above the marker
   user_content = ""
-  if File.exist?(env_local)
-    lines = File.readlines(env_local)
+  if File.exist?(path)
+    lines = File.readlines(path)
     marker_idx = lines.index { |l| l.strip == WORKTREE_MARKER }
     user_content = lines[0...marker_idx].join if marker_idx
     user_content = lines.join unless marker_idx
   end
 
-  managed = <<~ENV
-    #{WORKTREE_MARKER}
+  File.write(path, user_content + "#{WORKTREE_MARKER}\n" + managed_body)
+end
+
+def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_redis_db, cookie_prefix: nil)
+  write_managed_env(".env.local", <<~ENV)
     PORT=#{port}
     DB_PORT=#{db_port}
     REDIS_URL=redis://localhost:#{redis_port}
@@ -155,8 +158,21 @@ def write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_red
     ON_SUBDOMAIN=false
     #{"COOKIE_PREFIX=#{cookie_prefix}" if cookie_prefix}
   ENV
+end
 
-  File.write(env_local, user_content + managed)
+# dotenv deliberately skips `.env.local` in the test environment, so the
+# worktree's suffix never reached `config/database.yml` there and every worktree
+# shared one `fleetyards_test`. Two suites running at once then fight over it,
+# and whichever purges the database first fails with PG::ObjectInUse.
+#
+# Only the variables that decide which database the suite talks to are repeated
+# here: the ports are the same shared containers for every worktree, and the web
+# and cookie settings would change what the tests themselves assert.
+def write_env_test_local(db_port, db_suffix)
+  write_managed_env(".env.test.local", <<~ENV)
+    DB_PORT=#{db_port}
+    WORKTREE_SUFFIX=#{db_suffix}
+  ENV
 end
 
 if ARGV.include?("--help") || ARGV.include?("-h")
@@ -210,7 +226,8 @@ FileUtils.chdir APP_ROOT do
 
     cookie_prefix = "FLTYRD_WT_#{sanitize_worktree_name(effective_name)}"
     write_env_local(port, db_port, redis_port, vite_port, db_suffix, sidekiq_db, cookie_prefix:)
-    puts "   Wrote .env.local" if VERBOSE
+    write_env_test_local(db_port, db_suffix)
+    puts "   Wrote .env.local and .env.test.local" if VERBOSE
 
   end
 
