@@ -235,7 +235,6 @@
         "hideRemoved": "Nascondi Rimossi"
       },
       "logistics": {
-        "viewInventories": "View Inventories",
         "viewRequests": "View Requests",
         "newRequest": "New Request",
         "createRequest": "Create Request",

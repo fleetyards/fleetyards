@@ -199,13 +199,6 @@ const crumbs = computed(() => [
   },
   {
     to: {
-      name: "fleet-logistics-inventories",
-      params: { slug: props.fleet.slug },
-    },
-    label: t("headlines.logistics.inventories"),
-  },
-  {
-    to: {
       name: "fleet-logistics-inventory",
       params: { slug: props.fleet.slug, inventory: inventorySlug.value },
     },
