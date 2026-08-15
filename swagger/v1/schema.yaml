@@ -9448,6 +9448,7 @@ components:
             type:
               type: string
               enum:
+              - Commodity
               - Component
             name:
               type: string
@@ -9544,6 +9545,7 @@ components:
           - string
           - 'null'
           enum:
+          - Commodity
           - Component
           -
         itemId:
@@ -10715,6 +10717,7 @@ components:
             type:
               type: string
               enum:
+              - Commodity
               - Component
             name:
               type: string
@@ -10790,6 +10793,7 @@ components:
           - string
           - 'null'
           enum:
+          - Commodity
           - Component
           -
         itemId:
@@ -11680,6 +11684,7 @@ components:
             type:
               type: string
               enum:
+              - Commodity
               - Component
             name:
               type: string

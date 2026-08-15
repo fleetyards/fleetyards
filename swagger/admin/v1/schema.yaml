@@ -9534,6 +9534,7 @@ components:
             type:
               type: string
               enum:
+              - Commodity
               - Component
             name:
               type: string
