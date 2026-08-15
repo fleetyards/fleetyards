@@ -9,7 +9,7 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import StockItemPanel from "@/frontend/components/Logistics/StockItemPanel/index.vue";
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import {
@@ -197,24 +197,28 @@ const crumbs = computed(() => [
         </Heading>
 
         <Teleport v-if="!mobile" to="#header-right">
-          <Btn :inline="true" @click="openEditModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openEditModal">
             <i class="fa-duotone fa-pen" />
             {{ t("actions.logistics.editStockItem") }}
           </Btn>
-          <Btn :inline="true" variant="danger" @click="destroyStockItem">
+          <Btn
+            :size="BtnSizesEnum.MD"
+            :tone="BtnTonesEnum.DANGER"
+            @click="destroyStockItem"
+          >
             <i class="fa-duotone fa-trash" />
             {{ t("actions.logistics.destroyStockItem") }}
           </Btn>
         </Teleport>
 
         <div v-if="mobile" class="stock-item-actions">
-          <Btn :size="BtnSizesEnum.SMALL" @click="openEditModal">
+          <Btn :size="BtnSizesEnum.SM" @click="openEditModal">
             <i class="fa-duotone fa-pen" />
             {{ t("actions.logistics.editStockItem") }}
           </Btn>
           <Btn
-            :size="BtnSizesEnum.SMALL"
-            variant="danger"
+            :size="BtnSizesEnum.SM"
+            :tone="BtnTonesEnum.DANGER"
             @click="destroyStockItem"
           >
             <i class="fa-duotone fa-trash" />
@@ -237,8 +241,8 @@ const crumbs = computed(() => [
         >
           <template #log-actions="{ record }">
             <Btn
-              :size="BtnSizesEnum.SMALL"
-              variant="danger"
+              :size="BtnSizesEnum.SM"
+              :tone="BtnTonesEnum.DANGER"
               :aria-label="t('actions.logistics.destroyEntry')"
               :title="t('actions.logistics.destroyEntry')"
               @click="destroyEntry(record as HangarInventoryItem)"

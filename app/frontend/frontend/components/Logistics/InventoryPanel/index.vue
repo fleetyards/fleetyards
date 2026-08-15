@@ -13,7 +13,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
-import { PanelShadowsEnum } from "@/shared/components/base/Panel/types";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import fallbackImage1 from "@/images/inventories/placeholder-1.webp";
 import fallbackImage2 from "@/images/inventories/placeholder-2.jpg";
@@ -54,12 +53,8 @@ const image = computed(
 </script>
 
 <template>
-  <Panel
-    :bg-image="image"
-    :shadow="PanelShadowsEnum.TOP"
-    class="inventory-panel"
-  >
-    <PanelHeading :level="HeadingLevelEnum.H2">
+  <Panel :bg-image="image" class="inventory-panel">
+    <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
       <template #default>
         <router-link :to="to">
           {{ inventory.name }}
@@ -70,8 +65,7 @@ const image = computed(
       </template>
       <template v-if="editable" #actions>
         <Btn
-          :variant="BtnVariantsEnum.LINK"
-          :inline="true"
+          :variant="BtnVariantsEnum.BARE"
           class="inventory-panel-edit"
           @click.prevent="emit('edit')"
         >

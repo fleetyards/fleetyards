@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -269,7 +269,7 @@ const crumbs = computed(() => [
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.logistics.importCsv") }}
           </Btn>
-          <Btn :inline="true" @click="openEditModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openEditModal">
             <i class="fa-duotone fa-pen" />
           </Btn>
         </Teleport>
@@ -289,21 +289,21 @@ const crumbs = computed(() => [
           <template #actions-right>
             <BtnDropdown
               v-if="mobile && canManageInventory"
-              :size="BtnSizesEnum.SMALL"
+              :size="BtnSizesEnum.SM"
             >
-              <Btn :size="BtnSizesEnum.SMALL" @click="openDepositModal">
+              <Btn :size="BtnSizesEnum.SM" @click="openDepositModal">
                 <i class="fa-duotone fa-arrow-down-to-bracket" />
                 <span>{{ t("actions.logistics.deposit") }}</span>
               </Btn>
-              <Btn :size="BtnSizesEnum.SMALL" @click="openWithdrawModal">
+              <Btn :size="BtnSizesEnum.SM" @click="openWithdrawModal">
                 <i class="fa-duotone fa-arrow-up-from-bracket" />
                 <span>{{ t("actions.logistics.withdraw") }}</span>
               </Btn>
-              <Btn :size="BtnSizesEnum.SMALL" @click="openCsvImportModal">
+              <Btn :size="BtnSizesEnum.SM" @click="openCsvImportModal">
                 <i class="fa-duotone fa-file-csv" />
                 <span>{{ t("actions.logistics.importCsv") }}</span>
               </Btn>
-              <Btn :size="BtnSizesEnum.SMALL" @click="openEditModal">
+              <Btn :size="BtnSizesEnum.SM" @click="openEditModal">
                 <i class="fa-duotone fa-pen" />
                 <span>{{ t("actions.logistics.editInventory") }}</span>
               </Btn>
@@ -344,8 +344,8 @@ const crumbs = computed(() => [
               </template>
               <template v-if="canManageInventory" #log-actions="{ record }">
                 <Btn
-                  :size="BtnSizesEnum.SMALL"
-                  variant="danger"
+                  :size="BtnSizesEnum.SM"
+                  :tone="BtnTonesEnum.DANGER"
                   :aria-label="t('actions.logistics.destroyEntry')"
                   :title="t('actions.logistics.destroyEntry')"
                   @click="destroyEntry(record as FleetInventoryItem)"

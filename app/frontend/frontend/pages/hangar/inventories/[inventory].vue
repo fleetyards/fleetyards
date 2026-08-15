@@ -12,7 +12,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   type HangarInventoryItem,
   useHangarInventory,
@@ -185,17 +185,17 @@ const crumbs = computed(() => [
         </p>
 
         <Teleport v-if="!mobile" to="#header-right">
-          <Btn :inline="true" @click="openItemModal('deposit')">
+          <Btn :size="BtnSizesEnum.MD" @click="openItemModal('deposit')">
             {{ t("actions.logistics.deposit") }}
           </Btn>
-          <Btn :inline="true" @click="openItemModal('withdrawal')">
+          <Btn :size="BtnSizesEnum.MD" @click="openItemModal('withdrawal')">
             {{ t("actions.logistics.withdraw") }}
           </Btn>
-          <Btn :inline="true" @click="openCsvImportModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openCsvImportModal">
             <i class="fa-duotone fa-file-csv" />
             {{ t("actions.logistics.importCsv") }}
           </Btn>
-          <Btn :inline="true" @click="openEditModal">
+          <Btn :size="BtnSizesEnum.MD" @click="openEditModal">
             <i class="fa-duotone fa-pen" />
           </Btn>
         </Teleport>
@@ -213,23 +213,20 @@ const crumbs = computed(() => [
           </template>
 
           <template #actions-right>
-            <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SMALL">
-              <Btn :size="BtnSizesEnum.SMALL" @click="openItemModal('deposit')">
+            <BtnDropdown v-if="mobile" :size="BtnSizesEnum.SM">
+              <Btn :size="BtnSizesEnum.SM" @click="openItemModal('deposit')">
                 <i class="fa-duotone fa-arrow-down-to-bracket" />
                 <span>{{ t("actions.logistics.deposit") }}</span>
               </Btn>
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                @click="openItemModal('withdrawal')"
-              >
+              <Btn :size="BtnSizesEnum.SM" @click="openItemModal('withdrawal')">
                 <i class="fa-duotone fa-arrow-up-from-bracket" />
                 <span>{{ t("actions.logistics.withdraw") }}</span>
               </Btn>
-              <Btn :size="BtnSizesEnum.SMALL" @click="openCsvImportModal">
+              <Btn :size="BtnSizesEnum.SM" @click="openCsvImportModal">
                 <i class="fa-duotone fa-file-csv" />
                 <span>{{ t("actions.logistics.importCsv") }}</span>
               </Btn>
-              <Btn :size="BtnSizesEnum.SMALL" @click="openEditModal">
+              <Btn :size="BtnSizesEnum.SM" @click="openEditModal">
                 <i class="fa-duotone fa-pen" />
                 <span>{{ t("actions.logistics.editInventory") }}</span>
               </Btn>
@@ -237,21 +234,11 @@ const crumbs = computed(() => [
           </template>
 
           <template #actions-left>
-            <BtnGroup inline>
-              <Btn
-                :active="activeTab === 'stock'"
-                inline
-                size="small"
-                @click="activeTab = 'stock'"
-              >
+            <BtnGroup segmented>
+              <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
                 {{ t("labels.logistics.stockView") }}
               </Btn>
-              <Btn
-                :active="activeTab === 'log'"
-                inline
-                size="small"
-                @click="activeTab = 'log'"
-              >
+              <Btn :active="activeTab === 'log'" @click="activeTab = 'log'">
                 {{ t("labels.logistics.logView") }}
               </Btn>
             </BtnGroup>
@@ -278,8 +265,8 @@ const crumbs = computed(() => [
               </template>
               <template #log-actions="{ record }">
                 <Btn
-                  :size="BtnSizesEnum.SMALL"
-                  variant="danger"
+                  :size="BtnSizesEnum.SM"
+                  :tone="BtnTonesEnum.DANGER"
                   :aria-label="t('actions.logistics.destroyEntry')"
                   :title="t('actions.logistics.destroyEntry')"
                   @click="destroyEntry(record as HangarInventoryItem)"
