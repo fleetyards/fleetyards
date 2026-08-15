@@ -10,10 +10,12 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import PanelUserTag from "@/frontend/components/base/PanelUserTag/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
+import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 import fallbackImage1 from "@/images/inventories/placeholder-1.webp";
 import fallbackImage2 from "@/images/inventories/placeholder-2.jpg";
 
@@ -22,12 +24,12 @@ const fallbackImages = [fallbackImage1, fallbackImage2];
 type Props = {
   inventory: InventoryPanelRecord;
   to: RouteLocationRaw;
-  managedBy?: string;
+  manager?: MemberContact;
   editable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  managedBy: undefined,
+  manager: undefined,
   editable: false,
 });
 
@@ -74,10 +76,11 @@ const image = computed(
       </template>
     </PanelHeading>
     <PanelBody class="inventory-panel-body" rounded="bottom">
-      <div v-if="managedBy" class="inventory-panel-manager">
-        {{ t("labels.logistics.managedBy") }}
-        {{ managedBy }}
-      </div>
+      <PanelUserTag
+        v-if="manager"
+        :label="t('labels.logistics.managedBy')"
+        :member="manager"
+      />
       <div class="inventory-panel-counts">
         <div class="inventory-panel-count">
           <span class="inventory-panel-count-number">
@@ -121,20 +124,6 @@ const image = computed(
     > :first-child {
       font-size: 18px;
     }
-  }
-
-  &-manager {
-    position: absolute;
-    bottom: 10px;
-    right: 0;
-    padding: 4px 10px;
-    background-color: $primary;
-    border-radius: 10px 0 0 10px;
-    font-size: 0.85em;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    color: #fff;
   }
 
   &-counts {

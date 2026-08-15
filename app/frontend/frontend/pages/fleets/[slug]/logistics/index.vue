@@ -190,7 +190,7 @@ const crumbs = computed(() => [
           name: 'fleet-logistics-inventory',
           params: { slug: fleet.slug, inventory: record.slug },
         }"
-        :managed-by="record.manager?.username"
+        :manager="record.manager"
         :editable="canManageInventories"
         @edit="openInventoryModal(record)"
       />
