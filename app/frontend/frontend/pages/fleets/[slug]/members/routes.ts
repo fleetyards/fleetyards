@@ -8,7 +8,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "fleets.members.index",
       needsAuthentication: true,
-      quickSearch: "searchCont",
       customTitle: true,
     },
   },

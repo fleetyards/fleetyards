@@ -6,7 +6,6 @@ declare module "vue-router" {
     title?: string;
     customTitle?: boolean;
     needsAuthentication?: boolean;
-    quickSearch?: string;
     primaryAction?: boolean;
     backgroundImage?: string;
     icon?: string;
