@@ -97,6 +97,7 @@ module ScData
             },
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
             **extract_hull(values.dig("Components", "VehicleComponentParams")),
+            speeds: extract_ground_speeds(values.dig("Components", "VehicleComponentParams")),
             metrics: {
               x: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "x").to_f,
               y: values.dig("Components", "VehicleComponentParams", "maxBoundingBoxSize", "y").to_f,
@@ -263,6 +264,111 @@ module ScData
           hull_health: parts.sum { |part| part[:health] },
           hull_parts: parts
         }
+      end
+
+      # Ground vehicles carry no flight controller, so their speeds come from the
+      # implementation XML's `MovementParams` rather than an IFCS item. Two
+      # independent limits live there and only around half the vehicles have the
+      # first one: `Handling/Power` is the arcade controller's target speed, while
+      # `wWheelsMax` caps how fast physics may spin the driven wheels. Whichever
+      # is lower is the speed the vehicle actually reaches.
+      private def extract_ground_speeds(component_params)
+        definition_file_path = component_params.dig("vehicleDefinition")
+
+        return {} if definition_file_path.blank?
+
+        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+
+        movement = extract_movement_params(definition_data, definition_file_path, component_params.dig("modification"))
+
+        return {} if movement.blank?
+
+        power = extract_handling_power(movement)
+        target_speed = power&.dig("topSpeed")&.to_f || movement.dig("TrackWheeled", "maxSpeed")&.to_f
+        wheel_speed = extract_wheel_speed_limit(movement, definition_data)
+
+        return {} if target_speed.blank? && wheel_speed.blank?
+
+        {
+          max: [target_speed, wheel_speed].compact.min,
+          reverse: power&.dig("reverseSpeed")&.to_f,
+          acceleration: power&.dig("acceleration")&.to_f,
+          decceleration: power&.dig("decceleration")&.to_f
+        }
+      end
+
+      # Variants replace the whole `MovementParams` block through their
+      # modification's `patchFile` — the inline `Elems` overrides that
+      # extract_modification_definition applies only carry display names and
+      # masses. The Cyclone tunes every variant this way (RN 55 down to MT 47).
+      private def extract_movement_params(definition_data, definition_file_path, modification_key)
+        base = definition_data.dig("Vehicle", "MovementParams")
+
+        return base if modification_key.blank?
+
+        modifications = definition_data.dig("Vehicle", "Modifications", "Modification")
+        modifications = [modifications] unless modifications.is_a?(Array)
+
+        patch_file = modifications.compact.find { |modification|
+          modification.dig("name") == modification_key
+        }&.dig("patchFile")
+
+        return base if patch_file.blank?
+
+        patch_path = "#{definition_path}/#{File.dirname(definition_file_path)}/#{patch_file}.xml"
+
+        return base unless File.exist?(patch_path)
+
+        Hash.from_xml(File.read(patch_path)).dig("Modifications", "MovementParams") || base
+      end
+
+      # The Lynx carries a second, stray `Handling` block as a sibling of its
+      # movement node; the one nested inside the movement node is the schema
+      # correct source, and document order puts it first.
+      private def extract_handling_power(movement)
+        nested = movement.values.filter_map { |node|
+          node.dig("Handling", "Power") if node.is_a?(Hash)
+        }.first
+
+        nested || movement.dig("Handling", "Power")
+      end
+
+      # `wWheelsMax` is the maximum angular velocity of a wheel in rad/s, so the
+      # speed it allows depends on the wheels the vehicle drives on.
+      private def extract_wheel_speed_limit(movement, definition_data)
+        max_angular_velocity = movement.values.filter_map { |node|
+          node.dig("PhysicsParams", "wWheelsMax") if node.is_a?(Hash)
+        }.first&.to_f
+
+        return if max_angular_velocity.blank?
+
+        radius = extract_driven_wheel_radius(definition_data)
+
+        return if radius.blank?
+
+        (max_angular_velocity * radius).round(2)
+      end
+
+      private def extract_driven_wheel_radius(definition_data)
+        wheels = collect_nodes(definition_data.dig("Vehicle", "Parts"), "SubPartWheel")
+        driven = wheels.select { |wheel| wheel.dig("driving") == "1" }
+
+        (driven.presence || wheels).filter_map { |wheel| wheel.dig("rimRadius")&.to_f }.max
+      end
+
+      private def collect_nodes(node, name)
+        case node
+        when Array
+          node.flat_map { |child| collect_nodes(child, name) }
+        when Hash
+          node.flat_map do |key, value|
+            next Array.wrap(value) if key == name
+
+            collect_nodes(value, name)
+          end
+        else
+          []
+        end
       end
 
       # The ship's shared weapon-power pool size (in power segments). Sustained
