@@ -746,7 +746,7 @@ GEM
     sidekiq-scheduler (6.0.2)
       rufus-scheduler (~> 3.2)
       sidekiq (>= 7.3, < 9)
-    simplecov (1.0.3)
+    simplecov (1.1.0)
     simplecov-console (0.9.5)
       ansi
       simplecov
