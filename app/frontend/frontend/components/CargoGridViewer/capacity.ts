@@ -1,10 +1,10 @@
 import type { CargoHold } from "@/services/fyApi";
 import { CONTAINER_DEFS, SCU_UNIT } from "./constants";
 
-export type ContainerCapacity = {
+export interface ContainerCapacity {
   size: number;
   maxQuantity: number;
-};
+}
 
 // How many containers of one size fit across every hold, taking the best of the
 // two floor orientations per hold. Holds refuse containers larger than their
