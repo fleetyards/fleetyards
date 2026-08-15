@@ -97,7 +97,7 @@ const quality = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import "@/frontend/components/Models/metricsCard";
+@import "@/shared/components/metricsCard";
 
 .stock-item {
   display: flex;
