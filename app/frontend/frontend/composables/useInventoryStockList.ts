@@ -38,16 +38,26 @@ export const useInventoryStockList = (
       if (categoryFilter && item.category !== categoryFilter) {
         return false;
       }
-      // Rows from the merged endpoints carry a range rather than a single
-      // quality, so a filter keeps every row whose range reaches into it.
-      const highest = item.qualityMax ?? item.quality;
-      const lowest = item.qualityMin ?? item.quality;
+      if (qualityMin !== undefined || qualityMax !== undefined) {
+        // Rows from the merged endpoints carry a range rather than a single
+        // quality, so a filter keeps every row whose range reaches into it.
+        const highest = item.qualityMax ?? item.quality;
+        const lowest = item.qualityMin ?? item.quality;
 
-      if (qualityMin !== undefined && (highest ?? 0) < qualityMin) {
-        return false;
-      }
-      if (qualityMax !== undefined && (lowest ?? 0) > qualityMax) {
-        return false;
+        // Entries may carry no quality at all, and a row aggregated from only
+        // those has nothing to compare against. Reading the absent value as 0
+        // would answer both bounds - below every minimum, under every maximum.
+        // The log view drops such rows, ransack comparing against NULL, so the
+        // same filter must not leave them standing here.
+        if (highest == null || lowest == null) {
+          return false;
+        }
+        if (qualityMin !== undefined && highest < qualityMin) {
+          return false;
+        }
+        if (qualityMax !== undefined && lowest > qualityMax) {
+          return false;
+        }
       }
       return true;
     });

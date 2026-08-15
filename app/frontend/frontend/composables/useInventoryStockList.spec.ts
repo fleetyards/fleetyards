@@ -87,4 +87,18 @@ describe("useInventoryStockList", () => {
 
     expect(namesFor(items, { qualityGteq: "1" })).toEqual(["Mixed"]);
   });
+
+  // Quality is nullable and the API takes it as null, so a position can carry
+  // none at all. It answers neither bound, the way the log view's own filter
+  // treats it, rather than reading as a quality of zero.
+  it("drops a position with no quality from either bound", () => {
+    const items = [
+      stock({ name: "Unrated" }),
+      stock({ name: "Worn", quality: 200 }),
+    ];
+
+    expect(namesFor(items, { qualityGteq: "100" })).toEqual(["Worn"]);
+    expect(namesFor(items, { qualityLteq: "500" })).toEqual(["Worn"]);
+    expect(namesFor(items)).toEqual(["Unrated", "Worn"]);
+  });
 });
