@@ -5,8 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -99,20 +101,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col-12 col-lg-8">
-      <Heading size="hero" hero>
-        {{ t("headlines.logistics.hangarInventories") }}
-      </Heading>
-    </div>
-    <div class="col-12 col-lg-4 flex justify-end items-center">
-      <div class="page-actions page-actions-right">
-        <Btn @click="openInventoryModal()">
-          {{ t("actions.logistics.createInventory") }}
-        </Btn>
-      </div>
-    </div>
-  </div>
+  <BreadCrumbs
+    :crumbs="[{ to: { name: 'hangar' }, label: t('nav.hangar.index') }]"
+  />
+  <Heading size="hero" hero>
+    {{ t("headlines.logistics.hangarInventories") }}
+  </Heading>
+
+  <Teleport to="#header-right">
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :aria-label="t('actions.logistics.createInventory')"
+      mobile-icon-only
+      @click="openInventoryModal()"
+    >
+      <i class="fa-light fa-plus" />
+      {{ t("actions.logistics.createInventory") }}
+    </Btn>
+  </Teleport>
 
   <Loader :loading="inventoriesLoading" />
 
