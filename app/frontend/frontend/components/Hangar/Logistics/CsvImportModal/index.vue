@@ -96,7 +96,7 @@ const importCsv = async () => {
       {{ t("labels.logistics.csvImportHelp") }}
     </p>
 
-    <Btn size="small" :inline="true" @click="downloadTemplate">
+    <Btn @click="downloadTemplate">
       <i class="fa-duotone fa-download" />
       {{ t("actions.logistics.downloadTemplate") }}
     </Btn>

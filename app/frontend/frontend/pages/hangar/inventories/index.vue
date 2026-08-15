@@ -107,7 +107,7 @@ onMounted(() => {
     </div>
     <div class="col-12 col-lg-4 flex justify-end items-center">
       <div class="page-actions page-actions-right">
-        <Btn :inline="true" @click="openInventoryModal()">
+        <Btn @click="openInventoryModal()">
           {{ t("actions.logistics.createInventory") }}
         </Btn>
       </div>
@@ -148,21 +148,11 @@ onMounted(() => {
     </template>
 
     <template #actions-left>
-      <BtnGroup inline>
-        <Btn
-          :active="activeTab === 'stock'"
-          inline
-          size="small"
-          @click="activeTab = 'stock'"
-        >
+      <BtnGroup segmented>
+        <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
           {{ t("labels.logistics.stockView") }}
         </Btn>
-        <Btn
-          :active="activeTab === 'log'"
-          inline
-          size="small"
-          @click="activeTab = 'log'"
-        >
+        <Btn :active="activeTab === 'log'" @click="activeTab = 'log'">
           {{ t("labels.logistics.logView") }}
         </Btn>
       </BtnGroup>

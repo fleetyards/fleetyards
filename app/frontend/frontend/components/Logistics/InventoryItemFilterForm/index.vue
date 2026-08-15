@@ -7,7 +7,10 @@ export default {
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/base/FilterGroup/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
+import {
+  InputSizesEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -63,6 +66,7 @@ defineExpose({ isFilterSelected });
   <form @submit.prevent="handleSubmit">
     <Teleport v-if="!hideQuicksearch" to="#header-left">
       <FormInput
+        :size="InputSizesEnum.MEDIUM"
         v-model="form.nameCont"
         name="search"
         :placeholder="t('labels.logistics.searchItems')"
@@ -113,7 +117,7 @@ defineExpose({ isFilterSelected });
       </div>
     </div>
 
-    <Btn :disabled="!isFilterSelected" :inline="true" @click="resetFilter">
+    <Btn :disabled="!isFilterSelected" @click="resetFilter">
       {{ t("actions.resetFilter") }}
     </Btn>
   </form>
