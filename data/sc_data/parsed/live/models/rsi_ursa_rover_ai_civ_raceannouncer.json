@@ -227,6 +227,12 @@
       "category": "cosmetic"
     }
   ],
+  "speeds": {
+    "max": 24.0,
+    "reverse": 12.0,
+    "acceleration": 8.0,
+    "decceleration": 12.0
+  },
   "metrics": {
     "x": 8.75,
     "y": 6.0,

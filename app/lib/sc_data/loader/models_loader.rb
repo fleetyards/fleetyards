@@ -42,6 +42,7 @@ module ScData
         update_params = update_external_fuel_tanks(hardpoints, update_params)
         update_params = update_refuel_boom(hardpoints, update_params)
         update_params = update_speeds(hardpoints, update_params)
+        update_params = update_ground_speeds(model_data, update_params)
 
         model.update!(update_params.merge(update_reason: :sc_data_loader))
       end
@@ -198,6 +199,23 @@ module ScData
         update_params[:yaw_boosted] = ifcs.dig("boosted_angular_velocity", "yaw").to_f if ifcs.dig("boosted_angular_velocity", "yaw").present?
         update_params[:roll] = ifcs.dig("angular_velocity", "roll").to_f if ifcs.dig("angular_velocity", "roll").present?
         update_params[:roll_boosted] = ifcs.dig("boosted_angular_velocity", "roll").to_f if ifcs.dig("boosted_angular_velocity", "roll").present?
+
+        update_params
+      end
+
+      # Ground vehicles have no FlightController to read speeds off, so the
+      # parser takes them straight from the vehicle definition. Only the
+      # vehicles that declare a `Handling/Power` block get reverse speed and
+      # acceleration; the rest have a top speed and nothing else.
+      private def update_ground_speeds(model_data, update_params)
+        speeds = model_data.dig("speeds")
+
+        return update_params if speeds.blank?
+
+        update_params[:ground_max_speed] = speeds.dig("max").to_f if speeds.dig("max").present?
+        update_params[:ground_reverse_speed] = speeds.dig("reverse").to_f if speeds.dig("reverse").present?
+        update_params[:ground_acceleration] = speeds.dig("acceleration").to_f if speeds.dig("acceleration").present?
+        update_params[:ground_decceleration] = speeds.dig("decceleration").to_f if speeds.dig("decceleration").present?
 
         update_params
       end
