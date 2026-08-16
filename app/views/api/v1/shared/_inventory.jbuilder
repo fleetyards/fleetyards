@@ -28,6 +28,7 @@ if inventory.vehicle.present?
       json.name inventory.vehicle.model.name
       json.slug inventory.vehicle.model.slug
       json.cargo inventory.vehicle.model.cargo.to_f
+      json.personal_inventory inventory.vehicle.model.personal_inventory.to_f
     end
   end
 else

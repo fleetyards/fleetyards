@@ -9916,6 +9916,8 @@ components:
               type: string
             cargo:
               type: number
+            personalInventory:
+              type: number
       additionalProperties: false
       required:
       - id
@@ -10398,6 +10400,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:
@@ -10869,6 +10877,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:

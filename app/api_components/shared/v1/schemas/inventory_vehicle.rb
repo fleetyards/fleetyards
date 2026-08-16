@@ -19,7 +19,8 @@ module Shared
               properties: {
                 name: {type: :string},
                 slug: {type: :string},
-                cargo: {type: :number}
+                cargo: {type: :number},
+                personalInventory: {type: :number}
               }
             }
           },

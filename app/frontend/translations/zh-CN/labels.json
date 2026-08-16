@@ -1239,7 +1239,9 @@
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
-        "overCapacity": "超出货舱容量"
+        "overCapacity": "超出货舱容量",
+        "cargoGrid": "货舱网格",
+        "shipInventory": "飞船库存"
       },
       "hangarInventories": "Inventories"
     }

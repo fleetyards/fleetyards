@@ -38,7 +38,12 @@ export type InventoryVehicleReference = {
   id: string;
   name: string;
   serial?: string | null;
-  model?: { name?: string; slug?: string; cargo?: number };
+  model?: {
+    name?: string;
+    slug?: string;
+    cargo?: number;
+    personalInventory?: number;
+  };
 };
 
 export type InventoryPanelRecord = {

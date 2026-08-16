@@ -113,6 +113,8 @@ module V1
                 beamLabel: {type: :string},
                 cargo: {type: :number},
                 cargoLabel: {type: :string},
+                personalInventory: {type: :number},
+                personalInventoryLabel: {type: [:string, :null]},
                 fleetchartOffsetLength: {type: :number},
                 fleetchartOffsetBeam: {type: :number},
                 extendedLength: {type: :number},

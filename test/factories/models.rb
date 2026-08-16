@@ -52,6 +52,7 @@
 #  name                              :string(255)
 #  notified                          :boolean          default(FALSE)
 #  on_sale                           :boolean          default(FALSE)
+#  personal_inventory                :decimal(15, 2)
 #  pitch                             :decimal(15, 2)
 #  pitch_boosted                     :decimal(15, 2)
 #  player_ownable                    :boolean          default(TRUE), not null

@@ -102,9 +102,15 @@ const hasCargo = computed(() => (inventory.value?.itemCount ?? 0) > 0);
 // Players stash cargo outside the grid and personal inventory is not cargo, so
 // the capacity is reported rather than enforced.
 const cargoCapacity = computed(() => props.vehicle.model?.metrics?.cargo ?? 0);
+const shipInventory = computed(
+  () => props.vehicle.model?.metrics?.personalInventory ?? 0,
+);
+// One bucket holds everything a ship carries, so it is measured against
+// everything a ship can hold: the grid plus the storage container.
+const totalCapacity = computed(() => cargoCapacity.value + shipInventory.value);
 const storedScu = computed(() => inventory.value?.totalScu ?? 0);
 const overCapacity = computed(
-  () => cargoCapacity.value > 0 && storedScu.value > cargoCapacity.value,
+  () => totalCapacity.value > 0 && storedScu.value > totalCapacity.value,
 );
 
 const openItemModal = (initialEntryType: "deposit" | "withdrawal") => {
@@ -235,8 +241,16 @@ onMounted(() => {
         :class="{ over: overCapacity }"
       >
         {{ storedScu }}
-        <template v-if="cargoCapacity > 0"> / {{ cargoCapacity }} </template>
+        <template v-if="totalCapacity > 0"> / {{ totalCapacity }} </template>
         SCU
+      </span>
+      <span v-if="totalCapacity > 0" class="vehicle-cargo-capacity-breakdown">
+        <span v-if="cargoCapacity > 0">
+          {{ t("labels.logistics.cargoGrid") }}: {{ cargoCapacity }} SCU
+        </span>
+        <span v-if="shipInventory > 0">
+          {{ t("labels.logistics.shipInventory") }}: {{ shipInventory }} SCU
+        </span>
       </span>
       <span v-if="overCapacity" class="vehicle-cargo-capacity-hint">
         {{ t("labels.logistics.overCapacity") }}
@@ -370,6 +384,13 @@ onMounted(() => {
     &.over {
       color: $danger;
     }
+  }
+
+  &-capacity-breakdown {
+    display: flex;
+    gap: 10px;
+    font-size: 0.85em;
+    opacity: 0.75;
   }
 
   &-capacity-hint {

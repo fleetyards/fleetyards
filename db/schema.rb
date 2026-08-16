@@ -550,11 +550,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_120000) do
     t.string "name", null: false
     t.string "slug", null: false
     t.datetime "updated_at", null: false
-    t.uuid "vehicle_id"
-    t.index "holder_type, holder_id, lower((name)::text)", name: "index_inventories_on_holder_and_lower_name", unique: true, where: "(vehicle_id IS NULL)"
-    t.index ["holder_type", "holder_id", "slug"], name: "index_inventories_on_holder_type_and_holder_id_and_slug", unique: true, where: "(vehicle_id IS NULL)"
+    t.index "holder_type, holder_id, lower((name)::text)", name: "index_inventories_on_holder_and_lower_name", unique: true
+    t.index ["holder_type", "holder_id", "slug"], name: "index_inventories_on_holder_type_and_holder_id_and_slug", unique: true
     t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_type_and_holder_id"
-    t.index ["vehicle_id"], name: "index_inventories_on_vehicle_id", unique: true, where: "(vehicle_id IS NOT NULL)"
   end
 
   create_table "inventory_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -824,6 +822,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_120000) do
     t.string "name", limit: 255
     t.boolean "notified", default: false
     t.boolean "on_sale", default: false
+    t.decimal "personal_inventory", precision: 15, scale: 2
     t.decimal "pitch", precision: 15, scale: 2
     t.decimal "pitch_boosted", precision: 15, scale: 2
     t.boolean "player_ownable", default: true, null: false
@@ -1235,7 +1234,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_120000) do
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"
-  add_foreign_key "inventories", "vehicles", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"

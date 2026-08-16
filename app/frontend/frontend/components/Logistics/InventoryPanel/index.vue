@@ -46,8 +46,11 @@ const subtitle = computed(
   () => props.inventory.vehicle?.name || props.inventory.location,
 );
 
+// Everything a ship can hold: the cargo grid plus its own storage container.
 const cargoCapacity = computed(
-  () => props.inventory.vehicle?.model?.cargo ?? 0,
+  () =>
+    (props.inventory.vehicle?.model?.cargo ?? 0) +
+    (props.inventory.vehicle?.model?.personalInventory ?? 0),
 );
 
 const overCapacity = computed(
