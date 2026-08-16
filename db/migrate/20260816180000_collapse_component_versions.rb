@@ -87,10 +87,25 @@ class CollapseComponentVersions < ActiveRecord::Migration[8.1]
       # A component owns its sub-hardpoints through a polymorphic parent, and
       # those carry a foreign key back to components, so they go before the row
       # they hang off can.
+      #
+      # Hardpoints nest -- a turret owns the guns fitted to it -- and raw SQL
+      # gets none of the `dependent: :destroy` cascade that would normally take
+      # them. Deleting only the top level would leave the children pointing at a
+      # parent that no longer exists, so the whole subtree goes.
       execute(<<~SQL)
-        DELETE FROM hardpoints
-        WHERE parent_type = 'Component'
-          AND parent_id IN (SELECT id FROM component_survivors WHERE id <> survivor_id)
+        WITH RECURSIVE doomed AS (
+          SELECT id
+          FROM hardpoints
+          WHERE parent_type = 'Component'
+            AND parent_id IN (SELECT id FROM component_survivors WHERE id <> survivor_id)
+
+          UNION ALL
+
+          SELECT child.id
+          FROM hardpoints child
+          JOIN doomed ON child.parent_type = 'Hardpoint' AND child.parent_id = doomed.id
+        )
+        DELETE FROM hardpoints WHERE id IN (SELECT id FROM doomed)
       SQL
 
       execute("DELETE FROM components WHERE id IN (SELECT id FROM component_survivors WHERE id <> survivor_id)")
