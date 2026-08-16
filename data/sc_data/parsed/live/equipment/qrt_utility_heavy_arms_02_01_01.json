@@ -1,0 +1,32 @@
+{
+  "key": "qrt_utility_heavy_arms_02_01_01",
+  "ref": "e0d886f5-a721-4f1d-ae5a-ac8d14d2415c",
+  "name": "Palatino Arms Mark I",
+  "description": "Elegant design meets innovation with the Palatino armor from Quirinus Tech. This armor set masterfully mixes reinforced plating with patented new materials that are light-weight and flexible, yet rated to withstand heavy damage allowing the wearer to be fashionable, light on their feet, and able to withstand serious firepower. The Mark I variant is primarily icy white with blue and red highlights.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-70 / 100 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "SM_RestrictedArm",
+    "qrt_utility_heavy",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

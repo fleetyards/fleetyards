@@ -1,0 +1,32 @@
+{
+  "key": "hdh_pants_05_01_20",
+  "ref": "4944bb64-99d0-42e1-b735-bc24948f23d7",
+  "name": "Guerra Pants Daylight",
+  "description": "The Guerra pants by Alejo Brothers are a staple for daily wear. The synthetic fabric ensures adequate protection from the general wear and tear of frontier life while remaining easy to patch up if the need arises.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_pants",
+    "Set_05",
+    "Texture_01",
+    "Color_20"
+  ],
+  "hidden": false
+}

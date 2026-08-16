@@ -1,0 +1,31 @@
+{
+  "key": "rmb_pants_01_01_01",
+  "ref": "a82f62f1-fd2b-4b5d-a60d-f87337885a13",
+  "name": "Pollux Pants",
+  "description": "Durable comfort becomes fashion forward thanks to the edgy details in the Pollux pants from Rambler. The thick, woven fabric is reinforced with leather panels and accented by the unique lace front. \n\nMen's sizes currently not available.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "3000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e7489831-23c1-4629-ab36-221bb9bad06f",
+  "tags": [
+    "rmb_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

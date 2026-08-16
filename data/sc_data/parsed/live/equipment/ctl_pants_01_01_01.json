@@ -1,0 +1,31 @@
+{
+  "key": "ctl_pants_01_01_01",
+  "ref": "eb34de82-ec46-4d5d-90db-f34318c2e8cd",
+  "name": "Perth Pants",
+  "description": "These straight-leg pants from City Lights are essential for everyday work and play. Both the front and back pockets feature metallic button accents to provide that perfect amount of flair.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5ca8a669-44c2-40e4-89b2-7a5da790b832",
+  "tags": [
+    "ctl_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

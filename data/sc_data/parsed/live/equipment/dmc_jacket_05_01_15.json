@@ -1,0 +1,32 @@
+{
+  "key": "dmc_jacket_05_01_15",
+  "ref": "b45986d8-2360-4488-a9df-da6120b87136",
+  "name": "Coloma Coat Sage and Navy",
+  "description": "Stuffed with water-resistant gilly down, the Coloma coat blocks wind, traps body heat, and allows the wearer to move freely, making it the perfect choice for changeable weather conditions. Additionally, its roomy pockets provide plenty of storage.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_jacket",
+    "Set_05",
+    "Texture_01",
+    "Color_15"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "mym_shirt_02_01_06",
+  "ref": "b5265828-f7dd-4b43-86af-bd77d41c03cd",
+  "name": "Atavi Shirt Multi-blue",
+  "description": "MuyMuy's Atavi line of casual shirts are comfortable enough to wear at home, but stylish enough for a night out. They are made with EasyCare technology to maintain the colors during repeated washes.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cc1731c4-8156-4750-a138-96838df79117",
+  "tags": [
+    "mym_shirt",
+    "Set_02",
+    "Color_06"
+  ],
+  "hidden": false
+}

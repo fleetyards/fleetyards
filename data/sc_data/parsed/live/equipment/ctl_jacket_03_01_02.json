@@ -1,0 +1,31 @@
+{
+  "key": "ctl_jacket_03_01_02",
+  "ref": "57bfcbd8-2855-4f1b-b46b-66bfdc0c73b7",
+  "name": "Lanxi Jacket Gray",
+  "description": "This simple knit jacket from City Lights features a classic cut and chic microseam technology to create a thoroughly modern addition to any wardrobe. It also features a stand collar to help keep you warm.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "5ca8a669-44c2-40e4-89b2-7a5da790b832",
+  "tags": [
+    "ctl_jacket",
+    "set_03",
+    "Color_01"
+  ],
+  "hidden": true
+}

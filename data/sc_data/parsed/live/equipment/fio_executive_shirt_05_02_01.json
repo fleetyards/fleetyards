@@ -1,0 +1,31 @@
+{
+  "key": "fio_executive_shirt_05_02_01",
+  "ref": "50c0b216-ffa6-463b-a815-a8e6a92a1b6b",
+  "name": "Radford Shirt Dark Blue",
+  "description": "The Radford dress shirt and tie combo proves that simple elegance is eternal. The shirt features a unique side seam that provides a tailored fit. A silver tie bar is the perfect finishing accent to make sure everything stays in place.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "executive",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_executive_shirt",
+    "Set_05",
+    "Color_05_02"
+  ],
+  "hidden": false
+}

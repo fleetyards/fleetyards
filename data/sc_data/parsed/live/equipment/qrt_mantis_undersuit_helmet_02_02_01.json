@@ -1,0 +1,31 @@
+{
+  "key": "qrt_mantis_undersuit_helmet_02_02_01",
+  "ref": "7440e342-3c54-4a15-93f5-7cf041bbb57c",
+  "name": "Calva Helmet Red Racing Festival",
+  "description": "Get a clear view of everything around you with the Calva helmet from Quirinus Tech. The large face shield made from proprietary synthetic sapphire provides scratch resistance while remaining just as thin and light as typical materials.\n\nThis special Red Festival variant features deep red and gleaming gold accents with an all gold visor to help give your lunar new year an auspicious start.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "racing_helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false
+}

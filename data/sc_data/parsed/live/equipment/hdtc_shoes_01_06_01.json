@@ -1,0 +1,32 @@
+{
+  "key": "hdtc_shoes_01_06_01",
+  "ref": "0697177b-8b22-43e4-9bf4-e75594ac5b75",
+  "name": "Spettro Shoes Goldsmith",
+  "description": "Hand crafted from premium Quasi Grazer leather, the Spettro shoes are a sleek and refined addition to any wardrobe. Styled after traditional human dress shoes, they pair perfectly with any formal outfit.\n\nThe Goldsmith edition features gold seaming on luxurious black for an extravagant look.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_shoes",
+    "Set_01",
+    "Texture_06",
+    "Color_01"
+  ],
+  "hidden": false
+}

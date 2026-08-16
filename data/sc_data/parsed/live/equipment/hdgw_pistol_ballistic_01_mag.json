@@ -1,0 +1,29 @@
+{
+  "key": "hdgw_pistol_ballistic_01_mag",
+  "ref": "aa9edf82-8a45-4088-b5de-14c646252f79",
+  "name": "Salvo Frag Pistol Magazine (8 cap)",
+  "description": "This magazine for the Salvo Frag Pistol holds eight .50 caliber rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "9d3ee727-bb52-4ed2-bacf-47d93d8bb0d5",
+  "tags": [
+    "hdgw_pistol_ballistic_01"
+  ],
+  "hidden": false
+}

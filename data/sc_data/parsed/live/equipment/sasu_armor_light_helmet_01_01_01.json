@@ -1,0 +1,33 @@
+{
+  "key": "sasu_armor_light_helmet_01_01_01",
+  "ref": "8f5262ca-06e0-4eee-893a-457c6bc0c260",
+  "name": "Mandible Snowfly Helmet",
+  "description": "Show that you're ready to 'bug out' with the exclusive Mandible helmet from Sakura Sun. Lightweight plating provides protection while metal fangs protrude from the front for an intimidating insectoid shape that walks the line between fun and frightening.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-35 / 65 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "40c59850-8fb5-4a0e-ab61-7fd3871a632a",
+  "tags": [
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "hdtc_shoes_01_03_01",
+  "ref": "edf21c0a-46aa-4548-a14f-b6ce99d2f95b",
+  "name": "Spettro Shoes Tatton",
+  "description": "Hand crafted from premium Quasi Grazer leather, the Spettro shoes are a sleek and refined addition to any wardrobe. Styled after traditional human dress shoes, they pair perfectly with any formal outfit.\n\nThe Tatton edition is a walnut brown with a black sole.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_shoes",
+    "Set_01",
+    "Texture_03",
+    "Color_01"
+  ],
+  "hidden": false
+}

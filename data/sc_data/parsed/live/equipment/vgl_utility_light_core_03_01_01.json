@@ -1,0 +1,32 @@
+{
+  "key": "vgl_utility_light_core_03_01_01",
+  "ref": "ea095069-4da8-4152-972a-fb2ec02477e6",
+  "name": "Chiron Core AA Support",
+  "description": "Be the first on the scene with the Chiron armor. Designed to provide the essential protection that combat medics need, the armor features ultra-lightweight panelling to keep the wearer quick on their feet without compromising on safety. Crucial, high-impact sections have been reinforced with raised carbon plating on top of a highly durable polyfiber for maximum flexibility.\n\nThe AA Support edition uses sharp red coloring and bright yellow detailing, ensuring that Alliance Aid Support Units remain visible while assisting the people of Levski through their crisis.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-32 / 62 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "Viirgil",
+    "Set_03",
+    "Color_01",
+    "SM_Marine"
+  ],
+  "hidden": false
+}

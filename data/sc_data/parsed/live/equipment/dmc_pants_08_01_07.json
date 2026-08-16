@@ -1,0 +1,32 @@
+{
+  "key": "dmc_pants_08_01_07",
+  "ref": "8ebd7671-bd35-49a2-a914-e6e68c2e6431",
+  "name": "Chamar Pants",
+  "description": "Decades of design experience helped DMC make the Chamar pants ready for any adventure. The pants utilize a unique seam design to deliver durability while maintaining flexibility. A built-in belt ensures an ideal fit, while leather front pockets and a padded back-panel provide rugged reinforcement where needed most.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_pants",
+    "Set_08",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": true
+}

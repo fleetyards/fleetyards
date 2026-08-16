@@ -1,0 +1,32 @@
+{
+  "key": "ccc_medium_armor_helmet_01_02_01",
+  "ref": "4c3b48ba-1b77-4fa6-800a-5ad54cb0c832",
+  "name": "Aves Helmet Epoque",
+  "description": "CC's Conversions is proud to release the Aves to celebrate the beautiful and unique history of the Tevarin culture. This medium helmet honors traditional stylings while perfectly fitting a Human head. Visor is AR crosshair compatible.\n\nThe Epoque edition features a navy and black coloring, finished with baroque gold detailing.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-55 / 85 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "2",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "Set_01",
+    "Color_02",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false
+}

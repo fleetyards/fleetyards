@@ -1,0 +1,31 @@
+{
+  "key": "fro_shoes_01_01_01",
+  "ref": "c2665234-c23e-4c30-976c-af29db9a4dbd",
+  "name": "Kinolo Shoes",
+  "description": "The Kinolo shoes deliver a subtle yet striking look. Made from grey synthetic leather punctuated with gold highlights, these slip-on shoes feature a heel cushion for extra support and a special non-slip sole.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "915b461d-4375-4c7c-ae51-ddd300fcb98f",
+  "tags": [
+    "fro_shoes",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

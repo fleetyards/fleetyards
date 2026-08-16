@@ -1,0 +1,30 @@
+{
+  "key": "nvs_pilot_flightsuit_01_01_04",
+  "ref": "2319da52-b185-4e0a-b841-5f7e8795f755",
+  "name": "OMNI-AFS-Sapphire Armored Flight Suit Alpine",
+  "description": "Inspired by the armored flight suit worn by UEE Navy pilots, the OMNI-AFS-Sapphire has been battle tested and refined for centuries to become the ultimate wear for any pilot. Its sturdy yet comfortable construction can not only withstand hostile environments, but comes with integrated arm, core, and leg armor for combat encounters. The only way a pilot can get closer to the real thing is by enlisting.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "armored_flight_suit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "15.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": "97.5",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

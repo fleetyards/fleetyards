@@ -1,0 +1,29 @@
+{
+  "key": "grin_tool_resource_salvage_repair_01_filled",
+  "ref": "100037d0-d9c1-400d-a29a-c2ea3b621753",
+  "name": "Cambio SRT Canister",
+  "description": "Canister used by the Cambio SRT to store recycle material composite (RMC) reclaimed from scrap. Contents can be sold or used to make repairs.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "rmc_canister_large",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_tool_salvage_01_canister"
+  ],
+  "hidden": true
+}

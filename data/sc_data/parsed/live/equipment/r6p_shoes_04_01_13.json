@@ -1,0 +1,31 @@
+{
+  "key": "r6p_shoes_04_01_13",
+  "ref": "baecfe80-30a7-4e69-8c60-84ce0dd20e20",
+  "name": "Campo Shoes Brick",
+  "description": "Slip into comfort with the Campo shoes, which have a supportive midsole, cushioned footbed, and a molded, slip-resistant outsole. These ankle high slip-ons deliver an ideal fit thanks to two adjustable straps with metal clasps.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1ddcadf0-7bb0-4fa9-94f0-6af19432631c",
+  "tags": [
+    "r6p_shoes",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

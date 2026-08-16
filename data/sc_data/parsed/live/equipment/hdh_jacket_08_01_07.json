@@ -1,0 +1,32 @@
+{
+  "key": "hdh_jacket_08_01_07",
+  "ref": "ff1a4779-423d-4438-955f-bb51c851d8c7",
+  "name": "Detara Jacket Calypso",
+  "description": "The Detara Jacket by Habidash weaves several long panels of durable fabric together to create a unique silhouette well suited to harsh environments.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_jacket",
+    "Set_08",
+    "Texture_01",
+    "Color_07"
+  ],
+  "hidden": false
+}

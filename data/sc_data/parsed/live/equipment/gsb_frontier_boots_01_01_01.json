@@ -1,0 +1,32 @@
+{
+  "key": "gsb_frontier_boots_01_01_01",
+  "ref": "64f30d23-994f-41a0-9774-cc13d9093270",
+  "name": "Corsti Boots",
+  "description": "Made with hardy and adaptable materials, the Corsti boots are suitable for any conditions, whether you're taking a day-long hike on a well-worn road or exploring a strange landscape on an untamed world.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "frontier",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_frontier_boots",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

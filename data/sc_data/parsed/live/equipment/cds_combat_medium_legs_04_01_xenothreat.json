@@ -1,0 +1,32 @@
+{
+  "key": "cds_combat_medium_legs_04_01_xenothreat",
+  "ref": "7fde8c0e-cf97-4f01-8926-bf4915d9ae48",
+  "name": "ORC-mkX Legs (XenoThreat v2)",
+  "description": "This version of CDS' ORC-mkX combat armor has been modified from its original form. The mark X is part of CDS’ award-winning Omni-Role Combat armor series. This EVA-rated suit features new EdgeCore composite weave technology, maximizing protection against projectiles, explosives and the elements while minimizing operator agility.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4.0",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Xenothreat",
+    "Marine_Medium",
+    "Set_04",
+    "Color_01"
+  ],
+  "hidden": false
+}

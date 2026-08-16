@@ -1,0 +1,31 @@
+{
+  "key": "hwk_shoes_02_01_01",
+  "ref": "cfcbf96e-8634-40ab-b6b1-beea1b4bce90",
+  "name": "De Leon Shoes Black",
+  "description": "Hawksworth's De Leon take the classic cap toed Oxford design but incorporate a laceless slip-on design to create an exciting new addition to the world of formal footwear.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d7a8b196-8778-4e18-8c8c-38229eef01f1",
+  "tags": [
+    "hwk_shoes",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

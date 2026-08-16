@@ -1,0 +1,31 @@
+{
+  "key": "nrs_shoes_03_01_05",
+  "ref": "a802e1fc-4d88-4f4c-8a68-771fd175b56c",
+  "name": "Li-Tok Boots Green",
+  "description": "Stylish yet rugged, NorthStar's Li-Tok boots are made from a composite nylon fabric, vulcanized rubber grips that hold fast to a variety of surfaces, and reinforced ankle support making these perfect for hanging out or on the job.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2d1922e0-f8dc-46d3-a453-6a85711f3771",
+  "tags": [
+    "nrs_shoes",
+    "Set_03",
+    "Color_05"
+  ],
+  "hidden": false
+}

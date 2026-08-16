@@ -1,0 +1,29 @@
+{
+  "key": "gmni_pistol_ballistic_01_tan01",
+  "ref": "15beb454-90fb-4492-a06f-44a8eda06949",
+  "name": "LH86 \"Desert Shadow\" Pistol",
+  "description": "The LH86 from Gemini is a compact kinetic handgun designed for personal defense and close-quarter combat. A keen eye on ergonomics and balance coupled with hardy construction makes this pistol a natural fit for any shooter in any number of hostile conditions. The LH86 also comes with Tritium low-light sight and a twenty-five round magazine.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "pistol",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "1200.0",
+  "range": "30.0",
+  "storage": "25.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/gemini_lh86_pistol_64.tif",
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b33050cd-6ca9-4c57-baf8-f4114eb85237",
+  "tags": [
+    "pistol"
+  ],
+  "hidden": true
+}

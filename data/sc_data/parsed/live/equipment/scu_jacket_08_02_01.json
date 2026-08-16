@@ -1,0 +1,31 @@
+{
+  "key": "scu_jacket_08_02_01",
+  "ref": "dbff29cc-0c0d-4c71-8938-faa550bb9fa3",
+  "name": "Vagabond Jacket Red Menace",
+  "description": "When you need to move like your life depends on it. This lightweight layered jacket-and-poncho combination won't tie you up when things get tight. Finished with a hooded cowl, cross straps, and kit-webbing, the Vagabond is ready for whatever your day may have in store. The Red Menace version is dyed gray and features bold red striping.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_jacket",
+    "set_08",
+    "Color_02"
+  ],
+  "hidden": false
+}

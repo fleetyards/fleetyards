@@ -1,0 +1,31 @@
+{
+  "key": "cbd_shirt_01_02_01",
+  "ref": "7c805d6b-bf0a-4767-a9f8-c5a54a9c9bfc",
+  "name": "Loudmouth T-Shirt",
+  "description": "CBD's proud to introduce this graphic tee featuring the album artwork from The Leedos' classic debut album <i>Never Silent</i>.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_shirt",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

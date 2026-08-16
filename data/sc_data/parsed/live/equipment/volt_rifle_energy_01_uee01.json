@@ -1,0 +1,31 @@
+{
+  "key": "volt_rifle_energy_01_uee01",
+  "ref": "b6dd5e0a-202c-4385-88f7-284583cd6528",
+  "name": "Parallax \"GCD-Army\" Rifle",
+  "description": "With the Parallax, VOLT offers consumers a rugged assault rifle design with features like a larger-than-average battery and a unique actuator that enables the weapon to scale up into a persistent beam as it fires.\n\nThis \"GCD-Army\" edition has yellow wiring and is decorated with a dark and light gray digital camo pattern.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "assault_rifle",
+  "weapon_class": "energy",
+  "rate_of_fire": "200.0",
+  "range": "30.0",
+  "storage": "80.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_galant_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "e2787f3b-b892-4276-bb2e-eb2b4dc9666b",
+  "tags": [
+    "stocked",
+    "volt_rifle_energy_01",
+    "rifle"
+  ],
+  "hidden": false
+}

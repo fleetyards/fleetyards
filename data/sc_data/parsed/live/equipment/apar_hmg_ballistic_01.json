@@ -1,0 +1,33 @@
+{
+  "key": "apar_hmg_ballistic_01",
+  "ref": "e302c7ae-b850-412d-983e-36dbf04f98fe",
+  "name": "Vendetta HMG",
+  "description": "Too large to use except with a heavy exo-suit, the Vendetta from Apocalypse Arms is a belt-fed instrument of death. What it lacks in accuracy it makes up for with a high rate of fire for complete target saturation and battlefield dominance.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "hmg",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "1000.0",
+  "range": "35.0",
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Large",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "tags": [
+    "heavyhip",
+    "hip",
+    "hmg",
+    "apar_hmg_ballistic_01",
+    "SM_RestrictedWep"
+  ],
+  "hidden": false
+}

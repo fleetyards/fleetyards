@@ -1,0 +1,32 @@
+{
+  "key": "cds_legacy_armor_light_legs_01_01_19",
+  "ref": "3c38120f-ed09-4459-b8f8-3788665c83b2",
+  "name": "PAB-1 Legs Imperial",
+  "description": "Clark Defense Systems built the PAB-1 light but strong enough to stay in a fight. The first CDS suit to utilize their proprietary nano-weave, this light armor became a favorite of those who needed a little extra protection while remaining agile.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-40 / 70 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Light",
+    "Set_01",
+    "Color_19",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

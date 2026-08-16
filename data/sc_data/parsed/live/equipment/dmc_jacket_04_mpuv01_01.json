@@ -1,0 +1,31 @@
+{
+  "key": "dmc_jacket_04_mpuv01_01",
+  "ref": "b7ede6b4-7379-4fb5-9680-ba8c7441ca66",
+  "name": "MPUV-1C Flight Jacket",
+  "description": "Show how far you'll go for the Argo Cargo. This flight jacket celebrates the ship that changed the cargo game and became ubiquitous at spaceports across the empire. Made from synthetic leather, it features two front pockets, a ribbed waistband, and cuffs that guarantees a good fit. There's also an Argo logo on the front and a stylish silhouette of the ship across the back.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_jacket",
+    "Set_04",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "srvl_armor_heavy_arms_02_01_01",
+  "ref": "dd9f47b0-64bf-4ad7-bbb9-358270296e74",
+  "name": "Dust Devil Armor Arms",
+  "description": "Salvaged pieces of disused protective gear were welded together to make this intimidating armor set.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-85 / 115 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "Survival_Heavy",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

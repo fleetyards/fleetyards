@@ -1,0 +1,33 @@
+{
+  "key": "qrt_utility_heavy_backpack_01_03_01",
+  "ref": "2146dce8-da07-4c37-adda-4ea98b5ab1d0",
+  "name": "Palatino Backpack Shadow Gild",
+  "description": "Elegant design meets innovation with the Palatino armor from Quirinus Tech. The associated backpack seamlessly integrates into the armor, matching its silhouette while also providing ample storage. The Shadow Gild variant is dark gray and features stylish gold highlights.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "heavy_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "180000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "qrt_utility_heavy",
+    "Set_01",
+    "Color_01",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

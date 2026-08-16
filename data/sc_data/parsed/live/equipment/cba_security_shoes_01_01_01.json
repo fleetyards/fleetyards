@@ -1,0 +1,31 @@
+{
+  "key": "cba_security_shoes_01_01_01",
+  "ref": "26929685-659d-460c-b6c9-d3286ff9ab44",
+  "name": "Ajax Security Uniform Shoes",
+  "description": "Ajax Security Uniform Shoes are a standard security accessory produced by Code Blue Apparel's professional division. The boot-styled shoes feature a unique thick-body construction that increases durability in exchange for overall bulk. A heavy-duty rubberized exterior protects the shoes from weather and general day-to-day wear.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "security",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_security_shoes",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

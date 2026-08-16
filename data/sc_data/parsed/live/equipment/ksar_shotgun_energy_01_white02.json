@@ -1,0 +1,31 @@
+{
+  "key": "ksar_shotgun_energy_01_white02",
+  "ref": "5accfcef-7e4b-4ccf-a92e-782b40ea8a05",
+  "name": "Devastator \"Boneyard\" Shotgun",
+  "description": "Kastak Arms’ Devastator is a pump-action plasma shotgun capable of delivering sustained medium range, high-impact plasma blasts for close combat, room clearances and other combat operations. If the situation requires a high-power presence, look no further than the Devastator.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "energy",
+  "rate_of_fire": "60.0",
+  "range": "20.0",
+  "storage": "12.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_devastator_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "stocked",
+    "ksar_shotgun_energy_01",
+    "shotgun"
+  ],
+  "hidden": false
+}

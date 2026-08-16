@@ -1,0 +1,31 @@
+{
+  "key": "nrs_shoes_02_01_01",
+  "ref": "f7ae1654-4eae-4627-a276-169fa67d40aa",
+  "name": "Hi&Tight Shoes",
+  "description": "Take your next step in these versatile high-tops from NorthStar. The Hi&Tight's cut an intriguing profile by blending nylon and microweave fabric with a vulcanized rubber soul, padded collar, and cross foot fastening strap.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2d1922e0-f8dc-46d3-a453-6a85711f3771",
+  "tags": [
+    "nrs_shoes",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

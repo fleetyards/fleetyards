@@ -1,0 +1,31 @@
+{
+  "key": "vpw_bouncer_mask_01_01_01",
+  "ref": "f0479098-81ae-41bb-8004-bbe6febbbd2d",
+  "name": "Brace Mask",
+  "description": "Ever dream of standing out in a crowd while remaining completely anonymous? Vaporwear's Brace hood offer total facial coverage that keeps the wearer's identity hidden. Small optical sensors woven into the hood and run through a digital interface on the back provides the wearer with a perfect view of their surroundings.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "bouncer",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7dfff1b9-2bfa-4ace-86d9-30329a2a0f30",
+  "tags": [
+    "vpw_mask",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "cds_combat_superheavy_backpack_01_05_01",
+  "ref": "9e167a65-fa52-44c4-8cd7-ed01542edf6e",
+  "name": "BUL-H4 Ammo Carrier Stronghold",
+  "description": "Custom built to store additional ammo for heavy machine guns, this carrier connects directly to your weapon via an ammo belt, ensuring prolonged continuous fire without impairment.\n\nThe Stronghold edition features the fierce symbology of the Nine Tails gang with bold neon pink accents.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "ammo_carrier",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "150000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "medium_heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "backpack",
+    "SM_RestrictedWep",
+    "CdsSuperheavyBackpack_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "dyl_shoes_02_01_01",
+  "ref": "2ccbd0c3-9d79-4734-97eb-1bb84d679031",
+  "name": "Barrymore Pumps",
+  "description": "The Barrymore pumps are part of the Dyna Lei essentials collection. The shoes feature classic yet subtle curves and supportive insoles for an ultra-comfortable fit ideal for all day wear.\n\nMen sizes are currently unavailable.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "92b20988-dbf3-4e95-b4a9-7e5e22112516",
+  "tags": [
+    "dyl_shoes",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": true
+}

@@ -1,0 +1,29 @@
+{
+  "key": "srvl_combat_medium_legs_01_03_01",
+  "ref": "eb28a3de-f436-4860-942e-913f71081de5",
+  "name": "Carrion Legs Ashen",
+  "description": "Forged from scavenged metals and ragged clothes, the Carrion armor is a crude concoction of repurposed materials that demonstrates you'll do anything it takes to survive.\n\nThe Ashen version is sprayed with white paint and anointed with bone fragments.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4000.0",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-50 / 80 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

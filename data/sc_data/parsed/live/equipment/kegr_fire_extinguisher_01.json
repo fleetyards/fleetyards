@@ -1,0 +1,29 @@
+{
+  "key": "kegr_fire_extinguisher_01",
+  "ref": "1b6a6b76-f3fc-402c-a24a-204f2eeae6f7",
+  "name": "APX Fire Extinguisher",
+  "description": "The KE Group's APX Fire Extinguisher has been rated a best-in-class consumer grade safety equipment for well-over a decade making it the industry standard in fire prevention. Filled with a patented gaseous cooling compound, the extinguisher can rapidly smother any fire in sight. The digital screen on the device allows you to monitor the local temperature to help you contain and eliminate fire hazards.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "fire_extinguisher",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": "3.0",
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Gadget",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "kegr_fire_extinguisher_01"
+  ],
+  "hidden": false
+}

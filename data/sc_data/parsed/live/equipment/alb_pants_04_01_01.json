@@ -1,0 +1,32 @@
+{
+  "key": "alb_pants_04_01_01",
+  "ref": "070141dc-b82a-4fed-a9f6-26def39d7187",
+  "name": "Navoi Boots and Pants",
+  "description": "Be ready to take on whatever the day brings when wearing the Navoi. This unique piece integrates the pants perfectly into knee high boots. Made from a combination of synthetic materials to be tough yet comfortable, the Navoi also comes with shin pads and pouches strapped onto each leg.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_pants",
+    "Set_04",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

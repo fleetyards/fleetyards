@@ -1,0 +1,31 @@
+{
+  "key": "srvl_utility_light_helmet_01_01_15",
+  "ref": "3964b84c-f63a-4dbd-aaaa-8c6cadf861dd",
+  "name": "Outback Helmet Molehill Brown",
+  "description": "This full-coverage reinforced leather helmet incorporates darkened goggles and a heavy-duty rebreather suitable for low oxygen environments. Visor is AR Crosshair compatible. The Molehill version is dyed a neutral brown to keep you subtle, but not unsightly.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-65 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false
+}

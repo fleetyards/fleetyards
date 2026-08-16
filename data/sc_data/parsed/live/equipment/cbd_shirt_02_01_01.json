@@ -1,0 +1,31 @@
+{
+  "key": "cbd_shirt_02_01_01",
+  "ref": "ee484573-758e-4dae-a069-17565ee46371",
+  "name": "Thrasher T-Shirt",
+  "description": "This thrash-tacular tee from CBD rocks Gutterwash's infamous half-human, half-Vanduul logo, and also features leather straps sewn into the shoulder slope seam.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_shirt",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

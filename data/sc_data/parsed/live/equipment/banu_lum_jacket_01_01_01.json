@@ -1,0 +1,31 @@
+{
+  "key": "banu_lum_jacket_01_01_01",
+  "ref": "6c26a414-6537-45b4-9304-ffa216f1f15d",
+  "name": "Good Gift Sweater",
+  "description": "This Banu-made mock turtleneck lets you celebrate Luminalia in comfort and style. Cozy up around the lamp with this luxurious red and green fabric blend with an asymmetrical front and three adjustable straps that guarantee the perfect fit. Banu phrases calling for merriment and a prosperous future adorn the front and back in golden script.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "lum",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2b5ba252-e826-4356-ac0d-8d88007ea386",
+  "tags": [
+    "banu_lum_jacket",
+    "set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

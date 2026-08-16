@@ -1,0 +1,31 @@
+{
+  "key": "ops_pants_05_01_9tails01",
+  "ref": "a459ce52-9acd-42cc-8679-26463fc44bf2",
+  "name": "Lavelle Pants (Modified)",
+  "description": "This version of OpalSky's Lavelle pants has been modified from its original form. Part of the OpalSky Essentials collection, the Lavelle are classic dress pants with a timeless cut and look that make them an indispensable part of any wardrobe.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6f5af1a4-a50d-41e5-8bb0-c1acd89d4b9e",
+  "tags": [
+    "ops_pants",
+    "Set_05",
+    "Color_01"
+  ],
+  "hidden": false
+}

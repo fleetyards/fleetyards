@@ -1,0 +1,30 @@
+{
+  "key": "srvl_undersuit_02_01_02",
+  "ref": "8b1649cc-aaa2-4895-a993-7307e7c7598e",
+  "name": "Wastelander Undersuit",
+  "description": "Roughly sewn together from a variety of ransacked materials, the Wastelander undersuit will just about do the job. This version features a bold rust color.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "undersuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "90.0",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

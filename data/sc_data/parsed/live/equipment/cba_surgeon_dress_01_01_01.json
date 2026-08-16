@@ -1,0 +1,31 @@
+{
+  "key": "cba_surgeon_dress_01_01_01",
+  "ref": "b5358d0d-3022-491f-8540-5e631363befc",
+  "name": "Shizhen Surgical Gown",
+  "description": "Ensure complete upper body coverage and comfort with the Shizhen surgical gown. Its unique design features a light, breathable long sleeve shirt underneath a see through surgical gown, delivering dual layer protection against fluids and pathogens.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "surgeon",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_surgeon_dress",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

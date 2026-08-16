@@ -1,0 +1,31 @@
+{
+  "key": "fio_shirt_01_01_02",
+  "ref": "5ad2a1f4-46d7-431d-99cd-41212397483a",
+  "name": "Concept Shirt Red",
+  "description": "This crisp, versatile button-front shirt from Fiore is made with cutting edge stain resistant and wrinkle-free technology, guaranteeing that you stay professional at all times.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_shirt",
+    "Set_01",
+    "Color_02"
+  ],
+  "hidden": false
+}

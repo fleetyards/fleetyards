@@ -1,0 +1,31 @@
+{
+  "key": "qrt_mask_01_01_11",
+  "ref": "f42e745f-6d5a-48d3-8f79-859aa7f1fc12",
+  "name": "Kiba Mask Raku",
+  "description": "Inspired by ancient Human folklore, the Kiba mask features a demonic face with long fangs and still offers some protection thanks to the use of treated metals. This intimidating visage is enough to transform any warrior into a terrifying presence on the battlefield.\n\nThe Raku edition is a metallic gray with shining golden teeth.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-5 / 50 °C",
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "qrt_mask",
+    "Set_01",
+    "Color_11"
+  ],
+  "hidden": false
+}

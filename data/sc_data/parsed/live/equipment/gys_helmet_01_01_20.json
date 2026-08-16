@@ -1,0 +1,32 @@
+{
+  "key": "gys_helmet_01_01_20",
+  "ref": "5b8781c1-3722-4e09-b1f2-24cb4639383b",
+  "name": "Ready-Up Helmet Olive",
+  "description": "The Ready-Up is a dependable, affordable softshell helmet alternative. Built from space-age plastic, the Ready-Up provides a vacuum-ready seal to keep you breathing for longer.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "helmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d56a3985-2f29-4095-b2f2-542376cc74f4",
+  "tags": [
+    "gys_helmet",
+    "Set_01",
+    "Color_20",
+    "KeepsShape"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,30 @@
+{
+  "key": "none_special_ballistic_01_tint01",
+  "ref": "f644aa8e-7025-4411-be18-154a40d59993",
+  "name": "Boomtube \"Ruby\" Rocket Launcher",
+  "description": "Who's got time to aim? Once you got enough room to clear the arming distance, just point the Boomtube launcher at whatever you don't like, squeeze the trigger, and watch the triple-grenade rocket thingy take care of the rest.  Sometimes simple is best.\n\nThis Ruby variant features a red tint.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "launcher",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "20.0",
+  "range": "100.0",
+  "storage": "1.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/apocalypse_arms_scourge_railgun_64.tif",
+  "sub_type": "Large",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "shouldered",
+    "none_special_ballistic_01"
+  ],
+  "hidden": true
+}

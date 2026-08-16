@@ -1,0 +1,32 @@
+{
+  "key": "rmb_gloves_01_01_01",
+  "ref": "80e5cf8b-b704-4e2c-ad4f-daf13490ba55",
+  "name": "Cody Gloves",
+  "description": "The Cody gloves are pros at keeping hands warm whether you're holding a multi-tool in a mine or an ice-cold drink at the bar. Made for frigid environments but stylish enough to be worn anywhere.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "e7489831-23c1-4629-ab36-221bb9bad06f",
+  "tags": [
+    "rmb_gloves",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

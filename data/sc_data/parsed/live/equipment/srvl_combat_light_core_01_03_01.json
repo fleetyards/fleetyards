@@ -1,0 +1,29 @@
+{
+  "key": "srvl_combat_light_core_01_03_01",
+  "ref": "f1e557da-9df9-486e-9d4a-190fb5f3d91d",
+  "name": "Piecemeal Armor Core Olive",
+  "description": "This armor was created using repurposed parts from a Caldera armor set to provide the wearer with an extra layer of protection against aggressors and harsh environments.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-32 / 62 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

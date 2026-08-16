@@ -1,0 +1,31 @@
+{
+  "key": "ops_pants_02_01_18",
+  "ref": "28235dfd-a4bf-4cbb-bc15-4fa98cca132e",
+  "name": "Mivaldi Pants Twilight",
+  "description": "Cut to a narrow fit, OpalSky's Mivaldi pants feature bold asymmetrical design with smart yet casual dual material styling, making it the perfect addition to any wardrobe.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6f5af1a4-a50d-41e5-8bb0-c1acd89d4b9e",
+  "tags": [
+    "ops_pants",
+    "Set_02",
+    "Color_18"
+  ],
+  "hidden": false
+}

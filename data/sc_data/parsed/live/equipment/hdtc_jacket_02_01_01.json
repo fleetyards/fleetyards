@@ -1,0 +1,32 @@
+{
+  "key": "hdtc_jacket_02_01_01",
+  "ref": "61a67562-ef37-4439-bbf9-3b1205ba8115",
+  "name": "Bellator Jacket Goldsmith",
+  "description": "Stylish, functional, and deadly: the Bellator clothing line is designed to fit in at dinner party just as well as a gunfight. Blending cutting edge technology with precise measurements, this jacket provides some combat protection thanks to the intricate weaving of layered graphene in its threads. Adorned with a decorative lapel pin, the jacket's spacious inner lining is also capable of subtly concealing small weaponry and devices.\n\nThe Goldsmith edition features gold filigree and seaming on luxurious black for an extravagant look.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_jacket",
+    "Set_02",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,29 @@
+{
+  "key": "grin_tractor_01_mag",
+  "ref": "c3ba088f-3a92-412b-90a8-de468d76ec2c",
+  "name": "MaxLift Tractor Beam Battery",
+  "description": "This replacement battery powers Greycat's MaxLift tractor beam, so you can keep working without any delay.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "battery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_tractor_01"
+  ],
+  "hidden": false
+}

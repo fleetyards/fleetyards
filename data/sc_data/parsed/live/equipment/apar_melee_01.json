@@ -1,0 +1,29 @@
+{
+  "key": "apar_melee_01",
+  "ref": "9e8d6cf1-17d6-453e-bfe3-44529969eebf",
+  "name": "Demon Fang Combat Knife",
+  "description": "The Demon Fang is a simple yet sinister split blade knife supported by a sturdy and lightly textured handle. Vibrant red cutting edges highlight the knife's unusual and intimidating look, guaranteeing to give anyone second thoughts about getting in its way.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "tags": [
+    "knife"
+  ],
+  "hidden": false
+}

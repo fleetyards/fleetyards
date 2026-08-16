@@ -1,0 +1,32 @@
+{
+  "key": "vgl_utility_light_core_03_02_01",
+  "ref": "46a414c4-8c49-48e1-b4a4-41e7b3eaa74f",
+  "name": "Chiron Core Foundation",
+  "description": "Item Type: Light Armor\nDamage Reduction: 20%\nTemp. Rating: -35 / 65 °C\nRadiation Protection: 26000 REM\nRadiation Scrub Rate: 145.8 REM/s\n \nBe the first on the scene with the Chiron armor. Designed to provide the essential protection that combat medics need, the armor features ultra-lightweight panelling to keep the wearer quick on their feet without compromising on safety. Crucial, high-impact sections have been reinforced with raised carbon plating on top of a highly durable polyfiber for maximum flexibility.\n \nCelebrate the UEE's commitment to building a brighter future with this Foundation Festival special edition. Designed with Guides and other community leaders in mind, it features a teal polyfiber underlayer and matching accents on the carbon plating sections.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "utility",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "Viirgil",
+    "Set_03",
+    "Color_01",
+    "SM_Marine"
+  ],
+  "hidden": false
+}

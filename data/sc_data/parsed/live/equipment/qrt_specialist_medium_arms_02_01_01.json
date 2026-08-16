@@ -1,0 +1,31 @@
+{
+  "key": "qrt_specialist_medium_arms_02_01_01",
+  "ref": "22e68459-2580-4e44-bb4e-269e0a428953",
+  "name": "Artimex Arms Hurston Dynamics Executive Security",
+  "description": "Blending durability and a striking style, the Artimex armor exemplifies the Quirinus aesthetic. This intricately detailed armor considers both form and function, especially when paired with the fully enclosed helmet that features a neon ocular flourish. The armor also comes with a unique cowl that fans over the helmet and a knee length fitted cape. The Hurston Dynamics edition was made specifically for the company's Executive Security team.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "Set_02",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

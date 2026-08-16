@@ -1,0 +1,32 @@
+{
+  "key": "cds_combat_light_backpack_01_05_01",
+  "ref": "b6d25fdc-38b2-455a-a36c-63545734da97",
+  "name": "CSP-68L Backpack Epoque",
+  "description": "Be ready for any situation with the CSP-68L Backpack. Originally designed for the rigors of combat support, this light backpack has become popular thanks to its durability and a patented core connector that helps the CSP-68L sit comfortably and balanced on the back.\n\nThe Epoque edition features a navy and black coloring, finished with baroque gold detailing.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "light_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "54000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "all",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "cds_combat_light",
+    "Color_05",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

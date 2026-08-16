@@ -1,0 +1,31 @@
+{
+  "key": "hdh_pants_01_01_11",
+  "ref": "ec51baf4-d2c1-4f56-8780-573fdecefec6",
+  "name": "Zelena Pants Ebony and Bisbee Boots",
+  "description": "Stay warm and dry on rainy days in the Zelena pants and the Bisbee boots. Both made with water-repellant materials and built-in sweat-wicking technology, they'll be your go-to choice for adventures on even the most hostile worlds.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

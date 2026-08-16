@@ -1,0 +1,31 @@
+{
+  "key": "srvl_jacket_01_01_18",
+  "ref": "21ebb163-2a48-424a-9c2a-acdc2bb1c2e9",
+  "name": "Rustic Jacket Blue",
+  "description": "Assembled from an old Dusters flag, salvaged armor, and derelict ship parts, this serviceable jacket is secured to its wearer via sturdy leather straps.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "oct_jacket",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

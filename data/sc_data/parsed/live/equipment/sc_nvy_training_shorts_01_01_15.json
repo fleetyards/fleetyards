@@ -1,0 +1,32 @@
+{
+  "key": "sc_nvy_training_shorts_01_01_15",
+  "ref": "bbd8c0de-d106-4533-a028-cea52d999b40",
+  "name": "ActiveWear Training Shorts Khaki",
+  "description": "Standard issue ActiveWear training shorts are constructed from four-way stretch fabric technology to allow for increased airflow and a larger range of motion while keeping you cool and dry during the most intensive training sessions.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "nvy",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d133f90d-bc69-4273-9867-6c03631f0c4b",
+  "tags": [
+    "nvy_shorts",
+    "Training",
+    "Set_01",
+    "Color_15"
+  ],
+  "hidden": false
+}

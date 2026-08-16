@@ -1,0 +1,29 @@
+{
+  "key": "ksar_melee_01",
+  "ref": "ea692f4b-0545-4f0b-8d4f-05f41fa1e876",
+  "name": "Sawtooth Combat Knife",
+  "description": "Don't end up on the wrong side of the Sawtooth combat knife. The blade embodies Kastak Arms' aggressive styling and was designed to stab, slice, or saw. It features a strong tip for piercing, a straight edge for slicing, and a unique serrated edge with microblades for when you really need to rip through something. The blade is also made with a special ceramic polymer coating that enhances its strength and overall wear resistance.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "knife"
+  ],
+  "hidden": false
+}

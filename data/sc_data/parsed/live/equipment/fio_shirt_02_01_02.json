@@ -1,0 +1,31 @@
+{
+  "key": "fio_shirt_02_01_02",
+  "ref": "c23979ae-40db-4951-bd24-ce1bbf6c718f",
+  "name": "Deo Shirt Red",
+  "description": "Fiore's Deo is a slim cut work shirt that's as practical as it is timeless. Featuring a high collar and metal neck clasp, the Deo has been a mainstay in business attire.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_shirt",
+    "Set_02",
+    "Color_02"
+  ],
+  "hidden": false
+}

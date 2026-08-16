@@ -1,0 +1,31 @@
+{
+  "key": "vpw_bouncer_jacket_01_01_01",
+  "ref": "23b0a448-5c10-4f51-9b0c-5e10c4068d63",
+  "name": "Creese Jacket Nine Tails",
+  "description": "The Vaporwear Creese jacket features an old-Earth collar and tags around the shoulders. Armored shoulder accents and ventilated sleeves provide protection without restricting movement, allowing the jacket to be worn casually or piloting an open canopy vehicle. The special Nine Tails edition features the symbology of the gang.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "bouncer",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7dfff1b9-2bfa-4ace-86d9-30329a2a0f30",
+  "tags": [
+    "vpw_jacket",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "eld_shirt_04_levski01_01",
+  "ref": "90d0dc82-1cbb-4bce-ae7e-220e011d8fe7",
+  "name": "Stronger Together T-Shirt",
+  "description": "This denim-blue t-shirt has the famous \"Welcome to Levski\" mural on the front which features the symbol of the People's Alliance behind two hands clasped in solidarity and the motto \"Stronger Together.\"",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Mat_levski01",
+    "Color_01"
+  ],
+  "hidden": false
+}

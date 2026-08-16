@@ -1,0 +1,29 @@
+{
+  "key": "lbco_pistol_energy_01_acid01",
+  "ref": "19e3192c-60a3-44ba-816c-625dd6729379",
+  "name": "Yubarev \"Venom\" Pistol",
+  "description": "Engineering excellence only scratches the surface of the distinct Yubarev pistol. Former merc turned weapon manufacturing mogul Irina Arkadova oversaw every aspect of the weapon, imbuing it with power, practicality, and panache. Featuring a classic woodgrain grip and cutting edge barrel design, the Yubarev fires a charged electron shot that impacts not only your target, amplifying the charge with each hit, but can spread to additional conductive targets in range. The Venom edition integrates a vibrant green coating into the weapon.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "pistol",
+  "weapon_class": "energy",
+  "rate_of_fire": "350.0",
+  "range": "35.0",
+  "storage": "10.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/lbco_yubarev_pistol_64.tif",
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "98bb2e9e-fcc7-46e5-9ba6-d34c42c414e0",
+  "tags": [
+    "pistol"
+  ],
+  "hidden": false
+}

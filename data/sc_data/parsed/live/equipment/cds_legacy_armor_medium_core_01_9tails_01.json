@@ -1,0 +1,32 @@
+{
+  "key": "cds_legacy_armor_medium_core_01_9tails_01",
+  "ref": "2cb38f8b-1e7a-4be9-b5b0-000fc1e5bd28",
+  "name": "ORC-mkV Core (Modified)",
+  "description": "This version of CDS' ORC-mkV core has been modified from its original form. Dependable and durable armor never goes out of style. The ORC-mkV from Clark Defense Systems has been a battlefield staple for centuries. This highly regarded medium armor blends composite plating with a special fiber reinforced polymer to provide solid protection and a wide range of movement.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "6.4",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-55 / 85 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light_medium",
+  "icon": "ui/textures/ea/loadouticons/medium_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Medium",
+    "Set_01",
+    "Color_9tails01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,33 @@
+{
+  "key": "rsi_odyssey_undersuit_01_01_04",
+  "ref": "80707607-69f8-43e4-856f-a6ab7904d53e",
+  "name": "Odyssey II Undersuit Yellow/Black",
+  "description": "The latest generation of RSI's classic Odyssey undersuit features a new rugged design capable of withstanding the harshest of conditions in space or planetside. Built using the latest microweave technology, the Odyssey II undersuit provides hours of comfort in locations that are anything but comfortable.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "undersuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "90.0",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Odyssey",
+    "Set_01",
+    "Color_04",
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

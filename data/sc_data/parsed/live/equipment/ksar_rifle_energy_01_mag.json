@@ -1,0 +1,29 @@
+{
+  "key": "ksar_rifle_energy_01_mag",
+  "ref": "91cfb7dc-660b-4505-b86a-6028c9a3f54d",
+  "name": "Karna Rifle Battery (35 cap)",
+  "description": "This is a replacement battery for Kastak Arms' plasma assault rifle, the Karna.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "battery",
+  "weapon_class": "energy",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "35.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "ksar_rifle_energy_01"
+  ],
+  "hidden": false
+}

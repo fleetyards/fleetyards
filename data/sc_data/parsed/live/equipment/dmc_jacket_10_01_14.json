@@ -1,0 +1,32 @@
+{
+  "key": "dmc_jacket_10_01_14",
+  "ref": "a35400a7-cd40-423a-beec-8115df104445",
+  "name": "Keystone Jacket Gold",
+  "description": "DMC’s Keystone is a two-layer jacket that puts utility first. The top-most vest layer ensures the Keystone jacket remains warm and durable, while the underlayer is designed to avoid restricting your range of motion. Various pockets adorn the jacket to provide convenient storage options.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_jacket",
+    "Set_10",
+    "Texture_01",
+    "Color_14"
+  ],
+  "hidden": false
+}

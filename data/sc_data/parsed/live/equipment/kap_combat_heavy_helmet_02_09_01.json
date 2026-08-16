@@ -1,0 +1,33 @@
+{
+  "key": "kap_combat_heavy_helmet_02_09_01",
+  "ref": "aa369676-fd5d-48cf-b8fc-f20dd89faec0",
+  "name": "Monde Helmet Purgatory Camo",
+  "description": "Item Type: Heavy Armor\nDamage Reduction: 40%\nTemp. Rating: -77 / 107 °C\nRadiation Protection: 26800 REM\nRadiation Scrub Rate: 145.8 REM/s\n \nFrom the masterwork designers of Kilgore & Poole comes the Monde helmet. Effortlessly integrating triple-laminate plating with the latest in defensive technology, this armor provides battle-ready protection with a next-class comfort system.\n \nThe Purgatory Camo edition features a sleek gray-on-gray pattern.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "combat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a349d45f-cda5-4fdb-89ea-4ea91804a163",
+  "tags": [
+    "Set_02",
+    "Color_08",
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false
+}

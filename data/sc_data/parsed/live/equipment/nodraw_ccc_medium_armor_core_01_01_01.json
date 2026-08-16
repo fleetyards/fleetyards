@@ -1,0 +1,31 @@
+{
+  "key": "nodraw_ccc_medium_armor_core_01_01_01",
+  "ref": "d3c22aee-6473-466a-975c-ecde2eaba580",
+  "name": "Aves Core",
+  "description": "Honor and embody the Tevarin aesthetic with the Aves armor. Cutting edge manufacturing techniques were used to place white, red, grey, and black plating perfectly to fit the Human form and evoke the shape language imbued into the Tevarin's iconic ships. This medium armor from CC's Conversions is both sensational and practical, providing solid protection while keeping you light on your feet. When paired with the Aves helmet, the suit combines for a striking and unforgettable look.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "6.4",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light_medium",
+  "icon": "ui/textures/ea/loadouticons/medium_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

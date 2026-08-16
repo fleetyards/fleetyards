@@ -1,0 +1,31 @@
+{
+  "key": "fio_gloves_01_01_08",
+  "ref": "7057fde4-8b64-4899-b762-e146ccfeae26",
+  "name": "Ventra Gloves Purple",
+  "description": "Keep your hands warm and dry with Fiore's Ventra gloves. Microstitching creates a snug, tailored fit to keep you looking stylish and warm.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_gloves",
+    "Set_01",
+    "Color_08"
+  ],
+  "hidden": false
+}

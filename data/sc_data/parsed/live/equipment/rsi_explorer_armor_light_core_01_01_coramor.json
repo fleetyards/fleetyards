@@ -1,0 +1,32 @@
+{
+  "key": "rsi_explorer_armor_light_core_01_01_coramor",
+  "ref": "45bc6edb-e6e4-4f9b-80cb-f3396390e11f",
+  "name": "Venture Core Lovestruck",
+  "description": "Robert Space Industries’ Venture Explorer Suit provides exceptional protection against the dangers of space. Designed for those who don't know where their next adventure might go, the suit combines comfort and safety without sacrificing mobility. This special Lovestruck edition features a stylish metallic pink and black color scheme inspired by the colors of the Coramor festival.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-38 / 68 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Color_coramor",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

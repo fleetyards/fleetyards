@@ -1,0 +1,31 @@
+{
+  "key": "oct_boots_02_01_18",
+  "ref": "32213912-dd36-4edd-8f07-ee57a2fc5deb",
+  "name": "Ridgewalker Boots Dark Blue",
+  "description": "Functional style meets modern comfort with the Ridgewalker boots. Made with a lightweight yet durable synthetic leather, these boots feature a custom cushioned footbed and total traction soles that will keep you on your feet for hours. Fit for adventure or fashion the Ridgewalker boots are perfect for any occasion.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "boots",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a05001d-0511-415f-8e32-618fbd75242b",
+  "tags": [
+    "oct_boots",
+    "Set_02",
+    "Color_18"
+  ],
+  "hidden": false
+}

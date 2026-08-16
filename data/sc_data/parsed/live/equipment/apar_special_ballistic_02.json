@@ -1,0 +1,30 @@
+{
+  "key": "apar_special_ballistic_02",
+  "ref": "3666c8ac-d552-4006-8c47-7e8f773b11a4",
+  "name": "Animus Missile Launcher",
+  "description": "Lift the Animus onto your shoulder and level the opposition on the battlefield. This missile launcher from Apocalypse Arms features a rotating barrel that quickly fires three missiles, making it the perfect weapon to obliterate ground forces or damage vehicles and small ships. When you need to sow destruction to save yourself, you can trust Apocalypse Arms to deliver.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "missile_launcher",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "300.0",
+  "range": "2.0",
+  "storage": "3.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/apocalypse_arms_animus_missile_launcher_64.tif",
+  "sub_type": "Large",
+  "size": "5",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "tags": [
+    "shouldered",
+    "SM_RestrictedWep"
+  ],
+  "hidden": false
+}

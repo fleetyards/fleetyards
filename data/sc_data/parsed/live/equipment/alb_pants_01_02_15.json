@@ -1,0 +1,33 @@
+{
+  "key": "alb_pants_01_02_15",
+  "ref": "51aa5d93-667d-4895-8a81-d5bd988d3828",
+  "name": "Strode Pants Molehill Brown",
+  "description": "When you need to move like your life depends on it. Made from loose-fit tear-resistant polyweave with rigid greaves, these pants won't tie you up when things get tight. The Molehill version is dyed a neutral brown to keep you subtle, but not unsightly.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "3000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "frontier_desert",
+    "alb_pants",
+    "Set_01",
+    "Texture_02",
+    "Color_15"
+  ],
+  "hidden": false
+}

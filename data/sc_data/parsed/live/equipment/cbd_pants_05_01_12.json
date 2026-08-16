@@ -1,0 +1,33 @@
+{
+  "key": "cbd_pants_05_01_12",
+  "ref": "edb7d4b6-5461-4eb6-8ec9-1467ce8f0a84",
+  "name": "Courser Jeans Pitch",
+  "description": "Made with soft yet sturdy cotton, these jeans are ripped and then \"repaired\" with colorful thread alongside misshapen patches that give them a touch of history.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "headhunter",
+    "cbd_pants",
+    "Set_05",
+    "Texture_01",
+    "Color_12"
+  ],
+  "hidden": false
+}

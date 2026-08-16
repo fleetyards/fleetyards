@@ -1,0 +1,29 @@
+{
+  "key": "behr_pistol_ballistic_01_mag",
+  "ref": "8ec810e2-2d9e-4bbf-9b64-c603aaef01db",
+  "name": "S-38 Magazine (20 cap)",
+  "description": "This magazine for the Behring S-38 pistol holds twenty 10mm rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "20.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "behr_pistol_ballistic_01"
+  ],
+  "hidden": false
+}

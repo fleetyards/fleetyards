@@ -1,0 +1,32 @@
+{
+  "key": "gsb_shoes_03_01_01",
+  "ref": "05cddb57-26fa-4dab-aa79-1f4a5c11a9d9",
+  "name": "Hillcrest Boots",
+  "description": "Spend all day in your Hillcrest boots. Rugged yet refined, the boots feature a stylish and waterproof brown synthetic leather with red inlays and yellow stitching. A comfortable, odor absorbing insole and slip resistant outer sole will keep you comfortable and on your feet.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_shoes",
+    "Set_03",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

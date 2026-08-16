@@ -1,0 +1,31 @@
+{
+  "key": "behr_rifle_ballistic_03_tint02",
+  "ref": "8363b277-253a-4e48-9963-b088f4f75e96",
+  "name": "CQ7 \"Snowfire\" Rifle",
+  "description": null,
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "rifle",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behring_p4_ar_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "behr_rifle_ballistic_01",
+    "rifle"
+  ],
+  "hidden": true
+}

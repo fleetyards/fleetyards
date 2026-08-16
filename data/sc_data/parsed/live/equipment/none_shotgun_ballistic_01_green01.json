@@ -1,0 +1,31 @@
+{
+  "key": "none_shotgun_ballistic_01_green01",
+  "ref": "01b0f0a7-c064-4ce7-a0ee-0039533ea53d",
+  "name": "Deadrig 'Noxious' Shotgun",
+  "description": "The Deadrig is a high powered, double-barreled shotgun with a simple design pieced together from junkyard scraps. Prioritizing power above all else, the Deadrig lacks the refinement of mass-produced weapons and suffers from heavy recoil. The Noxious variant features more green coloration due to the scrap metal used during its assembly.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "120.0",
+  "range": "0.0",
+  "storage": "8.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_arms_ravager_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "stocked",
+    "glsn_shotgun_ballistic_01",
+    "shotgun"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,33 @@
+{
+  "key": "cds_combat_heavy_backpack_01_01_01",
+  "ref": "fb904353-c334-4674-874c-874b64a4c6db",
+  "name": "CSP-68H Backpack",
+  "description": "Be ready for any situation with the CSP-68H Backpack. Originally designed for the rigors of combat support, this heavy backpack has become popular thanks to its durability and a patented core connector that helps the CSP-68H sit comfortably and balanced on the back.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "heavy_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "150000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "cds_combat_heavy",
+    "Set_01",
+    "Color_01",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "ksar_shotgun_energy_01_purple01",
+  "ref": "a150758d-fb03-435d-bad8-77774292f4ba",
+  "name": "Devastator \"Starchaser\" Shotgun",
+  "description": "Kastak Arms’ Devastator is a semi-automatic electric shotgun capable of delivering sustained medium range, high-impact plasma blasts for close combat, room clearances and other combat operations. If the situation requires a high-power presence, look no further than the Devastator. Created to celebrate the 2954 IAE, the Starchaser edition is a vivid purple with white and black highlights.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "energy",
+  "rate_of_fire": "60.0",
+  "range": "20.0",
+  "storage": "12.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_devastator_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "stocked",
+    "ksar_shotgun_energy_01",
+    "shotgun",
+    "IAE_2024"
+  ],
+  "hidden": false
+}

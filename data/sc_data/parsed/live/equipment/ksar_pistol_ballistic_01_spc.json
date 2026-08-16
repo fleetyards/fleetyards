@@ -1,0 +1,29 @@
+{
+  "key": "ksar_pistol_ballistic_01_spc",
+  "ref": "052b79e7-6c1d-4aee-96f6-e6d92559892f",
+  "name": "Coda Pistol (Modified)",
+  "description": "Often called the Kastak Arms \"hand cannon,\" the Coda can end an engagement with a single .50 caliber round, although the substantial power can make the Coda's recoil hard to handle. Considering its limited magazine size and substantial kick, sustained fire is discouraged in favor of more accurate single shots.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "pistol",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "180.0",
+  "range": "100.0",
+  "storage": "6.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_arms_coda_pistol_64.tif",
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "pistol"
+  ],
+  "hidden": false
+}

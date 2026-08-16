@@ -1,0 +1,31 @@
+{
+  "key": "none_lmg_ballistic_01_tint04",
+  "ref": "d04c3b55-ca67-4076-834c-45e57e4d3de2",
+  "name": "Pulverizer \"Zigzag\" LMG",
+  "description": "Nothing like ripping through a huge mag of .50 cal bullets to scare away unwanted guests. Based on a modified FS9, the Pulverizer LMG wastes no time with pleasantries, instead lends itself to a more direct confrontational approach. \n\nThis version features a gray finish with a zigzag pattern.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "lmg",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "355.0",
+  "range": "100.0",
+  "storage": "120.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/gemini_f55_lmg_64.tif",
+  "sub_type": "Medium",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "stocked",
+    "lmg",
+    "none_lmg_ballistic_01"
+  ],
+  "hidden": true
+}

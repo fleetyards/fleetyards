@@ -1,0 +1,29 @@
+{
+  "key": "behr_pistol_ballistic_01_mr01",
+  "ref": "c8c2e14b-5263-44f4-add3-bf70055976a3",
+  "name": "S-38 \"SecondWind\" Pistol",
+  "description": "Thanks to a streamlined design and a lightweight polymer frame that helps to minimize recoil, it's easy to see why the versatile and dependable S-38 from Behring has become a trusted sidearm across the Empire for both citizens and law enforcement officers. To honor those who came to Orison's aid in its time of need, the SecondWind edition compliments the weapon with a rich blue base adorned with a sleek, flowing air design along the length of the gun.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "pistol",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "450.0",
+  "range": "25.0",
+  "storage": "20.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behring_s38_pistol_64.tif",
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "pistol"
+  ],
+  "hidden": true
+}

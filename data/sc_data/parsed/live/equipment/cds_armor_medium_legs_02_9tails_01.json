@@ -1,0 +1,32 @@
+{
+  "key": "cds_armor_medium_legs_02_9tails_01",
+  "ref": "bc079d07-34ff-46c1-938b-d8a617118760",
+  "name": "ORC-mkX Legs (Modified)",
+  "description": "This version of CDS' ORC-mkX legs has been modified from its original form. The mark X is the latest in CDS’ award-winning Omni-Role Combat armor series. This EVA-rated suit features new EdgeCore composite weave technology, maximizing protection against projectiles, explosives and the elements while minimizing operator agility.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4.0",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Medium",
+    "Set_02",
+    "Color_9tails01",
+    "SM_Marine"
+  ],
+  "hidden": false
+}

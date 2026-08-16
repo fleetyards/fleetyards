@@ -1,0 +1,29 @@
+{
+  "key": "vncl_melee_01_tint01",
+  "ref": "1133333b-84f7-43bb-a833-e2581bbdbe4c",
+  "name": "VCK-1 \"Maul\" Blade",
+  "description": "Renowned as Humanity's fiercest enemy, the weapons wielded by the Vanduul are some of the most feared in the universe. Taking inspiration from those brutal knives, the VCK-1 from UltiFlex features a split blade, ceremonial detailing, and has been finished with a unique patina that closely resembles the Vanduul's own bespoke alloys.\n\nThe Maul edition features dark metal and red detailing.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "da264d7b-755b-48a2-9580-4adc17ff7ad5",
+  "tags": [
+    "knife"
+  ],
+  "hidden": true
+}

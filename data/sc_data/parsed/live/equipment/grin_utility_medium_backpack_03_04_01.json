@@ -1,0 +1,33 @@
+{
+  "key": "grin_utility_medium_backpack_03_04_01",
+  "ref": "7524df82-4578-464b-a917-d3b6c31462f6",
+  "name": "Strata Backpack Heatwave",
+  "description": "Made for miners but ready for any adventure, Greycat Industrial's Strata armor provides premium protection and convenient features. Each piece features an angular and precise design to deliver coverage where it's most needed most. A toolbelt with convenient pouches and a reinforced backpack offers plenty of storage. The award-winning helmet design has been copied by other manufacturers, but the original still reigns supreme with its high quality materials and next-gen air filtration system that enables clean breathing whether in a deep mine or hostile atmospheres. The Heatwave edition is primarily black with glowing red highlights.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "medium_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "127500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "medium_heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_medium",
+    "backpack",
+    "Set_02",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

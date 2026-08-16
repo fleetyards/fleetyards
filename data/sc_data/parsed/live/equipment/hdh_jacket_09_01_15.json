@@ -1,0 +1,32 @@
+{
+  "key": "hdh_jacket_09_01_15",
+  "ref": "d9ab1663-805a-433c-b6c2-a4223ecba75d",
+  "name": "Calister Jacket Westar",
+  "description": "The Calister Jacket by Habidash is made with thick synthetic fabric intended to ensure full body coverage. The cross-body panel that shapes the silhouette of the design provides additional insulation in harsher conditions.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_jacket",
+    "Set_09",
+    "Texture_01",
+    "Color_15"
+  ],
+  "hidden": false
+}

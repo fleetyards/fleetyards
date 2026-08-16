@@ -1,0 +1,31 @@
+{
+  "key": "hdh_jacket_11_01_13",
+  "ref": "95fe20d7-6baa-429d-a1fd-538444be1f0a",
+  "name": "Sharud Wrap and Arm Bands Redwood",
+  "description": "The Sharud is an ideal top for staying cool in hot weather. Advanced production techniques allow Habidash to make a light yet absorbent shawl that looks and feels like handspun natural cotton but at a fraction of the cost. The three arm band pieces provide stylish accents and come embedded with microchips that tracks body temperature and other vitals.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_jacket",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

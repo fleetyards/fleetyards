@@ -1,0 +1,30 @@
+{
+  "key": "utfl_crossbow_ballistic_01_sota01",
+  "ref": "777110d2-78f4-48db-a306-ca005e515d0b",
+  "name": "Novian \"Shroud\" Crossbow",
+  "description": "The craftsman at UltiFlex went through hundreds of prototypes to discover the perfect lightweight material with the right combination of strength and flexibility for its Novian crossbow, an ideal companion on everything from frontier expeditions to tactical infiltrations. With a pull of its firing action, the Novian near-silently launches a heavy bolt that shatters on impact causing devastating damage to close-range targets.\n\nThe Shroud edition features rich, dark wood accents on a dark gray frame making it the ideal equipment for anyone seeking their next adventure.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "crossbow",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "60.0",
+  "range": "50.0",
+  "storage": "5.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/lbco_atzkav_sniper_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "da264d7b-755b-48a2-9580-4adc17ff7ad5",
+  "tags": [
+    "stocked",
+    "utfl_crossbow_ballistic_01"
+  ],
+  "hidden": false
+}
