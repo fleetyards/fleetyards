@@ -2,6 +2,8 @@
 
 module Uex
   class PriceSyncer
+    include Uex::PriceSnapshot
+
     ITEM_TYPE = "Model"
     TERMINAL_TYPES = %w[vehicle_buy vehicle_rent].freeze
 
@@ -9,11 +11,6 @@ module Uex
     # field. It is the 1-day rate: in game the Avenger Titan rents at 27,165 /
     # 71,308 / 142,616 / 509,344 for 1 / 3 / 7 / 30 days, and UEX reports 27,165.
     RENTAL_TIME_RANGE = "1-day"
-
-    # How much of a terminal's stock it must still list before we believe its
-    # omissions. A shop dropping over half its vehicles between two daily runs is
-    # not plausible churn; a feed that came back short looks exactly like that.
-    MIN_TERMINAL_RETENTION = 0.5
 
     # Stamped on the paper-trail version so a repriced model reads apart from an
     # admin having typed the figure in by hand.
@@ -131,94 +128,16 @@ module Uex
       end
     end
 
-    # `contact_url` is whatever a UEX contributor typed. Anything that is not a
-    # web link is dropped rather than stored: `ItemPrice` rejects it, and one odd
-    # row must not fail a validation and take the whole snapshot down with it.
-    private def web_url(value)
-      url = value.to_s.strip
-
-      url if url.match?(%r{\Ahttps?://}i)
-    end
-
-    # None of the four feeds is ever legitimately empty. An empty one still
-    # arrives as HTTP 200 with status "ok", and taking it at face value would read
-    # as "every location closed" and delete the lot.
-    private def require_rows(feed, rows)
-      return rows if rows.present?
-
-      raise Uex::Error, "UEX returned no usable rows for #{feed}; refusing to sync a snapshot that would delete live prices"
-    end
-
     private def persist(desired, live:, unmatched:)
-      created = 0
-      updated = 0
-      removed = 0
-      skipped_removals = 0
-
-      ItemPrice.transaction do
-        held = ItemPrice.where(item_type: ITEM_TYPE).to_a
-        held_per_location = held.group_by(&:location).transform_values(&:size)
-        listed_per_location = desired.values.group_by { |row| row[:location] }.transform_values(&:size)
-
-        # Whatever is left in here once every desired row has claimed its match
-        # is a location UEX no longer lists.
-        unclaimed = held.index_by do |item_price|
-          [item_price.item_id, item_price.price_type, item_price.location, item_price.time_range]
-        end
-
-        desired.each do |key, attributes|
-          item_price = unclaimed.delete(key)
-
-          if item_price.blank?
-            ItemPrice.create!(attributes)
-            created += 1
-            next
-          end
-
-          item_price.assign_attributes(attributes.slice(:price, :location_url))
-          next unless item_price.changed?
-
-          item_price.save!
-          updated += 1
-        end
-
-        deletable, ambiguous = unclaimed.values.partition do |item_price|
-          deletable?(item_price.location, listed: listed_per_location, held: held_per_location, live:)
-        end
-
-        # Upserts have already applied either way, so fresh prices still land and
-        # only the destructive half is held back. A later whole snapshot reconciles.
-        skipped_removals = ambiguous.size
-        report_skipped_removals(ambiguous, held.size) if ambiguous.any?
-
-        removed = ItemPrice.where(id: deletable.map(&:id)).destroy_all.size
-      end
+      counts = persist_prices(desired, live:)
 
       Result.new(
-        created:, updated:, removed:, skipped_removals:,
+        created: counts.created,
+        updated: counts.updated,
+        removed: counts.removed,
+        skipped_removals: counts.skipped_removals,
         unmatched: unmatched.uniq { |vehicle| vehicle["id"] }
       )
-    end
-
-    # Decided per terminal, because that is the only granularity at which the
-    # question is answerable. A terminal gone from the terminals feed has closed,
-    # so its rows go. Otherwise the test is whether it reported at anything like
-    # its usual volume: a shop discontinuing a ship or two still lists the rest,
-    # whereas a truncated feed shows up as a terminal that suddenly lists a
-    # fraction of what we hold for it — or nothing at all. Below the retention
-    # floor we keep its rows and report rather than guess.
-    private def deletable?(location, listed:, held:, live:)
-      return true if live.exclude?(location)
-
-      listed.fetch(location, 0) >= held.fetch(location, 0) * MIN_TERMINAL_RETENTION
-    end
-
-    private def report_skipped_removals(preserved, held_before)
-      message = "UEX snapshot omitted #{preserved.size} of #{held_before} model prices at " \
-        "#{preserved.map(&:location).uniq.sort.join(", ")}; kept them and applied updates only"
-
-      Rails.logger.warn("[Uex::PriceSyncer] #{message}")
-      Appsignal.report_error(Uex::Error.new(message))
     end
 
     # Deliberately free of the sync counts: GithubIssueCreator dedupes on a
