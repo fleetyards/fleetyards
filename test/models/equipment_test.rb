@@ -12,7 +12,6 @@ require "test_helper"
 #  damage_reduction       :decimal(15, 2)
 #  description            :text
 #  equipment_type         :string
-#  extras                 :string
 #  grade                  :string
 #  hidden                 :boolean          default(FALSE)
 #  icon                   :string
@@ -26,9 +25,6 @@ require "test_helper"
 #  slot                   :integer
 #  slug                   :string
 #  storage                :decimal(15, 2)
-#  store_image            :string
-#  store_image_height     :integer
-#  store_image_width      :integer
 #  sub_type               :string
 #  temperature_rating     :string
 #  version                :string
