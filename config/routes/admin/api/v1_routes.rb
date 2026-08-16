@@ -139,6 +139,17 @@ v1_admin_api_routes = lambda do
     end
   end
 
+  resources :notifications, only: %i[index destroy] do
+    member do
+      put :read
+    end
+    collection do
+      get "unread-count", to: "notifications#unread_count"
+      put "read-all", to: "notifications#read_all"
+      delete "destroy-all", to: "notifications#destroy_all"
+    end
+  end
+
   # Flag lifecycle belongs to config/feature_flags.yml, so no create/destroy here.
   resources :features, only: %i[index show] do
     member do
