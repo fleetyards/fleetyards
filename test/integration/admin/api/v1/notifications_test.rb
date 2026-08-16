@@ -139,6 +139,15 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /notifications hides types the admin no longer has access to" do
+    create(:admin_notification, admin_user: @admin_user, notification_type: "new_supporter")
+    sign_in @admin_user
+
+    assert_api_response :get, 200, api_path: "/notifications" do
+      assert_equal 0, parsed_body["items"].count
+    end
+  end
+
   test "GET /notifications filters by unread" do
     create(:admin_notification, :read, admin_user: @admin_user)
     create(:admin_notification, admin_user: @admin_user)
@@ -179,6 +188,13 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
 
   test "PUT /notifications/:id/read does not reach another admin's notification" do
     notification = create(:admin_notification, admin_user: @other_admin)
+    sign_in @admin_user
+
+    assert_api_response :put, 404, path_params: {id: notification.id}
+  end
+
+  test "PUT /notifications/:id/read does not reach a type the admin lost access to" do
+    notification = create(:admin_notification, admin_user: @admin_user, notification_type: "new_supporter")
     sign_in @admin_user
 
     assert_api_response :put, 404, path_params: {id: notification.id}

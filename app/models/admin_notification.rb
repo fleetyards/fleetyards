@@ -144,6 +144,10 @@ class AdminNotification < ApplicationRecord
     AdminUser.all.select { |admin_user| admin_user.has_access?(access) }
   end
 
+  def self.types_for(admin_user)
+    TYPES.select { |_type, config| admin_user.has_access?(config[:access]) }.keys.map(&:to_s)
+  end
+
   # A dedupe_key folds repeat reports of the same content into the row that is
   # still unread, so a weekly job that keeps finding nothing does not stack up.
   def self.notify!(type:, title:, body: nil, severity: :info, link: nil, icon: nil, record: nil, dedupe_key: nil)

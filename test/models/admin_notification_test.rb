@@ -115,6 +115,15 @@ class AdminNotificationTest < ActiveSupport::TestCase
     assert_equal 2, existing.reload.occurrences
   end
 
+  test "lists only the types the admin currently has access to" do
+    admin_user = create(:admin_user, resource_access: [:models])
+
+    types = AdminNotification.types_for(admin_user)
+
+    assert_includes types, "paints_import"
+    assert_not_includes types, "new_supporter"
+  end
+
   test "keeps reports with differing bodies apart" do
     create(:admin_user, resource_access: [:models])
 

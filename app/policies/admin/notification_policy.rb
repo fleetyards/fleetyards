@@ -18,8 +18,11 @@ module Admin
       user.present?
     end
 
+    # Ownership alone would keep a notification readable after the privilege
+    # that made its owner a recipient is revoked, so the type has to be
+    # re-checked against the current privileges on every read.
     relation_scope do |relation|
-      relation.where(admin_user_id: user.id)
+      relation.where(admin_user_id: user.id, notification_type: AdminNotification.types_for(user))
     end
   end
 end
