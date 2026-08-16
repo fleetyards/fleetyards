@@ -33,6 +33,7 @@
 #
 #  index_components_on_manufacturer_id  (manufacturer_id)
 #  index_components_on_sc_key           (sc_key) UNIQUE
+#  index_components_on_version          (version)
 #
 FactoryBot.define do
   factory :component do
