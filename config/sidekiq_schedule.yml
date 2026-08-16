@@ -41,6 +41,10 @@ cleanup_unattached_check_job:
   cron: '0 2 */1 * *' # Daily at 2:00
   class: 'Cleanup::UnattachedCheckJob'
   queue: 'cleanup'
+cleanup_component_versions_job:
+  cron: '0 3 * * 0' # Weekly on Sunday 3:00, after a week of imports have landed
+  class: 'Cleanup::ComponentVersionsJob'
+  queue: 'cleanup'
 loaders_paints_import_job:
   cron: '0 19 * * 0' # Weekly on Sunday 19:00
   class: 'Loaders::PaintsImportJob'
