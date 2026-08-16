@@ -11,7 +11,8 @@ module UexFixtures
       vehicle_purchase_prices: uex_fixture("vehicles_purchases_prices_all"),
       vehicle_rental_prices: uex_fixture("vehicles_rentals_prices_all"),
       terminals: uex_fixture("terminals"),
-      commodities: uex_fixture("commodities")
+      commodities: uex_fixture("commodities"),
+      commodity_prices: uex_fixture("commodities_prices_all")
     }.merge(overrides)
 
     client = mock("Uex::Client")
@@ -39,6 +40,16 @@ module UexFixtures
       punctuated_match: create(:commodity, name: "Agricium (Ore)", sc_key: "items_commodities_agricium_ore"),
       mapping_match: create(:commodity, name: "Lastaprene", sc_key: "items_commodities_lastaprene"),
       near_neighbour: create(:commodity, name: "Organs", sc_key: "items_commodities_organs")
+    }
+  end
+
+  # The price feed joins on uex_id rather than on name, so the price tests need
+  # commodities already carrying the ids the mapper would have written.
+  def create_uex_priced_commodities
+    {
+      gold: create(:commodity, name: "Gold", sc_key: "items_commodities_gold", uex_id: 33, uex_code: "GOLD"),
+      agricium_ore: create(:commodity, name: "Agricium (Ore)", sc_key: "items_commodities_agricium_ore", uex_id: 24, uex_code: "AGRIORE"),
+      unmapped: create(:commodity, name: "Vent Slug", sc_key: "items_commodities_ventslug", uex_id: nil)
     }
   end
 end

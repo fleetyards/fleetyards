@@ -26,6 +26,10 @@ module Uex
       get("commodities")
     end
 
+    def commodity_prices
+      get("commodities_prices_all")
+    end
+
     private def get(path)
       # UEX answers 403 to requests without a User-Agent, so it is not optional.
       response = Typhoeus.get(
