@@ -152,18 +152,23 @@ module ScData
       #
       # The written path mirrors the one the record names, extension aside, so
       # a loader can find it from what the record already stores.
+      #
+      # Emptied per source folder rather than per icons root, because every
+      # catalogue writes into the same root: clearing that would leave whichever
+      # parser ran last as the only one with artwork. The folders themselves do
+      # not overlap -- manufacturer logos live under ManufacturerLogos, commodity
+      # icons under textures/vector -- so each is still swept of what its own
+      # records stopped naming.
       private def save_icon(icon_path)
         source = raw_asset(icon_path)
 
         return if source.blank?
 
-        icons_path = "#{export_path}/icons"
-
-        clear_once(icons_path)
-
         extension = File.extname(source).downcase
         drawable = DRAWABLE_FORMATS.include?(extension)
-        target = "#{icons_path}/#{icon_path.sub(/\.\w+\z/, drawable ? extension : ".png")}"
+        target = "#{export_path}/icons/#{icon_path.sub(/\.\w+\z/, drawable ? extension : ".png")}"
+
+        clear_once(File.dirname(target))
 
         FileUtils.mkdir_p(File.dirname(target))
 
@@ -219,10 +224,19 @@ module ScData
         end
       end
 
+      # Both time-carrying chunks are excluded because ImageMagick otherwise
+      # stamps the moment of conversion into what it writes -- date:create and
+      # date:modify as text, and tIME on the handful of images that carry a
+      # timestamp of their own. A parse that changed nothing would rewrite
+      # those files, and the diff would say icons changed when none did.
       private def png(source, target)
         return if source.blank?
 
-        MiniMagick::Image.open(source).tap { |image| image.format("png") }.write(target)
+        MiniMagick.convert do |convert|
+          convert << source.to_s
+          convert.define("png:exclude-chunk=date,time")
+          convert << target
+        end
 
         target
       rescue MiniMagick::Error
