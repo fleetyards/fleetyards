@@ -27,6 +27,7 @@ if hangar_inventory_item.item.present?
     json.type hangar_inventory_item.item_type
     json.name hangar_inventory_item.item.name
     json.slug hangar_inventory_item.item.slug
+    json.available hangar_inventory_item.item_available?
   end
 else
   json.item nil

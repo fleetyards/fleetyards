@@ -112,6 +112,22 @@ module InventoryLedgerEntry
     item_type.in?(ITEM_TYPES) && item.present?
   end
 
+  # Entries are never broken by a patch: the row they point at stays, so the
+  # name, the image and the stock they carry keep resolving. What changes is
+  # that the pickers stop offering the item, and this is what says so, rather
+  # than leaving a player to work out why they cannot record more of something
+  # they are holding.
+  #
+  # `version` records the build an item was last seen in, which is the same
+  # question `current_version` asks of the catalogues. Entries naming a thing
+  # without pointing at one -- most of them -- have nothing to be missing from.
+  def item_available?
+    return true unless referenced_item?
+    return true unless item.respond_to?(:version)
+
+    item.version == Rails.configuration.sc_data[:version]
+  end
+
   private def set_name_from_item
     return if name.present?
     return unless referenced_item?

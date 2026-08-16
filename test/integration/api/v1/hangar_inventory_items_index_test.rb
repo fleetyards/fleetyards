@@ -62,6 +62,21 @@ class Api::V1::HangarInventoryItemsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/inventories/:slug/items says which referenced items the build still ships" do
+    create(:inventory_item, inventory: @inventory, name: "Current",
+      item: create(:component, version: Rails.configuration.sc_data[:version]))
+    create(:inventory_item, inventory: @inventory, name: "Dropped",
+      item: create(:component, version: "0.0.1-live.1"))
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
+      available = parsed_body["items"].to_h { |item| [item["name"], item.dig("item", "available")] }
+
+      assert available["Current"]
+      assert_not available["Dropped"]
+    end
+  end
+
   test "GET /hangar/inventories/:slug/items filters by category" do
     create(:inventory_item, inventory: @inventory, category: :commodity)
     create(:inventory_item, :component, inventory: @inventory)

@@ -132,6 +132,32 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
     assert_not item.reload.update(category: :weapon)
   end
 
+  # The entry is never broken by a patch -- the row it points at stays, so the
+  # name and the stock still resolve. It just stops being something a picker
+  # will offer again, and this is what says so.
+  test "flags an entry pointing at an item the current build no longer ships" do
+    dropped = create(:component, name: "FR-66 Shield Generator", version: "0.0.1-live.1")
+
+    item = create(:inventory_item, inventory: @inventory, item: dropped)
+
+    assert_not_predicate item, :item_available?
+    assert_equal dropped, item.reload.item, "the reference still has to resolve"
+  end
+
+  test "leaves an entry pointing at an item of the current build alone" do
+    current = create(:component, version: Rails.configuration.sc_data[:version])
+
+    item = create(:inventory_item, inventory: @inventory, item: current)
+
+    assert_predicate item, :item_available?
+  end
+
+  # Most entries name a thing without pointing at one, and a name has no build
+  # to be missing from.
+  test "leaves an entry that references nothing alone" do
+    assert_predicate create(:inventory_item, inventory: @inventory), :item_available?
+  end
+
   test "does not create notifications" do
     assert_no_difference "Notification.count" do
       create(:inventory_item, inventory: @inventory)
