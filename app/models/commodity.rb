@@ -7,7 +7,6 @@
 #  id             :uuid             not null, primary key
 #  commodity_type :string
 #  description    :text
-#  icon           :string
 #  name           :string           not null
 #  sc_key         :string
 #  sc_ref         :string
@@ -30,6 +29,11 @@ class Commodity < ApplicationRecord
 
   has_many :fleet_inventory_items, as: :item, dependent: :nullify
   has_many :inventory_items, as: :item, dependent: :nullify
+
+  # Named as every other catalogue names its picture, so a ledger entry
+  # pointing at a commodity draws it through the same fallback that already
+  # gives a component its artwork.
+  has_one_attached :store_image
 
   before_save :update_slugs
 

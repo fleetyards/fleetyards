@@ -16,6 +16,8 @@ module ScData
 
         commodity.update!(update_params(commodity_data))
 
+        attach_icon(commodity, :store_image, commodity_data["icon"])
+
         commodity
       end
 
@@ -26,7 +28,6 @@ module ScData
           name: commodity_data["name"],
           commodity_type: commodity_data["commodity_type"],
           description: commodity_data["description"],
-          icon: commodity_data["icon"],
           version: sc_version
         }
       end
