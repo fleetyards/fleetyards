@@ -150,7 +150,8 @@
           "openModal": "数据重置后重置游戏内飞船",
           "moveToWishlist": "Move to Wishlist",
           "removeAll": "Remove all"
-        }
+        },
+        "manageCargo": "管理货物"
       },
       "syncExtension": {
         "cancel": "取消",

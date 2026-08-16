@@ -150,7 +150,8 @@
           "openModal": "Resetta navi in-game dopo il wipe",
           "moveToWishlist": "Sposta nella lista dei desideri",
           "removeAll": "Rimuovi tutto"
-        }
+        },
+        "manageCargo": "Gestisci carico"
       },
       "syncExtension": {
         "cancel": "Annulla",

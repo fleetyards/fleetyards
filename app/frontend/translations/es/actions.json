@@ -150,7 +150,8 @@
           "openModal": "Restablecer naves del juego después del wipe",
           "moveToWishlist": "Mover a lista de deseos",
           "removeAll": "Eliminar todo"
-        }
+        },
+        "manageCargo": "Gestionar carga"
       },
       "syncExtension": {
         "cancel": "Cancelar",

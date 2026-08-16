@@ -160,7 +160,8 @@
           "openModal": "Ingame-Schiffe nach Wipe zurücksetzen",
           "moveToWishlist": "Zur Wunschliste verschieben",
           "removeAll": "Alle entfernen"
-        }
+        },
+        "manageCargo": "Fracht verwalten"
       },
       "syncExtension": {
         "cancel": "Abbrechen",

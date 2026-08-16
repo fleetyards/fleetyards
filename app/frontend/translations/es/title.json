@@ -36,6 +36,7 @@
         "publicStats": "%{user} Hangar Stats",
         "wishlist": "Lista de deseos",
         "publicWishlist": "Lista de deseos de %{user}",
+        "vehicleCargo": "Carga de la nave",
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}"
       },
