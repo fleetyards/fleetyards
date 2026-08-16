@@ -120,6 +120,8 @@ module ScData
 
         items_path = "#{export_path}/#{folder}"
 
+        clear_once(items_path)
+
         FileUtils.mkdir_p(items_path) unless File.directory?(items_path)
 
         items.each do |item|
@@ -129,6 +131,23 @@ module ScData
 
           File.write("#{items_path}/#{file_name}.json", JSON.pretty_generate(item))
         end
+      end
+
+      # Writing is otherwise additive: a record the game files stopped carrying
+      # keeps the file an earlier run wrote for it, and every later step reads
+      # it back as part of the build -- which is what a loader retiring absent
+      # records cannot see past.
+      #
+      # Emptied on the first write of a run rather than per call, because
+      # `items` and `models` are filled by several passes and the later ones
+      # must not wipe the earlier ones. That first write is also past the blank
+      # check, so a pass that parsed nothing leaves what is on disk alone.
+      private def clear_once(items_path)
+        @cleared_paths ||= Set.new
+
+        return unless @cleared_paths.add?(items_path)
+
+        FileUtils.rm_rf(items_path)
       end
 
       private def parse_translations
