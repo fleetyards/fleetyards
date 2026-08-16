@@ -71,6 +71,24 @@ module InventoryStock
     )
   end
 
+  # How much of a hold everything in here fills, and how many positions could
+  # not say. Bulk cargo counts itself; gear is counted per piece, so it only
+  # answers once it points at something a catalogue has measured. What nothing
+  # has measured is left out rather than guessed at, which makes the total a
+  # floor and the count the distance it might be off by.
+  def stock_volume
+    stock_positions.each_with_object({total: 0.0, unmeasured: 0}) do |row, result|
+      position = InventoryStockItem.new(row, inventory: self, reference_entry: reference_entry_for(row))
+      volume = position.volume_scu
+
+      if volume.nil?
+        result[:unmeasured] += 1
+      else
+        result[:total] += volume
+      end
+    end
+  end
+
   def entries_for_stock_item(stock_item)
     inventory_items.where(
       name: stock_item.name, category: stock_item.category, unit: stock_item.unit

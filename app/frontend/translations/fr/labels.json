@@ -1249,7 +1249,9 @@
         "stockItem": "Stock Item",
         "overCapacity": "au-delà de la capacité de fret",
         "cargoGrid": "Grille de fret",
-        "shipInventory": "Inventaire du vaisseau"
+        "shipInventory": "Inventaire du vaisseau",
+        "remaining": "Restant",
+        "unmeasured": "%{count} pas encore mesurés"
       },
       "hangarInventories": "Inventories"
     }

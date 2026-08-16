@@ -11,6 +11,10 @@ stock = inventory.persisted? ? inventory.current_stock : []
 json.total_scu stock.select { |s| s.unit == "scu" }.sum(&:net_quantity).to_f
 json.total_units stock.select { |s| s.unit == "units" }.sum(&:net_quantity).to_f
 
+volume = inventory.persisted? ? inventory.stock_volume : {total: 0.0, unmeasured: 0}
+json.total_volume_scu volume[:total].round(4)
+json.unmeasured_count volume[:unmeasured]
+
 if inventory.image.attached?
   json.image do
     json.partial! "api/v1/shared/file", record: inventory, attr: :image

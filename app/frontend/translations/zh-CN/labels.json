@@ -1241,7 +1241,9 @@
         "stockItem": "Stock Item",
         "overCapacity": "超出货舱容量",
         "cargoGrid": "货舱网格",
-        "shipInventory": "飞船库存"
+        "shipInventory": "飞船库存",
+        "remaining": "剩余",
+        "unmeasured": "%{count} 项尚未测量"
       },
       "hangarInventories": "Inventories"
     }

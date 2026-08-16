@@ -70,6 +70,33 @@ class Api::V1::VehicleInventoryShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /vehicles/:vehicle_id/inventory measures gear into the volume aboard" do
+    inventory = create(:inventory, holder: @user, vehicle: @vehicle, name: "Ironclad Inventory")
+    create(:inventory_item, inventory:, name: "Quantanium", quantity: 12, unit: :scu)
+
+    armor = create(:equipment, volume: 0.15)
+    create(:inventory_item, inventory:, item: armor, category: :equipment, unit: :units, quantity: 4)
+
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
+      assert_in_delta 12.0, parsed_body["totalScu"], 0.001, "bulk cargo is unchanged"
+      assert_in_delta 12.6, parsed_body["totalVolumeScu"], 0.001, "four sets at 0.15 on top"
+      assert_equal 0, parsed_body["unmeasuredCount"]
+    end
+  end
+
+  test "GET /vehicles/:vehicle_id/inventory counts what nothing has measured" do
+    inventory = create(:inventory, holder: @user, vehicle: @vehicle, name: "Ironclad Inventory")
+    create(:inventory_item, inventory:, name: "Medpen", category: :consumable, unit: :units, quantity: 3)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
+      assert_in_delta 0.0, parsed_body["totalVolumeScu"], 0.001
+      assert_equal 1, parsed_body["unmeasuredCount"]
+    end
+  end
+
   test "GET /vehicles/:vehicle_id/inventory addresses the ship by serial" do
     sign_in @user
 

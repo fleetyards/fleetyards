@@ -11463,6 +11463,10 @@ components:
           type: number
         totalUnits:
           type: number
+        totalVolumeScu:
+          type: number
+        unmeasuredCount:
+          type: integer
         image:
           "$ref": "#/components/schemas/MediaFile"
         vehicle:
@@ -12492,6 +12496,10 @@ components:
           type: number
         totalUnits:
           type: number
+        totalVolumeScu:
+          type: number
+        unmeasuredCount:
+          type: integer
         image:
           "$ref": "#/components/schemas/MediaFile"
         vehicle:
