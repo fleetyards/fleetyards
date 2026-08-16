@@ -73,7 +73,7 @@ module ScData
       # which wins, so the three that say nothing -- OxyPen among them -- take
       # the same words rather than adding near-synonyms to a picker's filter.
       # Every named record under Hacking or SystemAccess reads as a keycard, an
-      # access card or a decryption key.
+      # access card or a decryption key, bar the drives below.
       CONSUMABLE_TYPES = {
         "Medical" => ["medical", "medical_consumable"],
         "MedPack" => ["medical", "medical_consumable"],
@@ -81,6 +81,12 @@ module ScData
         "Hacking" => ["hacking_tool", "keycard"],
         "SystemAccess" => ["hacking_tool", "keycard"]
       }.freeze
+
+      # SystemAccess also holds the three ASD drives, which are data storage
+      # carried off a delving site rather than something that opens a door.
+      # Filed by key because the subtype cannot tell them apart, and left out of
+      # the keycard filter so a player looking for one does not read past them.
+      DATA_DRIVE_KEY = /_harddrive_/
 
       CONSUMABLE_ATTACH_TYPES = %w[FPS_Consumable RemovableChip].freeze
 
@@ -156,7 +162,7 @@ module ScData
         segments = key.split("_")
         described = describe(translate(attach_def.dig("Localization", "Description")))
         worn_type, slot = CHAR_TYPES[attach_def["Type"]]
-        carried_type, carried_item_type = consumable_types(attach_def)
+        carried_type, carried_item_type = consumable_types(attach_def, key)
 
         {
           key:,
@@ -189,10 +195,14 @@ module ScData
         }
       end
 
-      private def consumable_types(attach_def)
+      private def consumable_types(attach_def, key)
         return unless CONSUMABLE_ATTACH_TYPES.include?(attach_def["Type"])
 
-        CONSUMABLE_TYPES[attach_def["SubType"]]
+        carried_type, carried_item_type = CONSUMABLE_TYPES[attach_def["SubType"]]
+
+        return if carried_type.blank?
+
+        [carried_type, DATA_DRIVE_KEY.match?(key) ? "data_drive" : carried_item_type]
       end
 
       # Most descriptions open with a spec block -- "Item Type: Assault Rifle",

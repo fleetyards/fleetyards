@@ -41,8 +41,19 @@ module ScData
 
         assert_equal %w[hacking_tool medical],
           consumables.filter_map { |item| item[:equipment_type] }.uniq.sort
-        assert_equal %w[keycard medical_consumable],
+        assert_equal %w[data_drive keycard medical_consumable],
           consumables.filter_map { |item| item[:item_type] }.uniq.sort
+      end
+
+      # The ASD drives share SystemAccess with the keycards, so only the key
+      # keeps them out of a filter for the cards that open a door.
+      test "the delving drives are not filed with the keycards" do
+        drives = parsed.values.select { |item| item[:key].include?("_harddrive_") }
+
+        assert_equal ["ASD Data Drive", "ASD Memory Drive", "ASD Secure Drive"],
+          drives.map { |item| item[:name] }.sort
+        assert_equal ["data_drive"], drives.map { |item| item[:item_type] }.uniq
+        assert_equal ["hacking_tool"], drives.map { |item| item[:equipment_type] }.uniq
       end
 
       test "a medical pen keeps its spec block's type and its prose" do

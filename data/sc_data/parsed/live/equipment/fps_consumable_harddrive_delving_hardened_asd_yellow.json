@@ -5,7 +5,7 @@
   "description": "An ASD Onyx Facility memory drive made to contain propriety information.",
   "equipment_type": "hacking_tool",
   "slot": null,
-  "item_type": "keycard",
+  "item_type": "data_drive",
   "weapon_class": null,
   "rate_of_fire": null,
   "range": null,
