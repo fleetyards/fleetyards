@@ -1,0 +1,31 @@
+{
+  "key": "vpw_bouncer_boots_01_01_01",
+  "ref": "ea73662f-7910-4156-836f-54944a569345",
+  "name": "Good Boot",
+  "description": "The Vaporwear Good Boot is the result of a design collaboration between seven up-and-coming designers who were each tasked to answer one question: what makes a good boot? The result is a fusion of supreme comfort with supergrip rubber soles, reinforced toe safeguards, and a variety of decorative zippers and buckles around the top quarter.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "bouncer",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "7dfff1b9-2bfa-4ace-86d9-30329a2a0f30",
+  "tags": [
+    "vpw_boots",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

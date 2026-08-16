@@ -1,0 +1,32 @@
+{
+  "key": "alb_shirt_05_01_03",
+  "ref": "6400df60-19b1-4c4b-97ba-809da6fc99a2",
+  "name": "Amaris Shirt Ochre",
+  "description": "The rugged Amaris Shirt is a breathable long-sleeve shirt reinforced by raised fabric on the shoulders to create an elegant but industrial look.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_shirt",
+    "Set_05",
+    "Texture_01",
+    "Color_03"
+  ],
+  "hidden": false
+}

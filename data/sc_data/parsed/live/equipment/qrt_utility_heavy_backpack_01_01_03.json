@@ -1,0 +1,33 @@
+{
+  "key": "qrt_utility_heavy_backpack_01_01_03",
+  "ref": "aa3a3eeb-9d03-414e-8ef2-0988a9b88fb6",
+  "name": "Palatino Backpack Sunstone",
+  "description": "Elegant design meets innovation with the Palatino armor from Quirinus Tech. The associated backpack seamlessly integrates into the armor, matching its silhouette while also providing ample storage.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "heavy_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "180000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "qrt_utility_heavy",
+    "Set_01",
+    "Color_03",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

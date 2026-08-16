@@ -1,0 +1,31 @@
+{
+  "key": "fio_jacket_01_01_13",
+  "ref": "af0a2fd5-cbf4-46bb-99a7-59b64b30c3c9",
+  "name": "Ati Jacket Dark Red",
+  "description": "Fiore's is a modern update of traditional Earth design. Slim tailoring, a high collar, and striking asymmetrical design make this overcoat a must-have item for any wardrobe.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_jacket",
+    "set_01",
+    "Color_13"
+  ],
+  "hidden": false
+}

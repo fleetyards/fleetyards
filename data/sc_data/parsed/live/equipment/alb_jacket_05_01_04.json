@@ -1,0 +1,32 @@
+{
+  "key": "alb_jacket_05_01_04",
+  "ref": "a8b32edc-5abb-4863-9f8f-5dc7f6d1bcae",
+  "name": "Marshal Sleeveless Vest Sycamore",
+  "description": "The durable Marshal sleeveless vest by Alejo Brothers is made to endure life on the frontier while distinct stylings like shoulder straps, bold cross-chest placket, and a high-collar make sure the wearer stands out on any far flung world.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_jacket",
+    "Set_05",
+    "Texture_01",
+    "Color_04"
+  ],
+  "hidden": false
+}

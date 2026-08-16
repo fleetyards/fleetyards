@@ -1,0 +1,31 @@
+{
+  "key": "scu_pants_02_01_07",
+  "ref": "98385d8b-5d09-4195-9b44-e6c850fe4651",
+  "name": "Edgewear Pants Blue",
+  "description": "Stegman's Edgewear utility clothes are made from reinforced nylon weaves and lined with temperature-rated quilted technology to provide you with a little extra protection while on the jobsite. Double knees, reinforced joint pads and extra pockets add comfort and durability to this field-tested and worker-approved clothing line.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_pants",
+    "Set_02",
+    "Color_07"
+  ],
+  "hidden": false
+}

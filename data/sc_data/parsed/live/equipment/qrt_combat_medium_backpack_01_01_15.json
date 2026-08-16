@@ -1,0 +1,32 @@
+{
+  "key": "qrt_combat_medium_backpack_01_01_15",
+  "ref": "17d9c6b5-8a2c-4900-9639-2026707570b6",
+  "name": "Testudo Backpack Earthshake",
+  "description": "The Testudo backpack may feel as light as a feather in your hands, but it can hold an impressive amount of weight thanks to its use of the same tough yet lightweight plating as the armor set.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "medium_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "105000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "medium_heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "64f8b397-8c0d-40b0-96a0-52bbeb41e5ad",
+  "tags": [
+    "cds_combat_medium",
+    "Color_01",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

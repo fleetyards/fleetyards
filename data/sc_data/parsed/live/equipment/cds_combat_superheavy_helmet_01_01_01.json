@@ -1,0 +1,32 @@
+{
+  "key": "cds_combat_superheavy_helmet_01_01_01",
+  "ref": "4670540c-7d6a-47d4-bb92-c5709b67be05",
+  "name": "BUL-H4 Helmet",
+  "description": "Redefine personal protection with the BUL-H4 series. CDS's proprietary PROWL hardware combines the video input from quad-visor slots to create one singular feed, offering uninhibited vision without compromising on safety.",
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "super_heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "90.0",
+  "temperature_rating": "-70 / 100 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedWep",
+    "Helmet",
+    "HelmetCarryable",
+    "CdsSuperheavyHelmet_01"
+  ],
+  "hidden": false
+}

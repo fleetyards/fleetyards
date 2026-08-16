@@ -1,0 +1,31 @@
+{
+  "key": "dmc_jacket_09_01_10",
+  "ref": "0ad851e9-678a-4a36-9af9-1f3818f1f142",
+  "name": "Omnitrek Jacket Permafrost",
+  "description": "Be ready for anything with DMC’s Omnitrek, the survival jacket designed for maximal performance in adverse weather conditions with the addition of the water-resistant collapsible collar. The Omnitrek also provides numerous storage options across both sleeve and chest pockets.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_jacket",
+    "Set_09",
+    "Color_01"
+  ],
+  "hidden": false
+}

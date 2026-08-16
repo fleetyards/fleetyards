@@ -1,0 +1,32 @@
+{
+  "key": "hdh_shirt_01_01_13",
+  "ref": "f2cb6838-00f4-49e3-83b1-ebf78429a54e",
+  "name": "Samya Tank Rosewood",
+  "description": "This Samya Tank is your perfect staple for hot weather. Made with soft and breathable fabric, it features moisture-wicking technology and reinforced binding at the openings to protect it from wear and tear. A detachable sleeve is included with each shirt.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_shirt",
+    "Set_01",
+    "Texture_01",
+    "Color_13"
+  ],
+  "hidden": false
+}

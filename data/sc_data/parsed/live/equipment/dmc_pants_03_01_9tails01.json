@@ -1,0 +1,31 @@
+{
+  "key": "dmc_pants_03_01_9tails01",
+  "ref": "f1ab7f13-671a-47d2-8e74-28adf80cb0fa",
+  "name": "Frontier Pants (Modified)",
+  "description": "This version of DMC's Frontier pants has been modified from its original form. DMC's Frontier collection has been a staple of frontier living for centuries. These heavy denim workpants have double-stitched reinforcement and stainguard technology, making them dependable pants for any environment day in and day out.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_pants",
+    "Set_03",
+    "Color_01"
+  ],
+  "hidden": false
+}

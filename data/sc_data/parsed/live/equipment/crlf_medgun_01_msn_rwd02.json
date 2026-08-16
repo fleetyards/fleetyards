@@ -1,0 +1,30 @@
+{
+  "key": "crlf_medgun_01_msn_rwd02",
+  "ref": "68a8b5ff-8285-4a68-89ba-ab7132f36b16",
+  "name": "ParaMed \"AA Support\" Medical Device",
+  "description": "The ParaMed from CureLife is a professional-grade emergency medical device designed to stabilize patients suffering from possible life-threatening injuries. Offering extremely accurate diagnostics and dosing, the ParaMed can treat more patients and offer longer relief with less risk of overdose.\n\nThe AA Support edition features a sharp red coloring and was intended for those who assisted Alliance Aid during Levski's time of need. Additionally, this special edition has an increased healing rate to allow injured individuals to return to their vital work even faster.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "medical_device",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Small",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "f4a1ad63-43fb-483c-a90f-33dd50586e3a",
+  "tags": [
+    "crlf",
+    "pistol"
+  ],
+  "hidden": false
+}

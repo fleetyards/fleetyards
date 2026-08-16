@@ -1,0 +1,29 @@
+{
+  "key": "srvl_utility_light_arms_01_01_07",
+  "ref": "fcd41c68-367c-40c7-86c4-712786bb73a6",
+  "name": "Outback Arms Grime Blue",
+  "description": "Send a statement with thick leather paired with metal plated cuffs, pauldrons and spike-backed gloves. The Grime version is dyed a dusky blue to keep you subtle, but not unsightly.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": "-65 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "fio_pants_01_01_02",
+  "ref": "f9394ae7-6eab-4f45-b4c0-4bd6a10f2890",
+  "name": "Lillo Pants Red",
+  "description": "These slim cut pants from Fiore give you a tailored feel at a fraction of the cost. Built from space-age weaves, the Lillo are a low maintenance, high impact addition to your office wardrobe.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_pants",
+    "Set_01",
+    "Color_02"
+  ],
+  "hidden": false
+}

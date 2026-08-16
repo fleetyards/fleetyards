@@ -1,0 +1,32 @@
+{
+  "key": "alb_pants_01_01_15",
+  "ref": "b9c61e6d-a393-4bf7-a290-a1b46ed9a998",
+  "name": "Tekaw Pants Arctic",
+  "description": "Comfortable enough to wear all day yet designed to thrive under harsh conditions, the Tekaw pants are perfect whether you're on or off duty. Their stylish yet durable design includes a water-wicking coating and padded shins guards with wrappings that ensure a snug fit.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_pants",
+    "Set_01",
+    "Texture_01",
+    "Color_15"
+  ],
+  "hidden": false
+}

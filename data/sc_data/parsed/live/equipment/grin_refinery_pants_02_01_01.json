@@ -1,0 +1,31 @@
+{
+  "key": "grin_refinery_pants_02_01_01",
+  "ref": "175ab9c1-b42e-466c-b1df-97655b37c49d",
+  "name": "ThermoWeave Pants ASD Edition",
+  "description": "The ThermoWeave pants have a large, easy-access pocket on each leg and feature a special fire-resistant synthetic moisture-wicking lining that makes them comfortable to wear for an entire shift.\n\nWorn by employees who require an extra level of protection in their field, the ASD Edition showcases the reds and greens of the ASD branding.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "refinery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_refinery_pants",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

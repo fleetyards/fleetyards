@@ -1,0 +1,32 @@
+{
+  "key": "hdh_shirt_04_05_01",
+  "ref": "b8e7f555-36f7-4b4f-bec3-83c0fbc48de8",
+  "name": "Alban Shirt Striker",
+  "description": "The Alban is a long sleeve shirt made from comfortable, natural fabrics. Featuring a deep V-neck, its asymmetrical patchwork design provides it with a bit of texture and a two-toned look.\n\nThe Striker edition is a worn grey with dark grey patches.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_shirt",
+    "Set_03",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

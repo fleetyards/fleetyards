@@ -1,0 +1,32 @@
+{
+  "key": "hdtc_shirt_02_03_01",
+  "ref": "269410b4-0f8f-43d5-ab86-88746789330f",
+  "name": "Bellator Shirt and Waistcoat Tatton",
+  "description": "Stylish, functional, and deadly: the Bellator clothing line is designed to fit in at dinner party just as well as a gunfight. Accompanied by a luxurious silk tie and smart fitting waistcoat, this shirts provides some combat protection thanks to the intricate weaving of layered graphene into its threads.\n\nThe Tatton edition features an ashen gray waistcoat, a pale gray shirt, finished with a regal gold and blue striped gray tie.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_shirt",
+    "Set_02",
+    "Texture_03",
+    "Color_01"
+  ],
+  "hidden": false
+}

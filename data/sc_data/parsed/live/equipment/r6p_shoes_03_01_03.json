@@ -1,0 +1,32 @@
+{
+  "key": "r6p_shoes_03_01_03",
+  "ref": "bcd55149-c2a6-4a51-8067-0b35a2e952e7",
+  "name": "Varhey Boots Ochre",
+  "description": "The Varhey by R6Pro is a widely popular lightweight workboot made of a durable, but flexible, polyweave that ensures a safe, snug fit.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1ddcadf0-7bb0-4fa9-94f0-6af19432631c",
+  "tags": [
+    "r6p_shoes",
+    "Set_01",
+    "Texture_01",
+    "Color_03"
+  ],
+  "hidden": false
+}

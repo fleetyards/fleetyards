@@ -1,0 +1,33 @@
+{
+  "key": "cds_armor_light_legs_01_01_01",
+  "ref": "cc7aa50a-e09d-4d23-a417-1386a35b0a2b",
+  "name": "Field Recon Suit Legs",
+  "description": "CDS’ Field Recon Suit is the perfect solution for the combat operator who wants a little extra protection without compromising any of their situational agility. EdgeCore composite plating is strategically sewn into the nano-weave suit to cover vital organs while keeping the suit flexible.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-35 / 65 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Light",
+    "Set_01",
+    "Color_01",
+    "$Legs++",
+    "SM_Marine"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "grin_refinery_gloves_02_01_01",
+  "ref": "0673155b-2b19-4e2a-ad79-e6a42305b6f8",
+  "name": "ThermoWeave Gloves ASD Edition",
+  "description": "The ThermoWeave gloves were designed with a special multilayer weave and extra insulated padding on the palm and fingers for additional protection when touching hot objects.\n\nWorn by employees who require an extra level of protection in their field, the ASD Edition showcases the reds and greens of the ASD branding.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "refinery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_refinery_gloves",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

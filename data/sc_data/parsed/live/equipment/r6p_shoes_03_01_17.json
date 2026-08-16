@@ -1,0 +1,32 @@
+{
+  "key": "r6p_shoes_03_01_17",
+  "ref": "437181f9-5838-4d9a-a27d-4d8cf9b6dbdb",
+  "name": "Varhey Boots Bayoux",
+  "description": "The Varhey by R6Pro is a widely popular lightweight workboot made of a durable, but flexible, polyweave that ensures a safe, snug fit.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1ddcadf0-7bb0-4fa9-94f0-6af19432631c",
+  "tags": [
+    "r6p_shoes",
+    "Set_01",
+    "Texture_01",
+    "Color_17"
+  ],
+  "hidden": false
+}

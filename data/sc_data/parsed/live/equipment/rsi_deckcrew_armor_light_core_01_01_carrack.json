@@ -1,0 +1,32 @@
+{
+  "key": "rsi_deckcrew_armor_light_core_01_01_carrack",
+  "ref": "6309efdf-324a-4503-bf7c-a44da432a7f4",
+  "name": "MacFlex Core",
+  "description": null,
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "deckcrew",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "DeckCrew",
+    "Set_01",
+    "Color_carrack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": true
+}

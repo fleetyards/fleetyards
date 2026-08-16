@@ -1,0 +1,31 @@
+{
+  "key": "cba_doctor_pants_01_01_04",
+  "ref": "836cdbe4-601b-42ad-ad38-dd841ca07a07",
+  "name": "Galen Surgical Scrub Pants Honeycomb",
+  "description": "You can count on Code Blue Apparel to deliver professional and comfortable medical clothing. The Galen Surgical Scrub Pants feature ribbing around the knees, and are made with a special anti-bacterial fabric that's 99% effective while also being lightweight and wrinkle free.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "doctor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_doctor_pants",
+    "Set_01",
+    "Color_04"
+  ],
+  "hidden": false
+}

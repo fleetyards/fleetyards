@@ -1,0 +1,31 @@
+{
+  "key": "ccc_medium_armor_arms_01_01_shrike",
+  "ref": "6cba6778-4e76-4bbb-9135-ca5a787e7228",
+  "name": "Aves Shrike Arms",
+  "description": "Honor and embody the Tevarin aesthetic with the Aves Shrike armor; manufactured with white, blue, magenta, grey, and black plating to perfectly evoke the shape language imbued into their iconic ships. This medium armor from CC's Conversions is both sensational and practical, providing solid protection while keeping you light on your feet. When paired with the Aves Shrike helmet, the suit combines for a striking and unforgettable look.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "30.0",
+  "temperature_rating": "-61 / 91 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "be4a26fd-0585-4aaf-bad9-d234091bd02e",
+  "tags": [
+    "Set_01",
+    "Color_shrike",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

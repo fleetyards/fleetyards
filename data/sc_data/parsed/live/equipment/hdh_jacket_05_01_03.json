@@ -1,0 +1,31 @@
+{
+  "key": "hdh_jacket_05_01_03",
+  "ref": "63094b13-3ef8-45bd-aa34-4b6c36eff5ce",
+  "name": "Tulsi Jacket Olive",
+  "description": "This Tulsi jacket features an outer shell designed to cut down on wind shear and an inner shell made to retain warmth without sacrificing comfort. For ease of use, it also features an gentle-glide zipper with a secure top stop and roomy pockets that guarantee you'll always have what you need on hand.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_jacket",
+    "Set_05",
+    "Color_01"
+  ],
+  "hidden": false
+}

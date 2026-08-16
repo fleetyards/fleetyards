@@ -1,0 +1,31 @@
+{
+  "key": "alb_mask_03_01_01",
+  "ref": "5eb44c18-aef1-469d-9a43-ef822db9a182",
+  "name": "Salluq Mask Brown",
+  "description": "Made for hostile environments, the Salluq Mask keeps dirt, dust, and grit out of your eyes while providing you with a wide field of vision. Please note that this mask is not space-rated and should only be worn in naturally breathable environments.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "mask",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_mask",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

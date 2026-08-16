@@ -1,0 +1,32 @@
+{
+  "key": "drn_jacket_10_01_01",
+  "ref": "75dad1b1-17ed-4a00-a420-ced2b36f6cdf",
+  "name": "Rokmor Suit Jacket",
+  "description": "The Rokmor is a stylish suit jacket ideal for the executive with an eye for quality. Not only is it wrinkle-resistant and able to retain its shape well, but the angular design of both the shoulder pads and the lapels strengthen the wearer's silhouette for a strong aesthetic sure to impress any boardroom.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "2ab62815-6273-44b9-bbc6-28d36fed6fd8",
+  "tags": [
+    "drn_jacket",
+    "Set_10",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

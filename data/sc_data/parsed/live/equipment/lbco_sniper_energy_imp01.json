@@ -1,0 +1,31 @@
+{
+  "key": "lbco_sniper_energy_imp01",
+  "ref": "6ab71d2c-e0a4-4875-92a1-6cf90b746532",
+  "name": "Atzkav \"Deadeye\" Sniper Rifle",
+  "description": "The Atzkav is a unique precision sniper rifle from Lightning Bolt Co. Once the charging handle is engaged, it accurately fires a charged electron to deal significant energy damage that spreads to nearby conductive targets. This special pulse effect also leaves a residual charge in the strike area that increases damage delivered by subsequent electron shots. Alongside the rifle's special firing capabilities, the Atzkav is best known for its distinct barrel that crackles with energy when powering its next shot. The exclusive Deadeye edition is black with gold highlights.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "sniper_rifle",
+  "weapon_class": "energy",
+  "rate_of_fire": "30.0",
+  "range": "150.0",
+  "storage": "5.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/lbco_atzkav_sniper_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "98bb2e9e-fcc7-46e5-9ba6-d34c42c414e0",
+  "tags": [
+    "stocked",
+    "lbco_sniper_energy_01",
+    "sniper"
+  ],
+  "hidden": false
+}

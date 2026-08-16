@@ -1,0 +1,32 @@
+{
+  "key": "behr_smg_ballistic_01_iae2201",
+  "ref": "7a81b598-ce83-44e0-88f9-482e528c3747",
+  "name": "P8-SC \"Red Alert\" SMG",
+  "description": "When the top fighting force in the universe chooses a weapon as their standard, it pays to stand up and take notice. The Behring-crafted P8-SC has been the ballistic submachine gun of choice for the UEE Marines since it first came off the production line, but since then, many have come to rely on this weapon for their own personal safety and protection. The \"Red Alert\" edition mixes grey and a vibrant red for a bold and dynamic design.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "smg",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "800.0",
+  "range": "30.0",
+  "storage": "45.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behring_p8_sc_smg_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "behr_smg_ballistic_01",
+    "smg",
+    "iae2022"
+  ],
+  "hidden": false
+}

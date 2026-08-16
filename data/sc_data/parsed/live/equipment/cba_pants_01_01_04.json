@@ -1,0 +1,31 @@
+{
+  "key": "cba_pants_01_01_04",
+  "ref": "f0341939-97c7-46d9-8423-ad11adbcaa8a",
+  "name": "Cumulus Pants Yellow",
+  "description": "Be bold and brave the cold with Cumulus pants. Designed with a synthetic fabric that insulates the inside and wicks away moisture from the outside, these pants provide protection against temperature drops to -35 °C.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "3000.0",
+  "damage_reduction": null,
+  "temperature_rating": "-35 / 15 °C",
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_pants",
+    "Set_01",
+    "Color_04"
+  ],
+  "hidden": false
+}

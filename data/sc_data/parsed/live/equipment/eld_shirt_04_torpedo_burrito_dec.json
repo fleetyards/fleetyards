@@ -1,0 +1,31 @@
+{
+  "key": "eld_shirt_04_torpedo_burrito_dec",
+  "ref": "7976b488-7caf-4bb3-8b97-73601177ef51",
+  "name": "Torpedo Burrito T-Shirt",
+  "description": "Show your affinity for the meal guaranteed to destroy your hunger. This ultra-soft natural fiber shirt features the Torpedo Burrito logo on the front and their very appropriate catch phrase \"Unleash A Payload of Flavor\" on the back.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Color_torpedo"
+  ],
+  "hidden": false
+}

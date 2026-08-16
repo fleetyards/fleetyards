@@ -1,0 +1,30 @@
+{
+  "key": "gmni_shotgun_ballistic_01_firerats01",
+  "ref": "2e15ad7c-79d0-48fc-91a1-bda4fbd45c6a",
+  "name": "R97 \"Scorched\" Shotgun",
+  "description": "The R97 combines sleek design and stopping power for an elegant and effective close quarters weapon. This ballistic shotgun from Gemini features two distinct fire modes — a semi-auto wide spread mode ideal for dealing quick damage and a focused mode that offers increased range at the expense of some power. This combat flexibility has made the R97 a popular personal defense weapon across the Empire. The Scorched edition features a unique flame patina.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "120.0",
+  "range": "15.0",
+  "storage": "18.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/gemini_r97_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "b33050cd-6ca9-4c57-baf8-f4114eb85237",
+  "tags": [
+    "stocked",
+    "shotgun"
+  ],
+  "hidden": false
+}

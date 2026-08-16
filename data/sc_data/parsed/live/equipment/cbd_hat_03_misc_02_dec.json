@@ -1,0 +1,33 @@
+{
+  "key": "cbd_hat_03_misc_02_dec",
+  "ref": "068920d7-06fc-49a5-8ad5-c4c29f791139",
+  "name": "MISC Hat",
+  "description": "Evoke the industrial spirit of MISC by sporting this tan hat featuring the company's emblem.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "hat",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_hat",
+    "Set_03",
+    "Color_misc02",
+    "KeepsShape",
+    "$hatHair+"
+  ],
+  "hidden": false
+}

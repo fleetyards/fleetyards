@@ -1,0 +1,31 @@
+{
+  "key": "klwe_smg_energy_01_blue_gold",
+  "ref": "e9b16168-3969-4865-a17b-e4f49f34a538",
+  "name": "Lumin V \"Valor\" SMG",
+  "description": "Klaus & Werner's expert craftsmanship is once again on full display to make the Lumin V laser compact energy rifle even more deadly and dependable. A new \"interval autofire\" mode blasts five-round barrages when the trigger is held down, utilizing the target saturation that comes with autofire while providing breaks to recompensate aim. Even when constantly on the attack, the gun's excellent design provides low recoil and a tight spread. The bold blue and gold color scheme gives the Valor edition a valiant and dignified appeal.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "smg",
+  "weapon_class": "energy",
+  "rate_of_fire": "562.5",
+  "range": "25.0",
+  "storage": "45.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_lumin_v_smg_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [
+    "stocked",
+    "smg",
+    "klwe_smg_energy_01"
+  ],
+  "hidden": false
+}

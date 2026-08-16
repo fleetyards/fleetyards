@@ -1,0 +1,32 @@
+{
+  "key": "alb_gloves_02_02_15",
+  "ref": "dd9cd32c-7b68-4522-9d8c-493fc555db61",
+  "name": "Chokehold Gloves Molehill Brown",
+  "description": "When you can't afford to fumble. Flexible polyweave provide excellent grip plus ablative ceramic demi-gaunt reinforcement and close-fit cuffs. The Molehill version is dyed a neutral brown to keep you subtle, but not unsightly.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_gloves",
+    "Set_02",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

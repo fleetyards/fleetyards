@@ -1,0 +1,33 @@
+{
+  "key": "rsi_explorer_undersuit_01_01_ruso",
+  "ref": "cd99e671-9d3f-41eb-90a7-f565bb1b7b51",
+  "name": "Venture Undersuit \"Rust Society\"",
+  "description": "Whether you’re discovering bold new frontiers or simply stretching your legs after a long spaceflight, Robert Space Industries’ Venture Explorer Suit takes vacuum-safe wear to the next level with its incorporation of top-of-class safety features seamlessly blended with phenomenal freedom of movement. The Rust Society edition adds a red and tan color scheme so you look good while working hard.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "undersuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "90.0",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Color_01",
+    "$armor_mobi++",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

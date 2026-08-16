@@ -1,0 +1,33 @@
+{
+  "key": "rrs_specialist_light_core_01_01_iae2022",
+  "ref": "bc4711b5-5f10-4746-8863-0fd06b22d4f6",
+  "name": "Arden-SL Core Red Alert",
+  "description": "With its excellent design and eye-catching style, the Arden-SL armor exemplifies why security specialists love Roussimoff Rehabilitation Systems. This versatile armor set lets the wearer stay agile but safe thanks to the precise placement of special composite armor plating and fabrics. It also features a toolbelt for easy access to important gear.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-35 / 65 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "73a6ba90-8f53-423d-ad0b-96e81b7e18a5",
+  "tags": [
+    "rrs_specialist_light",
+    "Set_01",
+    "Texture_01",
+    "Color_iae2022",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

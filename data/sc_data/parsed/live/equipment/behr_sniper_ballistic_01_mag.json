@@ -1,0 +1,29 @@
+{
+  "key": "behr_sniper_ballistic_01_mag",
+  "ref": "b038fea7-2e2f-4b47-b90d-4bb39bde3229",
+  "name": "P6-LR Magazine (8 cap)",
+  "description": "This magazine for the Behring P6-LR sniper rifle holds eight rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "behr_sniper_ballistic_01"
+  ],
+  "hidden": false
+}

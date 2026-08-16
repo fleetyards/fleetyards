@@ -1,0 +1,31 @@
+{
+  "key": "cba_chef_jacket_01_01_01",
+  "ref": "b06569c0-391f-4e1d-b796-d115092a8fc3",
+  "name": "Grammercy Food Service Jacket",
+  "description": "The Grammercy Food Service Jacket is a standard food service accessory produced by Code Blue Apparel's professional division. The jacket, first adapted from one of the company's bespoke surgeons coats, is the modern standard for chefs and line cooks. The jacket is constructed from a patented stain-resistant material that can be quickly cleaned.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "chef",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_chef_jacket",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

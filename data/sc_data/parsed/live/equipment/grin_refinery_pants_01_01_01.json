@@ -1,0 +1,31 @@
+{
+  "key": "grin_refinery_pants_01_01_01",
+  "ref": "d5e0392e-7ba1-40a8-83a5-89ab191ed44d",
+  "name": "ThermoWeave Pants",
+  "description": "The ThermoWeave pants have a large, easy-access pocket on each leg and feature a special fire-resistant synthetic moisture-wicking lining that makes them comfortable to wear for an entire shift.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "refinery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_refinery_pants",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "eld_shirt_04_crus01_12",
+  "ref": "6bf651ce-1f3f-4fe3-8b59-034bcdc7de33",
+  "name": "Cloud City T-Shirt Black",
+  "description": "Due to its unique location, Orison is known as the city above the clouds. This shirt features the phrase and a truly unique view from one of its platforms.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Material_crus01",
+    "Color_12"
+  ],
+  "hidden": false
+}

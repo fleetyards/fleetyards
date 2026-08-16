@@ -1,0 +1,31 @@
+{
+  "key": "cba_chef_shoes_01_01_01",
+  "ref": "979c18d6-3e59-4038-be76-8364bb0196fc",
+  "name": "Variable Service Shoes",
+  "description": "Code Blue Apparel's Variable Service Shoes are constructed from a rigid rubber-carbon splice that help provide protection from physical impacts or piercings. The exterior is sprayed with artileather for a professional finish and offers maximum ease-of-cleaning.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "chef",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d9179d05-55be-4eed-8b1b-93bb8450ff04",
+  "tags": [
+    "cba_chef_shoes",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

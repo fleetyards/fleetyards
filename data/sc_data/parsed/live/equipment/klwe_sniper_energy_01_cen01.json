@@ -1,0 +1,31 @@
+{
+  "key": "klwe_sniper_energy_01_cen01",
+  "ref": "8b266e43-6a55-4fe5-b2d4-21e67d5d9795",
+  "name": "Arrowhead \"Voyager\" Sniper Rifle",
+  "description": "Klaus & Werner’s Arrowhead Model VI long-range energy rifle features a fiberglass composite body capable of withstanding any number of rigorous environments both in atmosphere and out. Built with a precision stock, compound scope and built-in bipod, the Arrowhead offers a stable and devastating weapon for operators who want to keep their distance, but stay in the fight.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "sniper_rifle",
+  "weapon_class": "energy",
+  "rate_of_fire": "50.0",
+  "range": "100.0",
+  "storage": "20.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [
+    "stocked",
+    "klwe_sniper_energy_01",
+    "sniper"
+  ],
+  "hidden": false
+}

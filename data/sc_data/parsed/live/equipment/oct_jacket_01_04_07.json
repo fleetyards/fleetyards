@@ -1,0 +1,32 @@
+{
+  "key": "oct_jacket_01_04_07",
+  "ref": "16680409-81ed-41ad-b4a2-2d8e75e24c2c",
+  "name": "Tolo Jacket Blue",
+  "description": "A creatively integrated dickey gives the Tolo its fashionable and unconventional look. This three quarter sleeve shirt also features small epaulettes perched atop each shoulder.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a05001d-0511-415f-8e32-618fbd75242b",
+  "tags": [
+    "oct_jacket",
+    "Set_01",
+    "Material_04",
+    "Color_07"
+  ],
+  "hidden": false
+}

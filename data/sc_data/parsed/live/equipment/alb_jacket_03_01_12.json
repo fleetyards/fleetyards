@@ -1,0 +1,32 @@
+{
+  "key": "alb_jacket_03_01_12",
+  "ref": "a2c1969c-c12f-4e62-8c8f-4ca3ec9c79dc",
+  "name": "Taberna Jacket Tactical",
+  "description": "The Taberna jacket delivers refined design for rugged conditions. It features a weather resistant outer shell with additional paneling on the torso and arms. An integrated hood and shawl provide extra protection from the elements while a spacious toolbelt ensures gear remains within reach.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "5000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_jacket",
+    "Set_03",
+    "Texture_01",
+    "Color_12"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "hdh_boots_01_01_01",
+  "ref": "a5cfa010-ee34-4fab-b77a-ce6a92247e00",
+  "name": "Paradan Boots",
+  "description": "Built to last, the Paradan boots from Habidash are simple, sturdy, and reliable. The outer layer of the boots is made from a thick synthetic material that will protect the wearer from water, sand, or snow, while the inside features a pliable foam that ensures the boots will remain comfortable for years to come.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "boots",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_boots",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

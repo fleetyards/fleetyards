@@ -1,0 +1,31 @@
+{
+  "key": "tmbl_vest_biker_01_01_01",
+  "ref": "c5244c19-41d0-44b8-bbb2-efe33b2a2264",
+  "name": "Renegade Cut Vest",
+  "description": "Reveal your inner rebel with the Renegade Cut vest, featuring a wide notched lapel and metal studs on the left shoulder. High quality synthetic leather and an insulated lining give the vest both comfort and style.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "vest",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "bb1024bc-b82e-491c-820c-36662c36feb3",
+  "tags": [
+    "tmbl_vest_biker",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

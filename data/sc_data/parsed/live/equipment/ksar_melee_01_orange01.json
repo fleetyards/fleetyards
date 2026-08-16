@@ -1,0 +1,29 @@
+{
+  "key": "ksar_melee_01_orange01",
+  "ref": "ceef3147-5315-4ba2-ae03-7b6b840af2ba",
+  "name": "Sawtooth \"Sunspike\" Combat Knife",
+  "description": "Don't end up on the wrong side of the Sawtooth combat knife. The blade embodies Kastak Arms' aggressive styling and was designed to stab, slice, or saw. It features a strong drop tip for piercing, a straight edge for slicing, and a unique serrated edge with microblades for when you really need to rip through something. The blade is also made with a special ceramic polymer coating that enhances its strength and overall wear resistance. For the special Sunspike edition, an orange handle and aged finish was added to make the blade more visually distinct.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "knife",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Knife",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "knife"
+  ],
+  "hidden": false
+}

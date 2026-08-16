@@ -1,0 +1,31 @@
+{
+  "key": "dmc_pants_01_01_16",
+  "ref": "5557b02e-d6c1-4b59-b1dd-8069f7ef15a6",
+  "name": "Foundation Pants Olive",
+  "description": "DMC's Foundation line is just that; the foundation for your work wear. Featuring a simple, elegant cut with easy-access pockets, the Foundation is both professional and functional.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_pants",
+    "Set_01",
+    "Color_16"
+  ],
+  "hidden": false
+}

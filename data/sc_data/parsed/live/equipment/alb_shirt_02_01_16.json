@@ -1,0 +1,31 @@
+{
+  "key": "alb_shirt_02_01_16",
+  "ref": "4a0a2b97-95ac-46aa-8b55-1940d981c130",
+  "name": "Cliffback T-Shirt Dark Green",
+  "description": "Alejo Brothers' classic loop tee with a spatter pattern.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_shirt",
+    "Set_02",
+    "Color_16"
+  ],
+  "hidden": false
+}

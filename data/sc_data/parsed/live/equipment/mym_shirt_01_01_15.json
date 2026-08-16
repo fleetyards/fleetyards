@@ -1,0 +1,31 @@
+{
+  "key": "mym_shirt_01_01_15",
+  "ref": "7f969073-af54-4ee7-a722-5dffd1c1ff18",
+  "name": "Davlos Shirt Charcoal",
+  "description": "Live in comfort with MuyMuy's Davlos line of cotton-synthetic shirts. The durable, yet soft, fabric contains a patented SweatGuard technology that not only whisks away perspiration but helps prevent stains.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cc1731c4-8156-4750-a138-96838df79117",
+  "tags": [
+    "mym_shirt",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": true
+}

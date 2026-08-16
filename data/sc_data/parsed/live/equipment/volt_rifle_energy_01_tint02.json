@@ -1,0 +1,31 @@
+{
+  "key": "volt_rifle_energy_01_tint02",
+  "ref": "75ca08ba-6edc-46ed-a13c-56d788e258f9",
+  "name": "Parallax \"Sanguine\" Energy Assault Rifle",
+  "description": "With the Parallax, VOLT offers consumers a rugged assault rifle design with features like a larger-than-average battery and a unique actuator that enables the weapon to scale up into a persistent beam as it fires.\n\nThe \"Sanguine\" edition contrasts deep reds against a crisp gray reminiscent of emergency medical services.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "assault_rifle",
+  "weapon_class": "energy",
+  "rate_of_fire": "200.0",
+  "range": "30.0",
+  "storage": "80.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_galant_rifle_64.tif",
+  "sub_type": "Medium",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "e2787f3b-b892-4276-bb2e-eb2b4dc9666b",
+  "tags": [
+    "stocked",
+    "volt_rifle_energy_01",
+    "rifle"
+  ],
+  "hidden": true
+}

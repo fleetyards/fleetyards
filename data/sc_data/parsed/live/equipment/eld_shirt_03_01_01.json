@@ -1,0 +1,31 @@
+{
+  "key": "eld_shirt_03_01_01",
+  "ref": "4f13fa60-7837-46ec-ae16-6862e2676bda",
+  "name": "Balboa Shirt",
+  "description": "A partial zip pullover shirt with mesh arm accents and a button collar. Escar Limited's Balboa line delivers cutting edge style suitable for any system or situation. \n\nWomen's sizes currently out of stock.   ",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_03",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "eld_shirt_04_cubby_blast_dec",
+  "ref": "6305f242-6f39-4688-b4dc-66171dd66ff1",
+  "name": "Cubby Blast T-Shirt",
+  "description": "Show your support for local and independently owned businesses with this Cubby Blast t-shirt. From its infectious holo-jingle promising \"racks of rifles, stacks of shotguns, piles of pistols\" to Clor Vee, the eccentric owner with a thick Cathcart accent, Cubby Blast remains one of Area18's most unique shops, and a refreshing change of pace from the corporate-owned chain stores that dominant the Empire.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Color_cubby"
+  ],
+  "hidden": false
+}

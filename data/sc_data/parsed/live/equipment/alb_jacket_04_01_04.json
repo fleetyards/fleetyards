@@ -1,0 +1,32 @@
+{
+  "key": "alb_jacket_04_01_04",
+  "ref": "5a3ffc3c-0ca5-4648-bfb0-f890591b80dc",
+  "name": "Loscha Work Vest Primrose",
+  "description": "The heavy-duty Loscha Work Vest by Alejo Brothers is designed for people who want to be prepared for anything at any time.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_jacket",
+    "Set_04",
+    "Texture_01",
+    "Color_14"
+  ],
+  "hidden": false
+}

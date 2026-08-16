@@ -1,0 +1,31 @@
+{
+  "key": "987_pants_03_01_12",
+  "ref": "28236e4c-d685-412a-b007-ac11ed3c4df9",
+  "name": "Union Pants Black",
+  "description": "987 delivers comfort, durability, and style with the Union pants. Designed with a special, next-gen blend of high-performance synthetic fabrics, these pants are enduringly fashionable in these modern times.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3b54a8cc-5700-45f1-940a-2436b213926f",
+  "tags": [
+    "987_pants",
+    "Set_03",
+    "Color_12"
+  ],
+  "hidden": false
+}

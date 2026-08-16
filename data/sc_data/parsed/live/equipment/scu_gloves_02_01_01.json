@@ -1,0 +1,31 @@
+{
+  "key": "scu_gloves_02_01_01",
+  "ref": "4521f35f-eeba-4f82-98cc-662940b48af0",
+  "name": "Davin Work Gloves",
+  "description": "Field-tested for over fifty years, you can find Davin work gloves at numerous sites and ships around the Empire. Stegman's rugged construction and comfort lining have made them a customer favorite.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_gloves",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

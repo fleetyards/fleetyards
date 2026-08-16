@@ -1,0 +1,32 @@
+{
+  "key": "alb_mask_01_01_12",
+  "ref": "6e9aea3c-1849-4e21-b79d-6178498a5cc8",
+  "name": "Taos Balaclava and Goggles Tactical",
+  "description": "Fearlessly face any weather with the Taos balaclava and goggles. An ultra-soft inner lining provides warmth and comfort while a special exterior coating repels precipitation. The adjustable headband ensures an ideal fit, and the padding of the anti-fog goggles is integrated directly into the fabric to seal out the elements.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "mask",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_mask",
+    "Set_01",
+    "Texture_01",
+    "Color_12"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "fio_executive_jacket_02_01_18",
+  "ref": "f2a825ae-b359-4eae-98ea-5bea7f309395",
+  "name": "Giotto Jacket Dark Blue",
+  "description": "Fiore elevates the typical suit jacket with the Giotto. Subtle and stylish flourishes include light lines running down the left lapel and a strip of accent fabric along the arm seams that connect across the back of the jacket. The end result is an elegant and inspired addition to any wardrobe.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "executive",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_executive_jacket",
+    "set_02",
+    "Color_18"
+  ],
+  "hidden": false
+}

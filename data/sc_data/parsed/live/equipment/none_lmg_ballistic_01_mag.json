@@ -1,0 +1,29 @@
+{
+  "key": "none_lmg_ballistic_01_mag",
+  "ref": "b4df80a2-7aa6-412c-b1ff-67467bcf43ec",
+  "name": "Pulverizer LMG Magazine (120 Cap)",
+  "description": "This magazine for the Pulverizer LMG comes pre-loaded with one hundred and twenty .50 caliber rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "120.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "587a3cae-5e66-4f22-b0fc-1a47d41cafef",
+  "tags": [
+    "none_lmg_ballistic_01"
+  ],
+  "hidden": false
+}

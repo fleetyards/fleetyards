@@ -1,0 +1,31 @@
+{
+  "key": "eld_pants_02_01_01",
+  "ref": "cfdd6879-f3db-4ab0-842d-f169994f36a2",
+  "name": "88-RD Pants",
+  "description": "88s are the ultimate leisure attire from Escar Limited. From the striking color to the tailored fit, they are the perfect complement for laid back days and festive nights.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_pants",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}
