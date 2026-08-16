@@ -1615,6 +1615,8 @@
         "category": "Category",
         "component": "Component",
         "componentCategory": "Component Type",
+        "commodity": "Commodity",
+        "commodityType": "Commodity Type",
         "quantity": "Quantity",
         "unit": "Unit",
         "notes": "Notes",

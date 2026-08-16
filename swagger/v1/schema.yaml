@@ -10,6 +10,42 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 paths:
+  "/commodities":
+    get:
+      summary: Commodities list
+      tags:
+      - Commodities
+      operationId: commodities
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 60
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/CommodityQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Commodities"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/compare/share":
     post:
       summary: Create a short share URL for a comparison
@@ -104,6 +140,21 @@ paths:
                 type: array
                 items:
                   type: string
+  "/filters/commodities/types":
+    get:
+      summary: Commodity Types Filters
+      tags:
+      - CommoditiesFilters
+      operationId: commodityTypesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/filters/components/categories":
     get:
       summary: Components Categories Filters
@@ -7697,6 +7748,77 @@ components:
       required:
       - value
       title: CheckInput
+    Commodities:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Commodity"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Commodities
+    Commodity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        commodityType:
+          type:
+          - string
+          - 'null'
+        description:
+          type:
+          - string
+          - 'null'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - createdAt
+      - updatedAt
+      title: Commodity
+    CommodityQuery:
+      type: object
+      properties:
+        nameCont:
+          type: string
+        idIn:
+          type: array
+          items:
+            type: string
+            format: uuid
+        nameIn:
+          type: array
+          items:
+            type: string
+        slugIn:
+          type: array
+          items:
+            type: string
+        commodityTypeIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      example: {}
+      title: CommodityQuery
     CompareShare:
       type: object
       required:

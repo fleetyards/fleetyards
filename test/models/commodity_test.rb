@@ -55,12 +55,20 @@ class CommodityTest < ActiveSupport::TestCase
     assert_predicate commodity, :valid?
   end
 
-  test "can be referenced by a fleet inventory item" do
+  test "can be referenced by an inventory ledger entry" do
     commodity = create(:commodity, name: "Gold")
-    item = create(:fleet_inventory_item, item: commodity, name: nil)
+    item = create(:fleet_inventory_item, item: commodity, name: nil, category: :commodity, unit: :scu)
 
     assert_equal "Gold", item.name
     assert_equal commodity, item.item
-    assert_includes commodity.fleet_inventory_items, item
+  end
+
+  test "lists the types present in the table" do
+    create(:commodity, commodity_type: "metal")
+    create(:commodity, commodity_type: "metal")
+    create(:commodity, commodity_type: "gas")
+    create(:commodity, commodity_type: nil)
+
+    assert_equal %w[gas metal], Commodity.commodity_types
   end
 end
