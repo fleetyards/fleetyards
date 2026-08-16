@@ -2,9 +2,9 @@ module ScData
   module Loader
     class CommoditiesLoader < ::ScData::Loader::BaseLoader
       def all
-        load_items("commodities").each do |commodity_data|
-          one(commodity_data)
-        end
+        loaded = load_items("commodities").filter_map { |commodity_data| one(commodity_data)&.id }
+
+        retire_absent(Commodity, loaded)
       end
 
       def one(commodity_data)
