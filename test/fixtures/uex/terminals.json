@@ -29,6 +29,20 @@
       "name": "New Deal - Teasa Spaceport - Lorville",
       "nickname": "New Deal Lorville",
       "contact_url": null
+    },
+    {
+      "id": 104,
+      "type": "commodity",
+      "name": "TDD - Trade and Development Division - Area 18",
+      "nickname": "TDD Area 18",
+      "contact_url": "https://example.test/tdd"
+    },
+    {
+      "id": 105,
+      "type": "commodity",
+      "name": "TDD - Trade and Development Division - Area 18",
+      "nickname": "TDD Area 18 Annex",
+      "contact_url": "https://example.test/tdd"
     }
   ]
 }
