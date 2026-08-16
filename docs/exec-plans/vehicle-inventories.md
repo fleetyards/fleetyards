@@ -206,8 +206,7 @@ On the overview (`/hangar/inventories`), ship inventories render through the exi
 `InventoryPanel` with the ship as the subtitle — the panel already renders `location`
 there, so passing the ship name needs no component change. Capacity comes free from
 `models.cargo` (SCU) and the `CargoHold` records: show `312 / 400 SCU` and flag overfill,
-but **do not validate** against it — players stash cargo outside the grid, and personal
-inventory is not cargo.
+but **do not validate** against it — players stash cargo outside the grid.
 
 ## Edge Cases
 
@@ -258,6 +257,24 @@ inventory is not cargo.
   `Logistics/CsvImportModal`) behind an `InventoryTarget` discriminated union, and
   `hangar-inventory-item-created` became `inventory-item-created`. Slice 3 adds a
   `fleet` variant to the union rather than a third copy of the modals.
+- Capacity is the cargo grid **plus** `models.personal_inventory`, a new column fed by
+  the vehicle entity's own `inventoryContainerParams`. One bucket holds everything a
+  ship carries, so measuring it against the grid alone read as overfull for any ship
+  whose gear sits in its storage container. The Cargo tab prints the two figures under
+  the total; the ship page gained a Ship Inventory tile beside Cargo.
+- The Cargo tab reaches the hangar through the vehicle context menu (`Manage Cargo`),
+  behind `ship_inventories` — the tab bar alone left the page unreachable from the
+  hangar list.
+- `ship_inventories` gates more than the vehicle endpoints: while it is off, the hangar
+  list, the aggregate stock and the aggregate ledger drop `Inventory.hand_made`'s
+  complement. Otherwise the overview keeps listing ship inventories and linking them
+  to a tab that is not there.
+- `meta.feature` only ever hid nav entries, so every flagged route in the app was still
+  reachable by URL. The frontend router's `beforeResolve` now resolves the flag through
+  the query client and answers 404, after the session checks — flags are read per user,
+  so signing in first is what makes the answer meaningful. The client had to move out of
+  `VueQueryPlugin` and into `plugins/QueryClient.ts` for the guard to share one cache
+  entry with `useFeatures`.
 
 Not built: a per-position detail page for ship inventories (the hangar's
 `/hangar/inventories/:slug/:item`). The Cargo tab edits and deletes positions in place
