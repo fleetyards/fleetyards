@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_16_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -248,6 +248,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_140000) do
     t.string "equipment_type"
     t.string "grade"
     t.boolean "hidden", default: false
+    t.string "icon"
     t.string "item_type"
     t.uuid "manufacturer_id"
     t.string "name"
@@ -265,6 +266,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_140000) do
     t.string "version"
     t.decimal "volume", precision: 15, scale: 2
     t.string "weapon_class"
+    t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
+    t.index ["item_type"], name: "index_equipment_on_item_type"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
     t.index ["sc_key"], name: "index_equipment_on_sc_key", unique: true
   end

@@ -9,8 +9,6 @@ class ReshapeEquipmentForGameFiles < ActiveRecord::Migration[8.1]
     add_column :equipment, :sub_type, :string
 
     add_index :equipment, :sc_key, unique: true
-    add_index :equipment, :equipment_type
-    add_index :equipment, :item_type
 
     # Stored as strings rather than enums so a class CIG adds in a later build
     # loads instead of raising, the way Commodity#commodity_type does.
@@ -18,6 +16,11 @@ class ReshapeEquipmentForGameFiles < ActiveRecord::Migration[8.1]
       remove_column :equipment, column
       add_column :equipment, column, :string
     end
+
+    # After the replacement, not before: dropping a column takes its index with
+    # it, so indexing first leaves the table with neither.
+    add_index :equipment, :equipment_type
+    add_index :equipment, :item_type
 
     # Leftovers from the store-scraped sketch. Images belong to ActiveStorage
     # now, the way Component#store_image is attached.

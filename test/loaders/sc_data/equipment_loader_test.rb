@@ -67,6 +67,22 @@ module ScData
         assert_equal "Behring", Equipment.find_by(sc_key: "behr_rifle_ballistic_01").manufacturer&.name
       end
 
+      # A 64px loadout icon shared by every variant of a weapon, and named by no
+      # attachment at all. Stored against the day the export carries textures;
+      # nothing resolves the path today.
+      test "#all records the loadout icon the game names for a weapon" do
+        @loader.all
+
+        assert_equal "ui/textures/ea/loadouticons/behring_p4_ar_rifle_64.tif",
+          Equipment.find_by(sc_key: "behr_rifle_ballistic_01").icon
+      end
+
+      test "#all leaves the icon empty for the attachments that name none" do
+        @loader.all
+
+        assert_empty Equipment.where(equipment_type: "weapon_attachment").where.not(icon: nil)
+      end
+
       test "#all hides skins and dev copies but keeps the item they copy" do
         @loader.all
 

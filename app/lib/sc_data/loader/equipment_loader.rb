@@ -24,6 +24,7 @@ module ScData
           sc_ref: equipment_data["ref"],
           name: equipment_data["name"],
           description: equipment_data["description"],
+          icon: equipment_data["icon"],
           equipment_type: equipment_data["equipment_type"],
           item_type: equipment_data["item_type"],
           sub_type: equipment_data["sub_type"],

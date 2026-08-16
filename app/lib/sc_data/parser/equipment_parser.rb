@@ -111,6 +111,7 @@ module ScData
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
           storage: described[:storage],
+          icon: icon(values),
           sub_type: value_or_nil(attach_def["SubType"]),
           size: value_or_nil(attach_def["Size"]),
           grade: value_or_nil(attach_def["Grade"]),
@@ -167,6 +168,16 @@ module ScData
         number = value[/[\d.]+/]
 
         number&.to_d
+      end
+
+      # A 64px loadout icon, shared by every variant of a weapon rather than
+      # unique to a record -- all seventeen P4-AR records name the same file,
+      # and no attachment names one at all. Stored for when the export starts
+      # carrying the assets; nothing resolves the path today.
+      private def icon(values)
+        path = values.dig("StaticEntityClassData", "EntityUIDisplayParams", "displayIcon")
+
+        value_or_nil(path)&.downcase
       end
 
       private def variant?(key)
