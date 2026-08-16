@@ -3,5 +3,6 @@
   "ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
   "name": "Apocalypse Arms",
   "short_name": null,
-  "description": "Apocalypse Arms produces aggressive, devastating weapons inspired by Messer-Era technology."
+  "description": "Apocalypse Arms produces aggressive, devastating weapons inspired by Messer-Era technology.",
+  "icon": "ui/sharedassets/manufacturerlogos/apocalypsearms_256.tif"
 }

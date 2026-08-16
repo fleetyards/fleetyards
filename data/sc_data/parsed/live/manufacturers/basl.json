@@ -3,5 +3,6 @@
   "ref": "2948496b-45d2-41f8-bdff-97587f1e6981",
   "name": "Basilisk",
   "short_name": null,
-  "description": "Defensive system manufacturer who produces shield systems, ship armor and personal armor for both the military and private sector."
+  "description": "Defensive system manufacturer who produces shield systems, ship armor and personal armor for both the military and private sector.",
+  "icon": "ui/sharedassets/manufacturerlogos/basilisk_256.tif"
 }

@@ -3,5 +3,6 @@
   "ref": "57432775-b421-45cc-8616-ac2d35018193",
   "name": "RAMP Corporation",
   "short_name": null,
-  "description": "Manufacturer of consumer and pro-grade ship components, RAMP Corp sponsors the Team RAMP M50 racing team."
+  "description": "Manufacturer of consumer and pro-grade ship components, RAMP Corp sponsors the Team RAMP M50 racing team.",
+  "icon": "ui/sharedassets/manufacturerlogos/ramp_corporation_256.tif"
 }

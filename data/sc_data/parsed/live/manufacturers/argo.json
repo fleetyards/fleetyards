@@ -3,5 +3,6 @@
   "ref": "9e1f5a35-edcc-4d19-bede-08e2730043c5",
   "name": "Argo Astronautics",
   "short_name": null,
-  "description": "This commercial ship manufacturer focuses on building shuttles, transport vessels and utility vehicles that can be seen around the universe."
+  "description": "This commercial ship manufacturer focuses on building shuttles, transport vessels and utility vehicles that can be seen around the universe.",
+  "icon": "ui/sharedassets/manufacturerlogos/argo_256.tif"
 }
