@@ -48,6 +48,24 @@ module ScData
         assert_equal blob, Manufacturer.find_by(code: "TALN").logo.blob
       end
 
+      # A load cannot tell its own attachment from one an admin uploaded, and
+      # the manufacturers the game names no logo for are exactly the ones
+      # somebody filled in by hand -- so a blank path leaves the file alone
+      # rather than taking their work with it.
+      test "#all leaves an uploaded logo alone when the game names none" do
+        curated = create(:manufacturer, code: "NOSUCHCODE", sc_ref: nil, icon: nil)
+        curated.logo.attach(
+          io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+          filename: "curated.png",
+          content_type: "image/png"
+        )
+
+        @loader.all
+
+        assert_predicate curated.reload.logo, :attached?
+        assert_equal "curated.png", curated.logo.filename.to_s
+      end
+
       test "#all records the logo the game names for a manufacturer" do
         @loader.all
 

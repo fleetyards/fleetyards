@@ -49,6 +49,12 @@ module ScData
       # Guarded on the checksum ActiveStorage itself stores, because attaching
       # an identical file writes a fresh blob every time: a load that changed
       # nothing would otherwise leave a few hundred orphans behind on each run.
+      # Nothing is detached when the export stops naming artwork: these
+      # attachments are also where an admin's own upload lives -- the eight
+      # manufacturers the game names no logo for are exactly the ones somebody
+      # filled in by hand -- and a load cannot tell one from the other. A path
+      # that changes still replaces what it put there, since the checksum moves
+      # with it.
       def attach_icon(record, attachment_name, icon_path)
         file = parsed_icon(icon_path)
 
@@ -59,11 +65,13 @@ module ScData
 
         return if attachment.attached? && attachment.blob.checksum == checksum
 
-        attachment.attach(
-          io: File.open(file),
-          filename: File.basename(file),
-          content_type: Marcel::MimeType.for(name: File.basename(file))
-        )
+        File.open(file) do |io|
+          attachment.attach(
+            io:,
+            filename: File.basename(file),
+            content_type: Marcel::MimeType.for(name: File.basename(file))
+          )
+        end
       end
 
       # The record names the source art -- .tif -- while what was written is a
