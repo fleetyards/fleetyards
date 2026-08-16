@@ -41,9 +41,13 @@ class Inventory < ApplicationRecord
 
   has_one_attached :image
 
+  # The inventories a user created by hand, as opposed to the ones a ship
+  # provisioned for itself.
+  scope :hand_made, -> { where(vehicle_id: nil) }
+
   # Slugs are unique among these only. Two Ironclads produce the same slug, so a
   # ship inventory is addressed through its ship instead.
-  scope :addressable_by_slug, -> { where(vehicle_id: nil) }
+  scope :addressable_by_slug, -> { hand_made }
 
   validates :name, presence: true
   validates :name, uniqueness: {case_sensitive: false, scope: [:holder_type, :holder_id]},

@@ -4,6 +4,7 @@ module Api
   module V1
     class HangarAllInventoryItemsController < ::Api::BaseController
       include HangarInventoriesFeatureConcern
+      include ShipInventoriesFeatureConcern
 
       after_action -> { pagination_header(:inventory_items) }, only: %i[index]
 
@@ -20,6 +21,8 @@ module Api
           .joins(:inventory)
           .where(inventories: {holder: current_resource_owner})
           .includes(:inventory)
+
+        scope = scope.where(inventories: {vehicle_id: nil}) unless ship_inventories_enabled?
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :category_eq, :quality_gteq, :quality_lteq, :s)
         normalize_sort_params(query_params)
