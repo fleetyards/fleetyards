@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_16_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -245,27 +245,28 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_120000) do
     t.datetime "created_at", precision: nil, null: false
     t.decimal "damage_reduction", precision: 15, scale: 2
     t.text "description"
-    t.integer "equipment_type"
-    t.string "extras"
+    t.string "equipment_type"
     t.string "grade"
-    t.boolean "hidden", default: true
-    t.integer "item_type"
+    t.boolean "hidden", default: false
+    t.string "item_type"
     t.uuid "manufacturer_id"
     t.string "name"
     t.decimal "range", precision: 15, scale: 2
     t.decimal "rate_of_fire", precision: 15, scale: 2
+    t.string "sc_key"
+    t.string "sc_ref"
     t.string "size"
     t.integer "slot"
     t.string "slug"
     t.decimal "storage", precision: 15, scale: 2
-    t.string "store_image"
-    t.integer "store_image_height"
-    t.integer "store_image_width"
+    t.string "sub_type"
     t.string "temperature_rating"
     t.datetime "updated_at", precision: nil, null: false
+    t.string "version"
     t.decimal "volume", precision: 15, scale: 2
-    t.integer "weapon_class"
+    t.string "weapon_class"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
+    t.index ["sc_key"], name: "index_equipment_on_sc_key", unique: true
   end
 
   create_table "exchange_rates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

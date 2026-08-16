@@ -9,8 +9,8 @@ module Shared
 
           schema({
             type: :string,
-            enum: ::Equipment.equipment_types.keys,
-            "x-enumNames": ::Equipment.equipment_types.keys.map { |v| transform_enum_key(v) }
+            enum: ::Equipment::EQUIPMENT_TYPES,
+            "x-enumNames": ::Equipment::EQUIPMENT_TYPES.map { |v| transform_enum_key(v) }
           })
         end
       end

@@ -45,12 +45,43 @@ module ScData
       # useful -- Component solves the same problem the same way.
       VARIANT_SUFFIX = /_(tint|collector|store|mr|sf|prop|template|black|mat|tan)\d*\z/
 
+      # Copies that exist for a game mode, an NPC, or a developer rather than a
+      # player: the AI loadout, the tug-of-war and gun-game event weapons, the
+      # multi-tool pre-fitted with each attachment, and anything named test or
+      # placeholder. Derived from the records that collide on a display name --
+      # twelve of the duplicates were Pyro RYT Multi-Tools.
+      VARIANT_MARKERS = [
+        /_(ai|tow|gungame|contestedzonereward|ea_elim)(_|\z)/,
+        /_default_/,
+        /placeholder/,
+        /test/
+      ].freeze
+
       def all
         save_items(equipment, folder: "equipment")
       end
 
       def equipment
-        load_equipment_data.filter_map { |item| parse_equipment(item) }
+        mark_skins(load_equipment_data.filter_map { |item| parse_equipment(item) })
+      end
+
+      # A record whose key extends another's and carries the same display name is
+      # a skin or loadout copy of it -- the four colourways of a scope, the
+      # "reference" build of a shotgun. Deriving it beats extending the suffix
+      # list every patch.
+      #
+      # The name test is what keeps real items out: a rifle's magazine key also
+      # extends the rifle's, but it is named for the magazine.
+      private def mark_skins(parsed)
+        by_key = parsed.index_by { |item| item[:key] }
+
+        parsed.each do |item|
+          next if item[:hidden]
+
+          item[:hidden] = by_key.any? do |key, other|
+            key != item[:key] && item[:key].start_with?("#{key}_") && other[:name] == item[:name]
+          end
+        end
       end
 
       private def parse_equipment(item)
@@ -85,7 +116,7 @@ module ScData
           grade: value_or_nil(attach_def["Grade"]),
           manufacturer_ref: value_or_nil(attach_def["Manufacturer"]),
           tags: attach_def["Tags"].to_s.split,
-          hidden: VARIANT_SUFFIX.match?(key)
+          hidden: variant?(key)
         }
       end
 
@@ -136,6 +167,10 @@ module ScData
         number = value[/[\d.]+/]
 
         number&.to_d
+      end
+
+      private def variant?(key)
+        VARIANT_SUFFIX.match?(key) || VARIANT_MARKERS.any? { |marker| marker.match?(key) }
       end
 
       private def item_type(segments)
