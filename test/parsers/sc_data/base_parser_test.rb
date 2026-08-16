@@ -62,39 +62,9 @@ module ScData
         assert_equal ["kept_model.json"], parsed_files("models")
       end
 
-      # Records name the source art -- a .tif that the export ships as a
-      # CryEngine texture -- so a parse has to find it under another extension
-      # and leave a browser something it can draw.
-      test "#save_icon converts a texture the record names as a tif" do
-        requires_imagemagick
-
-        write_texture("ui/logos/acme_256.dds")
-
-        target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
-
-        assert_equal "#{@export_path}/icons/ui/logos/acme_256.png", target
-        assert_equal "PNG", MiniMagick::Image.open(target).type
-      end
-
-      # ImageMagick stamps the moment of conversion into what it writes, so
-      # without the chunks excluded a parse that changed nothing still rewrites
-      # every icon it touched and the diff claims they all changed.
-      test "#save_icon writes the same bytes for a source that has not changed" do
-        requires_imagemagick
-
-        write_texture("ui/logos/acme_256.dds")
-
-        target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
-        first = File.binread(target)
-
-        @parser.send(:save_icon, "ui/logos/acme_256.tif")
-
-        assert_equal first, File.binread(target)
-      end
-
-      # The export is moving to PNG, and re-encoding one would cost quality for
-      # nothing. No ImageMagick either, which is the point.
-      test "#save_icon copies a texture the export already ships as a png" do
+      # The record names the source art -- a .tif -- and the export ships the
+      # picture beside it under the same name.
+      test "#save_icon copies the png the export ships for a record's tif" do
         FileUtils.mkdir_p("#{@base_folder}/raw/1.0.0/Data/ui/logos")
         source = "#{@base_folder}/raw/1.0.0/Data/ui/logos/acme_256.png"
         FileUtils.cp(Rails.root.join("test/fixtures/files/test.png"), source)
@@ -103,20 +73,6 @@ module ScData
 
         assert_equal "#{@export_path}/icons/ui/logos/acme_256.png", target
         assert_equal File.binread(source), File.binread(target)
-      end
-
-      # The export is moving to PNG and may ship both for a while. Converting
-      # the texture when a ready-to-serve copy sits beside it would be work for
-      # a worse result.
-      test "#save_icon prefers the drawable copy over the texture beside it" do
-        FileUtils.mkdir_p("#{@base_folder}/raw/1.0.0/Data/ui/logos")
-        FileUtils.cp(Rails.root.join("test/fixtures/files/test.png"),
-          "#{@base_folder}/raw/1.0.0/Data/ui/logos/acme_256.png")
-        File.write("#{@base_folder}/raw/1.0.0/Data/ui/logos/acme_256.dds", "not a texture at all")
-
-        target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
-
-        assert_equal File.binread(Rails.root.join("test/fixtures/files/test.png")), File.binread(target)
       end
 
       # Vectors are already drawable, and rasterising one would only lose it
@@ -128,22 +84,6 @@ module ScData
 
         assert_equal "#{@export_path}/icons/ui/logos/acme.svg", target
         assert_equal File.read(source), File.read(target)
-      end
-
-      # The split form: a header with no surface, and the picture itself in a
-      # numbered companion beside it.
-      test "#save_icon reassembles a texture whose surface sits beside it" do
-        requires_imagemagick
-
-        texture = write_texture("ui/logos/split_256.dds")
-        bytes = File.binread(texture)
-        File.binwrite(texture, bytes[0, 128])
-        File.binwrite("#{texture}.1", bytes[128..])
-
-        target = @parser.send(:save_icon, "ui/logos/split_256.tif")
-
-        assert_equal "#{@export_path}/icons/ui/logos/split_256.png", target
-        assert_equal 16, MiniMagick::Image.open(target).width
       end
 
       # Every catalogue writes into the same icons root, so sweeping that root
@@ -179,29 +119,13 @@ module ScData
         assert_not File.directory?("#{@export_path}/icons")
       end
 
-      # Textures are converted where the export is parsed: a machine with the
-      # raw dump and ImageMagick on it. Neither CI nor production has either --
-      # the loader only reads what the parse already wrote -- so the two cases
-      # that shell out say so rather than failing there.
-      private def requires_imagemagick
-        skip("ImageMagick is not installed") unless imagemagick?
-      end
+      # The export still carries the textures its pictures were made from.
+      # Copying one would leave a record pointing at a file nothing can draw,
+      # so a texture on its own counts as no asset at all.
+      test "#save_icon passes over a texture with no drawable copy" do
+        write_asset("ui/logos/acme_256.dds", "DDS ")
 
-      private def imagemagick?
-        return @imagemagick if defined?(@imagemagick)
-
-        @imagemagick = %w[magick convert].any? do |binary|
-          system(binary, "-version", out: File::NULL, err: File::NULL)
-        end
-      end
-
-      private def write_texture(path)
-        target = "#{@base_folder}/raw/1.0.0/Data/#{path}"
-
-        FileUtils.mkdir_p(File.dirname(target))
-        MiniMagick.convert.size("16x16").tap { |c| c << "xc:red" }.tap { |c| c << target }.call
-
-        target
+        assert_nil @parser.send(:save_icon, "ui/logos/acme_256.tif")
       end
 
       private def write_asset(path, contents)
