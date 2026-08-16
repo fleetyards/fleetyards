@@ -112,13 +112,15 @@ module ScData
 
           if item["key"].blank? && item["ref"].blank? && parent.is_a?(Model) && item["name"]&.end_with?("_module")
             derived_key = "#{parent.sc_data_identifier}_module"
-            item["key"] = derived_key if Component.exists?(sc_key: derived_key, version: sc_version)
+            item["key"] = derived_key if Component.exists?(sc_key: derived_key)
           end
 
+          # Resolved by key alone: a component is one row now, and `version`
+          # says which build it was last seen in rather than which row to use.
           component = if item["key"].present?
-            Component.find_by(sc_key: item["key"]&.downcase, version: sc_version)
+            Component.find_by(sc_key: item["key"]&.downcase)
           elsif item["ref"].present?
-            Component.find_by(sc_ref: item["ref"], version: sc_version)
+            Component.find_by(sc_ref: item["ref"])
           end
 
           if component.present?
@@ -135,9 +137,9 @@ module ScData
                                  nested = nested_loadout.find { |nl| nl["name"]&.downcase == hp.sc_name }
                                  if nested.present?
                                    sub_component = if nested["key"].present?
-                                     Component.find_by(sc_key: nested["key"]&.downcase, version: sc_version)
+                                     Component.find_by(sc_key: nested["key"]&.downcase)
                                    elsif nested["ref"].present?
-                                     Component.find_by(sc_ref: nested["ref"], version: sc_version)
+                                     Component.find_by(sc_ref: nested["ref"])
                                    end
                                  end
                                end

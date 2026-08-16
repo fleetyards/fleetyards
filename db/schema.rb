@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_16_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -213,6 +213,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_120000) do
     t.datetime "updated_at", precision: nil
     t.string "version"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
+    t.index ["sc_key"], name: "index_components_on_sc_key", unique: true
   end
 
   create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
