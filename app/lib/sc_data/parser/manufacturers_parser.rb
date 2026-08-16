@@ -19,7 +19,10 @@ module ScData
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(translate(values.dig("Localization", "Name"))),
           short_name: value_or_nil(translate(values.dig("Localization", "ShortName"))),
-          description: value_or_nil(translate(values.dig("Localization", "Description")))
+          description: value_or_nil(translate(values.dig("Localization", "Description"))),
+          # Downcased to match the icon paths equipment and commodities record,
+          # since whatever resolves one of them has to resolve all three.
+          icon: value_or_nil(values.dig("Logo"))&.downcase
         }
       end
 

@@ -25,6 +25,26 @@ module ScData
         assert_equal manufacturer_codes.uniq.size, manufacturer_codes.size
       end
 
+      # The path only: the images live in the export rather than the record, so
+      # nothing resolves it yet.
+      test "#all records the logo the game names for a manufacturer" do
+        @loader.all
+
+        assert_equal "ui/sharedassets/manufacturerlogos/talon_256.tif",
+          Manufacturer.find_by(code: "TALN").icon
+        assert_operator Manufacturer.where.not(icon: nil).count, :>=, 100
+      end
+
+      # A curated description beats the game's, but an icon has no curated
+      # counterpart -- it is a path into the export.
+      test "#all fills the logo in on a manufacturer that predates it" do
+        existing = create(:manufacturer, code: "TALN", sc_ref: nil, icon: nil)
+
+        @loader.all
+
+        assert_equal "ui/sharedassets/manufacturerlogos/talon_256.tif", existing.reload.icon
+      end
+
       test "reuses existing entries with matrix data" do
         pledge_response_stub = File.read("test/fixtures/rsi/300i_pledge_page.html")
         matrix_response_stub = File.read("test/fixtures/rsi/matrix.json")

@@ -8,8 +8,12 @@ module ScData
           manufacturer = Manufacturer.find_by(name: manufacturer_data["name"], sc_ref: nil) if manufacturer.blank? && manufacturer_data["name"].present?
 
           if manufacturer.present?
+            # The description and the code are left alone once set, because a
+            # curated one is better than the game's. The icon has no curated
+            # counterpart -- it is a path into the export -- so it follows it.
             update_params = {
-              sc_ref: manufacturer_data["ref"]
+              sc_ref: manufacturer_data["ref"],
+              icon: manufacturer_data["icon"]
             }
 
             if manufacturer.description.blank? && manufacturer_data["description"].present?
@@ -28,7 +32,8 @@ module ScData
               sc_ref: manufacturer_data["ref"],
               name: manufacturer_data["name"],
               code: manufacturer_data["code"],
-              description: manufacturer_data["description"]
+              description: manufacturer_data["description"],
+              icon: manufacturer_data["icon"]
             )
           end
         end
