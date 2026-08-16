@@ -271,6 +271,11 @@
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
         "editInventory": "Edit Inventory"
+      },
+      "adminNotifications": {
+        "read": "Mark as read",
+        "readAll": "Mark all as read",
+        "destroyAll": "Delete all"
       }
     }
   }

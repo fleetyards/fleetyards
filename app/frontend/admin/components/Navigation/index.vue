@@ -10,6 +10,7 @@ import logo from "@/images/admin/favicons/favicon.png";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import AppNavigationItems from "@/shared/components/AppNavigation/Items/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import AdminNotificationsNav from "@/admin/components/Notifications/index.vue";
 import { routes } from "@/admin/pages/routes";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/admin/stores/session";
@@ -61,6 +62,7 @@ const hasAccessTo = (access?: string[]) => {
         :has-access-to="hasAccessTo"
       />
       <template v-if="isAuthenticated && currentUser">
+        <AdminNotificationsNav :authenticated="isAuthenticated" />
         <NavItem
           :action="logout"
           menu-key="logout"

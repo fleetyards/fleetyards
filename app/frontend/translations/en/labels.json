@@ -1705,7 +1705,32 @@
         "qualityRange": "Quality",
         "stockItem": "Stock Item"
       },
-      "hangarInventories": "Inventories"
+      "hangarInventories": "Inventories",
+      "adminNotifications": {
+        "empty": "Nothing open",
+        "showAll": "Show all",
+        "readAll": "Mark all as read",
+        "unreadOnly": "Unread only",
+        "status": "Status",
+        "severity": "Severity",
+        "type": "Type",
+        "severities": {
+          "info": "Info",
+          "warning": "Warning",
+          "error": "Error"
+        },
+        "types": {
+          "paints_import": "Paints Import",
+          "modules_import": "Modules Import",
+          "loaner_sync": "Loaner Sync",
+          "uex_prices_import": "UEX Price Sync",
+          "uex_commodity_prices_import": "UEX Commodity Sync",
+          "new_supporter": "New Supporter",
+          "rsi_api_blocked": "RSI API Blocked",
+          "rsi_api_unblocked": "RSI API Restored",
+          "weekly_stats": "Weekly Report"
+        }
+      }
     }
   }
 }

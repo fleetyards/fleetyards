@@ -134,6 +134,9 @@
         },
         "imports": {
           "index": "Imports"
+        },
+        "notifications": {
+          "index": "Notifications"
         }
       },
       "welcome": "Welcome to",

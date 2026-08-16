@@ -11,6 +11,7 @@ type Props = {
   image?: string;
   slim?: boolean;
   avatar?: boolean;
+  badge?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -19,10 +20,19 @@ const props = withDefaults(defineProps<Props>(), {
   image: undefined,
   slim: false,
   avatar: false,
+  badge: 0,
 });
 
 const firstLetter = computed(() => {
   return props.label?.charAt(0);
+});
+
+const badgeLabel = computed(() => {
+  if (!props.badge) {
+    return undefined;
+  }
+
+  return props.badge > 99 ? "99+" : String(props.badge);
 });
 </script>
 
@@ -50,9 +60,18 @@ const firstLetter = computed(() => {
       <span v-else class="nav-item-image-empty">
         {{ firstLetter }}
       </span>
+      <span
+        v-if="badgeLabel && slim"
+        class="nav-item-badge nav-item-badge--dot"
+      >
+        {{ badgeLabel }}
+      </span>
     </span>
     <span v-if="!slim" class="nav-item-text">
       {{ label }}
+    </span>
+    <span v-if="badgeLabel && !slim" class="nav-item-badge">
+      {{ badgeLabel }}
     </span>
   </div>
 </template>

@@ -512,6 +512,13 @@
             "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
           }
         }
+      },
+      "adminNotifications": {
+        "read": "Notification marked as read",
+        "readAll": "All notifications marked as read",
+        "destroyed": "Notification deleted",
+        "destroyedAll": "All notifications deleted",
+        "error": "Something went wrong"
       }
     }
   }
