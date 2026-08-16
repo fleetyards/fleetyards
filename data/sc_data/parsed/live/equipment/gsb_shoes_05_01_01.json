@@ -1,0 +1,32 @@
+{
+  "key": "gsb_shoes_05_01_01",
+  "ref": "a2a10efe-30bb-4a6d-ab78-e86d0de2ee15",
+  "name": "Trekker Boots",
+  "description": "Designed for unfamiliar terrain, these boots are made with our SureFire grip technology and feature ankle support and steel-reinforced lacing to ensure stability on unfamiliar ground. Guaranteed to fit comfortably, even when worn with armor.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_shoes",
+    "Set_05",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

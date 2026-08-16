@@ -1,0 +1,30 @@
+{
+  "key": "grin_multitool_resource_salvage_repair_01",
+  "ref": "5ea0d020-8e9c-4a33-8fad-757651e1088d",
+  "name": "Cambio-Lite SRT Canister",
+  "description": "Canister used in conjunction with the Pyro RYT Multi-Tool and Cambio-Lite SRT attachment to store recycle material composite (RMC) reclaimed from scrap. Contents can be sold or used to make repairs.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "rmc_canister_small",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_multitool_01",
+    "multitool_resource"
+  ],
+  "hidden": false
+}

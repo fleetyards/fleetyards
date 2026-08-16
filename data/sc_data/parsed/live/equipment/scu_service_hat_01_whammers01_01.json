@@ -1,0 +1,33 @@
+{
+  "key": "scu_service_hat_01_whammers01_01",
+  "ref": "6edb2097-8cc5-47af-90a9-cddf597d4b8d",
+  "name": "Tipper Hat Whammer's",
+  "description": "The Tipper hat from Stegman's features a pre-curved bill for comfortable wear from day one.",
+  "equipment_type": "clothing",
+  "slot": "hat",
+  "item_type": "service",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_service_hat",
+    "Set_01",
+    "Texture_whammers01",
+    "Color_01",
+    "KeepsShape"
+  ],
+  "hidden": false
+}

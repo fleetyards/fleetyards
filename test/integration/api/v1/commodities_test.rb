@@ -60,6 +60,22 @@ class Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /commodities leaves out commodities the current build no longer ships" do
+    create(:commodity, name: "Astatine", version: "0.0.1-live.1")
+
+    assert_api_response :get, 200 do
+      assert_not_includes parsed_body["items"].map { |item| item["name"] }, "Astatine"
+    end
+  end
+
+  test "GET /commodities includes older patches when currentVersion is false" do
+    create(:commodity, name: "Astatine", version: "0.0.1-live.1")
+
+    assert_api_response :get, 200, params: {q: {"currentVersion" => false}} do
+      assert_includes parsed_body["items"].map { |item| item["name"] }, "Astatine"
+    end
+  end
+
   test "GET /commodities exposes the fields the picker needs" do
     assert_api_response :get, 200 do
       gold = parsed_body["items"].find { |item| item["name"] == "Gold" }

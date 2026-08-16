@@ -1,0 +1,30 @@
+{
+  "key": "utfl_crossbow_ballistic_01",
+  "ref": "cb57dee1-c2f2-4328-bd7f-8ff1c8481008",
+  "name": "Novian Crossbow",
+  "description": "Manufacturer: UltiFlex\nItem Type: Crossbow\n \nMagazine Size: 5\nRate Of Fire: 60 rpm\nEffective Range: 50 m\n \nAttachments: Optics (S3), Underbarrel (S3)\n \nThe craftsman at UltiFlex went through hundreds of prototypes to discover the perfect lightweight material with the right combination of strength and flexibility for its Novian crossbow, an ideal companion on everything from frontier expeditions to tactical infiltrations. With a pull of its firing action, the Novian near-silently launches a heavy bolt that shatters on impact causing devastating damage to close-range targets.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "crossbow",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/lbco_atzkav_sniper_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "da264d7b-755b-48a2-9580-4adc17ff7ad5",
+  "tags": [
+    "stocked",
+    "utfl_crossbow_ballistic_01"
+  ],
+  "hidden": false
+}

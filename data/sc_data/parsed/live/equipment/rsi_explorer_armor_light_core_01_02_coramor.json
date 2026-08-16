@@ -1,0 +1,33 @@
+{
+  "key": "rsi_explorer_armor_light_core_01_02_coramor",
+  "ref": "c2eda8c0-d84d-48eb-941d-3b36a7b6b995",
+  "name": "Venture Core Envy",
+  "description": null,
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "explorer",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Texture_02",
+    "Color_coramor",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

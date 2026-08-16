@@ -1,0 +1,32 @@
+{
+  "key": "scu_pants_04_01_11",
+  "ref": "1ad936cf-cb78-4e94-acd0-80d1c098aa6c",
+  "name": "Caret Pants Charcoal",
+  "description": "With the fortitude of workwear and the comfort of khakis, the Caret pants are sure to become your standard go-to for tough jobs. Built with strong fabric and quality stitching so you can focus on what needs to be done.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_pants",
+    "Set_04",
+    "Texture_01",
+    "Color_11"
+  ],
+  "hidden": false
+}

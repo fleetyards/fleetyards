@@ -1,0 +1,31 @@
+{
+  "key": "fio_executive_shirt_02_01_01",
+  "ref": "3c733ed1-4f5f-42c5-a485-e5b91773ab3a",
+  "name": "Radford Shirt Crusader Edition",
+  "description": "The Radford dress shirt and tie combo proves that simple elegance is eternal. The shirt features a unique side seam that provides a tailored fit. A silver tie bar is the perfect finishing accent to make sure everything stays in place. \n\nThe Crusader Edition was made specifically for employees of Crusader Industries.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "executive",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_executive_shirt",
+    "Set_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,33 @@
+{
+  "key": "thp_pants_01_01_01",
+  "ref": "c819d660-ad98-48ae-8509-ae223b1c2cbf",
+  "name": "Ixonia Pants Desert Camo",
+  "description": "Designed in partnership with Grindstone Boots, the Ixonia pants are designed to keep you safe from hard knocks. The shin guards fits seamlessly over the Trekker boots, and are made from Tehachapi's proprietary polymer weave to provide a high level of protection.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "medium_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "4.0",
+  "damage_reduction": "30.0",
+  "temperature_rating": "-56 / 86 °C",
+  "radiation_protection": "26400.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Medium",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "c0bc7b2d-9c1a-4029-9715-f28b81122863",
+  "tags": [
+    "thp_pants",
+    "Set_01",
+    "Texture_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

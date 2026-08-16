@@ -1,0 +1,32 @@
+{
+  "key": "cds_combat_light_backpack_01_02_10",
+  "ref": "b32c8292-3509-45c2-8420-77587156319a",
+  "name": "Geist Backpack Whiteout",
+  "description": "An ideal synthesis of strength and technology, the Geist Stealth Armor has been crafted from military-grade carbon silk sourced from the same manufacturers that protect the UEE's special forces. Hair-thin filaments woven into the fabric mask the wearer's emissions, making them undetectable via radar, and specialized tubing built into the soles of the boots dampens the sound of footsteps.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "light_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "54000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "all",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "cds_combat_light",
+    "Color_10",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

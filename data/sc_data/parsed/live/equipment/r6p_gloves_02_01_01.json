@@ -1,0 +1,31 @@
+{
+  "key": "r6p_gloves_02_01_01",
+  "ref": "5d864483-2433-4c73-981a-9cd67ae980f8",
+  "name": "Aster Gloves Sand",
+  "description": "Pros at keeping your hands safe without sacrificing dexterity, the slip-resistant Aster Gloves deliver solid protection and lasting warmth during chilly or hostile conditions. The tough synthetic leather breaks in well and will stand up to years of frequent use.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1ddcadf0-7bb0-4fa9-94f0-6af19432631c",
+  "tags": [
+    "r6p_gloves",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

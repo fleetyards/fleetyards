@@ -1,0 +1,32 @@
+{
+  "key": "scu_jacket_07_02_01",
+  "ref": "d0f0d92b-8964-46f7-8c94-efd8d9cd6614",
+  "name": "ToolSafe Vest Horizon",
+  "description": "The ToolSafe Vest is constructed with thick materials accentuated by high-visibility straps to ensure worker safety. The inclusion of numerous pouches gives this jacket a generous amount of storage to make it a staple of worksites everywhere.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "10000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_jacket",
+    "set_07",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

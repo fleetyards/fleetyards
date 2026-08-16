@@ -1,0 +1,31 @@
+{
+  "key": "987_shirt_03_01_10",
+  "ref": "d7bf624e-6c62-4a31-ab14-aba9254bfc55",
+  "name": "Adrift Shirt White",
+  "description": "The Adrift mock neck sweater takes the idea of fashion as entertainment to the next level. This comfortable fiber blend material features a special vid-fabric depicting a dynamic space scene to ensure that people won't be able to keep their eyes off you.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3b54a8cc-5700-45f1-940a-2436b213926f",
+  "tags": [
+    "987_shirt",
+    "Set_03",
+    "Color_10"
+  ],
+  "hidden": false
+}

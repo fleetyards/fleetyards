@@ -1,0 +1,31 @@
+{
+  "key": "vgl_utility_light_backpack_01_02_01",
+  "ref": "c4153a6c-f7e2-436b-84fa-ebf29e5aa33f",
+  "name": "Chiron Backpack Samaritan",
+  "description": "Engineered with first responders in mind, the Chiron backpack provides an ideal carryall for critical supplies with quick access to the medical essentials that are stored inside.\n\nThe Samaritan edition was styled for first responders to be highly visible with a red, white, and grey color scheme.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "light_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "75000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "all",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "backpack",
+    "Set_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

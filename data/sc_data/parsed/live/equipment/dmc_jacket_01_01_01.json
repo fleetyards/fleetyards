@@ -1,0 +1,31 @@
+{
+  "key": "dmc_jacket_01_01_01",
+  "ref": "3dfc5dbd-c000-4fb6-82f6-579b97775bce",
+  "name": "Mountaintop Jacket Multitone",
+  "description": "These insulated, water-resistant jackets are perfect for any jobsite where temperature can be a factor. The Mountaintop from DMC features secure pockets and is made with a vinyl-weave exterior, guaranteeing that rough environments won't compromise your warmth.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": "-20 / 10 °C",
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "a53bbc2b-aa43-483d-967e-0cebc5600c04",
+  "tags": [
+    "dmc_jacket",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

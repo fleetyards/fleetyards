@@ -1,0 +1,32 @@
+{
+  "key": "oct_boots_01_04_01",
+  "ref": "0d7ab0b1-d9af-40a7-897f-a48340410c29",
+  "name": "Bracewell Boots Blue and Grey",
+  "description": "Durable, dependable, and comfortable. The Bracewell are high ankle boots designed to thrive amidst unpredictable weather conditions with a water-resistant finish, high-traction soles, and a toggle-locked top enclosure to help keep out any precipitation.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "boots",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "4a05001d-0511-415f-8e32-618fbd75242b",
+  "tags": [
+    "oct_boots",
+    "Set_01",
+    "Material_04",
+    "Color_01"
+  ],
+  "hidden": false
+}

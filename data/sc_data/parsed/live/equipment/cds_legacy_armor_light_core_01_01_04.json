@@ -1,0 +1,32 @@
+{
+  "key": "cds_legacy_armor_light_core_01_01_04",
+  "ref": "3e73a2a2-bba5-4483-8415-95b6643c57d3",
+  "name": "PAB-1 Core Yellow",
+  "description": "Clark Defense Systems built the PAB-1 light but strong enough to stay in a fight. The first CDS suit to utilize their proprietary nano-weave, this light armor became a favorite of those who needed a little extra protection while remaining agile.",
+  "equipment_type": "armor",
+  "slot": "torso",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-40 / 70 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": "light",
+  "icon": "ui/textures/ea/loadouticons/light_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Light",
+    "Set_01",
+    "Color_04",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

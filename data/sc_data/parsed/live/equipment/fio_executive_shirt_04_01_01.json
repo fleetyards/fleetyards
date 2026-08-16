@@ -1,0 +1,31 @@
+{
+  "key": "fio_executive_shirt_04_01_01",
+  "ref": "8e4c19c1-9973-42b8-8ca9-07528c749320",
+  "name": "Aranda Shirt",
+  "description": "Fiore makes it easy to be fashionable with the Aranda. This unique top combines a dress shirt and waistcoat styled in complementary colors. The shirt comes with short sleeves cuffed at the elbows while the waistcoat features a small geometric flourish on the front pockets that's mirrored across the back.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "executive",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "503b0974-5027-4c69-bce6-a38c42e87ebe",
+  "tags": [
+    "fio_executive_shirt",
+    "Set_04",
+    "Color_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,33 @@
+{
+  "key": "hdtc_utility_light_backpack_01_02_01",
+  "ref": "89211f2f-f43c-4764-8a48-474a43d92549",
+  "name": "Cataby Backpack Lifeforce Edition",
+  "description": "The Cataby is a stylish backpack built by Hardin Tactical to withstand rigorous adventures. The unique rectangle shape features a hard frame fitted around a durable and expandable softshell with two zippered pockets allowing for easy access to essentials. The MPUV-1C Edition also comes with a commemorative patch to celebrate the Argo Cargo's 2951 Best in Show victory.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "light_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "75000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "all",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_utility_light",
+    "Set_01",
+    "Color_01",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

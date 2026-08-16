@@ -1,0 +1,30 @@
+{
+  "key": "apar_hmg_ballistic_01_mag",
+  "ref": "b601c979-1a7e-41a9-b4f4-7e74d954d186",
+  "name": "Vendetta HMG Magazine (1000 Cap)",
+  "description": "This magazine for the Apocalypse Arms Vendetta HMG comes pre-loaded with a thousand rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "1000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "77f7999a-b23b-4812-94c2-09b5e15e1b0e",
+  "tags": [
+    "apar_hmg_ballistic_01",
+    "apar_hmg_ballistic_01_mag"
+  ],
+  "hidden": false
+}

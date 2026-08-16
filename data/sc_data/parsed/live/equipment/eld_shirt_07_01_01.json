@@ -1,0 +1,31 @@
+{
+  "key": "eld_shirt_07_01_01",
+  "ref": "423cb5a3-ba6c-43ea-a053-64a4a4e6be93",
+  "name": "Yenny Shirt",
+  "description": "A simple, light grey, long-sleeved shirt constructed from moisture wicking fabric ideal for keeping you comfortable during work and play.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_07",
+    "Color_01"
+  ],
+  "hidden": false
+}

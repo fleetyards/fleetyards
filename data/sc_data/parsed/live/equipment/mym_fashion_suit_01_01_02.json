@@ -1,0 +1,32 @@
+{
+  "key": "mym_fashion_suit_01_01_02",
+  "ref": "bcb4b6cc-a6fa-47e2-936e-8e3cb4cc1fc7",
+  "name": "Ambrus Suit",
+  "description": "MuyMuy's Ambrus suit was expertly crafted by artisans on Saisei from natural brocade silk and worsted ma'xy.un wool. Featuring bold coloration and a relaxed fit, it lets the wearer maintain comfort without sacrificing style.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "fashion",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "cc1731c4-8156-4750-a138-96838df79117",
+  "tags": [
+    "mym_fashion_suit",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": true
+}

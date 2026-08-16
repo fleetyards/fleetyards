@@ -1,0 +1,31 @@
+{
+  "key": "cbd_gloves_01_01_04",
+  "ref": "691717bf-8019-4d69-8bf7-092f3d92439b",
+  "name": "Grappler Gloves Veritas",
+  "description": "Originally made for open-canopy racers, the Grappler gloves became beloved for their versatility and durability. Their mix of leather and synthetic fabrics make for a lightweight and warm wear. They also feature an adjustable strap to guarantee the perfect fit, and a special tactile fingertip design so wearers don't have to remove the gloves to interact with screens.\n\nThe Veritas edition is a bloody red, with black belts and leather straps.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "64eef2d9-5d3d-431d-a83b-ae077a16b4e2",
+  "tags": [
+    "cbd_gloves_01",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

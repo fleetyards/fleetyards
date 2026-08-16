@@ -1,0 +1,29 @@
+{
+  "key": "behr_glauncher_ballistic_01_mag",
+  "ref": "aff2521e-2e7a-40d5-98a1-9a6a379a2f01",
+  "name": "GP-33 MOD Grenade Launcher Magazine (6 cap)",
+  "description": "This magazine for the GP-33 MOD holds six 40mm grenades.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "6.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "behr_glauncher_ballistic_01"
+  ],
+  "hidden": false
+}

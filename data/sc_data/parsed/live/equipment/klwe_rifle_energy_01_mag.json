@@ -1,0 +1,29 @@
+{
+  "key": "klwe_rifle_energy_01_mag",
+  "ref": "0988e9ce-5f5d-4eb8-83a7-dc70f187579d",
+  "name": "Gallant Rifle Battery (45 cap)",
+  "description": "This high-capacity battery sets itself apart by powering the Klaus & Werner Gallant energy rifle for 45 shots per charge. ",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "battery",
+  "weapon_class": "energy",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "45.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [
+    "klwe_rifle_energy_01"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "grin_refinery_backpack_01_01_01",
+  "ref": "a03c4c8e-e555-448a-a916-53c3af014635",
+  "name": "ThermoWeave Breathing Apparatus",
+  "description": "The ThermoWeave breathing apparatus integrates with the hood to ensure a constant flow of breathable oxygen regardless of air quality conditions.",
+  "equipment_type": "clothing",
+  "slot": "backpack",
+  "item_type": "refinery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "33800.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "backpack",
+    "Set_01",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,33 @@
+{
+  "key": "grin_utility_medium_backpack_03_01_01",
+  "ref": "420fe0da-40b1-4db6-94d6-72055715cdff",
+  "name": "Strata Backpack Pyrotechnic Edition",
+  "description": "Made for miners but ready for any adventure, Greycat Industrial's Strata armor provides premium protection and convenient features. Each piece features an angular and precise design to deliver coverage where it's most needed most. A toolbelt with convenient pouches and a reinforced backpack offers plenty of storage. The award-winning helmet design has been copied by other manufacturers, but the original still reigns supreme with its high quality materials and next-gen air filtration system that enables clean breathing whether in a deep mine or hostile atmospheres. This edition features the colors and logo of the now defunct Pyrotechnic Amalgamated.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "medium_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "127500.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "medium_heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_medium",
+    "backpack",
+    "Set_02",
+    "Color_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

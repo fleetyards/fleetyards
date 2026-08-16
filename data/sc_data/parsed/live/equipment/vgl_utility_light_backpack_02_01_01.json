@@ -1,0 +1,30 @@
+{
+  "key": "vgl_utility_light_backpack_02_01_01",
+  "ref": "f674b2a2-a589-4957-a8b3-e2b62708c894",
+  "name": "Chiron Backpack Heartthrob",
+  "description": "Engineered with first responders in mind, the Chiron backpack provides an ideal carryall for critical supplies with quick access to the medical essentials that are stored inside.\n\nThe Heartthrob edition is a dreamy, shimmering violet adorned with bright digital hearts; perfect for making friends and foes weak in the knees.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "light_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "75000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "all",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

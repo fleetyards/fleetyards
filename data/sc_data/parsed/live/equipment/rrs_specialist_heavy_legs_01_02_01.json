@@ -1,0 +1,31 @@
+{
+  "key": "rrs_specialist_heavy_legs_01_02_01",
+  "ref": "967d0beb-d88c-4b9f-8ad0-15a73b194486",
+  "name": "Morozov-SH Legs Snowdrift",
+  "description": "Featuring fortified armor plating, special anti-rip protective padding and ample storage, the Morozov-SH is ready to overcome all kinds of adversity. After consulting with security professionals, RRS added a unique high protective collar and a lightweight inner lining based on their recommendation; making the Morozov-SH both comfortable and a battlefield stalwart.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "7500.0",
+  "damage_reduction": "40.0",
+  "temperature_rating": "-90 / 115 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "73a6ba90-8f53-423d-ad0b-96e81b7e18a5",
+  "tags": [
+    "rrs_specialist_heavy",
+    "Set_01_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

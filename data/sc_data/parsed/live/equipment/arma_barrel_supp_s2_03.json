@@ -1,0 +1,31 @@
+{
+  "key": "arma_barrel_supp_s2_03",
+  "ref": "4ef9f8dd-6229-4c86-bc8e-025c6cc87c2c",
+  "name": "Stoic Suppressor2",
+  "description": "Using a more heavyweight barrel attachment for increased control, the longer chamber of the Stoic Suppressor2 grants reduced noise and increased accuracy at the cost of slower responsiveness.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "barrel",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Barrel",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a",
+  "tags": [
+    "FPS_Barrel",
+    "ballistic_attach",
+    "energy_attach"
+  ],
+  "hidden": false
+}

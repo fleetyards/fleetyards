@@ -1,0 +1,32 @@
+{
+  "key": "cds_legacy_armor_heavy_arms_01_01_20",
+  "ref": "b5deb872-f379-4a22-b943-44a169fdacfe",
+  "name": "ADP Arms Olive",
+  "description": "Revolutionary when first released, the ADP heavy armor system was heralded as the pinnacle of personal protection. Clark Defense Systems' maximalist design provides plenty of attachment points and excellent protection against the elements and enemy fire. CDS refined and reshaped the ADP line over the years, but many still consider the original ADP to be the touchstone of military-grade heavy armor.",
+  "equipment_type": "armor",
+  "slot": "arms",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "40.0",
+  "temperature_rating": "-75 / 105 °C",
+  "radiation_protection": "52800.0",
+  "radiation_scrub_rate": "251.1",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Marine_Legacy_Heavy",
+    "Set_01",
+    "Color_20",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

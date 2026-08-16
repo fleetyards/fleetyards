@@ -1,0 +1,31 @@
+{
+  "key": "volt_shotgun_energy_01_red01",
+  "ref": "f0ea7fd5-ad93-4ac7-9c63-66399bc3110f",
+  "name": "Prism \"ArcCorp\" Laser Shotgun",
+  "description": "Firing powerful shortrange bursts of energy, engineers at Verified Offworld Laser Technologies have developed the Prism laser shotgun so that as the weapon's heat-levels rise, the pellets begin fusing together into slug-like projectiles that inflict higher damage on targets. This special edition features ArcCorp branding.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "energy",
+  "rate_of_fire": "120.0",
+  "range": "10.0",
+  "storage": "10.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_devastator_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "e2787f3b-b892-4276-bb2e-eb2b4dc9666b",
+  "tags": [
+    "stocked",
+    "volt_shotgun_energy_01",
+    "shotgun"
+  ],
+  "hidden": false
+}

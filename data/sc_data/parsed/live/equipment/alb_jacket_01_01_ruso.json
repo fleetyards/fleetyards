@@ -1,0 +1,31 @@
+{
+  "key": "alb_jacket_01_01_ruso",
+  "ref": "10c4b93e-6d3d-45fe-86c8-30fda217a116",
+  "name": "Tuvic Outerwear Jacket Rust Society",
+  "description": "Alejo Brothers have seamlessly blended functionality and style with the Tuvic line of outerwear. These rugged jackets feature reinforced leather padding to offer additional protection and support while still maintaining a modern aesthetic.\n\nWomen's sizes currently out of stock.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_jacket",
+    "Set_01",
+    "Color_ruso"
+  ],
+  "hidden": false
+}

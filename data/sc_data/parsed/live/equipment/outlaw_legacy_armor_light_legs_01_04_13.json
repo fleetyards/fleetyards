@@ -1,0 +1,33 @@
+{
+  "key": "outlaw_legacy_armor_light_legs_01_04_13",
+  "ref": "04ae0ab4-1398-4d3f-ba84-fc69ab50f255",
+  "name": "Lynx Legs Dark Red",
+  "description": "Maintain your mobility with the Lynx combat armor. A high tech polymer weave allows the wearer to withstand enough damage to quickly escape danger. The suit's striking look became famous after being worn by the Seeker in the widely popular \"Fire and Fury\" vids of the mid-2800s.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "5000.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-31 / 61 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "Outlaw_Legacy_Light",
+    "Set_01",
+    "Texture_04",
+    "Color_13",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

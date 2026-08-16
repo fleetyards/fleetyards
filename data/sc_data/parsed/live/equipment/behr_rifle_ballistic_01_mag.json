@@ -1,0 +1,29 @@
+{
+  "key": "behr_rifle_ballistic_01_mag",
+  "ref": "1f8845fb-22de-4c73-b6e6-ed1d1b066808",
+  "name": "P4-AR Magazine (40 cap)",
+  "description": "This magazine for the Behring P4-AR rifle holds fourty 5.56mm cartridges.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "40.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "behr_rifle_ballistic_01"
+  ],
+  "hidden": false
+}

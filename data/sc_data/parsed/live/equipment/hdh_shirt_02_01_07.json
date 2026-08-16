@@ -1,0 +1,32 @@
+{
+  "key": "hdh_shirt_02_01_07",
+  "ref": "9e5e8be5-5b9e-4a72-b228-b7e456cade33",
+  "name": "Silco Shirt Calypso",
+  "description": "With a sleek design and durable material, the Silco Shirt by Habidash is a comfortable shirt that can be conveniently worn either as an undershirt or on its own.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_shirt",
+    "Set_02",
+    "Texture_01",
+    "Color_07"
+  ],
+  "hidden": false
+}

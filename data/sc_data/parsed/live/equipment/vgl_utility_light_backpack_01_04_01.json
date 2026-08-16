@@ -1,0 +1,31 @@
+{
+  "key": "vgl_utility_light_backpack_01_04_01",
+  "ref": "91ed5cd2-a953-4dcf-83d1-68dc52aa188a",
+  "name": "Chiron Backpack Foundation",
+  "description": "Item Type: Light Backpack\nCarrying Capacity: 75K µSCU\nCore Compatibility: All\n \nEngineered with first responders in mind, the Chiron backpack provides an ideal carryall for critical supplies with quick access to the medical essentials that are stored inside.\n \nCelebrate the UEE's commitment to building a brighter future with this Foundation Festival special edition. Designed with Guides and other community leaders in mind, it features a teal polyfiber underlayer and matching accents on the carbon plating sections.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "utility",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "backpack",
+    "Set_01",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

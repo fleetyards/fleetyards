@@ -1,0 +1,31 @@
+{
+  "key": "volt_lmg_energy_01_store02",
+  "ref": "93ae8a77-efd2-4eb1-933f-f436a5789bb6",
+  "name": "Fresnel \"Shadow Gild\" Energy LMG",
+  "description": "The engineers at VOLT crafted the Fresnel LMG to bring a powerful energy weapon to the frontlines, one that can initiate a fight with a rapid spray of deadly blasts. As the weapon heats up, the shots become slower and more powerful, but be careful of overheating. A weapon of this magnitude demands a strong foundation; operators are encouraged to fire from a crouching position to allow for better recoil management.\n\nThe Shadow Gild edition is dark gray and features stylish gold highlights.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "lmg",
+  "weapon_class": "energy",
+  "rate_of_fire": "550.0",
+  "range": "50.0",
+  "storage": "165.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_demeco_lmg_64.tif",
+  "sub_type": "Medium",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "1aa076d5-ac29-4c61-a905-d3ea39cf167a",
+  "tags": [
+    "stocked",
+    "lmg",
+    "volt_lmg_energy_01"
+  ],
+  "hidden": true
+}

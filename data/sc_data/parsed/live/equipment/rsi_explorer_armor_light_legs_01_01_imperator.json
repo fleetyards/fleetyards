@@ -1,0 +1,32 @@
+{
+  "key": "rsi_explorer_armor_light_legs_01_01_imperator",
+  "ref": "708be659-3f3d-4742-8ea4-fb69a1aa743b",
+  "name": "Venture Legs Pathfinder",
+  "description": "Robert Space Industries combines elegance and effectiveness with the Venture Explorer Suit. The exclusive Pathfinder edition features all the safety features necessary for the vacuum of space plus a striking purple design with tasteful gold highlights. After wearing a suit that looks and perform this well, you may never want to take it off.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "light_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2.0",
+  "damage_reduction": "20.0",
+  "temperature_rating": "-41 / 71 °C",
+  "radiation_protection": "26000.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Light",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "093e6eba-93fa-4dad-b3dd-38966934e34e",
+  "tags": [
+    "Explorer",
+    "Set_01",
+    "Color_imperator",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

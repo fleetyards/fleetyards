@@ -1,0 +1,31 @@
+{
+  "key": "mannequin_displayhelmet",
+  "ref": "269dc312-1113-4e06-8a82-ef310dcc472a",
+  "name": "TEST STRING NAME",
+  "description": null,
+  "equipment_type": "armor",
+  "slot": "helmet",
+  "item_type": "displayhelmet",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Helmet",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "SM_RestrictedArm",
+    "Helmet",
+    "HelmetCarryable"
+  ],
+  "hidden": false
+}

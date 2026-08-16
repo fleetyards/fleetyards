@@ -1,0 +1,29 @@
+{
+  "key": "lbco_pistol_energy_01_mag",
+  "ref": "9dc383ba-2686-46d0-abf9-1bc764aec0b6",
+  "name": "Yubarev Pistol Battery (10 cap)",
+  "description": "This battery for the Yubarev Pistol holds enough electron energy for 10 shots.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "battery",
+  "weapon_class": "energy",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "10.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "98bb2e9e-fcc7-46e5-9ba6-d34c42c414e0",
+  "tags": [
+    "lbco_pistol_energy_01"
+  ],
+  "hidden": false
+}

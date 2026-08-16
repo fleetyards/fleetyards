@@ -1,0 +1,31 @@
+{
+  "key": "ksar_shotgun_energy_01_black_purple01",
+  "ref": "82c475c9-7e54-4991-ad37-66f08cbc54f3",
+  "name": "Devastator \"Rager\" Shotgun",
+  "description": "This semi-automatic electric shotgun from Kastak Arms delivers high-impact plasma blasts ideal for close combat. The Voyager edition upgrades the look with a checked metallic finish offset with blue highlights. An outrageous combination of black, cyan, and purple makes the \"Rager\" edition an extra good time.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "shotgun",
+  "weapon_class": "energy",
+  "rate_of_fire": "60.0",
+  "range": "20.0",
+  "storage": "12.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/kastak_devastator_shotgun_64.tif",
+  "sub_type": "Medium",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "709e8255-a0b1-4c5e-8b0e-28781be25984",
+  "tags": [
+    "stocked",
+    "ksar_shotgun_energy_01",
+    "shotgun"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,31 @@
+{
+  "key": "grin_refinery_gloves_01_01_01",
+  "ref": "a1fcf0eb-4770-4026-8daa-227891624656",
+  "name": "ThermoWeave Gloves",
+  "description": "The ThermoWeave gloves were designed with a special multilayer weave and extra insulated padding on the palm and fingers for additional protection when touching hot objects.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "refinery",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_refinery_gloves",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

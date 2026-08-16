@@ -1,0 +1,31 @@
+{
+  "key": "eld_shirt_04_microtech_gift",
+  "ref": "51a16178-3bf2-4269-a9c8-579211767cea",
+  "name": "microTech T-Shirt",
+  "description": "A comfortable white cotton t-shirt featuring a large microTech logo across the front and a smaller one on the back.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Color_01"
+  ],
+  "hidden": false
+}

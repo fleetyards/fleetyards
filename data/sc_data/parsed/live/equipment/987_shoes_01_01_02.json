@@ -1,0 +1,31 @@
+{
+  "key": "987_shoes_01_01_02",
+  "ref": "bc842c39-1fbd-4a65-b466-351f6ec72069",
+  "name": "UrbEx Boots Dawn",
+  "description": "From bustling backstreets to crowded clubs, the UrbEx boots will make your next step a bold one. The boots blend a stylish design with reinforced high ankle support and ultra durable outsoles.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "3b54a8cc-5700-45f1-940a-2436b213926f",
+  "tags": [
+    "987_shoes",
+    "Set_01",
+    "Color_02"
+  ],
+  "hidden": false
+}

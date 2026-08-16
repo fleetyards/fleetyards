@@ -1,0 +1,32 @@
+{
+  "key": "eld_shirt_04_tumbril_01",
+  "ref": "7e7e8e3c-8a87-425a-9e51-19afe4893d22",
+  "name": "Tumbril T-Shirt",
+  "description": "This orange and gray shirt displays the famed logo of Tumbril Land Systems, makers of legendary land vehicles such as the Nova tank and the Cyclone buggy. In need of a military-grade vehicle at a civilian price? Think Tumbril.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Texture_tumbril",
+    "Color_01"
+  ],
+  "hidden": false
+}

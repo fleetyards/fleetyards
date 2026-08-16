@@ -1,0 +1,33 @@
+{
+  "key": "gys_undersuit_01_01_11",
+  "ref": "0bad23a8-3cfc-4009-a338-6e232c816eb7",
+  "name": "Deep-Space Undersuit River Rock",
+  "description": "Confidently venture into the unknown with the Deep-Space undersuit. Smartly designed with several overlapping sections to guarantee the suit's integrity, Gyson has created an affordable and fashionable undersuit that helps make space travel more accessible to all.",
+  "equipment_type": "undersuit",
+  "slot": "undersuit",
+  "item_type": "undersuit",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "5.0",
+  "temperature_rating": "-30 / 60 °C",
+  "radiation_protection": "15200.0",
+  "radiation_scrub_rate": "81.0",
+  "g_force_tolerance": "90.0",
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d56a3985-2f29-4095-b2f2-542376cc74f4",
+  "tags": [
+    "gys_undersuit",
+    "Set_02",
+    "Texture_01",
+    "Color_01",
+    "$armor_mobi++"
+  ],
+  "hidden": false
+}

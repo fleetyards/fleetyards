@@ -1,0 +1,32 @@
+{
+  "key": "eld_shirt_04_iae2023_10",
+  "ref": "45823952-1cad-458f-a8a3-02cb83ad548d",
+  "name": "IAE 2953 Shirt Purple",
+  "description": "Commemorate the UEE's foremost celebration of ships with the official shirt of the 2953 Intergalactic Aerospace Expo. This purple shirt features the IAE logo on the front, with a smaller version on the back.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "190a2e0e-6d60-4719-8238-ac7e1c746626",
+  "tags": [
+    "eld_shirt",
+    "Set_04",
+    "Texture_iae2023",
+    "Color_expo"
+  ],
+  "hidden": false
+}

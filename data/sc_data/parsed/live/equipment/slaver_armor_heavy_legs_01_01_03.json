@@ -1,0 +1,32 @@
+{
+  "key": "slaver_armor_heavy_legs_01_01_03",
+  "ref": "94beda1c-19cd-4212-ba3f-dcb497e7f911",
+  "name": "Defiance Legs Sunchaser",
+  "description": "Incorporating the same manufacturing know-how and expertise that the UEE Marines have come to rely on, Clark Defense Systems has designed their civilian-line of Defiance heavy armors to stand firm in the face of even the most adverse combat scenarios with its three-star rated protective plating and fully integrated mobility framework.",
+  "equipment_type": "armor",
+  "slot": "legs",
+  "item_type": "heavy_armor",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "8.0",
+  "damage_reduction": "40.0",
+  "temperature_rating": "-72 / 102 °C",
+  "radiation_protection": "26800.0",
+  "radiation_scrub_rate": "145.8",
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Heavy",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8a7bd715-5b97-404f-b02e-0d0cc593f608",
+  "tags": [
+    "Slaver_Heavy",
+    "Set_01",
+    "Color_03",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

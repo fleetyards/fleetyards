@@ -1,0 +1,29 @@
+{
+  "key": "grin_multitool_energy_01_mag",
+  "ref": "f1073c2c-900c-4c62-a866-46aa402ee1b2",
+  "name": "Pyro RYT Multi-Tool Battery",
+  "description": "This battery powers Greycat's Pyro RYT Multi-Tool, so that you can tackle a variety of tasks.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "multitool",
+  "weapon_class": "energy",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "grin_multitool_energy_01"
+  ],
+  "hidden": false
+}

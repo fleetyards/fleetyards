@@ -1,0 +1,32 @@
+{
+  "key": "scu_pants_05_02_01",
+  "ref": "6e15bb7e-f957-45ae-95cf-6bcf574211c5",
+  "name": "DuraWork Pants Horizon",
+  "description": "Made of a durable synthetic material, Stegman's designed the DuraWork to provide a comfortable and reliable clothing option to workers around the 'verse.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_pants",
+    "Set_05",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

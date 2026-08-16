@@ -1,0 +1,32 @@
+{
+  "key": "alb_gloves_02_01_01",
+  "ref": "31e87ff5-9256-41c7-91ff-d0471b93b2fa",
+  "name": "Parway Gloves",
+  "description": "Whether engaged in work or play, the Parway gloves provide protection and the perfect fit. Synthetic leather cuffs overlap with a lightweight metal plate to offer protection from impacts. The fingers and palm mix fleece and a special perforated polymer to keep your hands dry and cool while still being able to interact with touchscreens.",
+  "equipment_type": "clothing",
+  "slot": "gloves",
+  "item_type": "gloves",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd14fd7f-eead-4f7d-8057-2d95405a0183",
+  "tags": [
+    "alb_gloves",
+    "Set_02",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

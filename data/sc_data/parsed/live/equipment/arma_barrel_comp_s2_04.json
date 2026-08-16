@@ -1,0 +1,30 @@
+{
+  "key": "arma_barrel_comp_s2_04",
+  "ref": "cabb860f-f1f0-4477-90f6-39268ad74812",
+  "name": "Stark Compensator2",
+  "description": "The Stark Compensator2 disperses energy more evenly from the gun barrel to counteract recoil, helping you stay sure and steady with every shot.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "barrel",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Barrel",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "f2ca879c-deb6-49bf-a4b1-dc3a9cf91e7a",
+  "tags": [
+    "FPS_Barrel",
+    "ballistic_attach"
+  ],
+  "hidden": false
+}

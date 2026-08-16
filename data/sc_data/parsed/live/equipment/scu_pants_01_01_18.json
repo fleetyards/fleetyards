@@ -1,0 +1,31 @@
+{
+  "key": "scu_pants_01_01_18",
+  "ref": "644ae5ed-28fb-423e-9f4a-c8f362f3ebc9",
+  "name": "WorkLife Pants Blue",
+  "description": "With Stegman's, you know you're getting clothes made for workers, by workers. Featuring multiple external pockets with easy access tabs, WorkLife pants are rugged, functional and professional. Just like you.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_pants",
+    "Set_01",
+    "Color_18"
+  ],
+  "hidden": false
+}

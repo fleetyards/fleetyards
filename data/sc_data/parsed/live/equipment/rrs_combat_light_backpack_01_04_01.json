@@ -1,0 +1,33 @@
+{
+  "key": "rrs_combat_light_backpack_01_04_01",
+  "ref": "8bd4e563-afab-4c59-87f6-7f17ed723b27",
+  "name": "Arden-CL Backpack Archangel",
+  "description": "Whether carrying supplies into a combat zone or simply hauling extra gear, the Arden-CL backpack is battle ready and tested. Roussimoff Rehabilitation Systems designed the backpack with a universal core connector allowing it to attach to a wide variety of armors.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "light_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "40000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "all",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "LightArmor",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "73a6ba90-8f53-423d-ad0b-96e81b7e18a5",
+  "tags": [
+    "rrs_combat_light",
+    "Set_01",
+    "Color_12",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,32 @@
+{
+  "key": "vgl_combat_heavy_backpack_01_09_01",
+  "ref": "06da4100-fcb1-463f-ae8c-e1860593b64f",
+  "name": "Warden Backpack Delta Camo",
+  "description": "This hard backpack from Virgil, Ltd. makes travel easy. Whether you need a place to carry your weapons or you've decided to bring some extra rations along for a long journey, this backpack was designed to handle any occasion. The interior features a generous, closeable pocket to keep your small items from falling out of place.\n\nThis edition features a brown, gray, and tan camo pattern with brass accents.",
+  "equipment_type": "armor",
+  "slot": "backpack",
+  "item_type": "heavy_backpack",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "150000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": "heavy",
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/heavy_armour_64.tif",
+  "sub_type": "Personal",
+  "size": "3",
+  "grade": "1",
+  "manufacturer_ref": "0e6d8f1b-ebb8-4773-8ca4-f25d737c8709",
+  "tags": [
+    "Set_01",
+    "Color_09",
+    "backpack",
+    "SM_RestrictedArm"
+  ],
+  "hidden": false
+}

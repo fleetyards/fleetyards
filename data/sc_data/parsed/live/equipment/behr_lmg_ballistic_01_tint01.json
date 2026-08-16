@@ -1,0 +1,31 @@
+{
+  "key": "behr_lmg_ballistic_01_tint01",
+  "ref": "19c405b8-8b59-44fa-9bf9-a378aeb6e3bd",
+  "name": "FS-9 \"Blacklist\" LMG",
+  "description": "Behring designed the FS-9 to be an overwhelming battlefield force. This light machine gun features a full auto mode that makes it ideal for laying down covering fire or holding back advancing enemies. The FS-9 is also acclaimed for its ability to maintain accuracy while unleashing sustained fire. The Blacklist edition features a dark black finish.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "lmg",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "800.0",
+  "range": "40.0",
+  "storage": "75.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/gemini_f55_lmg_64.tif",
+  "sub_type": "Medium",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "lmg",
+    "behr_lmg_ballistic_01"
+  ],
+  "hidden": true
+}

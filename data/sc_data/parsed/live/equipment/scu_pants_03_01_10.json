@@ -1,0 +1,31 @@
+{
+  "key": "scu_pants_03_01_10",
+  "ref": "5d253a8c-6e90-4db4-972e-31947678d5b6",
+  "name": "Clempt Pants White",
+  "description": "Stegman's factory pants have been taken to the next level with the Clempt line. These rugged all-purpose pants come with double knees for extra comfort and protection and are made from tough composite weave fabric to last as long as the work needs.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "pants",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "2000.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "20121812-97a6-4ce1-a6a4-88a5ed646c58",
+  "tags": [
+    "scu_pants",
+    "Set_03",
+    "Color_10"
+  ],
+  "hidden": false
+}

@@ -1,0 +1,29 @@
+{
+  "key": "gmni_smg_ballistic_01_mag",
+  "ref": "3f4a69ef-0bcf-4cd6-a272-782f6641c242",
+  "name": "C54 SMG Magazine (50 cap)",
+  "description": "This magazine for the C54 SMG holds fifty 10mm rounds.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "magazine",
+  "weapon_class": "ballistic",
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "50.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "b33050cd-6ca9-4c57-baf8-f4114eb85237",
+  "tags": [
+    "gmni_smg_ballistic_01"
+  ],
+  "hidden": false
+}

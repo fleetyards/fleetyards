@@ -1,0 +1,32 @@
+{
+  "key": "hdtc_shirt_01_02_01",
+  "ref": "7bdeaa2c-dfc5-4e6d-a160-6bcad095eafd",
+  "name": "Bellator Shirt Continental",
+  "description": "Stylish, functional, and deadly: the Bellator clothing line is designed to fit in at dinner party just as well as a gunfight. Accompanied by a luxurious silk tie, this shirt provides some combat protection thanks to the intricate weaving of layered graphene into its threads.\n\nThe Continental edition features an off-white shirt and teal tie with star-like patterns.",
+  "equipment_type": "clothing",
+  "slot": "shirt",
+  "item_type": "shirt",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": "20.0",
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "8368a760-84b4-4359-bda1-7b015dc0c884",
+  "tags": [
+    "hdtc_shirt",
+    "Set_01",
+    "Texture_02",
+    "Color_01"
+  ],
+  "hidden": false
+}

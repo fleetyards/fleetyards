@@ -1,0 +1,32 @@
+{
+  "key": "gsb_shoes_04_01_05",
+  "ref": "307628da-b47d-41df-84fc-b47fb0b23d87",
+  "name": "Snapback Boots",
+  "description": "Vibrant light green leather and bold metallic accents bring an eye catching look to the Snapback boots. Grindstone Boots' classic thick, cushioned sole and an odor absorbing insole are complemented by a steel toe, magnetic clasps protecting the laces, and a metallic counter for additional support.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6d4b7375-8e0c-445a-a243-21f8f94f99cb",
+  "tags": [
+    "gsb_shoes",
+    "Set_04",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": true
+}

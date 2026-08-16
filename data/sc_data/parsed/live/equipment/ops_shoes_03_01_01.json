@@ -1,0 +1,31 @@
+{
+  "key": "ops_shoes_03_01_01",
+  "ref": "2348dc0a-1512-4aa0-a9aa-ff999c292ddd",
+  "name": "Ivers Boots Blue",
+  "description": "OpalSky imbued these ankle boots with their iconic panache. The Ivers are thoroughly fashionable but not flashy, and fitted with special KindSole insoles that provide exceptional comfort.",
+  "equipment_type": "clothing",
+  "slot": "footwear",
+  "item_type": "shoes",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "6f5af1a4-a50d-41e5-8bb0-c1acd89d4b9e",
+  "tags": [
+    "ops_shoes",
+    "Set_03",
+    "Color_01"
+  ],
+  "hidden": false
+}

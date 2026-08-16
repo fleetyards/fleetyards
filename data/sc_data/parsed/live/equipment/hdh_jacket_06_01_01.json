@@ -1,0 +1,32 @@
+{
+  "key": "hdh_jacket_06_01_01",
+  "ref": "dd6de881-f194-4204-be17-a1f3a450ef6b",
+  "name": "Vacha Jacket Sandalwood",
+  "description": "The Vacha jacket offers the wearer an admirable degree of comfort across a wide range of environments thanks to its sealed cuffs and utility neck collar. Additionally, the rugged design features a sealed cross closure, incorporated belt, and auxiliary ports. The garment's sheer durability and utility has cemented the Vacha jacket as a perennial favorite in Habidash's collection.",
+  "equipment_type": "clothing",
+  "slot": "jacket",
+  "item_type": "jacket",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": "400.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "70ce6432-3a1e-45a1-8179-fe30a3ee54dc",
+  "tags": [
+    "hdh_jacket",
+    "Set_01",
+    "Texture_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

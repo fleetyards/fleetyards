@@ -1,0 +1,32 @@
+{
+  "key": "sc_nvy_bdu_trouser_01_01_01",
+  "ref": "8f4d11af-2fd3-4c66-a36a-041caa2db90c",
+  "name": "Combat Readiness Uniform Trousers",
+  "description": "Made to military specification, the Combat Readiness Uniform pants are made from tough nylon synthetics to make them durable and comfortable enough for any kind of field operations. They also feature several multi-stitched pouches to keep small items secure, but accessible.",
+  "equipment_type": "clothing",
+  "slot": "pants",
+  "item_type": "nvy",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": null,
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "d133f90d-bc69-4273-9867-6c03631f0c4b",
+  "tags": [
+    "nvy_trouser",
+    "BDU",
+    "Set_01",
+    "Color_01"
+  ],
+  "hidden": false
+}

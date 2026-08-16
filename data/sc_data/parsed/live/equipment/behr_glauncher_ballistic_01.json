@@ -1,0 +1,31 @@
+{
+  "key": "behr_glauncher_ballistic_01",
+  "ref": "a6688dce-f8c7-4b73-b657-bd1e17f951d3",
+  "name": "GP-33 MOD Grenade Launcher",
+  "description": "The military-grade GP-33 MOD launcher fires 40mm grenades to clear rooms and flush out enemies behind cover thanks to Behring's precision design that primes each grenade to explode on impact.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "grenade_launcher",
+  "weapon_class": "ballistic",
+  "rate_of_fire": "40.0",
+  "range": "80.0",
+  "storage": "6.0",
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/behring_gp33_grenadelauncher_64.tif",
+  "sub_type": "Medium",
+  "size": "4",
+  "grade": "1",
+  "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
+  "tags": [
+    "stocked",
+    "glauncher",
+    "SM_RestrictedWep"
+  ],
+  "hidden": false
+}

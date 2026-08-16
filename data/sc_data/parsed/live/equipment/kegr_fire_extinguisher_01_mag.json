@@ -1,0 +1,29 @@
+{
+  "key": "kegr_fire_extinguisher_01_mag",
+  "ref": "a205d0b4-7157-4e5a-9e40-57bb6b4fbb55",
+  "name": "APX Fire Extinguisher Canister",
+  "description": "This canister refills the APX Fire Extinguisher with a full tank of the KE Group's patented cooling compound.",
+  "equipment_type": "weapon_attachment",
+  "slot": null,
+  "item_type": "extinguisher_refill",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Magazine",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "819545f4-18af-49a6-814e-ca4fd08f56e5",
+  "tags": [
+    "kegr_fire_extinguisher_01"
+  ],
+  "hidden": false
+}

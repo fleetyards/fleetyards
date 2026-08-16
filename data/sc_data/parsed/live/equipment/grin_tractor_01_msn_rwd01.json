@@ -1,0 +1,30 @@
+{
+  "key": "grin_tractor_01_msn_rwd01",
+  "ref": "321ec859-45dc-4dc6-bdc5-f5d1808365da",
+  "name": "MaxLift AA Transport Tractor Beam",
+  "description": "Greycat's heavy duty tractor beam boasts industrial performance at a consumer-friendly price. With its longer-lasting battery and wider beam emitter, the MaxLift can easily manipulate heavier and bulkier items making it the perfect tool for long days of hauling cargo.\n\nThe AA Transport edition features a metallic green coloring and was intended for those who assisted Alliance Aid's Transport Division during Levski's time of need.",
+  "equipment_type": "weapon",
+  "slot": null,
+  "item_type": "tractor_beam",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": "10.0",
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": "ui/textures/ea/loadouticons/klaus_werner_galant_rifle_64.tif",
+  "sub_type": "Gadget",
+  "size": "2",
+  "grade": "1",
+  "manufacturer_ref": "d8eca6d3-b40c-46c0-953e-ef5840c1fa63",
+  "tags": [
+    "stocked",
+    "grin_tractor_01"
+  ],
+  "hidden": false
+}

@@ -13,7 +13,8 @@ module V1
             idIn: {type: :array, items: {type: :string, format: :uuid}},
             nameIn: {type: :array, items: {type: :string}},
             slugIn: {type: :array, items: {type: :string}},
-            commodityTypeIn: {type: :array, items: {type: :string}}
+            commodityTypeIn: {type: :array, items: {type: :string}},
+            currentVersion: {type: :boolean}
           },
           additionalProperties: false,
           example: {}
