@@ -2,9 +2,20 @@ module ScData
   module Loader
     class EquipmentLoader < ::ScData::Loader::BaseLoader
       def all
-        load_items("equipment").each do |equipment_data|
-          one(equipment_data)
-        end
+        loaded = load_items("equipment").filter_map { |equipment_data| one(equipment_data)&.id }
+
+        retire(loaded)
+      end
+
+      # A record the export dropped keeps its row -- a ledger entry made against
+      # it still has to resolve -- but it must stop claiming a build it is no
+      # longer part of, or `current_version` would go on offering it.
+      #
+      # Re-importing the same build is what makes this necessary: a new build
+      # leaves the row on its old version, but a reload of the one we are
+      # already on leaves it looking current.
+      private def retire(loaded)
+        Equipment.where(version: sc_version).where.not(id: loaded).update_all(version: nil)
       end
 
       def one(equipment_data)
