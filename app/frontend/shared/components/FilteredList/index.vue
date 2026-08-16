@@ -9,8 +9,13 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
+import Forbidden from "@/shared/components/Forbidden/index.vue";
 import { useFiltersStore } from "@/shared/stores/filters";
-import { type AsyncStatus } from "@/shared/components/AsyncData.types";
+import {
+  type AsyncStatus,
+  ErrorTypesEnum,
+} from "@/shared/components/AsyncData.types";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -82,6 +87,13 @@ const filterTooltip = computed(() => {
 const error = computed(() => {
   return props.asyncStatus.isError.value;
 });
+
+// A list behind a flag that is not on yet, or a record belonging to somebody
+// else, comes back 403 — which is an answer, not an outage.
+const forbidden = computed(
+  () =>
+    errorTypeFrom(props.asyncStatus.error?.value) === ErrorTypesEnum.FORBIDDEN,
+);
 
 const emptyVisible = computed(() => {
   return !!(
@@ -212,7 +224,8 @@ const toggleFilter = () => {
         >
           <slot v-if="error" name="error">
             <transition name="fade">
-              <ServerError />
+              <Forbidden v-if="forbidden" />
+              <ServerError v-else />
             </transition>
           </slot>
 

@@ -13,7 +13,7 @@ import {
   type AsyncStatus,
   ErrorTypesEnum,
 } from "@/shared/components/AsyncData.types";
-import { isAxiosError } from "axios";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 
 type Props = {
   asyncStatus: AsyncStatus;
@@ -30,30 +30,7 @@ const error = computed(() => {
   return props.asyncStatus.error?.value;
 });
 
-const status = computed(() => {
-  if (!error.value || !isAxiosError(error.value)) return;
-
-  return error.value.response?.status;
-});
-
-const errorType = computed(() => {
-  if (!status.value) {
-    return undefined;
-  }
-
-  if (status.value == 404) {
-    return ErrorTypesEnum.NOT_FOUND;
-  }
-
-  // A refused request is not a broken server: the feature is off, or the record
-  // belongs to somebody else. Saying "server error" sends people to report an
-  // outage that isn't one.
-  if (status.value == 403) {
-    return ErrorTypesEnum.FORBIDDEN;
-  }
-
-  return ErrorTypesEnum.ERROR;
-});
+const errorType = computed(() => errorTypeFrom(error.value));
 
 const loading = computed(() => {
   return (
