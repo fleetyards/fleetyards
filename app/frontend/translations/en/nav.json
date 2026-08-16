@@ -197,9 +197,6 @@
           "index": "Funding Goals",
           "new": "New Funding Goal",
           "edit": "Edit Funding Goal"
-        },
-        "notifications": {
-          "index": "Notifications"
         }
       }
     }

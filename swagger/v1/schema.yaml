@@ -7681,49 +7681,6 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
-    AdminNotificationSeverityEnum:
-      type: string
-      enum:
-      - info
-      - warning
-      - error
-      x-enumNames:
-      - INFO
-      - WARNING
-      - ERROR
-      title: AdminNotificationSeverityEnum
-    AdminNotificationSortEnum:
-      type: string
-      enum:
-      - createdAt asc
-      - createdAt desc
-      x-enumNames:
-      - CREATED_AT_ASC
-      - CREATED_AT_DESC
-      title: AdminNotificationSortEnum
-    AdminNotificationTypeEnum:
-      type: string
-      enum:
-      - paints_import
-      - modules_import
-      - loaner_sync
-      - uex_prices_import
-      - uex_commodity_prices_import
-      - new_supporter
-      - rsi_api_blocked
-      - rsi_api_unblocked
-      - weekly_stats
-      x-enumNames:
-      - PAINTS_IMPORT
-      - MODULES_IMPORT
-      - LOANER_SYNC
-      - UEX_PRICES_IMPORT
-      - UEX_COMMODITY_PRICES_IMPORT
-      - NEW_SUPPORTER
-      - RSI_API_BLOCKED
-      - RSI_API_UNBLOCKED
-      - WEEKLY_STATS
-      title: AdminNotificationTypeEnum
     BarChartStats:
       type: object
       properties:
@@ -7843,7 +7800,6 @@ components:
     ChannelsEnum:
       type: string
       enum:
-      - AdminNotificationsChannel
       - AppVersionChannel
       - FleetMembersChannel
       - FleetVehiclesChannel
@@ -7861,7 +7817,6 @@ components:
       - WishlistCreateChannel
       - WishlistDestroyChannel
       x-enumNames:
-      - ADMIN_NOTIFICATIONS_CHANNEL
       - APP_VERSION_CHANNEL
       - FLEET_MEMBERS_CHANNEL
       - FLEET_VEHICLES_CHANNEL

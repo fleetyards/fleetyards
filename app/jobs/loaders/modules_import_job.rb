@@ -9,13 +9,11 @@ module Loaders
 
       results = ::ModulesImporter.new.run
 
-      AdminReport.deliver(
+      GithubIssueCreator.new(
         task_type: "modules_import",
         title: "Modules Import Results",
-        body: ::ModulesImporter.github_issue_body(results),
-        actionable: ::ModulesImporter.actionable?(results),
-        record: import
-      )
+        body: ::ModulesImporter.github_issue_body(results)
+      ).run
 
       import.finish!
     rescue => e

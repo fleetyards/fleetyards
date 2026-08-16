@@ -12,21 +12,6 @@ module Notifications
       ::Notifications::NewPatronJob.new.perform(supporter.id)
     end
 
-    test "#perform notifies admins with supporter access" do
-      AdminNotificationsChannel.stubs(:broadcast_to)
-      admin_user = create(:admin_user, resource_access: [:supporters])
-      supporter = create(:supporter_contribution, :patreon, name: "Alice", amount_cents: 500, currency: "EUR")
-      Discord::NewSupporter.expects(:new).with(supporter:).returns(stub(run: true))
-      AdminMailer.expects(:new_supporter).with(supporter).returns(stub(deliver_later: true))
-
-      ::Notifications::NewPatronJob.new.perform(supporter.id)
-
-      notification = AdminNotification.find_by(admin_user:, notification_type: "new_supporter")
-      assert_not_nil notification
-      assert_equal "Alice — 5.00 EUR", notification.body
-      assert_equal supporter, notification.record
-    end
-
     test "#perform still emails when the Discord post fails" do
       supporter = create(:supporter_contribution, :patreon)
       failing = stub

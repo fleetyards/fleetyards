@@ -38,12 +38,6 @@ class PaintsImporter
     }
   end
 
-  # A run that only found new paints is a status update; missing models and
-  # import errors are the parts a human has to resolve.
-  def self.actionable?(results)
-    results[:new_with_error][:items].present? || results[:model_not_found][:items].present?
-  end
-
   def self.github_issue_body(results)
     lines = []
 

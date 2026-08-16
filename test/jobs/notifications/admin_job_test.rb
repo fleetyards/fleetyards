@@ -4,50 +4,20 @@ require "test_helper"
 
 module Notifications
   class AdminJobTest < ActiveJob::TestCase
-    setup do
-      AdminNotificationsChannel.stubs(:broadcast_to)
-    end
-
-    test "#perform mails the digest to every super admin individually" do
-      first = create(:admin_user, :super_admin)
-      second = create(:admin_user, :super_admin)
-      create(:admin_user, resource_access: [:models])
-
-      recipients = []
-      AdminMailer.stubs(:weekly).with do |admin_user, _report|
-        recipients << admin_user
+    test "#perform sends weekly admin email with stats" do
+      captured_stats = nil
+      AdminMailer.stubs(:weekly).with do |stats|
+        captured_stats = stats
         true
       end.returns(stub(deliver_later: true))
 
       ::Notifications::AdminJob.new.perform
 
-      assert_equal [first, second].map(&:id).sort, recipients.map(&:id).sort
-    end
-
-    test "#perform passes a report covering every section" do
-      create(:admin_user, :super_admin)
-
-      captured = nil
-      AdminMailer.stubs(:weekly).with do |_admin_user, report|
-        captured = report
-        true
-      end.returns(stub(deliver_later: true))
-
-      ::Notifications::AdminJob.new.perform
-
-      assert_equal %i[growth engagement supporters ops content], captured[:sections].map(&:key)
-      assert_includes captured[:sections].first.metrics.map(&:key), :wishes
-    end
-
-    test "#perform records the report as an admin notification" do
-      admin_user = create(:admin_user, resource_access: [:stats])
-      AdminMailer.stubs(:weekly).returns(stub(deliver_later: true))
-
-      ::Notifications::AdminJob.new.perform
-
-      notification = AdminNotification.find_by(admin_user:, notification_type: "weekly_stats")
-      assert_not_nil notification
-      assert_includes notification.body, "New Registrations"
+      assert_includes captured_stats.keys, :registrations
+      assert_includes captured_stats.keys, :ships
+      assert_includes captured_stats.keys, :vehicles
+      assert_includes captured_stats.keys, :wishes
+      assert_includes captured_stats.keys, :fleets
     end
   end
 end

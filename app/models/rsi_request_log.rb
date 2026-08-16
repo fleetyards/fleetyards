@@ -20,30 +20,11 @@ class RsiRequestLog < ApplicationRecord
 
   def notify_admin
     AdminMailer.notify_block(url).deliver_later
-
-    AdminNotification.notify!(
-      type: :rsi_api_blocked,
-      title: "RSI blocked a request",
-      body: url,
-      severity: :error,
-      link: "/maintenance/rsi-api-status",
-      record: self,
-      dedupe_key: url
-    )
   end
 
   def notify_admin_resolved
     return unless resolved
 
     AdminMailer.notify_unblock(url).deliver_later
-
-    AdminNotification.notify!(
-      type: :rsi_api_unblocked,
-      title: "RSI unblocked a request",
-      body: url,
-      link: "/maintenance/rsi-api-status",
-      record: self,
-      dedupe_key: url
-    )
   end
 end

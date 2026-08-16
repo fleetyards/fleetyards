@@ -1,70 +1,15 @@
 <h4>
   <%= I18n.t("mailer.admin.weekly.headline") %>
 </h4>
-<p class="report-period">
-  <%= I18n.t("mailer.admin.weekly.period",
-        from: I18n.l(@report[:starts_at].to_date, format: :day_month),
-        to: I18n.l(@report[:ends_at].to_date, format: :day_month)) %>
+<p>
+  <%= I18n.t("mailer.admin.weekly.registrations") %>: <%= @stats[:registrations] %>
 </p>
-
-<% @report[:sections].each do |section| %>
-  <h5 class="report-section">
-    <%= I18n.t("mailer.admin.weekly.sections.#{section.key}") %>
-  </h5>
-  <table class="report-table">
-    <tr>
-      <th class="report-label"><%= I18n.t("mailer.admin.weekly.columns.metric") %></th>
-      <th class="report-number"><%= I18n.t("mailer.admin.weekly.columns.current") %></th>
-      <th class="report-number"><%= I18n.t("mailer.admin.weekly.columns.previous") %></th>
-      <th class="report-number"><%= I18n.t("mailer.admin.weekly.columns.delta") %></th>
-    </tr>
-    <% section.metrics.each do |metric| %>
-      <tr>
-        <td class="report-label">
-          <%= I18n.t("mailer.admin.weekly.metrics.#{metric.key}") %>
-        </td>
-        <td class="report-number">
-          <%= admin_report_metric_value(metric) %>
-        </td>
-        <td class="report-number report-muted">
-          <%= admin_report_previous_value(metric) || "&mdash;".html_safe %>
-        </td>
-        <td class="report-number report-delta-<%= admin_report_delta_class(metric) %>">
-          <%= admin_report_delta(metric) || "&mdash;".html_safe %>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-<% end %>
-
-<h5 class="report-section">
-  <%= I18n.t("mailer.admin.weekly.notifications.headline", count: @notifications.size) %>
-</h5>
-<% if @notifications.any? %>
-  <table class="report-table">
-    <% @notifications.each do |notification| %>
-      <tr>
-        <td class="report-label">
-          <%= notification.title %>
-          <% if notification.occurrences > 1 %>
-            <span class="report-muted">&times;<%= notification.occurrences %></span>
-          <% end %>
-        </td>
-        <td class="report-number report-muted">
-          <%= I18n.l(notification.created_at.to_date, format: :day_month) %>
-        </td>
-      </tr>
-    <% end %>
-  </table>
-<% else %>
-  <p class="report-muted">
-    <%= I18n.t("mailer.admin.weekly.notifications.empty") %>
-  </p>
-<% end %>
-
-<spacer size="16"></spacer>
-<center>
-  <a href="<%= @notifications_url %>" class="button" target="_blank">
-    <%= I18n.t("mailer.admin.weekly.notifications.action") %>
-  </a>
-</center>
+<p>
+  <%= I18n.t("mailer.admin.weekly.ships") %>: <%= @stats[:ships] %>
+</p>
+<p>
+  <%= I18n.t("mailer.admin.weekly.vehicles") %>: <%= @stats[:vehicles] %>
+</p>
+<p>
+  <%= I18n.t("mailer.admin.weekly.fleets") %>: <%= @stats[:fleets] %>
+</p>

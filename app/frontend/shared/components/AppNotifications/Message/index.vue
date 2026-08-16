@@ -28,18 +28,8 @@ const messageClasses = computed(() => {
 
 const notificationsStore = useNotificationsStore();
 
-const router = useRouter();
-
 const hideMessage = () => {
   notificationsStore.hideMessage(props.message.id);
-};
-
-const handleClick = async () => {
-  hideMessage();
-
-  if (props.message.to) {
-    await router.push(props.message.to);
-  }
 };
 
 const component = computed(() => {
@@ -68,7 +58,7 @@ onMounted(() => {
     class="app-notifications__message"
     :class="messageClasses"
     :data-test="`notification-${type}`"
-    @click="handleClick"
+    @click="hideMessage"
   >
     <component :is="component" v-if="component" v-bind="componentProps" />
     <MessageBody v-else :text="message.text" />

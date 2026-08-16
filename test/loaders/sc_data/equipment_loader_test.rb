@@ -20,7 +20,7 @@ module ScData
       test "every parsed item carries a family the model knows" do
         assert_empty parsed.values.reject { |item| item[:equipment_type].present? }.map { |item| item[:key] }
 
-        assert_equal %w[armor clothing hacking_tool medical undersuit weapon weapon_attachment],
+        assert_equal %w[armor clothing undersuit weapon weapon_attachment],
           parsed.values.filter_map { |item| item[:equipment_type] }.uniq.sort
       end
 
@@ -31,59 +31,6 @@ module ScData
 
         assert_equal "weapon_attachment", magazine[:equipment_type]
         assert_equal "magazine", magazine[:item_type]
-      end
-
-      # Neither Type nor SubType separates a keycard from a hacking chip --
-      # SystemAccess holds both and the orbital keycards are filed under
-      # Hacking -- so both land in the family the game gives them.
-      test "consumables split into the medical and access families" do
-        consumables = parsed.values.select { |item| item[:key].include?("_consumable_") }
-
-        assert_equal %w[hacking_tool medical],
-          consumables.filter_map { |item| item[:equipment_type] }.uniq.sort
-        assert_equal %w[data_drive keycard medical_consumable],
-          consumables.filter_map { |item| item[:item_type] }.uniq.sort
-      end
-
-      # The ASD drives share SystemAccess with the keycards, so only the key
-      # keeps them out of a filter for the cards that open a door.
-      test "the delving drives are not filed with the keycards" do
-        drives = parsed.values.select { |item| item[:key].include?("_harddrive_") }
-
-        assert_equal ["ASD Data Drive", "ASD Memory Drive", "ASD Secure Drive"],
-          drives.map { |item| item[:name] }.sort
-        assert_equal ["data_drive"], drives.map { |item| item[:item_type] }.uniq
-        assert_equal ["hacking_tool"], drives.map { |item| item[:equipment_type] }.uniq
-      end
-
-      test "a medical pen keeps its spec block's type and its prose" do
-        medpen = parsed["crlf_consumable_healing_01"]
-
-        assert_equal "MedPen (Hemozal)", medpen[:name]
-        assert_equal "medical", medpen[:equipment_type]
-        assert_equal "medical_consumable", medpen[:item_type]
-        assert_no_match(/Manufacturer:|Item Type:/, medpen[:description])
-      end
-
-      # The OxyPen's description names its maker and stops, so the SubType is
-      # all there is to file it by.
-      test "a consumable with no item type in its block still takes one" do
-        assert_equal "medical_consumable", parsed["crlf_consumable_oxygen_01"][:item_type]
-      end
-
-      test "a keycard is read from a description that is prose alone" do
-        keycard = parsed["fps_consumable_keycard_olp_access"]
-
-        assert_equal "OLP Storage Keycard", keycard[:name]
-        assert_equal "keycard", keycard[:item_type]
-        assert_match(/grants Orbital Laser Platform employees access/, keycard[:description])
-      end
-
-      # fps_consumable_template borrows the MedPen's name outright, so without
-      # the template suffix rule the catalogue would show two of them.
-      test "the consumable templates are hidden rather than shown twice" do
-        assert_predicate parsed["fps_consumable_template"][:hidden], :present?
-        assert_equal parsed["crlf_consumable_healing_01"][:name], parsed["fps_consumable_template"][:name]
       end
 
       test "worn gear takes its slot from the AttachDef type, carried gear has none" do

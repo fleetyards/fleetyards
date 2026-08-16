@@ -15,20 +15,18 @@ module Loaders
 
       Vehicle.where(loaner: true).where.not(model_id: loaner_model_ids).destroy_all
 
-      actionable = missing_loaners.present? || missing_models.present?
+      if missing_loaners.present? || missing_models.present?
+        body = missing_loaners_body(missing_loaners, missing_models)
 
-      AdminReport.deliver(
-        task_type: "loaner_sync",
-        # The resolve-loaners-import skill finds its issue by this title.
-        title: actionable ? "Missing Loaners" : "Loaner Sync Results",
-        body: missing_loaners_body(missing_loaners, missing_models),
-        actionable:
-      )
+        GithubIssueCreator.new(
+          task_type: "loaner_sync",
+          title: "Missing Loaners",
+          body:
+        ).run
+      end
     end
 
     private def missing_loaners_body(missing_loaners, missing_models)
-      return "No missing Loaners or Models found" if missing_loaners.blank? && missing_models.blank?
-
       lines = []
 
       if missing_models.present?

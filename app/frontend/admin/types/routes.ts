@@ -11,7 +11,6 @@ type AdminSimpleRoutes =
   | "home"
   | "admin-images"
   | "admin-maintenance"
-  | "admin-notifications"
   | "admin-login"
   | "404"
   // Models

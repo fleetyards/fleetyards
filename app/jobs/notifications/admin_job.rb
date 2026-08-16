@@ -3,38 +3,15 @@
 module Notifications
   class AdminJob < ::Notifications::BaseJob
     def perform
-      report = AdminWeeklyReport.build
+      stats = {
+        registrations: User.where(created_at: (1.week.ago)..Time.zone.now).size,
+        ships: Model.where(created_at: (1.week.ago)..Time.zone.now).size,
+        vehicles: Vehicle.where(loaner: false, wanted: false, created_at: (1.week.ago)..Time.zone.now).size,
+        wishes: Vehicle.where(loaner: false, wanted: true, created_at: (1.week.ago)..Time.zone.now).size,
+        fleets: Fleet.where(created_at: (1.week.ago)..Time.zone.now).size
+      }
 
-      AdminUser.where(super_admin: true).find_each do |admin_user|
-        AdminMailer.weekly(admin_user, report).deliver_later
-      end
-
-      AdminNotification.notify!(
-        type: :weekly_stats,
-        title: I18n.t(:"mailer.admin.weekly.headline"),
-        body: notification_body(report),
-        link: "/"
-      )
-    end
-
-    private def notification_body(report)
-      report[:sections].flat_map do |section|
-        [
-          "## #{I18n.t(:"mailer.admin.weekly.sections.#{section.key}")}",
-          "",
-          *section.metrics.map { |metric| metric_line(metric) },
-          ""
-        ]
-      end.join("\n").strip
-    end
-
-    private def metric_line(metric)
-      label = I18n.t(:"mailer.admin.weekly.metrics.#{metric.key}")
-      value = (metric.format == :currency) ? format("%.2f EUR", metric.current.to_f / 100) : metric.current
-
-      return "- #{label}: #{value}" unless metric.comparable?
-
-      "- #{label}: #{value} (#{"+" unless metric.delta.negative?}#{metric.delta})"
+      AdminMailer.weekly(stats).deliver_later
     end
   end
 end

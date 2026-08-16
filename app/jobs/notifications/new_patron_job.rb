@@ -10,14 +10,6 @@ module Notifications
 
       AdminMailer.new_supporter(supporter).deliver_later
 
-      AdminNotification.notify!(
-        type: :new_supporter,
-        title: "New Patreon Supporter",
-        body: "#{supporter.display_name} — #{supporter.formatted_amount}",
-        link: "/supporter-contributions",
-        record: supporter
-      )
-
       begin
         Discord::NewSupporter.new(supporter:).run
       rescue => e

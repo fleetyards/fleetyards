@@ -5,8 +5,6 @@ export enum MessageTypesEnum {
   ALERT = "alert",
 }
 
-import { type RouteLocationRaw } from "vue-router";
-
 export type AppNotification = {
   id: string;
   type: MessageTypesEnum;
@@ -19,6 +17,4 @@ export type AppNotification = {
   timeout?: number | false;
   background?: boolean;
   icon?: string;
-  // Where clicking the message takes you, on top of dismissing it.
-  to?: RouteLocationRaw;
 };

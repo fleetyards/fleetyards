@@ -12,24 +12,21 @@ module Loaders
       mapping = ::Uex::CommodityMapper.new.run
       result = ::Uex::CommodityPriceSyncer.new.run
 
-      unmapped = mapping.unmapped.present?
-      unknown = result.unknown.present?
+      if mapping.unmapped.present?
+        GithubIssueCreator.new(
+          task_type: "uex_commodity_prices_import",
+          title: "UEX Commodity Sync — Unmapped Commodities",
+          body: ::Uex::CommodityMapper.github_issue_body(mapping)
+        ).run
+      end
 
-      AdminReport.deliver(
-        task_type: "uex_commodity_prices_import",
-        title: unmapped ? "UEX Commodity Sync — Unmapped Commodities" : "UEX Commodity Mapping Results",
-        body: ::Uex::CommodityMapper.github_issue_body(mapping),
-        actionable: unmapped,
-        record: import
-      )
-
-      AdminReport.deliver(
-        task_type: "uex_commodity_prices_import",
-        title: unknown ? "UEX Commodity Sync — Priced Commodities We Do Not Carry" : "UEX Commodity Price Sync Results",
-        body: ::Uex::CommodityPriceSyncer.github_issue_body(result),
-        actionable: unknown,
-        record: import
-      )
+      if result.unknown.present?
+        GithubIssueCreator.new(
+          task_type: "uex_commodity_prices_import",
+          title: "UEX Commodity Sync — Priced Commodities We Do Not Carry",
+          body: ::Uex::CommodityPriceSyncer.github_issue_body(result)
+        ).run
+      end
 
       import.update!(
         output: {

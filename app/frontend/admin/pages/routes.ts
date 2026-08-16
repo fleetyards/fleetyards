@@ -159,17 +159,6 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/notifications",
-    name: "admin-notifications",
-    component: () => import("@/admin/pages/notifications.vue"),
-    meta: {
-      title: "admin.notifications.index",
-      needsAuthentication: true,
-      icon: "fa-duotone fa-bell",
-      nav: "hidden",
-    },
-  },
-  {
     path: "/login/",
     name: "admin-login",
     component: () => import("@/admin/pages/login.vue"),

@@ -230,9 +230,6 @@
           "startedAtGteq": "2026-01-01",
           "startedAtLteq": "2026-12-31"
         },
-        "adminNotifications": {
-          "search": "Title or content..."
-        },
         "users": {
           "search": "Username or Email",
           "username": "Username",
