@@ -28,6 +28,7 @@ import {
   useFleetMembers as useFleetMembersQuery,
   useFleetMembersStats as useFleetMembersStatsQuery,
   getFleetMembersQueryKey,
+  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetMemberQuery,
@@ -58,8 +59,12 @@ const canManageInvites = computed(() =>
 );
 
 const { isFeatureEnabled } = useFeatures();
-const starmapEnabled = computed(() => isFeatureEnabled("fleet_starmap"));
-const worldmapEnabled = computed(() => isFeatureEnabled("fleet_worldmap"));
+const starmapEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.fleet_starmap),
+);
+const worldmapEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.fleet_worldmap),
+);
 
 const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
   updateCallback: async () => {

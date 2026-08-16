@@ -4,6 +4,12 @@ require "test_helper"
 
 module FeatureFlags
   class RegistryTest < ActiveSupport::TestCase
+    # Flags a data migration created that have since been retired on purpose:
+    # dropped from the registry so the next sync prunes them from Flipper.
+    # Listing one here is what tells a deliberate retirement apart from an
+    # entry accidentally left out, which is all the guard below can see.
+    RETIRED_FLAG_NAMES = %w[hardpoints-v2].freeze
+
     def registry(raw)
       Registry.new(raw: raw)
     end
@@ -124,10 +130,16 @@ module FeatureFlags
     end
 
     test "the checked-in registry covers every flag created by a data migration" do
-      missing = migration_flag_names - Registry.new.names
+      missing = migration_flag_names - Registry.new.names - RETIRED_FLAG_NAMES
 
       assert_empty missing,
-        "flags created by data migrations but missing from config/feature_flags.yml (sync would prune them)"
+        "flags created by data migrations but missing from config/feature_flags.yml (sync would prune them). " \
+        "Retiring one on purpose? Add it to RETIRED_FLAG_NAMES."
+    end
+
+    test "a flag listed as retired is really gone from the registry" do
+      assert_empty RETIRED_FLAG_NAMES & Registry.new.names,
+        "declared again in config/feature_flags.yml — drop it from RETIRED_FLAG_NAMES so the guard sees it"
     end
 
     test "the migration scan finds both the literal and %w forms" do

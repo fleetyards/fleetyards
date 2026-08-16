@@ -26,6 +26,7 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   type HangarGroupMetric,
   type HangarGroupPublic,
+  FeatureFlagName,
   HangarGroup,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -401,7 +402,7 @@ const openDisplayOptionsModal = () => {
     </Btn>
 
     <Btn
-      v-if="isFeatureEnabled('hangar_inventories')"
+      v-if="isFeatureEnabled(FeatureFlagName.hangar_inventories)"
       :size="BtnSizesEnum.MD"
       :to="{ name: 'hangar-inventories' }"
     >
@@ -453,7 +454,7 @@ const openDisplayOptionsModal = () => {
           </Btn>
 
           <Btn
-            v-if="isFeatureEnabled('hangar_inventories')"
+            v-if="isFeatureEnabled(FeatureFlagName.hangar_inventories)"
             :to="{ name: 'hangar-inventories' }"
           >
             <i class="fa-duotone fa-boxes-stacked" />

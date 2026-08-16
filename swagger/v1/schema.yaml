@@ -9336,7 +9336,6 @@ components:
       - fleet_starmap
       - fleet_worldmap
       - hangar_inventories
-      - hardpoints-v2
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
