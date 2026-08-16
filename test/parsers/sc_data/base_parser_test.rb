@@ -62,6 +62,66 @@ module ScData
         assert_equal ["kept_model.json"], parsed_files("models")
       end
 
+      # Records name the source art -- a .tif that the export ships as a
+      # CryEngine texture -- so a parse has to find it under another extension
+      # and leave a browser something it can draw.
+      test "#save_icon converts a texture the record names as a tif" do
+        write_texture("ui/logos/acme_256.dds")
+
+        target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
+
+        assert_equal "#{@export_path}/icons/ui/logos/acme_256.png", target
+        assert_equal "PNG", MiniMagick::Image.open(target).type
+      end
+
+      # Vectors are already drawable, and rasterising one would only lose it
+      # its resolution.
+      test "#save_icon copies a vector icon as it is" do
+        source = write_asset("ui/logos/acme.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
+
+        target = @parser.send(:save_icon, "ui/logos/acme.svg")
+
+        assert_equal "#{@export_path}/icons/ui/logos/acme.svg", target
+        assert_equal File.read(source), File.read(target)
+      end
+
+      # The split form: a header with no surface, and the picture itself in a
+      # numbered companion beside it.
+      test "#save_icon reassembles a texture whose surface sits beside it" do
+        texture = write_texture("ui/logos/split_256.dds")
+        bytes = File.binread(texture)
+        File.binwrite(texture, bytes[0, 128])
+        File.binwrite("#{texture}.1", bytes[128..])
+
+        target = @parser.send(:save_icon, "ui/logos/split_256.tif")
+
+        assert_equal "#{@export_path}/icons/ui/logos/split_256.png", target
+        assert_equal 16, MiniMagick::Image.open(target).width
+      end
+
+      test "#save_icon writes nothing when the export carries no such asset" do
+        assert_nil @parser.send(:save_icon, "ui/logos/missing_256.tif")
+        assert_not File.directory?("#{@export_path}/icons")
+      end
+
+      private def write_texture(path)
+        target = "#{@base_folder}/raw/1.0.0/Data/#{path}"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        MiniMagick.convert.size("16x16").tap { |c| c << "xc:red" }.tap { |c| c << target }.call
+
+        target
+      end
+
+      private def write_asset(path, contents)
+        target = "#{@base_folder}/raw/1.0.0/Data/#{path}"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, contents)
+
+        target
+      end
+
       private def write_parsed(folder, name)
         FileUtils.mkdir_p("#{@export_path}/#{folder}")
         File.write("#{@export_path}/#{folder}/#{name}.json", "{}")

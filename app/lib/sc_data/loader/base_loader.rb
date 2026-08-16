@@ -43,6 +43,39 @@ module ScData
         Manufacturer.find_by(sc_ref: ref)
       end
 
+      # The parser carried the artwork into the parsed tree, so attaching it is
+      # a local read -- no bucket, no credentials, and it works offline.
+      #
+      # Guarded on the checksum ActiveStorage itself stores, because attaching
+      # an identical file writes a fresh blob every time: a load that changed
+      # nothing would otherwise leave a few hundred orphans behind on each run.
+      def attach_icon(record, attachment_name, icon_path)
+        file = parsed_icon(icon_path)
+
+        return if file.blank?
+
+        attachment = record.public_send(attachment_name)
+        checksum = Digest::MD5.file(file).base64digest
+
+        return if attachment.attached? && attachment.blob.checksum == checksum
+
+        attachment.attach(
+          io: File.open(file),
+          filename: File.basename(file),
+          content_type: Marcel::MimeType.for(name: File.basename(file))
+        )
+      end
+
+      # The record names the source art -- .tif -- while what was written is a
+      # .png or the .svg it already was, under a path that otherwise matches.
+      def parsed_icon(icon_path)
+        return if icon_path.blank?
+
+        Dir.glob(
+          Rails.root.join("data/sc_data/parsed/#{sc_environment}/icons/#{icon_path.sub(/\.\w+\z/, "")}.*")
+        ).first
+      end
+
       # A record the export dropped keeps its row -- a ledger entry or a loadout
       # made against it still has to resolve -- but it must stop claiming a
       # build it is no longer part of, or `current_version` would go on

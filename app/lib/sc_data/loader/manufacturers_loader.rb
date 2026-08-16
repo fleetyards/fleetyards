@@ -26,15 +26,21 @@ module ScData
 
             manufacturer.update!(update_params)
 
+            attach_icon(manufacturer, :logo, manufacturer_data["icon"])
+
             manufacturer
           elsif manufacturer_data["name"].present?
-            Manufacturer.create!(
+            created = Manufacturer.create!(
               sc_ref: manufacturer_data["ref"],
               name: manufacturer_data["name"],
               code: manufacturer_data["code"],
               description: manufacturer_data["description"],
               icon: manufacturer_data["icon"]
             )
+
+            attach_icon(created, :logo, manufacturer_data["icon"])
+
+            created
           end
         end
       end

@@ -25,8 +25,29 @@ module ScData
         assert_equal manufacturer_codes.uniq.size, manufacturer_codes.size
       end
 
-      # The path only: the images live in the export rather than the record, so
-      # nothing resolves it yet.
+      test "#all attaches the logo the parser carried over" do
+        @loader.all
+
+        logo = Manufacturer.find_by(code: "TALN").logo
+
+        assert_predicate logo, :attached?
+        assert_equal "talon_256.png", logo.filename.to_s
+        assert_equal "image/png", logo.content_type
+      end
+
+      # Attaching an identical file writes a fresh blob, so a load that changed
+      # nothing would leave a few hundred orphans behind on every run.
+      test "#all leaves an unchanged logo attached to the blob it already had" do
+        @loader.all
+        blob = Manufacturer.find_by(code: "TALN").logo.blob
+
+        assert_no_difference -> { ActiveStorage::Blob.count } do
+          @loader.all
+        end
+
+        assert_equal blob, Manufacturer.find_by(code: "TALN").logo.blob
+      end
+
       test "#all records the logo the game names for a manufacturer" do
         @loader.all
 

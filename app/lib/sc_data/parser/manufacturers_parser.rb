@@ -6,6 +6,8 @@ module ScData
           parse_manufacturer(item[:values])
         end
 
+        manufacturers.each { |manufacturer| save_icon(manufacturer[:icon]) }
+
         save_items(manufacturers, folder: "manufacturers", key: :code)
       end
 
