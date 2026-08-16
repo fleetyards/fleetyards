@@ -66,6 +66,8 @@ module ScData
       # CryEngine texture -- so a parse has to find it under another extension
       # and leave a browser something it can draw.
       test "#save_icon converts a texture the record names as a tif" do
+        requires_imagemagick
+
         write_texture("ui/logos/acme_256.dds")
 
         target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
@@ -88,6 +90,8 @@ module ScData
       # The split form: a header with no surface, and the picture itself in a
       # numbered companion beside it.
       test "#save_icon reassembles a texture whose surface sits beside it" do
+        requires_imagemagick
+
         texture = write_texture("ui/logos/split_256.dds")
         bytes = File.binread(texture)
         File.binwrite(texture, bytes[0, 128])
@@ -102,6 +106,22 @@ module ScData
       test "#save_icon writes nothing when the export carries no such asset" do
         assert_nil @parser.send(:save_icon, "ui/logos/missing_256.tif")
         assert_not File.directory?("#{@export_path}/icons")
+      end
+
+      # Textures are converted where the export is parsed: a machine with the
+      # raw dump and ImageMagick on it. Neither CI nor production has either --
+      # the loader only reads what the parse already wrote -- so the two cases
+      # that shell out say so rather than failing there.
+      private def requires_imagemagick
+        skip("ImageMagick is not installed") unless imagemagick?
+      end
+
+      private def imagemagick?
+        return @imagemagick if defined?(@imagemagick)
+
+        @imagemagick = %w[magick convert].any? do |binary|
+          system(binary, "-version", out: File::NULL, err: File::NULL)
+        end
       end
 
       private def write_texture(path)
