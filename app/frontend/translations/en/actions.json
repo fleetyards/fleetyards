@@ -275,7 +275,9 @@
       "adminNotifications": {
         "read": "Mark as read",
         "readAll": "Mark all as read",
-        "destroyAll": "Delete all"
+        "destroyAll": "Delete all",
+        "sortOldest": "Oldest first",
+        "sortNewest": "Newest first"
       }
     }
   }

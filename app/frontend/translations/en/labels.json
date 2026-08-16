@@ -1707,9 +1707,6 @@
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {
-        "empty": "Nothing open",
-        "showAll": "Show all",
-        "readAll": "Mark all as read",
         "unreadOnly": "Unread only",
         "status": "Status",
         "severity": "Severity",
