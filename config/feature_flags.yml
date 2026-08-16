@@ -35,12 +35,6 @@ hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"
   self_service: true
 
-# Superseded by the hardpoints redesign; the flag was removed from the code in
-# #4176 and is kept here only so this registry does not prune it as a side
-# effect of being introduced. Delete this entry to retire the flag.
-hardpoints-v2:
-  description: "Legacy hardpoints v2 rollout — no longer referenced in code"
-
 oauth-applications:
   description: "User-owned OAuth applications in settings"
   permanent: true
