@@ -3,6 +3,7 @@ module ScData
     class ItemsLoader < ::ScData::Loader::BaseLoader
       def all
         items = load_items("items").reject { |item| item["category"] == "inventory" }
+        loaded = []
 
         # Pass 1: create/update all components so they exist for cross-references
         items.each do |item|
@@ -62,7 +63,13 @@ module ScData
             end
           end
 
+          # Stamped on every load, not just on create: the row is reused across
+          # builds now, so this is what records the build it was last seen in.
+          update_params[:version] = sc_version
+
           component.update!(update_params)
+
+          loaded << component.id
         end
 
         # Pass 2: link loadouts (all components now exist for cross-references)
@@ -73,6 +80,8 @@ module ScData
           component = find_component(normalized_key, item["key"], item["ref"])
           add_loadout(item, component)
         end
+
+        retire_absent(Component, loaded)
       end
 
       private def add_loadout(item, component)
@@ -117,12 +126,17 @@ module ScData
         update_params
       end
 
+      # A component is the same component across builds, so the version is no
+      # longer part of its identity -- a row is updated in place and `version`
+      # records the build it was last seen in. Commodity and Equipment are keyed
+      # the same way; only this loader used to add a row per build, which is why
+      # the table kept every patch it had ever imported.
       private def find_component(normalized_key, key, ref = nil, name = nil)
         return if normalized_key.blank? && ref.blank?
 
-        component = Component.find_by(sc_key: normalized_key, version: sc_version) if normalized_key.present?
-        component = Component.find_by(sc_ref: ref, version: sc_version) if component.blank? && ref.present?
-        component = Component.where(name: name, sc_key: nil, sc_ref: nil, version: sc_version).first if component.blank? && name.present?
+        component = Component.find_by(sc_key: normalized_key) if normalized_key.present?
+        component = Component.find_by(sc_ref: ref) if component.blank? && ref.present?
+        component = Component.where(name: name, sc_key: nil, sc_ref: nil).first if component.blank? && name.present?
 
         component
       end

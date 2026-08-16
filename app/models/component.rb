@@ -34,12 +34,31 @@
 # Indexes
 #
 #  index_components_on_manufacturer_id  (manufacturer_id)
+#  index_components_on_sc_key           (sc_key) UNIQUE
+#  index_components_on_version          (version)
 #
 class Component < ApplicationRecord
   include ActiveStorageVariants
 
   paginates_per 50
   max_paginates_per 240
+
+  # One row per component, with the spec history kept as versions rather than as
+  # a row per build. `version` is deliberately not tracked: it moves on every
+  # import, and recording that would write a version per component per run for
+  # nothing. Only a spec that actually changed is worth keeping.
+  #
+  # The associations are renamed because PaperTrail's default `version` reader
+  # shadows this table's `version` column -- left alone, an update writes NULL
+  # over the build a component was last seen in.
+  has_paper_trail on: %i[update],
+    only: %i[
+      name description size grade item_type item_class component_class component_sub_type
+      component_type type_data durability power_connection heat_connection ammunition
+      inventory_consumption tracking_signal manufacturer_id hidden
+    ],
+    version: :paper_trail_version,
+    versions: {name: :paper_trail_versions}
 
   belongs_to :manufacturer, optional: true
 

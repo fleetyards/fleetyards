@@ -43,6 +43,25 @@ module ScData
         Manufacturer.find_by(sc_ref: ref)
       end
 
+      # A record the export dropped keeps its row -- a ledger entry or a loadout
+      # made against it still has to resolve -- but it must stop claiming a
+      # build it is no longer part of, or `current_version` would go on
+      # offering it.
+      #
+      # Re-importing the same build is what makes this necessary: a new build
+      # leaves the row on its old version, but a reload of the one we are
+      # already on leaves it looking current.
+      #
+      # A run that loaded nothing retires nothing. `where.not(id: [])` is
+      # `1=1`, so an export that failed to sync -- or an environment whose tree
+      # does not carry this catalogue at all -- would otherwise take the whole
+      # of it in one statement.
+      def retire_absent(model, loaded)
+        return if loaded.blank?
+
+        model.where(version: sc_version).where.not(id: loaded).update_all(version: nil)
+      end
+
       def update_cargo_holds(hardpoints, update_params)
         cargo_holds = extract_cargo_holds(hardpoints)
 
@@ -113,13 +132,15 @@ module ScData
 
           if item["key"].blank? && item["ref"].blank? && parent.is_a?(Model) && item["name"]&.end_with?("_module")
             derived_key = "#{parent.sc_data_identifier}_module"
-            item["key"] = derived_key if Component.exists?(sc_key: derived_key, version: sc_version)
+            item["key"] = derived_key if Component.exists?(sc_key: derived_key)
           end
 
+          # Resolved by key alone: a component is one row now, and `version`
+          # says which build it was last seen in rather than which row to use.
           component = if item["key"].present?
-            Component.find_by(sc_key: item["key"]&.downcase, version: sc_version)
+            Component.find_by(sc_key: item["key"]&.downcase)
           elsif item["ref"].present?
-            Component.find_by(sc_ref: item["ref"], version: sc_version)
+            Component.find_by(sc_ref: item["ref"])
           end
 
           if component.present?
@@ -136,9 +157,9 @@ module ScData
                                  nested = nested_loadout.find { |nl| nl["name"]&.downcase == hp.sc_name }
                                  if nested.present?
                                    sub_component = if nested["key"].present?
-                                     Component.find_by(sc_key: nested["key"]&.downcase, version: sc_version)
+                                     Component.find_by(sc_key: nested["key"]&.downcase)
                                    elsif nested["ref"].present?
-                                     Component.find_by(sc_ref: nested["ref"], version: sc_version)
+                                     Component.find_by(sc_ref: nested["ref"])
                                    end
                                  end
                                end

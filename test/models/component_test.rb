@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require "test_helper"
+
 # == Schema Information
 #
 # Table name: components
@@ -35,35 +39,31 @@
 #  index_components_on_sc_key           (sc_key) UNIQUE
 #  index_components_on_version          (version)
 #
-FactoryBot.define do
-  factory :component do
-    name { Faker::Name.name }
-    component_class { "RSIModular" }
+class ComponentTest < ActiveSupport::TestCase
+  setup do
+    @component = create(:component, name: "FR-66 Shield", sc_key: "fr66", version: "0.0.1-live.1")
+  end
 
-    trait :with_manufacturer do
-      manufacturer
+  test "keeps a version when the spec changes" do
+    assert_difference -> { @component.paper_trail_versions.count }, 1 do
+      @component.update!(name: "FR-66 Shield Generator")
     end
 
-    trait :with_store_image do
-      store_image { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png") }
-    end
+    assert_equal "FR-66 Shield", @component.paper_trail_versions.last.reify.name
+  end
 
-    trait :hidden do
-      hidden { true }
+  # An import touches every component it sees, and `version` moves on all of
+  # them. Tracking it would write a history row per component per run and bury
+  # the changes worth reading.
+  test "keeps no version when only the build it was last seen in moves" do
+    assert_no_difference -> { @component.paper_trail_versions.count } do
+      @component.update!(version: Rails.configuration.sc_data[:version])
     end
+  end
 
-    trait :weapon do
-      item_type { "WeaponGun" }
-      category { "weapon" }
-      component_type { "gun" }
-      size { "S3" }
-    end
-
-    trait :shield do
-      item_type { "Shield" }
-      category { "defense" }
-      component_type { "shield_generator" }
-      size { "S2" }
+  test "rejects a second component with the same sc_key" do
+    assert_raises(ActiveRecord::RecordNotUnique) do
+      Component.create!(name: "Copy", sc_key: "fr66")
     end
   end
 end

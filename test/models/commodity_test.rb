@@ -71,4 +71,22 @@ class CommodityTest < ActiveSupport::TestCase
 
     assert_equal %w[gas metal], Commodity.commodity_types
   end
+
+  # A type nothing in the current build carries is a filter that returns
+  # nothing, so the options follow the same scope the list does.
+  test "leaves a type only past builds carry out of the filter options" do
+    create(:commodity, commodity_type: "metal")
+    create(:commodity, commodity_type: "vice", version: "0.0.1-live.1")
+
+    assert_equal %w[metal], Commodity.commodity_types
+  end
+
+  test "narrows to the build the game currently ships" do
+    current = create(:commodity)
+    dropped = create(:commodity, version: "0.0.1-live.1")
+
+    assert_includes Commodity.current_version, current
+    assert_not_includes Commodity.current_version, dropped
+    assert_includes Commodity.current_version(false), dropped
+  end
 end

@@ -63,6 +63,28 @@ module ScData
         assert_equal count, Commodity.count
       end
 
+      # A new build leaves a dropped record on its old version, so
+      # current_version filters it out. Re-importing the build we are already on
+      # does not: the row keeps claiming it, and the picker keeps offering it.
+      test "#all stops a dropped commodity claiming the build it is no longer in" do
+        @loader.all
+
+        retired = create(:commodity, sc_key: "items_commodities_gone", version: Rails.configuration.sc_data[:version])
+
+        @loader.all
+
+        assert Commodity.exists?(retired.id), "the row has to stay for existing references"
+        assert_nil retired.reload.version
+        assert_not Commodity.current_version.exists?(retired.id)
+      end
+
+      test "#all leaves the commodities still in the export on the current build" do
+        @loader.all
+        @loader.all
+
+        assert_operator Commodity.current_version.count, :>=, 160
+      end
+
       test "#all keeps a commodity that already exists without an sc_key" do
         existing = create(:commodity, name: "Gold", sc_key: nil, commodity_type: nil)
 
