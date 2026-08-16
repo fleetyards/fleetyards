@@ -133,13 +133,18 @@ end
 def write_managed_env(filename, managed_body)
   path = File.join(APP_ROOT, filename)
 
-  # Preserve user content above the marker
+  # Preserve user content above the marker. An earlier version of this writer
+  # could glue the marker onto the last user line, so match anywhere in a line
+  # and keep only what precedes it.
   user_content = ""
   if File.exist?(path)
     lines = File.readlines(path)
-    marker_idx = lines.index { |l| l.strip == WORKTREE_MARKER }
-    user_content = lines[0...marker_idx].join if marker_idx
-    user_content = lines.join unless marker_idx
+    marker_idx = lines.index { |l| l.include?(WORKTREE_MARKER) }
+    user_content = if marker_idx
+      lines[0...marker_idx].join + lines[marker_idx].split(WORKTREE_MARKER).first.to_s
+    else
+      lines.join
+    end
   end
 
   user_content += "\n" unless user_content.empty? || user_content.end_with?("\n")
