@@ -246,6 +246,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150000) do
     t.decimal "damage_reduction", precision: 15, scale: 2
     t.text "description"
     t.string "equipment_type"
+    t.string "extras"
     t.string "grade"
     t.boolean "hidden", default: false
     t.string "icon"
@@ -260,6 +261,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_150000) do
     t.integer "slot"
     t.string "slug"
     t.decimal "storage", precision: 15, scale: 2
+    t.string "store_image"
+    t.integer "store_image_height"
+    t.integer "store_image_width"
     t.string "sub_type"
     t.string "temperature_rating"
     t.datetime "updated_at", precision: nil, null: false
