@@ -16,7 +16,7 @@ module InventoryLedgerEntry
   # item_type reaches us from the client, and a polymorphic belongs_to would
   # happily point an entry at any model in the app — including records the
   # signed-in user cannot see, whose name would then be copied onto the entry.
-  ITEM_TYPES = %w[Commodity Component].freeze
+  ITEM_TYPES = %w[Commodity Component Equipment].freeze
 
   UNITS = {scu: 0, units: 1}.freeze
 

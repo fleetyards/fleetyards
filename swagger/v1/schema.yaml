@@ -9696,6 +9696,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:
@@ -9793,6 +9794,7 @@ components:
           enum:
           - Commodity
           - Component
+          - Equipment
           -
         itemId:
           type:
@@ -10965,6 +10967,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:
@@ -11041,6 +11044,7 @@ components:
           enum:
           - Commodity
           - Component
+          - Equipment
           -
         itemId:
           type:
@@ -11934,6 +11938,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:

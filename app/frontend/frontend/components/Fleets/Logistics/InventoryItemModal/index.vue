@@ -20,10 +20,12 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
 import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/index.vue";
+import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/index.vue";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import {
   type Commodity,
   type Component as GameComponent,
+  type Equipment as GameEquipment,
   type Fleet,
   type FleetInventory,
   type FilterOption,
@@ -109,6 +111,18 @@ const isCommodity = computed(
   () => category.value === FleetInventoryItemCreateInputCategory.commodity,
 );
 
+// One table backs all three: the game files file magazines as weapon
+// attachments, so ammunition is not a catalogue of its own.
+const EQUIPMENT_CATEGORIES: FleetInventoryItemCreateInputCategory[] = [
+  FleetInventoryItemCreateInputCategory.weapon,
+  FleetInventoryItemCreateInputCategory.equipment,
+  FleetInventoryItemCreateInputCategory.ammunition,
+];
+
+const isEquipment = computed(() =>
+  EQUIPMENT_CATEGORIES.includes(category.value),
+);
+
 const unitOptions = unitOptionsFor(category);
 
 // The category dictates which units make sense, so a category change pulls the
@@ -185,9 +199,19 @@ const applyPickedCommodity = (commodity: Commodity) => {
   setFieldValue("name", commodity.name);
 };
 
+const applyPickedEquipment = (equipment: GameEquipment) => {
+  pickedItem.value = {
+    type: "Equipment",
+    id: equipment.id,
+    name: equipment.name,
+  };
+
+  setFieldValue("name", equipment.name);
+};
+
 // A hand-edited name no longer describes the picked item, so the reference goes
-// with it rather than mislabeling a real component or commodity. Typing a name
-// that isn't in the catalogue at all stays allowed; it just isn't a reference.
+// with it rather than mislabeling a real catalogue entry. Typing a name that
+// isn't in the catalogue at all stays allowed; it just isn't a reference.
 watch(name, (val) => {
   if (pickedItem.value && val !== pickedItem.value.name) {
     pickedItem.value = undefined;
@@ -196,11 +220,14 @@ watch(name, (val) => {
 
 // Switching away from the category that offered the picker leaves the reference
 // pointing at the wrong kind of thing.
-watch([isComponent, isCommodity], ([component, commodity]) => {
+watch([isComponent, isCommodity, isEquipment], () => {
   if (!pickedItem.value) return;
 
-  const stillOffered =
-    pickedItem.value.type === "Component" ? component : commodity;
+  const stillOffered = {
+    Component: isComponent.value,
+    Commodity: isCommodity.value,
+    Equipment: isEquipment.value,
+  }[pickedItem.value.type];
 
   if (!stillOffered) pickedItem.value = undefined;
 });
@@ -364,6 +391,7 @@ const onSubmit = handleSubmit(async (values) => {
         />
         <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
         <CommodityPicker v-if="isCommodity" @select="applyPickedCommodity" />
+        <EquipmentPicker v-if="isEquipment" @select="applyPickedEquipment" />
       </template>
 
       <div class="row">

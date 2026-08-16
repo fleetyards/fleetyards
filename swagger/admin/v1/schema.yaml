@@ -9529,6 +9529,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:
