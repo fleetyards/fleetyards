@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import NotFound from "@/shared/components/NotFound/index.vue";
+import Forbidden from "@/shared/components/Forbidden/index.vue";
 import ServerError from "@/shared/components/ServerError/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import {
@@ -44,6 +45,13 @@ const errorType = computed(() => {
     return ErrorTypesEnum.NOT_FOUND;
   }
 
+  // A refused request is not a broken server: the feature is off, or the record
+  // belongs to somebody else. Saying "server error" sends people to report an
+  // outage that isn't one.
+  if (status.value == 403) {
+    return ErrorTypesEnum.FORBIDDEN;
+  }
+
   return ErrorTypesEnum.ERROR;
 });
 
@@ -60,6 +68,7 @@ const loading = computed(() => {
 <template>
   <slot v-if="error && !hideError" name="error">
     <NotFound v-if="errorType === ErrorTypesEnum.NOT_FOUND" />
+    <Forbidden v-else-if="errorType === ErrorTypesEnum.FORBIDDEN" />
     <ServerError v-else />
   </slot>
   <slot v-else-if="loading" name="loading">

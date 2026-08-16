@@ -14,6 +14,7 @@ export type AsyncStatus = {
 
 export enum ErrorTypesEnum {
   NOT_FOUND = "NOT_FOUND",
+  FORBIDDEN = "FORBIDDEN",
   ERROR = "ERROR",
   UNDEFINED = "UNDEFINED",
 }

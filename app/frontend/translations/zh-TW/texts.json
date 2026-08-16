@@ -18,6 +18,7 @@
         "visitMilestone": "FleetYards 由社群資助 — 沒有廣告,沒有付費牆。如果你覺得它有用,一份小小的捐款就能發揮很大作用。"
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "forbidden": "你的權限不包含此區域。如果某項功能仍在灰度發布中，等它對你開放後，可以在「設定 > 功能」中自行開啟。",
       "featureNotReady": "此功能尚未完成，即將推出。敬請期待！",
       "accessDenied": "您無權檢視此頁面。",
       "serverError": "伺服器目前遇到技術問題。請稍後再試。",

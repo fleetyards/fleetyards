@@ -149,6 +149,7 @@
       "images": "Images Index",
       "stats": "Stats",
       "notFound": "Navigation Error",
+      "forbidden": "Access Denied",
       "featureNotReady": "Coming Soon",
       "accessDenied": "Access Denied",
       "serverError": "Server Error",

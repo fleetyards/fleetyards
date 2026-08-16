@@ -19,6 +19,7 @@
         "visitMilestone": "FleetYards is community-funded — no ads, no paywalls. If you find it useful, a small donation goes a long way."
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "forbidden": "Your clearance does not cover this area. If a feature is still being rolled out, you can switch it on yourself under Settings > Features once it is available to you.",
       "featureNotReady": "This feature is not yet ready and will be available soon. Stay tuned!",
       "accessDenied": "You are not authorized to view this page.",
       "serverError": "The server is currently experiencing technical difficulties. Please try again later.",

@@ -122,6 +122,7 @@
       "images": "Images Index",
       "stats": "统计",
       "notFound": "导航错误",
+      "forbidden": "拒绝访问",
       "featureNotReady": "即将推出",
       "accessDenied": "拒绝访问",
       "serverError": "服务器错误",
