@@ -123,6 +123,26 @@ const isEquipment = computed(() =>
   EQUIPMENT_CATEGORIES.includes(category.value),
 );
 
+// Which slice of the equipment table each category means. Without it the picker
+// offers every type in the table — a hundred of them, mostly armour and
+// clothing — no matter which category is selected.
+const EQUIPMENT_TYPES_FOR_CATEGORY: Record<string, string[]> = {
+  [InventoryItemCreateInputCategory.weapon]: ["weapon"],
+  [InventoryItemCreateInputCategory.ammunition]: ["weapon_attachment"],
+  [InventoryItemCreateInputCategory.equipment]: [
+    "armor",
+    "clothing",
+    "undersuit",
+    "tool",
+    "medical",
+    "hacking_tool",
+  ],
+};
+
+const equipmentTypes = computed(
+  () => EQUIPMENT_TYPES_FOR_CATEGORY[category.value] || [],
+);
+
 const unitOptions = unitOptionsFor(category);
 
 // The category dictates which units make sense, so a category change pulls the
@@ -363,7 +383,11 @@ const onSubmit = handleSubmit(async (values) => {
         />
         <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
         <CommodityPicker v-if="isCommodity" @select="applyPickedCommodity" />
-        <EquipmentPicker v-if="isEquipment" @select="applyPickedEquipment" />
+        <EquipmentPicker
+          v-if="isEquipment"
+          :equipment-types="equipmentTypes"
+          @select="applyPickedEquipment"
+        />
       </template>
 
       <div class="row">

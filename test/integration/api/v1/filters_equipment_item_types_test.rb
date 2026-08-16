@@ -13,6 +13,18 @@ class Api::V1::FiltersEquipmentItemTypesTest < ActionDispatch::IntegrationTest
       tags "EquipmentFilters"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          properties: {
+            equipmentTypeIn: {type: :array, items: {type: :string}}
+          },
+          additionalProperties: false
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
+
       response(200, "successful") do
         schema type: :array, items: {"$ref": "#/components/schemas/FilterOption"}
       end
@@ -36,6 +48,18 @@ class Api::V1::FiltersEquipmentItemTypesTest < ActionDispatch::IntegrationTest
     create(:equipment, :hidden, item_type: "toy_pistol")
 
     assert_api_response :get, 200 do
+      assert_equal %w[assault_rifle weapon_scope], parsed_body.map { |filter| filter["value"] }
+    end
+  end
+
+  test "GET /filters/equipment/item-types narrows to the equipment types asked for" do
+    assert_api_response :get, 200, params: {q: {equipmentTypeIn: ["weapon"]}} do
+      assert_equal %w[assault_rifle], parsed_body.map { |filter| filter["value"] }
+    end
+  end
+
+  test "GET /filters/equipment/item-types ignores an equipment type the game does not have" do
+    assert_api_response :get, 200, params: {q: {equipmentTypeIn: ["nonsense"]}} do
       assert_equal %w[assault_rifle weapon_scope], parsed_body.map { |filter| filter["value"] }
     end
   end

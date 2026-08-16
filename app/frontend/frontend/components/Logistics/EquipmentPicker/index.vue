@@ -15,6 +15,17 @@ import {
   equipmentItemTypesFilters,
 } from "@/services/fyApi";
 
+// One table holds guns, armour, clothing and attachments alike, so a picker
+// opened for a weapon has to say so — otherwise its type filter offers all
+// hundred-odd types the other categories contribute.
+type Props = {
+  equipmentTypes?: string[];
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  equipmentTypes: undefined,
+});
+
 const emit = defineEmits<{
   select: [equipment: Equipment];
 }>();
@@ -26,9 +37,15 @@ const itemType = ref<string | undefined>(undefined);
 const selected = ref<string | undefined>(undefined);
 const loaded = ref<Equipment[]>([]);
 
+const equipmentTypeQuery = computed(() =>
+  props.equipmentTypes?.length ? { equipmentTypeIn: props.equipmentTypes } : {},
+);
+
 const loadTypes = async () => {
   try {
-    typeOptions.value = await equipmentItemTypesFilters();
+    typeOptions.value = await equipmentItemTypesFilters({
+      q: equipmentTypeQuery.value,
+    });
   } catch {
     typeOptions.value = [];
   }
@@ -38,10 +55,19 @@ onMounted(() => {
   void loadTypes();
 });
 
+watch(
+  () => props.equipmentTypes,
+  () => {
+    itemType.value = undefined;
+    void loadTypes();
+  },
+);
+
 const equipmentQuery = ({ search, page }: { search?: string; page?: number }) =>
   fetchEquipment({
     page: String(page || 1),
     q: {
+      ...equipmentTypeQuery.value,
       ...(itemType.value ? { itemTypeIn: [itemType.value] } : {}),
       ...(search ? { nameCont: search } : {}),
     },
@@ -94,7 +120,7 @@ watch(selected, (val) => {
       <!-- Remounting on type change resets the option list, which is keyed to
            the FilterGroup instance and would otherwise keep stale entries. -->
       <FilterGroup
-        :key="itemType || 'all'"
+        :key="`${equipmentTypes?.join(',') || 'all'}-${itemType || 'all'}`"
         v-model="selected"
         name="equipment"
         :query-fn="equipmentQuery"
