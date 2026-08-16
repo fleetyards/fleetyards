@@ -1,6 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
 import { routes as publicHangarRoutes } from "@/frontend/pages/hangar/[username]/routes";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -50,6 +51,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
     },
   },
   {
@@ -61,6 +63,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
     },
   },
   {
@@ -72,6 +75,7 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_INVENTORIES,
     },
   },
   {

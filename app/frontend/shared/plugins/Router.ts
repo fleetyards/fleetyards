@@ -37,7 +37,9 @@ export type FyRouterOptions = {
   // ) => Promise<ScrollToPosition>;
   // parseQuery?: (query: string) => LocationQuery;
   // stringifyQuery?: (query: LocationQuery) => string;
-  beforeResolve?: (to: RouteLocationNormalized) => FyRedirectRoute | undefined;
+  beforeResolve?: (
+    to: RouteLocationNormalized,
+  ) => FyRedirectRoute | undefined | Promise<FyRedirectRoute | undefined>;
   beforeEach?: (to: RouteLocationNormalized) => void;
 };
 
@@ -71,12 +73,12 @@ export const setupRouter = (options: FyRouterOptions) => {
     routes: options?.routes || [],
   });
 
-  router.beforeResolve((to) => {
+  router.beforeResolve(async (to) => {
     if (!options?.beforeResolve) {
       return;
     }
 
-    const newRoute = options.beforeResolve(to);
+    const newRoute = await options.beforeResolve(to);
     if (newRoute) {
       return {
         name: newRoute.routeName,
