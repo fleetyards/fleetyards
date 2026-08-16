@@ -28,7 +28,7 @@ const resourceAccess = computed(
 
 <template>
   <router-view
-    v-if="isFeatureEnabled(FeatureFlagName.fleet_logistics)"
+    v-if="isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS)"
     :fleet="props.fleet"
     :membership="props.membership"
     :resource-access="resourceAccess"

@@ -36,6 +36,7 @@ import {
 import type { ContainerRequest } from "@/frontend/components/CargoGridViewer/constants";
 import { useSessionStore } from "@/frontend/stores/session";
 import FeatureGuard from "@/frontend/components/FeatureGuard.vue";
+import { FeatureFlagName } from "@/services/fyApi";
 import { useCargoGridShip } from "@/frontend/composables/useCargoGridShip";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -307,7 +308,7 @@ const resetFilters = () => {
 </script>
 
 <template>
-  <FeatureGuard feature="tools_cargo_grids">
+  <FeatureGuard :feature="FeatureFlagName.TOOLS_CARGO_GRIDS">
     <div class="cargo-grids-page">
       <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 

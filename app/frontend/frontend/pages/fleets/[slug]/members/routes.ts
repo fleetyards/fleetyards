@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -20,7 +21,7 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.members.worldmap",
       needsAuthentication: true,
       customTitle: true,
-      feature: "fleet_worldmap",
+      feature: FeatureFlagName.FLEET_WORLDMAP,
     },
   },
   {
@@ -32,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
       title: "fleets.members.starmap",
       needsAuthentication: true,
       customTitle: true,
-      feature: "fleet_starmap",
+      feature: FeatureFlagName.FLEET_STARMAP,
     },
   },
   {

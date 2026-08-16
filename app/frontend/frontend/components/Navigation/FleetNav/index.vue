@@ -122,7 +122,7 @@ onMounted(() => {
         <NavItem
           v-if="
             hasLogisticsAccess &&
-            isFeatureEnabled(FeatureFlagName.fleet_logistics)
+            isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS)
           "
           :to="{
             name: 'fleet-logistics',

@@ -9960,6 +9960,21 @@ components:
       - ship_inventories
       - tools_cargo_grids
       - tools_travel_times
+      x-enumNames:
+      - FLEET_LOGISTICS
+      - FLEET_STARMAP
+      - FLEET_WORLDMAP
+      - HANGAR_INVENTORIES
+      - OAUTH_APPLICATIONS
+      - OAUTH_BLUESKY
+      - OAUTH_CITIZENID
+      - OAUTH_DISCORD
+      - OAUTH_GITHUB
+      - OAUTH_GOOGLE
+      - OAUTH_TWITCH
+      - SHIP_INVENTORIES
+      - TOOLS_CARGO_GRIDS
+      - TOOLS_TRAVEL_TIMES
       title: FeatureFlagName
     FieldError:
       type: object
