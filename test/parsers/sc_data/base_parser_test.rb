@@ -105,6 +105,20 @@ module ScData
         assert_equal File.binread(source), File.binread(target)
       end
 
+      # The export is moving to PNG and may ship both for a while. Converting
+      # the texture when a ready-to-serve copy sits beside it would be work for
+      # a worse result.
+      test "#save_icon prefers the drawable copy over the texture beside it" do
+        FileUtils.mkdir_p("#{@base_folder}/raw/1.0.0/Data/ui/logos")
+        FileUtils.cp(Rails.root.join("test/fixtures/files/test.png"),
+          "#{@base_folder}/raw/1.0.0/Data/ui/logos/acme_256.png")
+        File.write("#{@base_folder}/raw/1.0.0/Data/ui/logos/acme_256.dds", "not a texture at all")
+
+        target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
+
+        assert_equal File.binread(Rails.root.join("test/fixtures/files/test.png")), File.binread(target)
+      end
+
       # Vectors are already drawable, and rasterising one would only lose it
       # its resolution.
       test "#save_icon copies a vector icon as it is" do

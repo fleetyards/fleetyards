@@ -252,10 +252,14 @@ module ScData
         raw_assets[icon_path.downcase.sub(/\.\w+\z/, "")]
       end
 
+      # An export that ships a texture and a drawable copy of the same art --
+      # which is where this one is heading -- would otherwise be resolved by
+      # whichever the glob happened to yield last. The drawable one wins, so
+      # nothing is converted that arrives ready to serve.
       private def raw_assets
-        @raw_assets ||= Dir.glob("#{base_path}/Data/**/*.{dds,svg,png,tif}").to_h do |file|
-          [file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, ""), file]
-        end
+        @raw_assets ||= Dir.glob("#{base_path}/Data/**/*.{dds,svg,png,tif}")
+          .sort_by { |file| DRAWABLE_FORMATS.include?(File.extname(file).downcase) ? 1 : 0 }
+          .to_h { |file| [file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, ""), file] }
       end
 
       # Writing is otherwise additive: a record the game files stopped carrying
