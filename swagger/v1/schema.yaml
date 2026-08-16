@@ -11742,6 +11742,7 @@ components:
       - Imports::ModulesImport
       - Imports::PaintsImport
       - Imports::UexPricesImport
+      - Imports::UexCommodityPricesImport
       x-enumNames:
       - IMPORTS_MODEL_IMPORT
       - IMPORTS_MODELS_IMPORT
@@ -11753,6 +11754,7 @@ components:
       - IMPORTS_MODULES_IMPORT
       - IMPORTS_PAINTS_IMPORT
       - IMPORTS_UEX_PRICES_IMPORT
+      - IMPORTS_UEX_COMMODITY_PRICES_IMPORT
       title: ImportTypeEnum
     InventoryStockPosition:
       type: object
