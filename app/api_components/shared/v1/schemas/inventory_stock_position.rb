@@ -25,7 +25,8 @@ module Shared
                 id: {type: :string, format: :uuid},
                 type: {type: :string, enum: InventoryLedgerEntry::ITEM_TYPES},
                 name: {type: :string},
-                slug: {type: :string}
+                slug: {type: :string},
+                available: {type: :boolean}
               }
             },
             inventory: {

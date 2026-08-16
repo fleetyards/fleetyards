@@ -21,6 +21,7 @@ if stock_item.item.present?
     json.type stock_item.reference_entry.item_type
     json.name stock_item.item.name
     json.slug stock_item.item.slug
+    json.available stock_item.item_available?
   end
 else
   json.item nil

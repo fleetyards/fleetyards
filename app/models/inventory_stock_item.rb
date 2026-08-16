@@ -32,6 +32,10 @@ class InventoryStockItem
     reference_entry&.item
   end
 
+  def item_available?
+    reference_entry.nil? || reference_entry.item_available?
+  end
+
   def image
     reference_entry&.display_image
   end

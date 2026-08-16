@@ -9706,6 +9706,8 @@ components:
               type: string
             slug:
               type: string
+            available:
+              type: boolean
         inventory:
           type: object
           properties:
@@ -10977,6 +10979,8 @@ components:
               type: string
             slug:
               type: string
+            available:
+              type: boolean
         inventory:
           type: object
           properties:
@@ -11948,6 +11952,8 @@ components:
               type: string
             slug:
               type: string
+            available:
+              type: boolean
         inventory:
           type: object
           properties:

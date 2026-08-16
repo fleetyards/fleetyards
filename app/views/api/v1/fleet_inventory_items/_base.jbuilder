@@ -27,6 +27,7 @@ if fleet_inventory_item.item.present?
     json.type fleet_inventory_item.item_type
     json.name fleet_inventory_item.item.name
     json.slug fleet_inventory_item.item.slug
+    json.available fleet_inventory_item.item_available?
   end
 else
   json.item nil
