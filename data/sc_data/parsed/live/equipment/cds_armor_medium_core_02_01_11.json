@@ -28,5 +28,11 @@
     "Color_11",
     "SM_Marine"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.042,
+  "volume_dimensions": {
+    "x": 0.395,
+    "y": 0.408,
+    "z": 0.325
+  }
 }

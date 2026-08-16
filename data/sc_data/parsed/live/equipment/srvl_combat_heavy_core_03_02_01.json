@@ -25,5 +25,11 @@
   "tags": [
     "SM_RestrictedArm"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.055,
+  "volume_dimensions": {
+    "x": 0.454,
+    "y": 0.459,
+    "z": 0.331
+  }
 }

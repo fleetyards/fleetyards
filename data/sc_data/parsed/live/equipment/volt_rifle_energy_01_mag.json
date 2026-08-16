@@ -25,5 +25,11 @@
   "tags": [
     "volt_rifle_energy_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00048,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.208
+  }
 }

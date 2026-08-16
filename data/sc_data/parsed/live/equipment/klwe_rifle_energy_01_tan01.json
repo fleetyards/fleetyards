@@ -27,5 +27,11 @@
     "klwe_rifle_energy_01",
     "rifle"
   ],
-  "hidden": true
+  "hidden": true,
+  "volume": 0.013,
+  "volume_dimensions": {
+    "x": 0.0811,
+    "y": 0.8528,
+    "z": 0.2487
+  }
 }

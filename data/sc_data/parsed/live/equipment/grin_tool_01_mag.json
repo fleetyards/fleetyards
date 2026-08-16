@@ -25,5 +25,11 @@
   "tags": [
     "grin_salvage_repair_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00028,
+  "volume_dimensions": {
+    "x": 0.0536,
+    "y": 0.1213,
+    "z": 0.0536
+  }
 }

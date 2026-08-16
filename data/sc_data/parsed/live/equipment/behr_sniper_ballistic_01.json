@@ -27,5 +27,11 @@
     "behr_sniper_ballistic_01",
     "sniper"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.019,
+  "volume_dimensions": {
+    "x": 0.0559,
+    "y": 0.9987,
+    "z": 0.3436
+  }
 }

@@ -25,5 +25,11 @@
   "tags": [
     "MissionQuestItem"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00014,
+  "volume_dimensions": {
+    "x": 0.0663,
+    "y": 0.1428,
+    "z": 0.0163
+  }
 }
