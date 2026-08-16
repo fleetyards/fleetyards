@@ -8,28 +8,31 @@ export default {
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import Grid from "@/shared/components/base/Grid/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
+import Empty from "@/shared/components/Empty/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
-import BaseTable, {
-  type BaseTableCol,
-} from "@/shared/components/base/Table/index.vue";
-import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import {
   type Fleet,
   type FleetMember,
+  type FleetInventory,
   type FleetInventoryItem,
-  type FleetInventoryStockItem,
+  useFleetInventories,
   useFleetAllInventoryStock,
   useFleetAllInventoryItems,
 } from "@/services/fyApi";
-import InventoryItemFilterForm from "@/frontend/components/Fleets/Logistics/InventoryItemFilterForm/index.vue";
+import InventoryPanel from "@/frontend/components/Logistics/InventoryPanel/index.vue";
+import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
+import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
+import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
+import type { InventoryStockRecord } from "@/frontend/types/logistics";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
-
-type StockItemWithId = FleetInventoryStockItem & { id: string };
 
 type Props = {
   fleet: Fleet;
@@ -40,6 +43,7 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+const comlink = useComlink();
 
 const fleetSlug = computed(() => props.fleet.slug);
 
@@ -53,6 +57,16 @@ const canManageInventories = computed(() =>
 
 const activeTab = ref<"stock" | "log">("stock");
 
+const {
+  data: inventories,
+  isLoading: inventoriesLoading,
+  refetch: refetchInventories,
+} = useFleetInventories(fleetSlug, {});
+
+const inventoryList = computed<FleetInventory[]>(
+  () => inventories.value?.items ?? [],
+);
+
 const refetchAll = async () => {
   await refetchItems();
 };
@@ -64,8 +78,13 @@ const queryParams = computed(() => ({
 }));
 
 // Stock view
-const { data: stockData, isLoading: stockLoading } =
-  useFleetAllInventoryStock(fleetSlug);
+const {
+  data: stockData,
+  isLoading: stockLoading,
+  refetch: refetchStock,
+} = useFleetAllInventoryStock(fleetSlug);
+
+const { stockRecords } = useInventoryStockList(stockData);
 
 // Log view
 const {
@@ -76,151 +95,71 @@ const {
 
 const logLoading = logAsyncStatus.isLoading;
 
-const crumbs = computed(() => [
-  {
-    to: { name: "fleet", params: { slug: props.fleet.slug } },
-    label: props.fleet.name,
-  },
-]);
-
-const route = useRoute();
-
-const allStockItems = computed<StockItemWithId[]>(() => {
-  if (!stockData.value) return [];
-  return stockData.value.map((item, index) => ({
-    ...item,
-    id: `${item.name}-${item.category}-${item.unit}-${index}`,
-  }));
-});
-
-const stockList = computed(() => {
-  const nameFilter = (route.query.nameCont as string)?.toLowerCase();
-  const categoryFilter = route.query.categoryEq as string;
-  const qualityMin = route.query.qualityGteq
-    ? Number(route.query.qualityGteq)
-    : undefined;
-  const qualityMax = route.query.qualityLteq
-    ? Number(route.query.qualityLteq)
-    : undefined;
-
-  return allStockItems.value.filter((item) => {
-    if (nameFilter && !item.name.toLowerCase().includes(nameFilter)) {
-      return false;
-    }
-    if (categoryFilter && item.category !== categoryFilter) {
-      return false;
-    }
-    if (qualityMin !== undefined && (item.quality ?? 0) < qualityMin) {
-      return false;
-    }
-    if (qualityMax !== undefined && (item.quality ?? 0) > qualityMax) {
-      return false;
-    }
-    return true;
-  });
-});
-
-const activeRecords = computed<(FleetInventoryItem | StockItemWithId)[]>(() =>
-  activeTab.value === "stock" ? stockList.value : itemsList.value,
-);
-
 const itemsList = computed<FleetInventoryItem[]>(
   () => allItems.value?.items ?? [],
 );
 
-const stockColumns = computed<BaseTableCol<StockItemWithId>[]>(() => [
-  {
-    name: "name",
-    label: t("labels.fleets.logistics.itemName"),
-    sortable: true,
-    attributeKey: "name",
-  },
-  {
-    name: "inventory",
-    label: t("labels.fleets.logistics.inventory"),
-    sortable: false,
-    width: "180px",
-    mobile: false,
-  },
-  {
-    name: "category",
-    label: t("labels.fleets.logistics.category"),
-    sortable: true,
-    attributeKey: "category",
-    width: "140px",
-    mobile: false,
-  },
-  {
-    name: "quality",
-    label: t("labels.fleets.logistics.quality"),
-    sortable: true,
-    attributeKey: "quality",
-    width: "100px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-    mobile: false,
-  },
-  {
-    name: "netQuantity",
-    label: t("labels.fleets.logistics.quantity"),
-    sortable: true,
-    attributeKey: "netQuantity",
-    width: "140px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-  },
-]);
+const activeRecords = computed<(FleetInventoryItem | InventoryStockRecord)[]>(
+  () => (activeTab.value === "stock" ? stockRecords.value : itemsList.value),
+);
 
-const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
-  {
-    name: "entryType",
-    label: t("labels.fleets.logistics.entryType"),
-    sortable: true,
-    attributeKey: "entryType",
-    width: "100px",
+// Every row of the merged stock and log views is grouped per inventory, so it
+// carries the inventory it came from and can point at that inventory's item.
+const stockItemRoute = (inventorySlug?: string, itemSlug?: string) => ({
+  name: "fleet-logistics-inventory-item",
+  params: {
+    slug: props.fleet.slug,
+    inventory: inventorySlug,
+    item: itemSlug,
   },
+});
+
+const openInventoryModal = (inventory?: FleetInventory) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Fleets/Logistics/InventoryModal/index.vue"),
+    props: {
+      fleet: props.fleet,
+      inventory,
+    },
+  });
+};
+
+const refetchEverything = async () => {
+  await refetchInventories();
+  await refetchStock();
+  await refetchItems();
+};
+
+const inventoryCreatedComlink = ref();
+const inventoryUpdatedComlink = ref();
+const inventoryItemCreatedComlink = ref();
+
+onMounted(() => {
+  inventoryCreatedComlink.value = comlink.on(
+    "fleet-inventory-created",
+    () => void refetchEverything(),
+  );
+  inventoryUpdatedComlink.value = comlink.on(
+    "fleet-inventory-updated",
+    () => void refetchEverything(),
+  );
+  inventoryItemCreatedComlink.value = comlink.on(
+    "fleet-inventory-item-created",
+    () => void refetchEverything(),
+  );
+});
+
+onUnmounted(() => {
+  inventoryCreatedComlink.value();
+  inventoryUpdatedComlink.value();
+  inventoryItemCreatedComlink.value();
+});
+
+const crumbs = computed(() => [
   {
-    name: "name",
-    label: t("labels.fleets.logistics.itemName"),
-    sortable: true,
-    attributeKey: "name",
-  },
-  {
-    name: "inventory",
-    label: t("labels.fleets.logistics.inventory"),
-    sortable: false,
-    width: "160px",
-    mobile: false,
-  },
-  {
-    name: "category",
-    label: t("labels.fleets.logistics.category"),
-    sortable: true,
-    attributeKey: "category",
-    width: "120px",
-    mobile: false,
-  },
-  {
-    name: "quality",
-    label: t("labels.fleets.logistics.quality"),
-    sortable: true,
-    attributeKey: "quality",
-    width: "100px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-    mobile: false,
-  },
-  {
-    name: "quantity",
-    label: t("labels.fleets.logistics.quantity"),
-    sortable: true,
-    attributeKey: "quantity",
-    width: "120px",
-    alignment: BaseTableColAlignmentEnum.RIGHT,
-  },
-  {
-    name: "member",
-    label: t("labels.fleets.logistics.member"),
-    sortable: false,
-    width: "120px",
-    mobile: false,
+    to: { name: "fleet", params: { slug: props.fleet.slug } },
+    label: props.fleet.name,
   },
 ]);
 </script>
@@ -230,27 +169,43 @@ const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
 
   <div class="row">
     <div class="col-12">
-      <Heading size="hero" hero>{{
-        t("headlines.fleets.logistics.index")
-      }}</Heading>
+      <Heading size="hero" hero>{{ t("headlines.logistics.index") }}</Heading>
     </div>
   </div>
 
   <Teleport v-if="canManageInventories" to="#header-right">
-    <Btn
-      :size="BtnSizesEnum.MD"
-      mobile-icon-only
-      :to="{
-        name: 'fleet-logistics-inventories',
-        params: { slug: fleet.slug },
-      }"
-    >
-      <i class="fa-duotone fa-boxes-stacked" />
-      {{ t("actions.fleets.logistics.viewInventories") }}
+    <Btn :size="BtnSizesEnum.MD" mobile-icon-only @click="openInventoryModal()">
+      <i class="fa-light fa-plus" />
+      {{ t("actions.logistics.createInventory") }}
     </Btn>
   </Teleport>
 
+  <Loader :loading="inventoriesLoading" />
+
+  <Grid v-if="inventoryList.length" :records="inventoryList" primary-key="id">
+    <template #default="{ record }">
+      <InventoryPanel
+        :inventory="record"
+        :to="{
+          name: 'fleet-logistics-inventory',
+          params: { slug: fleet.slug, inventory: record.slug },
+        }"
+        :manager="record.manager"
+        :editable="canManageInventories"
+        @edit="openInventoryModal(record)"
+      />
+    </template>
+  </Grid>
+
+  <Empty
+    v-if="!inventoriesLoading && !inventoryList.length"
+    variant="box"
+    hide-actions
+    name="inventories"
+  />
+
   <FilteredList
+    v-if="inventoryList.length"
     name="all-inventory-items"
     :records="activeRecords"
     :async-status="logAsyncStatus"
@@ -265,84 +220,51 @@ const logColumns = computed<BaseTableCol<FleetInventoryItem>[]>(() => [
     <template #actions-left>
       <BtnGroup segmented>
         <Btn :active="activeTab === 'stock'" @click="activeTab = 'stock'">
-          {{ t("labels.fleets.logistics.stockView") }}
+          {{ t("labels.logistics.stockView") }}
         </Btn>
         <Btn :active="activeTab === 'log'" @click="activeTab = 'log'">
-          {{ t("labels.fleets.logistics.logView") }}
+          {{ t("labels.logistics.logView") }}
         </Btn>
       </BtnGroup>
     </template>
 
     <template #default>
-      <!-- Stock View -->
-      <BaseTable
-        v-if="activeTab === 'stock'"
-        :records="stockList"
-        :columns="stockColumns"
-        primary-key="id"
-        :loading="stockLoading"
-        :empty-visible="!stockLoading && !stockList.length"
+      <InventoryLedgerTables
+        :active-tab="activeTab"
+        :stock-records="stockRecords"
+        :log-records="itemsList"
+        :stock-loading="stockLoading"
+        :log-loading="logLoading"
+        show-inventory
+        show-member
       >
-        <template #col-inventory="{ record }">
-          <span class="text-muted">{{ record.inventory?.name }}</span>
-        </template>
-        <template #col-category="{ record }">
-          {{ t(`labels.fleets.logistics.categories.${record.category}`) }}
-        </template>
-        <template #col-quality="{ record }">
-          <template v-if="record.qualityMin != null">
-            <template v-if="record.qualityMin === record.qualityMax">
-              {{ record.qualityMin }}
-            </template>
-            <template v-else>
-              {{ record.qualityMin }} - {{ record.qualityMax }}
-            </template>
-          </template>
-          <template v-else-if="record.quality != null">
-            {{ record.quality }}
-          </template>
-        </template>
-        <template #col-netQuantity="{ record }">
-          {{ record.netQuantity }}
-          {{ t(`labels.fleets.logistics.units.${record.unit}`) }}
-        </template>
-      </BaseTable>
-
-      <!-- Log View -->
-      <BaseTable
-        v-if="activeTab === 'log'"
-        :records="itemsList"
-        :columns="logColumns"
-        primary-key="id"
-        :loading="logLoading"
-        :empty-visible="!logLoading && !itemsList.length"
-      >
-        <template #col-entryType="{ record }">
-          <span
-            :class="
-              record.entryType === 'deposit' ? 'text-success' : 'text-danger'
-            "
+        <template #stock-name="{ record }">
+          <router-link
+            v-if="record.inventory?.slug && record.slug"
+            :to="stockItemRoute(record.inventory.slug, record.slug)"
           >
-            {{ t(`labels.fleets.logistics.entryTypes.${record.entryType}`) }}
-          </span>
+            {{ record.name }}
+          </router-link>
+          <template v-else>{{ record.name }}</template>
         </template>
-        <template #col-inventory="{ record }">
-          <span class="text-muted">{{ record.inventory?.name }}</span>
+        <template #log-name="{ record }">
+          <router-link
+            v-if="record.inventory?.slug && record.stockSlug"
+            :to="stockItemRoute(record.inventory.slug, record.stockSlug)"
+          >
+            {{ record.name }}
+          </router-link>
+          <template v-else>{{ record.name }}</template>
         </template>
-        <template #col-category="{ record }">
-          {{ t(`labels.fleets.logistics.categories.${record.category}`) }}
-        </template>
-        <template #col-quantity="{ record }">
-          {{ record.quantity }}
-          {{ t(`labels.fleets.logistics.units.${record.unit}`) }}
-        </template>
-        <template #col-member="{ record }">
+        <template #member="{ record }">
           <MemberName
-            v-if="record.member"
-            :member="record.member as unknown as FleetMember"
+            v-if="(record as FleetInventoryItem).member"
+            :member="
+              (record as FleetInventoryItem).member as unknown as FleetMember
+            "
           />
         </template>
-      </BaseTable>
+      </InventoryLedgerTables>
     </template>
   </FilteredList>
 </template>

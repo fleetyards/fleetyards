@@ -37,6 +37,9 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
       post :import, on: :collection
     end
     get "stock", to: "fleet_inventory_stock#index"
+    get "stock/:slug", to: "fleet_inventory_stock#show", as: "stock_item"
+    patch "stock/:slug", to: "fleet_inventory_stock#update"
+    delete "stock/:slug", to: "fleet_inventory_stock#destroy"
   end
 
   resource :fleet_stats, path: "stats", only: %i[] do

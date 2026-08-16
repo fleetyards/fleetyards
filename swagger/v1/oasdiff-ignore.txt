@@ -23,3 +23,12 @@ DELETE /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/
 GET /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
 PUT /vehicles/{id} added the new `cosmetic` enum value to the `model/metrics/hullParts/items/category` response property for the response status `200`
 GET /wishlist added the new `cosmetic` enum value to the `items/items/model/metrics/hullParts/items/category` response property for the response status `200`
+POST /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items request property `itemType` was restricted to a list of enum values
+GET /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Component` enum value to the `items/items/item/type` response property for the response status `200`
+POST /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Component` enum value to the `item/type` response property for the response status `201`
+PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} added the new `Component` enum value to the `item/type` response property for the response status `200`
+GET /fleets/{fleetSlug}/inventory-items added the new `Component` enum value to the `items/items/item/type` response property for the response status `200`
+GET /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Commodity` enum value to the `items/items/item/type` response property for the response status `200`
+POST /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Commodity` enum value to the `item/type` response property for the response status `201`
+PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} added the new `Commodity` enum value to the `item/type` response property for the response status `200`
+GET /fleets/{fleetSlug}/inventory-items added the new `Commodity` enum value to the `items/items/item/type` response property for the response status `200`

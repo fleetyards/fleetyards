@@ -11,7 +11,7 @@ module Api
         only: %i[index]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy]
+        only: %i[create update destroy import]
 
       before_action :set_fleet
       before_action :check_fleet_logistics_feature
@@ -23,7 +23,7 @@ module Api
 
         scope = @fleet_inventory.fleet_inventory_items
 
-        query_params = params.fetch(:q, {}).permit(:name_cont, :category_eq, :quality_gteq, :quality_lteq, :s)
+        query_params = params.fetch(:q, {}).permit(:name_cont, :name_eq, :unit_eq, :category_eq, :quality_gteq, :quality_lteq, :s)
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(FleetInventoryItem, query_params["sorts"])
 
@@ -69,7 +69,7 @@ module Api
 
         file = params.require(:file)
 
-        importer = FleetInventoryItemCsvImporter.new(@fleet_inventory, file, current_resource_owner)
+        importer = InventoryItemCsvImporter.new(@fleet_inventory, file, current_resource_owner)
         result = importer.call
 
         render json: result, status: :ok

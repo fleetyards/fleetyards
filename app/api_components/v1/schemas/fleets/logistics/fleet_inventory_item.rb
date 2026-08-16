@@ -12,6 +12,7 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
+              stockSlug: {type: :string},
               category: {type: :string},
               quantity: {type: :number},
               unit: {type: :string},
@@ -23,8 +24,9 @@ module V1
                 type: :object,
                 properties: {
                   id: {type: :string, format: :uuid},
-                  type: {type: :string},
-                  name: {type: :string}
+                  type: {type: :string, enum: InventoryLedgerEntry::ITEM_TYPES},
+                  name: {type: :string},
+                  slug: {type: :string}
                 }
               },
               inventory: {

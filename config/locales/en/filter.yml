@@ -3,6 +3,42 @@ en:
   filter:
     all: All
     component:
+      category:
+        items:
+          armor: Armor
+          batteries: Batteries
+          bombcompartments: Bomb Compartments
+          cargogrid: Cargo Grids
+          computers: Computers
+          controller: Controllers
+          cooler: Coolers
+          countermeasures: Countermeasures
+          doors: Doors
+          fuel_intakes: Fuel Intakes
+          fueltanks: Fuel Tanks
+          jumpdrive: Jump Drives
+          lifesupport: Life Support
+          missile_racks: Missile Racks
+          module: Modules
+          paints: Paints
+          powerplant: Power Plants
+          quantumdrive: Quantum Drives
+          quantumenforcementdevice: Quantum Enforcement Devices
+          radar: Radars
+          refuel_boom: Refuel Booms
+          relay: Relays
+          salvagefillerstation: Salvage Filler Stations
+          salvagemunching: Salvage Munchers
+          scanners: Scanners
+          seat: Seats
+          selfdestruct: Self Destruct
+          shieldgenerator: Shield Generators
+          thrusters: Thrusters
+          turret: Turrets
+          unknown: Unknown
+          utility: Utility
+          weapon_mounts: Weapon Mounts
+          weapons: Weapons
       class:
         items:
           rsiavionic: Avionic
@@ -10,6 +46,11 @@ en:
           rsipropulsion: Propulsion
           rsithruster: Thruster
           rsiweapon: Weapon
+      sub_type:
+        items:
+          ground_vehicle_missile: Ground Vehicle Missile
+          pdc_turret: PDC Turret
+          salvage_modifier_tractor_beam: Salvage Tractor Beam
     image:
       model:
         title: Model

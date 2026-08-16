@@ -47,10 +47,5 @@ FactoryBot.define do
       category { :component }
       unit { :units }
     end
-
-    trait :ship do
-      category { :ship }
-      unit { :units }
-    end
   end
 end

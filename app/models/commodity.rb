@@ -29,6 +29,7 @@ class Commodity < ApplicationRecord
   paginates_per 60
 
   has_many :fleet_inventory_items, as: :item, dependent: :nullify
+  has_many :inventory_items, as: :item, dependent: :nullify
 
   before_save :update_slugs
 

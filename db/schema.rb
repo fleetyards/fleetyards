@@ -505,6 +505,36 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_15_120000) do
     t.index ["type"], name: "index_imports_on_type"
   end
 
+  create_table "inventories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.uuid "holder_id", null: false
+    t.string "holder_type", null: false
+    t.string "location"
+    t.string "name", null: false
+    t.string "slug", null: false
+    t.datetime "updated_at", null: false
+    t.index "holder_type, holder_id, lower((name)::text)", name: "index_inventories_on_holder_and_lower_name", unique: true
+    t.index ["holder_type", "holder_id", "slug"], name: "index_inventories_on_holder_type_and_holder_id_and_slug", unique: true
+    t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_type_and_holder_id"
+  end
+
+  create_table "inventory_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.integer "entry_type", default: 0, null: false
+    t.uuid "inventory_id", null: false
+    t.uuid "item_id"
+    t.string "item_type"
+    t.string "name", null: false
+    t.text "notes"
+    t.integer "quality", default: 0
+    t.decimal "quantity", precision: 15, scale: 2, default: "0.0", null: false
+    t.integer "unit", default: 0, null: false
+    t.datetime "updated_at", null: false
+    t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
+  end
+
   create_table "item_prices", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.uuid "item_id", null: false
@@ -1166,6 +1196,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_15_120000) do
   add_foreign_key "fleet_roles", "fleets"
   add_foreign_key "hardpoints", "components"
   add_foreign_key "imports", "admin_users"
+  add_foreign_key "inventory_items", "inventories"
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"
   add_foreign_key "notification_preferences", "users"

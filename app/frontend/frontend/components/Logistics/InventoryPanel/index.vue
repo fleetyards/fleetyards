@@ -1,50 +1,45 @@
 <script lang="ts">
 export default {
-  name: "FleetLogisticsInventoryPanel",
+  name: "InventoryPanel",
 };
 </script>
 
 <script lang="ts" setup>
+import type { RouteLocationRaw } from "vue-router";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PanelUserTag from "@/frontend/components/base/PanelUserTag/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
-import { type Fleet, type FleetInventory } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useComlink } from "@/shared/composables/useComlink";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import type { InventoryPanelRecord } from "@/frontend/types/logistics";
+import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 import fallbackImage1 from "@/images/inventories/placeholder-1.webp";
 import fallbackImage2 from "@/images/inventories/placeholder-2.jpg";
 
 const fallbackImages = [fallbackImage1, fallbackImage2];
 
 type Props = {
-  fleet: Fleet;
-  inventory: FleetInventory;
-  fleetSlug: string;
+  inventory: InventoryPanelRecord;
+  to: RouteLocationRaw;
+  manager?: MemberContact;
   editable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  manager: undefined,
   editable: false,
 });
 
+const emit = defineEmits<{ edit: [] }>();
+
 const { t } = useI18n();
-const comlink = useComlink();
 
-const location = computed(
-  () => (props.inventory as unknown as { location?: string }).location,
-);
+const totalScu = computed(() => props.inventory.totalScu ?? 0);
 
-const totalScu = computed(
-  () => (props.inventory as unknown as { totalScu?: number }).totalScu ?? 0,
-);
-
-const totalUnits = computed(
-  () => (props.inventory as unknown as { totalUnits?: number }).totalUnits ?? 0,
-);
+const totalUnits = computed(() => props.inventory.totalUnits ?? 0);
 
 const fallbackIndex = computed(() => {
   let hash = 0;
@@ -54,46 +49,31 @@ const fallbackIndex = computed(() => {
   return Math.abs(hash) % fallbackImages.length;
 });
 
-const image = computed(() => {
-  const img = (props.inventory as unknown as { image?: { mediumUrl?: string } })
-    .image;
-
-  return img?.mediumUrl || fallbackImages[fallbackIndex.value];
-});
-
-const openEditModal = () => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Fleets/Logistics/InventoryModal/index.vue"),
-    props: {
-      fleet: props.fleet,
-      inventory: props.inventory,
-    },
-  });
-};
+const image = computed(
+  () => props.inventory.image?.mediumUrl || fallbackImages[fallbackIndex.value],
+);
 </script>
 
 <template>
-  <Panel :bg-image="image" class="inventory-panel">
+  <Panel
+    :bg-image="image"
+    :data-test="`inventory-panel-${inventory.slug}`"
+    class="inventory-panel"
+  >
     <PanelHeading shadow="top" :level="HeadingLevelEnum.H2">
       <template #default>
-        <router-link
-          :to="{
-            name: 'fleet-logistics-inventory',
-            params: { slug: fleetSlug, inventory: inventory.slug },
-          }"
-        >
+        <router-link :to="to">
           {{ inventory.name }}
         </router-link>
       </template>
-      <template v-if="location" #subtitle>
-        {{ location }}
+      <template v-if="inventory.location" #subtitle>
+        {{ inventory.location }}
       </template>
       <template v-if="editable" #actions>
         <Btn
-          class="inventory-panel-edit"
-          @click.prevent="openEditModal"
           :variant="BtnVariantsEnum.BARE"
+          class="inventory-panel-edit"
+          @click.prevent="emit('edit')"
         >
           <i class="fa-duotone fa-pen" />
         </Btn>
@@ -101,9 +81,9 @@ const openEditModal = () => {
     </PanelHeading>
     <PanelBody class="inventory-panel-body" rounded="bottom">
       <PanelUserTag
-        v-if="inventory.manager"
-        :label="t('labels.fleets.logistics.managedBy')"
-        :member="inventory.manager"
+        v-if="manager"
+        :label="t('labels.logistics.managedBy')"
+        :member="manager"
       />
       <div class="inventory-panel-counts">
         <div class="inventory-panel-count">
@@ -111,7 +91,7 @@ const openEditModal = () => {
             {{ inventory.itemCount }}
           </span>
           <span class="inventory-panel-count-label">
-            {{ t("labels.fleets.logistics.items") }}
+            {{ t("labels.logistics.items") }}
           </span>
         </div>
         <template v-if="totalScu > 0 || totalUnits > 0">

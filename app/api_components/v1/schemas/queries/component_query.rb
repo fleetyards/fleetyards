@@ -13,7 +13,11 @@ module V1
             idIn: {type: :array, items: {type: :string, format: :uuid}},
             nameIn: {type: :array, items: {type: :string}},
             itemTypeIn: {type: :array, items: {type: :string}},
-            componentClassIn: {type: :array, items: {type: :string}}
+            componentClassIn: {type: :array, items: {type: :string}},
+            categoryIn: {type: :array, items: {type: :string}},
+            componentSubTypeIn: {type: :array, items: {type: :string}},
+            currentVersion: {type: :boolean},
+            hiddenEq: {type: :boolean}
           },
           additionalProperties: false,
           example: {}

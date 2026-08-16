@@ -32,48 +32,18 @@
 #  fk_rails_...  (member_id => users.id)
 #
 class FleetInventoryItem < ApplicationRecord
+  include InventoryLedgerEntry
+
   has_paper_trail
 
   paginates_per 30
 
-  belongs_to :fleet_inventory, touch: true
-  belongs_to :item, polymorphic: true, optional: true
+  inventory_association :fleet_inventory
+
   belongs_to :added_by_user, class_name: "User", foreign_key: :added_by, optional: true
   belongs_to :member, class_name: "User", optional: true
 
-  enum :category, {
-    commodity: 0,
-    component: 1,
-    weapon: 2,
-    equipment: 3,
-    ammunition: 4,
-    consumable: 5,
-    other: 6
-  }
-
-  enum :unit, {scu: 0, units: 1}
-
-  enum :entry_type, {deposit: 0, withdrawal: 1}
-
-  has_one_attached :image
-
-  validates :quality, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000}, allow_nil: true
-
-  validates :name, presence: true
-  validates :quantity, numericality: {greater_than: 0}
-  validate :withdrawal_does_not_exceed_stock, if: :withdrawal?
-
-  before_validation :set_name_from_item
   after_create_commit :notify_inventory_entry
-
-  DEFAULT_SORTING_PARAMS = ["created_at desc"]
-  ALLOWED_SORTING_PARAMS = [
-    "name asc", "name desc",
-    "quantity asc", "quantity desc",
-    "category asc", "category desc",
-    "entryType asc", "entryType desc",
-    "createdAt asc", "createdAt desc"
-  ]
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[name category unit entry_type quality fleet_inventory_id created_at updated_at]
@@ -81,26 +51,6 @@ class FleetInventoryItem < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     %w[fleet_inventory item]
-  end
-
-  def self.net_quantity_for(fleet_inventory_id, name, category, unit)
-    where(fleet_inventory_id: fleet_inventory_id, name: name, category: category, unit: unit)
-      .sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
-  end
-
-  private def set_name_from_item
-    return if item.blank?
-    return if name.present?
-
-    self.name = item.name
-  end
-
-  private def withdrawal_does_not_exceed_stock
-    current = self.class.net_quantity_for(fleet_inventory_id, name, category, unit)
-
-    if quantity > current
-      errors.add(:quantity, :insufficient_stock, message: "exceeds current stock (#{current})")
-    end
   end
 
   private def notify_inventory_entry

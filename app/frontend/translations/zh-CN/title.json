@@ -35,7 +35,9 @@
         "public": "%{user} 机库",
         "publicStats": "%{user} 机库统计",
         "wishlist": "心愿单",
-        "publicWishlist": "%{user} 心愿单"
+        "publicWishlist": "%{user} 心愿单",
+        "inventories": "My Hangar Inventories",
+        "inventory": "%{inventory}"
       },
       "requestPassword": "请求密码",
       "changePassword": "更改密码",

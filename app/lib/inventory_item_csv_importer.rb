@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class FleetInventoryItemCsvImporter
-  VALID_CATEGORIES = %w[commodity component weapon equipment ammunition consumable other].freeze
-  VALID_UNITS = %w[scu units].freeze
+class InventoryItemCsvImporter
+  VALID_CATEGORIES = InventoryLedgerEntry::CATEGORIES.keys.map(&:to_s).freeze
+  VALID_UNITS = InventoryLedgerEntry::UNITS.keys.map(&:to_s).freeze
 
-  attr_reader :fleet_inventory, :file, :user, :imported, :errors
+  attr_reader :inventory, :file, :user, :imported, :errors
 
-  def initialize(fleet_inventory, file, user)
-    @fleet_inventory = fleet_inventory
+  def initialize(inventory, file, user)
+    @inventory = inventory
     @file = file
     @user = user
     @imported = 0
@@ -54,7 +54,9 @@ class FleetInventoryItemCsvImporter
       return
     end
 
-    unit = row["unit"]&.strip&.downcase || "scu"
+    # Without a unit column the category decides: SCU for cargo, pieces for gear.
+    unit = row["unit"]&.strip&.downcase.presence ||
+      inventory.inventory_items.model.units_for_category(category).first
     unless VALID_UNITS.include?(unit)
       @errors << {row: row_number, message: "Invalid unit: #{unit}"}
       return
@@ -62,13 +64,14 @@ class FleetInventoryItemCsvImporter
 
     quantity = row["quantity"]&.strip&.to_f || 0
 
-    item = fleet_inventory.fleet_inventory_items.new(
-      name: name,
-      category: category,
-      quantity: quantity,
-      unit: unit,
-      notes: row["notes"]&.strip,
-      added_by: user.id
+    item = inventory.inventory_items.new(
+      {
+        name: name,
+        category: category,
+        quantity: quantity,
+        unit: unit,
+        notes: row["notes"]&.strip
+      }.merge(inventory.ledger_attributes_for(user))
     )
 
     if item.save

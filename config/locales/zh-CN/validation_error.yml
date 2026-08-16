@@ -31,6 +31,22 @@ zh-CN:
       create: 无法创建群组
       destroy: 无法删除群组
       update: 无法更新群组
+    fleet_inventories:
+      create: 无法创建库存。
+      update: 无法更新库存。
+      destroy: 无法删除库存。
+    fleet_inventory_items:
+      create: 无法创建库存记录。
+      update: 无法更新库存记录。
+      destroy: 无法删除库存记录。
+    hangar_inventories:
+      create: 无法创建库存。
+      update: 无法更新库存。
+      destroy: 无法删除库存。
+    hangar_inventory_items:
+      create: 无法创建库存记录。
+      update: 无法更新库存记录。
+      destroy: 无法删除库存记录。
     image:
       create: 无法创建图片
       update: 无法更新图片

@@ -13,11 +13,11 @@ import {
 } from "@/shared/components/base/FormInput/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type FilterOption } from "@/services/fyApi";
 import {
   useInventoryItemFilters,
   type InventoryItemQuery,
 } from "@/frontend/composables/useInventoryItemFilters";
+import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 
 type Props = {
   hideQuicksearch?: boolean;
@@ -30,6 +30,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
+
+const { categoryOptions } = useInventoryOptions();
 
 const { filter, resetFilter, isFilterSelected, filters } =
   useInventoryItemFilters(props.updateCallback);
@@ -57,34 +59,6 @@ const handleSubmit = () => {
   filter(form.value);
 };
 
-const categoryOptions: FilterOption[] = [
-  {
-    value: "commodity",
-    label: t("labels.fleets.logistics.categories.commodity"),
-  },
-  {
-    value: "component",
-    label: t("labels.fleets.logistics.categories.component"),
-  },
-  {
-    value: "weapon",
-    label: t("labels.fleets.logistics.categories.weapon"),
-  },
-  {
-    value: "equipment",
-    label: t("labels.fleets.logistics.categories.equipment"),
-  },
-  {
-    value: "ammunition",
-    label: t("labels.fleets.logistics.categories.ammunition"),
-  },
-  {
-    value: "consumable",
-    label: t("labels.fleets.logistics.categories.consumable"),
-  },
-  { value: "other", label: t("labels.fleets.logistics.categories.other") },
-];
-
 defineExpose({ isFilterSelected });
 </script>
 
@@ -95,7 +69,7 @@ defineExpose({ isFilterSelected });
         :size="InputSizesEnum.MEDIUM"
         v-model="form.nameCont"
         name="search"
-        :placeholder="t('labels.fleets.logistics.searchItems')"
+        :placeholder="t('labels.logistics.searchItems')"
         :no-label="true"
         :clearable="true"
       />
@@ -105,7 +79,7 @@ defineExpose({ isFilterSelected });
       v-if="hideQuicksearch"
       v-model="form.nameCont"
       name="item-name"
-      :placeholder="t('labels.fleets.logistics.searchItems')"
+      :placeholder="t('labels.logistics.searchItems')"
       :no-label="true"
       :clearable="true"
     />
@@ -113,7 +87,7 @@ defineExpose({ isFilterSelected });
     <FilterGroup
       v-model="form.categoryEq"
       :options="categoryOptions"
-      :label="t('labels.fleets.logistics.category')"
+      :label="t('labels.logistics.category')"
       name="category"
       :nullable="true"
     />
@@ -124,7 +98,7 @@ defineExpose({ isFilterSelected });
           v-model="form.qualityGteq"
           name="quality-gteq"
           :type="InputTypesEnum.NUMBER"
-          :label="t('labels.fleets.logistics.qualityMin')"
+          :label="t('labels.logistics.qualityMin')"
           :no-placeholder="true"
           :min="0"
           :max="1000"
@@ -135,7 +109,7 @@ defineExpose({ isFilterSelected });
           v-model="form.qualityLteq"
           name="quality-lteq"
           :type="InputTypesEnum.NUMBER"
-          :label="t('labels.fleets.logistics.qualityMax')"
+          :label="t('labels.logistics.qualityMax')"
           :no-placeholder="true"
           :min="0"
           :max="1000"

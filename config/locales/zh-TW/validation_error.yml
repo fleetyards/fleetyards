@@ -31,6 +31,22 @@ zh-TW:
       create: 無法建立群組
       destroy: 無法刪除群組
       update: 無法更新群組
+    fleet_inventories:
+      create: 無法建立庫存。
+      update: 無法更新庫存。
+      destroy: 無法刪除庫存。
+    fleet_inventory_items:
+      create: 無法建立庫存記錄。
+      update: 無法更新庫存記錄。
+      destroy: 無法刪除庫存記錄。
+    hangar_inventories:
+      create: 無法建立庫存。
+      update: 無法更新庫存。
+      destroy: 無法刪除庫存。
+    hangar_inventory_items:
+      create: 無法建立庫存記錄。
+      update: 無法更新庫存記錄。
+      destroy: 無法刪除庫存記錄。
     image:
       create: 無法建立圖片
       update: 無法更新圖片
