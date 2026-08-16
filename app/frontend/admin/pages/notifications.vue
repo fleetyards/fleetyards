@@ -19,7 +19,7 @@ import { usePagination } from "@/shared/composables/usePagination";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useAdminNotificationFilters } from "@/admin/composables/useAdminNotificationFilters";
-import { useAdminNotificationUpdates } from "@/admin/composables/useAdminNotificationUpdates";
+import { useAdminNotificationInvalidation } from "@/admin/composables/useAdminNotificationUpdates";
 import {
   useAdminNotifications as useAdminNotificationsQuery,
   getAdminNotificationsQueryKey,
@@ -66,7 +66,7 @@ const {
   ...asyncStatus
 } = useAdminNotificationsQuery(queryParams);
 
-const { invalidate } = useAdminNotificationUpdates(ref(true));
+const { invalidate } = useAdminNotificationInvalidation();
 
 watch(
   () => sorts.value,
