@@ -3,5 +3,6 @@
   "ref": "04ded06f-7862-4771-b40f-aa310b74ee17",
   "name": "Universal Body Armor",
   "short_name": null,
-  "description": null
+  "description": null,
+  "icon": "ui/sharedassets/manufacturerlogos/unknownmanufacturer_256.tif"
 }

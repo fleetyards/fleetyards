@@ -3,5 +3,6 @@
   "ref": "d068b4d9-f869-4b82-97b9-f14c9d0d7c00",
   "name": "Crusader Industries",
   "short_name": null,
-  "description": "Makers of an extensive fleet of cargo, vehicle and data transport ships, and cutting edge shuttles, Crusader Industries is a titan of the aerospace industry. It is a company so powerful and prominent that it purchased a gas giant in the Stanton system to house its current headquarters. "
+  "description": "Makers of an extensive fleet of cargo, vehicle and data transport ships, and cutting edge shuttles, Crusader Industries is a titan of the aerospace industry. It is a company so powerful and prominent that it purchased a gas giant in the Stanton system to house its current headquarters. ",
+  "icon": "ui/sharedassets/manufacturerlogos/crusader_256.tif"
 }
