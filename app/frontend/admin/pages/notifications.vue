@@ -192,6 +192,7 @@ const destroyAll = () =>
       :size="BtnSizesEnum.MD"
       :aria-label="t('actions.adminNotifications.destroyAll')"
       :tone="BtnTonesEnum.DANGER"
+      :confirm="t('messages.confirm.adminNotifications.destroyAll')"
       mobile-icon-only
       @click="destroyAll"
     >
