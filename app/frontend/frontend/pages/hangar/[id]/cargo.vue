@@ -14,16 +14,12 @@ import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryIt
 import InventoryLedgerTables from "@/frontend/components/Logistics/InventoryLedgerTables/index.vue";
 import {
   type InventoryItem,
-  type InventoryStockPosition,
-  type InventoryStockPositionInput,
   type Vehicle,
   useVehicleInventory,
   useVehicleInventoryItems,
   useVehicleInventoryStock,
   useDestroyVehicleInventory,
   useDestroyVehicleInventoryItem,
-  useUpdateVehicleInventoryStockItem,
-  useDestroyVehicleInventoryStockItem,
 } from "@/services/fyApi";
 import { useInventoryItemFilters } from "@/frontend/composables/useInventoryItemFilters";
 import { useInventoryStockList } from "@/frontend/composables/useInventoryStockList";
@@ -99,6 +95,11 @@ const refetch = async () => {
 
 const hasCargo = computed(() => (inventory.value?.itemCount ?? 0) > 0);
 
+const stockItemRoute = (slug?: string) => ({
+  name: "hangar-vehicle-cargo-item",
+  params: { id: vehicleId.value, item: slug },
+});
+
 // Players stash cargo outside the grid and personal inventory is not cargo, so
 // the capacity is reported rather than enforced.
 const cargoCapacity = computed(() => props.vehicle.model?.metrics?.cargo ?? 0);
@@ -152,53 +153,6 @@ const destroyEntry = (entry: InventoryItem) => {
       } catch {
         displayAlert({
           text: t("messages.logistics.inventoryItem.destroy.failure"),
-        });
-      }
-    },
-  });
-};
-
-const updateStockMutation = useUpdateVehicleInventoryStockItem();
-
-const openStockItemModal = (record: InventoryStockRecord) => {
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Logistics/StockItemModal/index.vue"),
-    props: {
-      stockItem: record as unknown as InventoryStockPosition,
-      onSave: async (data: InventoryStockPositionInput) => {
-        await updateStockMutation.mutateAsync({
-          vehicleId: vehicleId.value,
-          slug: record.slug as string,
-          data,
-        });
-
-        await refetch();
-      },
-    },
-  });
-};
-
-const destroyStockMutation = useDestroyVehicleInventoryStockItem();
-
-const destroyStockItem = (record: InventoryStockRecord) => {
-  displayConfirm({
-    text: t("messages.logistics.stockItem.destroy.confirmAll"),
-    onConfirm: async () => {
-      try {
-        await destroyStockMutation.mutateAsync({
-          vehicleId: vehicleId.value,
-          slug: record.slug as string,
-        });
-
-        displaySuccess({
-          text: t("messages.logistics.stockItem.destroy.success"),
-        });
-
-        await refetch();
-      } catch {
-        displayAlert({
-          text: t("messages.logistics.stockItem.destroy.failure"),
         });
       }
     },
@@ -332,35 +286,28 @@ onMounted(() => {
           :log-loading="logLoading"
           show-notes
         >
-          <template #stock-actions="{ record }">
-            <Btn
-              :size="BtnSizesEnum.SM"
-              :aria-label="t('actions.logistics.editStockItem')"
-              :title="t('actions.logistics.editStockItem')"
-              @click="openStockItemModal(record as InventoryStockRecord)"
-            >
-              <i class="fa-duotone fa-pen" />
-            </Btn>
-            <Btn
-              :size="BtnSizesEnum.SM"
-              :tone="BtnTonesEnum.DANGER"
-              :aria-label="t('actions.logistics.destroyStockItem')"
-              :title="t('actions.logistics.destroyStockItem')"
-              @click="destroyStockItem(record as InventoryStockRecord)"
-            >
-              <i class="fa-duotone fa-trash" />
-            </Btn>
+          <template #stock-name="{ record }">
+            <router-link :to="stockItemRoute(record.slug)">
+              {{ record.name }}
+            </router-link>
+          </template>
+          <template #log-name="{ record }">
+            <router-link :to="stockItemRoute(record.stockSlug)">
+              {{ record.name }}
+            </router-link>
           </template>
           <template #log-actions="{ record }">
-            <Btn
-              :size="BtnSizesEnum.SM"
-              :tone="BtnTonesEnum.DANGER"
-              :aria-label="t('actions.logistics.destroyEntry')"
-              :title="t('actions.logistics.destroyEntry')"
-              @click="destroyEntry(record as InventoryItem)"
-            >
-              <i class="fa-duotone fa-trash" />
-            </Btn>
+            <BtnGroup>
+              <Btn
+                :size="BtnSizesEnum.SM"
+                :tone="BtnTonesEnum.DANGER"
+                :aria-label="t('actions.logistics.destroyEntry')"
+                :title="t('actions.logistics.destroyEntry')"
+                @click="destroyEntry(record as InventoryItem)"
+              >
+                <i class="fa-duotone fa-trash" />
+              </Btn>
+            </BtnGroup>
           </template>
         </InventoryLedgerTables>
       </template>

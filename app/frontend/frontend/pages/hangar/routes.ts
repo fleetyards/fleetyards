@@ -94,6 +94,21 @@ export const routes: RouteRecordRaw[] = [
     children: publicHangarRoutes,
     redirect: { name: publicHangarRoutes[0].name },
   },
+  // Outside the vehicle's tab shell on purpose: everything under it becomes a
+  // tab, and a single cargo position is a page you drill into rather than a
+  // fifth place to stand. Same shape as /hangar/inventories/:inventory/:item.
+  {
+    path: ":id/cargo/:item/",
+    name: "hangar-vehicle-cargo-item",
+    component: () => import("@/frontend/pages/hangar/[id]/cargo/[item].vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.vehicleCargo",
+      backgroundImage: "bg-5",
+      customTitle: true,
+      feature: FeatureFlagName.SHIP_INVENTORIES,
+    },
+  },
   {
     path: ":id/",
     component: () => import("@/frontend/pages/hangar/[id].vue"),
