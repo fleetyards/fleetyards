@@ -1,0 +1,30 @@
+{
+  "key": "rrs_consumable_sedative_01",
+  "ref": "6a163e8b-1819-424b-abac-3e8662c55237",
+  "name": "Drema Injector",
+  "description": "Designed by RRS for field applications, this single-use device injects a fast-acting sedative into the target's body that will incapacitate the subject for a short duration preventing them from hurting themselves or others.",
+  "equipment_type": "medical",
+  "slot": null,
+  "item_type": "medical_consumable",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medical",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "73a6ba90-8f53-423d-ad0b-96e81b7e18a5",
+  "tags": [
+    "Stash_MediPen",
+    "medical_injection"
+  ],
+  "hidden": false
+}
