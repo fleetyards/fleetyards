@@ -21,7 +21,7 @@ export const routes: RouteRecordRaw[] = [
       title: "hangar.vehicleCargo",
       backgroundImage: "bg-5",
       customTitle: true,
-      feature: "hangar_inventories",
+      feature: "ship_inventories",
     },
   },
 ];

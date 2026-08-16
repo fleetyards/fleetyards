@@ -9957,6 +9957,7 @@ components:
       - oauth-github
       - oauth-google
       - oauth-twitch
+      - ship_inventories
       - tools_cargo_grids
       - tools_travel_times
       title: FeatureFlagName

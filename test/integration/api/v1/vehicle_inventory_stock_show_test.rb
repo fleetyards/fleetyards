@@ -37,7 +37,7 @@ class Api::V1::VehicleInventoryStockShowTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("hangar_inventories")
+    Flipper.enable("ship_inventories")
     @user = create(:user)
     @other_user = create(:user)
     @vehicle = create(:vehicle, user: @user)

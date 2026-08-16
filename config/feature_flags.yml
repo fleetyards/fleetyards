@@ -35,6 +35,12 @@ hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"
   self_service: true
 
+# Rides its own gate rather than hangar_inventories: a ship's cargo is a
+# separate surface and rolls out on its own schedule.
+ship_inventories:
+  description: "Ship inventories — the cargo aboard a vehicle"
+  self_service: true
+
 oauth-applications:
   description: "User-owned OAuth applications in settings"
   permanent: true
