@@ -313,6 +313,66 @@ p {
   font-family: "Orbitron", sans-serif;
 }
 
+.report-period {
+  margin-top: -8px;
+  color: darken($global-font-color, 20%);
+  font-size: 0.85em;
+}
+
+.report-section {
+  margin-top: 24px;
+  margin-bottom: 4px;
+  color: $global-font-color;
+  font-weight: bold;
+  font-size: 1em;
+  font-family: "Orbitron", sans-serif;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(200, 200, 200, 0.12);
+    font-size: 0.9em;
+  }
+
+  th {
+    color: darken($global-font-color, 25%);
+    font-weight: normal;
+    font-size: 0.75em;
+    text-transform: uppercase;
+  }
+}
+
+.report-label {
+  text-align: left;
+}
+
+.report-number {
+  width: 90px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.report-muted {
+  color: darken($global-font-color, 25%);
+}
+
+.report-delta-positive {
+  color: #5cb85c;
+}
+
+.report-delta-negative {
+  color: #d9534f;
+}
+
+.report-delta-neutral {
+  color: darken($global-font-color, 25%);
+}
+
 @media (prefers-color-scheme: dark) {
   body,
   html,

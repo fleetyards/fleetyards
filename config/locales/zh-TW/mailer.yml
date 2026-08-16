@@ -13,12 +13,13 @@ zh-TW:
         subject: RSI 連線已恢復
         text: 透過 "%{url}" 的 RSI 自動更新已恢復
       weekly:
-        fleets: 新艦隊
         headline: FleetYards.net Command - Weekly
-        registrations: 新註冊
-        ships: 新飛船
+        metrics:
+          fleets: 新艦隊
+          registrations: 新註冊
+          ships: 新飛船
+          vehicles: 新載具
         subject: FleetYards.net Command Weekly
-        vehicles: 新載具
     fleet_membership:
       fleet_accepted:
         action: "%{fleet} 首頁"

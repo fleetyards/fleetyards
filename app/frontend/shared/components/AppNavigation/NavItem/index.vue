@@ -27,6 +27,7 @@ type Props = {
   prefix?: string;
   submenuActive?: boolean;
   submenuDirection?: string;
+  badge?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -43,6 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
   prefix: undefined,
   submenuActive: false,
   submenuDirection: "down",
+  badge: 0,
 });
 
 const open = ref(false);
@@ -149,6 +151,7 @@ const toggleMenu = () => {
           :image="image"
           :avatar="avatar"
           :slim="slim"
+          :badge="badge"
         />
         <span
           v-if="!slim"
@@ -187,6 +190,7 @@ const toggleMenu = () => {
           :image="image"
           :avatar="avatar"
           :slim="slim"
+          :badge="badge"
         />
       </slot>
     </a>
@@ -216,6 +220,7 @@ const toggleMenu = () => {
             :image="image"
             :avatar="avatar"
             :slim="slim"
+            :badge="badge"
           />
         </slot>
       </a>
@@ -237,6 +242,7 @@ const toggleMenu = () => {
           :image="image"
           :avatar="avatar"
           :slim="slim"
+          :badge="badge"
         />
       </slot>
     </a>
@@ -256,6 +262,7 @@ const toggleMenu = () => {
           :image="image"
           :avatar="avatar"
           :slim="slim"
+          :badge="badge"
         />
       </slot>
     </span>
