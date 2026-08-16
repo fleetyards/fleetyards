@@ -9,6 +9,7 @@ module ScData
         ::ScData::Loader::ModelsLoader.new.all
         ::ScData::Loader::ModelModulesLoader.new.all
         ::ScData::Loader::CommoditiesLoader.new.all
+        ::ScData::Loader::EquipmentLoader.new.all
       end
 
       def initialize

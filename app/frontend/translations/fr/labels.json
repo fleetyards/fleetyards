@@ -1156,6 +1156,8 @@
         "componentCategory": "Component Type",
         "commodity": "Commodity",
         "commodityType": "Commodity Type",
+        "equipment": "Equipment",
+        "equipmentItemType": "Equipment Type",
         "quantity": "Quantity",
         "unit": "Unit",
         "notes": "Notes",

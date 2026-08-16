@@ -8336,6 +8336,46 @@ components:
           type: string
         slug:
           type: string
+        description:
+          type:
+          - string
+          - 'null'
+        equipmentType:
+          "$ref": "#/components/schemas/EquipmentTypeEnum"
+        itemType:
+          type:
+          - string
+          - 'null'
+        subType:
+          type:
+          - string
+          - 'null'
+        weaponClass:
+          type:
+          - string
+          - 'null'
+        size:
+          type:
+          - string
+          - 'null'
+        grade:
+          type:
+          - string
+          - 'null'
+        rateOfFire:
+          type:
+          - number
+          - 'null'
+        range:
+          type:
+          - number
+          - 'null'
+        storage:
+          type:
+          - number
+          - 'null'
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
         availability:
           type: object
           properties:
@@ -8351,54 +8391,6 @@ components:
           required:
           - boughtAt
           - soldAt
-        backpackCompatibility:
-          type: string
-        coreCompatibility:
-          type: string
-        damageReduction:
-          type: string
-        description:
-          type: string
-        extras:
-          type: string
-        grade:
-          type: string
-        itemType:
-          type: string
-        itemTypeLabel:
-          type: string
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
-        range:
-          type: string
-        rateOfFire:
-          type: string
-        size:
-          type: string
-        slot:
-          type: string
-        slotLabel:
-          type: string
-        storage:
-          type: string
-        temperatureRating:
-          type: string
-        type:
-          type: string
-        typeLabel:
-          type: string
-        volume:
-          type: string
-        weaponClass:
-          type: string
-        weaponClassLabel:
-          type: string
         createdAt:
           type: string
           format: date-time
@@ -8411,29 +8403,28 @@ components:
       - name
       - slug
       - availability
-      - media
       - createdAt
       - updatedAt
       title: Equipment
     EquipmentTypeEnum:
       type: string
       enum:
-      - undersuit
-      - armor
       - weapon
-      - tool
-      - clothing
-      - medical
       - weapon_attachment
+      - tool
+      - armor
+      - clothing
+      - undersuit
+      - medical
       - hacking_tool
       x-enumNames:
-      - UNDERSUIT
-      - ARMOR
       - WEAPON
-      - TOOL
-      - CLOTHING
-      - MEDICAL
       - WEAPON_ATTACHMENT
+      - TOOL
+      - ARMOR
+      - CLOTHING
+      - UNDERSUIT
+      - MEDICAL
       - HACKING_TOOL
       title: EquipmentTypeEnum
     ExternalFuelTank:
@@ -9538,6 +9529,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:

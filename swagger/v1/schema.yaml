@@ -125,6 +125,42 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/WeaponIndex"
+  "/equipment":
+    get:
+      summary: Equipment list
+      tags:
+      - Equipment
+      operationId: equipment
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: string
+          default: '1'
+        required: false
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      - name: q
+        in: query
+        schema:
+          type: object
+          "$ref": "#/components/schemas/EquipmentQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Equipments"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     get:
       summary: Feature Flags for User
@@ -223,6 +259,21 @@ paths:
                   "$ref": "#/components/schemas/FilterOption"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/equipment/item-types":
+    get:
+      summary: Equipment Item Type Filters
+      tags:
+      - EquipmentFilters
+      operationId: equipmentItemTypesFilters
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/FilterOption"
   "/filters/manufacturers/options":
     get:
       summary: Manufacturer Options
@@ -9201,6 +9252,46 @@ components:
           type: string
         slug:
           type: string
+        description:
+          type:
+          - string
+          - 'null'
+        equipmentType:
+          "$ref": "#/components/schemas/EquipmentTypeEnum"
+        itemType:
+          type:
+          - string
+          - 'null'
+        subType:
+          type:
+          - string
+          - 'null'
+        weaponClass:
+          type:
+          - string
+          - 'null'
+        size:
+          type:
+          - string
+          - 'null'
+        grade:
+          type:
+          - string
+          - 'null'
+        rateOfFire:
+          type:
+          - number
+          - 'null'
+        range:
+          type:
+          - number
+          - 'null'
+        storage:
+          type:
+          - number
+          - 'null'
+        manufacturer:
+          "$ref": "#/components/schemas/Manufacturer"
         availability:
           type: object
           properties:
@@ -9216,54 +9307,6 @@ components:
           required:
           - boughtAt
           - soldAt
-        backpackCompatibility:
-          type: string
-        coreCompatibility:
-          type: string
-        damageReduction:
-          type: string
-        description:
-          type: string
-        extras:
-          type: string
-        grade:
-          type: string
-        itemType:
-          type: string
-        itemTypeLabel:
-          type: string
-        manufacturer:
-          "$ref": "#/components/schemas/Manufacturer"
-        media:
-          type: object
-          properties:
-            storeImage:
-              "$ref": "#/components/schemas/MediaFile"
-          additionalProperties: false
-        range:
-          type: string
-        rateOfFire:
-          type: string
-        size:
-          type: string
-        slot:
-          type: string
-        slotLabel:
-          type: string
-        storage:
-          type: string
-        temperatureRating:
-          type: string
-        type:
-          type: string
-        typeLabel:
-          type: string
-        volume:
-          type: string
-        weaponClass:
-          type: string
-        weaponClassLabel:
-          type: string
         createdAt:
           type: string
           format: date-time
@@ -9276,7 +9319,6 @@ components:
       - name
       - slug
       - availability
-      - media
       - createdAt
       - updatedAt
       title: Equipment
@@ -9285,6 +9327,9 @@ components:
       properties:
         nameCont:
           type: string
+        currentVersion:
+          type: boolean
+          default: true
         idIn:
           type: array
           items:
@@ -9294,30 +9339,60 @@ components:
           type: array
           items:
             type: string
+        slugIn:
+          type: array
+          items:
+            type: string
+        equipmentTypeIn:
+          type: array
+          items:
+            type: string
+        itemTypeIn:
+          type: array
+          items:
+            type: string
+        manufacturerSlugIn:
+          type: array
+          items:
+            type: string
       additionalProperties: false
       example: {}
       title: EquipmentQuery
     EquipmentTypeEnum:
       type: string
       enum:
-      - undersuit
-      - armor
       - weapon
-      - tool
-      - clothing
-      - medical
       - weapon_attachment
+      - tool
+      - armor
+      - clothing
+      - undersuit
+      - medical
       - hacking_tool
       x-enumNames:
-      - UNDERSUIT
-      - ARMOR
       - WEAPON
-      - TOOL
-      - CLOTHING
-      - MEDICAL
       - WEAPON_ATTACHMENT
+      - TOOL
+      - ARMOR
+      - CLOTHING
+      - UNDERSUIT
+      - MEDICAL
       - HACKING_TOOL
       title: EquipmentTypeEnum
+    Equipments:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Equipment"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: Equipments
     ExternalFuelTank:
       type: object
       properties:
@@ -9626,6 +9701,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:
@@ -9723,6 +9799,7 @@ components:
           enum:
           - Commodity
           - Component
+          - Equipment
           -
         itemId:
           type:
@@ -10895,6 +10972,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:
@@ -10971,6 +11049,7 @@ components:
           enum:
           - Commodity
           - Component
+          - Equipment
           -
         itemId:
           type:
@@ -11864,6 +11943,7 @@ components:
               enum:
               - Commodity
               - Component
+              - Equipment
             name:
               type: string
             slug:

@@ -115,6 +115,35 @@ class FleetInventoryItemTest < ActiveSupport::TestCase
     assert_equal "Gold", item.name
   end
 
+  # One table covers weapons, attachments and magazines, so all three ledger
+  # categories reference Equipment rather than a catalogue each.
+  test "accepts a reference to equipment" do
+    equipment = create(:equipment, name: "P4-AR Rifle")
+
+    item = build(:fleet_inventory_item, fleet_inventory: @inventory, name: nil,
+      category: :weapon, unit: :units, item: equipment)
+
+    assert_predicate item, :valid?
+    assert_equal "P4-AR Rifle", item.name
+  end
+
+  test "accepts equipment on an ammunition entry" do
+    magazine = create(:equipment, :magazine, name: "P4-AR Magazine")
+
+    item = build(:fleet_inventory_item, fleet_inventory: @inventory, name: nil,
+      category: :ammunition, unit: :units, item: magazine)
+
+    assert_predicate item, :valid?
+  end
+
+  test "rejects a reference to equipment that does not exist" do
+    item = build(:fleet_inventory_item, fleet_inventory: @inventory,
+      item_type: "Equipment", item_id: SecureRandom.uuid)
+
+    assert_not item.valid?
+    assert_includes item.errors.attribute_names, :item_id
+  end
+
   test "rejects a reference to a commodity that does not exist" do
     item = build(:fleet_inventory_item, fleet_inventory: @inventory,
       item_type: "Commodity", item_id: SecureRandom.uuid)

@@ -40,3 +40,15 @@ PUT /hangar/inventories/{hangarInventorySlug}/items/{id} added the new `Commodit
 GET /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Commodity` enum value to the `item/type` response property for the response status `200`
 PATCH /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Commodity` enum value to the `item/type` response property for the response status `200`
 GET /hangar/inventory-items added the new `Commodity` enum value to the `items/items/item/type` response property for the response status `200`
+GET /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Equipment` enum value to the `items/items/item/type` response property for the response status `200`
+POST /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items added the new `Equipment` enum value to the `item/type` response property for the response status `201`
+PUT /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/items/{id} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
+GET /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
+PATCH /fleets/{fleetSlug}/inventories/{fleetInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
+GET /fleets/{fleetSlug}/inventory-items added the new `Equipment` enum value to the `items/items/item/type` response property for the response status `200`
+GET /hangar/inventories/{hangarInventorySlug}/items added the new `Equipment` enum value to the `items/items/item/type` response property for the response status `200`
+POST /hangar/inventories/{hangarInventorySlug}/items added the new `Equipment` enum value to the `item/type` response property for the response status `201`
+PUT /hangar/inventories/{hangarInventorySlug}/items/{id} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
+GET /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
+PATCH /hangar/inventories/{hangarInventorySlug}/stock/{slug} added the new `Equipment` enum value to the `item/type` response property for the response status `200`
+GET /hangar/inventory-items added the new `Equipment` enum value to the `items/items/item/type` response property for the response status `200`
