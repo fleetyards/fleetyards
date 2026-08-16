@@ -13,12 +13,13 @@ it:
         subject: Connessione a RSI ripristinata
         text: Gli aggiornamenti automatici da RSI tramite "%{url}" sono stati ripristinati
       weekly:
-        fleets: Nuove flotte
         headline: FleetYards.net Command - Weekly
-        registrations: Nuove registrazioni
-        ships: Nuove navi
+        metrics:
+          fleets: Nuove flotte
+          registrations: Nuove registrazioni
+          ships: Nuove navi
+          vehicles: Nuovi veicoli
         subject: FleetYards.net Command Weekly
-        vehicles: Nuovi veicoli
     fleet_membership:
       fleet_accepted:
         action: Homepage di %{fleet}

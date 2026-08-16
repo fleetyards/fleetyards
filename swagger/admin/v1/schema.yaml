@@ -5004,6 +5004,161 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications":
+    get:
+      summary: Admin Notifications list
+      tags:
+      - Notifications
+      operationId: adminNotifications
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 25
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/AdminNotificationQuery"
+        required: false
+      - name: cacheId
+        in: query
+        schema:
+          type: string
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotifications"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/destroy-all":
+    delete:
+      summary: Delete all Admin Notifications
+      tags:
+      - Notifications
+      operationId: destroyAllAdminNotifications
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/notifications/read-all":
+    put:
+      summary: Mark all Admin Notifications as read
+      tags:
+      - Notifications
+      operationId: readAllAdminNotifications
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/notifications/unread-count":
+    get:
+      summary: Unread Admin Notification count
+      tags:
+      - Notifications
+      operationId: adminNotificationsUnreadCount
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotificationUnreadCount"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/notifications/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Admin Notification id
+      required: true
+    delete:
+      summary: Delete Admin Notification
+      tags:
+      - Notifications
+      operationId: destroyAdminNotification
+      responses:
+        '204':
+          description: successful
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/notifications/{id}/read":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Admin Notification id
+      required: true
+    put:
+      summary: Mark Admin Notification as read
+      tags:
+      - Notifications
+      operationId: readAdminNotification
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AdminNotification"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/oauth-applications":
     post:
       summary: Create OAuth Application
@@ -6546,6 +6701,142 @@ components:
       - name
       - permanent
       title: AdminFleetRole
+    AdminNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        notificationType:
+          "$ref": "#/components/schemas/AdminNotificationTypeEnum"
+        severity:
+          "$ref": "#/components/schemas/AdminNotificationSeverityEnum"
+        title:
+          type: string
+        body:
+          type: string
+        link:
+          type: string
+        icon:
+          type: string
+        occurrences:
+          type: integer
+        lastOccurredAt:
+          type: string
+          format: date-time
+        read:
+          type: boolean
+        readAt:
+          type: string
+          format: date-time
+        expiresAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - notificationType
+      - severity
+      - title
+      - occurrences
+      - lastOccurredAt
+      - read
+      - expiresAt
+      - createdAt
+      - updatedAt
+      title: AdminNotification
+    AdminNotificationQuery:
+      type: object
+      properties:
+        notificationTypeEq:
+          "$ref": "#/components/schemas/AdminNotificationTypeEnum"
+        severityEq:
+          "$ref": "#/components/schemas/AdminNotificationSeverityEnum"
+        readAtNull:
+          type: boolean
+        searchCont:
+          type: string
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/AdminNotificationSortEnum"
+          - "$ref": "#/components/schemas/AdminNotificationSortEnum"
+      additionalProperties: false
+      example: {}
+      title: AdminNotificationQuery
+    AdminNotificationSeverityEnum:
+      type: string
+      enum:
+      - info
+      - warning
+      - error
+      x-enumNames:
+      - INFO
+      - WARNING
+      - ERROR
+      title: AdminNotificationSeverityEnum
+    AdminNotificationSortEnum:
+      type: string
+      enum:
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: AdminNotificationSortEnum
+    AdminNotificationTypeEnum:
+      type: string
+      enum:
+      - paints_import
+      - modules_import
+      - loaner_sync
+      - uex_prices_import
+      - uex_commodity_prices_import
+      - new_supporter
+      - rsi_api_blocked
+      - rsi_api_unblocked
+      - weekly_stats
+      x-enumNames:
+      - PAINTS_IMPORT
+      - MODULES_IMPORT
+      - LOANER_SYNC
+      - UEX_PRICES_IMPORT
+      - UEX_COMMODITY_PRICES_IMPORT
+      - NEW_SUPPORTER
+      - RSI_API_BLOCKED
+      - RSI_API_UNBLOCKED
+      - WEEKLY_STATS
+      title: AdminNotificationTypeEnum
+    AdminNotificationUnreadCount:
+      type: object
+      properties:
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - count
+      title: AdminNotificationUnreadCount
+    AdminNotifications:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/AdminNotification"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: AdminNotifications
     AdminUser:
       type: object
       properties:
@@ -6831,6 +7122,7 @@ components:
     ChannelsEnum:
       type: string
       enum:
+      - AdminNotificationsChannel
       - AppVersionChannel
       - FleetMembersChannel
       - FleetVehiclesChannel
@@ -6848,6 +7140,7 @@ components:
       - WishlistCreateChannel
       - WishlistDestroyChannel
       x-enumNames:
+      - ADMIN_NOTIFICATIONS_CHANNEL
       - APP_VERSION_CHANNEL
       - FLEET_MEMBERS_CHANNEL
       - FLEET_VEHICLES_CHANNEL

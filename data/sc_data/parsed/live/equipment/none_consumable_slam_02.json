@@ -1,0 +1,30 @@
+{
+  "key": "none_consumable_slam_02",
+  "ref": "ad8918b3-3af9-4c8d-9c1c-a00f13f7feb4",
+  "name": "SLAM",
+  "description": "Most commonly ingested as a gas. Vials of SLAM are cracked and inhaled. Initially developed as a performance enhancer for athletes, SLAM targets the user's nervous system acting as a fear-inhibitor and painkiller. Once the severe physical side effects were discovered, the drug went underground and found popularity among mercs and outlaws who relied on it to provide that slight edge in combat. Unfortunately, SLAM is also heavily addictive, so many of these mercs ended up getting burned out on the drug. Heavy-duty SLAM junkies are easily identifiable in public; they have ‘the shakes’ -- involuntary muscle twitches. Important to note that this is not a sign of withdrawal, simply a side effect.",
+  "equipment_type": "medical",
+  "slot": null,
+  "item_type": "medical_consumable",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "Medical",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": "dd55bc19-5212-4365-bbc8-73474f0257ed",
+  "tags": [
+    "Stash_MediPen",
+    "medical_injection"
+  ],
+  "hidden": true
+}

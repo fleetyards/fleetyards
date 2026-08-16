@@ -395,6 +395,9 @@
         "adminFleet": {
           "destroy": "Are you sure you want to delete this fleet? This action can't be reverted."
         },
+        "adminNotifications": {
+          "destroyAll": "Are you sure you want to delete all notifications? This action can't be reverted."
+        },
         "adminDestroyedFleet": {
           "restore": "Are you sure you want to restore this fleet?",
           "restorePurged": "Are you sure you want to restore this purged fleet? Restoring is best-effort: roles, images, invite links and fleet vehicles are not restored."
@@ -512,6 +515,13 @@
             "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
           }
         }
+      },
+      "adminNotifications": {
+        "read": "Notification marked as read",
+        "readAll": "All notifications marked as read",
+        "destroyed": "Notification deleted",
+        "destroyedAll": "All notifications deleted",
+        "error": "Something went wrong"
       }
     }
   }

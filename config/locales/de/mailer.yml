@@ -17,12 +17,13 @@ de:
         subject: Verbindung zu RSI wiederhergestellt
         text: Automatische Aktualisierungen von RSI über "%{url}" wurden wiederhergestellt
       weekly:
-        fleets: Neue Flotten
         headline: FleetYards.net Command - Weekly
-        registrations: Neue Registrierungen
-        ships: Neue Schiffe
+        metrics:
+          fleets: Neue Flotten
+          registrations: Neue Registrierungen
+          ships: Neue Schiffe
+          vehicles: Neue Fahrzeuge
         subject: FleetYards.net Command Weekly
-        vehicles: Neue Fahrzeuge
     fleet_membership:
       fleet_accepted:
         action: "%{fleet} Homepage"

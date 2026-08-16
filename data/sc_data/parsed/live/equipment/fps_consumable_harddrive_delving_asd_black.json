@@ -1,0 +1,29 @@
+{
+  "key": "fps_consumable_harddrive_delving_asd_black",
+  "ref": "fee02949-15cc-42c7-90f1-d31dadf28cce",
+  "name": "ASD Data Drive",
+  "description": "An ASD Onyx Facility data drive made to contain propriety information.",
+  "equipment_type": "hacking_tool",
+  "slot": null,
+  "item_type": "data_drive",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "SystemAccess",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "MissionQuestItem"
+  ],
+  "hidden": true
+}
