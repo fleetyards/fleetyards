@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import BasePill from "@/shared/components/base/Pill/index.vue";
 import BaseTable, {
   type BaseTableCol,
 } from "@/shared/components/base/Table/index.vue";
@@ -222,6 +223,13 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
     <template #col-name="{ record }">
       <slot name="log-name" :record="record">{{ record.name }}</slot>
+      <BasePill
+        v-if="record.item && record.item.available === false"
+        variant="warning"
+        :title="t('labels.logistics.itemUnavailableHint')"
+      >
+        {{ t("labels.logistics.itemUnavailable") }}
+      </BasePill>
     </template>
     <template #col-inventory="{ record }">
       <span class="text-muted">{{ record.inventory?.name }}</span>

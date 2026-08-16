@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import BasePill from "@/shared/components/base/Pill/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { InventoryStockPosition } from "@/services/fyApi";
 
@@ -80,6 +81,13 @@ const quality = computed(() => {
             </div>
             <div class="metrics-card__row__value">
               {{ stockItem.item.name }}
+              <BasePill
+                v-if="stockItem.item.available === false"
+                variant="warning"
+                :title="t('labels.logistics.itemUnavailableHint')"
+              >
+                {{ t("labels.logistics.itemUnavailable") }}
+              </BasePill>
             </div>
           </div>
           <div v-if="stockItem.lastEntryAt" class="metrics-card__row">
