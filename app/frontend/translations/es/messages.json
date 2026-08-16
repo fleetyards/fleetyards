@@ -460,22 +460,16 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "¿Eliminar este artículo y todas sus entradas? Esta acción no se puede deshacer."
           }
-        }
-      }
-    },
-    "logistics": {
-      "stockItem": {
-        "destroy": {
-          "confirmAll": "¿Eliminar este artículo y todas sus entradas? Esta acción no se puede deshacer."
-        }
-      },
-      "vehicleInventory": {
-        "clear": {
-          "confirm": "¿Vaciar la carga de esta nave? Se eliminarán todas las entradas.",
-          "success": "Carga vaciada.",
-          "failure": "No se pudo vaciar la carga."
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "¿Vaciar la carga de esta nave? Se eliminarán todas las entradas.",
+            "success": "Carga vaciada.",
+            "failure": "No se pudo vaciar la carga."
+          }
         }
       }
     }

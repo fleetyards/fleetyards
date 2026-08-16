@@ -1238,12 +1238,10 @@
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
         "qualityRange": "Quality",
-        "stockItem": "Stock Item"
+        "stockItem": "Stock Item",
+        "overCapacity": "超出货舱容量"
       },
       "hangarInventories": "Inventories"
-    },
-    "logistics": {
-      "overCapacity": "超出货舱容量"
     }
   }
 }

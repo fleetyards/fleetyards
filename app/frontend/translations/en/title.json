@@ -38,7 +38,8 @@
         "publicWishlist": "%{user} Wishlist",
         "vehicleLoadouts": "Vehicle Loadouts",
         "inventories": "My Hangar Inventories",
-        "inventory": "%{inventory}"
+        "inventory": "%{inventory}",
+        "vehicleCargo": "Vehicle Cargo"
       },
       "requestPassword": "Request Password",
       "changePassword": "Change Password",
@@ -222,9 +223,6 @@
           "index": "Model Module Packages"
         }
       }
-    },
-    "hangar": {
-      "vehicleCargo": "Vehicle Cargo"
     }
   }
 }

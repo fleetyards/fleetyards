@@ -270,7 +270,8 @@
         "destroyEntry": "Delete Entry",
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
-        "editInventory": "Edit Inventory"
+        "editInventory": "Edit Inventory",
+        "clearCargo": "Clear Cargo"
       },
       "adminNotifications": {
         "read": "Mark as read",
@@ -279,9 +280,6 @@
         "sortOldest": "Oldest first",
         "sortNewest": "Newest first"
       }
-    },
-    "logistics": {
-      "clearCargo": "Clear Cargo"
     }
   }
 }

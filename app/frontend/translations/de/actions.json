@@ -265,11 +265,9 @@
         "destroyEntry": "Delete Entry",
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
-        "editInventory": "Edit Inventory"
+        "editInventory": "Edit Inventory",
+        "clearCargo": "Fracht leeren"
       }
-    },
-    "logistics": {
-      "clearCargo": "Fracht leeren"
     }
   }
 }

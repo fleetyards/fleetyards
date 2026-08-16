@@ -255,11 +255,9 @@
         "destroyEntry": "Delete Entry",
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
-        "editInventory": "Edit Inventory"
+        "editInventory": "Edit Inventory",
+        "clearCargo": "清空货物"
       }
-    },
-    "logistics": {
-      "clearCargo": "清空货物"
     }
   }
 }

@@ -17,7 +17,8 @@
       "hangar": {
         "index": "Il Mio Hangar",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventories"
+        "inventories": "Inventories",
+        "vehicleCargo": "Carico"
       },
       "login": "Accedi",
       "logout": "Esci",
@@ -186,9 +187,6 @@
           "edit": "Modifica obiettivo di finanziamento"
         }
       }
-    },
-    "hangar": {
-      "vehicleCargo": "Carico"
     }
   }
 }

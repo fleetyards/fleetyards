@@ -459,22 +459,16 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "刪除該物品及其所有記錄？此操作無法復原。"
           }
-        }
-      }
-    },
-    "logistics": {
-      "stockItem": {
-        "destroy": {
-          "confirmAll": "刪除該物品及其所有記錄？此操作無法復原。"
-        }
-      },
-      "vehicleInventory": {
-        "clear": {
-          "confirm": "清空這艘飛船的貨物？所有記錄都會被刪除。",
-          "success": "貨物已清空。",
-          "failure": "無法清空貨物。"
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "清空這艘飛船的貨物？所有記錄都會被刪除。",
+            "success": "貨物已清空。",
+            "failure": "無法清空貨物。"
+          }
         }
       }
     }

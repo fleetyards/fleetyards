@@ -17,7 +17,8 @@
       "hangar": {
         "index": "Mi Hangar",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventories"
+        "inventories": "Inventories",
+        "vehicleCargo": "Carga"
       },
       "login": "Iniciar sesión",
       "logout": "Cerrar sesión",
@@ -186,9 +187,6 @@
           "edit": "Editar objetivo de financiación"
         }
       }
-    },
-    "hangar": {
-      "vehicleCargo": "Carga"
     }
   }
 }
