@@ -88,6 +88,19 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /equipment exposes the armour stats the spec block carries" do
+    create(:equipment, :armor, name: "Novikov Exploration Suit")
+
+    assert_api_response :get, 200 do
+      suit = parsed_body["items"].find { |i| i["name"] == "Novikov Exploration Suit" }
+
+      assert_equal "torso", suit["slot"]
+      assert_equal 25, suit["damageReduction"]
+      assert_equal "-225 / 75 °C", suit["temperatureRating"]
+      assert_equal "all", suit["backpackCompatibility"]
+    end
+  end
+
   test "GET /equipment exposes the fields the picker needs" do
     assert_api_response :get, 200 do
       rifle = parsed_body["items"].find { |i| i["name"] == "P4-AR Rifle" }

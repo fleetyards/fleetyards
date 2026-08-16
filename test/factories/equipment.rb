@@ -10,11 +10,14 @@
 #  damage_reduction       :decimal(15, 2)
 #  description            :text
 #  equipment_type         :string
+#  g_force_tolerance      :decimal(15, 2)
 #  grade                  :string
 #  hidden                 :boolean          default(FALSE)
 #  icon                   :string
 #  item_type              :string
 #  name                   :string
+#  radiation_protection   :decimal(15, 2)
+#  radiation_scrub_rate   :decimal(15, 2)
 #  range                  :decimal(15, 2)
 #  rate_of_fire           :decimal(15, 2)
 #  sc_key                 :string
@@ -38,6 +41,7 @@
 #  index_equipment_on_item_type        (item_type)
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #  index_equipment_on_sc_key           (sc_key) UNIQUE
+#  index_equipment_on_slot             (slot)
 #
 FactoryBot.define do
   factory :equipment do
@@ -64,6 +68,19 @@ FactoryBot.define do
       weapon_class { nil }
       sub_type { "Magazine" }
       storage { 40 }
+    end
+
+    trait :armor do
+      equipment_type { "armor" }
+      item_type { "heavy_utility" }
+      weapon_class { nil }
+      sub_type { "Heavy" }
+      slot { :torso }
+      damage_reduction { 25 }
+      temperature_rating { "-225 / 75 °C" }
+      radiation_protection { 33_600 }
+      radiation_scrub_rate { 147.42 }
+      backpack_compatibility { :all }
     end
 
     trait :hidden do

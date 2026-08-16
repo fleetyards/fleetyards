@@ -9270,6 +9270,10 @@ components:
           type:
           - string
           - 'null'
+        slot:
+          type:
+          - string
+          - 'null'
         size:
           type:
           - string
@@ -9289,6 +9293,34 @@ components:
         storage:
           type:
           - number
+          - 'null'
+        damageReduction:
+          type:
+          - number
+          - 'null'
+        temperatureRating:
+          type:
+          - string
+          - 'null'
+        radiationProtection:
+          type:
+          - number
+          - 'null'
+        radiationScrubRate:
+          type:
+          - number
+          - 'null'
+        gForceTolerance:
+          type:
+          - number
+          - 'null'
+        coreCompatibility:
+          type:
+          - string
+          - 'null'
+        backpackCompatibility:
+          type:
+          - string
           - 'null'
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"

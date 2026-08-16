@@ -248,12 +248,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_190000) do
     t.decimal "damage_reduction", precision: 15, scale: 2
     t.text "description"
     t.string "equipment_type"
+    t.decimal "g_force_tolerance", precision: 15, scale: 2
     t.string "grade"
     t.boolean "hidden", default: false
     t.string "icon"
     t.string "item_type"
     t.uuid "manufacturer_id"
     t.string "name"
+    t.decimal "radiation_protection", precision: 15, scale: 2
+    t.decimal "radiation_scrub_rate", precision: 15, scale: 2
     t.decimal "range", precision: 15, scale: 2
     t.decimal "rate_of_fire", precision: 15, scale: 2
     t.string "sc_key"
@@ -272,6 +275,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_190000) do
     t.index ["item_type"], name: "index_equipment_on_item_type"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
     t.index ["sc_key"], name: "index_equipment_on_sc_key", unique: true
+    t.index ["slot"], name: "index_equipment_on_slot"
   end
 
   create_table "exchange_rates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

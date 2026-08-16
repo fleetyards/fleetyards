@@ -11,6 +11,9 @@ module ScData
         entities/scitem/weapons/magazines
         entities/scitem/weapons/throwable
         entities/scitem/weapons/mines
+        entities/scitem/characters/human/armor
+        entities/scitem/characters/human/clothing
+        entities/scitem/characters/human/starwear
       ].freeze
 
       # AttachDef Type is the game's own split between a weapon and the things
@@ -39,6 +42,37 @@ module ScData
 
       WEAPON_CLASSES = %w[ballistic energy kinetic].freeze
 
+      # Worn gear names its slot in the AttachDef Type rather than a SubType:
+      # Char_Armor_Helmet, Char_Clothing_Feet. The torso carries two clothing
+      # layers, which the slot enum already separates into shirt and jacket.
+      CHAR_TYPES = {
+        "Char_Armor_Helmet" => ["armor", "helmet"],
+        "Char_Armor_Torso" => ["armor", "torso"],
+        "Char_Armor_Arms" => ["armor", "arms"],
+        "Char_Armor_Legs" => ["armor", "legs"],
+        "Char_Armor_Backpack" => ["armor", "backpack"],
+        "Char_Armor_Undersuit" => ["undersuit", "undersuit"],
+        "Char_Clothing_Torso_0" => ["clothing", "shirt"],
+        "Char_Clothing_Torso_1" => ["clothing", "jacket"],
+        "Char_Clothing_Legs" => ["clothing", "pants"],
+        "Char_Clothing_Feet" => ["clothing", "footwear"],
+        "Char_Clothing_Hat" => ["clothing", "hat"],
+        "Char_Clothing_Hands" => ["clothing", "gloves"],
+        "Char_Clothing_Backpack" => ["clothing", "backpack"]
+      }.freeze
+
+      # "All", "Light", "Medium & Heavy" -- the spec block writes the pairs with
+      # an ampersand or a comma depending on the field.
+      COMPATIBILITY = {
+        "all" => "all",
+        "light" => "light",
+        "heavy" => "heavy",
+        "medium&heavy" => "medium_heavy",
+        "heavy&medium" => "medium_heavy",
+        "light&medium" => "light_medium",
+        "medium&light" => "light_medium"
+      }.freeze
+
       # Tints, store and collector editions, and the marketing and template
       # records that never reach a player. They carry their own key, so they
       # load as rows, but a picker listing twelve Pyro RYT Multi-Tools is not
@@ -65,23 +99,24 @@ module ScData
         mark_skins(load_equipment_data.filter_map { |item| parse_equipment(item) })
       end
 
-      # A record whose key extends another's and carries the same display name is
-      # a skin or loadout copy of it -- the four colourways of a scope, the
-      # "reference" build of a shotgun. Deriving it beats extending the suffix
-      # list every patch.
+      # Records that share a display name and a maker-and-type key prefix are
+      # colourways of one item: the seventeen mym_shirt_01_01_NN all read
+      # "Davlos Shirt (Charcoal)", and grin_multitool_01_ai copies
+      # grin_multitool_01. Only the first by key stays visible.
       #
-      # The name test is what keeps real items out: a rifle's magazine key also
-      # extends the rifle's, but it is named for the magazine.
+      # Both tests earn their place. Without the name, a rifle's magazine would
+      # be hidden by the rifle it shares a prefix with; without the prefix, the
+      # two makers who both ship a "BR-2 Shotgun" would collapse into one.
       private def mark_skins(parsed)
-        by_key = parsed.index_by { |item| item[:key] }
+        parsed.group_by { |item| item[:name] }.each_value do |named|
+          next if named.one?
 
-        parsed.each do |item|
-          next if item[:hidden]
-
-          item[:hidden] = by_key.any? do |key, other|
-            key != item[:key] && item[:key].start_with?("#{key}_") && other[:name] == item[:name]
+          named.group_by { |item| item[:key].split("_").first(2).join("_") }.each_value do |family|
+            family.sort_by { |item| item[:key] }.drop(1).each { |item| item[:hidden] = true }
           end
         end
+
+        parsed
       end
 
       private def parse_equipment(item)
@@ -97,13 +132,15 @@ module ScData
         key = item[:key]
         segments = key.split("_")
         described = describe(translate(attach_def.dig("Localization", "Description")))
+        worn_type, slot = CHAR_TYPES[attach_def["Type"]]
 
         {
           key:,
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(name),
           description: described[:description],
-          equipment_type: EQUIPMENT_TYPES[attach_def["Type"]],
+          equipment_type: worn_type || EQUIPMENT_TYPES[attach_def["Type"]],
+          slot:,
           # The description header is written by hand and says "Assault Rifle"
           # where the record key only says "rifle", so it wins where it exists.
           item_type: described[:item_type] || item_type(segments),
@@ -111,6 +148,13 @@ module ScData
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
           storage: described[:storage],
+          damage_reduction: described[:damage_reduction],
+          temperature_rating: described[:temperature_rating],
+          radiation_protection: described[:radiation_protection],
+          radiation_scrub_rate: described[:radiation_scrub_rate],
+          g_force_tolerance: described[:g_force_tolerance],
+          core_compatibility: described[:core_compatibility],
+          backpack_compatibility: described[:backpack_compatibility],
           icon: icon(values),
           sub_type: value_or_nil(attach_def["SubType"]),
           size: value_or_nil(attach_def["Size"]),
@@ -150,8 +194,24 @@ module ScData
           weapon_class: WEAPON_CLASSES.find { |klass| fields["class"].to_s.casecmp?(klass) },
           rate_of_fire: numeric(fields["rate of fire"]),
           range: numeric(fields["effective range"]),
-          storage: numeric(fields["magazine size"] || fields["capacity"] || fields["battery size"])
+          storage: numeric(fields["magazine size"] || fields["capacity"] || fields["battery size"] || fields["carrying capacity"]),
+          damage_reduction: numeric(fields["damage reduction"]),
+          # Left as written -- it is a range, "-225 / 75 °C", not a figure.
+          temperature_rating: fields["temp. rating"].presence,
+          radiation_protection: numeric(fields["radiation protection"]),
+          radiation_scrub_rate: numeric(fields["radiation scrub rate"]),
+          g_force_tolerance: numeric(fields["g-force tolerance"]),
+          core_compatibility: compatibility(fields["core compatibility"]),
+          # The same idea under two labels: armour says "Backpacks", the few
+          # undersuits that mention it say "Backpack Compatibility".
+          backpack_compatibility: compatibility(fields["backpacks"] || fields["backpack compatibility"])
         }
+      end
+
+      private def compatibility(value)
+        return if value.blank?
+
+        COMPATIBILITY[value.downcase.gsub(/[\s,]*(&|,)[\s,]*/, "&").gsub(/\s+/, "")]
       end
 
       # A short label before the colon on every line. The length bound keeps a
@@ -162,12 +222,20 @@ module ScData
         lines.any? && lines.all? { |line| line.match?(/\A[^:]{1,30}:/) }
       end
 
+      # Carrying capacity is written "8.0 µSCU" on a suit but "180K µSCU" on a
+      # backpack, so the multiplier has to be read rather than the digits alone.
       private def numeric(value)
         return if value.blank?
 
-        number = value[/[\d.]+/]
+        # Upper case, and not the first letter of a longer unit: "50 m" is fifty
+        # metres, not fifty million, and "147.42 REM/s" is not a multiplier either.
+        match = value.match(/(?<number>[\d.]+)\s*(?<scale>[KM](?![A-Za-z]))?/)
 
-        number&.to_d
+        return if match.nil?
+
+        scale = {"K" => 1_000, "M" => 1_000_000}.fetch(match[:scale], 1)
+
+        match[:number].to_d * scale
       end
 
       # A 64px loadout icon, shared by every variant of a weapon rather than
