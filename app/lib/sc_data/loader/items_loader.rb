@@ -3,6 +3,7 @@ module ScData
     class ItemsLoader < ::ScData::Loader::BaseLoader
       def all
         items = load_items("items").reject { |item| item["category"] == "inventory" }
+        loaded = []
 
         # Pass 1: create/update all components so they exist for cross-references
         items.each do |item|
@@ -67,6 +68,8 @@ module ScData
           update_params[:version] = sc_version
 
           component.update!(update_params)
+
+          loaded << component.id
         end
 
         # Pass 2: link loadouts (all components now exist for cross-references)
@@ -77,6 +80,8 @@ module ScData
           component = find_component(normalized_key, item["key"], item["ref"])
           add_loadout(item, component)
         end
+
+        retire_absent(Component, loaded)
       end
 
       private def add_loadout(item, component)

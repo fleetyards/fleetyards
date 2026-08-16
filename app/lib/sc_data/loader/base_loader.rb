@@ -42,6 +42,25 @@ module ScData
         Manufacturer.find_by(sc_ref: ref)
       end
 
+      # A record the export dropped keeps its row -- a ledger entry or a loadout
+      # made against it still has to resolve -- but it must stop claiming a
+      # build it is no longer part of, or `current_version` would go on
+      # offering it.
+      #
+      # Re-importing the same build is what makes this necessary: a new build
+      # leaves the row on its old version, but a reload of the one we are
+      # already on leaves it looking current.
+      #
+      # A run that loaded nothing retires nothing. `where.not(id: [])` is
+      # `1=1`, so an export that failed to sync -- or an environment whose tree
+      # does not carry this catalogue at all -- would otherwise take the whole
+      # of it in one statement.
+      def retire_absent(model, loaded)
+        return if loaded.blank?
+
+        model.where(version: sc_version).where.not(id: loaded).update_all(version: nil)
+      end
+
       def update_cargo_holds(hardpoints, update_params)
         cargo_holds = extract_cargo_holds(hardpoints)
 

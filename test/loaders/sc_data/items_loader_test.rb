@@ -35,6 +35,22 @@ module ScData
         # The same row, carrying the build it has now been seen in.
         assert_equal Rails.configuration.sc_data[:version], stale.reload.version
       end
+
+      # A new build leaves a dropped component on its old version, so
+      # current_version filters it out. Re-importing the build we are already on
+      # does not: the row keeps claiming it, and every picker keeps offering it.
+      test "#all stops a dropped component claiming the build it is no longer in" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        retired = create(:component, sc_key: "gone_from_the_export", version: Rails.configuration.sc_data[:version])
+        kept = Component.where.not(id: retired.id).where(version: Rails.configuration.sc_data[:version]).first
+
+        ::ScData::Loader::ItemsLoader.new.all
+
+        assert Component.exists?(retired.id), "the row has to stay for the loadouts pointing at it"
+        assert_nil retired.reload.version
+        assert_equal Rails.configuration.sc_data[:version], kept.reload.version
+      end
     end
   end
 end
