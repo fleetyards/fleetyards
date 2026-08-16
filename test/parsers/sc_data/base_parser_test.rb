@@ -76,6 +76,19 @@ module ScData
         assert_equal "PNG", MiniMagick::Image.open(target).type
       end
 
+      # The export is moving to PNG, and re-encoding one would cost quality for
+      # nothing. No ImageMagick either, which is the point.
+      test "#save_icon copies a texture the export already ships as a png" do
+        FileUtils.mkdir_p("#{@base_folder}/raw/1.0.0/Data/ui/logos")
+        source = "#{@base_folder}/raw/1.0.0/Data/ui/logos/acme_256.png"
+        FileUtils.cp(Rails.root.join("test/fixtures/files/test.png"), source)
+
+        target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
+
+        assert_equal "#{@export_path}/icons/ui/logos/acme_256.png", target
+        assert_equal File.binread(source), File.binread(target)
+      end
+
       # Vectors are already drawable, and rasterising one would only lose it
       # its resolution.
       test "#save_icon copies a vector icon as it is" do

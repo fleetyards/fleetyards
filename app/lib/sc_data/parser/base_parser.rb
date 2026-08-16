@@ -8,6 +8,12 @@ module ScData
       DDS_HEADER_BYTES = 128
       DDS_MIP_COUNT_OFFSET = 28
 
+      # What a browser already draws is copied rather than converted. The
+      # export ships CryEngine textures today and is moving to PNG; both end up
+      # in the parsed tree the same way, and a vector would only lose its
+      # resolution by being rasterised.
+      DRAWABLE_FORMATS = %w[.png .svg].freeze
+
       SCU_DIMENSIONS = 1.25
 
       CARGO_CONTAINER_DIMENSIONS = [
@@ -155,12 +161,13 @@ module ScData
 
         clear_once(icons_path)
 
-        svg = File.extname(source).casecmp?(".svg")
-        target = "#{icons_path}/#{icon_path.sub(/\.\w+\z/, svg ? ".svg" : ".png")}"
+        extension = File.extname(source).downcase
+        drawable = DRAWABLE_FORMATS.include?(extension)
+        target = "#{icons_path}/#{icon_path.sub(/\.\w+\z/, drawable ? extension : ".png")}"
 
         FileUtils.mkdir_p(File.dirname(target))
 
-        if svg
+        if drawable
           FileUtils.cp(source, target)
 
           target
