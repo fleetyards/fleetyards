@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_16_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_17_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -294,7 +294,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_200000) do
     t.string "temperature_rating"
     t.datetime "updated_at", precision: nil, null: false
     t.string "version"
-    t.decimal "volume", precision: 15, scale: 2
+    t.decimal "volume", precision: 15, scale: 6
+    t.jsonb "volume_dimensions"
     t.string "weapon_class"
     t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
     t.index ["item_type"], name: "index_equipment_on_item_type"

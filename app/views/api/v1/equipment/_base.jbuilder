@@ -17,6 +17,9 @@ json.rate_of_fire equipment.rate_of_fire&.to_f
 json.range equipment.range&.to_f
 json.storage equipment.storage&.to_f
 
+json.volume equipment.volume&.to_f
+json.volume_dimensions equipment.volume_dimensions
+
 json.damage_reduction equipment.damage_reduction&.to_f
 json.temperature_rating equipment.temperature_rating
 json.radiation_protection equipment.radiation_protection&.to_f

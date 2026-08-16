@@ -42,6 +42,8 @@ module ScData
           g_force_tolerance: equipment_data["g_force_tolerance"],
           core_compatibility: equipment_data["core_compatibility"],
           backpack_compatibility: equipment_data["backpack_compatibility"],
+          volume: equipment_data["volume"],
+          volume_dimensions: equipment_data["volume_dimensions"],
           hidden: equipment_data["hidden"],
           manufacturer: lookup_manufacturer(equipment_data["manufacturer_ref"]),
           version: sc_version
