@@ -53,6 +53,22 @@ module FeatureFlags
       assert_includes errors.join, "permanent must be a boolean"
     end
 
+    test "reads self_service, defaulting to off" do
+      definitions = registry(
+        "plain" => {"description" => "A"},
+        "toggleable" => {"description" => "B", "self_service" => true}
+      ).definitions
+
+      assert_not_predicate definitions.first, :self_service?
+      assert_predicate definitions.last, :self_service?
+    end
+
+    test "rejects a non-boolean self_service" do
+      errors = registry("my_flag" => {"description" => "x", "self_service" => "yes"}).validation_errors
+
+      assert_includes errors.join, "self_service must be a boolean"
+    end
+
     test "allows hyphens so the oauth provider gates stay valid" do
       assert_empty registry("oauth-discord" => {"description" => "Discord login"}).validation_errors
     end

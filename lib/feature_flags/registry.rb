@@ -10,6 +10,7 @@ module FeatureFlags
   #
   #   hangar_inventories:
   #     description: "Personal hangar inventories"
+  #     self_service: true
   #
   #   oauth-discord:
   #     description: "Discord login"
@@ -23,7 +24,8 @@ module FeatureFlags
     NAME_PATTERN = /\A[a-z][a-z0-9_-]*\z/
     MAX_NAME_LENGTH = 60
     REQUIRED_KEYS = %w[description].freeze
-    KNOWN_KEYS = %w[description permanent].freeze
+    KNOWN_KEYS = %w[description permanent self_service].freeze
+    BOOLEAN_KEYS = %w[permanent self_service].freeze
 
     class InvalidRegistryError < StandardError; end
 
@@ -96,8 +98,10 @@ module FeatureFlags
       unknown = attrs.keys.map(&:to_s) - KNOWN_KEYS
       errors << "#{name}: unknown keys #{unknown.inspect}" if unknown.any?
 
-      unless attrs["permanent"].nil? || [true, false].include?(attrs["permanent"])
-        errors << "#{name}: permanent must be a boolean"
+      BOOLEAN_KEYS.each do |key|
+        next if attrs[key].nil? || [true, false].include?(attrs[key])
+
+        errors << "#{name}: #{key} must be a boolean"
       end
 
       errors
@@ -109,7 +113,8 @@ module FeatureFlags
       Definition.new(
         name: name,
         description: attrs["description"],
-        permanent: attrs["permanent"] == true
+        permanent: attrs["permanent"] == true,
+        self_service: attrs["self_service"] == true
       )
     end
 
