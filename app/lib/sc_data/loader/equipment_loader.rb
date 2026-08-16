@@ -4,24 +4,7 @@ module ScData
       def all
         loaded = load_items("equipment").filter_map { |equipment_data| one(equipment_data)&.id }
 
-        retire(loaded)
-      end
-
-      # A record the export dropped keeps its row -- a ledger entry made against
-      # it still has to resolve -- but it must stop claiming a build it is no
-      # longer part of, or `current_version` would go on offering it.
-      #
-      # Re-importing the same build is what makes this necessary: a new build
-      # leaves the row on its old version, but a reload of the one we are
-      # already on leaves it looking current.
-      private def retire(loaded)
-        # A run that loaded nothing retires nothing. `where.not(id: [])` is
-        # `1=1`, so an export that failed to sync -- or an environment whose
-        # tree does not carry equipment at all -- would otherwise take the whole
-        # catalogue with it.
-        return if loaded.blank?
-
-        Equipment.where(version: sc_version).where.not(id: loaded).update_all(version: nil)
+        retire_absent(Equipment, loaded)
       end
 
       def one(equipment_data)
