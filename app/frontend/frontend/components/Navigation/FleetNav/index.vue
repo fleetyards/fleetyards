@@ -12,6 +12,7 @@ import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
   useFleetMembership as useFleetMembershipQuery,
+  FeatureFlagName,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -119,7 +120,10 @@ onMounted(() => {
           prefix="03"
         />
         <NavItem
-          v-if="hasLogisticsAccess && isFeatureEnabled('fleet_logistics')"
+          v-if="
+            hasLogisticsAccess &&
+            isFeatureEnabled(FeatureFlagName.fleet_logistics)
+          "
           :to="{
             name: 'fleet-logistics',
             params: { slug: currentFleet.slug },
