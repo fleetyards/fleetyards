@@ -11,6 +11,11 @@
 #     description: "…"           # REQUIRED — what does the flag toggle?
 #     permanent: true            # optional — long-lived infrastructure gate
 #                                #   rather than a temporary rollout
+#     self_service: true         # optional — ships user-toggleable from
+#                                #   Settings > Features. Sync seeds the setting
+#                                #   once and never overwrites it, so admins keep
+#                                #   ownership and dropping the key retracts
+#                                #   nothing.
 #
 # Rules are enforced by `rake feature_flags:validate` and bin/lint-feature-flags,
 # which CI runs on every push. Seeded from the flags live in Flipper at the time
@@ -18,6 +23,7 @@
 
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"
+  self_service: true
 
 fleet_starmap:
   description: "Starmap on the fleet page"
@@ -27,6 +33,7 @@ fleet_worldmap:
 
 hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"
+  self_service: true
 
 # Superseded by the hardpoints redesign; the flag was removed from the code in
 # #4176 and is kept here only so this registry does not prune it as a side

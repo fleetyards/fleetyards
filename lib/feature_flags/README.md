@@ -12,9 +12,11 @@ code that read it — `hardpoints-v2` sat in Flipper for months after #4176 dele
 its last reference. A version-controlled registry makes the inventory a PR diff
 and lets a deploy reconcile reality with it.
 
-The registry owns the flag **list**. The admin UI still owns each flag's **gates**
-(boolean, actors, groups, percentages), and `feature_settings.self_service` still
-governs whether users may toggle a flag for themselves from Settings → Features.
+The registry owns the flag **list** and the self-service each flag **starts**
+with. The admin UI still owns each flag's **gates** (boolean, actors, groups,
+percentages) and its `feature_settings.self_service` from then on, which is what
+decides whether users may toggle the flag for themselves from Settings →
+Features.
 
 Creating and deleting flags through the admin UI was removed along with this
 change. It could not coexist with pruning: a flag added there has no registry
@@ -24,10 +26,10 @@ entry, so the next deploy deleted it and every gate configured on it.
 
 | File | Purpose |
 | --- | --- |
-| `config/feature_flags.yml` | Registry — per flag: `description`, optional `permanent` |
+| `config/feature_flags.yml` | Registry — per flag: `description`, optional `permanent`, `self_service` |
 | `FeatureFlags::Registry` | Loads and validates the YAML (naming, required/known keys) |
-| `FeatureFlags::Definition` | Value object for one flag (`name`, `description`, `permanent?`) |
-| `FeatureFlags::Synchronizer` | Reconciles Flipper with the registry: adds missing, prunes orphaned |
+| `FeatureFlags::Definition` | Value object for one flag (`name`, `description`, `permanent?`, `self_service?`) |
+| `FeatureFlags::Synchronizer` | Reconciles Flipper with the registry: adds missing, seeds self-service, prunes orphaned |
 
 Rails autoloads `lib/` (`config.autoload_lib`), so these classes carry no
 requires of their own. `bin/lint-feature-flags` is the one place that has to know
@@ -49,12 +51,17 @@ bin/rails feature_flags:export     # print a YAML skeleton of the live Flipper s
    ```yaml
    my_new_flag:
      description: "What this toggles"
+     self_service: true  # optional — users may switch it on themselves
    ```
 
 2. Validate: `bin/rails feature_flags:validate` (or `ruby bin/lint-feature-flags`).
 3. Merge → `.kamal/hooks/pre-deploy` runs `feature_flags:sync` and creates the flag,
-   **off** by default.
+   **off** by default, with its self-service setting seeded from the registry.
 4. Turn it on per user, per fleet, or globally at `/admin/features`.
+
+Sync seeds `self_service` once and never overwrites it, so the admin toggle at
+`/admin/features` survives every deploy — and dropping the key from the registry
+retracts nothing. Untoggle it there instead.
 
 Read it in code exactly as before: `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
 `isFeatureEnabled('my_new_flag')` in Vue.

@@ -236,11 +236,13 @@ Flags are declared in **`config/feature_flags.yml`** — the single source of tr
 To add a flag:
 
 1. Add an entry with a `description` (plus `permanent: true` for long-lived
-   infrastructure gates like the OAuth providers):
+   infrastructure gates like the OAuth providers, and `self_service: true` if
+   users should be able to switch it on themselves):
 
    ```yaml
    my_new_flag:
      description: "What this toggles"
+     self_service: true
    ```
 
 2. Validate with `bin/rails feature_flags:validate`; CI runs the same rules via
@@ -249,16 +251,18 @@ To add a flag:
 4. Read it as usual — `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
    `isFeatureEnabled('my_new_flag')` in Vue.
 
-Flags are created **off**. Toggle gates at `/admin/features`; mark a flag
-self-service via `FeatureSetting` so users can enable it themselves.
+Flags are created **off**, and toggling their gates stays at `/admin/features`.
+`self_service: true` seeds the flag's `FeatureSetting` on sync so it arrives
+user-toggleable; admins own it from then on, so dropping the key later retracts
+nothing — untoggle it at `/admin/features` instead.
 
 To remove a flag, delete its entry — the next deploy prunes the Flipper feature,
 all of its gate values and its `FeatureSetting` row (irreversible).
 
-**Do not** write a `Flipper.add` data migration. The registry owns flag lifecycle;
-a migration creates a flag the registry doesn't know about, which the next sync
-prunes. The existing `db/data/*_feature_flag.rb` migrations predate the registry —
-leave them, don't add more.
+**Do not** write a `Flipper.add` or `FeatureSetting` data migration. The registry
+owns flag lifecycle; a migration creates state the registry doesn't know about,
+which the next sync prunes. The existing `db/data/*_feature_flag.rb` migrations
+predate the registry — leave them, don't add more.
 
 ## Debugging Protocol
 

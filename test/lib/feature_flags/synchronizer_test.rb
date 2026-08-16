@@ -35,6 +35,10 @@ module FeatureFlags
       Registry.new(raw: names.to_h { |name| [name, {"description" => name}] })
     end
 
+    def self_service_registry(*names)
+      Registry.new(raw: names.to_h { |name| [name, {"description" => name, "self_service" => true}] })
+    end
+
     def sync(registry:, flipper:, **options)
       Synchronizer.new(registry: registry, flipper: flipper, **options).call
     end
@@ -80,6 +84,34 @@ module FeatureFlags
       assert_empty flipper.removed
       assert_not FeatureSetting.exists?(feature_name: "ghost"),
         "an interrupted prune must be repaired by the next run"
+    end
+
+    test "seeds the setting of a flag declared self-service" do
+      sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new)
+
+      assert FeatureSetting.self_service?("hangar_inventories"),
+        "a self-service flag must arrive user-toggleable without a data migration"
+    end
+
+    test "leaves a self-service setting an admin has switched off alone" do
+      FeatureSetting.create!(feature_name: "hangar_inventories", self_service: false)
+
+      sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new(["hangar_inventories"]))
+
+      assert_not FeatureSetting.self_service?("hangar_inventories"),
+        "the registry seeds self-service; a deploy must not undo the admin"
+    end
+
+    test "leaves flags that do not declare self-service without a setting" do
+      sync(registry: registry("plain"), flipper: FakeFlipper.new)
+
+      assert_not FeatureSetting.exists?(feature_name: "plain")
+    end
+
+    test "dry_run seeds nothing" do
+      sync(registry: self_service_registry("hangar_inventories"), flipper: FakeFlipper.new, dry_run: true)
+
+      assert_not FeatureSetting.exists?(feature_name: "hangar_inventories")
     end
 
     test "dry_run leaves self-service settings alone" do
