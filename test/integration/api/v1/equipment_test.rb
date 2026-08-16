@@ -52,6 +52,24 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Gear a later patch stopped shipping keeps its row, so a ledger entry made
+  # against it still resolves -- but it should not be offered for a new one.
+  test "GET /equipment leaves out gear the current patch no longer ships" do
+    create(:equipment, name: "Retired Carbine", version: "0.0.1-live.1")
+
+    assert_api_response :get, 200 do
+      assert_not_includes parsed_body["items"].map { |i| i["name"] }, "Retired Carbine"
+    end
+  end
+
+  test "GET /equipment includes older patches when currentVersion is false" do
+    create(:equipment, name: "Retired Carbine", version: "0.0.1-live.1")
+
+    assert_api_response :get, 200, params: {q: {"currentVersion" => false}} do
+      assert_includes parsed_body["items"].map { |i| i["name"] }, "Retired Carbine"
+    end
+  end
+
   test "GET /equipment filters by equipmentTypeIn" do
     assert_api_response :get, 200, params: {q: {"equipmentTypeIn" => ["weapon_attachment"]}} do
       assert_equal ["Omarof Scope", "P4-AR Magazine"], parsed_body["items"].map { |i| i["name"] }

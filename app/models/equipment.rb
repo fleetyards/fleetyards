@@ -101,6 +101,17 @@ class Equipment < ApplicationRecord
     ["manufacturer"]
   end
 
+  # Gear from past patches stays in the table -- a ledger entry made last patch
+  # still has to resolve its item -- so anything meant for a picker narrows to
+  # the version the game currently ships. Component keeps the same scope.
+  scope :current_version, ->(flag = true) {
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      where(version: Rails.configuration.sc_data[:version])
+    else
+      all
+    end
+  }
+
   def self.visible
     where(hidden: false)
   end
@@ -110,7 +121,7 @@ class Equipment < ApplicationRecord
   end
 
   def self.equipment_types
-    visible.where.not(equipment_type: nil).distinct.order(:equipment_type).pluck(:equipment_type)
+    visible.current_version.where.not(equipment_type: nil).distinct.order(:equipment_type).pluck(:equipment_type)
   end
 
   def self.type_filters
@@ -142,7 +153,7 @@ class Equipment < ApplicationRecord
   end
 
   def self.item_types
-    visible.where.not(item_type: nil).distinct.order(:item_type).pluck(:item_type)
+    visible.current_version.where.not(item_type: nil).distinct.order(:item_type).pluck(:item_type)
   end
 
   def self.item_type_filters

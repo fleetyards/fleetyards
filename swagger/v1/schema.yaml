@@ -9325,6 +9325,9 @@ components:
       properties:
         nameCont:
           type: string
+        currentVersion:
+          type: boolean
+          default: true
         idIn:
           type: array
           items:

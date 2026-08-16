@@ -70,6 +70,21 @@ class EquipmentTest < ActiveSupport::TestCase
     assert_equal [shown.id], Equipment.visible.pluck(:id)
   end
 
+  test ".current_version narrows to the patch the game ships, or opts out" do
+    current = create(:equipment)
+    retired = create(:equipment, version: "0.0.1-live.1")
+
+    assert_equal [current.id], Equipment.current_version.pluck(:id)
+    assert_includes Equipment.current_version(false).pluck(:id), retired.id
+  end
+
+  test ".item_types leaves out types only older patches carried" do
+    create(:equipment, item_type: "assault_rifle")
+    create(:equipment, item_type: "toy_pistol", version: "0.0.1-live.1")
+
+    assert_equal ["assault_rifle"], Equipment.item_types
+  end
+
   test ".item_types lists what the visible rows carry" do
     create(:equipment, item_type: "assault_rifle")
     create(:equipment, item_type: "assault_rifle")

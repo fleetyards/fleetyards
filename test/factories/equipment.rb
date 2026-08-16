@@ -49,6 +49,7 @@ FactoryBot.define do
     sub_type { "Medium" }
     size { "2" }
     hidden { false }
+    version { Rails.configuration.sc_data[:version] }
 
     trait :attachment do
       equipment_type { "weapon_attachment" }

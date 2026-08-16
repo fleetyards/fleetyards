@@ -10,6 +10,7 @@ module V1
           type: :object,
           properties: {
             nameCont: {type: :string},
+            currentVersion: {type: :boolean, default: true},
             idIn: {type: :array, items: {type: :string, format: :uuid}},
             nameIn: {type: :array, items: {type: :string}},
             slugIn: {type: :array, items: {type: :string}},
