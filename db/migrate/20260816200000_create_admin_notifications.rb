@@ -22,6 +22,7 @@ class CreateAdminNotifications < ActiveRecord::Migration[8.1]
     add_index :admin_notifications, [:admin_user_id, :created_at], order: {created_at: :desc}
     add_index :admin_notifications, [:admin_user_id, :read_at]
     add_index :admin_notifications, [:admin_user_id, :notification_type, :dedupe_key],
+      unique: true, where: "read_at IS NULL AND dedupe_key IS NOT NULL",
       name: "index_admin_notifications_on_dedupe"
     add_index :admin_notifications, :expires_at
     add_index :admin_notifications, :notification_type

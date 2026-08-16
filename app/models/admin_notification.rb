@@ -26,7 +26,7 @@
 #
 #  index_admin_notifications_on_admin_user_id_and_created_at  (admin_user_id,created_at DESC)
 #  index_admin_notifications_on_admin_user_id_and_read_at     (admin_user_id,read_at)
-#  index_admin_notifications_on_dedupe                        (admin_user_id,notification_type,dedupe_key)
+#  index_admin_notifications_on_dedupe                        (admin_user_id,notification_type,dedupe_key) UNIQUE WHERE ((read_at IS NULL) AND (dedupe_key IS NOT NULL))
 #  index_admin_notifications_on_expires_at                    (expires_at)
 #  index_admin_notifications_on_notification_type             (notification_type)
 #  index_admin_notifications_on_record                        (record_type,record_id)
@@ -160,25 +160,40 @@ class AdminNotification < ApplicationRecord
   end
 
   def self.upsert_for(admin_user:, type:, title:, body:, severity:, link:, icon:, record:, dedupe_key:)
-    existing = dedupe_key.presence && active.unread.find_by(
-      admin_user:, notification_type: type, dedupe_key:
-    )
+    retried = false
 
-    if existing
-      existing.update!(
-        title:, body:, severity:, link:, icon:, record:,
-        occurrences: existing.occurrences + 1,
-        last_occurred_at: Time.current,
-        expires_at: Time.current + retention_for(type)
+    begin
+      existing = dedupe_key.presence && unread.find_by(
+        admin_user:, notification_type: type, dedupe_key:
       )
 
-      return existing
-    end
+      if existing
+        existing.update!(
+          title:, body:, severity:, link:, icon:, record:,
+          occurrences: existing.occurrences + 1,
+          last_occurred_at: Time.current,
+          expires_at: Time.current + retention_for(type)
+        )
 
-    create!(
-      admin_user:, notification_type: type, title:, body:, severity:,
-      link:, icon:, record:, dedupe_key:
-    )
+        return existing
+      end
+
+      # A concurrent report can insert the same dedupe key between the lookup
+      # and the insert; the partial unique index turns that into a conflict we
+      # replay into the update branch above. The savepoint keeps a surrounding
+      # transaction usable after the failed insert.
+      transaction(requires_new: true) do
+        create!(
+          admin_user:, notification_type: type, title:, body:, severity:,
+          link:, icon:, record:, dedupe_key:
+        )
+      end
+    rescue ActiveRecord::RecordNotUnique
+      raise if retried
+
+      retried = true
+      retry
+    end
   end
   private_class_method :upsert_for
 

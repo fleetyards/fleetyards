@@ -63,7 +63,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_16_200000) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.index ["admin_user_id", "created_at"], name: "index_admin_notifications_on_admin_user_id_and_created_at", order: { created_at: :desc }
-    t.index ["admin_user_id", "notification_type", "dedupe_key"], name: "index_admin_notifications_on_dedupe"
+    t.index ["admin_user_id", "notification_type", "dedupe_key"], name: "index_admin_notifications_on_dedupe", unique: true, where: "((read_at IS NULL) AND (dedupe_key IS NOT NULL))"
     t.index ["admin_user_id", "read_at"], name: "index_admin_notifications_on_admin_user_id_and_read_at"
     t.index ["expires_at"], name: "index_admin_notifications_on_expires_at"
     t.index ["notification_type"], name: "index_admin_notifications_on_notification_type"
