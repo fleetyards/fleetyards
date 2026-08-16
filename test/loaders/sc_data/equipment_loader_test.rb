@@ -130,6 +130,20 @@ module ScData
         assert_operator Equipment.current_version.count, :>=, 4_000
       end
 
+      # live-preview carries no equipment tree and probe carries nothing at all,
+      # so a loader pointed at one parses no records. Retiring on that would
+      # empty the catalogue the first time a build's files failed to sync.
+      test "#all retires nothing when the export parsed no records" do
+        @loader.all
+        current = Equipment.current_version.count
+
+        loader = ::ScData::Loader::EquipmentLoader.new
+        loader.sc_environment = "live-preview"
+        loader.all
+
+        assert_equal current, Equipment.current_version.count
+      end
+
       test "#all is idempotent" do
         @loader.all
         count = Equipment.count

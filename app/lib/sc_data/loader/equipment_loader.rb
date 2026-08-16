@@ -15,6 +15,12 @@ module ScData
       # leaves the row on its old version, but a reload of the one we are
       # already on leaves it looking current.
       private def retire(loaded)
+        # A run that loaded nothing retires nothing. `where.not(id: [])` is
+        # `1=1`, so an export that failed to sync -- or an environment whose
+        # tree does not carry equipment at all -- would otherwise take the whole
+        # catalogue with it.
+        return if loaded.blank?
+
         Equipment.where(version: sc_version).where.not(id: loaded).update_all(version: nil)
       end
 
