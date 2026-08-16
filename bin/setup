@@ -142,6 +142,8 @@ def write_managed_env(filename, managed_body)
     user_content = lines.join unless marker_idx
   end
 
+  user_content += "\n" unless user_content.empty? || user_content.end_with?("\n")
+
   File.write(path, user_content + "#{WORKTREE_MARKER}\n" + managed_body)
 end
 
