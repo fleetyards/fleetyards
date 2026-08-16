@@ -1,0 +1,29 @@
+{
+  "key": "fps_consumable_hackingchip_gold_access_03",
+  "ref": "e3c2c886-3fea-4480-954b-3c1d4a10596f",
+  "name": "Crypt Keycard",
+  "description": "The best rewards are worth fighting for!",
+  "equipment_type": "hacking_tool",
+  "slot": null,
+  "item_type": "keycard",
+  "weapon_class": null,
+  "rate_of_fire": null,
+  "range": null,
+  "storage": null,
+  "damage_reduction": null,
+  "temperature_rating": null,
+  "radiation_protection": null,
+  "radiation_scrub_rate": null,
+  "g_force_tolerance": null,
+  "core_compatibility": null,
+  "backpack_compatibility": null,
+  "icon": null,
+  "sub_type": "SystemAccess",
+  "size": "1",
+  "grade": "1",
+  "manufacturer_ref": null,
+  "tags": [
+    "LevelGoldAccess_03"
+  ],
+  "hidden": false
+}
