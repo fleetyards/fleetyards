@@ -8,13 +8,15 @@ module Api
       after_action -> { pagination_header(:equipment) }, only: [:index]
 
       def index
-        equipment_query_params["sorts"] = "name asc"
-
         # Skins, NPC loadouts and event copies carry their own record but are
         # not something a player holds, so the list leaves them out.
         @q = Equipment.visible.includes(:manufacturer).ransack(equipment_query_params)
 
+        # Ordered here rather than through ransack: `ransack_alias :name` points
+        # name at name_or_slug so that a search matches either, which leaves
+        # ransack unable to sort by it.
         @equipment = @q.result
+          .order(name: :asc)
           .page(params[:page])
           .per(per_page(Equipment))
       end
