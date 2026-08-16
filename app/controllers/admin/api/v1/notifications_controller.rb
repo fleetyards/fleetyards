@@ -11,10 +11,14 @@ module Admin
         def index
           authorize! with: ::Admin::NotificationPolicy
 
-          notification_query_params["sorts"] = sorting_params(AdminNotification, notification_query_params["sorts"])
+          notification_query_params["sorts"] = unread_first(
+            sorting_params(AdminNotification, notification_query_params["sorts"])
+          )
 
           @q = scope.ransack(notification_query_params)
-          @notifications = @q.result(distinct: true)
+          # No distinct: nothing here joins, and SELECT DISTINCT cannot order by
+          # the computed `unread` expression.
+          @notifications = @q.result
             .page(params[:page])
             .per(per_page(AdminNotification))
         end
@@ -65,9 +69,14 @@ module Admin
           @notification = scope.find(params[:id])
         end
 
+        # The requested sort only orders within the unread and read groups.
+        private def unread_first(sorts)
+          ["unread desc", *Array(sorts)]
+        end
+
         private def notification_query_params
           @notification_query_params ||= params.permit(q: [
-            :notification_type_eq, :severity_eq, :read_at_null, :sorts, sorts: []
+            :notification_type_eq, :severity_eq, :read_at_null, :search_cont, :sorts, sorts: []
           ]).fetch(:q, {})
         end
       end

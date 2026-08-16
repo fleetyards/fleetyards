@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import RadioList from "@/shared/components/base/RadioList/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
+import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -19,6 +21,7 @@ const { t } = useI18n();
 
 const prefillFormValues = () => {
   return {
+    searchCont: filters.value.searchCont,
     notificationTypeEq: filters.value.notificationTypeEq,
     severityEq: filters.value.severityEq,
     readAtNull: filters.value.readAtNull,
@@ -68,6 +71,18 @@ watch(
 
 <template>
   <form @submit.prevent="handleSubmit">
+    <Teleport to="#header-left">
+      <FormInput
+        v-model="form.searchCont"
+        :size="InputSizesEnum.MEDIUM"
+        name="search"
+        translation-key="filters.adminNotifications.search"
+        :no-label="true"
+        :clearable="true"
+        inline
+      />
+    </Teleport>
+
     <RadioList
       v-model="form.readAtNull"
       :label="t('labels.adminNotifications.status')"

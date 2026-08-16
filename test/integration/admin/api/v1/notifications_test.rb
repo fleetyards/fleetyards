@@ -158,6 +158,28 @@ class Admin::Api::V1::NotificationsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /notifications searches title and body" do
+    create(:admin_notification, admin_user: @admin_user, title: "Paints Import Results")
+    create(:admin_notification, admin_user: @admin_user, title: "Loaner Sync", body: "Missing **Aurora MR**")
+    sign_in @admin_user
+
+    assert_api_response :get, 200, api_path: "/notifications", params: {q: {searchCont: "aurora"}} do
+      assert_equal ["Loaner Sync"], parsed_body["items"].pluck("title")
+    end
+  end
+
+  test "GET /notifications keeps unread notifications on top" do
+    create(:admin_notification, :read, admin_user: @admin_user, title: "read newest")
+    travel(-1.hour) do
+      create(:admin_notification, admin_user: @admin_user, title: "unread older")
+    end
+    sign_in @admin_user
+
+    assert_api_response :get, 200, api_path: "/notifications" do
+      assert_equal ["unread older", "read newest"], parsed_body["items"].pluck("title")
+    end
+  end
+
   test "GET /notifications returns 401 when not signed in" do
     assert_api_response :get, 401, api_path: "/notifications"
   end

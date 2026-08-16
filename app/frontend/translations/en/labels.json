@@ -1381,6 +1381,9 @@
           "startedAtGteq": "Started from",
           "startedAtLteq": "Started until"
         },
+        "adminNotifications": {
+          "search": "Search"
+        },
         "images": {
           "station": "Station",
           "model": "Ship"

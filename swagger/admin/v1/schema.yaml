@@ -6760,6 +6760,8 @@ components:
           "$ref": "#/components/schemas/AdminNotificationSeverityEnum"
         readAtNull:
           type: boolean
+        searchCont:
+          type: string
         sorts:
           anyOf:
           - type: array

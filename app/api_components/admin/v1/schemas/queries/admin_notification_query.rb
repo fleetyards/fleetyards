@@ -13,6 +13,7 @@ module Admin
               notificationTypeEq: {"$ref": "#/components/schemas/AdminNotificationTypeEnum"},
               severityEq: {"$ref": "#/components/schemas/AdminNotificationSeverityEnum"},
               readAtNull: {type: :boolean},
+              searchCont: {type: :string},
               sorts: {anyOf: [{
                 type: :array, items: {"$ref": "#/components/schemas/AdminNotificationSortEnum"}
               }, {

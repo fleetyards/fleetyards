@@ -118,8 +118,20 @@ class AdminNotification < ApplicationRecord
 
   paginates_per 25
 
+  ransack_alias :search, :title_or_body
+
+  # Sortable rather than filterable: the inbox keeps what has not been dealt
+  # with on top, whichever way the client sorts underneath.
+  ransacker :unread, type: :boolean do
+    Arel.sql("admin_notifications.read_at IS NULL")
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
-    %w[notification_type severity read_at created_at]
+    %w[notification_type severity read_at created_at title body search unread]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    []
   end
 
   def self.type_config(type)
