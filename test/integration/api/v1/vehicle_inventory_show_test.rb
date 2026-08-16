@@ -70,6 +70,35 @@ class Api::V1::VehicleInventoryShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /vehicles/:vehicle_id/inventory measures gear into the volume aboard" do
+    inventory = create(:inventory, holder: @user, vehicle: @vehicle, name: "Ironclad Inventory")
+    create(:inventory_item, inventory:, name: "Quantanium", quantity: 12, unit: :scu)
+
+    # A helmet at the figure the game states for one, so the sum has to carry
+    # the microSCU rather than rounding four of them away to nothing.
+    helmet = create(:equipment, volume: 0.0087)
+    create(:inventory_item, inventory:, item: helmet, category: :equipment, unit: :units, quantity: 4)
+
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
+      assert_in_delta 12.0, parsed_body["totalScu"], 0.001, "bulk cargo is unchanged"
+      assert_in_delta 12.0348, parsed_body["totalVolumeScu"], 0.0001, "four helmets on top"
+      assert_equal 0, parsed_body["unmeasuredCount"]
+    end
+  end
+
+  test "GET /vehicles/:vehicle_id/inventory counts what nothing has measured" do
+    inventory = create(:inventory, holder: @user, vehicle: @vehicle, name: "Ironclad Inventory")
+    create(:inventory_item, inventory:, name: "Medpen", category: :consumable, unit: :units, quantity: 3)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
+      assert_in_delta 0.0, parsed_body["totalVolumeScu"], 0.001
+      assert_equal 1, parsed_body["unmeasuredCount"]
+    end
+  end
+
   test "GET /vehicles/:vehicle_id/inventory addresses the ship by serial" do
     sign_in @user
 

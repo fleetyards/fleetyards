@@ -1713,7 +1713,9 @@
         "stockItem": "Stock Item",
         "overCapacity": "over cargo capacity",
         "cargoGrid": "Cargo Grid",
-        "shipInventory": "Ship Inventory"
+        "shipInventory": "Ship Inventory",
+        "remaining": "Remaining",
+        "unmeasured": "%{count} not measured yet"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

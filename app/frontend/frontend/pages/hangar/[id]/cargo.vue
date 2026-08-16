@@ -109,7 +109,13 @@ const shipInventory = computed(
 // One bucket holds everything a ship carries, so it is measured against
 // everything a ship can hold: the grid plus the storage container.
 const totalCapacity = computed(() => cargoCapacity.value + shipInventory.value);
-const storedScu = computed(() => inventory.value?.totalScu ?? 0);
+// Gear counted per piece fills the hold too, so the figure is what everything
+// aboard measures rather than only what was entered in SCU.
+const storedScu = computed(() => inventory.value?.totalVolumeScu ?? 0);
+const unmeasuredCount = computed(() => inventory.value?.unmeasuredCount ?? 0);
+const remainingScu = computed(() =>
+  Math.max(0, totalCapacity.value - storedScu.value),
+);
 const overCapacity = computed(
   () => totalCapacity.value > 0 && storedScu.value > totalCapacity.value,
 );
@@ -205,9 +211,20 @@ onMounted(() => {
         <span v-if="shipInventory > 0">
           {{ t("labels.logistics.shipInventory") }}: {{ shipInventory }} SCU
         </span>
+        <span v-if="!overCapacity" class="vehicle-cargo-capacity-remaining">
+          {{ t("labels.logistics.remaining") }}: {{ remainingScu }} SCU
+        </span>
       </span>
       <span v-if="overCapacity" class="vehicle-cargo-capacity-hint">
         {{ t("labels.logistics.overCapacity") }}
+      </span>
+      <!-- A hold measured from what the catalogues know is a floor, so it says
+           where it stopped counting rather than presenting a guess as a fact. -->
+      <span
+        v-if="unmeasuredCount > 0"
+        class="vehicle-cargo-capacity-hint muted"
+      >
+        {{ t("labels.logistics.unmeasured", { count: unmeasuredCount }) }}
       </span>
     </div>
 
@@ -340,9 +357,17 @@ onMounted(() => {
     opacity: 0.75;
   }
 
+  &-capacity-remaining {
+    font-weight: 600;
+  }
+
   &-capacity-hint {
     font-size: 0.85em;
     color: $danger;
+
+    &.muted {
+      color: $gray-light;
+    }
   }
 }
 </style>

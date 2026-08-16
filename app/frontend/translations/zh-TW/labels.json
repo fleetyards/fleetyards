@@ -1241,7 +1241,9 @@
         "stockItem": "Stock Item",
         "overCapacity": "超出貨艙容量",
         "cargoGrid": "貨艙網格",
-        "shipInventory": "飛船庫存"
+        "shipInventory": "飛船庫存",
+        "remaining": "剩餘",
+        "unmeasured": "%{count} 項尚未測量"
       },
       "hangarInventories": "Inventories"
     }

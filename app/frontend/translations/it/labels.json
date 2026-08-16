@@ -1245,7 +1245,9 @@
         "stockItem": "Stock Item",
         "overCapacity": "oltre la capacità di carico",
         "cargoGrid": "Griglia di carico",
-        "shipInventory": "Inventario della nave"
+        "shipInventory": "Inventario della nave",
+        "remaining": "Rimanente",
+        "unmeasured": "%{count} non ancora misurati"
       },
       "hangarInventories": "Inventories"
     }
