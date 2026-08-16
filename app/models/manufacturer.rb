@@ -8,6 +8,7 @@
 #  code         :string
 #  code_mapping :string
 #  description  :text
+#  icon         :string
 #  known_for    :string(255)
 #  long_name    :string
 #  name         :string(255)

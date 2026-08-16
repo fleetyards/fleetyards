@@ -5,6 +5,15 @@ module ScData
 
       FOUNDRY_PATH = "Data/Libs/Foundry/Records"
 
+      DDS_HEADER_BYTES = 128
+      DDS_MIP_COUNT_OFFSET = 28
+
+      # What a browser already draws is copied rather than converted. The
+      # export ships CryEngine textures today and is moving to PNG; both end up
+      # in the parsed tree the same way, and a vector would only lose its
+      # resolution by being rasterised.
+      DRAWABLE_FORMATS = %w[.png .svg].freeze
+
       SCU_DIMENSIONS = 1.25
 
       CARGO_CONTAINER_DIMENSIONS = [
@@ -131,6 +140,107 @@ module ScData
           p "Duplicate key: #{file_name}" if File.exist?("#{items_path}/#{file_name}.json")
 
           File.write("#{items_path}/#{file_name}.json", JSON.pretty_generate(item))
+        end
+      end
+
+      # Records name their artwork as a path into the game files -- "UI/
+      # SharedAssets/ManufacturerLogos/Talon_256.tif" -- and the export ships
+      # the CryEngine texture beside it, .dds where the record says .tif. The
+      # referenced ones convert to about 2 MB all told, against 128 MB for the
+      # asset trees they sit in, so they are carried into the parsed tree here
+      # rather than fetched from the bucket every time data is loaded.
+      #
+      # The written path mirrors the one the record names, extension aside, so
+      # a loader can find it from what the record already stores.
+      private def save_icon(icon_path)
+        source = raw_asset(icon_path)
+
+        return if source.blank?
+
+        icons_path = "#{export_path}/icons"
+
+        clear_once(icons_path)
+
+        extension = File.extname(source).downcase
+        drawable = DRAWABLE_FORMATS.include?(extension)
+        target = "#{icons_path}/#{icon_path.sub(/\.\w+\z/, drawable ? extension : ".png")}"
+
+        FileUtils.mkdir_p(File.dirname(target))
+
+        if drawable
+          FileUtils.cp(source, target)
+
+          target
+        else
+          convert(source, target)
+        end
+      end
+
+      private def convert(source, target)
+        return target if png(source, target)
+
+        rebuilt = reassemble(source)
+
+        if rebuilt.blank?
+          p "Could not convert #{source}"
+
+          return
+        end
+
+        begin
+          png(rebuilt.path, target) || p("Could not convert #{source} even reassembled")
+        ensure
+          rebuilt.close!
+        end
+      end
+
+      # Twenty of the logo textures are CryEngine's split form: the .dds holds
+      # the header and the smallest mips, and the rest sit beside it in
+      # numbered companions -- GREY_256.dds is 464 bytes with its 256px surface
+      # in GREY_256.dds.4. ImageMagick reads such a header, finds no surface
+      # and exits, so the file is put back together first: the header with its
+      # mip count set to one, followed by the largest companion.
+      private def reassemble(source)
+        companion = Dir.glob("#{source}.[0-9]*").max_by { |file| File.size(file) }
+
+        return if companion.blank?
+
+        header = File.binread(source, DDS_HEADER_BYTES).to_s
+
+        return unless header.start_with?("DDS ") && header.bytesize == DDS_HEADER_BYTES
+
+        header = header.dup
+        header[DDS_MIP_COUNT_OFFSET, 4] = [1].pack("V")
+
+        Tempfile.new(["sc_data_icon", ".dds"], binmode: true).tap do |file|
+          file.write(header)
+          file.write(File.binread(companion))
+          file.flush
+        end
+      end
+
+      private def png(source, target)
+        return if source.blank?
+
+        MiniMagick::Image.open(source).tap { |image| image.format("png") }.write(target)
+
+        target
+      rescue MiniMagick::Error
+        nil
+      end
+
+      # Matched without the extension and without case: the records were
+      # written against the source art, so they name .tif where the export
+      # ships .dds, and neither side agrees on capitalisation.
+      private def raw_asset(icon_path)
+        return if icon_path.blank?
+
+        raw_assets[icon_path.downcase.sub(/\.\w+\z/, "")]
+      end
+
+      private def raw_assets
+        @raw_assets ||= Dir.glob("#{base_path}/Data/**/*.{dds,svg,png,tif}").to_h do |file|
+          [file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, ""), file]
         end
       end
 

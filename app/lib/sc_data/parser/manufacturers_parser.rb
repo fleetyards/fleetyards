@@ -6,6 +6,8 @@ module ScData
           parse_manufacturer(item[:values])
         end
 
+        manufacturers.each { |manufacturer| save_icon(manufacturer[:icon]) }
+
         save_items(manufacturers, folder: "manufacturers", key: :code)
       end
 
@@ -19,7 +21,10 @@ module ScData
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(translate(values.dig("Localization", "Name"))),
           short_name: value_or_nil(translate(values.dig("Localization", "ShortName"))),
-          description: value_or_nil(translate(values.dig("Localization", "Description")))
+          description: value_or_nil(translate(values.dig("Localization", "Description"))),
+          # Downcased to match the icon paths equipment and commodities record,
+          # since whatever resolves one of them has to resolve all three.
+          icon: value_or_nil(values.dig("Logo"))&.downcase
         }
       end
 
