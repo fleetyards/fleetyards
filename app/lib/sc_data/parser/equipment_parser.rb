@@ -14,6 +14,7 @@ module ScData
         entities/scitem/characters/human/armor
         entities/scitem/characters/human/clothing
         entities/scitem/characters/human/starwear
+        entities/scitem/consumables
       ].freeze
 
       # AttachDef Type is the game's own split between a weapon and the things
@@ -60,6 +61,28 @@ module ScData
         "Char_Clothing_Hands" => ["clothing", "gloves"],
         "Char_Clothing_Backpack" => ["clothing", "backpack"]
       }.freeze
+
+      # Consumables split by SubType rather than by Type: the tree writes both
+      # FPS_Consumable and RemovableChip, and neither tells a keycard from a
+      # hacking chip -- SystemAccess holds both, and the five orbital keycards
+      # are filed under Hacking. The families are the two the model has been
+      # carrying unused since the weapons landed.
+      #
+      # item_type here is only the fallback. Sixteen of the nineteen medical
+      # records open their description with "Item Type: Medical Consumable",
+      # which wins, so the three that say nothing -- OxyPen among them -- take
+      # the same words rather than adding near-synonyms to a picker's filter.
+      # Every named record under Hacking or SystemAccess reads as a keycard, an
+      # access card or a decryption key.
+      CONSUMABLE_TYPES = {
+        "Medical" => ["medical", "medical_consumable"],
+        "MedPack" => ["medical", "medical_consumable"],
+        "OxygenCap" => ["medical", "medical_consumable"],
+        "Hacking" => ["hacking_tool", "keycard"],
+        "SystemAccess" => ["hacking_tool", "keycard"]
+      }.freeze
+
+      CONSUMABLE_ATTACH_TYPES = %w[FPS_Consumable RemovableChip].freeze
 
       # "All", "Light", "Medium & Heavy" -- the spec block writes the pairs with
       # an ampersand or a comma depending on the field.
@@ -133,17 +156,18 @@ module ScData
         segments = key.split("_")
         described = describe(translate(attach_def.dig("Localization", "Description")))
         worn_type, slot = CHAR_TYPES[attach_def["Type"]]
+        carried_type, carried_item_type = consumable_types(attach_def)
 
         {
           key:,
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(name),
           description: described[:description],
-          equipment_type: worn_type || EQUIPMENT_TYPES[attach_def["Type"]],
+          equipment_type: worn_type || carried_type || EQUIPMENT_TYPES[attach_def["Type"]],
           slot:,
           # The description header is written by hand and says "Assault Rifle"
           # where the record key only says "rifle", so it wins where it exists.
-          item_type: described[:item_type] || item_type(segments),
+          item_type: described[:item_type] || carried_item_type || item_type(segments),
           weapon_class: described[:weapon_class] || WEAPON_CLASSES.find { |klass| segments.include?(klass) },
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
@@ -163,6 +187,12 @@ module ScData
           tags: attach_def["Tags"].to_s.split,
           hidden: variant?(key)
         }
+      end
+
+      private def consumable_types(attach_def)
+        return unless CONSUMABLE_ATTACH_TYPES.include?(attach_def["Type"])
+
+        CONSUMABLE_TYPES[attach_def["SubType"]]
       end
 
       # Most descriptions open with a spec block -- "Item Type: Assault Rifle",
