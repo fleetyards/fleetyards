@@ -33,6 +33,7 @@ import {
   useFleetModelCounts as useFleetModelCountsQuery,
   useFleetVehiclesStats as useFleetVehiclesStatsQuery,
   fleetVehiclesExport as fetchFleetVehiclesExport,
+  fleetVehiclesHangarLinkExport as fetchFleetVehiclesHangarLinkExport,
   useFleetVehicles as useFleetVehiclesQuery,
   getFleetVehiclesQueryKey,
   type FleetVehicleQuery,
@@ -115,14 +116,28 @@ const exportJson = async () => {
       fleetVehiclesQueryParams,
     );
 
-    downloadExport(exportedData);
+    downloadExport(exportedData, "vehicles");
   } catch (error) {
     displayAlert({ text: t("messages.hangarExport.failure") });
     console.error(error);
   }
 };
 
-const downloadExport = (data?: VehicleExport[]) => {
+const exportHangarLink = async () => {
+  try {
+    const exportedData = await fetchFleetVehiclesHangarLinkExport(
+      fleetSlug,
+      fleetVehiclesQueryParams,
+    );
+
+    downloadExport(exportedData, "hangar-link");
+  } catch (error) {
+    displayAlert({ text: t("messages.hangarExport.failure") });
+    console.error(error);
+  }
+};
+
+const downloadExport = (data: VehicleExport[] | undefined, suffix: string) => {
   if (!data || !window.URL) {
     displayAlert({ text: t("messages.hangarExport.failure") });
     return;
@@ -136,7 +151,7 @@ const downloadExport = (data?: VehicleExport[]) => {
 
   link.setAttribute(
     "download",
-    `fleetyards-${props.fleet.slug}-vehicles-${format(
+    `fleetyards-${props.fleet.slug}-${suffix}-${format(
       new Date(),
       "yyyy-MM-dd",
     )}.json`,
@@ -287,6 +302,14 @@ const {
             <Btn :aria-label="t('actions.export')" @click="exportJson">
               <i class="fa-light fa-download" />
               <span>{{ t("actions.export") }}</span>
+            </Btn>
+
+            <Btn
+              :aria-label="t('actions.exportHangarLink')"
+              @click="exportHangarLink"
+            >
+              <i class="fa-light fa-link" />
+              <span>{{ t("actions.exportHangarLink") }}</span>
             </Btn>
           </BtnDropdown>
         </template>

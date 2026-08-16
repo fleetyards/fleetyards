@@ -8,7 +8,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   end
 
   resources :fleet_vehicles, path: "vehicles", only: %i[index] do
-    get :export, on: :collection
+    collection do
+      get :export
+      get "export/hangar-link", to: "fleet_vehicles#export_hangar_link"
+    end
   end
 
   resources :fleet_members, path: "members", param: :username, only: %i[index create destroy] do
