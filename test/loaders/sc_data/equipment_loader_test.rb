@@ -10,61 +10,119 @@ module ScData
         @loader = ::ScData::Loader::EquipmentLoader.new
       end
 
-      test "#all loads personal equipment from game files" do
-        @loader.all
-
-        assert_operator Equipment.count, :>=, 500
-
-        sc_keys = Equipment.pluck(:sc_key)
-        assert_equal sc_keys.uniq.size, sc_keys.size
+      # The parsed files are the parser's output and the loader's input, so the
+      # data-shape assertions read them directly. Loading all 4,700-odd rows
+      # into the database once per test would cost minutes for no more cover.
+      def parsed
+        @parsed ||= @loader.load_items("equipment").index_by { |item| item[:key] }
       end
 
-      # Asserts the families this parser produces are present and that nothing
-      # is left unsorted, rather than that these are the only two there will
-      # ever be -- the character trees add their own.
-      test "#all sorts every item into a family the model knows" do
-        @loader.all
+      test "every parsed item carries a family the model knows" do
+        assert_empty parsed.values.reject { |item| item[:equipment_type].present? }.map { |item| item[:key] }
 
-        assert_empty Equipment.where(equipment_type: nil).pluck(:sc_key)
-        assert_empty Equipment.where.not(equipment_type: Equipment::EQUIPMENT_TYPES).pluck(:equipment_type)
-
-        families = Equipment.distinct.pluck(:equipment_type)
-
-        assert_includes families, "weapon"
-        assert_includes families, "weapon_attachment"
+        assert_equal %w[armor clothing undersuit weapon weapon_attachment],
+          parsed.values.filter_map { |item| item[:equipment_type] }.uniq.sort
       end
 
       # Magazines are WeaponAttachment in the game's own taxonomy, which is why
       # ammunition is not a family of its own here.
-      test "#all files magazines as attachments rather than a family of their own" do
-        @loader.all
+      test "magazines are filed as attachments rather than a family of their own" do
+        magazine = parsed["behr_rifle_ballistic_01_mag"]
 
-        magazine = Equipment.find_by(sc_key: "behr_rifle_ballistic_01_mag")
-
-        assert_equal "weapon_attachment", magazine.equipment_type
-        assert_equal "magazine", magazine.item_type
+        assert_equal "weapon_attachment", magazine[:equipment_type]
+        assert_equal "magazine", magazine[:item_type]
       end
 
-      test "#all reads the spec block for the type, class and numbers" do
-        @loader.all
-
-        rifle = Equipment.find_by(sc_key: "behr_rifle_ballistic_01")
-
-        assert_equal "P4-AR Rifle", rifle.name
-        assert_equal "assault_rifle", rifle.item_type
-        assert_equal "ballistic", rifle.weapon_class
-        assert_equal 550, rifle.rate_of_fire
-        assert_equal 50, rifle.range
-        assert_equal 40, rifle.storage
+      test "worn gear takes its slot from the AttachDef type, carried gear has none" do
+        assert_equal "helmet", parsed["gys_helmet_03_01_01"][:slot]
+        assert_nil parsed["behr_rifle_ballistic_01"][:slot]
       end
 
-      test "#all leaves the description as prose once the spec block is read" do
-        @loader.all
+      test "the two clothing torso layers land in different slots" do
+        clothing = parsed.values.select { |item| item[:equipment_type] == "clothing" }
+        slots = clothing.filter_map { |item| item[:slot] }.uniq
 
-        description = Equipment.find_by(sc_key: "behr_rifle_ballistic_01").description
+        assert_includes slots, "shirt"
+        assert_includes slots, "jacket"
+      end
+
+      test "a weapon's spec block gives its type, class and numbers" do
+        rifle = parsed["behr_rifle_ballistic_01"]
+
+        assert_equal "P4-AR Rifle", rifle[:name]
+        assert_equal "assault_rifle", rifle[:item_type]
+        assert_equal "ballistic", rifle[:weapon_class]
+        assert_equal 550, rifle[:rate_of_fire].to_d
+        assert_equal 50, rifle[:range].to_d
+        assert_equal 40, rifle[:storage].to_d
+      end
+
+      test "an armour spec block gives its protection figures" do
+        suit = parsed["clda_env_armor_heavy_suit_01_01_01"]
+
+        assert_equal "Novikov Exploration Suit", suit[:name]
+        assert_equal 25, suit[:damage_reduction].to_d
+        assert_equal "-225 / 75 °C", suit[:temperature_rating]
+        assert_equal 33_600, suit[:radiation_protection].to_d
+        assert_equal 147.42, suit[:radiation_scrub_rate].to_d
+        assert_equal "all", suit[:backpack_compatibility]
+      end
+
+      # Capacity is written "8.0 µSCU" on a suit but "180K µSCU" on a backpack,
+      # while "50 m" of range is metres rather than fifty million.
+      test "a thousands suffix scales a capacity without catching a unit" do
+        armor = parsed.values.select { |item| item[:equipment_type] == "armor" }
+
+        assert_operator armor.filter_map { |item| item[:storage]&.to_d }.max, :>=, 100_000
+        assert_equal 50, parsed["behr_rifle_ballistic_01"][:range].to_d
+      end
+
+      test "the spec block is stripped, leaving the description as prose" do
+        description = parsed["behr_rifle_ballistic_01"][:description]
 
         assert_no_match(/Item Type:|Rate Of Fire:|Magazine Size:/, description)
         assert_match(/collapsible stock/, description)
+      end
+
+      # A 64px loadout icon shared by every variant of a weapon, and named by no
+      # attachment at all. Stored against the day the export carries textures.
+      test "a weapon records the loadout icon the game names for it" do
+        assert_equal "ui/textures/ea/loadouticons/behring_p4_ar_rifle_64.tif",
+          parsed["behr_rifle_ballistic_01"][:icon]
+
+        attachments = parsed.values.select { |item| item[:equipment_type] == "weapon_attachment" }
+
+        assert_empty attachments.select { |item| item[:icon].present? }
+      end
+
+      test "skins and dev copies are hidden but the item they copy is not" do
+        assert_not parsed["grin_multitool_01"][:hidden]
+        assert parsed["grin_multitool_01_ai"][:hidden]
+        assert parsed["lbco_optics_tsco_x16_s3_acid01"][:hidden]
+        assert parsed["mym_shirt_01_01_02"][:hidden]
+
+        # The name test is what keeps real items in: a rifle's magazine key
+        # shares the rifle's prefix, but it is named for the magazine.
+        assert_not parsed["behr_rifle_ballistic_01_mag"][:hidden]
+      end
+
+      # Clothing ships a record per colourway, all under one name, so without
+      # the skin rule a picker would list the Davlos Shirt seventeen times.
+      test "few visible items share a name for a picker to show" do
+        visible = parsed.values.reject { |item| item[:hidden] }
+        duplicated = visible.group_by { |item| item[:name] }.select { |_, group| group.size > 1 }
+
+        assert_operator duplicated.size, :<=, 25,
+          "visible duplicates: #{duplicated.keys.sort.join(", ")}"
+      end
+
+      test "#all loads the parsed equipment into the table" do
+        @loader.all
+
+        assert_operator Equipment.count, :>=, 4_000
+
+        sc_keys = Equipment.pluck(:sc_key)
+        assert_equal sc_keys.uniq.size, sc_keys.size
       end
 
       test "#all resolves the manufacturer from the record" do
@@ -73,39 +131,6 @@ module ScData
         @loader.all
 
         assert_equal "Behring", Equipment.find_by(sc_key: "behr_rifle_ballistic_01").manufacturer&.name
-      end
-
-      # A 64px loadout icon shared by every variant of a weapon, and named by no
-      # attachment at all. Stored against the day the export carries textures;
-      # nothing resolves the path today.
-      test "#all records the loadout icon the game names for a weapon" do
-        @loader.all
-
-        assert_equal "ui/textures/ea/loadouticons/behring_p4_ar_rifle_64.tif",
-          Equipment.find_by(sc_key: "behr_rifle_ballistic_01").icon
-      end
-
-      test "#all leaves the icon empty for the attachments that name none" do
-        @loader.all
-
-        assert_empty Equipment.where(equipment_type: "weapon_attachment").where.not(icon: nil)
-      end
-
-      test "#all hides skins and dev copies but keeps the item they copy" do
-        @loader.all
-
-        assert_not Equipment.find_by(sc_key: "grin_multitool_01").hidden?
-        assert_predicate Equipment.find_by(sc_key: "grin_multitool_01_ai"), :hidden?
-        assert_predicate Equipment.find_by(sc_key: "lbco_optics_tsco_x16_s3_acid01"), :hidden?
-      end
-
-      test "#all leaves few visible items sharing a name for a picker to show" do
-        @loader.all
-
-        duplicated = Equipment.visible.group(:slug).having("count(*) > 1").count
-
-        assert_operator duplicated.size, :<=, 25,
-          "visible duplicates: #{duplicated.keys.sort.join(", ")}"
       end
 
       # A new build leaves a dropped record on its old version, so current_version

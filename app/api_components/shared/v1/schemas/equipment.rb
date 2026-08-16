@@ -19,11 +19,20 @@ module Shared
             subType: {type: [:string, :null]},
             weaponClass: {type: [:string, :null]},
 
+            slot: {type: [:string, :null]},
             size: {type: [:string, :null]},
             grade: {type: [:string, :null]},
             rateOfFire: {type: [:number, :null]},
             range: {type: [:number, :null]},
             storage: {type: [:number, :null]},
+
+            damageReduction: {type: [:number, :null]},
+            temperatureRating: {type: [:string, :null]},
+            radiationProtection: {type: [:number, :null]},
+            radiationScrubRate: {type: [:number, :null]},
+            gForceTolerance: {type: [:number, :null]},
+            coreCompatibility: {type: [:string, :null]},
+            backpackCompatibility: {type: [:string, :null]},
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 

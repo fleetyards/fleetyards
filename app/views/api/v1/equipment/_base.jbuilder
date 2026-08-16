@@ -10,11 +10,20 @@ json.item_type equipment.item_type
 json.sub_type equipment.sub_type
 json.weapon_class equipment.weapon_class
 
+json.slot equipment.slot
 json.size equipment.size
 json.grade equipment.grade
 json.rate_of_fire equipment.rate_of_fire&.to_f
 json.range equipment.range&.to_f
 json.storage equipment.storage&.to_f
+
+json.damage_reduction equipment.damage_reduction&.to_f
+json.temperature_rating equipment.temperature_rating
+json.radiation_protection equipment.radiation_protection&.to_f
+json.radiation_scrub_rate equipment.radiation_scrub_rate&.to_f
+json.g_force_tolerance equipment.g_force_tolerance&.to_f
+json.core_compatibility equipment.core_compatibility
+json.backpack_compatibility equipment.backpack_compatibility
 
 if equipment.manufacturer.present?
   json.manufacturer do

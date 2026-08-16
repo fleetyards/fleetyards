@@ -12,11 +12,14 @@ require "test_helper"
 #  damage_reduction       :decimal(15, 2)
 #  description            :text
 #  equipment_type         :string
+#  g_force_tolerance      :decimal(15, 2)
 #  grade                  :string
 #  hidden                 :boolean          default(FALSE)
 #  icon                   :string
 #  item_type              :string
 #  name                   :string
+#  radiation_protection   :decimal(15, 2)
+#  radiation_scrub_rate   :decimal(15, 2)
 #  range                  :decimal(15, 2)
 #  rate_of_fire           :decimal(15, 2)
 #  sc_key                 :string
@@ -40,6 +43,7 @@ require "test_helper"
 #  index_equipment_on_item_type        (item_type)
 #  index_equipment_on_manufacturer_id  (manufacturer_id)
 #  index_equipment_on_sc_key           (sc_key) UNIQUE
+#  index_equipment_on_slot             (slot)
 #
 class EquipmentTest < ActiveSupport::TestCase
   test "generates a slug from the name" do
