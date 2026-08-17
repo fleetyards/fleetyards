@@ -64,6 +64,8 @@ class Component < ApplicationRecord
 
   belongs_to :manufacturer, optional: true
 
+  has_many :model_paints, dependent: :nullify
+
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
   has_many :hardpoint_loadouts, class_name: "Hardpoint", dependent: :nullify
 

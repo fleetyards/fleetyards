@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Reporting only. Copying the artwork is Maintenance::CopyPaintStoreImagesTask,
-# so the write that has to run against production does so where it can be
-# watched, throttled and resumed, rather than from somebody's shell.
+# Reporting only. Linking and copying are maintenance tasks, so the writes that
+# have to run against production do so where they can be watched, throttled and
+# resumed, rather than from somebody's shell.
 
 COMMANDS = {
-  "match-report" => "Report which paint Components match a ModelPaint, writing nothing"
+  "link-report" => "Report the state of the paint <-> component links",
+  "match-preview" => "Report what linking would match, without writing"
 }.freeze
 
 def usage
@@ -27,17 +28,25 @@ end
 
 require_relative "../config/environment"
 
-components = Component.where(category: "paints").where.not(name: [nil, ""]).order(:name)
-matcher = PaintComponentMatcher.new
-
 case command
-when "match-report"
+when "link-report"
+  linked = ModelPaint.where.not(component_id: nil)
+
+  puts "model paints:       #{ModelPaint.count}"
+  puts "  linked:           #{linked.count}"
+  puts "  no counterpart:   #{ModelPaint.where(component_id: nil).count}"
+  puts ""
+  puts "paint components:   #{Component.where(category: "paints").count}"
+  puts "  linked:           #{Component.where(category: "paints").joins(:model_paints).distinct.count}"
+
+when "match-preview"
+  components = Component.where(category: "paints").where.not(name: [nil, ""]).order(:name)
+  matcher = PaintComponentMatcher.new
   matched, unmatched = components.partition { |component| matcher.call(component) }
 
   puts "paint components: #{components.count}"
-  puts "matched:          #{matched.size}"
-  puts "unmatched:        #{unmatched.size}"
-
+  puts "would match:      #{matched.size}"
+  puts "would not:        #{unmatched.size}"
   puts ""
   puts "Unmatched:"
   unmatched.each { |component| puts "  #{component.name}" }

@@ -721,6 +721,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
 
   create_table "model_paints", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.boolean "active", default: true
+    t.uuid "component_id"
     t.datetime "created_at", null: false
     t.string "description"
     t.boolean "hidden", default: true
@@ -740,6 +741,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
     t.datetime "store_images_updated_at", precision: nil
     t.string "store_url"
     t.datetime "updated_at", null: false
+    t.index ["component_id"], name: "index_model_paints_on_component_id"
   end
 
   create_table "model_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1240,6 +1242,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_120000) do
   add_foreign_key "imports", "admin_users"
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"
+  add_foreign_key "model_paints", "components", on_delete: :nullify
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify
   add_foreign_key "model_positions", "models"
   add_foreign_key "notification_preferences", "users"

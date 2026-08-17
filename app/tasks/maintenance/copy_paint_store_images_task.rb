@@ -3,29 +3,28 @@
 module Maintenance
   # Paints came to FleetYards from RSI long before the game files were parsed,
   # so the artwork sits on a ModelPaint while the component the export creates
-  # has none. This carries it across for the ones that can be matched.
+  # has none. This carries it across.
   #
-  # The collection is every named paint component rather than only those
-  # missing a picture: attaching one would otherwise move a record out of
-  # scope mid-run, and a stable collection is what makes the task resumable.
+  # Which paint belongs to which component is read from the link rather than
+  # matched here -- run LinkPaintComponentsTask first. Names are a guess and
+  # the link is a decision, so the guess is made in one place and recorded.
   class CopyPaintStoreImagesTask < MaintenanceTasks::Task
     def collection
-      Component.where(category: "paints").where.not(name: [nil, ""]).order(:id)
+      ModelPaint.where.not(component_id: nil).order(:id)
     end
 
     def count
       collection.count
     end
 
-    def process(component)
+    def process(paint)
+      return unless paint.store_image.attached?
+
+      component = paint.component
+
       # Never overwrite what an admin or the hangar sync put there. A component
       # that already has a picture is curated by definition.
-      return if component.store_image.attached?
-
-      paint = matcher.call(component)
-
-      return if paint.nil?
-      return unless paint.store_image.attached?
+      return if component.nil? || component.store_image.attached?
 
       # Copied rather than attached by blob: the two records would otherwise
       # share one, and purging the paint would take the component's picture
@@ -37,12 +36,6 @@ module Maintenance
           content_type: paint.store_image.content_type
         )
       end
-    end
-
-    # Every ModelPaint is read once to build the index, so it is held for the
-    # length of the run rather than rebuilt per component.
-    private def matcher
-      @matcher ||= PaintComponentMatcher.new
     end
   end
 end
