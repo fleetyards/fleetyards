@@ -90,7 +90,7 @@ const openExpandModal = () => {
         })
       }}
     </span>
-    <Btn :size="BtnSizesEnum.SMALL" inline @click="openExpandModal">
+    <Btn :size="BtnSizesEnum.SM" inline @click="openExpandModal">
       {{ t("actions.fleets.events.addSeats") }}
     </Btn>
   </div>
@@ -104,7 +104,7 @@ const openExpandModal = () => {
   margin: 0.4rem 0 0.6rem;
   padding: 0.4rem 0.7rem;
   font-size: 0.82rem;
-  color: var(--accent, #4aa);
+  color: var(--color-primary, #428bca);
   background: rgba(74, 170, 170, 0.08);
   border: 1px solid rgba(74, 170, 170, 0.4);
   border-radius: 4px;

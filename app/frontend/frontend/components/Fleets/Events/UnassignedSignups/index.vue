@@ -102,14 +102,14 @@ const remove = (signup: FleetEventSignup) => {
           {{ signup.notes }}
         </p>
         <div class="unassigned-signups__actions">
-          <Btn :size="BtnSizesEnum.SMALL" inline @click="openAssign(signup)">
+          <Btn :size="BtnSizesEnum.SM" inline @click="openAssign(signup)">
             <i class="fa-light fa-arrow-right-arrow-left" />
             {{ t("actions.fleets.events.assignSlot") }}
           </Btn>
           <Btn
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             inline
-            variant="danger"
+            tone="danger"
             @click="remove(signup)"
           >
             <i class="fa-light fa-xmark" />
@@ -140,14 +140,14 @@ const remove = (signup: FleetEventSignup) => {
   letter-spacing: 0.04em;
 
   i {
-    color: var(--warning, #ff9800);
+    color: var(--color-warning, #fa6800);
   }
 }
 .unassigned-signups__count {
   font-size: 0.7rem;
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
-  background: var(--warning, #ff9800);
+  background: var(--color-warning, #fa6800);
   color: #000;
 }
 .unassigned-signups__list {
@@ -174,7 +174,7 @@ const remove = (signup: FleetEventSignup) => {
   flex-wrap: wrap;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .unassigned-signups__notes {

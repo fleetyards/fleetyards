@@ -98,8 +98,7 @@ const categoryOptions = computed<FilterOption[]>(() =>
 const existingCoverImage = computed(() => {
   return (
     props.mission as
-      | { coverImage?: { url?: string; mediumUrl?: string } | null }
-      | undefined
+      { coverImage?: { url?: string; mediumUrl?: string } | null } | undefined
   )?.coverImage;
 });
 
@@ -339,7 +338,7 @@ const onSubmit = handleSubmit(async (values) => {
         :hidden="!isEdit"
       >
         <div class="teams-section__header">
-          <Btn :inline="true" size="small" @click="openAddTeamModal">
+          <Btn :inline="true" @click="openAddTeamModal">
             <i class="fa-light fa-plus" />
             <span>{{ t("actions.fleets.missions.addTeam") }}</span>
           </Btn>
@@ -378,7 +377,7 @@ const onSubmit = handleSubmit(async (values) => {
   display: block;
   margin-bottom: 0.4rem;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .cover-presets-grid {
   display: grid;
@@ -406,8 +405,8 @@ const onSubmit = handleSubmit(async (values) => {
   }
 }
 .cover-preset--active {
-  border-color: var(--accent, #4aa);
-  box-shadow: 0 0 0 1px var(--accent, #4aa);
+  border-color: var(--color-primary, #428bca);
+  box-shadow: 0 0 0 1px var(--color-primary, #428bca);
 }
 .teams-section__header {
   display: flex;

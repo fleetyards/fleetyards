@@ -141,9 +141,9 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
 
     <div class="discord-status-row">
       <Btn
-        :size="BtnSizesEnum.SMALL"
+        :size="BtnSizesEnum.SM"
         inline
-        variant="link"
+        variant="bare"
         :loading="probing"
         @click="probeDiscord"
       >
@@ -231,7 +231,7 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
   font-size: 0.95rem;
 
   i {
-    color: var(--accent, #4aa);
+    color: var(--color-primary, #428bca);
   }
 
   a {
@@ -252,9 +252,9 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
   font-size: 0.85rem;
 }
 .discord-status--ok {
-  color: var(--success, #4caf50);
+  color: var(--color-success, #5cb85c);
 }
 .discord-status--err {
-  color: var(--warning, #ff9800);
+  color: var(--color-warning, #fa6800);
 }
 </style>

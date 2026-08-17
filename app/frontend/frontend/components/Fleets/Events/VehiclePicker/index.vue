@@ -161,7 +161,7 @@ watch(selectedMatches, (value) => emit("match", value), { immediate: true });
   align-items: center;
   gap: 0.4rem;
   margin: 0;
-  color: var(--warning, #ff9800);
+  color: var(--color-warning, #fa6800);
 
   i {
     color: inherit;

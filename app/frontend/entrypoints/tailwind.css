@@ -119,6 +119,36 @@
 }
 
 /*
+ * Mission categories.
+ *
+ * Outside @theme for the reason the cap geometry is: these generate no
+ * utilities, and Tailwind drops a theme variable it cannot see used - a
+ * category colour is only ever read through a style binding, which its scanner
+ * does not count as a use, so declared in @theme they would be pruned and every
+ * chip would fall back to nothing.
+ *
+ * They belong to the theme rather than to whichever component renders them
+ * first: the calendar chip, the event card and the category filter all need the
+ * same eight, and five of them are a colour the app already has a token for.
+ * Aliasing rather than repeating the literal is what stops them drifting.
+ *
+ * The last three have no existing token. `combined-combat` sits close to
+ * --color-danger, and the two show side by side whenever a fleet runs both
+ * combat categories; that pairing has not been checked for distinguishability.
+ * See the mission-builder plan's Q2.
+ */
+:root {
+  --color-category-other: var(--color-gray-light, #7a8288);
+  --color-category-ship-combat: var(--color-danger, #dc3545);
+  --color-category-ground-combat: var(--color-warning, #fa6800);
+  --color-category-cargo-hauling: var(--color-primary, #428bca);
+  --color-category-mining: var(--color-gold, #d4af37);
+  --color-category-combined-combat: #c0392b;
+  --color-category-salvage: #16a085;
+  --color-category-exploration: #9b59b6;
+}
+
+/*
  * Width of the off-canvas navigation, which the page slides sideways by while it
  * is open. The literal appears four times in partials/app-navigation.scss and
  * twice in shared/layout.scss; AppFooter consumes this token instead of copying

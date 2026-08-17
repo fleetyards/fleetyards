@@ -154,9 +154,9 @@ const revoke = (admin: FleetEventAdmin) => {
             {{ t(`labels.fleets.events.eventRoles.${entry.role}`) }}
           </span>
           <Btn
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             inline
-            variant="link"
+            variant="bare"
             @click="revoke(entry)"
           >
             <i class="fa-light fa-xmark" />
@@ -192,7 +192,7 @@ const revoke = (admin: FleetEventAdmin) => {
           inline
         />
         <Btn
-          :size="BtnSizesEnum.SMALL"
+          :size="BtnSizesEnum.SM"
           inline
           :disabled="!selectedUserId"
           :loading="createMutation.isPending.value"
@@ -207,9 +207,9 @@ const revoke = (admin: FleetEventAdmin) => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :size="BtnSizesEnum.LARGE"
+          :size="BtnSizesEnum.LG"
           inline
-          variant="link"
+          variant="bare"
           @click="comlink.emit('close-modal')"
         >
           {{ t("actions.close") }}
@@ -230,7 +230,7 @@ const revoke = (admin: FleetEventAdmin) => {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .event-admins__creator {
   display: inline-flex;
@@ -238,7 +238,7 @@ const revoke = (admin: FleetEventAdmin) => {
   gap: 0.4rem;
 
   i {
-    color: var(--gold, #f5c542);
+    color: var(--color-gold, #d4af37);
   }
 }
 .event-admins__list {
@@ -258,7 +258,7 @@ const revoke = (admin: FleetEventAdmin) => {
   border-radius: 4px;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .event-admins__role {
@@ -268,7 +268,7 @@ const revoke = (admin: FleetEventAdmin) => {
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
   background: rgba(74, 170, 170, 0.18);
-  color: var(--accent, #4aa);
+  color: var(--color-primary, #428bca);
   margin-right: auto;
 }
 .event-admins__form {

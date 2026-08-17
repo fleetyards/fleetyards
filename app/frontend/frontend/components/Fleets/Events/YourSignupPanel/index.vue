@@ -197,33 +197,23 @@ const statusLabel = computed(() =>
 
     <div class="your-signup__actions">
       <template v-if="editing">
-        <Btn :size="BtnSizesEnum.SMALL" inline :loading="saving" @click="save">
+        <Btn :size="BtnSizesEnum.SM" inline :loading="saving" @click="save">
           <i class="fa-light fa-floppy-disk" />
           {{ t("actions.save") }}
         </Btn>
-        <Btn
-          :size="BtnSizesEnum.SMALL"
-          inline
-          variant="link"
-          @click="cancelEdit"
-        >
+        <Btn :size="BtnSizesEnum.SM" inline variant="bare" @click="cancelEdit">
           {{ t("actions.cancel") }}
         </Btn>
       </template>
       <template v-else>
-        <Btn
-          v-if="canEdit"
-          :size="BtnSizesEnum.SMALL"
-          inline
-          @click="startEdit"
-        >
+        <Btn v-if="canEdit" :size="BtnSizesEnum.SM" inline @click="startEdit">
           <i class="fa-light fa-pen" />
           {{ t("actions.edit") }}
         </Btn>
         <Btn
-          :size="BtnSizesEnum.SMALL"
+          :size="BtnSizesEnum.SM"
           inline
-          variant="danger"
+          tone="danger"
           :loading="withdrawMutation.isPending.value"
           @click="withdraw"
         >
@@ -243,7 +233,7 @@ const statusLabel = computed(() =>
   padding: 0.85rem 1rem;
   border-radius: 6px;
   background: rgba(74, 170, 170, 0.1);
-  border: 1px solid var(--accent, #4aa);
+  border: 1px solid var(--color-primary, #428bca);
 }
 .your-signup__head {
   display: flex;
@@ -262,7 +252,7 @@ const statusLabel = computed(() =>
   letter-spacing: 0.04em;
 
   i {
-    color: var(--accent, #4aa);
+    color: var(--color-primary, #428bca);
   }
 }
 .your-signup__status {
@@ -274,10 +264,10 @@ const statusLabel = computed(() =>
   border: 1px solid currentColor;
 }
 .your-signup__status--confirmed {
-  color: var(--success, #4caf50);
+  color: var(--color-success, #5cb85c);
 }
 .your-signup__status--tentative {
-  color: var(--warning, #ff9800);
+  color: var(--color-warning, #fa6800);
 }
 .your-signup__location {
   display: flex;
@@ -286,7 +276,7 @@ const statusLabel = computed(() =>
   flex-wrap: wrap;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .your-signup__notes {
@@ -297,7 +287,7 @@ const statusLabel = computed(() =>
   white-space: pre-wrap;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
     margin-top: 0.25rem;
   }
 }

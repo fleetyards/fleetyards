@@ -19,17 +19,13 @@ type StatItem = { icon: string; label?: string; value: string };
 
 const modelMinCrew = computed<number | null>(() => {
   const model = props.ship.model as
-    | { minCrew?: number | null }
-    | null
-    | undefined;
+    { minCrew?: number | null } | null | undefined;
   return model?.minCrew ?? null;
 });
 
 const modelMaxCrew = computed<number | null>(() => {
   const model = props.ship.model as
-    | { maxCrew?: number | null }
-    | null
-    | undefined;
+    { maxCrew?: number | null } | null | undefined;
   return model?.maxCrew ?? null;
 });
 
@@ -103,7 +99,7 @@ const items = computed<StatItem[]>(() => {
   gap: 0.4rem 0.85rem;
   margin: 0.25rem 0 0.5rem;
   font-size: 0.78rem;
-  color: var(--text);
+  color: var(--color-text, #c8c8c8);
 }
 .event-ship-meta__item {
   display: inline-flex;
@@ -111,11 +107,11 @@ const items = computed<StatItem[]>(() => {
   gap: 0.3rem;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .event-ship-meta__label {
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-size: 0.7rem;

@@ -285,8 +285,7 @@ if (props.mission) {
 const existingCoverImage = computed(() => {
   return (
     props.event as
-      | { coverImage?: { url?: string; mediumUrl?: string } | null }
-      | undefined
+      { coverImage?: { url?: string; mediumUrl?: string } | null } | undefined
   )?.coverImage;
 });
 
@@ -418,18 +417,14 @@ const onSubmit = handleSubmit(async (values) => {
               </span>
             </span>
             <div class="event-form__prefill-actions">
-              <Btn
-                :size="BtnSizesEnum.SMALL"
-                inline
-                @click="openTemplatePicker"
-              >
+              <Btn :size="BtnSizesEnum.SM" inline @click="openTemplatePicker">
                 <i class="fa-light fa-arrows-rotate" />
                 {{ t("labels.fleets.events.changeTemplate") }}
               </Btn>
               <Btn
-                :size="BtnSizesEnum.SMALL"
+                :size="BtnSizesEnum.SM"
                 inline
-                variant="link"
+                variant="bare"
                 @click="applyMissionPrefill(null)"
               >
                 <i class="fa-light fa-xmark" />
@@ -439,7 +434,7 @@ const onSubmit = handleSubmit(async (values) => {
           </div>
           <Btn
             v-else
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             inline
             @click="openTemplatePicker"
           >
@@ -744,7 +739,7 @@ const onSubmit = handleSubmit(async (values) => {
         :hidden="!isEdit"
       >
         <div class="event-teams-section__header">
-          <Btn :inline="true" size="small" @click="openAddEventTeamModal">
+          <Btn :inline="true" @click="openAddEventTeamModal">
             <i class="fa-light fa-plus" />
             <span>{{ t("actions.fleets.events.addTeam") }}</span>
           </Btn>
@@ -792,7 +787,7 @@ const onSubmit = handleSubmit(async (values) => {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .event-form__prefill-active {
   display: flex;
@@ -808,7 +803,7 @@ const onSubmit = handleSubmit(async (values) => {
   font-weight: 600;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .event-form__prefill-badge {
@@ -818,7 +813,7 @@ const onSubmit = handleSubmit(async (values) => {
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
   background: rgba(74, 170, 170, 0.18);
-  color: var(--accent, #4aa);
+  color: var(--color-primary, #428bca);
 }
 .event-form__prefill-actions {
   display: flex;
@@ -829,7 +824,7 @@ const onSubmit = handleSubmit(async (values) => {
   display: block;
   margin-bottom: 0.4rem;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .cover-presets-grid {
   display: grid;
@@ -857,8 +852,8 @@ const onSubmit = handleSubmit(async (values) => {
   }
 }
 .cover-preset--active {
-  border-color: var(--accent, #4aa);
-  box-shadow: 0 0 0 1px var(--accent, #4aa);
+  border-color: var(--color-primary, #428bca);
+  box-shadow: 0 0 0 1px var(--color-primary, #428bca);
 }
 .event-teams-section__header {
   display: flex;

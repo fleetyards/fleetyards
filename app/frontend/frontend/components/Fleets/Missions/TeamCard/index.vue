@@ -186,12 +186,7 @@ onUnmounted(() => {
         <h4 class="team-section-label">
           {{ t("headlines.fleets.missions.ships") }}
         </h4>
-        <Btn
-          v-if="editable"
-          :inline="true"
-          size="small"
-          @click="openAddShipModal"
-        >
+        <Btn v-if="editable" :inline="true" @click="openAddShipModal">
           <i class="fa-light fa-plus" />
           <span>{{ t("actions.fleets.missions.addShip") }}</span>
         </Btn>
@@ -219,7 +214,7 @@ onUnmounted(() => {
 .team-box {
   position: relative;
   padding: 1.25rem;
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.45);
   margin-bottom: 1.5rem;
@@ -230,7 +225,7 @@ onUnmounted(() => {
   right: 0.5rem;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   cursor: pointer;
   padding: 0.25rem 0.5rem;
   font-size: 1rem;
@@ -241,7 +236,7 @@ onUnmounted(() => {
     background 0.15s;
 
   &:hover {
-    color: var(--danger, #c66);
+    color: var(--color-danger, #dc3545);
     background: rgba(255, 255, 255, 0.06);
   }
 }
@@ -253,7 +248,7 @@ onUnmounted(() => {
 }
 .team-drag-handle {
   cursor: grab;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   font-size: 0.85rem;
   letter-spacing: -0.15em;
   user-select: none;
@@ -266,7 +261,7 @@ onUnmounted(() => {
 .team-edit {
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   cursor: pointer;
   padding: 0.25rem 0.4rem;
   border-radius: 3px;
@@ -276,12 +271,12 @@ onUnmounted(() => {
     background 0.15s;
 
   &:hover {
-    color: var(--text);
+    color: var(--color-text, #c8c8c8);
     background: rgba(255, 255, 255, 0.06);
   }
 }
 .team-desc {
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   margin: 0.5rem 0 0;
 }
 .team-section {
@@ -296,7 +291,7 @@ onUnmounted(() => {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .team-section-header {
   display: flex;

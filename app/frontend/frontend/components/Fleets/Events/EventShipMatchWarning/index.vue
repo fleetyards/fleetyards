@@ -66,7 +66,7 @@ const message = computed(() =>
   padding: 0.4rem 0.7rem;
   font-size: 0.82rem;
   font-weight: 500;
-  color: var(--warning, #ff9800);
+  color: var(--color-warning, #fa6800);
   background: rgba(255, 152, 0, 0.1);
   border: 1px solid rgba(255, 152, 0, 0.4);
   border-radius: 4px;

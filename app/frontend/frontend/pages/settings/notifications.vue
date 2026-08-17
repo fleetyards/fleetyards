@@ -170,7 +170,7 @@ const togglePref = async (
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .notification-prefs {

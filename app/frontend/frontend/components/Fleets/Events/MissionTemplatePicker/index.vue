@@ -110,9 +110,9 @@ const pick = (mission: Mission | null) => {
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :size="BtnSizesEnum.LARGE"
+          :size="BtnSizesEnum.LG"
           inline
-          variant="link"
+          variant="bare"
           @click="comlink.emit('close-modal')"
         >
           {{ t("actions.cancel") }}
@@ -150,8 +150,8 @@ const pick = (mission: Mission | null) => {
   }
 }
 .template-card--active {
-  border-color: var(--accent, #4aa);
-  box-shadow: 0 0 0 1px var(--accent, #4aa);
+  border-color: var(--color-primary, #428bca);
+  box-shadow: 0 0 0 1px var(--color-primary, #428bca);
 }
 .template-card--clear {
   flex-direction: row;
@@ -162,7 +162,7 @@ const pick = (mission: Mission | null) => {
 }
 .template-card__icon {
   font-size: 1.6rem;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .template-card__cover {
   width: 100%;
@@ -197,7 +197,7 @@ const pick = (mission: Mission | null) => {
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
   background: rgba(74, 170, 170, 0.18);
-  color: var(--accent, #4aa);
+  color: var(--color-primary, #428bca);
 }
 .template-card__desc {
   margin: 0;
@@ -211,7 +211,7 @@ const pick = (mission: Mission | null) => {
   gap: 0.85rem;
 
   strong {
-    color: var(--text);
+    color: var(--color-text, #c8c8c8);
   }
 }
 .small {

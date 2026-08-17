@@ -171,27 +171,27 @@ const timeConfig = computed(() => ({
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .form-datetime__wrapper :deep(.dp__main) {
   --dp-input-icon-padding: 2.6rem;
   --dp-input-padding: 0.55rem 2.4rem 0.55rem 0.75rem;
   --dp-background-color: var(--input-bg, rgba(0, 0, 0, 0.4));
-  --dp-text-color: var(--text);
+  --dp-text-color: var(--color-text, #c8c8c8);
   --dp-hover-color: rgba(74, 170, 170, 0.2);
-  --dp-hover-text-color: var(--text);
-  --dp-hover-icon-color: var(--accent, #4aa);
-  --dp-primary-color: var(--accent, #4aa);
+  --dp-hover-text-color: var(--color-text, #c8c8c8);
+  --dp-hover-icon-color: var(--color-primary, #428bca);
+  --dp-primary-color: var(--color-primary, #428bca);
   --dp-primary-text-color: #fff;
-  --dp-secondary-color: var(--text-muted);
+  --dp-secondary-color: var(--color-muted, #7a8288);
   --dp-border-color: rgba(255, 255, 255, 0.15);
   --dp-border-color-hover: rgba(255, 255, 255, 0.3);
   --dp-disabled-color: rgba(255, 255, 255, 0.1);
   --dp-scroll-bar-background: rgba(255, 255, 255, 0.05);
   --dp-scroll-bar-color: rgba(255, 255, 255, 0.2);
-  --dp-success-color: var(--success, #4caf50);
+  --dp-success-color: var(--color-success, #5cb85c);
   --dp-success-color-disabled: rgba(76, 175, 80, 0.4);
-  --dp-icon-color: var(--text-muted);
+  --dp-icon-color: var(--color-muted, #7a8288);
   --dp-danger-color: var(--danger, #c62828);
   --dp-highlight-color: rgba(74, 170, 170, 0.5);
   --dp-menu-min-width: 260px;

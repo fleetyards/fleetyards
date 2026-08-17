@@ -101,9 +101,9 @@ const teams = computed<FleetEventTeam[]>(
             class="slot-picker__slot"
           >
             <Btn
-              :size="BtnSizesEnum.SMALL"
+              :size="BtnSizesEnum.SM"
               inline
-              variant="link"
+              variant="bare"
               :disabled="
                 slot.id === currentSlotId ||
                 !!slotTakenBy(slot) ||
@@ -172,9 +172,9 @@ const teams = computed<FleetEventTeam[]>(
               class="slot-picker__slot"
             >
               <Btn
-                :size="BtnSizesEnum.SMALL"
+                :size="BtnSizesEnum.SM"
                 inline
-                variant="link"
+                variant="bare"
                 :disabled="
                   slot.id === currentSlotId ||
                   !!slotTakenBy(slot) ||
@@ -226,9 +226,9 @@ const teams = computed<FleetEventTeam[]>(
     <template #footer>
       <div class="float-sm-right">
         <Btn
-          :size="BtnSizesEnum.LARGE"
+          :size="BtnSizesEnum.LG"
           inline
-          variant="link"
+          variant="bare"
           @click="comlink.emit('close-modal')"
         >
           {{ t("actions.cancel") }}
@@ -261,7 +261,7 @@ const teams = computed<FleetEventTeam[]>(
   font-size: 0.95rem;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .slot-picker__ship {
@@ -281,11 +281,11 @@ const teams = computed<FleetEventTeam[]>(
   font-size: 0.88rem;
 
   i {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .slot-picker__ship-fit {
-  color: var(--success, #4caf50);
+  color: var(--color-success, #5cb85c);
   margin-left: 0.2rem;
 }
 .slot-picker__slots {
@@ -320,11 +320,11 @@ const teams = computed<FleetEventTeam[]>(
 }
 .slot-picker__slot-badge--current {
   background: rgba(74, 170, 170, 0.18);
-  color: var(--accent, #4aa);
+  color: var(--color-primary, #428bca);
 }
 .slot-picker__slot-badge--taken {
   background: rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .small {
   font-size: 0.78rem;

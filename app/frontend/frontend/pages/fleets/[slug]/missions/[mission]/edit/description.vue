@@ -56,8 +56,7 @@ const selectPreset = (key: string) => {
 const existingCoverImage = computed(() => {
   return (
     props.mission as
-      | { coverImage?: { url?: string; mediumUrl?: string } | null }
-      | undefined
+      { coverImage?: { url?: string; mediumUrl?: string } | null } | undefined
   )?.coverImage;
 });
 
@@ -135,7 +134,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<MissionUpdateInput>) =>
 .cover-presets-label {
   display: block;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   margin-bottom: 0.35rem;
 }
 .cover-presets-grid {
@@ -159,7 +158,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<MissionUpdateInput>) =>
   }
 
   &--active {
-    border-color: var(--accent, #4aa);
+    border-color: var(--color-primary, #428bca);
   }
 }
 </style>

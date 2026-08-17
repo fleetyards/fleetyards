@@ -72,18 +72,42 @@ const titleLabel = ref("");
 
 type CategoryStyle = { icon: string; color: string };
 
+// Colour comes from the --color-category-* tokens in entrypoints/tailwind.css
+// rather than from literals here: the same eight are needed by the event card
+// and the category filter, and five of them alias a token the app already has.
 const categoryStyles: Record<string, CategoryStyle> = {
-  [MissionCategory.other]: { icon: "fa-circle-question", color: "#7a8288" },
-  [MissionCategory.ship_combat]: { icon: "fa-rocket", color: "#dc3545" },
-  [MissionCategory.ground_combat]: { icon: "fa-burst", color: "#fa6800" },
+  [MissionCategory.other]: {
+    icon: "fa-circle-question",
+    color: "var(--color-category-other)",
+  },
+  [MissionCategory.ship_combat]: {
+    icon: "fa-rocket",
+    color: "var(--color-category-ship-combat)",
+  },
+  [MissionCategory.ground_combat]: {
+    icon: "fa-burst",
+    color: "var(--color-category-ground-combat)",
+  },
   [MissionCategory.combined_combat]: {
     icon: "fa-crosshairs",
-    color: "#c0392b",
+    color: "var(--color-category-combined-combat)",
   },
-  [MissionCategory.mining]: { icon: "fa-gem", color: "#d4af37" },
-  [MissionCategory.salvage]: { icon: "fa-recycle", color: "#16a085" },
-  [MissionCategory.cargo_hauling]: { icon: "fa-box", color: "#428bca" },
-  [MissionCategory.exploration]: { icon: "fa-compass", color: "#9b59b6" },
+  [MissionCategory.mining]: {
+    icon: "fa-gem",
+    color: "var(--color-category-mining)",
+  },
+  [MissionCategory.salvage]: {
+    icon: "fa-recycle",
+    color: "var(--color-category-salvage)",
+  },
+  [MissionCategory.cargo_hauling]: {
+    icon: "fa-box",
+    color: "var(--color-category-cargo-hauling)",
+  },
+  [MissionCategory.exploration]: {
+    icon: "fa-compass",
+    color: "var(--color-category-exploration)",
+  },
 };
 
 const styleFor = (category?: string | null): CategoryStyle =>
@@ -288,20 +312,20 @@ onUnmounted(() => {
     <PanelBody no-padding rounded="all">
       <div class="fy-calendar__toolbar">
         <BtnGroup>
-          <Btn :size="BtnSizesEnum.SMALL" inline @click="goPrev">
+          <Btn :size="BtnSizesEnum.SM" inline @click="goPrev">
             <i class="fa-light fa-chevron-left" />
           </Btn>
-          <Btn :size="BtnSizesEnum.SMALL" inline @click="goNext">
+          <Btn :size="BtnSizesEnum.SM" inline @click="goNext">
             <i class="fa-light fa-chevron-right" />
           </Btn>
-          <Btn :size="BtnSizesEnum.SMALL" inline @click="goToday">
+          <Btn :size="BtnSizesEnum.SM" inline @click="goToday">
             {{ t("actions.today") }}
           </Btn>
         </BtnGroup>
         <h3 class="fy-calendar__title">{{ titleLabel }}</h3>
         <BtnGroup>
           <Btn
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             inline
             :active="props.view === 'month'"
             @click="setView('month')"
@@ -309,7 +333,7 @@ onUnmounted(() => {
             {{ t("labels.fleets.events.calendar.month") }}
           </Btn>
           <Btn
-            :size="BtnSizesEnum.SMALL"
+            :size="BtnSizesEnum.SM"
             inline
             :active="props.view === 'week'"
             @click="setView('week')"

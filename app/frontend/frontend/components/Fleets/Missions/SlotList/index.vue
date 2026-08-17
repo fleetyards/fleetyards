@@ -257,12 +257,12 @@ onUnmounted(() => {
   }
 
   &.is-derived .slot-title {
-    color: var(--text-muted);
+    color: var(--color-muted, #7a8288);
   }
 }
 .slot-drag-handle {
   cursor: grab;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   font-size: 0.75rem;
   letter-spacing: -0.15em;
   user-select: none;
@@ -271,10 +271,10 @@ onUnmounted(() => {
 .slot-type-badge {
   font-size: 0.65rem;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   flex-shrink: 0;
   padding: 0 0.25rem;
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 2px;
   letter-spacing: 0.04em;
 }
@@ -300,7 +300,7 @@ onUnmounted(() => {
 .slot-edit-input {
   flex: 1;
   background: var(--bg-elevated, rgba(255, 255, 255, 0.06));
-  border: 1px solid var(--accent, #4aa);
+  border: 1px solid var(--color-primary, #428bca);
   border-radius: 2px;
   padding: 0.1rem 0.35rem;
   font: inherit;
@@ -310,7 +310,7 @@ onUnmounted(() => {
 .slot-remove {
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
@@ -326,7 +326,7 @@ onUnmounted(() => {
   }
 
   &:hover {
-    color: var(--danger, #c66);
+    color: var(--color-danger, #dc3545);
   }
 }
 .slot-add {
@@ -335,7 +335,7 @@ onUnmounted(() => {
 .slot-add-input {
   width: 100%;
   background: transparent;
-  border: 1px dashed var(--border, rgba(255, 255, 255, 0.15));
+  border: 1px dashed var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 3px;
   padding: 0.2rem 0.4rem;
   font: inherit;
@@ -344,7 +344,7 @@ onUnmounted(() => {
 
   &:focus {
     outline: none;
-    border-color: var(--accent, #4aa);
+    border-color: var(--color-primary, #428bca);
     border-style: solid;
   }
 }

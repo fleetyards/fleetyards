@@ -256,20 +256,10 @@ const onSubmit = handleSubmit(async (values) => {
     <form id="ship-form" @submit.prevent="onSubmit">
       <div class="flex">
         <BtnGroup>
-          <Btn
-            :active="mode === 'specific'"
-            inline
-            size="small"
-            @click="mode = 'specific'"
-          >
+          <Btn :active="mode === 'specific'" inline @click="mode = 'specific'">
             {{ t("labels.fleets.missions.modelSpecific") }}
           </Btn>
-          <Btn
-            :active="mode === 'filter'"
-            size="small"
-            inline
-            @click="mode = 'filter'"
-          >
+          <Btn :active="mode === 'filter'" inline @click="mode = 'filter'">
             {{ t("labels.fleets.missions.filterRange") }}
           </Btn>
         </BtnGroup>
@@ -395,7 +385,7 @@ const onSubmit = handleSubmit(async (values) => {
       <div class="float-sm-right">
         <Btn
           :loading="submitting"
-          :size="BtnSizesEnum.LARGE"
+          :size="BtnSizesEnum.LG"
           :inline="true"
           @click="onSubmit"
         >
@@ -412,7 +402,7 @@ const onSubmit = handleSubmit(async (values) => {
   flex-direction: column;
   gap: 0.25rem;
   padding: 0.5rem;
-  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 4px;
   margin-top: 0.5rem;
 }
@@ -420,7 +410,7 @@ const onSubmit = handleSubmit(async (values) => {
   display: block;
   margin-bottom: 0.25rem;
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
 }
 .seat-row {
   display: flex;
@@ -434,7 +424,7 @@ const onSubmit = handleSubmit(async (values) => {
 }
 .seat-type {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--color-muted, #7a8288);
   text-transform: uppercase;
 }
 .min-crew-override {
