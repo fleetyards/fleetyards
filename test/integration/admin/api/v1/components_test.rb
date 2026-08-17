@@ -183,6 +183,32 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components carries the cheapest price of each direction" do
+    component = create(:component, name: "CF-227 Badger")
+    create(:item_price, item: component, price_type: :buy, price: 3400)
+    create(:item_price, item: component, price_type: :sell, price: 5100)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      item = parsed_body["items"].first
+
+      assert_in_delta 3400, item["buyPrice"]
+      assert_in_delta 5100, item["sellPrice"]
+    end
+  end
+
+  test "GET /components filters by a sell price range" do
+    cheap = create(:component, name: "Salvo")
+    create(:item_price, item: cheap, price_type: :sell, price: 900)
+    dear = create(:component, name: "Bulldog")
+    create(:item_price, item: dear, price_type: :sell, price: 9000)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"sellPriceLteq" => 1000}} do
+      assert_equal ["Salvo"], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /components paginates with perPage" do
     create_list(:component, 2)
     create(:component, name: "CF-227 Badger")
