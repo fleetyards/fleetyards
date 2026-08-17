@@ -147,6 +147,30 @@ class Admin::Api::V1::CommoditiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # See the equipment test: the request contract is camelCase, the permit list is
+  # snake_case, and Middleware::TransformParameters is what joins them. Only a
+  # multi-word field exercises it.
+  test "POST /commodities accepts the camelCase fields the schema declares" do
+    sign_in @user
+
+    body = {
+      name: "Laranite",
+      commodityType: "mineral",
+      uexId: 42,
+      uexCode: "LARA",
+      scKey: "test_commodity_laranite"
+    }
+
+    assert_api_response :post, 200, api_path: "/commodities", body: body do
+      assert_equal "mineral", parsed_body["commodityType"]
+      assert_equal 42, parsed_body["uexId"]
+      assert_equal "LARA", parsed_body["uexCode"]
+
+      created = Commodity.find(parsed_body["id"])
+      assert_equal "test_commodity_laranite", created.sc_key
+    end
+  end
+
   test "POST /commodities returns 401 when not signed in" do
     assert_api_response :post, 401, api_path: "/commodities", body: {name: "x"}
   end

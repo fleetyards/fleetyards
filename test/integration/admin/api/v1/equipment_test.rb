@@ -147,6 +147,37 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The schema declares the request body in camelCase and the generated client
+  # sends it that way, while the controller permits snake_case. What bridges the
+  # two is Middleware::TransformParameters, which decamelizes every request key
+  # app-wide -- so multi-word fields have to be asserted, not just `name`, which
+  # reads the same in both.
+  test "POST /equipment accepts the camelCase fields the schema declares" do
+    manufacturer = create(:manufacturer)
+    sign_in @user
+
+    body = {
+      name: "P4-AR Rifle",
+      equipmentType: "weapon",
+      itemType: "assault_rifle",
+      subType: "Medium",
+      weaponClass: "ballistic",
+      manufacturerId: manufacturer.id,
+      scKey: "test_p4ar_rifle"
+    }
+
+    assert_api_response :post, 200, api_path: "/equipment", body: body do
+      assert_equal "weapon", parsed_body["equipmentType"]
+      assert_equal "assault_rifle", parsed_body["itemType"]
+      assert_equal "Medium", parsed_body["subType"]
+      assert_equal "ballistic", parsed_body["weaponClass"]
+      assert_equal manufacturer.id, parsed_body["manufacturer"]["id"]
+
+      created = Equipment.find(parsed_body["id"])
+      assert_equal "test_p4ar_rifle", created.sc_key
+    end
+  end
+
   test "POST /equipment returns 401 when not signed in" do
     assert_api_response :post, 401, api_path: "/equipment", body: {name: "x"}
   end
