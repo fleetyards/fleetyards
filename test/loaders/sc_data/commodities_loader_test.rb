@@ -85,6 +85,18 @@ module ScData
         assert_operator Commodity.current_version.count, :>=, 160
       end
 
+      # The icons are vectors and are carried over as they are, so what a
+      # commodity ends up with is the file the game ships.
+      test "#all attaches the icon the parser carried over" do
+        @loader.all
+
+        image = Commodity.find_by(sc_key: "items_commodities_gold").store_image
+
+        assert_predicate image, :attached?
+        assert_equal "inv_icon_gold.svg", image.filename.to_s
+        assert_equal "image/svg+xml", image.content_type
+      end
+
       test "#all keeps a commodity that already exists without an sc_key" do
         existing = create(:commodity, name: "Gold", sc_key: nil, commodity_type: nil)
 

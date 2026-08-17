@@ -79,7 +79,11 @@ module ScData
       ].freeze
 
       def all
-        save_items(commodities, folder: "commodities")
+        parsed = commodities
+
+        parsed.each { |commodity| save_icon(commodity[:icon]) }
+
+        save_items(parsed, folder: "commodities")
       end
 
       def commodities
