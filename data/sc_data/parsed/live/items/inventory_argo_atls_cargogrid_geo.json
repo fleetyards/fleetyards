@@ -4,6 +4,6 @@
   "category": "inventory",
   "type": "PersonalStorage",
   "type_data": {
-    "storage": 0.01
+    "storage": 0.1
   }
 }

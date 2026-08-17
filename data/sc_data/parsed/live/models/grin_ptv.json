@@ -14,6 +14,7 @@
     "base_expediting_fee": "115"
   },
   "mass": 1500.0,
+  "inventory_container_ref": "cda4d69a-43cc-4d29-8e99-f8c5260913af",
   "hull_health": 8510.0,
   "hull_parts": [
     {
