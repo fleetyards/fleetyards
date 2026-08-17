@@ -13,6 +13,7 @@ module V1
           slug: {type: :string},
           commodityType: {type: [:string, :null]},
           description: {type: [:string, :null]},
+          storeImage: {"$ref": "#/components/schemas/MediaFile"},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },

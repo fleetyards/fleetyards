@@ -610,6 +610,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_120000) do
     t.string "code_mapping"
     t.datetime "created_at", precision: nil
     t.text "description"
+    t.string "icon"
     t.string "known_for", limit: 255
     t.string "long_name"
     t.string "name", limit: 255

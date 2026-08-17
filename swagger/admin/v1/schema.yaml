@@ -8732,6 +8732,8 @@ components:
           required:
           - boughtAt
           - soldAt
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time

@@ -5,6 +5,8 @@ module ScData
 
       FOUNDRY_PATH = "Data/Libs/Foundry/Records"
 
+      DRAWABLE_FORMATS = %w[png svg].freeze
+
       SCU_DIMENSIONS = 1.25
 
       CARGO_CONTAINER_DIMENSIONS = [
@@ -131,6 +133,56 @@ module ScData
           p "Duplicate key: #{file_name}" if File.exist?("#{items_path}/#{file_name}.json")
 
           File.write("#{items_path}/#{file_name}.json", JSON.pretty_generate(item))
+        end
+      end
+
+      # Records name their artwork as a path into the game files -- "UI/
+      # SharedAssets/ManufacturerLogos/Talon_256.tif" -- and the export ships
+      # the picture beside it under the same name. The referenced ones come to
+      # about 2 MB all told, against 128 MB for the asset trees they sit in, so
+      # they are carried into the parsed tree here rather than fetched from the
+      # bucket every time data is loaded.
+      #
+      # The written path mirrors the one the record names, extension aside, so
+      # a loader can find it from what the record already stores.
+      #
+      # Emptied per source folder rather than per icons root, because every
+      # catalogue writes into the same root: clearing that would leave whichever
+      # parser ran last as the only one with artwork. The folders themselves do
+      # not overlap -- manufacturer logos live under ManufacturerLogos, commodity
+      # icons under textures/vector -- so each is still swept of what its own
+      # records stopped naming.
+      private def save_icon(icon_path)
+        source = raw_asset(icon_path)
+
+        return if source.blank?
+
+        target = "#{export_path}/icons/#{icon_path.sub(/\.\w+\z/, File.extname(source).downcase)}"
+
+        clear_once(File.dirname(target))
+
+        FileUtils.mkdir_p(File.dirname(target))
+        FileUtils.cp(source, target)
+
+        target
+      end
+
+      # Matched without the extension and without case: the records were
+      # written against the source art, so they name .tif where the export
+      # ships .png, and neither side agrees on capitalisation.
+      private def raw_asset(icon_path)
+        return if icon_path.blank?
+
+        raw_assets[icon_path.downcase.sub(/\.\w+\z/, "")]
+      end
+
+      # Only what a browser can draw. The export also carries the CryEngine
+      # textures each of these was made from -- leftovers from the first run of
+      # it -- and copying one of those into the parsed tree would leave a
+      # record pointing at a file nothing can render.
+      private def raw_assets
+        @raw_assets ||= Dir.glob("#{base_path}/Data/**/*.{#{DRAWABLE_FORMATS.join(",")}}").to_h do |file|
+          [file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, ""), file]
         end
       end
 

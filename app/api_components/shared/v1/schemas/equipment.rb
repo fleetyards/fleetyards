@@ -65,6 +65,8 @@ module Shared
               required: %w[boughtAt soldAt]
             },
 
+            storeImage: {"$ref": "#/components/schemas/MediaFile"},
+
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

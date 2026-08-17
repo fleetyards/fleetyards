@@ -48,6 +48,12 @@ class Equipment < ApplicationRecord
   paginates_per 50
 
   belongs_to :manufacturer, optional: true
+
+  # Nothing fills this from the game files: the loadout icons the records name
+  # are art the export leaves out on purpose. It is here for the same reason
+  # every other catalogue has one -- an upload, and the ledger's fallback to
+  # the referenced item's picture.
+  has_one_attached :store_image
   has_many :item_prices, as: :item, dependent: :destroy
 
   validates :name, presence: true
