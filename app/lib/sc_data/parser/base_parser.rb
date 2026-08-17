@@ -5,14 +5,7 @@ module ScData
 
       FOUNDRY_PATH = "Data/Libs/Foundry/Records"
 
-      DDS_HEADER_BYTES = 128
-      DDS_MIP_COUNT_OFFSET = 28
-
-      # What a browser already draws is copied rather than converted. The
-      # export ships CryEngine textures today and is moving to PNG; both end up
-      # in the parsed tree the same way, and a vector would only lose its
-      # resolution by being rasterised.
-      DRAWABLE_FORMATS = %w[.png .svg].freeze
+      DRAWABLE_FORMATS = %w[png svg].freeze
 
       SCU_DIMENSIONS = 1.25
 
@@ -145,10 +138,10 @@ module ScData
 
       # Records name their artwork as a path into the game files -- "UI/
       # SharedAssets/ManufacturerLogos/Talon_256.tif" -- and the export ships
-      # the CryEngine texture beside it, .dds where the record says .tif. The
-      # referenced ones convert to about 2 MB all told, against 128 MB for the
-      # asset trees they sit in, so they are carried into the parsed tree here
-      # rather than fetched from the bucket every time data is loaded.
+      # the picture beside it under the same name. The referenced ones come to
+      # about 2 MB all told, against 128 MB for the asset trees they sit in, so
+      # they are carried into the parsed tree here rather than fetched from the
+      # bucket every time data is loaded.
       #
       # The written path mirrors the one the record names, extension aside, so
       # a loader can find it from what the record already stores.
@@ -164,102 +157,33 @@ module ScData
 
         return if source.blank?
 
-        extension = File.extname(source).downcase
-        drawable = DRAWABLE_FORMATS.include?(extension)
-        target = "#{export_path}/icons/#{icon_path.sub(/\.\w+\z/, drawable ? extension : ".png")}"
+        target = "#{export_path}/icons/#{icon_path.sub(/\.\w+\z/, File.extname(source).downcase)}"
 
         clear_once(File.dirname(target))
 
         FileUtils.mkdir_p(File.dirname(target))
-
-        if drawable
-          FileUtils.cp(source, target)
-
-          target
-        else
-          convert(source, target)
-        end
-      end
-
-      private def convert(source, target)
-        return target if png(source, target)
-
-        rebuilt = reassemble(source)
-
-        if rebuilt.blank?
-          p "Could not convert #{source}"
-
-          return
-        end
-
-        begin
-          png(rebuilt.path, target) || p("Could not convert #{source} even reassembled")
-        ensure
-          rebuilt.close!
-        end
-      end
-
-      # Twenty of the logo textures are CryEngine's split form: the .dds holds
-      # the header and the smallest mips, and the rest sit beside it in
-      # numbered companions -- GREY_256.dds is 464 bytes with its 256px surface
-      # in GREY_256.dds.4. ImageMagick reads such a header, finds no surface
-      # and exits, so the file is put back together first: the header with its
-      # mip count set to one, followed by the largest companion.
-      private def reassemble(source)
-        companion = Dir.glob("#{source}.[0-9]*").max_by { |file| File.size(file) }
-
-        return if companion.blank?
-
-        header = File.binread(source, DDS_HEADER_BYTES).to_s
-
-        return unless header.start_with?("DDS ") && header.bytesize == DDS_HEADER_BYTES
-
-        header = header.dup
-        header[DDS_MIP_COUNT_OFFSET, 4] = [1].pack("V")
-
-        Tempfile.new(["sc_data_icon", ".dds"], binmode: true).tap do |file|
-          file.write(header)
-          file.write(File.binread(companion))
-          file.flush
-        end
-      end
-
-      # Both time-carrying chunks are excluded because ImageMagick otherwise
-      # stamps the moment of conversion into what it writes -- date:create and
-      # date:modify as text, and tIME on the handful of images that carry a
-      # timestamp of their own. A parse that changed nothing would rewrite
-      # those files, and the diff would say icons changed when none did.
-      private def png(source, target)
-        return if source.blank?
-
-        MiniMagick.convert do |convert|
-          convert << source.to_s
-          convert.define("png:exclude-chunk=date,time")
-          convert << target
-        end
+        FileUtils.cp(source, target)
 
         target
-      rescue MiniMagick::Error
-        nil
       end
 
       # Matched without the extension and without case: the records were
       # written against the source art, so they name .tif where the export
-      # ships .dds, and neither side agrees on capitalisation.
+      # ships .png, and neither side agrees on capitalisation.
       private def raw_asset(icon_path)
         return if icon_path.blank?
 
         raw_assets[icon_path.downcase.sub(/\.\w+\z/, "")]
       end
 
-      # An export that ships a texture and a drawable copy of the same art --
-      # which is where this one is heading -- would otherwise be resolved by
-      # whichever the glob happened to yield last. The drawable one wins, so
-      # nothing is converted that arrives ready to serve.
+      # Only what a browser can draw. The export also carries the CryEngine
+      # textures each of these was made from -- leftovers from the first run of
+      # it -- and copying one of those into the parsed tree would leave a
+      # record pointing at a file nothing can render.
       private def raw_assets
-        @raw_assets ||= Dir.glob("#{base_path}/Data/**/*.{dds,svg,png,tif}")
-          .sort_by { |file| DRAWABLE_FORMATS.include?(File.extname(file).downcase) ? 1 : 0 }
-          .to_h { |file| [file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, ""), file] }
+        @raw_assets ||= Dir.glob("#{base_path}/Data/**/*.{#{DRAWABLE_FORMATS.join(",")}}").to_h do |file|
+          [file.delete_prefix("#{base_path}/Data/").downcase.sub(/\.\w+\z/, ""), file]
+        end
       end
 
       # Writing is otherwise additive: a record the game files stopped carrying
