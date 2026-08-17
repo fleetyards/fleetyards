@@ -11,14 +11,12 @@ import {
   type Fleet,
   type FleetEventExtended,
   type FleetEventUpdateInput,
-  type ValidationError,
   useUpdateFleetEvent,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { transformErrors } from "@/frontend/utils/transformErrors";
-import { type AxiosError } from "axios";
+import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 type FormMeta = {
   dirty: boolean;
@@ -63,13 +61,12 @@ const onSubmit = props.handleSubmit(async (values) => {
     displaySuccess({ text: t("messages.fleets.event.update.success") });
     comlink.emit("fleet-event-updated");
   } catch (error) {
-    const response = (error as AxiosError<ValidationError>).response;
-    if (response?.data?.errors && props.setErrors) {
-      props.setErrors(transformErrors(response.data.errors));
-    }
+    const { message, formErrors } = validationErrorFrom(error);
+
+    props.setErrors?.(formErrors);
+
     displayAlert({
-      text:
-        response?.data?.message || t("messages.fleets.event.update.failure"),
+      text: message || t("messages.fleets.event.update.failure"),
     });
   } finally {
     submitting.value = false;
