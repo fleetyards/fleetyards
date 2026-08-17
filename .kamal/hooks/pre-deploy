@@ -12,12 +12,14 @@ fi
 # (Errno::ECONNRESET), failing the deploy.
 # Retry to absorb the occasional genuinely transient reset; all three steps are
 # idempotent, so re-running them is safe.
+# Wrapped in `sh -c` because bin/docker-entrypoint execs its argv directly, so
+# the `&&` needs a shell of its own.
 echo "Running database and data migrations and syncing feature flags..."
 
 attempt=1
 max_attempts=3
 until kamal app exec $DEST_FLAG --roles=web --primary --version="$KAMAL_VERSION" \
-  'bin/rails db:migrate data:migrate feature_flags:sync'; do
+  'sh -c "bin/rails db:migrate data:migrate && bin/feature-flags sync"'; do
   if [ "$attempt" -ge "$max_attempts" ]; then
     echo "Migrations failed after $max_attempts attempts." >&2
     exit 1

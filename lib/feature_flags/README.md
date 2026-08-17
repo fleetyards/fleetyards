@@ -30,18 +30,19 @@ entry, so the next deploy deleted it and every gate configured on it.
 | `FeatureFlags::Registry` | Loads and validates the YAML (naming, required/known keys) |
 | `FeatureFlags::Definition` | Value object for one flag (`name`, `description`, `permanent?`, `self_service?`) |
 | `FeatureFlags::Synchronizer` | Reconciles Flipper with the registry: adds missing, seeds self-service, prunes orphaned |
+| `bin/feature-flags` | CLI: `validate`, `plan`, `sync`, `export` |
 
 Rails autoloads `lib/` (`config.autoload_lib`), so these classes carry no
-requires of their own. `bin/lint-feature-flags` is the one place that has to know
-their load order, because it runs without booting Rails.
+requires of their own. `bin/feature-flags` is the one place that has to know
+their load order, because `validate` runs without booting Rails.
 
-## Rake tasks
+## CLI
 
 ```bash
-bin/rails feature_flags:validate   # validate the schema (CI runs the same rules)
-bin/rails feature_flags:plan       # dry run: what would sync change?
-bin/rails feature_flags:sync       # apply (add + prune) — runs on every deploy
-bin/rails feature_flags:export     # print a YAML skeleton of the live Flipper state
+bin/feature-flags validate   # validate the schema — no Rails, no database (CI runs this)
+bin/feature-flags plan       # dry run: what would sync change?
+bin/feature-flags sync       # apply (add + prune) — runs on every deploy
+bin/feature-flags export     # print a YAML skeleton of the live Flipper state
 ```
 
 ## Adding a flag
@@ -54,8 +55,8 @@ bin/rails feature_flags:export     # print a YAML skeleton of the live Flipper s
      self_service: true  # optional — users may switch it on themselves
    ```
 
-2. Validate: `bin/rails feature_flags:validate` (or `ruby bin/lint-feature-flags`).
-3. Merge → `.kamal/hooks/pre-deploy` runs `feature_flags:sync` and creates the flag,
+2. Validate: `bin/feature-flags validate`.
+3. Merge → `.kamal/hooks/pre-deploy` runs `bin/feature-flags sync` and creates the flag,
    **off** by default, with its self-service setting seeded from the registry.
 4. Turn it on per user, per fleet, or globally at `/admin/features`.
 
@@ -66,7 +67,7 @@ retracts nothing. Untoggle it there instead.
 Read it in code exactly as before: `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
 `isFeatureEnabled('my_new_flag')` in Vue.
 
-Locally, `bin/rails feature_flags:sync` creates the flag in your dev database.
+Locally, `bin/feature-flags sync` creates the flag in your dev database.
 
 `permanent: true` marks a long-lived infrastructure gate (the OAuth provider
 flags, for example) rather than a temporary rollout expected to be cleaned up. It
@@ -90,12 +91,12 @@ stranded by a run that died after deleting the Flipper feature.
 
 The YAML is the only thing standing between a flag and deletion, so:
 
-- `feature_flags:plan` prints every planned change. Run it against the target
+- `bin/feature-flags plan` prints every planned change. Run it against the target
   environment before a deploy that removes entries and check the `Removed` list.
 - An invalid registry aborts before Flipper is touched (`Registry.load` raises),
   so a malformed file cannot prune anything. A *well-formed* file with a missing
   entry **will** prune it — review this file like you would a migration.
-- `feature_flags:export` prints the live state as a YAML skeleton, to reconcile
+- `bin/feature-flags export` prints the live state as a YAML skeleton, to reconcile
   the registry against reality.
 - `FEATURE_FLAGS_PRUNE=false` disables removal for a single run — an emergency
   brake, not part of the normal workflow.

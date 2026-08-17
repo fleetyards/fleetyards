@@ -6,8 +6,8 @@ module FeatureFlags
   # Holds no Flipper state (whether the flag is currently on, off or gated) —
   # only the declarative metadata the registry owns.
   #
-  # Kept to plain Ruby (no Rails, no ActiveSupport) because bin/lint-feature-flags
-  # loads this file without booting the application.
+  # Kept to plain Ruby (no Rails, no ActiveSupport) because
+  # `bin/feature-flags validate` loads this file without booting the application.
   class Definition
     attr_reader :name, :description
 
