@@ -3,5 +3,6 @@
   "ref": "eddc1a94-7840-4855-9889-544821d4d739",
   "name": "Caldera",
   "short_name": null,
-  "description": null
+  "description": null,
+  "icon": "ui/sharedassets/manufacturerlogos/caldera_256.tif"
 }

@@ -3,5 +3,6 @@
   "ref": "d1a1bf03-89d9-4eae-ac34-11eeb8e45d8f",
   "name": "Thermyte Concern",
   "short_name": null,
-  "description": null
+  "description": null,
+  "icon": "ui/sharedassets/manufacturerlogos/thermyte_256.tif"
 }
