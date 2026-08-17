@@ -88,12 +88,53 @@ def link_shared_paths(main_root)
   end
 end
 
-def worktree_port(name)
-  8270 + (Zlib.crc32(name) % 500)
+# A worktree owns one slot, and a slot owns the adjacent port pair
+# (base + 2N, base + 2N + 1). Deriving both ports from a single slot is what
+# keeps one worktree's Vite port from landing on another's Rails port. The base
+# clears the shared Postgres/Redis containers and the main checkout's own ports,
+# so only worktrees ever compete for this range.
+PORT_SLOT_BASE = 8300
+PORT_SLOTS = 200
+
+def slot_ports(slot)
+  first = PORT_SLOT_BASE + (slot * 2)
+  [first, first + 1]
 end
 
-def worktree_vite_port(name)
-  8273 + (Zlib.crc32(name) % 500)
+# Every other worktree's assignment, whichever scheme wrote it. Ports are read
+# rather than recomputed so a sibling holding a legacy (pre-slot) pair still
+# blocks the slot that overlaps it.
+def ports_claimed_by_siblings
+  out, status = Open3.capture2("git", "-C", APP_ROOT, "worktree", "list", "--porcelain")
+  return [] unless status.success?
+
+  out.lines.flat_map { |line|
+    next [] unless line.start_with?("worktree ")
+
+    root = line.split(" ", 2).last.strip
+    next [] if root == APP_ROOT
+
+    env_path = File.join(root, ".env.local")
+    next [] unless File.file?(env_path)
+
+    body = File.read(env_path)
+    [body[/^PORT=(\d+)/, 1], body[/^VITE_RUBY_PORT=(\d+)/, 1]].compact.map(&:to_i)
+  }
+end
+
+# crc32 alone hands identical ports to any two names that share a residue, and
+# whichever worktree booted second then failed to bind. The hash now only picks
+# where to start looking, so a name keeps a stable slot while taken ones get
+# skipped.
+def allocate_port_slot(name, claimed)
+  start = Zlib.crc32(name) % PORT_SLOTS
+
+  PORT_SLOTS.times do |offset|
+    slot = (start + offset) % PORT_SLOTS
+    return slot if (slot_ports(slot) & claimed).empty?
+  end
+
+  abort "All #{PORT_SLOTS} worktree port slots are taken. Free one, or pass --port and --vite-port."
 end
 
 def sanitize_worktree_name(name)
@@ -206,10 +247,12 @@ FileUtils.chdir APP_ROOT do
 
   if wt_name
     effective_name = NAME_OVERRIDE || wt_name
-    port = PORT_OVERRIDE || worktree_port(effective_name)
+    slot = allocate_port_slot(effective_name, ports_claimed_by_siblings)
+    slot_port, slot_vite_port = slot_ports(slot)
+    port = PORT_OVERRIDE || slot_port
     db_port = worktree_db_port(effective_name)
     redis_port = worktree_redis_port(effective_name)
-    vite_port = VITE_PORT_OVERRIDE || worktree_vite_port(effective_name)
+    vite_port = VITE_PORT_OVERRIDE || slot_vite_port
     db_suffix = worktree_db_suffix(effective_name)
     sidekiq_db = worktree_sidekiq_redis_db(effective_name)
 
