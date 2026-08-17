@@ -40,4 +40,8 @@ json.availability do
   end
 end
 
+json.store_image do
+  json.partial! "api/v1/shared/file", record: equipment, attr: :store_image
+end
+
 json.partial! "api/shared/dates", record: equipment
