@@ -96,30 +96,41 @@ end
 PORT_SLOT_BASE = 8300
 PORT_SLOTS = 200
 
+# Redis 0 belongs to the main checkout, and the shared container runs the
+# default `databases 16`, so worktrees have 1..15 to share.
+REDIS_DATABASES = 15
+
 def slot_ports(slot)
   first = PORT_SLOT_BASE + (slot * 2)
   [first, first + 1]
 end
 
-# Every other worktree's assignment, whichever scheme wrote it. Ports are read
+# Every other worktree's assignment, whichever scheme wrote it. Values are read
 # rather than recomputed so a sibling holding a legacy (pre-slot) pair still
 # blocks the slot that overlaps it.
-def ports_claimed_by_siblings
+def claims_by_siblings
   out, status = Open3.capture2("git", "-C", APP_ROOT, "worktree", "list", "--porcelain")
-  return [] unless status.success?
+  return {ports: [], redis_dbs: []} unless status.success?
 
-  out.lines.flat_map { |line|
-    next [] unless line.start_with?("worktree ")
+  ports = []
+  redis_dbs = []
+
+  out.lines.each do |line|
+    next unless line.start_with?("worktree ")
 
     root = line.split(" ", 2).last.strip
-    next [] if root == APP_ROOT
+    next if root == APP_ROOT
 
     env_path = File.join(root, ".env.local")
-    next [] unless File.file?(env_path)
+    next unless File.file?(env_path)
 
     body = File.read(env_path)
-    [body[/^PORT=(\d+)/, 1], body[/^VITE_RUBY_PORT=(\d+)/, 1]].compact.map(&:to_i)
-  }
+    ports.concat([body[/^PORT=(\d+)/, 1], body[/^VITE_RUBY_PORT=(\d+)/, 1]].compact.map(&:to_i))
+    redis_db = body[/^REDIS_DB=(\d+)/, 1]
+    redis_dbs << redis_db.to_i if redis_db
+  end
+
+  {ports:, redis_dbs:}
 end
 
 # crc32 alone hands identical ports to any two names that share a residue, and
@@ -154,12 +165,22 @@ def worktree_db_suffix(name)
 end
 
 # Every worktree points at the one shared Redis container, so the database index
-# is what keeps their Sidekiq queues, cache entries and sessions apart. It runs
-# the default `databases 16`, so anything past 15 is a number Redis would refuse
-# to SELECT; DB 0 is left to the main checkout. With more than 15 worktrees the
-# indexes wrap and two of them share a database again.
-def worktree_redis_db(slot)
-  1 + (slot % 15)
+# is what keeps their Sidekiq queues, cache entries and sessions apart. Folding
+# the 200 port slots onto 15 indexes collided immediately — four of the six
+# worktrees here shared a database while nine sat unused. As with the port slot
+# the hash now only picks where to start looking, so indexes a sibling already
+# holds get skipped and two worktrees share one only once all 15 are spoken for.
+def allocate_redis_db(name, claimed)
+  start = Zlib.crc32(name) % REDIS_DATABASES
+
+  REDIS_DATABASES.times do |offset|
+    db = 1 + ((start + offset) % REDIS_DATABASES)
+    return db unless claimed.include?(db)
+  end
+
+  fallback = 1 + start
+  puts "   All #{REDIS_DATABASES} Redis databases are claimed — sharing DB #{fallback} with another worktree."
+  fallback
 end
 
 def write_superset_ports(port, vite_port)
@@ -252,14 +273,15 @@ FileUtils.chdir APP_ROOT do
 
   if wt_name
     effective_name = NAME_OVERRIDE || wt_name
-    slot = allocate_port_slot(effective_name, ports_claimed_by_siblings)
+    claims = claims_by_siblings
+    slot = allocate_port_slot(effective_name, claims[:ports])
     slot_port, slot_vite_port = slot_ports(slot)
     port = PORT_OVERRIDE || slot_port
     db_port = worktree_db_port(effective_name)
     redis_port = worktree_redis_port(effective_name)
     vite_port = VITE_PORT_OVERRIDE || slot_vite_port
     db_suffix = worktree_db_suffix(effective_name)
-    redis_db = worktree_redis_db(slot)
+    redis_db = allocate_redis_db(effective_name, claims[:redis_dbs])
 
     if VERBOSE
       puts "== Worktree detected: #{wt_name}#{" (as #{effective_name})" if NAME_OVERRIDE} =="
