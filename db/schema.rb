@@ -185,7 +185,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_130000) do
     t.string "commodity_type"
     t.datetime "created_at", null: false
     t.text "description"
-    t.string "icon"
     t.string "name", null: false
     t.string "sc_key"
     t.string "sc_ref"
@@ -276,7 +275,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_130000) do
     t.decimal "g_force_tolerance", precision: 15, scale: 2
     t.string "grade"
     t.boolean "hidden", default: false
-    t.string "icon"
     t.string "item_type"
     t.uuid "manufacturer_id"
     t.string "name"
