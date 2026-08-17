@@ -35,13 +35,13 @@ const active = computed(() => {
         icon="fa-duotone fa-browsers"
       />
       <NavItem
-        v-if="isFeatureEnabled(FeatureFlagName.tools_travel_times)"
+        v-if="isFeatureEnabled(FeatureFlagName.TOOLS_TRAVEL_TIMES)"
         :to="{ name: 'travel-times' }"
         :label="t('nav.tools.travelTimes')"
         icon="fa-duotone fa-gauge-high"
       />
       <NavItem
-        v-if="isFeatureEnabled(FeatureFlagName.tools_cargo_grids)"
+        v-if="isFeatureEnabled(FeatureFlagName.TOOLS_CARGO_GRIDS)"
         :to="{ name: 'cargo-grids' }"
         :label="t('nav.tools.cargoGrids')"
         icon="fa-duotone fa-thin fa-cubes"

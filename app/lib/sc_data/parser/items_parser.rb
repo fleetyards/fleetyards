@@ -935,9 +935,9 @@ module ScData
           type_data[:storage] = if capacity.dig("SStandardCargoUnit").present?
             capacity.dig("SStandardCargoUnit", "standardCargoUnits").to_f
           elsif capacity.dig("SMicroCargoUnit").present?
-            capacity.dig("SMicroCargoUnit", "microSCU").to_f**-6
+            capacity.dig("SMicroCargoUnit", "microSCU").to_f / 1_000_000
           elsif capacity.dig("SCentiCargoUnit").present?
-            capacity.dig("SCentiCargoUnit", "centiSCU").to_f**-2
+            capacity.dig("SCentiCargoUnit", "centiSCU").to_f / 100
           end
         end
 

@@ -27,23 +27,44 @@ export type InventoryStockRecord = {
   name: string;
   category: string;
   unit: string;
-  quality?: number;
-  qualityMin?: number;
-  qualityMax?: number;
+  quality?: number | null;
+  qualityMin?: number | null;
+  qualityMax?: number | null;
   netQuantity: number;
   inventory?: InventoryReference;
 };
 
-export type InventoryPanelRecord = {
+export type InventoryVehicleReference = {
   id: string;
   name: string;
-  slug: string;
-  location?: string;
+  serial?: string | null;
+  model?: {
+    name?: string;
+    slug?: string;
+    cargo?: number;
+    personalInventory?: number;
+  };
+};
+
+export type InventoryPanelRecord = {
+  id: string | null;
+  name: string;
+  slug?: string | null;
+  location?: string | null;
   itemCount: number;
   totalScu?: number;
   totalUnits?: number;
   image?: { mediumUrl?: string };
+  vehicle?: InventoryVehicleReference | null;
 };
+
+/**
+ * Which inventory a logistics modal writes to, and through which endpoints. A
+ * ship inventory has no slug worth addressing — two Ironclads share one — so it
+ * is reached through the ship.
+ */
+export type InventoryTarget =
+  { kind: "hangar"; slug: string } | { kind: "vehicle"; vehicleId: string };
 
 export type InventoryLedgerRecord = {
   id: string;

@@ -10,10 +10,20 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import { useShowVehicle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useSessionStore } from "@/frontend/stores/session";
 import { routes as vehicleRoutes } from "@/frontend/pages/hangar/[id]/routes";
 
 const { t } = useI18n();
+const { isFeatureEnabled } = useFeatures();
+
+// A tab behind a flag stays out of the bar entirely; its endpoints answer 403
+// until the flag is on, so showing it would only offer a dead end.
+const tabs = computed(() =>
+  vehicleRoutes.filter(
+    (tab) => !tab.meta?.feature || isFeatureEnabled(tab.meta.feature),
+  ),
+);
 
 const route = useRoute();
 
@@ -53,7 +63,7 @@ const crumbs = computed(() => [
       <BreadCrumbs :crumbs="crumbs" />
       <TabNavView
         v-if="vehicle"
-        :routes="vehicleRoutes"
+        :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
       >
         <template #content>

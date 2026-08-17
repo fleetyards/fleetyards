@@ -158,6 +158,38 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
     assert_predicate create(:inventory_item, inventory: @inventory), :item_available?
   end
 
+  # Gear is priced in microSCU — a helmet is three thousandths of an SCU — so
+  # the figure has to survive the column at the precision the game states it.
+  test "#item_volume reads what a piece of equipment costs a hold" do
+    helmet = create(:equipment, volume: 0.0087)
+
+    item = create(:inventory_item, inventory: @inventory, item: helmet, category: :equipment, unit: :units)
+
+    assert_in_delta 0.0087, item.item_volume, 0.000001
+  end
+
+  test "#item_volume converts the microSCU a component keeps" do
+    cooler = create(:component, inventory_consumption: {"micro_scu" => 84_000.0})
+
+    item = create(:inventory_item, inventory: @inventory, item: cooler, category: :component, unit: :units)
+
+    assert_in_delta 0.084, item.item_volume
+  end
+
+  # One microSCU is what CIG leaves on a record nobody measured, so it has to
+  # read as unknown rather than as a volume of almost nothing.
+  test "#item_volume treats the unmeasured placeholder as unknown" do
+    unmeasured = create(:component, inventory_consumption: {"micro_scu" => 1.0})
+
+    item = create(:inventory_item, inventory: @inventory, item: unmeasured, category: :component, unit: :units)
+
+    assert_nil item.item_volume
+  end
+
+  test "#item_volume has nothing to read for an entry that references nothing" do
+    assert_nil create(:inventory_item, inventory: @inventory).item_volume
+  end
+
   test "does not create notifications" do
     assert_no_difference "Notification.count" do
       create(:inventory_item, inventory: @inventory)

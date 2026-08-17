@@ -10,6 +10,7 @@
       "size": "Dimensione",
       "beam": "Raggio",
       "cargo": "Carico",
+      "personalInventory": "Inventario della nave",
       "netCargo": "Carico con Rover/Snub",
       "crew": "Equipaggio",
       "speed": "Velocità",

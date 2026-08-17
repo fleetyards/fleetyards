@@ -512,7 +512,15 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "Delete this item and all of its entries? This cannot be undone."
+          }
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "Clear this ship's cargo? Every entry is deleted.",
+            "success": "Cargo cleared.",
+            "failure": "Could not clear the cargo."
           }
         }
       },

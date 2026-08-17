@@ -17,7 +17,8 @@
       "hangar": {
         "index": "Mein Hangar",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventare"
+        "inventories": "Inventare",
+        "vehicleCargo": "Fracht"
       },
       "login": "Anmelden",
       "logout": "Abmelden",

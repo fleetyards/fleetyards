@@ -206,8 +206,7 @@ On the overview (`/hangar/inventories`), ship inventories render through the exi
 `InventoryPanel` with the ship as the subtitle — the panel already renders `location`
 there, so passing the ship name needs no component change. Capacity comes free from
 `models.cargo` (SCU) and the `CargoHold` records: show `312 / 400 SCU` and flag overfill,
-but **do not validate** against it — players stash cargo outside the grid, and personal
-inventory is not cargo.
+but **do not validate** against it — players stash cargo outside the grid.
 
 ## Edge Cases
 
@@ -225,16 +224,62 @@ inventory is not cargo.
 
 ## Implementation Phases
 
-1. **Schema + model** — `vehicle_id`, the three partial indexes, `Inventory#vehicle`,
-   conditional name validation, `default_inventory_name_for`.
-2. **Controller concern** — extract `InventoryScoped` from the hangar controllers; the
+1. **Schema + model** (done) — `vehicle_id`, the three partial indexes, `Inventory#vehicle`,
+   conditional name validation, `Vehicle#default_inventory_name`.
+2. **Controller concern** (done) — extract `InventoryScoped` from the hangar controllers; the
    hangar suite must stay green with zero test edits. This is a pure refactor and should
    land as its own commit.
-3. **Vehicle endpoints** — routes, three controllers, neutral OpenAPI components, lazy
+3. **Vehicle endpoints** (done) — routes, three controllers, neutral OpenAPI components, lazy
    provisioning, integration tests mirroring the hangar ones.
-4. **Cargo tab** — vehicle page tab wiring the shared Logistics components.
-5. **Overview integration** — ship subtitle on `InventoryPanel`, capacity indicator,
+4. **Cargo tab** (done) — vehicle page tab wiring the shared Logistics components.
+5. **Overview integration** (done) — ship subtitle on `InventoryPanel`, capacity indicator,
    `vehicleIdEq` filter on the aggregate stock endpoint.
+
+### What the phases turned into
+
+- `InventoryScoped` split into a contract (`inventory` / `provisioned_inventory` /
+  policies) plus `InventoryScoped::ItemActions` and `InventoryScoped::StockActions` —
+  one module could not hold two `index` actions. Both hangar controllers and both
+  vehicle controllers now render the same neutral instance variables, so the item and
+  stock jbuilders moved to `api/v1/shared/`.
+- Provisioning lives on the model (`Inventory.provision_for`) rather than in the
+  controller, which is what makes the lost-race path testable without threads. The
+  insert sits in a savepoint so a losing deposit can still read the winner's row.
+- `POST .../items` wraps provisioning and the entry in one transaction: a rejected
+  deposit must not leave an empty ship inventory behind.
+- Slug lookups in the hangar controllers are scoped to `Inventory.addressable_by_slug`
+  (`vehicle_id IS NULL`). Ship inventories share a slug with every other ship of the
+  same model, so `/hangar/inventories/:slug` would otherwise be ambiguous. The
+  overview links them to the ship's Cargo tab instead.
+- `HangarInventory` gained a nullable `vehicle` — an addition, not a rename — because
+  the overview lists ship inventories through the same endpoint.
+- The two Hangar logistics modals became context-neutral (`Logistics/InventoryItemModal`,
+  `Logistics/CsvImportModal`) behind an `InventoryTarget` discriminated union, and
+  `hangar-inventory-item-created` became `inventory-item-created`. Slice 3 adds a
+  `fleet` variant to the union rather than a third copy of the modals.
+- Capacity is the cargo grid **plus** `models.personal_inventory`, a new column fed by
+  the vehicle entity's own `inventoryContainerParams`. One bucket holds everything a
+  ship carries, so measuring it against the grid alone read as overfull for any ship
+  whose gear sits in its storage container. The Cargo tab prints the two figures under
+  the total; the ship page gained a Ship Inventory tile beside Cargo.
+- The Cargo tab reaches the hangar through the vehicle context menu (`Manage Cargo`),
+  behind `ship_inventories` — the tab bar alone left the page unreachable from the
+  hangar list.
+- `ship_inventories` gates more than the vehicle endpoints: while it is off, the hangar
+  list, the aggregate stock and the aggregate ledger drop `Inventory.hand_made`'s
+  complement. Otherwise the overview keeps listing ship inventories and linking them
+  to a tab that is not there.
+- `meta.feature` only ever hid nav entries, so every flagged route in the app was still
+  reachable by URL. The frontend router's `beforeResolve` now resolves the flag through
+  the query client and answers 404, after the session checks — flags are read per user,
+  so signing in first is what makes the answer meaningful. The client had to move out of
+  `VueQueryPlugin` and into `plugins/QueryClient.ts` for the guard to share one cache
+  entry with `useFeatures`.
+
+Not built: a per-position detail page for ship inventories (the hangar's
+`/hangar/inventories/:slug/:item`). The Cargo tab edits and deletes positions in place
+through `StockItemModal`, which covers the same endpoints without a nested route inside
+the vehicle tab bar.
 
 ## Files to Create/Modify
 
@@ -267,11 +312,17 @@ inventory is not cargo.
 
 ## Open Decisions
 
+All three were taken as recommended.
+
 1. **One inventory per ship, or cargo grid vs personal inventory?** Star Citizen
-   distinguishes them. Recommend one per ship for v1 — relaxing a unique index later is
+   distinguishes them. One per ship for v1 — relaxing a unique index later is
    trivial and non-destructive, whereas an ambiguous deposit target defeats implicit
    provisioning. The upgrade shape is a `kind` enum with the index moved to
    `(vehicle_id, kind)`.
-2. **Capacity: display or enforce?** Recommend display only, for the reasons above.
-3. **Neutral API component names now or at slice 3?** Recommend now for the new endpoints
-   (renames are breaking; additions are not).
+2. **Capacity: display or enforce?** Display only, for the reasons above. The Cargo tab
+   and the overview panel both show `312 / 400 SCU` and turn red past the limit; nothing
+   rejects a deposit.
+3. **Neutral API component names now or at slice 3?** Now, for the new endpoints
+   (renames are breaking; additions are not). `Inventory`, `InventoryItem`,
+   `InventoryItemsList`, `InventoryItem{Create,Update}Input`, `InventoryItemQuery` and
+   `InventoryVehicle` ship alongside the untouched `Hangar*` ones.

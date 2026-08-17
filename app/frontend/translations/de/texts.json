@@ -19,6 +19,7 @@
         "visitMilestone": "FleetYards ist community-finanziert — keine Werbung, keine Paywalls. Wenn dir die Seite gefällt, hilft schon eine kleine Spende."
       },
       "notFound": "You are currently venturing unknown space. In the event you are lost, the UEE highly recommends plotting a new destination back towards home-space.",
+      "forbidden": "Deine Freigabe deckt diesen Bereich nicht ab. Wird eine Funktion gerade erst ausgerollt, kannst du sie unter Einstellungen > Funktionen selbst aktivieren, sobald sie für dich verfügbar ist.",
       "featureNotReady": "Diese Funktion ist noch nicht fertig und wird bald verfügbar sein. Bleiben Sie dran!",
       "accessDenied": "Sie sind nicht berechtigt, diese Seite anzuzeigen.",
       "serverError": "Der Server hat derzeit technische Probleme. Bitte versuchen Sie es später erneut.",

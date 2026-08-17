@@ -1223,7 +1223,7 @@
           "component": "Component",
           "weapon": "Weapon",
           "equipment": "Equipment",
-          "ammunition": "Ammunition",
+          "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
           "other": "Other"
         },
@@ -1242,7 +1242,12 @@
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
         "qualityRange": "Quality",
-        "stockItem": "Stock Item"
+        "stockItem": "Stock Item",
+        "overCapacity": "por encima de la capacidad de carga",
+        "cargoGrid": "Rejilla de carga",
+        "shipInventory": "Inventario de la nave",
+        "remaining": "Restante",
+        "unmeasured": "%{count} sin medir todavía"
       },
       "hangarInventories": "Inventories"
     }

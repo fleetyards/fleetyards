@@ -48,6 +48,12 @@ it:
       create: Impossibile creare la voce di inventario.
       update: Impossibile aggiornare la voce di inventario.
       destroy: Impossibile eliminare la voce di inventario.
+    vehicle_inventory:
+      destroy: Impossibile eliminare l'inventario.
+    vehicle_inventory_items:
+      create: Impossibile creare la voce di inventario.
+      update: Impossibile aggiornare la voce di inventario.
+      destroy: Impossibile eliminare la voce di inventario.
     image:
       create: Impossibile creare l'immagine
       update: Impossibile aggiornare l'immagine

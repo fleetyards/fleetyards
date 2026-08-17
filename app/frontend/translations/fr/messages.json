@@ -460,7 +460,15 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "Supprimer cet article et toutes ses entrées ? Cette action est irréversible."
+          }
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "Vider la cargaison de ce vaisseau ? Toutes les entrées seront supprimées.",
+            "success": "Cargaison vidée.",
+            "failure": "Impossible de vider la cargaison."
           }
         }
       }

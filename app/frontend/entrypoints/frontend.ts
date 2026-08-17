@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import App from "@/frontend/App.vue";
 import router from "@/frontend/plugins/Router";
+import { queryClient } from "@/frontend/plugins/QueryClient";
 import { createPinia } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import { setupAppsignal } from "@/shared/plugins/Appsignal";
@@ -45,15 +46,7 @@ const app = createApp(App);
 
 const vueQueryPluginOptions: VueQueryPluginOptions = {
   enableDevtoolsV6Plugin: true,
-  queryClientConfig: {
-    defaultOptions: {
-      queries: {
-        placeholderData: (prev: unknown) => prev,
-        retry: 1,
-        refetchOnWindowFocus: false,
-      },
-    },
-  },
+  queryClient,
 };
 
 app.use(VueQueryPlugin, vueQueryPluginOptions);

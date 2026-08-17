@@ -9895,6 +9895,36 @@ components:
       - netQuantity
       - entriesCount
       title: InventoryStockPosition
+    InventoryVehicle:
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        serial:
+          type:
+          - string
+          - 'null'
+        model:
+          type: object
+          properties:
+            name:
+              type: string
+            slug:
+              type: string
+            cargo:
+              type: number
+            personalInventory:
+              type: number
+      additionalProperties: false
+      required:
+      - id
+      - name
+      title: InventoryVehicle
     ItemPrice:
       type: object
       properties:
@@ -10372,6 +10402,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:
@@ -10843,6 +10879,12 @@ components:
               type: number
             cargoLabel:
               type: string
+            personalInventory:
+              type: number
+            personalInventoryLabel:
+              type:
+              - string
+              - 'null'
             fleetchartOffsetLength:
               type: number
             fleetchartOffsetBeam:

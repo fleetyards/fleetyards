@@ -47,6 +47,12 @@ en:
       create: Inventory entry could not be created.
       update: Inventory entry could not be updated.
       destroy: Inventory entry could not be destroyed.
+    vehicle_inventory:
+      destroy: Inventory could not be destroyed.
+    vehicle_inventory_items:
+      create: Inventory entry could not be created.
+      update: Inventory entry could not be updated.
+      destroy: Inventory entry could not be destroyed.
     image:
       create: Image could not be created
       update: Image could not be updated

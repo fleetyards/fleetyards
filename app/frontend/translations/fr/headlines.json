@@ -122,6 +122,7 @@
       "images": "Index des images",
       "stats": "Statistiques",
       "notFound": "Erreur de navigation",
+      "forbidden": "Accès refusé",
       "featureNotReady": "Bientôt disponible",
       "accessDenied": "Accès refusé",
       "serverError": "Erreur du serveur",

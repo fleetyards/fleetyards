@@ -136,6 +136,7 @@
       "images": "Images Index",
       "stats": "Statistiken",
       "notFound": "Navigationsfehler",
+      "forbidden": "Zugriff verweigert",
       "featureNotReady": "Demnächst",
       "accessDenied": "Zugriff verweigert",
       "serverError": "Serverfehler",

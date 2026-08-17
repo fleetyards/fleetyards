@@ -10,6 +10,7 @@
       "size": "尺寸",
       "beam": "寬度",
       "cargo": "貨物",
+      "personalInventory": "飛船庫存",
       "netCargo": "含 Rover/Snub 的貨物",
       "crew": "船員",
       "speed": "速度",

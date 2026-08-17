@@ -163,12 +163,18 @@ class Equipment < ApplicationRecord
     item_prices.buy.order(price: :asc).uniq(&:location)
   end
 
-  def self.item_types
-    visible.current_version.where.not(item_type: nil).distinct.order(:item_type).pluck(:item_type)
+  # A picker that only offers weapons has no use for the ninety-odd types the
+  # armour and clothing rows contribute, so the caller can narrow by the game's
+  # own split before the types are collected.
+  def self.item_types(equipment_types = nil)
+    scope = visible.current_version.where.not(item_type: nil)
+    scope = scope.where(equipment_type: equipment_types) if equipment_types.present?
+
+    scope.distinct.order(:item_type).pluck(:item_type)
   end
 
-  def self.item_type_filters
-    item_types.map do |item|
+  def self.item_type_filters(equipment_types = nil)
+    item_types(equipment_types).map do |item|
       Filter.new(
         category: "item_type",
         label: I18n.t("filter.equipment.item_type.items.#{item}", default: item.humanize),

@@ -150,7 +150,8 @@
           "openModal": "Réinitialiser les vaisseaux obtenus dans le jeu",
           "moveToWishlist": "Déplacer dans la liste de souhaits",
           "removeAll": "Tout supprimer"
-        }
+        },
+        "manageCargo": "Gérer la cargaison"
       },
       "syncExtension": {
         "cancel": "Annuler",
@@ -255,7 +256,8 @@
         "destroyEntry": "Delete Entry",
         "editStockItem": "Edit Item",
         "destroyStockItem": "Delete Item",
-        "editInventory": "Edit Inventory"
+        "editInventory": "Edit Inventory",
+        "clearCargo": "Vider la cargaison"
       }
     }
   }

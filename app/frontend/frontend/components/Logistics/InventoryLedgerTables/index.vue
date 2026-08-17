@@ -204,6 +204,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       {{ record.netQuantity }}
       {{ t(`labels.logistics.units.${record.unit}`) }}
     </template>
+    <template v-if="$slots['stock-actions']" #actions="{ record }">
+      <slot name="stock-actions" :record="record" />
+    </template>
   </BaseTable>
 
   <BaseTable

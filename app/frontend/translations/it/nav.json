@@ -17,7 +17,8 @@
       "hangar": {
         "index": "Il Mio Hangar",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventories"
+        "inventories": "Inventories",
+        "vehicleCargo": "Carico"
       },
       "login": "Accedi",
       "logout": "Esci",

@@ -106,6 +106,15 @@ const openAvailability = () => {
           <span class="metrics-card__tile__unit">SCU</span>
         </div>
       </div>
+      <div v-if="model.metrics.personalInventory" class="metrics-card__tile">
+        <div class="metrics-card__tile__label">
+          {{ t("model.personalInventory") }}
+        </div>
+        <div class="metrics-card__tile__value">
+          {{ toNumber(model.metrics.personalInventory) }}
+          <span class="metrics-card__tile__unit">SCU</span>
+        </div>
+      </div>
       <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.size") }}</div>
         <div class="metrics-card__tile__value">

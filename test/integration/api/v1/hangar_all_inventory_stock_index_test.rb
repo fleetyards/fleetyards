@@ -13,6 +13,15 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
       tags "HangarInventoryStock"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: {
+          type: :object,
+          "$ref": "#/components/schemas/InventoryStockQuery"
+        },
+        style: :deepObject,
+        explode: true,
+        required: false
+
       security [
         {SessionCookie: []},
         {Oauth2: ["hangar", "hangar:read"]},
@@ -61,6 +70,40 @@ class Api::V1::HangarAllInventoryStockIndexTest < ActionDispatch::IntegrationTes
 
     assert_api_response :get, 200 do
       assert_nil parsed_body.find { |d| d["name"] == "Titanium" }
+    end
+  end
+
+  test "GET /hangar/inventory-stock narrows to one ship" do
+    Flipper.enable("ship_inventories")
+    vehicle = create(:vehicle, user: @user)
+    aboard = create(:inventory, holder: @user, vehicle:, name: "Ironclad Inventory")
+    create(:inventory_item, inventory: aboard, name: "Titanium", category: :commodity, quantity: 15, unit: :scu)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {vehicleIdEq: vehicle.id}} do
+      assert_equal ["Titanium"], parsed_body.map { |d| d["name"] }
+    end
+  end
+
+  test "GET /hangar/inventory-stock ignores a ship that is not the user's" do
+    Flipper.enable("ship_inventories")
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {vehicleIdEq: create(:vehicle, user: @other_user).id}} do
+      assert_empty parsed_body
+    end
+  end
+
+  test "GET /hangar/inventory-stock leaves out what is aboard a ship while ship_inventories is off" do
+    Flipper.disable("ship_inventories")
+    vehicle = create(:vehicle, user: @user)
+    aboard = create(:inventory, holder: @user, vehicle:, name: "Ironclad Inventory")
+    create(:inventory_item, inventory: aboard, name: "Titanium", category: :commodity, quantity: 15, unit: :scu)
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_nil parsed_body.find { |d| d["name"] == "Titanium" }
+      assert_includes parsed_body.map { |d| d["name"] }, "Quantanium"
     end
   end
 

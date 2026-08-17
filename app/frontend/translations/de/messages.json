@@ -499,7 +499,15 @@
           "destroy": {
             "success": "Item deleted.",
             "failure": "Could not delete item.",
-            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone."
+            "confirm": "Delete this item and all %{count} of its entries? This cannot be undone.",
+            "confirmAll": "Diesen Eintrag und alle zugehörigen Buchungen löschen? Das kann nicht rückgängig gemacht werden."
+          }
+        },
+        "vehicleInventory": {
+          "clear": {
+            "confirm": "Fracht dieses Schiffs leeren? Alle Buchungen werden gelöscht.",
+            "success": "Fracht geleert.",
+            "failure": "Fracht konnte nicht geleert werden."
           }
         }
       }

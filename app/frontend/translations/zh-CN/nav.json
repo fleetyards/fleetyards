@@ -17,7 +17,8 @@
       "hangar": {
         "index": "我的机库",
         "vehicleLoadouts": "Loadouts",
-        "inventories": "Inventories"
+        "inventories": "Inventories",
+        "vehicleCargo": "货物"
       },
       "login": "登录",
       "logout": "登出",

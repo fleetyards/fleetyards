@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "HangarLogisticsCsvImportModal",
+  name: "LogisticsCsvImportModal",
 };
 </script>
 
@@ -10,14 +10,20 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { type HangarInventory } from "@/services/fyApi";
 import { axiosClient } from "@/services/axiosClient";
+import type { InventoryTarget } from "@/frontend/types/logistics";
 
 type Props = {
-  inventory: HangarInventory;
+  target: InventoryTarget;
 };
 
 const props = defineProps<Props>();
+
+const importUrl = computed(() =>
+  props.target.kind === "hangar"
+    ? `/hangar/inventories/${props.target.slug}/items/import`
+    : `/vehicles/${props.target.vehicleId}/inventory/items/import`,
+);
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -58,7 +64,7 @@ const importCsv = async () => {
 
   try {
     const response = (await axiosClient({
-      url: `/hangar/inventories/${props.inventory.slug}/items/import`,
+      url: importUrl.value,
       method: "POST",
       data: formData,
       headers: { "Content-Type": "multipart/form-data" },
@@ -74,7 +80,7 @@ const importCsv = async () => {
           count: results.value.imported,
         }),
       });
-      comlink.emit("hangar-inventory-item-created");
+      comlink.emit("inventory-item-created");
     }
 
     if (results.value.errors.length === 0) {

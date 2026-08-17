@@ -4,8 +4,7 @@ module Api
   module V1
     class HangarInventoryItemsController < ::Api::BaseController
       include HangarInventoriesFeatureConcern
-
-      after_action -> { pagination_header(:hangar_inventory_items) }, only: %i[index]
+      include InventoryScoped::ItemActions
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
@@ -16,75 +15,22 @@ module Api
         only: %i[create update destroy import]
 
       before_action :check_hangar_inventories_feature
-      before_action :set_hangar_inventory
-      before_action :set_hangar_inventory_item, only: %i[update destroy]
+      before_action :set_inventory_item, only: %i[update destroy]
 
-      def index
-        authorize! with: HangarInventoryItemPolicy
-
-        scope = @hangar_inventory.inventory_items
-
-        query_params = params.fetch(:q, {}).permit(:name_cont, :name_eq, :unit_eq, :category_eq, :quality_gteq, :quality_lteq, :s)
-        normalize_sort_params(query_params)
-        query_params["sorts"] = sorting_params(InventoryItem, query_params["sorts"])
-
-        @q = scope.ransack(query_params)
-        result = @q.result(distinct: true)
-
-        @hangar_inventory_items = result_with_pagination(result, per_page(InventoryItem))
+      private def inventory
+        @inventory ||= current_resource_owner.inventories.addressable_by_slug.find_by!(slug: params[:hangar_inventory_slug])
       end
 
-      def create
-        @hangar_inventory_item = @hangar_inventory.inventory_items.new(hangar_inventory_item_params)
-
-        authorize! @hangar_inventory_item, with: HangarInventoryItemPolicy
-
-        if @hangar_inventory_item.save
-          render :show, status: :created
-        else
-          render json: ValidationError.new("hangar_inventory_items.create", errors: @hangar_inventory_item.errors), status: :bad_request
-        end
+      private def inventory_policy
+        HangarInventoryPolicy
       end
 
-      def update
-        authorize! @hangar_inventory_item, with: HangarInventoryItemPolicy
-
-        if @hangar_inventory_item.update(hangar_inventory_item_params)
-          render :show
-        else
-          render json: ValidationError.new("hangar_inventory_items.update", errors: @hangar_inventory_item.errors), status: :bad_request
-        end
+      private def inventory_item_policy
+        HangarInventoryItemPolicy
       end
 
-      def destroy
-        authorize! @hangar_inventory_item, with: HangarInventoryItemPolicy
-
-        unless @hangar_inventory_item.destroy
-          render json: ValidationError.new("hangar_inventory_items.destroy", errors: @hangar_inventory_item.errors), status: :bad_request
-        end
-      end
-
-      def import
-        authorize! @hangar_inventory, with: HangarInventoryPolicy, to: :update?
-
-        file = params.require(:file)
-
-        importer = InventoryItemCsvImporter.new(@hangar_inventory, file, current_resource_owner)
-        result = importer.call
-
-        render json: result, status: :ok
-      end
-
-      private def hangar_inventory_item_params
-        authorized(params, with: HangarInventoryItemPolicy)
-      end
-
-      private def set_hangar_inventory
-        @hangar_inventory = current_resource_owner.inventories.find_by!(slug: params[:hangar_inventory_slug])
-      end
-
-      private def set_hangar_inventory_item
-        @hangar_inventory_item = @hangar_inventory.inventory_items.find(params[:id])
+      private def validation_error_scope
+        "hangar_inventory_items"
       end
     end
   end

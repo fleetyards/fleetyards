@@ -13,9 +13,13 @@ module Api
         end
 
         def item_types
-          @filters = Equipment.item_type_filters
+          @filters = Equipment.item_type_filters(equipment_types)
 
           render "api/v1/shared/filters"
+        end
+
+        private def equipment_types
+          Array(params.dig(:q, :equipment_type_in)).map(&:to_s) & Equipment::EQUIPMENT_TYPES
         end
       end
     end

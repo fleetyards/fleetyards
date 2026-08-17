@@ -41,6 +41,22 @@ const totalScu = computed(() => props.inventory.totalScu ?? 0);
 
 const totalUnits = computed(() => props.inventory.totalUnits ?? 0);
 
+// A ship says where its inventory is far better than a free-text location does.
+const subtitle = computed(
+  () => props.inventory.vehicle?.name || props.inventory.location,
+);
+
+// Everything a ship can hold: the cargo grid plus its own storage container.
+const cargoCapacity = computed(
+  () =>
+    (props.inventory.vehicle?.model?.cargo ?? 0) +
+    (props.inventory.vehicle?.model?.personalInventory ?? 0),
+);
+
+const overCapacity = computed(
+  () => cargoCapacity.value > 0 && totalScu.value > cargoCapacity.value,
+);
+
 const fallbackIndex = computed(() => {
   let hash = 0;
   for (const ch of props.inventory.name) {
@@ -66,8 +82,8 @@ const image = computed(
           {{ inventory.name }}
         </router-link>
       </template>
-      <template v-if="inventory.location" #subtitle>
-        {{ inventory.location }}
+      <template v-if="subtitle" #subtitle>
+        {{ subtitle }}
       </template>
       <template v-if="editable" #actions>
         <Btn
@@ -96,8 +112,14 @@ const image = computed(
         </div>
         <template v-if="totalScu > 0 || totalUnits > 0">
           <span class="inventory-panel-count-separator">|</span>
-          <span v-if="totalScu > 0" class="inventory-panel-count-unit">
-            {{ totalScu }} SCU
+          <span
+            v-if="totalScu > 0"
+            class="inventory-panel-count-unit"
+            :class="{ 'inventory-panel-count-over': overCapacity }"
+          >
+            {{ totalScu }}
+            <template v-if="cargoCapacity > 0">/ {{ cargoCapacity }}</template>
+            SCU
           </span>
           <span
             v-if="totalScu > 0 && totalUnits > 0"
@@ -167,6 +189,10 @@ const image = computed(
   &-count-unit {
     font-size: 0.85em;
     color: $gray-light;
+  }
+
+  &-count-over {
+    color: $danger;
   }
 }
 </style>
