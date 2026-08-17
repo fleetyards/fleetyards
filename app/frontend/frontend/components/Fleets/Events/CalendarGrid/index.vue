@@ -19,7 +19,9 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { type Fleet, type FleetEvent } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useI18nStore } from "@/shared/stores/i18n";
@@ -136,6 +138,16 @@ const renderEventChip = (info: {
   chip.className = "fy-event-chip";
 
   if (isMonth) {
+    /*
+     * Built to Chip's own metrics rather than out of Chip itself: the library
+     * hands us a DOM node, and Chip's styles are scoped, so its class names
+     * would carry nothing here. Mounting a Vue component per event to get them
+     * is not worth it for a dot, a time and a label.
+     *
+     * The icon stays, where a chip would show only a colour dot. The label is
+     * the event's title, so nothing else names the category - and colour on its
+     * own would be the only thing saying which one it is.
+     */
     chip.classList.add("fy-event-chip--compact");
     const { icon, color } = styleFor(event?.category as string | undefined);
     chip.style.setProperty("--chip-color", color);
@@ -308,92 +320,98 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <Panel slim>
-    <PanelBody no-padding rounded="all">
-      <div class="fy-calendar__toolbar">
+  <!--
+    No PanelBody. The grid is drawn edge to edge, and PanelBody's 4px/18px/18px
+    is not optional any more - `no-padding` was removed with the redesign, so
+    keeping it here would have inset the whole calendar. Panel renders its
+    default slot directly when it has no background image, which is what the
+    grid wants.
+  -->
+  <Panel :variant="PanelVariantsEnum.SLIM" class="fy-calendar">
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
+      {{ titleLabel }}
+      <template #actions>
+        <!-- Actions, so a plain group; the view switch beside it is a switch. -->
         <BtnGroup>
-          <Btn :size="BtnSizesEnum.SM" @click="goPrev">
+          <Btn
+            :size="BtnSizesEnum.XS"
+            :aria-label="t('actions.previous')"
+            @click="goPrev"
+          >
             <i class="fa-light fa-chevron-left" />
           </Btn>
-          <Btn :size="BtnSizesEnum.SM" @click="goNext">
+          <Btn
+            :size="BtnSizesEnum.XS"
+            :aria-label="t('actions.next')"
+            @click="goNext"
+          >
             <i class="fa-light fa-chevron-right" />
           </Btn>
-          <Btn :size="BtnSizesEnum.SM" @click="goToday">
+          <Btn :size="BtnSizesEnum.XS" @click="goToday">
             {{ t("actions.today") }}
           </Btn>
         </BtnGroup>
-        <h3 class="fy-calendar__title">{{ titleLabel }}</h3>
         <BtnGroup segmented>
           <Btn
-            :size="BtnSizesEnum.SM"
+            :size="BtnSizesEnum.XS"
             :active="props.view === 'month'"
             @click="setView('month')"
           >
             {{ t("labels.fleets.events.calendar.month") }}
           </Btn>
           <Btn
-            :size="BtnSizesEnum.SM"
+            :size="BtnSizesEnum.XS"
             :active="props.view === 'week'"
             @click="setView('week')"
           >
             {{ t("labels.fleets.events.calendar.week") }}
           </Btn>
         </BtnGroup>
-      </div>
-      <div ref="calendarEl" class="fy-calendar__body ec-dark" />
-    </PanelBody>
+      </template>
+    </PanelHeading>
+    <div ref="calendarEl" class="fy-calendar__body ec-dark" />
   </Panel>
 </template>
 
 <style lang="scss" scoped>
-.fy-calendar__toolbar {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.85rem 1rem;
-  background: rgba(#000, 0.25);
-  border-bottom: 1px solid rgba(#c8c8c8, 0.1);
-}
-
-.fy-calendar__title {
-  flex: 1;
-  margin: 0;
-  font-size: 1.05rem;
-  text-align: center;
-  color: $text-color;
-}
-
+/*
+ * The library is driven through its own custom properties, which is the seam it
+ * gives us, and those are fed from the app's tokens rather than from values
+ * remixed here. What is left below that is layout the library does not express
+ * as a variable at all.
+ *
+ * Alphas are the system's documented ones: 0.26 is .btn--grouped.active, 0.22 is
+ * .chip--included. Picking them out of the design system rather than by eye is
+ * what keeps a highlighted day and a selected chip reading as the same strength.
+ */
 .fy-calendar__body {
-  // Override library CSS variables so the calendar adopts the app palette
-  // instead of the library's stock dark palette. .ec-dark above wires the
-  // dark variant on as a starting point.
   :deep(.ec) {
-    --ec-bg-color: #{$panel-bg};
-    --ec-border-color: rgba(#c8c8c8, 0.22);
-    --ec-text-color: #{$text-color};
-    --ec-today-bg-color: rgba($primary, 0.32);
-    --ec-highlight-color: rgba($primary, 0.25);
+    --ec-bg-color: transparent;
+    --ec-border-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    --ec-text-color: var(--color-text, #c8c8c8);
+    --ec-today-bg-color: rgb(66 139 202 / 0.26);
+    --ec-highlight-color: rgb(66 139 202 / 0.22);
     --ec-event-bg-color: transparent;
-    --ec-event-text-color: white;
+    --ec-event-text-color: var(--color-lifted, #eee);
 
     background: transparent;
-    color: $text-color;
+    color: var(--color-text, #c8c8c8);
   }
 
-  // Under-header separator (in both views). .ec-col-head ships with a 1px
-  // bottom border via --ec-border-color; bumping its visibility here.
+  // The header rule wants to read as a divider rather than as another cell
+  // edge, so it takes the stronger edge token.
   :deep(.ec-col-head),
   :deep(.ec-header .ec-sidebar),
   :deep(.ec-header .ec-day-head),
   :deep(.ec-time-grid .ec-all-day) {
-    border-bottom: 1px solid rgba(#c8c8c8, 0.4);
+    border-bottom: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
   }
 
   :deep(.ec-day-grid .ec-day) {
-    --ec-day-bg-color: rgba(#000, 0.18);
+    --ec-day-bg-color: rgb(0 0 0 / 0.18);
     min-block-size: 7em;
-    padding: 0.5rem;
-    border: 1px solid rgba(#c8c8c8, 0.22);
+    padding: 7px;
+    border: 1px solid var(--ec-border-color);
     border-block-start: none;
     border-inline-start: none;
 
@@ -402,9 +420,8 @@ onUnmounted(() => {
     }
   }
 
-  // Today highlight: just the day-number gets a primary-color pill in
-  // month view; in week view, the column header (Mon 08/05) keeps a
-  // subtle full-cell tint since the date there isn't a separate element.
+  // Today is the day number, not the whole cell: a tinted cell competes with
+  // the events inside it.
   :deep(.ec-day-grid .ec-day.ec-today) {
     background-color: transparent !important;
     box-shadow: none;
@@ -417,63 +434,67 @@ onUnmounted(() => {
     min-inline-size: 1.6em;
     block-size: 1.6em;
     padding: 0 0.45em;
-    border-radius: 999px;
-    background-color: $primary;
-    color: white;
+    // The radius everything else at this scale uses; 999px was the only pill
+    // left in the feature.
+    border-radius: var(--radius-control-bare, 6px);
+    background-color: var(--ec-today-bg-color);
+    color: #fff;
     font-weight: 600;
   }
 
   :deep(.ec-col-head.ec-today) {
-    background-color: rgba($primary, 0.18) !important;
-    box-shadow: inset 0 -2px 0 0 $primary;
+    background-color: var(--ec-highlight-color) !important;
+    box-shadow: inset 0 -2px 0 0 var(--color-primary, #428bca);
   }
 
-  // Week view: a) vertical day separators, b) horizontal hour lines.
-  // Library renders hour lines via a gradient on each .ec-day that mixes
-  // --ec-day-bg-color (mask) with --ec-border-color (line). Replace it
-  // with a single explicit gradient so the lines render reliably regardless
-  // of how transparent we make the day background.
+  // Week view: vertical day separators plus horizontal hour lines. The library
+  // draws the hour lines as a gradient mixing --ec-day-bg-color with
+  // --ec-border-color; replaced with one explicit gradient so the lines survive
+  // however transparent the day background gets.
   :deep(.ec-time-grid .ec-day) {
-    --ec-day-bg-color: rgba(#000, 0.12);
+    --ec-day-bg-color: rgb(0 0 0 / 0.12);
     background-color: var(--ec-day-bg-color);
     background-image: repeating-linear-gradient(
       to bottom,
       transparent 0,
       transparent calc(var(--ec-slot-height) - 1px),
-      rgba(#c8c8c8, 0.22) calc(var(--ec-slot-height) - 1px),
-      rgba(#c8c8c8, 0.22) var(--ec-slot-height)
+      var(--ec-border-color) calc(var(--ec-slot-height) - 1px),
+      var(--ec-border-color) var(--ec-slot-height)
     );
     background-size: 100% var(--ec-slot-height);
-    border: 1px solid rgba(#c8c8c8, 0.22);
+    border: 1px solid var(--ec-border-color);
     border-block-start: none;
     border-inline-start: none;
   }
 
   :deep(.ec-day-grid.ec-month-view .ec-day-head) {
-    padding: 0.15rem 0.4rem 0.85rem;
+    padding: 2px 6px 12px;
     flex-direction: row;
     justify-content: center;
   }
 
+  // The weekday strip is a row of labels, so it takes the app's label
+  // treatment - Orbitron, tracked, uppercase - instead of a second one.
   :deep(.ec-days .ec-day-head) {
-    padding: 0.6rem 0.75rem;
-    background: rgba(#000, 0.2);
-    border-bottom: 1px solid rgba(#c8c8c8, 0.12);
+    padding: 9px 10px;
+    background: rgb(0 0 0 / 0.28);
+    border-bottom: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.75rem;
-    color: color.adjust($text-color, $lightness: -10%);
+    color: var(--color-gray-light, #7a8288);
   }
 
   :deep(.ec-day-head time),
   :deep(.ec-time) {
-    color: color.adjust($text-color, $lightness: -10%);
-    font-size: 0.8rem;
+    color: var(--color-gray-light, #7a8288);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
   }
 
-  // Library's .ec-event provides padding + background. We zero out the
-  // padding so our chip can fill the whole event card; the chip itself
-  // paints background (cover image or solid primary).
+  // The library's .ec-event carries its own padding and fill; zeroed so the
+  // chip fills the event box and paints its own.
   :deep(.ec-event) {
     padding: 0;
     overflow: hidden;
@@ -481,85 +502,87 @@ onUnmounted(() => {
 
   :deep(.fy-event-chip) {
     display: flex;
+    align-items: center;
+    gap: 7px;
     width: 100%;
-    padding: 0.18rem 0.4rem;
-    border-radius: 3px;
-    background-color: rgba($primary, 0.85);
+    padding: 3px 6px;
+    border-radius: var(--radius-control-bare, 6px);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    color: white;
-    font-size: 0.85rem;
+    color: var(--color-text, #c8c8c8);
+    font-size: 13px;
     line-height: 1.3;
     overflow: hidden;
     cursor: pointer;
     box-sizing: border-box;
-    gap: 0.3rem;
+    transition: background-color 150ms ease-in-out;
   }
 
-  // Month view: compact one-liner with category icon + tint, no cover image.
-  :deep(.ec-day-grid .fy-event-chip) {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-  }
-
+  // Month view: Chip's own metrics - the leading marker, the 7px gap, the bare
+  // radius - with a category rail in place of the tint, so a day with three
+  // events reads as three rows rather than three filled blocks.
   :deep(.fy-event-chip--compact) {
     background-image: none !important;
-    background-color: color-mix(
-      in srgb,
-      var(--chip-color, #{$primary}) 18%,
-      transparent
-    );
-    border-inline-start: 3px solid var(--chip-color, #{$primary});
-    color: $text-color;
-    text-shadow: none;
-    box-shadow: none;
-    padding-inline-start: 0.45rem;
+    padding-inline-start: 7px;
+    border-inline-start: 3px solid
+      var(--chip-color, var(--color-primary, #428bca));
+  }
+
+  :deep(.fy-event-chip--compact:hover) {
+    background-color: rgb(122 130 136 / 0.16);
+    color: var(--color-lifted, #eee);
   }
 
   :deep(.fy-event-chip__icon) {
-    color: var(--chip-color, #{$primary});
+    color: var(--chip-color, var(--color-primary, #428bca));
     flex-shrink: 0;
-    font-size: 0.85em;
+    font-size: 12px;
+    width: 12px;
+    text-align: center;
   }
 
-  // Week view: card-style, fills the time slot.
+  // Week view: the chip fills its time slot and carries the cover behind a
+  // scrim, so it is a card rather than a row.
   :deep(.ec-time-grid .fy-event-chip) {
     flex-direction: column;
     align-items: stretch;
-    padding: 0.25rem 0.4rem;
+    gap: 0;
+    padding: 4px 6px;
     height: 100%;
     min-height: 1.5rem;
-    gap: 0;
+    background-color: rgb(66 139 202 / 0.85);
+    color: #fff;
   }
 
   :deep(.fy-event-chip--with-cover) {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.45);
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.9);
+    box-shadow: inset 0 0 0 1000px rgb(0 0 0 / 0.45);
   }
 
   :deep(.fy-event-chip__time) {
-    font-variant-numeric: tabular-nums;
-    color: rgba(255, 255, 255, 0.92);
-    font-size: 0.78rem;
     flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: var(--color-gray-light, #7a8288);
   }
 
-  // In compact (month) chips the time/title use the page text color, not white.
-  :deep(.fy-event-chip--compact .fy-event-chip__time) {
-    color: color.adjust($text-color, $lightness: -10%);
-  }
-  :deep(.fy-event-chip--compact .fy-event-chip__title) {
-    color: $text-color;
+  :deep(.ec-time-grid .fy-event-chip__time) {
+    color: rgb(255 255 255 / 0.92);
   }
 
   :deep(.fy-event-chip__title) {
+    min-width: 0;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :deep(.fy-event-chip) {
+      transition-duration: 1ms;
+    }
   }
 }
 </style>
