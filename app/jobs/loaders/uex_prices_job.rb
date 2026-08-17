@@ -9,13 +9,15 @@ module Loaders
 
       result = ::Uex::PriceSyncer.new.run
 
-      if result.unmatched.present?
-        GithubIssueCreator.new(
-          task_type: "uex_prices_import",
-          title: "UEX Price Sync — Unmatched Vehicles",
-          body: ::Uex::PriceSyncer.github_issue_body(result)
-        ).run
-      end
+      unmatched = result.unmatched.present?
+
+      AdminReport.deliver(
+        task_type: "uex_prices_import",
+        title: unmatched ? "UEX Price Sync — Unmatched Vehicles" : "UEX Price Sync Results",
+        body: ::Uex::PriceSyncer.github_issue_body(result),
+        actionable: unmatched,
+        record: import
+      )
 
       import.update!(
         output: {

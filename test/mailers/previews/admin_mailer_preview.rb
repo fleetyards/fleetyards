@@ -2,13 +2,7 @@
 
 class AdminMailerPreview < ActionMailer::Preview
   def weekly
-    stats = {
-      registrations: 1,
-      ships: 2,
-      vehicles: 3
-    }
-
-    AdminMailer.weekly(stats)
+    AdminMailer.weekly(AdminUser.where(super_admin: true).first || AdminUser.first, AdminWeeklyReport.build)
   end
 
   def notify_block

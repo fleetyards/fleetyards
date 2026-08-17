@@ -76,6 +76,22 @@ module ScData
         assert_equal "PNG", MiniMagick::Image.open(target).type
       end
 
+      # ImageMagick stamps the moment of conversion into what it writes, so
+      # without the chunks excluded a parse that changed nothing still rewrites
+      # every icon it touched and the diff claims they all changed.
+      test "#save_icon writes the same bytes for a source that has not changed" do
+        requires_imagemagick
+
+        write_texture("ui/logos/acme_256.dds")
+
+        target = @parser.send(:save_icon, "ui/logos/acme_256.tif")
+        first = File.binread(target)
+
+        @parser.send(:save_icon, "ui/logos/acme_256.tif")
+
+        assert_equal first, File.binread(target)
+      end
+
       # The export is moving to PNG, and re-encoding one would cost quality for
       # nothing. No ImageMagick either, which is the point.
       test "#save_icon copies a texture the export already ships as a png" do
@@ -114,6 +130,34 @@ module ScData
 
         assert_equal "#{@export_path}/icons/ui/logos/split_256.png", target
         assert_equal 16, MiniMagick::Image.open(target).width
+      end
+
+      # Every catalogue writes into the same icons root, so sweeping that root
+      # would leave whichever parser ran last as the only one with artwork.
+      test "#save_icon leaves the icons another catalogue wrote alone" do
+        write_asset("ui/logos/acme.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
+        write_asset("ui/items/widget.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
+
+        @parser.send(:save_icon, "ui/logos/acme.svg")
+
+        # A second catalogue is a second parser, with its own idea of what it
+        # has already cleared.
+        ::ScData::Parser::BaseParser.new(
+          base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test"
+        ).send(:save_icon, "ui/items/widget.svg")
+
+        assert_path_exists "#{@export_path}/icons/ui/logos/acme.svg"
+        assert_path_exists "#{@export_path}/icons/ui/items/widget.svg"
+      end
+
+      test "#save_icon drops an icon its own folder no longer names" do
+        FileUtils.mkdir_p("#{@export_path}/icons/ui/logos")
+        File.write("#{@export_path}/icons/ui/logos/gone.svg", "")
+        write_asset("ui/logos/acme.svg", "<svg xmlns='http://www.w3.org/2000/svg'/>")
+
+        @parser.send(:save_icon, "ui/logos/acme.svg")
+
+        assert_equal ["acme.svg"], Dir.children("#{@export_path}/icons/ui/logos")
       end
 
       test "#save_icon writes nothing when the export carries no such asset" do

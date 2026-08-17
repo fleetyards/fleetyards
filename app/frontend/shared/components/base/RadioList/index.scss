@@ -10,6 +10,9 @@ $color2: #3197ee;
 
   &__wrapper {
     display: flex;
+    // Items are nowrap by themselves, so without this a list of more than a
+    // few options runs straight out of a filter sidebar.
+    flex-wrap: wrap;
     gap: 15px;
     align-items: center;
   }

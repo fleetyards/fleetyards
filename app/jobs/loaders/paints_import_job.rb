@@ -9,11 +9,13 @@ module Loaders
 
       results = ::PaintsImporter.new.run
 
-      GithubIssueCreator.new(
+      AdminReport.deliver(
         task_type: "paints_import",
         title: "Paints Import Results",
-        body: ::PaintsImporter.github_issue_body(results)
-      ).run
+        body: ::PaintsImporter.github_issue_body(results),
+        actionable: ::PaintsImporter.actionable?(results),
+        record: import
+      )
 
       import.finish!
     rescue => e

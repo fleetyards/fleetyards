@@ -190,6 +190,9 @@
         "images": {
           "index": "Images"
         },
+        "notifications": {
+          "index": "Notifications"
+        },
         "maintenance": {
           "index": "Maintenance",
           "pghero": "PgHero",
