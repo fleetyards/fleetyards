@@ -4,6 +4,7 @@ module ScData
       def all
         items = load_items("items").reject { |item| item["category"] == "inventory" }
         loaded = []
+        without_icon = []
 
         # Pass 1: create/update all components so they exist for cross-references
         items.each do |item|
@@ -69,10 +70,16 @@ module ScData
 
           component.update!(update_params)
 
-          attach_icon(component, :icon, item["icon"])
+          if item["icon"].present?
+            attach_icon(component, :icon, item["icon"])
+          else
+            without_icon << component.id
+          end
 
           loaded << component.id
         end
+
+        purge_dropped_icons(without_icon)
 
         # Pass 2: link loadouts (all components now exist for cross-references)
         items.each do |item|
@@ -84,6 +91,28 @@ module ScData
         end
 
         retire_absent(Component, loaded)
+      end
+
+      # A build that stops shipping a paint's swatch has to take the picture
+      # with it. The curated attachments are left alone when the export goes
+      # quiet -- a load cannot tell an admin's upload from its own -- but
+      # nothing except a load ever writes here, so there is no upload to
+      # protect and an icon the current build does not carry would otherwise go
+      # on being served.
+      #
+      # Only for a record that names no icon at all. A path that fails to
+      # resolve is a broken parse rather than a dropped picture, and throwing
+      # the artwork away over one would lose what the export still carries.
+      #
+      # Queried in one go rather than asked per item: almost none of the eight
+      # thousand components has an icon, and checking each would be eight
+      # thousand round trips to find a handful.
+      private def purge_dropped_icons(component_ids)
+        return if component_ids.blank?
+
+        ActiveStorage::Attachment
+          .where(record_type: "Component", name: "icon", record_id: component_ids)
+          .each(&:purge)
       end
 
       private def add_loadout(item, component)

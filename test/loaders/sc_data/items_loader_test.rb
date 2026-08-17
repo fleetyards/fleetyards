@@ -80,6 +80,39 @@ module ScData
 
         assert_not_predicate Component.find_by(sc_key: "aegs_avenger_cml_chaff").icon, :attached?
       end
+
+      # Nothing but a load writes to the icon, so a build that stops naming one
+      # has to take the picture with it -- otherwise the component goes on
+      # serving artwork the current export does not carry.
+      test "#all drops an icon the export stopped naming" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        component = Component.find_by(sc_key: "aegs_avenger_cml_chaff")
+        component.icon.attach(
+          io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+          filename: "test.png",
+          content_type: "image/png"
+        )
+
+        ::ScData::Loader::ItemsLoader.new.all
+
+        assert_not_predicate component.reload.icon, :attached?
+      end
+
+      # A path that fails to resolve is a broken parse, not a dropped picture.
+      test "#all keeps the icon of a record that still names one" do
+        ::ScData::Loader::ItemsLoader.new.all
+
+        icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
+        blob_id = icon.blob.id
+
+        ::ScData::Loader::ItemsLoader.new.all
+
+        icon = Component.find_by(sc_key: "paint_100i_black_orange").icon
+
+        assert_predicate icon, :attached?
+        assert_equal blob_id, icon.blob.id, "an unchanged icon should not be re-attached"
+      end
     end
   end
 end
