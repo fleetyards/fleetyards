@@ -118,8 +118,8 @@ importers:
         specifier: 9.4.4
         version: 9.4.4
       papaparse:
-        specifier: 5.5.4
-        version: 5.5.4
+        specifier: 5.6.0
+        version: 5.6.0
       photoswipe:
         specifier: 5.4.4
         version: 5.4.4
@@ -4651,8 +4651,8 @@ packages:
   panzoom@9.4.4:
     resolution: {integrity: sha512-r1KfkNZvsBw59IPq7Yy+GWZnZE1YCG/t7aG6caSkij/TBqdxTzmxNTm/lHf3h6qlVMFisIGIO+lgS2Ym23PIoA==}
 
-  papaparse@5.5.4:
-    resolution: {integrity: sha512-SwzWD9gl/ElwYLCI0nUja1mFJzjq2D8ziShfNBa7zCHzkOozeOGDwHWQ+tvCzEZcewecWZ5U7kUopDnG+DFYEQ==}
+  papaparse@5.6.0:
+    resolution: {integrity: sha512-N2vuNQAYGK1/4vs6HJX86+VYU6OkiSTgdJz3JQfTk1y51cFCO/U8gnaeTF4iNE4r57Tt0sV47dUua1/19pxO6Q==}
 
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
@@ -10580,7 +10580,7 @@ snapshots:
       ngraph.events: 1.4.0
       wheel: 1.0.0
 
-  papaparse@5.5.4: {}
+  papaparse@5.6.0: {}
 
   parent-module@1.0.1:
     dependencies:
