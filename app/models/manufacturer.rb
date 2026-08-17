@@ -30,6 +30,10 @@ class Manufacturer < ApplicationRecord
     dependent: :nullify
   has_many :components,
     dependent: :nullify
+  has_many :equipment,
+    dependent: :nullify
+  has_many :model_modules,
+    dependent: :nullify
 
   before_save :update_slugs
 
