@@ -3,6 +3,13 @@
 module ActiveStorageVariants
   extend ActiveSupport::Concern
 
+  # A vector needs no variant -- it draws at any size, and ActiveStorage will
+  # not process one anyway, so every size resolves to the file itself. Kept to
+  # image formats: the other non-representable attachments are JSON, glTF
+  # meshes and octet-stream, and handing those out as an image URL would draw a
+  # broken picture where a placeholder belongs.
+  VECTOR_CONTENT_TYPES = ["image/svg+xml"].freeze
+
   REPRESENTATION_SIZES = {
     small: {format: :webp, resize_to_limit: [500, 500], saver: {quality: 80}},
     medium: {format: :webp, resize_to_limit: [1000, 1000], saver: {quality: 82}},
