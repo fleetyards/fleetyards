@@ -50,7 +50,7 @@ class Api::V1::VehicleInventoryShowTest < ActionDispatch::IntegrationTest
       assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
         assert_nil parsed_body["id"]
         assert_equal "Ironclad Inventory", parsed_body["name"]
-        assert_equal 0, parsed_body["itemCount"]
+        assert_equal 0, parsed_body["entriesCount"]
         assert_in_delta 0.0, parsed_body["totalScu"]
         assert_equal @vehicle.id, parsed_body["vehicle"]["id"]
         assert_in_delta 400.0, parsed_body["vehicle"]["model"]["cargo"]
@@ -65,7 +65,7 @@ class Api::V1::VehicleInventoryShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id} do
       assert_equal inventory.id, parsed_body["id"]
-      assert_equal 1, parsed_body["itemCount"]
+      assert_equal 1, parsed_body["entriesCount"]
       assert_in_delta 312.0, parsed_body["totalScu"]
     end
   end

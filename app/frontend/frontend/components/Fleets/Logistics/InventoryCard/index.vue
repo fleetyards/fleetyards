@@ -35,8 +35,8 @@ const { t } = useI18n();
       </p>
       <div class="d-flex justify-content-between">
         <span class="text-muted">
-          {{ inventory.itemCount }}
-          {{ t("labels.logistics.items") }}
+          {{ inventory.entriesCount }}
+          {{ t("labels.logistics.entriesCount") }}
         </span>
         <span v-if="inventory.manager" class="text-muted">
           {{ inventory.manager.username }}

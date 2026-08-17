@@ -51,7 +51,7 @@ export type InventoryPanelRecord = {
   name: string;
   slug?: string | null;
   location?: string | null;
-  itemCount: number;
+  entriesCount: number;
   totalScu?: number;
   totalUnits?: number;
   image?: { mediumUrl?: string };

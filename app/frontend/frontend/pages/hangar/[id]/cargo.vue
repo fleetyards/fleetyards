@@ -93,7 +93,7 @@ const refetch = async () => {
   await refetchStock();
 };
 
-const hasCargo = computed(() => (inventory.value?.itemCount ?? 0) > 0);
+const hasCargo = computed(() => (inventory.value?.entriesCount ?? 0) > 0);
 
 const stockItemRoute = (slug?: string) => ({
   name: "hangar-vehicle-cargo-item",

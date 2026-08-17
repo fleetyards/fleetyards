@@ -10161,7 +10161,7 @@ components:
           - officers_only
         location:
           type: string
-        itemCount:
+        entriesCount:
           type: integer
         totalScu:
           type: number
@@ -10197,7 +10197,7 @@ components:
       - name
       - slug
       - visibility
-      - itemCount
+      - entriesCount
       - totalScu
       - totalUnits
       - createdAt
@@ -11461,7 +11461,7 @@ components:
           type: string
         location:
           type: string
-        itemCount:
+        entriesCount:
           type: integer
         totalScu:
           type: number
@@ -11486,7 +11486,7 @@ components:
       - id
       - name
       - slug
-      - itemCount
+      - entriesCount
       - totalScu
       - totalUnits
       - createdAt
@@ -12494,7 +12494,7 @@ components:
           type:
           - string
           - 'null'
-        itemCount:
+        entriesCount:
           type: integer
         totalScu:
           type: number
@@ -12522,7 +12522,7 @@ components:
       required:
       - id
       - name
-      - itemCount
+      - entriesCount
       - totalScu
       - totalUnits
       title: Inventory
