@@ -230,7 +230,7 @@ When adding new API endpoints, follow this order:
 
 Flags are declared in **`config/feature_flags.yml`** — the single source of truth.
 `FeatureFlags::Synchronizer` reconciles Flipper with it on every deploy
-(`.kamal/hooks/pre-deploy` runs `feature_flags:sync`). Full reference:
+(`.kamal/hooks/pre-deploy` runs `bin/feature-flags sync`). Full reference:
 [lib/feature_flags/README.md](lib/feature_flags/README.md).
 
 To add a flag:
@@ -245,9 +245,8 @@ To add a flag:
      self_service: true
    ```
 
-2. Validate with `bin/rails feature_flags:validate`; CI runs the same rules via
-   `bin/lint-feature-flags`.
-3. Run `bin/rails feature_flags:sync` to create it in your dev database.
+2. Validate with `bin/feature-flags validate`; CI runs the same command.
+3. Run `bin/feature-flags sync` to create it in your dev database.
 4. Read it as usual — `Flipper.enabled?(:my_new_flag, actor)` in Ruby,
    `isFeatureEnabled('my_new_flag')` in Vue.
 

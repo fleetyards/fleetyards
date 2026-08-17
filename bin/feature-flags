@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# `validate` deliberately runs WITHOUT booting Rails, so CI needs neither a
+# database nor the bundle. Rails autoloads lib/ via config.autoload_lib, so the
+# registry files carry no requires of their own; this script is the one place
+# that has to know their load order.
+
+COMMANDS = {
+  "validate" => "Validate config/feature_flags.yml against the registry rules (no Rails, no database)",
+  "plan" => "Show what `sync` would change, without touching Flipper",
+  "sync" => "Reconcile Flipper with config/feature_flags.yml (adds + prunes)",
+  "export" => "Print a YAML skeleton of the flags currently in Flipper"
+}.freeze
+
+def usage
+  puts "Usage: bin/feature-flags <command>"
+  puts ""
+  puts "Commands:"
+  COMMANDS.each { |cmd, desc| puts "  %-10s %s" % [cmd, desc] }
+  puts ""
+  puts "Environment:"
+  puts "  FEATURE_FLAGS_PRUNE=false   disable removal for a single `sync` run"
+  exit 1
+end
+
+def load_registry_classes
+  $LOAD_PATH.unshift(File.expand_path("../lib", __dir__))
+
+  require "feature_flags/definition"
+  require "feature_flags/registry"
+end
+
+def boot_rails
+  require_relative "../config/environment"
+end
+
+# Only callable once the FeatureFlags constants are loadable — resolving the
+# error class in a rescue that also covers the boot itself would mask a boot
+# failure with a NameError.
+def reporting_registry_errors
+  yield
+rescue FeatureFlags::Registry::InvalidRegistryError => e
+  warn e.message
+  exit 1
+end
+
+command = ARGV.shift
+usage if command.nil? || command == "--help" || command == "-h"
+
+unless COMMANDS.key?(command)
+  puts "Unknown command: #{command}"
+  usage
+end
+
+case command
+when "validate"
+  load_registry_classes
+  reporting_registry_errors do
+    registry = FeatureFlags::Registry.load
+    puts "✓ config/feature_flags.yml is valid (#{registry.names.size} flags)"
+  end
+
+when "plan"
+  boot_rails
+  reporting_registry_errors { puts FeatureFlags::Synchronizer.new(dry_run: true).call.to_console }
+
+when "sync"
+  boot_rails
+  reporting_registry_errors { puts FeatureFlags::Synchronizer.new.call.to_console }
+
+when "export"
+  boot_rails
+  Flipper.features.map(&:key).sort.each do |name|
+    puts <<~YAML
+      #{name}:
+        description: "TODO"
+    YAML
+  end
+end

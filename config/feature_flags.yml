@@ -1,6 +1,6 @@
 # Feature flag registry — single source of truth for Flipper.
 #
-# `rake feature_flags:sync` makes Flipper match this file: it adds flags listed
+# `bin/feature-flags sync` makes Flipper match this file: it adds flags listed
 # here that are missing, and removes flags in Flipper that are not listed here
 # (prune, including all of their gate values). Sync runs on every deploy from
 # .kamal/hooks/pre-deploy. The admin UI cannot create or delete flags — it only
@@ -17,9 +17,9 @@
 #                                #   ownership and dropping the key retracts
 #                                #   nothing.
 #
-# Rules are enforced by `rake feature_flags:validate` and bin/lint-feature-flags,
-# which CI runs on every push. Seeded from the flags live in Flipper at the time
-# the registry was introduced.
+# Rules are enforced by `bin/feature-flags validate`, which CI runs on every
+# push. Seeded from the flags live in Flipper at the time the registry was
+# introduced.
 
 fleet_logistics:
   description: "Fleet logistics — fleet inventories with a deposit/withdrawal ledger"

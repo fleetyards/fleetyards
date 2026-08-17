@@ -16,8 +16,8 @@ module FeatureFlags
   #     description: "Discord login"
   #     permanent: true
   #
-  # Kept to plain Ruby (no Rails, no ActiveSupport) because bin/lint-feature-flags
-  # loads this file without booting the application.
+  # Kept to plain Ruby (no Rails, no ActiveSupport) because
+  # `bin/feature-flags validate` loads this file without booting the application.
   class Registry
     # Hyphens are allowed because the OAuth provider gates are evaluated as
     # "oauth-#{provider}" in the frontend and cannot be renamed independently.
