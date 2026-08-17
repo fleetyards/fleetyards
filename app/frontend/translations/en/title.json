@@ -128,6 +128,7 @@
         "index": "Visual Tests",
         "panels": "Panels - Visual Tests",
         "buttons": "Buttons - Visual Tests",
+        "events": "Events",
         "typography": "Typography - Visual Tests",
         "forms": "Forms - Visual Tests",
         "tables": "Tables - Visual Tests",

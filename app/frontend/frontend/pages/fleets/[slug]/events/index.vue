@@ -245,7 +245,7 @@ const crumbs = computed(() => [
   </Teleport>
 
   <div class="events-toolbar">
-    <BtnGroup segmented>
+    <BtnGroup segmented data-test="events-view-switch">
       <Btn :active="view === 'list'" @click="toggleListCalendar('list')">
         <i class="fa-light fa-list" />
         {{ t("labels.fleets.events.listTab") }}
@@ -283,7 +283,7 @@ const crumbs = computed(() => [
     hide-empty
   >
     <template #actions-left>
-      <BtnGroup segmented>
+      <BtnGroup segmented data-test="events-tab-switch">
         <Btn :active="tab === 'upcoming'" @click="tab = 'upcoming'">
           {{ t("labels.fleets.events.upcomingTab") }}
         </Btn>

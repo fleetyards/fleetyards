@@ -351,7 +351,7 @@ onUnmounted(() => {
             {{ t("actions.today") }}
           </Btn>
         </BtnGroup>
-        <BtnGroup segmented>
+        <BtnGroup segmented data-test="calendar-view-switch">
           <Btn
             :size="BtnSizesEnum.XS"
             :active="props.view === 'month'"

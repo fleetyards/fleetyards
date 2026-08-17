@@ -55,7 +55,11 @@ const signup = async (status: FleetEventSignupCreateInputStatus) => {
 </script>
 
 <template>
-  <Panel :variant="PanelVariantsEnum.SLIM" class="event-signup-cta">
+  <Panel
+    :variant="PanelVariantsEnum.SLIM"
+    class="event-signup-cta"
+    data-test="signup-cta"
+  >
     <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       {{ t("headlines.fleets.events.signupTitle") }}
     </PanelHeading>

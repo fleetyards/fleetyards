@@ -85,6 +85,7 @@ const unarchive = async () => {
     :bg-rounded="PanelRoundedEnum.TOP"
     :tone="statusTone"
     class="event-panel"
+    data-test="event-card"
   >
     <PanelHeading
       :level="HeadingLevelEnum.H2"
@@ -103,7 +104,7 @@ const unarchive = async () => {
       <!-- The cap already carries the lifecycle; this names it, for anyone who
            cannot read a colour and for the states that share a tone. -->
       <template #actions>
-        <Chip bare>{{ statusLabel }}</Chip>
+        <Chip bare data-test="event-status">{{ statusLabel }}</Chip>
       </template>
     </PanelHeading>
 

@@ -182,6 +182,7 @@ const submitSignup = async () => {
       'event-slot-row--mine': !!ownSignupHere,
       'event-slot-row--expanded': expanded,
     }"
+    data-test="slot-row"
   >
     <header class="event-slot-row__head">
       <div class="event-slot-row__title">
@@ -201,6 +202,7 @@ const submitSignup = async () => {
           :size="BtnSizesEnum.XS"
           :disabled="!canSignup"
           :title="blockedReason"
+          data-test="slot-signup"
           @click="startSignup"
         >
           <i class="fa-light fa-hand" />
