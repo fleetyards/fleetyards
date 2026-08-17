@@ -175,7 +175,7 @@ const { t, l, toUEC } = useI18n();
             size="small"
             alt="image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
-            shadow
+            transparent
           />
         </template>
         <template #col-name="{ record }">
