@@ -29,5 +29,11 @@
     "$armor_mobi++",
     "SM_RestrictedArm"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.15,
+  "volume_dimensions": {
+    "x": 0.785,
+    "y": 0.572,
+    "z": 0.9
+  }
 }

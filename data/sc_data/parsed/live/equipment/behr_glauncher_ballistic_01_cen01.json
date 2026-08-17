@@ -27,5 +27,11 @@
     "glauncher",
     "SM_RestrictedWep"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.02,
+  "volume_dimensions": {
+    "x": 0.1248,
+    "y": 0.8436,
+    "z": 0.283
+  }
 }

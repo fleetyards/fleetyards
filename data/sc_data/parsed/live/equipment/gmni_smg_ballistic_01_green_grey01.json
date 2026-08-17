@@ -27,5 +27,11 @@
     "smg",
     "gmni_smg_ballistic_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.0075,
+  "volume_dimensions": {
+    "x": 0.0471,
+    "y": 0.7026,
+    "z": 0.2594
+  }
 }

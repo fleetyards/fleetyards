@@ -26,5 +26,11 @@
     "crlf",
     "pistol"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.0025,
+  "volume_dimensions": {
+    "x": 0.057,
+    "y": 0.19,
+    "z": 0.19
+  }
 }

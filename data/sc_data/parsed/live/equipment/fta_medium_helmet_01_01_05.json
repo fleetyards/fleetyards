@@ -31,5 +31,11 @@
     "HelmetCarryable",
     "FTA"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.017,
+  "volume_dimensions": {
+    "x": 0.24,
+    "y": 0.272,
+    "z": 0.317
+  }
 }

@@ -26,5 +26,11 @@
     "apar_special_ballistic_01",
     "SM_RestrictedWep"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00053,
+  "volume_dimensions": {
+    "x": 0.04562791,
+    "y": 0.1166916,
+    "z": 0.09885663
+  }
 }

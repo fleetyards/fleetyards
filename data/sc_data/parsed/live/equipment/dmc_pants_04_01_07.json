@@ -27,5 +27,11 @@
     "Set_04",
     "Color_07"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.0073,
+  "volume_dimensions": {
+    "x": 0.308,
+    "y": 0.109,
+    "z": 0.256
+  }
 }

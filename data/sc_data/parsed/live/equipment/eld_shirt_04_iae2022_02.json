@@ -29,5 +29,11 @@
     "Color_02",
     "Color_expo"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.009429,
+  "volume_dimensions": {
+    "x": 0.357669,
+    "y": 0.1979019,
+    "z": 0.574548
+  }
 }

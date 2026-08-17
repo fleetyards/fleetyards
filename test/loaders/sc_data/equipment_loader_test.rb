@@ -222,6 +222,44 @@ module ScData
         assert_equal current, Equipment.current_version.count
       end
 
+      test "every parsed item states what it costs an inventory" do
+        without = parsed.values.reject { |item| item[:volume].to_f.positive? }
+
+        assert_operator without.size, :<=, 10, "unmeasured: #{without.map { |item| item[:key] }.first(10)}"
+      end
+
+      test "a measured piece carries both the volume and the box it fills" do
+        helmet = parsed["gys_helmet_03_01_01"]
+
+        assert_operator helmet[:volume], :>, 0
+        assert_operator helmet[:volume], :<, 1, "gear is measured in fractions of an SCU"
+        assert_equal %w[x y z], helmet[:volume_dimensions].keys.sort
+        assert(helmet[:volume_dimensions].values.all? { |side| side.to_f.positive? })
+      end
+
+      # One microSCU in a 0.15m box is what CIG leaves on a record nobody has
+      # measured, so it has to read as unknown rather than as almost nothing.
+      test "the unmeasured placeholder is left blank rather than stored" do
+        placeholder = parsed.values.find { |item| item[:volume].blank? }
+
+        assert placeholder, "expected at least one unmeasured record"
+        assert_nil placeholder[:volume]
+      end
+
+      test "#all persists the volume onto the record" do
+        @loader.all
+
+        measured = Equipment.current_version.where.not(volume: nil)
+
+        assert_operator measured.count, :>=, 4_000
+        assert_operator Equipment.current_version.where.not(volume_dimensions: nil).count, :>=, 4_000
+
+        helmet = Equipment.find_by(sc_key: "gys_helmet_03_01_01")
+
+        assert_operator helmet.volume, :>, 0
+        assert_equal %w[x y z], helmet.volume_dimensions.keys.sort
+      end
+
       test "#all is idempotent" do
         @loader.all
         count = Equipment.count

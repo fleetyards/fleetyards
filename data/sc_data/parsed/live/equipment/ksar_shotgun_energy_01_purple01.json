@@ -28,5 +28,11 @@
     "shotgun",
     "IAE_2024"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.016,
+  "volume_dimensions": {
+    "x": 0.1069,
+    "y": 0.8358,
+    "z": 0.2864
+  }
 }

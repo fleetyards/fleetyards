@@ -25,5 +25,11 @@
   "tags": [
     "behr_rifle_ballistic_02_civilian"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00061,
+  "volume_dimensions": {
+    "x": 0.045,
+    "y": 0.045,
+    "z": 0.208
+  }
 }

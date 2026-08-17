@@ -25,5 +25,11 @@
   "tags": [
     "klwe_pistol_energy_01"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.00009,
+  "volume_dimensions": {
+    "x": 0.03443176,
+    "y": 0.03702345,
+    "z": 0.1430198
+  }
 }

@@ -32,5 +32,11 @@
     "SM_RestrictedWep",
     "clda_utility_heavy_explorer_04"
   ],
-  "hidden": false
+  "hidden": false,
+  "volume": 0.062,
+  "volume_dimensions": {
+    "x": 0.515,
+    "y": 1.38,
+    "z": 0.394
+  }
 }

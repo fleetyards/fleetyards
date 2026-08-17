@@ -9341,6 +9341,22 @@ components:
           type:
           - number
           - 'null'
+        volume:
+          type:
+          - number
+          - 'null'
+        volumeDimensions:
+          type:
+          - object
+          - 'null'
+          properties:
+            x:
+              type: number
+            "y":
+              type: number
+            z:
+              type: number
+          additionalProperties: false
         damageReduction:
           type:
           - number
