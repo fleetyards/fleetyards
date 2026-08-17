@@ -14,11 +14,6 @@ if record.try(attr) && record.send(attr).attached?
     json.medium_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]))
     json.large_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:large]))
     json.xlarge_url rails_representation_url(file.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:xlarge]))
-  elsif file.content_type.in?(ActiveStorageVariants::VECTOR_CONTENT_TYPES)
-    json.small_url rails_blob_url(file)
-    json.medium_url rails_blob_url(file)
-    json.large_url rails_blob_url(file)
-    json.xlarge_url rails_blob_url(file)
   end
   json.width file.metadata[:width]
   json.height file.metadata[:height]
