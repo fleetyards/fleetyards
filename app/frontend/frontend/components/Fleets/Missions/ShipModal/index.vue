@@ -255,11 +255,11 @@ const onSubmit = handleSubmit(async (values) => {
   >
     <form id="ship-form" @submit.prevent="onSubmit">
       <div class="flex">
-        <BtnGroup>
-          <Btn :active="mode === 'specific'" inline @click="mode = 'specific'">
+        <BtnGroup segmented>
+          <Btn :active="mode === 'specific'" @click="mode = 'specific'">
             {{ t("labels.fleets.missions.modelSpecific") }}
           </Btn>
-          <Btn :active="mode === 'filter'" inline @click="mode = 'filter'">
+          <Btn :active="mode === 'filter'" @click="mode = 'filter'">
             {{ t("labels.fleets.missions.filterRange") }}
           </Btn>
         </BtnGroup>
@@ -383,12 +383,7 @@ const onSubmit = handleSubmit(async (values) => {
 
     <template #footer>
       <div class="float-sm-right">
-        <Btn
-          :loading="submitting"
-          :size="BtnSizesEnum.LG"
-          :inline="true"
-          @click="onSubmit"
-        >
+        <Btn :loading="submitting" :size="BtnSizesEnum.LG" @click="onSubmit">
           {{ t("actions.save") }}
         </Btn>
       </div>

@@ -142,7 +142,6 @@ const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
     <div class="discord-status-row">
       <Btn
         :size="BtnSizesEnum.SM"
-        inline
         variant="bare"
         :loading="probing"
         @click="probeDiscord"

@@ -312,21 +312,20 @@ onUnmounted(() => {
     <PanelBody no-padding rounded="all">
       <div class="fy-calendar__toolbar">
         <BtnGroup>
-          <Btn :size="BtnSizesEnum.SM" inline @click="goPrev">
+          <Btn :size="BtnSizesEnum.SM" @click="goPrev">
             <i class="fa-light fa-chevron-left" />
           </Btn>
-          <Btn :size="BtnSizesEnum.SM" inline @click="goNext">
+          <Btn :size="BtnSizesEnum.SM" @click="goNext">
             <i class="fa-light fa-chevron-right" />
           </Btn>
-          <Btn :size="BtnSizesEnum.SM" inline @click="goToday">
+          <Btn :size="BtnSizesEnum.SM" @click="goToday">
             {{ t("actions.today") }}
           </Btn>
         </BtnGroup>
         <h3 class="fy-calendar__title">{{ titleLabel }}</h3>
-        <BtnGroup>
+        <BtnGroup segmented>
           <Btn
             :size="BtnSizesEnum.SM"
-            inline
             :active="props.view === 'month'"
             @click="setView('month')"
           >
@@ -334,7 +333,6 @@ onUnmounted(() => {
           </Btn>
           <Btn
             :size="BtnSizesEnum.SM"
-            inline
             :active="props.view === 'week'"
             @click="setView('week')"
           >

@@ -119,10 +119,10 @@ const submit = async () => {
 
     <template v-else>
       <div class="expand-toolbar">
-        <Btn :size="BtnSizesEnum.SM" inline variant="bare" @click="selectAll">
+        <Btn :size="BtnSizesEnum.SM" variant="bare" @click="selectAll">
           {{ t("actions.selectAll") }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SM" inline variant="bare" @click="clearAll">
+        <Btn :size="BtnSizesEnum.SM" variant="bare" @click="clearAll">
           {{ t("actions.clear") }}
         </Btn>
       </div>
@@ -154,7 +154,6 @@ const submit = async () => {
     <template #actions>
       <Btn
         :size="BtnSizesEnum.SM"
-        inline
         :disabled="selected.size === 0"
         :loading="mutation.isPending.value"
         @click="submit"

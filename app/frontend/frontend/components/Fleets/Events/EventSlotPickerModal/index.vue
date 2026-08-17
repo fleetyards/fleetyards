@@ -102,7 +102,6 @@ const teams = computed<FleetEventTeam[]>(
           >
             <Btn
               :size="BtnSizesEnum.SM"
-              inline
               variant="bare"
               :disabled="
                 slot.id === currentSlotId ||
@@ -173,7 +172,6 @@ const teams = computed<FleetEventTeam[]>(
             >
               <Btn
                 :size="BtnSizesEnum.SM"
-                inline
                 variant="bare"
                 :disabled="
                   slot.id === currentSlotId ||
@@ -227,7 +225,6 @@ const teams = computed<FleetEventTeam[]>(
       <div class="float-sm-right">
         <Btn
           :size="BtnSizesEnum.LG"
-          inline
           variant="bare"
           @click="comlink.emit('close-modal')"
         >

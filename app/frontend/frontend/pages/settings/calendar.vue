@@ -137,7 +137,7 @@ const crumbs = computed(() => [
         class="calendar-settings__field"
         @focus="($event.target as HTMLInputElement).select()"
       />
-      <Btn :size="BtnSizesEnum.SM" inline @click="copyFeedUrl">
+      <Btn :size="BtnSizesEnum.SM" @click="copyFeedUrl">
         <i class="fa-light fa-copy" />
         <span>{{ t("actions.copy") }}</span>
       </Btn>
@@ -153,7 +153,6 @@ const crumbs = computed(() => [
       <Btn
         :size="BtnSizesEnum.SM"
         :loading="rotateMutation.isPending.value"
-        inline
         @click="rotate"
       >
         <i class="fa-light fa-arrows-rotate" />
@@ -163,7 +162,6 @@ const crumbs = computed(() => [
         :size="BtnSizesEnum.SM"
         tone="danger"
         :loading="destroyMutation.isPending.value"
-        inline
         @click="disable"
       >
         <i class="fa-light fa-circle-xmark" />

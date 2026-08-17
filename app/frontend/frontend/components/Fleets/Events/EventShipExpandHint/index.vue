@@ -90,7 +90,7 @@ const openExpandModal = () => {
         })
       }}
     </span>
-    <Btn :size="BtnSizesEnum.SM" inline @click="openExpandModal">
+    <Btn :size="BtnSizesEnum.SM" @click="openExpandModal">
       {{ t("actions.fleets.events.addSeats") }}
     </Btn>
   </div>

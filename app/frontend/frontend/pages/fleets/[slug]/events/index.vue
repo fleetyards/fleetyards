@@ -230,7 +230,6 @@ const crumbs = computed(() => [
     <Btn
       v-if="canManageMissions"
       :to="{ name: 'fleet-missions', params: { slug: props.fleet.slug } }"
-      inline
       variant="bare"
     >
       <i class="fa-light fa-flag-checkered" />
@@ -239,7 +238,6 @@ const crumbs = computed(() => [
     <Btn
       v-if="canCreate"
       :to="{ name: 'fleet-event-new', params: { slug: props.fleet.slug } }"
-      inline
     >
       <i class="fa-light fa-plus" />
       <span>{{ t("actions.fleets.events.create") }}</span>
@@ -247,12 +245,12 @@ const crumbs = computed(() => [
   </Teleport>
 
   <div class="events-toolbar">
-    <BtnGroup inline>
-      <Btn :active="view === 'list'" inline @click="toggleListCalendar('list')">
+    <BtnGroup segmented>
+      <Btn :active="view === 'list'" @click="toggleListCalendar('list')">
         <i class="fa-light fa-list" />
         {{ t("labels.fleets.events.listTab") }}
       </Btn>
-      <Btn :active="isCalendar" inline @click="toggleListCalendar('calendar')">
+      <Btn :active="isCalendar" @click="toggleListCalendar('calendar')">
         <i class="fa-light fa-calendar" />
         {{ t("labels.fleets.events.calendarTab") }}
       </Btn>
@@ -260,7 +258,6 @@ const crumbs = computed(() => [
     <Btn
       v-if="canSubscribe"
       v-tooltip="t('labels.fleets.events.subscribeHint')"
-      inline
       variant="bare"
       @click="subscribe"
     >
@@ -270,7 +267,6 @@ const crumbs = computed(() => [
     <Btn
       v-else-if="showCalendarSetupNudge"
       :to="{ name: 'fleet-settings-calendar', params: { slug: fleet.slug } }"
-      inline
       variant="bare"
     >
       <i class="fa-light fa-calendar-plus" />
@@ -287,14 +283,14 @@ const crumbs = computed(() => [
     hide-empty
   >
     <template #actions-left>
-      <BtnGroup>
-        <Btn :active="tab === 'upcoming'" inline @click="tab = 'upcoming'">
+      <BtnGroup segmented>
+        <Btn :active="tab === 'upcoming'" @click="tab = 'upcoming'">
           {{ t("labels.fleets.events.upcomingTab") }}
         </Btn>
-        <Btn :active="tab === 'past'" inline @click="tab = 'past'">
+        <Btn :active="tab === 'past'" @click="tab = 'past'">
           {{ t("labels.fleets.events.pastTab") }}
         </Btn>
-        <Btn :active="tab === 'archived'" inline @click="tab = 'archived'">
+        <Btn :active="tab === 'archived'" @click="tab = 'archived'">
           {{ t("labels.fleets.events.archivedTab") }}
         </Btn>
       </BtnGroup>
@@ -321,15 +317,13 @@ const crumbs = computed(() => [
 </template>
 
 <style lang="scss" scoped>
+/* The gap is the spacing. The `:deep(> *) { margin-right: 0 }` that was here
+   cancelled a margin Btn no longer ships. */
 .events-toolbar {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
   align-items: center;
-  margin-bottom: 0.75rem;
-
-  :deep(> *) {
-    margin-right: 0;
-  }
+  gap: 10px;
+  margin-bottom: 12px;
 }
 </style>

@@ -197,22 +197,21 @@ const statusLabel = computed(() =>
 
     <div class="your-signup__actions">
       <template v-if="editing">
-        <Btn :size="BtnSizesEnum.SM" inline :loading="saving" @click="save">
+        <Btn :size="BtnSizesEnum.SM" :loading="saving" @click="save">
           <i class="fa-light fa-floppy-disk" />
           {{ t("actions.save") }}
         </Btn>
-        <Btn :size="BtnSizesEnum.SM" inline variant="bare" @click="cancelEdit">
+        <Btn :size="BtnSizesEnum.SM" variant="bare" @click="cancelEdit">
           {{ t("actions.cancel") }}
         </Btn>
       </template>
       <template v-else>
-        <Btn v-if="canEdit" :size="BtnSizesEnum.SM" inline @click="startEdit">
+        <Btn v-if="canEdit" :size="BtnSizesEnum.SM" @click="startEdit">
           <i class="fa-light fa-pen" />
           {{ t("actions.edit") }}
         </Btn>
         <Btn
           :size="BtnSizesEnum.SM"
-          inline
           tone="danger"
           :loading="withdrawMutation.isPending.value"
           @click="withdraw"

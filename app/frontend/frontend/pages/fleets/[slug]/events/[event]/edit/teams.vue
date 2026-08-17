@@ -47,7 +47,7 @@ const openAddTeamModal = () => {
   <Heading hero>{{ t("headlines.fleets.events.editTeams") }}</Heading>
 
   <div class="event-edit-teams__header">
-    <Btn :size="BtnSizesEnum.SM" inline @click="openAddTeamModal">
+    <Btn :size="BtnSizesEnum.SM" @click="openAddTeamModal">
       <i class="fa-light fa-plus" />
       <span>{{ t("actions.fleets.events.addTeam") }}</span>
     </Btn>

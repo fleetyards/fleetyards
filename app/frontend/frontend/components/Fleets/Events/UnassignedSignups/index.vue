@@ -102,16 +102,11 @@ const remove = (signup: FleetEventSignup) => {
           {{ signup.notes }}
         </p>
         <div class="unassigned-signups__actions">
-          <Btn :size="BtnSizesEnum.SM" inline @click="openAssign(signup)">
+          <Btn :size="BtnSizesEnum.SM" @click="openAssign(signup)">
             <i class="fa-light fa-arrow-right-arrow-left" />
             {{ t("actions.fleets.events.assignSlot") }}
           </Btn>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            inline
-            tone="danger"
-            @click="remove(signup)"
-          >
+          <Btn :size="BtnSizesEnum.SM" tone="danger" @click="remove(signup)">
             <i class="fa-light fa-xmark" />
             {{ t("actions.fleets.events.kick") }}
           </Btn>

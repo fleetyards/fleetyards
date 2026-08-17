@@ -417,13 +417,12 @@ const onSubmit = handleSubmit(async (values) => {
               </span>
             </span>
             <div class="event-form__prefill-actions">
-              <Btn :size="BtnSizesEnum.SM" inline @click="openTemplatePicker">
+              <Btn :size="BtnSizesEnum.SM" @click="openTemplatePicker">
                 <i class="fa-light fa-arrows-rotate" />
                 {{ t("labels.fleets.events.changeTemplate") }}
               </Btn>
               <Btn
                 :size="BtnSizesEnum.SM"
-                inline
                 variant="bare"
                 @click="applyMissionPrefill(null)"
               >
@@ -432,12 +431,7 @@ const onSubmit = handleSubmit(async (values) => {
               </Btn>
             </div>
           </div>
-          <Btn
-            v-else
-            :size="BtnSizesEnum.SM"
-            inline
-            @click="openTemplatePicker"
-          >
+          <Btn v-else :size="BtnSizesEnum.SM" @click="openTemplatePicker">
             <i class="fa-light fa-folder-open" />
             {{ t("labels.fleets.events.pickTemplate") }}
           </Btn>
@@ -739,7 +733,7 @@ const onSubmit = handleSubmit(async (values) => {
         :hidden="!isEdit"
       >
         <div class="event-teams-section__header">
-          <Btn :inline="true" @click="openAddEventTeamModal">
+          <Btn @click="openAddEventTeamModal">
             <i class="fa-light fa-plus" />
             <span>{{ t("actions.fleets.events.addTeam") }}</span>
           </Btn>

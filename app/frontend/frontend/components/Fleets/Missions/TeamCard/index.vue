@@ -152,7 +152,14 @@ onUnmounted(() => {
     </button>
 
     <div class="team-header">
-      <span v-if="editable" class="team-drag-handle" title="Drag">⋮⋮</span>
+      <span
+        v-if="editable"
+        v-tooltip="t('actions.reorder')"
+        class="team-drag-handle"
+        :aria-label="t('actions.reorder')"
+      >
+        <i class="fa-light fa-grip-vertical" />
+      </span>
       <h3 class="team-title">{{ team.title }}</h3>
       <button
         v-if="editable"
@@ -186,7 +193,7 @@ onUnmounted(() => {
         <h4 class="team-section-label">
           {{ t("headlines.fleets.missions.ships") }}
         </h4>
-        <Btn v-if="editable" :inline="true" @click="openAddShipModal">
+        <Btn v-if="editable" @click="openAddShipModal">
           <i class="fa-light fa-plus" />
           <span>{{ t("actions.fleets.missions.addShip") }}</span>
         </Btn>

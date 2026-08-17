@@ -105,11 +105,11 @@ const crumbs = computed(() => [
     </template>
 
     <template #actions-left>
-      <BtnGroup>
-        <Btn :active="!showArchived" inline @click="showArchived = false">
+      <BtnGroup segmented>
+        <Btn :active="!showArchived" @click="showArchived = false">
           {{ t("labels.fleets.missions.activeTab") }}
         </Btn>
-        <Btn :active="showArchived" inline @click="showArchived = true">
+        <Btn :active="showArchived" @click="showArchived = true">
           {{ t("labels.fleets.missions.archivedTab") }}
         </Btn>
       </BtnGroup>

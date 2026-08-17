@@ -111,7 +111,6 @@ const pick = (mission: Mission | null) => {
       <div class="float-sm-right">
         <Btn
           :size="BtnSizesEnum.LG"
-          inline
           variant="bare"
           @click="comlink.emit('close-modal')"
         >

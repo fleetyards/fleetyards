@@ -181,8 +181,13 @@ const subtitle = computed(() => {
       <PanelHeading :level="HeadingLevelEnum.H4">
         <template #default>
           <span class="ship-title-row">
-            <span v-if="editable" class="ship-drag-handle" title="Drag">
-              ⋮⋮
+            <span
+              v-if="editable"
+              v-tooltip="t('actions.reorder')"
+              class="ship-drag-handle"
+              :aria-label="t('actions.reorder')"
+            >
+              <i class="fa-light fa-grip-vertical" />
             </span>
             {{ headerTitle }}
           </span>
@@ -197,22 +202,12 @@ const subtitle = computed(() => {
             class="ship-context-menu"
             expand-left
             expand-bottom
-            inline
           >
-            <Btn
-              :size="BtnSizesEnum.SM"
-              :inline="true"
-              @click="openEditShipModal"
-            >
+            <Btn :size="BtnSizesEnum.SM" @click="openEditShipModal">
               <i class="fa fa-pencil" />
               <span>{{ t("actions.edit") }}</span>
             </Btn>
-            <Btn
-              :size="BtnSizesEnum.SM"
-              :inline="true"
-              tone="danger"
-              @click="removeShip"
-            >
+            <Btn :size="BtnSizesEnum.SM" tone="danger" @click="removeShip">
               <i class="fa-light fa-trash" />
               <span>{{ t("actions.delete") }}</span>
             </Btn>

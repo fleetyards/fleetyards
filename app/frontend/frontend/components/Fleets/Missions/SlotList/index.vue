@@ -181,7 +181,14 @@ onUnmounted(() => {
         class="slot-item"
         :class="{ 'is-derived': slot.derived }"
       >
-        <span v-if="editable" class="slot-drag-handle" title="Drag">⋮⋮</span>
+        <span
+          v-if="editable"
+          v-tooltip="t('actions.reorder')"
+          class="slot-drag-handle"
+          :aria-label="t('actions.reorder')"
+        >
+          <i class="fa-light fa-grip-vertical" />
+        </span>
         <span v-if="slot.positionType" class="slot-type-badge">
           {{ slot.positionType }}
         </span>

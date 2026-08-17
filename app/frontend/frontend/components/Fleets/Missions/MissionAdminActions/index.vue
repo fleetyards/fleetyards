@@ -131,16 +131,15 @@ const handleDestroy = () => {
 </script>
 
 <template>
-  <BtnGroup inline>
-    <Btn v-if="canEdit" :size="BtnSizesEnum.SM" inline @click="goToEdit">
+  <BtnGroup>
+    <Btn v-if="canEdit" :size="BtnSizesEnum.SM" @click="goToEdit">
       <i class="fa-light fa-pen" />
       <span>{{ t("actions.fleets.missions.edit") }}</span>
     </Btn>
-    <BtnDropdown :size="BtnSizesEnum.SM" inline>
+    <BtnDropdown :size="BtnSizesEnum.SM">
       <Btn
         v-if="canCreateEvents && !archived"
         :size="BtnSizesEnum.SM"
-        inline
         @click="goToSpawnEvent"
       >
         <i class="fa-light fa-calendar-plus" />
@@ -149,7 +148,6 @@ const handleDestroy = () => {
       <Btn
         v-if="archived"
         :size="BtnSizesEnum.SM"
-        inline
         :loading="updateMutation.isPending.value"
         @click="unarchive"
       >
@@ -159,7 +157,6 @@ const handleDestroy = () => {
       <Btn
         v-if="canDelete && !archived"
         :size="BtnSizesEnum.SM"
-        inline
         tone="danger"
         :loading="destroyMutation.isPending.value"
         @click="performArchive"
@@ -170,7 +167,6 @@ const handleDestroy = () => {
       <Btn
         v-if="canDelete && archived"
         :size="BtnSizesEnum.SM"
-        inline
         tone="danger"
         @click="handleDestroy"
       >

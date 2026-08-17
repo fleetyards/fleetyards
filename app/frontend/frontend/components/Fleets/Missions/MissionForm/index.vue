@@ -338,7 +338,7 @@ const onSubmit = handleSubmit(async (values) => {
         :hidden="!isEdit"
       >
         <div class="teams-section__header">
-          <Btn :inline="true" @click="openAddTeamModal">
+          <Btn @click="openAddTeamModal">
             <i class="fa-light fa-plus" />
             <span>{{ t("actions.fleets.missions.addTeam") }}</span>
           </Btn>

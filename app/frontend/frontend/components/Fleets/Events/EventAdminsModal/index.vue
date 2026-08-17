@@ -153,12 +153,7 @@ const revoke = (admin: FleetEventAdmin) => {
           <span class="event-admins__role">
             {{ t(`labels.fleets.events.eventRoles.${entry.role}`) }}
           </span>
-          <Btn
-            :size="BtnSizesEnum.SM"
-            inline
-            variant="bare"
-            @click="revoke(entry)"
-          >
+          <Btn :size="BtnSizesEnum.SM" variant="bare" @click="revoke(entry)">
             <i class="fa-light fa-xmark" />
             {{ t("actions.fleets.events.revokeRole") }}
           </Btn>
@@ -193,7 +188,6 @@ const revoke = (admin: FleetEventAdmin) => {
         />
         <Btn
           :size="BtnSizesEnum.SM"
-          inline
           :disabled="!selectedUserId"
           :loading="createMutation.isPending.value"
           @click="grant"
@@ -208,7 +202,6 @@ const revoke = (admin: FleetEventAdmin) => {
       <div class="float-sm-right">
         <Btn
           :size="BtnSizesEnum.LG"
-          inline
           variant="bare"
           @click="comlink.emit('close-modal')"
         >
